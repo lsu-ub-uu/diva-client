@@ -59,7 +59,6 @@ export const RepeatingGroup = ({
               }
               path={arrayPath}
             />
-            ,
           </>
         );
       }}
