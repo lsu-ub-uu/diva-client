@@ -188,6 +188,7 @@ export interface BFFSearch extends BFFBase {
   searchGroup: 'autocomplete' | 'publicSearch';
   searchDefText: string;
   searchText: string;
+  searchResultPresentation: string;
 }
 
 export interface BFFGuiElement extends BFFBase {
