@@ -26,6 +26,7 @@ import { createTextVariableValidation } from '@/.server/data/formDefinition/form
 import { checkForAttributes } from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/.server/data/formDefinition/createCommonParameters';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createTextVar = (
   metadataPool: Lookup<string, BFFMetadata>,
@@ -42,11 +43,11 @@ export const createTextVar = (
     presentation,
   );
   const commonParameters = createCommonParameters(metadata, presentation);
-  return {
+  return removeEmpty({
     ...commonParameters,
     validation,
     finalValue,
     inputFormat,
     attributes,
-  };
+  });
 };

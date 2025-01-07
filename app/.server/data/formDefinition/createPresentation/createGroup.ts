@@ -18,31 +18,49 @@
  */
 
 import type {
-  BFFMetadata,
-  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
   BFFPresentationBase,
+  BFFPresentationGroup,
 } from '@/.server/cora/transform/bffTypes';
 import {
   checkForAttributes,
-  createCollectionVariableOptions,
+  createComponentsFromChildReferences,
 } from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
-import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/.server/data/formDefinition/createCommonParameters';
+import { convertStylesToShortName } from '@/.server/cora/cora-data/CoraDataUtilsPresentations';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
-export const createCollVar = (
-  metadataPool: Lookup<string, BFFMetadata>,
-  metadata: BFFMetadataCollectionVariable,
+export const createGroup = (
+  dependencies: Dependencies,
+  metadata: BFFMetadataGroup,
   presentation: BFFPresentationBase,
 ) => {
-  const finalValue = metadata.finalValue;
-  const options = createCollectionVariableOptions(metadataPool, metadata);
+  const presentationGroup = dependencies.presentationPool.get(
+    presentation.id,
+  ) as BFFPresentationGroup;
+  const presentationStyle = convertStylesToShortName(
+    presentationGroup.presentationStyle ?? '',
+  );
   const attributes = checkForAttributes(
     metadata,
-    metadataPool,
+    dependencies.metadataPool,
     undefined,
     presentation,
   );
+
+  const components = createComponentsFromChildReferences(
+    dependencies,
+    metadata.children,
+    presentationGroup.children,
+  );
+
   const commonParameters = createCommonParameters(metadata, presentation);
-  return removeEmpty({ ...commonParameters, options, finalValue, attributes });
+
+  return removeEmpty({
+    ...commonParameters,
+    presentationStyle,
+    attributes,
+    components,
+  });
 };

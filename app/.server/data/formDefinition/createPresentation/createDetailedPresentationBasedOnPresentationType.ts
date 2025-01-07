@@ -33,12 +33,11 @@ import type {
   BFFPresentationChildReference,
   BFFPresentationContainer,
   BFFPresentationGroup,
-  BFFPresentationRecordLink,
-  BFFPresentationSurroundingContainer,
 } from '@/.server/cora/transform/bffTypes';
 import type {
   FormComponent,
   FormComponentCollVar,
+  FormComponentContainer,
   FormComponentGroup,
   FormComponentNumVar,
   FormComponentTextVar,
@@ -46,7 +45,6 @@ import type {
 import {
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
-  convertStylesToShortName,
 } from '@/.server/cora/cora-data/CoraDataUtilsPresentations';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
@@ -61,6 +59,9 @@ import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/.server/d
 import { createTextVar } from '@/.server/data/formDefinition/createPresentation/createTextVar';
 import { createNumVar } from '@/.server/data/formDefinition/createPresentation/createNumVar';
 import { createCollVar } from '@/.server/data/formDefinition/createPresentation/createCollVar';
+import { createRecordLink } from '@/.server/data/formDefinition/createPresentation/createRecordLink';
+import { createGroup } from '@/.server/data/formDefinition/createPresentation/createGroup';
+import { createContainer } from '@/.server/data/formDefinition/createPresentation/createContainer';
 
 export const createDetailedPresentationBasedOnPresentationType = (
   dependencies: Dependencies,
@@ -70,21 +71,11 @@ export const createDetailedPresentationBasedOnPresentationType = (
 ): FormComponentGroup | FormComponent | undefined => {
   const { metadataPool, presentationPool } = dependencies;
 
-  let options;
-  let finalValue;
-  let attributes;
-  let components;
-  let containerType;
-  let presentationStyle;
-  let metadataId;
   let metaDataChildRef;
   let repeat;
   let metadata;
   let commonParameters;
-  let recordLinkType;
-  let presentationRecordLinkId;
-  let search;
-  let linkedRecordPresentation;
+
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
   );
@@ -97,7 +88,6 @@ export const createDetailedPresentationBasedOnPresentationType = (
     | BFFPresentationGroup;
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-    metadataId = metadataOverrideId ?? presentation.presentationOf;
     const metadataFormPresentation = metadataPool.get(
       metadataOverrideId ?? presentation.presentationOf,
     );
@@ -116,10 +106,9 @@ export const createDetailedPresentationBasedOnPresentationType = (
   }
 
   if (presentation.type === 'pVar') {
-    const textVariable = metadata as BFFMetadataTextVariable;
-    const createdTextVar = createTextVar(
+    const textVar = createTextVar(
       metadataPool,
-      textVariable,
+      metadata as BFFMetadataTextVariable,
       presentation,
     );
 
@@ -127,142 +116,80 @@ export const createDetailedPresentationBasedOnPresentationType = (
       repeat,
       childStyle,
       gridColSpan,
-      ...createdTextVar,
+      ...textVar,
     } as FormComponentTextVar;
   }
 
   if (presentation.type === 'pNumVar') {
-    const numberVariable = metadata as BFFMetadataNumberVariable;
-    const createdNumVar = createNumVar(
+    const numVar = createNumVar(
       metadataPool,
-      numberVariable,
+      metadata as BFFMetadataNumberVariable,
       presentation,
     );
     return {
       repeat,
       childStyle,
       gridColSpan,
-      ...createdNumVar,
+      ...numVar,
     } as FormComponentNumVar;
   }
 
   if (presentation.type === 'pCollVar') {
-    const collectionVariable = metadata as BFFMetadataCollectionVariable;
-    const createdCollVar = createCollVar(
+    const collVar = createCollVar(
       metadataPool,
-      collectionVariable,
+      metadata as BFFMetadataCollectionVariable,
       presentation,
     );
     return {
       repeat,
       childStyle,
       gridColSpan,
-      ...createdCollVar,
+      ...collVar,
     } as FormComponentCollVar;
   }
 
   if (presentation.type === 'pRecordLink') {
-    const recordLink = metadata as BFFMetadataRecordLink;
-    recordLinkType = recordLink.linkedRecordType;
-    const presentationRecordLink = presentation as BFFPresentationRecordLink;
-    if (presentationRecordLink.search !== undefined) {
-      search = presentationRecordLink.search;
-    }
-    if (presentationRecordLink.linkedRecordPresentations !== undefined) {
-      linkedRecordPresentation =
-        presentationRecordLink.linkedRecordPresentations[0];
-    }
-    presentationRecordLinkId = presentation.id;
-
-    attributes = checkForAttributes(
-      recordLink,
+    const recordLink = createRecordLink(
       metadataPool,
-      options,
+      metadata as BFFMetadataRecordLink,
       presentation,
     );
+    return {
+      repeat,
+      childStyle,
+      gridColSpan,
+      ...recordLink,
+    } as FormComponentCollVar;
   }
 
   if (presentation.type === 'container') {
-    const presentationContainer = presentation as BFFPresentationContainer;
-    const name = presentation.id; // container does not have a nameInData so use id instead.
-    const { type, mode } = presentation;
-    containerType = getContainerType(presentationContainer);
-    presentationStyle = convertStylesToShortName(
-      presentationContainer.presentationStyle ?? '',
-    );
-
-    let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
-
-    if (containerType === 'surrounding') {
-      const presentationMetadataIds =
-        (presentationContainer as BFFPresentationSurroundingContainer)
-          .presentationsOf ?? [];
-      definitionFilteredChildRefs = metadataChildReferences.filter(
-        (definitionChildRef) => {
-          if (
-            checkIfPresentationIncludesMetadataId(
-              presentationMetadataIds,
-              definitionChildRef,
-            )
-          ) {
-            return true;
-          }
-
-          return matchPresentationWithMetadata(
-            metadataPool,
-            presentationMetadataIds,
-            definitionChildRef,
-          );
-        },
-      );
-    } else if (containerType === 'repeating') {
-      metadataId = presentationContainer.presentationOf;
-      metaDataChildRef = findMetadataChildReferenceById(
-        metadataId,
-        metadataChildReferences,
-      );
-      definitionFilteredChildRefs = [metaDataChildRef];
-    }
-
-    commonParameters = { type, name, mode };
-    components = createComponentsFromChildReferences(
+    const container = createContainer(
       dependencies,
-      definitionFilteredChildRefs,
-      presentationContainer.children,
+      metadataChildReferences,
+      presentation as BFFPresentationContainer,
     );
+    return { childStyle, gridColSpan, ...container } as FormComponentContainer;
   }
 
   if (presentation.type === 'pGroup') {
-    const group = metadata as BFFMetadataGroup;
-    const presentationGroup = presentationPool.get(
-      presentation.id,
-    ) as BFFPresentationGroup;
-    presentationStyle = convertStylesToShortName(
-      presentationGroup.presentationStyle ?? '',
-    );
-    attributes = checkForAttributes(group, metadataPool, options, presentation);
-
-    components = createComponentsFromChildReferences(
+    const group = createGroup(
       dependencies,
-      group.children,
-      presentationGroup.children,
+      metadata as BFFMetadataGroup,
+      presentation,
     );
+    return {
+      repeat,
+      childStyle,
+      gridColSpan,
+      ...group,
+    } as FormComponentGroup;
   }
 
   return removeEmpty({
     ...commonParameters,
     repeat,
-    options,
-    attributes,
-    components,
-    presentationStyle,
-    containerType,
     childStyle,
     gridColSpan,
-    recordLinkType,
-    presentationRecordLinkId,
-    search,
-    linkedRecordPresentation,
   }) as FormComponentGroup;
 };
 
@@ -277,7 +204,7 @@ const createRepeat = (
   const repeatMin = parseInt(metaDataChildRef.repeatMin);
   const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
 
-  return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
+  return removeEmpty({ minNumberOfRepeatingToShow, repeatMin, repeatMax });
 };
 
 const getMinNumberOfRepeatingToShow = (
@@ -385,49 +312,7 @@ export const createCollectionVariableOptions = (
   });
 };
 
-const getContainerType = (presentationContainer: BFFPresentationContainer) => {
-  return presentationContainer.repeat === 'children'
-    ? 'surrounding'
-    : 'repeating';
-};
-
-const checkIfPresentationIncludesMetadataId = (
-  presentationMetadataIds: string[],
-  definitionChildRef: BFFMetadataChildReference,
-) => {
-  return presentationMetadataIds.includes(definitionChildRef.childId);
-};
-
-const matchPresentationWithMetadata = (
-  metadataPool: Lookup<string, BFFMetadataBase>,
-  presentationMetadataIds: string[],
-  definitionChildRef: BFFMetadataChildReference,
-) => {
-  const metadataFromCurrentPresentation = metadataPool.get(
-    presentationMetadataIds[0],
-  );
-
-  return findMetadataChildReferenceByNameInDataAndAttributes(
-    metadataPool,
-    [definitionChildRef],
-    metadataFromCurrentPresentation,
-  );
-};
-
-const findMetadataChildReferenceById = (
-  childId: string,
-  metadataChildReferences: BFFMetadataChildReference[],
-) => {
-  const metaDataChildRef = metadataChildReferences.find(
-    (reference) => reference.childId === childId,
-  );
-  if (metaDataChildRef === undefined) {
-    throw new Error(`Child reference with childId [${childId}] does not exist`);
-  }
-  return metaDataChildRef;
-};
-
-const createComponentsFromChildReferences = (
+export const createComponentsFromChildReferences = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],

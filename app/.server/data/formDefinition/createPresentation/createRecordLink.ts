@@ -19,30 +19,48 @@
 
 import type {
   BFFMetadata,
-  BFFMetadataCollectionVariable,
+  BFFMetadataRecordLink,
   BFFPresentationBase,
+  BFFPresentationRecordLink,
 } from '@/.server/cora/transform/bffTypes';
-import {
-  checkForAttributes,
-  createCollectionVariableOptions,
-} from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
+import { checkForAttributes } from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/.server/data/formDefinition/createCommonParameters';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
-export const createCollVar = (
+export const createRecordLink = (
   metadataPool: Lookup<string, BFFMetadata>,
-  metadata: BFFMetadataCollectionVariable,
+  metadata: BFFMetadataRecordLink,
   presentation: BFFPresentationBase,
 ) => {
-  const finalValue = metadata.finalValue;
-  const options = createCollectionVariableOptions(metadataPool, metadata);
+  const recordLinkType = metadata.linkedRecordType;
+  const presentationRecordLink = presentation as BFFPresentationRecordLink;
+  let search;
+  if (presentationRecordLink.search !== undefined) {
+    search = presentationRecordLink.search;
+  }
+  let linkedRecordPresentation;
+  if (presentationRecordLink.linkedRecordPresentations !== undefined) {
+    linkedRecordPresentation =
+      presentationRecordLink.linkedRecordPresentations[0];
+  }
+  const presentationRecordLinkId = presentation.id;
+
   const attributes = checkForAttributes(
     metadata,
     metadataPool,
     undefined,
     presentation,
   );
+
   const commonParameters = createCommonParameters(metadata, presentation);
-  return removeEmpty({ ...commonParameters, options, finalValue, attributes });
+
+  return removeEmpty({
+    ...commonParameters,
+    recordLinkType,
+    search,
+    linkedRecordPresentation,
+    presentationRecordLinkId,
+    attributes,
+  });
 };
