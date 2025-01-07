@@ -26,7 +26,7 @@ import type {
   BFFMetadataTextVariable,
   BFFPresentationRecordLink,
 } from '@/.server/cora/transform/bffTypes';
-import { createCollectionVariableOptions } from '@/.server/data/formDefinition/createDetailedPresentationBasedOnPresentationType';
+import { createCollectionVariableOptions } from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
 
 export type BFFMetadataTypes =
   | BFFMetadataCollectionVariable

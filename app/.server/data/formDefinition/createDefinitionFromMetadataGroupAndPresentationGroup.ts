@@ -6,7 +6,7 @@ import type {
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { createBFFMetadataReference } from '@/.server/data/formDefinition/formMetadata';
 import { createBFFPresentationReference } from '@/.server/data/formDefinition/formPresentation';
-import { createDetailedPresentationBasedOnPresentationType } from '@/.server/data/formDefinition/createDetailedPresentationBasedOnPresentationType';
+import { createDetailedPresentationBasedOnPresentationType } from '@/.server/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType';
 
 export const createDefinitionFromMetadataGroupAndPresentationGroup = (
   dependencies: Dependencies,

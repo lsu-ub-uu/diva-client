@@ -124,7 +124,7 @@ export interface BFFPresentationBase extends BFFBase {
     | 'presentation';
   presentationOf: string;
   mode: 'input' | 'output';
-  inputType?: string;
+  inputType?: 'input' | 'textarea';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;

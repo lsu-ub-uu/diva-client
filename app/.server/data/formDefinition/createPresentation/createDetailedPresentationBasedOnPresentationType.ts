@@ -36,16 +36,18 @@ import type {
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
 } from '@/.server/cora/transform/bffTypes';
-import type { FormComponentGroup } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentCollVar,
+  FormComponentGroup,
+  FormComponentNumVar,
+  FormComponentTextVar,
+} from '@/components/FormGenerator/types';
 import {
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
   convertStylesToShortName,
 } from '@/.server/cora/cora-data/CoraDataUtilsPresentations';
-import {
-  createNumberVariableValidation,
-  createTextVariableValidation,
-} from '@/.server/data/formDefinition/formValidation';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   type BFFMetadataTypes,
@@ -53,19 +55,21 @@ import {
 } from '@/.server/data/formDefinition/formDefinition';
 import { createCommonParameters } from '@/.server/data/formDefinition/createCommonParameters';
 import type { Lookup } from '@/utils/structs/lookup';
-import { createGuiElement } from '@/.server/data/formDefinition/createGuiElement';
-import { createText } from '@/.server/data/formDefinition/createText';
+import { createGuiElement } from '@/.server/data/formDefinition/createPresentation/createGuiElement';
+import { createText } from '@/.server/data/formDefinition/createPresentation/createText';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/.server/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes';
+import { createTextVar } from '@/.server/data/formDefinition/createPresentation/createTextVar';
+import { createNumVar } from '@/.server/data/formDefinition/createPresentation/createNumVar';
+import { createCollVar } from '@/.server/data/formDefinition/createPresentation/createCollVar';
 
 export const createDetailedPresentationBasedOnPresentationType = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
   metadataOverrideId?: string,
-): FormComponentGroup | undefined => {
+): FormComponentGroup | FormComponent | undefined => {
   const { metadataPool, presentationPool } = dependencies;
 
-  let validation;
   let options;
   let finalValue;
   let attributes;
@@ -81,7 +85,6 @@ export const createDetailedPresentationBasedOnPresentationType = (
   let presentationRecordLinkId;
   let search;
   let linkedRecordPresentation;
-  let inputFormat;
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
   );
@@ -114,39 +117,48 @@ export const createDetailedPresentationBasedOnPresentationType = (
 
   if (presentation.type === 'pVar') {
     const textVariable = metadata as BFFMetadataTextVariable;
-    validation = createTextVariableValidation(textVariable);
-    finalValue = textVariable.finalValue;
-    inputFormat = presentation.inputFormat;
-    attributes = checkForAttributes(
-      textVariable,
+    const createdTextVar = createTextVar(
       metadataPool,
-      undefined,
+      textVariable,
       presentation,
     );
+
+    return {
+      repeat,
+      childStyle,
+      gridColSpan,
+      ...createdTextVar,
+    } as FormComponentTextVar;
   }
 
   if (presentation.type === 'pNumVar') {
     const numberVariable = metadata as BFFMetadataNumberVariable;
-    validation = createNumberVariableValidation(numberVariable);
-    finalValue = numberVariable.finalValue;
-    attributes = checkForAttributes(
-      numberVariable,
+    const createdNumVar = createNumVar(
       metadataPool,
-      undefined,
+      numberVariable,
       presentation,
     );
+    return {
+      repeat,
+      childStyle,
+      gridColSpan,
+      ...createdNumVar,
+    } as FormComponentNumVar;
   }
 
   if (presentation.type === 'pCollVar') {
     const collectionVariable = metadata as BFFMetadataCollectionVariable;
-    finalValue = collectionVariable.finalValue;
-    options = createCollectionVariableOptions(metadataPool, collectionVariable);
-    attributes = checkForAttributes(
-      collectionVariable,
+    const createdCollVar = createCollVar(
       metadataPool,
-      options,
+      collectionVariable,
       presentation,
     );
+    return {
+      repeat,
+      childStyle,
+      gridColSpan,
+      ...createdCollVar,
+    } as FormComponentCollVar;
   }
 
   if (presentation.type === 'pRecordLink') {
@@ -239,10 +251,8 @@ export const createDetailedPresentationBasedOnPresentationType = (
 
   return removeEmpty({
     ...commonParameters,
-    validation,
     repeat,
     options,
-    finalValue,
     attributes,
     components,
     presentationStyle,
@@ -253,7 +263,6 @@ export const createDetailedPresentationBasedOnPresentationType = (
     presentationRecordLinkId,
     search,
     linkedRecordPresentation,
-    inputFormat,
   }) as FormComponentGroup;
 };
 
@@ -283,7 +292,7 @@ const getMinNumberOfRepeatingToShow = (
   return minNumberOfRepeatingToShow;
 };
 
-const checkForAttributes = (
+export const checkForAttributes = (
   metadataVariable: BFFMetadataTypes,
   metadataPool: Lookup<string, BFFMetadataBase>,
   options: any,
