@@ -79,6 +79,11 @@ const transformCoraSearchToBFFSearch = (
     dataRecordGroup,
     'defTextId',
   );
+  console.log(JSON.stringify(dataRecordGroup.children, null, 2));
+  const searchResultPresentation = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'searchResultPresentation',
+  );
 
   return removeEmpty({
     id,
@@ -88,5 +93,6 @@ const transformCoraSearchToBFFSearch = (
     searchGroup,
     searchDefText,
     searchText,
+    searchResultPresentation,
   } as BFFSearch);
 };

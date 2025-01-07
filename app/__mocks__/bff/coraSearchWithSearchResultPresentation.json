@@ -1,0 +1,250 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "name": "search",
+            "children": [
+              {
+                "name": "recordInfo",
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "diva-personMinimalSearch"
+                  },
+                  {
+                    "name": "type",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "search"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "validationType",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "search"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "dataDivider",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "createdBy",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "161616"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2024-12-17T11:09:54.769356Z"
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "161616"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2024-12-17T11:09:54.769356Z"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "metadataId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "metadata"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "personMinimalSearchGroup"
+                  }
+                ]
+              },
+              {
+                "name": "presentationId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "presentation"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "outputSearchPGroup"
+                  }
+                ]
+              },
+              {
+                "name": "recordTypeToSearchIn",
+                "repeatId": "0",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "recordType"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "diva-person"
+                  }
+                ]
+              },
+              {
+                "name": "searchGroup",
+                "value": "autocomplete"
+              },
+              {
+                "name": "textId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "diva-personSearchText"
+                  }
+                ]
+              },
+              {
+                "name": "defTextId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "diva-personSearchDefText"
+                  }
+                ]
+              },
+              {
+                "name": "searchResultPresentation",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "presentation"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "someSearchResultPresentation"
+                  }
+                ]
+              }
+            ]
+          },
+          "actionLinks": {
+            "search": {
+              "requestMethod": "GET",
+              "rel": "search",
+              "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/searchResult/personSearch",
+              "accept": "application/vnd.uub.recordList+json"
+            },
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch",
+              "accept": "application/vnd.uub.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch/incomingLinks",
+              "accept": "application/vnd.uub.recordList+json"
+            },
+            "update": {
+              "requestMethod": "POST",
+              "rel": "update",
+              "contentType": "application/vnd.uub.record+json",
+              "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch",
+              "accept": "application/vnd.uub.record+json"
+            },
+            "index": {
+              "requestMethod": "POST",
+              "rel": "index",
+              "body": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "search"
+                      }
+                    ],
+                    "name": "recordType"
+                  },
+                  {
+                    "name": "recordId",
+                    "value": "personSearch"
+                  },
+                  {
+                    "name": "type",
+                    "value": "index"
+                  }
+                ],
+                "name": "workOrder"
+              },
+              "contentType": "application/vnd.uub.record+json",
+              "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/workOrder/",
+              "accept": "application/vnd.uub.record+json"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "recordType",
+    "toNo": "1"
+  }
+}

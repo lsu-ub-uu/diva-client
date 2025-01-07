@@ -19,6 +19,7 @@
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import { transformCoraSearch } from '../transformCoraSearch';
 import coraSearch from '@/__mocks__/bff/coraSearch.json';
+import coraSearchWithSearchResultPresentation from '@/__mocks__/bff/coraSearchWithSearchResultPresentation.json';
 import coraSearchWithTwoRecordTypeToSearchIn from '@/__mocks__/bff/coraSearchWithTwoRecordTypeToSearchIn.json';
 
 describe('transformSearch', () => {
@@ -54,6 +55,21 @@ describe('transformSearch', () => {
       searchGroup: 'autocomplete',
       searchDefText: 'personSearchDefText',
       searchText: 'personSearchText',
+    });
+  });
+  it('Returns one BFFSearch entry with an searchResultPresentation', () => {
+    const searchDataList = transformCoraSearch(
+      coraSearchWithSearchResultPresentation,
+    );
+    expect(searchDataList[0]).toStrictEqual({
+      id: 'diva-personMinimalSearch',
+      metadataId: 'personMinimalSearchGroup',
+      presentationId: 'outputSearchPGroup',
+      recordTypeToSearchIn: ['diva-person'],
+      searchDefText: 'diva-personSearchDefText',
+      searchGroup: 'autocomplete',
+      searchText: 'diva-personSearchText',
+      searchResultPresentation: 'someSearchResultPresentation',
     });
   });
 });
