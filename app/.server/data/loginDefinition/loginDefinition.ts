@@ -18,13 +18,13 @@
  */
 
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/formDefinition';
 import type {
   BFFLoginPassword,
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFPresentationGroup,
 } from '@/.server/cora/transform/bffTypes';
+import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/createLinkedRecordDefinition';
 
 interface LoginDefinition {
   loginDescription: string;

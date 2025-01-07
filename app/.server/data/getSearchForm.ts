@@ -22,7 +22,8 @@ import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
 } from '@/.server/cora/transform/bffTypes';
-import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/formDefinition';
+
+import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/createLinkedRecordDefinition';
 
 export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
   const searchFromPool = dependencies.searchPool.get(searchId);

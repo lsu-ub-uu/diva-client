@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createFormDefinition } from '@/.server/data/formDefinition/formDefinition';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import { createFormDefinition } from '@/.server/data/formDefinition/createFormDefinition';
 
 export const getFormDefinitionByValidationTypeId = async (
   dependencies: Dependencies,

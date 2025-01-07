@@ -19,11 +19,7 @@
 import type { BFFSearchResult } from '@/types/record';
 import type { Auth } from '@/types/Auth';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import type {
-  FormMetaData} from '@/.server/data/formDefinition/formDefinition';
-import {
-  createLinkedRecordDefinition
-} from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
@@ -35,8 +31,12 @@ import {
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
 import { getSearchResultDataListBySearchType } from '@/.server/cora/getSearchResultDataListBySearchType';
-import type { DataGroup, DataListWrapper } from '@/.server/cora/cora-data/CoraData';
+import type {
+  DataGroup,
+  DataListWrapper,
+} from '@/.server/cora/cora-data/CoraData';
 import { transformRecords } from '@/.server/cora/transform/transformRecord';
+import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/createLinkedRecordDefinition';
 
 export const searchRecords = async (
   dependencies: Dependencies,
