@@ -23,7 +23,7 @@ export const createDefinitionFromMetadataGroupAndPresentationGroup = (
     [formRootReference],
     formRootPresentationReference,
     metadataGroup.id,
-  );
+  ) as FormComponentGroup;
 
   if (!form) {
     throw new Error('Failed to create form definition');
