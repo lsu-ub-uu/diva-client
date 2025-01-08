@@ -26,7 +26,10 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/.server/cora/cora-data/CoraDataTransforms';
-import { getAllRecordLinksWithNameInData } from '@/.server/cora/cora-data/CoraDataUtils';
+import {
+  getAllRecordLinksWithNameInData,
+  hasChildWithNameInData,
+} from '@/.server/cora/cora-data/CoraDataUtils';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
 
@@ -79,11 +82,18 @@ const transformCoraSearchToBFFSearch = (
     dataRecordGroup,
     'defTextId',
   );
-  console.log(JSON.stringify(dataRecordGroup.children, null, 2));
-  const searchResultPresentation = extractLinkedRecordIdFromNamedRecordLink(
+
+  const hasSearchResultPresentation = hasChildWithNameInData(
     dataRecordGroup,
     'searchResultPresentation',
   );
+
+  const searchResultPresentation = hasSearchResultPresentation
+    ? extractLinkedRecordIdFromNamedRecordLink(
+        dataRecordGroup,
+        'searchResultPresentation',
+      )
+    : undefined;
 
   return removeEmpty({
     id,
