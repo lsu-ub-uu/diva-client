@@ -116,14 +116,14 @@ import {
   someValidationTypeForRepeatingTitleInfoId,
 } from '@/__mocks__/bff/form/bffMock';
 import {
-  createFormDefinition,
-  createLinkedRecordDefinition,
-  findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition';
 import type { Dependencies } from '../formDefinitionsDep';
+import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/createLinkedRecordDefinition';
+import { createFormDefinition } from '@/.server/data/formDefinition/createFormDefinition';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/.server/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

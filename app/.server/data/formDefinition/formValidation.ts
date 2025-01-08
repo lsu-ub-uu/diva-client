@@ -21,10 +21,11 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
 } from '@/.server/cora/transform/bffTypes';
+import type { FormRegexValidation } from '@/components/FormGenerator/types';
 
 export const createTextVariableValidation = (
   textVariable: BFFMetadataTextVariable,
-) => {
+): FormRegexValidation => {
   const pattern = textVariable.regEx;
   return { type: 'regex', pattern };
 };

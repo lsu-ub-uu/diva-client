@@ -83,12 +83,12 @@ export interface FormComponentMetadata extends FormComponentBase {
 export interface FormComponentTextVar extends FormComponentMetadata {
   inputType?: 'input' | 'textarea'; // really be optional?
   inputFormat?: 'password';
-  validation?: FormRegexValidation | FormNumberValidation;
+  validation?: FormRegexValidation;
   attributes?: FormAttributeCollection[];
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {
-  validation?: FormRegexValidation | FormNumberValidation;
+  validation?: FormNumberValidation;
   attributes?: FormAttributeCollection[];
 }
 export interface FormComponentCollVar extends FormComponentMetadata {

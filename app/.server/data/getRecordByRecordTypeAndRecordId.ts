@@ -19,10 +19,10 @@
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import type { RecordWrapper } from '@/.server/cora/cora-data/CoraData';
 import { transformRecord } from '@/.server/cora/transform/transformRecord';
-import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/formDefinition';
 import { getRecordDataById } from '@/.server/cora/getRecordDataById';
 import type * as TYPES from '@/.server/cora/transform/bffTypes';
 import type { BFFPresentationGroup } from '@/.server/cora/transform/bffTypes';
+import { createLinkedRecordDefinition } from '@/.server/data/formDefinition/createLinkedRecordDefinition';
 
 interface GetRecordByRecordTypeAndRecordIdArgs {
   dependencies: Dependencies;

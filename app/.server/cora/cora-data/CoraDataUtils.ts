@@ -231,6 +231,13 @@ const getAtomicChildren = (dataRecordGroup: DataGroup) => {
   ) as DataAtomic[];
 };
 
+export const hasChildWithNameInData = (
+  dataGroup: DataGroup,
+  nameInData: string,
+) => {
+  return dataGroup.children.some((child) => child.name === nameInData);
+};
+
 export default {
   // getFirstRecordLinkWithNameInData,
   getFirstChildWithNameInData,

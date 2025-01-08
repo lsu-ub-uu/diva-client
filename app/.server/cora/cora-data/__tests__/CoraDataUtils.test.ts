@@ -18,8 +18,12 @@
  */
 
 import * as cdu from '../CoraDataUtils';
-import type { DataGroup, DataElement, DataAtomic } from '../CoraData';
-import { getAllDataAtomicValueFromDataGroup } from '../CoraDataUtils';
+import {
+  getAllDataAtomicValueFromDataGroup,
+  hasChildWithNameInData,
+} from '../CoraDataUtils';
+import type { DataAtomic, DataElement, DataGroup } from '../CoraData';
+import { describe, expect } from 'vitest';
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',
@@ -30,28 +34,28 @@ const dataGroupWithOneRecordLink: DataGroup = {
       children: [
         {
           name: 'linkedRecordType',
-          value: 'someRecordType'
+          value: 'someRecordType',
         },
         {
           name: 'linkedRecordId',
-          value: 'someId'
-        }
+          value: 'someId',
+        },
       ],
       actionLinks: {
         read: {
           requestMethod: 'GET',
           rel: 'read',
           url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
-          accept: 'application/vnd.uub.record+json'
-        }
-      }
-    }
-  ]
+          accept: 'application/vnd.uub.record+json',
+        },
+      },
+    },
+  ],
 };
 
 const dataGroupWithEmptyChildren: DataGroup = {
   name: 'someName',
-  children: []
+  children: [],
 };
 
 const dataGroupWithNonMatchingDataElements: DataGroup = {
@@ -59,22 +63,22 @@ const dataGroupWithNonMatchingDataElements: DataGroup = {
   children: [
     {
       name: 'someUninterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someOtherUninterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someUninterestingChildName',
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
-      ]
-    }
-  ]
+          value: 'someValue',
+        },
+      ],
+    },
+  ],
 };
 
 const dataGroupWithOnlyMatchingAtomics: DataGroup = {
@@ -82,22 +86,22 @@ const dataGroupWithOnlyMatchingAtomics: DataGroup = {
   children: [
     {
       name: 'someInterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someInterestingChildName',
-      value: 'someOtherValue'
+      value: 'someOtherValue',
     },
     {
       name: 'someUninterestingChildName',
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
-      ]
-    }
-  ]
+          value: 'someValue',
+        },
+      ],
+    },
+  ],
 };
 
 const dataGroupWithOnlyMatchingGroups: DataGroup = {
@@ -108,24 +112,24 @@ const dataGroupWithOnlyMatchingGroups: DataGroup = {
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     },
     {
       name: 'someOtherUninterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
-      ]
-    }
-  ]
+          value: 'someValue',
+        },
+      ],
+    },
+  ],
 };
 
 const dataGroupWithOneMatchingAtomicAndOneMatchingGroup: DataGroup = {
@@ -133,26 +137,26 @@ const dataGroupWithOneMatchingAtomicAndOneMatchingGroup: DataGroup = {
   children: [
     {
       name: 'someUninterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someOtherUninterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     },
     {
       name: 'someInterestingChildName',
-      value: 'someValue'
-    }
-  ]
+      value: 'someValue',
+    },
+  ],
 };
 
 const dataGroupWithSeveralMatchingDataGroups: DataGroup = {
@@ -163,53 +167,53 @@ const dataGroupWithSeveralMatchingDataGroups: DataGroup = {
       children: [
         {
           name: 'firstChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'secondChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'thirdChild',
-          value: 'someValue'
-        }
-      ]
-    }
-  ]
+          value: 'someValue',
+        },
+      ],
+    },
+  ],
 };
 const dataGroupWithSeveralMatchingAtomics: DataGroup = {
   name: 'someName',
   children: [
     {
       name: 'someInterestingChildName',
-      value: 'firstMatch'
+      value: 'firstMatch',
     },
     {
       name: 'someInterestingChildName',
-      value: 'second'
+      value: 'second',
     },
     {
       name: 'someInterestingChildName',
-      value: 'third'
-    }
-  ]
+      value: 'third',
+    },
+  ],
 };
 
 describe('getAllRecordLinksWithNameInData', () => {
   it('should return empty list if there are no children', () => {
     const children = cdu.getAllRecordLinksWithNameInData(
       dataGroupWithEmptyChildren,
-      'someChildName'
+      'someChildName',
     );
 
     expect(children).toStrictEqual([]);
@@ -219,7 +223,7 @@ describe('getAllRecordLinksWithNameInData', () => {
   it('should return empty list if no record links exist with correct name', () => {
     const children = cdu.getAllRecordLinksWithNameInData(
       dataGroupWithOneRecordLink,
-      'NOTsomeChildName'
+      'NOTsomeChildName',
     );
 
     expect(children).toStrictEqual([]);
@@ -229,7 +233,7 @@ describe('getAllRecordLinksWithNameInData', () => {
   it('should return empty list if dataAtomic exist with correct name but wrong type', () => {
     const children = cdu.getAllRecordLinksWithNameInData(
       dataGroupWithSeveralMatchingAtomics,
-      'someInterestingChildName'
+      'someInterestingChildName',
     );
 
     expect(children).toStrictEqual([]);
@@ -239,7 +243,7 @@ describe('getAllRecordLinksWithNameInData', () => {
   it('should return empty list if dataGroup exist with correct name but wrong type', () => {
     const children = cdu.getAllRecordLinksWithNameInData(
       dataGroupWithOnlyMatchingAtomics,
-      'someInterestingChildName'
+      'someInterestingChildName',
     );
 
     expect(children).toStrictEqual([]);
@@ -247,7 +251,10 @@ describe('getAllRecordLinksWithNameInData', () => {
   });
 
   it('should return a list with correct recordLink if exist with correct name', () => {
-    const children = cdu.getAllRecordLinksWithNameInData(dataGroupWithOneRecordLink, 'someName');
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithOneRecordLink,
+      'someName',
+    );
 
     expect(children).toStrictEqual([
       {
@@ -258,9 +265,9 @@ describe('getAllRecordLinksWithNameInData', () => {
           requestMethod: 'GET',
           rel: 'read',
           url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
-          accept: 'application/vnd.uub.record+json'
-        }
-      }
+          accept: 'application/vnd.uub.record+json',
+        },
+      },
     ]);
     expect(children).toHaveLength(1);
   });
@@ -269,15 +276,21 @@ describe('getAllRecordLinksWithNameInData', () => {
 describe('getFirstRecordLinkWithNameInData', () => {
   it('should throw with no recordLink', () => {
     expect(() => {
-      cdu.getFirstRecordLinkWithNameInData(dataGroupWithOneRecordLink, 'someName');
+      cdu.getFirstRecordLinkWithNameInData(
+        dataGroupWithOneRecordLink,
+        'someName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstRecordLinkWithNameInData(dataGroupWithOneRecordLink, 'someName');
+      cdu.getFirstRecordLinkWithNameInData(
+        dataGroupWithOneRecordLink,
+        'someName',
+      );
     } catch (error: unknown) {
       const childMissingError: Error = <Error>error;
       expect(childMissingError.message).toStrictEqual(
-        'RecordLink with name [someName] does not exist'
+        'RecordLink with name [someName] does not exist',
       );
     }
   });
@@ -286,7 +299,10 @@ describe('getFirstRecordLinkWithNameInData', () => {
 
 describe('getAllChildrenWithNameInData', () => {
   it('should return empty list if there are no children', () => {
-    const children = cdu.getAllChildrenWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+    const children = cdu.getAllChildrenWithNameInData(
+      dataGroupWithEmptyChildren,
+      'someChildName',
+    );
 
     expect(children).toStrictEqual([]);
     expect(children).toHaveLength(0);
@@ -298,18 +314,18 @@ describe('getAllChildrenWithNameInData', () => {
       children: [
         {
           name: 'someUninterestingName',
-          value: 'someValue'
+          value: 'someValue',
         },
         {
           name: 'someOtherUninterestingName',
-          value: 'someOtherValue'
-        }
-      ]
+          value: 'someOtherValue',
+        },
+      ],
     };
 
     const children = cdu.getAllChildrenWithNameInData(
       dataGroupWithNonMatchingChildren,
-      'someChildName'
+      'someChildName',
     );
 
     expect(children).toStrictEqual([]);
@@ -322,45 +338,45 @@ describe('getAllChildrenWithNameInData', () => {
       children: [
         {
           name: 'someUninterestingName',
-          value: 'someValue'
+          value: 'someValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someInterestingValue'
+          value: 'someInterestingValue',
         },
         {
           name: 'someOtherUninterestingName',
-          value: 'someOtherValue'
+          value: 'someOtherValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someOtherInterestingValue'
+          value: 'someOtherInterestingValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someOther2InterestingValue'
-        }
-      ]
+          value: 'someOther2InterestingValue',
+        },
+      ],
     };
 
     const children = cdu.getAllChildrenWithNameInData(
       dataGroupWithSomeMatchingChildren,
-      'someInterestingName'
+      'someInterestingName',
     );
 
     expect(children).toStrictEqual([
       {
         name: 'someInterestingName',
-        value: 'someInterestingValue'
+        value: 'someInterestingValue',
       },
       {
         name: 'someInterestingName',
-        value: 'someOtherInterestingValue'
+        value: 'someOtherInterestingValue',
       },
       {
         name: 'someInterestingName',
-        value: 'someOther2InterestingValue'
-      }
+        value: 'someOther2InterestingValue',
+      },
     ]);
     expect(children).toHaveLength(3);
   });
@@ -371,39 +387,39 @@ describe('getAllChildrenWithNameInData', () => {
       children: [
         {
           name: 'someUninterestingName',
-          value: 'someValue'
+          value: 'someValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someInterestingValue'
+          value: 'someInterestingValue',
         },
         {
           name: 'someOtherUninterestingName',
-          value: 'someOtherValue'
+          value: 'someOtherValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someOtherInterestingValue'
+          value: 'someOtherInterestingValue',
         },
         {
           name: 'someInterestingName',
-          value: 'someOther2InterestingValue'
-        }
-      ]
+          value: 'someOther2InterestingValue',
+        },
+      ],
     };
 
     const children = cdu.getAllChildrenWithNameInData(
       dataGroupWithSomeMatchingChildren,
-      'someInterestingName'
+      'someInterestingName',
     );
 
     expect(children).not.toContain({
       name: 'someUninterestingName',
-      value: 'someValue'
+      value: 'someValue',
     });
     expect(children).not.toContain({
       name: 'someOtherUninterestingName',
-      value: 'someOtherValue'
+      value: 'someOtherValue',
     });
   });
 });
@@ -411,43 +427,61 @@ describe('getAllChildrenWithNameInData', () => {
 describe('getFirstChildWithNameInData', () => {
   it('should return null if no child exists', () => {
     expect(() => {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const attributeError: Error = <Error>error;
       expect(attributeError.message).toStrictEqual(
-        'DataGroup with name [someName] does not have any children'
+        'DataGroup with name [someName] does not have any children',
       );
     }
   });
 
   it('should return null if no matching child exists', () => {
     expect(() => {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const attributeError: Error = <Error>error;
       expect(attributeError.message).toStrictEqual(
-        'DataGroup with name [someName] does not have any children'
+        'DataGroup with name [someName] does not have any children',
       );
     }
 
     expect(() => {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstChildWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const attributeError: Error = <Error>error;
       expect(attributeError.message).toStrictEqual(
-        'DataGroup with name [someName] does not have any children'
+        'DataGroup with name [someName] does not have any children',
       );
     }
   });
@@ -458,13 +492,16 @@ describe('getFirstChildWithNameInData', () => {
       children: [
         {
           name: 'someChildName',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     };
 
     const child: DataAtomic = <DataAtomic>(
-      cdu.getFirstChildWithNameInData(dataGroupWithOneMatchingChild, 'someChildName')
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithOneMatchingChild,
+        'someChildName',
+      )
     );
     expect(child).not.toBe(undefined);
     expect(child.name).toBe('someChildName');
@@ -476,19 +513,19 @@ describe('getFirstChildWithNameInData', () => {
       children: [
         {
           name: 'someChildName',
-          value: 'someValue'
+          value: 'someValue',
         },
         {
           name: 'someOtherChildName',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     };
 
     const child2 = <DataElement>(
       cdu.getFirstChildWithNameInData(
         dataGroupWithOneMatchingAndOneOtherChild,
-        'someOtherChildName'
+        'someOtherChildName',
       )
     );
 
@@ -505,28 +542,31 @@ describe('getFirstChildWithNameInData', () => {
           children: [
             {
               name: 'someGrandChildName',
-              value: 'someValue'
-            }
-          ]
+              value: 'someValue',
+            },
+          ],
         },
         {
           name: 'someChildName',
-          value: 'someValue'
+          value: 'someValue',
         },
         {
           name: 'someChildName',
           children: [
             {
               name: 'anotherGrandChildName',
-              value: 'someValue'
-            }
-          ]
-        }
-      ]
+              value: 'someValue',
+            },
+          ],
+        },
+      ],
     };
 
     const child: DataAtomic = <DataAtomic>(
-      cdu.getFirstChildWithNameInData(dataGroupWithMultipleMatchingChildren, 'someChildName')
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithMultipleMatchingChildren,
+        'someChildName',
+      )
     );
     expect(child).not.toBe(undefined);
     expect(child.name).toBe('someChildName');
@@ -537,15 +577,18 @@ describe('getFirstChildWithNameInData', () => {
 describe('containsChildWithNameInData', () => {
   it('returns false if child does not exist', () => {
     expect(
-      cdu.containsChildWithNameInData(dataGroupWithSeveralMatchingAtomics, 'someNameInDataForFalse')
+      cdu.containsChildWithNameInData(
+        dataGroupWithSeveralMatchingAtomics,
+        'someNameInDataForFalse',
+      ),
     ).toBe(false);
   });
   it('returns true if child does exist', () => {
     expect(
       cdu.containsChildWithNameInData(
         dataGroupWithSeveralMatchingAtomics,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toBe(true);
   });
 });
@@ -553,29 +596,41 @@ describe('containsChildWithNameInData', () => {
 describe('getFirstDataAtomicWithNameInData', () => {
   it('if dataGroup has no children, should throw an error', () => {
     expect(() => {
-      cdu.getFirstDataAtomicWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstDataAtomicWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstDataAtomicWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstDataAtomicWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const attributeError: Error = <Error>error;
       expect(attributeError.message).toStrictEqual(
-        'DataGroup with name [someName] does not have any children'
+        'DataGroup with name [someName] does not have any children',
       );
     }
   });
 
   it('if dataGroup has no matching child, should throw error', () => {
     expect(() => {
-      cdu.getFirstDataAtomicWithNameInData(dataGroupWithNonMatchingDataElements, 'someChildName');
+      cdu.getFirstDataAtomicWithNameInData(
+        dataGroupWithNonMatchingDataElements,
+        'someChildName',
+      );
     }).toThrow(Error);
     try {
-      cdu.getFirstDataAtomicWithNameInData(dataGroupWithNonMatchingDataElements, 'someChildName');
+      cdu.getFirstDataAtomicWithNameInData(
+        dataGroupWithNonMatchingDataElements,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const attributeError: Error = <Error>error;
       expect(attributeError.message).toStrictEqual(
-        'DataGroup with name [someName] does not have atomic child with name [someChildName]'
+        'DataGroup with name [someName] does not have atomic child with name [someChildName]',
       );
     }
   });
@@ -584,11 +639,11 @@ describe('getFirstDataAtomicWithNameInData', () => {
     expect(
       cdu.getFirstDataAtomicWithNameInData(
         dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
-      value: 'someValue'
+      value: 'someValue',
     });
   });
 
@@ -596,11 +651,11 @@ describe('getFirstDataAtomicWithNameInData', () => {
     expect(
       cdu.getFirstDataAtomicWithNameInData(
         dataGroupWithSeveralMatchingAtomics,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
-      value: 'firstMatch'
+      value: 'firstMatch',
     });
   });
 });
@@ -608,13 +663,19 @@ describe('getFirstDataAtomicWithNameInData', () => {
 describe('getAllDataAtomicsWithNameInData', () => {
   it('if dataGroup has no children, should return empty array', () => {
     expect(
-      cdu.getAllDataAtomicsWithNameInData(dataGroupWithEmptyChildren, 'someChildName')
+      cdu.getAllDataAtomicsWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      ),
     ).toStrictEqual([]);
   });
 
   it('if dataGroup has no matching children, should return empty array', () => {
     expect(
-      cdu.getAllDataAtomicsWithNameInData(dataGroupWithNonMatchingDataElements, 'someChildName')
+      cdu.getAllDataAtomicsWithNameInData(
+        dataGroupWithNonMatchingDataElements,
+        'someChildName',
+      ),
     ).toStrictEqual([]);
   });
 
@@ -622,8 +683,8 @@ describe('getAllDataAtomicsWithNameInData', () => {
     expect(
       cdu.getAllDataAtomicsWithNameInData(
         dataGroupWithOnlyMatchingGroups,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual([]);
   });
 
@@ -631,8 +692,8 @@ describe('getAllDataAtomicsWithNameInData', () => {
     expect(
       cdu.getAllDataAtomicsWithNameInData(
         dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual([{ name: 'someInterestingChildName', value: 'someValue' }]);
   });
 
@@ -640,12 +701,12 @@ describe('getAllDataAtomicsWithNameInData', () => {
     expect(
       cdu.getAllDataAtomicsWithNameInData(
         dataGroupWithSeveralMatchingAtomics,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual([
       { name: 'someInterestingChildName', value: 'firstMatch' },
       { name: 'someInterestingChildName', value: 'second' },
-      { name: 'someInterestingChildName', value: 'third' }
+      { name: 'someInterestingChildName', value: 'third' },
     ]);
   });
 });
@@ -653,15 +714,21 @@ describe('getAllDataAtomicsWithNameInData', () => {
 describe('getFirstDataGroupWithNameInData', () => {
   it('should throw Error with no children', () => {
     expect(() => {
-      cdu.getFirstDataGroupWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstDataGroupWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     }).toThrow(Error);
 
     try {
-      cdu.getFirstDataGroupWithNameInData(dataGroupWithEmptyChildren, 'someChildName');
+      cdu.getFirstDataGroupWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
     } catch (error: unknown) {
       const childMissingError: Error = <Error>error;
       expect(childMissingError.message).toStrictEqual(
-        'Child with name [someChildName] does not exist'
+        'Child with name [someChildName] does not exist',
       );
     }
   });
@@ -670,16 +737,16 @@ describe('getFirstDataGroupWithNameInData', () => {
     expect(
       cdu.getFirstDataGroupWithNameInData(
         dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     });
   });
 
@@ -687,16 +754,16 @@ describe('getFirstDataGroupWithNameInData', () => {
     expect(
       cdu.getFirstDataGroupWithNameInData(
         dataGroupWithSeveralMatchingDataGroups,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
       children: [
         {
           name: 'firstChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     });
   });
 });
@@ -709,78 +776,79 @@ const dataGroupWithNonMatchingAttributes: DataGroup = {
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
+          value: 'someValue',
+        },
       ],
       attributes: {
-        someUninterestingKey: 'someUninterestingValue'
-      }
+        someUninterestingKey: 'someUninterestingValue',
+      },
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherUninterestingChildName',
-          value: 'someValue'
-        }
+          value: 'someValue',
+        },
       ],
       attributes: {
-        someOtherUninterestingKey: 'someOtherUninterestingValue'
-      }
-    }
-  ]
+        someOtherUninterestingKey: 'someOtherUninterestingValue',
+      },
+    },
+  ],
 };
 
-const dataGroupWithOneMatchingAtomicAndOneMatchingGroupWithAttributes: DataGroup = {
-  name: 'someName',
-  children: [
-    {
-      name: 'someUninterestingChildName',
-      value: 'someValue'
-    },
-    {
-      name: 'someOtherUninterestingChildName',
-      value: 'someValue'
-    },
-    {
-      name: 'someInterestingChildName',
-      children: [
-        {
-          name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ]
-    },
-    {
-      name: 'someInterestingChildName',
-      children: [
-        {
-          name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ],
-      attributes: {
-        someUninterestingKey: 'someUninterestingValue'
-      }
-    },
-    {
-      name: 'someInterestingChildName',
-      children: [
-        {
-          name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ],
-      attributes: {
-        someInterestingKey: 'someInterestingValue'
-      }
-    },
-    {
-      name: 'someInterestingChildName',
-      value: 'someValue'
-    }
-  ]
-};
+const dataGroupWithOneMatchingAtomicAndOneMatchingGroupWithAttributes: DataGroup =
+  {
+    name: 'someName',
+    children: [
+      {
+        name: 'someUninterestingChildName',
+        value: 'someValue',
+      },
+      {
+        name: 'someOtherUninterestingChildName',
+        value: 'someValue',
+      },
+      {
+        name: 'someInterestingChildName',
+        children: [
+          {
+            name: 'someOtherChild',
+            value: 'someValue',
+          },
+        ],
+      },
+      {
+        name: 'someInterestingChildName',
+        children: [
+          {
+            name: 'someOtherChild',
+            value: 'someValue',
+          },
+        ],
+        attributes: {
+          someUninterestingKey: 'someUninterestingValue',
+        },
+      },
+      {
+        name: 'someInterestingChildName',
+        children: [
+          {
+            name: 'someOtherChild',
+            value: 'someValue',
+          },
+        ],
+        attributes: {
+          someInterestingKey: 'someInterestingValue',
+        },
+      },
+      {
+        name: 'someInterestingChildName',
+        value: 'someValue',
+      },
+    ],
+  };
 const dataGroupWithMultipleMatchingGroupWithAttributes: DataGroup = {
   name: 'someName',
   children: [
@@ -789,51 +857,51 @@ const dataGroupWithMultipleMatchingGroupWithAttributes: DataGroup = {
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'childOfTheFirstMatchingDataGroup',
-          value: 'someValue'
-        }
+          value: 'someValue',
+        },
       ],
       attributes: {
-        someInterestingKey: 'someInterestingValue'
-      }
+        someInterestingKey: 'someInterestingValue',
+      },
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
+          value: 'someValue',
+        },
       ],
       attributes: {
-        someUninterestingKey: 'someUninterestingValue'
-      }
+        someUninterestingKey: 'someUninterestingValue',
+      },
     },
     {
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
+          value: 'someValue',
+        },
       ],
       attributes: {
-        someInterestingKey: 'someInterestingValue'
-      }
+        someInterestingKey: 'someInterestingValue',
+      },
     },
     {
       name: 'someInterestingChildName',
-      value: 'someValue'
-    }
-  ]
+      value: 'someValue',
+    },
+  ],
 };
 
 describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
@@ -842,7 +910,7 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
       cdu.getFirstDataGroupWithNameInDataAndAttributes(
         dataGroupWithEmptyChildren,
         'someChildName',
-        { someKey: 'someValue' }
+        { someKey: 'someValue' },
       );
     }).toThrow(Error);
 
@@ -850,12 +918,12 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
       cdu.getFirstDataGroupWithNameInDataAndAttributes(
         dataGroupWithEmptyChildren,
         'someChildName',
-        { someKey: 'someValue' }
+        { someKey: 'someValue' },
       );
     } catch (error: unknown) {
       const childMissingError: Error = <Error>error;
       expect(childMissingError.message).toStrictEqual(
-        'DataGroup with name [someChildName] does not exist'
+        'DataGroup with name [someChildName] does not exist',
       );
     }
   });
@@ -864,55 +932,67 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
     expect(
       cdu.getFirstDataGroupWithNameInDataAndAttributes(
         dataGroupWithSeveralMatchingDataGroups,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
       children: [
         {
           name: 'firstChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     });
 
     expect(
       cdu.getFirstDataGroupWithNameInDataAndAttributes(
         dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-        'someInterestingChildName'
-      )
+        'someInterestingChildName',
+      ),
     ).toStrictEqual({
       name: 'someInterestingChildName',
       children: [
         {
           name: 'someOtherChild',
-          value: 'someValue'
-        }
-      ]
+          value: 'someValue',
+        },
+      ],
     });
   });
 });
 
 describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
   it('should take dataGroup, nameInData and AttributeMatcher', () => {
-    cdu.getAllDataGroupsWithNameInDataAndAttributes(dataGroupWithEmptyChildren, 'someChildName', {
-      someKey: 'someValue'
-    });
+    cdu.getAllDataGroupsWithNameInDataAndAttributes(
+      dataGroupWithEmptyChildren,
+      'someChildName',
+      {
+        someKey: 'someValue',
+      },
+    );
   });
 
   it('if dataGroup has no children, should return empty array', () => {
     expect(
-      cdu.getAllDataGroupsWithNameInDataAndAttributes(dataGroupWithEmptyChildren, 'someChildName', {
-        someKey: 'someValue'
-      })
+      cdu.getAllDataGroupsWithNameInDataAndAttributes(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+        {
+          someKey: 'someValue',
+        },
+      ),
     ).toStrictEqual([]);
   });
 
   it('if dataGroup has empty nameInData, should return empty array', () => {
     expect(
-      cdu.getAllDataGroupsWithNameInDataAndAttributes(dataGroupWithEmptyChildren, '', {
-        someKey: 'someValue'
-      })
+      cdu.getAllDataGroupsWithNameInDataAndAttributes(
+        dataGroupWithEmptyChildren,
+        '',
+        {
+          someKey: 'someValue',
+        },
+      ),
     ).toStrictEqual([]);
   });
 
@@ -921,8 +1001,8 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
       cdu.getAllDataGroupsWithNameInDataAndAttributes(
         dataGroupWithNonMatchingDataElements,
         'someChildName',
-        { someKey: 'someValue' }
-      )
+        { someKey: 'someValue' },
+      ),
     ).toStrictEqual([]);
   });
 
@@ -931,8 +1011,8 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
       cdu.getAllDataGroupsWithNameInDataAndAttributes(
         dataGroupWithOnlyMatchingAtomics,
         'someInterestingChildName',
-        { someKey: 'someValue' }
-      )
+        { someKey: 'someValue' },
+      ),
     ).toStrictEqual([]);
   });
 
@@ -941,8 +1021,8 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
       cdu.getAllDataGroupsWithNameInDataAndAttributes(
         dataGroupWithNonMatchingAttributes,
         'someInterestingChildName',
-        { someKey: 'someValue' }
-      )
+        { someKey: 'someValue' },
+      ),
     ).toStrictEqual([]);
   });
 
@@ -952,22 +1032,22 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
         dataGroupWithOneMatchingAtomicAndOneMatchingGroupWithAttributes,
         'someInterestingChildName',
         {
-          someInterestingKey: 'someInterestingValue'
-        }
-      )
+          someInterestingKey: 'someInterestingValue',
+        },
+      ),
     ).toStrictEqual([
       {
         name: 'someInterestingChildName',
         children: [
           {
             name: 'someOtherChild',
-            value: 'someValue'
-          }
+            value: 'someValue',
+          },
         ],
         attributes: {
-          someInterestingKey: 'someInterestingValue'
-        }
-      }
+          someInterestingKey: 'someInterestingValue',
+        },
+      },
     ]);
   });
 
@@ -977,34 +1057,34 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
         dataGroupWithMultipleMatchingGroupWithAttributes,
         'someInterestingChildName',
         {
-          someInterestingKey: 'someInterestingValue'
-        }
-      )
+          someInterestingKey: 'someInterestingValue',
+        },
+      ),
     ).toStrictEqual([
       {
         name: 'someInterestingChildName',
         children: [
           {
             name: 'childOfTheFirstMatchingDataGroup',
-            value: 'someValue'
-          }
+            value: 'someValue',
+          },
         ],
         attributes: {
-          someInterestingKey: 'someInterestingValue'
-        }
+          someInterestingKey: 'someInterestingValue',
+        },
       },
       {
         name: 'someInterestingChildName',
         children: [
           {
             name: 'someOtherChild',
-            value: 'someValue'
-          }
+            value: 'someValue',
+          },
         ],
         attributes: {
-          someInterestingKey: 'someInterestingValue'
-        }
-      }
+          someInterestingKey: 'someInterestingValue',
+        },
+      },
     ]);
   });
 
@@ -1013,54 +1093,54 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
       expect(
         cdu.getAllDataGroupsWithNameInDataAndAttributes(
           dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-          'someInterestingChildName'
-        )
+          'someInterestingChildName',
+        ),
       ).toStrictEqual([
         {
           name: 'someInterestingChildName',
           children: [
             {
               name: 'someOtherChild',
-              value: 'someValue'
-            }
-          ]
-        }
+              value: 'someValue',
+            },
+          ],
+        },
       ]);
     });
     it('if dataGroup has several matching DataGroups, should return all of them', () => {
       expect(
         cdu.getAllDataGroupsWithNameInDataAndAttributes(
           dataGroupWithSeveralMatchingDataGroups,
-          'someInterestingChildName'
-        )
+          'someInterestingChildName',
+        ),
       ).toStrictEqual([
         {
           name: 'someInterestingChildName',
           children: [
             {
               name: 'firstChild',
-              value: 'someValue'
-            }
-          ]
+              value: 'someValue',
+            },
+          ],
         },
         {
           name: 'someInterestingChildName',
           children: [
             {
               name: 'secondChild',
-              value: 'someValue'
-            }
-          ]
+              value: 'someValue',
+            },
+          ],
         },
         {
           name: 'someInterestingChildName',
           children: [
             {
               name: 'thirdChild',
-              value: 'someValue'
-            }
-          ]
-        }
+              value: 'someValue',
+            },
+          ],
+        },
       ]);
     });
   });
@@ -1068,22 +1148,51 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
 
 describe('getAllDataAtomicValueFromDataGroup', () => {
   it('should return no results', () => {
-    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithEmptyChildren);
+    const actual = getAllDataAtomicValueFromDataGroup(
+      dataGroupWithEmptyChildren,
+    );
     expect(actual).toStrictEqual({});
   });
   it('should return one key for nested groups', () => {
-    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithOnlyMatchingGroups);
-    expect(actual).toStrictEqual({ someOtherUninterestingChildName: 'someValue' });
-  });
-  it('should return one key for identical atomics', () => {
-    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithOnlyMatchingAtomics);
-    expect(actual).toStrictEqual({ someInterestingChildName: 'someOtherValue' });
-  });
-  it('should return all keys for atomics', () => {
-    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithNonMatchingDataElements);
+    const actual = getAllDataAtomicValueFromDataGroup(
+      dataGroupWithOnlyMatchingGroups,
+    );
     expect(actual).toStrictEqual({
       someOtherUninterestingChildName: 'someValue',
-      someUninterestingChildName: 'someValue'
     });
+  });
+  it('should return one key for identical atomics', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(
+      dataGroupWithOnlyMatchingAtomics,
+    );
+    expect(actual).toStrictEqual({
+      someInterestingChildName: 'someOtherValue',
+    });
+  });
+  it('should return all keys for atomics', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(
+      dataGroupWithNonMatchingDataElements,
+    );
+    expect(actual).toStrictEqual({
+      someOtherUninterestingChildName: 'someValue',
+      someUninterestingChildName: 'someValue',
+    });
+  });
+});
+
+describe('hasChildWithNameInData', () => {
+  it('return true if has child', () => {
+    const actual = hasChildWithNameInData(
+      dataGroupWithNonMatchingDataElements,
+      'someUninterestingChildName',
+    );
+    expect(actual).toBe(true);
+  });
+  it('return false if does not have child', () => {
+    const actual = hasChildWithNameInData(
+      dataGroupWithNonMatchingDataElements,
+      'someFalseUninterestingChildName',
+    );
+    expect(actual).toBe(false);
   });
 });

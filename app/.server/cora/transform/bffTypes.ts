@@ -124,7 +124,7 @@ export interface BFFPresentationBase extends BFFBase {
     | 'presentation';
   presentationOf: string;
   mode: 'input' | 'output';
-  inputType?: string;
+  inputType?: 'input' | 'textarea';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;
@@ -188,6 +188,7 @@ export interface BFFSearch extends BFFBase {
   searchGroup: 'autocomplete' | 'publicSearch';
   searchDefText: string;
   searchText: string;
+  searchResultPresentation?: string;
 }
 
 export interface BFFGuiElement extends BFFBase {
