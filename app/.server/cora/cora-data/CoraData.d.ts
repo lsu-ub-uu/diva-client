@@ -38,6 +38,7 @@ export interface ActionLinks {
   update?: ActionLink;
   index?: ActionLink;
   delete?: ActionLink;
+  renew?: ActionLink;
 }
 
 type Permissions = {

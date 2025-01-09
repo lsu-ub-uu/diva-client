@@ -468,3 +468,11 @@ Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
     }
   }
 }
+
+####
+
+POST http://130.238.171.95:38180/login/rest/apptoken
+Content-Type: application/vnd.uub.login
+
+systemoneAdmin@system.cora.uu.se
+5d3f3ed4-4931-4924-9faa-8eaf5ac6457e

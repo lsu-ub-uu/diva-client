@@ -3,7 +3,7 @@ import {
   data,
   type LoaderFunctionArgs,
   redirect,
-} from '@remix-run/node'; // or cloudflare/deno // or cloudflare/deno
+} from '@remix-run/node';
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';

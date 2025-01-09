@@ -30,8 +30,7 @@ import {
   type LinksFunction,
   type LoaderFunctionArgs,
 } from '@remix-run/node';
-import type { ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
@@ -44,6 +43,7 @@ import { withEmotionCache } from '@emotion/react';
 import './root.css';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
+import { useSessionAutoRenew } from '@/utils/useSessionAutoRenew';
 
 const { MODE } = import.meta.env;
 
@@ -147,6 +147,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
+  useSessionAutoRenew();
+
   return (
     <SnackbarProvider maxSnack={5}>
       <PageLayout>

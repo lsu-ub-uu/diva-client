@@ -11,8 +11,12 @@ const authUser = {
         value: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       },
       {
-        name: 'validForNoSeconds',
-        value: '600',
+        name: 'validUntil',
+        value: '1736345539581',
+      },
+      {
+        name: 'renewUntil',
+        value: '1736431339581',
       },
       {
         name: 'userId', // idInUserStorage
@@ -34,6 +38,12 @@ const authUser = {
     name: 'authToken',
   },
   actionLinks: {
+    renew: {
+      requestMethod: 'POST',
+      rel: 'renew',
+      url: 'http://130.238.171.95:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
+      accept: 'application/vnd.uub.authToken+json',
+    },
     delete: {
       requestMethod: 'DELETE',
       rel: 'delete',
@@ -58,7 +68,8 @@ describe('requestAuthTokenOnLogin', () => {
     expect(response).toEqual({
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
+        renewUntil: '1736431339581',
+        validUntil: '1736345539581',
         userId: 'coraUser:111111111111111',
         loginId: 'user@domain.x',
         lastName: 'DiVA',
@@ -69,6 +80,12 @@ describe('requestAuthTokenOnLogin', () => {
           rel: 'delete',
           requestMethod: 'DELETE',
           url: 'http://localhost:38180/login/rest/authToken/b01dab5e-50eb-492a-b40d-f416500f5e6f',
+        },
+        renew: {
+          accept: 'application/vnd.uub.authToken+json',
+          rel: 'renew',
+          requestMethod: 'POST',
+          url: 'http://130.238.171.95:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
         },
       },
     });
@@ -81,6 +98,7 @@ describe('requestAuthTokenOnLogin', () => {
     const loginId = 'coraUser@ub.uu.se';
     const expectedBody = `coraUser@ub.uu.se\naaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`;
     const expectedHeaders = {
+      Accept: 'application/vnd.uub.authToken+json',
       'Content-Type': 'application/vnd.uub.login',
     };
 
@@ -104,6 +122,7 @@ describe('requestAuthTokenOnLogin', () => {
     const loginId = 'coraUser@ub.uu.se';
     const expectedBody = `coraUser@ub.uu.se\naaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`;
     const expectedHeaders = {
+      Accept: 'application/vnd.uub.authToken+json',
       'Content-Type': 'application/vnd.uub.login',
     };
 

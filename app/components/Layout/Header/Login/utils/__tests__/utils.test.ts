@@ -49,7 +49,8 @@ describe('Login validation', () => {
     const expected: Auth = {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
-        validForNoSeconds: '600',
+        validUntil: '1736342825558',
+        renewUntil: '1738972800000',
         loginId: 'johdo290@user.uu.se',
         userId: 'coraUser:111111111111111',
       },
@@ -64,7 +65,8 @@ describe('Login validation', () => {
 
     const actual = convertWebRedirectToUserSession({
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
+      validUntil: '1736342825558',
+      renewUntil: '1738972800000',
       userId: 'coraUser:111111111111111',
       loginId: 'johdo290@user.uu.se',
       actionLinks: {
@@ -92,7 +94,8 @@ describe('Login validation', () => {
       {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validForNoSeconds: '600',
+          validUntil: '1736342825558',
+          renewUntil: '1738972800000',
           loginId: 'johdo290@user.uu.se',
           userId: 'blaha',
         },
@@ -103,7 +106,8 @@ describe('Login validation', () => {
       {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validForNoSeconds: '600',
+          validUntil: '1736342825558',
+          renewUntil: '1738972800000',
           userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
@@ -122,7 +126,8 @@ describe('Login validation', () => {
       {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validForNoSeconds: '600',
+          validUntil: '1736342825558',
+          renewUntil: '1738972800000',
           userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
@@ -135,7 +140,8 @@ describe('Login validation', () => {
       {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validForNoSeconds: '600',
+          validUntil: '1736342825558',
+          renewUntil: '1738972800000',
           userId: 'coraUser:222222222222',
           loginId: 'johdo290@user.uu.se',
         },

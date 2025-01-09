@@ -32,6 +32,7 @@ export async function requestAuthTokenOnLogin(
 
   const headers = {
     'Content-Type': 'application/vnd.uub.login',
+    Accept: 'application/vnd.uub.authToken+json',
   };
   const body = `${user}\n${authToken}`;
   try {
@@ -46,9 +47,13 @@ export async function requestAuthTokenOnLogin(
 const extractDataFromResult = (record: CoraRecord): Auth => {
   const dataGroup = record.data;
   const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
-  const validForNoSeconds = getFirstDataAtomicValueWithNameInData(
+  const validUntil = getFirstDataAtomicValueWithNameInData(
     dataGroup,
-    'validForNoSeconds',
+    'validUntil',
+  );
+  const renewUntil = getFirstDataAtomicValueWithNameInData(
+    dataGroup,
+    'renewUntil',
   );
   const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
   const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
@@ -63,7 +68,8 @@ const extractDataFromResult = (record: CoraRecord): Auth => {
   return {
     data: {
       token,
-      validForNoSeconds,
+      validUntil,
+      renewUntil,
       userId,
       loginId,
       firstName,
