@@ -19,13 +19,11 @@
 import type { Auth } from '@/types/Auth';
 import axios from 'axios';
 import { coraLoginUrl } from '@/.server/cora/helper';
-import type { CoraRecord } from '@/.server/cora/cora-data/CoraData';
-import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
-import { invariant } from '@remix-run/router/history';
+import { transformCoraAuth } from '@/.server/cora/transform/transformCoraAuth';
 
 export async function requestAuthTokenOnLogin(
   user: string,
-  authToken: string | undefined,
+  appTokenOrPassword: string,
   loginType: 'apptoken' | 'password',
 ): Promise<Auth> {
   const url = coraLoginUrl(`/${loginType}`);
@@ -34,47 +32,12 @@ export async function requestAuthTokenOnLogin(
     'Content-Type': 'application/vnd.uub.login',
     Accept: 'application/vnd.uub.authToken+json',
   };
-  const body = `${user}\n${authToken}`;
+  const body = `${user}\n${appTokenOrPassword}`;
   try {
     const response = await axios.post(url, body, { headers });
-    return extractDataFromResult(response.data);
+    return transformCoraAuth(response.data);
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-
-const extractDataFromResult = (record: CoraRecord): Auth => {
-  const dataGroup = record.data;
-  const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
-  const validUntil = getFirstDataAtomicValueWithNameInData(
-    dataGroup,
-    'validUntil',
-  );
-  const renewUntil = getFirstDataAtomicValueWithNameInData(
-    dataGroup,
-    'renewUntil',
-  );
-  const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
-  const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
-  const firstName = getFirstDataAtomicValueWithNameInData(
-    dataGroup,
-    'firstName',
-  );
-  const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
-
-  invariant(record.actionLinks);
-
-  return {
-    data: {
-      token,
-      validUntil,
-      renewUntil,
-      userId,
-      loginId,
-      firstName,
-      lastName,
-    },
-    actionLinks: record.actionLinks,
-  };
-};
