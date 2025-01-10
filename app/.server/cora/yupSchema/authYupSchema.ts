@@ -18,22 +18,12 @@
 
 import * as yup from 'yup';
 
-const actionLinkSchema = yup
-  .object({
-    requestMethod: yup.string().required(),
-    rel: yup.string().required(),
-    url: yup.string().url().required(),
-    accept: yup.string(),
-    contentType: yup.string(),
-  })
-  .optional();
-
-const actionLinksSchema = yup.object({
-  read: actionLinkSchema,
-  update: actionLinkSchema,
-  index: actionLinkSchema,
-  delete: actionLinkSchema,
-  // renew: actionLinkSchema,
+const actionLinkSchema = yup.object({
+  requestMethod: yup.string(),
+  rel: yup.string(),
+  url: yup.string().url(),
+  accept: yup.string(),
+  contentType: yup.string(),
 });
 
 export const authYupSchema = yup.object({
@@ -49,5 +39,8 @@ export const authYupSchema = yup.object({
       firstName: yup.string(),
     })
     .required(),
-  actionLinks: actionLinksSchema,
+  actionLinks: yup.object({
+    delete: actionLinkSchema,
+    // renew: actionLinkSchema,
+  }),
 });
