@@ -31,13 +31,12 @@ export const ErrorAlert = ({ error }: ErrorAlertProps) => {
     return (
       <Alert severity='error'>
         <AlertTitle>
-          {' '}
           {error.status} {error.statusText}
         </AlertTitle>
         {error.data && (
           <>
             <button onClick={() => setDetailsExpanded(!detailsExpanded)}>
-              Visa detaljer
+              {detailsExpanded ? 'Hide details' : 'Show details'}
             </button>
             {detailsExpanded && <p>{error.data}</p>}
           </>
@@ -51,7 +50,7 @@ export const ErrorAlert = ({ error }: ErrorAlertProps) => {
         {error.stack && (
           <>
             <button onClick={() => setDetailsExpanded(!detailsExpanded)}>
-              {detailsExpanded ? 'Hide' : 'Show'} details
+              {detailsExpanded ? 'Hide details' : 'Show details'}
             </button>
             {detailsExpanded && <pre>{error.stack}</pre>}
           </>
