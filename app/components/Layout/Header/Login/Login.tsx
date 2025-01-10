@@ -75,12 +75,9 @@ export default function User() {
   };
 
   const receiveMessage = (event: MessageEvent<any>) => {
-    if (event === undefined || event.data.source === 'react-devtools-bridge') {
-      // dispatch(hasError('login error'));
-    }
-
     if (event.data.source !== 'react-devtools-bridge') {
       if (messageIsFromWindowOpenedFromHere(event)) {
+        console.log('Recieved webRedirect', event.data);
         submit(
           {
             loginType: 'webRedirect',
@@ -89,7 +86,11 @@ export default function User() {
           },
           { action: '/login', method: 'post' },
         );
+      } else {
+        console.log('Event is not from same origin', event);
       }
+    } else {
+      console.log('Event is react-devtools-bridge', event);
     }
   };
 

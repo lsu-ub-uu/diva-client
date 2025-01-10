@@ -14,11 +14,12 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
-import type { Auth } from '@/types/Auth';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
+import { authYupSchema } from '@/.server/cora/yupSchema/authYupSchema';
+import type { Auth } from '@/types/Auth';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -59,16 +60,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
 }
 
-const authenticate = async (form: FormData) => {
+const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
-
+  console.log('authenticating with loginType', loginType);
   switch (loginType) {
     case 'appToken': {
       const account = form.get('account');
       return loginWithAppToken(JSON.parse(account!.toString()));
     }
-    case 'webRedirect':
-      return JSON.parse(form.get('auth')!.toString()) as Auth;
+    case 'webRedirect': {
+      try {
+        return await authYupSchema.validate(
+          JSON.parse(form.get('auth') as string),
+        );
+      } catch (e) {
+        console.error('Failed to parse webRedirect auth', e);
+        return null;
+      }
+    }
     case 'password':
       return await loginWithUsernameAndPassword(
         form.get('password.loginId.value')!.toString(),
@@ -108,7 +117,7 @@ export const action: ActionFunction = async ({ request }) => {
       },
     );
   }
-
+  console.log('setting session to cookie', auth);
   session.set('auth', auth);
   return redirect(returnTo ?? '/', {
     headers: {

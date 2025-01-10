@@ -29,8 +29,8 @@ export const convertWebRedirectToUserSession = (coraUser: any): Auth => {
   return { data: rest, actionLinks };
 };
 
-export const convertUserIdToShortForm = (userId: string) => {
-  return userId.split('@')[0];
+export const convertLoginIdToShortForm = (loginId: string) => {
+  return loginId.split('@')[0];
 };
 
 export const checkTypeOfUser = (user: Auth) => {
@@ -43,5 +43,7 @@ export const checkTypeOfUser = (user: Auth) => {
 export const printUserNameOnPage = (user: Auth) => {
   return checkTypeOfUser(user) === 'appToken'
     ? `${user.data.firstName} ${user.data.lastName}`
-    : convertUserIdToShortForm(user.data.loginId);
+    : user.data.loginId
+      ? convertLoginIdToShortForm(user.data.loginId)
+      : user.data.userId;
 };

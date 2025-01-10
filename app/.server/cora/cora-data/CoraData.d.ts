@@ -66,8 +66,3 @@ type DataList = {
 export type DataListWrapper = {
   dataList: DataList;
 };
-
-export type AuthToken = {
-  data: DataGroup;
-  actionLinks?: ActionLinks;
-};
