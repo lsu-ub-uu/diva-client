@@ -77,7 +77,6 @@ export default function User() {
   const receiveMessage = (event: MessageEvent<any>) => {
     if (messageIsFromWindowOpenedFromHere(event) && event.data.token) {
       window.removeEventListener('message', receiveMessage);
-      console.log('Recieved webRedirect', event.data);
       submit(
         {
           loginType: 'webRedirect',
@@ -86,8 +85,6 @@ export default function User() {
         },
         { action: '/login', method: 'post' },
       );
-    } else {
-      console.log('Event is not webRedirect', event);
     }
   };
 

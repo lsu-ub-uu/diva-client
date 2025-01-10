@@ -62,7 +62,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
-  console.log('authenticating with loginType', loginType);
   switch (loginType) {
     case 'appToken': {
       const account = form.get('account');
@@ -117,7 +116,6 @@ export const action: ActionFunction = async ({ request }) => {
       },
     );
   }
-  console.log('setting session to cookie', auth);
   session.set('auth', auth);
   return redirect(returnTo ?? '/', {
     headers: {

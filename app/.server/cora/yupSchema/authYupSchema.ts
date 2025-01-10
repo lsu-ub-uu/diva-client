@@ -19,9 +19,9 @@
 import * as yup from 'yup';
 
 const actionLinkSchema = yup.object({
-  requestMethod: yup.string(),
-  rel: yup.string(),
-  url: yup.string().url(),
+  requestMethod: yup.string().required(),
+  rel: yup.string().required(),
+  url: yup.string().url().required(),
   accept: yup.string(),
   contentType: yup.string(),
 });
