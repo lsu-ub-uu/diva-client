@@ -5,7 +5,7 @@ export interface Auth {
     token: string;
     validForNoSeconds: string;
     userId: string;
-    loginId: string;
+    loginId?: string;
     lastName?: string;
     firstName?: string;
   };

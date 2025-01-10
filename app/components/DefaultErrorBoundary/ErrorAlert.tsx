@@ -18,27 +18,44 @@
 
 import { isRouteErrorResponse } from '@remix-run/react';
 import { Alert, AlertTitle } from '@mui/material';
+import { useState } from 'react';
 
 interface ErrorAlertProps {
   error: unknown;
 }
 
 export const ErrorAlert = ({ error }: ErrorAlertProps) => {
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+
   if (isRouteErrorResponse(error)) {
     return (
       <Alert severity='error'>
         <AlertTitle>
+          {' '}
           {error.status} {error.statusText}
         </AlertTitle>
-        <p>{error.data}</p>
+        {error.data && (
+          <>
+            <button onClick={() => setDetailsExpanded(!detailsExpanded)}>
+              Visa detaljer
+            </button>
+            {detailsExpanded && <p>{error.data}</p>}
+          </>
+        )}
       </Alert>
     );
   } else if (error instanceof Error) {
     return (
       <Alert severity='error'>
-        <AlertTitle>Error</AlertTitle>
-        <p>{error.message}</p>
-        <pre>{error.stack}</pre>
+        <AlertTitle>{error.message}</AlertTitle>
+        {error.stack && (
+          <>
+            <button onClick={() => setDetailsExpanded(!detailsExpanded)}>
+              {detailsExpanded ? 'Hide' : 'Show'} details
+            </button>
+            {detailsExpanded && <pre>{error.stack}</pre>}
+          </>
+        )}
       </Alert>
     );
   } else {
