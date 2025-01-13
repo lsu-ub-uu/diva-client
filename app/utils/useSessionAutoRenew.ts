@@ -24,7 +24,9 @@ import type { loader } from '@/root';
 export const useSessionAutoRenew = () => {
   const { auth } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
-  const renewTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const renewTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
   const authToken = auth?.data.token;
   const validUntil = Number(auth?.data.validUntil);
 
@@ -34,6 +36,8 @@ export const useSessionAutoRenew = () => {
     };
 
     if (!authToken) {
+      clearTimeout(renewTimeout.current);
+      renewTimeout.current = undefined;
       console.log('Not logged in.');
       return;
     } else {
