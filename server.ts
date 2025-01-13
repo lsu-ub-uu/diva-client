@@ -62,7 +62,6 @@ const createi18nInstance = async (request: Request) => {
       },
       lng: locale,
     });
-
   return i18nInstance;
 };
 

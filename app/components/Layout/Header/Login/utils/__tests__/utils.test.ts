@@ -20,7 +20,7 @@
 import { expect } from 'vitest';
 import {
   checkTypeOfUser,
-  convertUserIdToShortForm,
+  convertLoginIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
@@ -85,7 +85,7 @@ describe('Login validation', () => {
     ['joh.do@user.uu.se', 'joh.do'],
     ['joh+do@user.uu.se', 'joh+do'],
   ])('convertUserIdToShortForm converts %s to %s', (email, result) => {
-    const actual = convertUserIdToShortForm(email);
+    const actual = convertLoginIdToShortForm(email);
     expect(actual).toBe(result);
   });
 

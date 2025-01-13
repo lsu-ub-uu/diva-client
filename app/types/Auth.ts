@@ -6,7 +6,7 @@ export interface Auth {
     validUntil: string;
     renewUntil: string;
     userId: string;
-    loginId: string;
+    loginId?: string;
     lastName?: string;
     firstName?: string;
   };

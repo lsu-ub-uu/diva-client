@@ -67,7 +67,7 @@ export default function User() {
   const handleWebRedirectSelection = (url: string) => {
     try {
       window.open(MODE === 'development' ? '/devLogin' : url);
-      window.addEventListener('message', receiveMessage, { once: true });
+      window.addEventListener('message', receiveMessage);
     } catch (e: any) {
       console.error(e.message());
     }
@@ -75,21 +75,16 @@ export default function User() {
   };
 
   const receiveMessage = (event: MessageEvent<any>) => {
-    if (event === undefined || event.data.source === 'react-devtools-bridge') {
-      // dispatch(hasError('login error'));
-    }
-
-    if (event.data.source !== 'react-devtools-bridge') {
-      if (messageIsFromWindowOpenedFromHere(event)) {
-        submit(
-          {
-            loginType: 'webRedirect',
-            auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
-            returnTo,
-          },
-          { action: '/login', method: 'post' },
-        );
-      }
+    if (messageIsFromWindowOpenedFromHere(event) && event.data.token) {
+      window.removeEventListener('message', receiveMessage);
+      submit(
+        {
+          loginType: 'webRedirect',
+          auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
+          returnTo,
+        },
+        { action: '/login', method: 'post' },
+      );
     }
   };
 
