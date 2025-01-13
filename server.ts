@@ -43,7 +43,6 @@ const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, DOMAIN, PORT, BASE_PATH } =
   process.env;
 
 const createi18nInstance = async (request: Request) => {
-  console.log('creating i18n');
   const i18nInstance = createInstance();
 
   const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
@@ -63,7 +62,6 @@ const createi18nInstance = async (request: Request) => {
       },
       lng: locale,
     });
-  console.log('finished creating i18n');
   return i18nInstance;
 };
 
