@@ -19,12 +19,15 @@
 import type { BFFDataRecord } from '@/types/record';
 
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
 import { transformRecord } from '@/.server/cora/transform/transformRecord';
-import type { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
+import type {
+  DataGroup,
+  RecordWrapper,
+} from '@/.server/cora/cora-data/CoraData';
 import { postRecordData } from '@/.server/cora/postRecordData';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 

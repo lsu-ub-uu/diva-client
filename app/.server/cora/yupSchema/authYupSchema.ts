@@ -30,9 +30,8 @@ export const authYupSchema = yup.object({
   data: yup
     .object({
       token: yup.string().required(),
-      validForNoSeconds: yup.string().required(),
-      // validUntil: yup.string().required(),
-      // renewUntil: yup.string().required(),
+      validUntil: yup.string().required(),
+      renewUntil: yup.string().required(),
       userId: yup.string().required(),
       loginId: yup.string(),
       lastName: yup.string(),
@@ -41,6 +40,6 @@ export const authYupSchema = yup.object({
     .required(),
   actionLinks: yup.object({
     delete: actionLinkSchema,
-    // renew: actionLinkSchema,
+    renew: actionLinkSchema,
   }),
 });

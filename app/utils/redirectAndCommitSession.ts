@@ -18,7 +18,7 @@
 
 import type { Session } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import { commitSession } from '@/.server/sessions';
+import { commitSession } from '@/auth/sessions.server';
 
 export const redirectAndCommitSession = async (
   url: string,

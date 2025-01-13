@@ -17,7 +17,7 @@
  */
 
 import type { CoraRecord } from '@/.server/cora/cora-data/CoraData';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
 import { invariant } from '@remix-run/router/history';
 

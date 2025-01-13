@@ -16,19 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
-import { getAxiosRequestFromActionLink } from '@/.server/cora/helper';
-import { transformCoraAuth } from '@/.server/cora/transform/transformCoraAuth';
+import { data } from '@remix-run/node';
+import { i18nCookie } from '@/i18n/i18nCookie';
 
-export const renewAuthToken = async (auth: Auth) => {
-  if (auth.actionLinks?.renew === undefined) {
-    throw new Error('Missing auth update actionLink');
+export const changeLanguage = async (formData: FormData) => {
+  const language = formData.get('language');
+  if (typeof language === 'string') {
+    return data(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await i18nCookie.serialize(language),
+        },
+      },
+    );
   }
-
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
-  );
-
-  return transformCoraAuth(response.data);
 };

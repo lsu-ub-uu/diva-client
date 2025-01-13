@@ -17,7 +17,7 @@
  */
 
 import type { BFFDataRecord } from '@/types/record';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';

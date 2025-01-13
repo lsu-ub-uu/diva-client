@@ -33,11 +33,6 @@ import {
 import { type ReactNode, useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
-import {
-  commitSession,
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/.server/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
@@ -47,8 +42,9 @@ import { withEmotionCache } from '@emotion/react';
 import './root.css';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
-import { useSessionAutoRenew } from '@/utils/useSessionAutoRenew';
-import { renewAuthToken } from '@/.server/cora/renewAuthToken';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
+import { renewAuth } from '@/auth/renewAuth.server';
 
 const { MODE } = import.meta.env;
 
@@ -66,7 +62,7 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const loginUnits = getLoginUnits(context.dependencies);
   const locale = context.i18n.language;
@@ -98,33 +94,6 @@ const changeLanguage = async (formData: FormData) => {
         },
       },
     );
-  }
-};
-
-const renewAuth = async (request: Request) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
-  if (!auth) {
-    return { status: 'No session to renew', auth: undefined };
-  }
-
-  try {
-    console.log('getting renewed auth', auth);
-    const renewedAuth = await renewAuthToken(auth);
-
-    console.log('got renewed auth', renewedAuth);
-    session.set('auth', renewedAuth);
-    return data(
-      { status: 'Session renew', auth },
-      {
-        headers: {
-          'Set-Cookie': await commitSession(session),
-        },
-      },
-    );
-  } catch (error) {
-    console.log('Failed to renew', error);
-    return { status: 'Failed to renew session', auth: undefined, error };
   }
 };
 

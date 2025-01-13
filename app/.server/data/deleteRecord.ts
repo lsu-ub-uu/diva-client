@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { deleteRecordDataById } from '@/.server/cora/deleteRecordDataById';
 

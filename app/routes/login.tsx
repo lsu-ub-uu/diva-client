@@ -5,7 +5,7 @@ import {
   redirect,
 } from '@remix-run/node';
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
-import { commitSession, getSession } from '@/.server/sessions';
+import { commitSession, getSession } from '@/auth/sessions.server';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,7 +19,7 @@ import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteError
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
 import { authYupSchema } from '@/.server/cora/yupSchema/authYupSchema';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -116,7 +116,6 @@ export const action: ActionFunction = async ({ request }) => {
       },
     );
   }
-  console.log('Logged in successfully', auth);
   session.set('auth', auth);
   return redirect(returnTo ?? '/', {
     headers: {

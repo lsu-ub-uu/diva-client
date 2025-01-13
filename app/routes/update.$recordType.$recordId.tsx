@@ -21,8 +21,8 @@ import { UpdateRecordPage } from '@/pages';
 import {
   commitSession,
   getSessionFromCookie,
-  requireAuthentication,
-} from '@/.server/sessions';
+  requireAuth,
+} from '@/auth/sessions.server';
 import {
   type ActionFunctionArgs,
   data,
@@ -56,7 +56,7 @@ export const action = async ({
   context,
 }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
@@ -103,7 +103,7 @@ export const action = async ({
 
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
   const { t } = context.i18n;
 
   const notification = session.get('notification');

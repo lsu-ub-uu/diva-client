@@ -26,10 +26,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/.server/data/createRecord';
 import type { BFFDataRecord } from '@/types/record';
-import {
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/.server/sessions';
+import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
@@ -45,7 +42,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');

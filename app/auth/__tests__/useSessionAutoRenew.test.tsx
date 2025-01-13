@@ -19,10 +19,10 @@
 import {
   getTimeUntilNextRenew,
   useSessionAutoRenew,
-} from '@/utils/useSessionAutoRenew';
+} from '@/auth/useSessionAutoRenew';
 import { expect } from 'vitest';
 import { createRemixStub } from '@remix-run/testing';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 
 import { act, render } from '@testing-library/react';
 
@@ -32,28 +32,32 @@ const TestComponent = () => {
 };
 
 describe('useSessionAutoRenew', () => {
-  it('renews auth token on first mount', async () => {
-    const mockAuth = createMockAuth('2025-01-09T00:00:00Z');
+  it('renews auth token immediatly if validUntil within 10 seconds', async () => {
+    vi.useFakeTimers();
 
-    const renewAuthTokenActionSpy = vi.fn().mockReturnValue({
-      status: 'Session renew',
-      auth: mockAuth,
-    });
+    vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
+    const mockAuth = createMockAuth('2025-01-09T00:00:05Z');
+
+    const renewAuthTokenActionSpy = vi.fn();
 
     const RemixStub = createRemixStub([
       {
         path: '/',
         Component: TestComponent,
-      },
-      {
-        path: '/renewAuthToken',
+        loader: () => ({ auth: mockAuth }),
         action: renewAuthTokenActionSpy,
       },
     ]);
 
     render(<RemixStub />);
 
-    expect(renewAuthTokenActionSpy).toHaveBeenCalledOnce();
+    await act(() =>
+      expect(renewAuthTokenActionSpy).toHaveBeenCalledWith({
+        intent: 'renewAuthToken',
+      }),
+    );
+
+    vi.useRealTimers();
   });
 
   it('renews auth token 1 minute before validUntil has expired', async () => {
@@ -80,9 +84,6 @@ describe('useSessionAutoRenew', () => {
       {
         path: '/',
         Component: TestComponent,
-      },
-      {
-        path: '/renewAuthToken',
         action: renewAuthTokenActionSpy,
       },
     ]);
@@ -114,9 +115,6 @@ describe('useSessionAutoRenew', () => {
       {
         path: '/',
         Component: TestComponent,
-      },
-      {
-        path: '/renewAuthToken',
         action: renewAuthTokenActionSpy,
       },
     ]);

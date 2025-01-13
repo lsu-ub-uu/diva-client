@@ -21,22 +21,30 @@ import {
   getAuth,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { type ActionFunctionArgs, data } from '@remix-run/node';
 import { renewAuthToken } from '@/.server/cora/renewAuthToken';
+import { data } from '@remix-run/node';
+import { isAxiosError } from 'axios';
+import type { Auth } from '@/auth/Auth';
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const renewAuth = async (request: Request) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
+
   if (!auth) {
-    return { status: 'No session to renew', auth: undefined };
+    return { status: 'No auth to renew' };
   }
 
   try {
+    if (isAuthExpired(auth)) {
+      return removeAuthFromSession(request);
+    }
+
     const renewedAuth = await renewAuthToken(auth);
 
     session.set('auth', renewedAuth);
+
     return data(
-      { status: 'Session renew', auth },
+      { status: 'Session renewed' },
       {
         headers: {
           'Set-Cookie': await commitSession(session),
@@ -44,6 +52,32 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     );
   } catch (error) {
-    return { status: 'Failed to renew session', auth: undefined, error };
+    if (isAxiosError(error) && error.status === 401) {
+      return removeAuthFromSession(request);
+    }
+    return { status: 'Failed to renew session', error };
   }
+};
+
+const isAuthExpired = (auth: Auth) => {
+  const validUntil = Number(auth.data.validUntil);
+  const renewUntil = Number(auth.data.renewUntil);
+  const now = Date.now();
+
+  return validUntil < now || renewUntil < now;
+};
+
+const removeAuthFromSession = async (request: Request) => {
+  const session = await getSessionFromCookie(request);
+  session.flash('notification', {
+    severity: 'error',
+    summary: 'Your session has expired.',
+    details: 'You have been logged out. Please log in again to continue.',
+  });
+  session.unset('auth');
+  return data(null, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  });
 };

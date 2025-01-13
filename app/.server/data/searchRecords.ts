@@ -17,7 +17,7 @@
  */
 
 import type { BFFSearchResult } from '@/types/record';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
 import type {

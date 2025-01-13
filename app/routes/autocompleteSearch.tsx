@@ -18,7 +18,7 @@
 
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import type { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
 import { searchRecords } from '@/.server/data/searchRecords';
@@ -33,7 +33,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   invariant(searchTermValue, 'Missing searchTermValue param');
 
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const searchTermName = getSearchTermNameFromSearchLink(
     context.dependencies,

@@ -19,7 +19,7 @@
 import { getSearchForm } from '@/.server/data/getSearchForm';
 import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { HomePage } from '@/pages';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import {
   data,
   type LoaderFunctionArgs,
@@ -38,7 +38,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
   const { t } = context.i18n;
   const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
   const validationTypes = auth

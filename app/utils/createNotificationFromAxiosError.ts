@@ -17,7 +17,7 @@
  */
 
 import { isAxiosError } from 'axios';
-import type { Notification } from '@/.server/sessions';
+import type { Notification } from '@/auth/sessions.server';
 
 export const createNotificationFromAxiosError = (
   error: unknown,

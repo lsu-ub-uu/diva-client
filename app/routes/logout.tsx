@@ -16,18 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ActionFunctionArgs} from '@remix-run/node';
+import type { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
-import {
-  destroySession,
-  getAuthentication,
-  getSession,
-} from '@/.server/sessions';
+import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
 import { deleteSession } from '@/.server/data/deleteSession';
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
   if (auth) {

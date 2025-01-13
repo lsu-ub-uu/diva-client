@@ -21,8 +21,8 @@ import { deleteRecord } from '@/.server/data/deleteRecord';
 import {
   commitSession,
   getSessionFromCookie,
-  requireAuthentication,
-} from '@/.server/sessions';
+  requireAuth,
+} from '@/auth/sessions.server';
 import { invariant } from '@remix-run/router/history';
 
 export const action = async ({
@@ -36,7 +36,7 @@ export const action = async ({
   invariant(recordId, 'Missing recordId param');
 
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   await deleteRecord(context.dependencies, recordType, recordId, auth);
 

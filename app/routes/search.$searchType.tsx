@@ -20,7 +20,7 @@ import { getSearchForm } from '@/.server/data/getSearchForm';
 import { searchRecords } from '@/.server/data/searchRecords';
 import type { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
@@ -37,7 +37,7 @@ export const loader = async ({
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const searchForm = getSearchForm(
     context.dependencies,

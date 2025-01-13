@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import axios from 'axios';
 import { coraLoginUrl } from '@/.server/cora/helper';
 import { transformCoraAuth } from '@/.server/cora/transform/transformCoraAuth';
@@ -35,10 +35,8 @@ export async function requestAuthTokenOnLogin(
   const body = `${user}\n${appTokenOrPassword}`;
   try {
     const response = await axios.post(url, body, { headers });
-    console.log('Login success', response);
     return transformCoraAuth(response.data);
   } catch (error) {
-    console.log('Login failed', error);
     console.error(error);
     throw error;
   }

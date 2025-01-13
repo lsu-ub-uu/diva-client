@@ -16,13 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-// i18n/sessions.ts
 import {
   createCookieSessionStorage,
   data,
   type Session,
 } from '@remix-run/node';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 
 type SessionData = {
   auth: Auth;
@@ -56,18 +55,17 @@ async function getSessionFromCookie(request: Request) {
   return getSession(request.headers.get('Cookie'));
 }
 
-function getAuthentication(session: Session<SessionData, SessionFlashData>) {
+function getAuth(session: Session<SessionData, SessionFlashData>) {
   return session.get('auth');
 }
 
-async function requireAuthentication(
-  session: Session<SessionData, SessionFlashData>,
-) {
-  const auth = getAuthentication(session);
+async function requireAuth(session: Session<SessionData, SessionFlashData>) {
+  const auth = getAuth(session);
   if (!auth) {
     // Show error boundary
     throw data('Unauthorized', { status: 401 });
   }
+
   return auth;
 }
 
@@ -75,7 +73,7 @@ export {
   getSession,
   commitSession,
   destroySession,
-  requireAuthentication,
-  getAuthentication,
+  requireAuth,
+  getAuth,
   getSessionFromCookie,
 };

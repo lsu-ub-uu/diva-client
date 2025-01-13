@@ -19,10 +19,7 @@
 import { type LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
-import {
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/.server/sessions';
+import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 
 export const loader = async ({
   request,
@@ -30,7 +27,7 @@ export const loader = async ({
   context,
 }: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
