@@ -111,6 +111,7 @@ if (viteDevServer) {
 app.use(express.static('dist/client', { maxAge: '1h' }));
 
 app.use(morgan('tiny'));
+// app.use(axiosLoggingMiddleware);
 
 if (NODE_ENV !== 'production') {
   app.get('/devLogin', (req, res) => {

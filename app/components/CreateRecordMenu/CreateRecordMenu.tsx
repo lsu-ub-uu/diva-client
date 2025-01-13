@@ -33,7 +33,6 @@ export const CreateRecordMenu = ({
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const addButtonRef = useRef(null);
-
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
   }

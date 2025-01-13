@@ -469,10 +469,16 @@ Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
   }
 }
 
-####
-
-POST http://130.238.171.95:38180/login/rest/apptoken
+###
+POST http://130.238.171.95:38182/login/rest/apptoken
 Content-Type: application/vnd.uub.login
 
-systemoneAdmin@system.cora.uu.se
-5d3f3ed4-4931-4924-9faa-8eaf5ac6457e
+divaAdmin@cora.epc.ub.uu.se
+49ce00fb-68b5-4089-a5f7-1c225d3cf156
+
+###
+POST http://130.238.171.95:38182/login/rest/authToken/74ab9283-729a-4bb9-bd99-fd327a1486d4
+Authtoken: 7921fa16-6fc5-4b08-bda6-838d7a0ae347
+
+###
+GET http://130.238.171.95:38082/diva/rest/record/searchResult/validationTypeSearch

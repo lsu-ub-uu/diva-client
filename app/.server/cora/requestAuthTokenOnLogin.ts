@@ -37,8 +37,10 @@ export async function requestAuthTokenOnLogin(
   const body = `${user}\n${authToken}`;
   try {
     const response = await axios.post(url, body, { headers });
+    console.log('Login success', response);
     return extractDataFromResult(response.data);
   } catch (error) {
+    console.log('Login failed', error);
     console.error(error);
     throw error;
   }

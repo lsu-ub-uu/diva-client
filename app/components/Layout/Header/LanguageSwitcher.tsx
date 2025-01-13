@@ -30,6 +30,11 @@ export const LanguageSwitcher = () => {
 
   return (
     <Form method='post'>
+      <input
+        type='hidden'
+        name='intent'
+        value='changeLanguage'
+      />
       <NativeSelect
         input={<OutlinedInput />}
         name='language'

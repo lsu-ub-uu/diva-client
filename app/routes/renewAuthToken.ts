@@ -22,6 +22,7 @@ import {
   getSessionFromCookie,
 } from '@/.server/sessions';
 import { type ActionFunctionArgs, data } from '@remix-run/node';
+import { renewAuthToken } from '@/.server/cora/renewAuthToken';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
@@ -31,16 +32,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   try {
-    //  const renewedAuth = await renewAuthToken(auth);
-    const renewedAuth = {
-      ...auth,
-      data: {
-        ...auth.data,
-        validUntil: new Date(Date.now() + 3 * 60 * 1000).getTime().toString(),
-      },
-    };
-    session.set('auth', renewedAuth);
+    const renewedAuth = await renewAuthToken(auth);
 
+    session.set('auth', renewedAuth);
+    console.log('got renewed authtoken', renewedAuth);
     return data(
       { status: 'Session renew', auth },
       {
@@ -50,6 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     );
   } catch (error) {
+    console.log('Failed to renew', error);
     return { status: 'Failed to renew session', auth: undefined, error };
   }
 };

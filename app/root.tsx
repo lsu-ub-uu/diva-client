@@ -33,7 +33,11 @@ import {
 import { type ReactNode, useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import {
+  commitSession,
+  getAuthentication,
+  getSessionFromCookie,
+} from '@/.server/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
@@ -44,6 +48,7 @@ import './root.css';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
 import { useSessionAutoRenew } from '@/utils/useSessionAutoRenew';
+import { renewAuthToken } from '@/.server/cora/renewAuthToken';
 
 const { MODE } = import.meta.env;
 
@@ -70,6 +75,19 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
+
+  const intent = formData.get('intent');
+
+  if (intent === 'changeLanguage') {
+    return await changeLanguage(formData);
+  }
+
+  if (intent === 'renewAuthToken') {
+    return await renewAuth(request);
+  }
+}
+
+const changeLanguage = async (formData: FormData) => {
   const language = formData.get('language');
   if (typeof language === 'string') {
     return data(
@@ -81,7 +99,33 @@ export async function action({ request }: ActionFunctionArgs) {
       },
     );
   }
-}
+};
+
+const renewAuth = async (request: Request) => {
+  const session = await getSessionFromCookie(request);
+  const auth = getAuthentication(session);
+  if (!auth) {
+    return { status: 'No session to renew', auth: undefined };
+  }
+
+  try {
+    const renewedAuth = await renewAuthToken(auth);
+
+    session.set('auth', renewedAuth);
+    console.log('got renewed authtoken', renewedAuth);
+    return data(
+      { status: 'Session renew', auth },
+      {
+        headers: {
+          'Set-Cookie': await commitSession(session),
+        },
+      },
+    );
+  } catch (error) {
+    console.log('Failed to renew', error);
+    return { status: 'Failed to renew session', auth: undefined, error };
+  }
+};
 
 const Document = withEmotionCache(
   ({ children }: DocumentProps, emotionCache) => {

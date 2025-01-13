@@ -17,34 +17,45 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { useFetcher } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import type { action } from '@/routes/renewAuthToken';
+import type { loader } from '@/root';
 
 export const useSessionAutoRenew = () => {
+  const { auth } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
   const renewTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const authToken = auth?.data.token;
+  const validUntil = Number(auth?.data.validUntil);
 
   useEffect(() => {
     const renewAuthToken = async () => {
-      fetcher.submit(null, { method: 'POST', action: '/renewAuthToken' });
+      fetcher.submit({ intent: 'renewAuthToken' }, { method: 'POST' });
     };
 
+    if (!authToken) {
+      console.log('Not logged in.');
+      return;
+    } else {
+      console.log('AuthToken', authToken);
+    }
+
     if (fetcher.state !== 'idle') {
+      console.log('fetcher is not idle. ', fetcher.state);
       return;
     }
 
-    if (fetcher.data) {
-      if (!fetcher.data.auth) return;
-      const validUntil = Number(fetcher.data.auth.data.validUntil);
+    if (!renewTimeout.current) {
+      console.log('No renew scheduled');
 
+      console.log({ validUntil });
       const timeUntilNextRefresh = getTimeUntilNextRenew(validUntil);
-
+      console.log('Scheduling refresh in ms', timeUntilNextRefresh);
       renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRefresh);
     } else {
-      // Initial load or error case
-      renewAuthToken();
+      console.log('Renew already scheduled');
     }
-  }, [fetcher]);
+  }, [fetcher, authToken, validUntil]);
 };
 
 export const getTimeUntilNextRenew = (validUntil: number) => {
@@ -52,5 +63,5 @@ export const getTimeUntilNextRenew = (validUntil: number) => {
 
   const timeUntilInvalid = validUntil - now.getTime();
   // 1 minute before expiry, or 0 if expires in less than 1 minute.
-  return Math.max(timeUntilInvalid - 60000, 0); // Refresh 1 minute before expiry
+  return Math.max(timeUntilInvalid - 60000 * 9, 0); // Refresh 1 minute before expiry
 };
