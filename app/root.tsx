@@ -109,10 +109,11 @@ const renewAuth = async (request: Request) => {
   }
 
   try {
+    console.log('getting renewed auth', auth);
     const renewedAuth = await renewAuthToken(auth);
 
+    console.log('got renewed auth', renewedAuth);
     session.set('auth', renewedAuth);
-    console.log('got renewed authtoken', renewedAuth);
     return data(
       { status: 'Session renew', auth },
       {

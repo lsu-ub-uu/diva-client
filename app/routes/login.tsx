@@ -108,7 +108,7 @@ export const action: ActionFunction = async ({ request }) => {
       },
     );
   }
-
+  console.log('Logged in successfully', auth);
   session.set('auth', auth);
   return redirect(returnTo ?? '/', {
     headers: {
