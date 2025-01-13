@@ -18,7 +18,7 @@
 
 import { Button, Menu, MenuItem } from '@mui/material';
 import type { Option } from '@/components';
-import { Add } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@remix-run/react';
@@ -43,12 +43,13 @@ export const CreateRecordMenu = ({
       <Button
         variant='outlined'
         color='primary'
-        startIcon={<Add />}
+        startIcon={<AddIcon />}
         ref={addButtonRef}
         onClick={() => setMenuOpen(true)}
       >
         {t('divaClient_createRecordText')}
       </Button>
+
       <Menu
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
