@@ -72,8 +72,8 @@ const removeAuthFromSession = async (request: Request, i18n: i18nType) => {
   const { t } = i18n;
   session.flash('notification', {
     severity: 'info',
-    summary: t('divaClient_sessionExpiredSummary'),
-    details: t('divaClient_sessionExpiredDetails'),
+    summary: t('divaClient_sessionExpiredSummaryText'),
+    details: t('divaClient_sessionExpiredDetailsText'),
   });
   session.unset('auth');
   return data(null, {

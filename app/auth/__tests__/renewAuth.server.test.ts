@@ -127,9 +127,9 @@ describe('renewAuth', () => {
     expect(mockSession.unset).toHaveBeenCalledWith('auth');
     expect(commitSession).toHaveBeenCalledWith(mockSession);
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
-      details: 'divaClient_sessionExpiredDetails',
+      details: 'divaClient_sessionExpiredDetailsText',
       severity: 'info',
-      summary: 'divaClient_sessionExpiredSummary',
+      summary: 'divaClient_sessionExpiredSummaryText',
     });
     vi.useRealTimers();
   });
@@ -169,9 +169,9 @@ describe('renewAuth', () => {
     expect(mockSession.unset).toHaveBeenCalledWith('auth');
     expect(commitSession).toHaveBeenCalledWith(mockSession);
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
-      details: 'divaClient_sessionExpiredDetails',
+      details: 'divaClient_sessionExpiredDetailsText',
       severity: 'info',
-      summary: 'divaClient_sessionExpiredSummary',
+      summary: 'divaClient_sessionExpiredSummaryText',
     });
     vi.useRealTimers();
   });
@@ -205,9 +205,9 @@ describe('renewAuth', () => {
     expect(mockSession.unset).toHaveBeenCalledWith('auth');
     expect(commitSession).toHaveBeenCalledWith(mockSession);
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
-      details: 'divaClient_sessionExpiredDetails',
+      details: 'divaClient_sessionExpiredDetailsText',
       severity: 'info',
-      summary: 'divaClient_sessionExpiredSummary',
+      summary: 'divaClient_sessionExpiredSummaryText',
     });
     vi.useRealTimers();
   });
