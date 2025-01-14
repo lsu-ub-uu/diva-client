@@ -81,6 +81,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
   if (intent === 'renewAuthToken') {
     return await renewAuth(request, context.i18n);
   }
+
+  return {};
 }
 
 const changeLanguage = async (formData: FormData) => {

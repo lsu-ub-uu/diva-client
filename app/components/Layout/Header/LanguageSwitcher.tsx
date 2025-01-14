@@ -30,11 +30,6 @@ export const LanguageSwitcher = () => {
 
   return (
     <Form method='post'>
-      <input
-        type='hidden'
-        name='intent'
-        value='changeLanguage'
-      />
       <NativeSelect
         input={<OutlinedInput />}
         name='language'
@@ -45,7 +40,10 @@ export const LanguageSwitcher = () => {
         onChange={(e) => {
           const language = e.target.value as string;
           i18n.changeLanguage(language);
-          fetcher.submit({ language }, { method: 'post' });
+          fetcher.submit(
+            { language, intent: 'changeLanguage' },
+            { method: 'post' },
+          );
         }}
       >
         <option value='en'>English</option>
