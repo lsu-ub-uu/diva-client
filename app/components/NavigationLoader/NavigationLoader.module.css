@@ -16,42 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.devInfo {
-    font-family: monospace;
-    font-size: 0.8rem;
-    display: block;
-    color: antiquewhite;
-
-    button {
-        border: none;
-        color: inherit;
-        font-family: inherit;
-        cursor: pointer;
-        padding: 4px;
-        background: #666;
-        border-radius: 4px 4px 0 0;
-    }
-
-    pre {
-        margin: 0;
-        padding: 4px;
-        background: #444;
-        overflow: auto;
-        max-width: 900px;
-        max-height: 800px;
-        border-radius: 0 4px 4px 4px;
-    }
-}
-
-.devInfoButton {
-    cursor: pointer;
-    border: none;
-    background: rgb(var(--grayLight));
-    border-radius: 4px;
+.navigationLoader {
     position: absolute;
-    top: -24px;
-    right: -24px;
-    font-family: monospace;
-    color: rgb(var(--grayDark));
+    top: 0;
+    left: 0;
+    right: 0
 }
-

@@ -41,7 +41,7 @@ import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
-import './root.css';
+import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
 
@@ -57,6 +57,7 @@ export const links: LinksFunction = () => [
     type: 'image/svg+xml',
     href: MODE === 'development' ? dev_favicon : favicon,
   },
+  { rel: 'stylesheet', href: rootCss },
 ];
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
