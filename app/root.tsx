@@ -69,7 +69,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return { auth, locale, loginUnits };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const intent = formData.get('intent');
@@ -79,7 +79,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (intent === 'renewAuthToken') {
-    return await renewAuth(request);
+    return await renewAuth(request, context.i18n);
   }
 }
 

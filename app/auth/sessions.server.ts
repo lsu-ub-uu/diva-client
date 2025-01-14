@@ -23,17 +23,17 @@ import {
 } from '@remix-run/node';
 import type { Auth } from '@/auth/Auth';
 
-type SessionData = {
+export type SessionData = {
   auth: Auth;
 };
 
 export type Notification = {
-  severity: 'success' | 'error';
+  severity: 'success' | 'error' | 'info';
   summary: string;
   details?: string;
 };
 
-type SessionFlashData = {
+export type SessionFlashData = {
   notification: Notification;
 };
 

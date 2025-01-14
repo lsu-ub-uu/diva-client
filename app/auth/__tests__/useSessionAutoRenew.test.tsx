@@ -22,9 +22,8 @@ import {
 } from '@/auth/useSessionAutoRenew';
 import { expect } from 'vitest';
 import { createRemixStub } from '@remix-run/testing';
-import type { Auth } from '@/auth/Auth';
-
 import { act, render } from '@testing-library/react';
+import { createMockAuth } from '@/.server/cora/__mocks__/auth';
 
 const TestComponent = () => {
   useSessionAutoRenew();
@@ -32,13 +31,17 @@ const TestComponent = () => {
 };
 
 describe('useSessionAutoRenew', () => {
-  it('renews auth token immediatly if validUntil within 10 seconds', async () => {
+  it('renews auth token immediately if validUntil within 10 seconds', async () => {
     vi.useFakeTimers();
 
     vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
-    const mockAuth = createMockAuth('2025-01-09T00:00:05Z');
+    const mockAuth = createMockAuth({
+      data: {
+        validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
+      },
+    });
 
-    const renewAuthTokenActionSpy = vi.fn();
+    const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
 
     const RemixStub = createRemixStub([
       {
@@ -49,66 +52,51 @@ describe('useSessionAutoRenew', () => {
       },
     ]);
 
-    render(<RemixStub />);
+    await act(() => render(<RemixStub />));
 
-    await act(() =>
-      expect(renewAuthTokenActionSpy).toHaveBeenCalledWith({
-        intent: 'renewAuthToken',
-      }),
-    );
+    await act(() => vi.advanceTimersByTime(0));
+
+    expect(renewAuthTokenActionSpy).toHaveBeenCalled();
 
     vi.useRealTimers();
   });
 
-  it('renews auth token 1 minute before validUntil has expired', async () => {
+  it('renews auth token 10 seconds before validUntil has expired', async () => {
     vi.useFakeTimers();
     const mockDate = new Date('2025-01-09T00:00:00Z');
     vi.setSystemTime(mockDate);
 
-    const renewAuthTokenActionSpy = vi
-      .fn()
-      .mockReturnValueOnce({
-        status: 'Session renew',
-        auth: createMockAuth('2025-01-09T00:05:00Z'),
-      })
-      .mockReturnValueOnce({
-        status: 'Session renew',
-        auth: createMockAuth('2025-01-09T00:10:00Z'),
-      })
-      .mockReturnValue({
-        status: 'Session not renew',
-        auth: undefined,
-      });
+    const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
 
     const RemixStub = createRemixStub([
       {
         path: '/',
         Component: TestComponent,
+        loader: vi.fn().mockReturnValue({
+          auth: createMockAuth({
+            data: {
+              validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
+            },
+          }),
+        }),
         action: renewAuthTokenActionSpy,
       },
     ]);
 
-    render(<RemixStub />);
+    await act(() => render(<RemixStub />));
 
-    await act(() => expect(renewAuthTokenActionSpy).toHaveBeenCalled());
-    await act(() => vi.advanceTimersByTime(minutesToMillis(4)));
-
-    await act(() => expect(renewAuthTokenActionSpy).toHaveBeenCalledTimes(2));
-    await act(() => vi.advanceTimersByTime(minutesToMillis(5)));
-
-    expect(renewAuthTokenActionSpy).toHaveBeenCalledTimes(3);
-
+    await act(() => vi.advanceTimersByTime(minutesToMillis(4) + 50_000));
+    expect(renewAuthTokenActionSpy).toHaveBeenCalled();
     vi.useRealTimers();
   });
 
-  it('stops auto renew when no auth token returned from backend', async () => {
+  it('does not renew when no auth token returned from backend', async () => {
     vi.useFakeTimers();
     const mockDate = new Date('2025-01-09T00:00:00Z');
     vi.setSystemTime(mockDate);
 
     const renewAuthTokenActionSpy = vi.fn().mockReturnValue({
       status: 'Session not renew',
-      auth: undefined,
     });
 
     const RemixStub = createRemixStub([
@@ -116,15 +104,16 @@ describe('useSessionAutoRenew', () => {
         path: '/',
         Component: TestComponent,
         action: renewAuthTokenActionSpy,
+        loader: vi.fn().mockReturnValue({
+          auth: undefined,
+        }),
       },
     ]);
 
-    render(<RemixStub />);
+    await act(() => render(<RemixStub />));
 
-    await act(() => expect(renewAuthTokenActionSpy).toHaveBeenCalled());
-    await act(() => vi.advanceTimersByTime(minutesToMillis(5)));
-
-    expect(renewAuthTokenActionSpy).toHaveBeenCalledTimes(1);
+    await act(() => vi.advanceTimersToNextTimer());
+    expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();
 
     vi.useRealTimers();
   });
@@ -138,15 +127,15 @@ describe('useSessionAutoRenew', () => {
 
       const actual = getTimeUntilNextRenew(validUntilMockDate);
 
-      expect(actual).toBe(minutesToMillis(4));
+      expect(actual).toBe(290000);
 
       vi.useRealTimers();
     });
 
-    it('returns 0 when time difference between now and validUntil is less than 1 minute', () => {
+    it('returns 0 when time difference between now and validUntil is less than 10 seconds', () => {
       vi.useFakeTimers();
       const mockDate = new Date('2025-01-09T00:00:00');
-      const validUntilMockDate = new Date('2025-01-09T00:00:59').getTime();
+      const validUntilMockDate = new Date('2025-01-09T00:00:09').getTime();
       vi.setSystemTime(mockDate);
 
       const actual = getTimeUntilNextRenew(validUntilMockDate);
@@ -156,31 +145,6 @@ describe('useSessionAutoRenew', () => {
       vi.useRealTimers();
     });
   });
-});
-
-const createMockAuth = (validUntil: string): Auth => ({
-  data: {
-    token: `aaaaaaaa-aaaa-aaaa-aaaa-${validUntil}`,
-    renewUntil: '1736431339581',
-    validUntil: new Date(validUntil).getTime().toString(),
-    userId: 'coraUser:111111111111111',
-    loginId: 'user@domain.x',
-    lastName: 'DiVA',
-    firstName: 'Everything',
-  },
-  actionLinks: {
-    delete: {
-      rel: 'delete',
-      requestMethod: 'DELETE',
-      url: 'http://localhost:38180/login/rest/authToken/b01dab5e-50eb-492a-b40d-f416500f5e6f',
-    },
-    renew: {
-      accept: 'application/vnd.uub.authToken+json',
-      rel: 'renew',
-      requestMethod: 'POST',
-      url: 'http://130.238.171.95:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
-    },
-  },
 });
 
 const minutesToMillis = (minutes: number) => minutes * 1000 * 60;

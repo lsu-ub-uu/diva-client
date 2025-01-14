@@ -25,8 +25,9 @@ import { renewAuthToken } from '@/.server/cora/renewAuthToken';
 import { data } from '@remix-run/node';
 import { isAxiosError } from 'axios';
 import type { Auth } from '@/auth/Auth';
+import type { i18n as i18nType } from 'i18next';
 
-export const renewAuth = async (request: Request) => {
+export const renewAuth = async (request: Request, i18n: i18nType) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
@@ -36,7 +37,7 @@ export const renewAuth = async (request: Request) => {
 
   try {
     if (isAuthExpired(auth)) {
-      return removeAuthFromSession(request);
+      return removeAuthFromSession(request, i18n);
     }
 
     const renewedAuth = await renewAuthToken(auth);
@@ -53,7 +54,7 @@ export const renewAuth = async (request: Request) => {
     );
   } catch (error) {
     if (isAxiosError(error) && error.status === 401) {
-      return removeAuthFromSession(request);
+      return removeAuthFromSession(request, i18n);
     }
     return { status: 'Failed to renew session', error };
   }
@@ -63,16 +64,16 @@ const isAuthExpired = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const renewUntil = Number(auth.data.renewUntil);
   const now = Date.now();
-
   return validUntil < now || renewUntil < now;
 };
 
-const removeAuthFromSession = async (request: Request) => {
+const removeAuthFromSession = async (request: Request, i18n: i18nType) => {
   const session = await getSessionFromCookie(request);
+  const { t } = i18n;
   session.flash('notification', {
-    severity: 'error',
-    summary: 'Your session has expired.',
-    details: 'You have been logged out. Please log in again to continue.',
+    severity: 'info',
+    summary: t('divaClient_sessionExpiredSummary'),
+    details: t('divaClient_sessionExpiredDetails'),
   });
   session.unset('auth');
   return data(null, {

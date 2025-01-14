@@ -39,11 +39,8 @@ export const useSessionAutoRenew = () => {
     if (!authToken) {
       return;
     }
-
-    renewTimeout.current = setTimeout(
-      renewAuthToken,
-      getTimeUntilNextRenew(validUntil),
-    );
+    const timeUntilNextRenew = getTimeUntilNextRenew(validUntil);
+    renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRenew);
 
     return () => {
       clearTimeout(renewTimeout.current);
@@ -54,5 +51,6 @@ export const useSessionAutoRenew = () => {
 export const getTimeUntilNextRenew = (validUntil: number) => {
   const now = new Date();
   const timeUntilInvalid = validUntil - now.getTime();
-  return Math.max(timeUntilInvalid - 10_000, 0); // Refresh 10 seconds before expiry
+  const renewTimeBuffer = 10_000;
+  return Math.max(timeUntilInvalid - renewTimeBuffer, 0); // Refresh 10 seconds before expiry
 };
