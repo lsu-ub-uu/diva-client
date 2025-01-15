@@ -16,19 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
-import { getAxiosRequestFromActionLink } from '@/.server/cora/helper';
-import { transformCoraAuth } from '@/.server/cora/transform/transformCoraAuth';
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout>;
 
-export const renewAuthToken = async (auth: Auth) => {
-  if (auth.actionLinks?.renew === undefined) {
-    throw new Error('Missing auth update actionLink');
-  }
-  console.log('renewing auth token with cora');
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
-  );
-
-  return transformCoraAuth(response.data);
-};
+  return function (...args: Parameters<T>): void {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}

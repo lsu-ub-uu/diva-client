@@ -17,40 +17,59 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData, useRevalidator } from '@remix-run/react';
 import { type action, type loader } from '@/root';
+import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 
 export const useSessionAutoRenew = () => {
   const { auth } = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
+  const { submit } = useFetcher<typeof action>();
   const renewTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
-  const authToken = auth?.data.token;
+  const { revalidate } = useRevalidator();
+
+  const isNewestWindow = useIsNewestWindow(1000);
   const validUntil = Number(auth?.data.validUntil);
 
+  /**
+   * Only the newest window/tab renews the auth token.
+   */
   const renewAuthToken = useCallback(async () => {
-    if (fetcher.state === 'idle') {
-      fetcher.submit({ intent: 'renewAuthToken' }, { method: 'POST' });
+    console.log('checking if i am the newest tab');
+    if (await isNewestWindow()) {
+      console.log('I won! Renewing auth');
+      submit({ intent: 'renewAuthToken' }, { method: 'POST' });
+    } else {
+      console.log('I lost :(');
+      setTimeout(() => {
+        console.log('Revalidating');
+        revalidate();
+      }, 1000);
     }
-  }, [fetcher]);
+  }, [isNewestWindow, submit, revalidate]);
 
   useEffect(() => {
-    if (!authToken) {
+    if (!validUntil) {
+      console.log('not authenticated');
       return;
     }
     const timeUntilNextRenew = getTimeUntilNextRenew(validUntil);
+    console.log('scheduling renew in ms', timeUntilNextRenew);
     renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRenew);
 
     return () => {
-      clearTimeout(renewTimeout.current);
+      if (renewTimeout.current) {
+        console.log('clear timeout');
+        clearTimeout(renewTimeout.current);
+      }
     };
-  }, [renewAuthToken, authToken, validUntil]);
+  }, [renewAuthToken, validUntil]);
 };
 
 export const getTimeUntilNextRenew = (validUntil: number) => {
   const now = new Date();
   const timeUntilInvalid = validUntil - now.getTime();
-  const renewTimeBuffer = 10_000;
+  const renewTimeBuffer = 60_000 * 9 + 50_000;
   return Math.max(timeUntilInvalid - renewTimeBuffer, 0); // Refresh 10 seconds before expiry
 };

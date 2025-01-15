@@ -22,6 +22,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
+  useRevalidator,
   useRouteLoaderData,
 } from '@remix-run/react';
 import {
@@ -45,6 +47,9 @@ import { PageLayout } from '@/components/Layout';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
+import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
+import { debounce } from 'lodash-es';
+import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 
 const { MODE } = import.meta.env;
 
