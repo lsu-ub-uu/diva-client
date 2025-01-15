@@ -23,7 +23,6 @@ import {
 } from '@/auth/sessions.server';
 import { renewAuthToken } from '@/.server/cora/renewAuthToken';
 import { data } from '@remix-run/node';
-import { isAxiosError } from 'axios';
 import type { Auth } from '@/auth/Auth';
 import type { i18n as i18nType } from 'i18next';
 
@@ -53,9 +52,6 @@ export const renewAuth = async (request: Request, i18n: i18nType) => {
       },
     );
   } catch (error) {
-    if (isAxiosError(error) && error.status === 401) {
-      return removeAuthFromSession(request, i18n);
-    }
     return { status: 'Failed to renew session', error };
   }
 };

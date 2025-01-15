@@ -30,7 +30,6 @@ import { mock } from 'vitest-mock-extended';
 import { type Session } from '@remix-run/node';
 import { renewAuth } from '@/auth/renewAuth.server';
 import { renewAuthToken } from '@/.server/cora/renewAuthToken';
-import type { AxiosError } from 'axios';
 import type { i18n } from 'i18next';
 
 vi.mock('@/auth/sessions.server');
@@ -166,42 +165,6 @@ describe('renewAuth', () => {
     await renewAuth(mockRequest, i18nMock);
 
     expect(renewAuthToken).not.toHaveBeenCalled();
-    expect(mockSession.unset).toHaveBeenCalledWith('auth');
-    expect(commitSession).toHaveBeenCalledWith(mockSession);
-    expect(mockSession.flash).toHaveBeenCalledWith('notification', {
-      details: 'divaClient_sessionExpiredDetailsText',
-      severity: 'info',
-      summary: 'divaClient_sessionExpiredSummaryText',
-    });
-    vi.useRealTimers();
-  });
-
-  it('removes authToken when backend returns 401', async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
-    const mockAuth = createMockAuth({
-      data: {
-        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-
-        validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
-        renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
-      },
-    });
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(mockAuth);
-
-    const mockError = mock<AxiosError>({ status: 401, isAxiosError: true });
-    vi.mocked(renewAuthToken).mockReturnValue(Promise.reject(mockError));
-
-    vi.mocked(commitSession).mockReturnValue(Promise.resolve('updatedCookie'));
-
-    const mockRequest = mock<Request>();
-    await renewAuth(mockRequest, i18nMock);
-
-    expect(renewAuthToken).toHaveBeenCalled();
     expect(mockSession.unset).toHaveBeenCalledWith('auth');
     expect(commitSession).toHaveBeenCalledWith(mockSession);
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
