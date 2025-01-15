@@ -52,4 +52,31 @@
   --labelColor: 0 0 0 / 60%;
 
   --gap: 0.5rem;
+
+  --font-family-main: 'Arial', sans-serif;
+  --font-family-headings: 'Arial', serif;
+  --font-size-base: 16px;
+
+
+  --font-size-h1: 2rem;
+  --font-weight-h1: 400;
+
+  --font-size-h2: 1.3rem;
+  --font-weight-h2: 400;
+
+  --font-size-h3: 2rem;
+  --font-weight-h3: 400;
+
+  --font-size-h4: 2rem;
+
+  --font-size-h5: 2rem;
+
+  --font-size-h6: 2rem;
+
+  --font-size-body: 1rem;
+
+  --font-size-bold: 1rem;
+  --font-weight-bold: 800;
+
+  --line-height-base: 1.5;
 }
