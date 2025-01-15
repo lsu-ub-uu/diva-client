@@ -31,7 +31,7 @@ const TestComponent = () => {
 };
 
 describe('useSessionAutoRenew', () => {
-  it('renews auth token immediately if validUntil within 10 seconds', async () => {
+  it('renews auth token after 1s if validUntil within 10 seconds', async () => {
     vi.useFakeTimers();
 
     vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
@@ -54,7 +54,7 @@ describe('useSessionAutoRenew', () => {
 
     await act(() => render(<RemixStub />));
 
-    await act(() => vi.advanceTimersByTime(0));
+    await act(() => vi.advanceTimersByTime(1000));
 
     expect(renewAuthTokenActionSpy).toHaveBeenCalled();
 
@@ -117,6 +117,8 @@ describe('useSessionAutoRenew', () => {
 
     vi.useRealTimers();
   });
+
+  it.todo('revalidates instead of renewing when not newest window');
 
   describe('getTimeUntilNextRenew', () => {
     it('returns time difference between now and 1 minute before validUntil', () => {

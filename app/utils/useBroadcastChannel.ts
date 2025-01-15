@@ -26,7 +26,7 @@ const channel = new BroadcastChannel('diva-client');
  * @param eventType A unique event name.
  * @param onMessageReceived Callback function called when another window sends this message. The event data is passed as argument.
  */
-export const useBroadcastChannel = <T extends Record<string, unknown>>(
+export const useBroadcastChannel = <T extends Record<string, any>>(
   eventType: string,
   onMessageReceived: (data: T) => void,
 ) => {
