@@ -22,10 +22,12 @@ import { Form, Link as RouterLink, useLocation } from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
+import { useState } from 'react';
 
 export const Header = () => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
+  const [dev, setDev] = useState(false);
 
   return (
     <Box

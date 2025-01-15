@@ -19,6 +19,7 @@
 import { LinearProgress } from '@mui/material';
 import { useNavigation } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
+import styles from './NavigationLoader.module.css';
 
 const LOADER_DELAY = 500;
 
@@ -47,7 +48,8 @@ export const NavigationLoader = () => {
     return (
       <LinearProgress
         color='primary'
-        sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}
+        className={styles.navigationLoader}
+        // sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}
       />
     );
   }
