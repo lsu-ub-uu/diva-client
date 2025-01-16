@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,56 +16,77 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Card } from '@/components/Card/Card';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { CardHeader } from '@/components/Card/CardHeader';
-import { CardTitle } from '@/components/Card/CardTitle';
-import { Typography } from '@/components/Typography/Typography';
-import { headlineLevelToTypographyVariant } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { Grid2 as Grid, IconButton } from '@mui/material';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { CardContent } from '@/components/Card/CardContent';
-import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { useTranslation } from 'react-i18next';
-import InfoIcon from '@mui/icons-material/Info';
-import { useContext } from 'react';
+import { CardContent, Grid2 as Grid, IconButton } from '@mui/material';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import {
+  checkIfPresentationStyleIsInline,
+  checkIfPresentationStyleOrParentIsInline,
+  getGroupLevel,
+  headlineLevelToTypographyVariant,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Card } from '@/components/Card/Card';
+import styles from './Group.module.css';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardTitle } from '@/components/Card/CardTitle';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import { useTranslation } from 'react-i18next';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
+import { useRemixFormContext } from 'remix-hook-form';
+import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 
-interface FirstLevelGroupProps {
+interface GroupProps {
   currentComponentNamePath: string;
-  reactKey: string;
   component: FormComponentContainer | FormComponentGroup;
   parentPresentationStyle: string | undefined;
   childWithNameInDataArray: string[];
+  actionButtonGroup?: ReactNode;
 }
 
-export const FirstLevelGroup = ({
-  reactKey,
-  component,
+export const Group = ({
   currentComponentNamePath,
-  childWithNameInDataArray,
+  component,
   parentPresentationStyle,
-}: FirstLevelGroupProps) => {
-  const { t } = useTranslation();
+  childWithNameInDataArray,
+  actionButtonGroup,
+}: GroupProps) => {
   const { boxGroups } = useContext(FormGeneratorContext);
+  const { getValues } = useRemixFormContext();
+  const { t } = useTranslation();
+
+  const groupLevel = getGroupLevel(currentComponentNamePath);
+  const inline = checkIfPresentationStyleOrParentIsInline(
+    component,
+    parentPresentationStyle,
+  );
+  const hasNoValues = hasOnlyAttributes(
+    cleanFormData(getValues(currentComponentNamePath)),
+  );
+
+  if (component.mode === 'output' && hasNoValues) {
+    return null;
+  }
 
   return (
     <Grid
       size={12}
-      key={reactKey}
-      className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
+      className={`${styles.group} anchorLink`}
+      data-inline={inline}
     >
       <DevInfo component={component} />
-      <Card boxed={boxGroups}>
+      <Card boxed={boxGroups && groupLevel !== 0}>
         <CardHeader>
-          {component.showLabel ? (
+          {component.showLabel && (
             <CardTitle>
               <Typography
                 text={component?.label ?? ''}
@@ -86,18 +107,19 @@ export const FirstLevelGroup = ({
                 </IconButton>
               </Tooltip>
             </CardTitle>
-          ) : null}
+          )}
           <Attributes
             component={component}
             path={currentComponentNamePath}
           />
+
+          {actionButtonGroup}
         </CardHeader>
         <CardContent>
           <Grid
             container
             justifyContent='space-between'
             alignItems='flex-start'
-            id={`anchor_${addAttributesToName(component, component.name)}`}
             gap={2}
           >
             {component.components && (

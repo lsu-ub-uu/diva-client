@@ -36,11 +36,11 @@ import {
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
-import { GroupOrContainer } from '@/components/FormGenerator/components/GroupOrContainer';
 import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
 import { RepeatingVariable } from '@/components/FormGenerator/components/RepeatingVariable';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { Group } from '@/components/FormGenerator/components/Group';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -82,9 +82,8 @@ export const Component = ({
 
   if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
     return (
-      <GroupOrContainer
+      <Group
         currentComponentNamePath={currentComponentNamePath}
-        reactKey={reactKey}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
         childWithNameInDataArray={childrenWithSameNameInData}
