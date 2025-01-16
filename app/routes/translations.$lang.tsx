@@ -17,7 +17,7 @@
  */
 
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
 import { invariant } from '@remix-run/router/history';
 
 export const loader = async ({ context, params }: LoaderFunctionArgs) => {

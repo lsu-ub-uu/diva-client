@@ -22,13 +22,12 @@ import { Form, Link as RouterLink, useLocation } from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import { useState } from 'react';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 
 export const Header = () => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
-  const [dev, setDev] = useState(false);
-
+  const devMode = useIsDevMode();
   return (
     <Box
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
@@ -54,19 +53,21 @@ export const Header = () => {
               style={{ width: 160 }}
             />
           </Link>
-          <Form
-            action='/refreshDefinitions'
-            method='POST'
-          >
-            <input
-              type='hidden'
-              name='returnTo'
-              value={returnTo}
-            />
-            <Button type='submit'>
-              Refresh Def <CachedIcon />
-            </Button>
-          </Form>
+          {devMode && (
+            <Form
+              action='/refreshDefinitions'
+              method='POST'
+            >
+              <input
+                type='hidden'
+                name='returnTo'
+                value={returnTo}
+              />
+              <Button type='submit'>
+                Refresh Def <CachedIcon />
+              </Button>
+            </Form>
+          )}
 
           <LanguageSwitcher />
 

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import {
   addAttributesToName,
   addNamesToArray,

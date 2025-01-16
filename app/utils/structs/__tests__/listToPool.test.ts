@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFRecordType, BFFText } from '@/.server/cora/transform/bffTypes';
+import type { BFFRecordType, BFFText } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '../listToPool';
 
 const someListWithThreeRecordTypes: BFFRecordType[] = [

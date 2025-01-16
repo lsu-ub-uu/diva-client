@@ -30,10 +30,10 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '@/.server/cora/transform/bffTypes';
+} from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
 
-import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { getSearchTermNameFromSearchLink } from '@/routes/autocompleteSearch';
 
 describe('getSearchTermNameFromSearchLink', () => {

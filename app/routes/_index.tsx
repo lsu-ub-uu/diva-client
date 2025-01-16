@@ -16,10 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/.server/data/getSearchForm';
-import { getValidationTypes } from '@/.server/data/getValidationTypes';
+import { getSearchForm } from '@/data/getSearchForm.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { HomePage } from '@/pages';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import {
+  getAuthentication,
+  getSessionFromCookie,
+} from '@/auth/sessions.server';
 import {
   data,
   type LoaderFunctionArgs,
@@ -31,7 +34,7 @@ import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { useLoaderData } from '@remix-run/react';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { searchRecords } from '@/.server/data/searchRecords';
+import { searchRecords } from '@/data/searchRecords.server';
 import { isEmpty } from 'lodash-es';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;

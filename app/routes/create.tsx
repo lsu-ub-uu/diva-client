@@ -20,23 +20,23 @@ import { invariant } from '@remix-run/router/history';
 import { type ActionFunctionArgs, data } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
-import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
+import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId.server';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
-import { createRecord } from '@/.server/data/createRecord';
+import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecord } from '@/types/record';
 import {
   getSessionFromCookie,
   requireAuthentication,
-} from '@/.server/sessions';
+} from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { Alert, AlertTitle } from '@mui/material';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
