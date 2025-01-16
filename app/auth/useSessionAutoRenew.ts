@@ -36,14 +36,10 @@ export const useSessionAutoRenew = () => {
    * Only the newest window/tab renews the auth token.
    */
   const renewAuthToken = useCallback(async () => {
-    console.log('checking if i am the newest tab');
     if (await isNewestWindow()) {
-      console.log('I won! Renewing auth');
       submit({ intent: 'renewAuthToken' }, { method: 'POST' });
     } else {
-      console.log('I lost :(');
       setTimeout(() => {
-        console.log('Revalidating');
         revalidate();
       }, 1000);
     }
@@ -51,16 +47,13 @@ export const useSessionAutoRenew = () => {
 
   useEffect(() => {
     if (!validUntil) {
-      console.log('not authenticated');
       return;
     }
     const timeUntilNextRenew = getTimeUntilNextRenew(validUntil);
-    console.log('scheduling renew in ms', timeUntilNextRenew);
     renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRenew);
 
     return () => {
       if (renewTimeout.current) {
-        console.log('clear timeout');
         clearTimeout(renewTimeout.current);
       }
     };
@@ -70,6 +63,6 @@ export const useSessionAutoRenew = () => {
 export const getTimeUntilNextRenew = (validUntil: number) => {
   const now = new Date();
   const timeUntilInvalid = validUntil - now.getTime();
-  const renewTimeBuffer = 60_000 * 9 + 50_000;
+  const renewTimeBuffer = 30_000; //60_000 * 9 + 50_000;
   return Math.max(timeUntilInvalid - renewTimeBuffer, 0); // Refresh 10 seconds before expiry
 };

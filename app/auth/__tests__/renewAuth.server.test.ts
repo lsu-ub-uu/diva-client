@@ -72,7 +72,6 @@ describe('renewAuth', () => {
     expect(renewAuthToken).toHaveBeenCalled();
     expect(mockSession.set).toHaveBeenCalledWith('auth', mockRenewedAuth);
     expect(commitSession).toHaveBeenCalledWith(mockSession);
-    vi.useRealTimers();
   });
 
   it('does nothing when not authenticated', async () => {
@@ -88,7 +87,39 @@ describe('renewAuth', () => {
     expect(renewAuthToken).not.toHaveBeenCalled();
     expect(actual).toEqual({ status: 'No auth to renew' });
     expect(mockSession.set).not.toHaveBeenCalled();
-    vi.useRealTimers();
+  });
+
+  it('does not set cookie when failing to renew', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
+    const mockAuth = createMockAuth({
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+
+        validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
+        renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
+      },
+    });
+    const mockSession = mock<Session<SessionData, SessionFlashData>>();
+    vi.mocked(getSessionFromCookie).mockReturnValue(
+      Promise.resolve(mockSession),
+    );
+    vi.mocked(getAuth).mockReturnValue(mockAuth);
+
+    const mockError = new Error();
+    vi.mocked(renewAuthToken).mockRejectedValue(mockError);
+
+    const mockRequest = mock<Request>();
+
+    const actual = await renewAuth(mockRequest, i18nMock);
+
+    expect(renewAuthToken).toHaveBeenCalled();
+
+    expect(actual).toEqual({
+      status: 'Failed to renew session',
+      error: mockError,
+    });
+    expect(mockSession.set).not.toHaveBeenCalled();
   });
 
   it('removes auth from session when validUntil is in the past', async () => {
@@ -102,6 +133,7 @@ describe('renewAuth', () => {
         renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
       },
     });
+
     const mockSession = mock<Session<SessionData, SessionFlashData>>();
     vi.mocked(getSessionFromCookie).mockReturnValue(
       Promise.resolve(mockSession),
@@ -130,7 +162,6 @@ describe('renewAuth', () => {
       severity: 'info',
       summary: 'divaClient_sessionExpiredSummaryText',
     });
-    vi.useRealTimers();
   });
 
   it('removes auth from session when renewUntil is in the past', async () => {
@@ -172,6 +203,5 @@ describe('renewAuth', () => {
       severity: 'info',
       summary: 'divaClient_sessionExpiredSummaryText',
     });
-    vi.useRealTimers();
   });
 });

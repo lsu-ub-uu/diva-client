@@ -51,7 +51,6 @@ describe('useIsNewestWindow', () => {
     vi.advanceTimersByTime(500);
     const actual = await promise;
     expect(actual).toBe(true);
-    vi.useRealTimers();
   });
 
   it('resolves with true with non default syncWindowTime (100)', async () => {
@@ -69,7 +68,6 @@ describe('useIsNewestWindow', () => {
     vi.advanceTimersByTime(100);
     const actual = await promise;
     expect(actual).toBe(true);
-    vi.useRealTimers();
   });
 
   it('resolves with false when an id from a message is larger than myWindowId', async () => {
@@ -98,7 +96,6 @@ describe('useIsNewestWindow', () => {
     vi.advanceTimersByTime(500);
     const actual = await promise;
     expect(actual).toBe(false);
-    vi.useRealTimers();
   });
 
   it('sends a message to other windows with current time', async () => {
@@ -121,7 +118,5 @@ describe('useIsNewestWindow', () => {
     expect(sendMessageSpy).toHaveBeenCalledWith({
       id: new Date('2005-01-01T00:00:01').getTime(),
     });
-
-    vi.useRealTimers();
   });
 });

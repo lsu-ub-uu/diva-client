@@ -122,7 +122,11 @@ if (NODE_ENV !== 'production') {
 app.all('*', remixHandler);
 
 const port = PORT || 5173;
-app.listen(port, () => {
+
+console.info('Loading Cora metadata...');
+loadStuffOnServerStart().then(() => {
+  console.info('Loaded stuff from Cora');
+
   console.info(`Cora API-url ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
@@ -130,8 +134,5 @@ app.listen(port, () => {
   console.info(
     `Express server listening at http://${DOMAIN}:${port}${BASE_PATH ?? ''}`,
   );
-  loadStuffOnServerStart().then(() => {
-    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.info('Loaded stuff from Cora');
-  });
+  app.listen(port);
 });

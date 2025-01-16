@@ -33,4 +33,5 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.resetAllMocks();
   vi.clearAllMocks();
+  vi.useRealTimers();
 });
