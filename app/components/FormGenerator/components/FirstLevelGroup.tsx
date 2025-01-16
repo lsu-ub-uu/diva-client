@@ -98,6 +98,7 @@ export const FirstLevelGroup = ({
             justifyContent='space-between'
             alignItems='flex-start'
             id={`anchor_${addAttributesToName(component, component.name)}`}
+            gap={2}
           >
             {component.components && (
               <ComponentList
