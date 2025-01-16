@@ -18,8 +18,9 @@
 
 import type { FormComponent } from '@/components/FormGenerator/types';
 import styles from './DevInfo.module.css';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -49,14 +50,9 @@ export const DevInfo = ({ component }: DevInfoProps) => {
 };
 
 export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
-  const [dev, setDev] = useState(false);
+  const devMode = useIsDevMode();
 
-  useEffect(() => {
-    const isDev = window.localStorage.getItem('diva-dev');
-    setDev(isDev !== null);
-  }, []);
-
-  if (!dev) {
+  if (!devMode) {
     return null;
   }
 
