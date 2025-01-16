@@ -16,9 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useCallback, useEffect } from 'react';
-
-const channel = new BroadcastChannel('diva-client');
+import { useCallback, useEffect, useMemo } from 'react';
 
 /**
  * A custom hook used for sending messages between windows/tabs. Returns a sendMessage function for sending messages to other tabs and passing data.
@@ -30,6 +28,8 @@ export const useBroadcastChannel = <T extends Record<string, any>>(
   eventType: string,
   onMessageReceived: (data: T) => void,
 ) => {
+  const channel = useMemo(() => new BroadcastChannel('diva-client'), []);
+
   useEffect(() => {
     const onBroadcastChannelMessage = (event: MessageEvent) => {
       const { type } = event.data;
@@ -43,13 +43,13 @@ export const useBroadcastChannel = <T extends Record<string, any>>(
     return () => {
       channel.removeEventListener('message', onBroadcastChannelMessage);
     };
-  }, [eventType, onMessageReceived]);
+  }, [channel, eventType, onMessageReceived]);
 
   const sendMessage = useCallback(
     (data?: T) => {
       channel.postMessage({ type: eventType, ...data });
     },
-    [eventType],
+    [channel, eventType],
   );
 
   return {

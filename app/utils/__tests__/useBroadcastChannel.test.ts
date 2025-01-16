@@ -16,12 +16,87 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-describe('useBroadcastChannel', () => {
-  it.todo(
-    'sendMessage posts a message to the correct broadcast channel with the provided type and data.',
-  );
+import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
+import { act, renderHook } from '@testing-library/react';
+import { mock } from 'vitest-mock-extended';
 
-  it.todo(
-    'calls onMessageReceived callback when a message is received on the channel',
-  );
+describe('useBroadcastChannel', () => {
+  it('sendMessage posts a message to the correct broadcast channel with the provided type and data.', () => {
+    const mockBroadcastChannel = mock<BroadcastChannel>();
+
+    vi.stubGlobal(
+      'BroadcastChannel',
+      vi.fn().mockReturnValue(mockBroadcastChannel),
+    );
+
+    const { result } = renderHook(() => useBroadcastChannel('test', vi.fn()));
+
+    result.current.sendMessage({ someKey: 'someValue' });
+
+    expect(mockBroadcastChannel.postMessage).toHaveBeenCalledWith({
+      type: 'test',
+      someKey: 'someValue',
+    });
+  });
+
+  it('calls onMessageReceived callback when a message is received on the channel', async () => {
+    let messageEventCallback = vi.fn();
+
+    const mockBroadcastChannel = mock<BroadcastChannel>({
+      addEventListener: vi.fn().mockImplementation((eventType, callback) => {
+        if (eventType === 'message') {
+          messageEventCallback = callback;
+        }
+      }),
+    });
+
+    vi.stubGlobal(
+      'BroadcastChannel',
+      vi.fn().mockReturnValue(mockBroadcastChannel),
+    );
+
+    const messageReceivedMock = vi.fn();
+
+    await act(() =>
+      renderHook(() => useBroadcastChannel('test', messageReceivedMock)),
+    );
+
+    expect(mockBroadcastChannel.addEventListener).toHaveBeenCalled();
+
+    messageEventCallback({ data: { type: 'test', someData: 'someValue' } });
+
+    expect(messageReceivedMock).toHaveBeenCalledWith({
+      type: 'test',
+      someData: 'someValue',
+    });
+  });
+
+  it('does not call onMessageReceived callback when a message of another type is recieved', async () => {
+    let messageEventCallback = vi.fn();
+
+    const mockBroadcastChannel = mock<BroadcastChannel>({
+      addEventListener: vi.fn().mockImplementation((eventType, callback) => {
+        if (eventType === 'message') {
+          messageEventCallback = callback;
+        }
+      }),
+    });
+
+    vi.stubGlobal(
+      'BroadcastChannel',
+      vi.fn().mockReturnValue(mockBroadcastChannel),
+    );
+
+    const messageReceivedMock = vi.fn();
+
+    await act(() =>
+      renderHook(() => useBroadcastChannel('test', messageReceivedMock)),
+    );
+
+    expect(mockBroadcastChannel.addEventListener).toHaveBeenCalled();
+
+    messageEventCallback({ data: { type: 'notTest', someData: 'someValue' } });
+
+    expect(messageReceivedMock).not.toHaveBeenCalled();
+  });
 });

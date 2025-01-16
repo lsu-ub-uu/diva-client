@@ -16,12 +16,112 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-describe('useIsNewestWindow', () => {
-  it.todo(
-    'resolves with true when myWindowId is larger than all ids in recieved message',
-  );
+import { renderHook } from '@testing-library/react';
+import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
+import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
 
-  it.todo(
-    'resolves with false when an id from a message is larger than myWindowId',
-  );
+vi.mock('@/utils/useBroadcastChannel');
+
+describe('useIsNewestWindow', () => {
+  it('resolves with true when myWindowId is larger than all ids in received message', async () => {
+    vi.useFakeTimers();
+    let simulateMessageReceived;
+
+    vi.mocked(useBroadcastChannel).mockImplementation(
+      (eventType, onMessageReceived) => {
+        simulateMessageReceived = onMessageReceived;
+        return { sendMessage: vi.fn() };
+      },
+    );
+
+    vi.setSystemTime(new Date('2005-01-01T00:00:03').getTime());
+    const { result } = renderHook(() => useIsNewestWindow());
+    const isNewestWindow = result.current;
+
+    simulateMessageReceived!({
+      type: 'REQUEST_ATTEMPT',
+      id: new Date('2005-01-01T00:00:01').getTime(),
+    });
+    simulateMessageReceived!({
+      type: 'REQUEST_ATTEMPT',
+      id: new Date('2005-01-01T00:00:02').getTime(),
+    });
+
+    const promise = isNewestWindow();
+    vi.advanceTimersByTime(500);
+    const actual = await promise;
+    expect(actual).toBe(true);
+    vi.useRealTimers();
+  });
+
+  it('resolves with true with non default syncWindowTime (100)', async () => {
+    vi.useFakeTimers();
+
+    vi.mocked(useBroadcastChannel).mockImplementation(() => {
+      return { sendMessage: vi.fn() };
+    });
+
+    vi.setSystemTime(new Date('2005-01-01T00:00:01').getTime());
+    const { result } = renderHook(() => useIsNewestWindow(100));
+    const isNewestWindow = result.current;
+
+    const promise = isNewestWindow();
+    vi.advanceTimersByTime(100);
+    const actual = await promise;
+    expect(actual).toBe(true);
+    vi.useRealTimers();
+  });
+
+  it('resolves with false when an id from a message is larger than myWindowId', async () => {
+    let simulateMessageReceived;
+
+    vi.mocked(useBroadcastChannel).mockImplementation(
+      (eventType, onMessageReceived) => {
+        simulateMessageReceived = onMessageReceived;
+        return { sendMessage: vi.fn() };
+      },
+    );
+
+    vi.useFakeTimers();
+
+    vi.setSystemTime(new Date('2005-01-01T00:00:01').getTime());
+    const { result } = renderHook(() => useIsNewestWindow());
+    const isNewestWindow = result.current;
+
+    simulateMessageReceived!({
+      type: 'REQUEST_ATTEMPT',
+      id: new Date('2005-01-01T00:00:02').getTime(),
+    });
+
+    const promise = isNewestWindow();
+
+    vi.advanceTimersByTime(500);
+    const actual = await promise;
+    expect(actual).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it('sends a message to other windows with current time', async () => {
+    vi.useFakeTimers();
+
+    const sendMessageSpy = vi.fn();
+
+    vi.mocked(useBroadcastChannel).mockImplementation(() => {
+      return { sendMessage: sendMessageSpy };
+    });
+
+    vi.setSystemTime(new Date('2005-01-01T00:00:01').getTime());
+    const { result } = renderHook(() => useIsNewestWindow());
+    const isNewestWindow = result.current;
+
+    const promise = isNewestWindow();
+    vi.advanceTimersByTime(500);
+    await promise;
+
+    expect(sendMessageSpy).toHaveBeenCalledWith({
+      id: new Date('2005-01-01T00:00:01').getTime(),
+    });
+
+    vi.useRealTimers();
+  });
 });

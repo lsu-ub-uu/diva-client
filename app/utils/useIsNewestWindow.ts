@@ -16,10 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
-
-const myWindowId = Date.now();
 
 interface WindowSyncMessage {
   id: number;
@@ -33,6 +31,7 @@ interface WindowSyncMessage {
  * @param syncWindowTime The time to wait for other tabs to report.
  */
 export const useIsNewestWindow = (syncWindowTime: number = 500) => {
+  const myWindowId = useMemo(() => Date.now(), []);
   const latestRequestId = useRef<number>(myWindowId);
   const { sendMessage } = useBroadcastChannel<WindowSyncMessage>(
     'REQUEST_ATTEMPT',
@@ -45,17 +44,15 @@ export const useIsNewestWindow = (syncWindowTime: number = 500) => {
     },
   );
 
-  const resetWindowSync = () => (latestRequestId.current = myWindowId);
-
   const isNewestWindow = () => {
     sendMessage({ id: myWindowId });
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(latestRequestId.current === myWindowId);
-        resetWindowSync();
+        latestRequestId.current = myWindowId;
       }, syncWindowTime);
     });
   };
 
-  return useCallback(isNewestWindow, [syncWindowTime, sendMessage]);
+  return useCallback(isNewestWindow, [myWindowId, syncWindowTime, sendMessage]);
 };
