@@ -18,12 +18,12 @@
  */
 
 import { removeEmpty } from './removeEmpty';
-import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type {
   DataAtomic,
   DataGroup,
   RecordLink,
-} from '@/.server/cora/cora-data/CoraData';
+} from '@/cora/cora-data/CoraData.server';
 
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,

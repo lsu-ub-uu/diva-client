@@ -1,7 +1,7 @@
 import type {
   DataListWrapper,
   RecordWrapper,
-} from '@/.server/cora/cora-data/CoraData';
+} from '@/cora/cora-data/CoraData.server';
 
 export const dataListContainingOnePerson: DataListWrapper = {
   dataList: {

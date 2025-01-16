@@ -34,11 +34,14 @@ import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
-import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import {
+  getAuthentication,
+  getSessionFromCookie,
+} from '@/auth/sessions.server';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import { i18nCookie } from '@/i18n/i18nCookie';
-import { getLoginUnits } from '@/.server/data/getLoginUnits';
+import { i18nCookieServer } from '@/i18n/i18nCookie.server';
+import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
 import rootCss from './root.css?url';
@@ -77,7 +80,7 @@ export async function action({ request }: ActionFunctionArgs) {
       {},
       {
         headers: {
-          'Set-Cookie': await i18nCookie.serialize(language),
+          'Set-Cookie': await i18nCookieServer.serialize(language),
         },
       },
     );

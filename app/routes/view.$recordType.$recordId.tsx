@@ -21,10 +21,10 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import {
   getSessionFromCookie,
   requireAuthentication,
-} from '@/.server/sessions';
+} from '@/auth/sessions.server';
 import { invariant } from '@remix-run/router/history';
-import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
-import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { useLoaderData } from '@remix-run/react';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';

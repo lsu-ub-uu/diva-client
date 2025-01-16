@@ -3,22 +3,22 @@ import {
   data,
   type LoaderFunctionArgs,
   redirect,
-} from '@remix-run/node'; // or cloudflare/deno // or cloudflare/deno
+} from '@remix-run/node';
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
-import { commitSession, getSession } from '@/.server/sessions';
+import { commitSession, getSession } from '@/auth/sessions.server';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
-import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
-import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
+import { loginWithAppToken } from '@/data/loginWithAppToken.server';
+import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
-import { authYupSchema } from '@/.server/cora/yupSchema/authYupSchema';
+import { authYupSchema } from '@/cora/yupSchema/authYupSchema.server';
 import type { Auth } from '@/types/Auth';
 
 const parsePresentation = (searchParam: string | null) => {
