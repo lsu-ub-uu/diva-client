@@ -25,6 +25,7 @@ import type {
 import {
   checkForAttributes,
   createComponentsFromChildReferences,
+  createHiddenComponentsFromMetadataChildReferences,
 } from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
@@ -55,12 +56,18 @@ export const createGroup = (
     presentationGroup.children,
   );
 
+  const hiddenComponents = createHiddenComponentsFromMetadataChildReferences(
+    dependencies,
+    metadata.children,
+  );
+
   const commonParameters = createCommonParameters(metadata, presentation);
 
+  const allComponents = [...components, ...hiddenComponents];
   return removeEmpty({
     ...commonParameters,
     presentationStyle,
     attributes,
-    components,
+    components: allComponents,
   });
 };

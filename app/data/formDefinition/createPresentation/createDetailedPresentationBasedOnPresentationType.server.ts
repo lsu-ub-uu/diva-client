@@ -39,6 +39,7 @@ import type {
   FormComponentCollVar,
   FormComponentContainer,
   FormComponentGroup,
+  FormComponentHidden,
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
@@ -88,13 +89,13 @@ export const createDetailedPresentationBasedOnPresentationType = (
     | BFFPresentationGroup;
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-    const metadataFormPresentation = metadataPool.get(
+    const metadataFromPresentation = metadataPool.get(
       metadataOverrideId ?? presentation.presentationOf,
     );
     metaDataChildRef = findMetadataChildReferenceByNameInDataAndAttributes(
       metadataPool,
       metadataChildReferences,
-      metadataFormPresentation,
+      metadataFromPresentation,
     );
     if (!metaDataChildRef) {
       return;
@@ -316,14 +317,51 @@ export const createComponentsFromChildReferences = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
-): unknown => {
+): FormComponent[] => {
   return presentationChildReferences.map((presentationChildReference) => {
     return createComponentFromChildReference(
       dependencies,
       metadataChildReferences,
       presentationChildReference,
     );
-  });
+  }) as FormComponent[];
+};
+
+export const createHiddenComponentsFromMetadataChildReferences = (
+  dependencies: Dependencies,
+  metadataChildReferences: BFFMetadataChildReference[],
+): FormComponent[] => {
+  return metadataChildReferences
+    .map((metadataChildReference) => {
+      const metadata = dependencies.metadataPool.get(
+        metadataChildReference.childId,
+      );
+
+      if (metadata.type === 'group') {
+        const group = metadata as BFFMetadataGroup;
+        const components = createHiddenComponentsFromMetadataChildReferences(
+          dependencies,
+          group.children,
+        );
+
+        if (components.length > 0) {
+          return {
+            type: 'group',
+            name: group.nameInData,
+            components,
+          } as FormComponentGroup;
+        }
+      }
+
+      if ('finalValue' in metadata && metadata.finalValue !== undefined) {
+        return removeEmpty({
+          type: 'hidden',
+          name: metadata.nameInData,
+          finalValue: metadata.finalValue,
+        }) as FormComponentHidden;
+      }
+    })
+    .filter((c) => c !== undefined);
 };
 
 const createComponentFromChildReference = (
