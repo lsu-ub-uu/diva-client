@@ -28,7 +28,7 @@ import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 
 interface ViewRecordPageProps {
   record: BFFDataRecord;

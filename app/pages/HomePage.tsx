@@ -20,7 +20,7 @@ import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from '@remix-run/react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';

@@ -26,7 +26,7 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components/NavigationPanel/utils';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 
 interface CreateRecordPageProps {
   record: BFFDataRecord;
