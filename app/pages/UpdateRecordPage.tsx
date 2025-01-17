@@ -27,7 +27,7 @@ import {
   useSectionScroller,
 } from '@/components/NavigationPanel/utils';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 
 interface UpdateRecordPageProps {
   record: BFFDataRecord;

@@ -18,6 +18,7 @@
 
 import { Grid2 as Grid } from '@mui/material';
 import type { ReactNode } from 'react';
+import styles from './SidebarLayout.module.css';
 
 interface SidebarLayoutProps {
   children?: ReactNode;
@@ -32,6 +33,7 @@ export const SidebarLayout = ({
     <Grid
       container
       columnSpacing={{ md: 4 }}
+      className={styles.sidebarLayout}
     >
       <Grid
         size={3}
