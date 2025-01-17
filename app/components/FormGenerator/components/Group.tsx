@@ -24,7 +24,6 @@ import { CardContent, Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import {
-  checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
   getGroupLevel,
   headlineLevelToTypographyVariant,
@@ -118,9 +117,7 @@ export const Group = ({
         <CardContent>
           <Grid
             container
-            justifyContent='space-between'
-            alignItems='flex-start'
-            gap={2}
+            spacing={2}
           >
             {component.components && (
               <ComponentList

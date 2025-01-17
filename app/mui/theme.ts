@@ -16,12 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  PaletteColorOptions,
-  Shadows} from '@mui/material/styles';
-import {
-  createTheme
-} from '@mui/material/styles';
+import type { PaletteColorOptions, Shadows } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import type { CSSProperties } from 'react';
 import type { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
@@ -173,6 +169,13 @@ export const divaTheme = createTheme({
     }),
   },
   components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginBottom: '-20px',
+        },
+      },
+    },
     MuiCssBaseline: {},
     MuiDialogTitle: {
       styleOverrides: {

@@ -20,10 +20,7 @@ import type {
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
-import {
-  checkIfComponentHasValue,
-  convertChildStyleToString,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -68,12 +65,6 @@ export const TextOrNumberVariable = ({
       size={{
         xs: 12,
         sm: renderElementGridWrapper ? component.gridColSpan : 12,
-      }}
-      style={{
-        flexBasis:
-          convertChildStyleToString(component.childStyle) === 'compact'
-            ? 'auto'
-            : '100%',
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
