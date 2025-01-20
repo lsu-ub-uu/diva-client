@@ -25,7 +25,7 @@ import type {
 import {
   checkForAttributes,
   createComponentsFromChildReferences,
-} from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
+} from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';

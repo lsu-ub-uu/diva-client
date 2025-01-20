@@ -133,7 +133,7 @@ export const Component = ({
   );
 };
 
-const getCurrentComponentNamePath = (
+export const getCurrentComponentNamePath = (
   childWithNameInDataArray: string[],
   component: FormComponent,
   path: string,

@@ -24,6 +24,7 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
   FormComponentGuiElement,
+  FormComponentHidden,
   FormComponentLeaf,
   FormComponentNumVar,
   FormComponentRecordLink,
@@ -41,7 +42,6 @@ import {
 import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
 
-
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
 };
@@ -58,8 +58,12 @@ const countStringCharOccurrences = (
 };
 
 export const exportForTesting = {
-  countStringCharOccurrences
-}
+  countStringCharOccurrences,
+};
+
+export const isComponentHidden = (
+  component: FormComponent,
+): component is FormComponentHidden => component.type === 'hidden';
 
 export const isComponentTextVariable = (
   component: FormComponent,

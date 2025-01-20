@@ -913,6 +913,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     },
   ],
 };
+
 export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeEditMetadataGroupId',
   type: 'pGroup',

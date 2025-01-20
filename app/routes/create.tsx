@@ -20,7 +20,6 @@ import { invariant } from '@remix-run/router/history';
 import { type ActionFunctionArgs, data } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
-import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId.server';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
@@ -95,24 +94,20 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
-  const record = getRecordByValidationTypeId(
-    context.dependencies,
-    validationTypeId,
-  );
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationTypeId,
     'create',
   );
   return data(
-    { record, formDefinition, notification },
+    { formDefinition, notification },
     await getResponseInitWithSession(session),
   );
 };
 
 export default function CreateRecordRoute() {
-  const { record, formDefinition, notification } =
-    useLoaderData<typeof loader>();
+  const { formDefinition, notification } = useLoaderData<typeof loader>();
 
   useNotificationSnackbar(notification);
 
@@ -124,10 +119,7 @@ export default function CreateRecordRoute() {
           {notification.details}
         </Alert>
       )}
-      <CreateRecordPage
-        record={record}
-        formDefinition={formDefinition}
-      />
+      <CreateRecordPage formDefinition={formDefinition} />
     </>
   );
 }

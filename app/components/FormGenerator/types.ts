@@ -54,7 +54,8 @@ export type FormComponentType =
   | 'group'
   | 'text'
   | 'container'
-  | 'guiElementLink';
+  | 'guiElementLink'
+  | 'hidden';
 
 export type FormComponentWithDataType = Omit<
   FormComponentType,
@@ -85,6 +86,11 @@ export interface FormComponentTextVar extends FormComponentMetadata {
   inputFormat?: 'password';
   validation?: FormRegexValidation;
   attributes?: FormAttributeCollection[];
+}
+
+export interface FormComponentHidden extends FormComponentBase {
+  type: 'hidden';
+  finalValue: string;
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {
@@ -145,7 +151,8 @@ export type FormComponent =
   | FormComponentContainer
   | FormComponentGroup
   | FormComponentText
-  | FormComponentGuiElement;
+  | FormComponentGuiElement
+  | FormComponentHidden;
 
 export type FormComponentWithData =
   | FormComponentTextVar

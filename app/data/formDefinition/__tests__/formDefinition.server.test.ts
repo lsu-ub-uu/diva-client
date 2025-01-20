@@ -24,6 +24,7 @@ import type {
   BFFLinkedRecordPresentation,
   BFFLoginUnit,
   BFFLoginWebRedirect,
+  BFFMetadata,
   BFFMetadataBase,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
@@ -31,6 +32,7 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
+  BFFPresentation,
   BFFPresentationBase,
   BFFPresentationChildReference,
   BFFPresentationGroup,
@@ -116,25 +118,22 @@ import {
   someValidationTypeForRepeatingTitleInfoId,
 } from '@/__mocks__/bff/form/bffMock';
 import {
-  firstAttributesExistsInSecond,
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import {
+  findMetadataChildReferenceByNameInDataAndAttributes,
+  firstAttributesExistsInSecond,
+} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadataBase | BFFMetadataItemCollection>;
-  let presentationPool: Lookup<
-    string,
-    | BFFPresentationBase
-    | BFFPresentationGroup
-    | BFFPresentationSurroundingContainer
-    | BFFGuiElement
-  >;
+  let metadataPool: Lookup<string, BFFMetadata>;
+  let presentationPool: Lookup<string, BFFPresentation>;
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
   let searchPool: Lookup<string, BFFSearch>;
@@ -154,7 +153,7 @@ describe('formDefinition', () => {
       someValidationTypeForMissingChildIdTypeData,
       someValidationTypeForRepeatingTitleInfoId,
     ]);
-    metadataPool = listToPool<BFFMetadataBase | BFFMetadataGroup>([
+    metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataTextVariable3,
@@ -1832,7 +1831,6 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_NEW,
       );
-      expect(formDefinition.form!.components).toHaveLength(1);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -2185,6 +2183,8 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryNameTextVar',
         'sweLanguageCollectionVar',
       ]);
+      createCollVar('sweLanguageCollectionVar', 'sweLanguage', ['swe'], []);
+      createCollVar('engLanguageCollectionVar', 'engLanguage', ['eng'], []);
       createGroup(
         'nationalSubjectCategoryAlternativeNameGroup',
         'alternativeName',
@@ -3337,6 +3337,161 @@ describe('formDefinition', () => {
           type: 'group',
         },
         validationTypeId: 'thesisManuscript',
+      });
+    });
+  });
+  describe('finalValue no presentation', () => {
+    it('generates a group with a textVar that has no presentation but finalValue', () => {
+      // Metadata
+      const agentGroup: BFFMetadataGroup = {
+        id: 'agentGroup',
+        nameInData: 'agent',
+        type: 'group',
+        textId: 'agentGroupText',
+        defTextId: 'agentGroupDefText',
+        children: [
+          {
+            childId: 'namePartTextVar',
+            repeatMin: '0',
+            repeatMax: 'X',
+          },
+          {
+            childId: 'rolePublisherGroup',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      };
+      metadataPool.set('agentGroup', agentGroup);
+
+      const namePartTextVar: BFFMetadataTextVariable = {
+        nameInData: 'namePart',
+        regEx: '.+',
+        id: 'namePartTextVar',
+        type: 'textVariable',
+        textId: 'namePartTextVarText',
+        defTextId: 'namePartTextVarDefText',
+      };
+      metadataPool.set('namePartTextVar', namePartTextVar);
+
+      const rolePublisherGroup: BFFMetadataGroup = {
+        id: 'rolePublisherGroup',
+        nameInData: 'role',
+        type: 'group',
+        textId: 'rolePublisherGroupText',
+        defTextId: 'rolePublisherGroupDefText',
+        children: [
+          {
+            childId: 'rolePublisherTextVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      };
+      metadataPool.set('rolePublisherGroup', rolePublisherGroup);
+
+      const rolePublisherTextVar: BFFMetadataTextVariable = {
+        nameInData: 'roleTerm',
+        regEx: '.+',
+        id: 'rolePublisherTextVar',
+        finalValue: 'pbl',
+        type: 'textVariable',
+        textId: 'rolePublisherTextVarText',
+        defTextId: 'rolePublisherTextVarDefText',
+      };
+      metadataPool.set('rolePublisherTextVar', rolePublisherTextVar);
+
+      // Presentation
+      const agentPGroup: BFFPresentationGroup = {
+        id: 'agentPGroup',
+        presentationOf: 'agentGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'namePartPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '0',
+            childStyle: [],
+          },
+        ],
+        type: 'pGroup',
+      };
+      presentationPool.set('agentPGroup', agentPGroup);
+
+      const namePartPVar: BFFPresentationBase = {
+        id: 'namePartPVar',
+        presentationOf: 'namePartTextVar',
+        mode: 'input',
+        type: 'pVar',
+        inputType: 'input',
+      };
+      presentationPool.set('namePartPVar', namePartPVar);
+
+      const actual = createGroupOrComponent(
+        dependencies,
+        [
+          {
+            childId: 'agentGroup',
+            repeatMin: '0',
+            repeatMax: '1',
+          },
+        ],
+        {
+          childId: 'agentPGroup',
+          type: 'presentation',
+          minNumberOfRepeatingToShow: '0',
+          childStyle: [],
+        },
+      );
+
+      expect(actual).toStrictEqual({
+        repeat: {
+          minNumberOfRepeatingToShow: 0,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        childStyle: [''],
+        gridColSpan: 12,
+        name: 'agent',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'agentGroupText',
+          body: 'agentGroupDefText',
+        },
+        label: 'agentGroupText',
+        showLabel: true,
+        presentationStyle: '',
+        components: [
+          {
+            repeat: {
+              minNumberOfRepeatingToShow: 0,
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+            name: 'namePart',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'namePartTextVarText',
+              body: 'namePartTextVarDefText',
+            },
+            label: 'namePartTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+          },
+          {
+            type: 'hidden',
+            name: 'role.roleTerm',
+            finalValue: 'pbl',
+          },
+        ],
       });
     });
   });

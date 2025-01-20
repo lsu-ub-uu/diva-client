@@ -62,8 +62,9 @@ import { createCollVar } from '@/data/formDefinition/createPresentation/createCo
 import { createRecordLink } from '@/data/formDefinition/createPresentation/createRecordLink.server';
 import { createGroup } from '@/data/formDefinition/createPresentation/createGroup.server';
 import { createContainer } from '@/data/formDefinition/createPresentation/createContainer.server';
+import { createHiddenComponents } from '@/data/formDefinition/createPresentation/createHiddenComponents';
 
-export const createDetailedPresentationBasedOnPresentationType = (
+export const createGroupOrComponent = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
@@ -88,13 +89,13 @@ export const createDetailedPresentationBasedOnPresentationType = (
     | BFFPresentationGroup;
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-    const metadataFormPresentation = metadataPool.get(
+    const metadataFromPresentation = metadataPool.get(
       metadataOverrideId ?? presentation.presentationOf,
     );
     metaDataChildRef = findMetadataChildReferenceByNameInDataAndAttributes(
       metadataPool,
       metadataChildReferences,
-      metadataFormPresentation,
+      metadataFromPresentation,
     );
     if (!metaDataChildRef) {
       return;
@@ -316,14 +317,24 @@ export const createComponentsFromChildReferences = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
-): unknown => {
-  return presentationChildReferences.map((presentationChildReference) => {
-    return createComponentFromChildReference(
-      dependencies,
-      metadataChildReferences,
-      presentationChildReference,
-    );
-  });
+): FormComponent[] => {
+  const components = presentationChildReferences.map(
+    (presentationChildReference) => {
+      return createComponentFromChildReference(
+        dependencies,
+        metadataChildReferences,
+        presentationChildReference,
+      );
+    },
+  ) as FormComponent[];
+
+  const hiddenComponents = createHiddenComponents(
+    dependencies,
+    metadataChildReferences,
+    presentationChildReferences,
+  );
+
+  return [...components, ...hiddenComponents];
 };
 
 const createComponentFromChildReference = (
@@ -382,7 +393,7 @@ const createFormPartsForGroupOrVariable = (
     const foundMetadata = metadataPool.get(foundMetadataChildReference.childId);
     metadataOverrideId = foundMetadata.id;
   }
-  return createDetailedPresentationBasedOnPresentationType(
+  return createGroupOrComponent(
     dependencies,
     metadataChildReferences,
     presentationChildReference,

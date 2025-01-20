@@ -86,6 +86,7 @@ import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
 import type { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 
 const actionSpy = vi.fn();
 
@@ -2952,5 +2953,46 @@ describe('<Form />', () => {
       expect(input1Element).toBeInTheDocument();
       expect(input2Element).not.toBeInTheDocument();
     });
+  });
+
+  it('renders a form with a hidden input', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        showLabel: true,
+        label: 'someRootFormGroupText',
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678',
+        },
+        components: [
+          {
+            type: 'hidden',
+            name: 'role.roleTerm',
+            finalValue: 'pbl',
+          },
+        ],
+        mode: 'input',
+      },
+    };
+
+    render(<RecordFormWithRemixStub formSchema={formSchema} />);
+    const hiddenInput = screen.queryByTestId(
+      'someRootNameInData.role.roleTerm.value-hidden-input',
+    );
+
+    expect(hiddenInput).toHaveValue('pbl');
+    expect(hiddenInput).toHaveAttribute(
+      'name',
+      'someRootNameInData.role.roleTerm.value',
+    );
+    expect(hiddenInput).toHaveAttribute('type', 'hidden');
+    expect(hiddenInput).not.toBeVisible();
   });
 });
