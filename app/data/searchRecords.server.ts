@@ -49,7 +49,7 @@ export const searchRecords = async (
   }
 
   const search = dependencies.searchPool.get(searchType);
-
+  console.log('search', search);
   const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
   const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
   const transformData = transformToCoraData(formMetaDataPathLookup, query);
@@ -71,7 +71,7 @@ export const searchRecords = async (
     const { listPresentationViewId } = recordType;
 
     const presentationGroup = dependencies.presentationPool.get(
-      listPresentationViewId,
+      search.searchResultPresentation ?? listPresentationViewId,
     ) as BFFPresentationGroup;
     const metadataGroup = dependencies.metadataPool.get(
       presentationGroup.presentationOf,
