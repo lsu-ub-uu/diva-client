@@ -41,7 +41,6 @@ export const RecordSearch = ({
   const { t } = useTranslation();
   return (
     <div>
-      <h2>{t('divaClient_searchRecordText')}</h2>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}

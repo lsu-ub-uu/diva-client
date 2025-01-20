@@ -1,6 +1,9 @@
 import { isEmpty, omitBy } from 'lodash-es';
 
-export const cleanFormData = (obj: any): any => {
+export const cleanFormData = (obj: Record<string, any>): any => {
+  if (typeof obj !== 'object') {
+    return obj;
+  }
   return Object.keys(obj).reduce((acc: any, key: string) => {
     const value = obj[key];
 

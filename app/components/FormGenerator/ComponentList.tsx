@@ -17,8 +17,10 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { Component } from '@/components/FormGenerator/Component';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import {
+  Component,
+  getCurrentComponentNamePath,
+} from '@/components/FormGenerator/Component';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -35,7 +37,7 @@ export const ComponentList = ({
 }: FormComponentListGeneratorProps) => {
   return components.map((c, i) => (
     <Component
-      key={addAttributesToName(c, c.name)}
+      key={getCurrentComponentNamePath(childWithNameInDataArray, c, path)}
       component={c}
       idx={i}
       path={path}

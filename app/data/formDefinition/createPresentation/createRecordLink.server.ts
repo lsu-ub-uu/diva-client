@@ -23,7 +23,7 @@ import type {
   BFFPresentationBase,
   BFFPresentationRecordLink,
 } from '@/cora/transform/bffTypes.server';
-import { checkForAttributes } from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
+import { checkForAttributes } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';

@@ -21,6 +21,7 @@ import type { FormComponent } from '@/components/FormGenerator/types';
 import {
   isComponentCollVar,
   isComponentGuiElement,
+  isComponentHidden,
   isComponentNumVar,
   isComponentRecordLink,
   isComponentText,
@@ -32,6 +33,7 @@ import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { RecordLink } from '@/components/FormGenerator/components/RecordLink';
 import type { ReactNode } from 'react';
+import { HiddenInput } from '@/components/FormGenerator/components/HiddenInput';
 
 interface LeafComponentProps {
   component: FormComponent;
@@ -52,6 +54,14 @@ export const LeafComponent = ({
   attributes,
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
+  if (isComponentHidden(component)) {
+    return (
+      <HiddenInput
+        component={component}
+        name={name}
+      />
+    );
+  }
 
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
     return (
