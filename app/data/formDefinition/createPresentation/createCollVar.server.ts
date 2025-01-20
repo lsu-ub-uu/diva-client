@@ -25,7 +25,7 @@ import type {
 import {
   checkForAttributes,
   createCollectionVariableOptions,
-} from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
+} from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';

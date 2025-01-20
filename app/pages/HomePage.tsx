@@ -36,9 +36,26 @@ export const HomePage = () => {
     useLoaderData<typeof loader>();
 
   return (
-    <SidebarLayout sidebarContent={<p>Meddelanden kommer synas här</p>}>
+    <SidebarLayout
+      sidebarContent={
+        <Alert
+          icon={<PriorityHighIcon fontSize='inherit' />}
+          severity='warning'
+        >
+          {t('divaClient_metadataWarningText')}
+        </Alert>
+      }
+    >
       <Stack spacing={2}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <h1>{t('divaClient_searchRecordText')}</h1>
+
           <Suspense
             fallback={
               <Skeleton>
@@ -56,12 +73,7 @@ export const HomePage = () => {
             </Await>
           </Suspense>
         </Box>
-        <Alert
-          icon={<PriorityHighIcon fontSize='inherit' />}
-          severity='warning'
-        >
-          {t('divaClient_metadataWarningText')}
-        </Alert>
+
         <Suspense fallback={<Skeleton height={296} />}>
           <Await
             resolve={searchForm}

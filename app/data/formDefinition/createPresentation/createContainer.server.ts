@@ -21,7 +21,7 @@ import type {
   BFFMetadataChildReference,
   BFFPresentationContainer,
 } from '@/cora/transform/bffTypes.server';
-import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
+import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';

@@ -126,7 +126,7 @@ import type { Dependencies } from '../formDefinitionsDep.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
-import { createDetailedPresentationBasedOnPresentationType } from '@/data/formDefinition/createPresentation/createDetailedPresentationBasedOnPresentationType.server';
+import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -3424,7 +3424,7 @@ describe('formDefinition', () => {
       };
       presentationPool.set('namePartPVar', namePartPVar);
 
-      const actual = createDetailedPresentationBasedOnPresentationType(
+      const actual = createGroupOrComponent(
         dependencies,
         [
           {
