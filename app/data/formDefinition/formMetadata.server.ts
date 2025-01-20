@@ -28,7 +28,6 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type { Dependencies } from './formDefinitionsDep.server';
 import type { FormMetaData } from './formDefinition.server';
 import { determineRepeatMax } from './formDefinition.server';
-import type { dependencies } from '@/data/pool.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,
@@ -56,7 +55,7 @@ export const createFormMetaData = (
 
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
-  metadataPool: typeof dependencies.metadataPool,
+  metadataPool: Dependencies['metadataPool'],
 ): FormMetaData => {
   const metadata = metadataPool.get(metadataChildReference.childId);
   const repeatMin = parseInt(metadataChildReference.repeatMin);
