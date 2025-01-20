@@ -94,10 +94,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
-  /* const record = getRecordByValidationTypeId(
-    context.dependencies,
-    validationTypeId,
-  );*/
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationTypeId,

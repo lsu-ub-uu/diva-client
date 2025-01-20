@@ -32,6 +32,7 @@ export const HiddenInput = ({ name, component }: HiddenInputProps) => {
       <DevInfo component={component} />
       <input
         type='hidden'
+        data-testid={`${name}-hidden-input`}
         value={component.finalValue}
         {...register(name)}
       />
