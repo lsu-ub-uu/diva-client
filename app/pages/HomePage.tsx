@@ -24,7 +24,7 @@ import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from '@remix-run/react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
-import type { loader } from '@/routes/_index';
+import type { loader } from '@/routes/home';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 

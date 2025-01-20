@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import type { loader } from '@/routes/_index';
+import type { loader } from '@/routes/home';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
