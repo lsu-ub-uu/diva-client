@@ -5,8 +5,21 @@
 .resultListItem {
   position: relative;
   display: block;
-  border-radius: var(--border-radius);
-  border: 2px solid rgb(var(--beigeMain));
+  border-left: 2px solid rgb(var(--beigeMain));
+  border-right: 2px solid rgb(var(--beigeMain));
+  border-bottom: 2px solid rgb(var(--beigeMain));
   background-color: rgb(var(--beigeLight));
-  margin-bottom: calc(var(--gap) * 2);
+}
+.resultListItem:first-child {
+  position: relative;
+  display: block;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-top: 2px solid rgb(var(--beigeMain));
+  background-color: rgb(var(--beigeLight));
+}
+.resultListItem:last-child {
+  position: relative;
+  display: block;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  background-color: rgb(var(--beigeLight));
 }
