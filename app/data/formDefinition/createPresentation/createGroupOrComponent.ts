@@ -39,7 +39,6 @@ import type {
   FormComponentCollVar,
   FormComponentContainer,
   FormComponentGroup,
-  FormComponentHidden,
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
@@ -63,6 +62,7 @@ import { createCollVar } from '@/data/formDefinition/createPresentation/createCo
 import { createRecordLink } from '@/data/formDefinition/createPresentation/createRecordLink.server';
 import { createGroup } from '@/data/formDefinition/createPresentation/createGroup.server';
 import { createContainer } from '@/data/formDefinition/createPresentation/createContainer.server';
+import { createHiddenComponents } from '@/data/formDefinition/createPresentation/createHiddenComponents';
 
 export const createGroupOrComponent = (
   dependencies: Dependencies,
@@ -328,71 +328,13 @@ export const createComponentsFromChildReferences = (
     },
   ) as FormComponent[];
 
-  const hiddenComponents = createHiddenComponentsFromMetadataChildReferences(
+  const hiddenComponents = createHiddenComponents(
     dependencies,
-
     metadataChildReferences,
     presentationChildReferences,
-  ) as FormComponent[];
+  );
 
   return [...components, ...hiddenComponents];
-};
-
-export const createHiddenComponentsFromMetadataChildReferences = (
-  dependencies: Dependencies,
-  metadataChildReferences: BFFMetadataChildReference[],
-  presentationChildReferences: BFFPresentationChildReference[],
-  path: string = '',
-): FormComponent[] => {
-  return metadataChildReferences
-    .flatMap((metadataChildReference) => {
-      const metadata = dependencies.metadataPool.get(
-        metadataChildReference.childId,
-      );
-      const currentPath = `${path ? `${path}.` : ''}${metadata.nameInData}`;
-
-      if (metadata.type === 'group') {
-        const group = metadata as BFFMetadataGroup;
-        const components = createHiddenComponentsFromMetadataChildReferences(
-          dependencies,
-          group.children,
-          presentationChildReferences,
-          currentPath,
-        );
-
-        const containsOnlyHidden = components.length === group.children.length;
-
-        if (components.length > 0 && containsOnlyHidden) {
-          return components;
-        }
-      }
-
-      const isFinalValue =
-        'finalValue' in metadata && metadata.finalValue !== undefined;
-
-      const hasPresentation = presentationChildReferences.some(
-        (presentationChildRef) => {
-          const presentation = dependencies.presentationPool.get(
-            presentationChildRef.childId,
-          );
-          return (
-            'presentationOf' in presentation &&
-            presentation.presentationOf === metadata.id
-          );
-        },
-      );
-
-      if (isFinalValue && !hasPresentation) {
-        return [
-          removeEmpty({
-            type: 'hidden',
-            name: currentPath,
-            finalValue: metadata.finalValue,
-          }) as FormComponentHidden,
-        ];
-      }
-    })
-    .filter((c) => c !== undefined);
 };
 
 const createComponentFromChildReference = (

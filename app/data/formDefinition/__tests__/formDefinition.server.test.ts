@@ -118,14 +118,16 @@ import {
   someValidationTypeForRepeatingTitleInfoId,
 } from '@/__mocks__/bff/form/bffMock';
 import {
-  firstAttributesExistsInSecond,
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import {
+  findMetadataChildReferenceByNameInDataAndAttributes,
+  firstAttributesExistsInSecond,
+} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 describe('formDefinition', () => {
@@ -1829,7 +1831,6 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_NEW,
       );
-      expect(formDefinition.form!.components).toHaveLength(1);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -2182,6 +2183,8 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryNameTextVar',
         'sweLanguageCollectionVar',
       ]);
+      createCollVar('sweLanguageCollectionVar', 'sweLanguage', ['swe'], []);
+      createCollVar('engLanguageCollectionVar', 'engLanguage', ['eng'], []);
       createGroup(
         'nationalSubjectCategoryAlternativeNameGroup',
         'alternativeName',
@@ -3484,50 +3487,9 @@ describe('formDefinition', () => {
             },
           },
           {
-            repeat: {
-              minNumberOfRepeatingToShow: 0,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-            name: 'role',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'roleGroupText',
-              body: 'roleGroupDefText',
-            },
-            label: 'roleGroupText',
-            showLabel: true,
-            presentationStyle: '',
-            components: [
-              {
-                repeat: {
-                  minNumberOfRepeatingToShow: 0,
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                childStyle: [''],
-                gridColSpan: 12,
-                name: 'roleTerm',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                hidden: true,
-                tooltip: {
-                  title: 'roleTermTextVarText',
-                  body: 'roleTermTextVarDefText',
-                },
-                label: 'roleTermTextVarText',
-                showLabel: true,
-                finalValue: 'pbl',
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-              },
-            ],
+            type: 'hidden',
+            name: 'role.roleTerm',
+            finalValue: 'pbl',
           },
         ],
       });

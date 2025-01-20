@@ -12,6 +12,7 @@ import type {
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
+  BFFText,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 
@@ -912,6 +913,12 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childStyle: [],
     },
   ],
+};
+
+export const someHeadlineTextId: BFFText = {
+  id: 'someHeadlineTextId',
+  sv: 'någonText',
+  en: 'someText',
 };
 export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeEditMetadataGroupId',
