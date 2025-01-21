@@ -19,7 +19,6 @@
 import { invariant } from '@remix-run/router/history';
 import { type ActionFunctionArgs, data } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import CreateRecordPage from '@/pages/CreateRecordPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
@@ -36,8 +35,12 @@ import {
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { Alert, AlertTitle } from '@mui/material';
+import { Alert, AlertTitle, Stack } from '@mui/material';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
+import { RecordForm } from '@/components/Form/RecordForm';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
@@ -112,14 +115,24 @@ export default function CreateRecordRoute() {
   useNotificationSnackbar(notification);
 
   return (
-    <>
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity}>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
-      <CreateRecordPage formDefinition={formDefinition} />
-    </>
+    <SidebarLayout
+      sidebarContent={
+        <NavigationPanel
+          links={
+            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
+          }
+        />
+      }
+    >
+      <Stack spacing={2}>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity}>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
+        <RecordForm formSchema={formDefinition} />
+      </Stack>
+    </SidebarLayout>
   );
 }
