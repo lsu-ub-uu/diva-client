@@ -91,6 +91,7 @@ import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { parseFormData } from 'remix-hook-form';
 
 const actionSpy = vi.fn();
+vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
 
 const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
   const RemixStub = createRemixStub([
