@@ -35,9 +35,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import { useEffect } from 'react';
-import { enqueueSnackbar } from 'notistack';
-import { isEmpty } from 'lodash-es';
+import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -61,19 +59,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
-  const { handleSubmit, reset, formState } = methods;
-
-  const { errors } = formState;
-
-  useEffect(() => {
-    if (!isEmpty(errors)) {
-      enqueueSnackbar(t('divaClient_formValidationErrorsText'), {
-        variant: 'error',
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        preventDuplicate: true,
-      });
-    }
-  }, [t, errors]);
+  const { handleSubmit, reset } = methods;
 
   return (
     <Box
@@ -88,6 +74,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
+        <ValidationErrorSnackbar />
         <FormGenerator
           formSchema={formSchema}
           boxGroups
