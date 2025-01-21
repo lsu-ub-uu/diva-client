@@ -64,17 +64,17 @@ const differentNumberOfAttributes = (
   metadataCandidate: BFFMetadata,
   metadataFromCurrentPresentation: BFFMetadata,
 ) => {
-  if (
-    !isMetadatataWithAttributes(metadataCandidate) ||
-    !isMetadatataWithAttributes(metadataFromCurrentPresentation)
-  ) {
-    return false;
-  }
-
   return (
-    metadataCandidate.attributeReferences?.length !==
-    metadataFromCurrentPresentation.attributeReferences?.length
+    getNumberOfAttributes(metadataCandidate) !==
+    getNumberOfAttributes(metadataFromCurrentPresentation)
   );
+};
+
+const getNumberOfAttributes = (metadata: BFFMetadata) => {
+  if (!isMetadatataWithAttributes(metadata)) {
+    return 0;
+  }
+  return metadata.attributeReferences?.length == 0;
 };
 
 const noAttributesToCompare = (metadataCandidate: BFFMetadata) => {
