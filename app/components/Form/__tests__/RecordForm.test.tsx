@@ -41,6 +41,7 @@ import {
   formDefTwoOptionalGroupsWithRequiredTextVars,
   formDefWithGroupWithDefaultHeadlineLevel,
   formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithHiddenInputs,
   formDefWithOneCollectionVariable,
   formDefWithOneCollectionVariableWithModeOutput,
   formDefWithOneGroupHavingTextVariableAsChild,
@@ -87,6 +88,7 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import { parseFormData } from 'remix-hook-form';
 
 const actionSpy = vi.fn();
 
@@ -468,7 +470,6 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.logTestingPlaygroundURL();
       const thesisElement = screen.getByDisplayValue(
         'artistic-work_artistic-thesis',
       );
@@ -916,6 +917,74 @@ describe('<Form />', () => {
       expect(danielElement).toBeInTheDocument();
       const floresElement = screen.getByDisplayValue('Flores');
       expect(floresElement).toBeInTheDocument();
+    });
+
+    it('uses final values from formSchema if different from record', async () => {
+      const user = userEvent.setup();
+
+      const recordWithOldFinalValue: BFFDataRecord = {
+        data: {
+          someRootNameInData: {
+            recordInfo: {
+              dataDivider: { value: 'dataDivider' },
+              id: { value: '123' },
+            },
+            someNameInData: {
+              value: 'abc',
+            },
+            role: {
+              roleTerm: { value: 'old' },
+            },
+          },
+        },
+      };
+
+      let capturedFormData: BFFDataRecord | null = null;
+
+      const RemixStub = createRemixStub([
+        {
+          path: '/',
+          action: async ({ request }) => {
+            const formData = await request.formData();
+            capturedFormData = await parseFormData<BFFDataRecord>(formData);
+            return { success: true };
+          },
+          Component: () => (
+            <RecordForm
+              formSchema={formDefWithHiddenInputs}
+              record={recordWithOldFinalValue}
+            />
+          ),
+        },
+      ]);
+      render(<RemixStub />);
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
+
+      await user.click(submitButton);
+
+      expect(capturedFormData).toStrictEqual({
+        someRootNameInData: {
+          recordInfo: {
+            dataDivider: { value: 'dataDivider' },
+            id: { value: '123' },
+          },
+          someNameInData: {
+            value: 'abc',
+          },
+          role: {
+            roleTerm: {
+              value: 'pbl',
+            },
+          },
+        },
+      });
     });
   });
 

@@ -491,6 +491,46 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
   },
 };
 
+export const formDefWithHiddenInputs: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    showLabel: true,
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.?',
+        },
+        inputType: 'input',
+      },
+      {
+        type: 'hidden',
+        name: 'role.roleTerm',
+        finalValue: 'pbl',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneRepeatingTextVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
