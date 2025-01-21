@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { UpdateRecordPage } from '@/pages';
-
 import {
   commitSession,
   getSessionFromCookie,
@@ -45,8 +43,12 @@ import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteError
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
+import { RecordForm } from '@/components/Form/RecordForm';
 import { Alert, AlertTitle } from '@mui/material';
+import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -152,21 +154,31 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function UpdateRecordRoute() {
   const { record, formDefinition, notification } =
     useLoaderData<typeof loader>();
-
   useNotificationSnackbar(notification);
 
+  const lastUpdate =
+    record?.updated && record.updated[record.updated?.length - 1].updateAt;
   return (
-    <>
+    <SidebarLayout
+      sidebarContent={
+        <NavigationPanel
+          links={
+            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
+          }
+        />
+      }
+    >
       {notification && notification.severity === 'error' && (
         <Alert severity={notification.severity}>
           <AlertTitle>{notification.summary}</AlertTitle>
           {notification.details}
         </Alert>
       )}
-      <UpdateRecordPage
+      <RecordForm
+        key={lastUpdate}
         record={record}
-        formDefinition={formDefinition}
+        formSchema={formDefinition}
       />
-    </>
+    </SidebarLayout>
   );
 }

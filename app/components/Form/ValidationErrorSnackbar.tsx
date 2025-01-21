@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,24 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useLoaderData } from '@remix-run/react';
+import { useEffect } from 'react';
+import { isEmpty } from 'lodash-es';
+import { enqueueSnackbar } from 'notistack';
+import { useFormState } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import type { loader } from '@/routes/search.$searchType';
-import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 
-export const SearchPage = () => {
-  const { searchForm, query, searchResults } = useLoaderData<typeof loader>();
-
+export const ValidationErrorSnackbar = () => {
   const { t } = useTranslation();
-  return (
-    <div>
-      <h1>{t('divaClient_searchPageHeaderText')}</h1>
-      <RecordSearch
-        searchForm={searchForm}
-        searchType={'diva-outputSimpleSearch'}
-        query={query}
-        searchResults={searchResults}
-      />
-    </div>
-  );
+
+  const { errors } = useFormState();
+
+  useEffect(() => {
+    if (!isEmpty(errors)) {
+      enqueueSnackbar(t('divaClient_formValidationErrorsText'), {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        preventDuplicate: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors]);
+
+  return null;
 };
