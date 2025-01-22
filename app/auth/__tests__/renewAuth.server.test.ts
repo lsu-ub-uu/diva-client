@@ -33,7 +33,7 @@ import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n } from 'i18next';
 
 vi.mock('@/auth/sessions.server');
-vi.mock('@/.server/cora/renewAuthToken');
+vi.mock('@/cora/renewAuthToken.server');
 
 const i18nMock = { t: (key) => key } as i18n;
 
