@@ -16,13 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  commitSession,
-  getAuth,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { commitSession, getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { type ActionFunctionArgs, data } from '@remix-run/node';
-import { renewAuthToken } from '@/.server/cora/renewAuthToken';
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);

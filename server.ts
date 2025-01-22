@@ -25,16 +25,13 @@ import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  dependencies,
-  loadStuffOnServerStart,
-} from '@/.server/data/pool.server';
+import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
 import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { i18nConfig } from '@/i18n/i18nConfig';
-import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
-import { i18nCookie } from '@/i18n/i18nCookie';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -122,6 +119,7 @@ if (NODE_ENV !== 'production') {
 app.all('*', remixHandler);
 
 const port = PORT || 5173;
+const domain = DOMAIN || 'localhost';
 
 console.info('Loading Cora metadata...');
 loadStuffOnServerStart().then(() => {
@@ -130,9 +128,9 @@ loadStuffOnServerStart().then(() => {
   console.info(`Cora API-url ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
-  console.info(`DOMAIN ${DOMAIN}`);
+  console.info(`DOMAIN ${domain}`);
   console.info(
-    `Express server listening at http://${DOMAIN}:${port}${BASE_PATH ?? ''}`,
+    `Express server listening at http://${domain}:${port}${BASE_PATH ?? ''}`,
   );
   app.listen(port);
 });

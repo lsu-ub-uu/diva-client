@@ -19,7 +19,7 @@
 import type { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
-import { deleteSession } from '@/.server/data/deleteSession';
+import { deleteSession } from '@/data/deleteSession.server';
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));

@@ -41,6 +41,7 @@ import {
   formDefTwoOptionalGroupsWithRequiredTextVars,
   formDefWithGroupWithDefaultHeadlineLevel,
   formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithHiddenInputs,
   formDefWithOneCollectionVariable,
   formDefWithOneCollectionVariableWithModeOutput,
   formDefWithOneGroupHavingTextVariableAsChild,
@@ -86,8 +87,11 @@ import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
 import type { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import { parseFormData } from 'remix-hook-form';
 
 const actionSpy = vi.fn();
+vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
 
 const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
   const RemixStub = createRemixStub([
@@ -467,7 +471,6 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.logTestingPlaygroundURL();
       const thesisElement = screen.getByDisplayValue(
         'artistic-work_artistic-thesis',
       );
@@ -915,6 +918,74 @@ describe('<Form />', () => {
       expect(danielElement).toBeInTheDocument();
       const floresElement = screen.getByDisplayValue('Flores');
       expect(floresElement).toBeInTheDocument();
+    });
+
+    it('uses final values from formSchema if different from record', async () => {
+      const user = userEvent.setup();
+
+      const recordWithOldFinalValue: BFFDataRecord = {
+        data: {
+          someRootNameInData: {
+            recordInfo: {
+              dataDivider: { value: 'dataDivider' },
+              id: { value: '123' },
+            },
+            someNameInData: {
+              value: 'abc',
+            },
+            role: {
+              roleTerm: { value: 'old' },
+            },
+          },
+        },
+      };
+
+      let capturedFormData: BFFDataRecord | null = null;
+
+      const RemixStub = createRemixStub([
+        {
+          path: '/',
+          action: async ({ request }) => {
+            const formData = await request.formData();
+            capturedFormData = await parseFormData<BFFDataRecord>(formData);
+            return { success: true };
+          },
+          Component: () => (
+            <RecordForm
+              formSchema={formDefWithHiddenInputs}
+              record={recordWithOldFinalValue}
+            />
+          ),
+        },
+      ]);
+      render(<RemixStub />);
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
+
+      await user.click(submitButton);
+
+      expect(capturedFormData).toStrictEqual({
+        someRootNameInData: {
+          recordInfo: {
+            dataDivider: { value: 'dataDivider' },
+            id: { value: '123' },
+          },
+          someNameInData: {
+            value: 'abc',
+          },
+          role: {
+            roleTerm: {
+              value: 'pbl',
+            },
+          },
+        },
+      });
     });
   });
 
@@ -2952,5 +3023,46 @@ describe('<Form />', () => {
       expect(input1Element).toBeInTheDocument();
       expect(input2Element).not.toBeInTheDocument();
     });
+  });
+
+  it('renders a form with a hidden input', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        showLabel: true,
+        label: 'someRootFormGroupText',
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678',
+        },
+        components: [
+          {
+            type: 'hidden',
+            name: 'role.roleTerm',
+            finalValue: 'pbl',
+          },
+        ],
+        mode: 'input',
+      },
+    };
+
+    render(<RecordFormWithRemixStub formSchema={formSchema} />);
+    const hiddenInput = screen.queryByTestId(
+      'someRootNameInData.role.roleTerm.value-hidden-input',
+    );
+
+    expect(hiddenInput).toHaveValue('pbl');
+    expect(hiddenInput).toHaveAttribute(
+      'name',
+      'someRootNameInData.role.roleTerm.value',
+    );
+    expect(hiddenInput).toHaveAttribute('type', 'hidden');
+    expect(hiddenInput).not.toBeVisible();
   });
 });

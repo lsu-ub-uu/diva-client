@@ -22,8 +22,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
-  useRevalidator,
   useRouteLoaderData,
 } from '@remix-run/react';
 import {
@@ -37,19 +35,16 @@ import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import { i18nCookie } from '@/i18n/i18nCookie';
-import { getLoginUnits } from '@/.server/data/getLoginUnits';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
+import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
-import './root.css';
+import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew.server';
 import { renewAuth } from '@/auth/renewAuth.server';
-import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
-import { debounce } from 'lodash-es';
-import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 
 const { MODE } = import.meta.env;
 
@@ -63,6 +58,7 @@ export const links: LinksFunction = () => [
     type: 'image/svg+xml',
     href: MODE === 'development' ? dev_favicon : favicon,
   },
+  { rel: 'stylesheet', href: rootCss },
 ];
 
 export async function loader({ request, context }: LoaderFunctionArgs) {

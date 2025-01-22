@@ -1,4 +1,4 @@
-import type { CoraRecord } from '@/.server/cora/cora-data/CoraData';
+import type { CoraRecord } from '@/cora/cora-data/CoraData.server';
 
 export const authDataForOnePerson: CoraRecord = {
   data: {

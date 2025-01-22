@@ -17,7 +17,7 @@
  */
 
 import { data } from '@remix-run/node';
-import { i18nCookie } from '@/i18n/i18nCookie';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
 
 export const changeLanguage = async (formData: FormData) => {
   const language = formData.get('language');

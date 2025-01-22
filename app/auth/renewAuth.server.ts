@@ -21,7 +21,7 @@ import {
   getAuth,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { renewAuthToken } from '@/.server/cora/renewAuthToken';
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import { data } from '@remix-run/node';
 import type { Auth } from '@/auth/Auth';
 import type { i18n as i18nType } from 'i18next';

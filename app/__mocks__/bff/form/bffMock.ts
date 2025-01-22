@@ -13,7 +13,7 @@ import type {
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
   BFFValidationType,
-} from '@/.server/cora/transform/bffTypes';
+} from '@/cora/transform/bffTypes.server';
 
 export const someValidationTypeData: BFFValidationType = {
   id: 'someValidationTypeId',
@@ -913,6 +913,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     },
   ],
 };
+
 export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeEditMetadataGroupId',
   type: 'pGroup',

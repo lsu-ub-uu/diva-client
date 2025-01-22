@@ -25,11 +25,11 @@ import {
   type SessionData,
   type SessionFlashData,
 } from '@/auth/sessions.server';
-import { createMockAuth } from '@/.server/cora/__mocks__/auth';
+import { createMockAuth } from '@/auth/__mocks__/auth';
 import { mock } from 'vitest-mock-extended';
 import { type Session } from '@remix-run/node';
 import { renewAuth } from '@/auth/renewAuth.server';
-import { renewAuthToken } from '@/.server/cora/renewAuthToken';
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n } from 'i18next';
 
 vi.mock('@/auth/sessions.server');
