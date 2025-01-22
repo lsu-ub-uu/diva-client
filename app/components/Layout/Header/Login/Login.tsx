@@ -33,7 +33,6 @@ import {
 } from '@mui/material';
 import type { loader } from '@/root';
 import {
-  convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
@@ -75,12 +74,12 @@ export default function User() {
   };
 
   const receiveMessage = (event: MessageEvent<any>) => {
-    if (messageIsFromWindowOpenedFromHere(event) && event.data.token) {
+    if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
       window.removeEventListener('message', receiveMessage);
       submit(
         {
           loginType: 'webRedirect',
-          auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
+          auth: JSON.stringify(event.data),
           returnTo,
         },
         { action: '/login', method: 'post' },

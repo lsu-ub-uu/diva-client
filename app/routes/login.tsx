@@ -18,8 +18,8 @@ import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules'
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
-import { authYupSchema } from '@/cora/yupSchema/authYupSchema.server';
 import type { Auth } from '@/auth/Auth';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -69,9 +69,8 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
     }
     case 'webRedirect': {
       try {
-        return await authYupSchema.validate(
-          JSON.parse(form.get('auth') as string),
-        );
+        const authFromWebRedirect = JSON.parse(form.get('auth') as string);
+        return transformCoraAuth(authFromWebRedirect);
       } catch (e) {
         console.error('Failed to parse webRedirect auth', e);
         return null;

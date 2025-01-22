@@ -19,7 +19,7 @@
 import {
   getTimeUntilNextRenew,
   useSessionAutoRenew,
-} from '@/auth/useSessionAutoRenew.server';
+} from '@/auth/useSessionAutoRenew';
 import { expect } from 'vitest';
 import { createRemixStub } from '@remix-run/testing';
 import { act, render } from '@testing-library/react';

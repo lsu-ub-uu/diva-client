@@ -30,7 +30,7 @@ export async function requestAuthTokenOnLogin(
 
   const headers = {
     'Content-Type': 'application/vnd.uub.login',
-    Accept: 'application/vnd.uub.authToken+json',
+    Accept: 'application/vnd.uub.authentication+json',
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {

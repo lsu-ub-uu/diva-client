@@ -43,7 +43,7 @@ import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew.server';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 const { MODE } = import.meta.env;

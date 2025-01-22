@@ -1,9 +1,6 @@
 import axios from 'axios';
 import { requestAuthTokenOnLogin } from '@/cora/requestAuthTokenOnLogin.server';
-import {
-  createMockAuth,
-  createMockCoraAuth,
-} from '@/auth/__mocks__/auth';
+import { createMockAuth, createMockCoraAuth } from '@/auth/__mocks__/auth';
 
 vi.mock('axios');
 
@@ -34,7 +31,7 @@ describe('requestAuthTokenOnLogin', () => {
     );
     const expectedBody = `coraUser@ub.uu.se\naaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`;
     const expectedHeaders = {
-      Accept: 'application/vnd.uub.authToken+json',
+      Accept: 'application/vnd.uub.authentication+json',
       'Content-Type': 'application/vnd.uub.login',
     };
 
@@ -61,7 +58,7 @@ describe('requestAuthTokenOnLogin', () => {
     );
     const expectedBody = `coraUser@ub.uu.se\nhunter2`;
     const expectedHeaders = {
-      Accept: 'application/vnd.uub.authToken+json',
+      Accept: 'application/vnd.uub.authentication+json',
       'Content-Type': 'application/vnd.uub.login',
     };
 
