@@ -1,4 +1,4 @@
-import type { ActionLinks } from '@/cora/cora-data/CoraData.server';
+import type { ActionLinks } from '@/cora/cora-data/types.server';
 
 export interface Auth {
   data: {

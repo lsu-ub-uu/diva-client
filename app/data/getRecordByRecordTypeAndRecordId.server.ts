@@ -17,7 +17,7 @@
  */
 
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { RecordWrapper } from '@/cora/cora-data/CoraData.server';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type * as TYPES from '@/cora/transform/bffTypes.server';

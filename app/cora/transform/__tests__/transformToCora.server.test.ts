@@ -29,7 +29,7 @@ import {
 } from '../transformToCora.server';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
-import type { DataGroup } from '@/cora/cora-data/CoraData.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { Lookup } from '@/utils/structs/lookup';
 import type {
   BFFLoginUnit,

@@ -31,10 +31,7 @@ import {
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/cora/transform/transformToCora.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
-import type {
-  DataGroup,
-  DataListWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformRecords } from '@/cora/transform/transformRecord.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 

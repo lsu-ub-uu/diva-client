@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataAtomic, DataGroup } from '@/cora/cora-data/CoraData.server';
+import type { DataAtomic, DataGroup } from '@/cora/cora-data/types.server';
 import type { CreatedRecord } from './dataUtil.server';
 import type { BFFDataRecord } from '@/types/record';
 

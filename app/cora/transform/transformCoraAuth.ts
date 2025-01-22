@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { CoraRecord } from '@/cora/cora-data/CoraData.server';
 import type { Auth } from '@/auth/Auth';
 import { invariant } from '@remix-run/router/history';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import type { AuthWrapper } from '@/cora/cora-data/types.server';
 
-export const transformCoraAuth = (record: CoraRecord): Auth => {
-  const dataGroup = record.data;
+export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
+  const dataGroup = authentication.data;
   const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
   const validUntil = getFirstDataAtomicValueWithNameInData(
     dataGroup,
@@ -40,7 +40,7 @@ export const transformCoraAuth = (record: CoraRecord): Auth => {
   );
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
 
-  invariant(record.actionLinks);
+  invariant(authentication.actionLinks);
 
   return {
     data: {
@@ -52,6 +52,6 @@ export const transformCoraAuth = (record: CoraRecord): Auth => {
       firstName,
       lastName,
     },
-    actionLinks: record.actionLinks,
+    actionLinks: authentication.actionLinks,
   };
 };

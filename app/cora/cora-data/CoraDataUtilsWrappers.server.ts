@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Attributes, DataGroup } from './CoraData.server';
 import {
   getAllDataAtomicsWithNameInData,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes,
 } from './CoraDataUtils.server';
+import type { Attributes, DataGroup } from '@/cora/cora-data/types.server';
 
 export function getFirstDataAtomicValueWithNameInData(
   dataGroup: DataGroup,

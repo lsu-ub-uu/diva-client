@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  DataGroup,
-  RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import {
   getFirstChildWithNameInData,
   getFirstDataAtomicWithNameInData,

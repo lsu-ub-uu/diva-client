@@ -22,7 +22,7 @@ import type {
   DataAtomic,
   DataGroup,
   RecordLink,
-} from '@/cora/cora-data/CoraData.server';
+} from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import { isEmpty } from 'lodash-es';
 

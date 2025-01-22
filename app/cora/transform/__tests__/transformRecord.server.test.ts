@@ -47,7 +47,7 @@ import type {
   Attributes,
   DataGroup,
   RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+} from '@/cora/cora-data/types.server';
 import type { Lookup } from '@/utils/structs/lookup';
 import type {
   BFFGuiElement,

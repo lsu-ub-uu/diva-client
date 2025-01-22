@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ActionLink } from '@/cora/cora-data/CoraData.server';
+import type { ActionLink } from '@/cora/cora-data/types.server';
 import { type AxiosRequestConfig } from 'axios';
 
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';

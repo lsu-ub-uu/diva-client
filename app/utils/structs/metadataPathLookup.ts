@@ -23,7 +23,7 @@ import type {
   DataAtomic,
   DataGroup,
   RecordLink,
-} from '@/cora/cora-data/CoraData.server';
+} from '@/cora/cora-data/types.server';
 
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,

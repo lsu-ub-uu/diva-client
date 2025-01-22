@@ -1,4 +1,4 @@
-import type { ActionLinks } from '@/cora/cora-data/CoraData.server';
+import type { ActionLinks } from '@/cora/cora-data/types.server';
 import axios from 'axios';
 import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
 
