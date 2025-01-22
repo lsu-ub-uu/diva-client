@@ -18,6 +18,7 @@
  */
 
 import type {
+  BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
@@ -62,26 +63,9 @@ export const createMetaDataFromChildReference = (
   const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
   let children;
   let linkedRecordType;
-  let attributes;
   let finalValue;
   if ('finalValue' in metadata) {
     finalValue = metadata.finalValue;
-  }
-  if (
-    'attributeReferences' in metadata &&
-    metadata.attributeReferences !== undefined
-  ) {
-    metadata.attributeReferences.map((ref: any) => {
-      const attributeCollectionVar = metadataPool.get(
-        ref.refCollectionVarId,
-      ) as BFFMetadataCollectionVariable;
-      if (attributeCollectionVar.finalValue) {
-        attributes = {
-          [attributeCollectionVar.nameInData]:
-            attributeCollectionVar.finalValue,
-        };
-      }
-    });
   }
 
   if (metadata.type === 'group') {
@@ -98,7 +82,7 @@ export const createMetaDataFromChildReference = (
   return removeEmpty({
     name: metadata.nameInData,
     type: metadata.type,
-    attributes,
+    attributes: createAttributes(metadataPool, metadata),
     repeat: {
       repeatMin,
       repeatMax,
@@ -118,3 +102,27 @@ export const createBFFMetadataReference = (
   repeatMax,
   repeatMin,
 });
+
+const createAttributes = (
+  metadataPool: Dependencies['metadataPool'],
+  metadata: BFFMetadata,
+) => {
+  if (
+    'attributeReferences' in metadata &&
+    metadata.attributeReferences !== undefined
+  ) {
+    const attributeEntries = metadata.attributeReferences
+      .map(
+        (ref) =>
+          metadataPool.get(
+            ref.refCollectionVarId,
+          ) as BFFMetadataCollectionVariable,
+      )
+      .filter((collectionVar) => collectionVar.finalValue)
+      .map((collectionVar) => [
+        collectionVar.nameInData,
+        collectionVar.finalValue,
+      ]);
+    return Object.fromEntries(attributeEntries);
+  }
+};

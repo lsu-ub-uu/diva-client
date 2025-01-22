@@ -79,7 +79,6 @@ export const getMinNumberOfRepeatingToShow = (
 
 function createDefaultObjectForRepeating(
   component: FormComponentWithData,
-  currentComponentSameNameInData: boolean,
   defaultValues: {
     [p: string]:
       | string
@@ -94,37 +93,24 @@ function createDefaultObjectForRepeating(
 ) {
   const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
 
-  if (currentComponentSameNameInData) {
-    defaultValues[addAttributesToName(component, component.name)] =
-      generateRepeatingObject(numberToShowFromStart, formDefaultObject);
-  } else {
-    defaultValues[component.name] = generateRepeatingObject(
-      numberToShowFromStart,
-      formDefaultObject,
-    );
-  }
+  defaultValues[addAttributesToName(component, component.name)] =
+    generateRepeatingObject(numberToShowFromStart, formDefaultObject);
 }
 
 function createDefaultValueForNonRepeating(
-  currentComponentSameNameInData: boolean,
   defaultValues: any,
   component: FormComponentWithData,
   formDefaultObject:
     | { [p: string]: string; value: string }
     | { [p: string]: string },
 ) {
-  if (currentComponentSameNameInData) {
-    defaultValues[addAttributesToName(component, component.name)] =
-      formDefaultObject;
-  } else {
-    defaultValues[component.name] = formDefaultObject;
-  }
+  defaultValues[addAttributesToName(component, component.name)] =
+    formDefaultObject;
 }
 
 export const createDefaultValuesFromComponent = (
   component: FormComponentWithData,
   forceDefaultValuesForAppend = false,
-  childWithSameNameInData: string[] = [],
 ) => {
   let defaultValues: {
     [x: string]:
@@ -135,30 +121,21 @@ export const createDefaultValuesFromComponent = (
       | unknown[];
   } = {};
 
-  const childrenWithSameNameInData = getChildrenWithSameNameInData(
-    getChildNameInDataArray(component),
-  );
   const formDefaultObject = isComponentVariable(component)
     ? createDefaultValuesForVariable(component)
-    : createDefaultValuesForGroup(component, childrenWithSameNameInData);
+    : createDefaultValuesForGroup(component);
 
   if (forceDefaultValuesForAppend) {
     defaultValues = formDefaultObject;
   } else {
-    const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
-      childWithSameNameInData,
-      component.name,
-    );
     if (isComponentRepeating(component)) {
       createDefaultObjectForRepeating(
         component,
-        currentComponentSameNameInData,
         defaultValues,
         formDefaultObject,
       );
     } else {
       createDefaultValueForNonRepeating(
-        currentComponentSameNameInData,
         defaultValues,
         component,
         formDefaultObject,
@@ -201,32 +178,21 @@ function createDefaultValuesForVariable(component: FormComponentWithData) {
   };
 }
 
-function createDefaultValuesForGroup(
-  component: FormComponentGroup,
-  childrenWithSameNameInData: string[],
-) {
+function createDefaultValuesForGroup(component: FormComponentGroup) {
   return {
     // groups
-    ...createDefaultValuesFromComponents(
-      component.components,
-      childrenWithSameNameInData,
-    ),
+    ...createDefaultValuesFromComponents(component.components),
     ...generateComponentAttributes(component),
   };
 }
 
 export const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
-  childrenWithSameNameInData?: string[],
 ): { [p: string]: any } => {
   const formDefaultValuesArray = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) =>
-      createDefaultValuesFromComponent(
-        formComponent,
-        false,
-        childrenWithSameNameInData,
-      ),
+      createDefaultValuesFromComponent(formComponent, false),
     );
   return Object.assign({}, ...formDefaultValuesArray);
 };

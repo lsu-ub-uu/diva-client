@@ -30,6 +30,7 @@ import {
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Fragment, type ReactNode } from 'react';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -40,6 +41,7 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+  const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,

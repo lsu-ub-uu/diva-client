@@ -1575,109 +1575,106 @@ describe('FormGenerator Utils', () => {
             value: '12',
           },
         };
-        const actualData = createDefaultValuesFromComponents(
-          [
-            {
-              name: 'exampleNumberVar',
-              type: 'numberVariable',
-              mode: 'input',
-              tooltip: {
-                title: 'exampleMetadataNumberVarText',
-                body: 'exampleMetadataNumberVarDefText',
-              },
-              label: 'exampleMetadataNumberVarText',
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
-                  finalValue: 'eng',
-                },
-              ],
-              finalValue: '12',
-              showLabel: true,
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 100,
-                warningMin: 10,
-                warningMax: 90,
-                numberOfDecimals: 2,
-              },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
+        const actualData = createDefaultValuesFromComponents([
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
             },
-            {
-              name: 'exampleNumberVar',
-              type: 'numberVariable',
-              mode: 'input',
-              tooltip: {
-                title: 'exampleMetadataNumberVarText',
-                body: 'exampleMetadataNumberVarDefText',
-              },
-              label: 'exampleMetadataNumberVarText',
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
-                  finalValue: 'swe',
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
                 },
-              ],
-              finalValue: '12',
-              showLabel: true,
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 100,
-                warningMin: 10,
-                warningMax: 90,
-                numberOfDecimals: 2,
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
               },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
             },
-          ],
-          ['exampleNumberVar'],
-        );
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ]);
         expect(expectedData).toStrictEqual(actualData);
       });
 
@@ -1702,199 +1699,196 @@ describe('FormGenerator Utils', () => {
             },
           },
         };
-        const actualData = createDefaultValuesFromComponents(
-          [
-            {
-              name: 'author',
-              type: 'group',
-              mode: 'input',
-              tooltip: {
-                title: 'authorGroupText',
-                body: 'authorGroupDefText',
-              },
-              label: 'authorGroupText',
-              showLabel: true,
-              repeat: {
-                minNumberOfRepeatingToShow: 1,
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'nau',
-                      label: 'nauLangItemText',
-                    },
-                    {
-                      value: 'uwu',
-                      label: 'uwuLangItemText',
-                    },
-                  ],
-                  finalValue: 'uwu',
-                },
-              ],
-              components: [
-                {
-                  name: 'givenName',
-                  type: 'textVariable',
-                  mode: 'input',
-                  inputType: 'input',
-                  tooltip: {
-                    title: 'givenNameTextVarText',
-                    body: 'givenNameTextVarDefText',
-                  },
-                  label: 'givenNameTextVarText',
-                  placeholder: 'givenNameTextVarText1',
-                  showLabel: true,
-                  validation: {
-                    type: 'regex',
-                    pattern: '.+',
-                  },
-                  repeat: {
-                    minNumberOfRepeatingToShow: 1,
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  childStyle: ['sixChildStyle'],
-                  gridColSpan: 6,
-                },
-                {
-                  name: 'familyName',
-                  type: 'textVariable',
-                  mode: 'input',
-                  inputType: 'input',
-                  tooltip: {
-                    title: 'familyNameTextVarText',
-                    body: 'familyNameTextVarDefText',
-                  },
-                  label: 'familyNameTextVarText',
-                  placeholder: 'familyNameTextVarText1',
-                  showLabel: true,
-                  validation: {
-                    type: 'regex',
-                    pattern: '.+',
-                  },
-                  repeat: {
-                    minNumberOfRepeatingToShow: 1,
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  childStyle: ['sixChildStyle'],
-                  gridColSpan: 6,
-                },
-              ],
-              presentationStyle: '',
-              childStyle: [''],
-              gridColSpan: 12,
+        const actualData = createDefaultValuesFromComponents([
+          {
+            name: 'author',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'authorGroupText',
+              body: 'authorGroupDefText',
             },
-            {
-              name: 'author',
-              type: 'group',
-              mode: 'input',
-              tooltip: {
-                title: 'authorGroupText',
-                body: 'authorGroupDefText',
-              },
-              label: 'authorGroupText',
-              showLabel: true,
-              repeat: {
-                minNumberOfRepeatingToShow: 1,
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'nau',
-                      label: 'nauLangItemText',
-                    },
-                    {
-                      value: 'uwu',
-                      label: 'uwuLangItemText',
-                    },
-                  ],
-                  finalValue: 'nau',
-                },
-              ],
-              components: [
-                {
-                  name: 'givenName',
-                  type: 'textVariable',
-                  mode: 'input',
-                  inputType: 'input',
-                  tooltip: {
-                    title: 'givenNameTextVarText',
-                    body: 'givenNameTextVarDefText',
-                  },
-                  label: 'givenNameTextVarText',
-                  placeholder: 'givenNameTextVarText2',
-                  showLabel: true,
-                  validation: {
-                    type: 'regex',
-                    pattern: '.+',
-                  },
-                  repeat: {
-                    minNumberOfRepeatingToShow: 1,
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  childStyle: ['sixChildStyle'],
-                  gridColSpan: 6,
-                },
-                {
-                  name: 'familyName',
-                  type: 'textVariable',
-                  mode: 'input',
-                  inputType: 'input',
-                  tooltip: {
-                    title: 'familyNameTextVarText',
-                    body: 'familyNameTextVarDefText',
-                  },
-                  label: 'familyNameTextVarText',
-                  placeholder: 'familyNameTextVarText2',
-                  showLabel: true,
-                  validation: {
-                    type: 'regex',
-                    pattern: '.+',
-                  },
-                  repeat: {
-                    minNumberOfRepeatingToShow: 1,
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  childStyle: ['sixChildStyle'],
-                  gridColSpan: 6,
-                },
-              ],
-              presentationStyle: '',
-              childStyle: [''],
-              gridColSpan: 12,
+            label: 'authorGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
             },
-          ],
-          ['author'],
-        );
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'nau',
+                    label: 'nauLangItemText',
+                  },
+                  {
+                    value: 'uwu',
+                    label: 'uwuLangItemText',
+                  },
+                ],
+                finalValue: 'uwu',
+              },
+            ],
+            components: [
+              {
+                name: 'givenName',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'givenNameTextVarText',
+                  body: 'givenNameTextVarDefText',
+                },
+                label: 'givenNameTextVarText',
+                placeholder: 'givenNameTextVarText1',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: ['sixChildStyle'],
+                gridColSpan: 6,
+              },
+              {
+                name: 'familyName',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'familyNameTextVarText',
+                  body: 'familyNameTextVarDefText',
+                },
+                label: 'familyNameTextVarText',
+                placeholder: 'familyNameTextVarText1',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: ['sixChildStyle'],
+                gridColSpan: 6,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'author',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'authorGroupText',
+              body: 'authorGroupDefText',
+            },
+            label: 'authorGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'nau',
+                    label: 'nauLangItemText',
+                  },
+                  {
+                    value: 'uwu',
+                    label: 'uwuLangItemText',
+                  },
+                ],
+                finalValue: 'nau',
+              },
+            ],
+            components: [
+              {
+                name: 'givenName',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'givenNameTextVarText',
+                  body: 'givenNameTextVarDefText',
+                },
+                label: 'givenNameTextVarText',
+                placeholder: 'givenNameTextVarText2',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: ['sixChildStyle'],
+                gridColSpan: 6,
+              },
+              {
+                name: 'familyName',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'familyNameTextVarText',
+                  body: 'familyNameTextVarDefText',
+                },
+                label: 'familyNameTextVarText',
+                placeholder: 'familyNameTextVarText2',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: ['sixChildStyle'],
+                gridColSpan: 6,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ]);
         expect(expectedData).toStrictEqual(actualData);
       });
     });

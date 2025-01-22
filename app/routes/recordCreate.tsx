@@ -23,7 +23,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecordData } from '@/types/record';
 import {
   getSessionFromCookie,
   requireAuthentication,
@@ -69,11 +69,12 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   if (errors) {
     return { errors, defaultValues };
   }
+
   try {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      validatedFormData as unknown as BFFDataRecord,
+      validatedFormData as BFFDataRecordData,
       auth,
     );
     session.flash('notification', {

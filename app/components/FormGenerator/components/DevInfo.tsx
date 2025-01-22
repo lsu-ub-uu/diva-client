@@ -21,6 +21,7 @@ import styles from './DevInfo.module.css';
 import { useContext, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -42,7 +43,7 @@ export const DevInfo = ({ component }: DevInfoProps) => {
         type='button'
         onClick={() => setExpanded(!expanded)}
       >
-        {component.type} | {component.name}
+        {component.type} | {addAttributesToName(component, component.name)}
       </button>
       {expanded && <pre>{JSON.stringify(component, null, 2)}</pre>}
     </div>

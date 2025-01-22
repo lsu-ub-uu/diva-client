@@ -44,12 +44,20 @@ export const RepeatingVariable = ({
 }: RepeatingVariableProps) => {
   const { control, getValues } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
-  const hasValue = checkIfComponentHasValue(getValues, component.name);
+  const hasValue = checkIfComponentHasValue(
+    getValues,
+    currentComponentNamePath,
+  );
   const hasLinkedDataValue = checkIfSingularComponentHasValue(
     getValues,
     currentComponentNamePath,
   );
-  return !hasLinkedDataValue && linkedData ? null : (
+
+  if (!hasLinkedDataValue && linkedData) {
+    return null;
+  }
+
+  return (
     <FieldArrayComponent
       key={reactKey}
       control={control}

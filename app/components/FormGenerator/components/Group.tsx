@@ -47,7 +47,6 @@ interface GroupProps {
   currentComponentNamePath: string;
   component: FormComponentContainer | FormComponentGroup;
   parentPresentationStyle: string | undefined;
-  childWithNameInDataArray: string[];
   actionButtonGroup?: ReactNode;
 }
 
@@ -55,7 +54,6 @@ export const Group = ({
   currentComponentNamePath,
   component,
   parentPresentationStyle,
-  childWithNameInDataArray,
   actionButtonGroup,
 }: GroupProps) => {
   const { boxGroups } = useContext(FormGeneratorContext);
@@ -80,7 +78,6 @@ export const Group = ({
       size={12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
       className={`${styles.group} anchorLink`}
-      data-inline={inline}
     >
       <DevInfo component={component} />
       <Card boxed={boxGroups && groupLevel !== 0}>
@@ -122,7 +119,6 @@ export const Group = ({
             {component.components && (
               <ComponentList
                 components={component.components}
-                childWithNameInDataArray={childWithNameInDataArray}
                 parentPresentationStyle={
                   component.presentationStyle ?? parentPresentationStyle
                 }

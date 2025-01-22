@@ -20,12 +20,7 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import {
-  addAttributesToName,
-  getChildNameInDataArray,
-  getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
-} from '@/components/FormGenerator/defaultValues/defaultValues';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import {
   isComponentContainer,
   isComponentGroup,
@@ -46,7 +41,6 @@ interface FormComponentGeneratorProps {
   component: FormComponent;
   idx: number;
   path: string;
-  childWithNameInDataArray?: string[];
   parentPresentationStyle?: string;
 }
 
@@ -54,20 +48,11 @@ export const Component = ({
   component,
   idx,
   path,
-  childWithNameInDataArray = [],
   parentPresentationStyle,
 }: FormComponentGeneratorProps) => {
   const reactKey = `key_${idx}`;
 
-  const childrenWithSameNameInData = getChildrenWithSameNameInData(
-    getChildNameInDataArray(component),
-  );
-
-  const currentComponentNamePath = getCurrentComponentNamePath(
-    childWithNameInDataArray,
-    component,
-    path,
-  );
+  const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
@@ -86,7 +71,6 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
-        childWithNameInDataArray={childrenWithSameNameInData}
       />
     );
   }
@@ -98,7 +82,6 @@ export const Component = ({
         reactKey={reactKey}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
-        childWithNameInDataArray={childrenWithSameNameInData}
       />
     );
   }
@@ -134,7 +117,6 @@ export const Component = ({
 };
 
 export const getCurrentComponentNamePath = (
-  childWithNameInDataArray: string[],
   component: FormComponent,
   path: string,
 ) => {
@@ -142,19 +124,9 @@ export const getCurrentComponentNamePath = (
     return '';
   }
 
-  const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
-    childWithNameInDataArray,
-    component.name,
-  );
-  const addAttributesForMatchingNameInDataWithoutPath =
-    currentComponentSameNameInData
-      ? `${addAttributesToName(component, component.name)}`
-      : `${component.name}`;
+  const addAttributesForMatchingNameInDataWithoutPath = `${addAttributesToName(component, component.name)}`;
 
-  const addAttributesForMatchingNameInDataWithPath =
-    currentComponentSameNameInData
-      ? `${path}.${addAttributesToName(component, component.name)}`
-      : `${path}.${component.name}`;
+  const addAttributesForMatchingNameInDataWithPath = `${path}.${addAttributesToName(component, component.name)}`;
 
   if (isComponentContainer(component)) {
     return path;

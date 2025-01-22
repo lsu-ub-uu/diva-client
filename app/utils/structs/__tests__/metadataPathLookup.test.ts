@@ -18,7 +18,7 @@
  */
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import {
-  addAttributesToName,
+  addAttributesToNameServer,
   addNamesToArray,
   createFormMetaDataPathLookup,
   createPath,
@@ -272,7 +272,7 @@ describe('createFormMetaDataPathLookup', () => {
   describe('addAttributesToName', () => {
     describe('formMetaData', () => {
       it('adds no attributes to name when not available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -281,7 +281,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -293,7 +293,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds multiple attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -307,7 +307,7 @@ describe('createFormMetaDataPathLookup', () => {
     });
     describe('Cora MetaData', () => {
       it('adds no attributes to name when not available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
         });
@@ -315,7 +315,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
           attributes: {
@@ -326,7 +326,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds multiple attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
           attributes: {

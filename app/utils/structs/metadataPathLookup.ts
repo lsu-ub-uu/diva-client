@@ -29,49 +29,30 @@ export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
   path: string = '',
   lookup: Record<string, FormMetaData> = {},
-  childWithSameNameInData: string[] = [],
 ) => {
-  let childrenWithSameNameInData: string[] = [];
-
-  path = createPath(path, metaDataGroup, childWithSameNameInData);
-  if (metaDataGroup.type === 'group') {
-    childrenWithSameNameInData = addNamesToArray(metaDataGroup);
-  }
+  path = createPath(path, metaDataGroup);
 
   metaDataGroup.children?.forEach((metaData) => {
-    createFormMetaDataPathLookup(
-      metaData,
-      path,
-      lookup,
-      childrenWithSameNameInData,
-    );
+    createFormMetaDataPathLookup(metaData, path, lookup);
   });
   lookup[path] = removeEmpty({ ...metaDataGroup, children: undefined });
   return lookup;
 };
 
-export const createPath = (
-  path: string,
-  metaDataGroup: FormMetaData,
-  childArray: string[],
-) => {
-  const hasMetaDataSameNameInData = childArray.includes(metaDataGroup.name);
-  const hasPath = path.length > 0 || path !== undefined;
-  if (hasMetaDataSameNameInData && hasPath) {
-    return path
-      ? `${path}.${addAttributesToName(metaDataGroup)}`
-      : addAttributesToName(metaDataGroup);
-  }
-  return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
+export const createPath = (path: string, metaDataGroup: FormMetaData) => {
+  return path
+    ? `${path}.${addAttributesToNameServer(metaDataGroup)}`
+    : addAttributesToNameServer(metaDataGroup);
 };
 
-export const addAttributesToName = (
+export const addAttributesToNameServer = (
   metaDataGroup: FormMetaData | (DataGroup | DataAtomic | RecordLink),
 ) => {
   if (metaDataGroup.attributes === undefined) {
     return metaDataGroup.name;
   }
   const nameArray: any[] = [];
+
   Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
     nameArray.push(`${key}_${value}`);
   });
