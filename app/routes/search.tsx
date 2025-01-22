@@ -19,7 +19,6 @@
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import type { BFFSearchResult } from '@/types/record';
-import { SearchPage } from '@/pages';
 import {
   getAuthentication,
   getSessionFromCookie,
@@ -29,6 +28,9 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { useLoaderData } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -65,5 +67,18 @@ export const loader = async ({
 };
 
 export default function SearchRoute() {
-  return <SearchPage />;
+  const { searchForm, query, searchResults } = useLoaderData<typeof loader>();
+
+  const { t } = useTranslation();
+  return (
+    <div>
+      <h1>{t('divaClient_searchPageHeaderText')}</h1>
+      <RecordSearch
+        searchForm={searchForm}
+        searchType={'diva-outputSimpleSearch'}
+        query={query}
+        searchResults={searchResults}
+      />
+    </div>
+  );
 }

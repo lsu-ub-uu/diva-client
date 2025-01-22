@@ -19,6 +19,7 @@
 import type { FormComponentHidden } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { useEffect } from 'react';
 
 interface HiddenInputProps {
   name: string;
@@ -26,15 +27,24 @@ interface HiddenInputProps {
 }
 
 export const HiddenInput = ({ name, component }: HiddenInputProps) => {
-  const { register } = useRemixFormContext();
+  const { register, getValues, setValue } = useRemixFormContext();
+  const value = getValues(name);
+  const finalValue = component.finalValue;
+
+  useEffect(() => {
+    if (value !== finalValue) {
+      setValue(name, finalValue);
+    }
+  }, [value, setValue, name, finalValue]);
+
   return (
     <>
       <DevInfo component={component} />
+
       <input
         type='hidden'
         data-testid={`${name}-hidden-input`}
-        value={component.finalValue}
-        {...register(name)}
+        {...register(name, { value: finalValue })}
       />
     </>
   );

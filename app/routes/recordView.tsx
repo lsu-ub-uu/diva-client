@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ViewRecordPage } from '@/pages';
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import {
   getSessionFromCookie,
@@ -30,6 +29,14 @@ import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules'
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import {
+  linksFromFormSchema,
+  removeComponentsWithoutValuesFromSchema,
+} from '@/components/NavigationPanel/utils';
+import { Stack } from '@mui/material';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -69,9 +76,28 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function ViewRecordRoute() {
   const { record, formDefinition } = useLoaderData<typeof loader>();
   return (
-    <ViewRecordPage
-      record={record}
-      formDefinition={formDefinition}
-    />
+    <SidebarLayout
+      sidebarContent={
+        <NavigationPanel
+          links={
+            formDefinition
+              ? linksFromFormSchema(
+                  removeComponentsWithoutValuesFromSchema(
+                    formDefinition,
+                    record,
+                  ),
+                ) || []
+              : []
+          }
+        />
+      }
+    >
+      <Stack spacing={2}>
+        <ReadOnlyForm
+          record={record}
+          formSchema={formDefinition}
+        />
+      </Stack>
+    </SidebarLayout>
   );
 }

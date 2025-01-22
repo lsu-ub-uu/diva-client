@@ -116,10 +116,10 @@ export const AttributeSelect = ({
                   'unknown',
               )}
             </span>
+
             <input
               type='hidden'
-              defaultValue={value}
-              {...register(name)}
+              {...register(name, { value })}
             />
           </>
         )}

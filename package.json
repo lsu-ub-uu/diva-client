@@ -53,6 +53,7 @@
     "@babel/core": "^7.25.8",
     "@eslint/js": "^9.13.0",
     "@remix-run/dev": "^2.13.1",
+    "@remix-run/route-config": "^2.15.2",
     "@remix-run/testing": "^2.15.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",

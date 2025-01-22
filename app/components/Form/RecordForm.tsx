@@ -35,6 +35,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -49,6 +50,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     formSchema,
     record?.data as RecordData,
   );
+
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -56,6 +58,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     defaultValues,
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
+
   const { handleSubmit, reset } = methods;
 
   return (
@@ -71,6 +74,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
+        <ValidationErrorSnackbar />
         <FormGenerator
           formSchema={formSchema}
           boxGroups

@@ -18,7 +18,6 @@
 
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { HomePage } from '@/pages';
 import {
   getAuthentication,
   getSessionFromCookie,
@@ -31,11 +30,19 @@ import {
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { useLoaderData } from '@remix-run/react';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { Await, useLoaderData } from '@remix-run/react';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { searchRecords } from '@/data/searchRecords.server';
 import { isEmpty } from 'lodash-es';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
+import { useTranslation } from 'react-i18next';
+import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Suspense } from 'react';
+import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
+import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -83,8 +90,67 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.title }];
 };
 
-export default function IndexRoute() {
-  const { notification } = useLoaderData<typeof loader>();
+export default function Home() {
+  const { t } = useTranslation();
+  const { searchForm, validationTypes, searchResults, query, notification } =
+    useLoaderData<typeof loader>();
   useNotificationSnackbar(notification);
-  return <HomePage />;
+
+  return (
+    <SidebarLayout
+      sidebarContent={
+        <Alert
+          icon={<PriorityHighIcon fontSize='inherit' />}
+          severity='warning'
+        >
+          {t('divaClient_metadataWarningText')}
+        </Alert>
+      }
+    >
+      <Stack spacing={2}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <h1>{t('divaClient_searchRecordText')}</h1>
+
+          <Suspense
+            fallback={
+              <Skeleton>
+                <Button>Skapa</Button>
+              </Skeleton>
+            }
+          >
+            <Await
+              resolve={validationTypes}
+              errorElement={<AsyncErrorBoundary />}
+            >
+              {(validationTypes) => (
+                <CreateRecordMenu validationTypes={validationTypes} />
+              )}
+            </Await>
+          </Suspense>
+        </Box>
+
+        <Suspense fallback={<Skeleton height={296} />}>
+          <Await
+            resolve={searchForm}
+            errorElement={<AsyncErrorBoundary />}
+          >
+            {(searchForm) => (
+              <RecordSearch
+                searchForm={searchForm}
+                searchType='diva-outputSimpleSearch'
+                query={query}
+                searchResults={searchResults}
+              />
+            )}
+          </Await>
+        </Suspense>
+      </Stack>
+    </SidebarLayout>
+  );
 }
