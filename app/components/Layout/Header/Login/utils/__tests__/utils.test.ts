@@ -19,7 +19,6 @@
 
 import { expect } from 'vitest';
 import {
-  checkTypeOfUser,
   convertLoginIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
@@ -96,38 +95,6 @@ describe('Login validation', () => {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validUntil: '1736342825558',
           renewUntil: '1738972800000',
-          loginId: 'johdo290@user.uu.se',
-          userId: 'blaha',
-        },
-      },
-      'webRedirect',
-    ],
-    [
-      {
-        data: {
-          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validUntil: '1736342825558',
-          renewUntil: '1738972800000',
-          userId: 'coraUser:111111111111111',
-          loginId: 'coraUser:111111111111111',
-          firstName: 'Everything',
-          lastName: 'DiVA',
-        },
-      },
-      'appToken',
-    ],
-  ])('checkTypeOfUser returns correct type of user', (userSession, type) => {
-    const actual = checkTypeOfUser(userSession);
-    expect(actual).toBe(type);
-  });
-
-  it.each([
-    [
-      {
-        data: {
-          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validUntil: '1736342825558',
-          renewUntil: '1738972800000',
           userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
@@ -146,7 +113,7 @@ describe('Login validation', () => {
           loginId: 'johdo290@user.uu.se',
         },
       },
-      'johdo290',
+      'johdo290@user.uu.se',
     ],
   ])('printUserNameOnPage', (user, name) => {
     const actual = printUserNameOnPage(user);

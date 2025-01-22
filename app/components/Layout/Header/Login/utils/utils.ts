@@ -33,17 +33,12 @@ export const convertLoginIdToShortForm = (loginId: string) => {
   return loginId.split('@')[0];
 };
 
-export const checkTypeOfUser = (user: Auth) => {
-  if (user.data.firstName) {
-    return 'appToken';
+export const getName = (user: Auth) => {
+  if (user.data.firstName || user.data.lastName) {
+    return `${user.data.firstName} ${user.data.lastName}`;
   }
-  return 'webRedirect';
 };
 
 export const printUserNameOnPage = (user: Auth) => {
-  return checkTypeOfUser(user) === 'appToken'
-    ? `${user.data.firstName} ${user.data.lastName}`
-    : user.data.loginId
-      ? convertLoginIdToShortForm(user.data.loginId)
-      : user.data.userId;
+  return getName(user) ?? user.data.loginId;
 };
