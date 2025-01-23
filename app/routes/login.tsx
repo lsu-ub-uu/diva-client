@@ -3,8 +3,8 @@ import {
   data,
   type LoaderFunctionArgs,
   redirect,
-} from '@remix-run/node';
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+} from 'react-router';
+import { Form, useLoaderData, useSubmit } from 'react-router';
 import { commitSession, getSession } from '@/auth/sessions.server';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -14,7 +14,6 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
@@ -33,7 +32,7 @@ const parsePresentation = (searchParam: string | null) => {
   }
 };
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

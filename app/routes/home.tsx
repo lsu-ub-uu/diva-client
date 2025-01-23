@@ -22,15 +22,10 @@ import {
   getAuthentication,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import {
-  data,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { data, type LoaderFunctionArgs, type MetaFunction } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { Await, useLoaderData } from '@remix-run/react';
+import { Await, useLoaderData } from 'react-router';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { searchRecords } from '@/data/searchRecords.server';
 import { isEmpty } from 'lodash-es';
@@ -44,7 +39,7 @@ import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);

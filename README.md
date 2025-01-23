@@ -2,7 +2,7 @@
 
 This is the client for DiVA on Cora. It uses the Cora REST API to enable users to search, view and manage metadata.
 
-It is a full stack React application with server side rendering, using the [Remix](https://remix.run/) framework in a custom Node.js Express server.
+It is a full stack React application with server side rendering, using the [React Router](https://reactrouter.com) framework in a custom Node.js Express server.
 
 As this project includes server side logic, the DiVA BFF (`diva-react-spa-bff`) is obsolete and no longer in use.
 

@@ -85,7 +85,7 @@ import {
 } from '@/__mocks__/data/formDef';
 import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { parseFormData } from 'remix-hook-form';
@@ -93,8 +93,8 @@ import { parseFormData } from 'remix-hook-form';
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
 
-const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
-  const RemixStub = createRemixStub([
+const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
+  const RoutesStub = createRoutesStub([
     {
       path: '/',
       Component: () => (
@@ -107,7 +107,7 @@ const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
     },
   ]);
 
-  return <RemixStub />;
+  return <RoutesStub />;
 };
 
 describe('<Form />', () => {
@@ -121,7 +121,7 @@ describe('<Form />', () => {
 
   describe('form', () => {
     it('renders a form from a given definition', () => {
-      render(<RecordFormWithRemixStub formSchema={formDefWithTextVar} />);
+      render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toBeInTheDocument();
 
@@ -138,7 +138,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition for a update definition with variables with same nameInData', () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -404,7 +404,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition for a update definition with colVar with same nameInData', () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -485,7 +485,7 @@ describe('<Form />', () => {
     it('renders a form from a given definition does validate it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub formSchema={formDefWithOneTextVariable} />,
+        <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -503,7 +503,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition does NOT validate it', async () => {
       const { container } = render(
-        <RecordFormWithRemixStub formSchema={formDefWithOneTextVariable} />,
+        <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -524,7 +524,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
       const { container } = render(
-        <RecordFormWithRemixStub formSchema={formDefTitleInfoGroup} />,
+        <RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -545,7 +545,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefTextVarsWithSameNameInData}
         />,
       );
@@ -569,7 +569,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition for collectionVariables with same nameInData and validates it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
@@ -603,7 +603,7 @@ describe('<Form />', () => {
 
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -942,7 +942,7 @@ describe('<Form />', () => {
 
       let capturedFormData: BFFDataRecord | null = null;
 
-      const RemixStub = createRemixStub([
+      const RoutesStub = createRoutesStub([
         {
           path: '/',
           action: async ({ request }) => {
@@ -958,7 +958,7 @@ describe('<Form />', () => {
           ),
         },
       ]);
-      render(<RemixStub />);
+      render(<RoutesStub />);
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -992,7 +992,7 @@ describe('<Form />', () => {
   describe('recordLink', () => {
     it('renders a recordLink 0-1 and minNumberToShow 1 and validates it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneRecordLinkBeingOptional}
         />,
       );
@@ -1007,7 +1007,7 @@ describe('<Form />', () => {
 
     it('renders a recordLink 1-1 and does NOT validates it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneRecordLinkBeingRequired}
         />,
       );
@@ -1024,7 +1024,7 @@ describe('<Form />', () => {
 
   describe('textVariable', () => {
     it('renders a textVariable 1-1 and does NOT validate it', async () => {
-      render(<RecordFormWithRemixStub formSchema={formDefWithTextVar} />);
+      render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
@@ -1039,7 +1039,7 @@ describe('<Form />', () => {
 
     it('renders a multiple textVariables 1-1 with finalValue ', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
@@ -1114,7 +1114,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={record}
         />,
@@ -1177,7 +1177,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={record}
         />,
@@ -1190,7 +1190,7 @@ describe('<Form />', () => {
 
     it('renders a textVariable 0-1 and minNumberOfRepeatingToShow 1', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
@@ -1206,7 +1206,7 @@ describe('<Form />', () => {
 
     test('renders a textVariable 0-2 and minNumberOfRepeatingToShow 1', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableBeingRepeating}
         />,
       );
@@ -1222,7 +1222,7 @@ describe('<Form />', () => {
 
     it('renders a textVariable 0-1, minNumberToShow 1 and bad input', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
@@ -1243,7 +1243,7 @@ describe('<Form />', () => {
 
     it('renders a textVariable 0-1 as password', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableBeingPassword}
         />,
       );
@@ -1269,7 +1269,7 @@ describe('<Form />', () => {
   describe('numberVariable', () => {
     it('renders a numberVariable 1-1 and does NOT validate it', async () => {
       render(
-        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
+        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1340,7 +1340,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableModeOutput}
           record={record}
         />,
@@ -1403,7 +1403,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableBeingOptionalOutput}
           record={record}
         />,
@@ -1418,7 +1418,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 1-1 with input under min', async () => {
       render(
-        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
+        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1437,7 +1437,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 1-1 with input over max', async () => {
       render(
-        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
+        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1456,7 +1456,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 0-1 and does NOT validate text', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1482,7 +1482,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 1-1 with numberOfDecimals 2 and does NOT validate', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
@@ -1503,7 +1503,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 1-1 with numberOfDecimals 2 and does validate', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
@@ -1524,7 +1524,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 with no input and does validate', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1540,7 +1540,7 @@ describe('<Form />', () => {
 
     it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 and does validate', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1564,7 +1564,7 @@ describe('<Form />', () => {
   describe('minNumberOfRepeatingToShow', () => {
     it('renders a textVariable 2-3 should render 2 based on minNumberOfRepeatingToShow', () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
         />,
       );
@@ -1577,7 +1577,7 @@ describe('<Form />', () => {
   describe('repeatMax', () => {
     it('should NOT render add button when repeatMax is reached', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
         />,
       );
@@ -1600,7 +1600,7 @@ describe('<Form />', () => {
 
     it('should NOT render move buttons when repeatMax is less or equal to one', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
@@ -1621,7 +1621,7 @@ describe('<Form />', () => {
   describe('repeatMin', () => {
     it('Remove buttons should be disabled when repeatMin is reached', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
         />,
       );
@@ -1635,7 +1635,7 @@ describe('<Form />', () => {
 
     it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
@@ -1652,7 +1652,7 @@ describe('<Form />', () => {
   describe('collectionVariable', () => {
     it('renders a collectionVariable 1-1 and its options', async () => {
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariable}
         />,
       );
@@ -1666,7 +1666,7 @@ describe('<Form />', () => {
 
     it('renders a collectionVariable 1-1 and does validate it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariable}
         />,
       );
@@ -1691,7 +1691,7 @@ describe('<Form />', () => {
 
     it('renders a collectionVariable 1-1 and does NOT validate it', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariable}
         />,
       );
@@ -1760,7 +1760,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={record}
         />,
@@ -1824,7 +1824,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={record}
         />,
@@ -1838,7 +1838,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
         />,
       );
@@ -1866,7 +1866,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
         />,
       );
@@ -1896,7 +1896,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
@@ -1927,7 +1927,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneRequiredNumberVariableWithAttributeCollection
           }
@@ -1956,7 +1956,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
@@ -1983,7 +1983,7 @@ describe('<Form />', () => {
     it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection
           }
@@ -2011,7 +2011,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
         />,
       );
@@ -2033,7 +2033,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneRequiredGroupWithAttributeCollection}
         />,
       );
@@ -2063,7 +2063,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with a group 1-1 having textVars 1-1 an validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
@@ -2089,7 +2089,7 @@ describe('<Form />', () => {
     it('renders a group having 0-1 with a group having 1-1 having textVars having 1-1 and does NOT validate it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
@@ -2115,7 +2115,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with attribute and with a textVariable 0-1 and attribute and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute
           }
@@ -2143,7 +2143,7 @@ describe('<Form />', () => {
     it('renders a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
@@ -2185,7 +2185,7 @@ describe('<Form />', () => {
     it('renders a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
@@ -2220,7 +2220,7 @@ describe('<Form />', () => {
   describe('group', () => {
     it('renders a group 1-1 with textVariable 1-1 child', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneGroupHavingTextVariableAsChild}
         />,
       );
@@ -2231,7 +2231,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-10 and headlineLevel 1', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
         />,
       );
@@ -2245,7 +2245,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-10 and headlineLevel 3', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
         />,
       );
@@ -2259,7 +2259,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-10 and headlineLevel default', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithGroupWithDefaultHeadlineLevel}
         />,
       );
@@ -2274,7 +2274,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 and textVariable 1-1 and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithRequiredTextVar}
         />,
       );
@@ -2290,7 +2290,7 @@ describe('<Form />', () => {
     it('renders a group group 0-1 and numberVariable being 1-1 and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithRequiredNumberVar}
         />,
       );
@@ -2306,7 +2306,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 and recordLink being 1-1 and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithRequiredRecordLink}
         />,
       );
@@ -2322,7 +2322,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithWithOptionalGroupWithRequiredVar}
         />,
       );
@@ -2345,7 +2345,7 @@ describe('<Form />', () => {
     it('render a group 0-1 with a child group 1-X and textVar being 1-1 and validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar
           }
@@ -2363,7 +2363,7 @@ describe('<Form />', () => {
     it('render a group 1-1 and some sub groups 0-1 and does NOT validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefContributorGroupWithAuthorGroupAuthor}
         />,
       );
@@ -2379,7 +2379,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 and some textVars 0-1 and 1-1 and does NOT validates it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars
           }
@@ -2404,7 +2404,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
         />,
       );
@@ -2430,7 +2430,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars
           }
@@ -2458,7 +2458,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
         />,
       );
@@ -2486,7 +2486,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
         />,
       );
@@ -2512,7 +2512,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with nested textVars 1-1 and does validate it', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefTwoOptionalGroupsWithRequiredTextVars}
         />,
       );
@@ -2533,7 +2533,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars
           }
@@ -2560,7 +2560,7 @@ describe('<Form />', () => {
     it('renders a group 0-1 with with nested textVars  1-1 with attributes for both and does validate it ', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes
           }
@@ -2578,7 +2578,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 with with nested textVars 1-1 with attributes for both and does validate it ', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes
           }
@@ -2596,7 +2596,7 @@ describe('<Form />', () => {
     it('renders a group 1-1 with same nameInData with nested recordLinks 1-1 with attributes and does validate it ', async () => {
       const user = userEvent.setup();
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={
             formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes
           }
@@ -2678,7 +2678,7 @@ describe('<Form />', () => {
       };
 
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefPreprintWithOnlyAuthorName}
           record={record}
         />,
@@ -2695,7 +2695,7 @@ describe('<Form />', () => {
   describe('guiElementLink', () => {
     it('renders a numberVariable 1-1 and guiElementLink', async () => {
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefWithOneNumberVariableAndGuiElementLink}
         />,
       );
@@ -2711,7 +2711,7 @@ describe('<Form />', () => {
       it('renders a textVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
         const { container } = render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingTextVar}
           />,
         );
@@ -2731,7 +2731,7 @@ describe('<Form />', () => {
       it('renders a textVar 1-X with group 0-1 and does validate it', async () => {
         const user = userEvent.setup();
         render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingText2Var}
           />,
         );
@@ -2750,7 +2750,7 @@ describe('<Form />', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
         const { container } = render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingNumberVar}
           />,
         );
@@ -2770,7 +2770,7 @@ describe('<Form />', () => {
       it('renders a numberVar 1-X with group 0-1 and does validate it', async () => {
         const user = userEvent.setup();
         render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingNumber2Var}
           />,
         );
@@ -2788,7 +2788,7 @@ describe('<Form />', () => {
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {
         const { container } = render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingCollectionVar}
           />,
         );
@@ -2809,7 +2809,7 @@ describe('<Form />', () => {
 
       it('renders a collectionVariable 1-X with group 0-1 and does validate it', async () => {
         render(
-          <RecordFormWithRemixStub
+          <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingCollection2Var}
           />,
         );
@@ -2882,7 +2882,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefForCheckTextValue}
           record={record}
         />,
@@ -2946,7 +2946,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefForCheckTextValue}
           record={record}
         />,
@@ -3011,7 +3011,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordFormWithRemixStub
+        <RecordFormWithRoutesStub
           formSchema={formDefForCheckNumberValue}
           record={record}
         />,
@@ -3052,7 +3052,7 @@ describe('<Form />', () => {
       },
     };
 
-    render(<RecordFormWithRemixStub formSchema={formSchema} />);
+    render(<RecordFormWithRoutesStub formSchema={formSchema} />);
     const hiddenInput = screen.queryByTestId(
       'someRootNameInData.role.roleTerm.value-hidden-input',
     );
