@@ -61,11 +61,16 @@ export const action = async ({
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
-  const formData = await request.formData();
-  const parsedFormData = (await parseFormData(formData)) as any;
-  const validationType =
-    parsedFormData.output?.recordInfo?.validationType?.value;
+
+  const { validationType } = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+  });
   invariant(validationType, 'Failed to extract validationType from form data');
+
+  const formData = await request.formData();
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationType,
@@ -102,10 +107,14 @@ export const action = async ({
   return data({}, await getResponseInitWithSession(session));
 };
 
-export async function loader({ request, params, context }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+  context: { dependencies, i18n },
+}: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
-  const { t } = context.i18n;
+  const { t } = i18n;
 
   const notification = session.get('notification');
 
@@ -114,7 +123,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   invariant(recordId, 'Missing recordId param');
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: dependencies,
     recordType,
     recordId,
     authToken: auth.data.token,
@@ -126,7 +135,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    dependencies,
     record.validationType,
     'update',
   );
