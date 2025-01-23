@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Session } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import type { Session } from 'react-router';
+import { redirect } from 'react-router';
 import { commitSession } from '@/auth/sessions.server';
 
 export const redirectAndCommitSession = async (

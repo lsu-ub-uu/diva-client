@@ -16,20 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useRouteLoaderData,
-} from '@remix-run/react';
-import {
-  type ActionFunctionArgs,
-  data,
-  type LinksFunction,
-  type LoaderFunctionArgs,
-} from '@remix-run/node';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
+import { type ActionFunctionArgs, data, type LinksFunction, type LoaderFunctionArgs } from 'react-router';
 import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';

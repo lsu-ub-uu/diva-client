@@ -33,7 +33,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 

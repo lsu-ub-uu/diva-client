@@ -17,7 +17,7 @@
  */
 
 import { MenuItem, Typography } from '@mui/material';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { loader } from '@/root';
 

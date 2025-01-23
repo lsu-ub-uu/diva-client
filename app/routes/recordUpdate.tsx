@@ -26,11 +26,10 @@ import {
   data,
   type LoaderFunctionArgs,
   type MetaFunction,
-} from '@remix-run/node';
+} from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData } from 'react-router';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -38,7 +37,6 @@ import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
@@ -49,8 +47,9 @@ import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { Alert, AlertTitle } from '@mui/material';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const action = async ({
   request,

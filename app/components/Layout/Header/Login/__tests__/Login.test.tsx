@@ -19,7 +19,7 @@
 import { expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 import Login from '@/components/Layout/Header/Login/Login';
 
 const loginUnits = [
@@ -45,7 +45,7 @@ describe('<Login/>', () => {
     it('shows the accounts in a list', async () => {
       const user = userEvent.setup();
 
-      const RemixStub = createRemixStub([
+      const RoutesStub = createRoutesStub([
         {
           path: '/',
           Component: Login,
@@ -55,7 +55,7 @@ describe('<Login/>', () => {
         },
       ]);
 
-      render(<RemixStub />);
+      render(<RoutesStub />);
 
       const loginButton = await waitFor(() =>
         screen.getByRole('button', {
@@ -87,7 +87,7 @@ describe('<Login/>', () => {
       vi.stubEnv('ENVIRONMENT', 'pre');
       const user = userEvent.setup();
 
-      const RemixStub = createRemixStub([
+      const RoutesStub = createRoutesStub([
         {
           path: '/',
           Component: Login,
@@ -97,7 +97,7 @@ describe('<Login/>', () => {
         },
       ]);
 
-      render(<RemixStub />);
+      render(<RoutesStub />);
 
       const loginButton = await waitFor(() =>
         screen.getByRole('button', {
@@ -132,7 +132,7 @@ describe('<Login/>', () => {
 
         const user = userEvent.setup();
 
-        const RemixStub = createRemixStub([
+        const RoutesStub = createRoutesStub([
           {
             path: '/',
             Component: Login,
@@ -142,7 +142,7 @@ describe('<Login/>', () => {
           },
         ]);
 
-        render(<RemixStub />);
+        render(<RoutesStub />);
 
         const loginButton = await waitFor(() =>
           screen.getByRole('button', {

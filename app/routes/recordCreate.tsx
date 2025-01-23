@@ -16,9 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { invariant } from '@remix-run/router/history';
-import { type ActionFunctionArgs, data } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { type ActionFunctionArgs, data } from 'react-router';
+import { useLoaderData } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
@@ -32,7 +31,6 @@ import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { Alert, AlertTitle, Stack } from '@mui/material';
@@ -42,8 +40,9 @@ import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);

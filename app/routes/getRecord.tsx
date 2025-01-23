@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { type LoaderFunctionArgs } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
+import { type LoaderFunctionArgs } from 'react-router';
 import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { invariant } from '@/utils/invariant';
 
 export const loader = async ({
   request,

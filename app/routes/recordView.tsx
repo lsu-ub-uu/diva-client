@@ -16,16 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/auth/sessions.server';
-import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from '@remix-run/react';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { useLoaderData } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
@@ -37,8 +35,9 @@ import {
 } from '@/components/NavigationPanel/utils';
 import { Stack } from '@mui/material';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const loader = async ({
   request,
