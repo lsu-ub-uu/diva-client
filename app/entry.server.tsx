@@ -51,7 +51,6 @@ function handleBotRequest(
         <ServerRouter
           context={reactRouterContext}
           url={request.url}
-          abortDelay={ABORT_DELAY}
         />
       </I18nextProvider>,
       {
@@ -105,7 +104,6 @@ function handleBrowserRequest(
           <ServerRouter
             context={reactRouterContext}
             url={request.url}
-            abortDelay={ABORT_DELAY}
           />
         </MuiProvider>
       </I18nextProvider>,
