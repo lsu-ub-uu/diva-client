@@ -40,8 +40,14 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
-import type { BFFDataRecord, BFFUpdate, BFFUserRight } from '@/types/record';
+import type {
+  BFFDataRecord,
+  BFFUpdate,
+  BFFUserRight,
+  Metadata,
+} from '@/types/record';
 import { groupBy } from 'lodash-es';
+import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
 /**
  * Transforms records
@@ -110,9 +116,24 @@ export const transformRecord = (
     validationType,
     'update',
   );
+
   const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
-  const data = traverseDataGroup(dataRecordGroup, formPathLookup);
+  const newData = {
+    [dataRecordGroup.name]: transformDataGroup(dataRecordGroup, formMetadata),
+  };
+
+  const data = traverseDataGroup(
+    dataRecordGroup,
+    formPathLookup,
+    dataRecordGroup.name,
+  );
+
+  console.log({
+    newData,
+    data,
+  });
+
   return removeEmpty({
     id,
     recordType,
@@ -123,6 +144,101 @@ export const transformRecord = (
     userRights,
     data,
   });
+};
+
+const transformDataGroup = (
+  dataRecordGroup: DataGroup,
+  formMetadata: FormMetaData,
+): Metadata => {
+  const init = {} as Metadata;
+  return dataRecordGroup.children.reduce<Metadata>((group, dataChild) => {
+    const matchingMetadata = findMatchingMetadata(dataChild, formMetadata);
+
+    if (!matchingMetadata) {
+      console.warn(`Failed to find matching metadata for ${dataChild.name}`);
+      return group;
+    }
+    const metadataAttributes = Object.entries(
+      matchingMetadata.attributes ?? {},
+    ).map(([name, value]) => ({ name, value }));
+
+    const name = createFieldNameWithAttributes(
+      dataChild.name,
+      metadataAttributes,
+    );
+
+    group[name] = transformData(dataChild, matchingMetadata);
+    return group;
+  }, init);
+};
+
+const transformData = (
+  data: DataGroup | DataAtomic | RecordLink,
+  formMetadata: FormMetaData,
+): Metadata => {
+  if ('children' in data) {
+    return transformDataGroup(data, formMetadata);
+  }
+
+  return undefined;
+};
+
+const findMatchingMetadata = (
+  data: DataGroup | DataAtomic | RecordLink,
+  metadata: FormMetaData,
+) => {
+  console.log('findMatchingMetadata', data, metadata);
+  const matchingMetadatas = (metadata.children ?? []).filter(
+    (metadata) => metadata.name === data.name,
+  );
+
+  if (matchingMetadatas.length === 0) {
+    console.log('no match');
+    return undefined;
+  }
+
+  if (matchingMetadatas.length === 1) {
+    console.log('1 match', matchingMetadatas);
+    return matchingMetadatas[0];
+  }
+
+  if (matchingMetadatas.length > 0) {
+    console.log('>>>>>>>1 match', matchingMetadatas);
+
+    return findMetadataMatchingAttributes(data, matchingMetadatas);
+  }
+};
+
+const findMetadataMatchingAttributes = (
+  data: DataGroup | DataAtomic | RecordLink,
+  metadataCandidates: FormMetaData[],
+) => {
+  return metadataCandidates.reduce((bestMatchSoFar, candidate) => {
+    if (
+      getNumberOfMatchingAttributes(data, candidate) >
+      getNumberOfMatchingAttributes(data, bestMatchSoFar)
+    ) {
+      return candidate;
+    }
+    return bestMatchSoFar;
+  });
+};
+
+const getNumberOfMatchingAttributes = (
+  data: DataGroup | DataAtomic | RecordLink,
+  metadata: FormMetaData,
+) => {
+  if (metadata === undefined) {
+    return 0;
+  }
+
+  const dataAttributes = Object.entries(data.attributes ?? {});
+
+  const candidateAttributes = metadata.attributes ?? {};
+
+  return dataAttributes.filter(([name, value]) => {
+    return candidateAttributes[name] === value;
+  }).length;
 };
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
