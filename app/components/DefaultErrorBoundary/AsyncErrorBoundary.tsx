@@ -17,7 +17,7 @@
  */
 
 import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
-import { useAsyncError } from '@remix-run/react';
+import { useAsyncError } from 'react-router';
 
 export const AsyncErrorBoundary = () => {
   const error = useAsyncError();

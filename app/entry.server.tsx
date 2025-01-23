@@ -1,8 +1,8 @@
 import { PassThrough } from 'node:stream';
 
-import type { AppLoadContext, EntryContext } from '@remix-run/node';
-import { createReadableStreamFromReadable } from '@remix-run/node';
-import { RemixServer } from '@remix-run/react';
+import type { AppLoadContext, EntryContext } from 'react-router';
+import { createReadableStreamFromReadable } from '@react-router/node';
+import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { MuiProvider } from '@/mui/MuiProvider';
@@ -15,7 +15,7 @@ export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
   loadContext: AppLoadContext,
 ) {
   const i18nInstance = loadContext.i18n;
@@ -25,14 +25,14 @@ export default async function handleRequest(
         request,
         responseStatusCode,
         responseHeaders,
-        remixContext,
+        reactRouterContext,
         i18nInstance,
       )
     : handleBrowserRequest(
         request,
         responseStatusCode,
         responseHeaders,
-        remixContext,
+        reactRouterContext,
         i18nInstance,
       );
 }
@@ -41,17 +41,16 @@ function handleBotRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
   i18nInstance: i18n,
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={i18nInstance}>
-        <RemixServer
-          context={remixContext}
+        <ServerRouter
+          context={reactRouterContext}
           url={request.url}
-          abortDelay={ABORT_DELAY}
         />
       </I18nextProvider>,
       {
@@ -94,7 +93,7 @@ function handleBrowserRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
   i18nInstance: i18n,
 ) {
   return new Promise((resolve, reject) => {
@@ -102,10 +101,9 @@ function handleBrowserRequest(
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={i18nInstance}>
         <MuiProvider>
-          <RemixServer
-            context={remixContext}
+          <ServerRouter
+            context={reactRouterContext}
             url={request.url}
-            abortDelay={ABORT_DELAY}
           />
         </MuiProvider>
       </I18nextProvider>,

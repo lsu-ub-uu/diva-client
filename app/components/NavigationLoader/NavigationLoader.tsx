@@ -17,7 +17,7 @@
  */
 
 import { LinearProgress } from '@mui/material';
-import { useNavigation } from '@remix-run/react';
+import { useNavigation } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 import styles from './NavigationLoader.module.css';
 

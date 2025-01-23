@@ -21,7 +21,7 @@ import axios from 'axios';
 import { coraLoginUrl } from '@/cora/helper.server';
 import type { CoraRecord } from '@/cora/cora-data/CoraData.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@/utils/invariant';
 
 export async function requestAuthTokenOnLogin(
   user: string,
@@ -58,7 +58,7 @@ const extractDataFromResult = (record: CoraRecord): Auth => {
   );
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
 
-  invariant(record.actionLinks);
+  invariant(record.actionLinks, 'Action links missing from Cora auth');
 
   return {
     data: {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,13 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from 'react-router';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
-import { invariant } from '@/utils/invariant';
-
-export const loader = async ({ context, params }: LoaderFunctionArgs) => {
-  const { lang } = params;
-  invariant(lang, 'Missing param lang');
-
-  return Response.json(createTextDefinition(context.dependencies, lang));
-};
+export function invariant<T>(
+  value: T | null | undefined,
+  message: string,
+): asserts value is NonNullable<T> {
+  if (value === null || value === undefined) {
+    throw new Error(message);
+  }
+}

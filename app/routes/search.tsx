@@ -24,15 +24,14 @@ import {
   getSessionFromCookie,
 } from '@/auth/sessions.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import type { LoaderFunctionArgs } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const loader = async ({
   request,

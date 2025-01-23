@@ -18,7 +18,7 @@
 
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
-import { useNavigation } from '@remix-run/react';
+import { useNavigation } from 'react-router';
 import type { Notification } from '@/auth/sessions.server';
 
 export const useNotificationSnackbar = (
