@@ -33,6 +33,7 @@ import {
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { uniq } from 'lodash-es';
+import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
 export interface RecordData {
   [key: string]: any;
@@ -272,18 +273,12 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
     return name;
   }
 
-  const nameArray: any[] = [];
-  if (component.attributes === undefined) {
-    return component.name;
-  }
-  (component.attributes ?? []).forEach((attribute) => {
-    if (attribute.finalValue === undefined) {
-      return component.name;
-    }
-    nameArray.push(`${attribute.name}_${attribute.finalValue}`);
-  });
+  const attributes = (component.attributes ?? []).map((attribute) => ({
+    name: attribute.name,
+    value: attribute.finalValue,
+  }));
 
-  return nameArray.length > 0 ? `${name}_${nameArray.join('_')}` : name;
+  return createFieldNameWithAttributes(name, attributes);
 };
 
 export const hasCurrentComponentSameNameInData = (

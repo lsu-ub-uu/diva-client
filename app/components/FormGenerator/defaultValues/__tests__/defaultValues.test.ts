@@ -796,11 +796,11 @@ describe('FormGenerator Utils', () => {
                 _colour: '',
               },
             ],
-            firstChildGroup: {
+            firstChildGroup_groupColourAgain_pink: {
               exampleNumberVar: {
                 value: '',
               },
-              exampleTextVar: {
+              exampleTextVar_colourAgain_pink: {
                 _colour: '',
                 _colourAgain: 'pink',
                 value: 'exampleFinalValue',
@@ -826,7 +826,7 @@ describe('FormGenerator Utils', () => {
             bookTitle: {
               value: '',
             },
-            keeptHis: [
+            keeptHis_colour_blue: [
               {
                 value: '',
                 _colour: 'blue',
@@ -849,7 +849,7 @@ describe('FormGenerator Utils', () => {
               },
             ],
             firstChildGroup: {
-              exampleNumberVar: [
+              exampleNumberVar_colour_pink: [
                 {
                   value: '',
                   _colour: 'pink',
@@ -2370,7 +2370,7 @@ describe('FormGenerator Utils', () => {
           },
           'nationalSubjectCategory.subject.value',
         );
-        expect(actual).toEqual('subject');
+        expect(actual).toEqual('nationalSubjectCategory.subject.value');
       });
     });
     describe('hasCurrentComponentSameNameInData', () => {

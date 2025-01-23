@@ -24,6 +24,7 @@ import type {
   DataGroup,
   RecordLink,
 } from '@/cora/cora-data/CoraData.server';
+import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
@@ -40,23 +41,26 @@ export const createFormMetaDataPathLookup = (
 };
 
 export const createPath = (path: string, metaDataGroup: FormMetaData) => {
-  return path
-    ? `${path}.${addAttributesToNameServer(metaDataGroup)}`
-    : addAttributesToNameServer(metaDataGroup);
+  const hasPath = path.length > 0 || path !== undefined;
+  if (hasPath) {
+    return path
+      ? `${path}.${addAttributesToNameServer(metaDataGroup)}`
+      : addAttributesToNameServer(metaDataGroup);
+  }
+  return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
 };
-
 export const addAttributesToNameServer = (
   metaDataGroup: FormMetaData | (DataGroup | DataAtomic | RecordLink),
 ) => {
   if (metaDataGroup.attributes === undefined) {
     return metaDataGroup.name;
   }
-  const nameArray: any[] = [];
 
-  Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
-    nameArray.push(`${key}_${value}`);
-  });
-  return `${metaDataGroup.name}_${nameArray.join('_')}`;
+  const attributes = Object.entries(metaDataGroup.attributes).map(
+    ([name, value]) => ({ name, value }),
+  );
+
+  return createFieldNameWithAttributes(metaDataGroup.name, attributes);
 };
 
 export const addNamesToArray = (metaDataGroup: FormMetaData) => {

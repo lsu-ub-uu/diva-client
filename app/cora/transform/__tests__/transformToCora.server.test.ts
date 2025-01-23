@@ -1441,7 +1441,7 @@ describe('transformToCora', () => {
             },
           },
           outputType: {
-            genre: {
+            genre_type_outputType: {
               value: 'publication_newspaper-article',
               _type: 'outputType',
             },
@@ -1484,7 +1484,7 @@ describe('transformToCora', () => {
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         output: {
           language: {
-            languageTerm: [
+            'languageTerm_authority_iso639-2b_type_code': [
               {
                 value: 'ach',
                 _type: 'code',
@@ -1494,6 +1494,7 @@ describe('transformToCora', () => {
           },
         },
       });
+
       expect(transformData[0]).toStrictEqual(expected);
     });
   });

@@ -123,6 +123,11 @@ const createAttributes = (
         collectionVar.nameInData,
         collectionVar.finalValue,
       ]);
+
+    if (attributeEntries.length === 0) {
+      return undefined;
+    }
+
     return Object.fromEntries(attributeEntries);
   }
 };
