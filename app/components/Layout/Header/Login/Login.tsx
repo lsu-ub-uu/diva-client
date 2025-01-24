@@ -16,7 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, useLoaderData, useLocation, useNavigation, useSubmit } from 'react-router';
+import {
+  Form,
+  useLoaderData,
+  useLocation,
+  useNavigation,
+  useSubmit,
+} from 'react-router';
 import {
   Box,
   Button,
@@ -34,12 +40,13 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout';
 import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 
 export default function User() {
+  const [hydrated, setHydrated] = useState(false);
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
@@ -49,6 +56,10 @@ export default function User() {
   const location = useLocation();
   const navigation = useNavigation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const handleDevSelection = (account: Account) => {
     setMenuOpen(false);
@@ -88,7 +99,7 @@ export default function User() {
         <Button
           ref={anchorEl}
           onClick={() => setMenuOpen(true)}
-          disabled={navigation.state === 'submitting'}
+          disabled={!hydrated || navigation.state === 'submitting'}
         >
           {navigation.state === 'submitting' ? (
             <>

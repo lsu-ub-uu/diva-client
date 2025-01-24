@@ -83,8 +83,8 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             >
               {showLabel ? (
                 <FormLabel
+                  id={`${props.name}-label`}
                   htmlFor={field.name}
-                  aria-label={props.label}
                   required={props.required}
                   error={error !== undefined}
                   sx={{
@@ -152,6 +152,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             ) : (
               <>
                 <Box
+                  aria-labelledby={`${props.name}-label`}
                   component='span'
                   sx={{ pl: 2, mb: 1 }}
                 >

@@ -85,6 +85,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
           >
             {hasValueAndIsOutput || showLabelAndIsInput ? (
               <FormLabel
+                id={`${props.name}-label`}
                 htmlFor={name}
                 aria-label={props.label}
                 required={props.required}
@@ -168,6 +169,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               {props.hasValue === true ? (
                 <>
                   <Box
+                    aria-labelledby={`${props.name}-label`}
                     component='span'
                     sx={{ pl: 2, mb: 1 }}
                   >

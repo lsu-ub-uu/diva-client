@@ -121,16 +121,17 @@ app.all('*', reactRouterHandler);
 
 const port = PORT || 5173;
 const domain = DOMAIN || 'localhost';
-app.listen(port, () => {
-  console.info(`Cora API-url ${CORA_API_URL}`);
-  console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
-  console.info(`BASE_PATH ${BASE_PATH}`);
-  console.info(`DOMAIN ${domain}`);
-  console.info(
-    `Express server listening at http://${domain}:${port}${BASE_PATH ?? ''}`,
-  );
-  loadStuffOnServerStart().then(() => {
-    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.info('Loaded stuff from Cora');
+
+console.info('Loading cora metadata ...');
+loadStuffOnServerStart().then(() => {
+  console.info('Loaded stuff from Cora');
+  app.listen(port, () => {
+    console.info(`Cora API-url ${CORA_API_URL}`);
+    console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
+    console.info(`BASE_PATH ${BASE_PATH}`);
+    console.info(`DOMAIN ${domain}`);
+    console.info(
+      `Express server listening at http://${domain}:${port}${BASE_PATH ?? ''}`,
+    );
   });
 });
