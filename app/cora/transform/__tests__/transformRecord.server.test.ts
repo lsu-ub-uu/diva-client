@@ -38,6 +38,7 @@ import {
   isDataGroup,
   isRecordLink,
   isRepeating,
+  transformDataGroup,
   transformObjectAttributes,
   transformRecord,
   traverseDataGroup,
@@ -1649,6 +1650,267 @@ describe('transformRecord', () => {
         },
       };
       expect(transformData).toStrictEqual(expected);
+    });
+
+    it('handles fields with multiple matching metadatas', () => {
+      const dataRecordGroup = {
+        children: [
+          {
+            repeatId: '0',
+            children: [
+              {
+                name: 'namePart',
+                attributes: {
+                  type: 'family',
+                },
+                value: 'eeeeeee',
+              },
+              {
+                name: 'namePart',
+                attributes: {
+                  type: 'given',
+                },
+                value: 'gil',
+              },
+            ],
+            name: 'name',
+            attributes: {
+              type: 'personal',
+            },
+          },
+        ],
+        name: 'output',
+      } as DataGroup;
+
+      const formMetaData = {
+        name: 'output',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        children: [
+          {
+            name: 'name',
+            type: 'group',
+            attributes: {
+              type: 'personal',
+            },
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            children: [
+              {
+                name: 'person',
+                type: 'recordLink',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'diva-person',
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                attributes: {
+                  type: 'family',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                attributes: {
+                  type: 'given',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'role',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                children: [
+                  {
+                    name: 'roleTerm',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'affiliation',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                children: [
+                  {
+                    name: 'organisation',
+                    type: 'recordLink',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    linkedRecordType: 'diva-organisation',
+                  },
+                  {
+                    name: 'name',
+                    type: 'group',
+                    attributes: {
+                      type: 'corporate',
+                    },
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    children: [
+                      {
+                        name: 'namePart',
+                        type: 'textVariable',
+                        repeat: {
+                          repeatMin: 1,
+                          repeatMax: 1,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    name: 'identifier',
+                    type: 'textVariable',
+                    attributes: {
+                      type: 'ror',
+                    },
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'country',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'description',
+                    type: 'textVariable',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: 'name',
+            type: 'group',
+            attributes: {
+              type: 'corporate',
+            },
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            children: [
+              {
+                name: 'organisation',
+                type: 'recordLink',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'diva-organisation',
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'role',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                children: [
+                  {
+                    name: 'roleTerm',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'identifier',
+                type: 'textVariable',
+                attributes: {
+                  type: 'ror',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'description',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+            ],
+          },
+        ],
+      } satisfies FormMetaData;
+
+      const actual = transformDataGroup(dataRecordGroup, formMetaData);
+
+      const expected = {
+        name_type_personal: [
+          {
+            namePart_type_family: [
+              {
+                value: 'eeeeeee',
+                _type: 'family',
+              },
+            ],
+            namePart_type_given: [
+              {
+                value: 'gil',
+                _type: 'given',
+              },
+            ],
+            _type: 'personal',
+          },
+        ],
+      };
+      expect(actual).toStrictEqual(expected);
     });
   });
 
