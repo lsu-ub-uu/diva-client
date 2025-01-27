@@ -155,7 +155,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               <>
                 <Box
                   component='span'
-                  sx={{ pl: 2, mb: 1 }}
+                  sx={{ pl: 2 }}
                 >
                   {field.value || props.linkedDataToShow}
                 </Box>

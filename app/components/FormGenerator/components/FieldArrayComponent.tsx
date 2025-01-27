@@ -41,7 +41,6 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
-  const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,

@@ -20,7 +20,7 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { CardContent, Grid2 as Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import {
@@ -42,6 +42,7 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
+import { CardContent } from '@/components/Card/CardContent';
 
 interface GroupProps {
   currentComponentNamePath: string;
