@@ -51,7 +51,10 @@ export const RecordLinkWithSearch = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={name}
+      />
 
       <ControlledAutocomplete
         label={component.label ?? ''}

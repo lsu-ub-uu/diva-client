@@ -22,18 +22,22 @@ import { useContext, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface DevInfoProps {
   component: FormComponent;
+  path?: string;
 }
 
 interface ToggleDevInfoButtonProps {
   onClick: () => void;
 }
 
-export const DevInfo = ({ component }: DevInfoProps) => {
+export const DevInfo = ({ component, path }: DevInfoProps) => {
   const { showDevInfo } = useContext(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
+  const { getValues } = useRemixFormContext();
+  const data = path && getValues(path);
   if (!showDevInfo) {
     return null;
   }
@@ -45,7 +49,21 @@ export const DevInfo = ({ component }: DevInfoProps) => {
       >
         {component.type} | {addAttributesToName(component, component.name)}
       </button>
-      {expanded && <pre>{JSON.stringify(component, null, 2)}</pre>}
+
+      {expanded && (
+        <div className={styles.expandInfo}>
+          <pre>
+            <strong>FORM DEF</strong>
+            {JSON.stringify(component, null, 2)}
+          </pre>
+          {data && (
+            <pre>
+              <strong>DATA</strong>
+              {JSON.stringify(data, null, 2)}
+            </pre>
+          )}
+        </div>
+      )}
     </div>
   );
 };

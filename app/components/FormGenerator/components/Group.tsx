@@ -65,6 +65,8 @@ export const Group = ({
     component,
     parentPresentationStyle,
   );
+
+  // TODO: Check for valuable data instead
   const hasNoValues = hasOnlyAttributes(
     cleanFormData(getValues(currentComponentNamePath)),
   );
@@ -79,7 +81,10 @@ export const Group = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
       className={`${styles.group} anchorLink`}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={currentComponentNamePath}
+      />
       <Card boxed={boxGroups && groupLevel !== 0}>
         <CardHeader>
           {component.showLabel && (

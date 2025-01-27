@@ -17,41 +17,57 @@
  */
 
 .devInfo {
-    font-family: monospace;
-    font-size: 0.8rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  display: block;
+  color: antiquewhite;
+
+  button {
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 4px;
+    background: #666;
+    border-radius: 4px 4px 0 0;
+  }
+
+  strong {
     display: block;
-    color: antiquewhite;
+    position: sticky;
+    top: 0;
+    background: #444;
+    border-bottom: 1px solid #666;
+    padding-left: 2px;
+  }
 
-    button {
-        border: none;
-        color: inherit;
-        font-family: inherit;
-        cursor: pointer;
-        padding: 4px;
-        background: #666;
-        border-radius: 4px 4px 0 0;
-    }
+  .expandInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+    background: #444;
+  }
 
-    pre {
-        margin: 0;
-        padding: 4px;
-        background: #444;
-        overflow: auto;
-        max-width: 900px;
-        max-height: 800px;
-        border-radius: 0 4px 4px 4px;
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    max-width: 900px;
+    max-height: 800px;
+    border-radius: 0 4px 4px 4px;
+    &:nth-child(even) {
+      border-left: 1px solid #666;
     }
+  }
 }
 
 .devInfoButton {
-    cursor: pointer;
-    border: none;
-    background: rgb(var(--grayLight));
-    border-radius: 4px;
-    position: absolute;
-    top: -24px;
-    right: -24px;
-    font-family: monospace;
-    color: rgb(var(--grayDark));
+  cursor: pointer;
+  border: none;
+  background: rgb(var(--grayLight));
+  border-radius: 4px;
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  font-family: monospace;
+  color: rgb(var(--grayDark));
 }
-

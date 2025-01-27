@@ -68,7 +68,10 @@ export const TextOrNumberVariable = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={name}
+      />
 
       <ControlledTextField
         multiline={

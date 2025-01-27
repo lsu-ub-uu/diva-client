@@ -53,7 +53,10 @@ export const RecordLinkWithLinkedPresentation = ({
             sm: renderElementGridWrapper ? component.gridColSpan : 12,
           }}
         >
-          <DevInfo component={component} />
+          <DevInfo
+            component={component}
+            path={name}
+          />
 
           <Box
             sx={{
