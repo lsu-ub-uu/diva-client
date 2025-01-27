@@ -25,9 +25,9 @@ import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValue
 
 export const linksFromFormSchema = (
   formSchema: RecordFormSchema,
-): NavigationPanelLink[] | undefined => {
-  return formSchema?.form.components
-    ?.filter((c) => !['text', 'container'].includes(c.type))
+): NavigationPanelLink[] => {
+  return (formSchema.form.components ?? [])
+    .filter((c) => !['text', 'container'].includes(c.type))
     .map((c) => {
       if (!('label' in c)) {
         return undefined;
@@ -45,7 +45,6 @@ export const removeComponentsWithoutValuesFromSchema = (
   formSchema: RecordFormSchema,
   record: BFFDataRecord,
 ): RecordFormSchema => {
-  const schema = formSchema;
   let componentsFromSchema = formSchema.form.components;
 
   const flattenedRecord = flattenObject(record.data);
@@ -55,8 +54,13 @@ export const removeComponentsWithoutValuesFromSchema = (
   componentsFromSchema = componentsFromSchema?.filter((component) => {
     return [...lastKeyFromString].includes(component.name);
   });
-  schema.form.components = componentsFromSchema;
-  return schema;
+  return {
+    ...formSchema,
+    form: {
+      ...formSchema.form,
+      components: componentsFromSchema,
+    },
+  };
 };
 
 export const flattenObject = (obj: any, prefix = '') => {

@@ -74,20 +74,14 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function ViewRecordRoute() {
   const { record, formDefinition } = useLoaderData<typeof loader>();
+
   return (
     <SidebarLayout
       sidebarContent={
         <NavigationPanel
-          links={
-            formDefinition
-              ? linksFromFormSchema(
-                  removeComponentsWithoutValuesFromSchema(
-                    formDefinition,
-                    record,
-                  ),
-                ) || []
-              : []
-          }
+          links={linksFromFormSchema(
+            removeComponentsWithoutValuesFromSchema(formDefinition, record),
+          )}
         />
       }
     >
