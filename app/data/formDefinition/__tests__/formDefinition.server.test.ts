@@ -45,7 +45,10 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
 import {
+  createdByLink,
+  dataDividerLink,
   exampleOtherCollectionVarId,
+  idTextVar,
   pSomeArchiveNumberTextVar,
   pSomeContainer,
   pSomeEditMetadataGroup,
@@ -75,6 +78,8 @@ import {
   pSomeOtherMetadataCollectionVariableWithMissingChildId,
   pSomeRepeatingContainer,
   pSomeScopusIdTextVar,
+  recordInfoMetadata,
+  recordTypeLink,
   someArchiveNumberTextVar,
   someEditMetadataGroup,
   someLocalIdTextVar,
@@ -116,6 +121,11 @@ import {
   someValidationTypeDataFaultyChildReference,
   someValidationTypeForMissingChildIdTypeData,
   someValidationTypeForRepeatingTitleInfoId,
+  tsCreatedTextVar,
+  tsUpdatedTextVar,
+  updatedByLink,
+  updatedGroup,
+  validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
 import {
   getAttributesByAttributeReferences,
@@ -191,6 +201,16 @@ describe('formDefinition', () => {
       someMetadataCollectionWithOtherIdVariable,
       someMetadataCollectionVariable2,
       someNewRecordLink,
+      recordInfoMetadata,
+      createdByLink,
+      dataDividerLink,
+      idTextVar,
+      tsCreatedTextVar,
+      recordTypeLink,
+      updatedGroup,
+      updatedByLink,
+      tsUpdatedTextVar,
+      validationTypeLink,
     ]);
     presentationPool = listToPool<
       | BFFPresentationBase

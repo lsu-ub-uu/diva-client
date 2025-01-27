@@ -48,6 +48,7 @@ export const someNewMetadataGroupForMissingChildId: BFFMetadataGroup = {
   textId: '',
   defTextId: '',
   children: [
+    { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
     {
       childId: 'mainTitle',
       repeatMin: '0',
@@ -96,12 +97,227 @@ export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
   textId: '',
   defTextId: '',
   children: [
+    { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
+    { childId: 'titleGroup', repeatMin: '1', repeatMax: '1' },
+    { childId: 'alternativeTitle', repeatMin: '0', repeatMax: '1' },
+    { childId: 'nationalSubjectCategory', repeatMin: '0', repeatMax: '1' },
+    { childId: 'abstract', repeatMin: '0', repeatMax: '1' },
+  ],
+};
+
+export const recordInfoMetadata: BFFMetadataGroup = {
+  defTextId: '',
+  textId: '',
+  id: 'recordInfo',
+  nameInData: 'recordInfo',
+  type: 'group',
+  children: [
     {
-      childId: 'alternativeTitle',
-      repeatMin: '0',
+      childId: 'createdByLink',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'dataDividerLink',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'idTextVar',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'tsCreatedTextVar',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'recordTypeLink',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'updatedGroup',
+      repeatMin: '1',
+      repeatMax: 'X',
+    },
+    {
+      childId: 'validationTypeLink',
+      repeatMin: '1',
       repeatMax: '1',
     },
   ],
+};
+
+export const createdByLink: BFFMetadataRecordLink = {
+  id: 'createdByLink',
+  nameInData: 'createdBy',
+  type: 'recordLink',
+  textId: 'createdByDivaLinkText',
+  defTextId: 'createdByDivaLinkDefText',
+  linkedRecordType: 'user',
+};
+
+export const dataDividerLink: BFFMetadataRecordLink = {
+  id: 'dataDividerLink',
+  nameInData: 'dataDivider',
+  type: 'recordLink',
+  textId: 'dataDividerDivaDataLinkText',
+  defTextId: 'dataDividerDivaDataLinkDefText',
+  finalValue: 'divaData',
+  linkedRecordType: 'system',
+};
+
+export const idTextVar: BFFMetadataTextVariable = {
+  nameInData: 'id',
+  regEx: '.+',
+  id: 'idTextVar',
+  type: 'textVariable',
+  textId: 'idDivaTextVarText',
+  defTextId: 'idDivaTextVarDefText',
+};
+
+export const tsCreatedTextVar: BFFMetadataTextVariable = {
+  nameInData: 'tsCreated',
+  regEx:
+    '^((((19|20)([2468][048]|[13579][26]|0[48])|2000)-02-29|((19|20)[0-9]{2}-(0[4678]|1[02])-(0[1-9]|[12][0-9]|30|31)|(19|20)[0-9]{2}-(0[1359]|11)-(0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}-02-(0[1-9]|1[0-9]|2[0-8])))T([01][0-9]|2[0-3]):([012345][0-9]):([012345][0-9])\\.([0-9]{6}Z))$',
+  id: 'tsCreatedTextVar',
+  type: 'textVariable',
+  textId: 'tsCreatedDivaTextVarText',
+  defTextId: 'tsCreatedDivaTextVarDefText',
+};
+
+export const recordTypeLink: BFFMetadataRecordLink = {
+  id: 'recordTypeLink',
+  nameInData: 'type',
+  type: 'recordLink',
+  textId: 'recordTypeOutputLinkText',
+  defTextId: 'recordTypeOutputLinkDefText',
+  finalValue: 'diva-output',
+  linkedRecordType: 'recordType',
+};
+
+export const updatedGroup: BFFMetadataGroup = {
+  id: 'updatedGroup',
+  nameInData: 'updated',
+  type: 'group',
+  textId: 'updatedDivaGroupText',
+  defTextId: 'updatedDivaGroupDefText',
+  children: [
+    {
+      childId: 'updatedByLink',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'tsUpdatedTextVar',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+};
+
+export const updatedByLink: BFFMetadataRecordLink = {
+  id: 'updatedByLink',
+  nameInData: 'updatedBy',
+  type: 'recordLink',
+  textId: 'updatedByDivaLinkText',
+  defTextId: 'updatedByDivaLinkDefText',
+  linkedRecordType: 'user',
+};
+
+export const tsUpdatedTextVar: BFFMetadataTextVariable = {
+  nameInData: 'tsUpdated',
+  regEx:
+    '^((((19|20)([2468][048]|[13579][26]|0[48])|2000)-02-29|((19|20)[0-9]{2}-(0[4678]|1[02])-(0[1-9]|[12][0-9]|30|31)|(19|20)[0-9]{2}-(0[1359]|11)-(0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}-02-(0[1-9]|1[0-9]|2[0-8])))T([01][0-9]|2[0-3]):([012345][0-9]):([012345][0-9])\\.([0-9]{6}Z))$',
+  id: 'tsUpdatedTextVar',
+  type: 'textVariable',
+  textId: 'tsUpdatedTextVarText',
+  defTextId: 'tsUpdatedTextVarDefText',
+};
+
+export const validationTypeLink: BFFMetadataRecordLink = {
+  id: 'validationTypeLink',
+  nameInData: 'validationType',
+  type: 'recordLink',
+  textId: 'validationTypeOutputLinkText',
+  defTextId: 'validationTypeOutputLinkDefText',
+  finalValue: 'diva-output',
+  linkedRecordType: 'validationType',
+};
+
+export const languageCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'languageCollectionVar',
+  nameInData: 'language',
+  type: 'collectionVariable',
+  textId: 'languageCollectionVarText',
+  defTextId: 'languageCollectionVarDefText',
+  refCollection: 'languageCollection',
+};
+
+export const languageCollection: BFFMetadataItemCollection = {
+  id: 'languageCollection',
+  nameInData: 'languageCollection',
+  textId: '',
+  type: 'itemCollection',
+  defTextId: '',
+  collectionItemReferences: [
+    { refCollectionItemId: 'faoItem' },
+    { refCollectionItemId: 'sweItem' },
+    { refCollectionItemId: 'engItem' },
+    { refCollectionItemId: 'epoItem' },
+    { refCollectionItemId: 'kalItem' },
+  ],
+};
+
+export const faoCollectionItem: BFFMetadataBase = {
+  id: 'faoItem',
+  nameInData: 'fao',
+  type: 'collectionItem',
+  textId: 'exampleFaoItemText',
+  defTextId: 'exampleFaoItemDefText',
+};
+
+export const epoCollectionItem: BFFMetadataBase = {
+  id: 'epoItem',
+  nameInData: 'epo',
+  type: 'collectionItem',
+  textId: 'exampleEpoItemText',
+  defTextId: 'exampleEpoItemDefText',
+};
+
+export const kalCollectionItem: BFFMetadataBase = {
+  id: 'kalItem',
+  nameInData: 'kal',
+  type: 'collectionItem',
+  textId: 'exampleKalItemText',
+  defTextId: 'exampleKalItemDefText',
+};
+
+export const newLangItemCollectionItemEng: BFFMetadataBase = {
+  id: 'engItem',
+  nameInData: 'english',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText',
+};
+
+export const newLangItemCollectionItemSwe: BFFMetadataBase = {
+  id: 'sweItem',
+  nameInData: 'swedish',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText',
+};
+
+export const nationalSubjectCategoryLink: BFFMetadataRecordLink = {
+  id: 'nationalSubjectCategory',
+  nameInData: 'nationalSubjectCategory',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryDefText',
+  linkedRecordType: 'nationalSubjectCategory',
 };
 
 export const someAlternativeTitleMetadataChildGroup: BFFMetadataGroup = {
@@ -122,6 +338,41 @@ export const someAlternativeTitleMetadataChildGroup: BFFMetadataGroup = {
       repeatMax: '1',
     },
   ],
+};
+
+export const sometitleMetadataChildGroup: BFFMetadataGroup = {
+  id: 'titleGroup',
+  nameInData: 'title',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+    {
+      childId: 'subTitle',
+      repeatMin: '0',
+      repeatMax: '1',
+    },
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageCollectionVar',
+    },
+  ],
+};
+
+export const someAbstractTextVariable: BFFMetadataTextVariable = {
+  id: 'abstract',
+  nameInData: 'abstract',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [{ refCollectionVarId: 'languageCollectionVar' }],
 };
 
 export const someMainTitleTextVariable: BFFMetadataTextVariable = {
@@ -1568,6 +1819,7 @@ export const preprintNewGroup: BFFMetadataGroup = {
   textId: '',
   defTextId: '',
   children: [
+    { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
     {
       childId: 'domainCollectionVar',
       repeatMin: '1',
@@ -1909,6 +2161,7 @@ export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataG
     textId: '',
     defTextId: '',
     children: [
+      { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
       {
         childId: 'someNewMetadataGroupTitleInfoGroup',
         repeatMin: '1',
@@ -2058,22 +2311,6 @@ export const typeCollectionItemAlternative: BFFMetadataBase = {
   defTextId: 'alternativeItemDefText',
 };
 
-export const newLangItemCollectionItemEng: BFFMetadataBase = {
-  id: 'engItem',
-  nameInData: 'english',
-  type: 'collectionItem',
-  textId: 'alternativeItemText',
-  defTextId: 'alternativeItemDefText',
-};
-
-export const newLangItemCollectionItemSwe: BFFMetadataBase = {
-  id: 'sweItem',
-  nameInData: 'swedish',
-  type: 'collectionItem',
-  textId: 'alternativeItemText',
-  defTextId: 'alternativeItemDefText',
-};
-
 export const someMainTitleTitleInfoATextVariable: BFFMetadataTextVariable = {
   id: 'someMainTitleVar',
   nameInData: 'title',
@@ -2112,6 +2349,7 @@ export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
   textId: '',
   defTextId: '',
   children: [
+    { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
     {
       childId: 'someNamePartTextVar',
       repeatMin: '1',
@@ -2171,6 +2409,7 @@ export const someNewMetadataGroupRepeatingNamePartWithAttributesGroup: BFFMetada
     textId: '',
     defTextId: '',
     children: [
+      { childId: 'recordInfo', repeatMin: '1', repeatMax: '1' },
       {
         childId: 'someNamePartTextVar',
         repeatMin: '0',

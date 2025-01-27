@@ -131,7 +131,7 @@ export const transformRecord = (
   });
 };
 
-const transformRecordData = (
+export const transformRecordData = (
   dataRecordGroup: DataGroup,
   formMetadata: FormMetaData,
 ) => {
@@ -194,7 +194,7 @@ const transformData = (data: CoraData, metadata: FormMetaData) => {
   }
 
   console.warn('Unhandled metadata type', metadata.type);
-  return data;
+  return transformDataAtomic(data as DataAtomic);
 };
 
 const transformRecordLink = (data: RecordLink) => {
