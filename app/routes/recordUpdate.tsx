@@ -26,11 +26,11 @@ import {
   data,
   type LoaderFunctionArgs,
   type MetaFunction,
+  useLoaderData,
 } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from 'react-router';
-import { getValidatedFormData, parseFormData } from 'remix-hook-form';
+import { getValidatedFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
@@ -62,10 +62,16 @@ export const action = async ({
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
   const formData = await request.formData();
-  const parsedFormData = (await parseFormData(formData)) as any;
-  const validationType =
-    parsedFormData.output?.recordInfo?.validationType?.value;
-  invariant(validationType, 'Failed to extract validationType from form data');
+
+  const { validationType } = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+  });
+
+  invariant(validationType, 'Failed to get validation type from record');
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationType,
@@ -122,9 +128,8 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
 
-  if (record?.validationType == null) {
-    throw new Error();
-  }
+  invariant(record.validationType, 'Failed to get validation type from record');
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     record.validationType,
