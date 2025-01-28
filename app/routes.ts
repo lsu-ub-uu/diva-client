@@ -21,4 +21,7 @@ export default [
   route('refreshDefinitions', 'routes/refreshDefinitions.tsx'),
   route('autocompleteSearch', 'routes/autocompleteSearch.tsx'),
   route('translations/:lang', 'routes/translations.tsx'),
+
+  /* Playground */
+  route('playground', 'routes/playground.tsx'),
 ] satisfies RouteConfig;

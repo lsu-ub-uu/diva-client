@@ -53,25 +53,36 @@ export const Header = () => {
               style={{ width: 160 }}
             />
           </Link>
-          {devMode && (
-            <Form
-              action='/refreshDefinitions'
-              method='POST'
-            >
-              <input
-                type='hidden'
-                name='returnTo'
-                value={returnTo}
-              />
-              <Button type='submit'>
-                Refresh Def <CachedIcon />
-              </Button>
-            </Form>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
+            {devMode && (
+              <Link
+                component={RouterLink}
+                to='/playground'
+                sx={{ mr: 'auto' }}
+              >
+                Playground
+              </Link>
+            )}
+            {devMode && (
+              <Form
+                action='/refreshDefinitions'
+                method='POST'
+              >
+                <input
+                  type='hidden'
+                  name='returnTo'
+                  value={returnTo}
+                />
+                <Button type='submit'>
+                  Refresh Def <CachedIcon />
+                </Button>
+              </Form>
+            )}
 
-          <LanguageSwitcher />
+            <LanguageSwitcher />
 
-          <Login />
+            <Login />
+          </div>
         </Box>
       </Container>
     </Box>
