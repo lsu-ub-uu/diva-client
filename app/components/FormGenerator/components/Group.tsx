@@ -75,10 +75,9 @@ export const Group = ({
   if (component.mode === 'output' && hasNoValues) {
     return null;
   }
-
   return (
     <Grid
-      size={12}
+      size={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
       className={`${styles.group} anchorLink`}
     >
@@ -121,6 +120,7 @@ export const Group = ({
           <Grid
             container
             spacing={2}
+            id='bbbb'
           >
             {component.components && (
               <ComponentList
