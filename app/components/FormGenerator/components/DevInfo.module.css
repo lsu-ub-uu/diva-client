@@ -46,6 +46,8 @@
     grid-template-columns: 1fr 1fr;
     padding: 4px;
     background: #444;
+    scrollbar-color: rgb(117, 89, 142) -moz-default-background-color;
+    scrollbar-width: thin;
   }
 
   pre {

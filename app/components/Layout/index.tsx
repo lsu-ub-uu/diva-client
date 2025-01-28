@@ -41,7 +41,10 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         </MemberBar>
         <Header />
       </AppBar>
-      <Container className={styles.container}>
+      <Container
+        maxWidth='xl'
+        className={styles.container}
+      >
         <Grid container>
           <Grid
             size={12}
