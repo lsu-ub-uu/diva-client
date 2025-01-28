@@ -22,6 +22,7 @@ import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type { ReactNode } from 'react';
+import styles from './layout.module.css';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -40,10 +41,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         </MemberBar>
         <Header />
       </AppBar>
-      <Container
-        maxWidth='lg'
-        sx={{ minHeight: '100vh' }}
-      >
+      <Container className={styles.container}>
         <Grid container>
           <Grid
             size={12}
