@@ -63,7 +63,6 @@ export const RepeatingVariable = ({
       control={control}
       component={component}
       name={currentComponentNamePath}
-      parentPresentationStyle={parentPresentationStyle}
       renderCallback={(
         variableArrayPath: string,
         actionButtonGroup: ReactNode,
