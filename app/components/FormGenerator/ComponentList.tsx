@@ -33,10 +33,10 @@ export const ComponentList = ({
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps) => {
-  return components.map((c, i) => (
+  return components.map((component, i) => (
     <Component
-      key={getCurrentComponentNamePath(c, path)}
-      component={c}
+      key={getCurrentComponentNamePath(component, path)}
+      component={component}
       idx={i}
       path={path}
       parentPresentationStyle={parentPresentationStyle}

@@ -42,7 +42,6 @@ interface TextOrNumberVariableProps {
 
 export const TextOrNumberVariable = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
   parentPresentationStyle,
@@ -64,7 +63,7 @@ export const TextOrNumberVariable = ({
       key={reactKey}
       size={{
         xs: 12,
-        sm: renderElementGridWrapper ? component.gridColSpan : 12,
+        sm: component.gridColSpan ?? 12,
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >

@@ -17,37 +17,37 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React, { Fragment, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { Button, Grid2 as Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
+import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Fragment, type ReactNode } from 'react';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { useRemixFormContext } from 'remix-hook-form';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponentWithData;
   renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
-  hasValue?: boolean;
 }
 
-export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+export const FieldArrayComponent = ({
+  control,
+  name,
+  component,
+  renderCallback,
+}: FieldArrayComponentProps) => {
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
-    control: props.control,
-    name: props.name,
+    control: control,
+    name: name,
   });
   const handleAppend = async () => {
-    append(createDefaultValuesFromComponent(props.component, true));
+    append(createDefaultValuesFromComponent(component, true));
   };
 
   const handleMove = async (prev: number, next: number) => {
@@ -59,16 +59,16 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   };
 
   return (
-    <Grid
-      key={`${props.name}_grid`}
-      size={{ xs: 12, sm: props.component.gridColSpan }}
-      id={`anchor_${addAttributesToName(props.component, props.component.name)}`}
+    /*    <Grid
+      size={{ xs: 12, sm: component.gridColSpan }}
+      id={`anchor_${addAttributesToName(component, component.name)} aaaaaaaaaaaaaaaaaa`}
       container
       spacing={1}
-    >
+    >*/
+    <React.Fragment key={`${name}_fac`}>
       <Controller
-        control={props.control}
-        name={props.name}
+        control={control}
+        name={name}
         render={({ fieldState }) => (
           <>
             {fieldState.error && (
@@ -78,50 +78,46 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         )}
       />
       {fields.map((field, index) => {
-        const actionButtonGroup = props.component.mode === 'input' && (
+        const actionButtonGroup = component.mode === 'input' && (
           <ActionButtonGroup
-            entityName={`${t(props.component.label ?? '')}`}
-            hideMoveButtons={isComponentSingularAndOptional(props.component)}
+            entityName={`${t(component.label ?? '')}`}
+            hideMoveButtons={isComponentSingularAndOptional(component)}
             moveUpButtonDisabled={index === 0}
             moveUpButtonAction={() => handleMove(index, index - 1)}
             moveDownButtonDisabled={index === fields.length - 1}
             moveDownButtonAction={() => handleMove(index, index + 1)}
             deleteButtonDisabled={
-              fields.length <= (props.component.repeat?.repeatMin ?? 1)
+              fields.length <= (component.repeat?.repeatMin ?? 1)
             }
             deleteButtonAction={() => handleRemove(index)}
-            entityType={props.component.type}
+            entityType={component.type}
             key={`${field.id}_${index}_f`}
           />
         );
 
         return (
           <Fragment key={`${field.id}_${index}_a`}>
-            {props.renderCallback(
-              `${props.name}[${index}]` as const,
-              actionButtonGroup,
-            )}
+            {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
       })}
 
-      {props.component.mode === 'input' &&
-        fields.length < (props.component.repeat?.repeatMax ?? 1) && (
+      {component.mode === 'input' &&
+        fields.length < (component.repeat?.repeatMax ?? 1) && (
           <Grid size={12}>
             <Button
               fullWidth
               variant='outlined'
-              disabled={
-                fields.length >= (props.component.repeat?.repeatMax ?? 1)
-              }
+              disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
               disableRipple
               endIcon={<AddCircleOutlineIcon />}
             >
-              {t(props.component.label as string)}
+              {t(component.label as string)}
             </Button>
           </Grid>
         )}
-    </Grid>
+    </React.Fragment>
+    /*</Grid>*/
   );
 };

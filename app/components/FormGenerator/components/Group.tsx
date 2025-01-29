@@ -120,7 +120,6 @@ export const Group = ({
           <Grid
             container
             spacing={2}
-            id='bbbb'
           >
             {component.components && (
               <ComponentList
