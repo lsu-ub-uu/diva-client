@@ -30,6 +30,8 @@ import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
+import styles from './Form.module.css';
+
 export interface RecordFormProps {
   record?: BFFDataRecord;
   formSchema: RecordFormSchema;
@@ -55,15 +57,10 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { handleSubmit, reset } = methods;
 
   return (
-    <Box
-      component={Form}
+    <Form
       method='POST'
-      sx={{
-        width: '100%',
-        opacity: submitting ? 0.5 : 1,
-        pointerEvents: submitting ? 'none' : 'all',
-        pb: 4,
-      }}
+      className={styles.form}
+      data-submitting={submitting}
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
@@ -74,25 +71,10 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
         />
       </RemixFormProvider>
 
-      <AppBar
-        position='fixed'
-        style={{
-          backgroundColor: '#eee',
-          top: 'auto',
-          bottom: 0,
-          display: 'block',
-        }}
-      >
+      <div className={styles.toolbar}>
         <Container maxWidth='xl'>
           <Toolbar>
-            <Box
-              component='div'
-              sx={{ mt: 1, mb: 1, width: '100%' }}
-              display='flex'
-              justifyContent='flex-end'
-              alignItems='center'
-              gap={2}
-            >
+            <div className={styles.toolbarActions}>
               <Button
                 disabled={submitting}
                 disableRipple
@@ -113,10 +95,10 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
               >
                 {t('divaClient_SubmitButtonText')}
               </Button>
-            </Box>
+            </div>
           </Toolbar>
         </Container>
-      </AppBar>
-    </Box>
+      </div>
+    </Form>
   );
 };

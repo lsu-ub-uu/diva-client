@@ -37,7 +37,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
       >
         <NavigationLoader />
         <MemberBar color='#efefef'>
-          <p>AppBar</p>
+          <p>MemberBar</p>
         </MemberBar>
         <Header />
       </AppBar>
