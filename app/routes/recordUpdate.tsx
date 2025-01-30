@@ -21,15 +21,9 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/auth/sessions.server';
-import {
-  type ActionFunctionArgs,
-  data,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from 'react-router';
+import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from 'react-router';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -49,60 +43,9 @@ import { Alert, AlertTitle } from '@mui/material';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary = RouteErrorBoundary;
+import type { Route } from './+types/recordUpdate';
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: ActionFunctionArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
-  const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
-  const formData = await request.formData();
-  const parsedFormData = (await parseFormData(formData)) as any;
-  const validationType =
-    parsedFormData.output?.recordInfo?.validationType?.value;
-  invariant(validationType, 'Failed to extract validationType from form data');
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    validationType,
-    'update',
-  );
-  const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
-  const {
-    errors,
-    data: validatedFormData,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(formData, resolver);
-
-  if (errors) {
-    return { errors, defaultValues };
-  }
-
-  try {
-    await updateRecord(
-      context.dependencies,
-      validationType,
-      recordId,
-      validatedFormData as unknown as BFFDataRecord,
-      auth,
-    );
-    session.flash('notification', {
-      severity: 'success',
-      summary: `Record was successfully updated`,
-    });
-  } catch (error) {
-    console.error(error);
-    session.flash('notification', createNotificationFromAxiosError(error));
-  }
-
-  return data({}, await getResponseInitWithSession(session));
-};
-
-export async function loader({ request, params, context }: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { t } = context.i18n;
@@ -110,8 +53,6 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const notification = session.get('notification');
 
   const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
 
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies: context.dependencies,
@@ -146,13 +87,64 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.ActionArgs) => {
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuthentication(session);
+  const formData = await request.formData();
+  const parsedFormData = (await parseFormData(formData)) as any;
+  const validationType =
+    parsedFormData.output?.recordInfo?.validationType?.value;
+  invariant(validationType, 'Failed to extract validationType from form data');
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
+    validationType,
+    'update',
+  );
+  const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
+  const {
+    errors,
+    data: validatedFormData,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData(formData, resolver);
+
+  if (errors) {
+    return { errors, defaultValues };
+  }
+
+  try {
+    await updateRecord(
+      context.dependencies,
+      validationType,
+      params.recordId,
+      validatedFormData as unknown as BFFDataRecord,
+      auth,
+    );
+    session.flash('notification', {
+      severity: 'success',
+      summary: `Record was successfully updated`,
+    });
+  } catch (error) {
+    console.error(error);
+    session.flash('notification', createNotificationFromAxiosError(error));
+  }
+
+  return data({}, await getResponseInitWithSession(session));
+};
+
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function UpdateRecordRoute() {
-  const { record, formDefinition, notification } =
-    useLoaderData<typeof loader>();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function UpdateRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { record, formDefinition, notification } = loaderData;
   useNotificationSnackbar(notification);
 
   const lastUpdate =

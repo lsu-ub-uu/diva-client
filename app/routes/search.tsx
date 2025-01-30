@@ -24,20 +24,18 @@ import {
   getSessionFromCookie,
 } from '@/auth/sessions.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { LoaderFunctionArgs } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { useLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary = RouteErrorBoundary;
+import type { Route } from './+types/search';
 
 export const loader = async ({
   request,
   params,
   context,
-}: LoaderFunctionArgs) => {
+}: Route.LoaderArgs) => {
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
   const session = await getSessionFromCookie(request);
@@ -65,8 +63,10 @@ export const loader = async ({
   return { searchForm, query, searchResults };
 };
 
-export default function SearchRoute() {
-  const { searchForm, query, searchResults } = useLoaderData<typeof loader>();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function SearchRoute({ loaderData }: Route.ComponentProps) {
+  const { searchForm, query, searchResults } = loaderData;
 
   const { t } = useTranslation();
   return (

@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ActionFunctionArgs } from 'react-router';
 import { redirect } from 'react-router';
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
+import type { Route } from './+types/refreshDefinitions';
+
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
 
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
