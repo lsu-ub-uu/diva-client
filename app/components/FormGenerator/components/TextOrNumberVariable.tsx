@@ -84,6 +84,7 @@ export const TextOrNumberVariable = ({
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
+        textStyle={component.textStyle}
         parentPresentationStyle={parentPresentationStyle}
         hasValue={hasValue}
         inputFormat={

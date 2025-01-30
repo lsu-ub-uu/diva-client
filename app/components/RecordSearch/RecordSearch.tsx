@@ -48,11 +48,11 @@ export const RecordSearch = ({
       />
       {searchResults && (
         <>
-          <h3>
+          <h2>
             {t('divaClient_searchPageResultText', {
               numberOfResults: searchResults?.totalNo,
             })}
-          </h3>
+          </h2>
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
               <li

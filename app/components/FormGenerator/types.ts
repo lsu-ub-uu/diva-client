@@ -66,6 +66,35 @@ export interface FormComponentBase {
   type: FormComponentType;
   name: string;
 }
+
+export type TextStyle =
+  | 'h1TextStyle'
+  | 'h2TextStyle'
+  | 'h3TextStyle'
+  | 'h4TextStyle'
+  | 'h5TextStyle'
+  | 'h6TextStyle'
+  | 'bodyTextStyle';
+
+export type ChildStyle =
+  | 'zeroChildStyle'
+  | 'oneChildStyle'
+  | 'twoChildStyle'
+  | 'threeChildStyle'
+  | 'fourChildStyle'
+  | 'fiveChildStyle'
+  | 'sixChildStyle'
+  | 'sevenChildStyle'
+  | 'eightChildStyle'
+  | 'nineChildStyle'
+  | 'tenChildStyle'
+  | 'elevenChildStyle'
+  | 'twelveChildStyle'
+  | 'compactChildStyle'
+  | 'frameChildStyle'
+  | 'specificationChildStyle'
+  | 'rowBasedChildStyle';
+
 export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode?: FormComponentMode;
@@ -77,7 +106,8 @@ export interface FormComponentMetadata extends FormComponentBase {
   repeat?: FormComponentRepeat;
   finalValue?: string;
   gridColSpan?: number;
-  childStyle?: string[];
+  childStyle?: ChildStyle[];
+  textStyle?: TextStyle;
   presentationStyle?: string; // frame etc
 }
 
@@ -125,17 +155,7 @@ export interface FormComponentGroup extends FormComponentMetadata {
   components?: FormComponent[];
 }
 
-export interface FormComponentText extends FormComponentMetadata {
-  textStyle?:
-    | 'h1TextStyle'
-    | 'h2TextStyle'
-    | 'h3TextStyle'
-    | 'h4TextStyle'
-    | 'h5TextStyle'
-    | 'h6TextStyle'
-    | 'bodyTextStyle';
-  childStyle?: string[];
-}
+export type FormComponentText = FormComponentMetadata;
 
 export interface FormComponentGuiElement extends FormComponentBase {
   url?: string; // used for guiElementLink

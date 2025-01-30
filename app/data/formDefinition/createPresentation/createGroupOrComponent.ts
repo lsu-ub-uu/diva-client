@@ -80,6 +80,7 @@ export const createGroupOrComponent = (
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
   );
+  const textStyle = presentationChildReference.textStyle;
   const gridColSpan = convertChildStylesToGridColSpan(
     presentationChildReference.childStyle ?? [],
   );
@@ -116,6 +117,7 @@ export const createGroupOrComponent = (
     return {
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...textVar,
     } as FormComponentTextVar;
@@ -130,6 +132,7 @@ export const createGroupOrComponent = (
     return {
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...numVar,
     } as FormComponentNumVar;
@@ -144,6 +147,7 @@ export const createGroupOrComponent = (
     return {
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...collVar,
     } as FormComponentCollVar;
@@ -158,6 +162,7 @@ export const createGroupOrComponent = (
     return {
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...recordLink,
     } as FormComponentCollVar;
@@ -169,7 +174,12 @@ export const createGroupOrComponent = (
       metadataChildReferences,
       presentation as BFFPresentationContainer,
     );
-    return { childStyle, gridColSpan, ...container } as FormComponentContainer;
+    return {
+      childStyle,
+      gridColSpan,
+      textStyle,
+      ...container,
+    } as FormComponentContainer;
   }
 
   if (presentation.type === 'pGroup') {
@@ -182,6 +192,7 @@ export const createGroupOrComponent = (
       repeat,
       childStyle,
       gridColSpan,
+      textStyle,
       ...group,
     } as FormComponentGroup;
   }
@@ -190,6 +201,7 @@ export const createGroupOrComponent = (
     ...commonParameters,
     repeat,
     childStyle,
+    textStyle,
     gridColSpan,
   }) as FormComponentGroup;
 };

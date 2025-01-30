@@ -22,6 +22,7 @@ import {
   FormLabel,
   IconButton,
   TextField,
+  Typography,
 } from '@mui/material';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -30,6 +31,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import type { TextStyle } from '@/components/FormGenerator/types';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -48,13 +50,14 @@ interface ControlledTextFieldProps {
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
   linkedDataToShow?: string;
+  textStyle?: TextStyle;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
   const showLabel = !props.linkedDataToShow && props.showLabel;
-
+  const inline = props.parentPresentationStyle === 'inline';
   if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
@@ -68,8 +71,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
           <FormControl
             fullWidth
             sx={{
-              flexDirection:
-                props.parentPresentationStyle === 'inline' ? 'row' : 'column',
+              flexDirection: inline ? 'row' : 'column',
               alignItems: 'baseline',
             }}
           >
@@ -151,12 +153,14 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               />
             ) : (
               <>
-                <Box
-                  component='span'
-                  sx={{ pl: 2 }}
+                <Typography
+                  variant={props.textStyle ?? 'bodyTextStyle'}
+                  sx={{
+                    pl: showLabel && inline ? 2 : 0,
+                  }}
                 >
                   {field.value || props.linkedDataToShow}
-                </Box>
+                </Typography>
                 <input
                   type='hidden'
                   value={field.value}
