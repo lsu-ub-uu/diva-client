@@ -20,10 +20,11 @@ import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
-import { type ReactNode } from 'react';
+import { type ReactNode, useContext } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 import styles from './FormComponent.module.css';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
@@ -42,6 +43,8 @@ export const RecordLinkWithSearch = ({
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { control } = useRemixFormContext();
+  const { showTooltips } = useContext(FormGeneratorContext);
+
   return (
     <div
       className={styles.component}
@@ -59,7 +62,7 @@ export const RecordLinkWithSearch = ({
         name={name}
         showLabel={component.showLabel}
         placeholder={component.placeholder}
-        tooltip={component.tooltip}
+        tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}

@@ -48,6 +48,7 @@ export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
       <FormGenerator
         formSchema={props.formSchema}
         boxGroups={false}
+        showTooltips={false}
       />
     </FormProvider>
   );

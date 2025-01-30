@@ -57,7 +57,7 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
 }: GroupProps) => {
-  const { boxGroups } = useContext(FormGeneratorContext);
+  const { boxGroups, showTooltips } = useContext(FormGeneratorContext);
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
 
@@ -92,18 +92,20 @@ export const Group = ({
                   component.headlineLevel,
                 )}
               />
-              <Tooltip
-                title={t(component.tooltip?.title as string)}
-                body={t(component.tooltip?.body as string)}
-              >
-                <IconButton
-                  disableRipple
-                  color='info'
-                  aria-label='info'
+              {showTooltips && (
+                <Tooltip
+                  title={t(component.tooltip?.title as string)}
+                  body={t(component.tooltip?.body as string)}
                 >
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    disableRipple
+                    color='info'
+                    aria-label='info'
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </CardTitle>
           )}
           <Attributes

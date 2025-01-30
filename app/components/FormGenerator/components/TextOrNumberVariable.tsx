@@ -49,7 +49,7 @@ export const TextOrNumberVariable = ({
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData, showTooltips } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   if (component.mode === 'output' && !hasValue) {
@@ -80,7 +80,7 @@ export const TextOrNumberVariable = ({
         showLabel={component.showLabel}
         name={name}
         placeholder={component.placeholder}
-        tooltip={component.tooltip}
+        tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}

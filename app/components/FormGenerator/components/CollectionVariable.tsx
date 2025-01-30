@@ -21,9 +21,10 @@ import { checkIfComponentHasValue } from '@/components/FormGenerator/formGenerat
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
-import { type ReactNode } from 'react';
+import { type ReactNode, useContext } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from './FormComponent.module.css';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -41,6 +42,7 @@ export const CollectionVariable = ({
   attributes,
   actionButtonGroup,
 }: CollectionVariableProps) => {
+  const { showTooltips } = useContext(FormGeneratorContext);
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
   if (component.mode === 'output' && !hasValue) {
@@ -65,7 +67,7 @@ export const CollectionVariable = ({
         label={component.label ?? ''}
         showLabel={component.showLabel}
         placeholder={component.placeholder}
-        tooltip={component.tooltip}
+        tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
         options={component.options}
         readOnly={!!component.finalValue}
