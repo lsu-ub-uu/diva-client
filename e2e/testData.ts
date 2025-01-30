@@ -1,7 +1,7 @@
 import type { DataGroup } from '@/cora/cora-data/CoraData.server';
 import { faker } from '@faker-js/faker';
 
-export const divaOuputWithMinimalData: DataGroup = {
+export const divaOutputWithMinimalData: DataGroup = {
   name: 'output',
   children: [
     {

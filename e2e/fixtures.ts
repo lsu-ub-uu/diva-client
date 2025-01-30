@@ -1,6 +1,6 @@
 import type { DataGroup } from '@/cora/cora-data/CoraData.server';
 import { test as base } from '@playwright/test';
-import { divaOuputWithMinimalData } from './testData';
+import { divaOutputWithMinimalData } from './testData';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 
 const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
@@ -33,7 +33,7 @@ export const test = base.extend<Fixtures>({
 
   divaOutput: async ({ request, authtoken }, use) => {
     const response = await request.post(`${CORA_API_URL}/record/diva-output`, {
-      data: divaOuputWithMinimalData,
+      data: divaOutputWithMinimalData,
       headers: {
         Accept: 'application/vnd.uub.record+json',
         'Content-Type': 'application/vnd.uub.record+json',

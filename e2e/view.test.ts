@@ -1,5 +1,5 @@
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import { test } from '../fixtures';
+import { test } from './fixtures';
 import { expect } from '@playwright/test';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
@@ -14,9 +14,6 @@ test('View diva-output', async ({ page, divaOutput }) => {
   );
 
   await page.goto(`/view/diva-output/${recordId}`);
-  await page.getByRole('button', { name: 'Logga in' }).click();
-  await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-  await expect(await page.getByText('Logga ut')).toBeVisible();
 
   await expect(await page.getByLabel(/^Id/)).toHaveText(recordId);
   await expect(await page.getByLabel(/^Posttyp/)).toHaveText('diva-output');

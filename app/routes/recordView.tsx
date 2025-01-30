@@ -17,13 +17,13 @@
  */
 
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
+import { useLoaderData } from 'react-router';
 import {
+  getAuthentication,
   getSessionFromCookie,
-  requireAuthentication,
 } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
@@ -45,7 +45,7 @@ export const loader = async ({
   context,
 }: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = getAuthentication(session);
 
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
@@ -54,7 +54,7 @@ export const loader = async ({
     dependencies: context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
   const title = `${getRecordTitle(record)} | DiVA`;
 
