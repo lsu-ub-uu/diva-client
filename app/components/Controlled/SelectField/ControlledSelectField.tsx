@@ -49,6 +49,7 @@ interface ControlledSelectFieldProps {
   hasValue?: boolean;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  parentPresentationStyle?: string;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
@@ -74,7 +75,14 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
         field: { onChange, ref, value, name, onBlur },
         fieldState: { error },
       }) => (
-        <FormControl fullWidth>
+        <FormControl
+          fullWidth
+          sx={{
+            flexDirection:
+              props.parentPresentationStyle === 'inline' ? 'row' : 'column',
+            alignItems: 'baseline',
+          }}
+        >
           <Box
             sx={{
               display: 'flex',

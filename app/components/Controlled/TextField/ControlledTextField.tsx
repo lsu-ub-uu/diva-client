@@ -67,13 +67,11 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
         return (
           <FormControl
             fullWidth
-            sx={
-              {
-                /* flexDirection:
+            sx={{
+              flexDirection:
                 props.parentPresentationStyle === 'inline' ? 'row' : 'column',
-              alignItems: 'baseline',*/
-              }
-            }
+              alignItems: 'baseline',
+            }}
           >
             <Box
               sx={{
