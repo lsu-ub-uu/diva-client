@@ -18,20 +18,16 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import type { SxProps} from '@mui/material';
-import { Typography as MuiTypography } from '@mui/material';
+import type { SxProps } from '@mui/material';
+import {
+  Typography as MuiTypography,
+  type TypographyProps as MuiTypographyProps,
+} from '@mui/material';
 import type { ElementType } from 'react';
+import type { TextStyle } from '@/components/FormGenerator/types';
 
 export interface DivaTypographyVariants {
-  variant:
-    | 'h1TextStyle'
-    | 'h2TextStyle'
-    | 'h3TextStyle'
-    | 'h4TextStyle'
-    | 'h5TextStyle'
-    | 'h6TextStyle'
-    | 'bodyTextStyle'
-    | 'boldTextStyle';
+  variant: TextStyle;
 }
 
 interface TypographyProps extends DivaTypographyVariants {
@@ -39,23 +35,57 @@ interface TypographyProps extends DivaTypographyVariants {
   sx?: SxProps;
 }
 
-const mapHeaderStyleToComponent = (headerStyle: string): ElementType => {
-  // hack to get header components to render correctly
-  return headerStyle.slice(0, 2) as ElementType;
+const mapTextStyleToComponent = (textStyle: TextStyle): ElementType => {
+  switch (textStyle) {
+    case 'h1TextStyle':
+      return 'h1';
+    case 'h2TextStyle':
+      return 'h1';
+    case 'h3TextStyle':
+      return 'h1';
+    case 'h4TextStyle':
+      return 'h1';
+    case 'h5TextStyle':
+      return 'h1';
+    case 'h6TextStyle':
+      return 'h1';
+    default:
+      return 'p';
+  }
 };
 
+const mapTextStyleToTypographyVariant = (
+  textStyle: TextStyle,
+): MuiTypographyProps['variant'] => {
+  switch (textStyle) {
+    case 'h1TextStyle':
+      return 'h1';
+    case 'h2TextStyle':
+      return 'h1';
+    case 'h3TextStyle':
+      return 'h1';
+    case 'h4TextStyle':
+      return 'h1';
+    case 'h5TextStyle':
+      return 'h1';
+    case 'h6TextStyle':
+      return 'h1';
+    default:
+      return 'body1';
+  }
+};
 export const Typography = (props: TypographyProps) => {
   const { t } = useTranslation();
 
   return (
     <MuiTypography
-      component={
-        props.variant.startsWith('bo')
-          ? 'p'
-          : mapHeaderStyleToComponent(props.variant)
-      }
-      variant={props.variant}
-      sx={props.sx}
+      component={mapTextStyleToComponent(props.variant)}
+      variant={mapTextStyleToTypographyVariant(props.variant)}
+      sx={{
+        fontWeight: props.variant === 'boldTextStyle' ? 'bold' : 'medium',
+        fontStyle: props.variant === 'italicTextStyle' ? 'italic' : 'normal',
+        ...props.sx,
+      }}
     >
       {t(props.text)}
     </MuiTypography>

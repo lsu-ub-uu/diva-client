@@ -74,7 +74,9 @@ export type TextStyle =
   | 'h4TextStyle'
   | 'h5TextStyle'
   | 'h6TextStyle'
-  | 'bodyTextStyle';
+  | 'bodyTextStyle'
+  | 'italicTextStyle'
+  | 'boldTextStyle';
 
 export type ChildStyle =
   | 'zeroChildStyle'

@@ -5,6 +5,7 @@
 .resultListItem {
   position: relative;
   display: block;
+  padding: var(--gap);
   border-left: 2px solid rgb(var(--beigeMain));
   border-right: 2px solid rgb(var(--beigeMain));
   border-bottom: 2px solid rgb(var(--beigeMain));

@@ -91,11 +91,11 @@ export const divaTheme = createTheme({
       fontWeight: '400',
     },
     h2TextStyle: {
-      fontSize: '1.3rem',
+      fontSize: '1.4rem',
       fontWeight: '400',
     },
     h3TextStyle: {
-      fontSize: '2rem',
+      fontSize: '1.2rem',
       fontWeight: '400',
     },
     h4TextStyle: {
