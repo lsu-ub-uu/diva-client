@@ -79,4 +79,6 @@
   --font-weight-bold: 800;
 
   --line-height-base: 1.5;
+
+  --desktop-breakpoint: 900px;
 }

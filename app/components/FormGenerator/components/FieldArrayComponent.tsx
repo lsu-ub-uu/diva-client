@@ -20,13 +20,14 @@
 import React, { Fragment, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
-import { Button, Grid2 as Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
+import styles from './FormComponent.module.css';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -59,12 +60,6 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    /*    <Grid
-      size={{ xs: 12, sm: component.gridColSpan }}
-      id={`anchor_${addAttributesToName(component, component.name)} aaaaaaaaaaaaaaaaaa`}
-      container
-      spacing={1}
-    >*/
     <React.Fragment key={`${name}_fac`}>
       <Controller
         control={control}
@@ -104,7 +99,7 @@ export const FieldArrayComponent = ({
 
       {component.mode === 'input' &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
-          <Grid size={12}>
+          <div className={styles.component}>
             <Button
               fullWidth
               variant='outlined'
@@ -115,9 +110,8 @@ export const FieldArrayComponent = ({
             >
               {t(component.label as string)}
             </Button>
-          </Grid>
+          </div>
         )}
     </React.Fragment>
-    /*</Grid>*/
   );
 };

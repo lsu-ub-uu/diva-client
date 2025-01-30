@@ -20,18 +20,16 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import {
-  checkIfPresentationStyleOrParentIsInline,
+  checkIfPresentationStyleIsInline,
   getGroupLevel,
   headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { Card } from '@/components/Card/Card';
-import styles from './Group.module.css';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
@@ -43,6 +41,8 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
+import styles from './FormComponent.module.css';
+import { IconButton } from '@mui/material';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -62,10 +62,7 @@ export const Group = ({
   const { t } = useTranslation();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
-  const inline = checkIfPresentationStyleOrParentIsInline(
-    component,
-    parentPresentationStyle,
-  );
+  const inline = checkIfPresentationStyleIsInline(component);
 
   // TODO: Check for valuable data instead
   const hasNoValues = hasOnlyAttributes(
@@ -76,10 +73,10 @@ export const Group = ({
     return null;
   }
   return (
-    <Grid
-      size={component.gridColSpan ?? 12}
+    <div
+      className={`${styles.component} anchorLink`}
+      data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      className={`${styles.group} anchorLink`}
     >
       <DevInfo
         component={component}
@@ -117,9 +114,9 @@ export const Group = ({
           {actionButtonGroup}
         </CardHeader>
         <CardContent>
-          <Grid
-            container
-            spacing={2}
+          <div
+            className={styles.container}
+            data-layout={inline ? 'inline' : 'grid'}
           >
             {component.components && (
               <ComponentList
@@ -130,9 +127,9 @@ export const Group = ({
                 path={currentComponentNamePath}
               />
             )}
-          </Grid>
+          </div>
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   );
 };

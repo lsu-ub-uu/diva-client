@@ -17,14 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Grid2 as Grid,
-  Toolbar,
-} from '@mui/material';
+import { AppBar, Box, Button, Container, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -90,42 +83,38 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
           display: 'block',
         }}
       >
-        <Container maxWidth='lg'>
-          <Grid container>
-            <Grid size={3} />
-            <Grid size={9}>
-              <Toolbar>
-                <Box
-                  component='div'
-                  sx={{ mt: 1, mb: 1, width: '100%' }}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                >
-                  <Button
-                    disabled={submitting}
-                    disableRipple
-                    variant='contained'
-                    color='secondary'
-                    sx={{ height: 40 }}
-                    onClick={() => reset()}
-                  >
-                    {t('divaClient_ResetButtonText')}
-                  </Button>
-                  <Button
-                    disabled={submitting}
-                    type='submit'
-                    disableRipple
-                    variant='contained'
-                    color='primary'
-                    sx={{ height: 40 }}
-                  >
-                    {t('divaClient_SubmitButtonText')}
-                  </Button>
-                </Box>
-              </Toolbar>
-            </Grid>
-          </Grid>
+        <Container maxWidth='xl'>
+          <Toolbar>
+            <Box
+              component='div'
+              sx={{ mt: 1, mb: 1, width: '100%' }}
+              display='flex'
+              justifyContent='flex-end'
+              alignItems='center'
+              gap={2}
+            >
+              <Button
+                disabled={submitting}
+                disableRipple
+                variant='outlined'
+                color='secondary'
+                sx={{ height: 40 }}
+                onClick={() => reset()}
+              >
+                {t('divaClient_ResetButtonText')}
+              </Button>
+              <Button
+                disabled={submitting}
+                type='submit'
+                disableRipple
+                variant='contained'
+                color='primary'
+                sx={{ height: 40 }}
+              >
+                {t('divaClient_SubmitButtonText')}
+              </Button>
+            </Box>
+          </Toolbar>
         </Container>
       </AppBar>
     </Box>

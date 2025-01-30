@@ -17,12 +17,12 @@
  */
 
 import type { FormComponentText } from '@/components/FormGenerator/types';
-import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Typography } from '@/components/Typography/Typography';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+
+import styles from './FormComponent.module.css';
 
 interface TextProps {
   reactKey: string;
@@ -30,18 +30,12 @@ interface TextProps {
   component: FormComponentText;
 }
 
-export const Text = ({
-  reactKey,
-  renderElementGridWrapper,
-  component,
-}: TextProps) => {
+export const Text = ({ reactKey, component }: TextProps) => {
   return (
-    <Grid
+    <div
       key={reactKey}
-      size={{
-        xs: 12,
-        sm: renderElementGridWrapper ? component.gridColSpan : 12,
-      }}
+      className={styles.component}
+      data-colspan={component.gridColSpan}
       style={{
         flexBasis:
           convertChildStyleToString(component.childStyle) === 'compact'
@@ -56,6 +50,6 @@ export const Text = ({
         variant={component.textStyle ?? 'bodyTextStyle'}
         text={component.name}
       />
-    </Grid>
+    </div>
   );
 };

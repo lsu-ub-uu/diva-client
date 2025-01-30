@@ -18,12 +18,12 @@
 
 import type { FormComponentCollVar } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import styles from './FormComponent.module.css';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -36,7 +36,6 @@ interface CollectionVariableProps {
 
 export const CollectionVariable = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
   attributes,
@@ -48,13 +47,11 @@ export const CollectionVariable = ({
     return null;
   }
   return (
-    <Grid
+    <div
       key={reactKey}
+      className={styles.component}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      size={{
-        xs: 12,
-        sm: renderElementGridWrapper ? component.gridColSpan : 12,
-      }}
+      data-colspan={component.gridColSpan ?? 12}
     >
       <DevInfo
         component={component}
@@ -77,6 +74,6 @@ export const CollectionVariable = ({
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
-    </Grid>
+    </div>
   );
 };
