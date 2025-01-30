@@ -16,8 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
-import { type ActionFunctionArgs, data, type LinksFunction, type LoaderFunctionArgs } from 'react-router';
+import {
+  data,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useRouteLoaderData,
+} from 'react-router';
 import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
@@ -36,22 +43,14 @@ import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
 
+import type { Route } from './+types/root';
+
 const { MODE } = import.meta.env;
 
 interface DocumentProps {
   children: ReactNode;
 }
-
-export const links: LinksFunction = () => [
-  {
-    rel: 'icon',
-    type: 'image/svg+xml',
-    href: MODE === 'development' ? dev_favicon : favicon,
-  },
-  { rel: 'stylesheet', href: rootCss },
-];
-
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
@@ -60,7 +59,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return { auth, locale, loginUnits };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {
@@ -74,6 +73,15 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 }
+
+export const links: Route.LinksFunction = () => [
+  {
+    rel: 'icon',
+    type: 'image/svg+xml',
+    href: MODE === 'development' ? dev_favicon : favicon,
+  },
+  { rel: 'stylesheet', href: rootCss },
+];
 
 const Document = withEmotionCache(
   ({ children }: DocumentProps, emotionCache) => {
