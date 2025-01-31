@@ -57,7 +57,7 @@ export const Typography = (props: TypographyProps) => {
   return (
     <MuiTypography
       component={mapTextStyleToComponent(props.variant)}
-      variant={props.variant}
+      {...props}
       sx={{
         fontWeight: props.variant === 'boldTextStyle' ? 'bold' : 'medium',
         ...props.sx,
