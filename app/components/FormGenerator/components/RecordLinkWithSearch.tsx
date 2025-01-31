@@ -28,7 +28,6 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;

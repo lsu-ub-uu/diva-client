@@ -32,7 +32,6 @@ import styles from './FormComponent.module.css';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentTextVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;

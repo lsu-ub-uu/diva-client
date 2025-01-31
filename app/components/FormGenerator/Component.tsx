@@ -102,7 +102,6 @@ export const Component = ({
       component={component}
       reactKey={reactKey}
       name={`${currentComponentNamePath}.value`}
-      renderElementGridWrapper={true}
       parentPresentationStyle={parentPresentationStyle}
       attributes={
         isComponentWithData(component) && (

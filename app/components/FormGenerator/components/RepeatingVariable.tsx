@@ -17,10 +17,7 @@
  */
 
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import {
-  checkIfComponentHasValue,
-  checkIfSingularComponentHasValue,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
@@ -69,7 +66,6 @@ export const RepeatingVariable = ({
             component={component}
             reactKey={variableArrayPath}
             name={`${variableArrayPath}.value`}
-            renderElementGridWrapper={false}
             parentPresentationStyle={parentPresentationStyle}
             attributes={
               <Attributes

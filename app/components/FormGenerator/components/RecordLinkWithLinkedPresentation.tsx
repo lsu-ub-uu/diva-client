@@ -27,7 +27,6 @@ import styles from '@/components/FormGenerator/components/FormComponent.module.c
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;
@@ -36,7 +35,6 @@ interface RecordLinkWithLinkedPresentationProps {
 
 export const RecordLinkWithLinkedPresentation = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
   attributes,

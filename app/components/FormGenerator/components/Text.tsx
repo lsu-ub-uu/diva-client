@@ -26,7 +26,6 @@ import styles from './FormComponent.module.css';
 
 interface TextProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentText;
 }
 

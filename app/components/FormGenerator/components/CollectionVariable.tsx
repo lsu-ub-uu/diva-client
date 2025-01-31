@@ -31,7 +31,6 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 
 interface CollectionVariableProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentCollVar;
   name: string;
   parentPresentationStyle: string | undefined;
