@@ -22,7 +22,6 @@ import {
   FormLabel,
   IconButton,
   TextField,
-  Typography,
 } from '@mui/material';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -32,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import type { TextStyle } from '@/components/FormGenerator/types';
+import { Typography } from '@/components/Typography/Typography';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -90,7 +90,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   required={props.required}
                   error={error !== undefined}
                   sx={{
-                    p: '2px 4px',
+                    pr: 1,
                     display: 'flex',
                     alignItems: 'center',
                     mr: 'auto',
@@ -156,11 +156,10 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 <Typography
                   variant={props.textStyle ?? 'bodyTextStyle'}
                   sx={{
-                    pl: showLabel && inline ? 2 : 0,
+                    pl: showLabel && !inline ? 2 : 0,
                   }}
-                >
-                  {field.value || props.linkedDataToShow}
-                </Typography>
+                  text={field.value || props.linkedDataToShow}
+                />
                 <input
                   type='hidden'
                   value={field.value}

@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentCollVar } from '@/components/FormGenerator/types';
+import type {
+  FormComponentCollVar,
+  TextStyle,
+} from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
@@ -31,14 +34,17 @@ interface CollectionVariableProps {
   renderElementGridWrapper: boolean;
   component: FormComponentCollVar;
   name: string;
+  parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  textStyle?: TextStyle;
 }
 
 export const CollectionVariable = ({
   reactKey,
   component,
   name,
+  parentPresentationStyle,
   attributes,
   actionButtonGroup,
 }: CollectionVariableProps) => {
@@ -75,6 +81,8 @@ export const CollectionVariable = ({
         hasValue={hasValue}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
+        parentPresentationStyle={parentPresentationStyle}
+        textStyle={component.textStyle}
       />
     </div>
   );

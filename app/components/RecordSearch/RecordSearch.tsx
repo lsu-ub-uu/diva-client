@@ -63,6 +63,7 @@ export const RecordSearch = ({
                   record={record}
                   formSchema={record.presentation!}
                 />
+
                 <Box
                   sx={(theme) => ({
                     position: 'absolute',

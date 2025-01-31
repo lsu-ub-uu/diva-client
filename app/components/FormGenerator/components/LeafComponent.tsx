@@ -97,6 +97,7 @@ export const LeafComponent = ({
         renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
+        parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
