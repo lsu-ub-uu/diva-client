@@ -1,6 +1,10 @@
 .searchForm {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
   gap: var(--gap);
+
+  button[type='submit'] {
+    padding-left: calc(var(--gap) * 6);
+    padding-right: calc(var(--gap) * 6);
+  }
 }
