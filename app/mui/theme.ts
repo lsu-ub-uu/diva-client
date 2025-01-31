@@ -30,6 +30,7 @@ declare module '@mui/material/styles' {
     h5TextStyle: CSSProperties;
     h6TextStyle: CSSProperties;
     bodyTextStyle: CSSProperties;
+    italicTextStyle?: CSSProperties;
     boldTextStyle: CSSProperties;
   }
 
@@ -41,6 +42,7 @@ declare module '@mui/material/styles' {
     h5TextStyle?: CSSProperties;
     h6TextStyle?: CSSProperties;
     bodyTextStyle?: CSSProperties;
+    italicTextStyle?: CSSProperties;
     boldTextStyle: CSSProperties;
   }
 
@@ -72,6 +74,7 @@ declare module '@mui/material/Typography' {
     h6TextStyle: true;
     bodyTextStyle: true;
     boldTextStyle: true;
+    italicTextStyle: true;
   }
 }
 
@@ -91,11 +94,11 @@ export const divaTheme = createTheme({
       fontWeight: '400',
     },
     h2TextStyle: {
-      fontSize: '1.3rem',
+      fontSize: '1.6rem',
       fontWeight: '400',
     },
     h3TextStyle: {
-      fontSize: '2rem',
+      fontSize: '1.4rem',
       fontWeight: '400',
     },
     h4TextStyle: {
@@ -106,6 +109,10 @@ export const divaTheme = createTheme({
     },
     h6TextStyle: {
       fontSize: '2rem',
+    },
+    italicTextStyle: {
+      fontSize: '1rem',
+      fontStyle: 'italic',
     },
     bodyTextStyle: {
       fontSize: '1rem',

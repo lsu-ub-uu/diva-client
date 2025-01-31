@@ -78,16 +78,9 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
     <SidebarLayout
       sidebarContent={
         <NavigationPanel
-          links={
-            formDefinition
-              ? linksFromFormSchema(
-                  removeComponentsWithoutValuesFromSchema(
-                    formDefinition,
-                    record,
-                  ),
-                ) || []
-              : []
-          }
+          links={linksFromFormSchema(
+            removeComponentsWithoutValuesFromSchema(formDefinition, record),
+          )}
         />
       }
     >

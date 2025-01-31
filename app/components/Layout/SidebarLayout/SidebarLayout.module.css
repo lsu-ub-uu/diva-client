@@ -17,11 +17,28 @@
  */
 
 .sidebarLayout {
+  display: grid;
+  gap: calc(var(--gap) * 8);
+
+  @media (width >= 900px) {
+    grid-template-columns: 3fr 9fr;
+  }
+
   aside {
+    @media (width < 900px) {
+      display: none;
+    }
+
     position: sticky;
     top: 0;
-    max-height: 80vh;
+    max-height: 100vh;
+    padding-bottom: 64px;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+
+  main {
+    /* Take account for toolbar height */
+    padding-bottom: 64px;
   }
 }

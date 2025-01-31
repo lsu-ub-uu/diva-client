@@ -1,10 +1,10 @@
 {
-  "someNewMetadataGroupWithAttributesNameInData": {
+  "someNewMetadataGroupWithAttributesNameInData_colour_pink": {
     "_colour": "someAttributeValue3",
     "someNameInData": {
       "value": "Erik"
     },
-    "someNameInDataTextWithAttrib": {
+    "someNameInDataTextWithAttrib_colour_pink": {
       "value": "AttribVar",
       "_colour": "someAttributeValue3"
     },
@@ -22,17 +22,17 @@
         "value": "4"
       }
     ],
-    "someNameInDataNumberWithAttributeVar": [
+    "someNameInDataNumberWithAttributeVar_colour_pink": [
       {
         "value": "1",
         "_colour": "someAttributeValue3"
       }
     ],
-    "nationalSubjectCategoryWithAttributes": {
+    "nationalSubjectCategoryWithAttributes_colour_pink": {
       "value": "recordLinkWithAttrib",
       "_colour": "someAttributeValue3"
     },
-    "nationalSubjectCategoryRepeatingWithAttributes": [
+    "nationalSubjectCategoryRepeatingWithAttributes_colour_pink": [
       {
         "value": "recordLinkRepeatingWithAttrib",
         "_colour": "someAttributeValue4"

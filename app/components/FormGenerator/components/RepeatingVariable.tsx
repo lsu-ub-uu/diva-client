@@ -17,10 +17,7 @@
  */
 
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import {
-  checkIfComponentHasValue,
-  checkIfSingularComponentHasValue,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
@@ -44,12 +41,17 @@ export const RepeatingVariable = ({
 }: RepeatingVariableProps) => {
   const { control, getValues } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
-  const hasValue = checkIfComponentHasValue(getValues, component.name);
+
   const hasLinkedDataValue = checkIfSingularComponentHasValue(
     getValues,
     currentComponentNamePath,
   );
-  return !hasLinkedDataValue && linkedData ? null : (
+
+  if (!hasLinkedDataValue && linkedData) {
+    return null;
+  }
+
+  return (
     <FieldArrayComponent
       key={reactKey}
       control={control}
@@ -64,7 +66,6 @@ export const RepeatingVariable = ({
             component={component}
             reactKey={variableArrayPath}
             name={`${variableArrayPath}.value`}
-            renderElementGridWrapper={false}
             parentPresentationStyle={parentPresentationStyle}
             attributes={
               <Attributes
@@ -76,7 +77,6 @@ export const RepeatingVariable = ({
           />
         );
       }}
-      hasValue={hasValue}
     />
   );
 };

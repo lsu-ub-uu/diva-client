@@ -25,26 +25,11 @@ import recordManuscriptWithSameNameInDataVarWithoutAllVars from '@/__mocks__/bff
 import coraRecordManuscriptWithSameNameInDataWithOneGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInDataWithOneGroup.json';
 
 import {
-  addAttributesToArray,
-  addAttributesToNameForRecords,
-  findSearchPart,
-  getMetadataChildrenWithSiblings,
-  getNamesFromChildren,
-  getSameNameInDatas,
-  hasComponentAttributes,
-  hasCoraAttributes,
-  hasSameNameInDatas,
-  isDataAtomic,
-  isDataGroup,
-  isRecordLink,
-  isRepeating,
-  transformObjectAttributes,
+  transformDataGroup,
   transformRecord,
-  traverseDataGroup,
-  updateGroupWithPossibleNewNameWithAttribute,
+  transformRecordData,
 } from '../transformRecord.server';
 import type {
-  Attributes,
   DataGroup,
   RecordWrapper,
 } from '@/cora/cora-data/CoraData.server';
@@ -66,6 +51,14 @@ import type {
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import {
+  createdByLink,
+  dataDividerLink,
+  epoCollectionItem,
+  faoCollectionItem,
+  idTextVar,
+  kalCollectionItem,
+  languageCollectionVar,
+  nationalSubjectCategoryLink,
   nationSubjectCategoryValidationTypeData,
   newLangCollVariable,
   newLangItemCollection,
@@ -76,6 +69,9 @@ import {
   pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
   pSomeNewMetadataGroupTitleInfoAlternativePGroup,
   pSomeNewMetadataGroupTitleInfoPGroup,
+  recordInfoMetadata,
+  recordTypeLink,
+  someAbstractTextVariable,
   someAlternativeTitleMetadataChildGroup,
   someMainTitleTextVariable,
   someMainTitleTitleInfoATextVariable,
@@ -91,14 +87,21 @@ import {
   someOtherNamePartTextVariable,
   someOtherNamePartWithAttributesTextVariable,
   someSubTitleTextVariable,
+  sometitleMetadataChildGroup,
   someValidationTypeForRepeatingTitleInfoId,
   someValidationTypeNamePartId,
   someValidationTypeNamePartWithAttributesId,
+  tsCreatedTextVar,
+  tsUpdatedTextVar,
   typeCollectionItemAlternative,
   typeCollVariable,
   typeItemCollection,
+  updatedByLink,
+  updatedGroup,
+  validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import { describe } from 'vitest';
 
 describe('transformRecord', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -143,6 +146,23 @@ describe('transformRecord', () => {
       someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
       someNamePartWithAttributesTextVariable,
       someOtherNamePartWithAttributesTextVariable,
+      recordInfoMetadata,
+      someAbstractTextVariable,
+      createdByLink,
+      dataDividerLink,
+      idTextVar,
+      tsCreatedTextVar,
+      recordTypeLink,
+      updatedGroup,
+      updatedByLink,
+      tsUpdatedTextVar,
+      validationTypeLink,
+      nationalSubjectCategoryLink,
+      faoCollectionItem,
+      epoCollectionItem,
+      kalCollectionItem,
+      languageCollectionVar,
+      sometitleMetadataChildGroup,
     ]);
     presentationPool = listToPool<BFFPresentation>([
       pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
@@ -730,18 +750,9 @@ describe('transformRecord', () => {
     });
   });
 
-  describe('traverseDataGroup', () => {
-    it('should return a root group', () => {
-      const test = { name: 'divaOutput', children: [] };
-      const transformData = traverseDataGroup(test);
-      const expected = {
-        divaOutput: {},
-      };
-      expect(transformData).toStrictEqual(expected);
-    });
-
+  describe('transformRecordData', () => {
     it('should return a root group with a dataAtomic child', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -750,7 +761,21 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            name: 'title',
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           title: {
@@ -762,7 +787,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with a childGroup with atomic children', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -776,7 +801,28 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'group',
+            name: 'childGroup',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            children: [
+              {
+                type: 'textVariable',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+                name: 'title',
+              },
+            ],
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           childGroup: {
@@ -790,7 +836,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with two dataAtomic children', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -803,7 +849,27 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'title',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+          {
+            type: 'textVariable',
+            name: 'age',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           title: {
@@ -818,7 +884,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with repeating children', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -837,7 +903,26 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test as DataGroup);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'exampleNumberVar',
+            repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
+          },
+          {
+            type: 'textVariable',
+            name: 'exampleNumberVarTwo',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           exampleNumberVar: [
@@ -857,7 +942,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with repeating children with attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -878,7 +963,21 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test as DataGroup);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'exampleNumberVar',
+            repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           exampleNumberVar: [
@@ -897,7 +996,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with two different repeating children', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -922,7 +1021,26 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test as DataGroup);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'exampleNumberVar',
+            repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
+          },
+          {
+            type: 'textVariable',
+            name: 'exampleNumberVarTwo',
+            repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           exampleNumberVar: [
@@ -947,7 +1065,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with a repeating childGroup with atomic children', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -972,7 +1090,27 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'group',
+            name: 'childGroup',
+            repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
+            children: [
+              {
+                type: 'textVariable',
+                name: 'title',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+              },
+            ],
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           childGroup: [
@@ -993,7 +1131,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with a non-repeating RecordLink', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1011,7 +1149,20 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           nationalSubjectCategory: {
@@ -1023,7 +1174,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with a repeating RecordLinks having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1062,7 +1213,20 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           nationalSubjectCategory: [
@@ -1081,7 +1245,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with multiple variables with same nameInData having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1100,7 +1264,31 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'subject',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+          },
+          {
+            type: 'textVariable',
+            name: 'subject',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'eng',
+            },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           subject_language_eng: {
@@ -1117,7 +1305,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with multiple variables with same nameInData and one having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1133,7 +1321,28 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'subject',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+          },
+          {
+            type: 'textVariable',
+            name: 'subject',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         divaOutput: {
           subject: {
@@ -1150,7 +1359,7 @@ describe('transformRecord', () => {
 
     it(`should return a root group with multiple variables with same 
     nameInData and one having attributes with formPathLookup`, () => {
-      const dataRecordGroup = {
+      const data: DataGroup = {
         children: [
           {
             children: [
@@ -1181,55 +1390,40 @@ describe('transformRecord', () => {
         ],
         name: 'output',
       };
-      const formPathLookup = {
-        'output.titleInfo.title': {
-          name: 'title',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'output',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'group',
+            name: 'titleInfo',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            children: [
+              {
+                type: 'textVariable',
+                name: 'title',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+              },
+            ],
           },
-        },
-        'output.titleInfo': {
-          name: 'titleInfo',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
+          {
+            type: 'group',
+            name: 'titleInfo',
+            attributes: { type: 'alternative' },
+            repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
+            children: [
+              {
+                type: 'textVariable',
+                name: 'title',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+              },
+            ],
           },
-        },
-        'output.titleInfo_type_alternative.title': {
-          name: 'title',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-        },
-        'output.titleInfo_type_alternative': {
-          name: 'titleInfo',
-          type: 'group',
-          attributes: {
-            type: 'alternative',
-          },
-          repeat: {
-            repeatMin: 0,
-            repeatMax: 1,
-          },
-        },
-        output: {
-          name: 'output',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-        },
+        ],
       };
-      const transformData = traverseDataGroup(
-        dataRecordGroup as DataGroup,
-        formPathLookup as Record<string, FormMetaData>,
-      );
+
+      const transformData = transformRecordData(data, metadata);
       const expected = {
         output: {
           titleInfo: {
@@ -1253,7 +1447,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with multiple colVar with same nameInData having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1272,7 +1466,32 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'output',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'collectionVariable',
+            name: 'domain',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'eng',
+            },
+          },
+          {
+            type: 'collectionVariable',
+            name: 'domain',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           domain_language_eng: {
@@ -1289,7 +1508,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with multiple recordLinks with same nameInData having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1327,7 +1546,32 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = traverseDataGroup(test);
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'eng',
+            },
+          },
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           nationalSubjectCategory_language_swe: {
@@ -1344,7 +1588,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with groups with same nameInData having attributes', () => {
-      const test = {
+      const data = {
         name: 'divaOutput',
         children: [
           {
@@ -1373,58 +1617,46 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const formPathLookup = {
-        divaOutput: {
-          name: 'divaOutput',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'group',
+            name: 'author',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'eng',
+            },
+            children: [
+              {
+                type: 'textVariable',
+                name: 'name',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+              },
+            ],
           },
-          type: 'group',
-        },
-        'divaOutput.author_language_eng': {
-          attributes: {
-            language: 'eng',
+          {
+            type: 'group',
+            name: 'author',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+            children: [
+              {
+                type: 'textVariable',
+                name: 'name',
+                repeat: { repeatMin: 1, repeatMax: 1 },
+              },
+            ],
           },
-          name: 'author',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          type: 'group',
-        },
-        'divaOutput.author_language_eng.name': {
-          name: 'name',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          type: 'textVariable',
-        },
-        'divaOutput.author_language_swe': {
-          attributes: {
-            language: 'swe',
-          },
-          name: 'author',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          type: 'group',
-        },
-        'divaOutput.author_language_swe.name': {
-          name: 'name',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          type: 'textVariable',
-        },
+        ],
       };
-      const transformData = traverseDataGroup(
-        test,
-        formPathLookup as Record<string, FormMetaData>,
-      );
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
           author_language_eng: {
@@ -1445,7 +1677,7 @@ describe('transformRecord', () => {
     });
 
     it('should return a root group with variables with same nameInData and one having attributes', () => {
-      const test = {
+      const data = {
         name: 'output',
         children: [
           {
@@ -1461,29 +1693,29 @@ describe('transformRecord', () => {
           },
         ],
       };
-      const formPathLookup = {
-        output: {
-          name: 'output',
-          type: 'group',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        },
-        'output.name_type_personal.namePart': {
-          name: 'namePart',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        },
-        'output.name_type_personal.namePart_language_swe': {
-          name: 'namePart',
-          type: 'textVariable',
-          attributes: { type: 'given' },
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        },
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'output',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            name: 'namePart',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+          {
+            type: 'textVariable',
+            name: 'namePart',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            attributes: {
+              language: 'swe',
+            },
+          },
+        ],
       };
 
-      const transformData = traverseDataGroup(
-        test,
-        formPathLookup as Record<string, FormMetaData>,
-      );
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         output: {
           namePart: {
@@ -1497,1048 +1729,334 @@ describe('transformRecord', () => {
       };
       expect(transformData).toStrictEqual(expected);
     });
-    it('aaaaaaa recordInfo', () => {
-      const test = {
-        name: 'divaOutput',
+
+    it('handles fields with multiple matching metadatas', () => {
+      const dataRecordGroup = {
         children: [
           {
+            repeatId: '0',
             children: [
               {
-                children: [
-                  {
-                    name: 'linkedRecordType',
-                    value: 'system',
-                  },
-                  {
-                    name: 'linkedRecordId',
-                    value: 'divaData',
-                  },
-                ],
-                name: 'dataDivider',
+                name: 'namePart',
+                attributes: {
+                  type: 'family',
+                },
+                value: 'eeeeeee',
               },
               {
-                children: [
-                  {
-                    name: 'linkedRecordType',
-                    value: 'validationType',
-                  },
-                  {
-                    name: 'linkedRecordId',
-                    value: 'divaOutputSwepub',
-                  },
-                ],
-                name: 'validationType',
-              },
-              {
-                name: 'id',
-                value: 'divaOutputSwepub:3727881616799576',
-              },
-              {
-                children: [
-                  {
-                    name: 'linkedRecordType',
-                    value: 'recordType',
-                  },
-                  {
-                    name: 'linkedRecordId',
-                    value: 'divaOutputSwepub',
-                  },
-                ],
-                name: 'type',
-              },
-              {
-                children: [
-                  {
-                    name: 'linkedRecordType',
-                    value: 'user',
-                  },
-                  {
-                    name: 'linkedRecordId',
-                    value: 'coraUser:490742519075086',
-                  },
-                ],
-                name: 'createdBy',
-              },
-              {
-                name: 'tsCreated',
-                value: '2024-10-02T11:31:06.108115Z',
-              },
-              {
-                repeatId: '0',
-                children: [
-                  {
-                    name: 'tsUpdated',
-                    value: '2024-10-02T11:31:06.108115Z',
-                  },
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'user',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'coraUser:490742519075086',
-                      },
-                    ],
-                    name: 'updatedBy',
-                  },
-                ],
-                name: 'updated',
+                name: 'namePart',
+                attributes: {
+                  type: 'given',
+                },
+                value: 'gil',
               },
             ],
-            name: 'recordInfo',
+            name: 'name',
+            attributes: {
+              type: 'personal',
+            },
+          },
+        ],
+        name: 'output',
+      } as DataGroup;
+
+      const formMetaData = {
+        name: 'output',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        children: [
+          {
+            name: 'name',
+            type: 'group',
+            attributes: {
+              type: 'personal',
+            },
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            children: [
+              {
+                name: 'person',
+                type: 'recordLink',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'diva-person',
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                attributes: {
+                  type: 'family',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                attributes: {
+                  type: 'given',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'role',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                children: [
+                  {
+                    name: 'roleTerm',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'affiliation',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                children: [
+                  {
+                    name: 'organisation',
+                    type: 'recordLink',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    linkedRecordType: 'diva-organisation',
+                  },
+                  {
+                    name: 'name',
+                    type: 'group',
+                    attributes: {
+                      type: 'corporate',
+                    },
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    children: [
+                      {
+                        name: 'namePart',
+                        type: 'textVariable',
+                        repeat: {
+                          repeatMin: 1,
+                          repeatMax: 1,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    name: 'identifier',
+                    type: 'textVariable',
+                    attributes: {
+                      type: 'ror',
+                    },
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'country',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'description',
+                    type: 'textVariable',
+                    repeat: {
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
+            name: 'name',
+            type: 'group',
             attributes: {
-              language: 'eng',
+              type: 'corporate',
             },
-            name: 'domain',
-            value: 'hb',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            children: [
+              {
+                name: 'organisation',
+                type: 'recordLink',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'diva-organisation',
+              },
+              {
+                name: 'namePart',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'role',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                children: [
+                  {
+                    name: 'roleTerm',
+                    type: 'collectionVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                ],
+              },
+              {
+                name: 'identifier',
+                type: 'textVariable',
+                attributes: {
+                  type: 'ror',
+                },
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'description',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+              },
+            ],
           },
+        ],
+      } satisfies FormMetaData;
+
+      const actual = transformDataGroup(dataRecordGroup, formMetaData);
+
+      const expected = {
+        name_type_personal: [
           {
-            attributes: {
-              language: 'swe',
-            },
-            name: 'domain',
-            value: 'uu',
+            namePart_type_family: [
+              {
+                value: 'eeeeeee',
+                _type: 'family',
+              },
+            ],
+            namePart_type_given: [
+              {
+                value: 'gil',
+                _type: 'given',
+              },
+            ],
+            _type: 'personal',
           },
         ],
       };
-      const transformData = traverseDataGroup(test);
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it("should handle data that doesn't match metadata", () => {
+      const data = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'title',
+            value: 'testTitleVal',
+          },
+        ],
+      };
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            name: 'notTitle',
+          },
+        ],
+      };
+
+      const transformData = transformRecordData(data, metadata);
+
+      const expected = {
+        divaOutput: {},
+      };
+
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should handle unknown metadataType', () => {
+      const data = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'title',
+            value: 'testTitleVal',
+          },
+        ],
+      };
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'GLORP',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            name: 'title',
+          },
+        ],
+      } as unknown as FormMetaData;
+
+      const transformData = transformRecordData(data, metadata);
+
       const expected = {
         divaOutput: {
-          recordInfo: {
-            createdBy: {
-              value: 'coraUser:490742519075086',
-            },
-            dataDivider: {
-              value: 'divaData',
-            },
-            id: {
-              value: 'divaOutputSwepub:3727881616799576',
-            },
-            tsCreated: {
-              value: '2024-10-02T11:31:06.108115Z',
-            },
-            type: {
-              value: 'divaOutputSwepub',
-            },
-            updated: [
-              {
-                tsUpdated: {
-                  value: '2024-10-02T11:31:06.108115Z',
-                },
-                updatedBy: {
-                  value: 'coraUser:490742519075086',
-                },
-              },
-            ],
-            validationType: {
-              value: 'divaOutputSwepub',
-            },
-          },
-          domain_language_eng: {
-            value: 'hb',
-            _language: 'eng',
-          },
-          domain_language_swe: {
-            value: 'uu',
-            _language: 'swe',
+          title: {
+            value: 'testTitleVal',
           },
         },
       };
+
       expect(transformData).toStrictEqual(expected);
-    });
-  });
-
-  describe('helper methods', () => {
-    describe('check for type of metadata', () => {
-      it('isDataGroup return true', () => {
-        const actual = isDataGroup({
-          name: 'isGroup',
-          children: [],
-        });
-
-        expect(actual).toBe(true);
-      });
-
-      it('isDataGroup return false', () => {
-        const actual = isDataGroup({
-          name: 'isAtomic',
-          value: 'notAGroup',
-        });
-
-        expect(actual).toBe(false);
-      });
-
-      it('isDataAtomic return true', () => {
-        const actual = isDataAtomic({
-          name: 'isAtomic',
-          value: 'notAGroup',
-        });
-        expect(actual).toBe(true);
-      });
-
-      it('isDataAtomic return false', () => {
-        const actual = isDataAtomic({
-          name: 'isGroup',
-          children: [],
-        });
-        expect(actual).toBe(false);
-      });
-
-      it('isRecordLink return false for not DataGroup', () => {
-        const actual = isRecordLink({
-          name: 'isAtomic',
-          value: 'notARecordLink',
-        });
-
-        expect(actual).toBe(false);
-      });
-
-      it('isRecordLink return true for RecordLink', () => {
-        const actual = isRecordLink({
-          name: 'isGroup',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'aLinkedRecordType',
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'aLinkedRecordId',
-            },
-          ],
-        });
-        expect(actual).toBe(true);
-      });
-
-      it('isRepeating return false for repeating', () => {
-        const actual = isRepeating(
-          { name: 'domain', value: 'hh' },
-          'divaOutput.domain',
-          {
-            'divaOutput.domain': {
-              name: 'domain',
-              type: 'collectionVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          },
-        );
-
-        expect(actual).toBe(false);
-      });
-
-      it('isRepeating return true for repeating', () => {
-        const actual = isRepeating(
-          { name: 'domain', value: 'hh' },
-          'divaOutput.domain',
-          {
-            'divaOutput.domain': {
-              name: 'domain',
-              type: 'collectionVariable',
-              repeat: { repeatMin: 0, repeatMax: 1 },
-            },
-          },
-        );
-
-        expect(actual).toBe(true);
-      });
-    });
-
-    describe('transformObjectAttributes', () => {
-      it('transformObjectAttributes convert empty attributes', () => {
-        const actual = transformObjectAttributes(undefined);
-        expect(actual).toStrictEqual([]);
-      });
-
-      it('transformObjectAttributes convert attributes', () => {
-        const actual = transformObjectAttributes({ colour: 'red' });
-        expect(actual).toStrictEqual([{ _colour: 'red' }]);
-      });
-
-      it('should be able to transform object attributes with underscore prefix in key', () => {
-        const testAttributes: Attributes = {
-          attr1: 'someAttr1Value',
-          attr2: 'someAttr2Value',
-        };
-        const actual = transformObjectAttributes(testAttributes);
-        const expected = [
-          {
-            _attr1: 'someAttr1Value',
-          },
-          {
-            _attr2: 'someAttr2Value',
-          },
-        ];
-        expect(actual).toStrictEqual(expected);
-      });
-    });
-
-    describe('hasSameNameInDatas', () => {
-      it('hasSameNameInDatas returns true when multiple siblings exist', () => {
-        const actual = hasSameNameInDatas(
-          [
-            {
-              name: 'subject',
-              value: 'Naturvetenskap',
-              attributes: { language: 'swe' },
-            },
-            {
-              name: 'subject',
-              value: 'Natural sciences',
-              attributes: { language: 'eng' },
-            },
-            { name: 'code', value: '1' },
-          ],
-          'subject',
-        );
-        expect(actual).toBe(true);
-      });
-
-      it('hasSameNameInDatas returns false when single', () => {
-        const actual = hasSameNameInDatas(
-          [
-            {
-              name: 'subject',
-              value: 'Natural sciences',
-              attributes: { language: 'eng' },
-            },
-            { name: 'code', value: '1' },
-          ],
-          'subject',
-        );
-        expect(actual).toBe(false);
-      });
-
-      it('hasSameNameInDatas returns true with name nameInData with different attribute', () => {
-        const actual = hasSameNameInDatas(
-          [
-            {
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt titel',
-                },
-              ],
-              name: 'titleInfo',
-            },
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          'titleInfo',
-        );
-        expect(actual).toBe(true);
-      });
-
-      it('hasSameNameInDatas returns true when post has single but metadata has multiple', () => {
-        const actual = hasSameNameInDatas(
-          [
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          'titleInfo',
-          ['titleInfo'],
-        );
-        expect(actual).toBe(true);
-      });
-
-      it('hasSameNameInDatas returns true when post has single but metadata has multiple 2', () => {
-        const actual = hasSameNameInDatas(
-          [
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          'titleInfo',
-          [],
-        );
-        expect(actual).toBe(false);
-      });
-    });
-
-    describe('updateGroupNameWithAttribute', () => {
-      it('updates name with possible name', () => {
-        const actual = updateGroupWithPossibleNewNameWithAttribute(
-          {
-            name: 'author',
-            children: [{ name: 'name', value: 'value2' }],
-            attributes: { language: 'swe' },
-          },
-          'author_language_swe',
-        );
-        expect(actual).toStrictEqual({
-          name: 'author_language_swe',
-          children: [{ name: 'name', value: 'value2' }],
-          attributes: { language: 'swe' },
-        });
-      });
-      it('updates name with previous name', () => {
-        const actual = updateGroupWithPossibleNewNameWithAttribute(
-          {
-            name: 'author',
-            children: [{ name: 'name', value: 'value2' }],
-            attributes: { language: 'swe' },
-          },
-          'author',
-        );
-        expect(actual).toStrictEqual({
-          name: 'author',
-          children: [{ name: 'name', value: 'value2' }],
-          attributes: { language: 'swe' },
-        });
-      });
-    });
-
-    it('addAttributesToArray', () => {
-      const actual = addAttributesToArray({
-        name: 'author',
-        children: [{ name: 'name', value: 'value2' }],
-      });
-      expect(actual).toStrictEqual([]);
-    });
-
-    it('addAttributesToArray with 1 attributes', () => {
-      const actual = addAttributesToArray({
-        name: 'author',
-        children: [{ name: 'name', value: 'value2' }],
-        attributes: { language: 'swe' },
-      });
-      expect(actual).toStrictEqual(['language_swe']);
-    });
-
-    it('addAttributesToArray with two attributes', () => {
-      const actual = addAttributesToArray({
-        name: 'author',
-        children: [{ name: 'name', value: 'value2' }],
-        attributes: { language: 'swe', otherLanguage: 'eng' },
-      });
-      expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
-    });
-
-    describe('hasCoraAttributes', () => {
-      it('hasCoraAttributes', () => {
-        const actual = hasCoraAttributes('output.titleInfo', [], {
-          'output.titleInfo.mainTitle': {
-            name: 'mainTitle',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo': {
-            name: 'titleInfo',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative.mainTitle': {
-            name: 'mainTitle',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative': {
-            name: 'titleInfo',
-            type: 'group',
-            attributes: { type: 'alternative' },
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          output: {
-            name: 'output',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-        });
-        expect(actual).toStrictEqual({
-          name: 'titleInfo',
-          type: 'group',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        });
-      });
-
-      it('hasCoraAttributes returns with attributes', () => {
-        const actual = hasCoraAttributes(
-          'output.titleInfo',
-          ['lang_amh', 'type_alternative'],
-          {
-            'output.titleInfo.mainTitle': {
-              name: 'mainTitle',
-              type: 'textVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            'output.titleInfo': {
-              name: 'titleInfo',
-              type: 'group',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            'output.titleInfo_type_alternative.mainTitle': {
-              name: 'mainTitle',
-              type: 'textVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            'output.titleInfo_type_alternative': {
-              name: 'titleInfo',
-              type: 'group',
-              attributes: { type: 'alternative' },
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            output: {
-              name: 'output',
-              type: 'group',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          },
-        );
-        expect(actual).toStrictEqual({
-          name: 'titleInfo',
-          type: 'group',
-          attributes: { type: 'alternative' },
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        });
-      });
-
-      it('hasCoraAttributes returns without attribute', () => {
-        const actual = hasCoraAttributes('output.titleInfo', ['lang_ady'], {
-          'output.titleInfo.title': {
-            name: 'title',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo': {
-            name: 'titleInfo',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative.title': {
-            name: 'title',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative': {
-            name: 'titleInfo',
-            type: 'group',
-            attributes: { type: 'alternative' },
-            repeat: { repeatMin: 0, repeatMax: 1 },
-          },
-          output: {
-            name: 'output',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-        });
-        expect(actual).toStrictEqual(undefined);
-      });
-    });
-
-    describe('addAttributesToNameForRecords', () => {
-      it('adds no attributes to name when not available, no correctChild, no Array', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            name: 'subject',
-            value: 'Naturvetenskap',
-          },
-          undefined,
-          // ['subject']
-        );
-        expect(actual).toStrictEqual('subject');
-      });
-
-      it('adds attributes to name when available, no correctChild, subjectArray', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            name: 'subject',
-            value: 'Naturvetenskap',
-            attributes: {
-              language: 'swe',
-            },
-          },
-          undefined,
-          // ['subject']
-        );
-        expect(actual).toStrictEqual('subject_language_swe');
-      });
-
-      it('adds multiple attributes to name when available, no correctChild, subjectArray', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            name: 'subject',
-            value: 'Naturvetenskap',
-            attributes: {
-              language: 'swe',
-              otherLanguage: 'aak',
-            },
-          },
-          undefined,
-          // ['subject']
-        );
-        expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
-      });
-
-      it('adds no attributes to name when correctChild has none, titleInfoArray', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            children: [{ name: 'title', value: 'EN utmärkt titel' }],
-            name: 'titleInfo',
-            attributes: { lang: 'ady' },
-          },
-          {
-            name: 'titleInfo',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          // ['titleInfo']
-        );
-        expect(actual).toStrictEqual('titleInfo');
-      });
-
-      it('adds multiple attributes to name when with nameInDataArray', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            name: 'titleInfo',
-            value: 'Naturvetenskap',
-            attributes: {
-              language: 'swe',
-              otherLanguage: 'aak',
-            },
-          },
-          {
-            name: 'titleInfo',
-            type: 'group',
-            attributes: { language: 'swe' },
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          // ['titleInfo']
-        );
-        expect(actual).toStrictEqual('titleInfo_language_swe');
-      });
-      it('removed attributes to name when with when not Cora attributes', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            children: [{ name: 'title', value: 'EN utmärkt titel' }],
-            name: 'titleInfo',
-            attributes: { language: 'ady' },
-          },
-          undefined,
-          ['titleInfo'],
-          {
-            'output.titleInfo': {
-              name: 'titleInfo',
-              type: 'group',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-            },
-          },
-          'output.titleInfo',
-        );
-        expect(actual).toStrictEqual('titleInfo');
-      });
-
-      it('removed attributes to name when with when not Cora attributes2', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            children: [{ name: 'title', value: 'asdasdasd' }],
-            name: 'titleInfo',
-            attributes: { lang: 'ain' },
-          },
-          undefined,
-          ['titleInfo', 'titleInfo_lang_ain'],
-          {
-            'output.titleInfo': {
-              name: 'titleInfo',
-              type: 'group',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-            },
-          },
-          'output.titleInfo',
-        );
-        expect(actual).toStrictEqual('titleInfo');
-      });
-
-      it('add attributes to name when with when not Cora attributes3', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            name: 'namePart',
-            attributes: { type: 'family' },
-            value: 'Swenning',
-          },
-          undefined,
-          ['namePart', 'namePart', 'namePart_type_family'],
-          {
-            'output.name_type_personal.namePart_type_family': {
-              name: 'namePart',
-              type: 'textVariable',
-              attributes: { type: 'family' },
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            'output.name_type_personal.namePart_type_given': {
-              name: 'namePart',
-              type: 'textVariable',
-              attributes: { type: 'given' },
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            'output.name_type_personal.namePart': {
-              name: 'namePart',
-              type: 'textVariable',
-              repeat: { repeatMin: 0, repeatMax: 1 },
-            },
-            output: {
-              name: 'output',
-              type: 'group',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          },
-          'output.name.namePart',
-        );
-        expect(actual).toStrictEqual('namePart_type_family');
-      });
-
-      it('add attributes to name when with when not Cora attributes4', () => {
-        const actual = addAttributesToNameForRecords(
-          {
-            repeatId: '0',
-            name: 'languageTerm',
-            attributes: { authority: 'iso639-2b', type: 'code' },
-            value: 'ach',
-          },
-          undefined,
-          ['languageTerm_authority_iso639-2b_type_code'],
-          {
-            'output.language.languageTerm': {
-              name: 'languageTerm',
-              type: 'collectionVariable',
-              attributes: { authority: 'iso639-2b' },
-              repeat: { repeatMin: 1, repeatMax: 1.7976931348623157e308 },
-            },
-            'output.language': {
-              name: 'language',
-              type: 'group',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            output: {
-              name: 'output',
-              type: 'group',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          },
-          'output.language.languageTerm',
-        );
-        expect(actual).toStrictEqual('languageTerm');
-      });
-    });
-
-    describe('getNameFromChildren', () => {
-      it('1', () => {
-        const actual = getNamesFromChildren([
-          {
-            titleInfo: {
-              title: {
-                value: 'EN utmärkt titel',
-              },
-            },
-          },
-          {
-            titleInfo_type_alternative: {
-              title: {
-                value: 'EN utmärkt alternativ titel',
-              },
-              _lang: 'amh',
-              _type: 'alternative',
-            },
-          },
-        ]);
-        expect(actual).toStrictEqual([
-          'titleInfo',
-          'titleInfo_type_alternative',
-        ]);
-      });
-    });
-
-    describe('getSameNameInDatas', () => {
-      it('getSameNameInDatas 1', () => {
-        const actual = getSameNameInDatas(
-          [
-            {
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'ady',
-              },
-            },
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          addAttributesToNameForRecords(
-            {
-              repeatId: '7',
-              children: [
-                { name: 'title', value: 'EN utmärkt alternativ titel' },
-              ],
-              name: 'titleInfo',
-              attributes: { lang: 'amh', type: 'alternative' },
-            },
-            {
-              name: 'titleInfo',
-              type: 'group',
-              attributes: { type: 'alternative' },
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ),
-        );
-        expect(actual).toStrictEqual([
-          'titleInfo',
-          'titleInfo_type_alternative',
-        ]);
-      });
-      it('getSameNameInDatas 2', () => {
-        const actual = getSameNameInDatas(
-          [
-            {
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'ady',
-              },
-            },
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'notTitleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          addAttributesToNameForRecords(
-            {
-              repeatId: '7',
-              children: [
-                { name: 'title', value: 'EN utmärkt alternativ titel' },
-              ],
-              name: 'titleInfo',
-              attributes: { lang: 'amh', type: 'alternative' },
-            },
-            {
-              name: 'titleInfo',
-              type: 'group',
-              attributes: { type: 'alternative' },
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ),
-        );
-        expect(actual).toStrictEqual([
-          'titleInfo',
-          'titleInfo_type_alternative',
-        ]);
-      });
-    });
-    describe('findSearchPart', () => {
-      it('finds part in path from array', () => {
-        const actual = findSearchPart(['titleInfo'], 'output.titleInfo');
-        expect(actual).toBe('output.titleInfo');
-      });
-      it('finds part in path from array2', () => {
-        const actual = findSearchPart(
-          ['titleInfo', 'titleInfo_type_alternative'],
-          'output.titleInfo',
-        );
-        expect(actual).toBe('output.titleInfo');
-      });
-      it('finds part in path from array3', () => {
-        const actual = findSearchPart(
-          ['titleInfo', 'titleInfo_type_alternative'],
-          'output.titleInfo_type_alternative',
-        );
-        expect(actual).toBe('output.titleInfo_type_alternative');
-      });
-      it('finds part in path from array4', () => {
-        const actual = findSearchPart(
-          ['titleInfo_lang_ady'],
-          'output.titleInfo',
-        );
-        expect(actual).toBe('');
-      });
-    });
-    describe('getMetadataChildrenWithSiblings', () => {
-      it('1', () => {
-        const formPathLookup = {
-          'name.namePart': {
-            name: 'namePart',
-            type: 'textVariable',
-            repeat: { repeatMin: 0, repeatMax: 1 },
-          },
-          'name.namePart_language_eng': {
-            name: 'namePart',
-            type: 'textVariable',
-            attributes: { language: 'eng' },
-            repeat: { repeatMin: 0, repeatMax: 1 },
-          },
-          name: {
-            name: 'name',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-        };
-        const actual = getMetadataChildrenWithSiblings(
-          formPathLookup as Record<string, FormMetaData>,
-        );
-        expect(actual).toEqual(['namePart']);
-      });
-
-      it('2', () => {
-        const formPathLookup = {
-          'name.namePart': {
-            name: 'namePart',
-            type: 'textVariable',
-            repeat: { repeatMin: 0, repeatMax: 1 },
-          },
-          name: {
-            name: 'name',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-        };
-        const actual = getMetadataChildrenWithSiblings(
-          formPathLookup as Record<string, FormMetaData>,
-        );
-        expect(actual).toEqual([]);
-      });
-      it('3', () => {
-        const formPathLookup = {
-          'output.titleInfo.title': {
-            name: 'title',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo': {
-            name: 'titleInfo',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative.title': {
-            name: 'title',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-          'output.titleInfo_type_alternative': {
-            name: 'titleInfo',
-            type: 'group',
-            attributes: { type: 'alternative' },
-            repeat: { repeatMin: 0, repeatMax: 1 },
-          },
-          output: {
-            name: 'output',
-            type: 'group',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-          },
-        };
-        const actual = getMetadataChildrenWithSiblings(
-          formPathLookup as Record<string, FormMetaData>,
-        );
-        expect(actual).toEqual(['title', 'titleInfo']);
-      });
-    });
-
-    describe('hasFormComponentAttributes', () => {
-      it('1', () => {
-        const acutal = hasComponentAttributes({
-          name: 'output',
-          type: 'group',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          attributes: {
-            someAttribute: 'blue',
-          },
-        });
-        expect(acutal).toBe(true);
-      });
-
-      it('2', () => {
-        const acutal = hasComponentAttributes({
-          name: 'output',
-          type: 'group',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        });
-        expect(acutal).toBe(false);
-      });
     });
   });
 });

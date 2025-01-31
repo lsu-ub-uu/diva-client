@@ -49,7 +49,6 @@ export const searchRecords = async (
   }
 
   const search = dependencies.searchPool.get(searchType);
-
   const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
   const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
   const transformData = transformToCoraData(formMetaDataPathLookup, query);
@@ -71,7 +70,7 @@ export const searchRecords = async (
     const { listPresentationViewId } = recordType;
 
     const presentationGroup = dependencies.presentationPool.get(
-      listPresentationViewId,
+      search.searchResultPresentation ?? listPresentationViewId,
     ) as BFFPresentationGroup;
     const metadataGroup = dependencies.metadataPool.get(
       presentationGroup.presentationOf,
@@ -97,12 +96,6 @@ const createSearchMetaData = (
   id: string,
 ): FormMetaData => {
   const { metadataPool } = dependencies;
-  const metadata = metadataPool.get(id);
-
-  const metadataGroup: BFFMetadataGroup = metadataPool.get(
-    metadata.id,
-  ) as BFFMetadataGroup;
-
-  const formRootReference = createBFFMetadataReference(metadataGroup.id);
+  const formRootReference = createBFFMetadataReference(id);
   return createMetaDataFromChildReference(formRootReference, metadataPool);
 };

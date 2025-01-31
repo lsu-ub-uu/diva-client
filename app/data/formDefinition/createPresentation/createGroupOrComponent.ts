@@ -80,6 +80,7 @@ export const createGroupOrComponent = (
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
   );
+  const textStyle = presentationChildReference.textStyle;
   const gridColSpan = convertChildStylesToGridColSpan(
     presentationChildReference.childStyle ?? [],
   );
@@ -113,12 +114,13 @@ export const createGroupOrComponent = (
       presentation,
     );
 
-    return {
+    return removeEmpty({
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...textVar,
-    } as FormComponentTextVar;
+    }) as FormComponentTextVar;
   }
 
   if (presentation.type === 'pNumVar') {
@@ -127,12 +129,13 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataNumberVariable,
       presentation,
     );
-    return {
+    return removeEmpty({
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...numVar,
-    } as FormComponentNumVar;
+    }) as FormComponentNumVar;
   }
 
   if (presentation.type === 'pCollVar') {
@@ -141,12 +144,13 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataCollectionVariable,
       presentation,
     );
-    return {
+    return removeEmpty({
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...collVar,
-    } as FormComponentCollVar;
+    }) as FormComponentCollVar;
   }
 
   if (presentation.type === 'pRecordLink') {
@@ -155,12 +159,13 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataRecordLink,
       presentation,
     );
-    return {
+    return removeEmpty({
       repeat,
       childStyle,
+      textStyle,
       gridColSpan,
       ...recordLink,
-    } as FormComponentCollVar;
+    }) as FormComponentCollVar;
   }
 
   if (presentation.type === 'container') {
@@ -169,7 +174,12 @@ export const createGroupOrComponent = (
       metadataChildReferences,
       presentation as BFFPresentationContainer,
     );
-    return { childStyle, gridColSpan, ...container } as FormComponentContainer;
+    return removeEmpty({
+      childStyle,
+      gridColSpan,
+      textStyle,
+      ...container,
+    }) as FormComponentContainer;
   }
 
   if (presentation.type === 'pGroup') {
@@ -178,18 +188,20 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataGroup,
       presentation,
     );
-    return {
+    return removeEmpty({
       repeat,
       childStyle,
       gridColSpan,
+      textStyle,
       ...group,
-    } as FormComponentGroup;
+    }) as FormComponentGroup;
   }
 
   return removeEmpty({
     ...commonParameters,
     repeat,
     childStyle,
+    textStyle,
     gridColSpan,
   }) as FormComponentGroup;
 };

@@ -24,7 +24,7 @@ import {
 import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData, parseFormData } from 'remix-hook-form';
+import { getValidatedFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
@@ -92,13 +92,21 @@ export const action = async ({
   params,
   context,
 }: Route.ActionArgs) => {
+  const { recordType, recordId } = params;
+
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const formData = await request.formData();
-  const parsedFormData = (await parseFormData(formData)) as any;
-  const validationType =
-    parsedFormData.output?.recordInfo?.validationType?.value;
-  invariant(validationType, 'Failed to extract validationType from form data');
+
+  const { validationType } = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+  });
+
+  invariant(validationType, 'Failed to get validation type from record');
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationType,
@@ -119,7 +127,7 @@ export const action = async ({
     await updateRecord(
       context.dependencies,
       validationType,
-      params.recordId,
+      recordId,
       validatedFormData as unknown as BFFDataRecord,
       auth,
     );

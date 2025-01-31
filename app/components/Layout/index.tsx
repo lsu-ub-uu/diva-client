@@ -16,12 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AppBar, Container, Grid2 as Grid } from '@mui/material';
+import { AppBar, Box, Container } from '@mui/material';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type { ReactNode } from 'react';
+import styles from './layout.module.css';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -36,22 +37,17 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
       >
         <NavigationLoader />
         <MemberBar color='#efefef'>
-          <p>AppBar</p>
+          <p>MemberBar</p>
         </MemberBar>
         <Header />
       </AppBar>
       <Container
-        maxWidth='lg'
-        sx={{ minHeight: '100vh' }}
+        maxWidth='xl'
+        className={styles.container}
       >
-        <Grid container>
-          <Grid
-            size={12}
-            sx={{ pt: 2, pb: 4 }}
-          >
-            <Breadcrumbs />
-          </Grid>
-        </Grid>
+        <Box my={2}>
+          <Breadcrumbs />
+        </Box>
 
         {children}
       </Container>

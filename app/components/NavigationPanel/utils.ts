@@ -21,38 +21,22 @@ import { useEffect, useState } from 'react';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { NavigationPanelLink } from '../index';
 import type { BFFDataRecord } from '@/types/record';
-import {
-  addAttributesToName,
-  hasCurrentComponentSameNameInData,
-} from '../FormGenerator/defaultValues/defaultValues';
-
-import { getChildrenWithSameNameInDataFromSchema } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
 
 export const linksFromFormSchema = (
   formSchema: RecordFormSchema,
-): NavigationPanelLink[] | undefined => {
-  const childrenWithSameNameInData =
-    getChildrenWithSameNameInDataFromSchema(formSchema);
-
-  return formSchema?.form.components
-    ?.filter((c) => !['text', 'container'].includes(c.type))
+): NavigationPanelLink[] => {
+  return (formSchema.form.components ?? [])
+    .filter((c) => !['text', 'container'].includes(c.type))
     .map((c) => {
-      const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
-        childrenWithSameNameInData,
-        c.name,
-      );
-
       if (!('label' in c)) {
         return undefined;
       }
 
-      if (currentComponentSameNameInData) {
-        return {
-          name: `${addAttributesToName(c, c.name)}`,
-          label: c.label,
-        } as NavigationPanelLink;
-      }
-      return { name: `${c.name}`, label: c.label } as NavigationPanelLink;
+      return {
+        name: `${addAttributesToName(c, c.name)}`,
+        label: c.label,
+      } as NavigationPanelLink;
     })
     .filter((c) => c !== undefined);
 };
@@ -61,7 +45,6 @@ export const removeComponentsWithoutValuesFromSchema = (
   formSchema: RecordFormSchema,
   record: BFFDataRecord,
 ): RecordFormSchema => {
-  const schema = formSchema;
   let componentsFromSchema = formSchema.form.components;
 
   const flattenedRecord = flattenObject(record.data);
@@ -71,8 +54,13 @@ export const removeComponentsWithoutValuesFromSchema = (
   componentsFromSchema = componentsFromSchema?.filter((component) => {
     return [...lastKeyFromString].includes(component.name);
   });
-  schema.form.components = componentsFromSchema;
-  return schema;
+  return {
+    ...formSchema,
+    form: {
+      ...formSchema.form,
+      components: componentsFromSchema,
+    },
+  };
 };
 
 export const flattenObject = (obj: any, prefix = '') => {

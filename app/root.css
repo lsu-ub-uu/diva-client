@@ -57,14 +57,13 @@
   --font-family-headings: 'Arial', serif;
   --font-size-base: 16px;
 
-
   --font-size-h1: 2rem;
   --font-weight-h1: 400;
 
-  --font-size-h2: 1.3rem;
+  --font-size-h2: 1.4rem;
   --font-weight-h2: 400;
 
-  --font-size-h3: 2rem;
+  --font-size-h3: 1.2rem;
   --font-weight-h3: 400;
 
   --font-size-h4: 2rem;
@@ -79,4 +78,6 @@
   --font-weight-bold: 800;
 
   --line-height-base: 1.5;
+
+  --desktop-breakpoint: 900px;
 }
