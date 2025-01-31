@@ -29,4 +29,9 @@ test('Create output', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Skapa publikation' }).click();
   await page.getByRole('menuitem', { name: 'DiVA-output' }).click();
+
+  await expect(page).toHaveTitle(/^Skapa ny DiVA-output/);
+
+  /* await page.getByLabel(/^Record content source/).click();
+  await page.getByRole('menuitem', { name: 'Uppsala Universitet' }).click();*/
 });

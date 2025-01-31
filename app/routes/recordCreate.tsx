@@ -46,6 +46,7 @@ import type { Route } from './+types/recordCreate';
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const notification = session.get('notification');
+  const { t } = context.i18n;
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -56,8 +57,16 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     validationTypeId,
     'create',
   );
+
+  // Skapa ny {validationType}
+  const createTitleText = t('divaClient_CreatePageTitleText', {
+    validationType: t(formDefinition.form.label as string),
+  });
+
+  const title = `${createTitleText} | DiVA`;
+
   return data(
-    { formDefinition, notification },
+    { formDefinition, notification, title },
     await getResponseInitWithSession(session),
   );
 };
@@ -106,6 +115,10 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
     return data({}, await getResponseInitWithSession(session));
   }
+};
+
+export const meta = ({ data }: Route.MetaArgs) => {
+  return [{ title: data.title }];
 };
 
 export const ErrorBoundary = RouteErrorBoundary;
