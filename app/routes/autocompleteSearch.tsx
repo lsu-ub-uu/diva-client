@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from 'react-router';
 import {
   getAuthentication,
   getSessionFromCookie,
@@ -26,7 +25,9 @@ import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { invariant } from '@/utils/invariant';
 
-export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+import type { Route } from './+types/autocompleteSearch';
+
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url);
 
   const searchType = url.searchParams.get('searchType');

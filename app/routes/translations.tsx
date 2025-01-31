@@ -16,11 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from 'react-router';
 import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
 import { invariant } from '@/utils/invariant';
 
-export const loader = async ({ context, params }: LoaderFunctionArgs) => {
+import type { Route } from './+types/translations';
+
+export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;
   invariant(lang, 'Missing param lang');
 
