@@ -95,7 +95,9 @@ export type ChildStyle =
   | 'compactChildStyle'
   | 'frameChildStyle'
   | 'specificationChildStyle'
-  | 'rowBasedChildStyle';
+  | 'rowBasedChildStyle'
+  | 'compact'
+  | '';
 
 export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;

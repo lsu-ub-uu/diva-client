@@ -16,7 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export const i18nConfig = {
+import type { InitOptions } from 'i18next';
+
+export const i18nConfig: InitOptions = {
   fallbackLng: 'sv',
   supportedLngs: ['sv', 'en'],
   debug: false, // TODO set to true if dev env

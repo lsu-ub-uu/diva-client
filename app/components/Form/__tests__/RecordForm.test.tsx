@@ -1766,7 +1766,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('SPAN');
+      expect(inputElement.tagName).toBe('P');
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
@@ -1830,7 +1830,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('SPAN');
+      expect(inputElement.tagName).toBe('P');
     });
   });
 
