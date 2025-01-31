@@ -11,13 +11,13 @@ export default [
   route('create', 'routes/recordCreate.tsx'),
   route('view/:recordType/:recordId', 'routes/recordView.tsx'),
   route('update/:recordType/:recordId', 'routes/recordUpdate.tsx'),
-  route('delete/:recordType/:recordId.tsx', 'routes/recordDelete.tsx'),
+  route('delete/:recordType/:recordId', 'routes/recordDelete.tsx'),
 
   /* Search */
   route('search/:searchType', 'routes/search.tsx'),
 
   /* Resource routes */
-  route('record/:recordType/:recordId.tsx', 'routes/getRecord.tsx'),
+  route('record/:recordType/:recordId', 'routes/getRecord.tsx'),
   route('refreshDefinitions', 'routes/refreshDefinitions.tsx'),
   route('autocompleteSearch', 'routes/autocompleteSearch.tsx'),
   route('translations/:lang', 'routes/translations.tsx'),

@@ -42,11 +42,14 @@ import type {
 import {
   authorGroup,
   authorGroup2,
+  createdByLink,
+  dataDividerLink,
   domainCollectionVar,
   familyNameTextVar,
   genreCollectionVar,
   genreOtherCollectionVar,
   givenNameTextVar,
+  idTextVar,
   mainTitleTextVar,
   newLangCollVariable,
   newLangItemCollection,
@@ -69,6 +72,8 @@ import {
   pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
   pSomeNewMetadataGroupTitleInfoAlternativePGroup,
   pSomeNewMetadataGroupTitleInfoPGroup,
+  recordInfoMetadata,
+  recordTypeLink,
   someMainTitleTitleInfoATextVariable,
   someMetadataChildGroup,
   someMetadataRecordLink,
@@ -89,10 +94,15 @@ import {
   someValidationTypeForRepeatingRecordLinksNameInDataId,
   someValidationTypeForRepeatingTitleInfoId,
   titleGroup,
+  tsCreatedTextVar,
+  tsUpdatedTextVar,
   typeCollectionItemAlternative,
   typeCollVariable,
   typeItemCollection,
   typeOutputTypeCollectionVar,
+  updatedByLink,
+  updatedGroup,
+  validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
 import type { Lookup } from '@/utils/structs/lookup';
 import type { Dependencies } from '../formDefinitionsDep.server';
@@ -164,6 +174,16 @@ describe('formMetadata', () => {
       newLangItemCollection,
       newLangItemCollectionItemEng,
       newLangItemCollectionItemSwe,
+      recordInfoMetadata,
+      createdByLink,
+      dataDividerLink,
+      idTextVar,
+      tsCreatedTextVar,
+      recordTypeLink,
+      updatedGroup,
+      updatedByLink,
+      tsUpdatedTextVar,
+      validationTypeLink,
     ]);
     presentationPool = listToPool<
       | BFFPresentationBase
@@ -707,6 +727,98 @@ describe('formMetadata', () => {
       },
       children: [
         {
+          children: [
+            {
+              linkedRecordType: 'user',
+              name: 'createdBy',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'recordLink',
+            },
+            {
+              finalValue: 'divaData',
+              linkedRecordType: 'system',
+              name: 'dataDivider',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'recordLink',
+            },
+            {
+              name: 'id',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'textVariable',
+            },
+            {
+              name: 'tsCreated',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'textVariable',
+            },
+            {
+              finalValue: 'diva-output',
+              linkedRecordType: 'recordType',
+              name: 'type',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'recordLink',
+            },
+            {
+              children: [
+                {
+                  linkedRecordType: 'user',
+                  name: 'updatedBy',
+                  repeat: {
+                    repeatMax: 1,
+                    repeatMin: 1,
+                  },
+                  type: 'recordLink',
+                },
+                {
+                  name: 'tsUpdated',
+                  repeat: {
+                    repeatMax: 1,
+                    repeatMin: 1,
+                  },
+                  type: 'textVariable',
+                },
+              ],
+              name: 'updated',
+              repeat: {
+                repeatMax: 1.7976931348623157e308,
+                repeatMin: 1,
+              },
+              type: 'group',
+            },
+            {
+              finalValue: 'diva-output',
+              linkedRecordType: 'validationType',
+              name: 'validationType',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              type: 'recordLink',
+            },
+          ],
+          name: 'recordInfo',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          type: 'group',
+        },
+        {
           name: 'titleInfo',
           type: 'group',
           repeat: {
@@ -756,6 +868,94 @@ describe('formMetadata', () => {
           repeatMin: 1,
         },
         type: 'group',
+      },
+      'output.recordInfo': {
+        name: 'recordInfo',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'group',
+      },
+      'output.recordInfo.createdBy': {
+        linkedRecordType: 'user',
+        name: 'createdBy',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'recordLink',
+      },
+      'output.recordInfo.dataDivider': {
+        finalValue: 'divaData',
+        linkedRecordType: 'system',
+        name: 'dataDivider',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'recordLink',
+      },
+      'output.recordInfo.id': {
+        name: 'id',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'textVariable',
+      },
+      'output.recordInfo.tsCreated': {
+        name: 'tsCreated',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'textVariable',
+      },
+      'output.recordInfo.type': {
+        finalValue: 'diva-output',
+        linkedRecordType: 'recordType',
+        name: 'type',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'recordLink',
+      },
+      'output.recordInfo.updated': {
+        name: 'updated',
+        repeat: {
+          repeatMax: 1.7976931348623157e308,
+          repeatMin: 1,
+        },
+        type: 'group',
+      },
+      'output.recordInfo.updated.tsUpdated': {
+        name: 'tsUpdated',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'textVariable',
+      },
+      'output.recordInfo.updated.updatedBy': {
+        linkedRecordType: 'user',
+        name: 'updatedBy',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'recordLink',
+      },
+      'output.recordInfo.validationType': {
+        finalValue: 'diva-output',
+        linkedRecordType: 'validationType',
+        name: 'validationType',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1,
+        },
+        type: 'recordLink',
       },
       'output.titleInfo': {
         name: 'titleInfo',

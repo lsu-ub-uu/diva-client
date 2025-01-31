@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { type LoaderFunctionArgs } from 'react-router';
 import {
   getSessionFromCookie,
   requireAuthentication,
@@ -24,17 +23,17 @@ import {
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { invariant } from '@/utils/invariant';
 
+import type { Route } from './+types/getRecord';
+
 export const loader = async ({
   request,
   params,
   context,
-}: LoaderFunctionArgs) => {
+}: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
   const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
 
   const url = new URL(request.url);
 

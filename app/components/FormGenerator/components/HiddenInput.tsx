@@ -39,7 +39,10 @@ export const HiddenInput = ({ name, component }: HiddenInputProps) => {
 
   return (
     <>
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={name}
+      />
 
       <input
         type='hidden'

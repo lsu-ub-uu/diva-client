@@ -20,18 +20,16 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { CardContent, Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import {
-  checkIfPresentationStyleOrParentIsInline,
+  checkIfPresentationStyleIsInline,
   getGroupLevel,
   headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { Card } from '@/components/Card/Card';
-import styles from './Group.module.css';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
@@ -42,12 +40,14 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
+import { CardContent } from '@/components/Card/CardContent';
+import styles from './FormComponent.module.css';
+import { IconButton } from '@mui/material';
 
 interface GroupProps {
   currentComponentNamePath: string;
   component: FormComponentContainer | FormComponentGroup;
   parentPresentationStyle: string | undefined;
-  childWithNameInDataArray: string[];
   actionButtonGroup?: ReactNode;
 }
 
@@ -55,18 +55,16 @@ export const Group = ({
   currentComponentNamePath,
   component,
   parentPresentationStyle,
-  childWithNameInDataArray,
   actionButtonGroup,
 }: GroupProps) => {
-  const { boxGroups } = useContext(FormGeneratorContext);
+  const { boxGroups, showTooltips } = useContext(FormGeneratorContext);
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
-  const inline = checkIfPresentationStyleOrParentIsInline(
-    component,
-    parentPresentationStyle,
-  );
+  const inline = checkIfPresentationStyleIsInline(component);
+
+  // TODO: Check for valuable data instead
   const hasNoValues = hasOnlyAttributes(
     cleanFormData(getValues(currentComponentNamePath)),
   );
@@ -74,15 +72,16 @@ export const Group = ({
   if (component.mode === 'output' && hasNoValues) {
     return null;
   }
-
   return (
-    <Grid
-      size={12}
+    <div
+      className={`${styles.component} anchorLink`}
+      data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      className={`${styles.group} anchorLink`}
-      data-inline={inline}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={currentComponentNamePath}
+      />
       <Card boxed={boxGroups && groupLevel !== 0}>
         <CardHeader>
           {component.showLabel && (
@@ -93,18 +92,20 @@ export const Group = ({
                   component.headlineLevel,
                 )}
               />
-              <Tooltip
-                title={t(component.tooltip?.title as string)}
-                body={t(component.tooltip?.body as string)}
-              >
-                <IconButton
-                  disableRipple
-                  color='info'
-                  aria-label='info'
+              {showTooltips && (
+                <Tooltip
+                  title={t(component.tooltip?.title as string)}
+                  body={t(component.tooltip?.body as string)}
                 >
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    disableRipple
+                    color='info'
+                    aria-label='info'
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </CardTitle>
           )}
           <Attributes
@@ -115,23 +116,22 @@ export const Group = ({
           {actionButtonGroup}
         </CardHeader>
         <CardContent>
-          <Grid
-            container
-            spacing={2}
+          <div
+            className={styles.container}
+            data-layout={inline ? 'inline' : 'grid'}
           >
             {component.components && (
               <ComponentList
                 components={component.components}
-                childWithNameInDataArray={childWithNameInDataArray}
                 parentPresentationStyle={
                   component.presentationStyle ?? parentPresentationStyle
                 }
                 path={currentComponentNamePath}
               />
             )}
-          </Grid>
+          </div>
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   );
 };

@@ -18,6 +18,7 @@
  */
 
 import type {
+  BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
@@ -28,7 +29,6 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type { Dependencies } from './formDefinitionsDep.server';
 import type { FormMetaData } from './formDefinition.server';
 import { determineRepeatMax } from './formDefinition.server';
-import type { dependencies } from '@/data/pool.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,
@@ -56,33 +56,16 @@ export const createFormMetaData = (
 
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
-  metadataPool: typeof dependencies.metadataPool,
+  metadataPool: Dependencies['metadataPool'],
 ): FormMetaData => {
   const metadata = metadataPool.get(metadataChildReference.childId);
   const repeatMin = parseInt(metadataChildReference.repeatMin);
   const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
   let children;
   let linkedRecordType;
-  let attributes;
   let finalValue;
   if ('finalValue' in metadata) {
     finalValue = metadata.finalValue;
-  }
-  if (
-    'attributeReferences' in metadata &&
-    metadata.attributeReferences !== undefined
-  ) {
-    metadata.attributeReferences.map((ref: any) => {
-      const attributeCollectionVar = metadataPool.get(
-        ref.refCollectionVarId,
-      ) as BFFMetadataCollectionVariable;
-      if (attributeCollectionVar.finalValue) {
-        attributes = {
-          [attributeCollectionVar.nameInData]:
-            attributeCollectionVar.finalValue,
-        };
-      }
-    });
   }
 
   if (metadata.type === 'group') {
@@ -99,7 +82,7 @@ export const createMetaDataFromChildReference = (
   return removeEmpty({
     name: metadata.nameInData,
     type: metadata.type,
-    attributes,
+    attributes: createAttributes(metadataPool, metadata),
     repeat: {
       repeatMin,
       repeatMax,
@@ -119,3 +102,32 @@ export const createBFFMetadataReference = (
   repeatMax,
   repeatMin,
 });
+
+const createAttributes = (
+  metadataPool: Dependencies['metadataPool'],
+  metadata: BFFMetadata,
+) => {
+  if (
+    'attributeReferences' in metadata &&
+    metadata.attributeReferences !== undefined
+  ) {
+    const attributeEntries = metadata.attributeReferences
+      .map(
+        (ref) =>
+          metadataPool.get(
+            ref.refCollectionVarId,
+          ) as BFFMetadataCollectionVariable,
+      )
+      .filter((collectionVar) => collectionVar.finalValue)
+      .map((collectionVar) => [
+        collectionVar.nameInData,
+        collectionVar.finalValue,
+      ]);
+
+    if (attributeEntries.length === 0) {
+      return undefined;
+    }
+
+    return Object.fromEntries(attributeEntries);
+  }
+};

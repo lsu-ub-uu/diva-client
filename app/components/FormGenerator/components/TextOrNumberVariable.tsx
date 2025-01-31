@@ -21,7 +21,6 @@ import type {
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
@@ -29,10 +28,10 @@ import { ControlledTextField } from '@/components/Controlled';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
+import styles from './FormComponent.module.css';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentTextVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
@@ -42,7 +41,6 @@ interface TextOrNumberVariableProps {
 
 export const TextOrNumberVariable = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
   parentPresentationStyle,
@@ -50,7 +48,7 @@ export const TextOrNumberVariable = ({
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData, showTooltips } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   if (component.mode === 'output' && !hasValue) {
@@ -60,15 +58,16 @@ export const TextOrNumberVariable = ({
   const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
 
   return (
-    <Grid
+    <div
+      className={styles.component}
+      data-colspan={component.gridColSpan ?? 12}
       key={reactKey}
-      size={{
-        xs: 12,
-        sm: renderElementGridWrapper ? component.gridColSpan : 12,
-      }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={name}
+      />
 
       <ControlledTextField
         multiline={
@@ -80,10 +79,11 @@ export const TextOrNumberVariable = ({
         showLabel={component.showLabel}
         name={name}
         placeholder={component.placeholder}
-        tooltip={component.tooltip}
+        tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
+        textStyle={component.textStyle}
         parentPresentationStyle={parentPresentationStyle}
         hasValue={hasValue}
         inputFormat={
@@ -93,6 +93,6 @@ export const TextOrNumberVariable = ({
         actionButtonGroup={actionButtonGroup}
         linkedDataToShow={linkedDataToShow ?? undefined}
       />
-    </Grid>
+    </div>
   );
 };

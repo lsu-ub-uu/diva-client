@@ -21,6 +21,8 @@ import type {
   FormComponentCollVar,
   FormComponentWithData,
 } from '@/components/FormGenerator/types';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface AttributesProps {
   component: FormComponentWithData;
@@ -29,6 +31,7 @@ interface AttributesProps {
 
 export const Attributes = ({ component, path }: AttributesProps) => {
   const attributesToShow = getAttributesToShow(component);
+  const { showTooltips } = useContext(FormGeneratorContext);
 
   return attributesToShow.map((attribute, index) => {
     return (
@@ -39,7 +42,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         options={attribute.options}
         showLabel={attribute.showLabel}
         placeholder={attribute.placeholder}
-        tooltip={attribute.tooltip}
+        tooltip={showTooltips ? attribute.tooltip : undefined}
         finalValue={attribute.finalValue}
         displayMode={attribute.mode}
       />

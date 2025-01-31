@@ -29,7 +29,6 @@ interface RecordLinkProps {
   component: FormComponentRecordLink;
   reactKey: string;
   name: string;
-  renderElementGridWrapper: boolean;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -39,7 +38,6 @@ export const RecordLink = ({
   name,
   component,
   reactKey,
-  renderElementGridWrapper,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
@@ -58,7 +56,6 @@ export const RecordLink = ({
     return (
       <RecordLinkWithSearch
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
         attributes={attributes}
@@ -74,7 +71,6 @@ export const RecordLink = ({
     return (
       <RecordLinkWithLinkedPresentation
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
         attributes={attributes}
@@ -86,7 +82,6 @@ export const RecordLink = ({
   return (
     <TextOrNumberVariable
       reactKey={reactKey}
-      renderElementGridWrapper={renderElementGridWrapper}
       component={component}
       name={name}
       parentPresentationStyle={parentPresentationStyle}

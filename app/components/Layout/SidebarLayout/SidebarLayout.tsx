@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Grid2 as Grid } from '@mui/material';
 import type { ReactNode } from 'react';
 import styles from './SidebarLayout.module.css';
 
@@ -30,23 +29,9 @@ export const SidebarLayout = ({
   children,
 }: SidebarLayoutProps) => {
   return (
-    <Grid
-      container
-      columnSpacing={{ md: 4 }}
-      className={styles.sidebarLayout}
-    >
-      <Grid
-        size={3}
-        display={{ xs: 'none', sm: 'none', md: 'block' }}
-      >
-        <aside>{sidebarContent}</aside>
-      </Grid>
-      <Grid
-        sx={{ paddingBottom: '64px' }}
-        size={9}
-      >
-        <main>{children}</main>
-      </Grid>
-    </Grid>
+    <div className={styles.sidebarLayout}>
+      <aside>{sidebarContent}</aside>
+      <main>{children}</main>
+    </div>
   );
 };

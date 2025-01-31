@@ -39,7 +39,6 @@ interface LeafComponentProps {
   component: FormComponent;
   reactKey: string;
   name: string;
-  renderElementGridWrapper: boolean;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -49,7 +48,6 @@ export const LeafComponent = ({
   component,
   reactKey,
   name,
-  renderElementGridWrapper,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
@@ -67,7 +65,6 @@ export const LeafComponent = ({
     return (
       <TextOrNumberVariable
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
         parentPresentationStyle={parentPresentationStyle}
@@ -83,7 +80,6 @@ export const LeafComponent = ({
         name={name}
         component={component}
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
@@ -94,9 +90,9 @@ export const LeafComponent = ({
     return (
       <CollectionVariable
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
+        parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
@@ -107,7 +103,6 @@ export const LeafComponent = ({
     return (
       <Text
         reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
         component={component}
       />
     );

@@ -19,14 +19,14 @@
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React, { type ReactNode } from 'react';
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { ControlledLinkedRecord } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;
@@ -35,7 +35,6 @@ interface RecordLinkWithLinkedPresentationProps {
 
 export const RecordLinkWithLinkedPresentation = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
   attributes,
@@ -43,17 +42,19 @@ export const RecordLinkWithLinkedPresentation = ({
 }: RecordLinkWithLinkedPresentationProps) => {
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
+
   return (
     <React.Fragment key={`${reactKey}_${name}`}>
       {hasValue ? (
-        <Grid
+        <div
           key={reactKey}
-          size={{
-            xs: 12,
-            sm: renderElementGridWrapper ? component.gridColSpan : 12,
-          }}
+          className={styles.component}
+          data-colspan={component.gridColSpan ?? 12}
         >
-          <DevInfo component={component} />
+          <DevInfo
+            component={component}
+            path={name}
+          />
 
           <Box
             sx={{
@@ -70,7 +71,7 @@ export const RecordLinkWithLinkedPresentation = ({
             recordType={component.recordLinkType ?? ''}
             presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
           />
-        </Grid>
+        </div>
       ) : null}
     </React.Fragment>
   );

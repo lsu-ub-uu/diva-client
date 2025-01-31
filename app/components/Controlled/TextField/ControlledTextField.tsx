@@ -30,6 +30,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import type { TextStyle } from '@/components/FormGenerator/types';
+import { Typography } from '@/components/Typography/Typography';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -48,13 +50,14 @@ interface ControlledTextFieldProps {
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
   linkedDataToShow?: string;
+  textStyle?: TextStyle;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
   const showLabel = !props.linkedDataToShow && props.showLabel;
-
+  const inline = props.parentPresentationStyle === 'inline';
   if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
@@ -68,15 +71,13 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
           <FormControl
             fullWidth
             sx={{
-              flexDirection:
-                props.parentPresentationStyle === 'inline' ? 'row' : 'column',
-              alignItems: 'baseline',
+              flexDirection: inline ? 'row' : 'column',
+              alignItems: inline ? 'baseline' : 'stretch',
             }}
           >
             <Box
               sx={{
                 display: 'flex',
-                width: '100%',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
               }}
@@ -88,7 +89,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   required={props.required}
                   error={error !== undefined}
                   sx={{
-                    p: '2px 4px',
+                    pr: 1,
                     display: 'flex',
                     alignItems: 'center',
                     mr: 'auto',
@@ -151,13 +152,14 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               />
             ) : (
               <>
-                <Box
+                <Typography
                   aria-labelledby={`${props.name}-label`}
-                  component='span'
-                  sx={{ pl: 2, mb: 1 }}
-                >
-                  {field.value || props.linkedDataToShow}
-                </Box>
+                  variant={props.textStyle ?? 'bodyTextStyle'}
+                  sx={{
+                    pl: showLabel && !inline ? 2 : 0,
+                  }}
+                  text={field.value || props.linkedDataToShow}
+                />
                 <input
                   type='hidden'
                   value={field.value}

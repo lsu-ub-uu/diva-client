@@ -1,6 +1,5 @@
-export abstract class DataElement {
+export interface DataElement {
   name: string;
-
   repeatId?: string;
 }
 
@@ -8,8 +7,10 @@ export type Attributes = {
   [key: string]: string;
 };
 
+export type CoraData = DataGroup | DataAtomic | RecordLink;
+
 export interface DataGroup extends DataElement {
-  children: (DataAtomic | DataGroup | RecordLink)[];
+  children: CoraData[];
   attributes?: Attributes;
 }
 
@@ -40,22 +41,22 @@ export interface ActionLinks {
   delete?: ActionLink;
 }
 
-type Permissions = {
+export type Permissions = {
   read?: string[];
   write?: string[];
 };
 
-type CoraRecord = {
+export type CoraRecord = {
   data: DataGroup;
   permissions?: Permissions;
   actionLinks?: ActionLinks;
 };
 
-type RecordWrapper = {
+export type RecordWrapper = {
   record: CoraRecord;
 };
 
-type DataList = {
+export type DataList = {
   fromNo: string;
   data: RecordWrapper[];
   totalNo: string;
