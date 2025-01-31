@@ -72,13 +72,12 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             fullWidth
             sx={{
               flexDirection: inline ? 'row' : 'column',
-              alignItems: 'baseline',
+              alignItems: inline ? 'baseline' : 'stretch',
             }}
           >
             <Box
               sx={{
                 display: 'flex',
-                width: '100%',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
               }}
