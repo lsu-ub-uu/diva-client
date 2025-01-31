@@ -23,4 +23,5 @@ export const i18nConfig = {
   interpolation: {
     escapeValue: false,
   },
+  nsSeparator: false,
 };
