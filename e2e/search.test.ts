@@ -1,7 +1,7 @@
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { expect } from '@playwright/test';
-import { test } from './fixtures';
+import { test } from './util/fixtures';
 
 test('Search for records', async ({ page, divaOutput }) => {
   const recordTitle = getFirstDataAtomicValueWithNameInData(

@@ -16,8 +16,9 @@
     "test:ci": "vitest run",
     "test-ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "e2e-run": "playwright test",
-    "e2e-open": "playwright test --ui"
+    "e2e-run": "playwright test --project firefox",
+    "e2e-open": "playwright test --ui",
+    "e2e:ci": "playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

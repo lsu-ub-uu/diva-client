@@ -1,5 +1,5 @@
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import { test } from './fixtures';
+import { test } from './util/fixtures';
 import { expect } from '@playwright/test';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
