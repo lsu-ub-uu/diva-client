@@ -14,7 +14,7 @@ export default [
   route('delete/:recordType/:recordId', 'routes/recordDelete.tsx'),
 
   /* Search */
-  route('search/:searchType', 'routes/search.tsx'),
+  route('search', 'routes/home.tsx', { id: 'search' }),
 
   /* Resource routes */
   route('record/:recordType/:recordId', 'routes/getRecord.tsx'),

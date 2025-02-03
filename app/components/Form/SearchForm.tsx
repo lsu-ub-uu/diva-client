@@ -53,7 +53,7 @@ export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
   return (
     <Form
       method='GET'
-      action={`/`}
+      action='/search'
     >
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>

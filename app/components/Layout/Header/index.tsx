@@ -32,7 +32,7 @@ export const Header = () => {
     <Box
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl'>
         <Box
           sx={{
             display: 'flex',
