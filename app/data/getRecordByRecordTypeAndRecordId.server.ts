@@ -28,7 +28,7 @@ interface GetRecordByRecordTypeAndRecordIdArgs {
   dependencies: Dependencies;
   recordType: string;
   recordId: string;
-  authToken: string;
+  authToken?: string;
   presentationRecordLinkId?: string;
 }
 

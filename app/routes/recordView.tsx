@@ -17,8 +17,8 @@
  */
 
 import {
+  getAuthentication,
   getSessionFromCookie,
-  requireAuthentication,
 } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
@@ -43,7 +43,7 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = getAuthentication(session);
 
   const { recordType, recordId } = params;
 
@@ -51,7 +51,7 @@ export const loader = async ({
     dependencies: context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
 
   const title = `${getRecordTitle(record)} | DiVA`;
