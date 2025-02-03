@@ -30,14 +30,22 @@ import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValue
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
+import { Pagination } from '@/components/Form/Pagination';
 
 interface SearchFormProps {
   searchType: string;
   record?: BFFDataRecord;
   formSchema: SearchFormSchema;
+  totalHits: number | undefined;
+  rowsPerPage: number | undefined;
 }
 
-export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
+export const SearchForm = ({
+  record,
+  formSchema,
+  totalHits,
+  rowsPerPage,
+}: SearchFormProps) => {
   const { t } = useTranslation();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -62,6 +70,12 @@ export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />
         </RemixFormProvider>
+        {totalHits && rowsPerPage && (
+          <Pagination
+            totalHits={totalHits}
+            rowsPerPage={rowsPerPage}
+          />
+        )}
         <label>
           Start at
           <input

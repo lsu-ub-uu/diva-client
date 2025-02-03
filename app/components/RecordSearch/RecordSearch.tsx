@@ -39,12 +39,17 @@ export const RecordSearch = ({
   searchResults,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
+  console.log({ searchResults });
   return (
     <div>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
         record={{ data: query }}
+        totalHits={searchResults?.totalNo}
+        rowsPerPage={
+          searchResults && searchResults?.toNo - searchResults?.fromNo - 1
+        }
       />
       {searchResults && (
         <>
@@ -53,6 +58,8 @@ export const RecordSearch = ({
               numberOfResults: searchResults?.totalNo,
             })}
           </h2>
+          fromNo: {searchResults.fromNo} | toNo: {searchResults.toNo} | totalNo:{' '}
+          {searchResults.totalNo}
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
               <li
