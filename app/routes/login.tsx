@@ -110,6 +110,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     );
   }
   session.set('auth', auth);
+
   return redirect(returnTo ?? '/', {
     headers: {
       'Set-Cookie': await commitSession(session),
