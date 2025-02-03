@@ -20,7 +20,7 @@
 import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
@@ -29,20 +29,26 @@ interface FormGeneratorProps {
   formSchema: FormSchema;
   linkedData?: BFFDataRecord['data'];
   boxGroups?: boolean;
+  showTooltips?: boolean;
 }
 
 export const FormGenerator = ({
   linkedData,
   boxGroups = false,
+  showTooltips = true,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
+
+  const formContextValues = useMemo(
+    () => ({ linkedData, boxGroups, showDevInfo, showTooltips }),
+    [linkedData, boxGroups, showDevInfo, showTooltips],
+  );
+
   return (
     <Box sx={{ position: 'relative' }}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
-      <FormGeneratorContext.Provider
-        value={{ linkedData, boxGroups, showDevInfo }}
-      >
+      <FormGeneratorContext.Provider value={formContextValues}>
         <Component
           component={props.formSchema.form}
           idx={0}

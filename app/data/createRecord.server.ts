@@ -31,7 +31,7 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 export const createRecord = async (
   dependencies: Dependencies,
   formDefinition: RecordFormSchema,
-  record: BFFDataRecord,
+  record: BFFDataRecord['data'],
   auth: Auth,
 ) => {
   const validationTypeId = formDefinition.validationTypeId;

@@ -19,15 +19,9 @@
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import {
-  data,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { Await, useLoaderData } from '@remix-run/react';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { searchRecords } from '@/data/searchRecords.server';
 import { isEmpty } from 'lodash-es';
@@ -41,9 +35,9 @@ import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+import type { Route } from './+types/home';
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
   const { t } = context.i18n;
@@ -83,14 +77,17 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function Home() {
-  const { t } = useTranslation();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function Home({ loaderData }: Route.ComponentProps) {
   const { searchForm, validationTypes, searchResults, query, notification } =
-    useLoaderData<typeof loader>();
+    loaderData;
+  const { t } = useTranslation();
+
   useNotificationSnackbar(notification);
 
   return (

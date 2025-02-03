@@ -17,58 +17,39 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@mui/material';
-
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { BFFDataRecord } from '@/types/record';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
 import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
-import type { SearchFormSchema } from '../FormGenerator/types';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import type { FormSchema } from '../FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import styles from './SearchForm.module.css';
 
-interface SearchFormProps {
-  searchType: string;
+interface SearchResultFormProps {
   record?: BFFDataRecord;
-  formSchema: SearchFormSchema;
+  formSchema: FormSchema;
 }
 
-export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
-  const { t } = useTranslation();
-  const methods = useRemixForm({
+export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
+  const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(
-      formSchema,
-      record?.data as RecordData,
+      props.formSchema,
+      props.record?.data as RecordData,
     ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
   return (
-    <Form
-      method='GET'
-      action='/search'
-    >
-      <div className={styles.searchForm}>
-        <RemixFormProvider {...methods}>
-          <FormGenerator formSchema={formSchema} />
-        </RemixFormProvider>
-        <Button
-          type='submit'
-          disableRipple
-          variant='contained'
-          color='secondary'
-          sx={{ height: 40 }}
-        >
-          {t('divaClient_SearchButtonText')}
-        </Button>
-      </div>
-    </Form>
+    <FormProvider {...methods}>
+      <FormGenerator
+        formSchema={props.formSchema}
+        boxGroups={false}
+        showTooltips={false}
+      />
+    </FormProvider>
   );
 };

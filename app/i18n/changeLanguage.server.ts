@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from '@remix-run/node';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
+import { data } from 'react-router';
 
 export const changeLanguage = async (formData: FormData) => {
   const language = formData.get('language');

@@ -21,10 +21,10 @@ import {
   useSessionAutoRenew,
 } from '@/auth/useSessionAutoRenew';
 import { expect } from 'vitest';
-import { createRemixStub } from '@remix-run/testing';
 import { act, render } from '@testing-library/react';
 import { createMockAuth } from '@/auth/__mocks__/auth';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
+import { createRoutesStub } from 'react-router';
 
 vi.mock('@/utils/useIsNewestWindow');
 
@@ -44,7 +44,7 @@ describe('useSessionAutoRenew', () => {
 
     const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
 
-    const RemixStub = createRemixStub([
+    const RoutesStub = createRoutesStub([
       {
         path: '/',
         Component: TestComponent,
@@ -59,7 +59,7 @@ describe('useSessionAutoRenew', () => {
       },
     ]);
 
-    await act(() => render(<RemixStub />));
+    await act(() => render(<RoutesStub />));
 
     await act(() => vi.advanceTimersByTime(minutesToMillis(4) + 30_000));
     expect(renewAuthTokenActionSpy).toHaveBeenCalled();
@@ -80,7 +80,7 @@ describe('useSessionAutoRenew', () => {
 
     const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
 
-    const RemixStub = createRemixStub([
+    const RoutesStub = createRoutesStub([
       {
         path: '/',
         Component: TestComponent,
@@ -89,7 +89,7 @@ describe('useSessionAutoRenew', () => {
       },
     ]);
 
-    await act(() => render(<RemixStub />));
+    await act(() => render(<RoutesStub />));
 
     await act(() => vi.advanceTimersByTime(1000));
 
@@ -105,7 +105,7 @@ describe('useSessionAutoRenew', () => {
       status: 'Session not renew',
     });
 
-    const RemixStub = createRemixStub([
+    const RoutesStub = createRoutesStub([
       {
         path: '/',
         Component: TestComponent,
@@ -116,7 +116,7 @@ describe('useSessionAutoRenew', () => {
       },
     ]);
 
-    await act(() => render(<RemixStub />));
+    await act(() => render(<RoutesStub />));
 
     await act(() => vi.advanceTimersToNextTimer());
     expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();
@@ -139,7 +139,7 @@ describe('useSessionAutoRenew', () => {
       }),
     });
 
-    const RemixStub = createRemixStub([
+    const RoutesStub = createRoutesStub([
       {
         path: '/',
         Component: TestComponent,
@@ -148,7 +148,7 @@ describe('useSessionAutoRenew', () => {
       },
     ]);
 
-    await act(() => render(<RemixStub />));
+    await act(() => render(<RoutesStub />));
 
     await act(() => vi.advanceTimersByTime(minutesToMillis(4) + 30_000));
     expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();

@@ -17,7 +17,7 @@
  */
 
 import 'dotenv/config';
-import { createRequestHandler } from '@remix-run/express';
+import { createRequestHandler } from '@react-router/express';
 import compression from 'compression';
 import type { Request } from 'express';
 import express from 'express';
@@ -71,14 +71,14 @@ const viteDevServer =
         }),
       );
 
-const remixHandler = createRequestHandler({
+const reactRouterHandler = createRequestHandler({
   getLoadContext: async (request) => ({
     dependencies,
     refreshDependencies: loadStuffOnServerStart,
     i18n: await createi18nInstance(request),
   }),
   build: viteDevServer
-    ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
+    ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
     : // @ts-expect-error The built file is not ts
       await import('./dist/server/index.js'),
 });
@@ -115,8 +115,8 @@ if (NODE_ENV !== 'production') {
   });
 }
 
-// Remix SSR requests
-app.all('*', remixHandler);
+// React router SSR requests
+app.all('*', reactRouterHandler);
 
 const port = PORT || 5173;
 const domain = DOMAIN || 'localhost';

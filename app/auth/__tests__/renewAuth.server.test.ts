@@ -27,10 +27,10 @@ import {
 } from '@/auth/sessions.server';
 import { createMockAuth } from '@/auth/__mocks__/auth';
 import { mock } from 'vitest-mock-extended';
-import { type Session } from '@remix-run/node';
 import { renewAuth } from '@/auth/renewAuth.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n } from 'i18next';
+import type { Session } from 'react-router';
 
 vi.mock('@/auth/sessions.server');
 vi.mock('@/cora/renewAuthToken.server');

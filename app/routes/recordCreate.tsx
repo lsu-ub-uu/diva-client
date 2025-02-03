@@ -16,20 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { invariant } from '@remix-run/router/history';
-import { type ActionFunctionArgs, data } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { data } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecordData } from '@/types/record';
 import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { Alert, AlertTitle, Stack } from '@mui/material';
@@ -39,10 +36,30 @@ import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+import type { Route } from './+types/recordCreate';
 
-export const action = async ({ context, request }: ActionFunctionArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  const session = await getSessionFromCookie(request);
+  const notification = session.get('notification');
+
+  const url = new URL(request.url);
+  const validationTypeId = url.searchParams.get('validationType');
+  invariant(validationTypeId, 'Missing validationTypeId param');
+
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
+    validationTypeId,
+    'create',
+  );
+  return data(
+    { formDefinition, notification },
+    await getResponseInitWithSession(session),
+  );
+};
+
+export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
 
@@ -66,11 +83,12 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   if (errors) {
     return { errors, defaultValues };
   }
+
   try {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      validatedFormData as unknown as BFFDataRecord,
+      validatedFormData as BFFDataRecordData,
       auth,
     );
     session.flash('notification', {
@@ -87,27 +105,12 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   }
 };
 
-export const loader = async ({ request, context }: ActionFunctionArgs) => {
-  const session = await getSessionFromCookie(request);
-  const notification = session.get('notification');
+export const ErrorBoundary = RouteErrorBoundary;
 
-  const url = new URL(request.url);
-  const validationTypeId = url.searchParams.get('validationType');
-  invariant(validationTypeId, 'Missing validationTypeId param');
-
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    validationTypeId,
-    'create',
-  );
-  return data(
-    { formDefinition, notification },
-    await getResponseInitWithSession(session),
-  );
-};
-
-export default function CreateRecordRoute() {
-  const { formDefinition, notification } = useLoaderData<typeof loader>();
+export default function CreateRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { formDefinition, notification } = loaderData;
 
   useNotificationSnackbar(notification);
 

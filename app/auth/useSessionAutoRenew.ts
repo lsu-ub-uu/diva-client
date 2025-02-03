@@ -17,9 +17,9 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react';
-import { useFetcher, useLoaderData, useRevalidator } from '@remix-run/react';
 import { type action, type loader } from '@/root';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
+import { useFetcher, useLoaderData, useRevalidator } from 'react-router';
 
 export const useSessionAutoRenew = () => {
   const { auth } = useLoaderData<typeof loader>();

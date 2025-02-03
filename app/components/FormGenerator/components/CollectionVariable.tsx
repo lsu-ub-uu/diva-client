@@ -16,47 +16,54 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentCollVar } from '@/components/FormGenerator/types';
+import type {
+  FormComponentCollVar,
+  TextStyle,
+} from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
-import { type ReactNode } from 'react';
+import { type ReactNode, useContext } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import styles from './FormComponent.module.css';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface CollectionVariableProps {
   reactKey: string;
-  renderElementGridWrapper: boolean;
   component: FormComponentCollVar;
   name: string;
+  parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  textStyle?: TextStyle;
 }
 
 export const CollectionVariable = ({
   reactKey,
-  renderElementGridWrapper,
   component,
   name,
+  parentPresentationStyle,
   attributes,
   actionButtonGroup,
 }: CollectionVariableProps) => {
+  const { showTooltips } = useContext(FormGeneratorContext);
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
   if (component.mode === 'output' && !hasValue) {
     return null;
   }
   return (
-    <Grid
+    <div
       key={reactKey}
+      className={styles.component}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      size={{
-        xs: 12,
-        sm: renderElementGridWrapper ? component.gridColSpan : 12,
-      }}
+      data-colspan={component.gridColSpan ?? 12}
     >
-      <DevInfo component={component} />
+      <DevInfo
+        component={component}
+        path={name}
+      />
 
       <ControlledSelectField
         name={name}
@@ -65,7 +72,7 @@ export const CollectionVariable = ({
         label={component.label ?? ''}
         showLabel={component.showLabel}
         placeholder={component.placeholder}
-        tooltip={component.tooltip}
+        tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
         options={component.options}
         readOnly={!!component.finalValue}
@@ -73,7 +80,9 @@ export const CollectionVariable = ({
         hasValue={hasValue}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
+        parentPresentationStyle={parentPresentationStyle}
+        textStyle={component.textStyle}
       />
-    </Grid>
+    </div>
   );
 };

@@ -1,10 +1,4 @@
-import {
-  type ActionFunction,
-  data,
-  type LoaderFunctionArgs,
-  redirect,
-} from '@remix-run/node';
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { data, Form, redirect, useSubmit } from 'react-router';
 import { commitSession, getSession } from '@/auth/sessions.server';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -14,28 +8,15 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
-const parsePresentation = (searchParam: string | null) => {
-  if (searchParam === null) {
-    return null;
-  }
-  try {
-    return JSON.parse(decodeURIComponent(searchParam));
-  } catch {
-    console.error('Failed to parse presentation search param', searchParam);
-    return null;
-  }
-};
+import type { Route } from './+types/login';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
-
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
@@ -59,6 +40,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
     },
   );
 }
+
+const parsePresentation = (searchParam: string | null) => {
+  if (searchParam === null) {
+    return null;
+  }
+  try {
+    return JSON.parse(decodeURIComponent(searchParam));
+  } catch {
+    console.error('Failed to parse presentation search param', searchParam);
+    return null;
+  }
+};
 
 const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
@@ -86,7 +79,7 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
@@ -116,6 +109,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
   session.set('auth', auth);
+
   return redirect(returnTo ?? '/', {
     headers: {
       'Set-Cookie': await commitSession(session),
@@ -123,9 +117,10 @@ export const action: ActionFunction = async ({ request }) => {
   });
 };
 
-export default function Login() {
-  const { notification, presentation, returnTo } =
-    useLoaderData<typeof loader>();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function Login({ loaderData }: Route.ComponentProps) {
+  const { notification, presentation, returnTo } = loaderData;
   const submit = useSubmit();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();

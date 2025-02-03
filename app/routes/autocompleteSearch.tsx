@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
 import {
   getAuth,
   getSessionFromCookie,
@@ -25,8 +23,11 @@ import {
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
+import { invariant } from '@/utils/invariant';
 
-export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+import type { Route } from './+types/autocompleteSearch';
+
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url);
 
   const searchType = url.searchParams.get('searchType');

@@ -49,11 +49,6 @@ import {
   isComponentValidForDataCarrying,
 } from '../formGeneratorUtils/formGeneratorUtils';
 
-import {
-  getChildNameInDataArray,
-  getChildrenWithSameNameInData,
-} from '../defaultValues/defaultValues';
-
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
@@ -64,7 +59,6 @@ export const createYupValidationsFromComponent = (
   component: FormComponent,
   parentGroupOptional: boolean = false,
   parentGroupRepeating: boolean = false,
-  childWithSameNameInData: string[] = [],
 ) => {
   let validationRule: {
     [x: string]: any;
@@ -72,7 +66,7 @@ export const createYupValidationsFromComponent = (
   if (isComponentContainer(component)) {
     validationRule = removeSurroundingContainer(component, validationRule);
   }
-  const currentNameInData = getNameInData(childWithSameNameInData, component);
+  const currentNameInData = getNameInData(component);
 
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
@@ -119,14 +113,10 @@ function createSchemaForRepeatingGroup(
   component: FormComponentGroup,
   parentGroupOptional: boolean,
 ) {
-  const childrenWithSameNameInData = getChildrenWithSameNameInData(
-    getChildNameInDataArray(component),
-  );
   const innerObjectSchema = generateYupSchema(
     component.components,
     isComponentGroupAndOptional(component) || parentGroupOptional,
     isComponentRepeating(component),
-    childrenWithSameNameInData,
   );
 
   // Create a new schema by merging the existing schema and attribute fields
@@ -162,14 +152,10 @@ function createSchemaForNonRepeatingGroup(
   parentGroupOptional: boolean,
   parentGroupRepeating: boolean,
 ) {
-  const childrenWithSameNameInData = getChildrenWithSameNameInData(
-    getChildNameInDataArray(component),
-  );
   const innerSchema = generateYupSchema(
     component.components,
     parentGroupOptional,
     false,
-    childrenWithSameNameInData,
   );
   return yup.object().shape({
     ...innerSchema.fields,
@@ -204,7 +190,6 @@ export const generateYupSchema = (
   components: FormComponent[] | undefined,
   parentGroupOptional: boolean,
   parentGroupRepeating: boolean,
-  childrenWithSameNameInData: string[],
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
@@ -213,7 +198,6 @@ export const generateYupSchema = (
         formComponent,
         parentGroupOptional,
         parentGroupRepeating,
-        childrenWithSameNameInData,
       );
     });
 

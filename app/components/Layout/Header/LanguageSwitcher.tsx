@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, useFetcher, useLoaderData } from '@remix-run/react';
+import { Form, useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { NativeSelect, OutlinedInput } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';

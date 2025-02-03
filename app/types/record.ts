@@ -27,12 +27,14 @@ export interface BFFDataRecord {
   createdBy?: string;
   updated?: BFFUpdate[];
   userRights?: BFFUserRight[];
-  data: {
-    [key: string]: Metadata;
-  };
+  data: BFFDataRecordData;
   presentation?: FormSchema;
   listPresentation?: FormSchema;
   autoCompletePresentation?: unknown;
+}
+
+export interface BFFDataRecordData {
+  [key: string]: Metadata;
 }
 
 export type BFFUserRight =

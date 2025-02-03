@@ -7,8 +7,10 @@ export interface Attributes {
   [key: string]: string;
 }
 
+export type CoraData = DataGroup | DataAtomic | RecordLink;
+
 export interface DataGroup extends DataElement {
-  children: (DataAtomic | DataGroup | RecordLink)[];
+  children: CoraData[];
   attributes?: Attributes;
 }
 

@@ -26,7 +26,6 @@ interface RepeatingGroupProps {
   reactKey: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
-  childWithNameInDataArray: string[];
 }
 
 export const RepeatingGroup = ({
@@ -34,7 +33,6 @@ export const RepeatingGroup = ({
   reactKey,
   component,
   parentPresentationStyle,
-  childWithNameInDataArray,
 }: RepeatingGroupProps) => {
   const { control } = useRemixFormContext();
   return (
@@ -49,7 +47,6 @@ export const RepeatingGroup = ({
             currentComponentNamePath={arrayPath}
             component={component}
             parentPresentationStyle={parentPresentationStyle}
-            childWithNameInDataArray={childWithNameInDataArray}
             actionButtonGroup={actionButtonGroup}
           />
         );

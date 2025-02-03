@@ -17,14 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Grid2 as Grid,
-  Toolbar,
-} from '@mui/material';
+import { Button, Container, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -33,9 +26,11 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
+
+import styles from './Form.module.css';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -62,15 +57,10 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { handleSubmit, reset } = methods;
 
   return (
-    <Box
-      component={Form}
+    <Form
       method='POST'
-      sx={{
-        width: '100%',
-        opacity: submitting ? 0.5 : 1,
-        pointerEvents: submitting ? 'none' : 'all',
-        pb: 4,
-      }}
+      className={styles.form}
+      data-submitting={submitting}
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
@@ -81,53 +71,34 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
         />
       </RemixFormProvider>
 
-      <AppBar
-        position='fixed'
-        style={{
-          backgroundColor: '#eee',
-          top: 'auto',
-          bottom: 0,
-          display: 'block',
-        }}
-      >
-        <Container maxWidth='lg'>
-          <Grid container>
-            <Grid size={3} />
-            <Grid size={9}>
-              <Toolbar>
-                <Box
-                  component='div'
-                  sx={{ mt: 1, mb: 1, width: '100%' }}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                >
-                  <Button
-                    disabled={submitting}
-                    disableRipple
-                    variant='contained'
-                    color='secondary'
-                    sx={{ height: 40 }}
-                    onClick={() => reset()}
-                  >
-                    {t('divaClient_ResetButtonText')}
-                  </Button>
-                  <Button
-                    disabled={submitting}
-                    type='submit'
-                    disableRipple
-                    variant='contained'
-                    color='primary'
-                    sx={{ height: 40 }}
-                  >
-                    {t('divaClient_SubmitButtonText')}
-                  </Button>
-                </Box>
-              </Toolbar>
-            </Grid>
-          </Grid>
+      <div className={styles.toolbar}>
+        <Container maxWidth='xl'>
+          <Toolbar>
+            <div className={styles.toolbarActions}>
+              <Button
+                disabled={submitting}
+                disableRipple
+                variant='outlined'
+                color='secondary'
+                sx={{ height: 40 }}
+                onClick={() => reset()}
+              >
+                {t('divaClient_ResetButtonText')}
+              </Button>
+              <Button
+                disabled={submitting}
+                type='submit'
+                disableRipple
+                variant='contained'
+                color='primary'
+                sx={{ height: 40 }}
+              >
+                {t('divaClient_SubmitButtonText')}
+              </Button>
+            </div>
+          </Toolbar>
         </Container>
-      </AppBar>
-    </Box>
+      </div>
+    </Form>
   );
 };

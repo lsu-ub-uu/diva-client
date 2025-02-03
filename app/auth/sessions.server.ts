@@ -16,11 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  createCookieSessionStorage,
-  data,
-  type Session,
-} from '@remix-run/node';
+import { createCookieSessionStorage, data, type Session } from 'react-router';
 import type { Auth } from '@/auth/Auth';
 
 export type SessionData = {

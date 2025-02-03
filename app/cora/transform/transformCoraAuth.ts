@@ -17,9 +17,9 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import { invariant } from '@remix-run/router/history';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type { AuthWrapper } from '@/cora/cora-data/types.server';
+import { invariant } from '@/utils/invariant';
 
 export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
   const dataGroup = authentication.data;
@@ -40,7 +40,7 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
   );
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
 
-  invariant(authentication.actionLinks);
+  invariant(authentication.actionLinks, 'Authentication actionLinks missing');
 
   return {
     data: {

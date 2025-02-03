@@ -21,7 +21,7 @@ import type { Option } from '@/components';
 import AddIcon from '@mui/icons-material/Add';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@remix-run/react';
+import { Link } from 'react-router';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;

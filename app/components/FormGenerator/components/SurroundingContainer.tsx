@@ -22,6 +22,8 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
+import styles from './FormComponent.module.css';
+
 interface SurroundingContainerProps {
   reactKey: string;
   component: FormComponentContainer;
@@ -35,25 +37,20 @@ export const SurroundingContainer = ({
   currentComponentNamePath,
   parentPresentationStyle,
 }: SurroundingContainerProps) => {
+  const inline = checkIfPresentationStyleIsInline(component);
+
   return (
     <React.Fragment key={reactKey}>
       <div
         id={`anchor_${addAttributesToName(component, component.name)}`}
         key={reactKey}
-        style={{
-          display: 'flex',
-          flexDirection: checkIfPresentationStyleIsInline(component)
-            ? 'row'
-            : 'column',
-          alignItems: checkIfPresentationStyleIsInline(component)
-            ? 'center'
-            : undefined,
-        }}
+        className={`${styles.component} ${styles.container} anchorLink`}
+        data-colspan={component.gridColSpan ?? 12}
+        data-layout={inline ? 'inline' : 'grid'}
       >
         {component.components && (
           <ComponentList
             components={component.components}
-            childWithNameInDataArray={[]}
             parentPresentationStyle={
               component.presentationStyle ?? parentPresentationStyle
             }

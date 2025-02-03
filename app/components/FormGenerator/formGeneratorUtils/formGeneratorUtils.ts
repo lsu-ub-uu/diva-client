@@ -37,7 +37,6 @@ import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
@@ -245,16 +244,8 @@ export const checkIfValueExists = (value: unknown) => {
   return !(value === null || value === '' || value === undefined);
 };
 
-export function getNameInData(
-  childWithSameNameInData: string[],
-  component: FormComponent,
-) {
-  return hasCurrentComponentSameNameInData(
-    childWithSameNameInData,
-    component.name,
-  ) && isComponentWithData(component)
-    ? addAttributesToName(component, component.name)
-    : component.name;
+export function getNameInData(component: FormComponent) {
+  return addAttributesToName(component, component.name);
 }
 
 export const checkIfPresentationStyleIsInline = (

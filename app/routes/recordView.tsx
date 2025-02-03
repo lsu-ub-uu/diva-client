@@ -16,13 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
-import { invariant } from '@remix-run/router/history';
+import { getSessionFromCookie, getAuth } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from '@remix-run/react';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
@@ -34,26 +30,27 @@ import {
 } from '@/components/NavigationPanel/utils';
 import { Stack } from '@mui/material';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+import type { Route } from './+types/recordView';
 
 export const loader = async ({
   request,
   params,
   context,
-}: LoaderFunctionArgs) => {
+}: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
 
   const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
+
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies: context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
+
   const title = `${getRecordTitle(record)} | DiVA`;
 
   invariant(record.validationType, 'Record has no validation type');
@@ -66,26 +63,21 @@ export const loader = async ({
   return { record, formDefinition, title };
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function ViewRecordRoute() {
-  const { record, formDefinition } = useLoaderData<typeof loader>();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
+  const { record, formDefinition } = loaderData;
   return (
     <SidebarLayout
       sidebarContent={
         <NavigationPanel
-          links={
-            formDefinition
-              ? linksFromFormSchema(
-                  removeComponentsWithoutValuesFromSchema(
-                    formDefinition,
-                    record,
-                  ),
-                ) || []
-              : []
-          }
+          links={linksFromFormSchema(
+            removeComponentsWithoutValuesFromSchema(formDefinition, record),
+          )}
         />
       }
     >

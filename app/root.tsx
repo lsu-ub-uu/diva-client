@@ -17,19 +17,14 @@
  */
 
 import {
+  data,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
-} from '@remix-run/react';
-import {
-  type ActionFunctionArgs,
-  data,
-  type LinksFunction,
-  type LoaderFunctionArgs,
-} from '@remix-run/node';
+} from 'react-router';
 import { type ReactNode, useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
@@ -46,22 +41,14 @@ import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
+import type { Route } from './+types/root';
+
 const { MODE } = import.meta.env;
 
 interface DocumentProps {
   children: ReactNode;
 }
-
-export const links: LinksFunction = () => [
-  {
-    rel: 'icon',
-    type: 'image/svg+xml',
-    href: MODE === 'development' ? dev_favicon : favicon,
-  },
-  { rel: 'stylesheet', href: rootCss },
-];
-
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
@@ -70,7 +57,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return { auth, locale, loginUnits };
 }
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
 
   const intent = formData.get('intent');
@@ -99,6 +86,15 @@ const changeLanguage = async (formData: FormData) => {
     );
   }
 };
+
+export const links: Route.LinksFunction = () => [
+  {
+    rel: 'icon',
+    type: 'image/svg+xml',
+    href: MODE === 'development' ? dev_favicon : favicon,
+  },
+  { rel: 'stylesheet', href: rootCss },
+];
 
 const Document = withEmotionCache(
   ({ children }: DocumentProps, emotionCache) => {

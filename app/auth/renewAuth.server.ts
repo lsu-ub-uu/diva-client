@@ -22,9 +22,9 @@ import {
   getSessionFromCookie,
 } from '@/auth/sessions.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import { data } from '@remix-run/node';
 import type { Auth } from '@/auth/Auth';
 import type { i18n as i18nType } from 'i18next';
+import { data } from 'react-router';
 
 export const renewAuth = async (request: Request, i18n: i18nType) => {
   const session = await getSessionFromCookie(request);

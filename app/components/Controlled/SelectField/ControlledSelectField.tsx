@@ -32,6 +32,8 @@ import type { Option } from '@/components';
 import { Select } from '@/components/FormComponents/Select/Select';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import type { ReactNode } from 'react';
+import type { TextStyle } from '@/components/FormGenerator/types';
+import { Typography } from '@/components/Typography/Typography';
 
 interface ControlledSelectFieldProps {
   name: string;
@@ -49,11 +51,15 @@ interface ControlledSelectFieldProps {
   hasValue?: boolean;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  parentPresentationStyle?: string;
+  textStyle?: TextStyle;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
+  const inline = props.parentPresentationStyle === 'inline';
+
   const hasValueAndIsOutput =
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
@@ -74,11 +80,16 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
         field: { onChange, ref, value, name, onBlur },
         fieldState: { error },
       }) => (
-        <FormControl fullWidth>
+        <FormControl
+          fullWidth
+          sx={{
+            flexDirection: inline ? 'row' : 'column',
+            alignItems: inline ? 'baseline' : 'stretch',
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
-              width: '100%',
               justifyContent: 'flex-end',
               alignItems: 'center',
             }}
@@ -90,7 +101,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 required={props.required}
                 error={error !== undefined}
                 sx={{
-                  p: '2px 4px',
+                  pr: 1,
                   display: 'flex',
                   alignItems: 'center',
                   mr: 'auto',
@@ -167,12 +178,13 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             <>
               {props.hasValue === true ? (
                 <>
-                  <Box
-                    component='span'
-                    sx={{ pl: 2, mb: 1 }}
-                  >
-                    {t(findOptionLabelByValue(props.options, value))}
-                  </Box>
+                  <Typography
+                    variant={props.textStyle ?? 'bodyTextStyle'}
+                    sx={{
+                      pl: props.showLabel && !inline ? 2 : 0,
+                    }}
+                    text={findOptionLabelByValue(props.options, value)}
+                  />
                   <input
                     type='hidden'
                     value={value}

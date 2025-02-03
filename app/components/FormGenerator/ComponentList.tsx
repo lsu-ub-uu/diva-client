@@ -24,24 +24,21 @@ import {
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
-  childWithNameInDataArray: string[];
   parentPresentationStyle?: string;
   path?: string;
 }
 
 export const ComponentList = ({
   components,
-  childWithNameInDataArray,
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps) => {
-  return components.map((c, i) => (
+  return components.map((component, i) => (
     <Component
-      key={getCurrentComponentNamePath(childWithNameInDataArray, c, path)}
-      component={c}
+      key={getCurrentComponentNamePath(component, path)}
+      component={component}
       idx={i}
       path={path}
-      childWithNameInDataArray={childWithNameInDataArray}
       parentPresentationStyle={parentPresentationStyle}
     />
   ));

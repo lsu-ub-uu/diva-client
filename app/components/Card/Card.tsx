@@ -17,7 +17,6 @@
  */
 
 import type { SxProps } from '@mui/material';
-import { Box } from '@mui/material';
 import type { ReactNode } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
@@ -28,14 +27,13 @@ export interface CardProps {
   sx?: SxProps;
 }
 
-export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
+export const Card = ({ children, boxed = false }: CardProps) => {
   return (
-    <Box
+    <div
       className={styles.card}
-      sx={sx}
       data-boxed={boxed}
     >
       <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
-    </Box>
+    </div>
   );
 };

@@ -52,12 +52,15 @@ import {
   authorGroup,
   authorGroup2,
   authorityLanguageTermCollectionVar,
+  createdByLink,
+  dataDividerLink,
   divaOutputValidationType,
   domainCollectionVar,
   familyNameTextVar,
   genreCollectionVar,
   genreOtherCollectionVar,
   givenNameTextVar,
+  idTextVar,
   mainTitleTextVar,
   newNationalSubjectCategoryRecordTypeGroup,
   newNationalSubjectCategoryRecordTypeNewGroup,
@@ -72,6 +75,8 @@ import {
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
   preprintNewGroup,
+  recordInfoMetadata,
+  recordTypeLink,
   someLanguageTerm,
   someMetadataChildGroup,
   someMetadataCollectionVariable,
@@ -100,8 +105,13 @@ import {
   someValidationTypeForRepeatingRecordLinksNameInDataId,
   someValidationTypeForRequiredAndRepeatingId,
   titleGroup,
+  tsCreatedTextVar,
+  tsUpdatedTextVar,
   typeCodeCollectionVar,
   typeOutputTypeCollectionVar,
+  updatedByLink,
+  updatedGroup,
+  validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
@@ -185,6 +195,16 @@ describe('transformToCora', () => {
       someLanguageTerm,
       typeCodeCollectionVar,
       authorityLanguageTermCollectionVar,
+      recordInfoMetadata,
+      createdByLink,
+      dataDividerLink,
+      idTextVar,
+      tsCreatedTextVar,
+      recordTypeLink,
+      updatedGroup,
+      updatedByLink,
+      tsUpdatedTextVar,
+      validationTypeLink,
     ]);
     presentationPool = listToPool<BFFPresentationBase | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1441,7 +1461,7 @@ describe('transformToCora', () => {
             },
           },
           outputType: {
-            genre: {
+            genre_type_outputType: {
               value: 'publication_newspaper-article',
               _type: 'outputType',
             },
@@ -1484,7 +1504,7 @@ describe('transformToCora', () => {
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         output: {
           language: {
-            languageTerm: [
+            'languageTerm_authority_iso639-2b_type_code': [
               {
                 value: 'ach',
                 _type: 'code',
@@ -1494,6 +1514,7 @@ describe('transformToCora', () => {
           },
         },
       });
+
       expect(transformData[0]).toStrictEqual(expected);
     });
   });

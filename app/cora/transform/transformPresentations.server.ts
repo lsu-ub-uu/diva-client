@@ -295,6 +295,14 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     );
   }
 
+  let attributesToShow;
+  if (containsChildWithNameInData(dataRecordGroup, 'attributesToShow')) {
+    attributesToShow = getFirstDataAtomicValueWithNameInData(
+      dataRecordGroup,
+      'attributesToShow',
+    );
+  }
+
   return removeEmpty({
     id,
     presentationOf,
@@ -302,6 +310,7 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     specifiedHeadlineTextId,
     showHeadline,
     specifiedHeadlineLevel,
+    attributesToShow,
     mode,
     children,
     type,

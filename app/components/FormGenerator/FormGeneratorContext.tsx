@@ -23,10 +23,12 @@ export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
   showDevInfo: boolean;
   boxGroups: boolean;
+  showTooltips: boolean;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
   linkedData: undefined,
   showDevInfo: false,
   boxGroups: false,
+  showTooltips: true,
 });

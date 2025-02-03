@@ -21,24 +21,16 @@ import {
   getSessionFromCookie,
   requireAuth,
 } from '@/auth/sessions.server';
-import {
-  type ActionFunctionArgs,
-  data,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node';
+import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { useLoaderData } from '@remix-run/react';
-import { getValidatedFormData, parseFormData } from 'remix-hook-form';
+import { getValidatedFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
@@ -49,24 +41,72 @@ import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { Alert, AlertTitle } from '@mui/material';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+import type { Route } from './+types/recordUpdate';
+
+export async function loader({ request, params, context }: Route.LoaderArgs) {
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuth(session);
+  const { t } = context.i18n;
+
+  const notification = session.get('notification');
+
+  const { recordType, recordId } = params;
+
+  const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+  });
+
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
+
+  if (record?.validationType == null) {
+    throw new Error();
+  }
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
+    record.validationType,
+    'update',
+  );
+
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formDefinition,
+    record,
+  );
+
+  return data(
+    { record, formDefinition, defaultValues, notification, title },
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    },
+  );
+}
 
 export const action = async ({
   request,
   params,
   context,
-}: ActionFunctionArgs) => {
+}: Route.ActionArgs) => {
+  const { recordType, recordId } = params;
+
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
-  const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
   const formData = await request.formData();
-  const parsedFormData = (await parseFormData(formData)) as any;
-  const validationType =
-    parsedFormData.output?.recordInfo?.validationType?.value;
-  invariant(validationType, 'Failed to extract validationType from form data');
+
+  const { validationType } = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+  });
+
+  invariant(validationType, 'Failed to get validation type from record');
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
     validationType,
@@ -103,57 +143,16 @@ export const action = async ({
   return data({}, await getResponseInitWithSession(session));
 };
 
-export async function loader({ request, params, context }: LoaderFunctionArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
-  const { t } = context.i18n;
-
-  const notification = session.get('notification');
-
-  const { recordType, recordId } = params;
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
-
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
-    recordType,
-    recordId,
-    authToken: auth.data.token,
-  });
-
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
-
-  if (record?.validationType == null) {
-    throw new Error();
-  }
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    record.validationType,
-    'update',
-  );
-
-  const defaultValues = createDefaultValuesFromFormSchema(
-    formDefinition,
-    record,
-  );
-
-  return data(
-    { record, formDefinition, defaultValues, notification, title },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
-}
-
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function UpdateRecordRoute() {
-  const { record, formDefinition, notification } =
-    useLoaderData<typeof loader>();
+export const ErrorBoundary = RouteErrorBoundary;
+
+export default function UpdateRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { record, formDefinition, notification } = loaderData;
   useNotificationSnackbar(notification);
 
   const lastUpdate =

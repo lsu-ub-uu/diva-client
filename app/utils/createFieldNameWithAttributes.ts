@@ -16,13 +16,26 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.group {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  &[data-inline='true'] {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.2em;
-  }
+export interface Attribute {
+  name: string;
+  value?: string;
 }
+
+export const createFieldNameWithAttributes = (
+  fieldName: string,
+  attributes: Attribute[],
+) => {
+  return attributes
+    .filter(hasValue)
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .reduce((previousValue, attribute) => {
+      const escapedValue = attribute.value.replaceAll('.', '-');
+      return `${previousValue}_${attribute.name}_${escapedValue}`;
+    }, fieldName);
+};
+
+const hasValue = (
+  attribute: Attribute,
+): attribute is { name: string; value: string } => {
+  return attribute.value !== undefined;
+};

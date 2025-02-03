@@ -18,7 +18,7 @@
  */
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import {
-  addAttributesToName,
+  addAttributesToNameServer,
   addNamesToArray,
   createFormMetaDataPathLookup,
   createPath,
@@ -272,7 +272,7 @@ describe('createFormMetaDataPathLookup', () => {
   describe('addAttributesToName', () => {
     describe('formMetaData', () => {
       it('adds no attributes to name when not available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -281,7 +281,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -293,7 +293,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds multiple attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           type: 'textVariable',
           repeat: { repeatMin: 1, repeatMax: 1 },
@@ -307,7 +307,7 @@ describe('createFormMetaDataPathLookup', () => {
     });
     describe('Cora MetaData', () => {
       it('adds no attributes to name when not available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
         });
@@ -315,7 +315,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
           attributes: {
@@ -326,7 +326,7 @@ describe('createFormMetaDataPathLookup', () => {
       });
 
       it('adds multiple attributes to name when available', () => {
-        const actual = addAttributesToName({
+        const actual = addAttributesToNameServer({
           name: 'subject',
           value: 'Naturvetenskap',
           attributes: {
@@ -341,87 +341,42 @@ describe('createFormMetaDataPathLookup', () => {
 
   describe('createPath', () => {
     it('creates a path for empty path', () => {
-      const actual = createPath(
-        '',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        },
-        [],
-      );
+      const actual = createPath('', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      });
       expect(actual).toStrictEqual('subject');
     });
     it('creates a path for non empty path', () => {
-      const actual = createPath(
-        'nationalSubjectCategory',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-        },
-        [],
-      );
+      const actual = createPath('nationalSubjectCategory', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      });
       expect(actual).toStrictEqual('nationalSubjectCategory.subject');
     });
-    it('creates a path for empty path with attributes without array', () => {
-      const actual = createPath(
-        '',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          attributes: {
-            language: 'swe',
-          },
-        },
-        [],
-      );
-      expect(actual).toStrictEqual('subject');
-    });
-    it('creates a path for non empty path with attributes without array', () => {
-      const actual = createPath(
-        'nationalSubjectCategory',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          attributes: {
-            language: 'swe',
-          },
-        },
-        [],
-      );
-      expect(actual).toStrictEqual('nationalSubjectCategory.subject');
-    });
+
     it('creates a path for empty path with attributes with array', () => {
-      const actual = createPath(
-        '',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          attributes: {
-            language: 'swe',
-          },
+      const actual = createPath('', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe',
         },
-        ['subject'],
-      );
+      });
       expect(actual).toStrictEqual('subject_language_swe');
     });
     it('creates a path for non empty path with attributes with array', () => {
-      const actual = createPath(
-        'nationalSubjectCategory',
-        {
-          name: 'subject',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          attributes: {
-            language: 'swe',
-          },
+      const actual = createPath('nationalSubjectCategory', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe',
         },
-        ['subject'],
-      );
+      });
       expect(actual).toStrictEqual(
         'nationalSubjectCategory.subject_language_swe',
       );

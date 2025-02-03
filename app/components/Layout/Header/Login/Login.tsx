@@ -16,13 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Form,
-  useLoaderData,
-  useLocation,
-  useNavigation,
-  useSubmit,
-} from '@remix-run/react';
+import { Form, useLoaderData, useLocation, useNavigation, useSubmit } from 'react-router';
 import {
   Box,
   Button,

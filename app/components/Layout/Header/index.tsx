@@ -18,7 +18,7 @@
 
 import { Box, Button, Container, Link } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Form, Link as RouterLink, useLocation } from '@remix-run/react';
+import { Form, Link as RouterLink, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -32,7 +32,7 @@ export const Header = () => {
     <Box
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl'>
         <Box
           sx={{
             display: 'flex',

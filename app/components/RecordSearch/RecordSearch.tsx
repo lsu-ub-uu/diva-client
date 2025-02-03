@@ -18,12 +18,12 @@
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
+import { SearchResultForm } from '@/components/Form/SearchResultForm';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -48,21 +48,22 @@ export const RecordSearch = ({
       />
       {searchResults && (
         <>
-          <h3>
+          <h2>
             {t('divaClient_searchPageResultText', {
               numberOfResults: searchResults?.totalNo,
             })}
-          </h3>
+          </h2>
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
               <li
                 key={record.id}
                 className={styles.resultListItem}
               >
-                <AutocompleteForm
+                <SearchResultForm
                   record={record}
                   formSchema={record.presentation!}
                 />
+
                 <Box
                   sx={(theme) => ({
                     position: 'absolute',

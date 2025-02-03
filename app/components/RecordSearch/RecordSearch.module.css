@@ -5,8 +5,24 @@
 .resultListItem {
   position: relative;
   display: block;
-  border-radius: var(--border-radius);
-  border: 2px solid rgb(var(--beigeMain));
+  padding: var(--gap);
+  border-left: 2px solid rgb(var(--beigeMain));
+  border-right: 2px solid rgb(var(--beigeMain));
+  border-bottom: 2px solid rgb(var(--beigeMain));
   background-color: rgb(var(--beigeLight));
-  margin-bottom: calc(var(--gap) * 2);
+}
+.resultListItem:first-child {
+  position: relative;
+  display: block;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  border-top: 2px solid rgb(var(--beigeMain));
+  background-color: rgb(var(--beigeLight));
+}
+.resultListItem:last-child {
+  position: relative;
+  display: block;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  background-color: rgb(var(--beigeLight));
 }
