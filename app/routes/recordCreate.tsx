@@ -23,6 +23,7 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
 import {
+  getNotification,
   getSessionFromCookie,
   requireAuthentication,
 } from '@/auth/sessions.server';
@@ -45,7 +46,7 @@ import type { Route } from './+types/recordCreate';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const notification = session.get('notification');
+  const notification = getNotification(session);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');

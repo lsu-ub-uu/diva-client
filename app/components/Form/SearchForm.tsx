@@ -50,15 +50,32 @@ export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
+  const { handleSubmit, register } = methods;
+
   return (
     <Form
       method='GET'
       action='/search'
+      onSubmit={handleSubmit}
     >
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />
         </RemixFormProvider>
+        <label>
+          Start at
+          <input
+            type='text'
+            {...register('search.start[0].value')}
+          />
+        </label>
+        <label>
+          Rows per page
+          <input
+            type='text'
+            {...register('search.rows[0].value')}
+          />
+        </label>
         <Button
           type='submit'
           disableRipple

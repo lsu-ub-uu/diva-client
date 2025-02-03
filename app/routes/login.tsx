@@ -1,5 +1,9 @@
 import { data, Form, redirect, useSubmit } from 'react-router';
-import { commitSession, getSession } from '@/auth/sessions.server';
+import {
+  commitSession,
+  getNotification,
+  getSession,
+} from '@/auth/sessions.server';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -30,7 +34,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   return data(
     {
       presentation,
-      notification: session.get('notification'),
+      notification: getNotification(session),
       returnTo,
     },
     {

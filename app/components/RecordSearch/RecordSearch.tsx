@@ -29,7 +29,7 @@ interface RecordSearchProps {
   searchForm: SearchFormSchema;
   searchType: string;
   query: any;
-  searchResults: BFFSearchResult | null;
+  searchResults: BFFSearchResult | undefined;
 }
 
 export const RecordSearch = ({

@@ -18,6 +18,7 @@
 
 import {
   commitSession,
+  getNotification,
   getSessionFromCookie,
   requireAuthentication,
 } from '@/auth/sessions.server';
@@ -50,7 +51,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const auth = await requireAuthentication(session);
   const { t } = context.i18n;
 
-  const notification = session.get('notification');
+  const notification = getNotification(session);
 
   const { recordType, recordId } = params;
 

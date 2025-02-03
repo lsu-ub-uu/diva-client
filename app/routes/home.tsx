@@ -20,14 +20,13 @@ import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import {
   getAuthentication,
+  getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { Await, data } from 'react-router';
+import { type AppLoadContext, Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { searchRecords } from '@/data/searchRecords.server';
-import { isEmpty } from 'lodash-es';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
@@ -39,42 +38,38 @@ import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 import type { Route } from './+types/home';
+import { getValidatedFormData } from 'remix-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import type { SearchFormSchema } from '@/components/FormGenerator/types';
+import type { Auth } from '@/types/Auth';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
-  const { t } = context.i18n;
-  const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
-  const validationTypes = auth
-    ? getValidationTypes(auth.data.token)
-    : Promise.resolve(null);
-
-  const notification = session.get('notification');
 
   const searchForm = getSearchForm(
     context.dependencies,
     'diva-outputSimpleSearch',
   );
 
-  const query = parseFormDataFromSearchParams(request);
-
-  const searchResults = !isEmpty(query)
-    ? await searchRecords(
-        context.dependencies,
-        'diva-outputSimpleSearch',
-        query,
-        auth,
-      )
-    : null;
+  const { errors, query, defaultValues, searchResults } = await performSearch(
+    searchForm,
+    request,
+    context,
+    auth,
+  );
 
   return data(
     {
-      validationTypes,
+      validationTypes: getValidationTypes(auth?.data.token),
       query,
       searchForm,
+      errors,
+      defaultValues,
       searchResults,
-      title,
-      notification,
+      title: getPageTitle(context),
+      notification: getNotification(session),
     },
     await getResponseInitWithSession(session),
   );
@@ -151,3 +146,34 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     </SidebarLayout>
   );
 }
+
+const getPageTitle = (context: AppLoadContext) => {
+  const { t } = context.i18n;
+  return `DiVA | ${t('divaClient_HomePageTitleText')}`;
+};
+
+const performSearch = async (
+  searchForm: SearchFormSchema,
+  request: Request,
+  context: AppLoadContext,
+  auth: Auth | undefined,
+) => {
+  const resolver = yupResolver(generateYupSchemaFromFormSchema(searchForm));
+  const {
+    errors,
+    data: query,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData(request, resolver);
+
+  if (errors) {
+    return { errors, defaultValues, query };
+  }
+
+  const searchResults = await searchRecords(
+    context.dependencies,
+    'diva-outputSimpleSearch',
+    query,
+    auth,
+  );
+  return { query, searchResults };
+};
