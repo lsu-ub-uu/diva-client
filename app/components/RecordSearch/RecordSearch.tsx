@@ -24,6 +24,7 @@ import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import { Form, useSubmit } from 'react-router';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -39,17 +40,13 @@ export const RecordSearch = ({
   searchResults,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
-  console.log({ searchResults });
   return (
     <div>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
         record={{ data: query }}
-        totalHits={searchResults?.totalNo}
-        rowsPerPage={
-          searchResults && searchResults?.toNo - searchResults?.fromNo - 1
-        }
+        searchResults={searchResults}
       />
       {searchResults && (
         <>
@@ -58,7 +55,7 @@ export const RecordSearch = ({
               numberOfResults: searchResults?.totalNo,
             })}
           </h2>
-          fromNo: {searchResults.fromNo} | toNo: {searchResults.toNo} | totalNo:{' '}
+          {searchResults.fromNo} - {searchResults.toNo} av
           {searchResults.totalNo}
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (

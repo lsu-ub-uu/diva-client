@@ -20,9 +20,9 @@
 import { Button } from '@mui/material';
 
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-router';
+import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -30,22 +30,25 @@ import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValue
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
-import { Pagination } from '@/components/Form/Pagination';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import type { MouseEvent } from 'react';
 
 interface SearchFormProps {
   searchType: string;
   record?: BFFDataRecord;
   formSchema: SearchFormSchema;
-  totalHits: number | undefined;
-  rowsPerPage: number | undefined;
+  searchResults?: BFFSearchResult;
 }
 
 export const SearchForm = ({
   record,
   formSchema,
-  totalHits,
-  rowsPerPage,
+  searchResults,
 }: SearchFormProps) => {
+  const submit = useSubmit();
   const { t } = useTranslation();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -58,38 +61,19 @@ export const SearchForm = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
-  const { handleSubmit, register } = methods;
+  const { register, getValues } = methods;
+
+  const rowsPerPage = getValues('search.rows[0].value');
 
   return (
     <Form
       method='GET'
       action='/search'
-      onSubmit={handleSubmit}
     >
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />
         </RemixFormProvider>
-        {totalHits && rowsPerPage && (
-          <Pagination
-            totalHits={totalHits}
-            rowsPerPage={rowsPerPage}
-          />
-        )}
-        <label>
-          Start at
-          <input
-            type='text'
-            {...register('search.start[0].value')}
-          />
-        </label>
-        <label>
-          Rows per page
-          <input
-            type='text'
-            {...register('search.rows[0].value')}
-          />
-        </label>
         <Button
           type='submit'
           disableRipple
@@ -99,6 +83,46 @@ export const SearchForm = ({
         >
           {t('divaClient_SearchButtonText')}
         </Button>
+        <div>
+          <label>
+            Rows per page
+            <select
+              {...register('search.rows[0].value')}
+              onChange={(e) => submit(e.currentTarget.form)}
+            >
+              <option value='5'>5</option>
+              <option value='10'>10</option>
+              <option value='20'>20</option>
+              <option value='30'>30</option>
+              <option value='40'>40</option>
+              <option value='50'>50</option>
+            </select>
+          </label>
+          <button type='button'>
+            <KeyboardDoubleArrowLeftIcon />
+          </button>
+          <button
+            type='submit'
+            name='search.start[0].value'
+            disabled={!searchResults || searchResults.fromNo <= 1}
+            value={searchResults && searchResults.fromNo - rowsPerPage}
+          >
+            <KeyboardArrowLeftIcon />
+          </button>
+          <button
+            type='submit'
+            name='search.start[0].value'
+            disabled={
+              !searchResults || searchResults.toNo >= searchResults.totalNo
+            }
+            value={searchResults && searchResults.toNo + 1}
+          >
+            <KeyboardArrowRightIcon />
+          </button>
+          <button type='button'>
+            <KeyboardDoubleArrowRightIcon />
+          </button>
+        </div>
       </div>
     </Form>
   );

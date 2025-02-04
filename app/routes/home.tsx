@@ -38,11 +38,10 @@ import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 import type { Route } from './+types/home';
-import { getValidatedFormData } from 'remix-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import type { Auth } from '@/types/Auth';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { isEmpty } from 'lodash-es';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -53,7 +52,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     'diva-outputSimpleSearch',
   );
 
-  const { errors, query, defaultValues, searchResults } = await performSearch(
+  const { query, searchResults } = await performSearch(
     searchForm,
     request,
     context,
@@ -65,8 +64,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       validationTypes: getValidationTypes(auth?.data.token),
       query,
       searchForm,
-      errors,
-      defaultValues,
       searchResults,
       title: getPageTitle(context),
       notification: getNotification(session),
@@ -158,15 +155,22 @@ const performSearch = async (
   context: AppLoadContext,
   auth: Auth | undefined,
 ) => {
-  const resolver = yupResolver(generateYupSchemaFromFormSchema(searchForm));
+  // const resolver = yupResolver(generateYupSchemaFromFormSchema(searchForm));
+  const url = new URL(request.url);
+  const query = parseFormDataFromSearchParams(url.searchParams);
+  /*
   const {
     errors,
     data: query,
     receivedValues: defaultValues,
-  } = await getValidatedFormData(request, resolver);
+  } = await getValidatedFormData(request, resolver);*/
 
-  if (errors) {
+  /* if (errors) {
     return { errors, defaultValues, query };
+  }*/
+
+  if (isEmpty(query)) {
+    return { query };
   }
 
   const searchResults = await searchRecords(
