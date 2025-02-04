@@ -21,6 +21,23 @@ import { type action, type loader } from '@/root';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 import { useFetcher, useLoaderData, useRevalidator } from 'react-router';
 
+/**
+ * How long before token expiry to start the renewal process
+ */
+const RENEW_TIME_BUFFER = 30_000;
+
+/**
+ * The amount of time to wait for other browser window messages,
+ * to determine which should be the master window that performs the renewal
+ */
+const WINDOW_SYNC_BUFFER = 1000;
+
+/**
+ * The amount of time that non-master windows will wait before revalidating,
+ * to get the new session cookie set by the master window
+ */
+const REVALIDATE_TIME_BUFFER = 5000;
+
 export const useSessionAutoRenew = () => {
   const { auth } = useLoaderData<typeof loader>();
   const { submit } = useFetcher<typeof action>();
@@ -29,7 +46,7 @@ export const useSessionAutoRenew = () => {
   );
   const { revalidate } = useRevalidator();
 
-  const isNewestWindow = useIsNewestWindow(1000);
+  const isNewestWindow = useIsNewestWindow(WINDOW_SYNC_BUFFER);
   const validUntil = Number(auth?.data.validUntil);
 
   /**
@@ -41,7 +58,7 @@ export const useSessionAutoRenew = () => {
     } else {
       setTimeout(() => {
         revalidate();
-      }, 5000);
+      }, REVALIDATE_TIME_BUFFER);
     }
   }, [isNewestWindow, submit, revalidate]);
 
@@ -63,6 +80,5 @@ export const useSessionAutoRenew = () => {
 export const getTimeUntilNextRenew = (validUntil: number) => {
   const now = new Date();
   const timeUntilInvalid = validUntil - now.getTime();
-  const renewTimeBuffer = 30_000;
-  return Math.max(timeUntilInvalid - renewTimeBuffer, 0);
+  return Math.max(timeUntilInvalid - RENEW_TIME_BUFFER, 0);
 };

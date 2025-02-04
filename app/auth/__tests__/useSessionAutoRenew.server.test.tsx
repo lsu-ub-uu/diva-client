@@ -154,7 +154,7 @@ describe('useSessionAutoRenew', () => {
     expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();
     expect(loaderSpy).toHaveBeenCalledTimes(1);
 
-    await act(() => vi.advanceTimersByTime(1000));
+    await act(() => vi.advanceTimersByTime(5000));
     expect(loaderSpy).toHaveBeenCalledTimes(2);
   });
 
