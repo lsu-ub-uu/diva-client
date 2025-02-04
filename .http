@@ -94,7 +94,7 @@ POST https://cora.epc.ub.uu.se/diva/login/apptoken
 Content-Type: application/vnd.uub.login
 
 divaAdmin@cora.epc.ub.uu.se
-49ce00fb-68b5-4089-a5f7-1c225d3cf156
+xxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 
 ###
 POST http://localhost:8080/api/record/manuscript
@@ -473,7 +473,7 @@ Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
 POST http://localhost:38182/login/rest/apptoken
 
 divaAdmin@cora.epc.ub.uu.se
-49ce00fb-68b5-4089-a5f7-1c225d3cf156
+xxxx-xxx-xxxxx-xxxx
 
 ### Renew authtoken
 POST http://localhost:38182/login/rest/authToken/ffb01845-3230-4ef8-b923-d7b775be2c2f
