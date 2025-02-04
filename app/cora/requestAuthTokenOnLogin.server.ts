@@ -16,59 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import axios from 'axios';
 import { coraLoginUrl } from '@/cora/helper.server';
-import type { CoraRecord } from '@/cora/cora-data/CoraData.server';
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import { invariant } from '@/utils/invariant';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 export async function requestAuthTokenOnLogin(
   user: string,
-  authToken: string | undefined,
+  appTokenOrPassword: string,
   loginType: 'apptoken' | 'password',
 ): Promise<Auth> {
   const url = coraLoginUrl(`/${loginType}`);
 
   const headers = {
     'Content-Type': 'application/vnd.uub.login',
+    Accept: 'application/vnd.uub.authentication+json',
   };
-  const body = `${user}\n${authToken}`;
+  const body = `${user}\n${appTokenOrPassword}`;
   try {
     const response = await axios.post(url, body, { headers });
-    return extractDataFromResult(response.data);
+    return transformCoraAuth(response.data);
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-
-const extractDataFromResult = (record: CoraRecord): Auth => {
-  const dataGroup = record.data;
-  const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
-  const validForNoSeconds = getFirstDataAtomicValueWithNameInData(
-    dataGroup,
-    'validForNoSeconds',
-  );
-  const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
-  const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
-  const firstName = getFirstDataAtomicValueWithNameInData(
-    dataGroup,
-    'firstName',
-  );
-  const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
-
-  invariant(record.actionLinks, 'Action links missing from Cora auth');
-
-  return {
-    data: {
-      token,
-      validForNoSeconds,
-      userId,
-      loginId,
-      firstName,
-      lastName,
-    },
-    actionLinks: record.actionLinks,
-  };
-};

@@ -17,7 +17,7 @@
  */
 
 import 'dotenv/config';
-import type { DataListWrapper } from '@/cora/cora-data/CoraData.server';
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformMetadata } from '@/cora/transform/transformMetadata.server';
 import { listToPool } from '@/utils/structs/listToPool';

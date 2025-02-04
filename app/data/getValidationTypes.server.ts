@@ -17,10 +17,7 @@
  */
 
 import type { Option } from '@/components';
-import type {
-  DataGroup,
-  DataListWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,20 +16,18 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/types/Auth';
-import { loginWithAppToken } from '@/data/loginWithAppToken.server';
+import type { Auth } from '@/auth/Auth';
+import axios from 'axios';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
 
-const divaAdminUser = {
-  idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
-  appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
-};
-
-export const loginAsDivaAdmin = async (): Promise<Auth> => {
-  const auth = await loginWithAppToken(divaAdminUser);
-
-  if (!auth) {
-    throw new Error('Login failed');
+export const renewAuthToken = async (auth: Auth) => {
+  if (auth.actionLinks?.renew === undefined) {
+    throw new Error('Missing auth update actionLink');
   }
+  const response = await axios.request(
+    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
+  );
 
-  return auth;
+  return transformCoraAuth(response.data);
 };

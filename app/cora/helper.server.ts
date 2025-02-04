@@ -16,13 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type { ActionLink } from '@/cora/cora-data/types.server';
+import { type AxiosRequestConfig } from 'axios';
+
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
 export const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
 
 export const createHeaders = (
-  init: Record<string, string>,
+  init: Record<string, string | undefined>,
   authToken?: string,
-): Record<string, string> => {
+): Record<string, string | undefined> => {
   const headers = init;
 
   if (authToken) {
@@ -38,4 +41,22 @@ export const coraApiUrl = (path: string) => {
 
 export const coraLoginUrl = (path: string) => {
   return `${process.env.CORA_LOGIN_URL}${path}`;
+};
+
+export const getAxiosRequestFromActionLink = (
+  actionLink: ActionLink,
+  authToken: string | undefined,
+): AxiosRequestConfig<any> => {
+  return {
+    method: actionLink.requestMethod,
+    url: actionLink.url,
+    data: actionLink.body,
+    headers: createHeaders(
+      {
+        Accept: actionLink.accept,
+        'Content-Type': actionLink.contentType,
+      },
+      authToken,
+    ),
+  };
 };

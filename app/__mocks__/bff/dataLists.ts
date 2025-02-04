@@ -1,4 +1,4 @@
-import type { DataListWrapper } from '@/cora/cora-data/CoraData.server';
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
 
 export const dataListWithTwoRecords: DataListWrapper = {
   dataList: {

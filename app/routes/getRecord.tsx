@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/auth/sessions.server';
+import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { invariant } from '@/utils/invariant';
 
@@ -31,7 +28,7 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   const { recordType, recordId } = params;
 

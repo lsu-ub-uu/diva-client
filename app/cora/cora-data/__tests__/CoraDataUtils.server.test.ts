@@ -22,8 +22,12 @@ import {
   getAllDataAtomicValueFromDataGroup,
   hasChildWithNameInData,
 } from '../CoraDataUtils.server';
-import type { DataAtomic, DataElement, DataGroup } from '../CoraData.server';
 import { describe, expect } from 'vitest';
+import type {
+  DataAtomic,
+  DataElement,
+  DataGroup,
+} from '@/cora/cora-data/types.server';
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',

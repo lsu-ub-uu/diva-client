@@ -18,10 +18,7 @@
 
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
@@ -42,7 +39,7 @@ import type { Route } from './+types/home';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
   const { t } = context.i18n;
   const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
   const validationTypes = auth

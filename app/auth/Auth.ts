@@ -1,11 +1,12 @@
-import type { ActionLinks } from '@/cora/cora-data/CoraData.server';
+import type { ActionLinks } from '@/cora/cora-data/types.server';
 
 export interface Auth {
   data: {
     token: string;
-    validForNoSeconds: string;
+    validUntil: string;
+    renewUntil: string;
     userId: string;
-    loginId?: string;
+    loginId: string;
     lastName?: string;
     firstName?: string;
   };

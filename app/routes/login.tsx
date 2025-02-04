@@ -11,8 +11,8 @@ import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPasswor
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { useSnackbar } from 'notistack';
-import { authYupSchema } from '@/cora/yupSchema/authYupSchema.server';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 import type { Route } from './+types/login';
 
@@ -62,9 +62,8 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
     }
     case 'webRedirect': {
       try {
-        return await authYupSchema.validate(
-          JSON.parse(form.get('auth') as string),
-        );
+        const authFromWebRedirect = JSON.parse(form.get('auth') as string);
+        return transformCoraAuth(authFromWebRedirect);
       } catch (e) {
         console.error('Failed to parse webRedirect auth', e);
         return null;

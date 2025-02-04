@@ -31,7 +31,7 @@ import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { i18nConfig } from '@/i18n/i18nConfig';
 import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
-import { i18nCookieServer } from '@/i18n/i18nCookie.server';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,9 +42,7 @@ const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, DOMAIN, PORT, BASE_PATH } =
 const createi18nInstance = async (request: Request) => {
   const i18nInstance = createInstance();
 
-  const languageCookie = await i18nCookieServer.parse(
-    request.headers.cookie ?? null,
-  );
+  const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
   const locale = languageCookie ?? 'sv';
   await i18nInstance
     .use(initReactI18next)
@@ -109,6 +107,7 @@ if (viteDevServer) {
 app.use(express.static('dist/client', { maxAge: '1h' }));
 
 app.use(morgan('tiny'));
+// app.use(axiosLoggingMiddleware);
 
 if (NODE_ENV !== 'production') {
   app.get('/devLogin', (req, res) => {
@@ -121,7 +120,11 @@ app.all('*', reactRouterHandler);
 
 const port = PORT || 5173;
 const domain = DOMAIN || 'localhost';
-app.listen(port, () => {
+
+console.info('Loading Cora metadata...');
+loadStuffOnServerStart().then(() => {
+  console.info('Loaded stuff from Cora');
+
   console.info(`Cora API-url ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
@@ -129,8 +132,5 @@ app.listen(port, () => {
   console.info(
     `Express server listening at http://${domain}:${port}${BASE_PATH ?? ''}`,
   );
-  loadStuffOnServerStart().then(() => {
-    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.info('Loaded stuff from Cora');
-  });
+  app.listen(port);
 });

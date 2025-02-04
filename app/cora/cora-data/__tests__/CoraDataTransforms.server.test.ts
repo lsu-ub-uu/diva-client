@@ -3,7 +3,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '../CoraDataTransforms.server';
-import type { DataGroup } from '../CoraData.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 
 const someRecordGroup = {
   name: 'parent',

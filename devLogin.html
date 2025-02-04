@@ -23,22 +23,64 @@
   <script type="text/javascript">
     window.onload = start;
 
+    const tenMinutes = 1000 * 60 * 10;
+    const twentyFourHours = 1000 * 60 * 60 * 24;
     function start() {
-      var authInfo = {
-        userId: '131313',
-        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        loginId: 'johdo290@user.uu.se',
-        validForNoSeconds: '600',
-        actionLinks: {
-          delete: {
-            requestMethod: 'DELETE',
-            rel: 'delete',
-            url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83'
-          }
-        }
-      };
+      var now = Date.now();
+      var validUntil = now + tenMinutes;
+      var renewUntil = now + twentyFourHours;
+      var authentication = {
+        authentication: {
+          data: {
+            children: [
+              {
+                name: 'token',
+                value: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+              },
+              {
+                name: 'validUntil',
+                value: validUntil.toString(),
+              },
+              {
+                name: 'renewUntil',
+                value: renewUntil.toString(),
+              },
+              {
+                name: 'userId',
+                value:  '131313',
+              },
+              {
+                name: 'loginId',
+                value:  'johdo290@user.uu.se',
+              },
+              {
+                name: 'firstName',
+                value:'John',
+              },
+              {
+                name: 'lastName',
+                value: 'Doe',
+              },
+            ],
+            name: 'authToken',
+          },
+          actionLinks: {
+            renew: {
+              requestMethod: 'POST',
+              rel: 'renew',
+              url: 'http://localhost:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
+              accept: 'application/vnd.uub.authentication+json',
+            },
+            delete: {
+              requestMethod: 'DELETE',
+              rel: 'delete',
+              url: 'http://localhost:38180/login/rest/authToken/b01dab5e-50eb-492a-b40d-f416500f5e6f',
+            },
+          },
+        },
+      }
       if (null != window.opener) {
-        window.opener.postMessage(authInfo, '*');
+        window.opener.postMessage(authentication, '*');
         window.opener.focus();
         window.close();
       }

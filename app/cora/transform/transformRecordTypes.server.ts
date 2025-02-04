@@ -1,7 +1,7 @@
 import type {
   DataListWrapper,
   RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+} from '@/cora/cora-data/types.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
