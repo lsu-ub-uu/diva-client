@@ -41,7 +41,7 @@ export const useSessionAutoRenew = () => {
     } else {
       setTimeout(() => {
         revalidate();
-      }, 1000);
+      }, 5000);
     }
   }, [isNewestWindow, submit, revalidate]);
 
@@ -63,6 +63,6 @@ export const useSessionAutoRenew = () => {
 export const getTimeUntilNextRenew = (validUntil: number) => {
   const now = new Date();
   const timeUntilInvalid = validUntil - now.getTime();
-  const renewTimeBuffer = 30_000; //60_000 * 9 + 50_000;
-  return Math.max(timeUntilInvalid - renewTimeBuffer, 0); // Refresh 10 seconds before expiry
+  const renewTimeBuffer = 30_000;
+  return Math.max(timeUntilInvalid - renewTimeBuffer, 0);
 };
