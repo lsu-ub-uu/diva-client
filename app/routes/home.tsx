@@ -18,7 +18,11 @@
 
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { getAuth, getNotification, getSessionFromCookie } from '@/auth/sessions.server';
+import {
+  getAuth,
+  getNotification,
+  getSessionFromCookie,
+} from '@/auth/sessions.server';
 import { type AppLoadContext, Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
@@ -35,7 +39,6 @@ import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 import type { Route } from './+types/home';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
-import type { Auth } from '@/types/Auth';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
 

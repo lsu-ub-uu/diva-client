@@ -24,7 +24,6 @@ import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
-import { Form, useSubmit } from 'react-router';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
