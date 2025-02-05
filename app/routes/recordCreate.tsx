@@ -25,8 +25,7 @@ import type { BFFDataRecordData } from '@/types/record';
 import {
   getNotification,
   getSessionFromCookie,
-  requireAuthentication,
-} from '@/auth/sessions.server';
+  requireAuth } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
@@ -65,7 +64,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');

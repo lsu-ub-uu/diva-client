@@ -3,9 +3,9 @@ export interface DataElement {
   repeatId?: string;
 }
 
-export type Attributes = {
+export interface Attributes {
   [key: string]: string;
-};
+}
 
 export type CoraData = DataGroup | DataAtomic | RecordLink;
 
@@ -39,31 +39,36 @@ export interface ActionLinks {
   update?: ActionLink;
   index?: ActionLink;
   delete?: ActionLink;
+  renew?: ActionLink;
 }
 
-export type Permissions = {
+export interface Permissions {
   read?: string[];
   write?: string[];
-};
+}
 
-export type CoraRecord = {
+export interface CoraRecord {
   data: DataGroup;
   permissions?: Permissions;
   actionLinks?: ActionLinks;
-};
+}
 
-export type RecordWrapper = {
+export interface AuthWrapper {
+  authentication: CoraRecord;
+}
+
+export interface RecordWrapper {
   record: CoraRecord;
-};
+}
 
-export type DataList = {
+export interface DataList {
   fromNo: string;
   data: RecordWrapper[];
   totalNo: string;
   containDataOfType: string;
   toNo: string;
-};
+}
 
-export type DataListWrapper = {
+export interface DataListWrapper {
   dataList: DataList;
-};
+}

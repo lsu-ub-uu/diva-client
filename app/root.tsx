@@ -25,23 +25,21 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import type { ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import { i18nCookieServer } from '@/i18n/i18nCookie.server';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
 import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { PageLayout } from '@/components/Layout';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
+import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
 
@@ -52,27 +50,42 @@ interface DocumentProps {
 }
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const loginUnits = getLoginUnits(context.dependencies);
   const locale = context.i18n.language;
   return { auth, locale, loginUnits };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
+
+  const intent = formData.get('intent');
+
+  if (intent === 'changeLanguage') {
+    return await changeLanguage(formData);
+  }
+
+  if (intent === 'renewAuthToken') {
+    return await renewAuth(request, context.i18n);
+  }
+
+  return {};
+}
+
+const changeLanguage = async (formData: FormData) => {
   const language = formData.get('language');
   if (typeof language === 'string') {
     return data(
       {},
       {
         headers: {
-          'Set-Cookie': await i18nCookieServer.serialize(language),
+          'Set-Cookie': await i18nCookie.serialize(language),
         },
       },
     );
   }
-}
+};
 
 export const links: Route.LinksFunction = () => [
   {
@@ -147,6 +160,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
+  useSessionAutoRenew();
+
   return (
     <SnackbarProvider maxSnack={5}>
       <PageLayout>

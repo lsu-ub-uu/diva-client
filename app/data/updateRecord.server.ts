@@ -17,14 +17,11 @@
  */
 
 import type { BFFDataRecord } from '@/types/record';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/cora/transform/transformToCora.server';
-import type {
-  DataGroup,
-  RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';

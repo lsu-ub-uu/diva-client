@@ -16,21 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-// i18n/sessions.ts
 import { createCookieSessionStorage, data, type Session } from 'react-router';
-import type { Auth } from '@/types/Auth';
+import type { Auth } from '@/auth/Auth';
 
-type SessionData = {
+export type SessionData = {
   auth: Auth;
 };
 
 export type Notification = {
-  severity: 'success' | 'error';
+  severity: 'success' | 'error' | 'info';
   summary: string;
   details?: string;
 };
 
-type SessionFlashData = {
+export type SessionFlashData = {
   notification: Notification;
 };
 
@@ -52,7 +51,7 @@ async function getSessionFromCookie(request: Request) {
   return getSession(request.headers.get('Cookie'));
 }
 
-function getAuthentication(session: Session<SessionData, SessionFlashData>) {
+function getAuth(session: Session<SessionData, SessionFlashData>) {
   return session.get('auth');
 }
 
@@ -60,14 +59,13 @@ function getNotification(session: Session<SessionData, SessionFlashData>) {
   return session.get('notification');
 }
 
-async function requireAuthentication(
-  session: Session<SessionData, SessionFlashData>,
-) {
-  const auth = getAuthentication(session);
+async function requireAuth(session: Session<SessionData, SessionFlashData>) {
+  const auth = getAuth(session);
   if (!auth) {
     // Show error boundary
     throw data('Unauthorized', { status: 401 });
   }
+
   return auth;
 }
 
@@ -75,8 +73,8 @@ export {
   getSession,
   commitSession,
   destroySession,
-  requireAuthentication,
-  getAuthentication,
+  requireAuth,
+  getAuth,
   getNotification,
   getSessionFromCookie,
 };

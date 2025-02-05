@@ -1,4 +1,4 @@
-import type { DataGroup } from './CoraData.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 import { getFirstDataGroupWithNameInData } from './CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from './CoraDataUtilsWrappers.server';
 

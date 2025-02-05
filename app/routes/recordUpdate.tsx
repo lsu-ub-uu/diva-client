@@ -20,7 +20,7 @@ import {
   commitSession,
   getNotification,
   getSessionFromCookie,
-  requireAuthentication,
+  requireAuth,
 } from '@/auth/sessions.server';
 import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
@@ -48,7 +48,7 @@ import type { Route } from './+types/recordUpdate';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
   const { t } = context.i18n;
 
   const notification = getNotification(session);
@@ -96,7 +96,7 @@ export const action = async ({
   const { recordType, recordId } = params;
 
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({

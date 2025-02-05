@@ -42,7 +42,7 @@ import coraPresentationGroupSpecifiedHeadlineText from '@/__mocks__/bff/coraPres
 import coraPresentationGroupWithShowLabel from '@/__mocks__/bff/coraPresentationGroupWithShowLabel.json';
 import coraPresentationGroupSpecifiedHeadlineLevel from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineLevel.json';
 import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
-import type { DataListWrapper } from '@/cora/cora-data/CoraData.server';
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {

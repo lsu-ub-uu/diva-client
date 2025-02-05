@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,12 +14,21 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { renameObjectKey } from '../index';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
+import { data } from 'react-router';
 
-it('rename', () => {
-  const actual = renameObjectKey({ value: 'aaaa' }, 'password');
-  expect(actual).toEqual({ password: 'aaaa' });
-});
+export const changeLanguage = async (formData: FormData) => {
+  const language = formData.get('language');
+  if (typeof language === 'string') {
+    return data(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await i18nCookie.serialize(language),
+        },
+      },
+    );
+  }
+};

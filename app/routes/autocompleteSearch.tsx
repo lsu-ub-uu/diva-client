@@ -17,7 +17,7 @@
  */
 
 import {
-  getAuthentication,
+  getAuth,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
@@ -37,7 +37,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   invariant(searchTermValue, 'Missing searchTermValue param');
 
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const searchTermName = getSearchTermNameFromSearchLink(
     context.dependencies,

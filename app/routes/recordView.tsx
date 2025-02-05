@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getSessionFromCookie, getAuth } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
@@ -43,7 +40,7 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const { recordType, recordId } = params;
 

@@ -18,11 +18,7 @@
 
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
-import {
-  getAuthentication,
-  getNotification,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getAuth, getNotification, getSessionFromCookie } from '@/auth/sessions.server';
 import { type AppLoadContext, Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
@@ -45,7 +41,7 @@ import { isEmpty } from 'lodash-es';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const searchForm = getSearchForm(
     context.dependencies,
