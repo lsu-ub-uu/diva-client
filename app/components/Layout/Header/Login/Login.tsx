@@ -16,7 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, useLoaderData, useLocation, useNavigation, useSubmit } from 'react-router';
+import {
+  Form,
+  useLoaderData,
+  useLocation,
+  useNavigation,
+  useSubmit,
+} from 'react-router';
 import {
   Box,
   Button,
@@ -69,6 +75,7 @@ export default function User() {
 
   const receiveMessage = (event: MessageEvent<any>) => {
     if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
+      console.log('Received authentication', event.data.authentication);
       window.removeEventListener('message', receiveMessage);
       submit(
         {
