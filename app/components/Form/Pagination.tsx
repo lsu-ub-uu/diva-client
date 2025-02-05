@@ -36,24 +36,26 @@ export const Pagination = ({
   searchResults,
   onRowsPerPageChange,
 }: PaginationProps) => {
-  const { register, getValues } = useRemixFormContext();
+  const { t } = useTranslation();
+  const { register } = useRemixFormContext();
 
-  const rowsPerPage = Number(getValues('search.rows[0].value'));
-  const isOnFirstPage = searchResults.fromNo <= 1;
-  const isOnLastPage = searchResults.toNo >= searchResults.totalNo;
+  const { fromNo, toNo, totalNo } = searchResults;
+  const rowsPerPage = toNo - fromNo + 1;
+  const isOnFirstPage = fromNo <= 1;
+  const isOnLastPage = toNo >= totalNo;
 
   const firstPageStart = 1;
-  const previousPageStart = Math.max(1, searchResults.fromNo - rowsPerPage);
-  const nextPageStart = searchResults.toNo + 1;
-  const lastPageStart = searchResults.totalNo - rowsPerPage + 1;
-  const { t } = useTranslation();
+  const previousPageStart = Math.max(1, fromNo - rowsPerPage);
+  const nextPageStart = toNo + 1;
+  const lastPageStart = totalNo - rowsPerPage + 1;
+
   return (
     <div>
       <span>
         {t('divaClient_paginationResultText', {
-          fromNo: searchResults.fromNo,
-          toNo: searchResults.toNo,
-          totalNo: searchResults.totalNo,
+          fromNo,
+          toNo,
+          totalNo,
         })}
       </span>
       <label>
@@ -72,6 +74,7 @@ export const Pagination = ({
 
       <button
         type='submit'
+        aria-label='Visa första sidan'
         name='search.start[0].value'
         value={firstPageStart}
         disabled={isOnFirstPage}
@@ -80,6 +83,7 @@ export const Pagination = ({
       </button>
       <button
         type='submit'
+        aria-label='Visa föregående sida'
         name='search.start[0].value'
         value={previousPageStart}
         disabled={isOnFirstPage}
@@ -88,6 +92,7 @@ export const Pagination = ({
       </button>
       <button
         type='submit'
+        aria-label='Visa nästa sida'
         name='search.start[0].value'
         value={nextPageStart}
         disabled={isOnLastPage}
@@ -95,7 +100,7 @@ export const Pagination = ({
         <KeyboardArrowRightIcon />
       </button>
       <button
-        aria-label='lastPage'
+        aria-label='Visa sista sidan'
         type='submit'
         name='search.start[0].value'
         value={lastPageStart}
