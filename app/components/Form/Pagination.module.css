@@ -1,0 +1,8 @@
+.pagination {
+    display: flex;
+    justify-content: end;
+    gap: calc(var(--gap) * 2)
+}
+.children {
+    align-self: center;
+}

@@ -28,6 +28,7 @@ import {
   PreviousPageIcon,
 } from '@/icons';
 import { Button } from '@/components/Button/Button';
+import styles from './Pagination.module.css';
 
 interface PaginationProps {
   searchResults: BFFSearchResult;
@@ -54,8 +55,8 @@ export const Pagination = ({
   const lastPageStart = totalNo - rowsPerPage + 1;
 
   return (
-    <div>
-      <span>
+    <div className={styles.pagination}>
+      <span className={styles.children}>
         {`${fromNo} - ${toNo} av ${totalNo}`}
         {/* {t('divaClient_paginationResultText', {
           fromNo,
@@ -63,7 +64,7 @@ export const Pagination = ({
           totalNo,
         })}*/}
       </span>
-      <label>
+      <label className={styles.children}>
         Visa antal rader
         <select
           {...register('search.rows[0].value')}
@@ -76,47 +77,48 @@ export const Pagination = ({
           ))}
         </select>
       </label>
-
-      <Button
-        variant='icon'
-        type='submit'
-        aria-label='Visa första sidan'
-        name='search.start[0].value'
-        value={firstPageStart}
-        disabled={isOnFirstPage}
-      >
-        <FirstPageIcon />
-      </Button>
-      <Button
-        variant='icon'
-        type='submit'
-        aria-label='Visa föregående sida'
-        name='search.start[0].value'
-        value={previousPageStart}
-        disabled={isOnFirstPage}
-      >
-        <PreviousPageIcon />
-      </Button>
-      <Button
-        variant='icon'
-        type='submit'
-        aria-label='Visa nästa sida'
-        name='search.start[0].value'
-        value={nextPageStart}
-        disabled={isOnLastPage}
-      >
-        <NextPageIcon />
-      </Button>
-      <Button
-        variant='icon'
-        aria-label='Visa sista sidan'
-        type='submit'
-        name='search.start[0].value'
-        value={lastPageStart}
-        disabled={isOnLastPage}
-      >
-        <LastPageIcon />
-      </Button>
+      <span className={styles.children}>
+        <Button
+          variant='icon'
+          type='submit'
+          aria-label='Visa första sidan'
+          name='search.start[0].value'
+          value={firstPageStart}
+          disabled={isOnFirstPage}
+        >
+          <FirstPageIcon />
+        </Button>
+        <Button
+          variant='icon'
+          type='submit'
+          aria-label='Visa föregående sida'
+          name='search.start[0].value'
+          value={previousPageStart}
+          disabled={isOnFirstPage}
+        >
+          <PreviousPageIcon />
+        </Button>
+        <Button
+          variant='icon'
+          type='submit'
+          aria-label='Visa nästa sida'
+          name='search.start[0].value'
+          value={nextPageStart}
+          disabled={isOnLastPage}
+        >
+          <NextPageIcon />
+        </Button>
+        <Button
+          variant='icon'
+          aria-label='Visa sista sidan'
+          type='submit'
+          name='search.start[0].value'
+          value={lastPageStart}
+          disabled={isOnLastPage}
+        >
+          <LastPageIcon />
+        </Button>
+      </span>
     </div>
   );
 };
