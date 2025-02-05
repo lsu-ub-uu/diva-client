@@ -54,6 +54,7 @@ export const Pagination = ({
   const nextPageStart = toNo + 1;
   const lastPageStart = totalNo - rowsPerPage + 1;
 
+  console.log({ rowsPerPage });
   return (
     <div className={styles.pagination}>
       <span className={styles.children}>

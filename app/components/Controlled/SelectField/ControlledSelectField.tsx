@@ -27,7 +27,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import InfoIcon from '@mui/icons-material/Info';
+import { InfoIcon } from '@/icons';
 import type { Option } from '@/components';
 import { Select } from '@/components/FormComponents/Select/Select';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
@@ -154,10 +154,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               error={error !== undefined}
               loading={props.isLoading}
             >
-              <MenuItem
-                value=''
-                disableRipple
-              >
+              <MenuItem value='' disableRipple>
                 <em>{t('divaClient_optionNoneText')}</em>
               </MenuItem>
               {props.options &&
@@ -185,11 +182,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                     }}
                     text={findOptionLabelByValue(props.options, value)}
                   />
-                  <input
-                    type='hidden'
-                    value={value}
-                    name={name}
-                  />
+                  <input type='hidden' value={value} name={name} />
                 </>
               ) : null}
             </>

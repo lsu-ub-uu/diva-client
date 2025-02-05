@@ -20,3 +20,6 @@ export { default as FirstPageIcon } from './FirstPage.svg?react';
 export { default as PreviousPageIcon } from './ChevronLeft.svg?react';
 export { default as NextPageIcon } from './ChevronRight.svg?react';
 export { default as LastPageIcon } from './LastPage.svg?react';
+export { default as InfoIcon } from './Info.svg?react';
+export { default as SyncIcon } from './Sync.svg?react';
+export { default as CodeIcon } from './Code.svg?react';
