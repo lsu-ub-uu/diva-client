@@ -34,7 +34,6 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import type { MouseEvent } from 'react';
 
 interface SearchFormProps {
   searchType: string;
@@ -98,28 +97,40 @@ export const SearchForm = ({
               <option value='50'>50</option>
             </select>
           </label>
-          <button type='button'>
+          <button
+            type='submit'
+            name='search.start[0].value'
+            value='1'
+            disabled={!searchResults || searchResults.fromNo <= 1}
+          >
             <KeyboardDoubleArrowLeftIcon />
           </button>
           <button
             type='submit'
             name='search.start[0].value'
-            disabled={!searchResults || searchResults.fromNo <= 1}
             value={searchResults && searchResults.fromNo - rowsPerPage}
+            disabled={!searchResults || searchResults.fromNo <= 1}
           >
             <KeyboardArrowLeftIcon />
           </button>
           <button
             type='submit'
             name='search.start[0].value'
+            value={searchResults && searchResults.toNo + 1}
             disabled={
               !searchResults || searchResults.toNo >= searchResults.totalNo
             }
-            value={searchResults && searchResults.toNo + 1}
           >
             <KeyboardArrowRightIcon />
           </button>
-          <button type='button'>
+          <button
+            type='submit'
+            name='search.start[0].value'
+            value={searchResults && searchResults?.totalNo - rowsPerPage + 1}
+            disabled={
+              !searchResults || searchResults.toNo >= searchResults.totalNo
+            }
+          >
             <KeyboardDoubleArrowRightIcon />
           </button>
         </div>
