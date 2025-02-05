@@ -95,6 +95,7 @@ export const Pagination = ({
         <KeyboardArrowRightIcon />
       </button>
       <button
+        aria-label='lastPage'
         type='submit'
         name='search.start[0].value'
         value={lastPageStart}

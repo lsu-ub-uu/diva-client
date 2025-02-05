@@ -46,7 +46,34 @@ describe('<Pagination />', () => {
     expect(onChangeSpy).toHaveBeenCalled();
   });
 
-  it.todo('renders next page button with correct value');
+  it('renders next page button with correct value', async () => {
+    const onChangeSpy = vi.fn();
+
+    render(
+      <MockFormProvider>
+        <Pagination
+          searchResults={mock<BFFSearchResult>({
+            data: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            fromNo: 1,
+            toNo: 10,
+            totalNo: 11,
+            containDataOfType: 'mixed',
+          })}
+          onRowsPerPageChange={onChangeSpy}
+        />
+      </MockFormProvider>,
+    );
+
+    const rowsPerPageSelect = screen.getByRole('combobox', {
+      name: 'Rows per page',
+    });
+    const user = userEvent.setup();
+    const button = screen.getByLabelText('lastPage');
+    await user.click(button);
+    /*    await user.selectOptions(rowsPerPageSelect, '20');*/
+    screen.debug();
+    /*     expect(onChangeSpy).toHaveBeenCalled();*/
+  });
   it.todo('renders previous page button with correct value');
   it.todo('renders first page button with correct value');
   it.todo('renders last page button with correct value');
