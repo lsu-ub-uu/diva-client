@@ -42,7 +42,7 @@ describe('<Pagination />', () => {
     );
 
     const rowsPerPageSelect = screen.getByRole('combobox', {
-      name: 'Rows per page',
+      name: 'Visa antal rader',
     });
     const user = userEvent.setup();
     await user.selectOptions(rowsPerPageSelect, '20');

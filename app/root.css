@@ -52,6 +52,9 @@
   --labelColor: 0 0 0 / 60%;
 
   --gap: 0.5rem;
+  --gap2: 1rem;
+  --gap3: 2rem;
+  --gap4: 4rem;
 
   --font-family-main: 'Arial', sans-serif;
   --font-family-headings: 'Arial', serif;
@@ -80,4 +83,8 @@
   --line-height-base: 1.5;
 
   --desktop-breakpoint: 900px;
+
+  *:focus-visible {
+    outline: 2px solid rgb(var(--purpleMain));
+  }
 }

@@ -17,7 +17,8 @@
  */
 
 import type { SyntheticEvent } from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ChevronDownIcon from '@/icons/ChevronDown.svg';
 
 import {
   Autocomplete as MuiAutocomplete,
@@ -28,7 +29,6 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
 import type { SelectItem } from '../../index';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 interface MultiAutoCompleteProps {
@@ -65,7 +65,7 @@ export const MultiAutoComplete = (
       clearText='Clear all'
       size='small'
       multiple
-      popupIcon={<ExpandMoreIcon />}
+      popupIcon={<ChevronDownIcon />}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       id='autocomplete-multi-select'
       sx={{ width: '100%' }}

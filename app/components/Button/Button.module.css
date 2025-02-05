@@ -1,0 +1,106 @@
+.button {
+  --primary-button-color: #333333;
+  --secondary-button-color: #333333;
+
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: var(--gap) calc(var(--gap) * 2);
+  border-radius: calc(var(--border-radius) / 2);
+  border-width: 3px;
+  border-style: solid;
+  cursor: pointer;
+  transition:
+    background-color,
+    border-color 0.2s;
+
+  &[data-disabled] {
+    pointer-events: none;
+  }
+
+  &[data-variant='primary'] {
+    background-color: var(--primary-button-color);
+    border-color: var(--primary-button-color);
+    color: #fff;
+
+    &[data-hover] {
+      --primary-button-color: #111111;
+    }
+
+    &[data-active] {
+      background-color: rgba(0, 0, 0);
+    }
+
+    &[data-disabled] {
+      --primary-button-color: #888888;
+    }
+  }
+
+  &[data-variant='secondary'] {
+    background-color: transparent;
+    border-color: #333333;
+    &[data-hover] {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &[data-active] {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &[data-variant='tertiary'] {
+    border-color: transparent;
+    background: transparent;
+    &[data-hover] {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &[data-active] {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &[data-variant='icon'] {
+    font-size: 1.5rem;
+    aspect-ratio: 1/1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-color: transparent;
+    background: transparent;
+    border-radius: 50%;
+    padding: var(--gap);
+    line-height: 1;
+    &[data-hover] {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &[data-disabled] {
+      opacity: 0.5;
+    }
+    &[data-active] {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+/*
+* primary:
+    background-color: #333333;
+secondary:
+    background-color: #ffffff;
+    border: "3px solid #333333";
+tertiary:
+    border: none;
+    background: none;
+disabled:
+
+hover:
+
+error:
+    background-color: #990000
+
+error-secondary:
+    background-color: #990000;
+    border: "3px solid #333333";
+error-tertiary:
+    color:
+error-hover:
+    background-color: #730000
+    */

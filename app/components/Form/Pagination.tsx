@@ -17,13 +17,17 @@
  */
 
 import type { BFFSearchResult } from '@/types/record';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+
 import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
+import {
+  FirstPageIcon,
+  LastPageIcon,
+  NextPageIcon,
+  PreviousPageIcon,
+} from '@/icons';
+import { Button } from '@/components/Button/Button';
 
 interface PaginationProps {
   searchResults: BFFSearchResult;
@@ -52,14 +56,15 @@ export const Pagination = ({
   return (
     <div>
       <span>
-        {t('divaClient_paginationResultText', {
+        {`${fromNo} - ${toNo} av ${totalNo}`}
+        {/* {t('divaClient_paginationResultText', {
           fromNo,
           toNo,
           totalNo,
-        })}
+        })}*/}
       </span>
       <label>
-        Rows per page
+        Visa antal rader
         <select
           {...register('search.rows[0].value')}
           onChange={onRowsPerPageChange}
@@ -72,42 +77,46 @@ export const Pagination = ({
         </select>
       </label>
 
-      <button
+      <Button
+        variant='icon'
         type='submit'
         aria-label='Visa första sidan'
         name='search.start[0].value'
         value={firstPageStart}
         disabled={isOnFirstPage}
       >
-        <KeyboardDoubleArrowLeftIcon />
-      </button>
-      <button
+        <FirstPageIcon />
+      </Button>
+      <Button
+        variant='icon'
         type='submit'
         aria-label='Visa föregående sida'
         name='search.start[0].value'
         value={previousPageStart}
         disabled={isOnFirstPage}
       >
-        <KeyboardArrowLeftIcon />
-      </button>
-      <button
+        <PreviousPageIcon />
+      </Button>
+      <Button
+        variant='icon'
         type='submit'
         aria-label='Visa nästa sida'
         name='search.start[0].value'
         value={nextPageStart}
         disabled={isOnLastPage}
       >
-        <KeyboardArrowRightIcon />
-      </button>
-      <button
+        <NextPageIcon />
+      </Button>
+      <Button
+        variant='icon'
         aria-label='Visa sista sidan'
         type='submit'
         name='search.start[0].value'
         value={lastPageStart}
         disabled={isOnLastPage}
       >
-        <KeyboardDoubleArrowRightIcon />
-      </button>
+        <LastPageIcon />
+      </Button>
     </div>
   );
 };

@@ -16,28 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Button as HUIButton,
-  type ButtonProps as HUIButtonProps,
-} from '@headlessui/react';
-
-import styles from './Button.module.css';
-import clsx from 'clsx';
-
-interface ButtonProps extends HUIButtonProps {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
-}
-
-export const Button = ({
-  variant = 'secondary',
-  className,
-  ...rest
-}: ButtonProps) => {
-  return (
-    <HUIButton
-      className={clsx(styles.button, className)}
-      data-variant={variant}
-      {...rest}
-    />
-  );
-};
+export { default as FirstPageIcon } from './FirstPage.svg?react';
+export { default as PreviousPageIcon } from './ChevronLeft.svg?react';
+export { default as NextPageIcon } from './ChevronRight.svg?react';
+export { default as LastPageIcon } from './LastPage.svg?react';
