@@ -30,11 +30,7 @@ import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValue
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import { useEffect } from 'react';
+import { Pagination } from '@/components/Form/Pagination';
 
 interface SearchFormProps {
   searchType: string;
@@ -48,8 +44,8 @@ export const SearchForm = ({
   formSchema,
   searchResults,
 }: SearchFormProps) => {
-  const submit = useSubmit();
   const { t } = useTranslation();
+  const submit = useSubmit();
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -61,85 +57,28 @@ export const SearchForm = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
-  const { register, getValues, reset } = methods;
-
-  useEffect(() => {
-    console.log('reset');
-    reset();
-  }, [reset, record]);
-
-  const rowsPerPage = getValues('search.rows[0].value');
-
+  const { register, getValues } = methods;
   return (
-    <Form
-      method='GET'
-      action='/search'
-    >
+    <Form method='GET' action='/search'>
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />
+          <Button
+            type='submit'
+            disableRipple
+            variant='contained'
+            color='secondary'
+            sx={{ height: 40 }}
+          >
+            {t('divaClient_SearchButtonText')}
+          </Button>
+          {searchResults && (
+            <Pagination
+              searchResults={searchResults}
+              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
+            />
+          )}
         </RemixFormProvider>
-        <Button
-          type='submit'
-          disableRipple
-          variant='contained'
-          color='secondary'
-          sx={{ height: 40 }}
-        >
-          {t('divaClient_SearchButtonText')}
-        </Button>
-        <div>
-          <label>
-            Rows per page
-            <select
-              {...register('search.rows[0].value')}
-              onChange={(e) => submit(e.currentTarget.form)}
-            >
-              <option value='5'>5</option>
-              <option value='10'>10</option>
-              <option value='20'>20</option>
-              <option value='30'>30</option>
-              <option value='40'>40</option>
-              <option value='50'>50</option>
-            </select>
-          </label>
-          <button
-            type='submit'
-            name='search.start[0].value'
-            value='1'
-            disabled={!searchResults || searchResults.fromNo <= 1}
-          >
-            <KeyboardDoubleArrowLeftIcon />
-          </button>
-          <button
-            type='submit'
-            name='search.start[0].value'
-            value={searchResults && searchResults.fromNo - rowsPerPage}
-            disabled={!searchResults || searchResults.fromNo <= 1}
-          >
-            <KeyboardArrowLeftIcon />
-          </button>
-          <button
-            type='submit'
-            name='search.start[0].value'
-            value={searchResults && searchResults.toNo + 1}
-            disabled={
-              !searchResults || searchResults.toNo >= searchResults.totalNo
-            }
-          >
-            <KeyboardArrowRightIcon />
-          </button>
-          <button
-            type='submit'
-            name='search.start[0].value'
-            value={searchResults && searchResults?.totalNo - rowsPerPage + 1}
-            disabled={
-              !searchResults || searchResults.toNo >= searchResults.totalNo
-            }
-          >
-            <KeyboardDoubleArrowRightIcon />
-          </button>
-        </div>
       </div>
     </Form>
   );

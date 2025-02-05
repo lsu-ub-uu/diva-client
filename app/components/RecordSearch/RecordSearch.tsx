@@ -54,8 +54,7 @@ export const RecordSearch = ({
               numberOfResults: searchResults?.totalNo,
             })}
           </h2>
-          {searchResults.fromNo} - {searchResults.toNo} av
-          {searchResults.totalNo}
+
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
               <li

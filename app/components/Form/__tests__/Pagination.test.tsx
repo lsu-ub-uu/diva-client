@@ -18,30 +18,41 @@
 
 import { render, screen } from '@testing-library/react';
 import { Pagination } from '@/components/Form/Pagination';
+import { mock } from 'vitest-mock-extended';
+import type { BFFSearchResult } from '@/types/record';
+import userEvent from '@testing-library/user-event';
+import { expect } from 'vitest';
+import { MockFormProvider } from '@/utils/testUtils';
 
 describe('<Pagination />', () => {
-  it.each([
-    [10, 1000, 100], // Evenly divisible
-    [11, 1001, 100], // One hit overlowing to next page
-    [20, 100, 5], // 5 rows per page
-    [0, 10, 10], // Single page
-    [7, 67, 10], // Odd number of rows
-    [50, 50, 1], // One item per page
-    [0, 3, 10], // Less hits than rowsPerPage
-    [0, 0, 10], // No hits
-  ])(
-    'renders %d pages for %d hits with %d rows per page',
-    (expectedNumberOfPages, totalHits, rowsPerPage) => {
-      render(
+  it('renders rows per page select', async () => {
+    const onChangeSpy = vi.fn();
+
+    render(
+      <MockFormProvider>
         <Pagination
-          rowsPerPage={rowsPerPage}
-          totalHits={totalHits}
-        />,
-      );
+          searchResults={mock<BFFSearchResult>()}
+          onRowsPerPageChange={onChangeSpy}
+        />
+      </MockFormProvider>,
+    );
 
-      expect(screen.getAllByRole('button')).toHaveLength(expectedNumberOfPages);
-    },
-  );
+    const rowsPerPageSelect = screen.getByRole('combobox', {
+      name: 'Rows per page',
+    });
+    const user = userEvent.setup();
+    await user.selectOptions(rowsPerPageSelect, '20');
 
-  it.todo('has a maximum number of pages');
+    expect(onChangeSpy).toHaveBeenCalled();
+  });
+
+  it.todo('renders next page button with correct value');
+  it.todo('renders previous page button with correct value');
+  it.todo('renders first page button with correct value');
+  it.todo('renders last page button with correct value');
+
+  it.todo('disables first and previous page buttons when on first page');
+  it.todo('disables next and last page buttons when on last page');
+
+  it.todo('does not render negative value for previous page button');
 });
