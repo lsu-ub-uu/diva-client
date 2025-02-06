@@ -92,6 +92,6 @@
   --desktop-breakpoint: 900px;
 
   *:focus-visible {
-    outline: 2px solid rgb(var(--purpleMain));
+    outline: 1px solid #9e53bb;
   }
 }

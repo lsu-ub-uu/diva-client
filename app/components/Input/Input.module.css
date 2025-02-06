@@ -19,9 +19,14 @@
 .field {
   display: flex;
 
+  &[data-invalid='true'] {
+    color: rgb(var(--errorMain));
+  }
+
   &[data-variant='block'] {
     flex-direction: column;
   }
+
   &[data-variant='inline'] {
     flex-direction: row;
     align-items: center;
@@ -31,19 +36,28 @@
   &[data-size='small'] {
     font-size: var(--font-size-s);
     .select {
-      padding-left: calc(var(--gap));
       padding-right: calc(var(--gap) * 6);
-      height: calc(var(--input-height) * 0.8);
       background-position: right calc(var(--gap) / 2) center;
+    }
+
+    .input,
+    .select {
+      padding-left: calc(var(--gap));
+      height: calc(var(--input-height) * 0.8);
     }
   }
 
   &[data-size='medium'] {
     font-size: 1rem;
+
     .select {
-      background-position: right var(--gap) center;
-      padding-left: calc(var(--gap) * 1.5);
       padding-right: calc(var(--gap) * 6);
+      background-position: right var(--gap) center;
+    }
+
+    .select,
+    .input {
+      padding-left: calc(var(--gap) * 1.5);
     }
   }
 }
@@ -54,24 +68,27 @@
   justify-content: space-between;
 }
 
+.input,
 .select {
-  appearance: none;
-  field-sizing: content;
-  width: auto;
   height: var(--input-height);
-  font-size: inherit;
-  border: 1px solid rgb(var(--fieldOutline));
   border-radius: calc(var(--border-radius) / 2);
-  cursor: pointer;
-
   background: rgb(var(--background-color));
-  background-repeat: no-repeat;
-
-  &:focus {
+  border: 1px solid rgb(var(--fieldOutline));
+  font-size: inherit;
+  width: auto;
+  position: relative;
+  &[data-focus] {
     border-color: black;
   }
 
   &[data-invalid] {
     border-color: rgb(var(--errorMain));
   }
+}
+
+.select {
+  appearance: none;
+  field-sizing: content;
+  cursor: pointer;
+  background-repeat: no-repeat;
 }

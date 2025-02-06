@@ -34,6 +34,10 @@
     &[data-disabled] {
       --primary-button-color: #888888;
     }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
   }
 
   &[data-variant='secondary'] {

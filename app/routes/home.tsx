@@ -43,6 +43,9 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import { isEmpty } from 'lodash-es';
 import { Button } from '@/components/Button/Button';
 import type { Auth } from '@/auth/Auth';
+import { Field } from '@/components/Input/Field';
+import { Input } from '@/components/Input/Input';
+import { Select } from '@/components/Input/Select';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -98,6 +101,25 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       }
     >
       <Stack spacing={2}>
+        <Field label='My field'>
+          <Input name='hejhopp' />
+        </Field>
+
+        <Field label='My select'>
+          <Select name='hejhopp2'>
+            <option>1</option>
+          </Select>
+        </Field>
+
+        <Field label='My field' invalid>
+          <Input name='hejhopp' />
+        </Field>
+
+        <Field label='My select' invalid>
+          <Select name='hejhopp2'>
+            <option>1</option>
+          </Select>
+        </Field>
         <Box
           sx={{
             display: 'flex',

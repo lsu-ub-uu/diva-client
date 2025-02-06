@@ -24,6 +24,7 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
+import { FieldContext } from '@/components/Input/FieldContext';
 
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
@@ -31,6 +32,7 @@ interface FieldProps extends HUIFieldProps {
   children?: ReactNode;
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium';
+  invalid?: boolean;
 }
 
 export const Field = ({
@@ -39,6 +41,7 @@ export const Field = ({
   children,
   variant = 'block',
   size = 'medium',
+  invalid = false,
   className,
   ...rest
 }: FieldProps) => {
@@ -48,11 +51,14 @@ export const Field = ({
       className={clsx(styles.field, className)}
       data-variant={variant}
       data-size={size}
+      data-invalid={invalid}
     >
       <div className={styles.labelWrapper}>
         <Label>{label}</Label> {adornment}
       </div>
-      {children}
+      <FieldContext.Provider value={{ invalid, size }}>
+        {children}
+      </FieldContext.Provider>
     </HUIField>
   );
 };

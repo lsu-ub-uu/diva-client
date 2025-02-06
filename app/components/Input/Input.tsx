@@ -40,7 +40,8 @@ import {
 } from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef, useContext } from 'react';
+import { FieldContext } from '@/components/Input/FieldContext';
 
 type InputProps = HUIInputProps;
 
@@ -48,7 +49,14 @@ export const Input = forwardRef(function Input(
   { className, ...rest }: InputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
+  const { invalid } = useContext(FieldContext);
+
   return (
-    <HUIInput className={clsx(styles.input, className)} {...rest} ref={ref} />
+    <HUIInput
+      className={clsx(styles.input, className)}
+      {...rest}
+      ref={ref}
+      invalid={invalid}
+    />
   );
 });
