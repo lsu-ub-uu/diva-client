@@ -4,7 +4,8 @@
 
   font-size: 1rem;
   line-height: 1.5;
-  padding: var(--gap) calc(var(--gap) * 2);
+  height: var(--input-height);
+  padding: 0 calc(var(--gap) * 2);
   border-radius: calc(var(--border-radius) / 2);
   border-width: 3px;
   border-style: solid;

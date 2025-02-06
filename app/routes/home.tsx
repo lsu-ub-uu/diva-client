@@ -29,7 +29,7 @@ import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { searchRecords } from '@/data/searchRecords.server';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
+import { Alert, Box, Skeleton, Stack } from '@mui/material';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
@@ -41,6 +41,8 @@ import type { Route } from './+types/home';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
+import { Button } from '@/components/Button/Button';
+import type { Auth } from '@/auth/Auth';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -124,10 +126,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </Box>
 
         <Suspense fallback={<Skeleton height={296} />}>
-          <Await
-            resolve={searchForm}
-            errorElement={<AsyncErrorBoundary />}
-          >
+          <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
             {(searchForm) => (
               <RecordSearch
                 searchForm={searchForm}

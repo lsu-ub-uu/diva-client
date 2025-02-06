@@ -42,13 +42,7 @@ interface SearchFormProps {
 export const SearchForm = ({
   record,
   formSchema,
-  searchResults = {
-    fromNo: 1,
-    toNo: 10,
-    totalNo: 100,
-    data: [],
-    containDataOfType: '',
-  },
+  searchResults,
 }: SearchFormProps) => {
   const { t } = useTranslation();
   const submit = useSubmit();
@@ -65,27 +59,6 @@ export const SearchForm = ({
 
   return (
     <Form method='GET' action='/search'>
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <Button variant='primary'>Primary</Button>
-        <Button variant='secondary'>Secondary</Button>
-        <Button variant='tertiary'>Tertiary</Button>
-        <Button variant='icon'>
-          <KeyboardDoubleArrowLeftIcon />
-        </Button>
-
-        <Button variant='primary' disabled>
-          Primary
-        </Button>
-        <Button variant='secondary' disabled>
-          Secondary
-        </Button>
-        <Button variant='tertiary' disabled>
-          Tertiary
-        </Button>
-        <Button variant='icon'>
-          <KeyboardDoubleArrowLeftIcon />
-        </Button>
-      </div>
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />

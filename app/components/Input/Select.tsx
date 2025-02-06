@@ -16,11 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { default as FirstPageIcon } from './FirstPage.svg?react';
-export { default as PreviousPageIcon } from './ChevronLeft.svg?react';
-export { default as NextPageIcon } from './ChevronRight.svg?react';
-export { default as LastPageIcon } from './LastPage.svg?react';
-export { default as InfoIcon } from './Info.svg?react';
-export { default as SyncIcon } from './Sync.svg?react';
-export { default as CodeIcon } from './Code.svg?react';
-export { default as SentimentNeutralIcon } from './SentimentNeutral.svg?react';
+import {
+  Select as HUISelect,
+  type SelectProps as HUISelectProps,
+} from '@headlessui/react';
+import styles from './Input.module.css';
+import chevronUrl from '@/icons/ChevronDown.svg';
+import clsx from 'clsx';
+
+type SelectProps = HUISelectProps;
+
+export const Select = ({ className, ...rest }: SelectProps) => {
+  return (
+    <HUISelect
+      className={clsx(styles.select, className)}
+      {...rest}
+      style={{ backgroundImage: `url(${chevronUrl})` }}
+    />
+  );
+};

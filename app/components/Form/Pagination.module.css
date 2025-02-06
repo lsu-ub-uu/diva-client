@@ -1,8 +1,11 @@
 .pagination {
-    display: flex;
-    justify-content: end;
-    gap: calc(var(--gap) * 2)
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: var(--gap3);
+  font-size: var(--font-size-s);
 }
-.children {
-    align-self: center;
+
+.paginationButtons {
+  display: flex;
 }

@@ -29,6 +29,8 @@ import {
 } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Pagination.module.css';
+import { Field } from '@/components/Input/Field';
+import { Select } from '@/components/Input/Select';
 
 interface PaginationProps {
   searchResults: BFFSearchResult;
@@ -54,20 +56,21 @@ export const Pagination = ({
   const nextPageStart = toNo + 1;
   const lastPageStart = totalNo - rowsPerPage + 1;
 
-  console.log({ rowsPerPage });
   return (
     <div className={styles.pagination}>
-      <span className={styles.children}>
-        {`${fromNo} - ${toNo} av ${totalNo}`}
-        {/* {t('divaClient_paginationResultText', {
+      <span>
+        {t('divaClient_paginationResultText', {
           fromNo,
           toNo,
           totalNo,
-        })}*/}
+        })}
       </span>
-      <label className={styles.children}>
-        Visa antal rader
-        <select
+      <Field
+        label={t('divaClient_paginationRowsPerPageText')}
+        variant='inline'
+        size='small'
+      >
+        <Select
           {...register('search.rows[0].value')}
           onChange={onRowsPerPageChange}
         >
@@ -76,13 +79,14 @@ export const Pagination = ({
               {rows}
             </option>
           ))}
-        </select>
-      </label>
-      <span className={styles.children}>
+        </Select>
+      </Field>
+
+      <span className={styles.paginationButtons}>
         <Button
           variant='icon'
           type='submit'
-          aria-label='Visa första sidan'
+          aria-label={t('divaClient_paginationFirstPageText')}
           name='search.start[0].value'
           value={firstPageStart}
           disabled={isOnFirstPage}
@@ -92,7 +96,7 @@ export const Pagination = ({
         <Button
           variant='icon'
           type='submit'
-          aria-label='Visa föregående sida'
+          aria-label={t('divaClient_paginationPreviousPageText')}
           name='search.start[0].value'
           value={previousPageStart}
           disabled={isOnFirstPage}
@@ -102,7 +106,7 @@ export const Pagination = ({
         <Button
           variant='icon'
           type='submit'
-          aria-label='Visa nästa sida'
+          aria-label={t('divaClient_paginationNextPageText')}
           name='search.start[0].value'
           value={nextPageStart}
           disabled={isOnLastPage}
@@ -111,7 +115,7 @@ export const Pagination = ({
         </Button>
         <Button
           variant='icon'
-          aria-label='Visa sista sidan'
+          aria-label={t('divaClient_paginationLastPageText')}
           type='submit'
           name='search.start[0].value'
           value={lastPageStart}
