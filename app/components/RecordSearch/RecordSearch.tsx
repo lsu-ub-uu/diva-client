@@ -18,18 +18,19 @@
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { Box } from '@mui/material';
+import { Alert, AlertTitle, Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import { SentimentNeutralIcon } from '@/icons';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
   searchType: string;
   query: any;
-  searchResults: BFFSearchResult | null;
+  searchResults: BFFSearchResult | undefined;
 }
 
 export const RecordSearch = ({
@@ -40,25 +41,27 @@ export const RecordSearch = ({
 }: RecordSearchProps) => {
   const { t } = useTranslation();
   return (
-    <div>
+    <div className={styles.recordSearch}>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
         record={{ data: query }}
+        searchResults={searchResults}
       />
       {searchResults && (
         <>
-          <h2>
-            {t('divaClient_searchPageResultText', {
-              numberOfResults: searchResults?.totalNo,
-            })}
-          </h2>
+          {searchResults.totalNo === 0 && (
+            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+              <AlertTitle>
+                {t('divaClient_noSearchResultsTitleText')}
+              </AlertTitle>
+              {t('divaClient_noSearchResultsBodyText')}
+            </Alert>
+          )}
+
           <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
-              <li
-                key={record.id}
-                className={styles.resultListItem}
-              >
+              <li key={record.id} className={styles.resultListItem}>
                 <SearchResultForm
                   record={record}
                   formSchema={record.presentation!}

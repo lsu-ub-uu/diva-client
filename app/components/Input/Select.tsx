@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,21 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { IconButton } from '@mui/material';
-import { InfoIcon } from '@/icons';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import {
+  Select as HUISelect,
+  type SelectProps as HUISelectProps,
+} from '@headlessui/react';
+import styles from './Input.module.css';
+import chevronUrl from '@/icons/ChevronDown.svg';
+import clsx from 'clsx';
+import { type ForwardedRef, forwardRef } from 'react';
 
-interface TooltipHelpButtonProps {
-  title: string;
-  body: string;
-}
+type SelectProps = HUISelectProps;
 
-export const TooltipHelpButton = (props: TooltipHelpButtonProps) => {
+export const Select = forwardRef(function Select(
+  { className, ...rest }: SelectProps,
+  ref: ForwardedRef<HTMLSelectElement>,
+) {
   return (
-    <Tooltip title={props.title} body={props.body}>
-      <IconButton sx={{ p: 0 }} disableRipple color='info' aria-label='info'>
-        <InfoIcon />
-      </IconButton>
-    </Tooltip>
+    <HUISelect
+      className={clsx(styles.select, className)}
+      {...rest}
+      style={{ backgroundImage: `url(${chevronUrl})` }}
+      ref={ref}
+    />
   );
-};
+});

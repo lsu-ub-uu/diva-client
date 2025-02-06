@@ -27,7 +27,7 @@ import type {
 } from '@/components/FormGenerator/types';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { IconButton } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { InfoIcon } from '@/icons';
 import { useFormState } from 'react-hook-form';
 import { get } from 'lodash-es';
 
@@ -67,16 +67,10 @@ export const AttributeSelect = ({
   }
 
   return (
-    <div
-      className={styles.attributeSelect}
-      data-error={error !== undefined}
-    >
+    <div className={styles.attributeSelect} data-error={error !== undefined}>
       <div className={styles.inputWrapper}>
         {tooltip && (
-          <Tooltip
-            title={t(tooltip.title)}
-            body={t(tooltip.body)}
-          >
+          <Tooltip title={t(tooltip.title)} body={t(tooltip.body)}>
             <IconButton
               sx={{ m: -1 }}
               aria-label='Help'
@@ -99,10 +93,7 @@ export const AttributeSelect = ({
               {t(placeholder ?? 'divaClient_optionNoneText')}
             </option>
             {options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-              >
+              <option key={option.value} value={option.value}>
                 {t(option.label)}
               </option>
             ))}
@@ -117,10 +108,7 @@ export const AttributeSelect = ({
               )}
             </span>
 
-            <input
-              type='hidden'
-              {...register(name, { value })}
-            />
+            <input type='hidden' {...register(name, { value })} />
           </>
         )}
       </div>

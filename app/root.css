@@ -50,12 +50,24 @@
   --beigeMain: 238, 220, 219;
 
   --labelColor: 0 0 0 / 60%;
+  --fieldOutline: 153 153 153;
 
   --gap: 0.5rem;
+  --gap2: 1rem;
+  --gap3: 2rem;
+  --gap4: 4rem;
+
+  --input-height: 2.75rem;
 
   --font-family-main: 'Arial', sans-serif;
   --font-family-headings: 'Arial', serif;
   --font-size-base: 16px;
+
+  --font-size-xs: 0.5rem;
+  --font-size-s: 0.9rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.5rem;
+  --font-size-xl: 2rem;
 
   --font-size-h1: 2rem;
   --font-weight-h1: 400;
@@ -72,12 +84,14 @@
 
   --font-size-h6: 2rem;
 
-  --font-size-body: 1rem;
-
   --font-size-bold: 1rem;
   --font-weight-bold: 800;
 
   --line-height-base: 1.5;
 
   --desktop-breakpoint: 900px;
+
+  *:focus-visible {
+    outline: 2px solid rgb(var(--purpleMain));
+  }
 }

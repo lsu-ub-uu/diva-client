@@ -60,10 +60,7 @@ export const CollectionVariable = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
       data-colspan={component.gridColSpan ?? 12}
     >
-      <DevInfo
-        component={component}
-        path={name}
-      />
+      <DevInfo component={component} path={name} />
 
       <ControlledSelectField
         name={name}

@@ -21,7 +21,11 @@ import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 
-export const getValidationTypes = async (authToken: string) => {
+export const getValidationTypes = async (authToken?: string) => {
+  if (!authToken) {
+    return null;
+  }
+
   const searchQuery: DataGroup = {
     name: 'validationTypeSearch',
     children: [

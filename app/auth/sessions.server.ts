@@ -55,6 +55,10 @@ function getAuth(session: Session<SessionData, SessionFlashData>) {
   return session.get('auth');
 }
 
+function getNotification(session: Session<SessionData, SessionFlashData>) {
+  return session.get('notification');
+}
+
 async function requireAuth(session: Session<SessionData, SessionFlashData>) {
   const auth = getAuth(session);
   if (!auth) {
@@ -71,5 +75,6 @@ export {
   destroySession,
   requireAuth,
   getAuth,
+  getNotification,
   getSessionFromCookie,
 };

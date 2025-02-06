@@ -26,12 +26,13 @@ import {
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
-import InfoIcon from '@mui/icons-material/Info';
+
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
+import { InfoIcon } from '@/icons';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -159,11 +160,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   }}
                   text={field.value || props.linkedDataToShow}
                 />
-                <input
-                  type='hidden'
-                  value={field.value}
-                  name={field.name}
-                />
+                <input type='hidden' value={field.value} name={field.name} />
               </>
             )}
           </FormControl>

@@ -34,7 +34,6 @@ import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
@@ -43,6 +42,7 @@ import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
 import styles from './FormComponent.module.css';
 import { IconButton } from '@mui/material';
+import { InfoIcon } from '@/icons';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -78,10 +78,7 @@ export const Group = ({
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={currentComponentNamePath}
-      />
+      <DevInfo component={component} path={currentComponentNamePath} />
       <Card boxed={boxGroups && groupLevel !== 0}>
         <CardHeader>
           {component.showLabel && (
@@ -97,21 +94,14 @@ export const Group = ({
                   title={t(component.tooltip?.title as string)}
                   body={t(component.tooltip?.body as string)}
                 >
-                  <IconButton
-                    disableRipple
-                    color='info'
-                    aria-label='info'
-                  >
+                  <IconButton disableRipple color='info' aria-label='info'>
                     <InfoIcon />
                   </IconButton>
                 </Tooltip>
               )}
             </CardTitle>
           )}
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
+          <Attributes component={component} path={currentComponentNamePath} />
 
           {actionButtonGroup}
         </CardHeader>

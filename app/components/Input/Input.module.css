@@ -1,0 +1,77 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+.field {
+  display: flex;
+
+  &[data-variant='block'] {
+    flex-direction: column;
+  }
+  &[data-variant='inline'] {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--gap);
+  }
+
+  &[data-size='small'] {
+    font-size: var(--font-size-s);
+    .select {
+      padding-left: calc(var(--gap));
+      padding-right: calc(var(--gap) * 6);
+      height: calc(var(--input-height) * 0.8);
+      background-position: right calc(var(--gap) / 2) center;
+    }
+  }
+
+  &[data-size='medium'] {
+    font-size: 1rem;
+    .select {
+      background-position: right var(--gap) center;
+      padding-left: calc(var(--gap) * 1.5);
+      padding-right: calc(var(--gap) * 6);
+    }
+  }
+}
+
+.labelWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.select {
+  appearance: none;
+  field-sizing: content;
+  width: auto;
+  height: var(--input-height);
+  font-size: inherit;
+  border: 1px solid rgb(var(--fieldOutline));
+  border-radius: calc(var(--border-radius) / 2);
+  cursor: pointer;
+
+  background: rgb(var(--background-color));
+  background-repeat: no-repeat;
+
+  &:focus {
+    border-color: black;
+  }
+
+  &[data-invalid] {
+    border-color: rgb(var(--errorMain));
+  }
+}

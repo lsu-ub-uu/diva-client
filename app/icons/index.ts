@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,21 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { IconButton } from '@mui/material';
-import { InfoIcon } from '@/icons';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-
-interface TooltipHelpButtonProps {
-  title: string;
-  body: string;
-}
-
-export const TooltipHelpButton = (props: TooltipHelpButtonProps) => {
-  return (
-    <Tooltip title={props.title} body={props.body}>
-      <IconButton sx={{ p: 0 }} disableRipple color='info' aria-label='info'>
-        <InfoIcon />
-      </IconButton>
-    </Tooltip>
-  );
-};
+export { default as FirstPageIcon } from './FirstPage.svg?react';
+export { default as PreviousPageIcon } from './ChevronLeft.svg?react';
+export { default as NextPageIcon } from './ChevronRight.svg?react';
+export { default as LastPageIcon } from './LastPage.svg?react';
+export { default as InfoIcon } from './Info.svg?react';
+export { default as SyncIcon } from './Sync.svg?react';
+export { default as CodeIcon } from './Code.svg?react';
+export { default as SentimentNeutralIcon } from './SentimentNeutral.svg?react';
