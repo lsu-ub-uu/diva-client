@@ -42,7 +42,7 @@ describe('<Pagination />', () => {
     );
 
     const rowsPerPageSelect = screen.getByRole('combobox', {
-      name: 'Visa antal rader',
+      name: 'divaClient_paginationRowsPerPageText',
     });
     const user = userEvent.setup();
     await user.selectOptions(rowsPerPageSelect, '20');
@@ -64,7 +64,9 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa nästa sida')).toHaveValue('11');
+    expect(
+      screen.getByLabelText('divaClient_paginationNextPageText'),
+    ).toHaveValue('11');
   });
 
   it('renders previous page button with correct value', () => {
@@ -81,7 +83,9 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa föregående sida')).toHaveValue('11');
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).toHaveValue('11');
   });
 
   it('renders first page button with correct value', () => {
@@ -98,7 +102,9 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa första sidan')).toHaveValue('1');
+    expect(
+      screen.getByLabelText('divaClient_paginationFirstPageText'),
+    ).toHaveValue('1');
   });
 
   it('renders last page button with correct value', () => {
@@ -115,7 +121,9 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa sista sidan')).toHaveValue('91');
+    expect(
+      screen.getByLabelText('divaClient_paginationLastPageText'),
+    ).toHaveValue('91');
   });
 
   it('disables first and previous page buttons when on first page', () => {
@@ -132,10 +140,18 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa första sidan')).toBeDisabled();
-    expect(screen.getByLabelText('Visa föregående sida')).toBeDisabled();
-    expect(screen.getByLabelText('Visa nästa sida')).not.toBeDisabled();
-    expect(screen.getByLabelText('Visa sista sidan')).not.toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationFirstPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationNextPageText'),
+    ).not.toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationLastPageText'),
+    ).not.toBeDisabled();
   });
 
   it('disables next and last page buttons when on last page', () => {
@@ -151,11 +167,18 @@ describe('<Pagination />', () => {
         />
       </MockFormProvider>,
     );
-
-    expect(screen.getByLabelText('Visa första sidan')).not.toBeDisabled();
-    expect(screen.getByLabelText('Visa föregående sida')).not.toBeDisabled();
-    expect(screen.getByLabelText('Visa nästa sida')).toBeDisabled();
-    expect(screen.getByLabelText('Visa sista sidan')).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationFirstPageText'),
+    ).not.toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).not.toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationNextPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationLastPageText'),
+    ).toBeDisabled();
   });
 
   it('disables all buttons when only one page', () => {
@@ -172,10 +195,18 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa första sidan')).toBeDisabled();
-    expect(screen.getByLabelText('Visa föregående sida')).toBeDisabled();
-    expect(screen.getByLabelText('Visa nästa sida')).toBeDisabled();
-    expect(screen.getByLabelText('Visa sista sidan')).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationFirstPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationNextPageText'),
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText('divaClient_paginationLastPageText'),
+    ).toBeDisabled();
   });
 
   it('does not render negative value for previous page button', () => {
@@ -192,6 +223,8 @@ describe('<Pagination />', () => {
       </MockFormProvider>,
     );
 
-    expect(screen.getByLabelText('Visa föregående sida')).toHaveValue('1');
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).toHaveValue('1');
   });
 });
