@@ -56,7 +56,7 @@ export const Field = ({
       <div className={styles.labelWrapper}>
         <Label>{label}</Label> {adornment}
       </div>
-      <FieldContext.Provider value={{ invalid, size }}>
+      <FieldContext.Provider value={{ invalid }}>
         {children}
       </FieldContext.Provider>
     </HUIField>

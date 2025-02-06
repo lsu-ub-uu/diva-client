@@ -29,6 +29,13 @@ import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
 import styles from './FormComponent.module.css';
+import { Field } from '@/components/Input/Field';
+import { Input } from '@/components/Input/Input';
+import { Label } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { IconButton } from '@mui/material';
+import { InfoIcon } from '@/icons';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -47,15 +54,42 @@ export const TextOrNumberVariable = ({
   attributes,
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
-  const { getValues, control } = useRemixFormContext();
+  const { getValues, register } = useRemixFormContext();
   const { linkedData, showTooltips } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
+  const { t } = useTranslation();
 
   if (component.mode === 'output' && !hasValue) {
     return null;
   }
 
   const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
+
+  const label = !linkedDataToShow && component.showLabel && component.label && (
+    <Label style={{ paddingRight: 1, display: 'flex', alignItems: 'center' }}>
+      {t(component.label)}
+      {showTooltips && component.tooltip && (
+        <Tooltip
+          title={t(component.tooltip.title)}
+          body={t(component.tooltip.body)}
+        >
+          <IconButton
+            edge='end'
+            aria-label='Help'
+            disableRipple
+            color='default'
+          >
+            <InfoIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Label>
+  );
+  // if(output) {}
+  // if(textarea) {}
+
+  const isPassword =
+    'inputFormat' in component && component.inputFormat === 'password';
 
   return (
     <div
@@ -64,12 +98,26 @@ export const TextOrNumberVariable = ({
       key={reactKey}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={name}
-      />
+      <DevInfo component={component} path={name} />
 
-      <ControlledTextField
+      <Field
+        label={label}
+        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+        adornment={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {attributes}
+            {actionButtonGroup}
+          </div>
+        }
+      >
+        <Input
+          {...register(name)}
+          placeholder={component.placeholder}
+          type={isPassword ? 'password' : 'text'}
+        />
+      </Field>
+
+      {/*<ControlledTextField
         multiline={
           'inputType' in component
             ? component.inputType === 'textarea'
@@ -92,7 +140,7 @@ export const TextOrNumberVariable = ({
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
         linkedDataToShow={linkedDataToShow ?? undefined}
-      />
+      />*/}
     </div>
   );
 };
