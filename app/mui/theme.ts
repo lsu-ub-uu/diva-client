@@ -202,6 +202,7 @@ export const divaTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#fff',
+          height: '2.75rem',
         },
       },
     },
