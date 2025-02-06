@@ -17,9 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
