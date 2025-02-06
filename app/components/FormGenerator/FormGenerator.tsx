@@ -49,11 +49,7 @@ export const FormGenerator = ({
     <Box sx={{ position: 'relative' }}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext.Provider value={formContextValues}>
-        <Component
-          component={props.formSchema.form}
-          idx={0}
-          path={''}
-        />
+        <Component component={props.formSchema.form} idx={0} path={''} />
       </FormGeneratorContext.Provider>
     </Box>
   );

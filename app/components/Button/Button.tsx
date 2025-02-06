@@ -23,21 +23,22 @@ import {
 
 import styles from './Button.module.css';
 import clsx from 'clsx';
+import { type ForwardedRef, forwardRef } from 'react';
 
 interface ButtonProps extends HUIButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
 }
 
-export const Button = ({
-  variant = 'secondary',
-  className,
-  ...rest
-}: ButtonProps) => {
+export const Button = forwardRef(function Button(
+  { variant = 'secondary', className, ...rest }: ButtonProps,
+  ref: ForwardedRef<HTMLButtonElement>,
+) {
   return (
     <HUIButton
       className={clsx(styles.button, className)}
       data-variant={variant}
+      ref={ref}
       {...rest}
     />
   );
-};
+});

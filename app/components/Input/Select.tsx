@@ -23,15 +23,20 @@ import {
 import styles from './Input.module.css';
 import chevronUrl from '@/icons/ChevronDown.svg';
 import clsx from 'clsx';
+import { type ForwardedRef, forwardRef } from 'react';
 
 type SelectProps = HUISelectProps;
 
-export const Select = ({ className, ...rest }: SelectProps) => {
+export const Select = forwardRef(function Select(
+  { className, ...rest }: SelectProps,
+  ref: ForwardedRef<HTMLSelectElement>,
+) {
   return (
     <HUISelect
       className={clsx(styles.select, className)}
       {...rest}
       style={{ backgroundImage: `url(${chevronUrl})` }}
+      ref={ref}
     />
   );
-};
+});

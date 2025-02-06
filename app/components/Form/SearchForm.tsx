@@ -30,7 +30,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import { useWatch } from 'react-hook-form';
 
 interface SearchFormProps {
   searchType: string;
@@ -44,7 +44,6 @@ export const SearchForm = ({
   formSchema,
   searchResults,
 }: SearchFormProps) => {
-  const { t } = useTranslation();
   const submit = useSubmit();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -54,7 +53,6 @@ export const SearchForm = ({
       formSchema,
       record?.data as RecordData,
     ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
   return (
@@ -62,9 +60,7 @@ export const SearchForm = ({
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} />
-          <Button type='submit' variant='primary'>
-            {t('divaClient_SearchButtonText')}
-          </Button>
+          <SearchButton />
           {searchResults && (
             <Pagination
               searchResults={searchResults}
@@ -74,5 +70,19 @@ export const SearchForm = ({
         </RemixFormProvider>
       </div>
     </Form>
+  );
+};
+
+const SearchButton = () => {
+  const { t } = useTranslation();
+
+  const searchInput = useWatch({
+    name: 'search.include.includePart.genericSearchTerm.value',
+  });
+
+  return (
+    <Button type='submit' variant='primary' disabled={!searchInput}>
+      {t('divaClient_SearchButtonText')}
+    </Button>
   );
 };
