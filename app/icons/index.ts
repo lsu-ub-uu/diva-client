@@ -24,3 +24,7 @@ export { default as InfoIcon } from './Info.svg?react';
 export { default as SyncIcon } from './Sync.svg?react';
 export { default as CodeIcon } from './Code.svg?react';
 export { default as SentimentNeutralIcon } from './SentimentNeutral.svg?react';
+export { default as EditDocument } from './EditDocument.svg?react';
+export { default as RestartAlt } from './RestartAlt.svg?react';
+export { default as Delete } from './Delete.svg?react';
+export { default as Upgrade } from './Upgrade.svg?react';

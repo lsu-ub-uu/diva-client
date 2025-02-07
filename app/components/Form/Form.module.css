@@ -11,9 +11,12 @@
 .toolbar {
     position: fixed;
     inset: 0;
+    right: 0;
+    left: auto;
+    width: fit-content;
     top: auto;
     z-index: 1;
-    background-color: rgba(var(--grayMain) / 80%);
+
     display: block;
 }
 
@@ -25,4 +28,19 @@
   align-items: center;
   justify-content: flex-end;
   gap: calc(var(--gap) * 2);
+}
+
+.floatingActionButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    filter: drop-shadow(0px 1px 2px #000000);
+    border-radius: var(--gap2);
+    padding: var(--gap);
+    height: 3rem;
+    width: 3rem;
+    svg {
+        font-size: 1.3rem;
+    }
 }

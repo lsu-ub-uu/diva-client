@@ -31,6 +31,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
+import { Delete, EditDocument, RestartAlt, Upgrade } from '@/icons';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -65,36 +66,31 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
       <div className={styles.toolbar}>
         <Container maxWidth='xl'>
           <Toolbar>
             <div className={styles.toolbarActions}>
-              <Button
-                disabled={submitting}
-                disableRipple
-                variant='outlined'
-                color='secondary'
-                sx={{ height: 40 }}
-                onClick={() => reset()}
+              <div className={styles.floatingActionButton}>
+                <RestartAlt /> {/*Reset*/}
+                {/*{t('divaClient_ResetButtonText')}*/}
+              </div>
+              <div className={styles.floatingActionButton}>
+                <Delete />
+              </div>
+              <div className={styles.floatingActionButton}>
+                <Upgrade />
+              </div>
+              <div
+                className={styles.floatingActionButton}
+                style={{ backgroundColor: '#222', color: 'white' }}
               >
-                {t('divaClient_ResetButtonText')}
-              </Button>
-              <Button
-                disabled={submitting}
-                type='submit'
-                disableRipple
-                variant='contained'
-                color='primary'
-                sx={{ height: 40 }}
-              >
-                {t('divaClient_SubmitButtonText')}
-              </Button>
+                {/*{t('divaClient_ResetButtonText')}*/}
+                <EditDocument />
+              </div>
+              {/*{t('divaClient_SubmitButtonText')}*/}
             </div>
           </Toolbar>
         </Container>
