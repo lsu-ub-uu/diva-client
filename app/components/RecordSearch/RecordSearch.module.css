@@ -13,6 +13,7 @@
   position: relative;
   display: block;
   padding: var(--gap);
+  padding-right: calc(var(--gap4) * 2);
   border-left: 2px solid rgb(var(--beigeMain));
   border-right: 2px solid rgb(var(--beigeMain));
   border-bottom: 2px solid rgb(var(--beigeMain));
