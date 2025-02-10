@@ -32,6 +32,8 @@ import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
 import { Delete, EditDocument, RestartAlt, Upgrade } from '@/icons';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -69,32 +71,21 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
-      <div className={styles.toolbar}>
-        <Container maxWidth='xl'>
-          <Toolbar>
-            <div className={styles.toolbarActions}>
-              <div className={styles.floatingActionButton}>
-                <RestartAlt /> {/*Reset*/}
-                {/*{t('divaClient_ResetButtonText')}*/}
-              </div>
-              <div className={styles.floatingActionButton}>
-                <Delete />
-              </div>
-              <div className={styles.floatingActionButton}>
-                <Upgrade />
-              </div>
-              <div
-                className={styles.floatingActionButton}
-                style={{ backgroundColor: '#222', color: 'white' }}
-              >
-                {/*{t('divaClient_ResetButtonText')}*/}
-                <EditDocument />
-              </div>
-              {/*{t('divaClient_SubmitButtonText')}*/}
-            </div>
-          </Toolbar>
-        </Container>
-      </div>
+      <FloatingActionButtonContainer>
+        <FloatingActionButton
+          type='button'
+          onClick={reset}
+          icon={<RestartAlt />}
+          text={t('divaClient_ResetButtonText')}
+        />
+
+        <FloatingActionButton
+          variant='primary'
+          type='submit'
+          icon={<Upgrade />}
+          text={t('divaClient_SubmitButtonText')}
+        />
+      </FloatingActionButtonContainer>
     </Form>
   );
 };
