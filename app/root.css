@@ -18,12 +18,14 @@
 
 @import './theme.css';
 
-*,*::before,*::after{
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 :root {
-   *:focus-visible {
+  *:focus-visible {
     outline: 2px solid var(--color-accent);
   }
 
@@ -69,27 +71,14 @@
     font-size: var(--font-size-h6);
   }
 
-  h5, h6 {
+  h5,
+  h6 {
     text-transform: uppercase;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      /* Color palette */
-      --color-background:  rgb(33 33 33);
-      --color-background-inverted: rgb(255 255 255);
-
-      --color-text: rgb(255 255 255);
-      --color-text-inverted: rgb(33 33 33);
-
-      --color-primary: rgb(231 227 222);
-      --color-secondary: rgb(1 1 1);
-    }
-  }
-
-  [data-theme='dark'] {
-    /* Color palette */
-    --color-background:  rgb(33 33 33);
+  /* @media (prefers-color-scheme: dark) {
+    !* Color palette *!
+    --color-background: rgb(33 33 33);
     --color-background-inverted: rgb(255 255 255);
 
     --color-text: rgb(255 255 255);
@@ -98,5 +87,16 @@
     --color-primary: rgb(231 227 222);
     --color-secondary: rgb(1 1 1);
   }
+*/
+  [data-theme='dark'] {
+    /* Color palette */
+    --color-background: rgb(33 33 33);
+    --color-background-inverted: rgb(255 255 255);
 
+    --color-text: rgb(255 255 255);
+    --color-text-inverted: rgb(33 33 33);
+
+    --color-primary: rgb(231 227 222);
+    --color-secondary: rgb(1 1 1);
+  }
 }

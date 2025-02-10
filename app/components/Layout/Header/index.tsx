@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, Button, Container, Link } from '@mui/material';
+import { Box, Button, Container } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Form, Link as RouterLink, useLocation } from 'react-router';
+import { Form, Link, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -41,28 +41,20 @@ export const Header = () => {
             gap: 2,
           }}
         >
-          <Link
-            component={RouterLink}
-            to='/'
-            sx={{ mr: 'auto' }}
-          >
-            <img
-              src={divaLogo}
-              className='logo'
-              alt='logo'
-              style={{ width: 160 }}
-            />
-          </Link>
-          {devMode && (
-            <Form
-              action='/refreshDefinitions'
-              method='POST'
-            >
-              <input
-                type='hidden'
-                name='returnTo'
-                value={returnTo}
+          <Box sx={{ mr: 'auto' }}>
+            <Link to='/'>
+              <img
+                src={divaLogo}
+                className='logo'
+                alt='logo'
+                style={{ width: 160 }}
               />
+            </Link>
+          </Box>
+          {devMode && <Link to='/design-system'>Design system</Link>}
+          {devMode && (
+            <Form action='/refreshDefinitions' method='POST'>
+              <input type='hidden' name='returnTo' value={returnTo} />
               <Button type='submit'>
                 Refresh Def <CachedIcon />
               </Button>
