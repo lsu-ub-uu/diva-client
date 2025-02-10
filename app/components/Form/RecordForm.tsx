@@ -31,6 +31,9 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
+import { Delete, EditDocument, RestartAlt, Upgrade } from '@/icons';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -65,40 +68,24 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
-      <div className={styles.toolbar}>
-        <Container maxWidth='xl'>
-          <Toolbar>
-            <div className={styles.toolbarActions}>
-              <Button
-                disabled={submitting}
-                disableRipple
-                variant='outlined'
-                color='secondary'
-                sx={{ height: 40 }}
-                onClick={() => reset()}
-              >
-                {t('divaClient_ResetButtonText')}
-              </Button>
-              <Button
-                disabled={submitting}
-                type='submit'
-                disableRipple
-                variant='contained'
-                color='primary'
-                sx={{ height: 40 }}
-              >
-                {t('divaClient_SubmitButtonText')}
-              </Button>
-            </div>
-          </Toolbar>
-        </Container>
-      </div>
+      <FloatingActionButtonContainer>
+        <FloatingActionButton
+          type='button'
+          onClick={reset}
+          icon={<RestartAlt />}
+          text={t('divaClient_ResetButtonText')}
+        />
+
+        <FloatingActionButton
+          variant='primary'
+          type='submit'
+          icon={<Upgrade />}
+          text={t('divaClient_SubmitButtonText')}
+        />
+      </FloatingActionButtonContainer>
     </Form>
   );
 };

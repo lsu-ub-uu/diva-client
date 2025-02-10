@@ -8,21 +8,4 @@
   }
 }
 
-.toolbar {
-    position: fixed;
-    inset: 0;
-    top: auto;
-    z-index: 1;
-    background-color: rgba(var(--grayMain) / 80%);
-    display: block;
-}
 
-.toolbarActions {
-  width: 100%;
-  margin-top: var(--gap);
-  margin-bottom: var(--gap);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: calc(var(--gap) * 2);
-}
