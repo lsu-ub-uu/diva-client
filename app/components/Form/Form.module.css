@@ -1,6 +1,7 @@
 .form {
   width: 100%;
   padding-bottom: calc(var(--gap) * 4);
+  color: var(--primaryMainRgb);
 
   &[data-submitting='true'] {
     opacity: 0.5;

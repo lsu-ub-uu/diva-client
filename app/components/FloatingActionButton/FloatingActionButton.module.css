@@ -82,7 +82,7 @@
     }
 
     &[data-variant="primary"] {
-        background-color: rgb(var(--purpleMain));
+        background-color: var(--color-accent);
         color: white;
         &::before {
             background-color: #fff;

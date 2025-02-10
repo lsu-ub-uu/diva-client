@@ -21,4 +21,6 @@ export default [
   route('refreshDefinitions', 'routes/refreshDefinitions.tsx'),
   route('autocompleteSearch', 'routes/autocompleteSearch.tsx'),
   route('translations/:lang', 'routes/translations.tsx'),
+
+  route('design-system', 'routes/designSystem.tsx'),
 ] satisfies RouteConfig;

@@ -14,23 +14,23 @@
   display: block;
   padding: var(--gap);
   padding-right: calc(var(--gap4) * 2);
-  border-left: 2px solid rgb(var(--beigeMain));
-  border-right: 2px solid rgb(var(--beigeMain));
-  border-bottom: 2px solid rgb(var(--beigeMain));
-  background-color: rgb(var(--beigeLight));
+  border-left: 2px solid var(--color-card-dark);
+  border-right: 2px solid var(--color-card-dark);
+  border-bottom: 2px solid var(--color-card-dark);
+  background-color: var(--color-card);
 }
 .resultListItem:first-child {
   position: relative;
   display: block;
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
-  border-top: 2px solid rgb(var(--beigeMain));
-  background-color: rgb(var(--beigeLight));
+  border-top: 2px solid var(--color-card-dark);
+  background-color: var(--color-card);
 }
 .resultListItem:last-child {
   position: relative;
   display: block;
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
-  background-color: rgb(var(--beigeLight));
+  background-color: var(--color-card);
 }

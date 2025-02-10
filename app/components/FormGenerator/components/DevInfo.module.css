@@ -65,11 +65,11 @@
 .devInfoButton {
   cursor: pointer;
   border: none;
-  background: rgb(var(--grayLight));
+  background: var(--color-gray-light);
   border-radius: 4px;
   position: absolute;
   top: -24px;
   right: -24px;
   font-family: monospace;
-  color: rgb(var(--grayDark));
+  color: var(--color-gray-dark);
 }

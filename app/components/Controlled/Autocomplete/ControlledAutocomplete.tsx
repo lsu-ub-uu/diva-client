@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type * as React from 'react';
 import { type ReactNode, useEffect, useState } from 'react';
 
 import {

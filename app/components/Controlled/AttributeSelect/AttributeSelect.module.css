@@ -3,7 +3,7 @@
  *
  * This file is part of DiVA Client.
  *
- *     DiVA Client is free software: you can rgb(var(--errorMain))istribute it and/or modify
+ *     DiVA Client is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
@@ -30,7 +30,7 @@
     gap: calc(var(--gap) / 2);
   }
   label {
-    color: rgb(var(--labelColor));
+    color: var(--color-label);
     font-style: italic;
   }
 
@@ -44,8 +44,8 @@
     max-width: 25ch;
     padding: calc(var(--gap) / 2);
     font-size: inherit;
-    background: rgb(var(--background-color));
-    border: 1px solid rgb(var(--grayDark));
+    background: var(--color-background);
+    border: 1px solid var(--color-gray-dark);
     border-radius: calc(var(--border-radius) / 2);
     cursor: pointer;
     &:focus {
@@ -62,7 +62,7 @@
   }
 
   .errorMessage {
-    color: rgb(var(--errorMain));
+    color: var(--color-error-main);
     visibility: hidden;
     font-size: 0.75rem;
     margin: 0;
@@ -70,10 +70,10 @@
 
   &[data-error='true'] {
     label {
-      color: rgb(var(--errorMain));
+      color: var(--color-error-main);
     }
     select {
-      border-color: rgb(var(--errorMain));
+      border-color: var(--color-error-main);
     }
     .errorMessage {
       visibility: visible;

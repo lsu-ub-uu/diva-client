@@ -26,7 +26,6 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 import { type ReactNode, useEffect, useRef } from 'react';
-import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
@@ -124,14 +123,8 @@ const Document = withEmotionCache(
       <html lang={locale}>
         <head>
           <meta charSet='utf-8' />
-          <meta
-            name='viewport'
-            content='width=device-width,initial-scale=1'
-          />
-          <meta
-            name='theme-color'
-            content={divaTheme.palette.primary.main}
-          />
+          <meta name='viewport' content='width=device-width,initial-scale=1' />
+          <meta name='theme-color' content={divaTheme.palette.primary.main} />
           <Meta />
           <Links />
           <meta
@@ -151,12 +144,7 @@ const Document = withEmotionCache(
 );
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  return (
-    <Document>
-      <CssBaseline />
-      {children}
-    </Document>
-  );
+  return <Document>{children}</Document>;
 };
 
 export default function App() {

@@ -1,6 +1,4 @@
 .button {
-  --primary-button-color: #333333;
-  --secondary-button-color: #333333;
 
   font-size: 1rem;
   line-height: 1.5;
@@ -15,35 +13,33 @@
     border-color 0.2s;
 
   &[data-disabled] {
+    opacity: 0.5;
     pointer-events: none;
   }
 
   &[data-variant='primary'] {
-    background-color: var(--primary-button-color);
-    border-color: var(--primary-button-color);
+    background-color: var(--color-button);
+    border-color: var(--color-button);
     color: #fff;
 
     &[data-hover] {
-      --primary-button-color: #111111;
+      --primary-button-color: var(--color-button-primary-hover);
     }
 
     &[data-active] {
-      background-color: rgba(0, 0, 0);
+      background-color: var(--color-button-primary-active);
     }
 
-    &[data-disabled] {
-      --primary-button-color: #888888;
-    }
   }
 
   &[data-variant='secondary'] {
     background-color: transparent;
-    border-color: #333333;
+    border-color: var(--color-button);
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 
@@ -51,10 +47,10 @@
     border-color: transparent;
     background: transparent;
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 
@@ -70,38 +66,11 @@
     padding: var(--gap);
     line-height: 1;
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
-    &[data-disabled] {
-      opacity: 0.5;
-    }
+
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 }
-
-/*
-* primary:
-    background-color: #333333;
-secondary:
-    background-color: #ffffff;
-    border: "3px solid #333333";
-tertiary:
-    border: none;
-    background: none;
-disabled:
-
-hover:
-
-error:
-    background-color: #990000
-
-error-secondary:
-    background-color: #990000;
-    border: "3px solid #333333";
-error-tertiary:
-    color:
-error-hover:
-    background-color: #730000
-    */
