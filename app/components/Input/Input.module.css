@@ -67,8 +67,14 @@
 .labelAndAdornmentWrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--gap-s);
+}
+
+.adornments {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+  margin-left: auto;
 }
 
 .select {
@@ -76,7 +82,6 @@
   width: auto;
   cursor: pointer;
   background: var(--color-background);
-  max-width: 35ch;
   background-repeat: no-repeat;
 
   &:focus {

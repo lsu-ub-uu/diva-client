@@ -25,6 +25,10 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { Button } from '@/components/Button/Button';
+import { InfoIcon } from '@/icons';
+import { useTranslation } from 'react-i18next';
 
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
@@ -33,6 +37,8 @@ interface FieldProps extends HUIFieldProps {
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium';
   errorMessage?: ReactNode;
+  infoTitle?: string;
+  infoBody?: string;
 }
 
 export const Field = ({
@@ -43,8 +49,11 @@ export const Field = ({
   size = 'medium',
   className,
   errorMessage,
+  infoTitle,
+  infoBody,
   ...rest
 }: FieldProps) => {
+  const { t } = useTranslation();
   return (
     <HUIField
       {...rest}
@@ -54,7 +63,19 @@ export const Field = ({
     >
       <div className={styles.labelAndChildrenWrapper}>
         <div className={styles.labelAndAdornmentWrapper}>
-          <Label>{label}</Label> {adornment}
+          <Label>{label}</Label>
+          {infoTitle && infoBody && (
+            <Tooltip title={infoTitle} body={infoBody}>
+              <Button
+                variant='icon'
+                size='small'
+                aria-label={t('divaClient_fieldInfoText')}
+              >
+                <InfoIcon />
+              </Button>
+            </Tooltip>
+          )}
+          <div className={styles.adornments}>{adornment}</div>
         </div>
         {children}
       </div>

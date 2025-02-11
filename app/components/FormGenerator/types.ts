@@ -103,7 +103,7 @@ export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode?: FormComponentMode;
   tooltip?: FormComponentTooltip;
-  label?: string;
+  label: string;
   showLabel: boolean;
   headlineLevel?: string;
   attributesToShow?: 'all' | 'selectable' | 'none';

@@ -20,19 +20,17 @@ import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
 import { useRemixFormContext } from 'remix-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
 import type {
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { IconButton } from '@mui/material';
 import { InfoIcon } from '@/icons';
-import { useFormState } from 'react-hook-form';
-import { get } from 'lodash-es';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import { Button } from '@/components/Button/Button';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
 
 interface AttributeSelectProps {
   name: string;
@@ -58,11 +56,9 @@ export const AttributeSelect = ({
   finalValue,
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const { register, getValues } = useRemixFormContext();
+  const { register, getValues, formState } = useRemixFormContext();
 
-  const { errors } = useFormState({ name });
-  const error = get(errors, name);
-  const errorMessage = error?.message as string | undefined;
+  const errorMessage = getErrorMessageForField(formState, name);
   const value = finalValue ?? getValues(name);
   const showAsOutput = finalValue || displayMode === 'output';
 
@@ -72,21 +68,20 @@ export const AttributeSelect = ({
 
   if (showAsOutput) {
     return (
-      <dl className={styles.outputAttribute}>
-        <dt>{t(label)}</dt>
-        <dd>
-          {t(
-            options.find((option) => option.value === value)?.label ??
-              'unknown',
-          )}
-        </dd>
-        <input type='hidden' {...register(name, { value })} />
-      </dl>
+      <OutputField
+        name={name}
+        variant='inline'
+        label={t(label)}
+        value={t(
+          options.find((option) => option.value === value)?.label ?? 'unknown',
+        )}
+      />
     );
   }
 
   return (
     <Field
+      className={styles.attributeSelect}
       label={showLabel && t(label)}
       variant='inline'
       size='small'
@@ -104,8 +99,7 @@ export const AttributeSelect = ({
       <Select
         {...register(name)}
         disabled={disabled}
-        id={name}
-        invalid={error !== undefined}
+        invalid={errorMessage !== undefined}
       >
         <option value=''>
           {t(placeholder ?? 'divaClient_optionNoneText')}

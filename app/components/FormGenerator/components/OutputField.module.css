@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,12 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.attributeSelect {
-  select {
-    max-width: 35ch;
+.output-field {
+  display: flex;
+  &[data-variant='block'] {
+    flex-direction: column;
   }
-
+  gap: var(--gap-s);
   dt {
-    font-style: italic;
+    color: var(--color-label);
+
+    &:after {
+      content: ':';
+    }
   }
 }

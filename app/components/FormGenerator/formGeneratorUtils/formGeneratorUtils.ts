@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -40,6 +40,7 @@ import {
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { get } from 'lodash-es';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -288,4 +289,15 @@ export const getChildrenWithSameNameInDataFromSchema = (
   return getChildrenWithSameNameInData(
     getChildNameInDataArray(formSchema?.form),
   );
+};
+
+export const getErrorMessageForField = (
+  formState: FormState<FieldValues>,
+  name: string,
+) => {
+  const error = get(formState, name);
+  if (error?.message) {
+    return error.message as string;
+  }
+  return undefined;
 };

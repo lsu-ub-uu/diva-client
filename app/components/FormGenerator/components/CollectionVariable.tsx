@@ -20,19 +20,25 @@ import type {
   FormComponentCollVar,
   TextStyle,
 } from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledSelectField } from '@/components/Controlled';
+import {
+  checkIfComponentHasValue,
+  getErrorMessageForField,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, useContext } from 'react';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Field } from '@/components/Input/Field';
+import { useTranslation } from 'react-i18next';
+import { Select } from '@/components/Input/Select';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { InfoIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
 
 interface CollectionVariableProps {
   reactKey: string;
   component: FormComponentCollVar;
-  name: string;
+  path: string;
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -40,30 +46,64 @@ interface CollectionVariableProps {
 }
 
 export const CollectionVariable = ({
-  reactKey,
   component,
-  name,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
+  textStyle,
+  path,
 }: CollectionVariableProps) => {
+  const { t } = useTranslation();
   const { showTooltips } = useContext(FormGeneratorContext);
-  const { getValues, control } = useRemixFormContext();
-  const hasValue = checkIfComponentHasValue(getValues, name);
+  const { getValues, register, formState } = useRemixFormContext();
+  const hasValue = checkIfComponentHasValue(getValues, path);
+  const errorMessage = getErrorMessageForField(formState, path);
   if (component.mode === 'output' && !hasValue) {
     return null;
   }
-  return (
+
+  if (component.mode === 'input') {
+    return (
+      <Field
+        className={styles.component}
+        data-colspan={component.gridColSpan ?? 12}
+        label={component.showLabel && t(component.label)}
+        errorMessage={errorMessage}
+        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+        infoTitle={showTooltips && t(component.tooltip.title)}
+        infoBody={showTooltips && t(component.tooltip.body)}
+        adornment={
+          <div>
+            {attributes}
+            {actionButtonGroup}
+          </div>
+        }
+      >
+        <Select {...register(path)} invalid={errorMessage !== undefined}>
+          <option value=''>{t('divaClient_optionNoneText')}</option>
+          {(component.options ?? []).map((item) => {
+            return (
+              <option key={item.value} value={item.value}>
+                {t(item.label)}
+              </option>
+            );
+          })}
+        </Select>
+      </Field>
+    );
+  }
+
+  /*return (
     <div
       key={reactKey}
       className={styles.component}
       id={`anchor_${addAttributesToName(component, component.name)}`}
       data-colspan={component.gridColSpan ?? 12}
     >
-      <DevInfo component={component} path={name} />
+      <DevInfo component={component} path={path} />
 
       <ControlledSelectField
-        name={name}
+        name={path}
         isLoading={false}
         loadingError={false}
         label={component.label ?? ''}
@@ -81,5 +121,5 @@ export const CollectionVariable = ({
         textStyle={component.textStyle}
       />
     </div>
-  );
+  );*/
 };
