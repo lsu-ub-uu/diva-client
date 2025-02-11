@@ -27,17 +27,27 @@ import { type ForwardedRef, forwardRef } from 'react';
 
 interface ButtonProps extends HUIButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
+  size?: 'small' | 'medium';
+  fullWidth?: boolean;
 }
 
 export const Button = forwardRef(function Button(
-  { variant = 'secondary', className, ...rest }: ButtonProps,
+  {
+    variant = 'secondary',
+    size = 'medium',
+    fullWidth = false,
+    className,
+    ...rest
+  }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
   return (
     <HUIButton
       className={clsx(styles.button, className)}
       data-variant={variant}
+      data-size={size}
       ref={ref}
+      {...(fullWidth ? { 'data-fullwidth': '' } : {})}
       {...rest}
     />
   );

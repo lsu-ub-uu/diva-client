@@ -3,3 +3,8 @@
   grid-template-columns: 1fr auto;
   gap: var(--gap);
 }
+
+.searchButton {
+  padding-left: var(--gap-xl);
+  padding-right: var(--gap-xl);
+}

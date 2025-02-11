@@ -29,9 +29,7 @@ export const Header = () => {
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   return (
-    <Box
-      sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
-    >
+    <Box sx={{ py: 2, borderBottom: '1px solid #eee' }}>
       <Container maxWidth='xl'>
         <Box
           sx={{

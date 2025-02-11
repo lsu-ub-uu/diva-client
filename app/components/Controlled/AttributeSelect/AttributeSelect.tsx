@@ -30,6 +30,9 @@ import { IconButton } from '@mui/material';
 import { InfoIcon } from '@/icons';
 import { useFormState } from 'react-hook-form';
 import { get } from 'lodash-es';
+import { Field } from '@/components/Input/Field';
+import { Select } from '@/components/Input/Select';
+import { Button } from '@/components/Button/Button';
 
 interface AttributeSelectProps {
   name: string;
@@ -59,15 +62,69 @@ export const AttributeSelect = ({
 
   const { errors } = useFormState({ name });
   const error = get(errors, name);
+  const errorMessage = error?.message as string | undefined;
   const value = finalValue ?? getValues(name);
-  const showAsInput = !finalValue && displayMode === 'input';
+  const showAsOutput = finalValue || displayMode === 'output';
 
   if (displayMode === 'output' && !value) {
     return null;
   }
 
+  if (showAsOutput) {
+    return (
+      <dl className={styles.outputAttribute}>
+        <dt>{t(label)}</dt>
+        <dd>
+          {t(
+            options.find((option) => option.value === value)?.label ??
+              'unknown',
+          )}
+        </dd>
+        <input type='hidden' {...register(name, { value })} />
+      </dl>
+    );
+  }
+
   return (
-    <div className={styles.attributeSelect} data-error={error !== undefined}>
+    <Field
+      label={showLabel && t(label)}
+      variant='inline'
+      size='small'
+      errorMessage={errorMessage}
+      adornment={
+        tooltip && (
+          <Tooltip title={t(tooltip.title)} body={t(tooltip.body)}>
+            <Button size='small' aria-label='Help' variant='icon'>
+              <InfoIcon />
+            </Button>
+          </Tooltip>
+        )
+      }
+    >
+      <Select
+        {...register(name)}
+        disabled={disabled}
+        id={name}
+        invalid={error !== undefined}
+      >
+        <option value=''>
+          {t(placeholder ?? 'divaClient_optionNoneText')}
+        </option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {t(option.label)}
+          </option>
+        ))}
+      </Select>
+    </Field>
+  );
+
+  /*
+  return (
+    <div
+      className={styles.attributeSelect}
+      {...(error && { 'data-error': '' })}
+    >
       <div className={styles.inputWrapper}>
         {tooltip && (
           <Tooltip title={t(tooltip.title)} body={t(tooltip.body)}>
@@ -120,5 +177,5 @@ export const AttributeSelect = ({
         )}
       />
     </div>
-  );
+  );*/
 };

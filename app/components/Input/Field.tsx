@@ -17,6 +17,7 @@
  */
 
 import {
+  Description,
   Field as HUIField,
   type FieldProps as HUIFieldProps,
   Label,
@@ -31,6 +32,7 @@ interface FieldProps extends HUIFieldProps {
   children?: ReactNode;
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium';
+  errorMessage?: ReactNode;
 }
 
 export const Field = ({
@@ -40,6 +42,7 @@ export const Field = ({
   variant = 'block',
   size = 'medium',
   className,
+  errorMessage,
   ...rest
 }: FieldProps) => {
   return (
@@ -49,10 +52,17 @@ export const Field = ({
       data-variant={variant}
       data-size={size}
     >
-      <div className={styles.labelWrapper}>
-        <Label>{label}</Label> {adornment}
+      <div className={styles.labelAndChildrenWrapper}>
+        <div className={styles.labelAndAdornmentWrapper}>
+          <Label>{label}</Label> {adornment}
+        </div>
+        {children}
       </div>
-      {children}
+      {errorMessage && (
+        <Description className={styles.errorMessage}>
+          {errorMessage}
+        </Description>
+      )}
     </HUIField>
   );
 };

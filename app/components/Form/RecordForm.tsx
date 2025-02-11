@@ -31,7 +31,12 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import { Delete, EditDocument, RestartAlt, Upgrade } from '@/icons';
+import {
+  DeleteIcon,
+  EditDocumentIcon,
+  RestartAltIcon,
+  UpgradeIcon,
+} from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
@@ -63,7 +68,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     <Form
       method='POST'
       className={styles.form}
-      data-submitting={submitting}
+      {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
@@ -75,14 +80,14 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
         <FloatingActionButton
           type='button'
           onClick={reset}
-          icon={<RestartAlt />}
+          icon={<RestartAltIcon />}
           text={t('divaClient_ResetButtonText')}
         />
 
         <FloatingActionButton
           variant='primary'
           type='submit'
-          icon={<Upgrade />}
+          icon={<UpgradeIcon />}
           text={t('divaClient_SubmitButtonText')}
         />
       </FloatingActionButtonContainer>

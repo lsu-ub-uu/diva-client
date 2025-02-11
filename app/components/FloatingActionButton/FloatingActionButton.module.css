@@ -18,75 +18,76 @@
  */
 
 .container {
-    position: fixed;
-    bottom: calc(var(--gap) * 1.5);
-    right: calc(var(--gap) * 1.5);
-    display: flex;
-    align-items: stretch;
-    gap: calc(var(--gap) * 2);
+  position: fixed;
+  bottom: calc(var(--gap) * 1.5);
+  right: calc(var(--gap) * 1.5);
+  display: flex;
+  align-items: stretch;
+  gap: calc(var(--gap) * 2);
 
-    @media (width > 1200px) {
-        flex-direction: column;
-    }
+  @media (width > 1200px) {
+    flex-direction: column;
+  }
 }
-
 
 .floating-action-button {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--gap);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
 
-    background-color: #fff;
-    font-weight: 500;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px, rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
-    border-radius: var(--gap2);
-    border: none;
-    padding: var(--gap2);
-    height: 3rem;
-    cursor: pointer;
+  background-color: #fff;
+  font-weight: 500;
+  box-shadow:
+    rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0,
+    rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  border-radius: var(--gap-l);
+  border: none;
+  padding: var(--gap-l);
+  height: 3rem;
+  cursor: pointer;
 
-    @media (width < 600px) {
-        .content {
-            display: none;
-        }
+  @media (width < 600px) {
+    .content {
+      display: none;
     }
+  }
 
-    svg {
-        font-size: 1.3rem;
-    }
+  svg {
+    font-size: 1.3rem;
+  }
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    transition: opacity 100ms ease;
+    pointer-events: none;
+    opacity: 0;
+    background-color: #000;
+  }
+
+  &[data-hover]::before {
+    opacity: 8%;
+  }
+
+  &[data-active]::before {
+    opacity: 12%;
+  }
+
+  &[data-variant='primary'] {
+    background-color: var(--color-accent);
+    color: white;
     &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-
-        transition: opacity 100ms ease;
-        pointer-events: none;
-        opacity: 0;
-        background-color: #000;
+      background-color: #fff;
     }
-
-    &[data-hover]::before {
-        opacity: 8%;
-    }
-
-    &[data-active]::before {
-        opacity: 12%;
-    }
-
-    &[data-variant="primary"] {
-        background-color: var(--color-accent);
-        color: white;
-        &::before {
-            background-color: #fff;
-        }
-    }
+  }
 }
-

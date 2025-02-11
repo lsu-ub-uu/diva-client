@@ -29,6 +29,7 @@ import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
 import { useWatch } from 'react-hook-form';
+import { SearchIcon } from '@/icons';
 
 interface SearchFormProps {
   searchType: string;
@@ -79,8 +80,13 @@ const SearchButton = () => {
   });
 
   return (
-    <Button type='submit' variant='primary' disabled={!searchInput}>
-      {t('divaClient_SearchButtonText')}
+    <Button
+      type='submit'
+      variant='primary'
+      disabled={!searchInput}
+      className={styles.searchButton}
+    >
+      <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>
   );
 };

@@ -19,42 +19,49 @@
 
 /* Color Swatches */
 .color-palette {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: var(--gap2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--gap-l);
 }
 
 .color-swatch {
-    color: var(--color-text-inverted);
-    padding: var(--gap);
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    text-align: center;
+  color: var(--color-text-inverted);
+  padding: var(--gap);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  text-align: center;
+}
+
+.color-hex,
+.color-rgb {
+  font-size: var(--font-size-xs);
+  font-family: monospace;
 }
 
 /* Typography Demo */
 .typography-demo > * {
-    margin-bottom: var(--gap2);
+  margin-bottom: var(--gap-l);
 }
 
 /* Spacing Demo */
 .spacing-demo {
-    background-color: var(--color-gray-light);
-    padding: var(--gap2);
-    border-radius: var(--border-radius);
+  background-color: var(--color-gray-light);
+  padding: var(--gap-l);
+  border-radius: var(--border-radius);
 }
 
 .spacing-box {
-    background-color: var(--color-accent);
-    color: var(--color-text-inverted);
-    padding: var(--gap);
-    border-radius: var(--border-radius);
+  background-color: var(--color-accent);
+  color: var(--color-text-inverted);
+  padding: var(--gap);
+  border-radius: var(--border-radius);
 }
 
 /* Sections */
 section {
-    margin-bottom: var(--gap4);
+  margin-bottom: var(--gap-xxl);
 }

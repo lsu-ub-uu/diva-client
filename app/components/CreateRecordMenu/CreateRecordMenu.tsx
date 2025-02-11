@@ -16,12 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import type { Option } from '@/components';
-import AddIcon from '@mui/icons-material/Add';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { Button } from '@/components/Button/Button';
+import { AddCircleIcon } from '@/icons';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
@@ -40,13 +41,11 @@ export const CreateRecordMenu = ({
   return (
     <>
       <Button
-        variant='outlined'
-        color='primary'
-        startIcon={<AddIcon />}
+        variant='secondary'
         ref={addButtonRef}
         onClick={() => setMenuOpen(true)}
       >
-        {t('divaClient_createRecordText')}
+        <AddCircleIcon /> {t('divaClient_createRecordText')}
       </Button>
 
       <Menu

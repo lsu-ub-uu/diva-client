@@ -18,7 +18,7 @@
  */
 import css from './design-system.css?url';
 import { Button } from '@/components/Button/Button';
-import { EditDocument } from '@/icons';
+import { EditDocumentIcon } from '@/icons';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
@@ -57,37 +57,52 @@ export default function DesignSystem() {
                 color: 'var(--color-text)',
               }}
             >
-              Background
+              <div className='color-name'>Background</div>
+              <div className='color-rgb'>rgb(255 255 255)</div>
+              <div className='color-hex'>#ffffff</div>
             </div>
             <div
               className='color-swatch'
               style={{ backgroundColor: 'var(--color-primary)' }}
             >
-              Primary
+              <div className='color-name'>Primary</div>
+              <div className='color-rgb'>rgb(51 51 51)</div>
+              <div className='color-hex'>#333333</div>
             </div>
             <div
               className='color-swatch'
               style={{ backgroundColor: 'var(--color-accent)' }}
             >
-              Accent
+              <div className='color-name'>Accent</div>
+              <div className='color-rgb'>rgb(117 89 142)</div>
+              <div className='color-hex'>#75598E</div>
             </div>
             <div
               className='color-swatch'
               style={{ backgroundColor: 'var(--color-error-main)' }}
             >
-              Error Main
+              <div className='color-name'>Error Main</div>
+              <div className='color-rgb'>rgb(153 0 0)</div>
+              <div className='color-hex'>#990000</div>
             </div>
             <div
               className='color-swatch'
               style={{ backgroundColor: 'var(--color-success-main)' }}
             >
-              Success Main
+              <div className='color-name'>Success Main</div>
+              <div className='color-rgb'>rgb(0 112 15)</div>
+              <div className='color-hex'>#00700F</div>
             </div>
             <div
               className='color-swatch'
-              style={{ backgroundColor: 'var(--color-warning-main)' }}
+              style={{
+                backgroundColor: 'var(--color-warning-main)',
+                color: 'var(--color-text)',
+              }}
             >
-              Warning Main
+              <div className='color-name'>Warning Main</div>
+              <div className='color-rgb'>rgb(246 194 68)</div>
+              <div className='color-hex'>#F6C244</div>
             </div>
             <div
               className='color-swatch'
@@ -96,7 +111,9 @@ export default function DesignSystem() {
                 color: 'var(--color-text)',
               }}
             >
-              Gray Main
+              <div className='color-name'>Gray Main</div>
+              <div className='color-rgb'>rgb(231 227 222)</div>
+              <div className='color-hex'>#E7E3DE</div>
             </div>
           </div>
         </section>
@@ -122,26 +139,32 @@ export default function DesignSystem() {
         <section>
           <h2>Spacing (Gaps)</h2>
           <div className='spacing-demo'>
+            <div
+              className='spacing-box'
+              style={{ marginBottom: 'var(--gap-s)' }}
+            >
+              Gap (0.25rem)
+            </div>
             <div className='spacing-box' style={{ marginBottom: 'var(--gap)' }}>
               Gap (0.5rem)
             </div>
             <div
               className='spacing-box'
-              style={{ marginBottom: 'var(--gap2)' }}
+              style={{ marginBottom: 'var(--gap-l)' }}
             >
-              Gap 2 (1rem)
+              Gap L (1rem)
             </div>
             <div
               className='spacing-box'
-              style={{ marginBottom: 'var(--gap3)' }}
+              style={{ marginBottom: 'var(--gap-xl)' }}
             >
-              Gap 3 (2rem)
+              Gap XL (2rem)
             </div>
             <div
               className='spacing-box'
-              style={{ marginBottom: 'var(--gap4)' }}
+              style={{ marginBottom: 'var(--gap-xxl)' }}
             >
-              Gap 4 (4rem)
+              Gap XXL (4rem)
             </div>
           </div>
         </section>
@@ -162,17 +185,29 @@ export default function DesignSystem() {
               Tertiary disabled
             </Button>
             <Button variant='icon'>
-              <EditDocument />
+              <EditDocumentIcon />
             </Button>
             <Button variant='icon' disabled>
-              <EditDocument />
+              <EditDocumentIcon />
             </Button>
-            <FloatingActionButton text='FAB button' icon={<EditDocument />} />
+            <FloatingActionButton
+              text='FAB button'
+              icon={<EditDocumentIcon />}
+            />
             <FloatingActionButton
               text='FAB primary'
               variant='primary'
-              icon={<EditDocument />}
+              icon={<EditDocumentIcon />}
             />
+            <Button variant='primary' fullWidth>
+              Full Width
+            </Button>
+            <Button variant='secondary' fullWidth>
+              Full Width
+            </Button>
+            <Button variant='tertiary' fullWidth>
+              Full Width
+            </Button>
           </div>
         </section>
 
@@ -182,8 +217,75 @@ export default function DesignSystem() {
             <Field label='Input'>
               <Input />
             </Field>
+            <Field label='Input small' size='small'>
+              <Input />
+            </Field>
+            <Field label='Inline input' variant='inline'>
+              <Input />
+            </Field>
+            <Field
+              label='Input with error'
+              errorMessage='This field is required'
+            >
+              <Input invalid />
+            </Field>
+            <Field
+              label='Input small with error'
+              errorMessage='This field is required'
+              size='small'
+            >
+              <Input invalid />
+            </Field>
             <Field label='Select'>
               <Select>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+              </Select>
+            </Field>
+
+            <Field label='Select small' size='small'>
+              <Select>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+              </Select>
+            </Field>
+            <Field label='Inline select' variant='inline'>
+              <Select>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+              </Select>
+            </Field>
+            <Field label='Inline select small' variant='inline' size='small'>
+              <Select>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+              </Select>
+            </Field>
+            <Field
+              label='Select with error'
+              errorMessage='This field is required'
+            >
+              <Select invalid>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+              </Select>
+            </Field>
+            <Field
+              label='Inline select with error'
+              variant='inline'
+              errorMessage='This field is required'
+            >
+              <Select invalid>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>

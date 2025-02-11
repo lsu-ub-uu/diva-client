@@ -1,6 +1,6 @@
 .recordSearch {
   display: grid;
-  gap: var(--gap2);
+  gap: var(--gap-l);
 }
 
 .resultList {
@@ -13,7 +13,7 @@
   position: relative;
   display: block;
   padding: var(--gap);
-  padding-right: calc(var(--gap4) * 2);
+  padding-right: calc(var(--gap-xxl) * 2);
   border-left: 2px solid var(--color-card-dark);
   border-right: 2px solid var(--color-card-dark);
   border-bottom: 2px solid var(--color-card-dark);

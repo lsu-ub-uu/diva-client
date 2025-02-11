@@ -17,6 +17,7 @@
  */
 
 @import './theme.css';
+@import './normalize.css';
 
 *,
 *::before,
@@ -88,6 +89,7 @@
     --color-secondary: rgb(1 1 1);
   }
 */
+
   [data-theme='dark'] {
     /* Color palette */
     --color-background: rgb(33 33 33);

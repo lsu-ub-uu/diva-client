@@ -18,29 +18,45 @@
 
 .field {
   display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
 
+  &:has([data-invalid]) {
+    color: var(--color-error-main);
+  }
+
+  .labelAndChildrenWrapper {
+    display: flex;
+    gap: var(--gap-s);
+  }
   &[data-variant='block'] {
-    flex-direction: column;
+    .labelAndChildrenWrapper {
+      flex-direction: column;
+    }
   }
   &[data-variant='inline'] {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--gap);
+    align-items: flex-end;
+    .labelAndChildrenWrapper {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   &[data-size='small'] {
     font-size: var(--font-size-s);
-    .select {
+    --input-height: var(--input-height-small);
+    .select,
+    .input {
       padding-left: var(--gap);
       padding-right: calc(var(--gap) * 6);
-      height: calc(var(--input-height) * 0.8);
       background-position: right calc(var(--gap) / 2) center;
     }
   }
 
   &[data-size='medium'] {
     font-size: 1rem;
-    .select {
+    .select,
+    .input {
       background-position: right var(--gap) center;
       padding-left: calc(var(--gap) * 1.5);
       padding-right: calc(var(--gap) * 6);
@@ -48,30 +64,38 @@
   }
 }
 
-.labelWrapper {
+.labelAndAdornmentWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--gap-s);
 }
 
 .select {
   appearance: none;
-  field-sizing: content;
   width: auto;
-  height: var(--input-height);
-  font-size: inherit;
-  border: 1px solid var(--color-input-border);
-  border-radius: calc(var(--border-radius) / 2);
   cursor: pointer;
-
   background: var(--color-background);
+  max-width: 35ch;
   background-repeat: no-repeat;
 
   &:focus {
     border-color: black;
   }
+}
 
+.select,
+.input {
+  border: 1px solid var(--color-input-border);
+  border-radius: calc(var(--border-radius) / 2);
+  height: var(--input-height);
+  font-size: inherit;
+  color: var(--color-text);
   &[data-invalid] {
     border-color: var(--color-error-main);
   }
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs);
 }

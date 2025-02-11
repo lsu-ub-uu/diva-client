@@ -28,10 +28,7 @@ interface CardContentProps {
 export const CardContent = ({ children }: CardContentProps) => {
   const { boxed } = useContext(CardContext);
   return (
-    <div
-      className={styles.cardContent}
-      data-boxed={boxed}
-    >
+    <div className={styles.cardContent} {...(boxed && { 'data-boxed': '' })}>
       {children}
     </div>
   );
