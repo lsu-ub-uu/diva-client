@@ -66,30 +66,36 @@ export const TextOrNumberVariable = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <DevInfo component={component} path={path} />
-      {component.mode === 'output' && (
-        <OutputField
-          className={styles.component}
-          data-colspan={component.gridColSpan ?? 12}
-          label={component.showLabel ? t(component.label) : undefined}
-          value={value}
-          textStyle={textStyle}
-          info={
-            (showTooltips || undefined) &&
-            component.tooltip && {
-              title: t(component.tooltip.title),
-              body: t(component.tooltip.body),
+
+      {component.mode === 'output' ||
+        (component.finalValue && (
+          <OutputField
+            className={styles.component}
+            data-colspan={component.gridColSpan ?? 12}
+            label={component.showLabel ? t(component.label) : undefined}
+            value={value}
+            textStyle={textStyle}
+            info={
+              (showTooltips || undefined) &&
+              component.tooltip && {
+                title: t(component.tooltip.title),
+                body: t(component.tooltip.body),
+              }
             }
-          }
-          adornment={
-            <>
-              {attributes}
-              {actionButtonGroup}
-            </>
-          }
-        />
+            adornment={
+              <>
+                {attributes}
+                {actionButtonGroup}
+              </>
+            }
+          />
+        ))}
+
+      {component.finalValue && (
+        <input name={path} type='hidden' value={component.finalValue} />
       )}
 
-      {component.mode === 'input' && (
+      {!component.finalValue && component.mode === 'input' && (
         <Field
           className={styles.component}
           data-colspan={component.gridColSpan ?? 12}
@@ -110,7 +116,12 @@ export const TextOrNumberVariable = ({
             </>
           }
         >
-          <Input {...register(path)} invalid={errorMessage !== undefined} />
+          <Input
+            {...register(path)}
+            invalid={errorMessage !== undefined}
+            placeholder={component.placeholder}
+            readOnly={!!component.finalValue}
+          />
         </Field>
       )}
     </div>
@@ -131,7 +142,7 @@ export const TextOrNumberVariable = ({
         multiline={
           'inputType' in component
             ? component.inputType === 'textarea'
-            : undefined
+            : undefined 
         }
         label={component.label ?? ''}
         showLabel={component.showLabel}
