@@ -28,6 +28,9 @@
     .errorIcon {
       opacity: 0;
       transition: opacity 0.2s;
+      position: absolute;
+      top: calc((var(--input-height) / 2) - 0.5em);
+      right: var(--gap-xl);
     }
   }
 
@@ -35,9 +38,6 @@
     color: var(--color-error-main);
     .errorIcon {
       opacity: 1;
-      position: absolute;
-      top: calc((var(--input-height) / 2) - 0.5em);
-      right: var(--gap-xl);
     }
   }
 

@@ -32,6 +32,7 @@ import { Field } from '@/components/Input/Field';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -55,71 +56,74 @@ export const CollectionVariable = ({
   const { showTooltips } = useContext(FormGeneratorContext);
   const { getValues, register, formState } = useRemixFormContext();
   const value = getValues(path);
-
   const errorMessage = getErrorMessageForField(formState, path);
 
-  if (component.mode === 'output') {
-    if (!value) {
-      return null;
-    }
-
-    return (
-      <OutputField
-        className={styles.component}
-        data-colspan={component.gridColSpan ?? 12}
-        label={component.showLabel ? t(component.label) : undefined}
-        value={findOptionLabelByValue(component.options, value)}
-        textStyle={textStyle}
-        info={
-          (showTooltips || undefined) &&
-          component.tooltip && {
-            title: t(component.tooltip.title),
-            body: t(component.tooltip.body),
-          }
-        }
-        adornment={
-          <>
-            {attributes}
-            {actionButtonGroup}
-          </>
-        }
-      />
-    );
+  if (component.mode === 'output' && !value) {
+    return null;
   }
 
-  if (component.mode === 'input') {
-    return (
-      <Field
-        className={styles.component}
-        data-colspan={component.gridColSpan ?? 12}
-        label={component.showLabel && t(component.label)}
-        errorMessage={errorMessage}
-        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
-        info={
-          (showTooltips || undefined) &&
-          component.tooltip && {
-            title: t(component.tooltip.title),
-            body: t(component.tooltip.body),
+  return (
+    <div
+      className={styles.component}
+      data-colspan={component.gridColSpan ?? 12}
+    >
+      <DevInfo component={component} path={path} />
+      {component.mode === 'output' && (
+        <OutputField
+          className={styles.component}
+          data-colspan={component.gridColSpan ?? 12}
+          label={component.showLabel ? t(component.label) : undefined}
+          value={findOptionLabelByValue(component.options, value)}
+          textStyle={textStyle}
+          info={
+            (showTooltips || undefined) &&
+            component.tooltip && {
+              title: t(component.tooltip.title),
+              body: t(component.tooltip.body),
+            }
           }
-        }
-        adornment={
-          <>
-            {attributes}
-            {actionButtonGroup}
-          </>
-        }
-      >
-        <Select {...register(path)} invalid={errorMessage !== undefined}>
-          <option value=''>{t('divaClient_optionNoneText')}</option>
-          {(component.options ?? []).map((item) => {
-            return (
-              <option key={item.value} value={item.value}>
-                {t(item.label)}
-              </option>
-            );
-          })}
-        </Select>
-      </Field>
-    );
-  }
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        />
+      )}
+
+      {component.mode === 'input' && (
+        <Field
+          className={styles.component}
+          data-colspan={component.gridColSpan ?? 12}
+          label={component.showLabel && t(component.label)}
+          errorMessage={errorMessage}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+          info={
+            (showTooltips || undefined) &&
+            component.tooltip && {
+              title: t(component.tooltip.title),
+              body: t(component.tooltip.body),
+            }
+          }
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        >
+          <Select {...register(path)} invalid={errorMessage !== undefined}>
+            <option value=''>{t('divaClient_optionNoneText')}</option>
+            {(component.options ?? []).map((item) => {
+              return (
+                <option key={item.value} value={item.value}>
+                  {t(item.label)}
+                </option>
+              );
+            })}
+          </Select>
+        </Field>
+      )}
+    </div>
+  );
 };

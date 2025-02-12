@@ -43,10 +43,7 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
   }
   return (
     <div className={styles.devInfo}>
-      <button
-        type='button'
-        onClick={() => setExpanded(!expanded)}
-      >
+      <button type='button' onClick={() => setExpanded(!expanded)}>
         {component.type} | {addAttributesToName(component, component.name)}
       </button>
 
@@ -76,11 +73,7 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
   }
 
   return (
-    <button
-      type='button'
-      className={styles.devInfoButton}
-      onClick={onClick}
-    >
+    <button type='button' className={styles.devInfoButton} onClick={onClick}>
       &lt;/&gt;
     </button>
   );

@@ -19,43 +19,104 @@
 import type {
   FormComponentNumVar,
   FormComponentTextVar,
+  TextStyle,
 } from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { ControlledTextField } from '@/components/Controlled';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
 import styles from './FormComponent.module.css';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import { useTranslation } from 'react-i18next';
+import { Field } from '@/components/Input/Field';
+import { Input } from '@/components/Input/Input';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
   component: FormComponentTextVar | FormComponentNumVar;
-  name: string;
+  path: string;
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  textStyle?: TextStyle;
 }
 
 export const TextOrNumberVariable = ({
-  reactKey,
   component,
-  name,
+  path,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
+  textStyle,
 }: TextOrNumberVariableProps) => {
-  const { getValues, control } = useRemixFormContext();
+  const { t } = useTranslation();
+  const { getValues, register, formState } = useRemixFormContext();
   const { linkedData, showTooltips } = useContext(FormGeneratorContext);
-  const hasValue = checkIfComponentHasValue(getValues, name);
+  const value = getValues(path);
 
-  if (component.mode === 'output' && !hasValue) {
+  const errorMessage = getErrorMessageForField(formState, path);
+  if (component.mode === 'output' && !value) {
     return null;
   }
 
-  const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
+  return (
+    <div
+      className={styles.component}
+      data-colspan={component.gridColSpan ?? 12}
+    >
+      <DevInfo component={component} path={path} />
+      {component.mode === 'output' && (
+        <OutputField
+          className={styles.component}
+          data-colspan={component.gridColSpan ?? 12}
+          label={component.showLabel ? t(component.label) : undefined}
+          value={value}
+          textStyle={textStyle}
+          info={
+            (showTooltips || undefined) &&
+            component.tooltip && {
+              title: t(component.tooltip.title),
+              body: t(component.tooltip.body),
+            }
+          }
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        />
+      )}
+
+      {component.mode === 'input' && (
+        <Field
+          className={styles.component}
+          data-colspan={component.gridColSpan ?? 12}
+          label={component.showLabel && t(component.label)}
+          errorMessage={errorMessage}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+          info={
+            (showTooltips || undefined) &&
+            component.tooltip && {
+              title: t(component.tooltip.title),
+              body: t(component.tooltip.body),
+            }
+          }
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        >
+          <Input {...register(path)} invalid={errorMessage !== undefined} />
+        </Field>
+      )}
+    </div>
+  );
+
+  /*const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
 
   return (
     <div
@@ -64,10 +125,7 @@ export const TextOrNumberVariable = ({
       key={reactKey}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={name}
-      />
+      <DevInfo component={component} path={path} />
 
       <ControlledTextField
         multiline={
@@ -77,7 +135,7 @@ export const TextOrNumberVariable = ({
         }
         label={component.label ?? ''}
         showLabel={component.showLabel}
-        name={name}
+        name={path}
         placeholder={component.placeholder}
         tooltip={showTooltips ? component.tooltip : undefined}
         control={control}
@@ -94,5 +152,5 @@ export const TextOrNumberVariable = ({
         linkedDataToShow={linkedDataToShow ?? undefined}
       />
     </div>
-  );
+  );*/
 };

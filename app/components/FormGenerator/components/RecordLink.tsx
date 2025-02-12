@@ -83,7 +83,7 @@ export const RecordLink = ({
     <TextOrNumberVariable
       reactKey={reactKey}
       component={component}
-      name={name}
+      path={name}
       parentPresentationStyle={parentPresentationStyle}
       attributes={attributes}
       actionButtonGroup={actionButtonGroup}
