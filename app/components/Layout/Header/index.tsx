@@ -18,7 +18,7 @@
 
 import { Box, Button, Container, Link } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Form, Link as RouterLink, useLocation } from 'react-router';
+import { Form, Link as RouterLink, NavLink, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -30,7 +30,11 @@ export const Header = () => {
   const devMode = useIsDevMode();
   return (
     <Box
-      sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
+      sx={{
+        py: 2,
+        borderBottom: '2px solid rgb(117 89 142)',
+        backgroundColor: '#fff',
+      }}
     >
       <Container maxWidth='xl'>
         <Box
@@ -41,28 +45,22 @@ export const Header = () => {
             gap: 2,
           }}
         >
-          <Link
-            component={RouterLink}
-            to='/'
-            sx={{ mr: 'auto' }}
-          >
-            <img
-              src={divaLogo}
-              className='logo'
-              alt='logo'
-              style={{ width: 160 }}
-            />
-          </Link>
-          {devMode && (
-            <Form
-              action='/refreshDefinitions'
-              method='POST'
-            >
-              <input
-                type='hidden'
-                name='returnTo'
-                value={returnTo}
+          <nav>
+            <Link component={RouterLink} to='/' sx={{ mr: 'auto' }}>
+              <img
+                src={divaLogo}
+                className='logo'
+                alt='logo'
+                style={{ width: 160 }}
               />
+            </Link>
+            <NavLink to='/search'>Output</NavLink>
+            <NavLink to='/person'>Personer</NavLink>
+            <NavLink to='/project'>Projekt</NavLink>
+          </nav>
+          {devMode && (
+            <Form action='/refreshDefinitions' method='POST'>
+              <input type='hidden' name='returnTo' value={returnTo} />
               <Button type='submit'>
                 Refresh Def <CachedIcon />
               </Button>

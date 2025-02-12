@@ -105,7 +105,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             alignItems: 'center',
           }}
         >
-          <h1>{t('divaClient_searchRecordText')}</h1>
+          <h1 style={{ margin: 0 }}>Sök efter output</h1>
 
           <Suspense
             fallback={
