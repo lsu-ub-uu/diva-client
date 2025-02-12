@@ -28,14 +28,10 @@ import {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from '@/icons';
 
 const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
-  <MuiTooltip
-    arrow
-    {...props}
-    classes={{ popper: className }}
-  />
+  <MuiTooltip arrow {...props} classes={{ popper: className }} />
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     padding: 16,
@@ -89,10 +85,7 @@ const Content = (props: ContentProps) => {
       <Typography sx={{ fontWeight: 'bold', width: '90%' }}>
         {props.title}
       </Typography>
-      <Typography
-        variant='body1'
-        sx={{ fontSize: 14 }}
-      >
+      <Typography variant='body1' sx={{ fontSize: 14 }}>
         {props.body}
       </Typography>
     </Box>
@@ -124,12 +117,7 @@ export const Tooltip = (props: TooltipProps) => {
           disableFocusListener
           disableHoverListener
           disableTouchListener
-          title={
-            <Content
-              {...props}
-              onClose={handleTooltipClose}
-            />
-          }
+          title={<Content {...props} onClose={handleTooltipClose} />}
         >
           {props.children}
         </StyledTooltip>

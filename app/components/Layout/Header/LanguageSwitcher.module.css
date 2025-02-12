@@ -17,27 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
-import { OpenInNewIcon } from '@/icons';
-
-interface LinkButtonProps {
-  text: string;
-  href: string;
+.language-icon {
+    font-size: var(--font-size-xl);
+    margin-right: var(--gap);
 }
-
-export const LinkButton = (props: LinkButtonProps) => {
-  const { t } = useTranslation();
-  return (
-    <Button
-      component='a'
-      href={props.href}
-      target='_blank'
-      rel='noopener noreferrer'
-      endIcon={<OpenInNewIcon />}
-      color='primary'
-    >
-      {t(props.text)}
-    </Button>
-  );
-};

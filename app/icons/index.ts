@@ -19,6 +19,7 @@
 export { default as FirstPageIcon } from './FirstPage.svg?react';
 export { default as PreviousPageIcon } from './ChevronLeft.svg?react';
 export { default as NextPageIcon } from './ChevronRight.svg?react';
+export { default as ChevronDownIcon } from './ChevronDown.svg?react';
 export { default as LastPageIcon } from './LastPage.svg?react';
 export { default as InfoIcon } from './Info.svg?react';
 export { default as SyncIcon } from './Sync.svg?react';
@@ -36,3 +37,9 @@ export { default as SearchIcon } from './Search.svg?react';
 export { default as LanguageIcon } from './Language.svg?react';
 export { default as ErrorIcon } from './Error.svg?react';
 export { default as WarningIcon } from './Warning.svg?react';
+export { default as LogoutIcon } from './Logout.svg?react';
+export { default as CachedIcon } from './Cached.svg?react';
+export { default as OpenInNewIcon } from './OpenInNew.svg?react';
+export { default as DeleteForeverIcon } from './DeleteForever.svg?react';
+export { default as ArticleIcon } from './Article.svg?react';
+export { default as PriorityHighIcon } from './PriorityHigh.svg?react';

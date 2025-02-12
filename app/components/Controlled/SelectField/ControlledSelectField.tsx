@@ -29,7 +29,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { InfoIcon } from '@/icons';
 import type { Option } from '@/components';
-import { Select } from '@/components/FormComponents/Select/Select';
+
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import type { ReactNode } from 'react';
 import type { TextStyle } from '@/components/FormGenerator/types';
@@ -128,7 +128,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             {props.attributes}
             {props.actionButtonGroup}
           </Box>
-          {displayMode === 'input' ? (
+          {/*{displayMode === 'input' ? (
             <Select
               sx={{
                 '& .MuiSelect-select .notranslate::after': props.placeholder
@@ -186,7 +186,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 </>
               ) : null}
             </>
-          )}
+          )}*/}
           <FormHelperText error={error !== undefined}>
             {error !== undefined ? error.message : ' '}
           </FormHelperText>

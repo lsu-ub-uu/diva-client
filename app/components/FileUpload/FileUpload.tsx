@@ -16,10 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Alert, Box, Button, LinearProgress, linearProgressClasses, Stack, styled, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  LinearProgress,
+  linearProgressClasses,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from 'axios';
+import { AddCircleIcon } from '@/icons';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
@@ -129,7 +138,7 @@ export const FileUpload = (props: FileUploadProps) => {
           disableRipple
           color='primary'
           variant='contained'
-          endIcon={<AddCircleOutlineIcon />}
+          endIcon={<AddCircleIcon />}
           onClick={() => {
             setUploadStatus(UploadStatus.PENDING);
             setProgress(0);

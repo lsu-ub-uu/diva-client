@@ -29,7 +29,6 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
 import type { SelectItem } from '../../index';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 interface MultiAutoCompleteProps {
   loading: boolean;
@@ -92,7 +91,7 @@ export const MultiAutoComplete = (
                     }
                   }}
                 >
-                  <AccountTreeIcon />
+                  {/*<AccountTreeIcon />*/}
                 </IconButton>
                 {params.InputProps.startAdornment}
               </>

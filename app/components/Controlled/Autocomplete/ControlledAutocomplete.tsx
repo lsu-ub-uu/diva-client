@@ -27,10 +27,8 @@ import {
   TextField,
 } from '@mui/material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import axios from 'axios';
-import { InfoIcon } from '@/icons';
+import { ChevronDownIcon, InfoIcon } from '@/icons';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -151,7 +149,7 @@ export const ControlledAutocomplete = (
             <MuiAutocomplete
               size='small'
               noOptionsText={t('divaClient_NoOptionsText' as string)}
-              popupIcon={<ExpandMoreIcon />}
+              popupIcon={<ChevronDownIcon />}
               onChange={(
                 event: React.SyntheticEvent,
                 newValue: BFFDataRecord | null,

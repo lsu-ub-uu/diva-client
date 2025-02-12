@@ -23,26 +23,21 @@ import {
   useNavigation,
   useSubmit,
 } from 'react-router';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  Menu,
-  Stack,
-} from '@mui/material';
+import { Box, CircularProgress, Divider, Menu, Stack } from '@mui/material';
 import type { loader } from '@/root';
 import {
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
-import LogoutIcon from '@mui/icons-material/Logout';
+
 import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
 import { useRef, useState } from 'react';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
+import { LogoutIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
 
 export default function User() {
   const { MODE } = import.meta.env;
@@ -75,7 +70,6 @@ export default function User() {
 
   const receiveMessage = (event: MessageEvent<any>) => {
     if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
-      console.log('Received authentication', event.data.authentication);
       window.removeEventListener('message', receiveMessage);
       submit(
         {
@@ -99,10 +93,7 @@ export default function User() {
           {navigation.state === 'submitting' ? (
             <>
               {t('divaClient_LoginText')}{' '}
-              <CircularProgress
-                size='1em'
-                sx={{ ml: 1 }}
-              />
+              <CircularProgress size='1em' sx={{ ml: 1 }} />
             </>
           ) : (
             t('divaClient_LoginText')
@@ -136,20 +127,11 @@ export default function User() {
       style={{ marginTop: '-1px' }}
     >
       <Box style={{ fontSize: '14px' }}>{printUserNameOnPage(auth)}</Box>
-      <Form
-        action='/logout'
-        method='post'
-      >
-        <input
-          type='hidden'
-          name='returnTo'
-          value={returnTo}
-        />
-        <Button
-          type='submit'
-          endIcon={<LogoutIcon />}
-        >
+      <Form action='/logout' method='post'>
+        <input type='hidden' name='returnTo' value={returnTo} />
+        <Button type='submit' variant='tertiary'>
           {t('divaClient_LogoutText')}
+          <LogoutIcon />
         </Button>
       </Form>
     </Stack>

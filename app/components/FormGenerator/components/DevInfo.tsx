@@ -23,6 +23,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
+import { CodeIcon } from '@/icons';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -74,7 +75,7 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
 
   return (
     <button type='button' className={styles.devInfoButton} onClick={onClick}>
-      &lt;/&gt;
+      <CodeIcon />
     </button>
   );
 };

@@ -25,14 +25,13 @@ import {
 } from '@mui/material';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
-import ErrorIcon from '@mui/icons-material/Error';
 
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
-import { InfoIcon } from '@/icons';
+import { ErrorIcon, InfoIcon } from '@/icons';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -140,14 +139,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 helperText={error !== undefined ? error.message : ' '}
                 InputProps={{
                   readOnly: props.readOnly,
-                  endAdornment: (
-                    <ErrorIcon
-                      sx={{
-                        color: '#ff0000',
-                        visibility: error !== undefined ? 'visible' : 'hidden',
-                      }}
-                    />
-                  ),
+                  endAdornment: <ErrorIcon />,
                 }}
                 type={props.inputFormat}
               />

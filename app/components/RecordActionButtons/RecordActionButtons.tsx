@@ -18,10 +18,9 @@
 
 import { IconButton } from '@mui/material';
 import { Link, useFetcher } from 'react-router';
-import FeedIcon from '@mui/icons-material/Feed';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import type { BFFDataRecord } from '@/types/record';
+import { ArticleIcon, DeleteForeverIcon, EditDocumentIcon } from '@/icons';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -39,7 +38,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             component={Link}
             to={`/view/${record.recordType}/${record.id}`}
           >
-            <FeedIcon />
+            <ArticleIcon />
           </IconButton>
         );
       case 'update':
@@ -49,7 +48,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             component={Link}
             to={`/update/${record.recordType}/${record.id}`}
           >
-            <EditIcon />
+            <EditDocumentIcon />
           </IconButton>
         );
       case 'delete':

@@ -16,13 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, Button, Container } from '@mui/material';
-import CachedIcon from '@mui/icons-material/Cached';
+import { Box, Container } from '@mui/material';
 import { Form, Link, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
+import { CachedIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
 
 export const Header = () => {
   const location = useLocation();
@@ -53,7 +54,7 @@ export const Header = () => {
           {devMode && (
             <Form action='/refreshDefinitions' method='POST'>
               <input type='hidden' name='returnTo' value={returnTo} />
-              <Button type='submit'>
+              <Button variant='tertiary'>
                 Refresh Def <CachedIcon />
               </Button>
             </Form>

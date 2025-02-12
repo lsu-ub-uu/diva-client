@@ -30,19 +30,18 @@ import { searchRecords } from '@/data/searchRecords.server';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
 import { Alert, Box, Skeleton, Stack } from '@mui/material';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
-
 import type { Route } from './+types/home';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
 import { Button } from '@/components/Button/Button';
 import type { Auth } from '@/auth/Auth';
+import { PriorityHighIcon } from '@/icons';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);

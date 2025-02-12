@@ -19,8 +19,7 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import type {
-  Theme} from '@mui/material';
+import type { Theme } from '@mui/material';
 import {
   DialogContent,
   DialogActions,
@@ -31,8 +30,8 @@ import {
   Stack,
   IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import { CloseIcon } from '@/icons';
 
 const StyledDialog = styled(MuiDialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -53,10 +52,7 @@ const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <MuiDialogTitle
-      sx={{ m: 0, pl: 4 }}
-      {...other}
-    >
+    <MuiDialogTitle sx={{ m: 0, pl: 4 }} {...other}>
       {children}
       {onClose ? (
         <IconButton
@@ -111,10 +107,7 @@ export const Dialog = (props: DialogProps) => {
       aria-labelledby='customized-dialog-title'
       open={open}
     >
-      <DialogTitle
-        id='customized-dialog-title'
-        onClose={handleClose}
-      >
+      <DialogTitle id='customized-dialog-title' onClose={handleClose}>
         {props.title}
       </DialogTitle>
       {props.fixedHeader && (
@@ -122,16 +115,10 @@ export const Dialog = (props: DialogProps) => {
       )}
       <DialogContent dividers>{props.children}</DialogContent>
       <DialogActions>
-        <Stack
-          direction='row'
-          spacing={1}
-        >
+        <Stack direction='row' spacing={1}>
           {props.actions?.map((action) => action)}
           {props.closeButton && (
-            <Button
-              variant='contained'
-              onClick={handleClose}
-            >
+            <Button variant='contained' onClick={handleClose}>
               {t('common.close')}
             </Button>
           )}

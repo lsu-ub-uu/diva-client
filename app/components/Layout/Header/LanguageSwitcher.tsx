@@ -18,10 +18,11 @@
 
 import { Form, useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
-import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
 import { Field } from '@/components/Input/Field';
+import { LanguageIcon } from '@/icons';
+import styles from './LanguageSwitcher.module.css';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
@@ -32,7 +33,7 @@ export const LanguageSwitcher = () => {
   return (
     <Form method='post'>
       <Field variant='inline'>
-        <LanguageIcon />
+        <LanguageIcon className={styles['language-icon']} />
         <Select
           name='language'
           value={language as string}
