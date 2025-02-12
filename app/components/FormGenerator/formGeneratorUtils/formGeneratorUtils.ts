@@ -41,6 +41,7 @@ import {
 import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
+import type { Option } from '@/components';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -300,4 +301,13 @@ export const getErrorMessageForField = (
     return error.message as string;
   }
   return undefined;
+};
+
+export const findOptionLabelByValue = (
+  array: Option[] | undefined,
+  value: string,
+): string => {
+  if (array === undefined) return 'Failed to translate';
+  const option = array.find((opt) => opt.value === value);
+  return option?.label ?? 'Failed to translate';
 };

@@ -29,7 +29,10 @@ import { InfoIcon } from '@/icons';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import { Button } from '@/components/Button/Button';
-import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  findOptionLabelByValue,
+  getErrorMessageForField,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 
 interface AttributeSelectProps {
@@ -70,12 +73,10 @@ export const AttributeSelect = ({
     return (
       <>
         <OutputField
+          className={styles.attributeSelect}
           variant='inline'
           label={t(label)}
-          value={t(
-            options.find((option) => option.value === value)?.label ??
-              'unknown',
-          )}
+          value={findOptionLabelByValue(options, value)}
         />
         {finalValue && <input type='hidden' {...register(name, { value })} />}
       </>

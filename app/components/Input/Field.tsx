@@ -37,8 +37,10 @@ interface FieldProps extends HUIFieldProps {
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium';
   errorMessage?: ReactNode;
-  infoTitle?: string;
-  infoBody?: string;
+  info?: {
+    title: string;
+    body: string;
+  };
 }
 
 export const Field = ({
@@ -49,8 +51,7 @@ export const Field = ({
   size = 'medium',
   className,
   errorMessage,
-  infoTitle,
-  infoBody,
+  info,
   ...rest
 }: FieldProps) => {
   const { t } = useTranslation();
@@ -64,8 +65,8 @@ export const Field = ({
       <div className={styles.labelAndChildrenWrapper}>
         <div className={styles.labelAndAdornmentWrapper}>
           <Label>{label}</Label>
-          {infoTitle && infoBody && (
-            <Tooltip title={infoTitle} body={infoBody}>
+          {info && (
+            <Tooltip title={info.title} body={info.body}>
               <Button
                 variant='icon'
                 size='small'

@@ -20,7 +20,10 @@ import type {
   FormComponentCollVar,
   TextStyle,
 } from '@/components/FormGenerator/types';
-import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  findOptionLabelByValue,
+  getErrorMessageForField,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, useContext } from 'react';
 import styles from './FormComponent.module.css';
@@ -29,7 +32,6 @@ import { Field } from '@/components/Input/Field';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
-import type { Option } from '@/components';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -56,15 +58,6 @@ export const CollectionVariable = ({
 
   const errorMessage = getErrorMessageForField(formState, path);
 
-  const findOptionLabelByValue = (
-    array: Option[] | undefined,
-    value: string,
-  ): string => {
-    if (array === undefined) return 'Failed to translate';
-    const option = array.find((opt) => opt.value === value);
-    return option?.label ?? 'Failed to translate';
-  };
-
   if (component.mode === 'output') {
     if (!value) {
       return null;
@@ -72,8 +65,24 @@ export const CollectionVariable = ({
 
     return (
       <OutputField
+        className={styles.component}
+        data-colspan={component.gridColSpan ?? 12}
         label={component.showLabel ? t(component.label) : undefined}
         value={findOptionLabelByValue(component.options, value)}
+        textStyle={textStyle}
+        info={
+          (showTooltips || undefined) &&
+          component.tooltip && {
+            title: t(component.tooltip.title),
+            body: t(component.tooltip.body),
+          }
+        }
+        adornment={
+          <>
+            {attributes}
+            {actionButtonGroup}
+          </>
+        }
       />
     );
   }
@@ -86,13 +95,18 @@ export const CollectionVariable = ({
         label={component.showLabel && t(component.label)}
         errorMessage={errorMessage}
         variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
-        infoTitle={showTooltips && t(component.tooltip.title)}
-        infoBody={showTooltips && t(component.tooltip.body)}
+        info={
+          (showTooltips || undefined) &&
+          component.tooltip && {
+            title: t(component.tooltip.title),
+            body: t(component.tooltip.body),
+          }
+        }
         adornment={
-          <div>
+          <>
             {attributes}
             {actionButtonGroup}
-          </div>
+          </>
         }
       >
         <Select {...register(path)} invalid={errorMessage !== undefined}>
@@ -108,34 +122,4 @@ export const CollectionVariable = ({
       </Field>
     );
   }
-
-  /*return (
-    <div
-      key={reactKey}
-      className={styles.component}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
-      data-colspan={component.gridColSpan ?? 12}
-    >
-      <DevInfo component={component} path={path} />
-
-      <ControlledSelectField
-        name={path}
-        isLoading={false}
-        loadingError={false}
-        label={component.label ?? ''}
-        showLabel={component.showLabel}
-        placeholder={component.placeholder}
-        tooltip={showTooltips ? component.tooltip : undefined}
-        control={control}
-        options={component.options}
-        readOnly={!!component.finalValue}
-        displayMode={component.mode}
-        hasValue={hasValue}
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-        parentPresentationStyle={parentPresentationStyle}
-        textStyle={component.textStyle}
-      />
-    </div>
-  );*/
 };

@@ -30,6 +30,7 @@ export interface DivaTypographyVariants {
 interface TypographyProps extends DivaTypographyVariants {
   text: string;
   sx?: SxProps;
+  component?: ElementType;
 }
 
 const mapTextStyleToComponent = (textStyle: TextStyle): ElementType => {
@@ -56,7 +57,7 @@ export const Typography = (props: TypographyProps) => {
 
   return (
     <MuiTypography
-      component={mapTextStyleToComponent(props.variant)}
+      component={props.component ?? mapTextStyleToComponent(props.variant)}
       variant={props.variant}
       sx={{
         fontWeight: props.variant === 'boldTextStyle' ? 'bold' : 'medium',
