@@ -21,8 +21,22 @@
   flex-direction: column;
   gap: var(--gap-s);
 
+  .inputWrapper {
+    position: relative;
+    .errorIcon {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
   &:has([data-invalid]) {
     color: var(--color-error-main);
+    .errorIcon {
+      opacity: 1;
+      position: absolute;
+      top: calc((var(--input-height) / 2) - 0.5em);
+      right: var(--gap-xl);
+    }
   }
 
   .labelAndChildrenWrapper {
@@ -91,6 +105,8 @@
 
 .select,
 .input {
+  width: 100%;
+  position: relative;
   border: 1px solid var(--color-input-border);
   border-radius: calc(var(--border-radius) / 2);
   height: var(--input-height);
@@ -102,5 +118,5 @@
 }
 
 .errorMessage {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-s);
 }

@@ -20,10 +20,7 @@ import type {
   FormComponentCollVar,
   TextStyle,
 } from '@/components/FormGenerator/types';
-import {
-  checkIfComponentHasValue,
-  getErrorMessageForField,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, useContext } from 'react';
 import styles from './FormComponent.module.css';
@@ -31,9 +28,8 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { Field } from '@/components/Input/Field';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { InfoIcon } from '@/icons';
-import { Button } from '@/components/Button/Button';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import type { Option } from '@/components';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -56,10 +52,30 @@ export const CollectionVariable = ({
   const { t } = useTranslation();
   const { showTooltips } = useContext(FormGeneratorContext);
   const { getValues, register, formState } = useRemixFormContext();
-  const hasValue = checkIfComponentHasValue(getValues, path);
+  const value = getValues(path);
+
   const errorMessage = getErrorMessageForField(formState, path);
-  if (component.mode === 'output' && !hasValue) {
-    return null;
+
+  const findOptionLabelByValue = (
+    array: Option[] | undefined,
+    value: string,
+  ): string => {
+    if (array === undefined) return 'Failed to translate';
+    const option = array.find((opt) => opt.value === value);
+    return option?.label ?? 'Failed to translate';
+  };
+
+  if (component.mode === 'output') {
+    if (!value) {
+      return null;
+    }
+
+    return (
+      <OutputField
+        label={component.showLabel ? t(component.label) : undefined}
+        value={findOptionLabelByValue(component.options, value)}
+      />
+    );
   }
 
   if (component.mode === 'input') {

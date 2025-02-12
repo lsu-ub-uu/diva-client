@@ -27,7 +27,7 @@ import styles from './Input.module.css';
 import clsx from 'clsx';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Button } from '@/components/Button/Button';
-import { InfoIcon } from '@/icons';
+import { InfoIcon, WarningIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 
 interface FieldProps extends HUIFieldProps {
@@ -77,7 +77,9 @@ export const Field = ({
           )}
           <div className={styles.adornments}>{adornment}</div>
         </div>
-        {children}
+        <div className={styles.inputWrapper}>
+          {children} <WarningIcon className={styles.errorIcon} />
+        </div>
       </div>
       {errorMessage && (
         <Description className={styles.errorMessage}>

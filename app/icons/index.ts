@@ -34,3 +34,5 @@ export { default as ArrowDownwardIcon } from './ArrowDownward.svg?react';
 export { default as CloseIcon } from './Close.svg?react';
 export { default as SearchIcon } from './Search.svg?react';
 export { default as LanguageIcon } from './Language.svg?react';
+export { default as ErrorIcon } from './Error.svg?react';
+export { default as WarningIcon } from './Warning.svg?react';

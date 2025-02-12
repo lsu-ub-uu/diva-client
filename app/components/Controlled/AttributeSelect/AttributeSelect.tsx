@@ -68,14 +68,17 @@ export const AttributeSelect = ({
 
   if (showAsOutput) {
     return (
-      <OutputField
-        name={name}
-        variant='inline'
-        label={t(label)}
-        value={t(
-          options.find((option) => option.value === value)?.label ?? 'unknown',
-        )}
-      />
+      <>
+        <OutputField
+          variant='inline'
+          label={t(label)}
+          value={t(
+            options.find((option) => option.value === value)?.label ??
+              'unknown',
+          )}
+        />
+        {finalValue && <input type='hidden' {...register(name, { value })} />}
+      </>
     );
   }
 

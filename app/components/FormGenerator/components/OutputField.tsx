@@ -17,30 +17,22 @@
  */
 
 import styles from './OutputField.module.css';
-import type { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface OutputFieldProps {
-  label: string;
+  label?: string;
   value: string;
-  name: string;
   variant?: 'inline' | 'block';
-  finalValue?: string;
-  register: UseFormRegister<FieldValues>;
 }
 
 export const OutputField = ({
   label,
   value,
-  name,
   variant = 'block',
-  finalValue,
-  register,
 }: OutputFieldProps) => {
   return (
-    <dl className={styles['output-field']}>
+    <dl className={styles['output-field']} data-variant={variant}>
       <dt>{label}</dt>
       <dd>{value}</dd>
-      {finalValue && <input type='hidden' {...register(name, { value })} />}
     </dl>
   );
 };

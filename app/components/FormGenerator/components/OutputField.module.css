@@ -20,6 +20,9 @@
   display: flex;
   &[data-variant='block'] {
     flex-direction: column;
+    dt:after {
+      content: ':';
+    }
   }
   gap: var(--gap-s);
   dt {

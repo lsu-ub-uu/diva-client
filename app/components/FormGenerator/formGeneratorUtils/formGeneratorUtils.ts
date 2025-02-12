@@ -295,7 +295,7 @@ export const getErrorMessageForField = (
   formState: FormState<FieldValues>,
   name: string,
 ) => {
-  const error = get(formState, name);
+  const error = get(formState.errors, name);
   if (error?.message) {
     return error.message as string;
   }
