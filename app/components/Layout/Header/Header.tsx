@@ -24,47 +24,37 @@ import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { CachedIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
+import styles from './Header.module.css';
 
 export const Header = () => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   return (
-    <Box sx={{ py: 2, borderBottom: '1px solid #eee' }}>
-      <Container maxWidth='xl'>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
+    <div className={styles.headerWrapper}>
+      <div className={styles.headerLogo}>
+        <Link to='/'>
+          <img
+            src={divaLogo}
+            className='logo'
+            alt='logo'
+            style={{ width: 160 }}
+          />
+        </Link>
+      </div>
+      {devMode && <Link to='/design-system'>Design system</Link>}
+      {devMode && (
+        <Form action='/refreshDefinitions' method='POST'>
+          <input type='hidden' name='returnTo' value={returnTo} />
+          <Button variant='tertiary'>
+            Refresh Def <CachedIcon />
+          </Button>
+        </Form>
+      )}
 
-            gap: 2,
-          }}
-        >
-          <Box sx={{ mr: 'auto' }}>
-            <Link to='/'>
-              <img
-                src={divaLogo}
-                className='logo'
-                alt='logo'
-                style={{ width: 160 }}
-              />
-            </Link>
-          </Box>
-          {devMode && <Link to='/design-system'>Design system</Link>}
-          {devMode && (
-            <Form action='/refreshDefinitions' method='POST'>
-              <input type='hidden' name='returnTo' value={returnTo} />
-              <Button variant='tertiary'>
-                Refresh Def <CachedIcon />
-              </Button>
-            </Form>
-          )}
+      <LanguageSwitcher />
 
-          <LanguageSwitcher />
-
-          <Login />
-        </Box>
-      </Container>
-    </Box>
+      <Login />
+    </div>
   );
 };

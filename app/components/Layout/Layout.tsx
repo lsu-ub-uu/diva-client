@@ -18,11 +18,11 @@
 
 import { AppBar, Box, Container } from '@mui/material';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import { Header } from '@/components/Layout/Header';
+import { Header } from '@/components/Layout/Header/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type { ReactNode } from 'react';
-import styles from './layout.module.css';
+import styles from './Layout.module.css';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -31,20 +31,14 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <>
-      <AppBar
-        position='static'
-        color='default'
-      >
+      <AppBar position='static' color='default'>
         <NavigationLoader />
         <MemberBar color='#efefef'>
           <p>MemberBar</p>
         </MemberBar>
         <Header />
       </AppBar>
-      <Container
-        maxWidth='xl'
-        className={styles.container}
-      >
+      <Container maxWidth='xl' className={styles.container}>
         <Box my={2}>
           <Breadcrumbs />
         </Box>

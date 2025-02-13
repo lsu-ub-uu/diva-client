@@ -35,7 +35,7 @@ import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
 import rootCss from './root.css?url';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
-import { PageLayout } from '@/components/Layout';
+import { PageLayout } from '@/components/Layout/Layout';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
