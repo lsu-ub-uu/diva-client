@@ -126,7 +126,7 @@ export default function User() {
       spacing={2}
       style={{ marginTop: '-1px' }}
     >
-      <Box style={{ fontSize: '14px' }}>{printUserNameOnPage(auth)}</Box>
+      <div>{printUserNameOnPage(auth)}</div>
       <Form action='/logout' method='post'>
         <input type='hidden' name='returnTo' value={returnTo} />
         <Button type='submit' variant='tertiary'>
