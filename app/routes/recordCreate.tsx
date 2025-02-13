@@ -51,6 +51,7 @@ import {
   formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
   formDefWithOneTextVariableBeingPassword,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithOptionalGroupWithTwoCollectionVars,
 } from '@/__mocks__/data/formDef';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -61,11 +62,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
 
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    validationTypeId,
-    'create',
-  );
+  const formDefinition = formDefWithOptionalGroupWithTwoCollectionVars;
   return data(
     { formDefinition, notification },
     await getResponseInitWithSession(session),
