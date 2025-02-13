@@ -42,6 +42,7 @@ import { isEmpty } from 'lodash-es';
 import { Button } from '@/components/Button/Button';
 import type { Auth } from '@/auth/Auth';
 import { PriorityHighIcon } from '@/icons';
+import styles from './home.module.css';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -96,14 +97,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </Alert>
       }
     >
-      <Stack spacing={2}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+      <div className={styles.searchWrapper}>
+        <div className={styles.searchExtras}>
           <h1>{t('divaClient_searchRecordText')}</h1>
 
           <Suspense
@@ -122,7 +117,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               )}
             </Await>
           </Suspense>
-        </Box>
+        </div>
 
         <Suspense fallback={<Skeleton height={296} />}>
           <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
@@ -136,7 +131,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             )}
           </Await>
         </Suspense>
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }
