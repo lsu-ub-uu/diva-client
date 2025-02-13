@@ -66,14 +66,13 @@ export const TextOrNumberVariable = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <DevInfo component={component} path={path} />
-
-      {component.mode === 'output' ||
+      {(component.mode === 'output' && value) ||
         (component.finalValue && (
           <OutputField
             className={styles.component}
             data-colspan={component.gridColSpan ?? 12}
             label={component.showLabel ? t(component.label) : undefined}
-            value={value}
+            value={value ?? component.finalValue}
             textStyle={textStyle}
             info={
               (showTooltips || undefined) &&
@@ -118,6 +117,11 @@ export const TextOrNumberVariable = ({
         >
           <Input
             {...register(path)}
+            type={
+              'inputFormat' in component
+                ? (component.inputFormat ?? 'password')
+                : 'text'
+            }
             invalid={errorMessage !== undefined}
             placeholder={component.placeholder}
             readOnly={!!component.finalValue}

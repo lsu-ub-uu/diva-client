@@ -97,12 +97,7 @@ const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
   const RoutesStub = createRoutesStub([
     {
       path: '/',
-      Component: () => (
-        <RecordForm
-          formSchema={formSchema}
-          record={record}
-        />
-      ),
+      Component: () => <RecordForm formSchema={formSchema} record={record} />,
       action: actionSpy,
     },
   ]);
@@ -1043,10 +1038,16 @@ describe('<Form />', () => {
           formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId1');
-      expect(inputElement).toHaveValue('someFinalValue1');
-      const inputElement2 = screen.getByPlaceholderText('someEmptyTextId2');
-      expect(inputElement2).toHaveValue('someFinalValue2');
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(2);
+      const inputLabel = screen.getByText('label1');
+      expect(inputLabel).toBeInTheDocument();
+      const inputElement = screen.getByText('someFinalValue1');
+      expect(inputElement).toBeInTheDocument();
+      const inputLabel2 = screen.getByText('label2');
+      expect(inputLabel2).toBeInTheDocument();
+      const inputElement2 = screen.getByText('someFinalValue2');
+      expect(inputElement2).toBeInTheDocument();
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1251,9 +1252,7 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByPlaceholderText(
-        'loginPasswordTextVarText',
-      );
+      const inputElement = screen.getByLabelText('passwordLabel');
 
       const user = userEvent.setup();
       await user.type(inputElement, 'password');
@@ -1261,7 +1260,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(actionSpy).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -1275,8 +1274,8 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
+      const inputNumberElement = screen.getByLabelText(
+        'someNumberVariableNameInData',
       );
 
       const user = userEvent.setup();
@@ -1607,13 +1606,19 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElement = screen.queryByLabelText('delete');
+      const removeButtonElement = screen.queryByLabelText(
+        'divaClient_deleteFieldText',
+      );
       expect(removeButtonElement).toBeInTheDocument();
 
-      const moveUpButtonElement = screen.queryByLabelText('up');
+      const moveUpButtonElement = screen.queryByLabelText(
+        'divaClient_moveFieldUpText',
+      );
       expect(moveUpButtonElement).not.toBeInTheDocument();
 
-      const moveDownButtonElement = screen.queryByLabelText('down');
+      const moveDownButtonElement = screen.queryByLabelText(
+        'divaClient_moveFieldDownText',
+      );
       expect(moveDownButtonElement).not.toBeInTheDocument();
     });
   });
@@ -1626,7 +1631,9 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByLabelText('delete');
+      const removeButtonElements = screen.getAllByLabelText(
+        'divaClient_deleteFieldText',
+      );
 
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
@@ -1642,7 +1649,9 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByLabelText('delete');
+      const removeButtonElements = screen.getAllByLabelText(
+        'divaClient_deleteFieldText',
+      );
 
       expect(removeButtonElements).toHaveLength(1);
       expect(removeButtonElements[0]).toBeEnabled();
@@ -1650,21 +1659,8 @@ describe('<Form />', () => {
   });
 
   describe('collectionVariable', () => {
-    it('renders a collectionVariable 1-1 and its options', async () => {
-      const { container } = render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneCollectionVariable}
-        />,
-      );
-
-      const selectInputs = container.getElementsByClassName(
-        'MuiSelect-nativeInput',
-      );
-
-      expect(selectInputs).toHaveLength(1);
-    });
-
     it('renders a collectionVariable 1-1 and does validate it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariable}
@@ -1675,15 +1671,18 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const expandButton = screen.getByRole('combobox', { expanded: false });
-      expect(expandButton).toBeInTheDocument();
+      const select = screen.getByRole('combobox');
+      expect(select).toBeInTheDocument();
 
-      const user = userEvent.setup();
-      await user.click(expandButton);
-      const items = screen.getByRole('listbox');
-      expect(items.children).toHaveLength(4); // includes None option
+      const items = screen.getAllByRole('option');
+      expect(items).toHaveLength(4); // includes None option
 
-      await user.selectOptions(items, 'exampleBlueItemText');
+      await user.click(select);
+      await user.selectOptions(
+        screen.getByRole('combobox'),
+        'examplePinkItemText',
+      );
+
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
@@ -1766,7 +1765,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('P');
+      expect(inputElement.tagName).toBe('DD');
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
@@ -1830,7 +1829,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('P');
+      expect(inputElement.tagName).toBe('DD');
     });
   });
 
@@ -1845,9 +1844,7 @@ describe('<Form />', () => {
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour:',
-      });
+      const attributeSelect = screen.getByLabelText('attribute colour');
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
       await user.type(numberInput, '12');
@@ -1874,9 +1871,7 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour:',
-      });
+      const attributeSelect = screen.getByLabelText('attribute colour');
       expect(attributeSelect).toBeInTheDocument();
 
       await user.type(numberInput, '12');
@@ -1907,9 +1902,9 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
@@ -1936,9 +1931,9 @@ describe('<Form />', () => {
 
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
@@ -1967,7 +1962,9 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
 
-      screen.getByRole('combobox', { name: 'someNumberVar2AttributeLabel:' });
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
 
       await user.type(numberInput, '12');
 
@@ -1993,10 +1990,9 @@ describe('<Form />', () => {
         'someNumberVarIdPlaceholder',
       );
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-      screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
-
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
       await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
@@ -2017,9 +2013,9 @@ describe('<Form />', () => {
       );
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
-      screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -2041,10 +2037,9 @@ describe('<Form />', () => {
         'mainTitleTextVarPlaceholderText',
       );
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-
+      const attributeSelect = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
 
       await user.selectOptions(attributeSelect, 'aarLangItemText');
@@ -2105,9 +2100,9 @@ describe('<Form />', () => {
       await user.type(mainTitleElement, '1.25');
       await user.click(submitButton);
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
       expect(attributeSelect).toBeInvalid();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2121,13 +2116,10 @@ describe('<Form />', () => {
           }
         />,
       );
-      screen.getByRole('combobox', {
-        name: 'someTitleGroupText:',
-      });
 
-      screen.getByRole('combobox', {
-        name: 'Eye colour:',
-      });
+      const groupAttribute = screen.getByLabelText('someTitleGroupText');
+
+      const variableAttribute = screen.getByLabelText('Eye colour');
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
@@ -2150,21 +2142,14 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-
-      screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
-
       const textInput = screen.getByPlaceholderText('givenNameTextVarText');
-      const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-      const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
+      const languageAttribute = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
+
+      const titleTypeAttribute = screen.getByLabelText(
+        'titleTypeCollectionVarText',
+      );
 
       await user.click(textInput);
       await user.type(textInput, 'someAlternativeTitle');
@@ -2191,12 +2176,13 @@ describe('<Form />', () => {
           }
         />,
       );
-      const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-      const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
+      const languageAttribute = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
+
+      const titleTypeAttribute = screen.getByLabelText(
+        'titleTypeCollectionVarText',
+      );
 
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',

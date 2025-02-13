@@ -25,7 +25,8 @@ import type { BFFDataRecordData } from '@/types/record';
 import {
   getNotification,
   getSessionFromCookie,
-  requireAuth } from '@/auth/sessions.server';
+  requireAuth,
+} from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
@@ -42,6 +43,15 @@ import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordCreate';
+import {
+  formDefWithOneCollectionVariable,
+  formDefWithOneNumberVariable,
+  formDefWithOneNumberVariableWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+} from '@/__mocks__/data/formDef';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);

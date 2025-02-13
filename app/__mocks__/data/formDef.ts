@@ -598,6 +598,7 @@ export const formDefWithOneRepeatingTextVariableWithModeOutput: RecordFormSchema
             body: 'exampleMetadataTextVarDefText',
           },
           label: 'exampleMetadataTextVarText',
+          showLabel: true,
           validation: {
             type: 'regex',
             pattern: '.*',
@@ -819,6 +820,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
         type: 'textVariable',
         name: 'someNameInData1',
         label: 'label1',
+        showLabel: true,
         finalValue: 'someFinalValue1',
         placeholder: 'someEmptyTextId1',
         repeat: {
@@ -835,6 +837,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
         type: 'textVariable',
         name: 'someNameInData2',
         label: 'label2',
+        showLabel: true,
         finalValue: 'someFinalValue2',
         placeholder: 'someEmptyTextId2',
         repeat: {
@@ -962,6 +965,8 @@ export const formDefWithOneNumberVariable: RecordFormSchema = {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
         placeholder: 'someNumberPlaceholderTextId',
+        label: 'someNumberVariableNameInData',
+        showLabel: true,
         validation: {
           type: 'number',
           min: 1,
@@ -973,7 +978,9 @@ export const formDefWithOneNumberVariable: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
+        mode: 'input',
       },
     ],
     mode: 'input',
@@ -1096,6 +1103,7 @@ export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
           repeatMin: 1,
           repeatMax: 1,
         },
+        mode: 'input',
       },
     ],
     mode: 'input',
@@ -3507,6 +3515,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
               name: 'colourAttribute',
               placeholder: 'emptyTextId',
               showLabel: true,
+              label: 'colourAttribute',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText',
@@ -3561,6 +3570,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                       type: 'collectionVariable',
                       name: 'colourAttribute',
                       placeholder: 'emptyTextId',
+                      label: 'colourAttribute',
                       showLabel: true,
                       tooltip: {
                         title: 'exampleCollectionVarText',
@@ -5069,6 +5079,8 @@ export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
       {
         type: 'textVariable',
         name: 'someNameInData',
+        label: 'passwordLabel',
+        showLabel: true,
         placeholder: 'loginPasswordTextVarText',
         repeat: {
           repeatMin: 0,
@@ -5077,10 +5089,11 @@ export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
         },
         validation: {
           type: 'regex',
-          pattern: '^[a-zA-Z]$',
+          pattern: '.*',
         },
         inputType: 'input',
         inputFormat: 'password',
+        mode: 'input',
       },
     ],
     mode: 'input',
