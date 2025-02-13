@@ -28,11 +28,11 @@ import {
   linksFromFormSchema,
   removeComponentsWithoutValuesFromSchema,
 } from '@/components/NavigationPanel/utils';
-import { Stack } from '@mui/material';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
+import styles from '@/routes/record.module.css';
 
 export const loader = async ({
   request,
@@ -81,9 +81,9 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         />
       }
     >
-      <Stack spacing={2}>
+      <div className={styles.recordWrapper}>
         <ReadOnlyForm record={record} formSchema={formDefinition} />
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }

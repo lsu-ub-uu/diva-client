@@ -42,6 +42,7 @@ import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
+import styles from './record.module.css';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
@@ -127,7 +128,7 @@ export default function CreateRecordRoute({
         />
       }
     >
-      <Stack spacing={2}>
+      <div className={styles.recordWrapper}>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>
             <AlertTitle>{notification.summary}</AlertTitle>
@@ -135,7 +136,7 @@ export default function CreateRecordRoute({
           </Alert>
         )}
         <RecordForm formSchema={formDefinition} />
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }
