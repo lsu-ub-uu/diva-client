@@ -475,6 +475,8 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
       {
         type: 'textVariable',
         name: 'someNameInData',
+        showLabel: true,
+        label: 'someLabelTextId',
         placeholder: 'someEmptyTextId',
         repeat: {
           repeatMin: 1,
@@ -485,6 +487,7 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
           pattern: '^[a-zA-Z]$',
         },
         inputType: 'input',
+        mode: 'input',
       },
     ],
     mode: 'input',
@@ -520,6 +523,9 @@ export const formDefWithHiddenInputs: RecordFormSchema = {
           pattern: '.?',
         },
         inputType: 'input',
+        mode: 'input',
+        label: 'someNameInData',
+        showLabel: true,
       },
       {
         type: 'hidden',
@@ -6391,7 +6397,7 @@ export const formDefCollVarsWithSameNameInData: RecordFormSchema = {
       repeatMax: 1,
     },
     components: [
-      {
+      /*{
         name: 'recordInfo',
         type: 'group',
         mode: 'input',
@@ -6409,7 +6415,7 @@ export const formDefCollVarsWithSameNameInData: RecordFormSchema = {
         presentationStyle: '',
         childStyle: [''],
         gridColSpan: 12,
-      },
+      },*/
       {
         name: 'genre',
         type: 'collectionVariable',

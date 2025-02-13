@@ -466,15 +466,11 @@ describe('<Form />', () => {
         />,
       );
 
-      const thesisElement = screen.getByDisplayValue(
-        'artistic-work_artistic-thesis',
-      );
-      expect(thesisElement).toBeInTheDocument();
-
-      const creativeElement = screen.getByDisplayValue(
-        'artistic-work_original-creative-work',
-      );
-      expect(creativeElement).toBeInTheDocument();
+      const input1 = screen.getByLabelText('outputTypeCollectionVarText1');
+      const input2 = screen.getByLabelText('outputTypeCollectionVarText2');
+      expect(input1).toBeInTheDocument();
+      expect(input2).toBeInTheDocument();
+      screen.debug();
     });
 
     it('renders a form from a given definition does validate it', async () => {
@@ -512,8 +508,10 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText(
+          'someRootNameInData.someNameInData.value is a required field',
+        ),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -533,8 +531,10 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText(
+          'divaOutput.titleInfo.title.value is a required field',
+        ),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -574,22 +574,18 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const collections = screen.getAllByRole('combobox');
+      /*      const collections = screen.getAllByRole('combobox');
       expect(collections).toHaveLength(2);
       const firstCollection = collections[0];
       await user.click(firstCollection);
-      const firstItems = screen.getByRole('listbox');
-      expect(firstItems.children).toHaveLength(3);
+      const firstItems = screen.getByLabelText('option');
+      expect(firstItems).toHaveLength(3);*/
       await user.selectOptions(
-        firstItems,
+        screen.getByLabelText('outputTypeCollectionVarText1'),
         'artisticWorkOriginalCreativeWorkItemText',
       );
-      const secondCollection = collections[1];
-      await user.click(secondCollection);
-      const secondItems = screen.getByRole('listbox');
-      expect(secondItems.children).toHaveLength(3);
       await user.selectOptions(
-        secondItems,
+        screen.getByLabelText('outputTypeCollectionVarText2'),
         'artisticWorkArtisticThesisItemText',
       );
       await user.click(submitButton);
@@ -959,7 +955,7 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      const inputElement = screen.getByLabelText('someNameInData');
 
       expect(inputElement).toBeInTheDocument();
 

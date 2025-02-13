@@ -41,7 +41,6 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
-
 import type { Route } from './+types/recordCreate';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {

@@ -33,8 +33,6 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
-import type { BFFDataRecord } from '@/types/record';
-import { formDefForCheckTextValue } from '@/__mocks__/data/formDef';
 
 export const loader = async ({
   request,
@@ -46,64 +44,21 @@ export const loader = async ({
 
   const { recordType, recordId } = params;
 
-  const record: BFFDataRecord = {
-    id: 'divaOutput:519333261463755',
-    recordType: 'divaOutput',
-    validationType: 'someValidationTypeId',
-    createdAt: '2023-10-11T09:24:30.511487Z',
-    createdBy: 'coraUser:490742519075086',
-    userRights: ['read', 'update', 'index', 'delete'],
-    updated: [],
-    data: {
-      someRootNameInData: {
-        recordInfo: {
-          id: {
-            value: '12345',
-          },
-
-          validationType: {
-            value: 'record',
-          },
-          dataDivider: {
-            value: 'divaData',
-          },
-          type: [
-            {
-              value: 'record',
-            },
-          ],
-          createdBy: [
-            {
-              value: '161616',
-            },
-          ],
-          tsCreated: [
-            {
-              value: '2024-10-16T12:36:04.249992Z',
-            },
-          ],
-          updated: [
-            {
-              tsUpdated: {
-                value: '2024-10-16T12:36:04.249992Z',
-              },
-              updatedBy: {
-                value: '161616',
-              },
-            },
-          ],
-        },
-        someTextVar: {
-          value: 'aaaaa',
-        },
-      },
-    },
-  };
+  const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth?.data.token,
+  });
 
   const title = `${getRecordTitle(record)} | DiVA`;
 
   invariant(record.validationType, 'Record has no validation type');
-  const formDefinition = formDefForCheckTextValue;
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
+    record.validationType,
+    'view',
+  );
 
   return { record, formDefinition, title };
 };
