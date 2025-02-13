@@ -43,16 +43,6 @@ import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordCreate';
-import {
-  formDefWithOneCollectionVariable,
-  formDefWithOneNumberVariable,
-  formDefWithOneNumberVariableWithAttributeCollection,
-  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
-  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOneTextVariableBeingPassword,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
-  formDefWithOptionalGroupWithTwoCollectionVars,
-} from '@/__mocks__/data/formDef';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
@@ -62,7 +52,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
 
-  const formDefinition = formDefWithOptionalGroupWithTwoCollectionVars;
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
+    validationTypeId,
+    'create',
+  );
   return data(
     { formDefinition, notification },
     await getResponseInitWithSession(session),

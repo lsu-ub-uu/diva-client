@@ -832,6 +832,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
           pattern: '.*',
         },
         inputType: 'input',
+        mode: 'input',
       },
       {
         type: 'textVariable',
@@ -849,6 +850,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
           pattern: '.*',
         },
         inputType: 'input',
+        mode: 'input',
       },
     ],
     mode: 'input',

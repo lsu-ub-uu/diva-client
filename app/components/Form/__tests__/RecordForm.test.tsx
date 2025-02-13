@@ -2322,9 +2322,9 @@ describe('<Form />', () => {
 
       await user.click(submitButton);
 
-      /*      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);*/
+      expect(
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2407,9 +2407,9 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      /*      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);*/
+      expect(
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2435,9 +2435,9 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      /*      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);*/
+      expect(
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2458,9 +2458,9 @@ describe('<Form />', () => {
       );
       await user.click(submitButton);
 
-      /*      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);*/
+      expect(
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2484,9 +2484,9 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      /*      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);*/
+      expect(
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2704,8 +2704,10 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+          await screen.findByText(
+            'output.language.title[0].value is a required field',
+          ),
+        ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2742,9 +2744,7 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+        expect(await screen.findByText('Invalid format')).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2783,8 +2783,10 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+          await screen.findByText(
+            'output.language.languageTerm[0].value is a required field',
+          ),
+        ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2868,10 +2870,13 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const inputElement = screen.getByLabelText('someMetadataTextVarText');
-      const text = screen.getByText('aaaaa');
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const inputElement = screen.getByText('aaaaa');
       expect(inputElement).toBeInTheDocument();
-      expect(text).toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {
@@ -2932,12 +2937,18 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const input1Element = screen.queryByLabelText('someMetadataTextVarText');
-      const input2Element = screen.queryByLabelText(
-        'someOtherMetadataTextVarText',
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const hiddenInputLabel = screen.queryByLabelText(
+        'someMetadataTextVarText',
       );
-      expect(input1Element).toBeInTheDocument();
-      expect(input2Element).not.toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
+
+      expect(inputLabel).toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value 2', () => {
@@ -2997,12 +3008,17 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const input1Element = screen.queryByLabelText('someMetadataTextVarText');
-      const input2Element = screen.queryByLabelText(
-        'someMetadataNumberVarText',
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const hiddenInputLabel = screen.queryByLabelText(
+        'someMetadataTextVarText',
       );
-      expect(input1Element).toBeInTheDocument();
-      expect(input2Element).not.toBeInTheDocument();
+
+      expect(inputLabel).toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
     });
   });
 
