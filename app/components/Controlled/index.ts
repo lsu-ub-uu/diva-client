@@ -16,6 +16,4 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { ControlledTextField } from './TextField/ControlledTextField';
-export { ControlledSelectField } from './SelectField/ControlledSelectField';
 export { ControlledLinkedRecord } from './LinkedRecord/ControlledLinkedRecord';
