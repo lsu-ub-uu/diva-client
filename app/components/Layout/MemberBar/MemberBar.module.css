@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,21 +14,17 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type React from 'react';
-import { Box } from '@mui/material';
-import styles from './MemberBar.module.css';
-
-interface MemberBarProps {
-  color: string;
-  children: React.ReactNode;
+.memberBar {
+    padding: 0 var(--gap);
+    background-color: #efefef;
+    display: flex;
+    height: var(--gap-xxl);
+    justify-content: center;
+    align-items: center;
 }
-
-export const MemberBar = (props: MemberBarProps) => {
-  return (
-    <div className={styles['memberBar']}>
-      <div className={styles['content']}>{props.children}</div>
-    </div>
-  );
-};
+.content {
+    max-height: var(--gap-xl);
+}
