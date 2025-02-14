@@ -34,3 +34,10 @@
   border-bottom-right-radius: var(--border-radius);
   background-color: var(--color-card);
 }
+
+.recordActionButtons {
+  position: absolute;
+  display: flex;
+  top: var(--gap);
+  right: var(--gap);
+}

@@ -43,3 +43,4 @@ export { default as OpenInNewIcon } from './OpenInNew.svg?react';
 export { default as DeleteForeverIcon } from './DeleteForever.svg?react';
 export { default as ArticleIcon } from './Article.svg?react';
 export { default as PriorityHighIcon } from './PriorityHigh.svg?react';
+export { default as CheckCircleIcon } from './CheckCircle.svg?react';

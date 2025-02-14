@@ -24,7 +24,7 @@ import type {
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 import { InfoIcon } from '@/icons';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
@@ -92,11 +92,11 @@ export const AttributeSelect = ({
       errorMessage={errorMessage}
       adornment={
         tooltip && (
-          <Tooltip title={t(tooltip.title)} body={t(tooltip.body)}>
+          <TooltipLegacy title={t(tooltip.title)} body={t(tooltip.body)}>
             <Button size='small' aria-label='Help' variant='icon'>
               <InfoIcon />
             </Button>
-          </Tooltip>
+          </TooltipLegacy>
         )
       }
     >
@@ -125,7 +125,7 @@ export const AttributeSelect = ({
     >
       <div className={styles.inputWrapper}>
         {tooltip && (
-          <Tooltip title={t(tooltip.title)} body={t(tooltip.body)}>
+          <TooltipLegacy title={t(tooltip.title)} body={t(tooltip.body)}>
             <IconButton
               sx={{ m: -1 }}
               aria-label='Help'
@@ -134,7 +134,7 @@ export const AttributeSelect = ({
             >
               <InfoIcon />
             </IconButton>
-          </Tooltip>
+          </TooltipLegacy>
         )}
         {showLabel && <label htmlFor={name}>{t(label)}: </label>}
         {showAsInput && (

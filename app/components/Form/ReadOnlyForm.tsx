@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box } from '@mui/material';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import styles from './ReadOnlyForm.module.css';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -33,18 +33,10 @@ export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
   });
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        pb: 4,
-      }}
-    >
+    <div className={styles.wrapper}>
       <RemixFormProvider {...methods}>
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
-    </Box>
+    </div>
   );
 };

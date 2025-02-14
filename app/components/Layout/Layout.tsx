@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AppBar, Box, Container } from '@mui/material';
+import { AppBar, Container } from '@mui/material';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
@@ -39,9 +39,9 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         <Header />
       </AppBar>
       <Container maxWidth='xl' className={styles.container}>
-        <Box my={2}>
+        <div className={styles.breadcrumbs}>
           <Breadcrumbs />
-        </Box>
+        </div>
 
         {children}
       </Container>

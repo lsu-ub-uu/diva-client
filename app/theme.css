@@ -36,6 +36,7 @@
 
 :root {
   --border-radius: 8px;
+  --border-radius-s: 4px;
 
   /* Color palette */
   --color-background: rgb(255 255 255);

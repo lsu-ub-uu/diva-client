@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { Textarea } from '@/components/Input/Textarea';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -62,6 +63,7 @@ export const TextOrNumberVariable = ({
 
   const label = component.showLabel ? t(component.label) : undefined;
 
+  // @ts-ignore
   return (
     <div
       className={styles.component}
@@ -137,17 +139,26 @@ export const TextOrNumberVariable = ({
             </>
           }
         >
-          <Input
-            {...register(path)}
-            type={
-              'inputFormat' in component
-                ? (component.inputFormat ?? 'password')
-                : 'text'
-            }
-            invalid={errorMessage !== undefined}
-            placeholder={component.placeholder}
-            readOnly={!!component.finalValue}
-          />
+          {'inputType' in component && component.inputType === 'textarea' ? (
+            <Textarea
+              {...register(path)}
+              invalid={errorMessage !== undefined}
+              placeholder={component.placeholder}
+              readOnly={!!component.finalValue}
+            />
+          ) : (
+            <Input
+              {...register(path)}
+              type={
+                'inputFormat' in component
+                  ? (component.inputFormat ?? 'password')
+                  : 'text'
+              }
+              invalid={errorMessage !== undefined}
+              placeholder={component.placeholder}
+              readOnly={!!component.finalValue}
+            />
+          )}
         </Field>
       )}
     </div>

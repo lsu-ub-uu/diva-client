@@ -21,7 +21,7 @@ import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 import { Button } from '@/components/Button/Button';
 import { InfoIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +63,7 @@ export const OutputField = ({
           />
         )}
         {info && (
-          <Tooltip title={info.title} body={info.body}>
+          <TooltipLegacy title={info.title} body={info.body}>
             <Button
               variant='icon'
               size='small'
@@ -71,7 +71,7 @@ export const OutputField = ({
             >
               <InfoIcon />
             </Button>
-          </Tooltip>
+          </TooltipLegacy>
         )}
         {adornment && (
           <div className={styles.adornmentWrapper}>{adornment}</div>

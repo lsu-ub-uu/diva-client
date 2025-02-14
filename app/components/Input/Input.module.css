@@ -106,7 +106,7 @@
 }
 
 .select,
-.input {
+.input, .textarea {
   width: 100%;
   position: relative;
   border: 1px solid var(--color-input-border);
@@ -117,6 +117,13 @@
   &[data-invalid] {
     border-color: var(--color-error-main);
   }
+}
+.textarea {
+  resize: vertical;
+  min-height: calc(var(--input-height) * 2);
+  padding-top: calc(var(--gap) * 1.5);
+  padding-left: calc(var(--gap) * 1.5);
+  padding-right: calc(var(--gap) * 6);
 }
 
 .errorMessage {

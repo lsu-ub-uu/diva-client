@@ -25,10 +25,10 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Button } from '@/components/Button/Button';
 import { InfoIcon, WarningIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
@@ -66,7 +66,7 @@ export const Field = ({
         <div className={styles.labelAndAdornmentWrapper}>
           <Label>{label}</Label>
           {info && (
-            <Tooltip title={info.title} body={info.body}>
+            <TooltipLegacy title={info.title} body={info.body}>
               <Button
                 variant='icon'
                 size='small'
@@ -74,7 +74,7 @@ export const Field = ({
               >
                 <InfoIcon />
               </Button>
-            </Tooltip>
+            </TooltipLegacy>
           )}
           <div className={styles.adornments}>{adornment}</div>
         </div>

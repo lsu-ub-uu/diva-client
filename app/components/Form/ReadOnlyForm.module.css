@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,21 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { IconButton } from '@mui/material';
-import { InfoIcon } from '@/icons';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
-
-interface TooltipHelpButtonProps {
-  title: string;
-  body: string;
+.wrapper {
+    width: 100%;
+    padding-bottom: 4px;
 }
-
-export const TooltipHelpButton = (props: TooltipHelpButtonProps) => {
-  return (
-    <TooltipLegacy title={props.title} body={props.body}>
-      <IconButton sx={{ p: 0 }} disableRipple color='info' aria-label='info'>
-        <InfoIcon />
-      </IconButton>
-    </TooltipLegacy>
-  );
-};

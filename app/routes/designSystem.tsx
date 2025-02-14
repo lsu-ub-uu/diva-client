@@ -18,7 +18,7 @@
  */
 import css from './design-system.css?url';
 import { Button } from '@/components/Button/Button';
-import { EditDocumentIcon } from '@/icons';
+import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
@@ -28,6 +28,8 @@ import { CardTitle } from '@/components/Card/CardTitle';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
 import { useEffect, useState } from 'react';
+import { Textarea } from '@/components/Input/Textarea';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -236,6 +238,12 @@ export default function DesignSystem() {
             >
               <Input invalid />
             </Field>
+            <Field label='Textarea'>
+              <Textarea />
+            </Field>
+            <Field label='Textarea with error'>
+              <Textarea invalid />
+            </Field>
             <Field label='Select'>
               <Select>
                 <option>Option 1</option>
@@ -337,6 +345,35 @@ export default function DesignSystem() {
                 </Card>
               </CardContent>
             </Card>
+          </div>
+        </section>
+        <section>
+          <h2>Alerts</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+            <Alert severity='success'>
+              <AlertTitle>Success title</AlertTitle>Text
+            </Alert>
+            <Alert severity='info'>
+              <AlertTitle>Info title</AlertTitle>Text
+            </Alert>
+            <Alert severity='warning'>
+              <AlertTitle>Warning title</AlertTitle>Text
+            </Alert>
+            <Alert severity='error'>
+              <AlertTitle>Error title</AlertTitle>Text
+            </Alert>
+            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+              <AlertTitle>Custom Icon title</AlertTitle>
+              Text
+            </Alert>
+
+            <Alert severity='success'>Text</Alert>
+            <Alert severity='info'>Text</Alert>
+            <Alert severity='warning'>Text</Alert>
+            <Alert severity='error'>Text</Alert>
+            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+              Custom Icon Text
+            </Alert>
           </div>
         </section>
       </main>

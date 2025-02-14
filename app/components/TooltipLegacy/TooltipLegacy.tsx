@@ -92,7 +92,11 @@ const Content = (props: ContentProps) => {
   );
 };
 
-export const Tooltip = (props: TooltipProps) => {
+/**
+ *
+ * @deprecated
+ */
+export const TooltipLegacy = (props: TooltipProps) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {

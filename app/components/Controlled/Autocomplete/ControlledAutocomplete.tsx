@@ -35,7 +35,7 @@ import { useTranslation } from 'react-i18next';
 import type { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 
 interface AutoCompleteProps {
   name: string;
@@ -128,7 +128,7 @@ export const ControlledAutocomplete = (
               >
                 {props.showLabel === true ? t(props.label) : null}
                 {props.tooltip && (
-                  <Tooltip
+                  <TooltipLegacy
                     title={t(props.tooltip.title)}
                     body={t(props.tooltip.body)}
                   >
@@ -140,7 +140,7 @@ export const ControlledAutocomplete = (
                     >
                       <InfoIcon />
                     </IconButton>
-                  </Tooltip>
+                  </TooltipLegacy>
                 )}
               </FormLabel>
               {props.attributes}

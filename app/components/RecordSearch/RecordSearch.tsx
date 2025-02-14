@@ -18,13 +18,13 @@
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { Alert, AlertTitle, Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import { SentimentNeutralIcon } from '@/icons';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -67,16 +67,9 @@ export const RecordSearch = ({
                   formSchema={record.presentation!}
                 />
 
-                <Box
-                  sx={(theme) => ({
-                    position: 'absolute',
-                    display: 'flex',
-                    top: theme.spacing(1),
-                    right: theme.spacing(1),
-                  })}
-                >
+                <div className={styles.recordActionButtons}>
                   <RecordActionButtons record={record} />
-                </Box>
+                </div>
               </li>
             ))}
           </ol>

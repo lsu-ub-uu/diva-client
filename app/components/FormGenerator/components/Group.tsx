@@ -33,7 +33,7 @@ import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 import { useTranslation } from 'react-i18next';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
@@ -90,14 +90,14 @@ export const Group = ({
                 )}
               />
               {showTooltips && (
-                <Tooltip
+                <TooltipLegacy
                   title={t(component.tooltip?.title as string)}
                   body={t(component.tooltip?.body as string)}
                 >
                   <IconButton disableRipple color='info' aria-label='info'>
                     <InfoIcon />
                   </IconButton>
-                </Tooltip>
+                </TooltipLegacy>
               )}
             </CardTitle>
           )}

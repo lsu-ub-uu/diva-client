@@ -22,20 +22,17 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
 
-describe('<Tooltip />', () => {
+describe('<TooltipLegacy />', () => {
   it('Renders tooltip when child button is clicked and can be closed', async () => {
     const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';
     render(
-      <Tooltip
-        title={title}
-        body={body}
-      >
+      <TooltipLegacy title={title} body={body}>
         <span>click for tooltip</span>
-      </Tooltip>,
+      </TooltipLegacy>,
     );
 
     const spanBtn = screen.getByText('click for tooltip');
