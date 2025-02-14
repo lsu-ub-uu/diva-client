@@ -16,30 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, Container } from '@mui/material';
 import { Form, Link, useLocation } from 'react-router';
-import divaLogo from '../../../assets/divaLogo.svg';
+import divaLogo from '@/assets/divaLogo.svg';
+import divaLogoS from '@/assets/divaLogoS.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { CachedIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Header.module.css';
+import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   return (
     <div className={styles.headerWrapper}>
-      <div className={styles.headerLogo}>
+      <div className={styles.headerLogoWrapper}>
         <Link to='/'>
-          <img
-            src={divaLogo}
-            className='logo'
-            alt='logo'
-            style={{ width: 160 }}
-          />
+          <picture className={styles.logo}>
+            <source srcSet={divaLogoS} media='(max-width: 600px)' />
+            <source srcSet={divaLogo} />
+
+            <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
+          </picture>
         </Link>
       </div>
       {devMode && <Link to='/design-system'>Design system</Link>}
