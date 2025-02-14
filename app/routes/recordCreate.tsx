@@ -33,7 +33,6 @@ import {
 } from '@/utils/redirectAndCommitSession';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { Alert, AlertTitle, Stack } from '@mui/material';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
@@ -43,6 +42,7 @@ import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);

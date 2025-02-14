@@ -17,7 +17,6 @@
  */
 
 import {
-  Alert,
   Box,
   Button,
   LinearProgress,
@@ -29,6 +28,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { AddCircleIcon } from '@/icons';
+import { Alert } from '@/components/Alert/Alert';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,

@@ -40,11 +40,11 @@ import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { Alert, AlertTitle } from '@mui/material';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);

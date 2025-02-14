@@ -4,7 +4,7 @@ import {
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
-import { Alert, Button, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -19,6 +19,7 @@ import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 import type { Route } from './+types/login';
+import { Alert } from '@/components/Alert/Alert';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
