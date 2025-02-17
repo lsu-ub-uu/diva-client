@@ -1054,6 +1054,8 @@ export const formDefWithOneNumberVariableAndGuiElementLink: RecordFormSchema = {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
         placeholder: 'someNumberPlaceholderTextId',
+        label: 'someNumberVariableNameInData',
+        showLabel: true,
         validation: {
           type: 'number',
           min: 1,
@@ -1065,8 +1067,38 @@ export const formDefWithOneNumberVariableAndGuiElementLink: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
+        mode: 'input',
       },
+      {
+        type: 'guiElementLink',
+        name: 'pSomeGuiElementLinkId',
+        url: 'http://www.google.seasdfasdfasdfasdfasdf',
+        elementText: 'demoTestLinkGuiElementText',
+        presentAs: 'link',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithGuiElementLink: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    showLabel: true,
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
       {
         type: 'guiElementLink',
         name: 'pSomeGuiElementLinkId',

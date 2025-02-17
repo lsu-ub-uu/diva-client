@@ -57,22 +57,23 @@ const UploadProgress = (props: UploadProgressProps) => {
     setProgress(props.currentProgress);
   }, [props.currentProgress]);
 
+  /*Check if styling is correct*/
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ width: '100%', marginRight: '1rem' }}>
         <StyledLinearProgress
           variant='determinate'
           color='primary'
           value={progress}
         />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
+      </div>
+      <div style={{ minWidth: '2em' }}>
         <Typography
           variant='body2'
           color='text.secondary'
         >{`${Math.round(progress)}%`}</Typography>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
@@ -117,8 +118,9 @@ export const FileUpload = (props: FileUploadProps) => {
     }
   };
 
+  /*Check if styling is correct*/
   return (
-    <Box sx={{ marginBottom: 10 }}>
+    <div style={{ marginBottom: '10em' }}>
       <Stack spacing={2}>
         <input
           type='file'
@@ -162,6 +164,6 @@ export const FileUpload = (props: FileUploadProps) => {
           <UploadProgress currentProgress={progress} />
         )}
       </Stack>
-    </Box>
+    </div>
   );
 };

@@ -43,6 +43,10 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import {
+  formDefWithGuiElementLink,
+  formDefWithOneNumberVariableAndGuiElementLink,
+} from '@/__mocks__/data/formDef';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
@@ -52,11 +56,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
 
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    validationTypeId,
-    'create',
-  );
+  const formDefinition = formDefWithOneNumberVariableAndGuiElementLink;
   return data(
     { formDefinition, notification },
     await getResponseInitWithSession(session),

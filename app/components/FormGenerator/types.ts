@@ -162,9 +162,9 @@ export interface FormComponentGroup extends FormComponentMetadata {
 export type FormComponentText = FormComponentMetadata;
 
 export interface FormComponentGuiElement extends FormComponentBase {
-  url?: string; // used for guiElementLink
-  elementText?: string; // used for guiElementLink
-  presentAs?: string; // used for guiElementLink
+  url: string; // used for guiElementLink
+  elementText: string; // used for guiElementLink
+  presentAs: string; // used for guiElementLink
 }
 
 export type FormComponent =

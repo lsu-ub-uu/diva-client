@@ -18,8 +18,8 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
 import { OpenInNewIcon } from '@/icons';
+import styles from './LinkButton.module.css';
 
 interface LinkButtonProps {
   text: string;
@@ -29,15 +29,11 @@ interface LinkButtonProps {
 export const LinkButton = (props: LinkButtonProps) => {
   const { t } = useTranslation();
   return (
-    <Button
-      component='a'
-      href={props.href}
-      target='_blank'
-      rel='noopener noreferrer'
-      endIcon={<OpenInNewIcon />}
-      color='primary'
-    >
-      {t(props.text)}
-    </Button>
+    <a href={props.href} target='_blank' rel='noreferrer'>
+      <span className={styles.link}>
+        {t(props.text)}
+        <OpenInNewIcon />
+      </span>
+    </a>
   );
 };
