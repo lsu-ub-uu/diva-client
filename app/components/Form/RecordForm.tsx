@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Container, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -31,12 +30,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import {
-  DeleteIcon,
-  EditDocumentIcon,
-  RestartAltIcon,
-  UpgradeIcon,
-} from '@/icons';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
@@ -79,7 +73,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       <FloatingActionButtonContainer>
         <FloatingActionButton
           type='button'
-          onClick={reset}
+          onClick={() => reset(undefined, { keepDefaultValues: true })}
           icon={<RestartAltIcon />}
           text={t('divaClient_ResetButtonText')}
         />

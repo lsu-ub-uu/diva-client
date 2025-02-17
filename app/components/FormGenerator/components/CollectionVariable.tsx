@@ -68,7 +68,7 @@ export const CollectionVariable = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <DevInfo component={component} path={path} />
-      {component.mode === 'output' && (
+      {(component.mode === 'output' || component.finalValue) && (
         <OutputField
           className={styles.component}
           data-colspan={component.gridColSpan ?? 12}
@@ -91,7 +91,9 @@ export const CollectionVariable = ({
         />
       )}
 
-      {component.mode === 'input' && (
+      {component.finalValue && <input type='hidden' {...register(path)} />}
+
+      {!component.finalValue && component.mode === 'input' && (
         <Field
           className={styles.component}
           data-colspan={component.gridColSpan ?? 12}

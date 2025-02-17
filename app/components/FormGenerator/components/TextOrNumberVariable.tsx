@@ -63,7 +63,6 @@ export const TextOrNumberVariable = ({
 
   const label = component.showLabel ? t(component.label) : undefined;
 
-  // @ts-ignore
   return (
     <div
       className={styles.component}
@@ -71,7 +70,7 @@ export const TextOrNumberVariable = ({
     >
       <DevInfo component={component} path={path} />
 
-      {component.mode === 'output' && (
+      {(component.mode === 'output' || component.finalValue) && (
         <OutputField
           className={styles.component}
           data-colspan={component.gridColSpan ?? 12}
@@ -93,31 +92,9 @@ export const TextOrNumberVariable = ({
           }
         />
       )}
-      {component.finalValue && (
-        <>
-          <OutputField
-            className={styles.component}
-            data-colspan={component.gridColSpan ?? 12}
-            label={label}
-            value={value ?? component.finalValue}
-            textStyle={textStyle}
-            info={
-              (showTooltips || undefined) &&
-              component.tooltip && {
-                title: t(component.tooltip.title),
-                body: t(component.tooltip.body),
-              }
-            }
-            adornment={
-              <>
-                {attributes}
-                {actionButtonGroup}
-              </>
-            }
-          />
-          <input name={path} type='hidden' value={component.finalValue} />
-        </>
-      )}
+
+      {component.finalValue && <input type='hidden' {...register(path)} />}
+
       {!component.finalValue && component.mode === 'input' && (
         <Field
           className={styles.component}
