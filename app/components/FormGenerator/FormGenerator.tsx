@@ -21,10 +21,9 @@ import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
-import { Box } from '@mui/material';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
-import styles from './FormGenerator.module.css'
+import styles from './FormGenerator.module.css';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;

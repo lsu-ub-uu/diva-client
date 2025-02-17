@@ -17,7 +17,6 @@
  */
 
 import type React from 'react';
-import { Box } from '@mui/material';
 import styles from './MemberBar.module.css';
 
 interface MemberBarProps {

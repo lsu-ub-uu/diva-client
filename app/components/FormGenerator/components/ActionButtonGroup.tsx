@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
 import { Button } from '@/components/Button/Button';

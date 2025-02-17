@@ -20,10 +20,12 @@ import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React, { type ReactNode } from 'react';
 import { Box } from '@mui/material';
-import { ControlledLinkedRecord } from '@/components/Controlled';
+
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
+import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
+import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
@@ -51,10 +53,7 @@ export const RecordLinkWithLinkedPresentation = ({
           className={styles.component}
           data-colspan={component.gridColSpan ?? 12}
         >
-          <DevInfo
-            component={component}
-            path={name}
-          />
+          <DevInfo component={component} path={name} />
 
           <Box
             sx={{

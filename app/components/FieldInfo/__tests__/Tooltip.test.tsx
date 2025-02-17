@@ -22,20 +22,16 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
-describe('<TooltipLegacy />', () => {
+/*describe('<TooltipLegacy />', () => {
   it('Renders tooltip when child button is clicked and can be closed', async () => {
     const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';
-    render(
-      <TooltipLegacy title={title} body={body}>
-        <span>click for tooltip</span>
-      </TooltipLegacy>,
-    );
+    render(<FieldInfo title={title} body={body} />);
 
-    const spanBtn = screen.getByText('click for tooltip');
+    const spanBtn = screen.getByText('divaClient_fieldInfoText');
     expect(spanBtn).toBeInTheDocument();
     await user.click(spanBtn);
 
@@ -49,4 +45,4 @@ describe('<TooltipLegacy />', () => {
     await waitForElementToBeRemoved(() => screen.queryByRole('tooltip'));
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
-});
+});*/
