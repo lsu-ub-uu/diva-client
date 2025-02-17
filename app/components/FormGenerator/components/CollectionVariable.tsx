@@ -70,8 +70,6 @@ export const CollectionVariable = ({
       <DevInfo component={component} path={path} />
       {(component.mode === 'output' || component.finalValue) && (
         <OutputField
-          className={styles.component}
-          data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel ? t(component.label) : undefined}
           value={findOptionLabelByValue(component.options, value)}
           textStyle={textStyle}
@@ -95,8 +93,6 @@ export const CollectionVariable = ({
 
       {!component.finalValue && component.mode === 'input' && (
         <Field
-          className={styles.component}
-          data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel && t(component.label)}
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}

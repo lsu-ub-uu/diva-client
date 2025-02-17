@@ -20,9 +20,9 @@
 import type { FormSchema } from '@/components/FormGenerator/types';
 
 export interface BFFDataRecord {
-  id?: string;
-  recordType?: string;
-  validationType?: string;
+  id: string;
+  recordType: string;
+  validationType: string;
   createdAt?: string;
   createdBy?: string;
   updated?: BFFUpdate[];

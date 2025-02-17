@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,4 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { ControlledLinkedRecord } from './LinkedRecord/ControlledLinkedRecord';
+import {
+  ComboboxInput as HUIComboboxInput,
+  type ComboboxInputProps as HUIComboboxInputProps,
+} from '@headlessui/react';
+import clsx from 'clsx';
+import styles from './Input.module.css';
+import searchUrl from '@/icons/Search.svg';
+
+export const ComboboxInput = ({
+  className,
+  ...rest
+}: HUIComboboxInputProps) => {
+  return (
+    <HUIComboboxInput
+      className={clsx(styles.comboboxInput, className)}
+      style={{ backgroundImage: `url(${searchUrl})` }}
+      {...rest}
+    />
+  );
+};

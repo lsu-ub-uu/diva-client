@@ -22,8 +22,7 @@ import { TextOrNumberVariable } from '@/components/FormGenerator/components/Text
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useRemixFormContext } from 'remix-hook-form';
+import { useWatch } from 'react-hook-form';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -42,22 +41,21 @@ export const RecordLink = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
-  const { getValues } = useRemixFormContext();
+  const value = useWatch({ name });
 
-  const hasValue = checkIfComponentHasValue(getValues, name);
   const { linkedData } = useContext(FormGeneratorContext);
 
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
-    !hasValue &&
+    !value &&
     !linkedData
   ) {
     return (
       <RecordLinkWithSearch
         reactKey={reactKey}
         component={component}
-        name={name}
+        path={name}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />

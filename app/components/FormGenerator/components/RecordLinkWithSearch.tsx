@@ -19,17 +19,27 @@
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
 import { type ReactNode, useContext } from 'react';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { useTranslation } from 'react-i18next';
+import { useFetcher } from 'react-router';
+import { Field } from '@/components/Input/Field';
+import type { BFFDataRecord } from '@/types/record';
+import { ComboboxInput } from '@/components/Input/ComboboxInput';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import {
+  Combobox,
+  ComboboxOption,
+  ComboboxOptions,
+} from '@/components/Input/Combobox';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
   component: FormComponentRecordLink;
-  name: string;
+  path: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
@@ -37,12 +47,15 @@ interface RecordLinkWithSearchProps {
 export const RecordLinkWithSearch = ({
   reactKey,
   component,
-  name,
+  path,
   attributes,
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
-  const { control } = useRemixFormContext();
+  const { t } = useTranslation();
+  const { formState, setValue } = useRemixFormContext();
   const { showTooltips } = useContext(FormGeneratorContext);
+  const errorMessage = getErrorMessageForField(formState, path);
+  const fetcher = useFetcher();
 
   return (
     <div
@@ -51,26 +64,39 @@ export const RecordLinkWithSearch = ({
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={name}
-      />
-
-      <ControlledAutocomplete
-        label={component.label ?? ''}
-        name={name}
-        showLabel={component.showLabel}
-        placeholder={component.placeholder}
-        tooltip={showTooltips ? component.tooltip : undefined}
-        control={control}
-        readOnly={!!component.finalValue}
-        displayMode={component.mode}
-        searchLink={component.search}
-        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-        recordType={component.recordLinkType ?? ''}
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-      />
+      <Field
+        label={component.showLabel && t(component.label)}
+        errorMessage={errorMessage}
+        info={showTooltips ? component.tooltip : undefined}
+        adornment={
+          <>
+            {attributes}
+            {actionButtonGroup}
+          </>
+        }
+      >
+        <Combobox onChange={(recordId) => setValue(path, recordId)}>
+          <ComboboxInput
+            placeholder='Sök efter länkad post'
+            onChange={(event) =>
+              fetcher.load(
+                `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
+              )
+            }
+          />
+          <ComboboxOptions anchor='bottom'>
+            {fetcher.data &&
+              fetcher.data.result.map((result: BFFDataRecord) => (
+                <ComboboxOption key={result.id} value={result.id}>
+                  <AutocompleteForm
+                    record={result}
+                    formSchema={result.presentation!}
+                  />
+                </ComboboxOption>
+              ))}
+          </ComboboxOptions>
+        </Combobox>
+      </Field>
     </div>
   );
 };
