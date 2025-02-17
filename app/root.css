@@ -76,29 +76,4 @@
   h6 {
     text-transform: uppercase;
   }
-
-  /* @media (prefers-color-scheme: dark) {
-    !* Color palette *!
-    --color-background: rgb(33 33 33);
-    --color-background-inverted: rgb(255 255 255);
-
-    --color-text: rgb(255 255 255);
-    --color-text-inverted: rgb(33 33 33);
-
-    --color-primary: rgb(231 227 222);
-    --color-secondary: rgb(1 1 1);
-  }
-*/
-
-  [data-theme='dark'] {
-    /* Color palette */
-    --color-background: rgb(33 33 33);
-    --color-background-inverted: rgb(255 255 255);
-
-    --color-text: rgb(255 255 255);
-    --color-text-inverted: rgb(33 33 33);
-
-    --color-primary: rgb(231 227 222);
-    --color-secondary: rgb(1 1 1);
-  }
 }

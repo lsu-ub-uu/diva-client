@@ -21,10 +21,8 @@ import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
-import { Button } from '@/components/Button/Button';
-import { InfoIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface OutputFieldProps {
   className?: string;
@@ -62,17 +60,7 @@ export const OutputField = ({
             variant={textStyle ?? 'bodyTextStyle'}
           />
         )}
-        {info && (
-          <TooltipLegacy title={info.title} body={info.body}>
-            <Button
-              variant='icon'
-              size='small'
-              aria-label={t('divaClient_fieldInfoText')}
-            >
-              <InfoIcon />
-            </Button>
-          </TooltipLegacy>
-        )}
+        {info && <FieldInfo {...info} />}
         {adornment && (
           <div className={styles.adornmentWrapper}>{adornment}</div>
         )}

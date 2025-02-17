@@ -46,4 +46,5 @@
   margin-right: auto;
   display: flex;
   align-items: center;
+  gap: var(--gap);
 }

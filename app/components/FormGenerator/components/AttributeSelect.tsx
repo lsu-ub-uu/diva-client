@@ -24,16 +24,14 @@ import type {
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
-import { InfoIcon } from '@/icons';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
-import { Button } from '@/components/Button/Button';
 import {
   findOptionLabelByValue,
   getErrorMessageForField,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface AttributeSelectProps {
   name: string;
@@ -90,15 +88,7 @@ export const AttributeSelect = ({
       variant='inline'
       size='small'
       errorMessage={errorMessage}
-      adornment={
-        tooltip && (
-          <TooltipLegacy title={t(tooltip.title)} body={t(tooltip.body)}>
-            <Button size='small' aria-label='Help' variant='icon'>
-              <InfoIcon />
-            </Button>
-          </TooltipLegacy>
-        )
-      }
+      adornment={tooltip && <FieldInfo {...tooltip} />}
     >
       <Select
         {...register(name)}
@@ -116,64 +106,4 @@ export const AttributeSelect = ({
       </Select>
     </Field>
   );
-
-  /*
-  return (
-    <div
-      className={styles.attributeSelect}
-      {...(error && { 'data-error': '' })}
-    >
-      <div className={styles.inputWrapper}>
-        {tooltip && (
-          <TooltipLegacy title={t(tooltip.title)} body={t(tooltip.body)}>
-            <IconButton
-              sx={{ m: -1 }}
-              aria-label='Help'
-              disableRipple
-              color='default'
-            >
-              <InfoIcon />
-            </IconButton>
-          </TooltipLegacy>
-        )}
-        {showLabel && <label htmlFor={name}>{t(label)}: </label>}
-        {showAsInput && (
-          <select
-            {...register(name)}
-            disabled={disabled}
-            id={name}
-            aria-invalid={error ? 'true' : undefined}
-          >
-            <option value=''>
-              {t(placeholder ?? 'divaClient_optionNoneText')}
-            </option>
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(option.label)}
-              </option>
-            ))}
-          </select>
-        )}
-        {!showAsInput && (
-          <>
-            <span>
-              {t(
-                options.find((option) => option.value === value)?.label ??
-                  'unknown',
-              )}
-            </span>
-
-            <input type='hidden' {...register(name, { value })} />
-          </>
-        )}
-      </div>
-      <ErrorMessage
-        name={name}
-        errors={errors}
-        render={({ message }) => (
-          <p className={styles.errorMessage}>{message}</p>
-        )}
-      />
-    </div>
-  );*/
 };

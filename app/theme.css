@@ -123,27 +123,16 @@
 
   --desktop-breakpoint: 900px;
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      /* Color palette */
-      --color-background: rgb(33 33 33);
-      --color-background-inverted: rgb(255 255 255);
-
-      --color-text: rgb(255 255 255);
-      --color-text-inverted: rgb(33 33 33);
-
-      --color-primary: rgb(231 227 222);
-      --color-secondary: rgb(1 1 1);
-    }
-  }
+  --elevation: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
 
   [data-theme='dark'] {
     /* Color palette */
-    --color-background: rgb(33 33 33);
+    --color-background: rgb(66 66 66);
     --color-background-inverted: rgb(255 255 255);
 
     --color-text: rgb(255 255 255);
-    --color-text-inverted: rgb(33 33 33);
+    --color-text-inverted: rgb(66 66 66);
 
     --color-primary: rgb(231 227 222);
     --color-secondary: rgb(1 1 1);

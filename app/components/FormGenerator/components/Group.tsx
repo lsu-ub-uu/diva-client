@@ -33,16 +33,13 @@ import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
-import { useTranslation } from 'react-i18next';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
 import styles from './FormComponent.module.css';
-import { IconButton } from '@mui/material';
-import { InfoIcon } from '@/icons';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -59,7 +56,6 @@ export const Group = ({
 }: GroupProps) => {
   const { boxGroups, showTooltips } = useContext(FormGeneratorContext);
   const { getValues } = useRemixFormContext();
-  const { t } = useTranslation();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
   const inline = checkIfPresentationStyleIsInline(component);
@@ -89,15 +85,8 @@ export const Group = ({
                   component.headlineLevel,
                 )}
               />
-              {showTooltips && (
-                <TooltipLegacy
-                  title={t(component.tooltip?.title as string)}
-                  body={t(component.tooltip?.body as string)}
-                >
-                  <IconButton disableRipple color='info' aria-label='info'>
-                    <InfoIcon />
-                  </IconButton>
-                </TooltipLegacy>
+              {component.tooltip && showTooltips && (
+                <FieldInfo {...component.tooltip} />
               )}
             </CardTitle>
           )}

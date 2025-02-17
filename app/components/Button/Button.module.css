@@ -89,6 +89,7 @@
     border-radius: 50%;
     padding: 0;
     line-height: 1;
+    outline-offset: -2px;
     &[data-hover] {
       background-color: var(--color-button-secondary-hover);
     }

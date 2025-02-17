@@ -100,13 +100,7 @@ export const CollectionVariable = ({
           label={component.showLabel && t(component.label)}
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
-          info={
-            (showTooltips || undefined) &&
-            component.tooltip && {
-              title: t(component.tooltip.title),
-              body: t(component.tooltip.body),
-            }
-          }
+          info={showTooltips ? component.tooltip : undefined}
           adornment={
             <>
               {attributes}

@@ -25,10 +25,8 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { Button } from '@/components/Button/Button';
-import { InfoIcon, WarningIcon } from '@/icons';
-import { useTranslation } from 'react-i18next';
-import { TooltipLegacy } from '@/components/TooltipLegacy/TooltipLegacy';
+import { WarningIcon } from '@/icons';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
@@ -54,7 +52,6 @@ export const Field = ({
   info,
   ...rest
 }: FieldProps) => {
-  const { t } = useTranslation();
   return (
     <HUIField
       {...rest}
@@ -65,17 +62,7 @@ export const Field = ({
       <div className={styles.labelAndChildrenWrapper}>
         <div className={styles.labelAndAdornmentWrapper}>
           <Label>{label}</Label>
-          {info && (
-            <TooltipLegacy title={info.title} body={info.body}>
-              <Button
-                variant='icon'
-                size='small'
-                aria-label={t('divaClient_fieldInfoText')}
-              >
-                <InfoIcon />
-              </Button>
-            </TooltipLegacy>
-          )}
+          {info && <FieldInfo {...info} />}
           <div className={styles.adornments}>{adornment}</div>
         </div>
         <div className={styles.inputWrapper}>
