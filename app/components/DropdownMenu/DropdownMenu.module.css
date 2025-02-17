@@ -1,0 +1,28 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--border-radius-s);
+
+  hr {
+    height: 1px;
+    background-color: var(--color-gray-main);
+    margin: var(--gap-s) 0;
+  }
+
+  a,
+  button {
+    display: flex;
+    align-items: center;
+    color: var(--color-text);
+    height: var(--input-height);
+    padding: 0 var(--gap-l);
+    text-decoration: none;
+    transition: background-color 0.1s;
+    background-color: var(--color-background);
+    &:hover {
+      background-color: var(--color-button-secondary-hover);
+    }
+  }
+}

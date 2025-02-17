@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Menu, MenuItem } from '@mui/material';
 import type { Option } from '@/components';
-import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
@@ -32,39 +32,25 @@ export const CreateRecordMenu = ({
   validationTypes,
 }: CreateRecordMenuProps) => {
   const { t } = useTranslation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const addButtonRef = useRef(null);
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
   }
 
   return (
-    <>
-      <Button
-        variant='secondary'
-        ref={addButtonRef}
-        onClick={() => setMenuOpen(true)}
-      >
+    <Menu>
+      <MenuButton as={Button} variant='secondary'>
         <AddCircleIcon /> {t('divaClient_createRecordText')}
-      </Button>
+      </MenuButton>
 
-      <Menu
-        open={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        anchorEl={addButtonRef.current}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
+      <DropdownMenu anchor='bottom end'>
         {validationTypes.map((option) => (
-          <MenuItem
-            key={option.value}
-            component={Link}
-            to={`/create?validationType=${option.value}`}
-          >
-            {t(option.label)}
+          <MenuItem key={option.value}>
+            <Link to={`/create?validationType=${option.value}`}>
+              {t(option.label)}
+            </Link>
           </MenuItem>
         ))}
-      </Menu>
-    </>
+      </DropdownMenu>
+    </Menu>
   );
 };

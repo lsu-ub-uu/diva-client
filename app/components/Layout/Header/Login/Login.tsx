@@ -23,7 +23,7 @@ import {
   useNavigation,
   useSubmit,
 } from 'react-router';
-import { Box, CircularProgress, Divider, Menu, Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 import type { loader } from '@/root';
 import {
   messageIsFromWindowOpenedFromHere,
@@ -32,26 +32,24 @@ import {
 
 import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
-import { useRef, useState } from 'react';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 import { LogoutIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { Menu, MenuButton } from '@headlessui/react';
 
 export default function User() {
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const { t } = useTranslation();
-  const anchorEl = useRef<HTMLButtonElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigation = useNavigation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
 
   const handleDevSelection = (account: Account) => {
-    setMenuOpen(false);
     submit(
       { loginType: 'appToken', account: JSON.stringify(account), returnTo },
       { action: '/login', method: 'post' },
@@ -65,7 +63,6 @@ export default function User() {
     } catch (e: any) {
       console.error(e.message());
     }
-    setMenuOpen(false);
   };
 
   const receiveMessage = (event: MessageEvent<any>) => {
@@ -84,12 +81,8 @@ export default function User() {
 
   if (!auth) {
     return (
-      <>
-        <Button
-          ref={anchorEl}
-          onClick={() => setMenuOpen(true)}
-          disabled={navigation.state === 'submitting'}
-        >
+      <Menu>
+        <MenuButton as={Button} disabled={navigation.state === 'submitting'}>
           {navigation.state === 'submitting' ? (
             <>
               {t('divaClient_LoginText')}{' '}
@@ -98,24 +91,15 @@ export default function User() {
           ) : (
             t('divaClient_LoginText')
           )}
-        </Button>
-        <Menu
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-          anchorEl={anchorEl.current}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
+        </MenuButton>
+        <DropdownMenu anchor='bottom end'>
           <DevAccountLoginOptions onSelect={handleDevSelection} />
-          <Divider />
+          <hr />
           <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-          <Divider />
-          <PasswordLoginOptions
-            returnTo={returnTo}
-            onSelect={() => setMenuOpen(false)}
-          />
-        </Menu>
-      </>
+          <hr />
+          <PasswordLoginOptions returnTo={returnTo} />
+        </DropdownMenu>
+      </Menu>
     );
   }
 

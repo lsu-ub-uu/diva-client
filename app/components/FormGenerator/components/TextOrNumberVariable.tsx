@@ -140,42 +140,4 @@ export const TextOrNumberVariable = ({
       )}
     </div>
   );
-
-  /*const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
-
-  return (
-    <div
-      className={styles.component}
-      data-colspan={component.gridColSpan ?? 12}
-      key={reactKey}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
-    >
-      <DevInfo component={component} path={path} />
-
-      <ControlledTextField
-        multiline={
-          'inputType' in component
-            ? component.inputType === 'textarea'
-            : undefined 
-        }
-        label={component.label ?? ''}
-        showLabel={component.showLabel}
-        name={path}
-        placeholder={component.placeholder}
-        tooltip={showTooltips ? component.tooltip : undefined}
-        control={control}
-        readOnly={!!component.finalValue}
-        displayMode={component.mode}
-        textStyle={component.textStyle}
-        parentPresentationStyle={parentPresentationStyle}
-        hasValue={hasValue}
-        inputFormat={
-          'inputFormat' in component ? component.inputFormat : undefined
-        }
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-        linkedDataToShow={linkedDataToShow ?? undefined}
-      />
-    </div>
-  );*/
 };
