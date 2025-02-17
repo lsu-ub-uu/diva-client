@@ -41,7 +41,6 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import { isEmpty } from 'lodash-es';
 import { Button } from '@/components/Button/Button';
 import type { Auth } from '@/auth/Auth';
-import { PriorityHighIcon } from '@/icons';
 import styles from './home.module.css';
 import { Alert } from '@/components/Alert/Alert';
 
@@ -90,11 +89,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <SidebarLayout
       sidebarContent={
-        <Alert
-          severity='warning'
-        >
-          {t('divaClient_metadataWarningText')}
-        </Alert>
+        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
       }
     >
       <div className={styles.searchWrapper}>

@@ -17,8 +17,6 @@
  */
 
 import {
-  Box,
-  Button,
   LinearProgress,
   linearProgressClasses,
   Stack,
@@ -27,7 +25,6 @@ import {
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { AddCircleIcon } from '@/icons';
 import { Alert } from '@/components/Alert/Alert';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
@@ -135,12 +132,8 @@ export const FileUpload = (props: FileUploadProps) => {
           multiple={false}
           style={{ display: 'none' }}
         />
-        <Button
+        <button
           disabled={progress > 0 && progress < 100}
-          disableRipple
-          color='primary'
-          variant='contained'
-          endIcon={<AddCircleIcon />}
           onClick={() => {
             setUploadStatus(UploadStatus.PENDING);
             setProgress(0);
@@ -148,7 +141,7 @@ export const FileUpload = (props: FileUploadProps) => {
           }}
         >
           Choose file to upload
-        </Button>
+        </button>
         {uploadStatus === UploadStatus.FAILED && (
           <Alert severity='error'>
             File <i>{filename}</i> failed to upload

@@ -4,7 +4,7 @@ import {
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -20,6 +20,7 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 import type { Route } from './+types/login';
 import { Alert } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -157,18 +158,8 @@ export default function Login({ loaderData }: Route.ComponentProps) {
             }),
         )}
       >
-        <input
-          type='hidden'
-          name='loginType'
-          value='password'
-        />
-        {returnTo && (
-          <input
-            type='hidden'
-            name='returnTo'
-            value={returnTo}
-          />
-        )}
+        <input type='hidden' name='loginType' value='password' />
+        {returnTo && <input type='hidden' name='returnTo' value={returnTo} />}
         <input
           type='hidden'
           name='presentation'
@@ -183,11 +174,8 @@ export default function Login({ loaderData }: Route.ComponentProps) {
             <span />
           )}
         </Stack>
-        <Button
-          type='submit'
-          variant='contained'
-        >
-          Logga in
+        <Button type='submit' variant='primary'>
+          {t('divaClient_LoginText')}
         </Button>
       </Form>
     </div>
