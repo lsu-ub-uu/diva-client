@@ -30,6 +30,7 @@ import { CardContent } from '@/components/Card/CardContent';
 import { useEffect, useState } from 'react';
 import { Textarea } from '@/components/Input/Textarea';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { Typography } from '@/components/Typography/Typography';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -130,10 +131,10 @@ export default function DesignSystem() {
             <h4>Heading 4 - H4</h4>
             <h5>Heading 5 - H5</h5>
             <h6>Heading 6 - H6</h6>
-            <p>Body text with base font size and line height.</p>
-            <p>
-              <strong>Bold text example.</strong>
-            </p>
+            <hr />
+            <Typography variant='bodyTextStyle' text='bodyTextStyle' />
+            <Typography variant='boldTextStyle' text='boldTextStyle' />
+            <Typography variant='italicTextStyle' text='italicTextStyle' />
           </div>
         </section>
 

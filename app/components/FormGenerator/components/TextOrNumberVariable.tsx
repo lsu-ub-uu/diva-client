@@ -19,7 +19,6 @@
 import type {
   FormComponentNumVar,
   FormComponentTextVar,
-  TextStyle,
 } from '@/components/FormGenerator/types';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -40,7 +39,6 @@ interface TextOrNumberVariableProps {
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
-  textStyle?: TextStyle;
 }
 
 export const TextOrNumberVariable = ({
@@ -49,7 +47,6 @@ export const TextOrNumberVariable = ({
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
-  textStyle,
 }: TextOrNumberVariableProps) => {
   const { t } = useTranslation();
   const { getValues, register, formState } = useRemixFormContext();
@@ -76,14 +73,8 @@ export const TextOrNumberVariable = ({
           data-colspan={component.gridColSpan ?? 12}
           label={label}
           value={value ?? component.finalValue}
-          textStyle={textStyle}
-          info={
-            (showTooltips || undefined) &&
-            component.tooltip && {
-              title: t(component.tooltip.title),
-              body: t(component.tooltip.body),
-            }
-          }
+          textStyle={component.textStyle}
+          info={showTooltips ? component.tooltip : undefined}
           adornment={
             <>
               {attributes}

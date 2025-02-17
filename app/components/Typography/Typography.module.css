@@ -1,0 +1,45 @@
+.typography {
+  &[data-variant='h1TextStyle'] {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-h1);
+  }
+
+  &[data-variant='h2TextStyle'] {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-h2);
+  }
+
+  &[data-variant='h3TextStyle'] {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-h3);
+  }
+
+  &[data-variant='h4TextStyle'] {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-h4);
+  }
+
+  &[data-variant='h5TextStyle'] {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-h5);
+  }
+
+  &[data-variant='h6TextStyle'] {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-h6);
+  }
+
+  &[data-variant='boldTextStyle'] {
+    font-weight: bold;
+  }
+
+  &[data-variant='italicTextStyle'] {
+    font-style: italic;
+  }
+
+  &[data-variant='menuLabelStyle'] {
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-size: var(--font-size-small);
+  }
+}

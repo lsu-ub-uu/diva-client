@@ -18,22 +18,21 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import type { SxProps } from '@mui/material';
-import { Typography as MuiTypography } from '@mui/material';
 import type { ElementType } from 'react';
 import type { TextStyle } from '@/components/FormGenerator/types';
+import clsx from 'clsx';
+import styles from './Typography.module.css';
 
-export interface DivaTypographyVariants {
-  variant: TextStyle;
-}
-
-interface TypographyProps extends DivaTypographyVariants {
+interface TypographyProps {
+  as?: ElementType;
+  className?: string;
+  variant?: TextStyle;
   text: string;
-  sx?: SxProps;
-  component?: ElementType;
 }
 
-const mapTextStyleToComponent = (textStyle: TextStyle): ElementType => {
+const mapTextStyleToComponent = (
+  textStyle: TextStyle | undefined,
+): ElementType => {
   switch (textStyle) {
     case 'h1TextStyle':
       return 'h1';
@@ -52,19 +51,19 @@ const mapTextStyleToComponent = (textStyle: TextStyle): ElementType => {
   }
 };
 
-export const Typography = (props: TypographyProps) => {
+export const Typography = ({
+  as,
+  className,
+  variant,
+  text,
+}: TypographyProps) => {
   const { t } = useTranslation();
 
+  const Root = as ?? mapTextStyleToComponent(variant);
+
   return (
-    <MuiTypography
-      component={props.component ?? mapTextStyleToComponent(props.variant)}
-      variant={props.variant}
-      sx={{
-        fontWeight: props.variant === 'boldTextStyle' ? 'bold' : 'medium',
-        ...props.sx,
-      }}
-    >
-      {t(props.text)}
-    </MuiTypography>
+    <Root className={clsx(styles.typography, className)} data-variant={variant}>
+      {t(text)}
+    </Root>
   );
 };

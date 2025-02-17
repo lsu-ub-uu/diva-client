@@ -59,12 +59,12 @@ export const RecordLinkWithLinkedPresentation = ({
           <div className={linkedRecordStyles.container}>
             {attributes} {actionButtonGroup}
           </div>
-          <ControlledLinkedRecord
+          {/* <ControlledLinkedRecord
             control={control}
             name={name}
             recordType={component.recordLinkType ?? ''}
             presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-          />
+          />*/}
         </div>
       ) : null}
     </React.Fragment>

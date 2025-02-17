@@ -11,6 +11,11 @@
     margin: var(--gap-s) 0;
   }
 
+  h6 {
+    padding: var(--gap);
+    color: var(--color-label);
+  }
+
   a,
   button {
     display: flex;
@@ -21,6 +26,7 @@
     text-decoration: none;
     transition: background-color 0.1s;
     background-color: var(--color-background);
+    cursor: pointer;
     &:hover {
       background-color: var(--color-button-secondary-hover);
     }

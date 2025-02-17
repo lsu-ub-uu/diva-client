@@ -21,7 +21,6 @@ import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface OutputFieldProps {
@@ -46,7 +45,6 @@ export const OutputField = ({
   info,
   adornment,
 }: OutputFieldProps) => {
-  const { t } = useTranslation();
   return (
     <dl
       className={clsx(styles['output-field'], className)}
@@ -55,7 +53,7 @@ export const OutputField = ({
       <div className={styles.labelWrapper}>
         {label && (
           <Typography
-            component='dt'
+            as='dt'
             text={label}
             variant={textStyle ?? 'bodyTextStyle'}
           />
@@ -65,11 +63,7 @@ export const OutputField = ({
           <div className={styles.adornmentWrapper}>{adornment}</div>
         )}
       </div>
-      <Typography
-        component='dd'
-        text={value}
-        variant={textStyle ?? 'bodyTextStyle'}
-      />
+      <Typography as='dd' text={value} variant={textStyle ?? 'bodyTextStyle'} />
     </dl>
   );
 };

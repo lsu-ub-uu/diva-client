@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentCollVar,
-  TextStyle,
-} from '@/components/FormGenerator/types';
+import type { FormComponentCollVar } from '@/components/FormGenerator/types';
 import {
   findOptionLabelByValue,
   getErrorMessageForField,
@@ -41,7 +38,6 @@ interface CollectionVariableProps {
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
-  textStyle?: TextStyle;
 }
 
 export const CollectionVariable = ({
@@ -49,7 +45,6 @@ export const CollectionVariable = ({
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
-  textStyle,
   path,
 }: CollectionVariableProps) => {
   const { t } = useTranslation();
@@ -72,14 +67,8 @@ export const CollectionVariable = ({
         <OutputField
           label={component.showLabel ? t(component.label) : undefined}
           value={findOptionLabelByValue(component.options, value)}
-          textStyle={textStyle}
-          info={
-            (showTooltips || undefined) &&
-            component.tooltip && {
-              title: t(component.tooltip.title),
-              body: t(component.tooltip.body),
-            }
-          }
+          textStyle={component.textStyle}
+          info={showTooltips ? component.tooltip : undefined}
           adornment={
             <>
               {attributes}
