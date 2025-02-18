@@ -34,11 +34,13 @@ import { Typography } from '@/components/Typography/Typography';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { LinearLoader } from '@/components/Loader/LinearLoader';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DesignSystem() {
   const [darkMode, setDarkMode] = useState(false);
+  const [snacbkarOpen, setSnacbkarOpen] = useState(false);
 
   useEffect(() => {
     document.querySelector('body')!.dataset.theme = darkMode ? 'dark' : 'light';
@@ -394,6 +396,16 @@ export default function DesignSystem() {
             <SkeletonLoader width='45ch' height='1rem' />
             <SkeletonLoader width='35ch' height='1rem' />
           </div>
+        </section>
+        <section>
+          <h2>Snackbar</h2>
+          <Button onClick={() => setSnacbkarOpen(true)}>Show snackbar</Button>
+          <Snackbar
+            open={snacbkarOpen}
+            onClose={() => setSnacbkarOpen(false)}
+            severity={'success'}
+            text='I am a snack!'
+          />
         </section>
       </main>
     </div>

@@ -22,7 +22,7 @@ import { Typography } from '@/components/Typography/Typography';
 import { CheckCircleIcon, ErrorIcon, InfoIcon, WarningIcon } from '@/icons';
 import styles from './Alert.module.css';
 
-interface AlertProps {
+export interface AlertProps {
   icon?: ReactNode;
   severity: 'success' | 'info' | 'warning' | 'error';
   children: ReactNode;

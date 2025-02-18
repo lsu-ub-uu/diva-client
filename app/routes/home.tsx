@@ -33,7 +33,7 @@ import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import type { Route } from './+types/home';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
@@ -83,14 +83,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     loaderData;
   const { t } = useTranslation();
 
-  useNotificationSnackbar(notification);
-
   return (
     <SidebarLayout
       sidebarContent={
         <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
       }
     >
+      <NotificationSnackbar notification={notification} />
       <div className={styles.searchWrapper}>
         <div className={styles.searchExtras}>
           <h1>{t('divaClient_searchRecordText')}</h1>

@@ -20,6 +20,8 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import type { Route } from './+types/login';
 import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
+import { useState } from 'react';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -127,9 +129,8 @@ export const ErrorBoundary = RouteErrorBoundary;
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, presentation, returnTo } = loaderData;
   const submit = useSubmit();
-  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
-
+  const [validationErrorShown, setValidationErrorShown] = useState(false);
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -141,6 +142,12 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
+      <Snackbar
+        open={validationErrorShown}
+        onClose={() => setValidationErrorShown(false)}
+        severity='error'
+        text={t('divaClient_validationErrorsText')}
+      />
       {notification && notification.severity === 'error' ? (
         <Alert severity='error'>{notification.summary}</Alert>
       ) : null}
@@ -150,11 +157,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
           (_values, event) => {
             submit(event!.target);
           },
-          () =>
-            enqueueSnackbar(t('divaClient_validationErrorsText'), {
-              variant: 'error',
-              anchorOrigin: { vertical: 'top', horizontal: 'right' },
-            }),
+          () => setValidationErrorShown(true),
         )}
       >
         <input type='hidden' name='loginType' value='password' />

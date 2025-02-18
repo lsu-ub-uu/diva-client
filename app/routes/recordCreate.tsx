@@ -38,7 +38,7 @@ import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
@@ -116,8 +116,6 @@ export default function CreateRecordRoute({
 }: Route.ComponentProps) {
   const { formDefinition, notification } = loaderData;
 
-  useNotificationSnackbar(notification);
-
   return (
     <SidebarLayout
       sidebarContent={
@@ -128,6 +126,8 @@ export default function CreateRecordRoute({
         />
       }
     >
+      <NotificationSnackbar notification={notification} />
+
       <div className={styles.recordWrapper}>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>

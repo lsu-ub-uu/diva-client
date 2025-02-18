@@ -17,10 +17,11 @@
  */
 
 import { expect } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSnackbar } from 'notistack';
 import { render } from '../../../utils/testUtils';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
 
 const Button = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -38,22 +39,53 @@ const Button = () => {
     </button>
   );
 };
-describe('Snackbars', () => {
-  // it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])(
-  // look into why it doesn't goes higher than 3
-  it.each([1, 2, 3])(
-    'It renders %d snackbars from <Button /> on select',
-    async (snacks) => {
-      const user = userEvent.setup();
-      render(<Button />);
-      const button = screen.getByRole('button', {
-        name: 'Test Button',
-      });
-      for (let i = 0; i < snacks; i++) {
-        await user.click(button);
-      }
-      const snackbar = screen.queryAllByText('Subject was successfully added');
-      expect(snackbar).toHaveLength(snacks);
-    },
-  );
+
+describe('<Snackbar />', () => {
+  it('It renders a Snackbar when open', () => {
+    render(
+      <Snackbar
+        open={true}
+        onClose={vi.fn()}
+        text='Snacktext'
+        severity='info'
+      />,
+    );
+
+    const snackbar = screen.getByRole('alert');
+    expect(snackbar).toBeInTheDocument();
+
+    expect(within(snackbar).getByText('Snacktext')).toBeInTheDocument();
+  });
+
+  it('It does not render Snackbar when closed', () => {
+    render(
+      <Snackbar
+        open={false}
+        onClose={vi.fn()}
+        text='Snacktext'
+        severity='info'
+      />,
+    );
+
+    const snackbar = screen.queryByRole('alert');
+    expect(snackbar).not.toBeInTheDocument();
+  });
+
+  it('calls onClose after autoCloseDelay ms', () => {
+    vi.useFakeTimers();
+
+    const onCloseSpy = vi.fn();
+    render(
+      <Snackbar
+        open={true}
+        onClose={onCloseSpy}
+        text='Snacktext'
+        severity='info'
+        autoCloseDelay={1000}
+      />,
+    );
+
+    vi.advanceTimersByTime(1000);
+    expect(onCloseSpy).toHaveBeenCalled();
+  });
 });

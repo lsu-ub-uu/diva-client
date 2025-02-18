@@ -16,23 +16,33 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect } from 'react';
-import { enqueueSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 import { useNavigation } from 'react-router';
 import type { Notification } from '@/auth/sessions.server';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
 
-export const useNotificationSnackbar = (
-  notification: Notification | undefined,
-) => {
+interface NotificationSnackbarProps {
+  notification: Notification | undefined;
+}
+
+export const NotificationSnackbar = ({
+  notification,
+}: NotificationSnackbarProps) => {
   const navigation = useNavigation();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     if (notification && navigation.state === 'idle') {
-      enqueueSnackbar(notification.summary, {
-        variant: notification.severity,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        preventDuplicate: true,
-      });
+      setSnackbarOpen(true);
     }
   }, [notification, navigation.state]);
+
+  return (
+    <Snackbar
+      open={snackbarOpen}
+      onClose={() => setSnackbarOpen(false)}
+      severity={notification?.severity ?? 'info'}
+      text={notification?.summary ?? ''}
+    />
+  );
 };

@@ -18,14 +18,9 @@
     "coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.2.0",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.9.0",
-    "@mui/lab": "^5.0.0-alpha.123",
-    "@mui/material": "^6.1.4",
-    "@mui/x-data-grid": "^7.22.3",
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
     "@types/compression": "^1.7.5",
