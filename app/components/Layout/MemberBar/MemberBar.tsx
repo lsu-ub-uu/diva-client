@@ -17,7 +17,7 @@
  */
 
 import type React from 'react';
-import { Box } from '@mui/material';
+import styles from './MemberBar.module.css';
 
 interface MemberBarProps {
   color: string;
@@ -26,19 +26,8 @@ interface MemberBarProps {
 
 export const MemberBar = (props: MemberBarProps) => {
   return (
-    <Box
-      position='static'
-      sx={{
-        py: 1,
-        backgroundColor: props.color,
-        display: 'flex',
-        justifyContent: 'center',
-        img: {
-          height: '100%',
-        },
-      }}
-    >
-      <Box sx={{ maxHeight: 40 }}>{props.children}</Box>
-    </Box>
+    <div className={styles['member-bar']}>
+      <div className={styles['content']}>{props.children}</div>
+    </div>
   );
 };

@@ -33,7 +33,7 @@ export const Text = ({ reactKey, component }: TextProps) => {
   return (
     <div
       key={reactKey}
-      className={styles.component}
+      className={styles['component']}
       data-colspan={component.gridColSpan}
       style={{
         flexBasis:

@@ -23,40 +23,38 @@ import {
   useNavigation,
   useSubmit,
 } from 'react-router';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  Menu,
-  Stack,
-} from '@mui/material';
 import type { loader } from '@/root';
 import {
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
-import LogoutIcon from '@mui/icons-material/Logout';
+
 import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
-import { useRef, useState } from 'react';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
+import { LogoutIcon, LoginIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { Menu, MenuButton } from '@headlessui/react';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
+
+import styles from './Login.module.css';
 
 export default function User() {
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const { t } = useTranslation();
-  const anchorEl = useRef<HTMLButtonElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigation = useNavigation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
 
+  const submitting =
+    navigation.state === 'submitting' && navigation.formAction === '/login';
+
   const handleDevSelection = (account: Account) => {
-    setMenuOpen(false);
     submit(
       { loginType: 'appToken', account: JSON.stringify(account), returnTo },
       { action: '/login', method: 'post' },
@@ -70,12 +68,10 @@ export default function User() {
     } catch (e: any) {
       console.error(e.message());
     }
-    setMenuOpen(false);
   };
 
   const receiveMessage = (event: MessageEvent<any>) => {
     if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
-      console.log('Received authentication', event.data.authentication);
       window.removeEventListener('message', receiveMessage);
       submit(
         {
@@ -90,68 +86,37 @@ export default function User() {
 
   if (!auth) {
     return (
-      <>
-        <Button
-          ref={anchorEl}
-          onClick={() => setMenuOpen(true)}
-          disabled={navigation.state === 'submitting'}
+      <Menu>
+        <MenuButton
+          as={Button}
+          disabled={submitting}
+          aria-busy={submitting}
+          variant='tertiary'
         >
-          {navigation.state === 'submitting' ? (
-            <>
-              {t('divaClient_LoginText')}{' '}
-              <CircularProgress
-                size='1em'
-                sx={{ ml: 1 }}
-              />
-            </>
-          ) : (
-            t('divaClient_LoginText')
-          )}
-        </Button>
-        <Menu
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-          anchorEl={anchorEl.current}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
+          {t('divaClient_LoginText')}
+          {submitting ? <CircularLoader /> : <LoginIcon />}
+        </MenuButton>
+        <DropdownMenu anchor='bottom end'>
           <DevAccountLoginOptions onSelect={handleDevSelection} />
-          <Divider />
+          <hr />
           <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-          <Divider />
-          <PasswordLoginOptions
-            returnTo={returnTo}
-            onSelect={() => setMenuOpen(false)}
-          />
-        </Menu>
-      </>
+          <hr />
+          <PasswordLoginOptions returnTo={returnTo} />
+        </DropdownMenu>
+      </Menu>
     );
   }
 
   return (
-    <Stack
-      direction='row'
-      alignItems='center'
-      spacing={2}
-      style={{ marginTop: '-1px' }}
-    >
-      <Box style={{ fontSize: '14px' }}>{printUserNameOnPage(auth)}</Box>
-      <Form
-        action='/logout'
-        method='post'
-      >
-        <input
-          type='hidden'
-          name='returnTo'
-          value={returnTo}
-        />
-        <Button
-          type='submit'
-          endIcon={<LogoutIcon />}
-        >
+    <div className={styles['login']}>
+      <div>{printUserNameOnPage(auth)}</div>
+      <Form action='/logout' method='post'>
+        <input type='hidden' name='returnTo' value={returnTo} />
+        <Button type='submit' variant='tertiary'>
           {t('divaClient_LogoutText')}
+          <LogoutIcon />
         </Button>
       </Form>
-    </Stack>
+    </div>
   );
 }

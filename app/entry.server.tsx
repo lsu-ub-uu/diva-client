@@ -5,7 +5,6 @@ import { createReadableStreamFromReadable } from '@react-router/node';
 import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
-import { MuiProvider } from '@/mui/MuiProvider';
 import type { i18n } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 
@@ -48,10 +47,7 @@ function handleBotRequest(
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={i18nInstance}>
-        <ServerRouter
-          context={reactRouterContext}
-          url={request.url}
-        />
+        <ServerRouter context={reactRouterContext} url={request.url} />
       </I18nextProvider>,
       {
         onAllReady() {
@@ -100,12 +96,7 @@ function handleBrowserRequest(
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={i18nInstance}>
-        <MuiProvider>
-          <ServerRouter
-            context={reactRouterContext}
-            url={request.url}
-          />
-        </MuiProvider>
+        <ServerRouter context={reactRouterContext} url={request.url} />
       </I18nextProvider>,
       {
         onShellReady() {

@@ -16,27 +16,30 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { isEmpty } from 'lodash-es';
-import { enqueueSnackbar } from 'notistack';
 import { useFormState } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
 
 export const ValidationErrorSnackbar = () => {
   const { t } = useTranslation();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { errors } = useFormState();
 
   useEffect(() => {
     if (!isEmpty(errors)) {
-      enqueueSnackbar(t('divaClient_formValidationErrorsText'), {
-        variant: 'error',
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        preventDuplicate: true,
-      });
+      setSnackbarOpen(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
 
-  return null;
+  return (
+    <Snackbar
+      open={snackbarOpen}
+      onClose={() => setSnackbarOpen(false)}
+      severity='error'
+      text={t('divaClient_formValidationErrorsText')}
+    />
+  );
 };

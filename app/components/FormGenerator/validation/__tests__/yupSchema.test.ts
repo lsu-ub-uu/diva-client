@@ -1006,6 +1006,7 @@ describe('util functions', () => {
         showLabel: true,
         attributes: [
           {
+            label: 'exampleLabel',
             type: 'collectionVariable',
             showLabel: true,
             name: 'colourAttribute',

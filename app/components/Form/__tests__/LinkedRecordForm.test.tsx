@@ -27,6 +27,9 @@ describe('<LinkedRecordForm />', () => {
     render(
       <LinkedRecordForm
         record={{
+          id: 'id',
+          validationType: 'validationType',
+          recordType: 'linkedRecordType',
           data: {},
           presentation: formDefWithTextVar as FormSchema,
         }}

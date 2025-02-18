@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
+import { AttributeSelect } from '@/components/FormGenerator/components/AttributeSelect';
 import type {
   FormComponentCollVar,
   FormComponentWithData,

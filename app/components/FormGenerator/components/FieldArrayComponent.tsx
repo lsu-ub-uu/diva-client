@@ -20,14 +20,17 @@
 import React, { Fragment, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
-import { Button } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
+import {
+  addAttributesToName,
+  createDefaultValuesFromComponent,
+} from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
+import { Button } from '@/components/Button/Button';
+import { AddCircleIcon } from '@/icons';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -98,17 +101,18 @@ export const FieldArrayComponent = ({
       })}
 
       {component.mode === 'input' &&
+        component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
-          <div className={styles.component}>
+          <div
+            className={styles['component']}
+            id={`anchor_${addAttributesToName(component, component.name)}`}
+          >
             <Button
-              fullWidth
-              variant='outlined'
+              variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
-              disableRipple
-              endIcon={<AddCircleOutlineIcon />}
             >
-              {t(component.label as string)}
+              <AddCircleIcon /> {t(component.label)}
             </Button>
           </div>
         )}

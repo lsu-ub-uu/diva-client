@@ -25,23 +25,24 @@ import type { BFFDataRecordData } from '@/types/record';
 import {
   getNotification,
   getSessionFromCookie,
-  requireAuth } from '@/auth/sessions.server';
+  requireAuth,
+} from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { Alert, AlertTitle, Stack } from '@mui/material';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { invariant } from '@/utils/invariant';
-
 import type { Route } from './+types/recordCreate';
+import styles from './record.module.css';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
@@ -115,8 +116,6 @@ export default function CreateRecordRoute({
 }: Route.ComponentProps) {
   const { formDefinition, notification } = loaderData;
 
-  useNotificationSnackbar(notification);
-
   return (
     <SidebarLayout
       sidebarContent={
@@ -127,7 +126,9 @@ export default function CreateRecordRoute({
         />
       }
     >
-      <Stack spacing={2}>
+      <NotificationSnackbar notification={notification} />
+
+      <div className={styles['record-wrapper']}>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>
             <AlertTitle>{notification.summary}</AlertTitle>
@@ -135,7 +136,7 @@ export default function CreateRecordRoute({
           </Alert>
         )}
         <RecordForm formSchema={formDefinition} />
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }

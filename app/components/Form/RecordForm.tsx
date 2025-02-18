@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Container, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -31,7 +30,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import { Delete, EditDocument, RestartAlt, Upgrade } from '@/icons';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
@@ -62,8 +61,8 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   return (
     <Form
       method='POST'
-      className={styles.form}
-      data-submitting={submitting}
+      className={styles['form']}
+      {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
@@ -74,15 +73,15 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       <FloatingActionButtonContainer>
         <FloatingActionButton
           type='button'
-          onClick={reset}
-          icon={<RestartAlt />}
+          onClick={() => reset(undefined, { keepDefaultValues: true })}
+          icon={<RestartAltIcon />}
           text={t('divaClient_ResetButtonText')}
         />
 
         <FloatingActionButton
           variant='primary'
           type='submit'
-          icon={<Upgrade />}
+          icon={<UpgradeIcon />}
           text={t('divaClient_SubmitButtonText')}
         />
       </FloatingActionButtonContainer>

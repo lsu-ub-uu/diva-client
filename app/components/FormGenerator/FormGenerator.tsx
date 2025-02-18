@@ -21,9 +21,9 @@ import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
-import { Box } from '@mui/material';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
+import styles from './FormGenerator.module.css';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -46,11 +46,11 @@ export const FormGenerator = ({
   );
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext.Provider value={formContextValues}>
         <Component component={props.formSchema.form} idx={0} path={''} />
       </FormGeneratorContext.Provider>
-    </Box>
+    </div>
   );
 };

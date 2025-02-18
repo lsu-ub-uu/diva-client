@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -32,14 +32,17 @@ import type {
   FormComponentTextVar,
   FormComponentWithData,
   FormSchema,
+  TextStyle,
 } from '../types';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { DivaTypographyVariants } from '@/components/Typography/Typography';
+
 import { cleanFormData } from '@/utils/cleanFormData';
+import { get } from 'lodash-es';
+import type { Option } from '@/components';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -265,16 +268,15 @@ export const checkIfPresentationStyleOrParentIsInline = (
 };
 export const headlineLevelToTypographyVariant = (
   headlineLevel: string | undefined,
-): DivaTypographyVariants['variant'] => {
-  let typographyVariant: DivaTypographyVariants['variant'];
+): TextStyle => {
+  let typographyVariant: TextStyle;
   if (headlineLevel !== undefined) {
-    typographyVariant =
-      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+    typographyVariant = `${headlineLevel}TextStyle` as TextStyle;
   } else {
     typographyVariant = 'h2TextStyle';
   }
 
-  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
+  return typographyVariant as TextStyle; // check style to return as default
 };
 export const convertChildStyleToString = (
   childStyle: string[] | undefined,
@@ -288,4 +290,24 @@ export const getChildrenWithSameNameInDataFromSchema = (
   return getChildrenWithSameNameInData(
     getChildNameInDataArray(formSchema?.form),
   );
+};
+
+export const getErrorMessageForField = (
+  formState: FormState<FieldValues>,
+  name: string,
+) => {
+  const error = get(formState.errors, name);
+  if (error?.message) {
+    return error.message as string;
+  }
+  return undefined;
+};
+
+export const findOptionLabelByValue = (
+  array: Option[] | undefined,
+  value: string,
+): string => {
+  if (array === undefined) return 'Failed to translate';
+  const option = array.find((opt) => opt.value === value);
+  return option?.label ?? 'Failed to translate';
 };

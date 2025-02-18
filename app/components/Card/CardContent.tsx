@@ -29,8 +29,8 @@ export const CardContent = ({ children }: CardContentProps) => {
   const { boxed } = useContext(CardContext);
   return (
     <div
-      className={styles.cardContent}
-      data-boxed={boxed}
+      className={styles['card-content']}
+      {...(boxed && { 'data-boxed': '' })}
     >
       {children}
     </div>

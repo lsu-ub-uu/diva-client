@@ -103,8 +103,7 @@ export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode?: FormComponentMode;
   tooltip?: FormComponentTooltip;
-  label?: string;
-  showLabel: boolean;
+
   headlineLevel?: string;
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
@@ -120,6 +119,8 @@ export interface FormComponentTextVar extends FormComponentMetadata {
   inputFormat?: 'password';
   validation?: FormRegexValidation;
   attributes?: FormAttributeCollection[];
+  label: string;
+  showLabel: boolean;
 }
 
 export interface FormComponentHidden extends FormComponentBase {
@@ -130,10 +131,14 @@ export interface FormComponentHidden extends FormComponentBase {
 export interface FormComponentNumVar extends FormComponentMetadata {
   validation?: FormNumberValidation;
   attributes?: FormAttributeCollection[];
+  label: string;
+  showLabel: boolean;
 }
 export interface FormComponentCollVar extends FormComponentMetadata {
   options?: FormComponentCollItem[];
   attributes?: FormAttributeCollection[];
+  label: string;
+  showLabel: boolean;
 }
 
 interface FormComponentCollItem {
@@ -147,24 +152,30 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   presentationRecordLinkId?: string;
   search?: string;
   linkedRecordPresentation?: LinkedPresentation;
+  label: string;
+  showLabel: boolean;
 }
 
 export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
   components?: FormComponent[];
+  label: string;
+  showLabel: boolean;
 }
 
 export interface FormComponentGroup extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   components?: FormComponent[];
+  label: string;
+  showLabel: boolean;
 }
 
 export type FormComponentText = FormComponentMetadata;
 
 export interface FormComponentGuiElement extends FormComponentBase {
-  url?: string; // used for guiElementLink
-  elementText?: string; // used for guiElementLink
-  presentAs?: string; // used for guiElementLink
+  url: string; // used for guiElementLink
+  elementText: string; // used for guiElementLink
+  presentAs: string; // used for guiElementLink
 }
 
 export type FormComponent =

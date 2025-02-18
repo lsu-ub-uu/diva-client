@@ -1,0 +1,119 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Copyright 2024 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+:root {
+  --border-radius: 8px;
+  --border-radius-s: 4px;
+
+  /* Color palette */
+  --color-background: rgb(255 255 255);
+  --color-background-inverted: rgb(33 33 33);
+  --color-text: rgb(33 33 33);
+  --color-text-inverted: rgb(255 255 255);
+  --color-primary: rgb(51 51 51);
+  --color-secondary: rgb(1 1 1);
+  --color-accent: rgb(117 89 142);
+  --color-accent-dark: rgb(97 57 133);
+  --color-error-light: rgb(238 220 219);
+  --color-error-main: rgb(153 0 0);
+  --color-error-dark: rgb(115 0 0);
+  --color-success-light: rgb(217 234 219);
+  --color-success-main: rgb(0 112 15);
+  --color-gray-light: rgb(250 249 248);
+  --color-gray-main: rgb(231 227 222);
+  --color-gray-dark: rgb(155 138 122);
+  --color-warning-light: rgb(253 243 209);
+  --color-warning-main: rgb(246 194 68);
+  --color-thin-border: rgb(238 238 238);
+
+  /* Component colors */
+  --color-link: rgb(5 85 164);
+  --color-link-selected: rgb(13 110 253);
+  --color-card-dark: rgb(5 85 164 / 12%);
+  --color-card: rgb(5 85 164/ 8%);
+  --color-button: var(--color-primary);
+  --color-button-primary-hover: rgb(17 17 17);
+  --color-button-primary-active: rgb(0 0 0);
+  --color-button-secondary-hover: rgb(0 0 0 / 10%);
+  --color-button-secondary-active: rgb(0 0 0 / 20%);
+  --color-label: rgb(0 0 0 / 60%);
+  --color-input-border: rgb(153 153 153);
+  --gap-s: 0.25rem;
+  --gap: 0.5rem;
+  --gap-l: 1rem;
+  --gap-xl: 2rem;
+  --gap-xxl: 4rem;
+  --input-height: 2.75rem;
+  --input-height-small: 1.75rem;
+  --font-family-main: 'Arial';
+  --font-family-headings: 'Arial';
+  --font-size-base: 16px;
+  --font-size-xs: 0.8rem;
+  --font-size-s: 0.9rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-h1: 2rem;
+  --font-weight-h1: 600;
+  --font-size-h2: 1.6rem;
+  --font-weight-h2: 400;
+  --font-size-h3: 1.4rem;
+  --font-weight-h3: 400;
+  --font-size-h4: 1.2rem;
+  --font-weight-h4: 400;
+  --font-size-h5: 1rem;
+  --font-weight-h5: 400;
+  --font-size-h6: 0.9rem;
+  --font-weight-h6: 400;
+  --font-size-bold: 1rem;
+  --font-weight-bold: 800;
+  --line-height-base: 1.5;
+  --desktop-breakpoint: 900px;
+  --elevation: rgb(0 0 0 / 20%) 0 3px 5px -1px,
+    rgb(0 0 0 / 14%) 0 6px 10px 0, rgb(0 0 0 / 12%) 0 1px 18px 0;
+
+  [data-theme='dark'] {
+    /* Color palette */
+    --color-background: rgb(66 66 66);
+    --color-background-inverted: rgb(255 255 255);
+    --color-text: rgb(255 255 255);
+    --color-text-inverted: rgb(66 66 66);
+    --color-primary: rgb(231 227 222);
+    --color-secondary: rgb(1 1 1);
+    --color-button: rgb(255 255 255);
+  }
+}

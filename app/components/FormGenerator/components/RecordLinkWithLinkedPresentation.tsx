@@ -19,11 +19,13 @@
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React, { type ReactNode } from 'react';
-import { Box } from '@mui/material';
-import { ControlledLinkedRecord } from '@/components/Controlled';
+
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
+import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
+import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
@@ -48,23 +50,15 @@ export const RecordLinkWithLinkedPresentation = ({
       {hasValue ? (
         <div
           key={reactKey}
-          className={styles.component}
+          className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
+          id={`anchor_${addAttributesToName(component, component.name)}`}
         >
-          <DevInfo
-            component={component}
-            path={name}
-          />
+          <DevInfo component={component} path={name} />
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-            }}
-          >
+          <div className={linkedRecordStyles.container}>
             {attributes} {actionButtonGroup}
-          </Box>
+          </div>
           <ControlledLinkedRecord
             control={control}
             name={name}

@@ -53,12 +53,7 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   if (isComponentHidden(component)) {
-    return (
-      <HiddenInput
-        component={component}
-        name={name}
-      />
-    );
+    return <HiddenInput component={component} name={name} />;
   }
 
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
@@ -66,7 +61,7 @@ export const LeafComponent = ({
       <TextOrNumberVariable
         reactKey={reactKey}
         component={component}
-        name={name}
+        path={name}
         parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
@@ -91,7 +86,7 @@ export const LeafComponent = ({
       <CollectionVariable
         reactKey={reactKey}
         component={component}
-        name={name}
+        path={name}
         parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
@@ -100,21 +95,11 @@ export const LeafComponent = ({
   }
 
   if (isComponentText(component)) {
-    return (
-      <Text
-        reactKey={reactKey}
-        component={component}
-      />
-    );
+    return <Text reactKey={reactKey} component={component} />;
   }
 
   if (isComponentGuiElement(component)) {
-    return (
-      <GuiElementLink
-        reactKey={reactKey}
-        component={component}
-      />
-    );
+    return <GuiElementLink reactKey={reactKey} component={component} />;
   }
 
   return null;

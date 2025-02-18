@@ -15,18 +15,15 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-
-import type { Control} from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
-
 interface ControlledLinkedRecordProps {
   recordType: string;
   name: string;
   presentationRecordLinkId: string;
   control?: Control<any>;
 }
-
 export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
   return (
     <Controller

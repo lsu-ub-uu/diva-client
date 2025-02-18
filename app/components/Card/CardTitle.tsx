@@ -24,5 +24,5 @@ interface CardTitleProps {
 }
 
 export const CardTitle = ({ children }: CardTitleProps) => {
-  return <div className={styles.cardTitle}>{children}</div>;
+  return <div className={styles['card-title']}>{children}</div>;
 };

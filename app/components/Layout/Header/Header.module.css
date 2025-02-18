@@ -1,0 +1,43 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+  height: 4rem;
+
+  @media (width < 600px) {
+    padding: 0 1rem;
+  }
+}
+
+.logo img {
+  width: 10em;
+  min-width: 10em;
+
+  @media (width < 600px) {
+    width: 2em;
+    min-width: 2em;
+  }
+}
+
+.header-logo-wrapper {
+  margin-right: auto;
+}

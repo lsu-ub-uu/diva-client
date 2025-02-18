@@ -48,6 +48,7 @@ export const AutocompleteForm = ({ ...props }: AutocompleteFormProps) => {
       <FormGenerator
         formSchema={props.formSchema}
         linkedData={props.record?.data}
+        showTooltips={false}
       />
     </FormProvider>
   );

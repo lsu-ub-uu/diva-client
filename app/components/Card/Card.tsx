@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { SxProps } from '@mui/material';
 import type { ReactNode } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
@@ -24,15 +23,11 @@ import { CardContext } from '@/components/Card/CardContext';
 export interface CardProps {
   children: ReactNode;
   boxed?: boolean;
-  sx?: SxProps;
 }
 
 export const Card = ({ children, boxed = false }: CardProps) => {
   return (
-    <div
-      className={styles.card}
-      data-boxed={boxed}
-    >
+    <div className={styles['card']} {...(boxed && { 'data-boxed': '' })}>
       <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
     </div>
   );

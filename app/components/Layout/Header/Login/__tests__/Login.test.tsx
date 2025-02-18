@@ -68,17 +68,14 @@ describe('<Login/>', () => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
         expect(listItems).toEqual([
-          'divaClient_LoginDevAccountText',
           'DiVA Admin',
           'DiVA Everything',
           'Admin System',
           'UU domainAdmin',
           'KTH domainAdmin',
-          'divaClient_LoginWebRedirectText',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
-          'divaClient_LoginPasswordText',
         ]);
       });
     });
@@ -110,13 +107,10 @@ describe('<Login/>', () => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
         expect(listItems).toEqual([
-          'divaClient_LoginDevAccountText',
           'DiVA Admin',
-          'divaClient_LoginWebRedirectText',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
-          'divaClient_LoginPasswordText',
         ]);
       });
     });

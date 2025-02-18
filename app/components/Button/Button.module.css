@@ -1,107 +1,108 @@
 .button {
-  --primary-button-color: #333333;
-  --secondary-button-color: #333333;
-
   font-size: 1rem;
   line-height: 1.5;
   height: var(--input-height);
   padding: 0 calc(var(--gap) * 2);
   border-radius: calc(var(--border-radius) / 2);
-  border-width: 3px;
+  border-width: 2px;
   border-style: solid;
   cursor: pointer;
   transition:
     background-color,
     border-color 0.2s;
+  font-weight: normal;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  &[data-fullwidth] {
+    width: 100%;
+  }
 
   &[data-disabled] {
+    opacity: 0.5;
     pointer-events: none;
   }
 
+  &[data-size='small'] {
+    font-size: var(--font-size-s);
+
+    --input-height: var(--input-height-small);
+
+    svg {
+      font-size: 1.3rem;
+    }
+  }
+
   &[data-variant='primary'] {
-    background-color: var(--primary-button-color);
-    border-color: var(--primary-button-color);
-    color: #fff;
+    background-color: var(--color-button);
+    border-color: var(--color-button);
+    color: var(--color-text-inverted);
 
     &[data-hover] {
-      --primary-button-color: #111111;
+      --primary-button-color: var(--color-button-primary-hover);
     }
 
     &[data-active] {
-      background-color: rgba(0, 0, 0);
-    }
-
-    &[data-disabled] {
-      --primary-button-color: #888888;
+      background-color: var(--color-button-primary-active);
     }
   }
 
   &[data-variant='secondary'] {
     background-color: transparent;
-    border-color: #333333;
+    border-color: var(--color-button);
+
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
+
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 
   &[data-variant='tertiary'] {
     border-color: transparent;
     background: transparent;
+
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
+
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 
   &[data-variant='icon'] {
-    font-size: 1.5rem;
-    aspect-ratio: 1/1;
+    --icon-button-size: calc(var(--input-height) + 0.5rem);
+
+    width: var(--icon-button-size);
+    height: var(--icon-button-size);
+    margin: -0.5rem;
+    font-size: 1em;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-color: transparent;
     background: transparent;
     border-radius: 50%;
-    padding: var(--gap);
+    padding: 0;
     line-height: 1;
+    outline-offset: -2px;
+
     &[data-hover] {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-button-secondary-hover);
     }
-    &[data-disabled] {
-      opacity: 0.5;
-    }
+
     &[data-active] {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-button-secondary-active);
     }
   }
 }
-
-/*
-* primary:
-    background-color: #333333;
-secondary:
-    background-color: #ffffff;
-    border: "3px solid #333333";
-tertiary:
-    border: none;
-    background: none;
-disabled:
-
-hover:
-
-error:
-    background-color: #990000
-
-error-secondary:
-    background-color: #990000;
-    border: "3px solid #333333";
-error-tertiary:
-    color:
-error-hover:
-    background-color: #730000
-    */

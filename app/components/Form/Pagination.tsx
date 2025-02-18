@@ -57,7 +57,7 @@ export const Pagination = ({
   const lastPageStart = totalNo - rowsPerPage + 1;
 
   return (
-    <div className={styles.pagination}>
+    <div className={styles['pagination']}>
       <span>
         {t('divaClient_paginationResultText', {
           fromNo,
@@ -82,7 +82,7 @@ export const Pagination = ({
         </Select>
       </Field>
 
-      <span className={styles.paginationButtons}>
+      <span className={styles['pagination-buttons']}>
         <Button
           variant='icon'
           type='submit'

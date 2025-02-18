@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LinearProgress } from '@mui/material';
 import { useNavigation } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 import styles from './NavigationLoader.module.css';
+import { LinearLoader } from '@/components/Loader/LinearLoader';
 
 const LOADER_DELAY = 500;
 
@@ -45,12 +45,6 @@ export const NavigationLoader = () => {
   }, [navigation.state]);
 
   if (showLoader) {
-    return (
-      <LinearProgress
-        color='primary'
-        className={styles.navigationLoader}
-        // sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}
-      />
-    );
+    return <LinearLoader className={styles['navigation-loader']} />;
   }
 };

@@ -40,11 +40,12 @@ import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { Alert, AlertTitle } from '@mui/material';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import styles from '@/routes/record.module.css';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -154,7 +155,6 @@ export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
   const { record, formDefinition, notification } = loaderData;
-  useNotificationSnackbar(notification);
 
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
@@ -168,17 +168,21 @@ export default function UpdateRecordRoute({
         />
       }
     >
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity}>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
-      <RecordForm
-        key={lastUpdate}
-        record={record}
-        formSchema={formDefinition}
-      />
+      <NotificationSnackbar notification={notification} />
+
+      <div className={styles['record-wrapper']}>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity}>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
+        <RecordForm
+          key={lastUpdate}
+          record={record}
+          formSchema={formDefinition}
+        />
+      </div>
     </SidebarLayout>
   );
 }

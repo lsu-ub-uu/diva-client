@@ -16,70 +16,97 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentCollVar,
-  TextStyle,
-} from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledSelectField } from '@/components/Controlled';
+import type { FormComponentCollVar } from '@/components/FormGenerator/types';
+import {
+  findOptionLabelByValue,
+  getErrorMessageForField,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, useContext } from 'react';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Field } from '@/components/Input/Field';
+import { useTranslation } from 'react-i18next';
+import { Select } from '@/components/Input/Select';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface CollectionVariableProps {
   reactKey: string;
   component: FormComponentCollVar;
-  name: string;
+  path: string;
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
-  textStyle?: TextStyle;
 }
 
 export const CollectionVariable = ({
-  reactKey,
   component,
-  name,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
+  path,
 }: CollectionVariableProps) => {
+  const { t } = useTranslation();
   const { showTooltips } = useContext(FormGeneratorContext);
-  const { getValues, control } = useRemixFormContext();
-  const hasValue = checkIfComponentHasValue(getValues, name);
-  if (component.mode === 'output' && !hasValue) {
+  const { getValues, register, formState } = useRemixFormContext();
+  const value = getValues(path);
+  const errorMessage = getErrorMessageForField(formState, path);
+
+  if (component.mode === 'output' && !value) {
     return null;
   }
+
   return (
     <div
-      key={reactKey}
-      className={styles.component}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
+      className={styles['component']}
       data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} path={name} />
+      <DevInfo component={component} path={path} />
+      {(component.mode === 'output' || component.finalValue) && (
+        <OutputField
+          label={component.showLabel ? t(component.label) : undefined}
+          value={findOptionLabelByValue(component.options, value)}
+          textStyle={component.textStyle}
+          info={showTooltips ? component.tooltip : undefined}
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        />
+      )}
 
-      <ControlledSelectField
-        name={name}
-        isLoading={false}
-        loadingError={false}
-        label={component.label ?? ''}
-        showLabel={component.showLabel}
-        placeholder={component.placeholder}
-        tooltip={showTooltips ? component.tooltip : undefined}
-        control={control}
-        options={component.options}
-        readOnly={!!component.finalValue}
-        displayMode={component.mode}
-        hasValue={hasValue}
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-        parentPresentationStyle={parentPresentationStyle}
-        textStyle={component.textStyle}
-      />
+      {component.finalValue && <input type='hidden' {...register(path)} />}
+
+      {!component.finalValue && component.mode === 'input' && (
+        <Field
+          label={component.showLabel && t(component.label)}
+          errorMessage={errorMessage}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+          info={showTooltips ? component.tooltip : undefined}
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        >
+          <Select {...register(path)} invalid={errorMessage !== undefined}>
+            <option value=''>{t('divaClient_optionNoneText')}</option>
+            {(component.options ?? []).map((item) => {
+              return (
+                <option key={item.value} value={item.value}>
+                  {t(item.label)}
+                </option>
+              );
+            })}
+          </Select>
+        </Field>
+      )}
     </div>
   );
 };

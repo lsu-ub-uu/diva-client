@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuth,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
@@ -58,14 +55,18 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     },
   };
 
-  const result = await searchRecords(
-    context.dependencies,
-    searchType,
-    query,
-    auth,
-  );
-
-  return Response.json(result.data);
+  try {
+    const result = await searchRecords(
+      context.dependencies,
+      searchType,
+      query,
+      auth,
+    );
+    return { result: result.data };
+  } catch (error) {
+    console.error(error);
+    return { result: [] };
+  }
 };
 
 export const getSearchTermNameFromSearchLink = (

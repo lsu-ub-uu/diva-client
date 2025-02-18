@@ -20,79 +20,111 @@ import type {
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { ControlledTextField } from '@/components/Controlled';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
 import styles from './FormComponent.module.css';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import { useTranslation } from 'react-i18next';
+import { Field } from '@/components/Input/Field';
+import { Input } from '@/components/Input/Input';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { Textarea } from '@/components/Input/Textarea';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
   component: FormComponentTextVar | FormComponentNumVar;
-  name: string;
+  path: string;
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
 
 export const TextOrNumberVariable = ({
-  reactKey,
   component,
-  name,
+  path,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
-  const { getValues, control } = useRemixFormContext();
-  const { linkedData, showTooltips } = useContext(FormGeneratorContext);
-  const hasValue = checkIfComponentHasValue(getValues, name);
+  const { t } = useTranslation();
+  const { getValues, register, formState } = useRemixFormContext();
+  const { showTooltips } = useContext(FormGeneratorContext);
+  const value = getValues(path);
 
-  if (component.mode === 'output' && !hasValue) {
+  const errorMessage = getErrorMessageForField(formState, path);
+  if (component.mode === 'output' && !value) {
     return null;
   }
 
-  const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
+  const label = component.showLabel ? t(component.label) : undefined;
 
   return (
     <div
-      className={styles.component}
+      className={styles['component']}
       data-colspan={component.gridColSpan ?? 12}
-      key={reactKey}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={name}
-      />
+      <DevInfo component={component} path={path} />
 
-      <ControlledTextField
-        multiline={
-          'inputType' in component
-            ? component.inputType === 'textarea'
-            : undefined
-        }
-        label={component.label ?? ''}
-        showLabel={component.showLabel}
-        name={name}
-        placeholder={component.placeholder}
-        tooltip={showTooltips ? component.tooltip : undefined}
-        control={control}
-        readOnly={!!component.finalValue}
-        displayMode={component.mode}
-        textStyle={component.textStyle}
-        parentPresentationStyle={parentPresentationStyle}
-        hasValue={hasValue}
-        inputFormat={
-          'inputFormat' in component ? component.inputFormat : undefined
-        }
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-        linkedDataToShow={linkedDataToShow ?? undefined}
-      />
+      {(component.mode === 'output' || component.finalValue) && (
+        <OutputField
+          className={styles['component']}
+          data-colspan={component.gridColSpan ?? 12}
+          label={label}
+          value={value ?? component.finalValue}
+          textStyle={component.textStyle}
+          info={showTooltips ? component.tooltip : undefined}
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        />
+      )}
+
+      {component.finalValue && <input type='hidden' {...register(path)} />}
+
+      {!component.finalValue && component.mode === 'input' && (
+        <Field
+          className={styles['component']}
+          data-colspan={component.gridColSpan ?? 12}
+          label={component.showLabel && t(component.label)}
+          errorMessage={errorMessage}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+          info={showTooltips ? component.tooltip : undefined}
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
+        >
+          {'inputType' in component && component.inputType === 'textarea' ? (
+            <Textarea
+              {...register(path)}
+              invalid={errorMessage !== undefined}
+              placeholder={component.placeholder}
+              readOnly={!!component.finalValue}
+            />
+          ) : (
+            <Input
+              {...register(path)}
+              type={
+                'inputFormat' in component
+                  ? (component.inputFormat ?? 'password')
+                  : 'text'
+              }
+              invalid={errorMessage !== undefined}
+              placeholder={component.placeholder}
+              readOnly={!!component.finalValue}
+            />
+          )}
+        </Field>
+      )}
     </div>
   );
 };

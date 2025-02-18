@@ -105,10 +105,7 @@ export const Component = ({
       parentPresentationStyle={parentPresentationStyle}
       attributes={
         isComponentWithData(component) && (
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
+          <Attributes component={component} path={currentComponentNamePath} />
         )
       }
     />
