@@ -36,7 +36,7 @@ export const Header = () => {
     <div className={styles['header-wrapper']}>
       <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
-          <picture className={styles.logo}>
+          <picture className={styles['logo']}>
             <source srcSet={divaLogoS} media='(max-width: 600px)' />
             <source srcSet={divaLogo} />
 

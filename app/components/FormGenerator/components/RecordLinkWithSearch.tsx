@@ -59,7 +59,7 @@ export const RecordLinkWithSearch = ({
 
   return (
     <div
-      className={styles.component}
+      className={styles['component']}
       key={reactKey}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}

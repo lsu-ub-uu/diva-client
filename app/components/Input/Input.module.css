@@ -37,7 +37,6 @@
 
 .select {
   appearance: none;
-  width: auto;
   cursor: pointer;
 
   &:focus {
@@ -45,7 +44,7 @@
   }
 }
 
-.label-and-children-wrapper {
+.label-and-adornment-wrapper {
   display: flex;
   align-items: center;
   gap: var(--gap-s);

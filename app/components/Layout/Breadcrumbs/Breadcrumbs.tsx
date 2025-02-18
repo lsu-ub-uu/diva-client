@@ -34,7 +34,7 @@ export const Breadcrumbs = () => {
   let currentLink = '';
 
   return (
-    <nav aria-label='breadcrumb' className={styles.breadcrumbs}>
+    <nav aria-label='breadcrumb' className={styles['breadcrumbs']}>
       <ol>
         <li>
           <NavLink to='/'>

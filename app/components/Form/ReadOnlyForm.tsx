@@ -33,7 +33,7 @@ export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
   });
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles['wrapper']}>
       <RemixFormProvider {...methods}>
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>

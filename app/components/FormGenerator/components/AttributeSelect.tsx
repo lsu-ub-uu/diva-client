@@ -83,7 +83,7 @@ export const AttributeSelect = ({
 
   return (
     <Field
-      className={styles.attributeSelect}
+      className={styles['attributeSelect']}
       label={showLabel && t(label)}
       variant='inline'
       size='small'

@@ -61,7 +61,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   return (
     <Form
       method='POST'
-      className={styles.form}
+      className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
     >

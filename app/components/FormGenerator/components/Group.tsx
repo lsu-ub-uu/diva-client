@@ -70,7 +70,7 @@ export const Group = ({
   }
   return (
     <div
-      className={`${styles.component} anchorLink`}
+      className={`${styles['component']} anchorLink`}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
@@ -96,7 +96,7 @@ export const Group = ({
         </CardHeader>
         <CardContent>
           <div
-            className={styles.container}
+            className={styles['container']}
             data-layout={inline ? 'inline' : 'grid'}
           >
             {component.components && (

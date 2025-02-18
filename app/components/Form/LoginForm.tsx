@@ -56,7 +56,7 @@ export const LoginForm = ({ ...props }: RecordFormProps) => {
 
   return (
     <Form
-      className={styles.wrapper}
+      className={styles['wrapper']}
       onSubmit={handleSubmit(
         (values) => props.onSubmit(values),
         (errors) => props.onInvalid && props.onInvalid(errors),

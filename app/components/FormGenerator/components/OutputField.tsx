@@ -50,7 +50,7 @@ export const OutputField = ({
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
     >
-      <div className={styles.labelWrapper}>
+      <div className={styles['label-wrapper']}>
         {label && (
           <Typography
             as='dt'

@@ -55,11 +55,11 @@ const GetIcons = ({ severity }: GetIconProps) => {
 
 export const Alert = ({ icon, severity, children }: AlertProps) => {
   return (
-    <div className={styles.alert} data-severity={severity}>
-      <div className={styles.icon}>
+    <div className={styles['alert']} data-severity={severity}>
+      <div className={styles['icon']}>
         {icon === undefined ? <GetIcons severity={severity} /> : icon}
       </div>
-      <div className={styles.content}>{children}</div>
+      <div className={styles['content']}>{children}</div>
     </div>
   );
 };

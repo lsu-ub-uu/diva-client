@@ -63,7 +63,7 @@ export const TextOrNumberVariable = ({
 
   return (
     <div
-      className={styles.component}
+      className={styles['component']}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
@@ -71,7 +71,7 @@ export const TextOrNumberVariable = ({
 
       {(component.mode === 'output' || component.finalValue) && (
         <OutputField
-          className={styles.component}
+          className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           label={label}
           value={value ?? component.finalValue}
@@ -90,7 +90,7 @@ export const TextOrNumberVariable = ({
 
       {!component.finalValue && component.mode === 'input' && (
         <Field
-          className={styles.component}
+          className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel && t(component.label)}
           errorMessage={errorMessage}

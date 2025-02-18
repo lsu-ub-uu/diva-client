@@ -104,7 +104,7 @@ export const FieldArrayComponent = ({
         component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
           <div
-            className={styles.component}
+            className={styles['component']}
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button

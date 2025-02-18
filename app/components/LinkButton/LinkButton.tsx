@@ -30,7 +30,7 @@ export const LinkButton = (props: LinkButtonProps) => {
   const { t } = useTranslation();
   return (
     <a href={props.href} target='_blank' rel='noreferrer'>
-      <span className={styles.link}>
+      <span className={styles['link']}>
         {t(props.text)}
         <OpenInNewIcon />
       </span>

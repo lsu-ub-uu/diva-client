@@ -30,7 +30,7 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <>
-      <header className={styles.header}>
+      <header className={styles['header']}>
         <NavigationLoader />
         <MemberBar color='#efefef'>
           <p>MemberBar</p>
@@ -40,7 +40,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         </div>
       </header>
       <div className='container'>
-        <div className={styles.breadcrumbs}>
+        <div className={styles['breadcrumbs']}>
           <Breadcrumbs />
         </div>
 

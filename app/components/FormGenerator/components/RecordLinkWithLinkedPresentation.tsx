@@ -50,7 +50,7 @@ export const RecordLinkWithLinkedPresentation = ({
       {hasValue ? (
         <div
           key={reactKey}
-          className={styles.component}
+          className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           id={`anchor_${addAttributesToName(component, component.name)}`}
         >

@@ -60,10 +60,10 @@ export const Field = ({
       data-size={size}
     >
       <div className={styles['label-and-children-wrapper']}>
-        <div className={styles['label-and-children-wrapper']}>
+        <div className={styles['label-and-adornment-wrapper']}>
           {label && <Label>{label}</Label>}
           {info && <FieldInfo {...info} />}
-          <div className={styles.adornments}>{adornment}</div>
+          <div className={styles['adornments']}>{adornment}</div>
         </div>
         <div className={styles['input-wrapper']}>
           {children} <WarningIcon className={styles['error-icon']} />

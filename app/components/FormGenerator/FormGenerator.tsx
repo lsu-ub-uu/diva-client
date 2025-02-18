@@ -46,7 +46,7 @@ export const FormGenerator = ({
   );
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext.Provider value={formContextValues}>
         <Component component={props.formSchema.form} idx={0} path={''} />

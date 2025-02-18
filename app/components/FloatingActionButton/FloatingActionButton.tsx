@@ -42,7 +42,7 @@ export const FloatingActionButton = ({
       data-variant={variant}
       {...rest}
     >
-      {icon} <span className={styles.content}>{text}</span>
+      {icon} <span className={styles['content']}>{text}</span>
     </HUIButton>
   );
 };
