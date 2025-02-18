@@ -4,7 +4,6 @@ import {
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
-import { Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -165,7 +164,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
           name='presentation'
           value={JSON.stringify(presentation)}
         />
-        <Stack spacing={2}>
+        <div>
           {presentation !== null ? (
             <FormProvider {...methods}>
               <FormGenerator formSchema={presentation} />
@@ -173,7 +172,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
           ) : (
             <span />
           )}
-        </Stack>
+        </div>
         <Button type='submit' variant='primary'>
           {t('divaClient_LoginText')}
         </Button>

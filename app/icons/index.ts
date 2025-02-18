@@ -44,3 +44,6 @@ export { default as DeleteForeverIcon } from './DeleteForever.svg?react';
 export { default as ArticleIcon } from './Article.svg?react';
 export { default as PriorityHighIcon } from './PriorityHigh.svg?react';
 export { default as CheckCircleIcon } from './CheckCircle.svg?react';
+export { default as ProgressIcon } from './Progress.svg?react';
+export { default as PersonIcon } from './Person.svg?react';
+export { default as LoginIcon } from './Login.svg?react';

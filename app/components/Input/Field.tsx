@@ -61,7 +61,7 @@ export const Field = ({
     >
       <div className={styles.labelAndChildrenWrapper}>
         <div className={styles.labelAndAdornmentWrapper}>
-          <Label>{label}</Label>
+          {label && <Label>{label}</Label>}
           {info && <FieldInfo {...info} />}
           <div className={styles.adornments}>{adornment}</div>
         </div>

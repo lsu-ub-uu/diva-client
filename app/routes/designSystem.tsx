@@ -31,6 +31,9 @@ import { useEffect, useState } from 'react';
 import { Textarea } from '@/components/Input/Textarea';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { Typography } from '@/components/Typography/Typography';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { LinearLoader } from '@/components/Loader/LinearLoader';
+import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -375,6 +378,21 @@ export default function DesignSystem() {
             <Alert severity='info' icon={<SentimentNeutralIcon />}>
               Custom Icon Text
             </Alert>
+          </div>
+        </section>
+        <section>
+          <h2>Loaders</h2>
+          CircularLoader
+          <CircularLoader />
+          LinearLoader
+          <LinearLoader />
+          SkeletonLoader
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+          >
+            <SkeletonLoader width='20ch' height='1.5rem' />
+            <SkeletonLoader width='45ch' height='1rem' />
+            <SkeletonLoader width='35ch' height='1rem' />
           </div>
         </section>
       </main>

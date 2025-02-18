@@ -19,9 +19,9 @@
 
 import { useEffect, useState } from 'react';
 import type { RecordFormSchema } from '../FormGenerator/types';
-import type { NavigationPanelLink } from '../index';
 import type { BFFDataRecord } from '@/types/record';
 import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
+import type { NavigationPanelLink } from '@/components/NavigationPanel/NavigationPanel';
 
 export const linksFromFormSchema = (
   formSchema: RecordFormSchema,

@@ -31,6 +31,7 @@ import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Textarea } from '@/components/Input/Textarea';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -64,6 +65,7 @@ export const TextOrNumberVariable = ({
     <div
       className={styles.component}
       data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} path={path} />
 

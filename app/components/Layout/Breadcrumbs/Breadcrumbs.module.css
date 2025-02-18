@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,19 +16,42 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import styles from './Card.module.css';
-import { CardContext } from '@/components/Card/CardContext';
+.breadcrumbs {
+  font-size: var(--font-size-s);
 
-export interface CardProps {
-  children: ReactNode;
-  boxed?: boolean;
+  ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: inline;
+  }
+
+  li:not(:last-child)::after {
+    content: ' / ';
+    margin: 0 5px;
+    color: var(--color-label);
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--color-label);
+    /*  display: inline-flex;
+    align-items: center;*/
+  }
+
+  svg {
+    display: inline;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  li:last-child a {
+    font-weight: bold;
+    color: var(--color-text);
+  }
 }
-
-export const Card = ({ children, boxed = false }: CardProps) => {
-  return (
-    <div className={styles.card} {...(boxed && { 'data-boxed': '' })}>
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
-    </div>
-  );
-};

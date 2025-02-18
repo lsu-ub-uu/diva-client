@@ -30,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -61,6 +62,7 @@ export const CollectionVariable = ({
     <div
       className={styles.component}
       data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} path={path} />
       {(component.mode === 'output' || component.finalValue) && (

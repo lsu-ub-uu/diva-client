@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,19 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import styles from './Card.module.css';
-import { CardContext } from '@/components/Card/CardContext';
+import styles from './Loader.module.css';
+import clsx from 'clsx';
+import type { HTMLProps } from 'react';
 
-export interface CardProps {
-  children: ReactNode;
-  boxed?: boolean;
-}
-
-export const Card = ({ children, boxed = false }: CardProps) => {
-  return (
-    <div className={styles.card} {...(boxed && { 'data-boxed': '' })}>
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
-    </div>
-  );
+export const LinearLoader = ({
+  className,
+  ...rest
+}: HTMLProps<HTMLDivElement>) => {
+  return <div className={clsx(className, styles['linear-loader'])} {...rest} />;
 };

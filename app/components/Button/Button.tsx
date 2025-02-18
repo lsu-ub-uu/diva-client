@@ -23,12 +23,14 @@ import {
 
 import styles from './Button.module.css';
 import clsx from 'clsx';
-import { type ForwardedRef, forwardRef } from 'react';
+import { type ElementType, type ForwardedRef, forwardRef } from 'react';
 
-interface ButtonProps extends HUIButtonProps {
+interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
   size?: 'small' | 'medium';
   fullWidth?: boolean;
+  as?: ElementType;
+  to?: string;
 }
 
 export const Button = forwardRef(function Button(

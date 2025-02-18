@@ -23,7 +23,6 @@ import {
   useNavigation,
   useSubmit,
 } from 'react-router';
-import { CircularProgress, Stack } from '@mui/material';
 import type { loader } from '@/root';
 import {
   messageIsFromWindowOpenedFromHere,
@@ -35,10 +34,13 @@ import { useTranslation } from 'react-i18next';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { LogoutIcon } from '@/icons';
+import { LogoutIcon, LoginIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { Menu, MenuButton } from '@headlessui/react';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
+
+import styles from './Login.module.css';
 
 export default function User() {
   const { MODE } = import.meta.env;
@@ -48,6 +50,9 @@ export default function User() {
   const location = useLocation();
   const navigation = useNavigation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
+
+  const submitting =
+    navigation.state === 'submitting' && navigation.formAction === '/login';
 
   const handleDevSelection = (account: Account) => {
     submit(
@@ -82,15 +87,14 @@ export default function User() {
   if (!auth) {
     return (
       <Menu>
-        <MenuButton as={Button} disabled={navigation.state === 'submitting'}>
-          {navigation.state === 'submitting' ? (
-            <>
-              {t('divaClient_LoginText')}{' '}
-              <CircularProgress size='1em' sx={{ ml: 1 }} />
-            </>
-          ) : (
-            t('divaClient_LoginText')
-          )}
+        <MenuButton
+          as={Button}
+          disabled={submitting}
+          aria-busy={submitting}
+          variant='tertiary'
+        >
+          {t('divaClient_LoginText')}
+          {submitting ? <CircularLoader /> : <LoginIcon />}
         </MenuButton>
         <DropdownMenu anchor='bottom end'>
           <DevAccountLoginOptions onSelect={handleDevSelection} />
@@ -104,12 +108,7 @@ export default function User() {
   }
 
   return (
-    <Stack
-      direction='row'
-      alignItems='center'
-      spacing={2}
-      style={{ marginTop: '-1px' }}
-    >
+    <div className={styles.login}>
       <div>{printUserNameOnPage(auth)}</div>
       <Form action='/logout' method='post'>
         <input type='hidden' name='returnTo' value={returnTo} />
@@ -118,6 +117,6 @@ export default function User() {
           <LogoutIcon />
         </Button>
       </Form>
-    </Stack>
+    </div>
   );
 }

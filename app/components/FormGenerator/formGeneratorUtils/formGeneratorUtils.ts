@@ -32,13 +32,14 @@ import type {
   FormComponentTextVar,
   FormComponentWithData,
   FormSchema,
+  TextStyle,
 } from '../types';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { DivaTypographyVariants } from '@/components/Typography/Typography';
+
 import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
 import type { Option } from '@/components';
@@ -267,16 +268,15 @@ export const checkIfPresentationStyleOrParentIsInline = (
 };
 export const headlineLevelToTypographyVariant = (
   headlineLevel: string | undefined,
-): DivaTypographyVariants['variant'] => {
-  let typographyVariant: DivaTypographyVariants['variant'];
+): TextStyle => {
+  let typographyVariant: TextStyle;
   if (headlineLevel !== undefined) {
-    typographyVariant =
-      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+    typographyVariant = `${headlineLevel}TextStyle` as TextStyle;
   } else {
     typographyVariant = 'h2TextStyle';
   }
 
-  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
+  return typographyVariant as TextStyle; // check style to return as default
 };
 export const convertChildStyleToString = (
   childStyle: string[] | undefined,

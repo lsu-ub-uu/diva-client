@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--gap);
+  align-items: end;
 }
 
 .searchButton {

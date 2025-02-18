@@ -18,26 +18,22 @@
  */
 
 .headerWrapper {
-    width: 100%;
-    padding: 0 var(--gap-xxl);
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: var(--gap-l);
-    height: 4rem;
-    @media (width < 600px) {
-        padding: 0 1rem;
-    }
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+  height: 4rem;
+  @media (width < 600px) {
+    padding: 0 1rem;
+  }
 }
-    .logo img {
-        width: 10em;
-        min-width: 10em;
-        @media (max-width: 600px) {
-            width: 2em;
-            min-width: 2em;
-        }
-    }
+.logo img {
+  width: 10em;
+  min-width: 10em;
+  @media (max-width: 600px) {
+    width: 2em;
+    min-width: 2em;
+  }
+}
 .headerLogoWrapper {
-    margin-right: auto;
+  margin-right: auto;
 }
-

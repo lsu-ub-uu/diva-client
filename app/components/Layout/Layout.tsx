@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AppBar, Container } from '@mui/material';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
@@ -31,20 +30,22 @@ interface PageLayoutProps {
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <>
-      <AppBar position='static' color='default'>
+      <header className={styles.header}>
         <NavigationLoader />
         <MemberBar color='#efefef'>
           <p>MemberBar</p>
         </MemberBar>
-        <Header />
-      </AppBar>
-      <Container maxWidth='xl' className={styles.container}>
+        <div className='container'>
+          <Header />
+        </div>
+      </header>
+      <div className='container'>
         <div className={styles.breadcrumbs}>
           <Breadcrumbs />
         </div>
 
         {children}
-      </Container>
+      </div>
     </>
   );
 };

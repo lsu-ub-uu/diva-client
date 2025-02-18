@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,19 +16,26 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import styles from './Card.module.css';
-import { CardContext } from '@/components/Card/CardContext';
+import type { HTMLProps } from 'react';
+import clsx from 'clsx';
+import styles from '@/components/Loader/Loader.module.css';
 
-export interface CardProps {
-  children: ReactNode;
-  boxed?: boolean;
+interface SkeletonLoaderProps extends HTMLProps<HTMLDivElement> {
+  width?: string;
+  height?: string;
 }
 
-export const Card = ({ children, boxed = false }: CardProps) => {
+export const SkeletonLoader = ({
+  className,
+  width = '100%',
+  height = '100%',
+  ...rest
+}: SkeletonLoaderProps) => {
   return (
-    <div className={styles.card} {...(boxed && { 'data-boxed': '' })}>
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
-    </div>
+    <div
+      className={clsx(className, styles['skeleton-loader'])}
+      style={{ width, height }}
+      {...rest}
+    />
   );
 };

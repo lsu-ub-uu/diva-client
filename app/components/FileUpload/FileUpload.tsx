@@ -16,17 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  LinearProgress,
-  linearProgressClasses,
-  Stack,
-  styled,
-  Typography,
-} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Alert } from '@/components/Alert/Alert';
 
+/*
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
   borderRadius: 5,
@@ -37,7 +31,7 @@ const StyledLinearProgress = styled(LinearProgress)(() => ({
     borderRadius: 5,
     backgroundColor: '#1a90ff',
   },
-}));
+}));*/
 
 interface UploadProgressProps {
   currentProgress: number;
@@ -58,17 +52,14 @@ const UploadProgress = (props: UploadProgressProps) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <div style={{ width: '100%', marginRight: '1rem' }}>
-        <StyledLinearProgress
+        {/* <StyledLinearProgress
           variant='determinate'
           color='primary'
           value={progress}
-        />
+        />*/}
       </div>
       <div style={{ minWidth: '2em' }}>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-        >{`${Math.round(progress)}%`}</Typography>
+        <div>{`${Math.round(progress)}%`}</div>
       </div>
     </div>
   );
@@ -118,7 +109,7 @@ export const FileUpload = (props: FileUploadProps) => {
   /*Check if styling is correct*/
   return (
     <div style={{ marginBottom: '10em' }}>
-      <Stack spacing={2}>
+      <div>
         <input
           type='file'
           ref={inputRef}
@@ -156,7 +147,7 @@ export const FileUpload = (props: FileUploadProps) => {
         {uploadStatus === UploadStatus.UPLOADING && (
           <UploadProgress currentProgress={progress} />
         )}
-      </Stack>
+      </div>
     </div>
   );
 };

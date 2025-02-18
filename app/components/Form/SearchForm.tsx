@@ -58,7 +58,7 @@ export const SearchForm = ({
     <Form method='GET' action='/search'>
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
-          <FormGenerator formSchema={formSchema} />
+          <FormGenerator formSchema={formSchema} showTooltips={false} />
           <SearchButton />
           {searchResults && (
             <Pagination

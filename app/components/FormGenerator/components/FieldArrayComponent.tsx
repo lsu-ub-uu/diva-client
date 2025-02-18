@@ -22,7 +22,10 @@ import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
+import {
+  addAttributesToName,
+  createDefaultValuesFromComponent,
+} from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
@@ -100,7 +103,10 @@ export const FieldArrayComponent = ({
       {component.mode === 'input' &&
         component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
-          <div className={styles.component}>
+          <div
+            className={styles.component}
+            id={`anchor_${addAttributesToName(component, component.name)}`}
+          >
             <Button
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}

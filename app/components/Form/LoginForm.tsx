@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@mui/material';
 import type { FieldErrors, FieldValues } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +29,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { Form } from 'react-router';
 import styles from './LoginForm.module.css';
+import { Button } from '@/components/Button/Button';
 
 interface RecordFormProps {
   record?: BFFDataRecord;
@@ -66,13 +66,7 @@ export const LoginForm = ({ ...props }: RecordFormProps) => {
         <FormGenerator formSchema={props.formSchema} />
       </FormProvider>
 
-      <Button
-        type='submit'
-        disableRipple
-        variant='contained'
-        color='secondary'
-        sx={{ height: 40 }}
-      >
+      <Button type='submit' variant='primary'>
         {t('divaClient_LoginButtonText')}
       </Button>
     </Form>
