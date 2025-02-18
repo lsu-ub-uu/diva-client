@@ -77,6 +77,7 @@ export const RecordLinkWithSearch = ({
       >
         <Combobox onChange={(recordId) => setValue(path, recordId)}>
           <ComboboxInput
+            aria-busy={fetcher.state !== 'idle'}
             placeholder='Sök efter länkad post'
             onChange={(event) =>
               fetcher.load(
@@ -85,7 +86,8 @@ export const RecordLinkWithSearch = ({
             }
           />
           <ComboboxOptions anchor='bottom'>
-            {fetcher.data &&
+            {fetcher.state === 'idle' &&
+              fetcher.data &&
               fetcher.data.result.map((result: BFFDataRecord) => (
                 <ComboboxOption key={result.id} value={result.id}>
                   <AutocompleteForm
@@ -94,6 +96,18 @@ export const RecordLinkWithSearch = ({
                   />
                 </ComboboxOption>
               ))}
+            {fetcher.state === 'idle' &&
+              fetcher.data &&
+              fetcher.data.result.length === 0 && (
+                <ComboboxOption disabled value=''>
+                  Inga resultat
+                </ComboboxOption>
+              )}
+            {fetcher.state === 'loading' && (
+              <ComboboxOption disabled value=''>
+                Söker...
+              </ComboboxOption>
+            )}
           </ComboboxOptions>
         </Combobox>
       </Field>

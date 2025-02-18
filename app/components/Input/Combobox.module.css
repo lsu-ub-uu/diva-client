@@ -18,4 +18,9 @@
   &[data-focus] {
     background-color: var(--color-button-secondary-hover);
   }
+
+  &[data-disabled] {
+    pointer-events: none;
+    color: var(--color-label);
+  }
 }
