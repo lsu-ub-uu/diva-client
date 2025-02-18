@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render } from '@testing-library/react';
-import { SnackbarProvider } from 'notistack';
 import type { ReactNode } from 'react';
 import type {
   Control,
@@ -28,12 +26,7 @@ import type {
 import { RemixFormProvider } from 'remix-hook-form';
 import { mock } from 'vitest-mock-extended';
 
-const renderWithSnackbarProvider = (ui: JSX.Element) =>
-  render(ui, { wrapper: SnackbarProvider });
-
 export * from '@testing-library/react';
-
-export { renderWithSnackbarProvider as render };
 
 export const MockFormProvider = ({
   children,
