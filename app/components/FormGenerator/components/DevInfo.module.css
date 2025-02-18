@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.devInfo {
+.dev-info {
   font-family: monospace;
   font-size: 0.8rem;
   display: block;
@@ -41,12 +41,12 @@
     padding-left: 2px;
   }
 
-  .expandInfo {
+  .expand-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 4px;
     background: #444;
-    scrollbar-color: rgb(117, 89, 142) -moz-default-background-color;
+    scrollbar-color: rgb(117 89 142) -moz-default-background-color;
     scrollbar-width: thin;
   }
 
@@ -55,14 +55,15 @@
     overflow-x: auto;
     max-width: 900px;
     max-height: 800px;
-    border-radius: 0 4px 4px 4px;
+    border-radius: 0 4px 4px;
+
     &:nth-child(even) {
       border-left: 1px solid #666;
     }
   }
 }
 
-.devInfoButton {
+.dev-info-button {
   cursor: pointer;
   border: none;
   background: rgb(0 0 0 / 10%);

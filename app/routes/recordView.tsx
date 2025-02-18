@@ -81,7 +81,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         />
       }
     >
-      <div className={styles.recordWrapper}>
+      <div className={styles['record-wrapper']}>
         <ReadOnlyForm record={record} formSchema={formDefinition} />
       </div>
     </SidebarLayout>

@@ -26,7 +26,7 @@ interface MemberBarProps {
 
 export const MemberBar = (props: MemberBarProps) => {
   return (
-    <div className={styles['memberBar']}>
+    <div className={styles['member-bar']}>
       <div className={styles['content']}>{props.children}</div>
     </div>
   );

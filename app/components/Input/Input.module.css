@@ -16,83 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-s);
+.select,
+.input,
+.combobox-input,
+.textarea {
+  background: var(--color-background);
+  background-repeat: no-repeat;
+  width: 100%;
+  position: relative;
+  border: 1px solid var(--color-input-border);
+  border-radius: calc(var(--border-radius) / 2);
+  height: var(--input-height);
+  font-size: inherit;
+  color: var(--color-text);
 
-  .inputWrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-    .errorIcon {
-      opacity: 0;
-      transition: opacity 0.2s;
-      position: absolute;
-      top: calc((var(--input-height) / 2) - 0.5em);
-      right: var(--gap-xl);
-    }
+  &[data-invalid] {
+    border-color: var(--color-error-main);
   }
-
-  &:has([data-invalid]) {
-    color: var(--color-error-main);
-    .errorIcon {
-      opacity: 1;
-    }
-  }
-
-  .labelAndChildrenWrapper {
-    display: flex;
-    gap: var(--gap-s);
-  }
-  &[data-variant='block'] {
-    .labelAndChildrenWrapper {
-      flex-direction: column;
-    }
-  }
-  &[data-variant='inline'] {
-    align-items: flex-end;
-    .labelAndChildrenWrapper {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  &[data-size='small'] {
-    font-size: var(--font-size-s);
-    --input-height: var(--input-height-small);
-    .select,
-    .input,
-    .comboboxInput {
-      padding-left: var(--gap);
-      padding-right: calc(var(--gap) * 6);
-      background-position: right calc(var(--gap) / 2) center;
-    }
-  }
-
-  &[data-size='medium'] {
-    font-size: 1rem;
-    .select,
-    .input,
-    .comboboxInput {
-      background-position: right var(--gap) center;
-      padding-left: calc(var(--gap) * 1.5);
-      padding-right: calc(var(--gap) * 6);
-    }
-  }
-}
-
-.labelAndAdornmentWrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-}
-
-.adornments {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-  margin-left: auto;
 }
 
 .select {
@@ -105,23 +45,93 @@
   }
 }
 
-.select,
-.input,
-.comboboxInput,
-.textarea {
-  background: var(--color-background);
-  background-repeat: no-repeat;
-  width: 100%;
-  position: relative;
-  border: 1px solid var(--color-input-border);
-  border-radius: calc(var(--border-radius) / 2);
-  height: var(--input-height);
-  font-size: inherit;
-  color: var(--color-text);
-  &[data-invalid] {
-    border-color: var(--color-error-main);
+.label-and-children-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .error-icon {
+      opacity: 0;
+      transition: opacity 0.2s;
+      position: absolute;
+      top: calc((var(--input-height) / 2) - 0.5em);
+      right: var(--gap-xl);
+    }
+  }
+
+  &:has([data-invalid]) {
+    color: var(--color-error-main);
+
+    .error-icon {
+      opacity: 1;
+    }
+  }
+
+  .label-and-children-wrapper {
+    display: flex;
+    gap: var(--gap-s);
+  }
+
+  &[data-variant='block'] {
+    .label-and-children-wrapper {
+      flex-direction: column;
+    }
+  }
+
+  &[data-variant='inline'] {
+    align-items: flex-end;
+
+    .label-and-children-wrapper {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &[data-size='small'] {
+    font-size: var(--font-size-s);
+
+    --input-height: var(--input-height-small);
+
+    .select,
+    .input,
+    .combobox-input {
+      padding-left: var(--gap);
+      padding-right: calc(var(--gap) * 6);
+      background-position: right calc(var(--gap) / 2) center;
+    }
+  }
+
+  &[data-size='medium'] {
+    font-size: 1rem;
+
+    .select,
+    .input,
+    .combobox-input {
+      background-position: right var(--gap) center;
+      padding-left: calc(var(--gap) * 1.5);
+      padding-right: calc(var(--gap) * 6);
+    }
   }
 }
+
+.adornments {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+  margin-left: auto;
+}
+
 .textarea {
   resize: vertical;
   min-height: calc(var(--input-height) * 2);
@@ -130,6 +140,6 @@
   padding-right: calc(var(--gap) * 6);
 }
 
-.errorMessage {
+.error-message {
   font-size: var(--font-size-s);
 }

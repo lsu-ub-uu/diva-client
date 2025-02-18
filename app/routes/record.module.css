@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.recordWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-l)
+.record-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
 }

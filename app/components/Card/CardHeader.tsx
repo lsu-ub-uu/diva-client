@@ -30,7 +30,7 @@ export const CardHeader = ({ children }: CardHeaderProps) => {
   const { boxed } = useContext(CardContext);
 
   return (
-    <div className={styles.cardHeader} {...(boxed && { 'data-boxed': '' })}>
+    <div className={styles['card-header']} {...(boxed && { 'data-boxed': '' })}>
       {children}
     </div>
   );

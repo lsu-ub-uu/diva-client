@@ -60,9 +60,10 @@ export const OutputField = ({
         )}
         {info && <FieldInfo {...info} />}
         {adornment && (
-          <div className={styles.adornmentWrapper}>{adornment}</div>
+          <div className={styles['adornment-wrapper']}>{adornment}</div>
         )}
       </div>
+
       <Typography as='dd' text={value} variant={textStyle ?? 'bodyTextStyle'} />
     </dl>
   );

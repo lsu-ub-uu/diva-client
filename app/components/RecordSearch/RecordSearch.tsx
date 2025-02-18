@@ -41,7 +41,7 @@ export const RecordSearch = ({
 }: RecordSearchProps) => {
   const { t } = useTranslation();
   return (
-    <div className={styles.recordSearch}>
+    <div className={styles['record-search']}>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
@@ -59,15 +59,15 @@ export const RecordSearch = ({
             </Alert>
           )}
 
-          <ol className={styles.resultList}>
+          <ol className={styles['result-list']}>
             {searchResults.data.map((record) => (
-              <li key={record.id} className={styles.resultListItem}>
+              <li key={record.id} className={styles['result-list-item']}>
                 <SearchResultForm
                   record={record}
                   formSchema={record.presentation!}
                 />
 
-                <div className={styles.recordActionButtons}>
+                <div className={styles['record-action-buttons']}>
                   <RecordActionButtons record={record} />
                 </div>
               </li>

@@ -17,23 +17,27 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.headerWrapper {
+.header-wrapper {
   display: flex;
   align-items: center;
   gap: var(--gap-l);
   height: 4rem;
+
   @media (width < 600px) {
     padding: 0 1rem;
   }
 }
+
 .logo img {
   width: 10em;
   min-width: 10em;
-  @media (max-width: 600px) {
+
+  @media (width < 600px) {
     width: 2em;
     min-width: 2em;
   }
 }
-.headerLogoWrapper {
+
+.header-logo-wrapper {
   margin-right: auto;
 }

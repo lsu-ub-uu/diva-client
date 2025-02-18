@@ -30,7 +30,7 @@ export const ComboboxInput = ({
 }: HUIComboboxInputProps) => {
   return (
     <HUIComboboxInput
-      className={clsx(styles.comboboxInput, className)}
+      className={clsx(styles['combobox-input'], className)}
       style={{ backgroundImage: `url(${searchUrl})` }}
       {...rest}
     />

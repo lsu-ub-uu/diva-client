@@ -33,7 +33,7 @@ export const Select = forwardRef(function Select(
 ) {
   return (
     <HUISelect
-      className={clsx(styles.select, className)}
+      className={clsx(styles['select'], className)}
       {...rest}
       style={{ backgroundImage: `url(${chevronUrl})` }}
       ref={ref}

@@ -6,6 +6,6 @@
   font-size: var(--font-size-s);
 }
 
-.paginationButtons {
+.pagination-buttons {
   display: flex;
 }

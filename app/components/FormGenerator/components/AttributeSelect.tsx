@@ -71,7 +71,7 @@ export const AttributeSelect = ({
     return (
       <>
         <OutputField
-          className={styles.attributeSelect}
+          className={styles['attribute-select']}
           variant='inline'
           label={t(label)}
           value={findOptionLabelByValue(options, value)}

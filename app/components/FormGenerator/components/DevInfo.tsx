@@ -43,13 +43,13 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
     return null;
   }
   return (
-    <div className={styles.devInfo}>
+    <div className={styles['dev-info']}>
       <button type='button' onClick={() => setExpanded(!expanded)}>
         {component.type} | {addAttributesToName(component, component.name)}
       </button>
 
       {expanded && (
-        <div className={styles.expandInfo}>
+        <div className={styles['expand-info']}>
           <pre>
             <strong>FORM DEF</strong>
             {JSON.stringify(component, null, 2)}
@@ -74,7 +74,11 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
   }
 
   return (
-    <button type='button' className={styles.devInfoButton} onClick={onClick}>
+    <button
+      type='button'
+      className={styles['dev-info-button']}
+      onClick={onClick}
+    >
       <CodeIcon />
     </button>
   );

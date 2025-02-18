@@ -4,7 +4,7 @@
   justify-content: center;
 }
 
-.fieldInfoPanel {
+.field-info-panel {
   --anchor-gap: var(--gap);
 
   display: flex;
@@ -17,7 +17,7 @@
   box-shadow: var(--elevation);
 }
 
-.labelWrapper {
+.label-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;

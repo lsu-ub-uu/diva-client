@@ -45,6 +45,7 @@ import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import styles from '@/routes/record.module.css';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -169,17 +170,19 @@ export default function UpdateRecordRoute({
     >
       <NotificationSnackbar notification={notification} />
 
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity}>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
-      <RecordForm
-        key={lastUpdate}
-        record={record}
-        formSchema={formDefinition}
-      />
+      <div className={styles['record-wrapper']}>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity}>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
+        <RecordForm
+          key={lastUpdate}
+          record={record}
+          formSchema={formDefinition}
+        />
+      </div>
     </SidebarLayout>
   );
 }

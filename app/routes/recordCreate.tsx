@@ -128,7 +128,7 @@ export default function CreateRecordRoute({
     >
       <NotificationSnackbar notification={notification} />
 
-      <div className={styles.recordWrapper}>
+      <div className={styles['record-wrapper']}>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>
             <AlertTitle>{notification.summary}</AlertTitle>

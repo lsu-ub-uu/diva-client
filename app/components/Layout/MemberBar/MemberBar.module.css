@@ -17,14 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.memberBar {
-    padding: 0 var(--gap);
-    background-color: #efefef;
-    display: flex;
-    height: var(--gap-xxl);
-    justify-content: center;
-    align-items: center;
+.member-bar {
+  padding: 0 var(--gap);
+  background-color: #efefef;
+  display: flex;
+  height: var(--gap-xxl);
+  justify-content: center;
+  align-items: center;
 }
+
 .content {
-    max-height: var(--gap-xl);
+  max-height: var(--gap-xl);
 }

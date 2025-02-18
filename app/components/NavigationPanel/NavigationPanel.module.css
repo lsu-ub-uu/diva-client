@@ -6,7 +6,7 @@
     z-index: 0;
   }
 
-  ul:before {
+  ul::before {
     z-index: 1;
     content: ' ';
     display: block;
@@ -27,7 +27,7 @@
     text-decoration: none;
     color: var(--color-label);
 
-    &:before {
+    &::before {
       z-index: 2;
       flex-shrink: 0;
       content: ' ';
@@ -41,7 +41,8 @@
 
     &[aria-current='page'] {
       color: var(--color-text);
-      &:before {
+
+      &::before {
         background-color: var(--color-accent);
       }
     }

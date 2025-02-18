@@ -33,7 +33,7 @@ export const ComboboxOptions = ({
 }: HUIComboboxOptionsProps) => {
   return (
     <HUIComboboxOptions
-      className={clsx(styles.comboboxOptions, className)}
+      className={clsx(styles['combobox-options'], className)}
       {...rest}
     />
   );
@@ -45,7 +45,7 @@ export const ComboboxOption = ({
 }: HUIComboboxOptionProps) => {
   return (
     <HUIComboboxOption
-      className={clsx(styles.comboboxOption, className)}
+      className={clsx(styles['combobox-option'], className)}
       {...rest}
     />
   );

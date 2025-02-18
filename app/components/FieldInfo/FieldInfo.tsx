@@ -36,7 +36,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
   const { t } = useTranslation();
 
   return (
-    <Popover className={styles.popover}>
+    <Popover className={styles['popover']}>
       <PopoverButton
         as={Button}
         variant='icon'
@@ -47,10 +47,10 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
       </PopoverButton>
       <PopoverPanel
         anchor='top'
-        className={styles.fieldInfoPanel}
+        className={styles['field-info-panel']}
         role='definition'
       >
-        <div className={styles.labelWrapper}>
+        <div className={styles['label-wrapper']}>
           {title && <h4>{t(title)}</h4>}
           <CloseButton
             as={Button}

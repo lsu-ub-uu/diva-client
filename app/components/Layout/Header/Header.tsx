@@ -33,8 +33,8 @@ export const Header = () => {
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   return (
-    <div className={styles.headerWrapper}>
-      <div className={styles.headerLogoWrapper}>
+    <div className={styles['header-wrapper']}>
+      <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
           <picture className={styles.logo}>
             <source srcSet={divaLogoS} media='(max-width: 600px)' />

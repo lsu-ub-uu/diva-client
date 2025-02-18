@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.actionButtonGroup {
+.action-button-group {
   display: flex;
   align-items: center;
   gap: var(--gap);

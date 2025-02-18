@@ -18,34 +18,40 @@
 
 .output-field {
   display: flex;
+
   &[data-variant='block'] {
     flex-direction: column;
+
     dd {
       padding-left: var(--gap-l);
     }
   }
+
   &[data-variant='inline'] {
     dd {
       padding-left: var(--gap-s);
     }
-    dt:after {
+
+    dt::after {
       content: ':';
     }
   }
+
   gap: var(--gap-s);
+
   dt {
     font-style: italic;
     color: var(--color-label);
   }
 }
 
-.labelWrapper {
+.label-wrapper {
   display: flex;
   align-items: center;
   gap: var(--gap);
 }
 
-.adornmentWrapper {
+.adornment-wrapper {
   display: flex;
   align-items: center;
   gap: var(--gap-l);

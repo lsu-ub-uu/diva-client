@@ -1,11 +1,11 @@
-.searchForm {
+.search-form {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--gap);
   align-items: end;
 }
 
-.searchButton {
+.search-button {
   padding-left: var(--gap-xl);
   padding-right: var(--gap-xl);
 }

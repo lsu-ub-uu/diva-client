@@ -20,36 +20,44 @@
   width: 100%;
   display: flex;
   border-radius: var(--border-radius-s);
+
   &[data-severity='success'] {
-    --color-alert-bg: rgb(237, 247, 237);
+    --color-alert-bg: rgb(237 247 237);
     --color-alert-icon: #2e7d32;
-    --color-alert-font: rgb(30, 70, 32);
+    --color-alert-font: rgb(30 70 32);
   }
+
   &[data-severity='info'] {
-    --color-alert-bg: rgb(229, 246, 253);
+    --color-alert-bg: rgb(229 246 253);
     --color-alert-icon: #0288d1;
-    --color-alert-font: rgb(1, 67, 97);
+    --color-alert-font: rgb(1 67 97);
   }
+
   &[data-severity='error'] {
-    --color-alert-bg: rgb(255, 236, 240);
+    --color-alert-bg: rgb(255 236 240);
     --color-alert-icon: #ff1744;
-    --color-alert-font: rgb(102, 27, 42);
+    --color-alert-font: rgb(102 27 42);
   }
+
   &[data-severity='warning'] {
-    --color-alert-bg: rgb(255, 244, 229);
+    --color-alert-bg: rgb(255 244 229);
     --color-alert-icon: #ed6c02;
-    --color-alert-font: rgb(102, 60, 0);
+    --color-alert-font: rgb(102 60 0);
   }
+
   color: var(--color-alert-font);
   background-color: var(--color-alert-bg);
 }
+
 .icon {
   padding: var(--gap-l);
   font-size: var(--font-size-l);
+
   svg {
     fill: var(--color-alert-icon);
   }
 }
+
 .content {
   padding: var(--gap-l);
   display: flex;

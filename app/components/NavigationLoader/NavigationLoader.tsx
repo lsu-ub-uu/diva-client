@@ -45,6 +45,6 @@ export const NavigationLoader = () => {
   }, [navigation.state]);
 
   if (showLoader) {
-    return <LinearLoader className={styles.navigationLoader} />;
+    return <LinearLoader className={styles['navigation-loader']} />;
   }
 };

@@ -33,13 +33,11 @@ interface ActionButtonGroupProps {
   entityType: string;
 }
 
-export const ActionButtonGroup = (
-  props: ActionButtonGroupProps,
-): JSX.Element => {
+export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
   const { t } = useTranslation();
 
   return (
-    <div role='group' className={styles.actionButtonGroup}>
+    <div role='group' className={styles['action-button-group']}>
       {!props.hideMoveButtons && (
         <Button
           size='small'

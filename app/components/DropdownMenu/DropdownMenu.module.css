@@ -27,6 +27,7 @@
     transition: background-color 0.1s;
     background-color: var(--color-background);
     cursor: pointer;
+
     &:hover {
       background-color: var(--color-button-secondary-hover);
     }

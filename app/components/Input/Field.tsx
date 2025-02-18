@@ -55,22 +55,22 @@ export const Field = ({
   return (
     <HUIField
       {...rest}
-      className={clsx(styles.field, className)}
+      className={clsx(styles['field'], className)}
       data-variant={variant}
       data-size={size}
     >
-      <div className={styles.labelAndChildrenWrapper}>
-        <div className={styles.labelAndAdornmentWrapper}>
+      <div className={styles['label-and-children-wrapper']}>
+        <div className={styles['label-and-children-wrapper']}>
           {label && <Label>{label}</Label>}
           {info && <FieldInfo {...info} />}
           <div className={styles.adornments}>{adornment}</div>
         </div>
-        <div className={styles.inputWrapper}>
-          {children} <WarningIcon className={styles.errorIcon} />
+        <div className={styles['input-wrapper']}>
+          {children} <WarningIcon className={styles['error-icon']} />
         </div>
       </div>
       {errorMessage && (
-        <Description className={styles.errorMessage}>
+        <Description className={styles['error-message']}>
           {errorMessage}
         </Description>
       )}

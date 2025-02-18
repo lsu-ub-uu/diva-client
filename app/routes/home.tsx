@@ -90,8 +90,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       }
     >
       <NotificationSnackbar notification={notification} />
-      <div className={styles.searchWrapper}>
-        <div className={styles.searchExtras}>
+      <div className={styles['search-wrapper']}>
+        <div className={styles['search-extras']}>
           <h1>{t('divaClient_searchRecordText')}</h1>
 
           <Suspense

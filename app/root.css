@@ -54,20 +54,25 @@
     font-size: var(--font-size-h1);
     font-weight: var(--font-weight-h1);
   }
+
   h2 {
     font-size: var(--font-size-h2);
     font-weight: var(--font-weight-h2);
   }
+
   h3 {
     font-size: var(--font-size-h3);
     font-weight: var(--font-weight-h3);
   }
+
   h4 {
     font-size: var(--font-size-h4);
   }
+
   h5 {
     font-size: var(--font-size-h5);
   }
+
   h6 {
     font-size: var(--font-size-h6);
   }

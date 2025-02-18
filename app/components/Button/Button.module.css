@@ -32,7 +32,9 @@
 
   &[data-size='small'] {
     font-size: var(--font-size-s);
+
     --input-height: var(--input-height-small);
+
     svg {
       font-size: 1.3rem;
     }
@@ -55,9 +57,11 @@
   &[data-variant='secondary'] {
     background-color: transparent;
     border-color: var(--color-button);
+
     &[data-hover] {
       background-color: var(--color-button-secondary-hover);
     }
+
     &[data-active] {
       background-color: var(--color-button-secondary-active);
     }
@@ -66,9 +70,11 @@
   &[data-variant='tertiary'] {
     border-color: transparent;
     background: transparent;
+
     &[data-hover] {
       background-color: var(--color-button-secondary-hover);
     }
+
     &[data-active] {
       background-color: var(--color-button-secondary-active);
     }
@@ -76,6 +82,7 @@
 
   &[data-variant='icon'] {
     --icon-button-size: calc(var(--input-height) + 0.5rem);
+
     width: var(--icon-button-size);
     height: var(--icon-button-size);
     margin: -0.5rem;
@@ -89,9 +96,11 @@
     padding: 0;
     line-height: 1;
     outline-offset: -2px;
+
     &[data-hover] {
       background-color: var(--color-button-secondary-hover);
     }
+
     &[data-active] {
       background-color: var(--color-button-secondary-active);
     }

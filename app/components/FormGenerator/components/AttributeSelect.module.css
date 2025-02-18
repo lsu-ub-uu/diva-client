@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.attributeSelect {
+.attribute-select {
   select {
     max-width: 35ch;
   }

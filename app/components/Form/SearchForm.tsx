@@ -52,7 +52,7 @@ export const SearchForm = ({
 
   return (
     <Form method='GET' action='/search'>
-      <div className={styles.searchForm}>
+      <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} showTooltips={false} />
           <SearchButton />
@@ -80,7 +80,7 @@ const SearchButton = () => {
       type='submit'
       variant='primary'
       disabled={!searchInput}
-      className={styles.searchButton}
+      className={styles['search-button']}
     >
       <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>

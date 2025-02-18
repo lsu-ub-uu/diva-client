@@ -38,8 +38,6 @@
   a {
     text-decoration: none;
     color: var(--color-label);
-    /*  display: inline-flex;
-    align-items: center;*/
   }
 
   svg {

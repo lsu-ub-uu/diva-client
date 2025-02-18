@@ -2,15 +2,19 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   &:visited {
     color: var(--color-accent-dark);
   }
+
   &:hover {
     color: var(--color-text);
   }
+
   &:active {
     color: var(--color-primary);
   }
+
   &:link {
     color: var(--color-link);
   }

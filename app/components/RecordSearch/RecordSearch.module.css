@@ -1,15 +1,15 @@
-.recordSearch {
+.record-search {
   display: grid;
   gap: var(--gap-l);
 }
 
-.resultList {
+.result-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.resultListItem {
+.result-list-item {
   position: relative;
   display: block;
   padding: var(--gap);
@@ -19,7 +19,8 @@
   border-bottom: 2px solid var(--color-card-dark);
   background-color: var(--color-card);
 }
-.resultListItem:first-child {
+
+.result-list-item:first-child {
   position: relative;
   display: block;
   border-top-left-radius: var(--border-radius);
@@ -27,7 +28,8 @@
   border-top: 2px solid var(--color-card-dark);
   background-color: var(--color-card);
 }
-.resultListItem:last-child {
+
+.result-list-item:last-child {
   position: relative;
   display: block;
   border-bottom-left-radius: var(--border-radius);
@@ -35,7 +37,7 @@
   background-color: var(--color-card);
 }
 
-.recordActionButtons {
+.record-action-buttons {
   position: absolute;
   display: flex;
   top: var(--gap);

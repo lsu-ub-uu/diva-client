@@ -17,14 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.searchWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap);
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 
-.searchExtras {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.search-extras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
