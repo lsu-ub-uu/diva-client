@@ -62,10 +62,9 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
       query,
       auth,
     );
-    console.log('search result', result);
     return { result: result.data };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { result: [] };
   }
 };

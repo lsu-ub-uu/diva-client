@@ -18,27 +18,8 @@
 
 import { expect } from 'vitest';
 import { screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { useSnackbar } from 'notistack';
 import { render } from '../../../utils/testUtils';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-
-const Button = () => {
-  const { enqueueSnackbar } = useSnackbar();
-  return (
-    <button
-      type='button'
-      onClick={() =>
-        enqueueSnackbar(`Subject was successfully added`, {
-          variant: 'success',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        })
-      }
-    >
-      Test Button
-    </button>
-  );
-};
 
 describe('<Snackbar />', () => {
   it('It renders a Snackbar when open', () => {
