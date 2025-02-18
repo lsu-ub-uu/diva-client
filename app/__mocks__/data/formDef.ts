@@ -177,6 +177,7 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
           body: 'exampleFirstChildGroupDefText',
         },
         label: 'exampleFirstChildGroupText',
+        showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 2,
           repeatMin: 0,
@@ -190,6 +191,7 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
               repeatMin: 1,
               repeatMax: 2,
             },
+            showLabel: true,
           },
           {
             name: 'exampleNumberVar',
@@ -200,6 +202,7 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
               body: 'exampleMetadataNumberVarDefText',
             },
             label: 'exampleMetadataNumberVarText',
+            showLabel: true,
             finalValue: '12',
             validation: {
               type: 'number',
@@ -225,6 +228,7 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
               body: 'exampleMetadataTextVarDefText',
             },
             label: 'exampleMetadataTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.*',
@@ -246,6 +250,7 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
           body: 'exampleMetadataTextVarDefText',
         },
         label: 'exampleMetadataTextVarText',
+        showLabel: true,
         validation: {
           type: 'regex',
           pattern: '.*',
@@ -280,6 +285,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
       finalValue: 'yellow',
       placeholder: 'emptyTextId',
       showLabel: true,
+      label: 'firstChildGroupColorLabel',
       tooltip: {
         title: 'exampleCollectionVarText',
         body: 'exampleCollectionVarDefText',
@@ -296,6 +302,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
       name: 'firstChildGroupSecondAttribute',
       placeholder: 'emptyTextId',
       showLabel: true,
+      label: 'firstChildGroupSecondText',
       tooltip: {
         title: 'exampleCollectionVarText',
         body: 'exampleCollectionVarDefText',
@@ -318,6 +325,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
         body: 'exampleFirstChildGroupDefText',
       },
       label: 'exampleFirstChildGroupText',
+      showLabel: true,
       repeat: {
         minNumberOfRepeatingToShow: 1,
         repeatMin: 0,
@@ -333,6 +341,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
             body: 'exampleMetadataNumberVarDefText',
           },
           label: 'exampleMetadataNumberVarText',
+          showLabel: true,
           validation: {
             type: 'number',
             min: 0,
@@ -356,6 +365,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
             body: 'exampleMetadataTextVarDefText',
           },
           label: 'exampleMetadataTextVarText',
+          showLabel: true,
           validation: {
             type: 'regex',
             pattern: '.*',
@@ -369,6 +379,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
               type: 'collectionVariable',
               name: 'colour',
               showLabel: true,
+              label: 'colour',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -1074,7 +1085,7 @@ export const formDefWithOneNumberVariableAndGuiElementLink: RecordFormSchema = {
       {
         type: 'guiElementLink',
         name: 'pSomeGuiElementLinkId',
-        url: 'http://www.google.seasdfasdfasdfasdfasdf',
+        url: 'http://www.google.se',
         elementText: 'demoTestLinkGuiElementText',
         presentAs: 'link',
       },
@@ -2469,6 +2480,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             body: 'bookTitletextVarDefText',
           },
           label: 'bookTitletextVarText',
+          showLabel: true,
           validation: {
             type: 'regex',
             pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
@@ -2482,6 +2494,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               type: 'collectionVariable',
               name: 'colour',
               showLabel: true,
+              label: 'colourLabel',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -2505,6 +2518,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             body: 'keepThisNumberVarDefText',
           },
           label: 'keepThisNumberVarText',
+          showLabel: true,
           validation: {
             type: 'number',
             min: 0,
@@ -2522,6 +2536,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             {
               type: 'collectionVariable',
               showLabel: true,
+              label: 'colour',
               name: 'colour',
               placeholder: 'emptyTextId',
               tooltip: {
@@ -2546,6 +2561,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             body: 'exampleFirstChildGroupDefText',
           },
           label: 'exampleFirstChildGroupText',
+          showLabel: true,
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -2555,6 +2571,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               type: 'collectionVariable',
               name: 'groupColour',
               showLabel: true,
+              label: 'groupColourLabel',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -2572,6 +2589,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               name: 'groupColourAgain',
               placeholder: 'emptyTextId',
               showLabel: true,
+              label: 'groupColourAgainLabel',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText',
@@ -2594,6 +2612,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                 body: 'exampleMetadataNumberVarDefText',
               },
               label: 'exampleMetadataNumberVarText',
+              showLabel: true,
               validation: {
                 type: 'number',
                 min: 0,
@@ -2617,6 +2636,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                 body: 'exampleMetadataTextVarDefText',
               },
               label: 'exampleMetadataTextVarText',
+              showLabel: true,
               validation: {
                 type: 'regex',
                 pattern: '.*',
@@ -2631,6 +2651,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                   name: 'colour',
                   placeholder: 'emptyTextId',
                   showLabel: true,
+                  label: 'colourLabel',
                   tooltip: {
                     title: 'exampleCollectionVarText',
                     body: 'exampleCollectionVarDefText',
@@ -2646,6 +2667,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                   type: 'collectionVariable',
                   name: 'colourAgain',
                   showLabel: true,
+                  label: 'groupColourAgainLabel',
                   placeholder: 'emptyTextId',
                   tooltip: {
                     title: 'exampleCollectionVarText',
@@ -2708,6 +2730,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           body: 'bookTitletextVarDefText',
         },
         label: 'bookTitletextVarText',
+        showLabel: true,
         validation: {
           type: 'regex',
           pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
@@ -2721,6 +2744,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             type: 'collectionVariable',
             name: 'colour',
             showLabel: true,
+            label: 'colourLabel',
             placeholder: 'emptyTextId',
             tooltip: {
               title: 'exampleCollectionVarText',
@@ -2744,6 +2768,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           body: 'keepThisNumberVarDefText',
         },
         label: 'keepThisNumberVarText',
+        showLabel: true,
         validation: {
           type: 'number',
           min: 0,
@@ -2762,6 +2787,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             type: 'collectionVariable',
             name: 'colour',
             showLabel: true,
+            label: 'colourLabel',
             placeholder: 'emptyTextId',
             tooltip: {
               title: 'exampleCollectionVarText',
@@ -2785,6 +2811,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           body: 'exampleFirstChildGroupDefText',
         },
         label: 'exampleFirstChildGroupText',
+        showLabel: true,
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -2795,6 +2822,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             name: 'groupColour',
             placeholder: 'emptyTextId',
             showLabel: true,
+            label: 'groupColourLabel',
             tooltip: {
               title: 'exampleCollectionVarText',
               body: 'exampleCollectionVarDefText',
@@ -2810,6 +2838,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             type: 'collectionVariable',
             name: 'groupColourAgain',
             showLabel: true,
+            label: 'groupColourAgainLabel',
             finalValue: 'pink',
             placeholder: 'emptyTextId',
             tooltip: {
@@ -2834,6 +2863,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
               body: 'exampleMetadataNumberVarDefText',
             },
             label: 'exampleMetadataNumberVarText',
+            showLabel: true,
             validation: {
               type: 'number',
               min: 0,
@@ -2858,6 +2888,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
               body: 'exampleMetadataTextVarDefText',
             },
             label: 'exampleMetadataTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.*',
@@ -2872,6 +2903,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
                 name: 'colour',
                 placeholder: 'emptyTextId',
                 showLabel: true,
+                label: 'colourLabel',
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -2889,6 +2921,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
                 finalValue: 'pink',
                 placeholder: 'emptyTextId',
                 showLabel: true,
+                label: 'colourAgainLabel',
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -2967,6 +3000,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
           body: 'keepThisNumberVarDefText',
         },
         label: 'keepThisNumberVarText',
+        showLabel: true,
         validation: {
           type: 'number',
           min: 0,
@@ -2986,6 +3020,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
             name: 'colour',
             placeholder: 'emptyTextId',
             finalValue: 'blue',
+            label: 'colourLabel',
             showLabel: true,
             tooltip: {
               title: 'exampleCollectionVarText',
@@ -3009,6 +3044,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
           body: 'exampleFirstChildGroupDefText',
         },
         label: 'exampleFirstChildGroupText',
+        showLabel: true,
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -3023,6 +3059,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
               body: 'exampleMetadataNumberVarDefText',
             },
             label: 'exampleMetadataNumberVarText',
+            showLabel: true,
             validation: {
               type: 'number',
               min: 0,
@@ -3043,6 +3080,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
                 placeholder: 'emptyTextId',
                 finalValue: 'pink',
                 showLabel: true,
+                label: 'colourLabel',
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -3668,6 +3706,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
         {
           type: 'group',
           label: 'someChildGroupTextId',
+          showLabel: true,
           name: 'nonRepeatingGroup',
           repeat: {
             repeatMin: 1,
@@ -3682,6 +3721,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
               type: 'collectionVariable',
               name: 'groupAttribute',
               showLabel: true,
+              label: 'groupAttrLabel',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -3702,6 +3742,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           type: 'numberVariable',
           name: 'grade',
           placeholder: 'yourGrades',
+          showLabel: true,
+          label: 'gradeLabel',
           validation: {
             type: 'number',
             min: 1,
@@ -3715,6 +3757,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
               type: 'collectionVariable',
               name: 'gradeAttribute',
               showLabel: true,
+              label: 'gradeAttributeLabel',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',

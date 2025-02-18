@@ -45,10 +45,19 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
       >
         <InfoIcon />
       </PopoverButton>
-      <PopoverPanel anchor='top' className={styles.fieldInfoPanel}>
+      <PopoverPanel
+        anchor='top'
+        className={styles.fieldInfoPanel}
+        role='definition'
+      >
         <div className={styles.labelWrapper}>
           {title && <h4>{t(title)}</h4>}
-          <CloseButton as={Button} variant='icon' size='small'>
+          <CloseButton
+            as={Button}
+            variant='icon'
+            size='small'
+            aria-label={t('divaClient_closeText')}
+          >
             <CloseIcon />
           </CloseButton>
         </div>

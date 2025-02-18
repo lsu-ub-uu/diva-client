@@ -16,33 +16,34 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
-/*describe('<TooltipLegacy />', () => {
-  it('Renders tooltip when child button is clicked and can be closed', async () => {
+describe('<FieldInfo />', () => {
+  it('Renders tooltip when info button is clicked and can be closed', async () => {
     const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';
     render(<FieldInfo title={title} body={body} />);
 
-    const spanBtn = screen.getByText('divaClient_fieldInfoText');
-    expect(spanBtn).toBeInTheDocument();
-    await user.click(spanBtn);
+    expect(screen.queryByRole('definition')).not.toBeInTheDocument();
 
-    const tooltip = screen.queryByRole('tooltip');
-    expect(tooltip).toBeInTheDocument();
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_fieldInfoText' }),
+    );
 
-    const closeButton = screen.getByLabelText('close');
-    expect(closeButton).toBeInTheDocument();
+    expect(screen.getByRole('definition')).toBeInTheDocument();
 
-    await user.click(closeButton);
-    await waitForElementToBeRemoved(() => screen.queryByRole('tooltip'));
-    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    screen.getByText('Test Title');
+    screen.getByText('body content');
+
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_closeText',
+      }),
+    );
+
+    expect(screen.queryByRole('definition')).not.toBeInTheDocument();
   });
-});*/
+});

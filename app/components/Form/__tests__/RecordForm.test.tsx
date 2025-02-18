@@ -493,7 +493,7 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition does NOT validate it', async () => {
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
@@ -516,9 +516,7 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
-      const { container } = render(
-        <RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />,
-      );
+      render(<RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />);
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
@@ -915,6 +913,9 @@ describe('<Form />', () => {
       const user = userEvent.setup();
 
       const recordWithOldFinalValue: BFFDataRecord = {
+        id: 'id',
+        validationType: 'validationType',
+        recordType: 'recordType',
         data: {
           someRootNameInData: {
             recordInfo: {
@@ -1958,9 +1959,7 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
 
-      const attributeSelect = screen.getByLabelText(
-        'someNumberVar2AttributeLabel',
-      );
+      screen.getByLabelText('someNumberVar2AttributeLabel');
 
       await user.type(numberInput, '12');
 
@@ -1986,9 +1985,7 @@ describe('<Form />', () => {
         'someNumberVarIdPlaceholder',
       );
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-      const attributeSelect = screen.getByLabelText(
-        'someNumberVar2AttributeLabel',
-      );
+      screen.getByLabelText('someNumberVar2AttributeLabel');
       await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
@@ -2009,9 +2006,7 @@ describe('<Form />', () => {
       );
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
-      const attributeSelect = screen.getByLabelText(
-        'languageCollectionVarText',
-      );
+      screen.getByLabelText('languageCollectionVarText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -2113,9 +2108,9 @@ describe('<Form />', () => {
         />,
       );
 
-      const groupAttribute = screen.getByLabelText('someTitleGroupText');
+      screen.getByLabelText('someTitleGroupText');
 
-      const variableAttribute = screen.getByLabelText('Eye colour');
+      screen.getByLabelText('Eye colour');
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
@@ -2303,7 +2298,7 @@ describe('<Form />', () => {
 
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithWithOptionalGroupWithRequiredVar}
         />,
@@ -2385,7 +2380,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
         />,
@@ -2411,7 +2406,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={
             formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars
@@ -2439,7 +2434,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
         />,
@@ -2462,7 +2457,7 @@ describe('<Form />', () => {
 
     it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
         />,
@@ -2687,7 +2682,7 @@ describe('<Form />', () => {
     describe('textVar', () => {
       it('renders a textVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingTextVar}
           />,
@@ -2728,7 +2723,7 @@ describe('<Form />', () => {
     describe('numberVar', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingNumberVar}
           />,
@@ -2764,7 +2759,7 @@ describe('<Form />', () => {
 
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingCollectionVar}
           />,

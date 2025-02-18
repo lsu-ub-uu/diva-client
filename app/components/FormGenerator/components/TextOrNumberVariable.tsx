@@ -51,7 +51,7 @@ export const TextOrNumberVariable = ({
 }: TextOrNumberVariableProps) => {
   const { t } = useTranslation();
   const { getValues, register, formState } = useRemixFormContext();
-  const { linkedData, showTooltips } = useContext(FormGeneratorContext);
+  const { showTooltips } = useContext(FormGeneratorContext);
   const value = getValues(path);
 
   const errorMessage = getErrorMessageForField(formState, path);

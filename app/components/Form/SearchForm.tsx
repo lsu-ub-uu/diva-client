@@ -17,7 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import type {
+  BFFDataRecord,
+  BFFDataRecordData,
+  BFFSearchResult,
+} from '@/types/record';
 import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
@@ -33,13 +37,13 @@ import { SearchIcon } from '@/icons';
 
 interface SearchFormProps {
   searchType: string;
-  record?: BFFDataRecord;
+  data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
 }
 
 export const SearchForm = ({
-  record,
+  data,
   formSchema,
   searchResults,
 }: SearchFormProps) => {
@@ -48,10 +52,7 @@ export const SearchForm = ({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      formSchema,
-      record?.data as RecordData,
-    ),
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (

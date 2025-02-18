@@ -19,7 +19,7 @@
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import type { BFFSearchResult } from '@/types/record';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
@@ -29,7 +29,7 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
   searchType: string;
-  query: any;
+  query: BFFDataRecordData;
   searchResults: BFFSearchResult | undefined;
 }
 
@@ -45,7 +45,7 @@ export const RecordSearch = ({
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
-        record={{ data: query }}
+        data={query}
         searchResults={searchResults}
       />
       {searchResults && (

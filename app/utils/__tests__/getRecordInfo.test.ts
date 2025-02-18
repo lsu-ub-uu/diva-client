@@ -23,6 +23,9 @@ describe('recordInfoHelpers', () => {
   describe('getRecordInfo', () => {
     it('return a RecordInfo', () => {
       const response = {
+        id: 'id',
+        validationType: 'validationType',
+        recordType: 'recordType',
         data: {
           output: {
             titleInfo: {

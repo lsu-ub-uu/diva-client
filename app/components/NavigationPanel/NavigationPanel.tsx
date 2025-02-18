@@ -22,23 +22,23 @@ import { useTranslation } from 'react-i18next';
 import styles from './NavigationPanel.module.css';
 import { useLocation } from 'react-router';
 
-export interface NavigationPanelProps {
-  links: NavigationPanelLink[];
-  activeLinkName?: string;
-}
 export interface NavigationPanelLink {
   name: string;
   label: string;
 }
 
-export const NavigationPanel = (props: NavigationPanelProps) => {
+export interface NavigationPanelProps {
+  links: NavigationPanelLink[];
+}
+
+export const NavigationPanel = ({ links }: NavigationPanelProps) => {
   const { hash } = useLocation();
   const { t } = useTranslation();
 
   return (
     <nav className={styles['navigation-panel']}>
       <ul>
-        {props.links.map((item, index) => (
+        {links.map((item, index) => (
           <li key={index}>
             <a
               href={`#anchor_${item.name}`}
