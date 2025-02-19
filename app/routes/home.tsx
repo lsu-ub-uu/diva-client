@@ -35,7 +35,6 @@ import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import type { Route } from './+types/home';
-import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
 import type { Auth } from '@/auth/Auth';
@@ -52,12 +51,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     'diva-outputSimpleSearch',
   );
 
-  const { query, searchResults } = await performSearch(
-    searchForm,
-    request,
-    context,
-    auth,
-  );
+  const { query, searchResults } = await performSearch(request, context, auth);
 
   return data(
     {
@@ -140,27 +134,19 @@ const getPageTitle = (context: AppLoadContext) => {
 };
 
 const performSearch = async (
-  searchForm: SearchFormSchema,
   request: Request,
   context: AppLoadContext,
   auth: Auth | undefined,
 ) => {
-  // const resolver = yupResolver(generateYupSchemaFromFormSchema(searchForm));
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
-  /*
-  const {
-    errors,
-    data: query,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(request, resolver);*/
-
-  /* if (errors) {
-    return { errors, defaultValues, query };
-  }*/
 
   if (isEmpty(query)) {
     return { query };
+  }
+
+  if (query.search.rows === undefined) {
+    query.search.rows = [{ value: '10' }];
   }
 
   const searchResults = await searchRecords(
@@ -169,5 +155,6 @@ const performSearch = async (
     query,
     auth,
   );
+
   return { query, searchResults };
 };

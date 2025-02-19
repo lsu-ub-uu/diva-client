@@ -227,4 +227,31 @@ describe('<Pagination />', () => {
       screen.getByLabelText('divaClient_paginationPreviousPageText'),
     ).toHaveValue('1');
   });
+
+  it('renders correct value for back button when on last page with few items', () => {
+    render(
+      <MockFormProvider
+        overrides={{
+          getValues: vi
+            .fn()
+            .mockImplementation((name) =>
+              name === 'search.rows[0].value' ? '5' : undefined,
+            ),
+        }}
+      >
+        <Pagination
+          searchResults={mock<BFFSearchResult>({
+            fromNo: 11,
+            toNo: 12,
+            totalNo: 12,
+          })}
+          onRowsPerPageChange={vi.fn()}
+        />
+      </MockFormProvider>,
+    );
+
+    expect(
+      screen.getByLabelText('divaClient_paginationPreviousPageText'),
+    ).toHaveValue('6');
+  });
 });
