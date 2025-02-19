@@ -35,7 +35,6 @@
  */
 
 import type {
-  FormComponent,
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
@@ -43,8 +42,6 @@ import {
   findOptionLabelByValue,
   getErrorMessageForField,
   isComponentCollVar,
-  isComponentNumVar,
-  isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, useContext } from 'react';
@@ -53,11 +50,8 @@ import styles from './FormComponent.module.css';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { useTranslation } from 'react-i18next';
 import { Field } from '@/components/Input/Field';
-import { Input } from '@/components/Input/Input';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { Textarea } from '@/components/Input/Textarea';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Select } from '@/components/Input/Select';
 import { InputField } from '@/components/FormGenerator/components/InputField';
 
 interface VariableProps {
@@ -101,7 +95,7 @@ export const Variable = ({
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           label={label}
-          value={getDisplayValue(component, value)}
+          value={getOutputDisplayValue(component, value)}
           textStyle={component.textStyle}
           info={showTooltips ? component.tooltip : undefined}
           adornment={
@@ -142,7 +136,7 @@ export const Variable = ({
   );
 };
 
-const getDisplayValue = (
+const getOutputDisplayValue = (
   component: FormComponentTextVar | FormComponentNumVar,
   value: any,
 ) => {
