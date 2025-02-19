@@ -42,11 +42,8 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
   FormComponentNumVar,
-<<<<<<< Updated upstream
   FormComponentRecordLink,
-=======
   FormComponentResourceLink,
->>>>>>> Stashed changes
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import {
