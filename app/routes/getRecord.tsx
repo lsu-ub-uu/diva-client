@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { invariant } from '@/utils/invariant';
 
@@ -27,25 +27,33 @@ export const loader = async ({
   params,
   context,
 }: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  try {
+    const session = await getSessionFromCookie(request);
+    const auth = getAuth(session);
 
-  const { recordType, recordId } = params;
+    const { recordType, recordId } = params;
 
-  const url = new URL(request.url);
+    const url = new URL(request.url);
 
-  const presentationRecordLinkId = url.searchParams.get(
-    'presentationRecordLinkId',
-  );
-  invariant(presentationRecordLinkId, 'Missing presentationRecordLinkId param');
+    const presentationRecordLinkId = url.searchParams.get(
+      'presentationRecordLinkId',
+    );
+    invariant(
+      presentationRecordLinkId,
+      'Missing presentationRecordLinkId param',
+    );
 
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
-    recordType,
-    recordId,
-    authToken: auth.data.token,
-    presentationRecordLinkId,
-  });
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies: context.dependencies,
+      recordType,
+      recordId,
+      authToken: auth?.data.token,
+      presentationRecordLinkId,
+    });
 
-  return Response.json(record);
+    return { record };
+  } catch (error) {
+    console.error(error);
+    return { error: true };
+  }
 };

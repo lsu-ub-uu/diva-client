@@ -90,8 +90,18 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'recordLink': {
       return transformRecordLink(dataRecordGroup, metadata);
     }
+
+    case 'resourceLink': {
+      // Basic metadata is enough for a resourceLink
+      return metadata;
+    }
     // TODO add more types
+    // TODO BINARIES
     default: {
+      console.log(
+        'Unhandled metadata type: ',
+        JSON.stringify(dataRecordGroup, null, 2),
+      );
       return undefined;
     }
   }

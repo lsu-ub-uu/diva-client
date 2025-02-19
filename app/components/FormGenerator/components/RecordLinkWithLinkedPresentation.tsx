@@ -26,6 +26,7 @@ import styles from '@/components/FormGenerator/components/FormComponent.module.c
 import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
 import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { useTranslation } from 'react-i18next';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
@@ -42,6 +43,7 @@ export const RecordLinkWithLinkedPresentation = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
+  const { t } = useTranslation();
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
 
@@ -56,8 +58,15 @@ export const RecordLinkWithLinkedPresentation = ({
         >
           <DevInfo component={component} path={name} />
 
-          <div className={linkedRecordStyles.container}>
-            {attributes} {actionButtonGroup}
+          <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+            {component.showLabel && (
+              <div className={linkedRecordStyles['label']}>
+                {t(component.label)}
+              </div>
+            )}
+            <div className={linkedRecordStyles['container']}>
+              {attributes} {actionButtonGroup}
+            </div>
           </div>
           <ControlledLinkedRecord
             control={control}

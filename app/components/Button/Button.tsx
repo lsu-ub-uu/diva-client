@@ -31,6 +31,7 @@ interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   fullWidth?: boolean;
   as?: ElementType;
   to?: string;
+  href?: string;
 }
 
 export const Button = forwardRef(function Button(

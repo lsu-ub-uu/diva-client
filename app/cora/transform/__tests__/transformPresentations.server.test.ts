@@ -42,6 +42,8 @@ import coraPresentationGroupSpecifiedHeadlineText from '@/__mocks__/bff/coraPres
 import coraPresentationGroupWithShowLabel from '@/__mocks__/bff/coraPresentationGroupWithShowLabel.json';
 import coraPresentationGroupSpecifiedHeadlineLevel from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineLevel.json';
 import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
+import coraPresentationResourceLinkMasterImage from '@/__mocks__/bff/coraPresentationResourceLinkMasterImage.json';
+import coraPresentationResourceLinkThumbnail from '@/__mocks__/bff/coraPresentationResourceLinkThumbnail.json';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 
 describe('transformCoraPresentations', () => {
@@ -642,6 +644,33 @@ describe('transformCoraPresentations', () => {
             minNumberOfRepeatingToShow: '1',
           },
         ],
+      });
+    });
+  });
+
+  describe('pResourceLink', () => {
+    it('Returns one BFFPresentation for one pResourceLink entry with outputFormat download', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationResourceLinkMasterImage,
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'masterImagePResLink',
+        type: 'pResourceLink',
+        presentationOf: 'masterResLink',
+        outputFormat: 'download',
+        showLabel: 'false',
+      });
+    });
+    it('Returns one BFFPresentation for one pResourceLink entry with outputFormat image', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationResourceLinkThumbnail,
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'thumbnailImagePResLink',
+        type: 'pResourceLink',
+        presentationOf: 'thumbnailResLink',
+        outputFormat: 'image',
+        showLabel: 'false',
       });
     });
   });
