@@ -44,10 +44,10 @@ export const Pagination = ({
   onRowsPerPageChange,
 }: PaginationProps) => {
   const { t } = useTranslation();
-  const { register } = useRemixFormContext();
+  const { register, getValues } = useRemixFormContext();
 
   const { fromNo, toNo, totalNo } = searchResults;
-  const rowsPerPage = toNo - fromNo + 1;
+  const rowsPerPage = getValues('search.rows[0].value') ?? toNo - fromNo + 1;
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
 
@@ -81,7 +81,6 @@ export const Pagination = ({
           ))}
         </Select>
       </Field>
-
       <span className={styles['pagination-buttons']}>
         <Button
           variant='icon'
