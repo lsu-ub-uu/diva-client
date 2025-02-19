@@ -17,7 +17,6 @@
  */
 
 import {
-  getErrorMessageForField,
   isComponentCollVar,
   isComponentNumVar,
   isComponentTextVariable,
