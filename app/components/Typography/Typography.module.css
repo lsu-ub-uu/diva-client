@@ -1,4 +1,6 @@
 .typography {
+  word-wrap: break-word;
+
   &[data-variant='h1TextStyle'] {
     font-size: var(--font-size-h1);
     font-weight: var(--font-weight-h1);

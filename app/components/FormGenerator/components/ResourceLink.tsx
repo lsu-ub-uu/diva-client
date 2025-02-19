@@ -19,6 +19,7 @@
 import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
+import resourceLinkStyles from './ResourceLink.module.css';
 import { useRemixFormContext } from 'remix-hook-form';
 import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
 import { useRouteLoaderData } from 'react-router';
@@ -43,10 +44,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
       <DevInfo component={component} path={path} />
       {component.outputFormat === 'image' && <img src={resourceUrl} alt='' />}
       {component.outputFormat === 'download' && (
-        <a
-          href={resourceUrl}
-          style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
-        >
+        <a href={resourceUrl} className={resourceLinkStyles['downloadLink']}>
           {t('divaClient_downloadFileText')}
           <DownloadIcon />
         </a>
