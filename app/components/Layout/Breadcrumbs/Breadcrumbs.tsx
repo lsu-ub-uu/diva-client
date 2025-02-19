@@ -17,7 +17,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { useLocation, NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 import styles from './Breadcrumbs.module.css';
 
 export const Breadcrumbs = () => {
@@ -34,7 +34,10 @@ export const Breadcrumbs = () => {
   let currentLink = '';
 
   return (
-    <nav aria-label='breadcrumb' className={styles['breadcrumbs']}>
+    <nav
+      aria-label={t('divaClient_breadcrumbText')}
+      className={styles['breadcrumbs']}
+    >
       <ol>
         <li>
           <NavLink to='/'>

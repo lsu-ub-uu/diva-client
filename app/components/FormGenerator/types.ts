@@ -115,7 +115,7 @@ export interface FormComponentMetadata extends FormComponentBase {
 }
 
 export interface FormComponentTextVar extends FormComponentMetadata {
-  inputType?: 'input' | 'textarea'; // really be optional?
+  inputType: 'input' | 'textarea';
   inputFormat?: 'password';
   validation?: FormRegexValidation;
   attributes?: FormAttributeCollection[];
@@ -135,7 +135,7 @@ export interface FormComponentNumVar extends FormComponentMetadata {
   showLabel: boolean;
 }
 export interface FormComponentCollVar extends FormComponentMetadata {
-  options?: FormComponentCollItem[];
+  options: FormComponentCollItem[];
   attributes?: FormAttributeCollection[];
   label: string;
   showLabel: boolean;

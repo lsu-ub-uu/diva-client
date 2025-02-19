@@ -18,11 +18,11 @@
 
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
-import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useWatch } from 'react-hook-form';
+import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -78,7 +78,7 @@ export const RecordLink = ({
   }
 
   return (
-    <TextOrNumberVariable
+    <Variable
       reactKey={reactKey}
       component={component}
       path={name}
