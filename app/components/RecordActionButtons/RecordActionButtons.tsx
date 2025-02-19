@@ -21,12 +21,14 @@ import { Link, useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import { ArticleIcon, DeleteForeverIcon, EditDocumentIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
 }
 
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
+  const { t } = useTranslation();
   const fetcher = useFetcher();
 
   return record.userRights?.map((userRight) => {
@@ -38,6 +40,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/view/${record.recordType}/${record.id}`}
+            aria-label={t('divaClient_viewRecordText')}
           >
             <ArticleIcon />
           </Button>
@@ -49,6 +52,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/update/${record.recordType}/${record.id}`}
+            aria-label={t('divaClient_editRecordText')}
           >
             <EditDocumentIcon />
           </Button>
@@ -60,7 +64,11 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             method='POST'
             action={`/delete/${record.recordType}/${record.id}`}
           >
-            <Button variant='icon' type='submit'>
+            <Button
+              variant='icon'
+              type='submit'
+              aria-label={t('divaClient_deleteRecordText')}
+            >
               <DeleteForeverIcon />
             </Button>
           </fetcher.Form>

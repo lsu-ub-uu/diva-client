@@ -78,7 +78,7 @@ export const RecordLinkWithSearch = ({
         <Combobox onChange={(recordId) => setValue(path, recordId)}>
           <ComboboxInput
             aria-busy={fetcher.state !== 'idle'}
-            placeholder='Sök efter länkad post'
+            placeholder={t('divaClient_recordLinkAutocompletePlaceholderText')}
             onChange={(event) =>
               fetcher.load(
                 `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
@@ -100,12 +100,12 @@ export const RecordLinkWithSearch = ({
               fetcher.data &&
               fetcher.data.result.length === 0 && (
                 <ComboboxOption disabled value=''>
-                  Inga resultat
+                  {t('divaClient_recordLinkAutocompleteNoResultsText')}
                 </ComboboxOption>
               )}
             {fetcher.state === 'loading' && (
               <ComboboxOption disabled value=''>
-                Söker...
+                {t('divaClient_recordLinkAutocompleteSearchingText')}
               </ComboboxOption>
             )}
           </ComboboxOptions>
