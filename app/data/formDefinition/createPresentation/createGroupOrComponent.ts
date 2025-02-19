@@ -40,6 +40,7 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
   FormComponentNumVar,
+  FormComponentRecordLink,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import {
@@ -159,13 +160,14 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataRecordLink,
       presentation,
     );
+
     return removeEmpty({
       repeat,
       childStyle,
       textStyle,
       gridColSpan,
       ...recordLink,
-    }) as FormComponentCollVar;
+    }) as FormComponentRecordLink;
   }
 
   if (presentation.type === 'container') {

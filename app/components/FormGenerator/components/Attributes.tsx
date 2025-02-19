@@ -17,10 +17,7 @@
  */
 
 import { AttributeSelect } from '@/components/FormGenerator/components/AttributeSelect';
-import type {
-  FormComponentCollVar,
-  FormComponentWithData,
-} from '@/components/FormGenerator/types';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
@@ -50,7 +47,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
   });
 };
 
-const getAttributesToShow = (component: FormComponentCollVar) => {
+const getAttributesToShow = (component: FormComponentWithData) => {
   if (component.attributesToShow === 'selectable') {
     return (component.attributes ?? []).filter(
       (attribute) => attribute.finalValue === undefined,
