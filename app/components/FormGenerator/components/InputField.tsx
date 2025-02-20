@@ -18,7 +18,6 @@
 
 import {
   isComponentCollVar,
-  isComponentNumVar,
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Select } from '@/components/Input/Select';
