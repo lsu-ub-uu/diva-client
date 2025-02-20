@@ -40,21 +40,15 @@ export const coraRecord: BFFDataRecord = {
         dataDivider: {
           value: 'divaData',
         },
-        type: [
-          {
-            value: 'record',
-          },
-        ],
-        createdBy: [
-          {
-            value: '161616',
-          },
-        ],
-        tsCreated: [
-          {
-            value: '2024-10-16T12:36:04.249992Z',
-          },
-        ],
+        type: {
+          value: 'record',
+        },
+        createdBy: {
+          value: '161616',
+        },
+        tsCreated: {
+          value: '2024-10-16T12:36:04.249992Z',
+        },
         updated: [
           {
             tsUpdated: {
@@ -276,21 +270,15 @@ export const authorRecord: BFFDataRecord = {
         dataDivider: {
           value: 'divaData',
         },
-        type: [
-          {
-            value: 'author',
-          },
-        ],
-        createdBy: [
-          {
-            value: '161616',
-          },
-        ],
-        tsCreated: [
-          {
-            value: '2024-10-16T12:36:04.249992Z',
-          },
-        ],
+        type: {
+          value: 'author',
+        },
+        createdBy: {
+          value: '161616',
+        },
+        tsCreated: {
+          value: '2024-10-16T12:36:04.249992Z',
+        },
         updated: [
           {
             tsUpdated: {

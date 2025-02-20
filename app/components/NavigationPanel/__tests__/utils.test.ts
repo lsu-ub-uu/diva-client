@@ -23,7 +23,7 @@ import {
   removeComponentsWithoutValuesFromSchema,
   toShortString,
 } from '../utils';
-import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/formDef';
+import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/formDef';
 import {
   authorAndTitleSchema,
   authorRecord,

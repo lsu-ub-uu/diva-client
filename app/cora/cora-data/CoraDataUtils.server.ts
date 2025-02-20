@@ -73,7 +73,7 @@ export function getFirstRecordLinkWithNameInData(
 export function getFirstChildWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): DataAtomic | DataGroup {
+) {
   if (dataGroup.children.length === 0) {
     throw new Error(
       `DataGroup with name [${dataGroup.name}] does not have any children`,
@@ -94,7 +94,7 @@ export function getFirstChildWithNameInData(
 export function getAllChildrenWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): (DataAtomic | DataGroup)[] {
+) {
   const childrenToReturn = dataGroup.children.filter((child) => {
     return child.name === nameInData;
   });
