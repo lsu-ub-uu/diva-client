@@ -194,7 +194,8 @@ export type FormComponent =
   | FormComponentGroup
   | FormComponentText
   | FormComponentGuiElement
-  | FormComponentHidden;
+  | FormComponentHidden
+  | FormComponentResourceLink;
 
 export type FormComponentWithData =
   | FormComponentTextVar

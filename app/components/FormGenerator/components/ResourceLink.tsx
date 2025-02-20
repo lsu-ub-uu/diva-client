@@ -35,9 +35,8 @@ interface ResourceLinkProps {
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
-  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
+  const rootLoaderData = useRouteLoaderData<typeof loader>('/hej');
   const data: ResourceLinkType = getValues(path);
-
   const authToken = rootLoaderData?.auth?.data.token;
 
   const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
@@ -47,7 +46,11 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
       <DevInfo component={component} path={path} />
       {component.outputFormat === 'image' && <img src={resourceUrl} alt='' />}
       {component.outputFormat === 'download' && (
-        <a href={resourceUrl} className={resourceLinkStyles['downloadLink']}>
+        <a
+          href={resourceUrl}
+          className={resourceLinkStyles['downloadLink']}
+          type={data.mimeType}
+        >
           {t('divaClient_downloadFileText')}
           <DownloadIcon />
         </a>
