@@ -25,6 +25,7 @@ import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.se
 import { useRouteLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DownloadIcon } from '@/icons';
+import type { loader } from '@/root';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -34,10 +35,12 @@ interface ResourceLinkProps {
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
-  const { auth } = useRouteLoaderData('root');
+  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
   const data: ResourceLinkType = getValues(path);
 
-  const resourceUrl = `${data.actionLinks.read.url}${auth ? `?authToken=${auth.data.token}` : ''}`;
+  const authToken = rootLoaderData?.auth?.data.token;
+
+  const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
 
   return (
     <div className={styles['component']} data-colspan={component.gridColSpan}>

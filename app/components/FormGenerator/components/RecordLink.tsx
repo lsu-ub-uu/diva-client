@@ -44,7 +44,6 @@ export const RecordLink = ({
   const value = useWatch({ name });
 
   const { linkedData } = useContext(FormGeneratorContext);
-
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&

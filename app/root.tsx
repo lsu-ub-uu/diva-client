@@ -38,6 +38,7 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 const { MODE } = import.meta.env;
 
@@ -88,6 +89,8 @@ export const links: Route.LinksFunction = () => [
   },
   { rel: 'stylesheet', href: rootCss },
 ];
+
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');

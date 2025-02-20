@@ -18,6 +18,7 @@
 
 import {
   commitSession,
+  getAuth,
   getNotification,
   getSessionFromCookie,
   requireAuth,
@@ -49,7 +50,7 @@ import styles from '@/routes/record.module.css';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
   const { t } = context.i18n;
 
   const notification = getNotification(session);
@@ -60,7 +61,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     dependencies: context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
