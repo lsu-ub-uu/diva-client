@@ -464,7 +464,6 @@ describe('<Form />', () => {
       const input2 = screen.getByLabelText('outputTypeCollectionVarText2');
       expect(input1).toBeInTheDocument();
       expect(input2).toBeInTheDocument();
-      screen.debug();
     });
 
     it('renders a form from a given definition does validate it', async () => {
