@@ -132,6 +132,11 @@ export interface BFFPresentationBase extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
+export interface BFFPresentationResourceLink
+  extends Omit<BFFPresentationBase, 'mode'> {
+  outputFormat: 'image' | 'download';
+}
+
 export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
@@ -202,7 +207,8 @@ export type BFFPresentation =
   | BFFPresentationBase
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
-  | BFFGuiElement;
+  | BFFGuiElement
+  | BFFPresentationResourceLink;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
@@ -232,3 +238,5 @@ export interface BFFLoginPassword extends BFFLogin {
   viewPresentation: string;
   description: string;
 }
+
+export type BFFResourceLink = BFFMetadataBase;

@@ -18,15 +18,14 @@
  */
 
 import {
+  act,
   render,
   screen,
-  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { expect } from 'vitest';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
+import { createRoutesStub } from 'react-router';
 
 const nationalSubjectCategory = {
   id: 'nationalSubjectCategory:6325370460697648',
@@ -247,30 +246,26 @@ const nationalSubjectCategory = {
 };
 
 describe('<LinkedRecord/>', () => {
-  let mockAxios: MockAdapter;
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios);
-    const listUrl =
-      '/record/nationalSubjectCategory/nationalSubjectCategory:6325370460697648?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
-    mockAxios.onGet(listUrl).reply(200, nationalSubjectCategory);
-    const errorUrl =
-      '/record/nationalSubjectCategory/nationalSubjectCategory:error?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
-    mockAxios.onGet(errorUrl).networkErrorOnce();
-  });
-
-  afterEach(() => {
-    mockAxios.restore();
-  });
-
   it('renders with default loadingText', async () => {
-    // expect(loadingText).not.toBeInTheDocument();
-    render(
-      <LinkedRecord
-        id='nationalSubjectCategory:6325370460697648'
-        recordType='nationalSubjectCategory'
-        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <LinkedRecord
+            id='nationalSubjectCategory:6325370460697648'
+            recordType='nationalSubjectCategory'
+            presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+          />
+        ),
+      },
+      {
+        path: '/record/:recordType/:recordId',
+        loader: () => {
+          return { record: nationalSubjectCategory };
+        },
+      },
+    ]);
+    render(<RoutesStub />);
     const loadingText = screen.queryByText('divaClient_loadingText');
     expect(loadingText).toBeInTheDocument();
     await waitForElementToBeRemoved(() =>
@@ -279,76 +274,58 @@ describe('<LinkedRecord/>', () => {
   });
 
   it('renders the presentation for the linked record', async () => {
-    render(
-      <LinkedRecord
-        id='nationalSubjectCategory:6325370460697648'
-        recordType='nationalSubjectCategory'
-        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-      />,
-    );
-    const loadingText = screen.getByText('divaClient_loadingText');
-    expect(loadingText).toBeInTheDocument();
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <LinkedRecord
+            id='nationalSubjectCategory:6325370460697648'
+            recordType='nationalSubjectCategory'
+            presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+          />
+        ),
+      },
+      {
+        path: '/record/:recordType/:recordId',
+        loader: () => {
+          return { record: nationalSubjectCategory };
+        },
+      },
+    ]);
+    await act(() => render(<RoutesStub />));
 
-    await waitFor(() => {
-      const fysik = screen.queryByText(/fysik/i);
-      expect(fysik).toBeInTheDocument();
-      const physics = screen.queryByText(/Physical Sciences/i);
-      expect(physics).toBeInTheDocument();
-    });
-    expect(loadingText).not.toBeInTheDocument();
+    const fysik = screen.queryByText(/fysik/i);
+    expect(fysik).toBeInTheDocument();
+    const physics = screen.queryByText(/Physical Sciences/i);
+    expect(physics).toBeInTheDocument();
+    expect(
+      screen.queryByText('divaClient_loadingText'),
+    ).not.toBeInTheDocument();
   });
 
-  it('renders an 404 on missing linked record', async () => {
-    render(
-      <LinkedRecord
-        id='nationalSubjectCategory:missing'
-        recordType='nationalSubjectCategory'
-        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-      />,
-    );
-    const loadingText = screen.getByText('divaClient_loadingText');
-    expect(loadingText).toBeInTheDocument();
+  it('renders an error message on fetch error', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <LinkedRecord
+            id='nationalSubjectCategory:6325370460697648'
+            recordType='nationalSubjectCategory'
+            presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+          />
+        ),
+      },
+      {
+        path: '/record/:recordType/:recordId',
+        loader: () => {
+          return { error: true };
+        },
+      },
+    ]);
+    await act(() => render(<RoutesStub />));
 
-    await waitFor(() => {
-      const error = screen.queryByText(/Request failed with status code 404/i);
-      expect(error).toBeInTheDocument();
-    });
-  });
-
-  it('renders an error on network error', async () => {
-    render(
-      <LinkedRecord
-        id='nationalSubjectCategory:error'
-        recordType='nationalSubjectCategory'
-        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-      />,
-    );
-    const loadingText = screen.getByText('divaClient_loadingText');
-    expect(loadingText).toBeInTheDocument();
-
-    await waitFor(() => {
-      const error = screen.queryByText(/Network Error/i);
-      expect(error).toBeInTheDocument();
-    });
-  });
-
-  it('calls the api once', async () => {
-    render(
-      <LinkedRecord
-        id='nationalSubjectCategory:6325370460697648'
-        recordType='nationalSubjectCategory'
-        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-      />,
-    );
-    const loadingText = screen.getByText('divaClient_loadingText');
-    expect(loadingText).toBeInTheDocument();
-
-    await waitFor(() => {
-      const fysik = screen.queryByText(/fysik/i);
-      expect(fysik).toBeInTheDocument();
-      const physics = screen.queryByText(/Physical Sciences/i);
-      expect(physics).toBeInTheDocument();
-      expect(mockAxios.history.get.length).toBe(1);
-    });
+    expect(
+      screen.getByText('divaClient_FailedToGetRecordText'),
+    ).toBeInTheDocument();
   });
 });

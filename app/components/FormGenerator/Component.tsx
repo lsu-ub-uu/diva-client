@@ -26,6 +26,7 @@ import {
   isComponentGroup,
   isComponentRepeating,
   isComponentRepeatingContainer,
+  isComponentResourceLink,
   isComponentSurroundingContainer,
   isComponentVariable,
   isComponentWithData,
@@ -36,6 +37,7 @@ import { RepeatingVariable } from '@/components/FormGenerator/components/Repeati
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Group } from '@/components/FormGenerator/components/Group';
+import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -94,6 +96,12 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
       />
+    );
+  }
+
+  if (isComponentResourceLink(component)) {
+    return (
+      <ResourceLink component={component} path={currentComponentNamePath} />
     );
   }
 

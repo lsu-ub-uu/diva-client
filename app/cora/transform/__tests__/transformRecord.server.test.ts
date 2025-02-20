@@ -29,10 +29,7 @@ import {
   transformRecord,
   transformRecordData,
 } from '../transformRecord.server';
-import type {
-  DataGroup,
-  RecordWrapper,
-} from '@/cora/cora-data/types.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import type { Lookup } from '@/utils/structs/lookup';
 import type {
   BFFGuiElement,
@@ -42,6 +39,7 @@ import type {
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationGroup,
+  BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFSearch,
@@ -112,6 +110,7 @@ describe('transformRecord', () => {
     | BFFPresentationGroup
     | BFFPresentationSurroundingContainer
     | BFFGuiElement
+    | BFFPresentationResourceLink
   >;
   let dependencies: Dependencies;
 

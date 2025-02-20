@@ -47,3 +47,4 @@ export { default as CheckCircleIcon } from './CheckCircle.svg?react';
 export { default as ProgressIcon } from './Progress.svg?react';
 export { default as PersonIcon } from './Person.svg?react';
 export { default as LoginIcon } from './Login.svg?react';
+export { default as DownloadIcon } from './Download.svg?react';

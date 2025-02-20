@@ -28,6 +28,7 @@ import type {
   FormComponentLeaf,
   FormComponentNumVar,
   FormComponentRecordLink,
+  FormComponentResourceLink,
   FormComponentText,
   FormComponentTextVar,
   FormComponentWithData,
@@ -91,6 +92,9 @@ export const isComponentGuiElement = (
   component: FormComponent,
 ): component is FormComponentGuiElement => component.type === 'guiElementLink';
 
+export const isComponentResourceLink = (
+  component: FormComponent,
+): component is FormComponentResourceLink => component.type === 'resourceLink';
 export const isComponentVariable = (
   component: FormComponent,
 ): component is FormComponentLeaf =>

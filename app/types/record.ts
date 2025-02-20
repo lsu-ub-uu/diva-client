@@ -64,11 +64,11 @@ export interface Metadata {
 
 export interface RecordInfo {
   [key: string]: any;
-  createdBy?: Value[];
+  createdBy?: Value;
   dataDivider: Value;
   id: Value;
-  tsCreated?: Value[];
-  type?: Value[];
+  tsCreated?: Value;
+  type?: Value;
   updated?: UpdatedGroup[];
   validationType?: Value;
 }

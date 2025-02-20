@@ -18,7 +18,6 @@
 
 import {
   isComponentCollVar,
-  isComponentNumVar,
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Select } from '@/components/Input/Select';
@@ -75,22 +74,19 @@ export const InputField = ({
     );
   }
 
-  if (
-    (isComponentTextVariable(component) && component.inputType === 'input') ||
-    isComponentNumVar(component)
-  ) {
-    return (
-      <Input
-        {...register(path)}
-        type={
-          'inputFormat' in component
-            ? (component.inputFormat ?? 'password')
-            : 'text'
-        }
-        invalid={errorMessage !== undefined}
-        placeholder={component.placeholder}
-        readOnly={!!component.finalValue}
-      />
-    );
-  }
+  return (
+    <Input
+      {...register(path)}
+      type={isPasswordField(component) ? 'password' : 'text'}
+      invalid={errorMessage !== undefined}
+      placeholder={component.placeholder}
+      readOnly={!!component.finalValue}
+    />
+  );
+};
+
+const isPasswordField = (
+  component: FormComponentTextVar | FormComponentNumVar,
+) => {
+  return 'inputFormat' in component && component.inputFormat === 'password';
 };

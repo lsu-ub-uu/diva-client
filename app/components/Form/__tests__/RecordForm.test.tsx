@@ -18,7 +18,7 @@
  */
 
 import { describe, expect, vi } from 'vitest';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   formDefCollVarsWithSameNameInData,
@@ -82,13 +82,18 @@ import {
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithWithOptionalGroupWithRequiredVar,
-} from '@/__mocks__/data/formDef';
+} from '@/__mocks__/data/form/formDef';
 import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { parseFormData } from 'remix-hook-form';
+import {
+  formSchemaWithBinary,
+  linkedBinaryMock,
+  recordWithBinary,
+} from '@/__mocks__/data/form/binary';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -159,21 +164,15 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
                   updated: [
                     {
                       tsUpdated: {
@@ -425,21 +424,16 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+
                   updated: [
                     {
                       tsUpdated: {
@@ -470,7 +464,6 @@ describe('<Form />', () => {
       const input2 = screen.getByLabelText('outputTypeCollectionVarText2');
       expect(input1).toBeInTheDocument();
       expect(input2).toBeInTheDocument();
-      screen.debug();
     });
 
     it('renders a form from a given definition does validate it', async () => {
@@ -618,21 +611,16 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+
                   updated: [
                     {
                       tsUpdated: {
@@ -1079,21 +1067,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1142,21 +1125,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1303,21 +1281,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1366,21 +1339,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1723,21 +1691,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1787,21 +1750,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2609,21 +2567,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2800,6 +2753,7 @@ describe('<Form />', () => {
       });
     });
   });
+
   describe('checkIfComponentHasValue', () => {
     it('checkIfComponentHasValue does not hides variable in output with value', () => {
       const record: BFFDataRecord = {
@@ -2823,21 +2777,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2892,21 +2841,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2963,21 +2907,17 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+
+              createdBy: {
+                value: '161616',
+              },
+
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
               updated: [
                 {
                   tsUpdated: {
@@ -3052,5 +2992,52 @@ describe('<Form />', () => {
     );
     expect(hiddenInput).toHaveAttribute('type', 'hidden');
     expect(hiddenInput).not.toBeVisible();
+  });
+
+  describe('resourceLink', () => {
+    it('renders a linked binary', async () => {
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={formSchemaWithBinary}
+              record={recordWithBinary}
+            />
+          ),
+        },
+        {
+          path: '/record/:recordType/:recordId',
+          loader: () => {
+            return { record: linkedBinaryMock };
+          },
+        },
+      ]);
+
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('heading', {
+          name: /attachmentgrouptext/i,
+        }),
+      ).toBeInTheDocument();
+
+      expect(screen.getByRole('presentation')).toHaveAttribute(
+        'src',
+        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
+      );
+
+      expect(screen.getByText('cat.jpg')).toBeInTheDocument();
+
+      const downloadLink = screen.getByRole('link', {
+        name: /divaclient_downloadfiletext/i,
+      });
+
+      expect(downloadLink).toHaveAttribute(
+        'href',
+        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
+      );
+      expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
+    });
   });
 });

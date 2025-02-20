@@ -55,7 +55,8 @@ export type FormComponentType =
   | 'text'
   | 'container'
   | 'guiElementLink'
-  | 'hidden';
+  | 'hidden'
+  | 'resourceLink';
 
 export type FormComponentWithDataType = Omit<
   FormComponentType,
@@ -103,7 +104,6 @@ export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode?: FormComponentMode;
   tooltip?: FormComponentTooltip;
-
   headlineLevel?: string;
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
@@ -156,6 +156,13 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   showLabel: boolean;
 }
 
+export interface FormComponentResourceLink extends FormComponentMetadata {
+  outputFormat: 'image' | 'download';
+  attributes?: FormAttributeCollection[];
+  label: string;
+  showLabel: boolean;
+}
+
 export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
   components?: FormComponent[];
@@ -187,7 +194,8 @@ export type FormComponent =
   | FormComponentGroup
   | FormComponentText
   | FormComponentGuiElement
-  | FormComponentHidden;
+  | FormComponentHidden
+  | FormComponentResourceLink;
 
 export type FormComponentWithData =
   | FormComponentTextVar

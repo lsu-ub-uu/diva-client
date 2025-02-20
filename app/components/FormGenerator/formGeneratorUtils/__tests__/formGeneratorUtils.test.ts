@@ -22,6 +22,7 @@ import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
   checkIfValueExists,
+  exportForTesting,
   getChildrenWithSameNameInDataFromSchema,
   isComponentContainer,
   isComponentGroup,
@@ -33,14 +34,11 @@ import {
   isComponentValidForDataCarrying,
   isComponentVariable,
   isFirstLevelGroup,
-  exportForTesting
 } from '../formGeneratorUtils';
-import type {
-  FormComponent,
-} from '@/components/FormGenerator/types';
+import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, vi } from 'vitest';
-import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/formDef';
+import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/formDef';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {
