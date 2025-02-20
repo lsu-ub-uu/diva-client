@@ -21,12 +21,9 @@ import {
   act,
   render,
   screen,
-  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { expect } from 'vitest';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 import { createRoutesStub } from 'react-router';
 
