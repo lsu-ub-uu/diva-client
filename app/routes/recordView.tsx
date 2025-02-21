@@ -45,7 +45,7 @@ export const loader = async ({
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -55,7 +55,7 @@ export const loader = async ({
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     record.validationType,
     'view',
   );

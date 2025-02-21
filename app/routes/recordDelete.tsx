@@ -36,7 +36,7 @@ export const action = async ({
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
 
-  await deleteRecord(context.dependencies, recordType, recordId, auth);
+  await deleteRecord(await context.dependencies, recordType, recordId, auth);
 
   session.flash('notification', {
     severity: 'success',

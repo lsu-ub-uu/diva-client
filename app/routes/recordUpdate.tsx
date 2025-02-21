@@ -58,7 +58,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -70,7 +70,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     record.validationType,
     'update',
   );
@@ -102,7 +102,7 @@ export const action = async ({
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth.data.token,
@@ -111,7 +111,7 @@ export const action = async ({
   invariant(validationType, 'Failed to get validation type from record');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationType,
     'update',
   );
@@ -128,7 +128,7 @@ export const action = async ({
 
   try {
     await updateRecord(
-      context.dependencies,
+      await context.dependencies,
       validationType,
       recordId,
       validatedFormData as unknown as BFFDataRecord,

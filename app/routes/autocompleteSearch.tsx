@@ -37,7 +37,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const auth = getAuth(session);
 
   const searchTermName = getSearchTermNameFromSearchLink(
-    context.dependencies,
+    await context.dependencies,
     searchType,
   );
 
@@ -57,7 +57,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   try {
     const result = await searchRecords(
-      context.dependencies,
+      await context.dependencies,
       searchType,
       query,
       auth,

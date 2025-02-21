@@ -47,7 +47,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const auth = getAuth(session);
 
   const searchForm = getSearchForm(
-    context.dependencies,
+    await context.dependencies,
     'diva-outputSimpleSearch',
   );
 
@@ -150,7 +150,7 @@ const performSearch = async (
   }
 
   const searchResults = await searchRecords(
-    context.dependencies,
+    await context.dependencies,
     'diva-outputSimpleSearch',
     query,
     auth,
