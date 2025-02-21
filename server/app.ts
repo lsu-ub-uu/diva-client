@@ -18,24 +18,16 @@
 
 import 'react-router';
 import { createRequestHandler } from '@react-router/express';
-import express, { type Request } from 'express';
-import {
-  dependencies,
-  getDependencies,
-  loadStuffOnServerStart,
-} from '@/data/pool.server';
-import { createInstance, type i18n } from 'i18next';
-import { i18nCookie } from '@/i18n/i18nCookie.server';
-import { initReactI18next } from 'react-i18next';
-import I18NextHttpBackend from 'i18next-http-backend';
-import { i18nConfig } from '@/i18n/i18nConfig';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
+import express from 'express';
+import { getDependencies, loadDependencies } from './depencencies';
+import { type i18n } from 'i18next';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { createi18nInstance } from './i18n';
 
 declare module 'react-router' {
   export interface AppLoadContext {
     dependencies: Promise<Dependencies>;
-    refreshDependencies: () => Promise<Dependencies>;
+    refreshDependencies: () => Promise<void>;
     i18n: i18n;
   }
 }
@@ -48,31 +40,8 @@ app.use(
     build: () => import('virtual:react-router/server-build'),
     getLoadContext: async (request) => ({
       dependencies: getDependencies(),
-      refreshDependencies: loadStuffOnServerStart,
+      refreshDependencies: loadDependencies,
       i18n: await createi18nInstance(request),
     }),
   }),
 );
-
-const createi18nInstance = async (request: Request) => {
-  const i18nInstance = createInstance();
-
-  const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
-  const locale = languageCookie ?? 'sv';
-  await i18nInstance
-    .use(initReactI18next)
-    .use(I18NextHttpBackend)
-    .init({
-      ...i18nConfig,
-      resources: {
-        en: {
-          translation: createTextDefinition(dependencies, 'en'),
-        },
-        sv: {
-          translation: createTextDefinition(dependencies, 'sv'),
-        },
-      },
-      lng: locale,
-    });
-  return i18nInstance;
-};

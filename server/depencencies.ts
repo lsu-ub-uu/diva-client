@@ -64,7 +64,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
 };
 
-const loadStuffOnServerStart = async () => {
+const loadDependencies = async () => {
   console.info('Loading Cora metadata...');
 
   const response = await getRecordDataListByType<DataListWrapper>('text');
@@ -116,15 +116,14 @@ const loadStuffOnServerStart = async () => {
   dependencies.loginPool = loginPool;
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;
-  return dependencies;
 };
 
 export const getDependencies = async () => {
   if (!poolsInitialized) {
-    await loadStuffOnServerStart();
+    await loadDependencies();
   }
 
   return dependencies;
 };
 
-export { dependencies, loadStuffOnServerStart };
+export { dependencies, loadDependencies };
