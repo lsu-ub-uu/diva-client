@@ -39,13 +39,14 @@ import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { getThemeById } from '@/data/getTheme.server';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
-
+  const uuTheme = await getThemeById(await context.dependencies, 'uu-theme');
   const loginUnits = getLoginUnits(await context.dependencies);
   const locale = context.i18n.language;
   return { auth, locale, loginUnits };

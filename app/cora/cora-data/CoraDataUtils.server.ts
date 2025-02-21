@@ -63,13 +63,6 @@ export function getAllRecordLinksWithNameInData(
   });
 }
 
-export function getFirstRecordLinkWithNameInData(
-  dataGroup: DataGroup,
-  nameInData: string,
-) {
-  throw new Error(`RecordLink with name [${nameInData}] does not exist`);
-}
-
 export function getFirstChildWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
