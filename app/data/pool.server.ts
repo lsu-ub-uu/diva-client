@@ -63,6 +63,8 @@ const dependencies: Dependencies = {
 };
 
 const loadStuffOnServerStart = async () => {
+  console.info('Loading Cora metadata...');
+
   const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
 
@@ -110,5 +112,7 @@ const loadStuffOnServerStart = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
+  console.info('Loaded stuff from Cora');
+  return dependencies;
 };
 export { dependencies, loadStuffOnServerStart };
