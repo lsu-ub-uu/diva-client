@@ -19,7 +19,11 @@
 import 'react-router';
 import { createRequestHandler } from '@react-router/express';
 import express, { type Request } from 'express';
-import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
+import {
+  dependencies,
+  getDependencies,
+  loadStuffOnServerStart,
+} from '@/data/pool.server';
 import { createInstance, type i18n } from 'i18next';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { initReactI18next } from 'react-i18next';
@@ -30,7 +34,7 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 
 declare module 'react-router' {
   export interface AppLoadContext {
-    dependencies: Dependencies;
+    dependencies: Promise<Dependencies>;
     refreshDependencies: () => Promise<Dependencies>;
     i18n: i18n;
   }
@@ -43,7 +47,7 @@ app.use(
     // @ts-expect-error - virtual module provided by React Router at build time
     build: () => import('virtual:react-router/server-build'),
     getLoadContext: async (request) => ({
-      dependencies: await loadStuffOnServerStart(),
+      dependencies: getDependencies(),
       refreshDependencies: loadStuffOnServerStart,
       i18n: await createi18nInstance(request),
     }),

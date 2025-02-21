@@ -51,6 +51,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
+let poolsInitialized = false;
+
 const dependencies: Dependencies = {
   metadataPool: listToPool<BFFMetadata>([]),
   presentationPool: listToPool<BFFPresentation>([]),
@@ -113,6 +115,16 @@ const loadStuffOnServerStart = async () => {
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
   console.info('Loaded stuff from Cora');
+  poolsInitialized = true;
   return dependencies;
 };
+
+export const getDependencies = async () => {
+  if (!poolsInitialized) {
+    await loadStuffOnServerStart();
+  }
+
+  return dependencies;
+};
+
 export { dependencies, loadStuffOnServerStart };

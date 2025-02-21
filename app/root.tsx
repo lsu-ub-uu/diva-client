@@ -46,7 +46,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
-  const loginUnits = getLoginUnits(context.dependencies);
+  const loginUnits = getLoginUnits(await context.dependencies);
   const locale = context.i18n.language;
   return { auth, locale, loginUnits };
 }

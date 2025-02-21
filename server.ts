@@ -70,11 +70,12 @@ if (DEVELOPMENT) {
 
 app.use(morgan('tiny'));
 
-console.info(`Cora API-url ${process.env.CORA_API_URL}`);
-console.info(`CORA_LOGIN_URL-url ${process.env.CORA_LOGIN_URL}`);
-console.info(`BASE_PATH ${BASE_PATH}`);
-console.info(`DOMAIN ${DOMAIN}`);
-console.info(
-  `Express server listening at http://${DOMAIN}:${PORT}${BASE_PATH ?? ''}`,
-);
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.info(`Cora API-url ${process.env.CORA_API_URL}`);
+  console.info(`CORA_LOGIN_URL-url ${process.env.CORA_LOGIN_URL}`);
+  console.info(`BASE_PATH ${BASE_PATH}`);
+  console.info(`DOMAIN ${DOMAIN}`);
+  console.info(
+    `Server is running on  http://${DOMAIN}:${PORT}${BASE_PATH ?? ''}`,
+  );
+});
