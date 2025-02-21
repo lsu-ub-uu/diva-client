@@ -44,11 +44,15 @@ export const Header = () => {
           </picture>
         </Link>
       </div>
-      {devMode && <Link to='/design-system'>Design system</Link>}
+      {devMode && (
+        <Button as={Link} variant='tertiary' to='/design-system'>
+          Design system
+        </Button>
+      )}
       {devMode && (
         <Form action='/refreshDefinitions' method='POST'>
           <input type='hidden' name='returnTo' value={returnTo} />
-          <Button variant='tertiary'>
+          <Button variant='tertiary' type='submit'>
             Refresh Def <CachedIcon />
           </Button>
         </Form>

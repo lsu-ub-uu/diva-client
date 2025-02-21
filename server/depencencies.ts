@@ -51,6 +51,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
+let poolsInitialized = false;
+
 const dependencies: Dependencies = {
   metadataPool: listToPool<BFFMetadata>([]),
   presentationPool: listToPool<BFFPresentation>([]),
@@ -62,7 +64,9 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
 };
 
-const loadStuffOnServerStart = async () => {
+const loadDependencies = async () => {
+  console.info('Loading Cora metadata...');
+
   const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
 
@@ -110,5 +114,16 @@ const loadStuffOnServerStart = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
+  console.info('Loaded stuff from Cora');
+  poolsInitialized = true;
 };
-export { dependencies, loadStuffOnServerStart };
+
+export const getDependencies = async () => {
+  if (!poolsInitialized) {
+    await loadDependencies();
+  }
+
+  return dependencies;
+};
+
+export { dependencies, loadDependencies };

@@ -25,5 +25,5 @@ export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;
   invariant(lang, 'Missing param lang');
 
-  return Response.json(createTextDefinition(context.dependencies, lang));
+  return Response.json(createTextDefinition(await context.dependencies, lang));
 };

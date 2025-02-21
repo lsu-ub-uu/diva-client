@@ -44,7 +44,7 @@ export const loader = async ({
     );
 
     const record = await getRecordByRecordTypeAndRecordId({
-      dependencies: context.dependencies,
+      dependencies: await context.dependencies,
       recordType,
       recordId,
       authToken: auth?.data.token,

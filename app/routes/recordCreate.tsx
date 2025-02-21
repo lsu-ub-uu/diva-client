@@ -53,7 +53,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   invariant(validationTypeId, 'Missing validationTypeId param');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationTypeId,
     'create',
   );
@@ -73,7 +73,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   invariant(validationTypeId, 'Missing validationTypeId param');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationTypeId,
     'create',
   );
@@ -90,7 +90,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
   try {
     const { recordType, id } = await createRecord(
-      context.dependencies,
+      await context.dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,
