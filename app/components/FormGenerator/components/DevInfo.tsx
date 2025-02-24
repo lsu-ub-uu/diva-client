@@ -18,7 +18,7 @@
 
 import type { FormComponent } from '@/components/FormGenerator/types';
 import styles from './DevInfo.module.css';
-import { useContext, useState } from 'react';
+import { use, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -35,7 +35,7 @@ interface ToggleDevInfoButtonProps {
 }
 
 export const DevInfo = ({ component, path }: DevInfoProps) => {
-  const { showDevInfo } = useContext(FormGeneratorContext);
+  const { showDevInfo } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
   const { getValues } = useRemixFormContext();
   const data = path && getValues(path);

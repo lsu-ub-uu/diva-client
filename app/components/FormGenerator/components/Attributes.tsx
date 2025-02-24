@@ -18,7 +18,7 @@
 
 import { AttributeSelect } from '@/components/FormGenerator/components/AttributeSelect';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { useContext } from 'react';
+import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface AttributesProps {
@@ -28,7 +28,7 @@ interface AttributesProps {
 
 export const Attributes = ({ component, path }: AttributesProps) => {
   const attributesToShow = getAttributesToShow(component);
-  const { showTooltips } = useContext(FormGeneratorContext);
+  const { showTooltips } = use(FormGeneratorContext);
 
   return attributesToShow.map((attribute, index) => {
     return (
