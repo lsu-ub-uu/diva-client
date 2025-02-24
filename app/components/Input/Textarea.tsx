@@ -22,14 +22,13 @@ import {
 } from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type ForwardedRef, forwardRef } from 'react';
+import { type Ref } from 'react';
 
-type TextareaProps = HUITextareaProps;
+interface TextareaProps extends HUITextareaProps {
+  ref?: Ref<HTMLTextAreaElement>;
+}
 
-export const Textarea = forwardRef(function Input(
-  { className, ...rest }: TextareaProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export const Textarea = ({ className, ref, ...rest }: TextareaProps) => {
   return (
     <HUITextarea
       className={clsx(styles['textarea'], className)}
@@ -37,4 +36,4 @@ export const Textarea = forwardRef(function Input(
       ref={ref}
     />
   );
-});
+};

@@ -22,19 +22,18 @@ import {
 } from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type ForwardedRef, forwardRef } from 'react';
+import type { Ref } from 'react';
 
-type InputProps = HUIInputProps;
+interface InputProps extends HUIInputProps {
+  ref?: Ref<HTMLInputElement>;
+}
 
-export const Input = forwardRef(function Input(
-  { className, ...rest }: InputProps,
-  ref: ForwardedRef<HTMLInputElement>,
-) {
+export const Input = ({ className, ref, ...rest }: InputProps) => {
   return (
     <HUIInput
       className={clsx(styles['input'], className)}
-      {...rest}
       ref={ref}
+      {...rest}
     />
   );
-});
+};

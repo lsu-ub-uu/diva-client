@@ -23,14 +23,13 @@ import {
 import styles from './Input.module.css';
 import chevronUrl from '@/icons/ChevronDown.svg';
 import clsx from 'clsx';
-import { type ForwardedRef, forwardRef } from 'react';
+import { type Ref } from 'react';
 
-type SelectProps = HUISelectProps;
+interface SelectProps extends HUISelectProps {
+  ref?: Ref<HTMLSelectElement>;
+}
 
-export const Select = forwardRef(function Select(
-  { className, ...rest }: SelectProps,
-  ref: ForwardedRef<HTMLSelectElement>,
-) {
+export const Select = ({ className, ref, ...rest }: SelectProps) => {
   return (
     <HUISelect
       className={clsx(styles['select'], className)}
@@ -39,4 +38,4 @@ export const Select = forwardRef(function Select(
       ref={ref}
     />
   );
-});
+};
