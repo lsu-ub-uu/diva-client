@@ -240,3 +240,29 @@ export interface BFFLoginPassword extends BFFLogin {
 }
 
 export type BFFResourceLink = BFFMetadataBase;
+
+export interface BFFThemeLink {
+  url: string;
+  displayLabel: string;
+}
+
+export interface BFFThemeLinkWrapper {
+  sv: BFFThemeLink;
+  en: BFFThemeLink;
+}
+
+export interface BFFTheme {
+  id: string;
+  pageTitle: {
+    sv: string;
+    en: string;
+  };
+  backgroundColor: string;
+  textColor: string;
+  publicLinks?: BFFThemeLinkWrapper[];
+  adminLinks?: BFFThemeLinkWrapper[];
+  logo: {
+    url?: string;
+    svg?: string;
+  };
+}

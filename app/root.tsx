@@ -40,10 +40,13 @@ import { renewAuth } from '@/auth/renewAuth.server';
 import type { Route } from './+types/root';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getThemeById } from '@/data/getTheme.server';
+import { useTranslation } from 'react-i18next';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  console.log('hostname', url.hostname);
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
   const uuTheme = await getThemeById(await context.dependencies, 'uu-theme');
@@ -97,7 +100,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.locale ?? 'sv';
   const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
-
+  const { i18n } = useTranslation();
   useChangeLanguage(locale);
 
   return (

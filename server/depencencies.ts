@@ -33,6 +33,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
@@ -62,6 +63,7 @@ const dependencies: Dependencies = {
   searchPool: listToPool<BFFSearch>([]),
   loginUnitPool: listToPool<BFFLoginUnit>([]),
   loginPool: listToPool<BFFLoginWebRedirect>([]),
+  themePool: listToPool<BFFTheme>([]),
 };
 
 const loadDependencies = async () => {
@@ -114,6 +116,7 @@ const loadDependencies = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
+
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;
 };
