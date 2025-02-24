@@ -23,7 +23,7 @@ import {
 
 import styles from './Button.module.css';
 import clsx from 'clsx';
-import { type ElementType, type ForwardedRef, forwardRef } from 'react';
+import { type ElementType, type Ref } from 'react';
 
 interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
@@ -32,18 +32,17 @@ interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   as?: ElementType;
   to?: string;
   href?: string;
+  ref?: Ref<HTMLButtonElement>;
 }
 
-export const Button = forwardRef(function Button(
-  {
-    variant = 'secondary',
-    size = 'medium',
-    fullWidth = false,
-    className,
-    ...rest
-  }: ButtonProps,
-  ref: ForwardedRef<HTMLButtonElement>,
-) {
+export const Button = ({
+  variant = 'secondary',
+  size = 'medium',
+  fullWidth = false,
+  className,
+  ref,
+  ...rest
+}: ButtonProps) => {
   return (
     <HUIButton
       className={clsx(styles.button, className)}
@@ -54,4 +53,4 @@ export const Button = forwardRef(function Button(
       {...rest}
     />
   );
-});
+};

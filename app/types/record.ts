@@ -33,9 +33,7 @@ export interface BFFDataRecord {
   autoCompletePresentation?: unknown;
 }
 
-export interface BFFDataRecordData {
-  [key: string]: Metadata;
-}
+export type BFFDataRecordData = Record<string, Metadata>;
 
 export type BFFUserRight =
   | 'read'

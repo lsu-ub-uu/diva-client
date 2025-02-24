@@ -66,13 +66,16 @@ npm start
 
 ### Building and running Docker image
 ```bash
-docker build .
+docker build -t diva-client .
+```
+
+```bash
 docker run -d --name diva-client \
       -e CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest \
       -e CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest \
       -p 9876:5173 \
       diva-client
-```
+  ```
 
 ### Enable in-app devtools
 When running the application, open the DevTools console and run the following:

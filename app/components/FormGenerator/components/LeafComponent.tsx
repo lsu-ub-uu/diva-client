@@ -50,7 +50,7 @@ export const LeafComponent = ({
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
-}: LeafComponentProps): JSX.Element | null => {
+}: LeafComponentProps) => {
   if (isComponentHidden(component)) {
     return <HiddenInput component={component} name={name} />;
   }
