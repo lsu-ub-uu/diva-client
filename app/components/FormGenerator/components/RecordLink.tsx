@@ -19,7 +19,7 @@
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useWatch } from 'react-hook-form';
 import { Variable } from '@/components/FormGenerator/components/Variable';
@@ -43,7 +43,7 @@ export const RecordLink = ({
 }: RecordLinkProps) => {
   const value = useWatch({ name });
 
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData } = use(FormGeneratorContext);
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&

@@ -16,8 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import { useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
@@ -26,7 +25,7 @@ interface CardContentProps {
 }
 
 export const CardContent = ({ children }: CardContentProps) => {
-  const { boxed } = useContext(CardContext);
+  const { boxed } = use(CardContext);
   return (
     <div
       className={styles['card-content']}

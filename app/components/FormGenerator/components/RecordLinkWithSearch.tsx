@@ -19,7 +19,7 @@
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
@@ -53,7 +53,7 @@ export const RecordLinkWithSearch = ({
 }: RecordLinkWithSearchProps) => {
   const { t } = useTranslation();
   const { formState, setValue } = useRemixFormContext();
-  const { showTooltips } = useContext(FormGeneratorContext);
+  const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
   const fetcher = useFetcher();
 

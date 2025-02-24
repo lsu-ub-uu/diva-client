@@ -28,7 +28,7 @@ export interface CardProps {
 export const Card = ({ children, boxed = false }: CardProps) => {
   return (
     <div className={styles['card']} {...(boxed && { 'data-boxed': '' })}>
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
+      <CardContext value={{ boxed }}>{children}</CardContext>
     </div>
   );
 };

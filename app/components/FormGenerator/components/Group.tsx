@@ -27,7 +27,7 @@ import {
   getGroupLevel,
   headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
@@ -54,7 +54,7 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
 }: GroupProps) => {
-  const { boxGroups, showTooltips } = useContext(FormGeneratorContext);
+  const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);

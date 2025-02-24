@@ -44,7 +44,7 @@ import {
   isComponentCollVar,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import styles from './FormComponent.module.css';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
@@ -72,7 +72,7 @@ export const Variable = ({
 }: VariableProps) => {
   const { t } = useTranslation();
   const { getValues, register, formState } = useRemixFormContext();
-  const { showTooltips } = useContext(FormGeneratorContext);
+  const { showTooltips } = use(FormGeneratorContext);
   const value = getValues(path);
 
   const errorMessage = getErrorMessageForField(formState, path);
