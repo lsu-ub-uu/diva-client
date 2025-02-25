@@ -18,14 +18,42 @@
  */
 
 .member-bar {
-  padding: 0 var(--gap);
+  padding: 0 var(--gap-xl);
   background-color: #efefef;
   display: flex;
   height: var(--gap-xxl);
-  justify-content: center;
+  gap: var(--gap-xxl);
   align-items: center;
 }
 
 .content {
   max-height: var(--gap-xl);
+}
+
+.links {
+  font-size: var(--font-size-s);
+
+  ul {
+    list-style: none;
+    display: flex;
+    gap: var(--gap-l);
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.logo-wrapper {
+  height: var(--gap-xxl);
+
+  svg {
+    width: auto;
+    height: 100%;
+  }
 }

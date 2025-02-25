@@ -16,18 +16,48 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type React from 'react';
 import styles from './MemberBar.module.css';
+import type { BFFTheme } from '@/cora/transform/bffTypes.server';
+import { useLanguage } from '@/i18n/useLanguage';
 
 interface MemberBarProps {
-  color: string;
-  children: React.ReactNode;
+  theme: BFFTheme;
 }
 
-export const MemberBar = (props: MemberBarProps) => {
+export const MemberBar = ({ theme }: MemberBarProps) => {
+  const lang = useLanguage();
+
   return (
-    <div className={styles['member-bar']}>
-      <div className={styles['content']}>{props.children}</div>
+    <div
+      className={styles['member-bar']}
+      style={{
+        backgroundColor: theme.backgroundColor,
+        color: theme.textColor,
+      }}
+    >
+      {theme.logo.svg && (
+        <div
+          className={styles['logo-wrapper']}
+          dangerouslySetInnerHTML={{
+            __html: theme.logo.svg,
+          }}
+        />
+      )}
+      {!theme.logo.svg && theme.logo.url && (
+        <img src={theme.logo.url} alt={theme.pageTitle[lang]} />
+      )}
+
+      <div className={styles['links']}>
+        <ul>
+          {(theme.publicLinks ?? []).map((link) => (
+            <li key={link[lang].url}>
+              <a href={link[lang].url} target='_blank' rel='noreferrer'>
+                {link[lang].displayLabel}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

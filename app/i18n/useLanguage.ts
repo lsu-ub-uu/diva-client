@@ -14,31 +14,11 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.header-wrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-l);
-  padding: 0 var(--gap-xl);
-  height: 4rem;
+import { useTranslation } from 'react-i18next';
 
-  @media (width < 600px) {
-    padding: 0 1rem;
-  }
-}
-
-.logo img {
-  width: 10em;
-  min-width: 10em;
-
-  @media (width < 600px) {
-    width: 2em;
-    min-width: 2em;
-  }
-}
-
-.header-logo-wrapper {
-  margin-right: auto;
-}
+export const useLanguage = () => {
+  const { i18n } = useTranslation();
+  return i18n.language as 'sv' | 'en';
+};

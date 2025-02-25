@@ -41,9 +41,11 @@ import type { Auth } from '@/auth/Auth';
 import styles from './home.module.css';
 import { Alert } from '@/components/Alert/Alert';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
+import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
+  const dependencies = await context.dependencies;
   const auth = getAuth(session);
 
   const searchForm = getSearchForm(
@@ -59,7 +61,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       query,
       searchForm,
       searchResults,
-      title: getPageTitle(context),
+      title: getPageTitle(context, dependencies.themePool.get('uu-theme')),
       notification: getNotification(session),
     },
     await getResponseInitWithSession(session),
@@ -128,9 +130,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   );
 }
 
-const getPageTitle = (context: AppLoadContext) => {
+const getPageTitle = (context: AppLoadContext, theme: BFFTheme) => {
   const { t } = context.i18n;
-  return `DiVA | ${t('divaClient_HomePageTitleText')}`;
+  const language = context.i18n.language as 'sv' | 'en';
+  return `DiVA | ${theme.pageTitle[language]} | ${t('divaClient_HomePageTitleText')}`;
 };
 
 const performSearch = async (

@@ -49,6 +49,10 @@ Authtoken: fdfe6de8-9d30-47a1-83d5-a5f2de3e640b
 GET https://cora.epc.ub.uu.se/diva/rest/record/diva-theme
 Accept: application/vnd.uub.recordList+json
 
+### Get binary record
+GET https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516
+Accept: application/vnd.uub.record+json
+
 ###
 GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
 

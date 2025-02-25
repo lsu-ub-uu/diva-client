@@ -22,22 +22,20 @@ import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type { ReactNode } from 'react';
 import styles from './Layout.module.css';
+import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 
 interface PageLayoutProps {
   children: ReactNode;
+  theme: BFFTheme;
 }
 
-export const PageLayout = ({ children }: PageLayoutProps) => {
+export const PageLayout = ({ children, theme }: PageLayoutProps) => {
   return (
     <>
       <header className={styles['header']}>
         <NavigationLoader />
-        <MemberBar color='#efefef'>
-          <p>MemberBar</p>
-        </MemberBar>
-        <div className='container'>
-          <Header />
-        </div>
+        {theme && <MemberBar theme={theme} />}
+        <Header />
       </header>
       <div className='container'>
         <div className={styles['breadcrumbs']}>

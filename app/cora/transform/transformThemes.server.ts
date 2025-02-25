@@ -16,45 +16,101 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import type {
+  DataGroup,
+  DataListWrapper,
+  RecordWrapper,
+} from '@/cora/cora-data/types.server';
 import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import {
+  getAllDataGroupsWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInData,
+  getFirstResourceLinkWithNameInData,
+  hasChildWithNameInData,
+} from '@/cora/cora-data/CoraDataUtils.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { fetchLinkedRecordForRecordLinkWithNameInData } from '@/cora/cora-data/CoraDataTransforms.server';
 
 export const transformThemes = (
   dataListWrapper: DataListWrapper,
-): BFFTheme[] => {
-  if (dataListWrapper.dataList.data.length === 0) {
-    return [];
+): Promise<BFFTheme[]> => {
+  return Promise.all(dataListWrapper.dataList.data.map(transformTheme));
+};
+
+const transformTheme = async (
+  recordWrapper: RecordWrapper,
+): Promise<BFFTheme> => {
+  const data = recordWrapper.record.data;
+  return removeEmpty({
+    id: getFirstDataAtomicValueWithNameInData(
+      getFirstDataGroupWithNameInData(data, 'recordInfo'),
+      'id',
+    ),
+    pageTitle: {
+      sv: getFirstDataAtomicValueWithNameInData(data, 'pageTitleSv'),
+      en: getFirstDataAtomicValueWithNameInData(data, 'pageTitleEn'),
+    },
+    backgroundColor: getFirstDataAtomicValueWithNameInData(
+      data,
+      'backgroundColor',
+    ),
+    textColor: getFirstDataAtomicValueWithNameInData(data, 'textColor'),
+    logo: {
+      svg: hasChildWithNameInData(data, 'logoSvg')
+        ? getFirstDataAtomicValueWithNameInData(data, 'logoSvg')
+        : undefined,
+      url: await transformLogo(data),
+    },
+    publicLinks: hasChildWithNameInData(data, 'linkPublic')
+      ? transformLinks(
+          getAllDataGroupsWithNameInDataAndAttributes(data, 'linkPublic'),
+        )
+      : undefined,
+    adminLinks: hasChildWithNameInData(data, 'linkAdmin')
+      ? transformLinks(
+          getAllDataGroupsWithNameInDataAndAttributes(data, 'linkAdmin'),
+        )
+      : undefined,
+  });
+};
+
+const transformLinks = (data: DataGroup[]) => {
+  return data.map((item) => {
+    return {
+      sv: transformLink(getFirstDataGroupWithNameInData(item, 'linkSv')),
+      en: transformLink(getFirstDataGroupWithNameInData(item, 'linkEn')),
+    };
+  });
+};
+
+const transformLink = (data: DataGroup) => {
+  return {
+    url: getFirstDataAtomicValueWithNameInData(data, 'url'),
+    displayLabel: getFirstDataAtomicValueWithNameInData(data, 'displayLabel'),
+  };
+};
+
+const transformLogo = async (data: DataGroup) => {
+  if (!hasChildWithNameInData(data, 'logo')) {
+    return undefined;
   }
 
-  const coraRecord = dataListWrapper.dataList.data;
-  const backgroundColor = getFirstDataAtomicValueWithNameInData(
-    coraRecord,
-    'backgroundColor',
-  );
-  const textColor = getFirstDataAtomicValueWithNameInData(
-    coraRecord,
-    'textColor',
-  );
-
-  return {
-    backgroundColor,
-    textColor,
-  };
-
-  /*const data = recordWrapper.record.data;
-  const backgroundColor = getFirstDataAtomicValueWithNameInData(
-    data,
-    'backgroundColor',
-  );
-  const textColor = getFirstDataAtomicValueWithNameInData(data, 'textColor');
-  const binaryId = extractLinkedRecordIdFromNamedRecordLink(data, 'logo');
-  const links = getAllDataAtomicsWithNameInData(data, 'link');
-
-  const logoUrl = '';
-  return {
-    backgroundColor,
-    textColor,
-    logoUrl,
-  };*/
+  try {
+    const binaryRecordWrapper =
+      await fetchLinkedRecordForRecordLinkWithNameInData(data, 'logo');
+    const binaryDataGroup = binaryRecordWrapper.record.data;
+    const binaryMasterGroup = getFirstDataGroupWithNameInData(
+      binaryDataGroup,
+      'master',
+    );
+    const masterResourceLink = getFirstResourceLinkWithNameInData(
+      binaryMasterGroup,
+      'master',
+    );
+    return masterResourceLink.actionLinks.read.url;
+  } catch (error) {
+    console.error('Failed to fetch logo binary', error);
+    return undefined;
+  }
 };

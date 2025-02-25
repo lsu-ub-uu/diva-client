@@ -16,28 +16,35 @@
  *     You should have received a copy of the GNU General Public License
  */
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
-import divaThemeList from '@/__mocks__/bff/divaThemeList.json';
+import divaThemeListWithBinaryLogo from '@/__mocks__/bff/divaThemeListWithBinaryLogo.json';
+import divaThemeListWithSvgLogo from '@/__mocks__/bff/divaThemeListWithSvgLogo.json';
+import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
 import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { mock } from 'vitest-mock-extended';
+import type { AxiosResponse } from 'axios';
+
+vi.mock('@/cora/getRecordDataById.server');
 
 describe('transformTheme', () => {
-  it('transforms empty list', () => {
-    const transformData = transformThemes(emptyDataList);
+  it('transforms empty list', async () => {
+    const transformData = await transformThemes(emptyDataList);
     expect(transformData).toStrictEqual([]);
   });
 
-  it('transforms the theme list', () => {
-    const transformData = transformThemes(divaThemeList);
-    expect(transformData).toHaveLength(2);
-    expect(transformData).toStrictEqual([
-      {
-        id: 'uu-theme',
-        pageTitle: {
-          sv: 'Uppsala Universitet',
-          en: 'Uppsala University',
-        },
-        backgroundColor: '#CCCCCC',
-        textColor: '#990000',
-        publicLinks: {
+  it('transforms a theme with links and svg logo', async () => {
+    const transformData = await transformThemes(divaThemeListWithSvgLogo);
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0]).toStrictEqual({
+      id: 'uu-theme',
+      pageTitle: {
+        sv: 'Uppsala Universitet',
+        en: 'Uppsala University',
+      },
+      backgroundColor: '#CCCCCC',
+      textColor: '#990000',
+      publicLinks: [
+        {
           sv: {
             url: 'https://www.uu.se/bibliotek',
             displayLabel: 'Uppsala universitetsbibliotek',
@@ -47,13 +54,54 @@ describe('transformTheme', () => {
             displayLabel: 'Uppsala University Library',
           },
         },
-        adminLinks: { sv: '', en: '' },
-        logo: {
-          url: 'http://localhost:8080/img/logo.png',
-          svg: '<svg></svg>',
+        {
+          sv: {
+            url: 'http://libanswers.ub.uu.se',
+            displayLabel: 'Fråga biblioteket',
+          },
+          en: {
+            url: 'http://libanswers.ub.uu.se/en',
+            displayLabel: 'Ask the Library',
+          },
         },
+      ],
+      adminLinks: [
+        {
+          sv: {
+            url: 'https://www.uu.se/support',
+            displayLabel: 'Kontakta support',
+          },
+          en: {
+            url: 'https://www.uu.se/en/support',
+            displayLabel: 'Contact support',
+          },
+        },
+      ],
+      logo: {
+        svg: '<svg></svg>',
       },
-      {},
-    ]);
+    });
+  });
+
+  it('transforms a theme without links and binary logo', async () => {
+    vi.mocked(getRecordDataById).mockResolvedValue(
+      mock<AxiosResponse>({
+        data: divaThemeLogoBinary,
+      }),
+    );
+    const transformData = await transformThemes(divaThemeListWithBinaryLogo);
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0]).toStrictEqual({
+      backgroundColor: '#75598e',
+      id: 'diva-theme',
+      logo: {
+        url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/master',
+      },
+      pageTitle: {
+        en: 'DiVA',
+        sv: 'DiVA',
+      },
+      textColor: '#ffffff',
+    });
   });
 });
