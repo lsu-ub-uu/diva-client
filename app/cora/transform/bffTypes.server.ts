@@ -265,4 +265,5 @@ export interface BFFTheme {
     url?: string;
     svg?: string;
   };
+  hostnames: string[];
 }

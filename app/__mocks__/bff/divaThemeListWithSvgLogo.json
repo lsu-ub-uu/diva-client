@@ -233,6 +233,21 @@
                   }
                 ],
                 "name": "linkAdmin"
+              },
+              {
+                "repeatId": "0",
+                "name": "hostname",
+                "value": "uu.localhost"
+              },
+              {
+                "repeatId": "2",
+                "name": "hostname",
+                "value": "uu.cora.epc.ub.uu.se"
+              },
+              {
+                "repeatId": "1",
+                "name": "hostname",
+                "value": "uu.pre.diva-portal.org"
               }
             ],
             "name": "diva-theme"

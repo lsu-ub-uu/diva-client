@@ -61,7 +61,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       query,
       searchForm,
       searchResults,
-      title: getPageTitle(context, dependencies.themePool.get('uu-theme')),
+      title: getPageTitle(context),
       notification: getNotification(session),
     },
     await getResponseInitWithSession(session),
@@ -130,10 +130,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   );
 }
 
-const getPageTitle = (context: AppLoadContext, theme: BFFTheme) => {
+const getPageTitle = (context: AppLoadContext) => {
   const { t } = context.i18n;
-  const language = context.i18n.language as 'sv' | 'en';
-  return `DiVA | ${theme.pageTitle[language]} | ${t('divaClient_HomePageTitleText')}`;
+  return `DiVA | ${t('divaClient_HomePageTitleText')}`;
 };
 
 const performSearch = async (

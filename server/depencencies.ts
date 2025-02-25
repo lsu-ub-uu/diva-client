@@ -45,6 +45,7 @@ import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { Lookup } from '@/utils/structs/lookup';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -123,7 +124,7 @@ const loadDependencies = async () => {
   const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(login);
 
   const themes = await transformThemes(coraThemes.data);
-  const themePool = listToPool<BFFTheme>(themes);
+  const themePool = groupThemesByHostname(themes);
 
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
@@ -148,3 +149,17 @@ export const getDependencies = async () => {
 };
 
 export { dependencies, loadDependencies };
+
+const groupThemesByHostname = (
+  themes: BFFTheme[],
+): Lookup<string, BFFTheme> => {
+  const groupedThemes = new Lookup<string, BFFTheme>();
+
+  themes.forEach((theme) => {
+    theme.hostnames.forEach((hostname) => {
+      groupedThemes.set(hostname, theme);
+    });
+  });
+
+  return groupedThemes;
+};

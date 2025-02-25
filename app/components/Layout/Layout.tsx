@@ -26,7 +26,7 @@ import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 
 interface PageLayoutProps {
   children: ReactNode;
-  theme: BFFTheme;
+  theme: BFFTheme | undefined;
 }
 
 export const PageLayout = ({ children, theme }: PageLayoutProps) => {

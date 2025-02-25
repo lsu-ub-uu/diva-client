@@ -24,6 +24,7 @@ import type {
 import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import {
+  getAllDataAtomicsWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataGroupWithNameInData,
   getFirstResourceLinkWithNameInData,
@@ -72,6 +73,9 @@ const transformTheme = async (
           getAllDataGroupsWithNameInDataAndAttributes(data, 'linkAdmin'),
         )
       : undefined,
+    hostnames: getAllDataAtomicsWithNameInData(data, 'hostname').map(
+      (atomic) => atomic.value,
+    ),
   });
 };
 

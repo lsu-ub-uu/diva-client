@@ -80,6 +80,11 @@ describe('transformTheme', () => {
       logo: {
         svg: '<svg></svg>',
       },
+      hostnames: [
+        'uu.localhost',
+        'uu.cora.epc.ub.uu.se',
+        'uu.pre.diva-portal.org',
+      ],
     });
   });
 
@@ -102,6 +107,7 @@ describe('transformTheme', () => {
         sv: 'DiVA',
       },
       textColor: '#ffffff',
+      hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
     });
   });
 });
