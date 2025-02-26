@@ -29,6 +29,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
@@ -63,6 +64,7 @@ describe('getSearchTermNameFromSearchLink', () => {
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
       searchPool,
+      themePool: listToPool<BFFTheme>([]),
     };
   });
 

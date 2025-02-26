@@ -41,6 +41,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
@@ -263,6 +264,7 @@ describe('formDefinition', () => {
       searchPool,
       loginPool,
       loginUnitPool,
+      themePool: listToPool<BFFTheme>([]),
     };
 
     createRecordType('testRecordType');

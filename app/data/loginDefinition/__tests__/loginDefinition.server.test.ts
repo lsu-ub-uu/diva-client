@@ -30,6 +30,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { createLoginDefinition } from '../loginDefinition.server';
@@ -156,6 +157,7 @@ describe('loginDefinition', () => {
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool,
       loginPool,
+      themePool: listToPool<BFFTheme>([]),
     };
   });
 
