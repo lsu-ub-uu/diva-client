@@ -19,6 +19,9 @@
 import styles from './MemberBar.module.css';
 import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { Button } from '@/components/Button/Button';
+import { ChevronDownIcon } from '@/icons';
 
 interface MemberBarProps {
   theme: BFFTheme;
@@ -53,17 +56,44 @@ export const MemberBar = ({ theme, loggedIn }: MemberBarProps) => {
       )}
 
       {links && (
-        <div className={styles['links']}>
-          <ul>
-            {links.map((link) => (
-              <li key={link[lang].url}>
-                <a href={link[lang].url} target='_blank' rel='noreferrer'>
-                  {link[lang].displayLabel}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <>
+          <div className={styles['links']}>
+            <ul>
+              {links.map((link) => (
+                <li key={link[lang].url}>
+                  <a href={link[lang].url} target='_blank' rel='noreferrer'>
+                    {link[lang].displayLabel}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Popover className='relative'>
+            <PopoverButton
+              as={Button}
+              variant='tertiary'
+              size='small'
+              className={styles['links-popover-button']}
+              aria-hidden={true}
+            >
+              Länkar <ChevronDownIcon />
+            </PopoverButton>
+            <PopoverPanel
+              anchor='bottom'
+              className={styles['links-popover-panel']}
+            >
+              <ul>
+                {links.map((link) => (
+                  <li key={link[lang].url}>
+                    <a href={link[lang].url} target='_blank' rel='noreferrer'>
+                      {link[lang].displayLabel}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </PopoverPanel>
+          </Popover>
+        </>
       )}
     </section>
   );
