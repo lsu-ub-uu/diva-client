@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.select,
+.select-wrapper select,
 .input,
 .combobox-input,
 .textarea {
@@ -35,7 +35,7 @@
   }
 }
 
-.select {
+.select-wrapper select {
   appearance: none;
   cursor: pointer;
 
@@ -102,7 +102,7 @@
 
     --input-height: var(--input-height-small);
 
-    .select,
+    .select-wrapper select,
     .input,
     .combobox-input {
       padding-left: var(--gap);
@@ -114,7 +114,7 @@
   &[data-size='medium'] {
     font-size: 1rem;
 
-    .select,
+    .select-wrapper select,
     .input,
     .combobox-input {
       background-position: right var(--gap) center;
@@ -141,4 +141,20 @@
 
 .error-message {
   font-size: var(--font-size-s);
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-chevron {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: var(--gap);
+  font-size: 1.5em;
+  color: var(--color-primary);
+  pointer-events: none;
 }

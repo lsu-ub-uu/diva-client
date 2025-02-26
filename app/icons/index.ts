@@ -49,3 +49,4 @@ export { default as PersonIcon } from './Person.svg?react';
 export { default as LoginIcon } from './Login.svg?react';
 export { default as DownloadIcon } from './Download.svg?react';
 export { default as MenuIcon } from './Menu.svg?react';
+export { default as ArrowDropdownIcon } from './ArrowDropdown.svg?react';

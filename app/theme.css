@@ -79,16 +79,16 @@
   --gap-xxl: 4rem;
   --input-height: 2.75rem;
   --input-height-small: 1.75rem;
-  --font-family-main: 'Arial';
-  --font-family-headings: 'Arial';
+  --font-family-main: 'Arial', sans-serif;
+  --font-family-headings: 'Arial', sans-serif;
   --font-size-base: 16px;
   --font-size-xs: 0.8rem;
   --font-size-s: 0.9rem;
   --font-size-m: 1rem;
   --font-size-l: 1.5rem;
   --font-size-xl: 2rem;
-  --font-size-h1: 2rem;
-  --font-weight-h1: 600;
+  --font-size-h1: 3rem;
+  --font-weight-h1: 400;
   --font-size-h2: 1.6rem;
   --font-weight-h2: 400;
   --font-size-h3: 1.4rem;
@@ -103,8 +103,9 @@
   --font-weight-bold: 800;
   --line-height-base: 1.5;
   --desktop-breakpoint: 900px;
-  --elevation: rgb(0 0 0 / 20%) 0 3px 5px -1px,
-    rgb(0 0 0 / 14%) 0 6px 10px 0, rgb(0 0 0 / 12%) 0 1px 18px 0;
+  --elevation:
+    rgb(0 0 0 / 20%) 0 3px 5px -1px, rgb(0 0 0 / 14%) 0 6px 10px 0,
+    rgb(0 0 0 / 12%) 0 1px 18px 0;
 
   [data-theme='dark'] {
     /* Color palette */

@@ -33,6 +33,7 @@ export const SkeletonLoader = ({
 }: SkeletonLoaderProps) => {
   return (
     <div
+      role='progressbar'
       className={clsx(className, styles['skeleton-loader'])}
       style={{ width, height }}
       {...rest}
