@@ -21,5 +21,5 @@ import { ProgressIcon } from '@/icons';
 import styles from './Loader.module.css';
 
 export const CircularLoader = () => {
-  return <ProgressIcon className={styles['spinner']} />;
+  return <ProgressIcon role='progressbar' className={styles['spinner']} />;
 };
