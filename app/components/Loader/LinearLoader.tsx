@@ -24,5 +24,11 @@ export const LinearLoader = ({
   className,
   ...rest
 }: HTMLProps<HTMLDivElement>) => {
-  return <div className={clsx(className, styles['linear-loader'])} {...rest} />;
+  return (
+    <div
+      role='progressbar'
+      className={clsx(className, styles['linear-loader'])}
+      {...rest}
+    />
+  );
 };

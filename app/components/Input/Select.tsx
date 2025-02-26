@@ -21,9 +21,9 @@ import {
   type SelectProps as HUISelectProps,
 } from '@headlessui/react';
 import styles from './Input.module.css';
-import chevronUrl from '@/icons/ChevronDown.svg';
 import clsx from 'clsx';
 import { type Ref } from 'react';
+import { ChevronDownIcon } from '@/icons';
 
 interface SelectProps extends HUISelectProps {
   ref?: Ref<HTMLSelectElement>;
@@ -31,11 +31,12 @@ interface SelectProps extends HUISelectProps {
 
 export const Select = ({ className, ref, ...rest }: SelectProps) => {
   return (
-    <HUISelect
-      className={clsx(styles['select'], className)}
-      {...rest}
-      style={{ backgroundImage: `url(${chevronUrl})` }}
-      ref={ref}
-    />
+    <div className={clsx(styles['select-wrapper'], className)}>
+      <HUISelect {...rest} ref={ref} />
+      <ChevronDownIcon
+        className={styles['select-chevron']}
+        aria-hidden='true'
+      />
+    </div>
   );
 };
