@@ -33,6 +33,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
@@ -43,6 +44,8 @@ import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server
 import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
+import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { Lookup } from '@/utils/structs/lookup';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -62,6 +65,7 @@ const dependencies: Dependencies = {
   searchPool: listToPool<BFFSearch>([]),
   loginUnitPool: listToPool<BFFLoginUnit>([]),
   loginPool: listToPool<BFFLoginWebRedirect>([]),
+  themePool: listToPool<BFFTheme>([]),
 };
 
 const loadDependencies = async () => {
@@ -79,32 +83,48 @@ const loadDependencies = async () => {
     'search',
     'loginUnit',
     'login',
+    'diva-theme',
   ];
-  const result = await getPoolsFromCora(types);
+  const [
+    coraMetadata,
+    coraPresentations,
+    coraValidationTypes,
+    coraGuiElements,
+    coraRecordTypes,
+    coraSearches,
+    coraLoginUnits,
+    coraLogins,
+    coraThemes,
+  ] = await getPoolsFromCora(types);
 
-  const metadata = transformMetadata(result[0].data);
+  const metadata = transformMetadata(coraMetadata.data);
   const metadataPool = listToPool<BFFMetadata>(metadata);
-  const presentation = transformCoraPresentations(result[1].data);
-  const guiElements = transformCoraPresentations(result[3].data);
+  const presentation = transformCoraPresentations(coraPresentations.data);
+  const guiElements = transformCoraPresentations(coraGuiElements.data);
 
   const presentationPool = listToPool<
     BFFPresentationBase | BFFPresentationGroup | BFFGuiElement
   >([...presentation, ...guiElements]);
 
-  const validationTypes = transformCoraValidationTypes(result[2].data);
+  const validationTypes = transformCoraValidationTypes(
+    coraValidationTypes.data,
+  );
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
-  const recordTypes = transformCoraRecordTypes(result[4].data);
+  const recordTypes = transformCoraRecordTypes(coraRecordTypes.data);
   const recordTypePool = listToPool<BFFRecordType>(recordTypes);
 
-  const search = transformCoraSearch(result[5].data);
+  const search = transformCoraSearch(coraSearches.data);
   const searchPool = listToPool<BFFSearch>(search);
 
-  const loginUnit = transformLoginUnit(result[6].data);
+  const loginUnit = transformLoginUnit(coraLoginUnits.data);
   const loginUnitPool = listToPool<BFFLoginUnit>(loginUnit);
 
-  const login = transformLogin(result[7].data);
+  const login = transformLogin(coraLogins.data);
   const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(login);
+
+  const themes = await transformThemes(coraThemes.data);
+  const themePool = groupThemesByHostname(themes);
 
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
@@ -114,6 +134,8 @@ const loadDependencies = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
+  dependencies.themePool = themePool;
+
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;
 };
@@ -127,3 +149,17 @@ export const getDependencies = async () => {
 };
 
 export { dependencies, loadDependencies };
+
+const groupThemesByHostname = (
+  themes: BFFTheme[],
+): Lookup<string, BFFTheme> => {
+  const groupedThemes = new Lookup<string, BFFTheme>();
+
+  themes.forEach((theme) => {
+    theme.hostnames.forEach((hostname) => {
+      groupedThemes.set(hostname, theme);
+    });
+  });
+
+  return groupedThemes;
+};

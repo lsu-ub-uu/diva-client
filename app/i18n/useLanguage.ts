@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,21 +14,11 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.language-switcher {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+import { useTranslation } from 'react-i18next';
 
-  select {
-    width: fit-content;
-    padding-right: var(--gap-xs);
-  }
-}
-
-.language-icon {
-  font-size: var(--font-size-xl);
-  margin-right: var(--gap);
-}
+export const useLanguage = () => {
+  const { i18n } = useTranslation();
+  return i18n.language as 'sv' | 'en';
+};

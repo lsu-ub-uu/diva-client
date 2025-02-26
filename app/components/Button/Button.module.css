@@ -1,7 +1,7 @@
 .button {
   text-decoration: none;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1;
   height: var(--input-height);
   padding: 0 calc(var(--gap) * 2);
   border-radius: calc(var(--border-radius) / 2);

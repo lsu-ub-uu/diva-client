@@ -48,7 +48,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
       {component.outputFormat === 'download' && (
         <a
           href={resourceUrl}
-          className={resourceLinkStyles['downloadLink']}
+          className={resourceLinkStyles['download-link']}
           type={data.mimeType}
         >
           {t('divaClient_downloadFileText')}

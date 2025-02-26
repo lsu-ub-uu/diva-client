@@ -20,9 +20,10 @@ import { Form, useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
+
+import styles from './LanguageSwitcher.module.css';
 import { Field } from '@/components/Input/Field';
 import { LanguageIcon } from '@/icons';
-import styles from './LanguageSwitcher.module.css';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
@@ -31,26 +32,31 @@ export const LanguageSwitcher = () => {
   const language = fetcher.formData ? fetcher.formData.get('language') : locale;
 
   return (
-    <Form method='post'>
-      <Field variant='inline'>
-        <LanguageIcon className={styles['language-icon']} />
-        <Select
-          name='language'
-          value={language as string}
-          aria-label={t('divaClient_ChooseLanguageText')}
-          onChange={(e) => {
-            const language = e.target.value as string;
-            i18n.changeLanguage(language);
-            fetcher.submit(
-              { language, intent: 'changeLanguage' },
-              { method: 'post' },
-            );
-          }}
-        >
-          <option value='en'>English</option>
-          <option value='sv'> Svenska</option>
-        </Select>
-      </Field>
-    </Form>
+    <div className={styles['language-switcher']}>
+      <LanguageIcon
+        className={styles['language-icon']}
+        aria-description={t('divaClient_ChooseLanguageLabelText')}
+      />
+      <Form method='post'>
+        <Field>
+          <Select
+            name='language'
+            value={language as string}
+            aria-label={t('divaClient_ChooseLanguageText')}
+            onChange={(e) => {
+              const language = e.target.value as string;
+              i18n.changeLanguage(language);
+              fetcher.submit(
+                { language, intent: 'changeLanguage' },
+                { method: 'post' },
+              );
+            }}
+          >
+            <option value='en'>English</option>
+            <option value='sv'> Svenska</option>
+          </Select>
+        </Field>
+      </Form>
+    </div>
   );
 };

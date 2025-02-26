@@ -19,5 +19,21 @@
 .login {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  gap: var(--gap-s);
+
+  @media (width < 900px) {
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .logout-button {
+      padding-right: 0;
+    }
+  }
+}
+
+.username {
+  display: flex;
+  align-items: center;
   gap: var(--gap-s);
 }

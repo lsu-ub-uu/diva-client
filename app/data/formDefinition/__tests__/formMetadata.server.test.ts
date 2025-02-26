@@ -37,6 +37,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import {
@@ -214,6 +215,7 @@ describe('formMetadata', () => {
       searchPool,
       loginUnitPool,
       loginPool,
+      themePool: listToPool<BFFTheme>([]),
     };
   });
   it('should return form meta data for a given validation type', () => {

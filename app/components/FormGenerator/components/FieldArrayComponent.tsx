@@ -46,6 +46,7 @@ export const FieldArrayComponent = ({
   renderCallback,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
+
   const { fields, append, move, remove } = useFieldArray({
     control: control,
     name: name,

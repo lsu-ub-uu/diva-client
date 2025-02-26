@@ -277,30 +277,6 @@ describe('getAllRecordLinksWithNameInData', () => {
   });
 });
 
-describe('getFirstRecordLinkWithNameInData', () => {
-  it('should throw with no recordLink', () => {
-    expect(() => {
-      cdu.getFirstRecordLinkWithNameInData(
-        dataGroupWithOneRecordLink,
-        'someName',
-      );
-    }).toThrow(Error);
-
-    try {
-      cdu.getFirstRecordLinkWithNameInData(
-        dataGroupWithOneRecordLink,
-        'someName',
-      );
-    } catch (error: unknown) {
-      const childMissingError: Error = <Error>error;
-      expect(childMissingError.message).toStrictEqual(
-        'RecordLink with name [someName] does not exist',
-      );
-    }
-  });
-  it('', () => {});
-});
-
 describe('getAllChildrenWithNameInData', () => {
   it('should return empty list if there are no children', () => {
     const children = cdu.getAllChildrenWithNameInData(

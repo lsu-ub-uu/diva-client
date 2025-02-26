@@ -26,8 +26,8 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 import { type ReactNode, useRef } from 'react';
-import dev_favicon from '@/images/dev_favicon.svg';
-import favicon from '@/images/favicon.svg';
+import dev_favicon from '@/images/diva-star-dev.svg';
+import favicon from '@/images/diva-star.svg';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
@@ -43,12 +43,19 @@ import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteError
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
+  const dependencies = await context.dependencies;
+  const { hostname } = new URL(request.url);
+
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
+  const theme = dependencies.themePool.has(hostname)
+    ? dependencies.themePool.get(hostname)
+    : undefined;
 
   const loginUnits = getLoginUnits(await context.dependencies);
   const locale = context.i18n.language;
-  return { auth, locale, loginUnits };
+
+  return { auth, locale, loginUnits, theme };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -96,7 +103,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.locale ?? 'sv';
   const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
-
   useChangeLanguage(locale);
 
   return (
@@ -121,11 +127,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
-
+  const theme = loaderData.theme;
   return (
-    <PageLayout>
+    <PageLayout theme={theme} loggedIn={loaderData.auth !== undefined}>
       <Outlet />
     </PageLayout>
   );
