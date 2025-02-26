@@ -34,7 +34,7 @@ import { useTranslation } from 'react-i18next';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { LogoutIcon, LoginIcon } from '@/icons';
+import { LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { Menu, MenuButton } from '@headlessui/react';
@@ -86,33 +86,43 @@ export default function User() {
 
   if (!auth) {
     return (
-      <Menu>
-        <MenuButton
-          as={Button}
-          disabled={submitting}
-          aria-busy={submitting}
-          variant='tertiary'
-        >
-          {t('divaClient_LoginText')}
-          {submitting ? <CircularLoader /> : <LoginIcon />}
-        </MenuButton>
-        <DropdownMenu anchor='bottom end'>
-          <DevAccountLoginOptions onSelect={handleDevSelection} />
-          <hr />
-          <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-          <hr />
-          <PasswordLoginOptions returnTo={returnTo} />
-        </DropdownMenu>
-      </Menu>
+      <div className={styles['login']}>
+        <Menu>
+          <MenuButton
+            as={Button}
+            disabled={submitting}
+            aria-busy={submitting}
+            variant='tertiary'
+          >
+            {t('divaClient_LoginText')}
+            {submitting ? <CircularLoader /> : <LoginIcon />}
+          </MenuButton>
+          <DropdownMenu anchor='bottom end'>
+            <DevAccountLoginOptions onSelect={handleDevSelection} />
+            <hr />
+            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
+            <hr />
+            <PasswordLoginOptions returnTo={returnTo} />
+          </DropdownMenu>
+        </Menu>
+      </div>
     );
   }
 
   return (
     <div className={styles['login']}>
-      <div>{printUserNameOnPage(auth)}</div>
+      <div className={styles['username']}>
+        {printUserNameOnPage(auth)}
+
+        <PersonIcon />
+      </div>
       <Form action='/logout' method='post'>
         <input type='hidden' name='returnTo' value={returnTo} />
-        <Button type='submit' variant='tertiary'>
+        <Button
+          type='submit'
+          variant='tertiary'
+          className={styles['logout-button']}
+        >
           {t('divaClient_LogoutText')}
           <LogoutIcon />
         </Button>

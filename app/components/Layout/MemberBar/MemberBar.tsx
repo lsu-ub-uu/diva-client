@@ -22,6 +22,7 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { ChevronDownIcon } from '@/icons';
+import { useTranslation } from 'react-i18next';
 
 interface MemberBarProps {
   theme: BFFTheme;
@@ -29,6 +30,7 @@ interface MemberBarProps {
 }
 
 export const MemberBar = ({ theme, loggedIn }: MemberBarProps) => {
+  const { t } = useTranslation();
   const lang = useLanguage();
   const links = loggedIn ? theme.adminLinks : theme.publicLinks;
 
@@ -76,7 +78,7 @@ export const MemberBar = ({ theme, loggedIn }: MemberBarProps) => {
               className={styles['links-popover-button']}
               aria-hidden={true}
             >
-              Länkar <ChevronDownIcon />
+              {t('divaClient_memberBarLinksText')} <ChevronDownIcon />
             </PopoverButton>
             <PopoverPanel
               anchor='bottom'

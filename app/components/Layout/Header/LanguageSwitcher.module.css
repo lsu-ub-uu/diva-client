@@ -17,7 +17,18 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+.language-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  select {
+    width: fit-content;
+    padding-right: var(--gap-xs);
+  }
+}
+
 .language-icon {
-    font-size: var(--font-size-xl);
-    margin-right: var(--gap);
+  font-size: var(--font-size-xl);
+  margin-right: var(--gap);
 }
