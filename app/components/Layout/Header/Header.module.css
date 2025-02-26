@@ -53,11 +53,6 @@
 .logo img {
   width: 10em;
   min-width: 10em;
-
-  /*@media (width < 600px) {
-    width: 2em;
-    min-width: 2em;
-  }*/
 }
 
 .header-logo-wrapper {
@@ -93,7 +88,4 @@
     transform: translateX(100%);
     opacity: 0;
   }
-}
-
-.header-menu-dialog-close-button {
 }

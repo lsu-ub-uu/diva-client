@@ -1,7 +1,8 @@
-.downloadLink {
+.download-link {
   display: flex;
   align-items: center;
   gap: var(--gap-s);
+
   svg {
     font-size: var(--font-size-l);
   }

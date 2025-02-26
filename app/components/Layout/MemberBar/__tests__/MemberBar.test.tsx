@@ -4,54 +4,6 @@ import { useLanguage } from '@/i18n/useLanguage';
 
 vi.mock('@/i18n/useLanguage');
 
-const temp = {
-  id: 'uu-theme',
-  pageTitle: {
-    sv: 'Uppsala Universitet',
-    en: 'Uppsala University',
-  },
-  backgroundColor: '#CCCCCC',
-  textColor: '#990000',
-  publicLinks: [
-    {
-      sv: {
-        url: 'https://www.uu.se/bibliotek',
-        displayLabel: 'Uppsala universitetsbibliotek',
-      },
-      en: {
-        url: 'https://www.uu.se/en/library',
-        displayLabel: 'Uppsala University Library',
-      },
-    },
-    {
-      sv: {
-        url: 'http://libanswers.ub.uu.se',
-        displayLabel: 'Fråga biblioteket',
-      },
-      en: {
-        url: 'http://libanswers.ub.uu.se/en',
-        displayLabel: 'Ask the Library',
-      },
-    },
-  ],
-  adminLinks: [
-    {
-      sv: {
-        url: 'https://www.uu.se/support',
-        displayLabel: 'Kontakta support',
-      },
-      en: {
-        url: 'https://www.uu.se/en/support',
-        displayLabel: 'Contact support',
-      },
-    },
-  ],
-  logo: {
-    svg: '<svg></svg>',
-  },
-  hostnames: ['uu.localhost', 'uu.cora.epc.ub.uu.se', 'uu.pre.diva-portal.org'],
-};
-
 describe('<MemberBar />', () => {
   it('sets background and text color from theme', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
