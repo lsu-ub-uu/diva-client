@@ -131,7 +131,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   const theme = loaderData.theme;
   return (
-    <PageLayout theme={theme}>
+    <PageLayout theme={theme} loggedIn={loaderData.auth !== undefined}>
       <Outlet />
     </PageLayout>
   );

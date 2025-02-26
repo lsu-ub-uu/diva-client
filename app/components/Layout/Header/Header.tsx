@@ -33,7 +33,7 @@ export const Header = () => {
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   return (
-    <div className={styles['header-wrapper']}>
+    <header className={styles['header-wrapper']}>
       <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
           <picture className={styles['logo']}>
@@ -61,6 +61,6 @@ export const Header = () => {
       <LanguageSwitcher />
 
       <Login />
-    </div>
+    </header>
   );
 };

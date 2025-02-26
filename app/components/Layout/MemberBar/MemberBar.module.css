@@ -19,11 +19,16 @@
 
 .member-bar {
   padding: 0 var(--gap-xl);
-  background-color: #efefef;
   display: flex;
   height: var(--gap-xxl);
   gap: var(--gap-xxl);
   align-items: center;
+
+  @media (width < 900px) {
+    padding: 0 var(--gap);
+    gap: var(--gap);
+    height: auto;
+  }
 }
 
 .content {
@@ -38,6 +43,14 @@
     display: flex;
     gap: var(--gap-l);
   }
+
+  @media (width < 900px) {
+    font-size: var(--font-size-xs);
+
+    ul {
+      gap: var(--gap-s);
+    }
+  }
 }
 
 a {
@@ -51,6 +64,12 @@ a {
 
 .logo-wrapper {
   height: var(--gap-xxl);
+
+  @media (width >= 1400px) {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
   svg {
     width: auto;

@@ -22,21 +22,26 @@ import { useLanguage } from '@/i18n/useLanguage';
 
 interface MemberBarProps {
   theme: BFFTheme;
+  loggedIn: boolean;
 }
 
-export const MemberBar = ({ theme }: MemberBarProps) => {
+export const MemberBar = ({ theme, loggedIn }: MemberBarProps) => {
   const lang = useLanguage();
+  const links = loggedIn ? theme.adminLinks : theme.publicLinks;
 
   return (
-    <div
+    <section
       className={styles['member-bar']}
       style={{
         backgroundColor: theme.backgroundColor,
         color: theme.textColor,
       }}
+      aria-label={theme.pageTitle[lang]}
     >
       {theme.logo.svg && (
         <div
+          role='img'
+          aria-label={`${theme.pageTitle[lang]} logo`}
           className={styles['logo-wrapper']}
           dangerouslySetInnerHTML={{
             __html: theme.logo.svg,
@@ -44,20 +49,22 @@ export const MemberBar = ({ theme }: MemberBarProps) => {
         />
       )}
       {!theme.logo.svg && theme.logo.url && (
-        <img src={theme.logo.url} alt={theme.pageTitle[lang]} />
+        <img src={theme.logo.url} alt={`${theme.pageTitle[lang]} logo`} />
       )}
 
-      <div className={styles['links']}>
-        <ul>
-          {(theme.publicLinks ?? []).map((link) => (
-            <li key={link[lang].url}>
-              <a href={link[lang].url} target='_blank' rel='noreferrer'>
-                {link[lang].displayLabel}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      {links && (
+        <div className={styles['links']}>
+          <ul>
+            {links.map((link) => (
+              <li key={link[lang].url}>
+                <a href={link[lang].url} target='_blank' rel='noreferrer'>
+                  {link[lang].displayLabel}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 };
