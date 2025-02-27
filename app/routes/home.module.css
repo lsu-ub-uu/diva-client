@@ -27,4 +27,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (width < 600px) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: var(--gap-l);
+
+    button {
+      align-self: flex-end;
+    }
+  }
 }

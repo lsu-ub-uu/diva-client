@@ -33,16 +33,18 @@ export const LanguageSwitcher = () => {
 
   return (
     <div className={styles['language-switcher']}>
-      <LanguageIcon
-        className={styles['language-icon']}
-        aria-description={t('divaClient_ChooseLanguageLabelText')}
-      />
       <Form method='post'>
         <Field>
           <Select
             name='language'
             value={language as string}
             aria-label={t('divaClient_ChooseLanguageText')}
+            adornment={
+              <LanguageIcon
+                className={styles['language-icon']}
+                aria-description={t('divaClient_ChooseLanguageLabelText')}
+              />
+            }
             onChange={(e) => {
               const language = e.target.value as string;
               i18n.changeLanguage(language);

@@ -22,21 +22,25 @@ import {
 } from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type Ref } from 'react';
+import { type ReactNode, type Ref } from 'react';
 import { ChevronDownIcon } from '@/icons';
 
 interface SelectProps extends HUISelectProps {
   ref?: Ref<HTMLSelectElement>;
+  adornment?: ReactNode;
 }
 
-export const Select = ({ className, ref, ...rest }: SelectProps) => {
+export const Select = ({ className, adornment, ref, ...rest }: SelectProps) => {
   return (
     <div className={clsx(styles['select-wrapper'], className)}>
-      <HUISelect {...rest} ref={ref} />
+      {adornment && (
+        <div className={clsx(styles['select-adornment'])}>{adornment}</div>
+      )}
       <ChevronDownIcon
         className={styles['select-chevron']}
         aria-hidden='true'
       />
+      <HUISelect {...rest} ref={ref} />
     </div>
   );
 };

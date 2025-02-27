@@ -35,15 +35,6 @@
   }
 }
 
-.select-wrapper select {
-  appearance: none;
-  cursor: pointer;
-
-  &:focus {
-    border-color: black;
-  }
-}
-
 .label-and-adornment-wrapper {
   display: flex;
   align-items: center;
@@ -55,25 +46,30 @@
   flex-direction: column;
   gap: var(--gap-s);
 
+  &:has([data-invalid]) {
+    color: var(--color-error-main);
+
+    .error-icon {
+      opacity: 1;
+    }
+  }
+
   .input-wrapper {
     display: flex;
     align-items: center;
     position: relative;
 
     .error-icon {
+      pointer-events: none;
       opacity: 0;
       transition: opacity 0.2s;
       position: absolute;
       top: calc((var(--input-height) / 2) - 0.5em);
-      right: var(--gap-xl);
+      right: var(--gap);
     }
-  }
 
-  &:has([data-invalid]) {
-    color: var(--color-error-main);
-
-    .error-icon {
-      opacity: 1;
+    &:has(.select-wrapper) .error-icon {
+      right: var(--gap-xl);
     }
   }
 
@@ -102,7 +98,6 @@
 
     --input-height: var(--input-height-small);
 
-    .select-wrapper select,
     .input,
     .combobox-input {
       padding-left: var(--gap);
@@ -114,12 +109,10 @@
   &[data-size='medium'] {
     font-size: 1rem;
 
-    .select-wrapper select,
     .input,
     .combobox-input {
       background-position: right var(--gap) center;
-      padding-left: calc(var(--gap) * 1.5);
-      padding-right: calc(var(--gap) * 6);
+      padding: 0 var(--gap);
     }
   }
 }
@@ -146,10 +139,10 @@
 .select-wrapper {
   position: relative;
   width: 100%;
+  background: var(--color-background);
 }
 
 .select-chevron {
-  content: '';
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -157,4 +150,34 @@
   font-size: 1.5em;
   color: var(--color-primary);
   pointer-events: none;
+}
+
+.select-adornment {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--gap);
+  pointer-events: none;
+  width: 1.5rem;
+
+  svg {
+    font-size: 1.5rem;
+  }
+}
+
+.select-wrapper select {
+  padding-left: var(--gap);
+  padding-right: calc(1.5rem + var(--gap) + var(--gap));
+  background: none;
+  appearance: none;
+  cursor: pointer;
+  width: 100%;
+
+  &:focus {
+    border-color: black;
+  }
+}
+
+.select-wrapper:has(.select-adornment) select {
+  padding-left: calc(1.5rem + var(--gap) + var(--gap));
 }

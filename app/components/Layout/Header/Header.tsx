@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLocation } from 'react-router';
+import { Form, Link, useLocation, useNavigation } from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -25,15 +25,24 @@ import { CachedIcon, CloseIcon, MenuIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { Dialog, DialogPanel } from '@headlessui/react';
+import { useEffect, useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 
 export const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
+  const navigation = useNavigation();
+
   const [headerShown, setHeaderShown] = useState(false);
+
+  useEffect(() => {
+    if (navigation.state !== 'idle') {
+      setHeaderShown(false);
+    }
+  }, [navigation.state]);
+
   return (
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
       <div className={styles['header-logo-wrapper']}>
@@ -76,9 +85,12 @@ export const Header = () => {
         open={headerShown}
         onClose={() => setHeaderShown(false)}
         className={styles['header-menu-dialog']}
-        transition
       >
-        <DialogPanel className={styles['header-menu-dialog-panel']}>
+        <DialogBackdrop
+          className={styles['header-menu-dialog-backdrop']}
+          transition
+        />
+        <DialogPanel className={styles['header-menu-dialog-panel']} transition>
           <Button
             variant='icon'
             onClick={() => setHeaderShown(false)}
