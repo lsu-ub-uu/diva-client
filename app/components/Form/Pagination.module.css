@@ -1,9 +1,19 @@
 .pagination {
+  grid-column: span 2;
   display: flex;
   justify-content: end;
   align-items: center;
   gap: var(--gap-xl);
   font-size: var(--font-size-s);
+
+  @media (width < 600px) {
+    display: grid;
+    grid-template: '1fr 1fr';
+  }
+}
+
+.result-text {
+  grid-column: span 2;
 }
 
 .pagination-buttons {

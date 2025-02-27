@@ -112,9 +112,8 @@ export default function User() {
   return (
     <div className={styles['login']}>
       <div className={styles['username']}>
-        {printUserNameOnPage(auth)}
-
         <PersonIcon />
+        {printUserNameOnPage(auth)}
       </div>
       <Form action='/logout' method='post'>
         <input type='hidden' name='returnTo' value={returnTo} />
