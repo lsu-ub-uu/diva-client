@@ -28,11 +28,11 @@ import {
   linksFromFormSchema,
   removeComponentsWithoutValuesFromSchema,
 } from '@/components/NavigationPanel/utils';
-import { Stack } from '@mui/material';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
+import styles from '@/routes/record.module.css';
 
 export const loader = async ({
   request,
@@ -45,7 +45,7 @@ export const loader = async ({
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -55,7 +55,7 @@ export const loader = async ({
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     record.validationType,
     'view',
   );
@@ -81,12 +81,9 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         />
       }
     >
-      <Stack spacing={2}>
-        <ReadOnlyForm
-          record={record}
-          formSchema={formDefinition}
-        />
-      </Stack>
+      <div className={styles['record-wrapper']}>
+        <ReadOnlyForm record={record} formSchema={formDefinition} />
+      </div>
     </SidebarLayout>
   );
 }

@@ -20,9 +20,9 @@
 import type { FormSchema } from '@/components/FormGenerator/types';
 
 export interface BFFDataRecord {
-  id?: string;
-  recordType?: string;
-  validationType?: string;
+  id: string;
+  recordType: string;
+  validationType: string;
   createdAt?: string;
   createdBy?: string;
   updated?: BFFUpdate[];
@@ -33,9 +33,7 @@ export interface BFFDataRecord {
   autoCompletePresentation?: unknown;
 }
 
-export interface BFFDataRecordData {
-  [key: string]: Metadata;
-}
+export type BFFDataRecordData = Record<string, Metadata>;
 
 export type BFFUserRight =
   | 'read'
@@ -64,11 +62,11 @@ export interface Metadata {
 
 export interface RecordInfo {
   [key: string]: any;
-  createdBy?: Value[];
+  createdBy?: Value;
   dataDivider: Value;
   id: Value;
-  tsCreated?: Value[];
-  type?: Value[];
+  tsCreated?: Value;
+  type?: Value;
   updated?: UpdatedGroup[];
   validationType?: Value;
 }

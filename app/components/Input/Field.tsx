@@ -17,6 +17,7 @@
  */
 
 import {
+  Description,
   Field as HUIField,
   type FieldProps as HUIFieldProps,
   Label,
@@ -24,6 +25,8 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
+import { WarningIcon } from '@/icons';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
@@ -31,6 +34,11 @@ interface FieldProps extends HUIFieldProps {
   children?: ReactNode;
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium';
+  errorMessage?: ReactNode;
+  info?: {
+    title: string;
+    body: string;
+  };
 }
 
 export const Field = ({
@@ -40,19 +48,32 @@ export const Field = ({
   variant = 'block',
   size = 'medium',
   className,
+  errorMessage,
+  info,
   ...rest
 }: FieldProps) => {
   return (
     <HUIField
       {...rest}
-      className={clsx(styles.field, className)}
+      className={clsx(styles['field'], className)}
       data-variant={variant}
       data-size={size}
     >
-      <div className={styles.labelWrapper}>
-        <Label>{label}</Label> {adornment}
+      <div className={styles['label-and-children-wrapper']}>
+        <div className={styles['label-and-adornment-wrapper']}>
+          {label && <Label>{label}</Label>}
+          {info && <FieldInfo {...info} />}
+          <div className={styles['adornments']}>{adornment}</div>
+        </div>
+        <div className={styles['input-wrapper']}>
+          {children} <WarningIcon className={styles['error-icon']} />
+        </div>
       </div>
-      {children}
+      {errorMessage && (
+        <Description className={styles['error-message']}>
+          {errorMessage}
+        </Description>
+      )}
     </HUIField>
   );
 };

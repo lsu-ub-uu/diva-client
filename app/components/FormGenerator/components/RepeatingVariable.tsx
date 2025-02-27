@@ -21,8 +21,7 @@ import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/for
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import type { ReactNode } from 'react';
-import { useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -40,7 +39,7 @@ export const RepeatingVariable = ({
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
   const { control, getValues } = useRemixFormContext();
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData } = use(FormGeneratorContext);
 
   const hasLinkedDataValue = checkIfSingularComponentHasValue(
     getValues,
@@ -68,10 +67,7 @@ export const RepeatingVariable = ({
             name={`${variableArrayPath}.value`}
             parentPresentationStyle={parentPresentationStyle}
             attributes={
-              <Attributes
-                component={component}
-                path={variableArrayPath}
-              />
+              <Attributes component={component} path={variableArrayPath} />
             }
             actionButtonGroup={actionButtonGroup}
           />

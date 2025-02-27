@@ -18,18 +18,18 @@
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { Alert, AlertTitle, Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import type { BFFSearchResult } from '@/types/record';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import { SentimentNeutralIcon } from '@/icons';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
   searchType: string;
-  query: any;
+  query: BFFDataRecordData;
   searchResults: BFFSearchResult | undefined;
 }
 
@@ -41,11 +41,11 @@ export const RecordSearch = ({
 }: RecordSearchProps) => {
   const { t } = useTranslation();
   return (
-    <div className={styles.recordSearch}>
+    <div className={styles['record-search']}>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
-        record={{ data: query }}
+        data={query}
         searchResults={searchResults}
       />
       {searchResults && (
@@ -59,24 +59,17 @@ export const RecordSearch = ({
             </Alert>
           )}
 
-          <ol className={styles.resultList}>
+          <ol className={styles['result-list']}>
             {searchResults.data.map((record) => (
-              <li key={record.id} className={styles.resultListItem}>
+              <li key={record.id} className={styles['result-list-item']}>
                 <SearchResultForm
                   record={record}
                   formSchema={record.presentation!}
                 />
 
-                <Box
-                  sx={(theme) => ({
-                    position: 'absolute',
-                    display: 'flex',
-                    top: theme.spacing(1),
-                    right: theme.spacing(1),
-                  })}
-                >
+                <div className={styles['record-action-buttons']}>
                   <RecordActionButtons record={record} />
-                </Box>
+                </div>
               </li>
             ))}
           </ol>

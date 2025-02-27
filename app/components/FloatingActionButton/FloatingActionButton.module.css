@@ -1,0 +1,88 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.container {
+  position: fixed;
+  bottom: calc(var(--gap) * 1.5);
+  right: calc(var(--gap) * 1.5);
+  display: flex;
+  align-items: stretch;
+  gap: calc(var(--gap) * 2);
+
+  @media (width > 1200px) {
+    flex-direction: column;
+  }
+}
+
+.floating-action-button {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  background-color: var(--color-background);
+  font-weight: 500;
+  box-shadow: var(--elevation);
+  border-radius: var(--gap-l);
+  border: none;
+  padding: var(--gap-l);
+  height: 3rem;
+  cursor: pointer;
+
+  @media (width < 600px) {
+    .content {
+      display: none;
+    }
+  }
+
+  svg {
+    font-size: 1.3rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 100ms ease;
+    pointer-events: none;
+    opacity: 0;
+    background-color: #000;
+  }
+
+  &[data-hover]::before {
+    opacity: 0.08;
+  }
+
+  &[data-active]::before {
+    opacity: 0.12;
+  }
+
+  &[data-variant='primary'] {
+    background-color: var(--color-accent);
+    color: white;
+
+    &::before {
+      background-color: #fff;
+    }
+  }
+}

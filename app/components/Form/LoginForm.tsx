@@ -17,25 +17,19 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Button } from '@mui/material';
-import type {
-  FieldErrors,
-  FieldValues} from 'react-hook-form';
-import {
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
+import type { FieldErrors, FieldValues } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type {
-  RecordData} from '../FormGenerator/defaultValues/defaultValues';
-import {
-  createDefaultValuesFromFormSchema
-} from '../FormGenerator/defaultValues/defaultValues';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { Form } from 'react-router';
+import styles from './LoginForm.module.css';
+import { Button } from '@/components/Button/Button';
 
 interface RecordFormProps {
   record?: BFFDataRecord;
@@ -61,9 +55,8 @@ export const LoginForm = ({ ...props }: RecordFormProps) => {
   const { handleSubmit } = methods;
 
   return (
-    <Box
-      component='form'
-      sx={{ width: '100%' }}
+    <Form
+      className={styles['wrapper']}
       onSubmit={handleSubmit(
         (values) => props.onSubmit(values),
         (errors) => props.onInvalid && props.onInvalid(errors),
@@ -73,15 +66,9 @@ export const LoginForm = ({ ...props }: RecordFormProps) => {
         <FormGenerator formSchema={props.formSchema} />
       </FormProvider>
 
-      <Button
-        type='submit'
-        disableRipple
-        variant='contained'
-        color='secondary'
-        sx={{ height: 40 }}
-      >
+      <Button type='submit' variant='primary'>
         {t('divaClient_LoginButtonText')}
       </Button>
-    </Box>
+    </Form>
   );
 };

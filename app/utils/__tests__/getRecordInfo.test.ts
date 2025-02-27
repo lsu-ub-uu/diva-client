@@ -18,11 +18,15 @@
  */
 
 import { getRecordInfo, getValueFromRecordInfo } from '../getRecordInfo';
+import type { BFFDataRecord } from '@/types/record';
 
 describe('recordInfoHelpers', () => {
   describe('getRecordInfo', () => {
     it('return a RecordInfo', () => {
-      const response = {
+      const response: BFFDataRecord = {
+        id: 'id',
+        validationType: 'validationType',
+        recordType: 'recordType',
         data: {
           output: {
             titleInfo: {
@@ -41,21 +45,15 @@ describe('recordInfoHelpers', () => {
               id: {
                 value: 'divaOutputSwepub:4930578532044260',
               },
-              type: [
-                {
-                  value: 'divaOutputSwepub',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T09:36:03.023342Z',
-                },
-              ],
+              type: {
+                value: 'divaOutputSwepub',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T09:36:03.023342Z',
+              },
               updated: [
                 {
                   tsUpdated: {
@@ -72,27 +70,21 @@ describe('recordInfoHelpers', () => {
       };
       const actual = getRecordInfo(response);
       expect(actual).toStrictEqual({
-        createdBy: [
-          {
-            value: '161616',
-          },
-        ],
+        createdBy: {
+          value: '161616',
+        },
         dataDivider: {
           value: 'divaData',
         },
         id: {
           value: 'divaOutputSwepub:4930578532044260',
         },
-        tsCreated: [
-          {
-            value: '2024-10-16T09:36:03.023342Z',
-          },
-        ],
-        type: [
-          {
-            value: 'divaOutputSwepub',
-          },
-        ],
+        tsCreated: {
+          value: '2024-10-16T09:36:03.023342Z',
+        },
+        type: {
+          value: 'divaOutputSwepub',
+        },
         updated: [
           {
             tsUpdated: {
@@ -113,27 +105,21 @@ describe('recordInfoHelpers', () => {
     it('return a value from recordInfo as an array', () => {
       const actual = getValueFromRecordInfo(
         {
-          createdBy: [
-            {
-              value: '161616',
-            },
-          ],
+          createdBy: {
+            value: '161616',
+          },
           dataDivider: {
             value: 'divaData',
           },
           id: {
             value: 'divaOutputSwepub:4930578532044260',
           },
-          tsCreated: [
-            {
-              value: '2024-10-16T09:36:03.023342Z',
-            },
-          ],
-          type: [
-            {
-              value: 'divaOutputSwepub',
-            },
-          ],
+          tsCreated: {
+            value: '2024-10-16T09:36:03.023342Z',
+          },
+          type: {
+            value: 'divaOutputSwepub',
+          },
           updated: [
             {
               tsUpdated: {
@@ -158,27 +144,21 @@ describe('recordInfoHelpers', () => {
     it('return a value from recordInfo as an array with attribute', () => {
       const actual = getValueFromRecordInfo(
         {
-          createdBy: [
-            {
-              value: '161616',
-            },
-          ],
+          createdBy: {
+            value: '161616',
+          },
           dataDivider: {
             value: 'divaData',
           },
           id: {
             value: 'divaOutputSwepub:4930578532044260',
           },
-          tsCreated: [
-            {
-              value: '2024-10-16T09:36:03.023342Z',
-            },
-          ],
-          type: [
-            {
-              value: 'divaOutputSwepub',
-            },
-          ],
+          tsCreated: {
+            value: '2024-10-16T09:36:03.023342Z',
+          },
+          type: {
+            value: 'divaOutputSwepub',
+          },
           updated: [
             {
               tsUpdated: {
@@ -212,27 +192,21 @@ describe('recordInfoHelpers', () => {
     it('return a value from recordInfo a object', () => {
       const actual = getValueFromRecordInfo(
         {
-          createdBy: [
-            {
-              value: '161616',
-            },
-          ],
+          createdBy: {
+            value: '161616',
+          },
           dataDivider: {
             value: 'divaData',
           },
           id: {
             value: 'divaOutputSwepub:4930578532044260',
           },
-          tsCreated: [
-            {
-              value: '2024-10-16T09:36:03.023342Z',
-            },
-          ],
-          type: [
-            {
-              value: 'divaOutputSwepub',
-            },
-          ],
+          tsCreated: {
+            value: '2024-10-16T09:36:03.023342Z',
+          },
+          type: {
+            value: 'divaOutputSwepub',
+          },
           updated: [
             {
               tsUpdated: {
@@ -257,11 +231,9 @@ describe('recordInfoHelpers', () => {
     it('return a value from recordInfo a object with attribute', () => {
       const actual = getValueFromRecordInfo(
         {
-          createdBy: [
-            {
-              value: '161616',
-            },
-          ],
+          createdBy: {
+            value: '161616',
+          },
           dataDivider: {
             value: 'divaData',
             _attri: 'someAttribute',
@@ -269,16 +241,12 @@ describe('recordInfoHelpers', () => {
           id: {
             value: 'divaOutputSwepub:4930578532044260',
           },
-          tsCreated: [
-            {
-              value: '2024-10-16T09:36:03.023342Z',
-            },
-          ],
-          type: [
-            {
-              value: 'divaOutputSwepub',
-            },
-          ],
+          tsCreated: {
+            value: '2024-10-16T09:36:03.023342Z',
+          },
+          type: {
+            value: 'divaOutputSwepub',
+          },
           updated: [
             {
               tsUpdated: {

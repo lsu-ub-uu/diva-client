@@ -27,13 +27,12 @@ import {
   isComponentText,
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
-import { CollectionVariable } from '@/components/FormGenerator/components/CollectionVariable';
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { RecordLink } from '@/components/FormGenerator/components/RecordLink';
 import type { ReactNode } from 'react';
 import { HiddenInput } from '@/components/FormGenerator/components/HiddenInput';
+import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface LeafComponentProps {
   component: FormComponent;
@@ -51,22 +50,21 @@ export const LeafComponent = ({
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
-}: LeafComponentProps): JSX.Element | null => {
+}: LeafComponentProps) => {
   if (isComponentHidden(component)) {
-    return (
-      <HiddenInput
-        component={component}
-        name={name}
-      />
-    );
+    return <HiddenInput component={component} name={name} />;
   }
 
-  if (isComponentTextVariable(component) || isComponentNumVar(component)) {
+  if (
+    isComponentTextVariable(component) ||
+    isComponentNumVar(component) ||
+    isComponentCollVar(component)
+  ) {
     return (
-      <TextOrNumberVariable
+      <Variable
         reactKey={reactKey}
         component={component}
-        name={name}
+        path={name}
         parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
@@ -86,35 +84,12 @@ export const LeafComponent = ({
     );
   }
 
-  if (isComponentCollVar(component)) {
-    return (
-      <CollectionVariable
-        reactKey={reactKey}
-        component={component}
-        name={name}
-        parentPresentationStyle={parentPresentationStyle}
-        attributes={attributes}
-        actionButtonGroup={actionButtonGroup}
-      />
-    );
-  }
-
   if (isComponentText(component)) {
-    return (
-      <Text
-        reactKey={reactKey}
-        component={component}
-      />
-    );
+    return <Text reactKey={reactKey} component={component} />;
   }
 
   if (isComponentGuiElement(component)) {
-    return (
-      <GuiElementLink
-        reactKey={reactKey}
-        component={component}
-      />
-    );
+    return <GuiElementLink reactKey={reactKey} component={component} />;
   }
 
   return null;

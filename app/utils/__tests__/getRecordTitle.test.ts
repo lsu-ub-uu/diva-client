@@ -123,21 +123,17 @@ const recordInfo: RecordInfo = {
   id: {
     value: 'diva-output:10211259349608221',
   },
-  type: [
-    {
-      value: 'diva-output',
-    },
-  ],
-  createdBy: [
-    {
-      value: '161616',
-    },
-  ],
-  tsCreated: [
-    {
-      value: '2024-12-16T12:27:23.840907Z',
-    },
-  ],
+  type: {
+    value: 'diva-output',
+  },
+
+  createdBy: {
+    value: '161616',
+  },
+  tsCreated: {
+    value: '2024-12-16T12:27:23.840907Z',
+  },
+
   updated: [
     {
       tsUpdated: {

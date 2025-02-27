@@ -17,12 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ButtonGroup, IconButton, Tooltip } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ClearIcon from '@mui/icons-material/Clear';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
-
+import styles from './ActionButtonGroup.module.css';
+import { Button } from '@/components/Button/Button';
+import { ArrowDownwardIcon, ArrowUpwardIcon, CloseIcon } from '@/icons';
 interface ActionButtonGroupProps {
   entityName?: string;
   hideMoveButtons: boolean;
@@ -35,82 +33,43 @@ interface ActionButtonGroupProps {
   entityType: string;
 }
 
-export const ActionButtonGroup = (
-  props: ActionButtonGroupProps,
-): JSX.Element => {
+export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
   const { t } = useTranslation();
 
   return (
-    <ButtonGroup
-      size='small'
-      sx={{
-        zIndex: 1,
-        borderRadius: '25px',
-      }}
-      orientation='horizontal'
-      variant='text'
-    >
+    <div role='group' className={styles['action-button-group']}>
       {!props.hideMoveButtons && (
-        <IconButton
+        <Button
           size='small'
-          sx={{
-            transition: 'background-color .25s',
-            '&:hover': {
-              backgroundColor: 'rgb(0 0 0 / 12%)',
-            },
-          }}
-          aria-label='up'
+          variant='icon'
+          aria-label={t('divaClient_moveFieldUpText')}
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
         >
-          <ArrowUpwardIcon
-            sx={{ color: props.moveUpButtonDisabled ? '#cccccc' : '#000000' }}
-          />
-        </IconButton>
+          <ArrowUpwardIcon />
+        </Button>
       )}
-      <Tooltip
-        title={`${t('divaClient_removeFieldText')} ${
-          props.entityName ?? 'entity'
-        }`}
+      <Button
+        size='small'
+        variant='icon'
+        aria-label={t('divaClient_deleteFieldText')}
+        disabled={props.deleteButtonDisabled}
+        onClick={props.deleteButtonAction}
       >
-        <span>
-          <IconButton
-            size='small'
-            sx={{
-              transition: 'background-color .25s',
-              '&:hover': {
-                backgroundColor: 'rgb(0 0 0 / 12%)',
-              },
-            }}
-            aria-label='delete'
-            disabled={props.deleteButtonDisabled}
-            onClick={props.deleteButtonAction}
-          >
-            <ClearIcon
-              sx={{ color: props.deleteButtonDisabled ? '#cccccc' : '#000000' }}
-            />
-          </IconButton>
-        </span>
-      </Tooltip>
+        <CloseIcon />
+      </Button>
       {!props.hideMoveButtons && (
-        <IconButton
+        <Button
           size='small'
-          sx={{
-            transition: 'background-color .25s',
-            '&:hover': {
-              backgroundColor: 'rgb(0 0 0 / 12%)',
-            },
-          }}
-          aria-label='down'
+          variant='icon'
+          aria-label={t('divaClient_moveFieldDownText')}
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
         >
-          <ArrowDownwardIcon
-            sx={{ color: props.moveDownButtonDisabled ? '#cccccc' : '#000000' }}
-          />
-        </IconButton>
+          <ArrowDownwardIcon />
+        </Button>
       )}
-    </ButtonGroup>
+    </div>
   );
 };
 

@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Container, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
@@ -31,6 +30,9 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -59,46 +61,30 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   return (
     <Form
       method='POST'
-      className={styles.form}
-      data-submitting={submitting}
+      className={styles['form']}
+      {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
-      <div className={styles.toolbar}>
-        <Container maxWidth='xl'>
-          <Toolbar>
-            <div className={styles.toolbarActions}>
-              <Button
-                disabled={submitting}
-                disableRipple
-                variant='outlined'
-                color='secondary'
-                sx={{ height: 40 }}
-                onClick={() => reset()}
-              >
-                {t('divaClient_ResetButtonText')}
-              </Button>
-              <Button
-                disabled={submitting}
-                type='submit'
-                disableRipple
-                variant='contained'
-                color='primary'
-                sx={{ height: 40 }}
-              >
-                {t('divaClient_SubmitButtonText')}
-              </Button>
-            </div>
-          </Toolbar>
-        </Container>
-      </div>
+      <FloatingActionButtonContainer>
+        <FloatingActionButton
+          type='button'
+          onClick={() => reset(undefined, { keepDefaultValues: true })}
+          icon={<RestartAltIcon />}
+          text={t('divaClient_ResetButtonText')}
+        />
+
+        <FloatingActionButton
+          variant='primary'
+          type='submit'
+          icon={<UpgradeIcon />}
+          text={t('divaClient_SubmitButtonText')}
+        />
+      </FloatingActionButtonContainer>
     </Form>
   );
 };

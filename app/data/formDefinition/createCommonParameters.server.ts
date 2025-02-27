@@ -18,89 +18,83 @@
  */
 
 import type {
-  BFFMetadataBase,
-  BFFPresentationBase,
-  BFFPresentationGroup,
+  BFFMetadata,
+  BFFPresentation,
 } from '@/cora/transform/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createCommonParameters = (
-  metadata: BFFMetadataBase,
-  presentation: BFFPresentationBase | BFFPresentationGroup,
+  metadata: BFFMetadata,
+  presentation: BFFPresentation,
 ) => {
-  const name = metadata.nameInData;
-  const { type } = metadata;
-  const placeholder = presentation.emptyTextId;
-  const { mode, inputType } = presentation;
-  const tooltip = { title: metadata.textId, body: metadata.defTextId };
-  let label = presentation.specifiedLabelTextId
-    ? presentation.specifiedLabelTextId
-    : metadata.textId;
-  let showLabel = true;
-  let headlineLevel;
-  let attributesToShow;
-
-  const presentationGroup = presentation as BFFPresentationGroup;
-
-  if (
-    checkIfSpecifiedHeadlineTextIdExist(presentationGroup) &&
-    presentationGroup.specifiedHeadlineTextId !== undefined
-  ) {
-    label = presentationGroup.specifiedHeadlineTextId;
-  }
-
-  if (
-    checkIfSpecifiedHeadlineLevelExist(presentationGroup) &&
-    presentationGroup.specifiedHeadlineLevel !== undefined
-  ) {
-    headlineLevel = presentationGroup.specifiedHeadlineLevel;
-  }
-
-  if (
-    checkIfShowHeadlineExist(presentationGroup) &&
-    presentationGroup.showHeadline === 'false'
-  ) {
-    showLabel = false;
-  }
-
-  if (presentation.showLabel && presentation.showLabel === 'false') {
-    showLabel = false;
-  }
-
-  if (checkIfAttributesToShowExist(presentation)) {
-    attributesToShow = presentation.attributesToShow;
-  }
-
   return removeEmpty({
-    name,
-    type,
-    placeholder,
-    mode,
-    inputType,
-    tooltip,
-    label,
-    headlineLevel,
-    showLabel,
-    attributesToShow,
+    name: metadata.nameInData,
+    type: metadata.type,
+    placeholder: getPlaceholder(presentation),
+    mode: getMode(presentation),
+    inputType: getInputType(presentation),
+    tooltip: getTooltip(metadata),
+    label: getLabel(metadata, presentation),
+    headlineLevel: getHeadlineLevel(presentation),
+    showLabel: shouldShowLabel(presentation),
+    attributesToShow: getAttributesToShow(presentation),
   });
 };
 
-const checkIfSpecifiedHeadlineTextIdExist = (
-  presentation: BFFPresentationGroup,
-) => {
-  return Object.hasOwn(presentation, 'specifiedHeadlineTextId');
+const getAttributesToShow = (presentation: BFFPresentation) => {
+  return 'attributesToShow' in presentation
+    ? presentation.attributesToShow
+    : undefined;
 };
 
-const checkIfSpecifiedHeadlineLevelExist = (
-  presentation: BFFPresentationGroup,
-) => {
-  return Object.hasOwn(presentation, 'specifiedHeadlineLevel');
+const getHeadlineLevel = (presentation: BFFPresentation) => {
+  return 'specifiedHeadlineLevel' in presentation
+    ? presentation.specifiedHeadlineLevel
+    : undefined;
 };
 
-const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
-  return Object.hasOwn(presentation, 'showHeadline');
+const getTooltip = (metadata: BFFMetadata) => {
+  return { title: metadata.textId, body: metadata.defTextId };
 };
 
-const checkIfAttributesToShowExist = (presentation: BFFPresentationBase) => {
-  return Object.hasOwn(presentation, 'attributesToShow');
+const getInputType = (presentation: BFFPresentation) => {
+  return 'inputType' in presentation ? presentation.inputType : undefined;
+};
+
+const getMode = (presentation: BFFPresentation) => {
+  return 'mode' in presentation ? presentation.mode : undefined;
+};
+
+const getPlaceholder = (presentation: BFFPresentation) => {
+  return 'emptyTextId' in presentation ? presentation.emptyTextId : undefined;
+};
+
+const getLabel = (metadata: BFFMetadata, presentation: BFFPresentation) => {
+  if (
+    'specifiedHeadlineTextId' in presentation &&
+    presentation.specifiedHeadlineTextId
+  ) {
+    return presentation.specifiedHeadlineTextId;
+  }
+
+  if (
+    'specifiedLabelTextId' in presentation &&
+    presentation.specifiedLabelTextId
+  ) {
+    return presentation.specifiedLabelTextId;
+  }
+
+  return metadata.textId;
+};
+
+const shouldShowLabel = (presentation: BFFPresentation) => {
+  if ('showLabel' in presentation && presentation.showLabel === 'false') {
+    return false;
+  }
+
+  if ('showHeadline' in presentation && presentation.showHeadline === 'false') {
+    return false;
+  }
+
+  return true;
 };

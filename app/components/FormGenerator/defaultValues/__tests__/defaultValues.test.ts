@@ -51,7 +51,7 @@ import {
   formDefWithOneRepeatingTextVariable,
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTextVar,
-} from '@/__mocks__/data/formDef';
+} from '@/__mocks__/data/form/formDef';
 import type { FormComponent, FormSchema } from '../../types';
 import { cleanFormData } from '@/utils/cleanFormData';
 

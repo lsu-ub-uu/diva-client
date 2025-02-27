@@ -33,6 +33,8 @@ import type {
   BFFPresentationChildReference,
   BFFPresentationContainer,
   BFFPresentationGroup,
+  BFFPresentationResourceLink,
+  BFFResourceLink,
 } from '@/cora/transform/bffTypes.server';
 import type {
   FormComponent,
@@ -40,6 +42,8 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
   FormComponentNumVar,
+  FormComponentRecordLink,
+  FormComponentResourceLink,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import {
@@ -63,6 +67,7 @@ import { createRecordLink } from '@/data/formDefinition/createPresentation/creat
 import { createGroup } from '@/data/formDefinition/createPresentation/createGroup.server';
 import { createContainer } from '@/data/formDefinition/createPresentation/createContainer.server';
 import { createHiddenComponents } from '@/data/formDefinition/createPresentation/createHiddenComponents';
+import { createResourceLink } from '@/data/formDefinition/createPresentation/createResourceLink.server';
 
 export const createGroupOrComponent = (
   dependencies: Dependencies,
@@ -85,9 +90,9 @@ export const createGroupOrComponent = (
     presentationChildReference.childStyle ?? [],
   );
   const presentationChildId = presentationChildReference.childId;
-  const presentation = presentationPool.get(presentationChildId) as
-    | BFFPresentationBase
-    | BFFPresentationGroup;
+  const presentation = presentationPool.get(
+    presentationChildId,
+  ) as BFFPresentationBase;
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     const metadataFromPresentation = metadataPool.get(
@@ -159,13 +164,14 @@ export const createGroupOrComponent = (
       metadata as BFFMetadataRecordLink,
       presentation,
     );
+
     return removeEmpty({
       repeat,
       childStyle,
       textStyle,
       gridColSpan,
       ...recordLink,
-    }) as FormComponentCollVar;
+    }) as FormComponentRecordLink;
   }
 
   if (presentation.type === 'container') {
@@ -195,6 +201,20 @@ export const createGroupOrComponent = (
       textStyle,
       ...group,
     }) as FormComponentGroup;
+  }
+
+  if (presentation.type === 'pResourceLink') {
+    const resourceLink = createResourceLink(
+      metadata as BFFResourceLink,
+      presentation as unknown as BFFPresentationResourceLink,
+    );
+    return removeEmpty({
+      repeat,
+      childStyle,
+      textStyle,
+      gridColSpan,
+      ...resourceLink,
+    }) as FormComponentResourceLink;
   }
 
   return removeEmpty({

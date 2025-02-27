@@ -44,6 +44,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '../bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
@@ -221,6 +222,7 @@ describe('transformToCora', () => {
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
+      themePool: listToPool<BFFTheme>([]),
     };
   });
 

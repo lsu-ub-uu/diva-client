@@ -17,11 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
 import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
@@ -32,10 +31,11 @@ import { useWatch } from 'react-hook-form';
 import FilterChip from '@/components/FilterChip/FilterChip';
 import { useRef } from 'react';
 import { InputChip } from '@/components/Form/InputChip';
+import { SearchIcon } from '@/icons';
 
 interface SearchFormProps {
   searchType: string;
-  record?: BFFDataRecord;
+  data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
 }
@@ -120,7 +120,7 @@ export default function FilterChip({
 */
 
 export const SearchForm = ({
-  record,
+  data,
   formSchema,
   searchResults,
 }: SearchFormProps) => {
@@ -130,10 +130,7 @@ export const SearchForm = ({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      formSchema,
-      record?.data as RecordData,
-    ),
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (
@@ -143,9 +140,9 @@ export const SearchForm = ({
         <FilterChip label='Redo för publicering' />
         <FilterChip label='Redo för granskning' />
       </div>
-      <div className={styles.searchForm}>
+      <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
-          <FormGenerator formSchema={formSchema} />
+          <FormGenerator formSchema={formSchema} showTooltips={false} />
           <SearchButton />
           {searchResults && (
             <Pagination
@@ -178,8 +175,13 @@ const SearchButton = () => {
   });
 
   return (
-    <Button type='submit' variant='primary' disabled={!searchInput}>
-      {t('divaClient_SearchButtonText')}
+    <Button
+      type='submit'
+      variant='primary'
+      disabled={!searchInput}
+      className={styles['search-button']}
+    >
+      <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>
   );
 };

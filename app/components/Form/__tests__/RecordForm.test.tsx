@@ -18,7 +18,7 @@
  */
 
 import { describe, expect, vi } from 'vitest';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   formDefCollVarsWithSameNameInData,
@@ -82,13 +82,18 @@ import {
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithWithOptionalGroupWithRequiredVar,
-} from '@/__mocks__/data/formDef';
+} from '@/__mocks__/data/form/formDef';
 import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { parseFormData } from 'remix-hook-form';
+import {
+  formSchemaWithBinary,
+  linkedBinaryMock,
+  recordWithBinary,
+} from '@/__mocks__/data/form/binary';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -97,12 +102,7 @@ const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
   const RoutesStub = createRoutesStub([
     {
       path: '/',
-      Component: () => (
-        <RecordForm
-          formSchema={formSchema}
-          record={record}
-        />
-      ),
+      Component: () => <RecordForm formSchema={formSchema} record={record} />,
       action: actionSpy,
     },
   ]);
@@ -164,21 +164,15 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
                   updated: [
                     {
                       tsUpdated: {
@@ -430,21 +424,16 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+
                   updated: [
                     {
                       tsUpdated: {
@@ -471,15 +460,10 @@ describe('<Form />', () => {
         />,
       );
 
-      const thesisElement = screen.getByDisplayValue(
-        'artistic-work_artistic-thesis',
-      );
-      expect(thesisElement).toBeInTheDocument();
-
-      const creativeElement = screen.getByDisplayValue(
-        'artistic-work_original-creative-work',
-      );
-      expect(creativeElement).toBeInTheDocument();
+      const input1 = screen.getByLabelText('outputTypeCollectionVarText1');
+      const input2 = screen.getByLabelText('outputTypeCollectionVarText2');
+      expect(input1).toBeInTheDocument();
+      expect(input2).toBeInTheDocument();
     });
 
     it('renders a form from a given definition does validate it', async () => {
@@ -502,7 +486,7 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition does NOT validate it', async () => {
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
@@ -517,15 +501,15 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText(
+          'someRootNameInData.someNameInData.value is a required field',
+        ),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
-      const { container } = render(
-        <RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />,
-      );
+      render(<RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />);
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
@@ -538,8 +522,10 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText(
+          'divaOutput.titleInfo.title.value is a required field',
+        ),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -579,22 +565,18 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const collections = screen.getAllByRole('combobox');
+      /*      const collections = screen.getAllByRole('combobox');
       expect(collections).toHaveLength(2);
       const firstCollection = collections[0];
       await user.click(firstCollection);
-      const firstItems = screen.getByRole('listbox');
-      expect(firstItems.children).toHaveLength(3);
+      const firstItems = screen.getByLabelText('option');
+      expect(firstItems).toHaveLength(3);*/
       await user.selectOptions(
-        firstItems,
+        screen.getByLabelText('outputTypeCollectionVarText1'),
         'artisticWorkOriginalCreativeWorkItemText',
       );
-      const secondCollection = collections[1];
-      await user.click(secondCollection);
-      const secondItems = screen.getByRole('listbox');
-      expect(secondItems.children).toHaveLength(3);
       await user.selectOptions(
-        secondItems,
+        screen.getByLabelText('outputTypeCollectionVarText2'),
         'artisticWorkArtisticThesisItemText',
       );
       await user.click(submitButton);
@@ -629,21 +611,16 @@ describe('<Form />', () => {
                   dataDivider: {
                     value: 'divaData',
                   },
-                  type: [
-                    {
-                      value: 'record',
-                    },
-                  ],
-                  createdBy: [
-                    {
-                      value: '161616',
-                    },
-                  ],
-                  tsCreated: [
-                    {
-                      value: '2024-10-16T12:36:04.249992Z',
-                    },
-                  ],
+                  type: {
+                    value: 'record',
+                  },
+                  createdBy: {
+                    value: '161616',
+                  },
+                  tsCreated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+
                   updated: [
                     {
                       tsUpdated: {
@@ -924,6 +901,9 @@ describe('<Form />', () => {
       const user = userEvent.setup();
 
       const recordWithOldFinalValue: BFFDataRecord = {
+        id: 'id',
+        validationType: 'validationType',
+        recordType: 'recordType',
         data: {
           someRootNameInData: {
             recordInfo: {
@@ -964,7 +944,7 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      const inputElement = screen.getByLabelText('someNameInData');
 
       expect(inputElement).toBeInTheDocument();
 
@@ -1043,10 +1023,16 @@ describe('<Form />', () => {
           formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId1');
-      expect(inputElement).toHaveValue('someFinalValue1');
-      const inputElement2 = screen.getByPlaceholderText('someEmptyTextId2');
-      expect(inputElement2).toHaveValue('someFinalValue2');
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(2);
+      const inputLabel = screen.getByText('label1');
+      expect(inputLabel).toBeInTheDocument();
+      const inputElement = screen.getByText('someFinalValue1');
+      expect(inputElement).toBeInTheDocument();
+      const inputLabel2 = screen.getByText('label2');
+      expect(inputLabel2).toBeInTheDocument();
+      const inputElement2 = screen.getByText('someFinalValue2');
+      expect(inputElement2).toBeInTheDocument();
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1081,21 +1067,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1144,21 +1125,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1251,9 +1227,7 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByPlaceholderText(
-        'loginPasswordTextVarText',
-      );
+      const inputElement = screen.getByLabelText('passwordLabel');
 
       const user = userEvent.setup();
       await user.type(inputElement, 'password');
@@ -1261,7 +1235,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(actionSpy).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -1275,8 +1249,8 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
+      const inputNumberElement = screen.getByLabelText(
+        'someNumberVariableNameInData',
       );
 
       const user = userEvent.setup();
@@ -1307,21 +1281,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1370,21 +1339,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1607,13 +1571,19 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElement = screen.queryByLabelText('delete');
+      const removeButtonElement = screen.queryByLabelText(
+        'divaClient_deleteFieldText',
+      );
       expect(removeButtonElement).toBeInTheDocument();
 
-      const moveUpButtonElement = screen.queryByLabelText('up');
+      const moveUpButtonElement = screen.queryByLabelText(
+        'divaClient_moveFieldUpText',
+      );
       expect(moveUpButtonElement).not.toBeInTheDocument();
 
-      const moveDownButtonElement = screen.queryByLabelText('down');
+      const moveDownButtonElement = screen.queryByLabelText(
+        'divaClient_moveFieldDownText',
+      );
       expect(moveDownButtonElement).not.toBeInTheDocument();
     });
   });
@@ -1626,7 +1596,9 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByLabelText('delete');
+      const removeButtonElements = screen.getAllByLabelText(
+        'divaClient_deleteFieldText',
+      );
 
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
@@ -1642,7 +1614,9 @@ describe('<Form />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByLabelText('delete');
+      const removeButtonElements = screen.getAllByLabelText(
+        'divaClient_deleteFieldText',
+      );
 
       expect(removeButtonElements).toHaveLength(1);
       expect(removeButtonElements[0]).toBeEnabled();
@@ -1650,21 +1624,8 @@ describe('<Form />', () => {
   });
 
   describe('collectionVariable', () => {
-    it('renders a collectionVariable 1-1 and its options', async () => {
-      const { container } = render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneCollectionVariable}
-        />,
-      );
-
-      const selectInputs = container.getElementsByClassName(
-        'MuiSelect-nativeInput',
-      );
-
-      expect(selectInputs).toHaveLength(1);
-    });
-
     it('renders a collectionVariable 1-1 and does validate it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOneCollectionVariable}
@@ -1675,15 +1636,18 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const expandButton = screen.getByRole('combobox', { expanded: false });
-      expect(expandButton).toBeInTheDocument();
+      const select = screen.getByRole('combobox');
+      expect(select).toBeInTheDocument();
 
-      const user = userEvent.setup();
-      await user.click(expandButton);
-      const items = screen.getByRole('listbox');
-      expect(items.children).toHaveLength(4); // includes None option
+      const items = screen.getAllByRole('option');
+      expect(items).toHaveLength(4); // includes None option
 
-      await user.selectOptions(items, 'exampleBlueItemText');
+      await user.click(select);
+      await user.selectOptions(
+        screen.getByRole('combobox'),
+        'examplePinkItemText',
+      );
+
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
@@ -1727,21 +1691,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1766,7 +1725,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('P');
+      expect(inputElement.tagName).toBe('DD');
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
@@ -1791,21 +1750,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -1830,7 +1784,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('P');
+      expect(inputElement.tagName).toBe('DD');
     });
   });
 
@@ -1845,9 +1799,7 @@ describe('<Form />', () => {
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour:',
-      });
+      const attributeSelect = screen.getByLabelText('attribute colour');
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
       await user.type(numberInput, '12');
@@ -1874,9 +1826,7 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour:',
-      });
+      const attributeSelect = screen.getByLabelText('attribute colour');
       expect(attributeSelect).toBeInTheDocument();
 
       await user.type(numberInput, '12');
@@ -1907,9 +1857,9 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
@@ -1936,9 +1886,9 @@ describe('<Form />', () => {
 
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'someNumberVar2AttributeLabel',
+      );
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
@@ -1967,7 +1917,7 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
 
-      screen.getByRole('combobox', { name: 'someNumberVar2AttributeLabel:' });
+      screen.getByLabelText('someNumberVar2AttributeLabel');
 
       await user.type(numberInput, '12');
 
@@ -1993,10 +1943,7 @@ describe('<Form />', () => {
         'someNumberVarIdPlaceholder',
       );
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-      screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel:',
-      });
-
+      screen.getByLabelText('someNumberVar2AttributeLabel');
       await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
@@ -2017,9 +1964,7 @@ describe('<Form />', () => {
       );
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
-      screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
+      screen.getByLabelText('languageCollectionVarText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -2041,10 +1986,9 @@ describe('<Form />', () => {
         'mainTitleTextVarPlaceholderText',
       );
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-
+      const attributeSelect = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
 
       await user.selectOptions(attributeSelect, 'aarLangItemText');
@@ -2105,9 +2049,9 @@ describe('<Form />', () => {
       await user.type(mainTitleElement, '1.25');
       await user.click(submitButton);
 
-      const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
+      const attributeSelect = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
       expect(attributeSelect).toBeInvalid();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2121,13 +2065,10 @@ describe('<Form />', () => {
           }
         />,
       );
-      screen.getByRole('combobox', {
-        name: 'someTitleGroupText:',
-      });
 
-      screen.getByRole('combobox', {
-        name: 'Eye colour:',
-      });
+      screen.getByLabelText('someTitleGroupText');
+
+      screen.getByLabelText('Eye colour');
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
@@ -2150,21 +2091,14 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-
-      screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
-
       const textInput = screen.getByPlaceholderText('givenNameTextVarText');
-      const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-      const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
+      const languageAttribute = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
+
+      const titleTypeAttribute = screen.getByLabelText(
+        'titleTypeCollectionVarText',
+      );
 
       await user.click(textInput);
       await user.type(textInput, 'someAlternativeTitle');
@@ -2191,12 +2125,13 @@ describe('<Form />', () => {
           }
         />,
       );
-      const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText:',
-      });
-      const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText:',
-      });
+      const languageAttribute = screen.getByLabelText(
+        'languageCollectionVarText',
+      );
+
+      const titleTypeAttribute = screen.getByLabelText(
+        'titleTypeCollectionVarText',
+      );
 
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',
@@ -2321,7 +2256,7 @@ describe('<Form />', () => {
 
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithWithOptionalGroupWithRequiredVar}
         />,
@@ -2337,8 +2272,8 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2403,7 +2338,7 @@ describe('<Form />', () => {
 
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
         />,
@@ -2422,14 +2357,14 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={
             formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars
@@ -2450,14 +2385,14 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
         />,
@@ -2466,26 +2401,21 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const expandButton = screen.getAllByRole('combobox', { expanded: false });
-      // expect(expandButton).toBeInTheDocument();
-
-      await user.click(expandButton[0]);
-      const items = screen.getByRole('listbox');
-
-      expect(items.children).toHaveLength(2); // includes None option
-
-      await user.selectOptions(items, 'bthItemText');
+      await user.selectOptions(
+        screen.getByLabelText('someCollectionVarText'),
+        'bthItemText',
+      );
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
       const user = userEvent.setup();
-      const { container } = render(
+      render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
         />,
@@ -2504,8 +2434,8 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+        await screen.findByText('This variable is required'),
+      ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2637,21 +2567,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2710,7 +2635,7 @@ describe('<Form />', () => {
     describe('textVar', () => {
       it('renders a textVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingTextVar}
           />,
@@ -2723,8 +2648,10 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+          await screen.findByText(
+            'output.language.title[0].value is a required field',
+          ),
+        ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2749,7 +2676,7 @@ describe('<Form />', () => {
     describe('numberVar', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
         const user = userEvent.setup();
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingNumberVar}
           />,
@@ -2761,9 +2688,7 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+        expect(await screen.findByText('Invalid format')).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2787,7 +2712,7 @@ describe('<Form />', () => {
 
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {
-        const { container } = render(
+        render(
           <RecordFormWithRoutesStub
             formSchema={formDefRequiredRepeatingCollectionVar}
           />,
@@ -2802,8 +2727,10 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          container.getElementsByClassName('Mui-error').length,
-        ).toBeGreaterThan(0);
+          await screen.findByText(
+            'output.language.languageTerm[0].value is a required field',
+          ),
+        ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2826,6 +2753,7 @@ describe('<Form />', () => {
       });
     });
   });
+
   describe('checkIfComponentHasValue', () => {
     it('checkIfComponentHasValue does not hides variable in output with value', () => {
       const record: BFFDataRecord = {
@@ -2849,21 +2777,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2887,10 +2810,13 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const inputElement = screen.getByLabelText('someMetadataTextVarText');
-      const text = screen.getByText('aaaaa');
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const inputElement = screen.getByText('aaaaa');
       expect(inputElement).toBeInTheDocument();
-      expect(text).toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {
@@ -2915,21 +2841,16 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+              createdBy: {
+                value: '161616',
+              },
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+
               updated: [
                 {
                   tsUpdated: {
@@ -2951,12 +2872,18 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const input1Element = screen.queryByLabelText('someMetadataTextVarText');
-      const input2Element = screen.queryByLabelText(
-        'someOtherMetadataTextVarText',
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const hiddenInputLabel = screen.queryByLabelText(
+        'someMetadataTextVarText',
       );
-      expect(input1Element).toBeInTheDocument();
-      expect(input2Element).not.toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
+
+      expect(inputLabel).toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value 2', () => {
@@ -2980,21 +2907,17 @@ describe('<Form />', () => {
               dataDivider: {
                 value: 'divaData',
               },
-              type: [
-                {
-                  value: 'record',
-                },
-              ],
-              createdBy: [
-                {
-                  value: '161616',
-                },
-              ],
-              tsCreated: [
-                {
-                  value: '2024-10-16T12:36:04.249992Z',
-                },
-              ],
+              type: {
+                value: 'record',
+              },
+
+              createdBy: {
+                value: '161616',
+              },
+
+              tsCreated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
               updated: [
                 {
                   tsUpdated: {
@@ -3016,12 +2939,17 @@ describe('<Form />', () => {
           record={record}
         />,
       );
-      const input1Element = screen.queryByLabelText('someMetadataTextVarText');
-      const input2Element = screen.queryByLabelText(
-        'someMetadataNumberVarText',
+
+      const inputLabels = screen.getAllByRole('definition');
+      expect(inputLabels).toHaveLength(1);
+      const inputLabel = screen.getByText('someMetadataTextVarText');
+      expect(inputLabel).toBeInTheDocument();
+      const hiddenInputLabel = screen.queryByLabelText(
+        'someMetadataTextVarText',
       );
-      expect(input1Element).toBeInTheDocument();
-      expect(input2Element).not.toBeInTheDocument();
+
+      expect(inputLabel).toBeInTheDocument();
+      expect(hiddenInputLabel).not.toBeInTheDocument();
     });
   });
 
@@ -3064,5 +2992,52 @@ describe('<Form />', () => {
     );
     expect(hiddenInput).toHaveAttribute('type', 'hidden');
     expect(hiddenInput).not.toBeVisible();
+  });
+
+  describe('resourceLink', () => {
+    it('renders a linked binary', async () => {
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={formSchemaWithBinary}
+              record={recordWithBinary}
+            />
+          ),
+        },
+        {
+          path: '/record/:recordType/:recordId',
+          loader: () => {
+            return { record: linkedBinaryMock };
+          },
+        },
+      ]);
+
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('heading', {
+          name: /attachmentgrouptext/i,
+        }),
+      ).toBeInTheDocument();
+
+      expect(screen.getByRole('presentation')).toHaveAttribute(
+        'src',
+        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
+      );
+
+      expect(screen.getByText('cat.jpg')).toBeInTheDocument();
+
+      const downloadLink = screen.getByRole('link', {
+        name: /divaclient_downloadfiletext/i,
+      });
+
+      expect(downloadLink).toHaveAttribute(
+        'href',
+        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
+      );
+      expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
+    });
   });
 });

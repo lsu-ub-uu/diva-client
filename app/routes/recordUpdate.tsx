@@ -18,6 +18,7 @@
 
 import {
   commitSession,
+  getAuth,
   getNotification,
   getSessionFromCookie,
   requireAuth,
@@ -40,15 +41,16 @@ import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { Alert, AlertTitle } from '@mui/material';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import styles from '@/routes/record.module.css';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
   const { t } = context.i18n;
 
   const notification = getNotification(session);
@@ -56,10 +58,10 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
@@ -68,7 +70,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     record.validationType,
     'update',
   );
@@ -100,7 +102,7 @@ export const action = async ({
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth.data.token,
@@ -109,7 +111,7 @@ export const action = async ({
   invariant(validationType, 'Failed to get validation type from record');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationType,
     'update',
   );
@@ -126,7 +128,7 @@ export const action = async ({
 
   try {
     await updateRecord(
-      context.dependencies,
+      await context.dependencies,
       validationType,
       recordId,
       validatedFormData as unknown as BFFDataRecord,
@@ -154,7 +156,6 @@ export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
   const { record, formDefinition, notification } = loaderData;
-  useNotificationSnackbar(notification);
 
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
@@ -168,17 +169,21 @@ export default function UpdateRecordRoute({
         />
       }
     >
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity}>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
-      <RecordForm
-        key={lastUpdate}
-        record={record}
-        formSchema={formDefinition}
-      />
+      <NotificationSnackbar notification={notification} />
+
+      <div className={styles['record-wrapper']}>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity}>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
+        <RecordForm
+          key={lastUpdate}
+          record={record}
+          formSchema={formDefinition}
+        />
+      </div>
     </SidebarLayout>
   );
 }

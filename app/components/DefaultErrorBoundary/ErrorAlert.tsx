@@ -17,8 +17,8 @@
  */
 
 import { isRouteErrorResponse } from 'react-router';
-import { Alert, AlertTitle } from '@mui/material';
 import { useState } from 'react';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface ErrorAlertProps {
   error: unknown;

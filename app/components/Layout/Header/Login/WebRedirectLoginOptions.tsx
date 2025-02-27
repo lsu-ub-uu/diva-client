@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData } from 'react-router';
 import type { loader } from '@/root';
+import { MenuItem } from '@headlessui/react';
 
 interface WebRedirectLoginOptionsProps {
   onSelect: (url: string) => void;
@@ -32,22 +32,14 @@ export const WebRedirectLoginOptions = ({
   const { loginUnits } = useLoaderData<typeof loader>();
   return (
     <>
-      <MenuItem
-        disabled
-        sx={{ py: 0 }}
-      >
-        <Typography variant='overline'>
-          {t('divaClient_LoginWebRedirectText')}
-        </Typography>
-      </MenuItem>
+      <h6>{t('divaClient_LoginWebRedirectText')}</h6>
       {loginUnits
         .filter(({ type }) => type === 'webRedirect')
         .map(({ loginDescription, url }) => (
-          <MenuItem
-            key={loginDescription}
-            onClick={() => onSelect(url!)}
-          >
-            {t(loginDescription)}
+          <MenuItem key={loginDescription}>
+            <button onClick={() => onSelect(url!)}>
+              {t(loginDescription)}
+            </button>
           </MenuItem>
         ))}
     </>

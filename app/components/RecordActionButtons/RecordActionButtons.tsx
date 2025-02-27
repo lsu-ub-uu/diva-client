@@ -16,41 +16,46 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { IconButton } from '@mui/material';
 import { Link, useFetcher } from 'react-router';
-import FeedIcon from '@mui/icons-material/Feed';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import type { BFFDataRecord } from '@/types/record';
+import { ArticleIcon, DeleteForeverIcon, EditDocumentIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
 }
 
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
+  const { t } = useTranslation();
   const fetcher = useFetcher();
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
       case 'read':
         return (
-          <IconButton
+          <Button
+            variant='icon'
             key={`${record.id}_rab_${userRight}`}
-            component={Link}
+            as={Link}
             to={`/view/${record.recordType}/${record.id}`}
+            aria-label={t('divaClient_viewRecordText')}
           >
-            <FeedIcon />
-          </IconButton>
+            <ArticleIcon />
+          </Button>
         );
       case 'update':
         return (
-          <IconButton
+          <Button
+            variant='icon'
             key={`${record.id}_rab_${userRight}`}
-            component={Link}
+            as={Link}
             to={`/update/${record.recordType}/${record.id}`}
+            aria-label={t('divaClient_editRecordText')}
           >
-            <EditIcon />
-          </IconButton>
+            <EditDocumentIcon />
+          </Button>
         );
       case 'delete':
         return (
@@ -59,9 +64,13 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             method='POST'
             action={`/delete/${record.recordType}/${record.id}`}
           >
-            <IconButton type='submit'>
+            <Button
+              variant='icon'
+              type='submit'
+              aria-label={t('divaClient_deleteRecordText')}
+            >
               <DeleteForeverIcon />
-            </IconButton>
+            </Button>
           </fetcher.Form>
         );
       default:

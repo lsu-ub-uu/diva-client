@@ -16,20 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export interface SelectItem {
-  id: string;
-  name: string;
-  disabled?: boolean;
-  parentId?: string;
-}
-
 export interface Option {
   value: string;
   label: string;
   disabled?: boolean;
-}
-
-export interface NavigationPanelLink {
-  name: string;
-  label: string;
 }

@@ -44,10 +44,10 @@ export const Pagination = ({
   onRowsPerPageChange,
 }: PaginationProps) => {
   const { t } = useTranslation();
-  const { register } = useRemixFormContext();
+  const { register, getValues } = useRemixFormContext();
 
   const { fromNo, toNo, totalNo } = searchResults;
-  const rowsPerPage = toNo - fromNo + 1;
+  const rowsPerPage = getValues('search.rows[0].value') ?? toNo - fromNo + 1;
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
 
@@ -57,8 +57,8 @@ export const Pagination = ({
   const lastPageStart = totalNo - rowsPerPage + 1;
 
   return (
-    <div className={styles.pagination}>
-      <span>
+    <div className={styles['pagination']}>
+      <span className={styles['result-text']}>
         {t('divaClient_paginationResultText', {
           fromNo,
           toNo,
@@ -81,8 +81,7 @@ export const Pagination = ({
           ))}
         </Select>
       </Field>
-
-      <span className={styles.paginationButtons}>
+      <span className={styles['pagination-buttons']}>
         <Button
           variant='icon'
           type='submit'

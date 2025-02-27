@@ -4,7 +4,6 @@ import {
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
-import { Alert, Button, Stack } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -14,11 +13,14 @@ import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import { useSnackbar } from 'notistack';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 import type { Route } from './+types/login';
+import { Alert } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
+import { useState } from 'react';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -126,9 +128,8 @@ export const ErrorBoundary = RouteErrorBoundary;
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, presentation, returnTo } = loaderData;
   const submit = useSubmit();
-  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
-
+  const [validationErrorShown, setValidationErrorShown] = useState(false);
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -140,6 +141,12 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
+      <Snackbar
+        open={validationErrorShown}
+        onClose={() => setValidationErrorShown(false)}
+        severity='error'
+        text={t('divaClient_validationErrorsText')}
+      />
       {notification && notification.severity === 'error' ? (
         <Alert severity='error'>{notification.summary}</Alert>
       ) : null}
@@ -149,31 +156,17 @@ export default function Login({ loaderData }: Route.ComponentProps) {
           (_values, event) => {
             submit(event!.target);
           },
-          () =>
-            enqueueSnackbar(t('divaClient_validationErrorsText'), {
-              variant: 'error',
-              anchorOrigin: { vertical: 'top', horizontal: 'right' },
-            }),
+          () => setValidationErrorShown(true),
         )}
       >
-        <input
-          type='hidden'
-          name='loginType'
-          value='password'
-        />
-        {returnTo && (
-          <input
-            type='hidden'
-            name='returnTo'
-            value={returnTo}
-          />
-        )}
+        <input type='hidden' name='loginType' value='password' />
+        {returnTo && <input type='hidden' name='returnTo' value={returnTo} />}
         <input
           type='hidden'
           name='presentation'
           value={JSON.stringify(presentation)}
         />
-        <Stack spacing={2}>
+        <div>
           {presentation !== null ? (
             <FormProvider {...methods}>
               <FormGenerator formSchema={presentation} />
@@ -181,12 +174,9 @@ export default function Login({ loaderData }: Route.ComponentProps) {
           ) : (
             <span />
           )}
-        </Stack>
-        <Button
-          type='submit'
-          variant='contained'
-        >
-          Logga in
+        </div>
+        <Button type='submit' variant='primary'>
+          {t('divaClient_LoginText')}
         </Button>
       </Form>
     </div>

@@ -29,36 +29,29 @@ import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { searchRecords } from '@/data/searchRecords.server';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
-import { Alert, Box, Skeleton, Stack } from '@mui/material';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
-
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import type { Route } from './+types/home';
-import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
-import { Button } from '@/components/Button/Button';
 import type { Auth } from '@/auth/Auth';
+import styles from './home.module.css';
+import { Alert } from '@/components/Alert/Alert';
+import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
   const searchForm = getSearchForm(
-    context.dependencies,
+    await context.dependencies,
     'diva-outputSimpleSearch',
   );
 
-  const { query, searchResults } = await performSearch(
-    searchForm,
-    request,
-    context,
-    auth,
-  );
+  const { query, searchResults } = await performSearch(request, context, auth);
 
   return data(
     {
@@ -84,34 +77,20 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     loaderData;
   const { t } = useTranslation();
 
-  useNotificationSnackbar(notification);
-
   return (
     <SidebarLayout
       sidebarContent={
-        <Alert
-          icon={<PriorityHighIcon fontSize='inherit' />}
-          severity='warning'
-        >
-          {t('divaClient_metadataWarningText')}
-        </Alert>
+        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
       }
     >
-      <Stack spacing={2}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+      <NotificationSnackbar notification={notification} />
+      <div className={styles['search-wrapper']}>
+        <div className={styles['search-extras']}>
           <h1 style={{ margin: 0 }}>Sök efter output</h1>
 
           <Suspense
             fallback={
-              <Skeleton>
-                <Button>Skapa</Button>
-              </Skeleton>
+              <SkeletonLoader height='var(--input-height)' width='10rem' />
             }
           >
             <Await
@@ -123,9 +102,16 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               )}
             </Await>
           </Suspense>
-        </Box>
+        </div>
 
-        <Suspense fallback={<Skeleton height={296} />}>
+        <Suspense
+          fallback={
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <SkeletonLoader height='var(--input-height)' width='88%' />
+              <SkeletonLoader height='var(--input-height)' width='12%' />
+            </div>
+          }
+        >
           <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
             {(searchForm) => (
               <RecordSearch
@@ -137,7 +123,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             )}
           </Await>
         </Suspense>
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }
@@ -148,34 +134,27 @@ const getPageTitle = (context: AppLoadContext) => {
 };
 
 const performSearch = async (
-  searchForm: SearchFormSchema,
   request: Request,
   context: AppLoadContext,
   auth: Auth | undefined,
 ) => {
-  // const resolver = yupResolver(generateYupSchemaFromFormSchema(searchForm));
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
-  /*
-  const {
-    errors,
-    data: query,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(request, resolver);*/
-
-  /* if (errors) {
-    return { errors, defaultValues, query };
-  }*/
 
   if (isEmpty(query)) {
     return { query };
   }
 
+  if (query.search.rows === undefined) {
+    query.search.rows = [{ value: '10' }];
+  }
+
   const searchResults = await searchRecords(
-    context.dependencies,
+    await context.dependencies,
     'diva-outputSimpleSearch',
     query,
     auth,
   );
+
   return { query, searchResults };
 };

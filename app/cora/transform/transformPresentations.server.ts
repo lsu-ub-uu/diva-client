@@ -34,6 +34,7 @@ import type {
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationRecordLink,
+  BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
 } from './bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -54,6 +55,7 @@ export const transformCoraPresentations = (
   }
 
   const coraRecordWrappers = dataListWrapper.dataList.data;
+
   const presentations = coraRecordWrappers.map(
     transformCoraPresentationToBFFPresentation,
   );
@@ -71,6 +73,7 @@ const transformCoraPresentationToBFFPresentation = (
   | BFFPresentationSurroundingContainer
   | BFFGuiElement
   | BFFPresentationRecordLink
+  | BFFPresentationResourceLink
   | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -102,12 +105,17 @@ const transformCoraPresentationToBFFPresentation = (
         coraRecordWrapper,
       );
     }
-    // TODO add more types here like pResourceLink
     case 'guiElementLink': {
       return transformCoraPresentationGuiElementLinkToBFFGuiElement(
         coraRecordWrapper,
       );
     }
+    case 'pResourceLink': {
+      return transformCoraPresentationResourceLinkToBFFPresentation(
+        coraRecordWrapper,
+      );
+    }
+
     default: {
       return undefined;
     }
@@ -126,7 +134,10 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     'presentationOf',
   );
 
-  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  let mode;
+  if (containsChildWithNameInData(dataRecordGroup, 'mode')) {
+    mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  }
 
   let emptyTextId;
   if (containsChildWithNameInData(dataRecordGroup, 'emptyTextId')) {
@@ -430,6 +441,21 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
   );
 
   return { id, type, url, presentAs, elementText };
+};
+
+const transformCoraPresentationResourceLinkToBFFPresentation = (
+  coraRecordWrapper: RecordWrapper,
+) => {
+  const basicPresentation =
+    transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const outputFormat = extractAtomicValueByName(
+    dataRecordGroup,
+    'outputFormat',
+  );
+
+  return { ...basicPresentation, outputFormat };
 };
 
 const extractAtomicValueByName = (

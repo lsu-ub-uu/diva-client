@@ -16,62 +16,168 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+.select-wrapper select,
+.input,
+.combobox-input,
+.textarea {
+  background: var(--color-background);
+  background-repeat: no-repeat;
+  width: 100%;
+  position: relative;
+  border: 1px solid var(--color-input-border);
+  border-radius: calc(var(--border-radius) / 2);
+  height: var(--input-height);
+  font-size: inherit;
+  color: var(--color-text);
+
+  &[data-invalid] {
+    border-color: var(--color-error-main);
+  }
+}
+
+.label-and-adornment-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
 .field {
   display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+
+  &:has([data-invalid]) {
+    color: var(--color-error-main);
+
+    .error-icon {
+      opacity: 1;
+    }
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .error-icon {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      position: absolute;
+      top: calc((var(--input-height) / 2) - 0.5em);
+      right: var(--gap);
+    }
+
+    &:has(.select-wrapper) .error-icon {
+      right: var(--gap-xl);
+    }
+  }
+
+  .label-and-children-wrapper {
+    display: flex;
+    gap: var(--gap-s);
+  }
 
   &[data-variant='block'] {
-    flex-direction: column;
+    .label-and-children-wrapper {
+      flex-direction: column;
+    }
   }
+
   &[data-variant='inline'] {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--gap);
+    align-items: flex-end;
+
+    .label-and-children-wrapper {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   &[data-size='small'] {
     font-size: var(--font-size-s);
-    .select {
-      padding-left: calc(var(--gap));
+
+    --input-height: var(--input-height-small);
+
+    .input,
+    .combobox-input {
+      padding-left: var(--gap);
       padding-right: calc(var(--gap) * 6);
-      height: calc(var(--input-height) * 0.8);
       background-position: right calc(var(--gap) / 2) center;
     }
   }
 
   &[data-size='medium'] {
     font-size: 1rem;
-    .select {
+
+    .input,
+    .combobox-input {
       background-position: right var(--gap) center;
-      padding-left: calc(var(--gap) * 1.5);
-      padding-right: calc(var(--gap) * 6);
+      padding: 0 var(--gap);
     }
   }
 }
 
-.labelWrapper {
+.adornments {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--gap-s);
+  margin-left: auto;
 }
 
-.select {
-  appearance: none;
-  field-sizing: content;
-  width: auto;
-  height: var(--input-height);
-  font-size: inherit;
-  border: 1px solid rgb(var(--fieldOutline));
-  border-radius: calc(var(--border-radius) / 2);
-  cursor: pointer;
+.textarea {
+  resize: vertical;
+  min-height: calc(var(--input-height) * 2);
+  padding-top: calc(var(--gap) * 1.5);
+  padding-left: calc(var(--gap) * 1.5);
+  padding-right: calc(var(--gap) * 6);
+}
 
-  background: rgb(var(--background-color));
-  background-repeat: no-repeat;
+.error-message {
+  font-size: var(--font-size-s);
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  background: var(--color-background);
+}
+
+.select-chevron {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: var(--gap);
+  font-size: 1.5em;
+  color: var(--color-primary);
+  pointer-events: none;
+}
+
+.select-adornment {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--gap);
+  pointer-events: none;
+  width: 1.5rem;
+
+  svg {
+    font-size: 1.5rem;
+  }
+}
+
+.select-wrapper select {
+  padding-left: var(--gap);
+  padding-right: calc(1.5rem + var(--gap) + var(--gap));
+  background: none;
+  appearance: none;
+  cursor: pointer;
+  width: 100%;
 
   &:focus {
     border-color: black;
   }
+}
 
-  &[data-invalid] {
-    border-color: rgb(var(--errorMain));
-  }
+.select-wrapper:has(.select-adornment) select {
+  padding-left: calc(1.5rem + var(--gap) + var(--gap));
 }

@@ -18,11 +18,12 @@
 
 import type { FormComponent } from '@/components/FormGenerator/types';
 import styles from './DevInfo.module.css';
-import { useContext, useState } from 'react';
+import { use, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
+import { CodeIcon } from '@/icons';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -34,7 +35,7 @@ interface ToggleDevInfoButtonProps {
 }
 
 export const DevInfo = ({ component, path }: DevInfoProps) => {
-  const { showDevInfo } = useContext(FormGeneratorContext);
+  const { showDevInfo } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
   const { getValues } = useRemixFormContext();
   const data = path && getValues(path);
@@ -42,16 +43,13 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
     return null;
   }
   return (
-    <div className={styles.devInfo}>
-      <button
-        type='button'
-        onClick={() => setExpanded(!expanded)}
-      >
+    <div className={styles['dev-info']}>
+      <button type='button' onClick={() => setExpanded(!expanded)}>
         {component.type} | {addAttributesToName(component, component.name)}
       </button>
 
       {expanded && (
-        <div className={styles.expandInfo}>
+        <div className={styles['expand-info']}>
           <pre>
             <strong>FORM DEF</strong>
             {JSON.stringify(component, null, 2)}
@@ -78,10 +76,10 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
   return (
     <button
       type='button'
-      className={styles.devInfoButton}
+      className={styles['dev-info-button']}
       onClick={onClick}
     >
-      &lt;/&gt;
+      <CodeIcon />
     </button>
   );
 };

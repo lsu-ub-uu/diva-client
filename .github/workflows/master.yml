@@ -24,8 +24,11 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
 
-      - name: Run linting
+      - name: Run eslint
         run: npm run lint
+
+      - name: Run stylelint
+        run: npm run stylelint
 
       - name: Run tests
         run: npm run test:ci

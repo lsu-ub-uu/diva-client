@@ -132,6 +132,11 @@ export interface BFFPresentationBase extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
+export interface BFFPresentationResourceLink
+  extends Omit<BFFPresentationBase, 'mode'> {
+  outputFormat: 'image' | 'download';
+}
+
 export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
@@ -202,7 +207,8 @@ export type BFFPresentation =
   | BFFPresentationBase
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
-  | BFFGuiElement;
+  | BFFGuiElement
+  | BFFPresentationResourceLink;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
@@ -231,4 +237,33 @@ export interface BFFLoginPassword extends BFFLogin {
   viewDefinition: string;
   viewPresentation: string;
   description: string;
+}
+
+export type BFFResourceLink = BFFMetadataBase;
+
+export interface BFFThemeLink {
+  url: string;
+  displayLabel: string;
+}
+
+export interface BFFThemeLinkWrapper {
+  sv: BFFThemeLink;
+  en: BFFThemeLink;
+}
+
+export interface BFFTheme {
+  id: string;
+  pageTitle: {
+    sv: string;
+    en: string;
+  };
+  backgroundColor: string;
+  textColor: string;
+  publicLinks?: BFFThemeLinkWrapper[];
+  adminLinks?: BFFThemeLinkWrapper[];
+  logo: {
+    url?: string;
+    svg?: string;
+  };
+  hostnames: string[];
 }
