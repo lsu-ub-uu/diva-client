@@ -39,7 +39,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             variant='icon'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
-            to={`/view/${record.recordType}/${record.id}`}
+            to={`/${record.recordType}/${record.id}`}
             aria-label={t('divaClient_viewRecordText')}
           >
             <ArticleIcon />
@@ -51,7 +51,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             variant='icon'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
-            to={`/update/${record.recordType}/${record.id}`}
+            to={`/${record.recordType}/${record.id}/update`}
             aria-label={t('divaClient_editRecordText')}
           >
             <EditDocumentIcon />
@@ -62,7 +62,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
           <fetcher.Form
             key={`${record.id}_rab_${userRight}`}
             method='POST'
-            action={`/delete/${record.recordType}/${record.id}`}
+            action={`/${record.recordType}/${record.id}/delete`}
           >
             <Button
               variant='icon'

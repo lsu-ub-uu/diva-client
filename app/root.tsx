@@ -43,6 +43,7 @@ import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteError
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
+  const { t } = context.i18n;
   const dependencies = await context.dependencies;
   const { hostname } = new URL(request.url);
 

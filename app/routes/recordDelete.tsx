@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { data, redirect } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord.server';
 import {
   commitSession,
@@ -43,12 +43,9 @@ export const action = async ({
     summary: 'Successfully deleted record',
   });
 
-  return data(
-    {},
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
+  return redirect(`/${recordType}`, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
     },
-  );
+  });
 };

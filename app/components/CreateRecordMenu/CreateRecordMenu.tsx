@@ -45,7 +45,7 @@ export const CreateRecordMenu = ({
       <DropdownMenu anchor='bottom end'>
         {validationTypes.map((option) => (
           <MenuItem key={option.value}>
-            <Link to={`/create?validationType=${option.value}`}>
+            <Link to={`create?validationType=${option.value}`}>
               {t(option.label)}
             </Link>
           </MenuItem>

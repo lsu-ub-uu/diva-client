@@ -22,12 +22,15 @@ import {
   type ButtonProps as HUIButtonProps,
 } from '@headlessui/react';
 import styles from './FloatingActionButton.module.css';
-import type { ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
-interface FloatingActionButtonProps extends HUIButtonProps {
+interface FloatingActionButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary';
   text: string;
   icon: ReactNode;
+  as?: ElementType;
+  to?: string;
+  href?: string;
 }
 
 export const FloatingActionButton = ({

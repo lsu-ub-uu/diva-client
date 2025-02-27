@@ -16,41 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.breadcrumbs {
-  font-size: var(--font-size-s);
+import { Outlet } from 'react-router';
+import { type Route } from '.react-router/types/app/routes/+types/recordType';
 
-  ol {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const dependencies = await context.dependencies;
+  const recordType = dependencies.recordTypePool.get(params.recordType);
+  const recordTypeMetadata = dependencies.metadataPool.get(
+    recordType.metadataId,
+  );
 
-  li {
-    display: inline;
-  }
+  return { breadcrumb: context.i18n.t(recordTypeMetadata.textId) };
+};
 
-  li:not(:last-child)::after {
-    content: ' / ';
-    margin: 0 5px;
-    color: var(--color-label);
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--color-label);
-  }
-
-  svg {
-    display: inline;
-    transform: translateY(-2px);
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  li:last-child a {
-    font-weight: bold;
-    color: var(--color-text);
-  }
+export default function RecordTypeRoute() {
+  return <Outlet />;
 }

@@ -51,7 +51,7 @@ export const SearchForm = ({
   });
 
   return (
-    <Form method='GET' action='/search'>
+    <Form method='GET'>
       <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
           <FormGenerator formSchema={formSchema} showTooltips={false} />

@@ -23,7 +23,7 @@ import {
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { type AppLoadContext, Await, data } from 'react-router';
+import { type AppLoadContext, Await, data, Link } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { searchRecords } from '@/data/searchRecords.server';

@@ -33,6 +33,11 @@ import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { DeleteIcon, EditDocumentIcon } from '@/icons';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { Form, Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 export const loader = async ({
   request,
@@ -64,13 +69,14 @@ export const loader = async ({
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title }];
+  return [{ title: data?.title ?? data.record.id }];
 };
 
 export const ErrorBoundary = RouteErrorBoundary;
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
+  const { t } = useTranslation();
   return (
     <SidebarLayout
       sidebarContent={
@@ -84,6 +90,25 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
       <div className={styles['record-wrapper']}>
         <ReadOnlyForm record={record} formSchema={formDefinition} />
       </div>
+      <FloatingActionButtonContainer>
+        {record.userRights?.includes('update') && (
+          <FloatingActionButton
+            as={Link}
+            to='update'
+            text={t('divaClient_editRecordText')}
+            icon={<EditDocumentIcon />}
+          />
+        )}
+        {record.userRights?.includes('delete') && (
+          <Form method='POST' action='delete'>
+            <FloatingActionButton
+              type='submit'
+              text={t('divaClient_deleteRecordText')}
+              icon={<DeleteIcon />}
+            />
+          </Form>
+        )}
+      </FloatingActionButtonContainer>
     </SidebarLayout>
   );
 }
