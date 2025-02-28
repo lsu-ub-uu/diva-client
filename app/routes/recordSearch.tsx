@@ -71,6 +71,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
 
   return data(
     {
+      searchId: recordType.searchId,
       recordTypeTextId: recordType.textId,
       validationTypes,
       query,
@@ -93,6 +94,7 @@ export default function OutputSearchRoute({
   loaderData,
 }: Route.ComponentProps) {
   const {
+    searchId,
     recordTypeTextId,
     searchForm,
     validationTypes,
@@ -123,7 +125,10 @@ export default function OutputSearchRoute({
               errorElement={<AsyncErrorBoundary />}
             >
               {(validationTypes) => (
-                <CreateRecordMenu validationTypes={validationTypes} />
+                <CreateRecordMenu
+                  validationTypes={validationTypes}
+                  recordTypeTextId={recordTypeTextId}
+                />
               )}
             </Await>
           </Suspense>
@@ -140,8 +145,8 @@ export default function OutputSearchRoute({
           <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
             {(searchForm) => (
               <RecordSearch
+                key={searchId}
                 searchForm={searchForm}
-                searchType='diva-outputSimpleSearch'
                 query={query}
                 searchResults={searchResults}
               />

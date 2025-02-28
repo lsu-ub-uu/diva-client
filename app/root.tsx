@@ -39,11 +39,11 @@ import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { t } = context.i18n;
   const dependencies = await context.dependencies;
   const { hostname } = new URL(request.url);
 
@@ -56,7 +56,15 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(await context.dependencies);
   const locale = context.i18n.language;
 
-  return { auth, locale, loginUnits, theme };
+  const topNavigationLinks: TopNavigationLink[] = auth
+    ? [
+        { label: 'Output', to: '/diva-output' },
+        { label: 'Personer', to: '/diva-person' },
+        { label: 'Projekt', to: '/diva-project' },
+      ]
+    : [];
+
+  return { auth, locale, loginUnits, theme, topNavigationLinks };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {

@@ -51,3 +51,6 @@ export { default as DownloadIcon } from './Download.svg?react';
 export { default as MenuIcon } from './Menu.svg?react';
 export { default as ArrowDropdownIcon } from './ArrowDropdown.svg?react';
 export { default as HomeIcon } from './Home.svg?react';
+export { default as ContractIcon } from './Contract.svg?react';
+export { default as PersonsIcon } from './Persons.svg?react';
+export { default as SchemaIcon } from './Schema.svg?react';

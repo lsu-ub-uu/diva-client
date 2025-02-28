@@ -16,7 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLocation, useNavigation } from 'react-router';
+import {
+  Form,
+  Link,
+  useLocation,
+  useNavigation,
+  useRouteLoaderData,
+} from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -27,6 +33,8 @@ import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import type { loader } from '@/root';
 
 export const Header = () => {
   const { t } = useTranslation();
@@ -34,6 +42,7 @@ export const Header = () => {
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   const navigation = useNavigation();
+  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
 
   const [headerShown, setHeaderShown] = useState(false);
 
@@ -54,13 +63,18 @@ export const Header = () => {
             <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
           </picture>
         </Link>
+        {rootLoaderData && (
+          <TopNavigation links={rootLoaderData.topNavigationLinks} />
+        )}
       </div>
+
       <div className={styles['header-content']}>
         {devMode && (
           <Button as={Link} variant='tertiary' to='/design-system'>
             Design system
           </Button>
         )}
+
         {devMode && (
           <Form action='/refreshDefinitions' method='POST'>
             <input type='hidden' name='returnTo' value={returnTo} />

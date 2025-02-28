@@ -33,7 +33,6 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { isEmpty } from 'lodash-es';
 
 interface SearchFormProps {
-  searchType: string;
   data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
