@@ -43,7 +43,8 @@
 }
 
 @media (width < 600px) {
-  .header-content {
+  .header-content,
+  .top-navigation {
     display: none;
   }
 }

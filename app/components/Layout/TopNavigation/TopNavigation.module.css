@@ -26,4 +26,21 @@
       color: var(--color-accent-dark);
     }
   }
+
+  @media (width <600px) {
+    ul {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    a {
+      border-right: 4px solid transparent;
+      border-bottom: none;
+
+      &[aria-current='page'] {
+        border-color: var(--color-accent-dark);
+        color: var(--color-accent-dark);
+      }
+    }
+  }
 }

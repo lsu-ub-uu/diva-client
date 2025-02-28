@@ -64,7 +64,9 @@ export const Header = () => {
           </picture>
         </Link>
         {rootLoaderData && (
-          <TopNavigation links={rootLoaderData.topNavigationLinks} />
+          <div className={styles['top-navigation']}>
+            <TopNavigation links={rootLoaderData.topNavigationLinks} />
+          </div>
         )}
       </div>
 
@@ -113,6 +115,10 @@ export const Header = () => {
             <CloseIcon />
           </Button>
           <Login />
+
+          {rootLoaderData && (
+            <TopNavigation links={rootLoaderData.topNavigationLinks} />
+          )}
           <LanguageSwitcher />
         </DialogPanel>
       </Dialog>

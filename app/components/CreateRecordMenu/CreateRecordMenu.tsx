@@ -45,7 +45,7 @@ export const CreateRecordMenu = ({
         as={Link}
         to={`create?validationType=${validationTypes[0].value}`}
       >
-        <AddCircleIcon />{' '}
+        <AddCircleIcon />
         {t('divaClient_createText', { type: recordTypeTextId.toLowerCase() })}
       </Button>
     );
