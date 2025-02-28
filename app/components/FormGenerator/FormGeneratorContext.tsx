@@ -19,11 +19,16 @@
 import { createContext } from 'react';
 import type { BFFDataRecord } from '@/types/record';
 
+export interface EnhancedFieldsConfig {
+  type: 'hidden';
+}
+
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
   showDevInfo: boolean;
   boxGroups: boolean;
   showTooltips: boolean;
+  enhancedFields?: Record<string, EnhancedFieldsConfig>;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
@@ -31,4 +36,5 @@ export const FormGeneratorContext = createContext<FormGeneratorContextType>({
   showDevInfo: false,
   boxGroups: false,
   showTooltips: true,
+  enhancedFields: {},
 });

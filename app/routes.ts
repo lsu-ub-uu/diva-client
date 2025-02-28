@@ -5,7 +5,7 @@ export default [
 
   /* Generic record pages */
   route(':recordType', 'routes/recordType.tsx', [
-    index('routes/home.tsx'),
+    index('routes/recordSearch.tsx'),
     route('create', 'routes/recordCreate.tsx'),
     route(':recordId', 'routes/record.tsx', [
       index('routes/recordView.tsx'),
@@ -13,9 +13,6 @@ export default [
       route('delete', 'routes/recordDelete.tsx'),
     ]),
   ]),
-
-  /* Overrides */
-  //  route('diva-output', 'routes/divaOutputHome.tsx'),
 
   /* Auth */
   route('login', 'routes/login.tsx'),

@@ -22,11 +22,7 @@ import { type Route } from '.react-router/types/app/routes/+types/recordType';
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const dependencies = await context.dependencies;
   const recordType = dependencies.recordTypePool.get(params.recordType);
-  const recordTypeMetadata = dependencies.metadataPool.get(
-    recordType.metadataId,
-  );
-
-  return { breadcrumb: context.i18n.t(recordTypeMetadata.textId) };
+  return { breadcrumb: context.i18n.t(recordType.textId) };
 };
 
 export default function RecordTypeRoute() {

@@ -36,6 +36,18 @@ export const CreateRecordMenu = ({
     return null;
   }
 
+  if (validationTypes.length === 1) {
+    return (
+      <Button
+        variant='secondary'
+        as={Link}
+        to={`create?validationType=${validationTypes[0].value}`}
+      >
+        <AddCircleIcon /> {t('divaClient_createRecordText')}
+      </Button>
+    );
+  }
+
   return (
     <Menu>
       <MenuButton as={Button} variant='secondary'>

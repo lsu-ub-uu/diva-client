@@ -50,6 +50,7 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
 
       {expanded && (
         <div className={styles['expand-info']}>
+          <pre className={styles['path']}>{path}</pre>
           <pre>
             <strong>FORM DEF</strong>
             {JSON.stringify(component, null, 2)}
