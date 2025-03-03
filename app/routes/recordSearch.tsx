@@ -113,7 +113,11 @@ export default function OutputSearchRoute({
       <NotificationSnackbar notification={notification} />
       <div className={styles['search-wrapper']}>
         <div className={styles['search-extras']}>
-          <h1>Sök {t(recordTypeTextId)}</h1>
+          <h1>
+            {t('divaClient_searchText', {
+              type: t(recordTypeTextId).toLowerCase(),
+            })}
+          </h1>
 
           <Suspense
             fallback={

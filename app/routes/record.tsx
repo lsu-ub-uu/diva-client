@@ -19,7 +19,7 @@
 import { Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { type Route } from '.react-router/types/app/routes/+types/record';
+import type { Route } from './+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const loader = async ({
