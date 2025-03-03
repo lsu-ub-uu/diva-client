@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.navigation-loader {
-  position: absolute;
+div.navigation-loader {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;

@@ -38,6 +38,10 @@ export const CreateRecordMenu = ({
     return null;
   }
 
+  const buttonText = t('divaClient_createText', {
+    type: t(recordTypeTextId).toLowerCase(),
+  });
+
   if (validationTypes.length === 1) {
     return (
       <Button
@@ -46,7 +50,7 @@ export const CreateRecordMenu = ({
         to={`create?validationType=${validationTypes[0].value}`}
       >
         <AddCircleIcon />
-        {t('divaClient_createText', { type: recordTypeTextId.toLowerCase() })}
+        {buttonText}
       </Button>
     );
   }
@@ -55,7 +59,7 @@ export const CreateRecordMenu = ({
     <Menu>
       <MenuButton as={Button} variant='secondary'>
         <AddCircleIcon />
-        {t('divaClient_createText', { type: recordTypeTextId.toLowerCase() })}
+        {buttonText}
       </MenuButton>
 
       <DropdownMenu anchor='bottom end'>
