@@ -16,63 +16,135 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { act, render, screen, within } from '@testing-library/react';
+import { createRoutesStub } from 'react-router';
 import { Breadcrumbs } from '../Breadcrumbs';
 
 describe('<Breadcrumbs />', () => {
-  it('Renders', () => {
-    render(
-      <MemoryRouter initialEntries={['/page1/page1_1']}>
-        <Breadcrumbs />
-      </MemoryRouter>,
-    );
+  it('Renders', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
+            Component: Breadcrumbs,
+          },
+        ],
+        Component: Breadcrumbs,
+      },
+    ]);
 
-    const breads = screen.getByText('page1_1');
-    expect(breads).toBeInTheDocument();
+    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
+
+    const breadcrumbs = screen.getByRole('navigation', {
+      name: 'divaClient_breadcrumbText',
+    });
+    within(breadcrumbs).getByRole('link', { name: 'page1_1Crumb' });
   });
-  it('Can take the user back to home page', () => {
-    render(
-      <MemoryRouter initialEntries={['/page1/page1_1']}>
-        <Breadcrumbs />
-      </MemoryRouter>,
-    );
+
+  it('Can take the user back to home page', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
+            Component: Breadcrumbs,
+          },
+        ],
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
 
     expect(
-      screen.getByText('divaClient_breadcrumbStartText').closest('a'),
+      screen.getByRole('link', { name: 'divaClient_breadcrumbStartText' }),
     ).toHaveAttribute('href', '/');
   });
 
-  it('Renders steps as breadcrumbs', () => {
-    render(
-      <MemoryRouter initialEntries={['/page1/page1_1']}>
-        <Breadcrumbs />
-      </MemoryRouter>,
-    );
+  it('Renders steps as breadcrumbs', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
+            Component: Breadcrumbs,
+          },
+        ],
+        Component: Breadcrumbs,
+      },
+      {
+        path: '/page2',
+        loader: () => ({ breadcrumb: 'page2Crumb' }),
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
+
+    const breadcrumbs = screen.getByRole('navigation', {
+      name: 'divaClient_breadcrumbText',
+    });
+    within(breadcrumbs).getByRole('link', {
+      name: 'divaClient_breadcrumbStartText',
+    });
+
+    within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
+
+    within(breadcrumbs).getByRole('link', { name: 'page1_1Crumb' });
 
     expect(
-      screen.getByText('divaClient_breadcrumbStartText'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('page1')).toBeInTheDocument();
-    expect(screen.getByText('page1_1')).toBeInTheDocument();
-    expect(screen.queryByText('page2')).not.toBeInTheDocument();
+      within(breadcrumbs).queryByRole('link', { name: 'page2Crumb' }),
+    ).not.toBeInTheDocument();
   });
 
-  it('Renders last id correctly breadcrumbs', () => {
-    render(
-      <MemoryRouter
-        initialEntries={['/page1/divaOutputSwepub:2087392797647370']}
-      >
-        <Breadcrumbs />
-      </MemoryRouter>,
+  it('Only renders matches that has a breadcrumb', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        Component: Breadcrumbs,
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({}),
+            Component: Breadcrumbs,
+            children: [
+              {
+                path: 'page1_1_1',
+                loader: () => ({ breadcrumb: 'page1_1_1Crumb' }),
+                Component: Breadcrumbs,
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+
+    await act(() =>
+      render(<RoutesStub initialEntries={['/page1/page1_1/page1_1_1']} />),
     );
 
+    const breadcrumbs = screen.getByRole('navigation', {
+      name: 'divaClient_breadcrumbText',
+    });
+
+    expect(within(breadcrumbs).getAllByRole('link')).toHaveLength(3);
+    within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
+
     expect(
-      screen.getByText('divaClient_breadcrumbStartText'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('page1')).toBeInTheDocument();
-    expect(
-      screen.getByText('divaOutputSwepub:2087392797647370', { exact: true }),
-    ).toBeInTheDocument();
+      within(breadcrumbs).queryByRole('link', { name: 'page1_1Crumb' }),
+    ).not.toBeInTheDocument();
+
+    within(breadcrumbs).getByRole('link', { name: 'page1_1_1Crumb' });
   });
 });

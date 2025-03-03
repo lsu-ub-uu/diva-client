@@ -50,7 +50,7 @@ export const Breadcrumbs = () => {
     >
       <ol>
         <li>
-          <NavLink to='/'>
+          <NavLink to='/' aria-label={t('divaClient_breadcrumbStartText')}>
             <HomeIcon />
           </NavLink>
         </li>

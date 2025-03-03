@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, redirect } from 'react-router';
+import { redirect } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord.server';
 import {
   commitSession,

@@ -47,7 +47,6 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
-import type { HandleWithBreadcrumb } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
