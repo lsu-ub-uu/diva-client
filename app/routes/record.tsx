@@ -40,10 +40,20 @@ export const loader = async ({
   });
 
   const breadcrumb = getRecordTitle(record) ?? record.id;
+  const pageTitle = getRecordTitle(record);
 
-  return { record, breadcrumb };
+  return { record, breadcrumb, pageTitle };
 };
 
-export default function RecordTypeRoute() {
-  return <Outlet />;
+export const meta = ({ data }: Route.MetaArgs) => {
+  return [{ title: data.pageTitle }];
+};
+
+export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
+  return (
+    <div>
+      <h1 style={{ marginBottom: '2rem' }}>{loaderData.pageTitle}</h1>
+      <Outlet />
+    </div>
+  );
 }
