@@ -57,19 +57,16 @@ export const InputChip = ({ label = 'Contact', onClose }: InputChipProps) => {
   };
 
   return (
-    <button style={chipStyle} type='button'>
+    <button
+      style={chipStyle}
+      type='button'
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose?.();
+      }}
+    >
       {label}
-      {onClose && (
-        <span
-          style={iconStyle}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose?.();
-          }}
-        >
-          ×
-        </span>
-      )}
+      {onClose && <span style={iconStyle}>×</span>}
     </button>
   );
 };

@@ -20,10 +20,13 @@ import styles from './OutputField.module.css';
 import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
-import type { ReactNode } from 'react';
+import { type ReactNode, use } from 'react';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Link } from 'react-router';
 
 interface OutputFieldProps {
+  path: string;
   className?: string;
   label?: string;
   value: string;
@@ -37,6 +40,7 @@ interface OutputFieldProps {
 }
 
 export const OutputField = ({
+  path,
   className,
   label,
   value,
@@ -45,6 +49,8 @@ export const OutputField = ({
   info,
   adornment,
 }: OutputFieldProps) => {
+  const { enhancedFields } = use(FormGeneratorContext);
+  const enhancement = enhancedFields && enhancedFields[path];
   return (
     <dl
       className={clsx(styles['output-field'], className)}
@@ -64,7 +70,21 @@ export const OutputField = ({
         )}
       </div>
 
-      <Typography as='dd' text={value} variant={textStyle ?? 'bodyTextStyle'} />
+      {enhancement?.type === 'link' ? (
+        <Link to={enhancement.to}>
+          <Typography
+            as='dd'
+            text={value}
+            variant={textStyle ?? 'bodyTextStyle'}
+          />
+        </Link>
+      ) : (
+        <Typography
+          as='dd'
+          text={value}
+          variant={textStyle ?? 'bodyTextStyle'}
+        />
+      )}
     </dl>
   );
 };

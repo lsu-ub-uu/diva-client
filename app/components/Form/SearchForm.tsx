@@ -18,181 +18,110 @@
  */
 
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { SearchFormSchema } from '../FormGenerator/types';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
-import { useWatch } from 'react-hook-form';
 import FilterChip from '@/components/FilterChip/FilterChip';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { InputChip } from '@/components/Form/InputChip';
 import { SearchIcon } from '@/icons';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { isEmpty } from 'lodash-es';
+import { Field } from '@/components/Input/Field';
+import { Input } from '@/components/Input/Input';
+import { example1 } from '@/components/Form/example1';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
 }
-/*
-const FilterChip = ({ ...rest }: CheckboxProps) => {
-  return (
-    <Checkbox {...rest}>
-      {({ checked }) => (
-        <span style={{ display: 'block' }}>
-          <svg
-            style={{
-              stroke: 'white',
-              opacity: checked ? '100' : '0',
-              width: '1rem',
-              height: '1rem',
-            }}
-            viewBox='0 0 14 14'
-            fill='none'
-          >
-            <path
-              d='M3 8L6 11L11 3.5'
-              strokeWidth={2}
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            />
-          </svg>
-        </span>
-      )}
-    </Checkbox>
-  );
-};*/
-/*
 
-interface FilterChipProps {
-  label: string;
-  selected?: boolean;
-  onChange?: (checked: boolean) => void;
-}
-
-export default function FilterChip({
-  label,
-  selected = false,
-  onChange,
-}: FilterChipProps) {
-  const [isChecked, setIsChecked] = useState(selected);
-
-  const handleChange = (checked: boolean) => {
-    setIsChecked(checked);
-    onChange?.(checked);
-  };
+export const SearchForm = ({ data, searchResults }: SearchFormProps) => {
+  const [query, setQuery] = useState('');
+  const [myPubFilter, setMyPubFilter] = useState(false);
+  const [readyForPublicationFilter, setReadyForPublicationFilter] =
+    useState(false);
+  const [readyForReviewFilter, setReadyForReviewFilter] = useState(false);
 
   return (
-    <Checkbox
-      checked={isChecked}
-      onChange={handleChange}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '0 16px',
-        height: '32px',
-        borderRadius: '8px',
-        border: '1px solid #79747E',
-        backgroundColor: isChecked ? '#E8DEF8' : '#F4EFF4',
-        color: isChecked ? '#1D192B' : '#49454F',
-        fontSize: '14px',
-        fontWeight: 500,
-        letterSpacing: '0.1px',
-        cursor: 'pointer',
-        transition: 'all 150ms cubic-bezier(0.4, 0, 0.2, 1)',
-        gap: '1rem',
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        setQuery(e.currentTarget.query.value);
       }}
     >
-      {isChecked && (
-        <span style={{ marginLeft: '8px' }} aria-hidden='true'>
-          ✓
-        </span>
-      )}
-      {label}
-    </Checkbox>
-  );
-}
-*/
-
-export const SearchForm = ({
-  data,
-  formSchema,
-  searchResults,
-}: SearchFormProps) => {
-  const formRef = useRef<HTMLFormElement>(null);
-  const submit = useSubmit();
-  const methods = useRemixForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
-  });
-
-  return (
-    <Form method='GET'  ref={formRef}>
       <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
-        <FilterChip label='Mina publikationer' />
-        <FilterChip label='Redo för publicering' />
-        <FilterChip label='Redo för granskning' />
+        <FilterChip
+          label='Mina publikationer'
+          checked={myPubFilter}
+          onChange={setMyPubFilter}
+        />
+        <FilterChip
+          label='Redo för publicering'
+          checked={readyForPublicationFilter}
+          onChange={setReadyForPublicationFilter}
+        />
+        <FilterChip
+          label='Redo för granskning'
+          checked={readyForReviewFilter}
+          onChange={setReadyForReviewFilter}
+        />
       </div>
       <div className={styles['search-form']}>
-        <RemixFormProvider {...methods}>
-          <FormGenerator
-            formSchema={formSchema}
-            showTooltips={false}
-            enhancedFields={{
-              'search.rows': { type: 'hidden' },
-              'search.start': { type: 'hidden' },
-            }}
-          />
-          <SearchButton />
-          {!searchResults && (
-            <input type='hidden' name='search.rows[0].value' value='10' />
-          )}
+        <Field>
+          <Input name='query' />
+        </Field>
+        <SearchButton />
+        {!searchResults && (
+          <input type='hidden' name='search.rows[0].value' value='10' />
+        )}
 
-          {data && searchResults && (
-            <Pagination
-              query={data}
-              searchResults={searchResults}
-              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
+        {data && searchResults && (
+          <Pagination
+            searchResults={searchResults}
+            onRowsPerPageChange={(e) => {}}
+          />
+        )}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            gridColumn: 'span 2',
+          }}
+        >
+          Aktiva filter:
+          {myPubFilter && (
+            <InputChip
+              label='Mina publikationer'
+              onClose={() => setMyPubFilter(false)}
             />
           )}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              gridColumn: 'span 2',
-            }}
-          >
-            Aktiva filter:{' '}
-            <InputChip label='Mina publikationer' onClose={() => {}} />
-          </div>
-        </RemixFormProvider>
+          {readyForPublicationFilter && (
+            <InputChip
+              label='Redo för publicering'
+              onClose={() => setReadyForPublicationFilter(false)}
+            />
+          )}
+          {readyForReviewFilter && (
+            <InputChip
+              label='Redo för granskning'
+              onClose={() => setReadyForReviewFilter(false)}
+            />
+          )}
+        </div>
       </div>
-    </Form>
+    </form>
   );
 };
+example1;
 
 const SearchButton = () => {
   const { t } = useTranslation();
 
-  const watch = useWatch();
-  const isFormEmpty = isEmpty(cleanFormData(watch));
-
   return (
-    <Button
-      type='submit'
-      variant='primary'
-      className={styles['search-button']}
-      disabled={isFormEmpty}
-    >
+    <Button type='submit' variant='primary' className={styles['search-button']}>
       <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>
   );
