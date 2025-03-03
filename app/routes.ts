@@ -1,20 +1,22 @@
 import { index, route, type RouteConfig } from '@react-router/dev/routes';
 
 export default [
-  index('routes/home.tsx'),
+  index('routes/index.tsx'),
+
+  /* Generic record pages */
+  route(':recordType', 'routes/recordType.tsx', [
+    index('routes/recordSearch.tsx'),
+    route('create', 'routes/recordCreate.tsx'),
+    route(':recordId', 'routes/record.tsx', [
+      index('routes/recordView.tsx'),
+      route('update', 'routes/recordUpdate.tsx'),
+      route('delete', 'routes/recordDelete.tsx'),
+    ]),
+  ]),
 
   /* Auth */
   route('login', 'routes/login.tsx'),
   route('logout', 'routes/logout.tsx'),
-
-  /* Record CRUD */
-  route('create', 'routes/recordCreate.tsx'),
-  route('view/:recordType/:recordId', 'routes/recordView.tsx'),
-  route('update/:recordType/:recordId', 'routes/recordUpdate.tsx'),
-  route('delete/:recordType/:recordId', 'routes/recordDelete.tsx'),
-
-  /* Search */
-  route('search', 'routes/home.tsx', { id: 'search' }),
 
   /* Resource routes */
   route('record/:recordType/:recordId', 'routes/getRecord.tsx'),

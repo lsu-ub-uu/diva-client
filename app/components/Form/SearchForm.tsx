@@ -29,9 +29,10 @@ import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
 import { useWatch } from 'react-hook-form';
 import { SearchIcon } from '@/icons';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { isEmpty } from 'lodash-es';
 
 interface SearchFormProps {
-  searchType: string;
   data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
@@ -51,13 +52,25 @@ export const SearchForm = ({
   });
 
   return (
-    <Form method='GET' action='/search'>
+    <Form method='GET'>
       <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
-          <FormGenerator formSchema={formSchema} showTooltips={false} />
+          <FormGenerator
+            formSchema={formSchema}
+            showTooltips={false}
+            enhancedFields={{
+              'search.rows': { type: 'hidden' },
+              'search.start': { type: 'hidden' },
+            }}
+          />
           <SearchButton />
-          {searchResults && (
+          {!searchResults && (
+            <input type='hidden' name='search.rows[0].value' value='10' />
+          )}
+
+          {data && searchResults && (
             <Pagination
+              query={data}
               searchResults={searchResults}
               onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
             />
@@ -71,16 +84,15 @@ export const SearchForm = ({
 const SearchButton = () => {
   const { t } = useTranslation();
 
-  const searchInput = useWatch({
-    name: 'search.include.includePart.genericSearchTerm.value',
-  });
+  const watch = useWatch();
+  const isFormEmpty = isEmpty(cleanFormData(watch));
 
   return (
     <Button
       type='submit'
       variant='primary'
-      disabled={!searchInput}
       className={styles['search-button']}
+      disabled={isFormEmpty}
     >
       <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>

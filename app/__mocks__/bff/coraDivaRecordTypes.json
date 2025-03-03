@@ -202,6 +202,27 @@
                 "children": [
                   {
                     "name": "linkedRecordType",
+                    "value": "search"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "exampleSearch"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/search/exampleSearch",
+                    "accept": "application/vnd.uub.record+json"
+                  }
+                },
+                "name": "search"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
                     "value": "presentation"
                   },
                   {

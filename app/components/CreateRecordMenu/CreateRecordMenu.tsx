@@ -26,26 +26,42 @@ import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
+  recordTypeTextId: string;
 }
 
 export const CreateRecordMenu = ({
   validationTypes,
+  recordTypeTextId,
 }: CreateRecordMenuProps) => {
   const { t } = useTranslation();
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
   }
 
+  if (validationTypes.length === 1) {
+    return (
+      <Button
+        variant='secondary'
+        as={Link}
+        to={`create?validationType=${validationTypes[0].value}`}
+      >
+        <AddCircleIcon />
+        {t('divaClient_createText', { type: recordTypeTextId.toLowerCase() })}
+      </Button>
+    );
+  }
+
   return (
     <Menu>
       <MenuButton as={Button} variant='secondary'>
-        <AddCircleIcon /> {t('divaClient_createRecordText')}
+        <AddCircleIcon />
+        {t('divaClient_createText', { type: recordTypeTextId.toLowerCase() })}
       </MenuButton>
 
       <DropdownMenu anchor='bottom end'>
         {validationTypes.map((option) => (
           <MenuItem key={option.value}>
-            <Link to={`/create?validationType=${option.value}`}>
+            <Link to={`create?validationType=${option.value}`}>
               {t(option.label)}
             </Link>
           </MenuItem>

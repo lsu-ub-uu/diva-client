@@ -45,6 +45,7 @@ import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  const t = context.i18n.t;
   const session = await getSessionFromCookie(request);
   const notification = getNotification(session);
 
@@ -57,8 +58,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     validationTypeId,
     'create',
   );
+
+  const title = t('divaClient_createRecordText');
+  const breadcrumb = t('divaClient_createRecordText');
   return data(
-    { formDefinition, notification },
+    { formDefinition, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
   );
 };
@@ -99,7 +103,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
       severity: 'success',
       summary: `Record was successfully created ${id}`,
     });
-    return redirectAndCommitSession(`/update/${recordType}/${id}`, session);
+    return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
     console.error(error);
 
@@ -110,6 +114,10 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 };
 
 export const ErrorBoundary = RouteErrorBoundary;
+
+export const meta = ({ data }: Route.MetaArgs) => {
+  return [{ title: data.title }];
+};
 
 export default function CreateRecordRoute({
   loaderData,

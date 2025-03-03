@@ -43,6 +43,19 @@ const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
     'menuPresentationViewId',
   );
 
+  const searchId = containsChildWithNameInData(dataRecordGroup, 'search')
+    ? extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'search')
+    : undefined;
+
+  const textId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'textId',
+  );
+  const defTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'defTextId',
+  );
+
   // Some recordTypes does not have autocomplete as it seems (?)
   let autocompletePresentationView;
   if (
@@ -60,5 +73,8 @@ const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
     listPresentationViewId,
     menuPresentationViewId,
     autocompletePresentationView,
-  }) as BFFRecordType;
+    searchId,
+    textId,
+    defTextId,
+  }) satisfies BFFRecordType;
 };

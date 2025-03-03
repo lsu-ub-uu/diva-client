@@ -16,11 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { BFFSearchResult } from '@/types/record';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 
 import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
-import { useRemixFormContext } from 'remix-hook-form';
 import {
   FirstPageIcon,
   LastPageIcon,
@@ -31,8 +30,10 @@ import { Button } from '@/components/Button/Button';
 import styles from './Pagination.module.css';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
+import { get } from 'lodash-es';
 
 interface PaginationProps {
+  query: BFFDataRecordData;
   searchResults: BFFSearchResult;
   onRowsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -40,14 +41,16 @@ interface PaginationProps {
 const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
 export const Pagination = ({
+  query,
   searchResults,
   onRowsPerPageChange,
 }: PaginationProps) => {
   const { t } = useTranslation();
-  const { register, getValues } = useRemixFormContext();
 
   const { fromNo, toNo, totalNo } = searchResults;
-  const rowsPerPage = getValues('search.rows[0].value') ?? toNo - fromNo + 1;
+  const rowsPerPage =
+    Number(get(query, 'search.rows[0].value')) || toNo - fromNo + 1;
+
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
 
@@ -71,8 +74,9 @@ export const Pagination = ({
         size='small'
       >
         <Select
-          {...register('search.rows[0].value')}
+          name='search.rows[0].value'
           onChange={onRowsPerPageChange}
+          defaultValue={rowsPerPage}
         >
           {rowsPerPageOptions.map((rows) => (
             <option key={rows} value={rows}>

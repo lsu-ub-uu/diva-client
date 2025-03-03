@@ -27,8 +27,16 @@ import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import {
+  TopNavigation,
+  type TopNavigationLink,
+} from '@/components/Layout/TopNavigation/TopNavigation';
 
-export const Header = () => {
+interface HeaderProps {
+  topNavigationLinks: TopNavigationLink[];
+}
+
+export const Header = ({ topNavigationLinks }: HeaderProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -54,13 +62,18 @@ export const Header = () => {
             <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
           </picture>
         </Link>
+        <div className={styles['top-navigation']}>
+          <TopNavigation links={topNavigationLinks} />
+        </div>
       </div>
+
       <div className={styles['header-content']}>
         {devMode && (
           <Button as={Link} variant='tertiary' to='/design-system'>
             Design system
           </Button>
         )}
+
         {devMode && (
           <Form action='/refreshDefinitions' method='POST'>
             <input type='hidden' name='returnTo' value={returnTo} />
@@ -99,6 +112,8 @@ export const Header = () => {
             <CloseIcon />
           </Button>
           <Login />
+
+          <TopNavigation links={topNavigationLinks} />
           <LanguageSwitcher />
         </DialogPanel>
       </Dialog>

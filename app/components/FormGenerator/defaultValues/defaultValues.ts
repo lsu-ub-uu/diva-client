@@ -207,6 +207,7 @@ export const createDefaultValuesFromFormSchema = (
   if (existingRecordData !== undefined) {
     defaultValues = mergeObjects(defaultValues, existingRecordData);
   }
+
   return defaultValues;
 };
 

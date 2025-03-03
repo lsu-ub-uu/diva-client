@@ -63,6 +63,10 @@
   }
 }
 
+.path {
+  grid-column: span 2;
+}
+
 .dev-info-button {
   cursor: pointer;
   border: none;
@@ -75,4 +79,5 @@
   font-size: 1rem;
   padding: var(--gap-s);
   color: var(--color-gray-dark);
+  z-index: 1;
 }

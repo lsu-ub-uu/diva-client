@@ -35,6 +35,9 @@ describe('transformCoraRecordType', () => {
       listPresentationViewId: 'exampleDevOutputListPGroup',
       menuPresentationViewId: 'exampleDevOutputMenuPGroup',
       autocompletePresentationView: 'exampleDevOutputAutocompletePGroup',
+      searchId: 'exampleSearch',
+      textId: 'exampleDevOutputText',
+      defTextId: 'exampleDevOutputDefText',
     };
     expect(firstRecordType).toStrictEqual(expected);
   });

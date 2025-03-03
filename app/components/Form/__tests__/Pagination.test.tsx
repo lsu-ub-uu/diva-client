@@ -22,23 +22,26 @@ import { mock } from 'vitest-mock-extended';
 import type { BFFSearchResult } from '@/types/record';
 import userEvent from '@testing-library/user-event';
 import { expect } from 'vitest';
-import { MockFormProvider } from '@/utils/testUtils';
 
 describe('<Pagination />', () => {
   it('renders rows per page select', async () => {
     const onChangeSpy = vi.fn();
 
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 1,
-            toNo: 10,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={onChangeSpy}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 1,
+          toNo: 10,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={onChangeSpy}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     const rowsPerPageSelect = screen.getByRole('combobox', {
@@ -52,16 +55,20 @@ describe('<Pagination />', () => {
 
   it('renders next page button with correct value', async () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 1,
-            toNo: 10,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 1,
+          toNo: 10,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -71,16 +78,20 @@ describe('<Pagination />', () => {
 
   it('renders previous page button with correct value', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 21,
-            toNo: 30,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 21,
+          toNo: 30,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -90,16 +101,20 @@ describe('<Pagination />', () => {
 
   it('renders first page button with correct value', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 21,
-            toNo: 30,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 21,
+          toNo: 30,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -109,16 +124,20 @@ describe('<Pagination />', () => {
 
   it('renders last page button with correct value', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 11,
-            toNo: 20,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 11,
+          toNo: 20,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -128,16 +147,20 @@ describe('<Pagination />', () => {
 
   it('disables first and previous page buttons when on first page', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 1,
-            toNo: 10,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 1,
+          toNo: 10,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -156,16 +179,20 @@ describe('<Pagination />', () => {
 
   it('disables next and last page buttons when on last page', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 91,
-            toNo: 100,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 91,
+          toNo: 100,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
     expect(
       screen.getByLabelText('divaClient_paginationFirstPageText'),
@@ -183,16 +210,20 @@ describe('<Pagination />', () => {
 
   it('disables all buttons when only one page', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 1,
-            toNo: 8,
-            totalNo: 8,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 1,
+          toNo: 8,
+          totalNo: 8,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -211,16 +242,20 @@ describe('<Pagination />', () => {
 
   it('does not render negative value for previous page button', () => {
     render(
-      <MockFormProvider>
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 2,
-            toNo: 10,
-            totalNo: 100,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 2,
+          toNo: 10,
+          totalNo: 100,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '10' }],
+          },
+        }}
+      />,
     );
 
     expect(
@@ -230,24 +265,20 @@ describe('<Pagination />', () => {
 
   it('renders correct value for back button when on last page with few items', () => {
     render(
-      <MockFormProvider
-        overrides={{
-          getValues: vi
-            .fn()
-            .mockImplementation((name) =>
-              name === 'search.rows[0].value' ? '5' : undefined,
-            ),
+      <Pagination
+        searchResults={mock<BFFSearchResult>({
+          fromNo: 11,
+          toNo: 12,
+          totalNo: 12,
+        })}
+        onRowsPerPageChange={vi.fn()}
+        query={{
+          search: {
+            recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
+            rows: [{ value: '5' }],
+          },
         }}
-      >
-        <Pagination
-          searchResults={mock<BFFSearchResult>({
-            fromNo: 11,
-            toNo: 12,
-            totalNo: 12,
-          })}
-          onRowsPerPageChange={vi.fn()}
-        />
-      </MockFormProvider>,
+      />,
     );
 
     expect(

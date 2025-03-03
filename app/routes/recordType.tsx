@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,25 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createContext } from 'react';
-import type { BFFDataRecord } from '@/types/record';
+import { Outlet } from 'react-router';
+import { type Route } from '.react-router/types/app/routes/+types/recordType';
 
-export interface EnhancedFieldsConfig {
-  type: 'hidden';
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const dependencies = await context.dependencies;
+  const recordType = dependencies.recordTypePool.get(params.recordType);
+  return { breadcrumb: context.i18n.t(recordType.textId) };
+};
+
+export default function RecordTypeRoute() {
+  return <Outlet />;
 }
-
-export interface FormGeneratorContextType {
-  linkedData?: BFFDataRecord['data'];
-  showDevInfo: boolean;
-  boxGroups: boolean;
-  showTooltips: boolean;
-  enhancedFields?: Record<string, EnhancedFieldsConfig>;
-}
-
-export const FormGeneratorContext = createContext<FormGeneratorContextType>({
-  linkedData: undefined,
-  showDevInfo: false,
-  boxGroups: false,
-  showTooltips: true,
-  enhancedFields: {},
-});

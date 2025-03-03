@@ -49,6 +49,12 @@
   background-color: var(--color-alert-bg);
 }
 
+.alert-title {
+  line-height: 1;
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+}
+
 .icon {
   padding: var(--gap-l);
   font-size: var(--font-size-l);
@@ -63,4 +69,5 @@
   display: flex;
   flex-direction: column;
   line-height: inherit;
+  gap: var(--gap-l);
 }

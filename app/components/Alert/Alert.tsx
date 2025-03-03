@@ -18,7 +18,6 @@
  */
 
 import type { ReactNode } from 'react';
-import { Typography } from '@/components/Typography/Typography';
 import { CheckCircleIcon, ErrorIcon, InfoIcon, WarningIcon } from '@/icons';
 import styles from './Alert.module.css';
 
@@ -33,7 +32,7 @@ interface AlertTitleProps {
 }
 
 export const AlertTitle = ({ children }: AlertTitleProps) => {
-  return <Typography text={children as string} variant='boldTextStyle' />;
+  return <div className={styles['alert-title']}>{children}</div>;
 };
 
 interface GetIconProps {
