@@ -19,9 +19,29 @@
 import { createContext } from 'react';
 import type { BFFDataRecord } from '@/types/record';
 
-export interface EnhancedFieldsConfig {
+export interface EnhancedFieldsHiddenConfig {
   type: 'hidden';
 }
+
+export interface EnhancedFieldsCheckboxConfig {
+  type: 'checkbox';
+}
+
+export interface EnhancedGroupConfig {
+  type: 'group';
+  alert: boolean;
+}
+
+export interface EnhancedFieldsLinkConfig {
+  type: 'link';
+  to: string;
+}
+
+export type EnhancedFieldsConfig =
+  | EnhancedFieldsHiddenConfig
+  | EnhancedFieldsLinkConfig
+  | EnhancedGroupConfig
+  | EnhancedFieldsCheckboxConfig;
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];

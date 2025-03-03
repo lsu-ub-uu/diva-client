@@ -55,6 +55,9 @@ export const Group = ({
   actionButtonGroup,
 }: GroupProps) => {
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
+  const { enhancedFields } = use(FormGeneratorContext);
+  const enhancement =
+    enhancedFields && enhancedFields[currentComponentNamePath];
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
@@ -76,7 +79,11 @@ export const Group = ({
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card boxed={boxGroups && groupLevel !== 0}>
-        <CardHeader>
+        <CardHeader
+          enhancedFields={
+            enhancement?.type === 'group' && enhancement?.alert === true
+          }
+        >
           {component.showLabel && (
             <CardTitle>
               <Typography
@@ -94,7 +101,11 @@ export const Group = ({
 
           {actionButtonGroup}
         </CardHeader>
-        <CardContent>
+        <CardContent
+          enhancedFields={
+            enhancement?.type === 'group' && enhancement?.alert === true
+          }
+        >
           <div
             className={styles['container']}
             data-layout={inline ? 'inline' : 'grid'}
