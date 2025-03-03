@@ -17,7 +17,7 @@
  */
 
 import { Outlet } from 'react-router';
-import { type Route } from '.react-router/types/app/routes/+types/recordType';
+import type { Route } from './+types/recordType';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const dependencies = await context.dependencies;
