@@ -25,12 +25,12 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, Link, useNavigation } from 'react-router';
+import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import { ArticleIcon, RestartAltIcon, UpgradeIcon } from '@/icons';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 

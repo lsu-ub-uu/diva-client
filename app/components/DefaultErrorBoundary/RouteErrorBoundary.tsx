@@ -21,7 +21,6 @@ import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
 
 export const RouteErrorBoundary = () => {
   const error = useRouteError();
-  console.log('RouteErrorBoundary', error);
 
   return <ErrorAlert error={error} />;
 };

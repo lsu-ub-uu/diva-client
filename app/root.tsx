@@ -32,7 +32,6 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import rootCss from './root.css?url';
-import { PageLayout } from '@/components/Layout/Layout';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
@@ -40,6 +39,10 @@ import { renewAuth } from '@/auth/renewAuth.server';
 import type { Route } from './+types/root';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/components/Layout/Header/Header';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 const { MODE } = import.meta.env;
 
@@ -140,8 +143,16 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   const theme = loaderData.theme;
   return (
-    <PageLayout theme={theme} loggedIn={loaderData.auth !== undefined}>
-      <Outlet />
-    </PageLayout>
+    <>
+      <header>
+        <NavigationLoader />
+        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
+        <Header topNavigationLinks={loaderData.topNavigationLinks} />
+      </header>
+      <div className='container'>
+        <Breadcrumbs />
+        <Outlet />
+      </div>
+    </>
   );
 }
