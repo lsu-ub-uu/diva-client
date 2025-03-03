@@ -25,13 +25,17 @@ import { ChevronDownIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 
 interface MemberBarProps {
-  theme: BFFTheme;
+  theme: BFFTheme | undefined;
   loggedIn: boolean;
 }
 
 export const MemberBar = ({ theme, loggedIn }: MemberBarProps) => {
   const { t } = useTranslation();
   const lang = useLanguage();
+
+  if (!theme) {
+    return null;
+  }
   const links = loggedIn ? theme.adminLinks : theme.publicLinks;
 
   return (

@@ -88,27 +88,3 @@
   margin: 0 auto;
   padding: 0 var(--gap-l);
 }
-
-header nav {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-right: auto;
-
-  a {
-    position: relative;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: var(--color-text);
-    font-size: 1.2rem;
-    border-radius: var(--border-radius);
-    padding: var(--gap) var(--gap-l);
-    line-height: 1;
-
-    &.active {
-      background-color: var(--color-accent);
-      color: var(--color-text-inverted);
-    }
-  }
-}

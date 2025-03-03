@@ -28,14 +28,12 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
-  searchType: string;
   query: BFFDataRecordData;
   searchResults: BFFSearchResult | undefined;
 }
 
 export const RecordSearch = ({
   searchForm,
-  searchType,
   query,
   searchResults,
 }: RecordSearchProps) => {
@@ -44,7 +42,6 @@ export const RecordSearch = ({
     <div className={styles['record-search']}>
       <SearchForm
         formSchema={searchForm}
-        searchType={searchType}
         data={query}
         searchResults={searchResults}
       />

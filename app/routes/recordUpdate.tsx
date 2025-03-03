@@ -80,8 +80,10 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     record,
   );
 
+  const breadcrumb = t('divaClient_UpdatingPageTitleText');
+
   return data(
-    { record, formDefinition, defaultValues, notification, title },
+    { record, formDefinition, defaultValues, notification, title, breadcrumb },
     {
       headers: {
         'Set-Cookie': await commitSession(session),

@@ -23,43 +23,61 @@ import {
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { type AppLoadContext, Await, data } from 'react-router';
+import { Await, data } from 'react-router';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { searchRecords } from '@/data/searchRecords.server';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import type { Route } from './+types/home';
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { isEmpty } from 'lodash-es';
-import type { Auth } from '@/auth/Auth';
+import type { Route } from './+types/recordSearch';
 import styles from './home.module.css';
 import { Alert } from '@/components/Alert/Alert';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
+import { performSearch } from '@/routes/routeUtils/performSearch';
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
+  const { t } = context.i18n;
+
+  const dependencies = await context.dependencies;
+
+  const recordType = dependencies.recordTypePool.get(params.recordType);
+
+  if (!recordType.searchId) {
+    throw data('Record type has no search', { status: 404 });
+  }
 
   const searchForm = getSearchForm(
     await context.dependencies,
-    'diva-outputSimpleSearch',
+    recordType.searchId,
   );
 
-  const { query, searchResults } = await performSearch(request, context, auth);
+  const { query, searchResults } = await performSearch(
+    request,
+    context,
+    recordType.searchId,
+    auth,
+  );
+
+  const validationTypes = getValidationTypes(
+    params.recordType,
+    auth?.data.token,
+  );
 
   return data(
     {
-      validationTypes: getValidationTypes(auth?.data.token),
+      searchId: recordType.searchId,
+      recordTypeTextId: recordType.textId,
+      validationTypes,
       query,
       searchForm,
       searchResults,
-      title: getPageTitle(context),
+      title: `DiVA | ${t(recordType.textId)}`,
       notification: getNotification(session),
     },
     await getResponseInitWithSession(session),
@@ -72,9 +90,18 @@ export const meta = ({ data }: Route.MetaArgs) => {
 
 export const ErrorBoundary = RouteErrorBoundary;
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  const { searchForm, validationTypes, searchResults, query, notification } =
-    loaderData;
+export default function OutputSearchRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const {
+    searchId,
+    recordTypeTextId,
+    searchForm,
+    validationTypes,
+    searchResults,
+    query,
+    notification,
+  } = loaderData;
   const { t } = useTranslation();
 
   return (
@@ -86,7 +113,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <NotificationSnackbar notification={notification} />
       <div className={styles['search-wrapper']}>
         <div className={styles['search-extras']}>
-          <h1 style={{ margin: 0 }}>Sök efter output</h1>
+          <h1>Sök {t(recordTypeTextId)}</h1>
 
           <Suspense
             fallback={
@@ -98,7 +125,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               errorElement={<AsyncErrorBoundary />}
             >
               {(validationTypes) => (
-                <CreateRecordMenu validationTypes={validationTypes} />
+                <CreateRecordMenu
+                  validationTypes={validationTypes}
+                  recordTypeTextId={recordTypeTextId}
+                />
               )}
             </Await>
           </Suspense>
@@ -115,8 +145,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
             {(searchForm) => (
               <RecordSearch
+                key={searchId}
                 searchForm={searchForm}
-                searchType='diva-outputSimpleSearch'
                 query={query}
                 searchResults={searchResults}
               />
@@ -127,34 +157,3 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     </SidebarLayout>
   );
 }
-
-const getPageTitle = (context: AppLoadContext) => {
-  const { t } = context.i18n;
-  return `DiVA | ${t('divaClient_HomePageTitleText')}`;
-};
-
-const performSearch = async (
-  request: Request,
-  context: AppLoadContext,
-  auth: Auth | undefined,
-) => {
-  const url = new URL(request.url);
-  const query = parseFormDataFromSearchParams(url.searchParams);
-
-  if (isEmpty(query)) {
-    return { query };
-  }
-
-  if (query.search.rows === undefined) {
-    query.search.rows = [{ value: '10' }];
-  }
-
-  const searchResults = await searchRecords(
-    await context.dependencies,
-    'diva-outputSimpleSearch',
-    query,
-    auth,
-  );
-
-  return { query, searchResults };
-};

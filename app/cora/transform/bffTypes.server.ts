@@ -34,6 +34,9 @@ export interface BFFRecordType extends BFFBase {
   metadataId: string;
   presentationViewId: string;
   listPresentationViewId: string;
+  searchId?: string;
+  textId: string;
+  defTextId: string;
 }
 
 export interface BFFMetadataBase extends BFFBase {

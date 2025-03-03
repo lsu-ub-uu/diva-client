@@ -442,6 +442,8 @@ describe('formDefinition', () => {
       metadataId: `${id}OutputGroup`,
       presentationViewId: `${id}OutputPGroup`,
       listPresentationViewId: `${id}ListPGroup`,
+      textId: 'someText',
+      defTextId: 'someDefText',
     };
 
     recordTypePool.set(metadata.id, metadata);

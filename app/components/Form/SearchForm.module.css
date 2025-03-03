@@ -3,6 +3,12 @@
   grid-template-columns: 1fr auto;
   gap: var(--gap);
   align-items: end;
+
+  @media (width < 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .search-button {

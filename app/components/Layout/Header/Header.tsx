@@ -27,8 +27,16 @@ import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import {
+  TopNavigation,
+  type TopNavigationLink,
+} from '@/components/Layout/TopNavigation/TopNavigation';
 
-export const Header = () => {
+interface HeaderProps {
+  topNavigationLinks: TopNavigationLink[];
+}
+
+export const Header = ({ topNavigationLinks }: HeaderProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -45,25 +53,27 @@ export const Header = () => {
 
   return (
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
-      <nav className={styles['header-logo-wrapper']}>
-        <NavLink to='/'>
-          <img
-            src={divaLogo}
-            className='logo'
-            alt='logo'
-            style={{ width: 160 }}
-          />
-        </NavLink>
-        <NavLink to='/search'>Output</NavLink>
-        <NavLink to='/person'>Personer</NavLink>
-        <NavLink to='/project'>Projekt</NavLink>
-      </nav>
+      <div className={styles['header-logo-wrapper']}>
+        <Link to='/'>
+          <picture className={styles['logo']}>
+            {/*  <source srcSet={divaLogoS} media='(max-width: 600px)' />*/}
+            <source srcSet={divaLogo} />
+
+            <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
+          </picture>
+        </Link>
+        <div className={styles['top-navigation']}>
+          <TopNavigation links={topNavigationLinks} />
+        </div>
+      </div>
+
       <div className={styles['header-content']}>
         {devMode && (
           <Button as={Link} variant='tertiary' to='/design-system'>
             Design system
           </Button>
         )}
+
         {devMode && (
           <Form action='/refreshDefinitions' method='POST'>
             <input type='hidden' name='returnTo' value={returnTo} />
@@ -102,6 +112,8 @@ export const Header = () => {
             <CloseIcon />
           </Button>
           <Login />
+
+          <TopNavigation links={topNavigationLinks} />
           <LanguageSwitcher />
         </DialogPanel>
       </Dialog>

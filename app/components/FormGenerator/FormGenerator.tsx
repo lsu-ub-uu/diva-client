@@ -19,7 +19,10 @@
 
 import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import {
+  type EnhancedFieldsConfig,
+  FormGeneratorContext,
+} from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
@@ -30,19 +33,27 @@ interface FormGeneratorProps {
   linkedData?: BFFDataRecord['data'];
   boxGroups?: boolean;
   showTooltips?: boolean;
+  enhancedFields?: Record<string, EnhancedFieldsConfig>;
 }
 
 export const FormGenerator = ({
   linkedData,
   boxGroups = false,
   showTooltips = true,
+  enhancedFields,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
 
   const formContextValues = useMemo(
-    () => ({ linkedData, boxGroups, showDevInfo, showTooltips }),
-    [linkedData, boxGroups, showDevInfo, showTooltips],
+    () => ({
+      linkedData,
+      boxGroups,
+      showDevInfo,
+      showTooltips,
+      enhancedFields,
+    }),
+    [linkedData, boxGroups, showDevInfo, showTooltips, enhancedFields],
   );
 
   return (

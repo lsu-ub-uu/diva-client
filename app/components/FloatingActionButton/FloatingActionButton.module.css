@@ -45,6 +45,9 @@
   padding: var(--gap-l);
   height: 3rem;
   cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
 
   @media (width < 600px) {
     .content {

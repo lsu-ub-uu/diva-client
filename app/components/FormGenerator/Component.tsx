@@ -38,6 +38,8 @@ import { LeafComponent } from '@/components/FormGenerator/components/LeafCompone
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Group } from '@/components/FormGenerator/components/Group';
 import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
+import { use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -52,10 +54,14 @@ export const Component = ({
   path,
   parentPresentationStyle,
 }: FormComponentGeneratorProps) => {
+  const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
 
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
+  if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
+    return null;
+  }
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
       <SurroundingContainer
