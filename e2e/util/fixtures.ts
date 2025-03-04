@@ -1,7 +1,9 @@
-import type { DataGroup } from '@/cora/cora-data/CoraData.server';
 import { test as base } from '@playwright/test';
 import { divaOutputWithMinimalData } from './testData';
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+
+/* eslint-disable react-hooks/rules-of-hooks */
 
 const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
 
@@ -19,15 +21,12 @@ export const test = base.extend<Fixtures>({
       },
     });
     const responseBody = await response.json();
-    const authtoken = getFirstDataAtomicValueWithNameInData(
-      responseBody.data,
-      'token',
-    );
+    const auth = transformCoraAuth(responseBody);
 
-    await use(authtoken);
+    await use(auth.data.token);
 
     await request.delete(responseBody.actionLinks.delete.url, {
-      headers: { Authtoken: authtoken },
+      headers: { Authtoken: auth.data.token },
     });
   },
 
