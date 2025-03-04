@@ -11,6 +11,7 @@ As this project includes server side logic, the DiVA BFF (`diva-react-spa-bff`) 
 ### Prerequisites
 - Node.js (version 20 or later)
 - npm (version 10.8 or later)
+- Alternatively you can [build and run with Docker](#building-and-running-docker-image)
 
 ### Installation
 1. Clone the repository
@@ -70,12 +71,16 @@ docker build -t diva-client .
 ```
 
 ```bash
+docker kill diva-client
+docker rm diva-client
 docker run -d --name diva-client \
       -e CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest \
       -e CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest \
       -p 9876:5173 \
       diva-client
   ```
+
+Docker container should now be accessible at http://localhost:9876
 
 ### Enable in-app devtools
 When running the application, open the DevTools console and run the following:
