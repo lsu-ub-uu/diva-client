@@ -8,6 +8,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 
@@ -20,4 +21,5 @@ export interface Dependencies {
   searchPool: Lookup<string, BFFSearch>;
   loginUnitPool: Lookup<string, BFFLoginUnit>;
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
+  themePool: Lookup<string, BFFTheme>;
 }

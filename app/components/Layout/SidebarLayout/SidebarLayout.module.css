@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.sidebarLayout {
+.sidebar-layout {
   display: grid;
   gap: calc(var(--gap) * 8);
 
@@ -32,9 +32,8 @@
     position: sticky;
     top: 0;
     max-height: 100vh;
-    padding-bottom: 64px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding: var(--gap) 0;
+    overflow: hidden auto;
   }
 
   main {

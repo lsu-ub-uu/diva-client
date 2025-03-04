@@ -1,6 +1,7 @@
-import type { DataGroup } from './CoraData.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { getFirstDataGroupWithNameInData } from './CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from './CoraDataUtilsWrappers.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 
 export const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
   const recordInfo = getFirstDataGroupWithNameInData(
@@ -33,4 +34,32 @@ export const extractLinkedRecordIdFromNamedRecordLink = (
     linkName,
   ) as DataGroup;
   return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
+};
+
+export const fetchLinkedRecordForRecordLinkWithNameInData = async (
+  data: DataGroup,
+  nameInData: string,
+  authToken?: string,
+) => {
+  const recordLink = getFirstDataGroupWithNameInData(
+    data,
+    nameInData,
+  ) as DataGroup;
+
+  const linkedRecordType = getFirstDataAtomicValueWithNameInData(
+    recordLink,
+    'linkedRecordType',
+  );
+  const linkedRecordId = getFirstDataAtomicValueWithNameInData(
+    recordLink,
+    'linkedRecordId',
+  );
+
+  const response = await getRecordDataById<RecordWrapper>(
+    linkedRecordType,
+    linkedRecordId,
+    authToken,
+  );
+
+  return response.data;
 };

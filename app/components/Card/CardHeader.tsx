@@ -16,23 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { HTMLProps, ReactNode } from 'react';
-import { useContext } from 'react';
+import { type HTMLProps, type ReactNode, use } from 'react';
 
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
 interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
+  enhancedFields?: boolean;
 }
 
-export const CardHeader = ({ children }: CardHeaderProps) => {
-  const { boxed } = useContext(CardContext);
+export const CardHeader = ({ children, enhancedFields }: CardHeaderProps) => {
+  const { boxed } = use(CardContext);
 
   return (
     <div
-      className={styles.cardHeader}
-      data-boxed={boxed}
+      data-alert={enhancedFields === true}
+      className={styles['card-header']}
+      {...(boxed && { 'data-boxed': '' })}
     >
       {children}
     </div>

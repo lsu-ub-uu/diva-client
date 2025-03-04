@@ -16,13 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box } from '@mui/material';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import styles from './ReadOnlyForm.module.css';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -30,28 +28,15 @@ export interface RecordFormProps {
 }
 
 export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
-  const defaultValues = createDefaultValuesFromFormSchema(
-    formSchema,
-    record?.data as RecordData,
-  );
-
   const methods = useRemixForm({
-    defaultValues,
+    defaultValues: record?.data,
   });
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        pb: 4,
-      }}
-    >
+    <div className={styles['wrapper']}>
       <RemixFormProvider {...methods}>
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
-    </Box>
+    </div>
   );
 };

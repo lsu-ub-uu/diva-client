@@ -17,12 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FC} from 'react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { BFFDataRecord } from '@/types/record';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
+import { useFetcher } from 'react-router';
+import type { loader } from '@/routes/getRecord';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -30,53 +30,36 @@ interface LinkedRecordProps {
   presentationRecordLinkId: string;
 }
 
-export const LinkedRecord: FC<LinkedRecordProps> = (
-  props: LinkedRecordProps,
-) => {
-  const [record, setRecord] = useState<BFFDataRecord | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+export const LinkedRecord = ({
+  recordType,
+  id,
+  presentationRecordLinkId,
+}: LinkedRecordProps) => {
   const { t } = useTranslation();
+  const { load, data, state } = useFetcher<typeof loader>();
+  const isLoading = state === 'loading';
+  const record = state === 'idle' && data?.record;
+  const error = state === 'idle' && data?.error;
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.BASE_URL}record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
-        );
-        if (isMounted) {
-          setError(null);
-          setRecord(response.data);
-          setIsLoading(false);
-        }
-      } catch (err: unknown) {
-        if (isMounted) {
-          if (axios.isAxiosError(err)) {
-            setError(err.message);
-          } else {
-            setError('Unexpected error occurred');
-          }
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchData().then();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [props.id, props.recordType, props.presentationRecordLinkId]);
+    load(
+      `/record/${recordType}/${id}?presentationRecordLinkId=${presentationRecordLinkId}`,
+    );
+  }, [load, recordType, id, presentationRecordLinkId]);
 
   if (isLoading) {
-    return <div>{t('divaClient_loadingText')}</div>;
+    return (
+      <div>
+        {t('divaClient_loadingText')} <CircularLoader />
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>{t('divaClient_FailedToGetRecordText')}</div>;
   }
-  return <>{record && <LinkedRecordForm record={record} />}</>;
+
+  if (record) {
+    return <LinkedRecordForm record={record} />;
+  }
 };

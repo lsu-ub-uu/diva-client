@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Alert, Box, Button, LinearProgress, linearProgressClasses, Stack, styled, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from 'axios';
+import { Alert } from '@/components/Alert/Alert';
 
+/*
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
   borderRadius: 5,
@@ -31,7 +31,7 @@ const StyledLinearProgress = styled(LinearProgress)(() => ({
     borderRadius: 5,
     backgroundColor: '#1a90ff',
   },
-}));
+}));*/
 
 interface UploadProgressProps {
   currentProgress: number;
@@ -48,22 +48,20 @@ const UploadProgress = (props: UploadProgressProps) => {
     setProgress(props.currentProgress);
   }, [props.currentProgress]);
 
+  /*Check if styling is correct*/
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
-        <StyledLinearProgress
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ width: '100%', marginRight: '1rem' }}>
+        {/* <StyledLinearProgress
           variant='determinate'
           color='primary'
           value={progress}
-        />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-        >{`${Math.round(progress)}%`}</Typography>
-      </Box>
-    </Box>
+        />*/}
+      </div>
+      <div style={{ minWidth: '2em' }}>
+        <div>{`${Math.round(progress)}%`}</div>
+      </div>
+    </div>
   );
 };
 
@@ -108,9 +106,10 @@ export const FileUpload = (props: FileUploadProps) => {
     }
   };
 
+  /*Check if styling is correct*/
   return (
-    <Box sx={{ marginBottom: 10 }}>
-      <Stack spacing={2}>
+    <div style={{ marginBottom: '10em' }}>
+      <div>
         <input
           type='file'
           ref={inputRef}
@@ -124,12 +123,8 @@ export const FileUpload = (props: FileUploadProps) => {
           multiple={false}
           style={{ display: 'none' }}
         />
-        <Button
+        <button
           disabled={progress > 0 && progress < 100}
-          disableRipple
-          color='primary'
-          variant='contained'
-          endIcon={<AddCircleOutlineIcon />}
           onClick={() => {
             setUploadStatus(UploadStatus.PENDING);
             setProgress(0);
@@ -137,7 +132,7 @@ export const FileUpload = (props: FileUploadProps) => {
           }}
         >
           Choose file to upload
-        </Button>
+        </button>
         {uploadStatus === UploadStatus.FAILED && (
           <Alert severity='error'>
             File <i>{filename}</i> failed to upload
@@ -152,7 +147,7 @@ export const FileUpload = (props: FileUploadProps) => {
         {uploadStatus === UploadStatus.UPLOADING && (
           <UploadProgress currentProgress={progress} />
         )}
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 };

@@ -19,32 +19,45 @@
 .card {
   border-radius: var(--border-radius);
   position: relative;
-  &[data-boxed='true'] {
-    background-color: rgb(var(--blueDark) / 5%);
+
+  &[data-boxed] {
+    background-color: var(--color-card);
+  }
+
+}
+
+.card-content[data-boxed] {
+  padding: var(--gap) calc(var(--gap) * 2);
+
+  &[data-alert='true']  {
+    border-radius: var(--border-radius);
+    background-color: rgb(255 236 240);
   }
 }
 
-.cardContent[data-boxed='true'] {
-  padding: var(--gap) calc(var(--gap) * 2);
-}
-
-.cardHeader {
+.card-header {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: flex-end;
 
-  &[data-boxed='true'] {
-    background-color: rgb(var(--blueDark) / 8%);
+  &[data-boxed] {
+    background-color: var(--color-card-dark);
     padding: var(--gap) calc(var(--gap) * 2);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
+
+  &[data-alert='true']  {
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    background-color: rgb(210 175 182);
+  }
+
 }
 
-
-.cardTitle {
-  max-width: 400px;
+.card-title {
+  max-width: 75ch;
   margin-right: auto;
   display: flex;
   align-items: center;
+  gap: var(--gap);
 }

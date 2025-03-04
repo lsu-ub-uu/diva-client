@@ -25,54 +25,80 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import type { ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
-import { CssBaseline } from '@mui/material';
-import { divaTheme } from '@/mui/theme';
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
-import dev_favicon from '@/images/dev_favicon.svg';
-import favicon from '@/images/favicon.svg';
-import { i18nCookieServer } from '@/i18n/i18nCookie.server';
+import { type ReactNode, useRef } from 'react';
+import dev_favicon from '@/images/diva-star-dev.svg';
+import favicon from '@/images/diva-star.svg';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
-import { withEmotionCache } from '@emotion/react';
 import rootCss from './root.css?url';
-import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
-import { PageLayout } from '@/components/Layout';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
+import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/components/Layout/Header/Header';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 const { MODE } = import.meta.env;
 
-interface DocumentProps {
-  children: ReactNode;
-}
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const dependencies = await context.dependencies;
+  const { hostname } = new URL(request.url);
 
-  const loginUnits = getLoginUnits(context.dependencies);
+  const session = await getSessionFromCookie(request);
+  const auth = getAuth(session);
+  const theme = dependencies.themePool.has(hostname)
+    ? dependencies.themePool.get(hostname)
+    : undefined;
+
+  const loginUnits = getLoginUnits(await context.dependencies);
   const locale = context.i18n.language;
-  return { auth, locale, loginUnits };
+
+  const topNavigationLinks: TopNavigationLink[] = auth
+    ? [
+        { label: 'Output', to: '/diva-output' },
+        { label: 'Personer', to: '/diva-person' },
+        { label: 'Projekt', to: '/diva-project' },
+      ]
+    : [];
+
+  return { auth, locale, loginUnits, theme, topNavigationLinks };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
+
+  const intent = formData.get('intent');
+
+  if (intent === 'changeLanguage') {
+    return await changeLanguage(formData);
+  }
+
+  if (intent === 'renewAuthToken') {
+    return await renewAuth(request, context.i18n);
+  }
+
+  return {};
+}
+
+const changeLanguage = async (formData: FormData) => {
   const language = formData.get('language');
   if (typeof language === 'string') {
     return data(
       {},
       {
         headers: {
-          'Set-Cookie': await i18nCookieServer.serialize(language),
+          'Set-Cookie': await i18nCookie.serialize(language),
         },
       },
     );
   }
-}
+};
 
 export const links: Route.LinksFunction = () => [
   {
@@ -83,75 +109,50 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: rootCss },
 ];
 
-const Document = withEmotionCache(
-  ({ children }: DocumentProps, emotionCache) => {
-    const data = useRouteLoaderData<typeof loader>('root');
-    const locale = data?.locale ?? 'sv';
-    const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
-
-    useChangeLanguage(locale);
-
-    /**
-     * When a top level ErrorBoundary or CatchBoundary are rendered, the document head gets removed,
-     * so we have to create the style tags.
-     */
-    useEffect(() => {
-      const stylesLoaded =
-        emotionInsertionPointRef.current?.nextSibling?.nodeName === 'STYLE';
-
-      if (stylesLoaded) {
-        return;
-      }
-
-      emotionCache.sheet.container = document.head;
-      emotionCache.sheet.hydrate(emotionCache.sheet.tags);
-    }, [emotionCache.sheet]);
-
-    return (
-      <html lang={locale}>
-        <head>
-          <meta charSet='utf-8' />
-          <meta
-            name='viewport'
-            content='width=device-width,initial-scale=1'
-          />
-          <meta
-            name='theme-color'
-            content={divaTheme.palette.primary.main}
-          />
-          <Meta />
-          <Links />
-          <meta
-            ref={emotionInsertionPointRef}
-            name='emotion-insertion-point'
-            content='emotion-insertion-point'
-          />
-        </head>
-        <body>
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </body>
-      </html>
-    );
-  },
-);
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const Layout = ({ children }: { children: ReactNode }) => {
+  const data = useRouteLoaderData<typeof loader>('root');
+  const locale = data?.locale ?? 'sv';
+  const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
+  useChangeLanguage(locale);
+
   return (
-    <Document>
-      <CssBaseline />
-      {children}
-    </Document>
+    <html lang={locale}>
+      <head>
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <Meta />
+        <Links />
+        <meta
+          ref={emotionInsertionPointRef}
+          name='emotion-insertion-point'
+          content='emotion-insertion-point'
+        />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 };
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
+  useSessionAutoRenew();
+  const theme = loaderData.theme;
   return (
-    <SnackbarProvider maxSnack={5}>
-      <PageLayout>
+    <>
+      <header>
+        <NavigationLoader />
+        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
+        <Header topNavigationLinks={loaderData.topNavigationLinks} />
+      </header>
+      <div className='container'>
+        <Breadcrumbs />
         <Outlet />
-      </PageLayout>
-    </SnackbarProvider>
+      </div>
+    </>
   );
 }

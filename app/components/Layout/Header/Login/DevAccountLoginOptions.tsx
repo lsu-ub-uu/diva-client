@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { Account} from './devAccounts';
+import type { Account } from './devAccounts';
 import { getDevAccounts } from './devAccounts';
+import { MenuItem } from '@headlessui/react';
 
 interface DevAccountsProps {
   onSelect: (account: Account) => void;
@@ -29,20 +29,12 @@ export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
   const { t } = useTranslation();
   return (
     <>
-      <MenuItem
-        disabled
-        sx={{ py: 0 }}
-      >
-        <Typography variant='overline'>
-          {t('divaClient_LoginDevAccountText')}
-        </Typography>
-      </MenuItem>
+      <h6>{t('divaClient_LoginDevAccountText')}</h6>
       {getDevAccounts().map((devAccount) => (
-        <MenuItem
-          key={devAccount.userId}
-          onClick={() => onSelect(devAccount)}
-        >
-          {devAccount.lastName} {devAccount.firstName}
+        <MenuItem key={devAccount.id}>
+          <button key={devAccount.userId} onClick={() => onSelect(devAccount)}>
+            {devAccount.lastName} {devAccount.firstName}
+          </button>
         </MenuItem>
       ))}
     </>

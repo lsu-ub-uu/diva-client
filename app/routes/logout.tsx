@@ -17,18 +17,14 @@
  */
 
 import { redirect } from 'react-router';
-import {
-  destroySession,
-  getAuthentication,
-  getSession,
-} from '@/auth/sessions.server';
+import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
 import { deleteSession } from '@/data/deleteSession.server';
 
 import type { Route } from './+types/logout';
 
 export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
   if (auth) {

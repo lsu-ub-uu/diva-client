@@ -16,21 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import { useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
 interface CardContentProps {
   children: ReactNode;
+  enhancedFields?: boolean;
 }
 
-export const CardContent = ({ children }: CardContentProps) => {
-  const { boxed } = useContext(CardContext);
+export const CardContent = ({ children, enhancedFields }: CardContentProps) => {
+  const { boxed } = use(CardContext);
   return (
     <div
-      className={styles.cardContent}
-      data-boxed={boxed}
+      data-alert={enhancedFields === true}
+      className={styles['card-content']}
+      {...(boxed && { 'data-boxed': '' })}
     >
       {children}
     </div>

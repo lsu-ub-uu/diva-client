@@ -1,32 +1,61 @@
-import { getFormDataFromSearchParams } from 'remix-hook-form';
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
 
-export const parseFormDataFromSearchParams = (request: Request) => {
-  return convertIndexedKeysToArrays(getFormDataFromSearchParams(request));
-};
+const ARRAY_KEY_REGEX = /\[(\d*)\]$/;
 
-function convertIndexedKeysToArrays(obj: any): any {
-  if (typeof obj !== 'object' || obj === null) {
-    return obj;
-  }
+export const parseFormDataFromSearchParams = (
+  urlSearchParams: URLSearchParams,
+) => {
+  const result: Record<string, any> = {};
 
-  if (Array.isArray(obj)) {
-    return obj.map(convertIndexedKeysToArrays);
-  }
+  urlSearchParams.forEach((value, key) => {
+    const keyParts = key.split('.');
 
-  const result: { [key: string]: any } = {};
+    let parent: Record<string, any> = result;
 
-  for (const [key, value] of Object.entries(obj)) {
-    const match = key.match(/^(.+)\[(\d+)\]$/);
-    if (match) {
-      const [, arrayKey, index] = match;
-      if (!result[arrayKey]) {
-        result[arrayKey] = [];
+    keyParts.forEach((keyPart, depth) => {
+      const isLeaf = depth === keyParts.length - 1;
+      const isArray = ARRAY_KEY_REGEX.test(keyPart);
+
+      if (isArray) {
+        const arrayIndex = keyPart.match(ARRAY_KEY_REGEX)![1];
+        const strippedKey = keyPart.replace(ARRAY_KEY_REGEX, '');
+
+        if (!parent[strippedKey]) {
+          parent[strippedKey] = [];
+        }
+
+        if (isLeaf) {
+          parent[strippedKey][arrayIndex] = value;
+        } else {
+          parent[strippedKey][arrayIndex] = {};
+          parent = parent[strippedKey][arrayIndex];
+        }
+      } else {
+        if (isLeaf) {
+          parent[keyPart] ??= value;
+        } else {
+          parent[keyPart] ??= {};
+          parent = parent[keyPart];
+        }
       }
-      result[arrayKey][parseInt(index)] = convertIndexedKeysToArrays(value);
-    } else {
-      result[key] = convertIndexedKeysToArrays(value);
-    }
-  }
+    });
+  });
 
   return result;
-}
+};

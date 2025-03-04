@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { DataGroup } from '../CoraData.server';
 import {
   getAllDataAtomicsWithNameInData,
   getFirstDataAtomicWithNameInData,
@@ -30,6 +29,7 @@ import {
   getAllDataAtomicValuesWithNameInData,
   getFirstDataAtomicValueWithNameInData,
 } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 
 vi.mock('../CoraDataUtils.server');
 

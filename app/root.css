@@ -16,68 +16,99 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-:root {
-  --border-radius: 8px;
+@import './theme.css' layer(root);
+@import './normalize.css' layer(root);
 
-  --background-color: 255 255 255;
+@layer root, components;
 
-  --primaryMain: 51 51 51;
-  --secondaryMain: 1 1 1;
-  --errorMain: 255 23 68;
+@layer root {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-  --purpleLight: 117 89 142;
-  --purpleMain: 97 57 133;
+  :root {
+    *:focus-visible {
+      outline: 2px solid var(--color-accent);
+    }
 
-  --blueLight: 214 231 243;
-  --blueMain: 13 110 253;
-  --blueDark: 5 85 164;
+    body {
+      margin: 0;
+      font-family: var(--font-family-main), sans-serif;
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-base);
+      color: var(--color-text);
+      background-color: var(--color-background);
+    }
 
-  --redLight: 238 220 219;
-  --redMain: 153 0 0;
-  --redDark: 115 0 0;
+    /* Typography */
 
-  --greenLight: 217 234 219;
-  --greenMain: 0 112 15;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--font-family-headings), sans-serif;
+      margin: 0;
+    }
 
-  --grayLight: 250 249 248;
-  --grayMain: 231 227 222;
-  --grayDark: 155 138 122;
+    h1 {
+      font-size: var(--font-size-h1);
+      font-weight: var(--font-weight-h1);
+    }
 
-  --yellowLight: 253 243 209;
-  --yellowMain: 246 194 68;
+    h2 {
+      font-size: var(--font-size-h2);
+      font-weight: var(--font-weight-h2);
+    }
 
-  --beigeLight: 252, 248, 248;
-  --beigeMain: 238, 220, 219;
+    h3 {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-h3);
+    }
 
-  --labelColor: 0 0 0 / 60%;
+    h4 {
+      font-size: var(--font-size-h4);
+    }
 
-  --gap: 0.5rem;
+    h5 {
+      font-size: var(--font-size-h5);
+    }
 
-  --font-family-main: 'Arial', sans-serif;
-  --font-family-headings: 'Arial', serif;
-  --font-size-base: 16px;
+    h6 {
+      font-size: var(--font-size-h6);
+    }
 
-  --font-size-h1: 2rem;
-  --font-weight-h1: 400;
+    h5,
+    h6 {
+      text-transform: uppercase;
+    }
 
-  --font-size-h2: 1.4rem;
-  --font-weight-h2: 400;
+    a {
+      color: var(--color-link);
+      text-decoration: none;
 
-  --font-size-h3: 1.2rem;
-  --font-weight-h3: 400;
+      &:hover {
+        text-decoration: underline;
+      }
 
-  --font-size-h4: 2rem;
+      &:active {
+        color: var(--color-link-selected);
+      }
 
-  --font-size-h5: 2rem;
+      &:visited {
+        color: var(--color-link-visited);
+      }
+    }
+  }
+}
 
-  --font-size-h6: 2rem;
-
-  --font-size-body: 1rem;
-
-  --font-size-bold: 1rem;
-  --font-weight-bold: 800;
-
-  --line-height-base: 1.5;
-
-  --desktop-breakpoint: 900px;
+@layer components {
+  .container {
+    max-width: 1536px;
+    margin: 0 auto;
+    padding: 0 var(--gap-l);
+  }
 }

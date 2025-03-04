@@ -16,12 +16,46 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render } from '@testing-library/react';
-import { SnackbarProvider } from 'notistack';
-
-const renderWithSnackbarProvider = (ui: JSX.Element) =>
-  render(ui, { wrapper: SnackbarProvider });
+import type { ReactNode } from 'react';
+import type {
+  Control,
+  FieldValues,
+  FormState,
+  UseFormReturn,
+} from 'react-hook-form';
+import { RemixFormProvider } from 'remix-hook-form';
+import { mock } from 'vitest-mock-extended';
 
 export * from '@testing-library/react';
 
-export { renderWithSnackbarProvider as render };
+export const MockFormProvider = ({
+  children,
+  overrides = {},
+}: {
+  children: ReactNode;
+  overrides?: Partial<UseFormReturn<FieldValues>>;
+}) => {
+  return (
+    <RemixFormProvider
+      {...overrides}
+      handleSubmit={vi.fn()}
+      register={vi.fn()}
+      reset={vi.fn()}
+      watch={vi.fn()}
+      getValues={vi.fn()}
+      getFieldState={vi.fn()}
+      setError={vi.fn()}
+      clearErrors={vi.fn()}
+      setValue={vi.fn()}
+      trigger={vi.fn()}
+      formState={mock<FormState<FieldValues>>()}
+      resetField={vi.fn()}
+      unregister={vi.fn()}
+      control={mock<Control>()}
+      setFocus={vi.fn()}
+      {...overrides}
+    >
+      {children}
+    </RemixFormProvider>
+  );
+};

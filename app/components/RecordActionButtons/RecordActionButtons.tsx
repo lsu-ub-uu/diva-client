@@ -16,52 +16,60 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { IconButton } from '@mui/material';
 import { Link, useFetcher } from 'react-router';
-import FeedIcon from '@mui/icons-material/Feed';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import type { BFFDataRecord } from '@/types/record';
+import { ArticleIcon, DeleteForeverIcon, EditDocumentIcon } from '@/icons';
+import { Button } from '@/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
 }
 
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
+  const { t } = useTranslation();
   const fetcher = useFetcher();
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
       case 'read':
         return (
-          <IconButton
+          <Button
+            variant='secondary'
+            size='small'
             key={`${record.id}_rab_${userRight}`}
-            component={Link}
-            to={`/view/${record.recordType}/${record.id}`}
+            as={Link}
+            to={`/${record.recordType}/${record.id}`}
           >
-            <FeedIcon />
-          </IconButton>
+            <ArticleIcon />
+            {t('divaClient_viewRecordText')}
+          </Button>
         );
       case 'update':
         return (
-          <IconButton
+          <Button
+            variant='secondary'
+            size='small'
             key={`${record.id}_rab_${userRight}`}
-            component={Link}
-            to={`/update/${record.recordType}/${record.id}`}
+            as={Link}
+            to={`/${record.recordType}/${record.id}/update`}
           >
-            <EditIcon />
-          </IconButton>
+            <EditDocumentIcon />
+            {t('divaClient_editRecordText')}
+          </Button>
         );
       case 'delete':
         return (
           <fetcher.Form
             key={`${record.id}_rab_${userRight}`}
             method='POST'
-            action={`/delete/${record.recordType}/${record.id}`}
+            action={`/${record.recordType}/${record.id}/delete`}
           >
-            <IconButton type='submit'>
+            <Button variant='secondary' type='submit' size='small'>
               <DeleteForeverIcon />
-            </IconButton>
+              {t('divaClient_deleteRecordText')}
+            </Button>
           </fetcher.Form>
         );
       default:

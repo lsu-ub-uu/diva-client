@@ -18,12 +18,11 @@
 
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
-import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useRemixFormContext } from 'remix-hook-form';
+import { useWatch } from 'react-hook-form';
+import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -42,22 +41,20 @@ export const RecordLink = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
-  const { getValues } = useRemixFormContext();
+  const value = useWatch({ name });
 
-  const hasValue = checkIfComponentHasValue(getValues, name);
-  const { linkedData } = useContext(FormGeneratorContext);
-
+  const { linkedData } = use(FormGeneratorContext);
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
-    !hasValue &&
+    !value &&
     !linkedData
   ) {
     return (
       <RecordLinkWithSearch
         reactKey={reactKey}
         component={component}
-        name={name}
+        path={name}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
@@ -80,10 +77,10 @@ export const RecordLink = ({
   }
 
   return (
-    <TextOrNumberVariable
+    <Variable
       reactKey={reactKey}
       component={component}
-      name={name}
+      path={name}
       parentPresentationStyle={parentPresentationStyle}
       attributes={attributes}
       actionButtonGroup={actionButtonGroup}

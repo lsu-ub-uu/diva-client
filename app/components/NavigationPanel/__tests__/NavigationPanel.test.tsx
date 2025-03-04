@@ -19,9 +19,11 @@
 
 import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
-import userEvent from '@testing-library/user-event';
-import type { NavigationPanelLink } from '../../index';
-import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import {
+  NavigationPanel,
+  type NavigationPanelLink,
+} from '@/components/NavigationPanel/NavigationPanel';
+import { createRoutesStub } from 'react-router';
 
 describe('NavigationPanel', () => {
   const links: NavigationPanelLink[] = [
@@ -30,70 +32,16 @@ describe('NavigationPanel', () => {
     { name: 'anchor3', label: 'Anchor 3' },
   ];
 
-  const linksSameNameInData: NavigationPanelLink[] = [
-    { name: 'anchor1', label: 'Anchor 1' },
-    { name: 'anchor1', label: 'Anchor 2' },
-    { name: 'anchor3', label: 'Anchor 3' },
-  ];
-
   it('NavigationPanel renders with correct nr of links', () => {
-    const activeLinkName = 'anchor1';
-
-    render(
-      <NavigationPanel
-        links={links}
-        activeLinkName={activeLinkName}
-      />,
-    );
-
-    const navigationLinks = screen.getAllByRole('link');
-    expect(navigationLinks).toHaveLength(3);
-  });
-
-  it('NavigationPanel renders with correct nr of links but same nameInData', () => {
-    const activeLinkName = 'anchor1';
-
-    render(
-      <NavigationPanel
-        links={linksSameNameInData}
-        activeLinkName={activeLinkName}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => <NavigationPanel links={links} />,
+      },
+    ]);
+    render(<RoutesStub />);
 
     const navigationLinks = screen.getAllByRole('link');
     expect(navigationLinks).toHaveLength(3);
-  });
-
-  it('NavigationPanel renders with correct active link name', () => {
-    const activeLinkName = 'anchor2';
-
-    render(
-      <NavigationPanel
-        links={links}
-        activeLinkName={activeLinkName}
-      />,
-    );
-
-    const spanText = screen.getByText('Anchor 2');
-    expect(spanText).toHaveClass('Mui-active');
-  });
-
-  it('NavigationPanel switches focus when tab is pressed', async () => {
-    const activeLinkName = 'anchor1';
-
-    const user = userEvent.setup();
-    render(
-      <NavigationPanel
-        links={links}
-        activeLinkName={activeLinkName}
-      />,
-    );
-    await user.tab();
-    await user.tab();
-    const anchorText = screen.getByRole('link', {
-      name: 'Anchor 2',
-    });
-    // const anchorText = screen.getByText('Anchor 2');
-    expect(anchorText).toHaveFocus();
   });
 });

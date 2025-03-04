@@ -22,8 +22,12 @@ import {
   getAllDataAtomicValueFromDataGroup,
   hasChildWithNameInData,
 } from '../CoraDataUtils.server';
-import type { DataAtomic, DataElement, DataGroup } from '../CoraData.server';
 import { describe, expect } from 'vitest';
+import type {
+  DataAtomic,
+  DataElement,
+  DataGroup,
+} from '@/cora/cora-data/types.server';
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',
@@ -271,30 +275,6 @@ describe('getAllRecordLinksWithNameInData', () => {
     ]);
     expect(children).toHaveLength(1);
   });
-});
-
-describe('getFirstRecordLinkWithNameInData', () => {
-  it('should throw with no recordLink', () => {
-    expect(() => {
-      cdu.getFirstRecordLinkWithNameInData(
-        dataGroupWithOneRecordLink,
-        'someName',
-      );
-    }).toThrow(Error);
-
-    try {
-      cdu.getFirstRecordLinkWithNameInData(
-        dataGroupWithOneRecordLink,
-        'someName',
-      );
-    } catch (error: unknown) {
-      const childMissingError: Error = <Error>error;
-      expect(childMissingError.message).toStrictEqual(
-        'RecordLink with name [someName] does not exist',
-      );
-    }
-  });
-  it('', () => {});
 });
 
 describe('getAllChildrenWithNameInData', () => {

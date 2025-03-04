@@ -17,58 +17,84 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@mui/material';
-
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { BFFDataRecord } from '@/types/record';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-router';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
 import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
+import { Pagination } from '@/components/Form/Pagination';
+import { Button } from '@/components/Button/Button';
+import { useWatch } from 'react-hook-form';
+import { SearchIcon } from '@/icons';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { isEmpty } from 'lodash-es';
 
 interface SearchFormProps {
-  searchType: string;
-  record?: BFFDataRecord;
+  data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
+  searchResults?: BFFSearchResult;
 }
 
-export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
-  const { t } = useTranslation();
+export const SearchForm = ({
+  data,
+  formSchema,
+  searchResults,
+}: SearchFormProps) => {
+  const submit = useSubmit();
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      formSchema,
-      record?.data as RecordData,
-    ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (
-    <Form
-      method='GET'
-      action={`/`}
-    >
-      <div className={styles.searchForm}>
+    <Form method='GET'>
+      <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
-          <FormGenerator formSchema={formSchema} />
+          <FormGenerator
+            formSchema={formSchema}
+            showTooltips={false}
+            enhancedFields={{
+              'search.rows': { type: 'hidden' },
+              'search.start': { type: 'hidden' },
+            }}
+          />
+          <SearchButton />
+          {!searchResults && (
+            <input type='hidden' name='search.rows[0].value' value='10' />
+          )}
+
+          {data && searchResults && (
+            <Pagination
+              query={data}
+              searchResults={searchResults}
+              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
+            />
+          )}
         </RemixFormProvider>
-        <Button
-          type='submit'
-          disableRipple
-          variant='contained'
-          color='secondary'
-          sx={{ height: 40 }}
-        >
-          {t('divaClient_SearchButtonText')}
-        </Button>
       </div>
     </Form>
+  );
+};
+
+const SearchButton = () => {
+  const { t } = useTranslation();
+
+  const watch = useWatch();
+  const isFormEmpty = isEmpty(cleanFormData(watch));
+
+  return (
+    <Button
+      type='submit'
+      variant='primary'
+      className={styles['search-button']}
+      disabled={isFormEmpty}
+    >
+      <SearchIcon /> {t('divaClient_SearchButtonText')}
+    </Button>
   );
 };

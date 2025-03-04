@@ -1,0 +1,102 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-l);
+  padding: 0 var(--gap-xl);
+  height: 4rem;
+  border-bottom: 1px solid var(--color-thin-border);
+
+  @media (width < 600px) {
+    padding: 0 1rem;
+  }
+
+  @media (width >= 600px) {
+    .header-menu-toggle-button {
+      display: none;
+    }
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+}
+
+@media (width < 600px) {
+  .header-content,
+  .top-navigation {
+    display: none;
+  }
+}
+
+.logo img {
+  width: 10em;
+  min-width: 10em;
+}
+
+.header-logo-wrapper {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xl);
+}
+
+.header-menu-dialog {
+  position: relative;
+}
+
+.header-menu-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 30%);
+  transition: opacity 0.1s ease-in-out;
+  opacity: 1;
+
+  &[data-closed] {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.header-menu-dialog-panel {
+  transform: translateX(0%);
+  opacity: 1;
+  transition: all 0.1s ease-in-out;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-background);
+  box-shadow: var(--elevation);
+  padding: var(--gap-l);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--gap-l);
+
+  &[data-closed] {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

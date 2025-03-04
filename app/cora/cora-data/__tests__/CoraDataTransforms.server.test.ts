@@ -2,9 +2,15 @@ import {
   extractAttributeValueByName,
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
+  fetchLinkedRecordForRecordLinkWithNameInData,
 } from '../CoraDataTransforms.server';
-import type { DataGroup } from '../CoraData.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { expect } from 'vitest';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
+import type { AxiosResponse } from 'axios';
 
+vi.mock('@/cora/getRecordDataById.server');
 const someRecordGroup = {
   name: 'parent',
   children: [
@@ -318,6 +324,38 @@ describe('CoraDataTransform', () => {
         'viewPresentation',
       );
       expect(id).toEqual('viewDefinitionPasswordPGroup');
+    });
+  });
+
+  describe('fetchLinkedRecordForRecordLinkWithNameInData', () => {
+    it('fetches linked record and returns it', async () => {
+      vi.mocked(getRecordDataById).mockResolvedValue({
+        data: divaThemeLogoBinary,
+      } as AxiosResponse);
+
+      const actual = await fetchLinkedRecordForRecordLinkWithNameInData(
+        {
+          children: [
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'binary',
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: 'binary:859116905887438',
+                },
+              ],
+              name: 'logo',
+            },
+          ],
+          name: 'diva-theme',
+        },
+        'logo',
+      );
+
+      expect(actual).toStrictEqual(divaThemeLogoBinary);
     });
   });
 });

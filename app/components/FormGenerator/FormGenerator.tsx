@@ -19,42 +19,49 @@
 
 import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import {
+  type EnhancedFieldsConfig,
+  FormGeneratorContext,
+} from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
-import { Box } from '@mui/material';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
+import styles from './FormGenerator.module.css';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   linkedData?: BFFDataRecord['data'];
   boxGroups?: boolean;
   showTooltips?: boolean;
+  enhancedFields?: Record<string, EnhancedFieldsConfig>;
 }
 
 export const FormGenerator = ({
   linkedData,
   boxGroups = false,
   showTooltips = true,
+  enhancedFields,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
 
   const formContextValues = useMemo(
-    () => ({ linkedData, boxGroups, showDevInfo, showTooltips }),
-    [linkedData, boxGroups, showDevInfo, showTooltips],
+    () => ({
+      linkedData,
+      boxGroups,
+      showDevInfo,
+      showTooltips,
+      enhancedFields,
+    }),
+    [linkedData, boxGroups, showDevInfo, showTooltips, enhancedFields],
   );
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
-      <FormGeneratorContext.Provider value={formContextValues}>
-        <Component
-          component={props.formSchema.form}
-          idx={0}
-          path={''}
-        />
-      </FormGeneratorContext.Provider>
-    </Box>
+      <FormGeneratorContext value={formContextValues}>
+        <Component component={props.formSchema.form} idx={0} path={''} />
+      </FormGeneratorContext>
+    </div>
   );
 };

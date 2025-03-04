@@ -1,0 +1,33 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+import type { Auth } from '@/auth/Auth';
+import axios from 'axios';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
+
+export const renewAuthToken = async (auth: Auth) => {
+  if (auth.actionLinks?.renew === undefined) {
+    throw new Error('Missing auth update actionLink');
+  }
+  const response = await axios.request(
+    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
+  );
+
+  return transformCoraAuth(response.data);
+};

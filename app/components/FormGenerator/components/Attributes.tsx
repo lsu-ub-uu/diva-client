@@ -16,12 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
-import type {
-  FormComponentCollVar,
-  FormComponentWithData,
-} from '@/components/FormGenerator/types';
-import { useContext } from 'react';
+import { AttributeSelect } from '@/components/FormGenerator/components/AttributeSelect';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
+import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface AttributesProps {
@@ -31,7 +28,7 @@ interface AttributesProps {
 
 export const Attributes = ({ component, path }: AttributesProps) => {
   const attributesToShow = getAttributesToShow(component);
-  const { showTooltips } = useContext(FormGeneratorContext);
+  const { showTooltips } = use(FormGeneratorContext);
 
   return attributesToShow.map((attribute, index) => {
     return (
@@ -50,7 +47,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
   });
 };
 
-const getAttributesToShow = (component: FormComponentCollVar) => {
+const getAttributesToShow = (component: FormComponentWithData) => {
   if (component.attributesToShow === 'selectable') {
     return (component.attributes ?? []).filter(
       (attribute) => attribute.finalValue === undefined,

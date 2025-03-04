@@ -22,7 +22,7 @@ import type {
   DataListWrapper,
   RecordLink,
   RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+} from '@/cora/cora-data/types.server';
 import {
   extractAttributeValueByName,
   extractIdFromRecordInfo,
@@ -90,7 +90,11 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'recordLink': {
       return transformRecordLink(dataRecordGroup, metadata);
     }
-    // TODO add more types
+
+    case 'resourceLink': {
+      // Basic metadata is enough for a resourceLink
+      return metadata;
+    }
     default: {
       return undefined;
     }

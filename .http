@@ -45,6 +45,14 @@ Authtoken: fdfe6de8-9d30-47a1-83d5-a5f2de3e640b
   }
 }
 
+### List themes
+GET https://cora.epc.ub.uu.se/diva/rest/record/diva-theme
+Accept: application/vnd.uub.recordList+json
+
+### Get binary record
+GET https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516
+Accept: application/vnd.uub.record+json
+
 ###
 GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
 
@@ -94,7 +102,7 @@ POST https://cora.epc.ub.uu.se/diva/login/apptoken
 Content-Type: application/vnd.uub.login
 
 divaAdmin@cora.epc.ub.uu.se
-49ce00fb-68b5-4089-a5f7-1c225d3cf156
+xxxxx-xxxx-xxxx-xxxx-xxxxxxxx
 
 ###
 POST http://localhost:8080/api/record/manuscript
@@ -468,3 +476,14 @@ Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
     }
   }
 }
+
+### Log in with apptoken
+POST http://localhost:38182/login/rest/apptoken
+
+divaAdmin@cora.epc.ub.uu.se
+xxxx-xxx-xxxxx-xxxx
+
+### Renew authtoken
+POST http://localhost:38182/login/rest/authToken/ffb01845-3230-4ef8-b923-d7b775be2c2f
+Accept: application/vnd.uub.authToken+json
+Authtoken: b067564b-5694-4a3d-a7c6-456d3090c4a5

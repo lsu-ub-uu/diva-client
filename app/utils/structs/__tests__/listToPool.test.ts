@@ -26,18 +26,24 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
+    textId: '',
+    defTextId: '',
   },
   {
     id: '2',
     metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
+    textId: '',
+    defTextId: '',
   },
   {
     id: '3',
     metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
+    textId: '',
+    defTextId: '',
   },
 ];
 

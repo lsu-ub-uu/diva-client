@@ -8,6 +8,12 @@ beforeAll(() => {
   vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
   vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
 
+  global.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+
   i18n.use(initReactI18next).init({
     resources: {
       en: {
@@ -33,4 +39,5 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.resetAllMocks();
   vi.clearAllMocks();
+  vi.useRealTimers();
 });

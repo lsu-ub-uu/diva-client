@@ -36,7 +36,7 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTextVar,
   formDefWithTwoRepeatingVarsAndCollectionVar,
-} from '../../../../__mocks__/data/formDef';
+} from '../../../../__mocks__/data/form/formDef';
 import type {
   FormComponent,
   FormComponentNumVar,
@@ -1006,6 +1006,7 @@ describe('util functions', () => {
         showLabel: true,
         attributes: [
           {
+            label: 'exampleLabel',
             type: 'collectionVariable',
             showLabel: true,
             name: 'colourAttribute',

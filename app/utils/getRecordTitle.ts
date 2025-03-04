@@ -21,5 +21,24 @@ import type { BFFDataRecord } from '@/types/record';
 export const getRecordTitle = (record: BFFDataRecord): string | undefined => {
   const data = record.data;
   const root = data[Object.keys(data)[0]];
-  return root?.titleInfo?.title?.value;
+
+  if (record.recordType === 'diva-output') {
+    return root?.titleInfo?.title?.value;
+  }
+
+  if (record.recordType === 'diva-person') {
+    const familyName =
+      root?.authority.name_type_personal.namePart_type_family[0]?.value;
+    const givenName =
+      root?.authority.name_type_personal.namePart_type_given[0]?.value;
+
+    if (!familyName && !givenName) {
+      return undefined;
+    }
+    return `${familyName ?? ''} ${givenName ?? ''}`;
+  }
+
+  if (record.recordType === 'diva-project') {
+    return root.titleInfo.title.value;
+  }
 };

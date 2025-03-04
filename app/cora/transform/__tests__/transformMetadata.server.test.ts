@@ -16,7 +16,9 @@ import testCollectionWithTwoAttributes from '@/__mocks__/bff/coraMetadataCollect
 import testMetadataGroupWithAttribute from '@/__mocks__/bff/coraMetadataGroupWithAttribute.json';
 import testMetadataRecordLink from '@/__mocks__/bff/coraMetadataRecordLink.json';
 import testMetadataRecordLinkWithFinalValue from '@/__mocks__/bff/coraMetadataRecordLinkWithFinalValue.json';
-import type { DataListWrapper } from '@/cora/cora-data/CoraData.server';
+import testResourceLinkThumbnailMetaData from '@/__mocks__/bff/coraMetadataResourceLinkThumbnail.json';
+
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -373,6 +375,20 @@ describe('transformMetadata', () => {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar',
           },
         ],
+      });
+    });
+  });
+
+  describe('resourceLink', () => {
+    it('Returns one BFFMetadata for resourceLink', () => {
+      const metadataList = transformMetadata(testResourceLinkThumbnailMetaData);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        defTextId: 'resourceLinkResLinkDefText',
+        id: 'thumbnailResLink',
+        nameInData: 'thumbnail',
+        textId: 'resourceLinkResLinkText',
+        type: 'resourceLink',
       });
     });
   });

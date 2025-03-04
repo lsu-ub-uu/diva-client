@@ -29,10 +29,7 @@ import {
   transformRecord,
   transformRecordData,
 } from '../transformRecord.server';
-import type {
-  DataGroup,
-  RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import type { Lookup } from '@/utils/structs/lookup';
 import type {
   BFFGuiElement,
@@ -42,10 +39,12 @@ import type {
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationGroup,
+  BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFSearch,
   BFFText,
+  BFFTheme,
   BFFValidationType,
 } from '../bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
@@ -112,6 +111,7 @@ describe('transformRecord', () => {
     | BFFPresentationGroup
     | BFFPresentationSurroundingContainer
     | BFFGuiElement
+    | BFFPresentationResourceLink
   >;
   let dependencies: Dependencies;
 
@@ -180,6 +180,7 @@ describe('transformRecord', () => {
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
+      themePool: listToPool<BFFTheme>([]),
     };
   });
   describe('transformRecord', () => {

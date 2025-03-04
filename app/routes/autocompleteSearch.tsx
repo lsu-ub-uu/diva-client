@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
@@ -37,10 +34,10 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   invariant(searchTermValue, 'Missing searchTermValue param');
 
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const searchTermName = getSearchTermNameFromSearchLink(
-    context.dependencies,
+    await context.dependencies,
     searchType,
   );
 
@@ -58,14 +55,18 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     },
   };
 
-  const result = await searchRecords(
-    context.dependencies,
-    searchType,
-    query,
-    auth,
-  );
-
-  return Response.json(result.data);
+  try {
+    const result = await searchRecords(
+      await context.dependencies,
+      searchType,
+      query,
+      auth,
+    );
+    return { result: result.data };
+  } catch (error) {
+    console.error(error);
+    return { result: [] };
+  }
 };
 
 export const getSearchTermNameFromSearchLink = (

@@ -1,10 +1,19 @@
-.searchForm {
+.search-form {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--gap);
+  align-items: end;
 
-  button[type='submit'] {
-    padding-left: calc(var(--gap) * 6);
-    padding-right: calc(var(--gap) * 6);
+  --input-height: 3rem;
+
+  @media (width < 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
+}
+
+.search-button {
+  padding-left: var(--gap-xl);
+  padding-right: var(--gap-xl);
 }

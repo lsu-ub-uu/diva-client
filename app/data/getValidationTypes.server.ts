@@ -17,14 +17,18 @@
  */
 
 import type { Option } from '@/components';
-import type {
-  DataGroup,
-  DataListWrapper,
-} from '@/cora/cora-data/CoraData.server';
+import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 
-export const getValidationTypes = async (authToken: string) => {
+export const getValidationTypes = async (
+  recordType: string,
+  authToken?: string,
+) => {
+  if (!authToken) {
+    return null;
+  }
+
   const searchQuery: DataGroup = {
     name: 'validationTypeSearch',
     children: [
@@ -36,7 +40,7 @@ export const getValidationTypes = async (authToken: string) => {
             children: [
               {
                 name: 'validatesRecordTypeSearchTerm',
-                value: 'recordType_diva-output',
+                value: `recordType_${recordType}`,
               },
             ],
           },

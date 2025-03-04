@@ -26,6 +26,7 @@ import {
   isComponentGroup,
   isComponentRepeating,
   isComponentRepeatingContainer,
+  isComponentResourceLink,
   isComponentSurroundingContainer,
   isComponentVariable,
   isComponentWithData,
@@ -36,6 +37,9 @@ import { RepeatingVariable } from '@/components/FormGenerator/components/Repeati
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Group } from '@/components/FormGenerator/components/Group';
+import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
+import { use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -50,10 +54,14 @@ export const Component = ({
   path,
   parentPresentationStyle,
 }: FormComponentGeneratorProps) => {
+  const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
 
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
+  if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
+    return null;
+  }
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
       <SurroundingContainer
@@ -97,6 +105,12 @@ export const Component = ({
     );
   }
 
+  if (isComponentResourceLink(component)) {
+    return (
+      <ResourceLink component={component} path={currentComponentNamePath} />
+    );
+  }
+
   return (
     <LeafComponent
       component={component}
@@ -105,10 +119,7 @@ export const Component = ({
       parentPresentationStyle={parentPresentationStyle}
       attributes={
         isComponentWithData(component) && (
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
+          <Attributes component={component} path={currentComponentNamePath} />
         )
       }
     />

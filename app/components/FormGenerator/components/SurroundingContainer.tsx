@@ -44,7 +44,7 @@ export const SurroundingContainer = ({
       <div
         id={`anchor_${addAttributesToName(component, component.name)}`}
         key={reactKey}
-        className={`${styles.component} ${styles.container} anchorLink`}
+        className={`${styles['component']} ${styles['container']} anchorLink`}
         data-colspan={component.gridColSpan ?? 12}
         data-layout={inline ? 'inline' : 'grid'}
       >

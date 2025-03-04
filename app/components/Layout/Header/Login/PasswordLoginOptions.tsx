@@ -16,43 +16,33 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { MenuItem, Typography } from '@mui/material';
 import { Link, useLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { loader } from '@/root';
+import { MenuItem } from '@headlessui/react';
 
 interface PasswordLoginOptionsProps {
   returnTo: string;
-  onSelect: () => void;
 }
 
 export const PasswordLoginOptions = ({
   returnTo,
-  onSelect,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
   const { loginUnits } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <MenuItem
-        disabled
-        sx={{ py: 0 }}
-      >
-        <Typography variant='overline'>
-          {t('divaClient_LoginPasswordText')}
-        </Typography>
-      </MenuItem>
+      <h6>{t('divaClient_LoginPasswordText')}</h6>
       {loginUnits
         .filter(({ type }) => type === 'password')
         .map(({ loginDescription, presentation }) => (
-          <MenuItem
-            key='tempLoginUnitPassword'
-            component={Link}
-            to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
-            onClick={onSelect}
-          >
-            {t(loginDescription)}
+          <MenuItem key='tempLoginUnitPassword'>
+            <Link
+              to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
+            >
+              {t(loginDescription)}
+            </Link>
           </MenuItem>
         ))}
     </>

@@ -17,121 +17,65 @@
  */
 
 import 'dotenv/config';
-import { createRequestHandler } from '@react-router/express';
 import compression from 'compression';
-import type { Request } from 'express';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
-import { createInstance } from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import I18NextHttpBackend from 'i18next-http-backend';
-import { i18nConfig } from '@/i18n/i18nConfig';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
-import { i18nCookieServer } from '@/i18n/i18nCookie.server';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Short-circuit the type-checking of the built output.
+const BUILD_PATH = './dist/server/index.js';
+const DEVELOPMENT = process.env.NODE_ENV === 'development';
+const BASE_PATH = process.env.BASE_PATH ?? '';
+const DOMAIN = process.env.DOMAIN ?? 'localhost';
 
-const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, DOMAIN, PORT, BASE_PATH } =
-  process.env;
-
-const createi18nInstance = async (request: Request) => {
-  const i18nInstance = createInstance();
-
-  const languageCookie = await i18nCookieServer.parse(
-    request.headers.cookie ?? null,
-  );
-  const locale = languageCookie ?? 'sv';
-  await i18nInstance
-    .use(initReactI18next)
-    .use(I18NextHttpBackend)
-    .init({
-      ...i18nConfig,
-      resources: {
-        en: {
-          translation: createTextDefinition(dependencies, 'en'),
-        },
-        sv: {
-          translation: createTextDefinition(dependencies, 'sv'),
-        },
-      },
-      lng: locale,
-    });
-  return i18nInstance;
-};
-
-const viteDevServer =
-  NODE_ENV === 'production'
-    ? undefined
-    : await import('vite').then((vite) =>
-        vite.createServer({
-          server: { middlewareMode: true },
-        }),
-      );
-
-const reactRouterHandler = createRequestHandler({
-  getLoadContext: async (request) => ({
-    dependencies,
-    refreshDependencies: loadStuffOnServerStart,
-    i18n: await createi18nInstance(request),
-  }),
-  build: viteDevServer
-    ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
-    : // @ts-expect-error The built file is not ts
-      await import('./dist/server/index.js'),
-});
+const PORT = Number.parseInt(process.env.PORT || '5173');
 
 const app = express();
 
-// app.use(cookieParser());
 app.use(compression());
-
-// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable('x-powered-by');
 
-// handle asset requests
-if (viteDevServer) {
-  app.use(viteDevServer.middlewares);
-} else {
-  // Vite fingerprints its assets so we can cache forever.
-  app.use(
-    `${BASE_PATH ?? ''}/assets`,
-    express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
+if (DEVELOPMENT) {
+  console.info('Starting development server');
+  const viteDevServer = await import('vite').then((vite) =>
+    vite.createServer({
+      server: { middlewareMode: true },
+    }),
   );
-}
-
-// Everything else (like favicon.ico) is cached for an hour. You may want to be
-// more aggressive with this caching.
-app.use(express.static('dist/client', { maxAge: '1h' }));
-
-app.use(morgan('tiny'));
-
-if (NODE_ENV !== 'production') {
+  app.use(viteDevServer.middlewares);
+  app.use(async (req, res, next) => {
+    try {
+      const source = await viteDevServer.ssrLoadModule('./server/app.ts');
+      return await source.app(req, res, next);
+    } catch (error) {
+      if (typeof error === 'object' && error instanceof Error) {
+        viteDevServer.ssrFixStacktrace(error);
+      }
+      next(error);
+    }
+  });
   app.get('/devLogin', (req, res) => {
     res.sendFile(path.join(__dirname, 'devLogin.html'));
   });
+} else {
+  console.info('Starting production server');
+  app.use(
+    `${BASE_PATH}/assets`,
+    express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
+  );
+  app.use(express.static('dist/client', { maxAge: '1h' }));
+  app.use(await import(BUILD_PATH).then((mod) => mod.app));
 }
 
-// React router SSR requests
-app.all('*', reactRouterHandler);
+app.use(morgan('tiny'));
 
-const port = PORT || 5173;
-const domain = DOMAIN || 'localhost';
-
-console.info('Loading cora metadata ...');
-loadStuffOnServerStart().then(() => {
-  console.info('Loaded stuff from Cora');
-  app.listen(port, () => {
-    console.info(`Cora API-url ${CORA_API_URL}`);
-    console.info(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
-    console.info(`BASE_PATH ${BASE_PATH}`);
-    console.info(`DOMAIN ${domain}`);
-    console.info(
-      `Express server listening at http://${domain}:${port}${BASE_PATH ?? ''}`,
-    );
-  });
+app.listen(PORT, () => {
+  console.info(`Cora API-url ${process.env.CORA_API_URL}`);
+  console.info(`CORA_LOGIN_URL-url ${process.env.CORA_LOGIN_URL}`);
+  console.info(`BASE_PATH ${BASE_PATH}`);
+  console.info(`DOMAIN ${DOMAIN}`);
+  console.info(
+    `Server is running on  http://${DOMAIN}:${PORT}${BASE_PATH ?? ''}`,
+  );
 });

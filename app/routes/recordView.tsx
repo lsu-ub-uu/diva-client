@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuthentication,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { getSessionFromCookie, getAuth } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
@@ -31,11 +28,16 @@ import {
   linksFromFormSchema,
   removeComponentsWithoutValuesFromSchema,
 } from '@/components/NavigationPanel/utils';
-import { Stack } from '@mui/material';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
+import styles from '@/routes/record.module.css';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { DeleteIcon, EditDocumentIcon } from '@/icons';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { Form, Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 export const loader = async ({
   request,
@@ -43,12 +45,12 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = getAuthentication(session);
+  const auth = getAuth(session);
 
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: context.dependencies,
+    dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -58,7 +60,7 @@ export const loader = async ({
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     record.validationType,
     'view',
   );
@@ -67,13 +69,14 @@ export const loader = async ({
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title }];
+  return [{ title: data?.title ?? data.record.id }];
 };
 
 export const ErrorBoundary = RouteErrorBoundary;
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
+  const { t } = useTranslation();
   return (
     <SidebarLayout
       sidebarContent={
@@ -84,12 +87,28 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         />
       }
     >
-      <Stack spacing={2}>
-        <ReadOnlyForm
-          record={record}
-          formSchema={formDefinition}
-        />
-      </Stack>
+      <div className={styles['record-wrapper']}>
+        <ReadOnlyForm record={record} formSchema={formDefinition} />
+      </div>
+      <FloatingActionButtonContainer>
+        {record.userRights?.includes('update') && (
+          <FloatingActionButton
+            as={Link}
+            to='update'
+            text={t('divaClient_editRecordText')}
+            icon={<EditDocumentIcon />}
+          />
+        )}
+        {record.userRights?.includes('delete') && (
+          <Form method='POST' action='delete'>
+            <FloatingActionButton
+              type='submit'
+              text={t('divaClient_deleteRecordText')}
+              icon={<DeleteIcon />}
+            />
+          </Form>
+        )}
+      </FloatingActionButtonContainer>
     </SidebarLayout>
   );
 }

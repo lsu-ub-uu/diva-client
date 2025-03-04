@@ -16,57 +16,61 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button, Menu, MenuItem } from '@mui/material';
 import type { Option } from '@/components';
-import AddIcon from '@mui/icons-material/Add';
-import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { Button } from '@/components/Button/Button';
+import { AddCircleIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
+  recordTypeTextId: string;
 }
 
 export const CreateRecordMenu = ({
   validationTypes,
+  recordTypeTextId,
 }: CreateRecordMenuProps) => {
   const { t } = useTranslation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const addButtonRef = useRef(null);
-
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
   }
 
-  return (
-    <>
-      <Button
-        variant='outlined'
-        color='primary'
-        startIcon={<AddIcon />}
-        ref={addButtonRef}
-        onClick={() => setMenuOpen(true)}
-      >
-        {t('divaClient_createRecordText')}
-      </Button>
+  const buttonText = t('divaClient_createText', {
+    type: t(recordTypeTextId).toLowerCase(),
+  });
 
-      <Menu
-        open={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        anchorEl={addButtonRef.current}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+  if (validationTypes.length === 1) {
+    return (
+      <Button
+        variant='secondary'
+        as={Link}
+        to={`create?validationType=${validationTypes[0].value}`}
       >
+        <AddCircleIcon />
+        {buttonText}
+      </Button>
+    );
+  }
+
+  return (
+    <Menu>
+      <MenuButton as={Button} variant='secondary'>
+        <AddCircleIcon />
+        {buttonText}
+      </MenuButton>
+
+      <DropdownMenu anchor='bottom end'>
         {validationTypes.map((option) => (
-          <MenuItem
-            key={option.value}
-            component={Link}
-            to={`/create?validationType=${option.value}`}
-          >
-            {t(option.label)}
+          <MenuItem key={option.value}>
+            <Link to={`create?validationType=${option.value}`}>
+              {t(option.label)}
+            </Link>
           </MenuItem>
         ))}
-      </Menu>
-    </>
+      </DropdownMenu>
+    </Menu>
   );
 };

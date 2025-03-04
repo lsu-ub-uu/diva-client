@@ -18,62 +18,55 @@
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import type { BFFSearchResult } from '@/types/record';
+import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import { SentimentNeutralIcon } from '@/icons';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
-  searchType: string;
-  query: any;
-  searchResults: BFFSearchResult | null;
+  query: BFFDataRecordData;
+  searchResults: BFFSearchResult | undefined;
 }
 
 export const RecordSearch = ({
   searchForm,
-  searchType,
   query,
   searchResults,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
   return (
-    <div>
+    <div className={styles['record-search']}>
       <SearchForm
         formSchema={searchForm}
-        searchType={searchType}
-        record={{ data: query }}
+        data={query}
+        searchResults={searchResults}
       />
       {searchResults && (
         <>
-          <h2>
-            {t('divaClient_searchPageResultText', {
-              numberOfResults: searchResults?.totalNo,
-            })}
-          </h2>
-          <ol className={styles.resultList}>
+          {searchResults.totalNo === 0 && (
+            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+              <AlertTitle>
+                {t('divaClient_noSearchResultsTitleText')}
+              </AlertTitle>
+              {t('divaClient_noSearchResultsBodyText')}
+            </Alert>
+          )}
+
+          <ol className={styles['result-list']}>
             {searchResults.data.map((record) => (
-              <li
-                key={record.id}
-                className={styles.resultListItem}
-              >
+              <li key={record.id} className={styles['result-list-item']}>
                 <SearchResultForm
                   record={record}
                   formSchema={record.presentation!}
                 />
 
-                <Box
-                  sx={(theme) => ({
-                    position: 'absolute',
-                    display: 'flex',
-                    top: theme.spacing(1),
-                    right: theme.spacing(1),
-                  })}
-                >
+                <div className={styles['record-action-buttons']}>
                   <RecordActionButtons record={record} />
-                </Box>
+                </div>
               </li>
             ))}
           </ol>

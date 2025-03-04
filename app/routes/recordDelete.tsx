@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { redirect } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord.server';
 import {
   commitSession,
   getSessionFromCookie,
-  requireAuthentication,
+  requireAuth,
 } from '@/auth/sessions.server';
 
 import type { Route } from './+types/recordDelete';
@@ -34,21 +34,18 @@ export const action = async ({
   const { recordType, recordId } = params;
 
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
-  await deleteRecord(context.dependencies, recordType, recordId, auth);
+  await deleteRecord(await context.dependencies, recordType, recordId, auth);
 
   session.flash('notification', {
     severity: 'success',
     summary: 'Successfully deleted record',
   });
 
-  return data(
-    {},
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
+  return redirect(`/${recordType}`, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
     },
-  );
+  });
 };

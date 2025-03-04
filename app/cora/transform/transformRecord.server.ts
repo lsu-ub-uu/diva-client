@@ -25,7 +25,8 @@ import type {
   DataListWrapper,
   RecordLink,
   RecordWrapper,
-} from '@/cora/cora-data/CoraData.server';
+  ResourceLink,
+} from '@/cora/cora-data/types.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
@@ -154,6 +155,7 @@ export const transformDataGroup = (
     }
 
     const name = createDataName(dataChild, matchingMetadata);
+
     const transformedChild = {
       ...transformData(dataChild, matchingMetadata),
       ...transformAttributes(dataChild.attributes),
@@ -193,6 +195,10 @@ const transformData = (data: CoraData, metadata: FormMetaData) => {
     return transformDataAtomic(data as DataAtomic);
   }
 
+  if (metadata.type === 'resourceLink') {
+    return transformResourceLink(data as ResourceLink);
+  }
+
   console.warn('Unhandled metadata type', metadata.type);
   return transformDataAtomic(data as DataAtomic);
 };
@@ -207,6 +213,14 @@ const transformRecordLink = (data: RecordLink) => {
 
 const transformDataAtomic = (data: DataAtomic) => {
   return { value: data.value };
+};
+
+const transformResourceLink = (data: ResourceLink) => {
+  return {
+    name: data.name,
+    mimeType: data.mimeType,
+    actionLinks: data.actionLinks,
+  };
 };
 
 const findMatchingMetadata = (data: CoraData, metadataParent: FormMetaData) => {

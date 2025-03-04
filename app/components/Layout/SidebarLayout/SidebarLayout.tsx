@@ -29,7 +29,7 @@ export const SidebarLayout = ({
   children,
 }: SidebarLayoutProps) => {
   return (
-    <div className={styles.sidebarLayout}>
+    <div className={styles['sidebar-layout']}>
       <aside>{sidebarContent}</aside>
       <main>{children}</main>
     </div>

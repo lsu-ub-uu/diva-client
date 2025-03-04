@@ -27,22 +27,19 @@ import {
   getGroupLevel,
   headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-import InfoIcon from '@mui/icons-material/Info';
-import { useTranslation } from 'react-i18next';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
 import styles from './FormComponent.module.css';
-import { IconButton } from '@mui/material';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -57,9 +54,11 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
 }: GroupProps) => {
-  const { boxGroups, showTooltips } = useContext(FormGeneratorContext);
+  const { boxGroups, showTooltips } = use(FormGeneratorContext);
+  const { enhancedFields } = use(FormGeneratorContext);
+  const enhancement =
+    enhancedFields && enhancedFields[currentComponentNamePath];
   const { getValues } = useRemixFormContext();
-  const { t } = useTranslation();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
   const inline = checkIfPresentationStyleIsInline(component);
@@ -74,16 +73,17 @@ export const Group = ({
   }
   return (
     <div
-      className={`${styles.component} anchorLink`}
+      className={`${styles['component']} anchorLink`}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        component={component}
-        path={currentComponentNamePath}
-      />
+      <DevInfo component={component} path={currentComponentNamePath} />
       <Card boxed={boxGroups && groupLevel !== 0}>
-        <CardHeader>
+        <CardHeader
+          enhancedFields={
+            enhancement?.type === 'group' && enhancement?.alert === true
+          }
+        >
           {component.showLabel && (
             <CardTitle>
               <Typography
@@ -92,32 +92,22 @@ export const Group = ({
                   component.headlineLevel,
                 )}
               />
-              {showTooltips && (
-                <Tooltip
-                  title={t(component.tooltip?.title as string)}
-                  body={t(component.tooltip?.body as string)}
-                >
-                  <IconButton
-                    disableRipple
-                    color='info'
-                    aria-label='info'
-                  >
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
+              {component.tooltip && showTooltips && (
+                <FieldInfo {...component.tooltip} />
               )}
             </CardTitle>
           )}
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
+          <Attributes component={component} path={currentComponentNamePath} />
 
           {actionButtonGroup}
         </CardHeader>
-        <CardContent>
+        <CardContent
+          enhancedFields={
+            enhancement?.type === 'group' && enhancement?.alert === true
+          }
+        >
           <div
-            className={styles.container}
+            className={styles['container']}
             data-layout={inline ? 'inline' : 'grid'}
           >
             {component.components && (

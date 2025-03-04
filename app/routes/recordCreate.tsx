@@ -23,8 +23,9 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
 import {
+  getNotification,
   getSessionFromCookie,
-  requireAuthentication,
+  requireAuth,
 } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
@@ -32,48 +33,43 @@ import {
 } from '@/utils/redirectAndCommitSession';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { Alert, AlertTitle, Stack } from '@mui/material';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
-import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { invariant } from '@/utils/invariant';
-
 import type { Route } from './+types/recordCreate';
+import styles from './record.module.css';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  const t = context.i18n.t;
   const session = await getSessionFromCookie(request);
-  const notification = session.get('notification');
-  const { t } = context.i18n;
+  const notification = getNotification(session);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationTypeId,
     'create',
   );
 
-  // Skapa ny {validationType}
-  const createTitleText = t('divaClient_CreatePageTitleText', {
-    validationType: t(formDefinition.form.label as string),
-  });
-
-  const title = `${createTitleText} | DiVA`;
-
+  const title = t('divaClient_createRecordText');
+  const breadcrumb = t('divaClient_createRecordText');
   return data(
-    { formDefinition, notification, title },
+    { formDefinition, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
   );
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuthentication(session);
+  const auth = await requireAuth(session);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -81,7 +77,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   invariant(validationTypeId, 'Missing validationTypeId param');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
+    await context.dependencies,
     validationTypeId,
     'create',
   );
@@ -98,7 +94,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
   try {
     const { recordType, id } = await createRecord(
-      context.dependencies,
+      await context.dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,
@@ -107,7 +103,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
       severity: 'success',
       summary: `Record was successfully created ${id}`,
     });
-    return redirectAndCommitSession(`/update/${recordType}/${id}`, session);
+    return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
     console.error(error);
 
@@ -117,18 +113,16 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   }
 };
 
+export const ErrorBoundary = RouteErrorBoundary;
+
 export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data.title }];
 };
-
-export const ErrorBoundary = RouteErrorBoundary;
 
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
   const { formDefinition, notification } = loaderData;
-
-  useNotificationSnackbar(notification);
 
   return (
     <SidebarLayout
@@ -140,7 +134,9 @@ export default function CreateRecordRoute({
         />
       }
     >
-      <Stack spacing={2}>
+      <NotificationSnackbar notification={notification} />
+
+      <div className={styles['record-wrapper']}>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>
             <AlertTitle>{notification.summary}</AlertTitle>
@@ -148,7 +144,7 @@ export default function CreateRecordRoute({
           </Alert>
         )}
         <RecordForm formSchema={formDefinition} />
-      </Stack>
+      </div>
     </SidebarLayout>
   );
 }
