@@ -29,8 +29,6 @@ import type {
 } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormRegister } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -46,8 +44,6 @@ export const InputField = ({
   register,
 }: InputFieldProps) => {
   const { t } = useTranslation();
-  const { enhancedFields } = use(FormGeneratorContext);
-  const enhancement = enhancedFields && enhancedFields[path];
 
   if (isComponentCollVar(component)) {
     return (
