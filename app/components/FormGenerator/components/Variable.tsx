@@ -92,7 +92,6 @@ export const Variable = ({
 
       {(component.mode === 'output' || component.finalValue) && (
         <OutputField
-          path={path}
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           label={label}

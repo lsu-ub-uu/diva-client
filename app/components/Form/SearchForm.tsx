@@ -29,7 +29,6 @@ import { InputChip } from '@/components/Form/InputChip';
 import { SearchIcon } from '@/icons';
 import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
-import { example1 } from '@/components/Form/example1';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;

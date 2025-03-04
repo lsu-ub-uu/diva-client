@@ -18,9 +18,9 @@
 
 import { Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import type { Route } from './+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { fakeRecords } from '@/__mocks__/prototypeFakeData';
 
 export const loader = async ({
   request,
@@ -31,13 +31,15 @@ export const loader = async ({
   const auth = getAuth(session);
 
   const { recordType, recordId } = params;
+  const record = fakeRecords.find((record) => record.id === recordId);
 
-  const record = await getRecordByRecordTypeAndRecordId({
+  /*const record = await getRecordByRecordTypeAndRecordId({
     dependencies: await context.dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
   });
+*/
 
   const breadcrumb = getRecordTitle(record) ?? record.id;
   const pageTitle = getRecordTitle(record);

@@ -16,11 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getSessionFromCookie,
-  getAuth,
-  getNotification,
-} from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
@@ -31,19 +27,15 @@ import {
   linksFromFormSchema,
   removeComponentsWithoutValuesFromSchema,
 } from '@/components/NavigationPanel/utils';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { ReviewForm } from '@/components/Form/ReviewForm';
 import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
-import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { DeleteIcon, EditDocumentIcon } from '@/icons';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { data, Form, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { fakeRecords } from '@/__mocks__/prototypeFakeData';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { redirect } from 'react-router';
+import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 
 export const loader = async ({
   request,
@@ -54,9 +46,14 @@ export const loader = async ({
   const auth = getAuth(session);
 
   const { recordType, recordId } = params;
-  const notification = getNotification(session);
 
   const record = fakeRecords.find((record) => record.id === recordId);
+  /*const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: await context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth?.data.token,
+  });*/
 
   const title = `${getRecordTitle(record)} | DiVA`;
 
@@ -67,9 +64,19 @@ export const loader = async ({
     'view',
   );
 
-  return data(
-    { record, formDefinition, title, notification },
-    await getResponseInitWithSession(session),
+  return { record, formDefinition, title };
+};
+
+export const action = async ({ request, params }) => {
+  const session = await getSessionFromCookie(request);
+  session.flash('notification', {
+    severity: 'success',
+    summary: `Posten markerad som bibliografiskt granskad`,
+  });
+
+  return redirectAndCommitSession(
+    `/${params.recordType}/${params.recordId}`,
+    session,
   );
 };
 
@@ -79,8 +86,10 @@ export const meta = ({ data }: Route.MetaArgs) => {
 
 export const ErrorBoundary = RouteErrorBoundary;
 
-export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition, notification } = loaderData;
+export default function ReviewRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { record, formDefinition } = loaderData;
   const { t } = useTranslation();
   return (
     <SidebarLayout
@@ -92,29 +101,9 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         />
       }
     >
-      <NotificationSnackbar notification={notification} />
       <div className={styles['record-wrapper']}>
-        <ReadOnlyForm record={record} formSchema={formDefinition} />
+        <ReviewForm record={record} formSchema={formDefinition} />
       </div>
-      <FloatingActionButtonContainer>
-        {record.userRights?.includes('update') && (
-          <FloatingActionButton
-            as={Link}
-            to='update'
-            text={t('divaClient_editRecordText')}
-            icon={<EditDocumentIcon />}
-          />
-        )}
-        {record.userRights?.includes('delete') && (
-          <Form method='POST' action='delete'>
-            <FloatingActionButton
-              type='submit'
-              text={t('divaClient_deleteRecordText')}
-              icon={<DeleteIcon />}
-            />
-          </Form>
-        )}
-      </FloatingActionButtonContainer>
     </SidebarLayout>
   );
 }

@@ -11,8 +11,11 @@ export default [
       index('routes/recordView.tsx'),
       route('update', 'routes/recordUpdate.tsx'),
       route('delete', 'routes/recordDelete.tsx'),
+      route('review', 'routes/recordReview.tsx'),
     ]),
   ]),
+
+  route('revieww', 'routes/recordReview.tsx'),
 
   /* Auth */
   route('login', 'routes/login.tsx'),

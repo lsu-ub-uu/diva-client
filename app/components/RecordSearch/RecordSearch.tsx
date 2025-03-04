@@ -21,9 +21,17 @@ import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
-import { ArticleIcon, SearchIcon, SentimentNeutralIcon } from '@/icons';
+import {
+  ArticleIcon,
+  ContractIcon,
+  EditDocumentIcon,
+  MysteryIcon,
+  SearchIcon,
+  SentimentNeutralIcon,
+  VisibilityIcon,
+} from '@/icons';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { exampleArray } from '@/components/Form/example1';
+import { fakeRecords } from '@/__mocks__/prototypeFakeData';
 import { searchResultPresentationFake } from '@/components/Form/searchResultPresentationFake';
 import { useState } from 'react';
 import FilterChip from '@/components/FilterChip/FilterChip';
@@ -67,14 +75,15 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
   const [readyForPublicationFilter, setReadyForPublicationFilter] =
     useState(false);
   const [readyForReviewFilter, setReadyForReviewFilter] = useState(false);
-  const fakeResults = exampleArray.filter((record) => {
-    const matchesMyPubFilter = !myPubFilter || (myPubFilter && record.mine);
+  const fakeResults = fakeRecords.filter((recordWrapped) => {
+    const { data } = recordWrapped;
+    const matchesMyPubFilter = !myPubFilter || (myPubFilter && data.mine);
     const matchesReadyForReviewFilter =
-      !readyForReviewFilter || (readyForReviewFilter && record.readyForReview);
+      !readyForReviewFilter || (readyForReviewFilter && data.readyForReview);
 
     const matchesQuery2 =
       (!query && (myPubFilter || readyForReviewFilter)) ||
-      matchesQuery(record, query);
+      matchesQuery(data, query);
 
     return matchesMyPubFilter && matchesReadyForReviewFilter && matchesQuery2;
   });
@@ -127,6 +136,7 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
             }}
             onRowsPerPageChange={(e) => {}}
           />
+
           <div
             style={{
               display: 'flex',
@@ -168,18 +178,29 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
         {fakeResults.map((record) => (
           <li key={record.id} className={styles['result-list-item']}>
             <SearchResultForm
-              record={{ data: record }}
+              record={record}
               formSchema={searchResultPresentationFake}
             />
 
             <div className={styles['record-action-buttons']}>
-              <Button
-                variant='icon'
-                as={Link}
-                to={`/${record.recordType}/${record.id}`}
-                aria-label={t('divaClient_viewRecordText')}
-              >
-                <ArticleIcon />
+              {record.data.readyForReview && (
+                <Button
+                  variant='secondary'
+                  size='small'
+                  as={Link}
+                  to={`/${record.recordType}/${record.id}/review`}
+                >
+                  <MysteryIcon />
+                  Granska
+                </Button>
+              )}
+              <Button variant='secondary' size='small'>
+                <EditDocumentIcon />
+                Redigera
+              </Button>
+              <Button variant='secondary' size='small'>
+                <ContractIcon />
+                Visa
               </Button>
             </div>
           </li>
