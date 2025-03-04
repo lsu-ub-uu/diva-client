@@ -49,6 +49,12 @@ export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
         formSchema={props.formSchema}
         boxGroups={false}
         showTooltips={false}
+        enhancedFields={{
+          'output.titleInfo.title.value': {
+            type: 'link',
+            to: `/${props.record?.recordType}/${props.record?.id}`,
+          },
+        }}
       />
     </FormProvider>
   );
