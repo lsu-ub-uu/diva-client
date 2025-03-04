@@ -35,6 +35,7 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { LinearLoader } from '@/components/Loader/LinearLoader';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
+import * as icons from '@/icons';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -406,6 +407,17 @@ export default function DesignSystem() {
             severity={'success'}
             text='I am a snack!'
           />
+        </section>
+        <section>
+          <h2>Icons</h2>
+          <div className='icons'>
+            {Object.entries(icons).map(([iconName, IconComponent]) => (
+              <div key={iconName} className={'icon'}>
+                <IconComponent />
+                <span>&lt;{iconName} /&gt;</span>
+              </div>
+            ))}
+          </div>
         </section>
       </main>
     </div>

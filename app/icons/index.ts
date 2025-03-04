@@ -54,3 +54,6 @@ export { default as HomeIcon } from './Home.svg?react';
 export { default as ContractIcon } from './Contract.svg?react';
 export { default as PersonsIcon } from './Persons.svg?react';
 export { default as SchemaIcon } from './Schema.svg?react';
+export { default as VisibilityIcon } from './Visibility.svg?react';
+export { default as MysteryIcon } from './Mystery.svg?react';
+export { default as SearchCheck } from './SearchCheck.svg?react';
