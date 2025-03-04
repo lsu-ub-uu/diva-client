@@ -13,7 +13,7 @@ test('View diva-output', async ({ page, divaOutput }) => {
     'title',
   );
 
-  await page.goto(`/view/diva-output/${recordId}`);
+  await page.goto(`/diva-output/${recordId}`);
 
   await expect(await page.getByLabel(/^Id/)).toHaveText(recordId);
   await expect(await page.getByLabel(/^Posttyp/)).toHaveText('diva-output');
