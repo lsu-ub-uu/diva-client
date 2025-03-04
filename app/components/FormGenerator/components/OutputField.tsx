@@ -50,7 +50,7 @@ export const OutputField = ({
   adornment,
 }: OutputFieldProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
-  const enhancement = enhancedFields && enhancedFields[path];
+  const enhancement = enhancedFields?.[path];
   return (
     <dl
       className={clsx(styles['output-field'], className)}

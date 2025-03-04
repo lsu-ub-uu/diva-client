@@ -7,28 +7,42 @@ on:
     branches: [ master ]
 
 jobs:
-  build-and-test:
+  typecheck:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
+      - run: npm ci
+      - run: npm run typecheck
 
-      - name: Install dependencies
-        run: npm ci
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Run typecheck
-        run: npm run typecheck
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run stylelint
 
-      - name: Run eslint
-        run: npm run lint
-
-      - name: Run stylelint
-        run: npm run stylelint
-
-      - name: Run tests
-        run: npm run test:ci
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run test:ci

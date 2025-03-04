@@ -22,12 +22,14 @@ import { CardContext } from '@/components/Card/CardContext';
 
 interface CardContentProps {
   children: ReactNode;
+  enhancedFields?: boolean;
 }
 
-export const CardContent = ({ children }: CardContentProps) => {
+export const CardContent = ({ children, enhancedFields }: CardContentProps) => {
   const { boxed } = use(CardContext);
   return (
     <div
+      data-alert={enhancedFields === true}
       className={styles['card-content']}
       {...(boxed && { 'data-boxed': '' })}
     >

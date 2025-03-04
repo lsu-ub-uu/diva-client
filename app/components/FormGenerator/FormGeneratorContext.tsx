@@ -23,6 +23,15 @@ export interface EnhancedFieldsHiddenConfig {
   type: 'hidden';
 }
 
+export interface EnhancedFieldsCheckboxConfig {
+  type: 'checkbox';
+}
+
+export interface EnhancedGroupConfig {
+  type: 'group';
+  alert: boolean;
+}
+
 export interface EnhancedFieldsLinkConfig {
   type: 'link';
   to: string;
@@ -30,7 +39,9 @@ export interface EnhancedFieldsLinkConfig {
 
 export type EnhancedFieldsConfig =
   | EnhancedFieldsHiddenConfig
-  | EnhancedFieldsLinkConfig;
+  | EnhancedFieldsLinkConfig
+  | EnhancedGroupConfig
+  | EnhancedFieldsCheckboxConfig;
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];

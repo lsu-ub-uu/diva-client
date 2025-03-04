@@ -105,6 +105,7 @@ export const Variable = ({
               {actionButtonGroup}
             </>
           }
+          path={path}
         />
       )}
 

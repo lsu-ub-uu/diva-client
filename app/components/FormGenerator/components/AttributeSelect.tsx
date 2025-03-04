@@ -75,6 +75,7 @@ export const AttributeSelect = ({
           variant='inline'
           label={t(label)}
           value={findOptionLabelByValue(options, value)}
+          path={name}
         />
         {finalValue && <input type='hidden' {...register(name, { value })} />}
       </>
