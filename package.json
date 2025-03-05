@@ -15,10 +15,10 @@
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
     "test": "vitest",
     "test:ci": "vitest run",
-    "test-ui": "vitest --ui",
+    "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "e2e-run": "PORT=5174 playwright test --project firefox --project chromium",
-    "e2e-open": "playwright test --ui",
+    "e2e:run": "PORT=5174 playwright test --project firefox --project chromium",
+    "e2e:open": "PORT=5174 playwright test --ui",
     "e2e:ci": "playwright test"
   },
   "engines": {

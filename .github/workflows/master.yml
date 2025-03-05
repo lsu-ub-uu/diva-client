@@ -1,5 +1,4 @@
 name: CI
-#comment
 on:
   push:
     branches: [ master ]
