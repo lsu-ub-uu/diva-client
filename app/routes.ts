@@ -15,8 +15,6 @@ export default [
     ]),
   ]),
 
-  route('revieww', 'routes/recordReview.tsx'),
-
   /* Auth */
   route('login', 'routes/login.tsx'),
   route('logout', 'routes/logout.tsx'),
