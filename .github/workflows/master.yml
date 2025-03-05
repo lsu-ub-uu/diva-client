@@ -51,6 +51,12 @@ jobs:
   e2e:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      CORA_API_URL: https://cora.epc.ub.uu.se/diva/rest
+      CORA_LOGIN_URL: https://cora.epc.ub.uu.se/diva/login/rest
+      ENVIRONMENT: local
+      DOMAIN: localhost
+      PORT: 5174
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
