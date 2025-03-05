@@ -50,7 +50,7 @@ export const InputField = ({
       <Select
         {...register(path)}
         invalid={errorMessage !== undefined}
-        aria-label={!component.showLabel && t(component.label)}
+        aria-label={!component.showLabel ? t(component.label) : undefined}
       >
         <option value=''>{t('divaClient_optionNoneText')}</option>
         {(component.options ?? []).map((item) => {

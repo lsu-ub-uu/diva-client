@@ -37,7 +37,5 @@ export async function postRecordData<T>(
     authToken,
   );
 
-  console.log(apiUrl, JSON.stringify(payload), headers);
-
   return axios.post(apiUrl, payload, { headers });
 }
