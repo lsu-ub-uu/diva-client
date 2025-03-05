@@ -52,16 +52,17 @@ export const OutputField = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement = enhancedFields?.[path];
   return (
-    <dl
+    <div
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
     >
       <div className={styles['label-wrapper']}>
         {label && (
           <Typography
-            as='dt'
+            as='div'
             text={label}
             variant={textStyle ?? 'bodyTextStyle'}
+            id={`${path}-label`}
           />
         )}
         {info && <FieldInfo {...info} />}
@@ -73,18 +74,20 @@ export const OutputField = ({
       {enhancement?.type === 'link' ? (
         <Link to={enhancement.to}>
           <Typography
-            as='dd'
+            as='p'
             text={value}
             variant={textStyle ?? 'bodyTextStyle'}
+            aria-labelledby={`${path}-label`}
           />
         </Link>
       ) : (
         <Typography
-          as='dd'
+          as='p'
           text={value}
           variant={textStyle ?? 'bodyTextStyle'}
+          aria-labelledby={`${path}-label`}
         />
       )}
-    </dl>
+    </div>
   );
 };

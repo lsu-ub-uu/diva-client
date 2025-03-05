@@ -47,7 +47,11 @@ export const InputField = ({
 
   if (isComponentCollVar(component)) {
     return (
-      <Select {...register(path)} invalid={errorMessage !== undefined}>
+      <Select
+        {...register(path)}
+        invalid={errorMessage !== undefined}
+        aria-label={!component.showLabel && t(component.label)}
+      >
         <option value=''>{t('divaClient_optionNoneText')}</option>
         {(component.options ?? []).map((item) => {
           return (
@@ -70,6 +74,7 @@ export const InputField = ({
         invalid={errorMessage !== undefined}
         placeholder={component.placeholder}
         readOnly={!!component.finalValue}
+        aria-label={!component.showLabel ? t(component.label) : undefined}
       />
     );
   }
@@ -81,6 +86,7 @@ export const InputField = ({
       invalid={errorMessage !== undefined}
       placeholder={component.placeholder}
       readOnly={!!component.finalValue}
+      aria-label={!component.showLabel ? t(component.label) : undefined}
     />
   );
 };

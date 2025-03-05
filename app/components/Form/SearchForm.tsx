@@ -21,16 +21,12 @@ import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { SearchFormSchema } from '../FormGenerator/types';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
-import { useWatch } from 'react-hook-form';
 import { SearchIcon } from '@/icons';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { isEmpty } from 'lodash-es';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -48,7 +44,6 @@ export const SearchForm = ({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (
@@ -84,16 +79,8 @@ export const SearchForm = ({
 const SearchButton = () => {
   const { t } = useTranslation();
 
-  const watch = useWatch();
-  const isFormEmpty = isEmpty(cleanFormData(watch));
-
   return (
-    <Button
-      type='submit'
-      variant='primary'
-      className={styles['search-button']}
-      disabled={isFormEmpty}
-    >
+    <Button type='submit' variant='primary' className={styles['search-button']}>
       <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>
   );

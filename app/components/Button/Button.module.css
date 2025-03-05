@@ -44,6 +44,10 @@
       }
     }
 
+    &[data-size='large'] {
+      --input-height: var(--input-height-large);
+    }
+
     &[data-variant='primary'] {
       background-color: var(--color-button);
       border-color: var(--color-button);

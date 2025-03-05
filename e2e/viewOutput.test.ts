@@ -3,7 +3,7 @@ import { test } from './util/fixtures';
 import { expect } from '@playwright/test';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
-test('View diva-output', async ({ page, divaOutput }) => {
+test('View report', async ({ page, divaOutput }) => {
   const recordId = getFirstDataAtomicValueWithNameInData(
     getFirstDataGroupWithNameInData(divaOutput, 'recordInfo'),
     'id',
@@ -18,12 +18,14 @@ test('View diva-output', async ({ page, divaOutput }) => {
   await expect(await page.getByLabel(/^Id/)).toHaveText(recordId);
   await expect(await page.getByLabel(/^Posttyp/)).toHaveText('diva-output');
   await expect(await page.getByLabel(/^Valideringstyp/)).toHaveText(
-    'diva-output',
+    'publication_report',
   );
   await expect(await page.getByLabel(/^Datadelare/)).toHaveText('divaData');
   await expect(await page.getByLabel(/^Skapad av/)).toHaveText('161616');
   await expect(await page.getByLabel(/^Huvudtitel/)).toHaveText(recordTitle);
-  await expect(await page.getByLabel(/^Språk/)).toHaveText(
-    'Afrihili (artificiellt språk)',
-  );
+
+  const languageGroup = await page.getByRole('region', {
+    name: 'Språk för resursen',
+  });
+  await expect(await languageGroup.getByLabel(/^Språk/)).toHaveText('Ainu');
 });

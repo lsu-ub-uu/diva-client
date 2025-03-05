@@ -25,7 +25,7 @@ export const test = base.extend<Fixtures>({
 
     await use(auth.data.token);
 
-    await request.delete(responseBody.actionLinks.delete.url, {
+    await request.delete(auth.actionLinks!.delete.url, {
       headers: { Authtoken: auth.data.token },
     });
   },

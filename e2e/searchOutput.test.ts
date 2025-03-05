@@ -13,10 +13,13 @@ test('Search for records', async ({ page, divaOutput }) => {
     'id',
   );
 
-  await page.goto('/');
-  await page.getByRole('textbox', { name: /^Fritext.*/ }).fill(recordTitle);
+  await page.goto('/diva-output');
+  await page.getByRole('textbox', { name: 'Fritext' }).fill(recordTitle);
+
+  await expect(
+    await page.getByRole('textbox', { name: 'Fritext' }),
+  ).toHaveValue(recordTitle);
   await page.getByRole('button', { name: 'Sök' }).click();
 
-  await expect(await page.getByText('Sökresultat')).toBeVisible();
   await expect(await page.getByText(recordId)).toBeVisible();
 });

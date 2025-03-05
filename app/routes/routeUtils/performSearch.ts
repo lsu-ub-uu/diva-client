@@ -21,26 +21,36 @@ import type { Auth } from '@/auth/Auth';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { isEmpty } from 'lodash-es';
 import { searchRecords } from '@/data/searchRecords.server';
+import { type ObjectSchema, ValidationError } from 'yup';
 
 export const performSearch = async (
   request: Request,
   context: AppLoadContext,
   searchId: string,
   auth: Auth | undefined,
+  yupSchema: ObjectSchema<Record<string, any>>,
 ) => {
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
 
-  if (isEmpty(query)) {
-    return { query };
+  try {
+    if (isEmpty(query)) {
+      return { query };
+    }
+    await yupSchema.validate(query);
+
+    const searchResults = await searchRecords(
+      await context.dependencies,
+      searchId,
+      query,
+      auth,
+    );
+
+    return { query, searchResults };
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return { errors: error.errors, query };
+    }
+    throw error;
   }
-
-  const searchResults = await searchRecords(
-    await context.dependencies,
-    searchId,
-    query,
-    auth,
-  );
-
-  return { query, searchResults };
 };
