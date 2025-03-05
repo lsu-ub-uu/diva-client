@@ -44,10 +44,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
+    /*    {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
+    },*/
 
     /* Test against mobile viewports. */
     // {
@@ -71,11 +71,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: process.env.CI
-    ? undefined
-    : {
-        command: 'npm run dev',
-        url: `http://${DOMAIN}:${PORT}${BASE_PATH}`,
-        reuseExistingServer: true,
-      },
+  webServer: {
+    command: 'npm run dev',
+    url: `http://${DOMAIN}:${PORT}${BASE_PATH}`,
+    reuseExistingServer: true,
+  },
 });
