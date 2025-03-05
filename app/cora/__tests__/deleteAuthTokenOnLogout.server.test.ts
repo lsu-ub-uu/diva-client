@@ -16,21 +16,30 @@ describe('deleteAuthTokenOnLogout', () => {
   });
 
   it('Delete an appToken', async () => {
-    // const coraUser = 'coraUser:111111111111111';
-    const actionLink = {
-      delete: {
-        requestMethod: 'DELETE',
-        rel: 'delete',
-        url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
-      },
-    };
     const requestSpy = vi
       .spyOn(axios, 'request')
       .mockReturnValue(Promise.resolve({ status: 200 }));
-    const response = await deleteAuthTokenFromCora(
-      actionLink,
-      'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-    );
+    const response = await deleteAuthTokenFromCora({
+      data: {
+        validUntil: '',
+        renewUntil: '',
+        userId: '',
+        loginId: '',
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      },
+      actionLinks: {
+        renew: {
+          requestMethod: 'POST',
+          rel: 'renew',
+          url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+        },
+        delete: {
+          requestMethod: 'DELETE',
+          rel: 'delete',
+          url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+        },
+      },
+    });
 
     const expectedHeaders = {
       Authtoken: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',

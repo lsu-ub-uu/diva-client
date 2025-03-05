@@ -41,8 +41,10 @@ import { Menu, MenuButton } from '@headlessui/react';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 import styles from './Login.module.css';
+import { useHydrated } from '@/utils/useHydrated';
 
 export default function User() {
+  const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
@@ -90,7 +92,7 @@ export default function User() {
         <Menu>
           <MenuButton
             as={Button}
-            disabled={submitting}
+            disabled={submitting || !hydrated}
             aria-busy={submitting}
             variant='tertiary'
           >

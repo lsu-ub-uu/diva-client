@@ -28,6 +28,7 @@ export default defineConfig(({ isSsrBuild }) => {
         '**/node_modules/**',
         '**/target/**',
         '**/*.{test,spec}.{js,mjs,cjs,jsx}',
+        '**/e2e/**',
       ],
       setupFiles: './setupTest.ts',
     },

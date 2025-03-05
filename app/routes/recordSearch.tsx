@@ -38,6 +38,7 @@ import { Alert } from '@/components/Alert/Alert';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { performSearch } from '@/routes/routeUtils/performSearch';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -57,11 +58,14 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     recordType.searchId,
   );
 
-  const { query, searchResults } = await performSearch(
+  const yupSchema = generateYupSchemaFromFormSchema(searchForm);
+
+  const { query, searchResults, errors } = await performSearch(
     request,
     context,
     recordType.searchId,
     auth,
+    yupSchema,
   );
 
   const validationTypes = getValidationTypes(
@@ -79,6 +83,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
       searchResults,
       title: `DiVA | ${t(recordType.textId)}`,
       notification: getNotification(session),
+      errors,
     },
     await getResponseInitWithSession(session),
   );

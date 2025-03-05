@@ -565,12 +565,6 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      /*      const collections = screen.getAllByRole('combobox');
-      expect(collections).toHaveLength(2);
-      const firstCollection = collections[0];
-      await user.click(firstCollection);
-      const firstItems = screen.getByLabelText('option');
-      expect(firstItems).toHaveLength(3);*/
       await user.selectOptions(
         screen.getByLabelText('outputTypeCollectionVarText1'),
         'artisticWorkOriginalCreativeWorkItemText',
@@ -1023,8 +1017,7 @@ describe('<Form />', () => {
           formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
-      const inputLabels = screen.getAllByRole('definition');
-      expect(inputLabels).toHaveLength(2);
+
       const inputLabel = screen.getByText('label1');
       expect(inputLabel).toBeInTheDocument();
       const inputElement = screen.getByText('someFinalValue1');
@@ -1725,7 +1718,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('DD');
+      expect(inputElement.tagName).toBe('P');
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
@@ -1784,7 +1777,7 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
-      expect(inputElement.tagName).toBe('DD');
+      expect(inputElement.tagName).toBe('P');
     });
   });
 
@@ -2811,8 +2804,6 @@ describe('<Form />', () => {
         />,
       );
 
-      const inputLabels = screen.getAllByRole('definition');
-      expect(inputLabels).toHaveLength(1);
       const inputLabel = screen.getByText('someMetadataTextVarText');
       expect(inputLabel).toBeInTheDocument();
       const inputElement = screen.getByText('aaaaa');
@@ -2873,12 +2864,10 @@ describe('<Form />', () => {
         />,
       );
 
-      const inputLabels = screen.getAllByRole('definition');
-      expect(inputLabels).toHaveLength(1);
       const inputLabel = screen.getByText('someMetadataTextVarText');
       expect(inputLabel).toBeInTheDocument();
       const hiddenInputLabel = screen.queryByLabelText(
-        'someMetadataTextVarText',
+        'someOtherMetadataTextVarText',
       );
       expect(hiddenInputLabel).not.toBeInTheDocument();
 
@@ -2940,12 +2929,10 @@ describe('<Form />', () => {
         />,
       );
 
-      const inputLabels = screen.getAllByRole('definition');
-      expect(inputLabels).toHaveLength(1);
       const inputLabel = screen.getByText('someMetadataTextVarText');
       expect(inputLabel).toBeInTheDocument();
       const hiddenInputLabel = screen.queryByLabelText(
-        'someMetadataTextVarText',
+        'someOtherMetadataTextVarText',
       );
 
       expect(inputLabel).toBeInTheDocument();

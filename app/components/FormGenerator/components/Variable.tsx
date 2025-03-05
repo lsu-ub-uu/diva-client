@@ -98,6 +98,7 @@ export const Variable = ({
           value={getOutputDisplayValue(component, value)}
           textStyle={component.textStyle}
           info={showTooltips ? component.tooltip : undefined}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
           adornment={
             <>
               {attributes}

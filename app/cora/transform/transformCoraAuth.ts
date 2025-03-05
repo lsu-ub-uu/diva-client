@@ -41,6 +41,14 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
 
   invariant(authentication.actionLinks, 'Authentication actionLinks missing');
+  invariant(
+    authentication.actionLinks.renew,
+    'Authentication renew actionLink missing',
+  );
+  invariant(
+    authentication.actionLinks.delete,
+    'Authentication delete actionLink missing',
+  );
 
   return {
     data: {
@@ -52,6 +60,9 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
       firstName,
       lastName,
     },
-    actionLinks: authentication.actionLinks,
+    actionLinks: {
+      delete: authentication.actionLinks.delete,
+      renew: authentication.actionLinks.renew,
+    },
   };
 };

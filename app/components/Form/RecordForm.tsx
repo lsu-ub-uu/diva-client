@@ -51,7 +51,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: false,
+    shouldFocusError: true,
     defaultValues,
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });

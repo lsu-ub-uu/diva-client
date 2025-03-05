@@ -17,7 +17,7 @@
  */
 
 import styles from './Card.module.css';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 interface CardTitleProps {
   children: ReactNode;

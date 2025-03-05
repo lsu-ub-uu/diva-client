@@ -4,7 +4,7 @@
   gap: var(--gap);
   align-items: end;
 
-  --input-height: 3rem;
+  --input-height: var(--input-height-large);
 
   @media (width < 600px) {
     display: flex;

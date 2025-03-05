@@ -18,31 +18,12 @@
 
 .output-field {
   display: flex;
-
-  &[data-variant='block'] {
-    flex-direction: column;
-
-    dd {
-      padding-left: var(--gap-l);
-    }
-  }
-
-  &[data-variant='inline'] {
-    dd {
-      padding-left: var(--gap-s);
-    }
-
-    dt::after {
-      content: ':';
-    }
-  }
-
   gap: var(--gap-s);
+}
 
-  dt {
-    font-style: italic;
-    color: var(--color-label);
-  }
+.label {
+  font-style: italic;
+  color: var(--color-label);
 }
 
 .label-wrapper {
@@ -56,4 +37,26 @@
   align-items: center;
   gap: var(--gap-l);
   margin-left: auto;
+}
+
+.output-field[data-variant='inline'] {
+  align-items: center;
+
+  .value {
+    padding-left: var(--gap-s);
+  }
+
+  .label::after {
+    content: ':';
+  }
+}
+
+.output-field[data-variant='block'] {
+  flex-direction: column;
+
+  &:has(.label) {
+    .value {
+      padding-left: var(--gap-l);
+    }
+  }
 }
