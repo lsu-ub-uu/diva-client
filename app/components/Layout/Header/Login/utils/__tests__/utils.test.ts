@@ -59,6 +59,11 @@ describe('Login validation', () => {
           rel: 'delete',
           url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
         },
+        renew: {
+          requestMethod: 'POST',
+          rel: 'renew',
+          url: '',
+        },
       },
     };
 
@@ -73,6 +78,11 @@ describe('Login validation', () => {
           requestMethod: 'DELETE',
           rel: 'delete',
           url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
+        },
+        renew: {
+          requestMethod: 'POST',
+          rel: 'renew',
+          url: '',
         },
       },
     });
@@ -100,6 +110,18 @@ describe('Login validation', () => {
           firstName: 'Everything',
           lastName: 'DiVA',
         },
+        actionLinks: {
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: '',
+          },
+          renew: {
+            requestMethod: 'POST',
+            rel: 'renew',
+            url: '',
+          },
+        },
       },
       'Everything DiVA',
     ],
@@ -111,6 +133,18 @@ describe('Login validation', () => {
           renewUntil: '1738972800000',
           userId: 'coraUser:222222222222',
           loginId: 'johdo290@user.uu.se',
+        },
+        actionLinks: {
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: '',
+          },
+          renew: {
+            requestMethod: 'POST',
+            rel: 'renew',
+            url: '',
+          },
         },
       },
       'johdo290@user.uu.se',

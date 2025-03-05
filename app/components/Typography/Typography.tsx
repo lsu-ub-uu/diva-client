@@ -23,7 +23,7 @@ import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import styles from './Typography.module.css';
 
-interface TypographyProps extends HTMLProps<HTMLParagraphElement> {
+interface TypographyProps extends Omit<HTMLProps<HTMLParagraphElement>, 'as'> {
   as?: ElementType;
   className?: string;
   variant?: TextStyle;

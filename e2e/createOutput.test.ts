@@ -17,7 +17,7 @@
  */
 
 import { test } from './util/fixtures';
-import { expect } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 test('Create report', async ({ page, request, authtoken }) => {

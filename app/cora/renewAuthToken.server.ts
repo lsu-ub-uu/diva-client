@@ -22,9 +22,6 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
 
 export const renewAuthToken = async (auth: Auth) => {
-  if (auth.actionLinks?.renew === undefined) {
-    throw new Error('Missing auth update actionLink');
-  }
   const response = await axios.request(
     getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
   );
