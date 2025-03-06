@@ -70,7 +70,14 @@ export const Group = ({
     cleanFormData(getValues(currentComponentNamePath)),
   );
 
-  if (component.mode === 'output' && hasNoValues) {
+  if (
+    (component.mode === 'output' && hasNoValues) ||
+    currentComponentNamePath === 'output.relatedItem_type_book[0]' ||
+    currentComponentNamePath ===
+      'output.degreeGrantingInstitution_type_corporate[0]' ||
+    currentComponentNamePath ===
+      'output.relatedItem_type_conferencePublication[0]'
+  ) {
     return null;
   }
 

@@ -115,7 +115,7 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
         </div>
         <div className={styles['search-form']}>
           <Field>
-            <Input name='query' />
+            <Input name='query' onChange={(e) => setQuery(e.target.value)} />
           </Field>
           <Button
             type='submit'
@@ -194,11 +194,21 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
                   Granska
                 </Button>
               )}
-              <Button variant='secondary' size='small'>
+              <Button
+                variant='secondary'
+                size='small'
+                as={Link}
+                to={`/${record.recordType}/${record.id}/update`}
+              >
                 <EditDocumentIcon />
                 Redigera
               </Button>
-              <Button variant='secondary' size='small'>
+              <Button
+                variant='secondary'
+                size='small'
+                as={Link}
+                to={`/${record.recordType}/${record.id}`}
+              >
                 <ContractIcon />
                 Visa
               </Button>

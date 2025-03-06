@@ -1,5 +1,23 @@
 import type { BFFDataRecord } from '@/types/record';
 
+function createShortHash(input: string, length = 8) {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    const char = input.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+
+  // Convert to positive number and then to base 36 (0-9a-z)
+  const positiveHash = Math.abs(hash);
+  let shortHash = positiveHash.toString(36);
+
+  // Pad or truncate to desired length
+  shortHash = shortHash.padStart(length, '0').slice(-length);
+
+  return shortHash;
+}
+
 const createFakeRecord = (
   title: string,
   firstName: string,
@@ -9,7 +27,7 @@ const createFakeRecord = (
   readyForReview: boolean,
 ): BFFDataRecord => {
   return {
-    id: `diva-output:${Date.now()}`,
+    id: `diva-output:${createShortHash(title)}`,
     recordType: 'diva-output',
     validationType: 'publication_report',
     createdAt: '2025-03-03T14:15:22.123456Z',
@@ -26,7 +44,7 @@ const createFakeRecord = (
             value: 'publication_report',
             _type: 'outputType',
           },
-          id: { value: `diva-output:${Date.now()}` },
+          id: { value: `diva-output:${createShortHash(title)}` },
           type: { value: 'diva-output' },
           createdBy: { value: '161616' },
           tsCreated: { value: '2025-03-03T22:00:00.753951Z' },
@@ -40,7 +58,7 @@ const createFakeRecord = (
         language: [
           {
             'languageTerm_authority_iso639-2b_type_code': {
-              value: 'swe',
+              value: 'eng',
               _authority: 'iso639-2b',
               _type: 'code',
             },
@@ -54,12 +72,12 @@ const createFakeRecord = (
           title: {
             value: title,
           },
-          _lang: 'swe',
+          _lang: 'eng',
         },
         originInfo: {
           dateIssued: { year: { value: year } },
         },
-        admin: { reviewed: { value: 'true' } },
+        admin: { reviewed: { value: 'false' } },
         adminInfo: { visibility: { value: 'published' } },
         name_type_personal: [
           {
@@ -405,10 +423,10 @@ export const fakeRecords = [
     true,
   ),
   createFakeRecord(
-    'The Future of Personalized Medicine',
+    'The Future of Personaliized Medicine',
     'Per',
     'Persson',
-    '2024',
+    '3024',
     false,
     true,
   ),

@@ -88,7 +88,7 @@ export const action = async ({ request, params }) => {
   });
 
   return redirectAndCommitSession(
-    `/${params.recordType}/${params.recordId}`,
+    `/${params.recordType}/${params.recordId}?reviewed`,
     session,
   );
 };

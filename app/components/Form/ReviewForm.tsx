@@ -25,7 +25,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, Link, useNavigation } from 'react-router';
+import { Form, Link, useLocation, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
@@ -38,6 +38,7 @@ import {
 } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { set } from 'lodash-es';
 
 export interface ReviewFormProps {
   record?: BFFDataRecord;
@@ -48,6 +49,7 @@ export const ReviewForm = ({ record, formSchema }: ReviewFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
+
   const defaultValues = createDefaultValuesFromFormSchema(
     formSchema,
     record?.data as RecordData,

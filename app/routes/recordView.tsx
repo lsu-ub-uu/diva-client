@@ -37,7 +37,7 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { DeleteIcon, EditDocumentIcon } from '@/icons';
+import { DeleteIcon, EditDocumentIcon, MysteryIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { data, Form, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -97,23 +97,18 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         <ReadOnlyForm record={record} formSchema={formDefinition} />
       </div>
       <FloatingActionButtonContainer>
-        {record.userRights?.includes('update') && (
-          <FloatingActionButton
-            as={Link}
-            to='update'
-            text={t('divaClient_editRecordText')}
-            icon={<EditDocumentIcon />}
-          />
-        )}
-        {record.userRights?.includes('delete') && (
-          <Form method='POST' action='delete'>
-            <FloatingActionButton
-              type='submit'
-              text={t('divaClient_deleteRecordText')}
-              icon={<DeleteIcon />}
-            />
-          </Form>
-        )}
+        <FloatingActionButton
+          as={Link}
+          to='update'
+          text={'Redigera'}
+          icon={<EditDocumentIcon />}
+        />
+        <FloatingActionButton
+          as={Link}
+          to='review'
+          text={'Granska'}
+          icon={<MysteryIcon />}
+        />
       </FloatingActionButtonContainer>
     </SidebarLayout>
   );

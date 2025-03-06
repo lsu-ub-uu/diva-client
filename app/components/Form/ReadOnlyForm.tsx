@@ -21,6 +21,8 @@ import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './ReadOnlyForm.module.css';
+import { useLocation } from 'react-router';
+import { set } from 'lodash-es';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
