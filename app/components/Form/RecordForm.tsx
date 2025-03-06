@@ -89,7 +89,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
           variant='primary'
           type='submit'
           icon={<UpgradeIcon />}
-          text={t('divaClient_SubmitButtonText')}
+          text='Spara ändringar'
         />
       </FloatingActionButtonContainer>
     </Form>

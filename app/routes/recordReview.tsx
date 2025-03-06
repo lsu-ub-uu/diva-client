@@ -16,7 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import {
+  getAuth,
+  getNotification,
+  getSessionFromCookie,
+} from '@/auth/sessions.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
@@ -34,8 +38,12 @@ import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
 import { useTranslation } from 'react-i18next';
 import { fakeRecords } from '@/__mocks__/prototypeFakeData';
-import { redirect } from 'react-router';
-import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import { data, redirect } from 'react-router';
+import {
+  getResponseInitWithSession,
+  redirectAndCommitSession,
+} from '@/utils/redirectAndCommitSession';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 
 export const loader = async ({
   request,
@@ -46,6 +54,8 @@ export const loader = async ({
   const auth = getAuth(session);
 
   const { recordType, recordId } = params;
+
+  const notification = getNotification(session);
 
   const record = fakeRecords.find((record) => record.id === recordId);
   /*const record = await getRecordByRecordTypeAndRecordId({
@@ -64,7 +74,10 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition, title };
+  return data(
+    { record, formDefinition, title, notification },
+    await getResponseInitWithSession(session),
+  );
 };
 
 export const action = async ({ request, params }) => {
@@ -89,7 +102,7 @@ export const ErrorBoundary = RouteErrorBoundary;
 export default function ReviewRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
+  const { record, formDefinition, notification } = loaderData;
   const { t } = useTranslation();
   return (
     <SidebarLayout
@@ -101,6 +114,8 @@ export default function ReviewRecordRoute({
         />
       }
     >
+      <NotificationSnackbar notification={notification} />
+
       <div className={styles['record-wrapper']}>
         <ReviewForm record={record} formSchema={formDefinition} />
       </div>

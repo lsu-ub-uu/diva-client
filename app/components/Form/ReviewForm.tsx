@@ -25,7 +25,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from 'react-router';
+import { Form, Link, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
@@ -83,7 +83,8 @@ export const ReviewForm = ({ record, formSchema }: ReviewFormProps) => {
       <FloatingActionButtonContainer>
         <FloatingActionButton
           variant='secondary'
-          type='submit'
+          as={Link}
+          to={`/${record.recordType}/${record.id}/update`}
           icon={<EditDocumentIcon />}
           text={'Redigera post'}
         />

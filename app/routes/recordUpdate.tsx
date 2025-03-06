@@ -21,32 +21,24 @@ import {
   getAuth,
   getNotification,
   getSessionFromCookie,
-  requireAuth,
 } from '@/auth/sessions.server';
 import { data } from 'react-router';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData } from 'remix-hook-form';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord } from '@/types/record';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
+import { fakeRecords } from '@/__mocks__/prototypeFakeData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -57,12 +49,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const { recordType, recordId } = params;
 
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
-    recordType,
-    recordId,
-    authToken: auth?.data.token,
-  });
+  const record = fakeRecords.find((record) => record.id === recordId);
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
 
@@ -98,8 +85,15 @@ export const action = async ({
   context,
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
-
   const session = await getSessionFromCookie(request);
+
+  session.flash('notification', {
+    severity: 'success',
+    summary: `Dina ändringar har sparats`,
+  });
+
+  return redirectAndCommitSession(`/${recordType}/${recordId}/review`, session);
+  /*
   const auth = await requireAuth(session);
   const formData = await request.formData();
 
@@ -145,7 +139,7 @@ export const action = async ({
     session.flash('notification', createNotificationFromAxiosError(error));
   }
 
-  return data({}, await getResponseInitWithSession(session));
+  return data({}, await getResponseInitWithSession(session));*/
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {

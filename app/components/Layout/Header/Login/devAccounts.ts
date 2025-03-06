@@ -33,8 +33,8 @@ const divaUser = {
   appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
   userId: '161616',
   idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
-  lastName: 'DiVA',
-  firstName: 'Admin',
+  lastName: 'Rodriguez',
+  firstName: 'Sophia',
 };
 
 const divaEverything = {
