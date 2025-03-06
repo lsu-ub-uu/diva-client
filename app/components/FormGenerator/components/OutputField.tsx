@@ -22,7 +22,10 @@ import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import {
+  type EnhancedFieldsConfig,
+  FormGeneratorContext,
+} from '@/components/FormGenerator/FormGeneratorContext';
 import { Link } from 'react-router';
 
 interface OutputFieldProps {
@@ -52,16 +55,18 @@ export const OutputField = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement = enhancedFields?.[path];
   return (
-    <dl
+    <div
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
     >
       <div className={styles['label-wrapper']}>
         {label && (
           <Typography
-            as='dt'
+            as='div'
             text={label}
+            className={styles['label']}
             variant={textStyle ?? 'bodyTextStyle'}
+            id={`${path}-label`}
           />
         )}
         {info && <FieldInfo {...info} />}
@@ -69,22 +74,27 @@ export const OutputField = ({
           <div className={styles['adornment-wrapper']}>{adornment}</div>
         )}
       </div>
-
-      {enhancement?.type === 'link' ? (
-        <Link to={enhancement.to}>
-          <Typography
-            as='dd'
-            text={value}
-            variant={textStyle ?? 'bodyTextStyle'}
-          />
-        </Link>
-      ) : (
+      <Enhancement enhancement={enhancement}>
         <Typography
-          as='dd'
+          className={styles['value']}
+          as='p'
           text={value}
           variant={textStyle ?? 'bodyTextStyle'}
+          aria-labelledby={`${path}-label`}
         />
-      )}
-    </dl>
+      </Enhancement>
+    </div>
   );
+};
+
+interface EnhancementProps {
+  enhancement?: EnhancedFieldsConfig;
+  children: ReactNode;
+}
+
+const Enhancement = ({ enhancement, children }: EnhancementProps) => {
+  if (enhancement?.type === 'link') {
+    return <Link to={enhancement.to}>{children}</Link>;
+  }
+  return children;
 };

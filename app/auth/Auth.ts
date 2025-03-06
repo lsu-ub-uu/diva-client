@@ -1,4 +1,4 @@
-import type { ActionLinks } from '@/cora/cora-data/types.server';
+import type { ActionLink } from '@/cora/cora-data/types.server';
 
 export interface Auth {
   data: {
@@ -10,5 +10,8 @@ export interface Auth {
     lastName?: string;
     firstName?: string;
   };
-  actionLinks?: ActionLinks;
+  actionLinks: {
+    renew: ActionLink;
+    delete: ActionLink;
+  };
 }

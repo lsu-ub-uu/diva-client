@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 

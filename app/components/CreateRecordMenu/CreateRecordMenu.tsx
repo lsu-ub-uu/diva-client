@@ -48,6 +48,7 @@ export const CreateRecordMenu = ({
         variant='secondary'
         as={Link}
         to={`create?validationType=${validationTypes[0].value}`}
+        size='large'
       >
         <AddCircleIcon />
         {buttonText}
@@ -57,7 +58,7 @@ export const CreateRecordMenu = ({
 
   return (
     <Menu>
-      <MenuButton as={Button} variant='secondary'>
+      <MenuButton as={Button} variant='secondary' size='large'>
         <AddCircleIcon />
         {buttonText}
       </MenuButton>

@@ -18,12 +18,12 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import type { ElementType } from 'react';
+import type { ElementType, HTMLProps } from 'react';
 import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import styles from './Typography.module.css';
 
-interface TypographyProps {
+interface TypographyProps extends Omit<HTMLProps<HTMLParagraphElement>, 'as'> {
   as?: ElementType;
   className?: string;
   variant?: TextStyle;
@@ -56,13 +56,18 @@ export const Typography = ({
   className,
   variant,
   text,
+  ...rest
 }: TypographyProps) => {
   const { t } = useTranslation();
 
   const Root = as ?? mapTextStyleToComponent(variant);
 
   return (
-    <Root className={clsx(styles.typography, className)} data-variant={variant}>
+    <Root
+      className={clsx(styles.typography, className)}
+      data-variant={variant}
+      {...rest}
+    >
       {t(text)}
     </Root>
   );

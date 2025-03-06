@@ -16,15 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
-import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
-import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
+import { useEffect, useState } from 'react';
 
-export const renewAuthToken = async (auth: Auth) => {
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
-  );
+export const useHydrated = () => {
+  const [hydrated, setHydrated] = useState(false);
 
-  return transformCoraAuth(response.data);
+  useEffect(() => setHydrated(true), []);
+
+  return hydrated;
 };

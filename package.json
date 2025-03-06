@@ -15,8 +15,13 @@
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
     "test": "vitest",
     "test:ci": "vitest run",
-    "test-ui": "vitest --ui",
-    "coverage": "vitest --coverage"
+    "test:ui": "vitest --ui",
+    "coverage": "vitest --coverage",
+    "e2e": "PORT=5174 playwright test --project firefox --project chromium",
+    "e2e:ui": "PORT=5174 playwright test --ui",
+    "e2e:preview": "E2E_TARGET=https://cora.epc.ub.uu.se BASE_PATH=/divaclient playwright test --project firefox --project chromium",
+    "e2e:ci": "playwright test",
+    "e2e:report": "playwright show-report"
   },
   "engines": {
     "node": "^20.18.0"
@@ -50,6 +55,8 @@
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@eslint/js": "^9.20.0",
+    "@faker-js/faker": "^9.4.0",
+    "@playwright/test": "^1.50.0",
     "@react-router/dev": "~7.1.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",

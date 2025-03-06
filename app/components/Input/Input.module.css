@@ -115,6 +115,10 @@
       padding: 0 var(--gap);
     }
   }
+
+  &[data-size='large'] {
+    --input-height: var(--input-height-large);
+  }
 }
 
 .adornments {
