@@ -35,6 +35,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
@@ -64,6 +65,7 @@ export const RecordLinkWithSearch = ({
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
+      <DevInfo component={component} path={path} />
       <Field
         label={component.showLabel && t(component.label)}
         errorMessage={errorMessage}
