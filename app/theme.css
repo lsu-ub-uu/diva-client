@@ -46,6 +46,7 @@
   /* Component colors */
   --color-link: rgb(5 85 164);
   --color-link-selected: rgb(13 110 253);
+  --color-link-visited: var(--color-accent);
   --color-card-dark: rgb(5 85 164 / 12%);
   --color-card: rgb(5 85 164/ 8%);
   --color-button: var(--color-primary);
@@ -60,8 +61,9 @@
   --gap-l: 1rem;
   --gap-xl: 2rem;
   --gap-xxl: 4rem;
-  --input-height: 2.75rem;
-  --input-height-small: 1.75rem;
+  --input-height-large: 3rem;
+  --input-height: 2.2rem;
+  --input-height-small: 1.8rem;
   --font-family-main: 'Arial', sans-serif;
   --font-family-headings: 'Arial', sans-serif;
   --font-size-base: 16px;
@@ -92,13 +94,15 @@
 
   [data-theme='dark'] {
     /* Color palette */
-    --color-background: rgb(66 66 66);
+    --color-background: rgb(33 33 33);
     --color-background-inverted: rgb(255 255 255);
     --color-text: rgb(255 255 255);
     --color-text-inverted: rgb(66 66 66);
     --color-primary: rgb(231 227 222);
     --color-secondary: rgb(1 1 1);
     --color-button: rgb(255 255 255);
+    --color-accent-dark: rgb(150 136 162);
+    --color-label: rgb(255 255 255 / 60%);
   }
 
   @media (width < 600px) {

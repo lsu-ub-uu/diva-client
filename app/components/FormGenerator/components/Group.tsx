@@ -40,6 +40,7 @@ import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
 import styles from './FormComponent.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { useTranslation } from 'react-i18next';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -54,6 +55,7 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
 }: GroupProps) => {
+  const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
@@ -71,11 +73,17 @@ export const Group = ({
   if (component.mode === 'output' && hasNoValues) {
     return null;
   }
+
+  const groupAria = component.showLabel
+    ? { 'aria-labelledby': `${currentComponentNamePath}-label` }
+    : { 'aria-label': t(component.label) };
+
   return (
-    <div
+    <section
       className={`${styles['component']} anchorLink`}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
+      {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card boxed={boxGroups && groupLevel !== 0}>
@@ -87,6 +95,7 @@ export const Group = ({
           {component.showLabel && (
             <CardTitle>
               <Typography
+                id={`${currentComponentNamePath}-label`}
                 text={component?.label ?? ''}
                 variant={headlineLevelToTypographyVariant(
                   component.headlineLevel,
@@ -122,6 +131,6 @@ export const Group = ({
           </div>
         </CardContent>
       </Card>
-    </div>
+    </section>
   );
 };

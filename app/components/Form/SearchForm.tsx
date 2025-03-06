@@ -18,17 +18,15 @@
  */
 
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
-import FilterChip from '@/components/FilterChip/FilterChip';
-import { useState } from 'react';
-import { InputChip } from '@/components/Form/InputChip';
 import { SearchIcon } from '@/icons';
-import { Field } from '@/components/Input/Field';
-import { Input } from '@/components/Input/Input';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -36,85 +34,47 @@ interface SearchFormProps {
   searchResults?: BFFSearchResult;
 }
 
-export const SearchForm = ({ data, searchResults }: SearchFormProps) => {
-  const [query, setQuery] = useState('');
-  const [myPubFilter, setMyPubFilter] = useState(false);
-  const [readyForPublicationFilter, setReadyForPublicationFilter] =
-    useState(false);
-  const [readyForReviewFilter, setReadyForReviewFilter] = useState(false);
+export const SearchForm = ({
+  data,
+  formSchema,
+  searchResults,
+}: SearchFormProps) => {
+  const submit = useSubmit();
+  const methods = useRemixForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+  });
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setQuery(e.currentTarget.query.value);
-      }}
-    >
-      <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
-        <FilterChip
-          label='Mina publikationer'
-          checked={myPubFilter}
-          onChange={setMyPubFilter}
-        />
-        <FilterChip
-          label='Redo för publicering'
-          checked={readyForPublicationFilter}
-          onChange={setReadyForPublicationFilter}
-        />
-        <FilterChip
-          label='Redo för granskning'
-          checked={readyForReviewFilter}
-          onChange={setReadyForReviewFilter}
-        />
-      </div>
+    <Form method='GET'>
       <div className={styles['search-form']}>
-        <Field>
-          <Input name='query' />
-        </Field>
-        <SearchButton />
-        {!searchResults && (
-          <input type='hidden' name='search.rows[0].value' value='10' />
-        )}
-
-        {data && searchResults && (
-          <Pagination
-            searchResults={searchResults}
-            onRowsPerPageChange={(e) => {}}
+        <RemixFormProvider {...methods}>
+          <FormGenerator
+            formSchema={formSchema}
+            showTooltips={false}
+            enhancedFields={{
+              'search.rows': { type: 'hidden' },
+              'search.start': { type: 'hidden' },
+            }}
           />
-        )}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-            gridColumn: 'span 2',
-          }}
-        >
-          Aktiva filter:
-          {myPubFilter && (
-            <InputChip
-              label='Mina publikationer'
-              onClose={() => setMyPubFilter(false)}
+          <SearchButton />
+          {!searchResults && (
+            <input type='hidden' name='search.rows[0].value' value='10' />
+          )}
+
+          {data && searchResults && (
+            <Pagination
+              query={data}
+              searchResults={searchResults}
+              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
             />
           )}
-          {readyForPublicationFilter && (
-            <InputChip
-              label='Redo för publicering'
-              onClose={() => setReadyForPublicationFilter(false)}
-            />
-          )}
-          {readyForReviewFilter && (
-            <InputChip
-              label='Redo för granskning'
-              onClose={() => setReadyForReviewFilter(false)}
-            />
-          )}
-        </div>
+        </RemixFormProvider>
       </div>
-    </form>
+    </Form>
   );
 };
-example1;
 
 const SearchButton = () => {
   const { t } = useTranslation();

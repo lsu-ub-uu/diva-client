@@ -20,7 +20,5 @@ import type { Auth } from '@/auth/Auth';
 import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken.server';
 
 export const deleteSession = async (auth: Auth) => {
-  const { actionLinks } = auth;
-
-  return deleteAuthTokenFromCora(actionLinks!, auth.data.token);
+  return deleteAuthTokenFromCora(auth);
 };

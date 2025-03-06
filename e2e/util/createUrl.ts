@@ -16,15 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
-import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
-import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
+const { BASE_PATH } = process.env;
 
-export const renewAuthToken = async (auth: Auth) => {
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
-  );
-
-  return transformCoraAuth(response.data);
+export const createUrl = (url: string) => {
+  return BASE_PATH ? `${BASE_PATH}${url}` : url;
 };

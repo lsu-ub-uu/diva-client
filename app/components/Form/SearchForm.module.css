@@ -4,6 +4,8 @@
   gap: var(--gap);
   align-items: end;
 
+  --input-height: var(--input-height-large);
+
   @media (width < 600px) {
     display: flex;
     flex-direction: column;

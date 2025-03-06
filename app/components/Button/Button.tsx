@@ -27,7 +27,7 @@ import { type ElementType, type Ref } from 'react';
 
 interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
-  size?: 'small' | 'medium';
+  size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   as?: ElementType;
   to?: string;

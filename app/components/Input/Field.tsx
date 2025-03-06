@@ -33,7 +33,7 @@ interface FieldProps extends HUIFieldProps {
   adornment?: ReactNode;
   children?: ReactNode;
   variant?: 'block' | 'inline';
-  size?: 'small' | 'medium';
+  size?: 'small' | 'medium' | 'large';
   errorMessage?: ReactNode;
   info?: {
     title: string;

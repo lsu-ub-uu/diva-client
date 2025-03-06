@@ -19,9 +19,9 @@
 }
 
 .result-list-item {
-  position: relative;
   display: flex;
   flex-direction: column;
+  gap: var(--gap-l);
   padding: var(--gap);
   border-left: 2px solid var(--color-card-dark);
   border-right: 2px solid var(--color-card-dark);

@@ -1,15 +1,9 @@
-import type { ActionLinks } from '@/cora/cora-data/types.server';
 import axios from 'axios';
 import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
+import type { Auth } from '@/auth/Auth';
 
-export const deleteAuthTokenFromCora = async (
-  actionLinks: ActionLinks,
-  authToken: string | undefined,
-) => {
-  if (actionLinks.delete === undefined) {
-    throw new Error('Missing actionLink URL');
-  }
+export const deleteAuthTokenFromCora = async (auth: Auth) => {
   return axios.request(
-    getAxiosRequestFromActionLink(actionLinks.delete, authToken),
+    getAxiosRequestFromActionLink(auth.actionLinks.delete, auth.data.token),
   );
 };
