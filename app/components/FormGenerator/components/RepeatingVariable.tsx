@@ -24,36 +24,29 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useRemixFormContext } from 'remix-hook-form';
+import { get } from 'lodash-es';
 
 interface RepeatingVariableProps {
-  reactKey: string;
   component: FormComponentWithData;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingVariable = ({
-  reactKey,
   component,
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
-  const { control, getValues } = useRemixFormContext();
-  const { linkedData } = use(FormGeneratorContext);
+  const { linkedData, data } = use(FormGeneratorContext);
 
-  const hasLinkedDataValue = checkIfSingularComponentHasValue(
-    getValues,
-    currentComponentNamePath,
-  );
+  const hasValue = get(data, currentComponentNamePath) !== undefined;
 
-  if (!hasLinkedDataValue && linkedData) {
+  if (!hasValue && linkedData) {
     return null;
   }
 
   return (
     <FieldArrayComponent
-      key={reactKey}
-      control={control}
       component={component}
       name={currentComponentNamePath}
       renderCallback={(

@@ -15,33 +15,31 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type { Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
 import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
+import { use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { get } from 'lodash-es';
 interface ControlledLinkedRecordProps {
   recordType: string;
   name: string;
   presentationRecordLinkId: string;
-  control?: Control<any>;
 }
 export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
+  const { data } = use(FormGeneratorContext);
+  const value = get(data, props.name) as string | undefined;
+
+  if (!value) {
+    return null;
+  }
+
   return (
-    <Controller
-      control={props.control}
-      name={props.name}
-      render={({ field }) => {
-        return (
-          <span id='controled-linked-record'>
-            {field.value && (
-              <LinkedRecord
-                recordType={props.recordType}
-                id={field.value}
-                presentationRecordLinkId={props.presentationRecordLinkId}
-              />
-            )}
-          </span>
-        );
-      }}
-    />
+    <>
+      <input type='hidden' value={value} name={props.name} />
+      <LinkedRecord
+        recordType={props.recordType}
+        id={value}
+        presentationRecordLinkId={props.presentationRecordLinkId}
+      />
+    </>
   );
 };

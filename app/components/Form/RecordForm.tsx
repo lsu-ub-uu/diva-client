@@ -43,48 +43,25 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
-  const defaultValues = createDefaultValuesFromFormSchema(
-    formSchema,
-    record?.data as RecordData,
-  );
-
-  const methods = useRemixForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: true,
-    defaultValues,
-    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
-  });
-
-  const { handleSubmit, reset } = methods;
 
   return (
     <Form
       method='POST'
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
-      onSubmit={handleSubmit}
     >
-      <RemixFormProvider {...methods}>
-        <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-          enhancedFields={{
-            'output.admin': { type: 'group', alert: true },
-            'output.admin.reviewed.value': { type: 'checkbox' },
-          }}
-        />
-      </RemixFormProvider>
+      <ValidationErrorSnackbar />
+      <FormGenerator
+        formSchema={formSchema}
+        data={record?.data}
+        boxGroups
+        enhancedFields={{
+          'output.admin': { type: 'group', alert: true },
+          'output.admin.reviewed.value': { type: 'checkbox' },
+        }}
+      />
 
       <FloatingActionButtonContainer>
-        <FloatingActionButton
-          type='button'
-          onClick={() => reset(undefined, { keepDefaultValues: true })}
-          icon={<RestartAltIcon />}
-          text={t('divaClient_ResetButtonText')}
-        />
-
         <FloatingActionButton
           variant='primary'
           type='submit'

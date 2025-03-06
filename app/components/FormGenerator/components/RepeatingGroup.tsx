@@ -23,22 +23,17 @@ import { Group } from '@/components/FormGenerator/components/Group';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
-  reactKey: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingGroup = ({
   currentComponentNamePath,
-  reactKey,
   component,
   parentPresentationStyle,
 }: RepeatingGroupProps) => {
-  const { control } = useRemixFormContext();
   return (
     <FieldArrayComponent
-      key={reactKey}
-      control={control}
       component={component}
       name={currentComponentNamePath}
       renderCallback={(arrayPath, actionButtonGroup) => {

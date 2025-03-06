@@ -26,7 +26,6 @@ import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
-  reactKey: string;
   name: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
@@ -36,7 +35,6 @@ interface RecordLinkProps {
 export const RecordLink = ({
   name,
   component,
-  reactKey,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
@@ -52,7 +50,6 @@ export const RecordLink = ({
   ) {
     return (
       <RecordLinkWithSearch
-        reactKey={reactKey}
         component={component}
         path={name}
         attributes={attributes}
@@ -67,7 +64,6 @@ export const RecordLink = ({
   ) {
     return (
       <RecordLinkWithLinkedPresentation
-        reactKey={reactKey}
         component={component}
         name={name}
         attributes={attributes}
@@ -78,7 +74,6 @@ export const RecordLink = ({
 
   return (
     <Variable
-      reactKey={reactKey}
       component={component}
       path={name}
       parentPresentationStyle={parentPresentationStyle}

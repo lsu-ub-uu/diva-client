@@ -26,6 +26,9 @@ import { useRouteLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DownloadIcon } from '@/icons';
 import type { loader } from '@/root';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { use } from 'react';
+import { get } from 'lodash-es';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -33,13 +36,17 @@ interface ResourceLinkProps {
 }
 
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
-  const { getValues } = useRemixFormContext();
+  const { data } = use(FormGeneratorContext);
   const { t } = useTranslation();
   const rootLoaderData = useRouteLoaderData<typeof loader>('/hej');
-  const data: ResourceLinkType = getValues(path);
+  const value = get(data, path) as ResourceLinkType | undefined;
   const authToken = rootLoaderData?.auth?.data.token;
 
-  const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
+  if (!value) {
+    return null;
+  }
+
+  const resourceUrl = `${value.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
 
   return (
     <div className={styles['component']} data-colspan={component.gridColSpan}>
@@ -49,7 +56,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
         <a
           href={resourceUrl}
           className={resourceLinkStyles['download-link']}
-          type={data.mimeType}
+          type={value.mimeType}
         >
           {t('divaClient_downloadFileText')}
           <DownloadIcon />

@@ -19,19 +19,18 @@
 import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
 import type {
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
-import {
-  findOptionLabelByValue,
-  getErrorMessageForField,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { findOptionLabelByValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { get } from 'lodash-es';
 
 interface AttributeSelectProps {
   name: string;
@@ -57,17 +56,17 @@ export const AttributeSelect = ({
   finalValue,
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const { register, getValues, formState } = useRemixFormContext();
-
-  const errorMessage = getErrorMessageForField(formState, name);
-  const value = finalValue ?? getValues(name);
+  const { data, errors } = use(FormGeneratorContext);
+  const errorMessage = errors[name];
+  const defaultValue = get(data, name) as string | undefined;
+  const value = finalValue ?? defaultValue;
   const showAsOutput = finalValue || displayMode === 'output';
 
   if (displayMode === 'output' && !value) {
     return null;
   }
 
-  if (showAsOutput) {
+  if (showAsOutput && value) {
     return (
       <>
         <OutputField
@@ -77,7 +76,7 @@ export const AttributeSelect = ({
           value={findOptionLabelByValue(options, value)}
           path={name}
         />
-        {finalValue && <input type='hidden' {...register(name, { value })} />}
+        {value && <input type='hidden' name={name} value={value} />}
       </>
     );
   }
@@ -92,7 +91,8 @@ export const AttributeSelect = ({
       adornment={tooltip && <FieldInfo {...tooltip} />}
     >
       <Select
-        {...register(name)}
+        name={name}
+        defaultValue={defaultValue}
         disabled={disabled}
         invalid={errorMessage !== undefined}
       >

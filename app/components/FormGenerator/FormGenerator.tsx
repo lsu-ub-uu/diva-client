@@ -25,11 +25,13 @@ import {
 } from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import styles from './FormGenerator.module.css';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
+  data?: BFFDataRecordData;
+  errors?: Record<string, string>;
   linkedData?: BFFDataRecord['data'];
   boxGroups?: boolean;
   showTooltips?: boolean;
@@ -37,6 +39,8 @@ interface FormGeneratorProps {
 }
 
 export const FormGenerator = ({
+  data,
+  errors = {},
   linkedData,
   boxGroups = false,
   showTooltips = true,
@@ -48,6 +52,8 @@ export const FormGenerator = ({
   const formContextValues = useMemo(
     () => ({
       linkedData,
+      data,
+      errors,
       boxGroups,
       showDevInfo,
       showTooltips,

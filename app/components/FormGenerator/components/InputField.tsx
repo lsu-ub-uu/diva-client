@@ -34,23 +34,24 @@ interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
   errorMessage: string | undefined;
-  register: UseFormRegister<FieldValues>;
+  defaultValue?: string;
 }
 
 export const InputField = ({
   component,
   path,
   errorMessage,
-  register,
+  defaultValue,
 }: InputFieldProps) => {
   const { t } = useTranslation();
 
   if (isComponentCollVar(component)) {
     return (
       <Select
-        {...register(path)}
         invalid={errorMessage !== undefined}
         aria-label={!component.showLabel ? t(component.label) : undefined}
+        name={path}
+        defaultValue={defaultValue}
       >
         <option value=''>{t('divaClient_optionNoneText')}</option>
         {(component.options ?? []).map((item) => {
@@ -70,7 +71,8 @@ export const InputField = ({
   ) {
     return (
       <Textarea
-        {...register(path)}
+        name={path}
+        defaultValue={defaultValue}
         invalid={errorMessage !== undefined}
         placeholder={component.placeholder}
         readOnly={!!component.finalValue}
@@ -81,7 +83,8 @@ export const InputField = ({
 
   return (
     <Input
-      {...register(path)}
+      name={path}
+      defaultValue={defaultValue}
       type={isPasswordField(component) ? 'password' : 'text'}
       invalid={errorMessage !== undefined}
       placeholder={component.placeholder}

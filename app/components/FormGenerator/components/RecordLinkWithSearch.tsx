@@ -17,13 +17,11 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { type ReactNode, use } from 'react';
+import { type ReactNode, use, useState } from 'react';
 
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import { Field } from '@/components/Input/Field';
@@ -35,10 +33,10 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
+import { get } from 'lodash-es';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface RecordLinkWithSearchProps {
-  reactKey: string;
   component: FormComponentRecordLink;
   path: string;
   attributes?: ReactNode;
@@ -46,22 +44,23 @@ interface RecordLinkWithSearchProps {
 }
 
 export const RecordLinkWithSearch = ({
-  reactKey,
   component,
   path,
   attributes,
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { t } = useTranslation();
-  const { formState, setValue } = useRemixFormContext();
-  const { showTooltips } = use(FormGeneratorContext);
-  const errorMessage = getErrorMessageForField(formState, path);
+  const { data, showTooltips, errors } = use(FormGeneratorContext);
+  const defaultValue: string | undefined = get(data, path) as
+    | string
+    | undefined;
+  const [value, setValue] = useState(defaultValue);
+  const errorMessage = errors[path];
   const fetcher = useFetcher();
 
   return (
     <div
       className={styles['component']}
-      key={reactKey}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
@@ -77,7 +76,8 @@ export const RecordLinkWithSearch = ({
           </>
         }
       >
-        <Combobox onChange={(recordId) => setValue(path, recordId)}>
+        <input type='hidden' name={path} value={value} />
+        <Combobox onChange={(recordId: string) => setValue(recordId)}>
           <ComboboxInput
             aria-busy={fetcher.state !== 'idle'}
             placeholder={t('divaClient_recordLinkAutocompletePlaceholderText')}
