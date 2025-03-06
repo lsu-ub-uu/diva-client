@@ -17,10 +17,11 @@
     "test:ci": "vitest run",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "e2e:run": "PORT=5174 playwright test --project firefox --project chromium",
-    "e2e:open": "PORT=5174 playwright test --ui",
+    "e2e": "PORT=5174 playwright test --project firefox --project chromium",
+    "e2e:ui": "PORT=5174 playwright test --ui",
     "e2e:preview": "E2E_TARGET=https://cora.epc.ub.uu.se BASE_PATH=/divaclient playwright test --project firefox --project chromium",
-    "e2e:ci": "playwright test"
+    "e2e:ci": "playwright test",
+    "e2e:report": "playwright show-report"
   },
   "engines": {
     "node": "^20.18.0"
