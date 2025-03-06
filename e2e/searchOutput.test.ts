@@ -15,6 +15,8 @@ test('Search for records', async ({ page, divaOutput }) => {
   );
 
   await page.goto(createUrl('/diva-output'));
+  await expect(page.getByRole('button', { name: 'Logga in' })).toBeEnabled();
+
   await page.getByRole('textbox', { name: 'Fritext' }).fill(recordTitle);
 
   await expect(

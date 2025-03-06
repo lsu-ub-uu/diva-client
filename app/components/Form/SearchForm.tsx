@@ -27,6 +27,7 @@ import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
 import { SearchIcon } from '@/icons';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -44,6 +45,7 @@ export const SearchForm = ({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (
