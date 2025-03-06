@@ -19,12 +19,13 @@
 import { test } from './util/fixtures';
 import { expect, type Page } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+import { createUrl } from './util/createUrl';
 
 test('Create report', async ({ page, request, authtoken }) => {
   const mockTitle = faker.book.title();
 
   // Go to start page
-  await page.goto('/');
+  await page.goto(createUrl('/'));
 
   // Log in
   await page.getByRole('button', { name: 'Logga in' }).click();

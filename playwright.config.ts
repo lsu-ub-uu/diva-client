@@ -6,7 +6,12 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import 'dotenv/config';
 
-const { DOMAIN = '0.0.0.0', PORT = '5173', BASE_PATH = '' } = process.env;
+const {
+  DOMAIN = '0.0.0.0',
+  PORT = '5173',
+  BASE_PATH = '',
+  E2E_TARGET,
+} = process.env;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -26,7 +31,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: `http://${DOMAIN}:${PORT}${BASE_PATH}`,
+    baseURL: E2E_TARGET ?? `http://${DOMAIN}:${PORT}${BASE_PATH}`,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -44,10 +49,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    /*    {
+    {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },*/
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -71,9 +76,11 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'npm run dev',
-    url: `http://${DOMAIN}:${PORT}${BASE_PATH}`,
-    reuseExistingServer: true,
-  },
+  webServer: process.env.E2E_TARGET
+    ? undefined
+    : {
+        command: 'npm run dev',
+        url: `http://${DOMAIN}:${PORT}${BASE_PATH}`,
+        reuseExistingServer: true,
+      },
 });

@@ -2,6 +2,7 @@ import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { expect } from '@playwright/test';
 import { test } from './util/fixtures';
+import { createUrl } from './util/createUrl';
 
 test('Search for records', async ({ page, divaOutput }) => {
   const recordTitle = getFirstDataAtomicValueWithNameInData(
@@ -13,7 +14,7 @@ test('Search for records', async ({ page, divaOutput }) => {
     'id',
   );
 
-  await page.goto('/diva-output');
+  await page.goto(createUrl('/diva-output'));
   await page.getByRole('textbox', { name: 'Fritext' }).fill(recordTitle);
 
   await expect(

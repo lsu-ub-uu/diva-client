@@ -2,6 +2,7 @@ import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraData
 import { test } from './util/fixtures';
 import { expect } from '@playwright/test';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
+import { createUrl } from './util/createUrl';
 
 test('View report', async ({ page, divaOutput }) => {
   const recordId = getFirstDataAtomicValueWithNameInData(
@@ -13,7 +14,7 @@ test('View report', async ({ page, divaOutput }) => {
     'title',
   );
 
-  await page.goto(`/diva-output/${recordId}`);
+  await page.goto(createUrl(`/diva-output/${recordId}`));
 
   await expect(await page.getByLabel(/^Id/)).toHaveText(recordId);
   await expect(await page.getByLabel(/^Posttyp/)).toHaveText('diva-output');

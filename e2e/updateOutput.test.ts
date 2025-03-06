@@ -21,6 +21,7 @@ import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraData
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+import { createUrl } from './util/createUrl';
 
 test('updates an existing report', async ({ page, divaOutput }) => {
   const recordId = getFirstDataAtomicValueWithNameInData(
@@ -32,7 +33,7 @@ test('updates an existing report', async ({ page, divaOutput }) => {
     'title',
   );
 
-  await page.goto(`/diva-output/${recordId}/update`);
+  await page.goto(createUrl(`/diva-output/${recordId}/update`));
 
   // Log in
   await page.getByRole('button', { name: 'Logga in' }).click();
