@@ -21,8 +21,8 @@ import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/com
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { useWatch } from 'react-hook-form';
 import { Variable } from '@/components/FormGenerator/components/Variable';
+import { get } from 'lodash-es';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -39,7 +39,8 @@ export const RecordLink = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
-  const value = useWatch({ name });
+  const { data } = use(FormGeneratorContext);
+  const value = get(data, name);
 
   const { linkedData } = use(FormGeneratorContext);
   if (

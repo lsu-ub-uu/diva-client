@@ -17,15 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Fragment, type ReactNode, useState } from 'react';
-import type { Control } from 'react-hook-form';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { Fragment, type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
+import { addAttributesToName } from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
@@ -43,11 +38,16 @@ export const FieldArrayComponent = ({
   component,
   renderCallback,
 }: FieldArrayComponentProps) => {
-  const [fields, setFields] = useState<string[]>([]);
+  const minToShow = component.repeat?.minNumberOfRepeatingToShow;
+  const [fields, setFields] = useState<string[]>(
+    minToShow
+      ? Array.from({ length: minToShow }, () => crypto.randomUUID())
+      : [],
+  );
   const { t } = useTranslation();
 
   const append = () => {
-    const id = Date.now().toString();
+    const id = crypto.randomUUID();
     setFields([...fields, id]);
   };
 
