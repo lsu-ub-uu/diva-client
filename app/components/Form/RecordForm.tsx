@@ -18,21 +18,17 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from 'react-router';
+import { Form, useActionData, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import { RestartAltIcon, UpgradeIcon } from '@/icons';
+import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { Alert } from '@/components/Alert/Alert';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -43,6 +39,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
+  const actionData = useActionData();
 
   return (
     <Form
@@ -50,6 +47,9 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
     >
+      {actionData?.errors && (
+        <Alert severity={'error'}>{JSON.stringify(actionData?.errors)}</Alert>
+      )}
       <ValidationErrorSnackbar />
       <FormGenerator
         formSchema={formSchema}

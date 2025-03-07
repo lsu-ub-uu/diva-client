@@ -26,11 +26,10 @@ import {
 import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
@@ -47,6 +46,7 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
+import { parseFormData } from '@/utils/parseFormData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -117,23 +117,36 @@ export const action = async ({
     validationType,
     'update',
   );
-  const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
+  const schema = generateYupSchemaFromFormSchema(formDefinition);
+  const resolver = yupResolver(schema);
+  /*  const parsedFormData = await parseFormData(formData, true);
+  try {
+    await schema.validate(parsedFormData);
+  } catch (error) {
+    console.error(error);
+  }*/
+  /*
   const {
     errors,
     data: validatedFormData,
     receivedValues: defaultValues,
-  } = await getValidatedFormData(formData, resolver);
+  } = await getValidatedFormData(formData, resolver, true);
+*/
+  /*
 
   if (errors) {
     return { errors, defaultValues };
   }
+*/
+
+  const parsedFormData = parseFormData(formData);
 
   try {
     await updateRecord(
       await context.dependencies,
       validationType,
       recordId,
-      validatedFormData as unknown as BFFDataRecord,
+      parsedFormData as BFFDataRecordData,
       auth,
     );
     session.flash('notification', {

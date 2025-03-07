@@ -20,6 +20,7 @@ import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
 import type {
+  FormComponentMetadata,
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
@@ -42,6 +43,7 @@ interface AttributeSelectProps {
   disabled?: boolean;
   displayMode: FormComponentMode;
   finalValue: string | undefined;
+  attributesToShow: FormComponentMetadata['attributesToShow'];
 }
 
 export const AttributeSelect = ({
@@ -54,29 +56,53 @@ export const AttributeSelect = ({
   placeholder,
   displayMode,
   finalValue,
+  attributesToShow = 'all',
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
   const { data, errors } = use(FormGeneratorContext);
   const errorMessage = errors[name];
   const defaultValue = get(data, name) as string | undefined;
-  const value = finalValue ?? defaultValue;
-  const showAsOutput = finalValue || displayMode === 'output';
 
-  if (displayMode === 'output' && !value) {
-    return null;
+  if (finalValue) {
+    return (
+      <>
+        {attributesToShow === 'all' && (
+          <OutputField
+            className={styles['attribute-select']}
+            variant='inline'
+            label={t(label)}
+            value={findOptionLabelByValue(options, finalValue)}
+            path={name}
+          />
+        )}
+        <input type='hidden' name={name} value={finalValue} />
+      </>
+    );
   }
 
-  if (showAsOutput && value) {
+  if (attributesToShow === 'none') {
+    if (!defaultValue) {
+      return null;
+    }
+
+    return <input type='hidden' name={name} value={defaultValue} />;
+  }
+
+  if (displayMode === 'output') {
+    if (!defaultValue) {
+      return null;
+    }
+
     return (
       <>
         <OutputField
           className={styles['attribute-select']}
           variant='inline'
           label={t(label)}
-          value={findOptionLabelByValue(options, value)}
+          value={findOptionLabelByValue(options, defaultValue)}
           path={name}
         />
-        {value && <input type='hidden' name={name} value={value} />}
+        <input type='hidden' name={name} value={defaultValue} />
       </>
     );
   }
