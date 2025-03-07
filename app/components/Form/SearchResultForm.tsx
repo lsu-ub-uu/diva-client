@@ -31,30 +31,34 @@ interface SearchResultFormProps {
   formSchema: FormSchema;
 }
 
-export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
+export const SearchResultForm = ({
+  formSchema,
+  record,
+}: SearchResultFormProps) => {
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
+      formSchema,
+      record?.data as RecordData,
     ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
   return (
     <FormProvider {...methods}>
       <FormGenerator
-        formSchema={props.formSchema}
+        formSchema={formSchema}
         boxGroups={false}
         showTooltips={false}
         enhancedFields={{
           'output.titleInfo.title.value': {
             type: 'link',
-            to: `/${props.record?.recordType}/${props.record?.id}`,
+            to: `/${record?.recordType}/${record?.id}`,
           },
         }}
+        data={record?.data}
       />
     </FormProvider>
   );

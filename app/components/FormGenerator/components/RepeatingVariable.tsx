@@ -17,14 +17,10 @@
  */
 
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { useRemixFormContext } from 'remix-hook-form';
-import { get } from 'lodash-es';
+import { type ReactNode } from 'react';
 
 interface RepeatingVariableProps {
   component: FormComponentWithData;
@@ -37,14 +33,6 @@ export const RepeatingVariable = ({
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
-  const { linkedData, data } = use(FormGeneratorContext);
-
-  const hasValue = get(data, currentComponentNamePath) !== undefined;
-
-  if (!hasValue && linkedData) {
-    return null;
-  }
-
   return (
     <FieldArrayComponent
       component={component}
@@ -56,7 +44,6 @@ export const RepeatingVariable = ({
         return (
           <LeafComponent
             component={component}
-            reactKey={variableArrayPath}
             name={`${variableArrayPath}.value`}
             parentPresentationStyle={parentPresentationStyle}
             attributes={

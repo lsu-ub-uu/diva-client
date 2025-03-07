@@ -42,12 +42,10 @@ export const RecordLink = ({
   const { data } = use(FormGeneratorContext);
   const value = get(data, name);
 
-  const { linkedData } = use(FormGeneratorContext);
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
-    !value &&
-    !linkedData
+    !value
   ) {
     return (
       <RecordLinkWithSearch

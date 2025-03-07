@@ -32,7 +32,6 @@ interface FormGeneratorProps {
   formSchema: FormSchema;
   data?: BFFDataRecordData;
   errors?: Record<string, string>;
-  linkedData?: BFFDataRecord['data'];
   boxGroups?: boolean;
   showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
@@ -41,7 +40,6 @@ interface FormGeneratorProps {
 export const FormGenerator = ({
   data,
   errors = {},
-  linkedData,
   boxGroups = false,
   showTooltips = true,
   enhancedFields,
@@ -51,7 +49,6 @@ export const FormGenerator = ({
 
   const formContextValues = useMemo(
     () => ({
-      linkedData,
       data,
       errors,
       boxGroups,
@@ -59,14 +56,14 @@ export const FormGenerator = ({
       showTooltips,
       enhancedFields,
     }),
-    [linkedData, boxGroups, showDevInfo, showTooltips, enhancedFields],
+    [data, errors, boxGroups, showDevInfo, showTooltips, enhancedFields],
   );
 
   return (
     <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext value={formContextValues}>
-        <Component component={props.formSchema.form} idx={0} path={''} />
+        <Component component={props.formSchema.form} path={''} />
       </FormGeneratorContext>
     </div>
   );
