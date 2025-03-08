@@ -29,13 +29,15 @@ import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Alert } from '@/components/Alert/Alert';
+import { memo, useRef, useState } from 'react';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
   formSchema: RecordFormSchema;
+  onChange?: (formData: FormData) => void;
 }
 
-export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
+const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
@@ -46,6 +48,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       method='POST'
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
+      onChange={(e) => onChange?.(new FormData(e.currentTarget))}
     >
       {actionData?.errors && (
         <Alert severity={'error'}>{JSON.stringify(actionData?.errors)}</Alert>
@@ -72,3 +75,6 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     </Form>
   );
 };
+
+const MemoizedForm = memo(RecordForm);
+export { MemoizedForm as RecordForm };

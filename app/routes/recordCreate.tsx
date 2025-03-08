@@ -43,6 +43,9 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { useState } from 'react';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { parseFormData } from '@/utils/parseFormData';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -59,10 +62,16 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     'create',
   );
 
+  const previewFormDefinition = await getFormDefinitionByValidationTypeId(
+    await context.dependencies,
+    validationTypeId,
+    'view',
+  );
+
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
   return data(
-    { formDefinition, notification, title, breadcrumb },
+    { formDefinition, previewFormDefinition, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
   );
 };
@@ -81,6 +90,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     validationTypeId,
     'create',
   );
+
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
   const resolver = yupResolver(yupSchema);
   const {
@@ -122,7 +132,10 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { formDefinition, notification } = loaderData;
+  const { formDefinition, notification, previewFormDefinition } = loaderData;
+  const [previewData, setPreviewData] = useState<FormData | undefined>(
+    undefined,
+  );
 
   return (
     <SidebarLayout
@@ -143,7 +156,17 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <RecordForm formSchema={formDefinition} />
+        <div className={styles['form-wrapper']}>
+          <RecordForm formSchema={formDefinition} onChange={setPreviewData} />
+
+          <div className={styles['preview']}>
+            <h2>Förhandsgransking</h2>
+            <ReadOnlyForm
+              formSchema={previewFormDefinition}
+              data={previewData && parseFormData(previewData)}
+            />
+          </div>
+        </div>
       </div>
     </SidebarLayout>
   );

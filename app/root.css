@@ -107,7 +107,7 @@
 
 @layer components {
   .container {
-    max-width: 1536px;
+    max-width: 3000px;
     margin: 0 auto;
     padding: 0 var(--gap-l);
   }
