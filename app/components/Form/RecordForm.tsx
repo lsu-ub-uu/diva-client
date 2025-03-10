@@ -29,7 +29,7 @@ import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Alert } from '@/components/Alert/Alert';
-import { memo, useRef, useState } from 'react';
+import { memo, useCallback, useRef } from 'react';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -42,13 +42,19 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
   const actionData = useActionData();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const onFormChange = useCallback(() => {
+    onChange?.(new FormData(formRef.current!));
+  }, [formRef, onChange]);
 
   return (
     <Form
       method='POST'
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
-      onChange={(e) => onChange?.(new FormData(e.currentTarget))}
+      onChange={onFormChange}
+      ref={formRef}
     >
       {actionData?.errors && (
         <Alert severity={'error'}>{JSON.stringify(actionData?.errors)}</Alert>
@@ -62,6 +68,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
           'output.admin': { type: 'group', alert: true },
           'output.admin.reviewed.value': { type: 'checkbox' },
         }}
+        onFormChange={onFormChange}
       />
 
       <FloatingActionButtonContainer>

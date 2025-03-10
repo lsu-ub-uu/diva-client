@@ -17,12 +17,12 @@
  */
 const ARRAY_KEY_REGEX = /\[(\d*)\]$/;
 
-export const parseFormData = (formData: FormData) => {
+export const parseFormEntries = (
+  entries: [key: string, value: string][],
+): any => {
   const result: Record<string, any> = {};
 
-  formData.entries().forEach((entry) => {
-    const key = entry[0];
-    const value = entry[1] as string;
+  entries.forEach(([key, value]) => {
     const keyParts = key.split('.');
 
     let parent: Record<string, any> = result;
@@ -55,6 +55,21 @@ export const parseFormData = (formData: FormData) => {
       }
     });
   });
+  console.log({ entries: entries.filter(([, val]) => val !== ''), result });
 
   return result;
+};
+
+export const parseFormData = (formData: FormData) => {
+  return parseFormEntries(
+    Array.from(formData.entries()).filter(
+      (entry): entry is [string, string] => typeof entry[1] === 'string',
+    ),
+  );
+};
+
+export const parseFormDataFromSearchParams = (
+  urlSearchParams: URLSearchParams,
+) => {
+  return parseFormEntries(Array.from(urlSearchParams.entries()));
 };

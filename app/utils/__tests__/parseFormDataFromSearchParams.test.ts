@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormData';
 
 describe('parseFormDaraFormSearchParam', () => {
   it('handles a single nested param', () => {

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createContext } from 'react';
+import { createContext, type RefObject } from 'react';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 
 export interface EnhancedFieldsHiddenConfig {
@@ -51,6 +51,7 @@ export interface FormGeneratorContextType {
   boxGroups: boolean;
   showTooltips: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
+  onFormChange?: () => void;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({

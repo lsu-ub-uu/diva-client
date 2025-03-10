@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Fragment, type ReactNode, useState } from 'react';
+import { Fragment, type ReactNode, use, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { addAttributesToName } from '../defaultValues/defaultValues';
@@ -26,6 +26,8 @@ import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { get } from 'lodash-es';
 
 interface FieldArrayComponentProps {
   name: string;
@@ -38,13 +40,20 @@ export const FieldArrayComponent = ({
   component,
   renderCallback,
 }: FieldArrayComponentProps) => {
-  const minToShow = component.repeat?.minNumberOfRepeatingToShow;
+  const { t } = useTranslation();
+  const { data, onFormChange } = use(FormGeneratorContext);
+  const defaultValue = get(data, name);
+  const minToShow =
+    defaultValue?.length ?? component.repeat?.minNumberOfRepeatingToShow;
   const [fields, setFields] = useState<string[]>(
     minToShow
       ? Array.from({ length: minToShow }, () => crypto.randomUUID())
       : [],
   );
-  const { t } = useTranslation();
+
+  useEffect(() => {
+    onFormChange?.();
+  }, [onFormChange, fields]);
 
   const append = () => {
     const id = crypto.randomUUID();
@@ -87,7 +96,6 @@ export const FieldArrayComponent = ({
           </Fragment>
         );
       })}
-
       {component.mode === 'input' &&
         component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (

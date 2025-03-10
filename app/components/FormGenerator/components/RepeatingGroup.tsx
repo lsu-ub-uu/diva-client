@@ -18,8 +18,10 @@
 
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
-import { useRemixFormContext } from 'remix-hook-form';
 import { Group } from '@/components/FormGenerator/components/Group';
+import { Fragment, use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { get } from 'lodash-es';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -32,20 +34,40 @@ export const RepeatingGroup = ({
   component,
   parentPresentationStyle,
 }: RepeatingGroupProps) => {
+  const { data } = use(FormGeneratorContext);
+  const defaultValue = get(data, currentComponentNamePath);
+
+  if (
+    component.mode === 'output' &&
+    defaultValue !== undefined &&
+    Array.isArray(defaultValue)
+  ) {
+    return defaultValue.map((_field, index) => (
+      <Group
+        key={index}
+        currentComponentNamePath={`${currentComponentNamePath}[${index}]`}
+        component={component}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    ));
+  }
+
   return (
-    <FieldArrayComponent
-      component={component}
-      name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
-        return (
-          <Group
-            currentComponentNamePath={arrayPath}
-            component={component}
-            parentPresentationStyle={parentPresentationStyle}
-            actionButtonGroup={actionButtonGroup}
-          />
-        );
-      }}
-    />
+    <>
+      <FieldArrayComponent
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(arrayPath, actionButtonGroup) => {
+          return (
+            <Group
+              currentComponentNamePath={arrayPath}
+              component={component}
+              parentPresentationStyle={parentPresentationStyle}
+              actionButtonGroup={actionButtonGroup}
+            />
+          );
+        }}
+      />
+    </>
   );
 };

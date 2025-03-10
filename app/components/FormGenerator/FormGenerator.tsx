@@ -23,7 +23,7 @@ import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
-import { useMemo, useState } from 'react';
+import { type RefObject, useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import styles from './FormGenerator.module.css';
@@ -35,6 +35,7 @@ interface FormGeneratorProps {
   boxGroups?: boolean;
   showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
+  onFormChange?: () => void;
 }
 
 export const FormGenerator = ({
@@ -43,6 +44,7 @@ export const FormGenerator = ({
   boxGroups = false,
   showTooltips = true,
   enhancedFields,
+  onFormChange,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
@@ -55,8 +57,17 @@ export const FormGenerator = ({
       showDevInfo,
       showTooltips,
       enhancedFields,
+      onFormChange,
     }),
-    [data, errors, boxGroups, showDevInfo, showTooltips, enhancedFields],
+    [
+      data,
+      errors,
+      boxGroups,
+      showDevInfo,
+      showTooltips,
+      enhancedFields,
+      onFormChange,
+    ],
   );
 
   return (

@@ -30,7 +30,4 @@
 }
 
 .preview article {
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
 }

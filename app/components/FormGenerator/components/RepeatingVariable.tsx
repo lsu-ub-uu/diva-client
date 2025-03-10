@@ -20,7 +20,10 @@ import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { type ReactNode } from 'react';
+import { type ReactNode, use } from 'react';
+import { Group } from '@/components/FormGenerator/components/Group';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { get } from 'lodash-es';
 
 interface RepeatingVariableProps {
   component: FormComponentWithData;
@@ -33,6 +36,30 @@ export const RepeatingVariable = ({
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
+  const { data } = use(FormGeneratorContext);
+  const defaultValue = get(data, currentComponentNamePath);
+
+  if (
+    component.mode === 'output' &&
+    defaultValue !== undefined &&
+    Array.isArray(defaultValue)
+  ) {
+    return defaultValue.map((_field, index) => {
+      const variableArrayPath = `${currentComponentNamePath}[${index}]`;
+      return (
+        <LeafComponent
+          key={index}
+          name={`${variableArrayPath}.value`}
+          component={component}
+          parentPresentationStyle={parentPresentationStyle}
+          attributes={
+            <Attributes component={component} path={variableArrayPath} />
+          }
+        />
+      );
+    });
+  }
+
   return (
     <FieldArrayComponent
       component={component}

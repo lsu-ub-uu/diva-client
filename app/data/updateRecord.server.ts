@@ -58,9 +58,8 @@ export const updateRecord = async (
       recordType,
       auth.data.token,
     );
+    return transformRecord(dependencies, response.data);
   } catch (error) {
     console.error(error);
   }
-
-  return transformRecord(dependencies, response.data);
 };
