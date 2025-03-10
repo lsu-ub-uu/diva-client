@@ -28,7 +28,6 @@ interface AttributesProps {
 
 export const Attributes = ({ component, path }: AttributesProps) => {
   const { showTooltips } = use(FormGeneratorContext);
-
   return component.attributes?.map((attribute, index) => {
     return (
       <AttributeSelect
@@ -45,19 +44,4 @@ export const Attributes = ({ component, path }: AttributesProps) => {
       />
     );
   });
-};
-
-const getAttributesToShow = (component: FormComponentWithData) => {
-  if (component.attributesToShow === 'selectable') {
-    return (component.attributes ?? []).filter(
-      (attribute) => attribute.finalValue === undefined,
-    );
-  }
-
-  if (component.attributesToShow === 'none') {
-    return [];
-  }
-
-  // attributesToShow === 'all'
-  return component.attributes ?? [];
 };

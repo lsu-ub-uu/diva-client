@@ -24,6 +24,8 @@ import { type ReactNode, use } from 'react';
 import { Group } from '@/components/FormGenerator/components/Group';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { get } from 'lodash-es';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingVariableProps {
   component: FormComponentWithData;
@@ -36,8 +38,7 @@ export const RepeatingVariable = ({
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
-  const { data } = use(FormGeneratorContext);
-  const defaultValue = get(data, currentComponentNamePath);
+  const defaultValue = useValueFromData(currentComponentNamePath);
 
   if (
     component.mode === 'output' &&

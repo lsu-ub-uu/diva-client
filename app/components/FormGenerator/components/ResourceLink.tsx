@@ -29,6 +29,7 @@ import type { loader } from '@/root';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { use } from 'react';
 import { get } from 'lodash-es';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -36,10 +37,9 @@ interface ResourceLinkProps {
 }
 
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
-  const { data } = use(FormGeneratorContext);
   const { t } = useTranslation();
   const rootLoaderData = useRouteLoaderData<typeof loader>('/hej');
-  const value = get(data, path) as ResourceLinkType | undefined;
+  const value: ResourceLinkType | undefined = useValueFromData(path);
   const authToken = rootLoaderData?.auth?.data.token;
 
   if (!value) {

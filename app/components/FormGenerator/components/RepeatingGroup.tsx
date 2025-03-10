@@ -19,9 +19,7 @@
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { Group } from '@/components/FormGenerator/components/Group';
-import { Fragment, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { get } from 'lodash-es';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -34,8 +32,7 @@ export const RepeatingGroup = ({
   component,
   parentPresentationStyle,
 }: RepeatingGroupProps) => {
-  const { data } = use(FormGeneratorContext);
-  const defaultValue = get(data, currentComponentNamePath);
+  const defaultValue = useValueFromData(currentComponentNamePath);
 
   if (
     component.mode === 'output' &&

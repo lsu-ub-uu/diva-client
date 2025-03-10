@@ -41,6 +41,7 @@ import type {
 import {
   findOptionLabelByValue,
   isComponentCollVar,
+  useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
@@ -69,8 +70,8 @@ export const Variable = ({
   actionButtonGroup,
 }: VariableProps) => {
   const { t } = useTranslation();
-  const { data, errors, showTooltips } = use(FormGeneratorContext);
-  const value = get(data, path) as string | undefined;
+  const { errors, showTooltips } = use(FormGeneratorContext);
+  const value = useValueFromData(path);
   const errorMessage = errors[path];
 
   if (component.mode === 'output' && !value) {

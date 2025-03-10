@@ -35,6 +35,7 @@ import {
 } from '@/components/Input/Combobox';
 import { get } from 'lodash-es';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -50,10 +51,8 @@ export const RecordLinkWithSearch = ({
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { t } = useTranslation();
-  const { data, showTooltips, errors } = use(FormGeneratorContext);
-  const defaultValue: string | undefined = get(data, path) as
-    | string
-    | undefined;
+  const { showTooltips, errors } = use(FormGeneratorContext);
+  const defaultValue: string | undefined = useValueFromData(path);
   const [value, setValue] = useState(defaultValue);
   const errorMessage = errors[path];
   const fetcher = useFetcher();

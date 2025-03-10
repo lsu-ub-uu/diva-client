@@ -21,7 +21,10 @@ import { Fragment, type ReactNode, use, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { addAttributesToName } from '../defaultValues/defaultValues';
-import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  isComponentSingularAndOptional,
+  useValueFromData,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
@@ -41,8 +44,8 @@ export const FieldArrayComponent = ({
   renderCallback,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
-  const { data, onFormChange } = use(FormGeneratorContext);
-  const defaultValue = get(data, name);
+  const { onFormChange } = use(FormGeneratorContext);
+  const defaultValue = useValueFromData(name);
   const minToShow =
     defaultValue?.length ?? component.repeat?.minNumberOfRepeatingToShow;
   const [fields, setFields] = useState<string[]>(

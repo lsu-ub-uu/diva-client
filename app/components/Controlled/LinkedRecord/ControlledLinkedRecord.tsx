@@ -19,25 +19,25 @@ import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { get } from 'lodash-es';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 interface ControlledLinkedRecordProps {
   recordType: string;
   name: string;
   presentationRecordLinkId: string;
 }
 export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
-  const { data } = use(FormGeneratorContext);
-  const value = get(data, props.name) as string | undefined;
+  const defaultValue = useValueFromData(props.name);
 
-  if (!value) {
+  if (!defaultValue) {
     return null;
   }
 
   return (
     <>
-      <input type='hidden' value={value} name={props.name} />
+      <input type='hidden' value={defaultValue} name={props.name} />
       <LinkedRecord
         recordType={props.recordType}
-        id={value}
+        id={defaultValue}
         presentationRecordLinkId={props.presentationRecordLinkId}
       />
     </>

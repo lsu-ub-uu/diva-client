@@ -44,6 +44,8 @@ import {
 import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
 import type { Option } from '@/components';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { use } from 'react';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -314,4 +316,9 @@ export const findOptionLabelByValue = (
   if (array === undefined) return 'Failed to translate';
   const option = array.find((opt) => opt.value === value);
   return option?.label ?? 'Failed to translate';
+};
+
+export const useValueFromData = (path: string) => {
+  const { data } = use(FormGeneratorContext);
+  return get(data, path);
 };

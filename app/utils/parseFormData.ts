@@ -40,9 +40,9 @@ export const parseFormEntries = (
         }
 
         if (isLeaf) {
-          parent[strippedKey][arrayIndex] = value;
+          parent[strippedKey][arrayIndex] ??= value;
         } else {
-          parent[strippedKey][arrayIndex] = {};
+          parent[strippedKey][arrayIndex] ??= {};
           parent = parent[strippedKey][arrayIndex];
         }
       } else {
@@ -55,7 +55,6 @@ export const parseFormEntries = (
       }
     });
   });
-  console.log({ entries: entries.filter(([, val]) => val !== ''), result });
 
   return result;
 };

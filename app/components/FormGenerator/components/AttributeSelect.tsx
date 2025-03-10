@@ -26,7 +26,10 @@ import type {
 } from '@/components/FormGenerator/types';
 import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
-import { findOptionLabelByValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  findOptionLabelByValue,
+  useValueFromData,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { use } from 'react';
@@ -59,9 +62,9 @@ export const AttributeSelect = ({
   attributesToShow = 'all',
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const { data, errors } = use(FormGeneratorContext);
+  const { errors } = use(FormGeneratorContext);
   const errorMessage = errors[name];
-  const defaultValue = get(data, name) as string | undefined;
+  const defaultValue = useValueFromData(name);
 
   if (finalValue) {
     return (

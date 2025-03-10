@@ -26,6 +26,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { useTranslation } from 'react-i18next';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { get } from 'lodash-es';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -41,12 +42,11 @@ export const RecordLinkWithLinkedPresentation = ({
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { t } = useTranslation();
-  const { data } = use(FormGeneratorContext);
-  const hasValue = get(data, name) !== undefined;
+  const defaultValue = useValueFromData(name);
 
   return (
     <>
-      {hasValue ? (
+      {defaultValue !== undefined ? (
         <div
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}

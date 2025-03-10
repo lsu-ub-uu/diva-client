@@ -22,7 +22,7 @@ import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { Variable } from '@/components/FormGenerator/components/Variable';
-import { get } from 'lodash-es';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -39,8 +39,7 @@ export const RecordLink = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
-  const { data } = use(FormGeneratorContext);
-  const value = get(data, name);
+  const value = useValueFromData(name);
 
   if (
     checkIfComponentContainsSearchId(component) &&
