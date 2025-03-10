@@ -55,7 +55,6 @@ export const parseFormEntries = (
       }
     });
   });
-
   return result;
 };
 

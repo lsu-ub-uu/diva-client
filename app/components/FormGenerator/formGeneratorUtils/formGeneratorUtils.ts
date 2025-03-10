@@ -46,6 +46,7 @@ import { get } from 'lodash-es';
 import type { Option } from '@/components';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { use } from 'react';
+import type { Metadata } from '@/types/record';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -318,7 +319,7 @@ export const findOptionLabelByValue = (
   return option?.label ?? 'Failed to translate';
 };
 
-export const useValueFromData = (path: string) => {
+export const useValueFromData = <T = Metadata>(path: string): T | undefined => {
   const { data } = use(FormGeneratorContext);
-  return get(data, path);
+  return get(data, path) as T | undefined;
 };

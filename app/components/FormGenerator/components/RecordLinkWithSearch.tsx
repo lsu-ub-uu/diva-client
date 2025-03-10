@@ -18,7 +18,7 @@
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { type ReactNode, use, useState } from 'react';
+import { type ReactNode, use, useEffect, useState } from 'react';
 
 import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
@@ -33,7 +33,6 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
-import { get } from 'lodash-es';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
@@ -51,11 +50,15 @@ export const RecordLinkWithSearch = ({
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { t } = useTranslation();
-  const { showTooltips, errors } = use(FormGeneratorContext);
-  const defaultValue: string | undefined = useValueFromData(path);
+  const { showTooltips, errors, onFormChange } = use(FormGeneratorContext);
+  const defaultValue = useValueFromData<string>(path);
   const [value, setValue] = useState(defaultValue);
   const errorMessage = errors[path];
   const fetcher = useFetcher();
+
+  useEffect(() => {
+    onFormChange?.();
+  }, [value, onFormChange]);
 
   return (
     <div

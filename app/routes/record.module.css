@@ -25,9 +25,14 @@
 
 .form-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: var(--gap-l);
 }
 
 .preview article {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-bottom: var(--gap-xl);
 }

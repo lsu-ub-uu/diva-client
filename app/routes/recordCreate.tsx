@@ -160,7 +160,6 @@ export default function CreateRecordRoute({
           <RecordForm formSchema={formDefinition} onChange={setPreviewData} />
 
           <div className={styles['preview']}>
-            <h2>Förhandsgransking</h2>
             <ReadOnlyForm
               formSchema={previewFormDefinition}
               data={previewData && parseFormData(previewData)}

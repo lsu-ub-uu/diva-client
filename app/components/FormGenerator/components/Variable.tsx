@@ -71,7 +71,7 @@ export const Variable = ({
 }: VariableProps) => {
   const { t } = useTranslation();
   const { errors, showTooltips } = use(FormGeneratorContext);
-  const value = useValueFromData(path);
+  const value: string | undefined = useValueFromData(path);
   const errorMessage = errors[path];
 
   if (component.mode === 'output' && !value) {

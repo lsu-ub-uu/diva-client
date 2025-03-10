@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { get } from 'lodash-es';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -42,35 +43,35 @@ export const RecordLinkWithLinkedPresentation = ({
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { t } = useTranslation();
-  const defaultValue = useValueFromData(name);
+  const defaultValue = useValueFromData(name) as string | undefined;
+
+  if (!defaultValue) {
+    return null;
+  }
 
   return (
-    <>
-      {defaultValue !== undefined ? (
-        <div
-          className={styles['component']}
-          data-colspan={component.gridColSpan ?? 12}
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <DevInfo component={component} path={name} />
-
-          <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
-            {component.showLabel && (
-              <div className={linkedRecordStyles['label']}>
-                {t(component.label)}
-              </div>
-            )}
-            <div className={linkedRecordStyles['container']}>
-              {attributes} {actionButtonGroup}
-            </div>
+    <div
+      className={styles['component']}
+      data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
+    >
+      <DevInfo component={component} path={name} />
+      <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+        {component.showLabel && (
+          <div className={linkedRecordStyles['label']}>
+            {t(component.label)}
           </div>
-          <ControlledLinkedRecord
-            name={name}
-            recordType={component.recordLinkType ?? ''}
-            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-          />
+        )}
+        <div className={linkedRecordStyles['container']}>
+          {attributes} {actionButtonGroup}
         </div>
-      ) : null}
-    </>
+      </div>
+      <input type='hidden' value={defaultValue} name={name} />
+      <LinkedRecord
+        id={defaultValue}
+        recordType={component.recordLinkType ?? ''}
+        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+      />
+    </div>
   );
 };
