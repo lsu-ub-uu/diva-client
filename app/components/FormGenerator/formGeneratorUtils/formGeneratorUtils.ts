@@ -45,8 +45,9 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
 import type { Option } from '@/components';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { use } from 'react';
+import { use, useCallback, useState } from 'react';
 import type { Metadata } from '@/types/record';
+import { reach, ValidationError } from 'yup';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -322,4 +323,32 @@ export const findOptionLabelByValue = (
 export const useValueFromData = <T = Metadata>(path: string): T | undefined => {
   const { data } = use(FormGeneratorContext);
   return get(data, path) as T | undefined;
+};
+
+export const useFieldValidationError = (path: string) => {
+  const { errors, yupSchema } = use(FormGeneratorContext);
+
+  const contextError = errors[path];
+  const [localError, setLocalError] = useState<string | undefined | null>();
+
+  const errorMessage = localError !== undefined ? localError : contextError;
+  const validationRule = yupSchema && reach(yupSchema, path);
+
+  const onRevalidate = useCallback(
+    async (value: string) => {
+      if (validationRule && 'validate' in validationRule) {
+        try {
+          await validationRule.validate(value);
+          setLocalError(null);
+        } catch (e) {
+          if (e instanceof ValidationError) {
+            setLocalError(e.message);
+          }
+        }
+      }
+    },
+    [validationRule],
+  );
+
+  return { errorMessage, onRevalidate };
 };

@@ -30,6 +30,8 @@ import { FloatingActionButtonContainer } from '@/components/FloatingActionButton
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Alert } from '@/components/Alert/Alert';
 import { memo, useCallback, useRef } from 'react';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { merge } from 'lodash-es';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -44,9 +46,15 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
   const actionData = useActionData();
   const formRef = useRef<HTMLFormElement>(null);
 
+  const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
   const onFormChange = useCallback(() => {
     onChange?.(new FormData(formRef.current!));
   }, [formRef, onChange]);
+
+  const data = actionData?.defaultValues
+    ? merge(record?.data ?? {}, actionData.defaultValues)
+    : record?.data;
 
   return (
     <Form
@@ -62,7 +70,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
       <ValidationErrorSnackbar />
       <FormGenerator
         formSchema={formSchema}
-        data={record?.data}
+        data={data}
         boxGroups
         enhancedFields={{
           'output.admin': { type: 'group', alert: true },
@@ -70,6 +78,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
         }}
         onFormChange={onFormChange}
         errors={actionData?.errors}
+        yupSchema={yupSchema}
       />
 
       <FloatingActionButtonContainer>

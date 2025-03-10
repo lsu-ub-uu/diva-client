@@ -41,6 +41,7 @@ import type {
 import {
   findOptionLabelByValue,
   isComponentCollVar,
+  useFieldValidationError,
   useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { type ReactNode, use } from 'react';
@@ -52,7 +53,6 @@ import { Field } from '@/components/Input/Field';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { InputField } from '@/components/FormGenerator/components/InputField';
-import { get } from 'lodash-es';
 
 interface VariableProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -70,9 +70,9 @@ export const Variable = ({
   actionButtonGroup,
 }: VariableProps) => {
   const { t } = useTranslation();
-  const { errors, showTooltips } = use(FormGeneratorContext);
+  const { showTooltips } = use(FormGeneratorContext);
   const value: string | undefined = useValueFromData(path);
-  const errorMessage = errors[path];
+  const { errorMessage, onRevalidate } = useFieldValidationError(path);
 
   if (component.mode === 'output' && !value) {
     return null;
@@ -129,8 +129,9 @@ export const Variable = ({
           <InputField
             component={component}
             path={path}
-            errorMessage={errorMessage}
+            invalid={errorMessage != null}
             defaultValue={value}
+            onChange={onRevalidate}
           />
         </Field>
       )}

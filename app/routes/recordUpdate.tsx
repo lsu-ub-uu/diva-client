@@ -47,6 +47,7 @@ import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
 import { parseFormData } from '@/utils/parseFormData';
+import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -101,7 +102,6 @@ export const action = async ({
 
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
-  const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies: await context.dependencies,
@@ -110,43 +110,38 @@ export const action = async ({
     authToken: auth.data.token,
   });
 
-  invariant(validationType, 'Failed to get validation type from record');
-
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,
     validationType,
     'update',
   );
-  const schema = generateYupSchemaFromFormSchema(formDefinition);
-  const resolver = yupResolver(schema);
-  /*  const parsedFormData = await parseFormData(formData, true);
-  try {
-    await schema.validate(parsedFormData);
-  } catch (error) {
-    console.error(error);
-  }*/
-  /*
-  const {
-    errors,
-    data: validatedFormData,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(formData, resolver, true);
-*/
-  /*
+
+  const { parsedFormData, errors } = await parseAndValidateFormData(
+    formDefinition,
+    request,
+  );
 
   if (errors) {
-    return { errors, defaultValues };
-  }
-*/
+    session.flash('notification', {
+      severity: 'error',
+      summary: 'Valideringsfel',
+    });
 
-  const parsedFormData = parseFormData(formData);
+    return data(
+      {
+        errors,
+        defaultValues: parsedFormData,
+      },
+      await getResponseInitWithSession(session),
+    );
+  }
 
   try {
     await updateRecord(
       await context.dependencies,
       validationType,
       recordId,
-      parsedFormData as BFFDataRecordData,
+      parsedFormData,
       auth,
     );
     session.flash('notification', {

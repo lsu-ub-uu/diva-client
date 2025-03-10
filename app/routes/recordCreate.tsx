@@ -17,9 +17,7 @@
  */
 
 import { data } from 'react-router';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
 import {
@@ -47,6 +45,12 @@ import { useState } from 'react';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { parseFormData } from '@/utils/parseFormData';
 import { ValidationError } from 'yup';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type {
+  FormSchema,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
+import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -72,7 +76,13 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
   return data(
-    { formDefinition, previewFormDefinition, notification, title, breadcrumb },
+    {
+      formDefinition,
+      previewFormDefinition,
+      notification,
+      title,
+      breadcrumb,
+    },
     await getResponseInitWithSession(session),
   );
 };
@@ -92,15 +102,31 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     'create',
   );
 
-  const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
-  const parsedFormData = parseFormData(await request.formData());
+  const { parsedFormData, errors } = await parseAndValidateFormData(
+    formDefinition,
+    request,
+  );
+
+  if (errors) {
+    session.flash('notification', {
+      severity: 'error',
+      summary: 'Valideringsfel',
+    });
+
+    return data(
+      {
+        errors,
+        defaultValues: parsedFormData,
+      },
+      await getResponseInitWithSession(session),
+    );
+  }
+
   try {
-    await yupSchema.validate(parsedFormData, { abortEarly: false });
-    console.log('yay', parsedFormData);
     const { recordType, id } = await createRecord(
       await context.dependencies,
-      formDefinition,
-      parsedFormData as BFFDataRecordData,
+      validationTypeId,
+      parsedFormData,
       auth,
     );
     session.flash('notification', {
@@ -109,36 +135,11 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     });
     return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      session.flash('notification', {
-        severity: 'error',
-        summary: 'Valideringsfel',
-      });
-
-      return data(
-        {
-          errors: transformYupErrorsToMap(error),
-          defaultValues: parsedFormData,
-        },
-        await getResponseInitWithSession(session),
-      );
-    }
-
     console.error(error);
 
     session.flash('notification', createNotificationFromAxiosError(error));
     return data({}, await getResponseInitWithSession(session));
   }
-};
-
-const transformYupErrorsToMap = (error: ValidationError) => {
-  const errorMap: Record<string, string[]> = {};
-  error.inner.forEach((err) => {
-    if (err.path) {
-      errorMap[err.path] = err.errors;
-    }
-  });
-  return errorMap;
 };
 
 export const ErrorBoundary = RouteErrorBoundary;

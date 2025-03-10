@@ -27,6 +27,7 @@ import { type RefObject, useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import styles from './FormGenerator.module.css';
+import type { ObjectSchema } from 'yup';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -36,6 +37,7 @@ interface FormGeneratorProps {
   showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
   onFormChange?: () => void;
+  yupSchema?: ObjectSchema<Record<string, any>>;
 }
 
 export const FormGenerator = ({
@@ -45,6 +47,7 @@ export const FormGenerator = ({
   showTooltips = true,
   enhancedFields,
   onFormChange,
+  yupSchema,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
@@ -58,6 +61,7 @@ export const FormGenerator = ({
       showTooltips,
       enhancedFields,
       onFormChange,
+      yupSchema,
     }),
     [
       data,
@@ -67,6 +71,7 @@ export const FormGenerator = ({
       showTooltips,
       enhancedFields,
       onFormChange,
+      yupSchema,
     ],
   );
 

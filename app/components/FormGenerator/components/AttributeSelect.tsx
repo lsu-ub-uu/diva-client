@@ -28,13 +28,11 @@ import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import {
   findOptionLabelByValue,
+  useFieldValidationError,
   useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
-import { use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { get } from 'lodash-es';
 
 interface AttributeSelectProps {
   name: string;
@@ -62,9 +60,8 @@ export const AttributeSelect = ({
   attributesToShow = 'all',
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const { errors } = use(FormGeneratorContext);
-  const errorMessage = errors[name];
-  const defaultValue = useValueFromData(name);
+  const { errorMessage, onRevalidate } = useFieldValidationError(name);
+  const defaultValue = useValueFromData<string>(name);
 
   if (finalValue) {
     return (
@@ -123,7 +120,8 @@ export const AttributeSelect = ({
         name={name}
         defaultValue={defaultValue}
         disabled={disabled}
-        invalid={errorMessage !== undefined}
+        invalid={errorMessage != null}
+        onChange={(e) => onRevalidate(e.target.value)}
       >
         <option value=''>
           {t(placeholder ?? 'divaClient_optionNoneText')}
