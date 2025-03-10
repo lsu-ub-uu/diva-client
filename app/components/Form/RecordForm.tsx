@@ -69,6 +69,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
           'output.admin.reviewed.value': { type: 'checkbox' },
         }}
         onFormChange={onFormChange}
+        errors={actionData?.errors}
       />
 
       <FloatingActionButtonContainer>

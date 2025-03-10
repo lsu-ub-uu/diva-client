@@ -46,6 +46,7 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { useState } from 'react';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { parseFormData } from '@/utils/parseFormData';
+import { ValidationError } from 'yup';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -92,21 +93,14 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   );
 
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
-  const resolver = yupResolver(yupSchema);
-  const {
-    errors,
-    data: validatedFormData,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(request, resolver);
-  if (errors) {
-    return { errors, defaultValues };
-  }
-
+  const parsedFormData = parseFormData(await request.formData());
   try {
+    await yupSchema.validate(parsedFormData, { abortEarly: false });
+    console.log('yay', parsedFormData);
     const { recordType, id } = await createRecord(
       await context.dependencies,
       formDefinition,
-      validatedFormData as BFFDataRecordData,
+      parsedFormData as BFFDataRecordData,
       auth,
     );
     session.flash('notification', {
@@ -115,12 +109,36 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     });
     return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
+    if (error instanceof ValidationError) {
+      session.flash('notification', {
+        severity: 'error',
+        summary: 'Valideringsfel',
+      });
+
+      return data(
+        {
+          errors: transformYupErrorsToMap(error),
+          defaultValues: parsedFormData,
+        },
+        await getResponseInitWithSession(session),
+      );
+    }
+
     console.error(error);
 
     session.flash('notification', createNotificationFromAxiosError(error));
-
     return data({}, await getResponseInitWithSession(session));
   }
+};
+
+const transformYupErrorsToMap = (error: ValidationError) => {
+  const errorMap: Record<string, string[]> = {};
+  error.inner.forEach((err) => {
+    if (err.path) {
+      errorMap[err.path] = err.errors;
+    }
+  });
+  return errorMap;
 };
 
 export const ErrorBoundary = RouteErrorBoundary;
@@ -158,7 +176,6 @@ export default function CreateRecordRoute({
         )}
         <div className={styles['form-wrapper']}>
           <RecordForm formSchema={formDefinition} onChange={setPreviewData} />
-
           <div className={styles['preview']}>
             <ReadOnlyForm
               formSchema={previewFormDefinition}
