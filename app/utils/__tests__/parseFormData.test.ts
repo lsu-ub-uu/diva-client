@@ -17,6 +17,7 @@
  */
 
 import {
+  parseFormData,
   parseFormDataFromSearchParams,
   parseFormEntries,
 } from '@/utils/parseFormData';
@@ -144,6 +145,27 @@ describe('parseFormData', () => {
           },
         ],
       },
+    });
+  });
+  describe('parseFormData', () => {
+    it('parses formData', () => {
+      const formData = new FormData();
+      formData.append('output.name.value', 'Pelle');
+      formData.append('output.cats[0].name.value', 'Misse');
+      formData.append('output.cats[0].breed.value', 'Skogskatt');
+      formData.append('output.cats[1].name.value', 'Kisse');
+      formData.append('output.cats[1].breed.value', 'Siames');
+      expect(parseFormData(formData)).toStrictEqual({
+        output: {
+          name: {
+            value: 'Pelle',
+          },
+          cats: [
+            { name: { value: 'Misse' }, breed: { value: 'Skogskatt' } },
+            { name: { value: 'Kisse' }, breed: { value: 'Siames' } },
+          ],
+        },
+      });
     });
   });
 });
