@@ -25,42 +25,61 @@ import {
 } from '@/components/FormGenerator/FormGeneratorContext';
 import { useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecordData } from '@/types/record';
 import styles from './FormGenerator.module.css';
+import type { ObjectSchema } from 'yup';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
-  linkedData?: BFFDataRecord['data'];
+  data?: BFFDataRecordData;
+  errors?: Record<string, string[]>;
   boxGroups?: boolean;
   showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
+  onFormChange?: () => void;
+  yupSchema?: ObjectSchema<Record<string, any>>;
 }
 
 export const FormGenerator = ({
-  linkedData,
+  data,
+  errors = {},
   boxGroups = false,
   showTooltips = true,
   enhancedFields,
+  onFormChange,
+  yupSchema,
   ...props
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
 
   const formContextValues = useMemo(
     () => ({
-      linkedData,
+      data,
+      errors,
       boxGroups,
       showDevInfo,
       showTooltips,
       enhancedFields,
+      onFormChange,
+      yupSchema,
     }),
-    [linkedData, boxGroups, showDevInfo, showTooltips, enhancedFields],
+    [
+      data,
+      errors,
+      boxGroups,
+      showDevInfo,
+      showTooltips,
+      enhancedFields,
+      onFormChange,
+      yupSchema,
+    ],
   );
 
   return (
     <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext value={formContextValues}>
-        <Component component={props.formSchema.form} idx={0} path={''} />
+        <Component component={props.formSchema.form} path={''} />
       </FormGeneratorContext>
     </div>
   );

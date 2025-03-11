@@ -25,14 +25,12 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import styles from './FormComponent.module.css';
 
 interface SurroundingContainerProps {
-  reactKey: string;
   component: FormComponentContainer;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }
 
 export const SurroundingContainer = ({
-  reactKey,
   component,
   currentComponentNamePath,
   parentPresentationStyle,
@@ -40,10 +38,9 @@ export const SurroundingContainer = ({
   const inline = checkIfPresentationStyleIsInline(component);
 
   return (
-    <React.Fragment key={reactKey}>
+    <React.Fragment>
       <div
         id={`anchor_${addAttributesToName(component, component.name)}`}
-        key={reactKey}
         className={`${styles['component']} ${styles['container']} anchorLink`}
         data-colspan={component.gridColSpan ?? 12}
         data-layout={inline ? 'inline' : 'grid'}

@@ -25,14 +25,12 @@ import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from './FormComponent.module.css';
 
 interface TextProps {
-  reactKey: string;
   component: FormComponentText;
 }
 
-export const Text = ({ reactKey, component }: TextProps) => {
+export const Text = ({ component }: TextProps) => {
   return (
     <div
-      key={reactKey}
       className={styles['component']}
       data-colspan={component.gridColSpan}
       style={{

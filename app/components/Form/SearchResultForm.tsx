@@ -17,11 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { FormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
@@ -31,31 +26,22 @@ interface SearchResultFormProps {
   formSchema: FormSchema;
 }
 
-export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
-  const methods = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
-    ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
-  });
-
+export const SearchResultForm = ({
+  formSchema,
+  record,
+}: SearchResultFormProps) => {
   return (
-    <FormProvider {...methods}>
-      <FormGenerator
-        formSchema={props.formSchema}
-        boxGroups={false}
-        showTooltips={false}
-        enhancedFields={{
-          'output.titleInfo.title.value': {
-            type: 'link',
-            to: `/${props.record?.recordType}/${props.record?.id}`,
-          },
-        }}
-      />
-    </FormProvider>
+    <FormGenerator
+      formSchema={formSchema}
+      boxGroups={false}
+      showTooltips={false}
+      enhancedFields={{
+        'output.titleInfo.title.value': {
+          type: 'link',
+          to: `/${record?.recordType}/${record?.id}`,
+        },
+      }}
+      data={record?.data}
+    />
   );
 };

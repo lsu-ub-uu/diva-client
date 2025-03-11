@@ -17,43 +17,48 @@
  */
 
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { useRemixFormContext } from 'remix-hook-form';
+import { type ReactNode } from 'react';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingVariableProps {
-  reactKey: string;
   component: FormComponentWithData;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingVariable = ({
-  reactKey,
   component,
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
-  const { control, getValues } = useRemixFormContext();
-  const { linkedData } = use(FormGeneratorContext);
+  const defaultValue = useValueFromData(currentComponentNamePath);
 
-  const hasLinkedDataValue = checkIfSingularComponentHasValue(
-    getValues,
-    currentComponentNamePath,
-  );
-
-  if (!hasLinkedDataValue && linkedData) {
-    return null;
+  if (
+    component.mode === 'output' &&
+    defaultValue !== undefined &&
+    Array.isArray(defaultValue)
+  ) {
+    return defaultValue.map((_field, index) => {
+      const variableArrayPath = `${currentComponentNamePath}[${index}]`;
+      return (
+        <LeafComponent
+          key={index}
+          name={`${variableArrayPath}.value`}
+          component={component}
+          parentPresentationStyle={parentPresentationStyle}
+          attributes={
+            <Attributes component={component} path={variableArrayPath} />
+          }
+        />
+      );
+    });
   }
 
   return (
     <FieldArrayComponent
-      key={reactKey}
-      control={control}
       component={component}
       name={currentComponentNamePath}
       renderCallback={(
@@ -63,7 +68,6 @@ export const RepeatingVariable = ({
         return (
           <LeafComponent
             component={component}
-            reactKey={variableArrayPath}
             name={`${variableArrayPath}.value`}
             parentPresentationStyle={parentPresentationStyle}
             attributes={

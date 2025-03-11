@@ -18,15 +18,18 @@
 
 import { useEffect, useState } from 'react';
 import { isEmpty } from 'lodash-es';
-import { useFormState } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 
-export const ValidationErrorSnackbar = () => {
+interface ValidationErrorSnackbarProps {
+  errors: Record<string, string[]> | undefined;
+}
+
+export const ValidationErrorSnackbar = ({
+  errors,
+}: ValidationErrorSnackbarProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const { errors } = useFormState();
 
   useEffect(() => {
     if (!isEmpty(errors)) {

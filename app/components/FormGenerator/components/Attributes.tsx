@@ -27,10 +27,8 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const attributesToShow = getAttributesToShow(component);
   const { showTooltips } = use(FormGeneratorContext);
-
-  return attributesToShow.map((attribute, index) => {
+  return component.attributes?.map((attribute, index) => {
     return (
       <AttributeSelect
         key={`${attribute.name}_${index}`}
@@ -42,22 +40,8 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         tooltip={showTooltips ? attribute.tooltip : undefined}
         finalValue={attribute.finalValue}
         displayMode={attribute.mode}
+        attributesToShow={component.attributesToShow}
       />
     );
   });
-};
-
-const getAttributesToShow = (component: FormComponentWithData) => {
-  if (component.attributesToShow === 'selectable') {
-    return (component.attributes ?? []).filter(
-      (attribute) => attribute.finalValue === undefined,
-    );
-  }
-
-  if (component.attributesToShow === 'none') {
-    return [];
-  }
-
-  // attributesToShow === 'all'
-  return component.attributes ?? [];
 };

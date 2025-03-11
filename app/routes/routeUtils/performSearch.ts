@@ -18,7 +18,7 @@
 
 import type { AppLoadContext } from 'react-router';
 import type { Auth } from '@/auth/Auth';
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormData';
 import { isEmpty } from 'lodash-es';
 import { searchRecords } from '@/data/searchRecords.server';
 import { type ObjectSchema, ValidationError } from 'yup';

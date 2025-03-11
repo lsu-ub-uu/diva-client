@@ -18,39 +18,53 @@
 
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
-import { useRemixFormContext } from 'remix-hook-form';
 import { Group } from '@/components/FormGenerator/components/Group';
+import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
-  reactKey: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingGroup = ({
   currentComponentNamePath,
-  reactKey,
   component,
   parentPresentationStyle,
 }: RepeatingGroupProps) => {
-  const { control } = useRemixFormContext();
+  const defaultValue = useValueFromData(currentComponentNamePath);
+
+  if (
+    component.mode === 'output' &&
+    defaultValue !== undefined &&
+    Array.isArray(defaultValue)
+  ) {
+    return defaultValue.map((_field, index) => (
+      <Group
+        key={index}
+        currentComponentNamePath={`${currentComponentNamePath}[${index}]`}
+        component={component}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    ));
+  }
+
   return (
-    <FieldArrayComponent
-      key={reactKey}
-      control={control}
-      component={component}
-      name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
-        return (
-          <Group
-            currentComponentNamePath={arrayPath}
-            component={component}
-            parentPresentationStyle={parentPresentationStyle}
-            actionButtonGroup={actionButtonGroup}
-          />
-        );
-      }}
-    />
+    <>
+      <FieldArrayComponent
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(arrayPath, actionButtonGroup) => {
+          return (
+            <Group
+              currentComponentNamePath={arrayPath}
+              component={component}
+              parentPresentationStyle={parentPresentationStyle}
+              actionButtonGroup={actionButtonGroup}
+            />
+          );
+        }}
+      />
+    </>
   );
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,23 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
-import styles from './SidebarLayout.module.css';
-import clsx from 'clsx';
+export const scrollIntoView = (element: Element | null | undefined) => {
+  if (
+    typeof document === 'undefined' ||
+    !window.matchMedia ||
+    !element?.scrollIntoView
+  ) {
+    return;
+  }
 
-interface SidebarLayoutProps {
-  children?: ReactNode;
-  sidebarContent?: ReactNode;
-}
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches;
 
-export const SidebarLayout = ({
-  sidebarContent,
-  children,
-}: SidebarLayoutProps) => {
-  return (
-    <div className={clsx(styles['sidebar-layout'], 'container')}>
-      <aside>{sidebarContent}</aside>
-      <main>{children}</main>
-    </div>
-  );
+  element?.scrollIntoView({
+    behavior: prefersReducedMotion ? 'instant' : 'smooth',
+    block: 'center',
+  });
 };

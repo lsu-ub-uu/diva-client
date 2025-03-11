@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -44,6 +43,9 @@ import {
 import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
 import type { Option } from '@/components';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { use } from 'react';
+import type { Metadata } from '@/types/record';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -173,65 +175,6 @@ export const isComponentGroupAndOptional = (component: FormComponent) => {
   return rMin === 0;
 };
 
-export const checkIfComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentName: string,
-) => {
-  return (
-    getValues(componentName) !== '' && getValues(componentName) !== undefined
-  );
-};
-
-export const checkIfSingularComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-): boolean => {
-  if (isGVUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  if (hasGVArrayLength(getValues, componentValue)) {
-    return false;
-  }
-
-  if (isGVValueUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  return isGVValueEmptyString(getValues, componentValue);
-};
-
-const isGVUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue) === undefined;
-};
-
-const hasGVArrayLength = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return (
-    getValues(componentValue).length === undefined ||
-    getValues(componentValue).length === 0
-  );
-};
-
-const isGVValueUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value === undefined;
-};
-
-const isGVValueEmptyString = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value !== '';
-};
-
 export const checkForExistingSiblings = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
@@ -296,17 +239,6 @@ export const getChildrenWithSameNameInDataFromSchema = (
   );
 };
 
-export const getErrorMessageForField = (
-  formState: FormState<FieldValues>,
-  name: string,
-) => {
-  const error = get(formState.errors, name);
-  if (error?.message) {
-    return error.message as string;
-  }
-  return undefined;
-};
-
 export const findOptionLabelByValue = (
   array: Option[] | undefined,
   value: string,
@@ -314,4 +246,9 @@ export const findOptionLabelByValue = (
   if (array === undefined) return 'Failed to translate';
   const option = array.find((opt) => opt.value === value);
   return option?.label ?? 'Failed to translate';
+};
+
+export const useValueFromData = <T = Metadata>(path: string): T | undefined => {
+  const { data } = use(FormGeneratorContext);
+  return get(data, path) as T | undefined;
 };

@@ -43,19 +43,16 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
-  idx: number;
   path: string;
   parentPresentationStyle?: string;
 }
 
 export const Component = ({
   component,
-  idx,
   path,
   parentPresentationStyle,
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
-  const reactKey = `key_${idx}`;
 
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
@@ -65,7 +62,6 @@ export const Component = ({
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
       <SurroundingContainer
-        reactKey={reactKey}
         component={component}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
@@ -87,7 +83,6 @@ export const Component = ({
     return (
       <RepeatingGroup
         currentComponentNamePath={currentComponentNamePath}
-        reactKey={reactKey}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
       />
@@ -97,7 +92,6 @@ export const Component = ({
   if (isComponentVariableAndRepeating(component)) {
     return (
       <RepeatingVariable
-        reactKey={reactKey}
         component={component}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
@@ -114,7 +108,6 @@ export const Component = ({
   return (
     <LeafComponent
       component={component}
-      reactKey={reactKey}
       name={`${currentComponentNamePath}.value`}
       parentPresentationStyle={parentPresentationStyle}
       attributes={

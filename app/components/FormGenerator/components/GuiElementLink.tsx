@@ -20,19 +20,11 @@ import type { FormComponentGuiElement } from '@/components/FormGenerator/types';
 import { LinkButton } from '@/components/LinkButton/LinkButton';
 
 interface GuiElementLinkProps {
-  reactKey: string;
   component: FormComponentGuiElement;
 }
 
-export const GuiElementLink = ({
-  reactKey,
-  component,
-}: GuiElementLinkProps) => {
+export const GuiElementLink = ({ component }: GuiElementLinkProps) => {
   return (
-    <LinkButton
-      key={reactKey}
-      href={component.url ?? ''}
-      text={component.elementText ?? ''}
-    />
+    <LinkButton href={component.url ?? ''} text={component.elementText ?? ''} />
   );
 };

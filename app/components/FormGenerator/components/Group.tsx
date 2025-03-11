@@ -35,12 +35,12 @@ import { CardTitle } from '@/components/Card/CardTitle';
 import { Typography } from '@/components/Typography/Typography';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
-import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { CardContent } from '@/components/Card/CardContent';
 import styles from './FormComponent.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { useTranslation } from 'react-i18next';
+import { get } from 'lodash-es';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -56,18 +56,17 @@ export const Group = ({
   actionButtonGroup,
 }: GroupProps) => {
   const { t } = useTranslation();
-  const { boxGroups, showTooltips } = use(FormGeneratorContext);
+  const { boxGroups, showTooltips, data } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
     enhancedFields && enhancedFields[currentComponentNamePath];
-  const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
   const inline = checkIfPresentationStyleIsInline(component);
 
   // TODO: Check for valuable data instead
   const hasNoValues = hasOnlyAttributes(
-    cleanFormData(getValues(currentComponentNamePath)),
+    cleanFormData(get(data, currentComponentNamePath) ?? {}),
   );
 
   if (component.mode === 'output' && hasNoValues) {

@@ -88,7 +88,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
       }
     >
       <div className={styles['record-wrapper']}>
-        <ReadOnlyForm record={record} formSchema={formDefinition} />
+        <ReadOnlyForm data={record.data} formSchema={formDefinition} />
       </div>
       <FloatingActionButtonContainer>
         {record.userRights?.includes('update') && (

@@ -19,8 +19,8 @@
 import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
 import type {
+  FormComponentMetadata,
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
@@ -28,10 +28,11 @@ import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import {
   findOptionLabelByValue,
-  getErrorMessageForField,
+  useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { useFieldValidationError } from '@/components/FormGenerator/formGeneratorUtils/useFieldValidationError';
 
 interface AttributeSelectProps {
   name: string;
@@ -43,6 +44,7 @@ interface AttributeSelectProps {
   disabled?: boolean;
   displayMode: FormComponentMode;
   finalValue: string | undefined;
+  attributesToShow: FormComponentMetadata['attributesToShow'];
 }
 
 export const AttributeSelect = ({
@@ -55,29 +57,52 @@ export const AttributeSelect = ({
   placeholder,
   displayMode,
   finalValue,
+  attributesToShow = 'all',
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const { register, getValues, formState } = useRemixFormContext();
+  const { errorMessage, onRevalidate } = useFieldValidationError(name);
+  const defaultValue = useValueFromData<string>(name);
 
-  const errorMessage = getErrorMessageForField(formState, name);
-  const value = finalValue ?? getValues(name);
-  const showAsOutput = finalValue || displayMode === 'output';
-
-  if (displayMode === 'output' && !value) {
-    return null;
+  if (finalValue) {
+    return (
+      <>
+        {attributesToShow === 'all' && (
+          <OutputField
+            className={styles['attribute-select']}
+            variant='inline'
+            label={t(label)}
+            value={findOptionLabelByValue(options, finalValue)}
+            path={name}
+          />
+        )}
+        <input type='hidden' name={name} value={finalValue} />
+      </>
+    );
   }
 
-  if (showAsOutput) {
+  if (attributesToShow === 'none') {
+    if (!defaultValue) {
+      return null;
+    }
+
+    return <input type='hidden' name={name} value={defaultValue} />;
+  }
+
+  if (displayMode === 'output') {
+    if (!defaultValue) {
+      return null;
+    }
+
     return (
       <>
         <OutputField
           className={styles['attribute-select']}
           variant='inline'
           label={t(label)}
-          value={findOptionLabelByValue(options, value)}
+          value={findOptionLabelByValue(options, defaultValue)}
           path={name}
         />
-        {finalValue && <input type='hidden' {...register(name, { value })} />}
+        <input type='hidden' name={name} value={defaultValue} />
       </>
     );
   }
@@ -92,9 +117,11 @@ export const AttributeSelect = ({
       adornment={tooltip && <FieldInfo {...tooltip} />}
     >
       <Select
-        {...register(name)}
+        name={name}
+        defaultValue={defaultValue}
         disabled={disabled}
-        invalid={errorMessage !== undefined}
+        invalid={errorMessage != null}
+        onChange={(e) => onRevalidate(e.target.value)}
       >
         <option value=''>
           {t(placeholder ?? 'divaClient_optionNoneText')}

@@ -20,14 +20,12 @@
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { Pagination } from '@/components/Form/Pagination';
 import { Button } from '@/components/Button/Button';
 import { SearchIcon } from '@/icons';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -41,38 +39,30 @@ export const SearchForm = ({
   searchResults,
 }: SearchFormProps) => {
   const submit = useSubmit();
-  const methods = useRemixForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
-  });
 
   return (
     <Form method='GET'>
       <div className={styles['search-form']}>
-        <RemixFormProvider {...methods}>
-          <FormGenerator
-            formSchema={formSchema}
-            showTooltips={false}
-            enhancedFields={{
-              'search.rows': { type: 'hidden' },
-              'search.start': { type: 'hidden' },
-            }}
-          />
-          <SearchButton />
-          {!searchResults && (
-            <input type='hidden' name='search.rows[0].value' value='10' />
-          )}
+        <FormGenerator
+          formSchema={formSchema}
+          showTooltips={false}
+          enhancedFields={{
+            'search.rows': { type: 'hidden' },
+            'search.start': { type: 'hidden' },
+          }}
+        />
+        <SearchButton />
+        {!searchResults && (
+          <input type='hidden' name='search.rows[0].value' value='10' />
+        )}
 
-          {data && searchResults && (
-            <Pagination
-              query={data}
-              searchResults={searchResults}
-              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
-            />
-          )}
-        </RemixFormProvider>
+        {data && searchResults && (
+          <Pagination
+            query={data}
+            searchResults={searchResults}
+            onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
+          />
+        )}
       </div>
     </Form>
   );

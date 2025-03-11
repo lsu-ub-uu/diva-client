@@ -17,90 +17,87 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Fragment, type ReactNode } from 'react';
-import type { Control } from 'react-hook-form';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { Fragment, type ReactNode, use, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
+import { addAttributesToName } from '../defaultValues/defaultValues';
 import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
-import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+  isComponentSingularAndOptional,
+  useValueFromData,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface FieldArrayComponentProps {
-  control?: Control<any>;
   name: string;
   component: FormComponentWithData;
   renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
 }
 
 export const FieldArrayComponent = ({
-  control,
   name,
   component,
   renderCallback,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
+  const { onFormChange } = use(FormGeneratorContext);
+  const defaultValue = useValueFromData(name);
+  const minToShow =
+    defaultValue?.length ?? component.repeat?.minNumberOfRepeatingToShow;
+  const [fields, setFields] = useState<string[]>(
+    minToShow
+      ? Array.from({ length: minToShow }, () => crypto.randomUUID())
+      : [],
+  );
 
-  const { fields, append, move, remove } = useFieldArray({
-    control: control,
-    name: name,
-  });
-  const handleAppend = async () => {
-    append(createDefaultValuesFromComponent(component, true));
+  useEffect(() => {
+    onFormChange?.();
+  }, [onFormChange, fields]);
+
+  const append = () => {
+    const id = crypto.randomUUID();
+    setFields([...fields, id]);
   };
 
-  const handleMove = async (prev: number, next: number) => {
-    move(prev, next);
+  const move = (prevIndex: number, newIndex: number) => {
+    const newFields = [...fields];
+    const [movedItem] = newFields.splice(prevIndex, 1);
+    newFields.splice(newIndex, 0, movedItem);
+    setFields(newFields);
   };
 
-  const handleRemove = async (index: number) => {
-    remove(index);
+  const remove = (indexToRemove: number) => {
+    setFields(fields.filter((_, index) => index !== indexToRemove));
   };
 
   return (
-    <React.Fragment key={`${name}_fac`}>
-      <Controller
-        control={control}
-        name={name}
-        render={({ fieldState }) => (
-          <>
-            {fieldState.error && (
-              <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
-            )}
-          </>
-        )}
-      />
+    <>
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' && (
           <ActionButtonGroup
             entityName={`${t(component.label ?? '')}`}
             hideMoveButtons={isComponentSingularAndOptional(component)}
             moveUpButtonDisabled={index === 0}
-            moveUpButtonAction={() => handleMove(index, index - 1)}
+            moveUpButtonAction={() => move(index, index - 1)}
             moveDownButtonDisabled={index === fields.length - 1}
-            moveDownButtonAction={() => handleMove(index, index + 1)}
+            moveDownButtonAction={() => move(index, index + 1)}
             deleteButtonDisabled={
               fields.length <= (component.repeat?.repeatMin ?? 1)
             }
-            deleteButtonAction={() => handleRemove(index)}
+            deleteButtonAction={() => remove(index)}
             entityType={component.type}
-            key={`${field.id}_${index}_f`}
           />
         );
 
         return (
-          <Fragment key={`${field.id}_${index}_a`}>
+          <Fragment key={field}>
             {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
       })}
-
       {component.mode === 'input' &&
         component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
@@ -111,12 +108,12 @@ export const FieldArrayComponent = ({
             <Button
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
-              onClick={handleAppend}
+              onClick={append}
             >
               <AddCircleIcon /> {t(component.label)}
             </Button>
           </div>
         )}
-    </React.Fragment>
+    </>
   );
 };
