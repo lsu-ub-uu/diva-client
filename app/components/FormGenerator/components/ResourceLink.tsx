@@ -20,15 +20,11 @@ import type { FormComponentResourceLink } from '@/components/FormGenerator/types
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 import resourceLinkStyles from './ResourceLink.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
 import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
 import { useRouteLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DownloadIcon } from '@/icons';
 import type { loader } from '@/root';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { use } from 'react';
-import { get } from 'lodash-es';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface ResourceLinkProps {

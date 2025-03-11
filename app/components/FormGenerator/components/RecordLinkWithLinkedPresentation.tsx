@@ -17,15 +17,12 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import React, { type ReactNode, use } from 'react';
+import type { ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
-import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { get } from 'lodash-es';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 

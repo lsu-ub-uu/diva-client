@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -177,65 +176,6 @@ export const isComponentGroupAndOptional = (component: FormComponent) => {
   return rMin === 0;
 };
 
-export const checkIfComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentName: string,
-) => {
-  return (
-    getValues(componentName) !== '' && getValues(componentName) !== undefined
-  );
-};
-
-export const checkIfSingularComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-): boolean => {
-  if (isGVUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  if (hasGVArrayLength(getValues, componentValue)) {
-    return false;
-  }
-
-  if (isGVValueUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  return isGVValueEmptyString(getValues, componentValue);
-};
-
-const isGVUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue) === undefined;
-};
-
-const hasGVArrayLength = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return (
-    getValues(componentValue).length === undefined ||
-    getValues(componentValue).length === 0
-  );
-};
-
-const isGVValueUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value === undefined;
-};
-
-const isGVValueEmptyString = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value !== '';
-};
-
 export const checkForExistingSiblings = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
@@ -298,17 +238,6 @@ export const getChildrenWithSameNameInDataFromSchema = (
   return getChildrenWithSameNameInData(
     getChildNameInDataArray(formSchema?.form),
   );
-};
-
-export const getErrorMessageForField = (
-  formState: FormState<FieldValues>,
-  name: string,
-) => {
-  const error = get(formState.errors, name);
-  if (error?.message) {
-    return error.message as string;
-  }
-  return undefined;
 };
 
 export const findOptionLabelByValue = (

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,20 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecordData } from '@/types/record';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import styles from './ReadOnlyForm.module.css';
-
-export interface RecordFormProps {
-  data?: BFFDataRecordData;
-  formSchema: RecordFormSchema;
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
 }
-
-export const ReadOnlyForm = ({ data, formSchema }: RecordFormProps) => {
-  return (
-    <article className={styles['wrapper']}>
-      <FormGenerator formSchema={formSchema} boxGroups data={data} />
-    </article>
-  );
-};

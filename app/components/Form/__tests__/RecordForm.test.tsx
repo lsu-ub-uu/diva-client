@@ -88,12 +88,12 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import { parseFormData } from 'remix-hook-form';
 import {
   formSchemaWithBinary,
   linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
+import { parseFormData } from '@/utils/parseFormData';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -921,7 +921,7 @@ describe('<Form />', () => {
           path: '/',
           action: async ({ request }) => {
             const formData = await request.formData();
-            capturedFormData = await parseFormData<BFFDataRecord>(formData);
+            capturedFormData = parseFormData(formData);
             return { success: true };
           },
           Component: () => (
@@ -946,10 +946,6 @@ describe('<Form />', () => {
 
       expect(capturedFormData).toStrictEqual({
         someRootNameInData: {
-          recordInfo: {
-            dataDivider: { value: 'dataDivider' },
-            id: { value: '123' },
-          },
           someNameInData: {
             value: 'abc',
           },

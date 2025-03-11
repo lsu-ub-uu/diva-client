@@ -17,8 +17,7 @@
  */
 
 import { expect } from 'vitest';
-import { screen, within } from '@testing-library/react';
-import { render } from '../../../utils/testUtils';
+import { render, screen, within } from '@testing-library/react';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 
 describe('<Snackbar />', () => {
