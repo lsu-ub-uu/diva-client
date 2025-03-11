@@ -48,9 +48,9 @@ export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
   data?: BFFDataRecordData;
   errors: Record<string, string[]>;
-  showDevInfo: boolean;
-  boxGroups: boolean;
-  showTooltips: boolean;
+  showDevInfo?: boolean;
+  boxGroups?: boolean;
+  showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
   onFormChange?: () => void;
   yupSchema?: ObjectSchema<Record<string, any>>;

@@ -41,7 +41,6 @@ import type {
 import {
   findOptionLabelByValue,
   isComponentCollVar,
-  useFieldValidationError,
   useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { type ReactNode, use } from 'react';
@@ -53,6 +52,7 @@ import { Field } from '@/components/Input/Field';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { InputField } from '@/components/FormGenerator/components/InputField';
+import { useFieldValidationError } from '@/components/FormGenerator/formGeneratorUtils/useFieldValidationError';
 
 interface VariableProps {
   component: FormComponentTextVar | FormComponentNumVar;

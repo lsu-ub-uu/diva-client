@@ -28,11 +28,11 @@ import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import {
   findOptionLabelByValue,
-  useFieldValidationError,
   useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { useFieldValidationError } from '@/components/FormGenerator/formGeneratorUtils/useFieldValidationError';
 
 interface AttributeSelectProps {
   name: string;
