@@ -1,4 +1,4 @@
-import { data, Form, redirect, useSubmit } from 'react-router';
+import { data, Form, redirect } from 'react-router';
 import {
   commitSession,
   getNotification,
@@ -126,7 +126,6 @@ export const ErrorBoundary = RouteErrorBoundary;
 
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, presentation, returnTo } = loaderData;
-  const submit = useSubmit();
   const { t } = useTranslation();
   const [validationErrorShown, setValidationErrorShown] = useState(false);
 
