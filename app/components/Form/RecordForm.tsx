@@ -100,19 +100,6 @@ const RecordForm = ({
       ref={formRef}
       onSubmit={handleSubmit}
     >
-      {validationErrors && (
-        <Alert severity={'error'}>
-          <AlertTitle>Det finns fel i formuläret</AlertTitle>
-          <p>Åtgärda felen och försök igen</p>
-          <ul>
-            {Object.values(validationErrors)
-              .flatMap(([errors]) => errors)
-              .map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-          </ul>
-        </Alert>
-      )}
       <ValidationErrorSnackbar errors={validationErrors} />
       <FormGenerator
         formSchema={formSchema}

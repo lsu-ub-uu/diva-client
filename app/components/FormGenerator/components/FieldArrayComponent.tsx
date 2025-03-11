@@ -30,7 +30,6 @@ import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { get } from 'lodash-es';
 
 interface FieldArrayComponentProps {
   name: string;

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { describe, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, vi } from 'vitest';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -111,6 +111,10 @@ const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
 };
 
 describe('<Form />', () => {
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  });
+
   vi.mock('react-i18next', () => ({
     useTranslation: () => {
       return {

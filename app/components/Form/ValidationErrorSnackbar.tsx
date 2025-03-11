@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 
 interface ValidationErrorSnackbarProps {
-  errors: Record<string, string[]>;
+  errors: Record<string, string[]> | undefined;
 }
 
 export const ValidationErrorSnackbar = ({

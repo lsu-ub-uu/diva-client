@@ -17,7 +17,11 @@
  */
 
 export const scrollIntoView = (element: Element | null | undefined) => {
-  if (typeof document === 'undefined') {
+  if (
+    typeof document === 'undefined' ||
+    !window.matchMedia ||
+    !element?.scrollIntoView
+  ) {
     return;
   }
 

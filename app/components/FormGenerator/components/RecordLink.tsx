@@ -19,8 +19,7 @@
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { type ReactNode } from 'react';
 import { Variable } from '@/components/FormGenerator/components/Variable';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 

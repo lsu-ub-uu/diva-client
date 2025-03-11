@@ -20,11 +20,7 @@ import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { type ReactNode, use } from 'react';
-import { Group } from '@/components/FormGenerator/components/Group';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { get } from 'lodash-es';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { type ReactNode } from 'react';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingVariableProps {
