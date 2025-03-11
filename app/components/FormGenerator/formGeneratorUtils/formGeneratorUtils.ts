@@ -260,7 +260,8 @@ export const useFieldValidationError = (path: string) => {
   const contextError = errors[path];
   const [localError, setLocalError] = useState<string | undefined | null>();
 
-  const errorMessage = localError !== undefined ? localError : contextError[0];
+  const errorMessage =
+    localError !== undefined ? localError : contextError?.[0];
   const validationRule = yupSchema && reach(yupSchema, path);
 
   const onRevalidate = useCallback(

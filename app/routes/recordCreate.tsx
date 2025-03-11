@@ -39,9 +39,6 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { useState } from 'react';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { parseFormData } from '@/utils/parseFormData';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -59,18 +56,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     'create',
   );
 
-  const previewFormDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
-    validationTypeId,
-    'view',
-  );
-
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
   return data(
     {
       formDefinition,
-      previewFormDefinition,
       notification,
       title,
       breadcrumb,
@@ -147,10 +137,7 @@ export default function CreateRecordRoute({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const { formDefinition, notification, previewFormDefinition } = loaderData;
-  const [previewData, setPreviewData] = useState<FormData | undefined>(
-    undefined,
-  );
+  const { formDefinition, notification } = loaderData;
 
   return (
     <SidebarLayout
@@ -171,20 +158,11 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <div className={styles['form-wrapper']}>
-          <RecordForm
-            formSchema={formDefinition}
-            onChange={setPreviewData}
-            errors={actionData?.errors}
-            defaultValues={actionData?.defaultValues}
-          />
-          <div className={styles['preview']}>
-            <ReadOnlyForm
-              formSchema={previewFormDefinition}
-              data={previewData && parseFormData(previewData)}
-            />
-          </div>
-        </div>
+        <RecordForm
+          formSchema={formDefinition}
+          errors={actionData?.errors}
+          defaultValues={actionData?.defaultValues}
+        />
       </div>
     </SidebarLayout>
   );

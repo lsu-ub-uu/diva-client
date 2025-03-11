@@ -43,7 +43,6 @@ import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
-
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
@@ -71,6 +70,12 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     'update',
   );
 
+  const previewFormDefinition = await getFormDefinitionByValidationTypeId(
+    await context.dependencies,
+    record.validationType,
+    'view',
+  );
+
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
     record,
@@ -79,7 +84,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
 
   return data(
-    { record, formDefinition, defaultValues, notification, title, breadcrumb },
+    {
+      record,
+      formDefinition,
+      defaultValues,
+      notification,
+      title,
+      breadcrumb,
+      previewFormDefinition,
+    },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
