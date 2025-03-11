@@ -33,6 +33,7 @@ import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { merge } from 'lodash-es';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
+import { scrollIntoView } from '@/utils/scrollIntoView';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -79,6 +80,11 @@ const RecordForm = ({
 
     if (errors) {
       event.preventDefault();
+
+      const firstErrorElement = document.querySelector(
+        `[name="${Object.keys(errors)[0]}"]`,
+      );
+      scrollIntoView(firstErrorElement);
       setClientErrors(errors);
     } else {
       setClientErrors(undefined);
@@ -96,16 +102,18 @@ const RecordForm = ({
     >
       {validationErrors && (
         <Alert severity={'error'}>
-          <AlertTitle>Validerinsfel</AlertTitle>
-          {Object.entries(validationErrors).map(([key, errors]) => (
-            <>
-              <div>{key}</div>
-              <div>{errors.map((error) => error)}</div>
-            </>
-          ))}
+          <AlertTitle>Det finns fel i formuläret</AlertTitle>
+          <p>Åtgärda felen och försök igen</p>
+          <ul>
+            {Object.values(validationErrors)
+              .flatMap(([errors]) => errors)
+              .map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+          </ul>
         </Alert>
       )}
-      <ValidationErrorSnackbar />
+      <ValidationErrorSnackbar errors={validationErrors} />
       <FormGenerator
         formSchema={formSchema}
         data={data}

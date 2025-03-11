@@ -16,17 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
-export const ValidationErrorSnackbar = () => {
+interface ValidationErrorSnackbarProps {
+  errors: Record<string, string[]>;
+}
+
+export const ValidationErrorSnackbar = ({
+  errors,
+}: ValidationErrorSnackbarProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const { errors } = use(FormGeneratorContext);
 
   useEffect(() => {
     if (!isEmpty(errors)) {
