@@ -19,9 +19,11 @@
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode } from 'react';
+import { type ChangeEvent, type ReactNode, useState } from 'react';
 import { Variable } from '@/components/FormGenerator/components/Variable';
 import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Button } from '@/components/Button/Button';
+import { useFetcher, useSubmit } from 'react-router';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -38,7 +40,42 @@ export const RecordLink = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+
+  // const fetcher = useFetcher();
+  const submit = useSubmit();
+
+  const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedFileUrl(URL.createObjectURL(file));
+
+      const formData = new FormData();
+      formData.append('file', file);
+      submit(formData, {
+        action: '/fileUpload',
+        method: 'post',
+        encType: 'multipart/form-data',
+        navigate: false,
+      });
+    }
+  };
+
   const value = useValueFromData(name);
+
+  if (component.recordLinkType === 'binary') {
+    /*
+     * Modal öppnar komponenten?
+     * Skapa medan man skriver? spara posten?
+     *
+     */
+    return (
+      <div>
+        <input type='file' name={name} onChange={onFileUpload} />
+        {uploadedFileUrl && <img alt='' src={uploadedFileUrl} />}
+      </div>
+    );
+  }
 
   if (
     checkIfComponentContainsSearchId(component) &&
