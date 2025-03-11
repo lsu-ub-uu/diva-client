@@ -17,9 +17,7 @@
  */
 
 import { data } from 'react-router';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { createRecord } from '@/data/createRecord.server';
-import type { BFFDataRecordData } from '@/types/record';
 import {
   getNotification,
   getSessionFromCookie,
@@ -44,12 +42,6 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { useState } from 'react';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { parseFormData } from '@/utils/parseFormData';
-import { ValidationError } from 'yup';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type {
-  FormSchema,
-  RecordFormSchema,
-} from '@/components/FormGenerator/types';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -102,9 +94,9 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     'create',
   );
 
-  const { parsedFormData, errors } = await parseAndValidateFormData(
+  const { parsedFormData, errors } = parseAndValidateFormData(
     formDefinition,
-    request,
+    await request.formData(),
   );
 
   if (errors) {

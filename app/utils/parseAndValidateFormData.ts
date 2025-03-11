@@ -4,16 +4,14 @@ import { parseFormData } from '@/utils/parseFormData';
 import { ValidationError } from 'yup';
 import type { BFFDataRecordData } from '@/types/record';
 
-export const parseAndValidateFormData = async (
+export const parseAndValidateFormData = (
   formDefinition: RecordFormSchema,
-  request: Request,
+  formData: FormData,
 ) => {
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
-  const parsedFormData: BFFDataRecordData = parseFormData(
-    await request.formData(),
-  );
+  const parsedFormData: BFFDataRecordData = parseFormData(formData);
   try {
-    await yupSchema.validate(parsedFormData, { abortEarly: false });
+    yupSchema.validateSync(parsedFormData, { abortEarly: false });
     return { parsedFormData };
   } catch (error) {
     if (error instanceof ValidationError) {

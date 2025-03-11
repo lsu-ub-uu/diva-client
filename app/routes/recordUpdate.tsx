@@ -26,10 +26,7 @@ import {
 import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
@@ -41,12 +38,10 @@ import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { invariant } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
-import { parseFormData } from '@/utils/parseFormData';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
@@ -116,9 +111,9 @@ export const action = async ({
     'update',
   );
 
-  const { parsedFormData, errors } = await parseAndValidateFormData(
+  const { parsedFormData, errors } = parseAndValidateFormData(
     formDefinition,
-    request,
+    await request.formData(),
   );
 
   if (errors) {

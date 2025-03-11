@@ -29,9 +29,10 @@ import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Alert } from '@/components/Alert/Alert';
-import { memo, useCallback, useRef } from 'react';
+import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { merge } from 'lodash-es';
+import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
@@ -45,16 +46,35 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
   const submitting = navigation.state === 'submitting';
   const actionData = useActionData();
   const formRef = useRef<HTMLFormElement>(null);
+  const [clientErrors, setClientErrors] = useState<
+    Record<string, string[]> | undefined
+  >();
 
   const yupSchema = generateYupSchemaFromFormSchema(formSchema);
 
   const onFormChange = useCallback(() => {
-    onChange?.(new FormData(formRef.current!));
+    if (formRef.current && onChange) {
+      onChange?.(new FormData(formRef.current));
+    }
   }, [formRef, onChange]);
 
   const data = actionData?.defaultValues
     ? merge(record?.data ?? {}, actionData.defaultValues)
     : record?.data;
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const { errors } = parseAndValidateFormData(
+      formSchema,
+      new FormData(event.currentTarget),
+    );
+
+    if (errors) {
+      event.preventDefault();
+      setClientErrors(errors);
+    } else {
+      setClientErrors(undefined);
+    }
+  };
 
   return (
     <Form
@@ -63,6 +83,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
       {...(submitting && { 'data-submitting': '' })}
       onChange={onFormChange}
       ref={formRef}
+      onSubmit={handleSubmit}
     >
       {actionData?.errors && (
         <Alert severity={'error'}>{JSON.stringify(actionData?.errors)}</Alert>
@@ -77,7 +98,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
           'output.admin.reviewed.value': { type: 'checkbox' },
         }}
         onFormChange={onFormChange}
-        errors={actionData?.errors}
+        errors={clientErrors || actionData?.errors}
         yupSchema={yupSchema}
       />
 

@@ -30,6 +30,8 @@
 }
 
 .preview article {
+  --header-height: 138px;
+
   position: sticky;
   top: 0;
   max-height: 100vh;
