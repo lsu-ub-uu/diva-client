@@ -28,7 +28,6 @@ import styles from './Form.module.css';
 import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { merge } from 'lodash-es';
