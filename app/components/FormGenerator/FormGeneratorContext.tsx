@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createContext, type RefObject } from 'react';
+import { createContext } from 'react';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import type { ObjectSchema } from 'yup';
 
@@ -47,7 +47,7 @@ export type EnhancedFieldsConfig =
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
   data?: BFFDataRecordData;
-  errors: Record<string, string>;
+  errors: Record<string, string[]>;
   showDevInfo: boolean;
   boxGroups: boolean;
   showTooltips: boolean;

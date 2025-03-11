@@ -148,7 +148,10 @@ export const action = async ({
     session.flash('notification', createNotificationFromAxiosError(error));
   }
 
-  return data({}, await getResponseInitWithSession(session));
+  return data(
+    { errors: undefined, defaultValues: parsedFormData },
+    await getResponseInitWithSession(session),
+  );
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
@@ -159,6 +162,7 @@ export const ErrorBoundary = RouteErrorBoundary;
 
 export default function UpdateRecordRoute({
   loaderData,
+  actionData,
 }: Route.ComponentProps) {
   const { record, formDefinition, notification } = loaderData;
 
@@ -187,6 +191,8 @@ export default function UpdateRecordRoute({
           key={lastUpdate}
           record={record}
           formSchema={formDefinition}
+          errors={actionData?.errors}
+          defaultValues={actionData?.defaultValues}
         />
       </div>
     </SidebarLayout>

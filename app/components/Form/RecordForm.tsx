@@ -19,8 +19,8 @@
 
 import { useTranslation } from 'react-i18next';
 import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecord } from '@/types/record';
-import { Form, useActionData, useNavigation } from 'react-router';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
+import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
@@ -28,7 +28,7 @@ import styles from './Form.module.css';
 import { UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { Alert } from '@/components/Alert/Alert';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { merge } from 'lodash-es';
@@ -38,13 +38,20 @@ export interface RecordFormProps {
   record?: BFFDataRecord;
   formSchema: RecordFormSchema;
   onChange?: (formData: FormData) => void;
+  errors?: Record<string, string[]>;
+  defaultValues?: BFFDataRecordData;
 }
 
-const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
+const RecordForm = ({
+  record,
+  formSchema,
+  onChange,
+  errors,
+  defaultValues,
+}: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
-  const actionData = useActionData();
   const formRef = useRef<HTMLFormElement>(null);
   const [clientErrors, setClientErrors] = useState<
     Record<string, string[]> | undefined
@@ -58,9 +65,11 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
     }
   }, [formRef, onChange]);
 
-  const data = actionData?.defaultValues
-    ? merge(record?.data ?? {}, actionData.defaultValues)
+  const data = defaultValues
+    ? merge(record?.data ?? {}, defaultValues)
     : record?.data;
+
+  const validationErrors = clientErrors || errors;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     const { errors } = parseAndValidateFormData(
@@ -85,8 +94,16 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
       ref={formRef}
       onSubmit={handleSubmit}
     >
-      {actionData?.errors && (
-        <Alert severity={'error'}>{JSON.stringify(actionData?.errors)}</Alert>
+      {validationErrors && (
+        <Alert severity={'error'}>
+          <AlertTitle>Validerinsfel</AlertTitle>
+          {Object.entries(validationErrors).map(([key, errors]) => (
+            <>
+              <div>{key}</div>
+              <div>{errors.map((error) => error)}</div>
+            </>
+          ))}
+        </Alert>
       )}
       <ValidationErrorSnackbar />
       <FormGenerator
@@ -98,7 +115,7 @@ const RecordForm = ({ record, formSchema, onChange }: RecordFormProps) => {
           'output.admin.reviewed.value': { type: 'checkbox' },
         }}
         onFormChange={onFormChange}
-        errors={clientErrors || actionData?.errors}
+        errors={validationErrors}
         yupSchema={yupSchema}
       />
 

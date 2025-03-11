@@ -130,7 +130,10 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     console.error(error);
 
     session.flash('notification', createNotificationFromAxiosError(error));
-    return data({}, await getResponseInitWithSession(session));
+    return data(
+      { errors: undefined, defaultValues: parsedFormData },
+      await getResponseInitWithSession(session),
+    );
   }
 };
 
@@ -142,6 +145,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 
 export default function CreateRecordRoute({
   loaderData,
+  actionData,
 }: Route.ComponentProps) {
   const { formDefinition, notification, previewFormDefinition } = loaderData;
   const [previewData, setPreviewData] = useState<FormData | undefined>(
@@ -168,7 +172,12 @@ export default function CreateRecordRoute({
           </Alert>
         )}
         <div className={styles['form-wrapper']}>
-          <RecordForm formSchema={formDefinition} onChange={setPreviewData} />
+          <RecordForm
+            formSchema={formDefinition}
+            onChange={setPreviewData}
+            errors={actionData?.errors}
+            defaultValues={actionData?.defaultValues}
+          />
           <div className={styles['preview']}>
             <ReadOnlyForm
               formSchema={previewFormDefinition}

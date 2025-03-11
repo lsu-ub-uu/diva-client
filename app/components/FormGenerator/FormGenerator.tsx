@@ -23,16 +23,16 @@ import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
-import { type RefObject, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
+import type { BFFDataRecordData } from '@/types/record';
 import styles from './FormGenerator.module.css';
 import type { ObjectSchema } from 'yup';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   data?: BFFDataRecordData;
-  errors?: Record<string, string>;
+  errors?: Record<string, string[]>;
   boxGroups?: boolean;
   showTooltips?: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
