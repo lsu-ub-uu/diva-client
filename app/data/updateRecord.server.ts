@@ -51,15 +51,11 @@ export const updateRecord = async (
 
   const transformData = transformToCoraData(formMetaDataPathLookup, data);
 
-  try {
-    const response = await updateRecordDataById<RecordWrapper>(
-      recordId,
-      transformData[0] as DataGroup,
-      recordType,
-      auth.data.token,
-    );
-    return transformRecord(dependencies, response.data);
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await updateRecordDataById<RecordWrapper>(
+    recordId,
+    transformData[0] as DataGroup,
+    recordType,
+    auth.data.token,
+  );
+  return transformRecord(dependencies, response.data);
 };

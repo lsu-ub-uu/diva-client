@@ -43,6 +43,7 @@ import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import styles from '@/routes/record.module.css';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
+
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
@@ -162,7 +163,7 @@ export const action = async ({
   }
 
   return data(
-    { errors: undefined, defaultValues: parsedFormData },
+    { errors: undefined, defaultValues: undefined },
     await getResponseInitWithSession(session),
   );
 };

@@ -57,3 +57,4 @@ export { default as SchemaIcon } from './Schema.svg?react';
 export { default as VisibilityIcon } from './Visibility.svg?react';
 export { default as MysteryIcon } from './Mystery.svg?react';
 export { default as SearchCheck } from './SearchCheck.svg?react';
+export { default as ManageSearch } from './ManageSearch.svg?react';

@@ -30,9 +30,9 @@ import { FloatingActionButtonContainer } from '@/components/FloatingActionButton
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { merge } from 'lodash-es';
 import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 import { scrollIntoView } from '@/utils/scrollIntoView';
+import { merge } from 'lodash-es';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
