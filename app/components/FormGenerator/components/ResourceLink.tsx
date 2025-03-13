@@ -35,12 +35,11 @@ interface ResourceLinkProps {
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
-  const rootLoaderData = useRouteLoaderData<typeof loader>('/hej');
+  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
   const data: ResourceLinkType = getValues(path);
   const authToken = rootLoaderData?.auth?.data.token;
 
   const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
-
   return (
     <div className={styles['component']} data-colspan={component.gridColSpan}>
       <DevInfo component={component} path={path} />

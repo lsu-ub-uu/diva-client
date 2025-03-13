@@ -128,6 +128,7 @@ export const transformRecord = (
     createdBy,
     updated,
     userRights,
+    actionLinks: coraRecord.actionLinks,
     data,
   });
 };

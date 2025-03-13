@@ -23,6 +23,7 @@ import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useWatch } from 'react-hook-form';
 import { Variable } from '@/components/FormGenerator/components/Variable';
+import { FileUpload } from './FileUpload';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -44,6 +45,10 @@ export const RecordLink = ({
   const value = useWatch({ name });
 
   const { linkedData } = use(FormGeneratorContext);
+  if (component.recordLinkType === 'binary' && !value) {
+    return <FileUpload component={component} path={name} />;
+  }
+
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
