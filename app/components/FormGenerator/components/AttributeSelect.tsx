@@ -56,7 +56,6 @@ export const AttributeSelect = ({
   showLabel = true,
   tooltip,
   disabled,
-  placeholder,
   displayMode,
   finalValue,
 }: AttributeSelectProps) => {
