@@ -83,6 +83,7 @@ const RecordForm = ({
       const firstErrorElement = document.querySelector(
         `[name="${Object.keys(errors)[0]}"]`,
       );
+
       scrollIntoView(firstErrorElement);
       setClientErrors(errors);
     } else {

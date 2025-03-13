@@ -22,6 +22,7 @@ import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { pickBy } from 'lodash-es';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { Fragment } from 'react';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -41,8 +42,8 @@ export const ComponentList = ({
   return (
     <>
       {hiddenData &&
-        Object.entries(hiddenData).map(([key, value]) => (
-          <>
+        Object.entries(hiddenData).map(([key, value], index) => (
+          <Fragment key={index}>
             <DevInfo
               component={
                 { type: 'hiddenData', name: key } as unknown as FormComponent
@@ -50,7 +51,7 @@ export const ComponentList = ({
               path={key}
             />
             <input type='hidden' name={key} value={value} key={key} />
-          </>
+          </Fragment>
         ))}
       {components.map((component, i) => (
         <Component
