@@ -34,7 +34,6 @@ import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { Controller } from 'react-hook-form';
 import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
-import React from 'react';
 import { useHydrated } from '@/utils/useHydrated';
 
 interface AttributeSelectProps {

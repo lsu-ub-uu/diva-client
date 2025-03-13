@@ -18,7 +18,7 @@
 
 import { AttributeSelect } from '@/components/FormGenerator/components/AttributeSelect';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import React, { use } from 'react';
+import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useTranslation } from 'react-i18next';
 
