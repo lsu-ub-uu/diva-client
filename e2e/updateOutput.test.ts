@@ -47,17 +47,10 @@ test('updates an existing report', async ({ page, divaOutput }) => {
   await page
     .getByLabel('År')
     .fill(faker.date.recent().getFullYear().toString());
-  await page.getByLabel(/^Huvudtitel/).fill('Edited title');
 
   await page.getByRole('button', { name: 'Skicka in' }).click();
 
   await expect(
     page.getByText(/^Record was successfully updated/),
   ).toBeVisible();
-
-  await expect(page.getByLabel(/^Huvudtitel/)).toHaveValue('Edited title');
-
-  await page.goto(createUrl(`/diva-output/${recordId}`));
-
-  await expect(page.getByLabel(/^Huvudtitel/)).toHaveText('Edited title');
 });

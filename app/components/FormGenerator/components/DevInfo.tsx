@@ -23,9 +23,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { CodeIcon } from '@/icons';
-import clsx from 'clsx';
-import formComponentStyles from './FormComponent.module.css';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { get } from 'lodash-es';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -37,17 +35,14 @@ interface ToggleDevInfoButtonProps {
 }
 
 export const DevInfo = ({ component, path }: DevInfoProps) => {
-  const { showDevInfo } = use(FormGeneratorContext);
+  const { showDevInfo, data } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
-  const value = useValueFromData(path ?? '');
+  const value = path && get(data, path);
   if (!showDevInfo) {
     return null;
   }
   return (
-    <div
-      className={clsx(styles['dev-info'], formComponentStyles['component'])}
-      data-colspan={12}
-    >
+    <div className={styles['dev-info']}>
       <button type='button' onClick={() => setExpanded(!expanded)}>
         {component.type} | {addAttributesToName(component, component.name)}
       </button>

@@ -33,7 +33,6 @@ import {
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { useFieldValidationError } from '@/components/FormGenerator/formGeneratorUtils/useFieldValidationError';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 
 interface AttributeSelectProps {
   name: string;
@@ -117,27 +116,22 @@ export const AttributeSelect = ({
       errorMessage={errorMessage}
       adornment={tooltip && <FieldInfo {...tooltip} />}
     >
-      {options.length > 20 ? (
-        <ComboboxSelect
-          options={options}
-          defaultValue={defaultValue}
-          name={name}
-        />
-      ) : (
-        <Select
-          name={name}
-          defaultValue={defaultValue}
-          disabled={disabled}
-          invalid={errorMessage != null}
-          onChange={(e) => onRevalidate(e.target.value)}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {t(option.label)}
-            </option>
-          ))}
-        </Select>
-      )}
+      <Select
+        name={name}
+        defaultValue={defaultValue}
+        disabled={disabled}
+        invalid={errorMessage != null}
+        onChange={(e) => onRevalidate(e.target.value)}
+      >
+        <option value=''>
+          {t(placeholder ?? 'divaClient_optionNoneText')}
+        </option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {t(option.label)}
+          </option>
+        ))}
+      </Select>
     </Field>
   );
 };

@@ -127,7 +127,6 @@ export const Variable = ({
           }
         >
           <InputField
-            key={value}
             component={component}
             path={path}
             invalid={errorMessage != null}

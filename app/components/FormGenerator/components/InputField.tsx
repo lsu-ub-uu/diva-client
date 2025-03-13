@@ -28,7 +28,6 @@ import type {
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import { useTranslation } from 'react-i18next';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -48,19 +47,6 @@ export const InputField = ({
   const { t } = useTranslation();
 
   if (isComponentCollVar(component)) {
-    const options = [
-      { value: '', label: t('divaClient_optionNoneText') },
-      ...component.options,
-    ];
-    if (component.options.length > 20) {
-      return (
-        <ComboboxSelect
-          options={options}
-          defaultValue={defaultValue}
-          name={path}
-        />
-      );
-    }
     return (
       <Select
         invalid={invalid}
@@ -69,7 +55,8 @@ export const InputField = ({
         defaultValue={defaultValue}
         onChange={(e) => onChange?.(e.target.value)}
       >
-        {(options ?? []).map((item) => {
+        <option value=''>{t('divaClient_optionNoneText')}</option>
+        {(component.options ?? []).map((item) => {
           return (
             <option key={item.value} value={item.value}>
               {t(item.label)}
