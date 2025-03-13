@@ -117,9 +117,6 @@ export const AttributeSelect = ({
           disabled={disabled}
           invalid={errorMessage !== undefined}
         >
-          <option value=''>
-            {t(placeholder ?? 'divaClient_optionNoneText')}
-          </option>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {t(option.label)}
