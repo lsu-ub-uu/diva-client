@@ -19,12 +19,14 @@
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode } from 'react';
+import { type ReactNode, use } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { useWatch } from 'react-hook-form';
 import { Variable } from '@/components/FormGenerator/components/Variable';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
+  reactKey: string;
   name: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
@@ -34,19 +36,23 @@ interface RecordLinkProps {
 export const RecordLink = ({
   name,
   component,
+  reactKey,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
-  const value = useValueFromData(name);
+  const value = useWatch({ name });
 
+  const { linkedData } = use(FormGeneratorContext);
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
-    !value
+    !value &&
+    !linkedData
   ) {
     return (
       <RecordLinkWithSearch
+        reactKey={reactKey}
         component={component}
         path={name}
         attributes={attributes}
@@ -61,6 +67,7 @@ export const RecordLink = ({
   ) {
     return (
       <RecordLinkWithLinkedPresentation
+        reactKey={reactKey}
         component={component}
         name={name}
         attributes={attributes}
@@ -71,6 +78,7 @@ export const RecordLink = ({
 
   return (
     <Variable
+      reactKey={reactKey}
       component={component}
       path={name}
       parentPresentationStyle={parentPresentationStyle}

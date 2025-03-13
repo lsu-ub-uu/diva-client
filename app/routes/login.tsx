@@ -1,9 +1,13 @@
-import { data, Form, redirect } from 'react-router';
+import { data, Form, redirect, useSubmit } from 'react-router';
 import {
   commitSession,
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
@@ -11,19 +15,17 @@ import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteError
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+
 import type { Route } from './+types/login';
 import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { useState } from 'react';
-import styles from './login.module.css';
-import clsx from 'clsx';
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
-  const { t } = context.i18n;
 
   const session = await getSession(request.headers.get('Cookie'));
 
@@ -36,7 +38,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       presentation,
       notification: getNotification(session),
       returnTo,
-      breadcrumb: t('divaClient_LoginText'),
     },
     {
       headers: {
@@ -126,8 +127,17 @@ export const ErrorBoundary = RouteErrorBoundary;
 
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, presentation, returnTo } = loaderData;
+  const submit = useSubmit();
   const { t } = useTranslation();
   const [validationErrorShown, setValidationErrorShown] = useState(false);
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+    defaultValues: createDefaultValuesFromFormSchema(presentation),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(presentation)),
+  });
+  const { handleSubmit } = methods;
 
   return (
     <div>
@@ -142,7 +152,12 @@ export default function Login({ loaderData }: Route.ComponentProps) {
       ) : null}
       <Form
         method='POST'
-        className={clsx('container-s', styles['form-wrapper'])}
+        onSubmit={handleSubmit(
+          (_values, event) => {
+            submit(event!.target);
+          },
+          () => setValidationErrorShown(true),
+        )}
       >
         <input type='hidden' name='loginType' value='password' />
         {returnTo && <input type='hidden' name='returnTo' value={returnTo} />}
@@ -153,7 +168,9 @@ export default function Login({ loaderData }: Route.ComponentProps) {
         />
         <div>
           {presentation !== null ? (
-            <FormGenerator formSchema={presentation} />
+            <FormProvider {...methods}>
+              <FormGenerator formSchema={presentation} />
+            </FormProvider>
           ) : (
             <span />
           )}

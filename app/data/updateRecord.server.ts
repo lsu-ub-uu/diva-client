@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { BFFDataRecordData } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
@@ -30,7 +30,7 @@ export const updateRecord = async (
   dependencies: Dependencies,
   validationTypeId: string,
   recordId: string,
-  data: BFFDataRecordData,
+  data: BFFDataRecord,
   auth: Auth,
 ) => {
   const { validationTypePool } = dependencies;
@@ -57,5 +57,6 @@ export const updateRecord = async (
     recordType,
     auth.data.token,
   );
+
   return transformRecord(dependencies, response.data);
 };

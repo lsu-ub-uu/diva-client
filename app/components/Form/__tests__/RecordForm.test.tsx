@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { beforeEach, describe, expect, vi } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -88,12 +88,12 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import { parseFormData } from 'remix-hook-form';
 import {
   formSchemaWithBinary,
   linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
-import { parseFormData } from '@/utils/parseFormData';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -111,10 +111,6 @@ const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
 };
 
 describe('<Form />', () => {
-  beforeEach(() => {
-    vi.stubGlobal('matchMedia', () => ({ matches: true }));
-  });
-
   vi.mock('react-i18next', () => ({
     useTranslation: () => {
       return {
@@ -925,7 +921,7 @@ describe('<Form />', () => {
           path: '/',
           action: async ({ request }) => {
             const formData = await request.formData();
-            capturedFormData = parseFormData(formData);
+            capturedFormData = await parseFormData<BFFDataRecord>(formData);
             return { success: true };
           },
           Component: () => (
@@ -950,6 +946,10 @@ describe('<Form />', () => {
 
       expect(capturedFormData).toStrictEqual({
         someRootNameInData: {
+          recordInfo: {
+            dataDivider: { value: 'dataDivider' },
+            id: { value: '123' },
+          },
           someNameInData: {
             value: 'abc',
           },

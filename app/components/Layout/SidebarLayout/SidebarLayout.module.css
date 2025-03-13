@@ -18,10 +18,10 @@
 
 .sidebar-layout {
   display: grid;
-  gap: var(--gap-l);
+  gap: calc(var(--gap) * 8);
 
   @media (width >= 900px) {
-    grid-template-columns: 2fr 10fr;
+    grid-template-columns: 3fr 9fr;
   }
 
   aside {
@@ -34,7 +34,6 @@
     max-height: 100vh;
     padding: var(--gap) 0;
     overflow: hidden auto;
-    padding-bottom: var(--gap-xl);
   }
 
   main {

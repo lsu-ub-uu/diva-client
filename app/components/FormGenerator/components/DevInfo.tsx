@@ -22,10 +22,8 @@ import { use, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { useRemixFormContext } from 'remix-hook-form';
 import { CodeIcon } from '@/icons';
-import clsx from 'clsx';
-import formComponentStyles from './FormComponent.module.css';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -39,15 +37,13 @@ interface ToggleDevInfoButtonProps {
 export const DevInfo = ({ component, path }: DevInfoProps) => {
   const { showDevInfo } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
-  const value = useValueFromData(path ?? '');
+  const { getValues } = useRemixFormContext();
+  const data = path && getValues(path);
   if (!showDevInfo) {
     return null;
   }
   return (
-    <div
-      className={clsx(styles['dev-info'], formComponentStyles['component'])}
-      data-colspan={12}
-    >
+    <div className={styles['dev-info']}>
       <button type='button' onClick={() => setExpanded(!expanded)}>
         {component.type} | {addAttributesToName(component, component.name)}
       </button>
@@ -59,10 +55,10 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
             <strong>FORM DEF</strong>
             {JSON.stringify(component, null, 2)}
           </pre>
-          {value && (
+          {data && (
             <pre>
               <strong>DATA</strong>
-              {JSON.stringify(value, null, 2)}
+              {JSON.stringify(data, null, 2)}
             </pre>
           )}
         </div>

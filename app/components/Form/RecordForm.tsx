@@ -18,103 +18,73 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import styles from './Form.module.css';
-import { UpgradeIcon } from '@/icons';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { type FormEvent, memo, useCallback, useRef, useState } from 'react';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
-import { scrollIntoView } from '@/utils/scrollIntoView';
-import { merge } from 'lodash-es';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
   formSchema: RecordFormSchema;
-  onChange?: (formData: FormData) => void;
-  errors?: Record<string, string[]>;
-  defaultValues?: BFFDataRecordData;
 }
 
-const RecordForm = ({
-  record,
-  formSchema,
-  onChange,
-  errors,
-  defaultValues,
-}: RecordFormProps) => {
+export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
-  const formRef = useRef<HTMLFormElement>(null);
-  const [clientErrors, setClientErrors] = useState<
-    Record<string, string[]> | undefined
-  >();
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formSchema,
+    record?.data as RecordData,
+  );
 
-  const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+  const methods = useRemixForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: true,
+    defaultValues,
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
+  });
 
-  const onFormChange = useCallback(() => {
-    if (formRef.current && onChange) {
-      onChange?.(new FormData(formRef.current));
-    }
-  }, [formRef, onChange]);
-
-  const data = defaultValues
-    ? merge(record?.data ?? {}, defaultValues)
-    : record?.data;
-
-  const validationErrors = clientErrors || errors;
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    const { errors } = parseAndValidateFormData(
-      formSchema,
-      new FormData(event.currentTarget),
-    );
-
-    if (errors) {
-      event.preventDefault();
-
-      const firstErrorElement = document.querySelector(
-        `[name="${Object.keys(errors)[0]}"]`,
-      );
-
-      scrollIntoView(firstErrorElement);
-      setClientErrors(errors);
-    } else {
-      setClientErrors(undefined);
-    }
-  };
+  const { handleSubmit, reset } = methods;
 
   return (
     <Form
       method='POST'
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
-      onChange={onFormChange}
-      ref={formRef}
       onSubmit={handleSubmit}
     >
-      <ValidationErrorSnackbar errors={validationErrors} />
-      <FormGenerator
-        formSchema={formSchema}
-        data={data}
-        boxGroups
-        enhancedFields={{
-          'output.admin': { type: 'group', alert: true },
-          'output.admin.reviewed.value': { type: 'checkbox' },
-        }}
-        onFormChange={onFormChange}
-        errors={validationErrors}
-        yupSchema={yupSchema}
-      />
+      <RemixFormProvider {...methods}>
+        <ValidationErrorSnackbar />
+        <FormGenerator
+          formSchema={formSchema}
+          boxGroups
+          enhancedFields={{
+            'output.admin': { type: 'group', alert: true },
+            'output.admin.reviewed.value': { type: 'checkbox' },
+          }}
+        />
+      </RemixFormProvider>
 
       <FloatingActionButtonContainer>
+        <FloatingActionButton
+          type='button'
+          onClick={() => reset(undefined, { keepDefaultValues: true })}
+          icon={<RestartAltIcon />}
+          text={t('divaClient_ResetButtonText')}
+        />
+
         <FloatingActionButton
           variant='primary'
           type='submit'
@@ -125,6 +95,3 @@ const RecordForm = ({
     </Form>
   );
 };
-
-const MemoizedForm = memo(RecordForm);
-export { MemoizedForm as RecordForm };

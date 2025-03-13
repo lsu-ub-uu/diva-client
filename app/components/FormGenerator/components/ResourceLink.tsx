@@ -20,12 +20,12 @@ import type { FormComponentResourceLink } from '@/components/FormGenerator/types
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 import resourceLinkStyles from './ResourceLink.module.css';
+import { useRemixFormContext } from 'remix-hook-form';
 import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
 import { useRouteLoaderData } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DownloadIcon } from '@/icons';
 import type { loader } from '@/root';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -33,16 +33,13 @@ interface ResourceLinkProps {
 }
 
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
+  const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
   const rootLoaderData = useRouteLoaderData<typeof loader>('/hej');
-  const value: ResourceLinkType | undefined = useValueFromData(path);
+  const data: ResourceLinkType = getValues(path);
   const authToken = rootLoaderData?.auth?.data.token;
 
-  if (!value) {
-    return null;
-  }
-
-  const resourceUrl = `${value.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
+  const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
 
   return (
     <div className={styles['component']} data-colspan={component.gridColSpan}>
@@ -52,7 +49,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
         <a
           href={resourceUrl}
           className={resourceLinkStyles['download-link']}
-          type={value.mimeType}
+          type={data.mimeType}
         >
           {t('divaClient_downloadFileText')}
           <DownloadIcon />

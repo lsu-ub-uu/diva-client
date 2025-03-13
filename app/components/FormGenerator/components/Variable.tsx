@@ -40,9 +40,10 @@ import type {
 } from '@/components/FormGenerator/types';
 import {
   findOptionLabelByValue,
+  getErrorMessageForField,
   isComponentCollVar,
-  useValueFromData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import styles from './FormComponent.module.css';
@@ -52,9 +53,9 @@ import { Field } from '@/components/Input/Field';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { InputField } from '@/components/FormGenerator/components/InputField';
-import { useFieldValidationError } from '@/components/FormGenerator/formGeneratorUtils/useFieldValidationError';
 
 interface VariableProps {
+  reactKey: string;
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
   parentPresentationStyle: string | undefined;
@@ -70,10 +71,11 @@ export const Variable = ({
   actionButtonGroup,
 }: VariableProps) => {
   const { t } = useTranslation();
+  const { getValues, register, formState } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
-  const value: string | undefined = useValueFromData(path);
-  const { errorMessage, onRevalidate } = useFieldValidationError(path);
+  const value = getValues(path);
 
+  const errorMessage = getErrorMessageForField(formState, path);
   if (component.mode === 'output' && !value) {
     return null;
   }
@@ -107,9 +109,7 @@ export const Variable = ({
         />
       )}
 
-      {component.finalValue && (
-        <input type='hidden' name={path} value={component.finalValue} />
-      )}
+      {component.finalValue && <input type='hidden' {...register(path)} />}
 
       {!component.finalValue && component.mode === 'input' && (
         <Field
@@ -127,12 +127,10 @@ export const Variable = ({
           }
         >
           <InputField
-            key={value}
             component={component}
             path={path}
-            invalid={errorMessage != null}
-            defaultValue={value}
-            onChange={onRevalidate}
+            errorMessage={errorMessage}
+            register={register}
           />
         </Field>
       )}

@@ -17,12 +17,10 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { Component } from '@/components/FormGenerator/Component';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { pickBy } from 'lodash-es';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { Fragment } from 'react';
+import {
+  Component,
+  getCurrentComponentNamePath,
+} from '@/components/FormGenerator/Component';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -35,72 +33,13 @@ export const ComponentList = ({
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps) => {
-  const data = useValueFromData<Record<string, any>>(path);
-
-  const hiddenData = data && getHiddenData(data, components, path);
-
-  return (
-    <>
-      {hiddenData &&
-        Object.entries(hiddenData).map(([key, value], index) => (
-          <Fragment key={index}>
-            <DevInfo
-              component={
-                { type: 'hiddenData', name: key } as unknown as FormComponent
-              }
-              path={key}
-            />
-            <input type='hidden' name={key} value={value} key={key} />
-          </Fragment>
-        ))}
-      {components.map((component, i) => (
-        <Component
-          key={i}
-          component={component}
-          path={path}
-          parentPresentationStyle={parentPresentationStyle}
-        />
-      ))}
-    </>
-  );
-};
-
-const isAttribute = (key: string) => key.startsWith('_');
-
-const getHiddenData = (
-  data: Record<string, any>,
-  components: FormComponent[],
-  path: string | undefined,
-) => {
-  return flatten(
-    pickBy(
-      data,
-      (_value, key) =>
-        !isAttribute(key) &&
-        !components.find((c) => addAttributesToName(c, c.name).startsWith(key)),
-    ),
-    path,
-  );
-};
-
-const flatten = (inputValue: any, initialPath: string = '') => {
-  const result: Record<string, string> = {};
-
-  const processValue = (currentValue: any, currentPath: string) => {
-    if (Array.isArray(currentValue)) {
-      currentValue.forEach((item, index) => {
-        processValue(item, `${currentPath}[${index}]`);
-      });
-    } else if (typeof currentValue === 'object' && currentValue !== null) {
-      Object.entries(currentValue).forEach(([key, value]) => {
-        processValue(value, `${currentPath}.${key}`);
-      });
-    } else {
-      result[currentPath] = currentValue;
-    }
-  };
-
-  processValue(inputValue, initialPath);
-
-  return result;
+  return components.map((component, i) => (
+    <Component
+      key={getCurrentComponentNamePath(component, path)}
+      component={component}
+      idx={i}
+      path={path}
+      parentPresentationStyle={parentPresentationStyle}
+    />
+  ));
 };

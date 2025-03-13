@@ -17,6 +17,8 @@
  */
 
 import type { BFFDataRecord } from '@/types/record';
+
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
@@ -28,10 +30,11 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 
 export const createRecord = async (
   dependencies: Dependencies,
-  validationTypeId: string,
+  formDefinition: RecordFormSchema,
   record: BFFDataRecord['data'],
   auth: Auth,
 ) => {
+  const validationTypeId = formDefinition.validationTypeId;
   const { validationTypePool } = dependencies;
 
   const recordType =

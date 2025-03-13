@@ -34,7 +34,7 @@ export const Snackbar = ({
   }
 
   return createPortal(
-    <Transition show={open && text !== undefined} unmount={true}>
+    <Transition show={open} unmount={true}>
       <div role='alert' aria-live={ariaLive} className={styles['snackbar']}>
         <Alert severity={severity}>{text}</Alert>
       </div>

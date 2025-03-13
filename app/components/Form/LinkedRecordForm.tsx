@@ -16,6 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { FormProvider, useForm } from 'react-hook-form';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
@@ -24,9 +28,24 @@ interface LinkedRecordFormProps {
 }
 
 export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {
+  const formSchema = record.presentation!;
+
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, record.data),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
+  });
+
   return (
-    record.presentation && (
-      <FormGenerator formSchema={record.presentation} data={record.data} />
+    formSchema?.form && (
+      <FormProvider {...methods}>
+        <FormGenerator
+          formSchema={formSchema}
+          linkedData={record.data}
+        />
+      </FormProvider>
     )
   );
 };

@@ -17,21 +17,31 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { FieldErrors, FieldValues } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
 import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { FormSchema } from '../FormGenerator/types';
+import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { Form } from 'react-router';
+import styles from './LoginForm.module.css';
+import { Button } from '@/components/Button/Button';
 
-interface SearchResultFormProps {
+interface RecordFormProps {
   record?: BFFDataRecord;
-  formSchema: FormSchema;
+  formSchema: RecordFormSchema;
+  onSubmit: (formValues: FieldValues) => void;
+  onInvalid?: (fieldErrors: FieldErrors) => void;
+  linkedData?: boolean;
 }
 
-export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
+export const LoginForm = ({ ...props }: RecordFormProps) => {
+  const { t } = useTranslation();
+
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -42,20 +52,23 @@ export const SearchResultForm = ({ ...props }: SearchResultFormProps) => {
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
+  const { handleSubmit } = methods;
 
   return (
-    <FormProvider {...methods}>
-      <FormGenerator
-        formSchema={props.formSchema}
-        boxGroups={false}
-        showTooltips={false}
-        enhancedFields={{
-          'output.titleInfo.title.value': {
-            type: 'link',
-            to: `/${props.record?.recordType}/${props.record?.id}`,
-          },
-        }}
-      />
-    </FormProvider>
+    <Form
+      className={styles['wrapper']}
+      onSubmit={handleSubmit(
+        (values) => props.onSubmit(values),
+        (errors) => props.onInvalid && props.onInvalid(errors),
+      )}
+    >
+      <FormProvider {...methods}>
+        <FormGenerator formSchema={props.formSchema} />
+      </FormProvider>
+
+      <Button type='submit' variant='primary'>
+        {t('divaClient_LoginButtonText')}
+      </Button>
+    </Form>
   );
 };

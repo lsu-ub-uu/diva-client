@@ -17,6 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { FormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
@@ -26,15 +31,25 @@ interface AutocompleteFormProps {
   formSchema: FormSchema;
 }
 
-export const AutocompleteForm = ({
-  formSchema,
-  record,
-}: AutocompleteFormProps) => {
+export const AutocompleteForm = ({ ...props }: AutocompleteFormProps) => {
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+    defaultValues: createDefaultValuesFromFormSchema(
+      props.formSchema,
+      props.record?.data as RecordData,
+    ),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
+  });
+
   return (
-    <FormGenerator
-      formSchema={formSchema}
-      data={record?.data}
-      showTooltips={false}
-    />
+    <FormProvider {...methods}>
+      <FormGenerator
+        formSchema={props.formSchema}
+        linkedData={props.record?.data}
+        showTooltips={false}
+      />
+    </FormProvider>
   );
 };
