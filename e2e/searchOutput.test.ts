@@ -19,10 +19,10 @@ test('Search for records', async ({ page, divaOutput }) => {
 
   await page.getByRole('textbox', { name: 'Fritext' }).fill(recordTitle);
 
-  await expect(page.getByRole('textbox', { name: 'Fritext' })).toHaveValue(
-    recordTitle,
-  );
+  await expect(
+    await page.getByRole('textbox', { name: 'Fritext' }),
+  ).toHaveValue(recordTitle);
   await page.getByRole('button', { name: 'Sök' }).click();
 
-  await expect(page.getByText(recordId)).toBeVisible();
+  await expect(await page.getByText(recordId)).toBeVisible();
 });

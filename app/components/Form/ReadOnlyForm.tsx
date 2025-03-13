@@ -17,19 +17,26 @@
  */
 
 import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecordData } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import styles from './ReadOnlyForm.module.css';
 
 export interface RecordFormProps {
-  data?: BFFDataRecordData;
+  record?: BFFDataRecord;
   formSchema: RecordFormSchema;
 }
 
-export const ReadOnlyForm = ({ data, formSchema }: RecordFormProps) => {
+export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
+  const methods = useRemixForm({
+    defaultValues: record?.data,
+  });
+
   return (
     <article className={styles['wrapper']}>
-      <FormGenerator formSchema={formSchema} boxGroups data={data} />
+      <RemixFormProvider {...methods}>
+        <FormGenerator formSchema={formSchema} boxGroups />
+      </RemixFormProvider>
     </article>
   );
 };

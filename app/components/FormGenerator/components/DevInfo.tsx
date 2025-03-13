@@ -22,8 +22,8 @@ import { use, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { useRemixFormContext } from 'remix-hook-form';
 import { CodeIcon } from '@/icons';
-import { get } from 'lodash-es';
 
 interface DevInfoProps {
   component: FormComponent;
@@ -35,9 +35,10 @@ interface ToggleDevInfoButtonProps {
 }
 
 export const DevInfo = ({ component, path }: DevInfoProps) => {
-  const { showDevInfo, data } = use(FormGeneratorContext);
+  const { showDevInfo } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
-  const value = path && get(data, path);
+  const { getValues } = useRemixFormContext();
+  const data = path && getValues(path);
   if (!showDevInfo) {
     return null;
   }
@@ -54,10 +55,10 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
             <strong>FORM DEF</strong>
             {JSON.stringify(component, null, 2)}
           </pre>
-          {value && (
+          {data && (
             <pre>
               <strong>DATA</strong>
-              {JSON.stringify(value, null, 2)}
+              {JSON.stringify(data, null, 2)}
             </pre>
           )}
         </div>

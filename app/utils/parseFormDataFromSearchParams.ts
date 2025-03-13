@@ -15,14 +15,15 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+
 const ARRAY_KEY_REGEX = /\[(\d*)\]$/;
 
-export const parseFormEntries = (
-  entries: [key: string, value: string][],
-): any => {
+export const parseFormDataFromSearchParams = (
+  urlSearchParams: URLSearchParams,
+) => {
   const result: Record<string, any> = {};
 
-  entries.forEach(([key, value]) => {
+  urlSearchParams.forEach((value, key) => {
     const keyParts = key.split('.');
 
     let parent: Record<string, any> = result;
@@ -40,9 +41,9 @@ export const parseFormEntries = (
         }
 
         if (isLeaf) {
-          parent[strippedKey][arrayIndex] ??= value;
+          parent[strippedKey][arrayIndex] = value;
         } else {
-          parent[strippedKey][arrayIndex] ??= {};
+          parent[strippedKey][arrayIndex] = {};
           parent = parent[strippedKey][arrayIndex];
         }
       } else {
@@ -55,19 +56,6 @@ export const parseFormEntries = (
       }
     });
   });
+
   return result;
-};
-
-export const parseFormData = (formData: FormData) => {
-  return parseFormEntries(
-    Array.from(formData.entries()).filter(
-      (entry): entry is [string, string] => typeof entry[1] === 'string',
-    ),
-  );
-};
-
-export const parseFormDataFromSearchParams = (
-  urlSearchParams: URLSearchParams,
-) => {
-  return parseFormEntries(Array.from(urlSearchParams.entries()));
 };

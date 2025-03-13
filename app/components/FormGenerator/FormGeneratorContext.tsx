@@ -17,8 +17,7 @@
  */
 
 import { createContext } from 'react';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
-import type { ObjectSchema } from 'yup';
+import type { BFFDataRecord } from '@/types/record';
 
 export interface EnhancedFieldsHiddenConfig {
   type: 'hidden';
@@ -46,20 +45,14 @@ export type EnhancedFieldsConfig =
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
-  data?: BFFDataRecordData;
-  errors: Record<string, string[]>;
-  showDevInfo?: boolean;
-  boxGroups?: boolean;
-  showTooltips?: boolean;
+  showDevInfo: boolean;
+  boxGroups: boolean;
+  showTooltips: boolean;
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
-  onFormChange?: () => void;
-  yupSchema?: ObjectSchema<Record<string, any>>;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
   linkedData: undefined,
-  data: undefined,
-  errors: {},
   showDevInfo: false,
   boxGroups: false,
   showTooltips: true,

@@ -17,7 +17,11 @@
  */
 
 import { data } from 'react-router';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
+import type { BFFDataRecordData } from '@/types/record';
 import {
   getNotification,
   getSessionFromCookie,
@@ -39,7 +43,6 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { parseAndValidateFormData } from '@/utils/parseAndValidateFormData';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -59,12 +62,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
   return data(
-    {
-      formDefinition,
-      notification,
-      title,
-      breadcrumb,
-    },
+    { formDefinition, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
   );
 };
@@ -83,32 +81,22 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     validationTypeId,
     'create',
   );
-
-  const { parsedFormData, errors } = parseAndValidateFormData(
-    formDefinition,
-    await request.formData(),
-  );
-
+  const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
+  const resolver = yupResolver(yupSchema);
+  const {
+    errors,
+    data: validatedFormData,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData(request, resolver);
   if (errors) {
-    session.flash('notification', {
-      severity: 'error',
-      summary: 'Valideringsfel',
-    });
-
-    return data(
-      {
-        errors,
-        defaultValues: parsedFormData,
-      },
-      await getResponseInitWithSession(session),
-    );
+    return { errors, defaultValues };
   }
 
   try {
     const { recordType, id } = await createRecord(
       await context.dependencies,
-      validationTypeId,
-      parsedFormData,
+      formDefinition,
+      validatedFormData as BFFDataRecordData,
       auth,
     );
     session.flash('notification', {
@@ -120,10 +108,8 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     console.error(error);
 
     session.flash('notification', createNotificationFromAxiosError(error));
-    return data(
-      { errors: undefined, defaultValues: parsedFormData },
-      await getResponseInitWithSession(session),
-    );
+
+    return data({}, await getResponseInitWithSession(session));
   }
 };
 
@@ -135,7 +121,6 @@ export const meta = ({ data }: Route.MetaArgs) => {
 
 export default function CreateRecordRoute({
   loaderData,
-  actionData,
 }: Route.ComponentProps) {
   const { formDefinition, notification } = loaderData;
 
@@ -158,11 +143,7 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <RecordForm
-          formSchema={formDefinition}
-          errors={actionData?.errors}
-          defaultValues={actionData?.defaultValues}
-        />
+        <RecordForm formSchema={formDefinition} />
       </div>
     </SidebarLayout>
   );

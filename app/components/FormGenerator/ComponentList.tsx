@@ -17,7 +17,10 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { Component } from '@/components/FormGenerator/Component';
+import {
+  Component,
+  getCurrentComponentNamePath,
+} from '@/components/FormGenerator/Component';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -32,8 +35,9 @@ export const ComponentList = ({
 }: FormComponentListGeneratorProps) => {
   return components.map((component, i) => (
     <Component
-      key={i}
+      key={getCurrentComponentNamePath(component, path)}
       component={component}
+      idx={i}
       path={path}
       parentPresentationStyle={parentPresentationStyle}
     />

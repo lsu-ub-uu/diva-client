@@ -19,6 +19,8 @@
 
 import {
   checkForExistingSiblings,
+  checkIfComponentHasValue,
+  checkIfSingularComponentHasValue,
   checkIfValueExists,
   exportForTesting,
   getChildrenWithSameNameInDataFromSchema,
@@ -34,7 +36,8 @@ import {
   isFirstLevelGroup,
 } from '../formGeneratorUtils';
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { describe, expect } from 'vitest';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { describe, expect, vi } from 'vitest';
 import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/formDef';
 
 describe('helper methods', () => {
@@ -1619,6 +1622,67 @@ describe('helper methods', () => {
     it('checkIfValueExists returns true for non-empty string', () => {
       const actual = checkIfValueExists('someString');
       expect(actual).toBe(true);
+    });
+  });
+
+  describe('checkIfComponentHasValue', () => {
+    it('Should return false if the value is empty', () => {
+      const mockGetValues = vi.fn(() => {
+        return '';
+      }) as unknown as UseFormGetValues<FieldValues>;
+
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(false);
+    });
+    it('Should return true if the value is not empty', () => {
+      const values = {
+        divaOutput: {
+          recordInfo: {},
+          domain: {
+            value: 'hig',
+          },
+        },
+      };
+
+      const mockGetValues = vi.fn(() => {
+        return values.divaOutput.domain.value;
+      }) as unknown as UseFormGetValues<FieldValues>;
+
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(true);
+    });
+    it('Should return false if the value is undefined', () => {
+      const mockGetValues = vi.fn(() => {
+        return undefined;
+      }) as unknown as UseFormGetValues<FieldValues>;
+
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(false);
+    });
+  });
+  describe('checkIfSingularComponentHasValue', () => {
+    it('Should return false if the value is array with empty object', () => {
+      const mockGetValues = vi.fn(() => {
+        return [{ value: '' }];
+      }) as unknown as UseFormGetValues<FieldValues>;
+
+      const actual = checkIfSingularComponentHasValue(
+        mockGetValues,
+        'domain.value',
+      );
+      expect(actual).toStrictEqual(false);
+    });
+
+    it('Should return false if the value is undefined', () => {
+      const mockGetValues = vi.fn(() => {
+        return undefined;
+      }) as unknown as UseFormGetValues<FieldValues>;
+
+      const actual = checkIfSingularComponentHasValue(
+        mockGetValues as any,
+        'domain.value',
+      );
+      expect(actual).toStrictEqual(false);
     });
   });
 

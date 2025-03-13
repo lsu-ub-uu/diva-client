@@ -16,17 +16,17 @@ test('View report', async ({ page, divaOutput }) => {
 
   await page.goto(createUrl(`/diva-output/${recordId}`));
 
-  await expect(page.getByLabel(/^Id/)).toHaveText(recordId);
-  await expect(page.getByLabel(/^Posttyp/)).toHaveText('diva-output');
-  await expect(page.getByLabel(/^Valideringstyp/)).toHaveText(
+  await expect(await page.getByLabel(/^Id/)).toHaveText(recordId);
+  await expect(await page.getByLabel(/^Posttyp/)).toHaveText('diva-output');
+  await expect(await page.getByLabel(/^Valideringstyp/)).toHaveText(
     'publication_report',
   );
-  await expect(page.getByLabel(/^Datadelare/)).toHaveText('divaData');
-  await expect(page.getByLabel(/^Skapad av/)).toHaveText('161616');
-  await expect(page.getByLabel(/^Huvudtitel/)).toHaveText(recordTitle);
+  await expect(await page.getByLabel(/^Datadelare/)).toHaveText('divaData');
+  await expect(await page.getByLabel(/^Skapad av/)).toHaveText('161616');
+  await expect(await page.getByLabel(/^Huvudtitel/)).toHaveText(recordTitle);
 
-  const languageGroup = page.getByRole('region', {
+  const languageGroup = await page.getByRole('region', {
     name: 'Språk för resursen',
   });
-  await expect(languageGroup.getByLabel(/^Språk/)).toHaveText('Ainu');
+  await expect(await languageGroup.getByLabel(/^Språk/)).toHaveText('Ainu');
 });

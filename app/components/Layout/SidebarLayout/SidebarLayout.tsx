@@ -18,7 +18,6 @@
 
 import type { ReactNode } from 'react';
 import styles from './SidebarLayout.module.css';
-import clsx from 'clsx';
 
 interface SidebarLayoutProps {
   children?: ReactNode;
@@ -30,7 +29,7 @@ export const SidebarLayout = ({
   children,
 }: SidebarLayoutProps) => {
   return (
-    <div className={clsx(styles['sidebar-layout'], 'container')}>
+    <div className={styles['sidebar-layout']}>
       <aside>{sidebarContent}</aside>
       <main>{children}</main>
     </div>

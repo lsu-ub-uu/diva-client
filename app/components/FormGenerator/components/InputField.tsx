@@ -27,33 +27,30 @@ import type {
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
+import type { FieldValues, UseFormRegister } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
-  invalid: boolean;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
+  errorMessage: string | undefined;
+  register: UseFormRegister<FieldValues>;
 }
 
 export const InputField = ({
   component,
   path,
-  invalid,
-  defaultValue,
-  onChange,
+  errorMessage,
+  register,
 }: InputFieldProps) => {
   const { t } = useTranslation();
 
   if (isComponentCollVar(component)) {
     return (
       <Select
-        invalid={invalid}
+        {...register(path)}
+        invalid={errorMessage !== undefined}
         aria-label={!component.showLabel ? t(component.label) : undefined}
-        name={path}
-        defaultValue={defaultValue}
-        onChange={(e) => onChange?.(e.target.value)}
       >
         <option value=''>{t('divaClient_optionNoneText')}</option>
         {(component.options ?? []).map((item) => {
@@ -73,27 +70,23 @@ export const InputField = ({
   ) {
     return (
       <Textarea
-        name={path}
-        defaultValue={defaultValue}
-        invalid={invalid}
+        {...register(path)}
+        invalid={errorMessage !== undefined}
         placeholder={component.placeholder}
         readOnly={!!component.finalValue}
         aria-label={!component.showLabel ? t(component.label) : undefined}
-        onChange={(e) => onChange?.(e.target.value)}
       />
     );
   }
 
   return (
     <Input
-      name={path}
-      defaultValue={defaultValue}
+      {...register(path)}
       type={isPasswordField(component) ? 'password' : 'text'}
-      invalid={invalid}
+      invalid={errorMessage !== undefined}
       placeholder={component.placeholder}
       readOnly={!!component.finalValue}
       aria-label={!component.showLabel ? t(component.label) : undefined}
-      onChange={(e) => onChange?.(e.target.value)}
     />
   );
 };

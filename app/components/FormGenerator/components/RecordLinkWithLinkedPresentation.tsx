@@ -17,16 +17,19 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import type { ReactNode } from 'react';
+import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import React, { type ReactNode } from 'react';
+
+import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
+import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
-import { useValueFromData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 
 interface RecordLinkWithLinkedPresentationProps {
+  reactKey: string;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;
@@ -34,41 +37,45 @@ interface RecordLinkWithLinkedPresentationProps {
 }
 
 export const RecordLinkWithLinkedPresentation = ({
+  reactKey,
   component,
   name,
   attributes,
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { t } = useTranslation();
-  const defaultValue = useValueFromData(name) as string | undefined;
-
-  if (!defaultValue) {
-    return null;
-  }
+  const { getValues, control } = useRemixFormContext();
+  const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (
-    <div
-      className={styles['component']}
-      data-colspan={component.gridColSpan ?? 12}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
-    >
-      <DevInfo component={component} path={name} />
-      <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
-        {component.showLabel && (
-          <div className={linkedRecordStyles['label']}>
-            {t(component.label)}
+    <React.Fragment key={`${reactKey}_${name}`}>
+      {hasValue ? (
+        <div
+          key={reactKey}
+          className={styles['component']}
+          data-colspan={component.gridColSpan ?? 12}
+          id={`anchor_${addAttributesToName(component, component.name)}`}
+        >
+          <DevInfo component={component} path={name} />
+
+          <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+            {component.showLabel && (
+              <div className={linkedRecordStyles['label']}>
+                {t(component.label)}
+              </div>
+            )}
+            <div className={linkedRecordStyles['container']}>
+              {attributes} {actionButtonGroup}
+            </div>
           </div>
-        )}
-        <div className={linkedRecordStyles['container']}>
-          {attributes} {actionButtonGroup}
+          <ControlledLinkedRecord
+            control={control}
+            name={name}
+            recordType={component.recordLinkType ?? ''}
+            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+          />
         </div>
-      </div>
-      <input type='hidden' value={defaultValue} name={name} />
-      <LinkedRecord
-        id={defaultValue}
-        recordType={component.recordLinkType ?? ''}
-        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-      />
-    </div>
+      ) : null}
+    </React.Fragment>
   );
 };

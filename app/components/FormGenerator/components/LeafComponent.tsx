@@ -36,6 +36,7 @@ import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface LeafComponentProps {
   component: FormComponent;
+  reactKey: string;
   name: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
@@ -44,6 +45,7 @@ interface LeafComponentProps {
 
 export const LeafComponent = ({
   component,
+  reactKey,
   name,
   parentPresentationStyle,
   attributes,
@@ -60,6 +62,7 @@ export const LeafComponent = ({
   ) {
     return (
       <Variable
+        reactKey={reactKey}
         component={component}
         path={name}
         parentPresentationStyle={parentPresentationStyle}
@@ -74,6 +77,7 @@ export const LeafComponent = ({
       <RecordLink
         name={name}
         component={component}
+        reactKey={reactKey}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
@@ -81,11 +85,11 @@ export const LeafComponent = ({
   }
 
   if (isComponentText(component)) {
-    return <Text component={component} />;
+    return <Text reactKey={reactKey} component={component} />;
   }
 
   if (isComponentGuiElement(component)) {
-    return <GuiElementLink component={component} />;
+    return <GuiElementLink reactKey={reactKey} component={component} />;
   }
 
   return null;
