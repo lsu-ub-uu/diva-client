@@ -27,14 +27,22 @@ import type {
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
-import type { FieldValues, UseFormRegister } from 'react-hook-form';
+import {
+  type Control,
+  Controller,
+  type FieldValues,
+  type UseFormRegister,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { useHydrated } from '@/utils/useHydrated';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
   errorMessage: string | undefined;
   register: UseFormRegister<FieldValues>;
+  control: Control;
 }
 
 export const InputField = ({
@@ -42,18 +50,42 @@ export const InputField = ({
   path,
   errorMessage,
   register,
+  control,
 }: InputFieldProps) => {
+  const hydrated = useHydrated();
   const { t } = useTranslation();
 
   if (isComponentCollVar(component)) {
+    const options = [
+      { value: '', label: t('divaClient_optionNoneText') },
+      ...component.options,
+    ];
+    if (hydrated && component.options.length > 20) {
+      return (
+        <Controller
+          control={control}
+          name={path}
+          render={({ field: { name, value, onChange } }) => (
+            <ComboboxSelect
+              name={name}
+              value={value}
+              onChange={onChange}
+              invalid={errorMessage !== undefined}
+              aria-label={!component.showLabel ? t(component.label) : undefined}
+              options={options}
+            />
+          )}
+        />
+      );
+    }
+
     return (
       <Select
         {...register(path)}
         invalid={errorMessage !== undefined}
         aria-label={!component.showLabel ? t(component.label) : undefined}
       >
-        <option value=''>{t('divaClient_optionNoneText')}</option>
-        {(component.options ?? []).map((item) => {
+        {(options ?? []).map((item) => {
           return (
             <option key={item.value} value={item.value}>
               {t(item.label)}

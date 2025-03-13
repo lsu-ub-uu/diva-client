@@ -71,7 +71,7 @@ export const Variable = ({
   actionButtonGroup,
 }: VariableProps) => {
   const { t } = useTranslation();
-  const { getValues, register, formState } = useRemixFormContext();
+  const { getValues, register, control, formState } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const value = getValues(path);
 
@@ -131,6 +131,7 @@ export const Variable = ({
             path={path}
             errorMessage={errorMessage}
             register={register}
+            control={control}
           />
         </Field>
       )}

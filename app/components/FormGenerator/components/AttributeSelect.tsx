@@ -32,6 +32,9 @@ import {
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { Controller } from 'react-hook-form';
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { useHydrated } from '@/utils/useHydrated';
 
 interface AttributeSelectProps {
   name: string;
@@ -52,12 +55,12 @@ export const AttributeSelect = ({
   showLabel = true,
   tooltip,
   disabled,
-  placeholder,
   displayMode,
   finalValue,
 }: AttributeSelectProps) => {
+  const hydrated = useHydrated();
   const { t } = useTranslation();
-  const { register, getValues, formState } = useRemixFormContext();
+  const { register, getValues, control, formState } = useRemixFormContext();
 
   const errorMessage = getErrorMessageForField(formState, name);
   const value = finalValue ?? getValues(name);
@@ -91,20 +94,34 @@ export const AttributeSelect = ({
       errorMessage={errorMessage}
       adornment={tooltip && <FieldInfo {...tooltip} />}
     >
-      <Select
-        {...register(name)}
-        disabled={disabled}
-        invalid={errorMessage !== undefined}
-      >
-        <option value=''>
-          {t(placeholder ?? 'divaClient_optionNoneText')}
-        </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {t(option.label)}
-          </option>
-        ))}
-      </Select>
+      {hydrated && options.length > 20 ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { name, value, onChange } }) => (
+            <ComboboxSelect
+              name={name}
+              value={value}
+              onChange={onChange}
+              invalid={errorMessage !== undefined}
+              aria-label={!showLabel ? t(label) : undefined}
+              options={options}
+            />
+          )}
+        />
+      ) : (
+        <Select
+          {...register(name)}
+          disabled={disabled}
+          invalid={errorMessage !== undefined}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.label)}
+            </option>
+          ))}
+        </Select>
+      )}
     </Field>
   );
 };

@@ -141,7 +141,7 @@ export interface FormComponentCollVar extends FormComponentMetadata {
   showLabel: boolean;
 }
 
-interface FormComponentCollItem {
+export interface FormComponentCollItem {
   value: string;
   label: string;
 }
