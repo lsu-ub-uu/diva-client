@@ -28,24 +28,13 @@ import { useTranslation } from 'react-i18next';
 import { ManageSearch } from '@/icons';
 
 import styles from './ComboboxSelect.module.css';
-import { ComboboxButton, type ComboboxInputProps } from '@headlessui/react';
+import { ComboboxButton, type ComboboxProps } from '@headlessui/react';
 
-export interface ComboboxSelectProps
-  extends Omit<ComboboxInputProps, 'onChange'> {
+export interface ComboboxSelectProps extends ComboboxProps<string, false> {
   options: FormComponentCollItem[];
-  invalid?: boolean;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
 }
 
-export const ComboboxSelect = ({
-  options,
-  invalid,
-  onChange,
-  defaultValue,
-  name,
-  ...rest
-}: ComboboxSelectProps) => {
+export const ComboboxSelect = ({ options, ...rest }: ComboboxSelectProps) => {
   const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
@@ -79,18 +68,13 @@ export const ComboboxSelect = ({
         immediate
         onClose={() => setQuery('')}
         virtual={{ options: filteredOptions }}
-        defaultValue={defaultValue}
-        name={name}
-        onChange={onChange}
+        {...rest}
       >
         <ComboboxInput
           className={styles['combobox-input']}
           displayValue={(option) => optionMap[option]}
           onChange={(event) => setQuery(event.target.value)}
           onFocus={(e) => e.target.select()}
-          aria-invalid={invalid}
-          {...(invalid ? { 'data-invalid': '' } : undefined)}
-          {...rest}
         />
 
         <ComboboxButton className={styles['combobox-button']}>

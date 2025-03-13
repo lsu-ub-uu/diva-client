@@ -122,9 +122,6 @@ export const AttributeSelect = ({
           options={options}
           defaultValue={defaultValue}
           name={name}
-          disabled={disabled}
-          invalid={errorMessage != null}
-          onChange={onRevalidate}
         />
       ) : (
         <Select

@@ -58,9 +58,6 @@ export const InputField = ({
           options={options}
           defaultValue={defaultValue}
           name={path}
-          invalid={invalid}
-          aria-label={!component.showLabel ? t(component.label) : undefined}
-          onChange={(value) => onChange?.(value)}
         />
       );
     }
