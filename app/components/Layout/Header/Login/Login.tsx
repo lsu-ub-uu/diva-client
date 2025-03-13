@@ -29,7 +29,10 @@ import {
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
 
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
+import {
+  type Account,
+  devAccounts,
+} from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
@@ -89,24 +92,16 @@ export default function User() {
   if (!auth) {
     return (
       <div className={styles['login']}>
-        <Menu>
-          <MenuButton
-            as={Button}
-            disabled={submitting || !hydrated}
-            aria-busy={submitting}
-            variant='tertiary'
-          >
-            {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LoginIcon />}
-          </MenuButton>
-          <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions onSelect={handleDevSelection} />
-            <hr />
-            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-            <hr />
-            <PasswordLoginOptions returnTo={returnTo} />
-          </DropdownMenu>
-        </Menu>
+        <Button
+          as={Button}
+          onClick={() => handleDevSelection(devAccounts[0])}
+          disabled={submitting || !hydrated}
+          aria-busy={submitting}
+          variant='tertiary'
+        >
+          {t('divaClient_LoginText')}
+          {submitting ? <CircularLoader /> : <LoginIcon />}
+        </Button>
       </div>
     );
   }

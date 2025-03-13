@@ -44,6 +44,7 @@ import {
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 export const loader = async ({
   request,
@@ -75,7 +76,7 @@ export const loader = async ({
   );
 
   return data(
-    { record, formDefinition, title, notification },
+    { record, formDefinition, title, notification, breadcrumb: 'Granska' },
     await getResponseInitWithSession(session),
   );
 };
@@ -104,6 +105,7 @@ export default function ReviewRecordRoute({
 }: Route.ComponentProps) {
   const { record, formDefinition, notification } = loaderData;
   const { t } = useTranslation();
+  console.log(getRecordTitle(record!));
   return (
     <SidebarLayout
       sidebarContent={
@@ -115,8 +117,17 @@ export default function ReviewRecordRoute({
       }
     >
       <NotificationSnackbar notification={notification} />
-
       <div className={styles['record-wrapper']}>
+        <Alert severity='info'>
+          <AlertTitle>Bibliografisk granskning</AlertTitle>
+          <p>
+            Granska posten och klicka "Markera som granskad" för att godkänna.
+          </p>
+          <p>
+            Välj "Redigera post" vid behöv för att göra justeringar innan
+            godkännande .
+          </p>
+        </Alert>
         <ReviewForm record={record} formSchema={formDefinition} />
       </div>
     </SidebarLayout>

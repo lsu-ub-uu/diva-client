@@ -23,7 +23,7 @@ import { CardContext } from '@/components/Card/CardContext';
 
 interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
-  enhancedFields?: boolean;
+  enhancedFields?: 'red' | 'green' | false;
 }
 
 export const CardHeader = ({ children, enhancedFields }: CardHeaderProps) => {
@@ -31,7 +31,7 @@ export const CardHeader = ({ children, enhancedFields }: CardHeaderProps) => {
 
   return (
     <div
-      data-alert={enhancedFields === true}
+      data-alert={enhancedFields}
       className={styles['card-header']}
       {...(boxed && { 'data-boxed': '' })}
     >

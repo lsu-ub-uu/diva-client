@@ -128,43 +128,47 @@ export const RecordSearch = ({ searchResults }: RecordSearchProps) => {
             <input type='hidden' name='search.rows[0].value' value='10' />
           )}
 
-          <Pagination
-            searchResults={{
-              fromNo: 1,
-              toNo: fakeResults.length,
-              totalNo: fakeResults.length,
-            }}
-            onRowsPerPageChange={(e) => {}}
-          />
+          {query && (
+            <Pagination
+              searchResults={{
+                fromNo: 1,
+                toNo: fakeResults.length,
+                totalNo: fakeResults.length,
+              }}
+              onRowsPerPageChange={(e) => {}}
+            />
+          )}
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              gridColumn: 'span 2',
-            }}
-          >
-            Aktiva filter:
-            {myPubFilter && (
-              <InputChip
-                label='Mina publikationer'
-                onClose={() => setMyPubFilter(false)}
-              />
-            )}
-            {readyForPublicationFilter && (
-              <InputChip
-                label='Redo för publicering'
-                onClose={() => setReadyForPublicationFilter(false)}
-              />
-            )}
-            {readyForReviewFilter && (
-              <InputChip
-                label='Redo för granskning'
-                onClose={() => setReadyForReviewFilter(false)}
-              />
-            )}
-          </div>
+          {(myPubFilter || readyForReviewFilter) && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                gridColumn: 'span 2',
+              }}
+            >
+              Aktiva filter:
+              {myPubFilter && (
+                <InputChip
+                  label='Mina publikationer'
+                  onClose={() => setMyPubFilter(false)}
+                />
+              )}
+              {readyForPublicationFilter && (
+                <InputChip
+                  label='Redo för publicering'
+                  onClose={() => setReadyForPublicationFilter(false)}
+                />
+              )}
+              {readyForReviewFilter && (
+                <InputChip
+                  label='Redo för granskning'
+                  onClose={() => setReadyForReviewFilter(false)}
+                />
+              )}
+            </div>
+          )}
         </div>
       </form>
       {query && fakeResults.length === 0 && (

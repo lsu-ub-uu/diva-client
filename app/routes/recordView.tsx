@@ -39,11 +39,12 @@ import styles from '@/routes/record.module.css';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { DeleteIcon, EditDocumentIcon, MysteryIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { data, Form, Link } from 'react-router';
+import { data, Form, Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { fakeRecords } from '@/__mocks__/prototypeFakeData';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { merge } from 'lodash-es';
 
 export const loader = async ({
   request,
@@ -81,6 +82,10 @@ export const ErrorBoundary = RouteErrorBoundary;
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition, notification } = loaderData;
+  const location = useLocation();
+  const reviewed =
+    new URLSearchParams(location.search).get('reviewed') !== null;
+  console.log('reviewed', reviewed, record);
   const { t } = useTranslation();
   return (
     <SidebarLayout
@@ -94,7 +99,16 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
     >
       <NotificationSnackbar notification={notification} />
       <div className={styles['record-wrapper']}>
-        <ReadOnlyForm record={record} formSchema={formDefinition} />
+        <ReadOnlyForm
+          record={
+            reviewed
+              ? merge(record, {
+                  data: { output: { admin: { reviewed: { value: 'true' } } } },
+                })
+              : record
+          }
+          formSchema={formDefinition}
+        />
       </div>
       <FloatingActionButtonContainer>
         <FloatingActionButton

@@ -71,7 +71,6 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
           formSchema={formSchema}
           boxGroups
           enhancedFields={{
-            'output.admin': { type: 'group', alert: true },
             'output.admin.reviewed.value': { type: 'checkbox' },
           }}
         />

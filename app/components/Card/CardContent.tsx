@@ -22,14 +22,14 @@ import { CardContext } from '@/components/Card/CardContext';
 
 interface CardContentProps {
   children: ReactNode;
-  enhancedFields?: boolean;
+  enhancedFields?: 'red' | 'green' | false;
 }
 
 export const CardContent = ({ children, enhancedFields }: CardContentProps) => {
   const { boxed } = use(CardContext);
   return (
     <div
-      data-alert={enhancedFields === true}
+      data-alert={enhancedFields}
       className={styles['card-content']}
       {...(boxed && { 'data-boxed': '' })}
     >

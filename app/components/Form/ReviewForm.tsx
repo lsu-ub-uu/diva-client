@@ -76,7 +76,7 @@ export const ReviewForm = ({ record, formSchema }: ReviewFormProps) => {
           formSchema={formSchema}
           boxGroups
           enhancedFields={{
-            'output.admin': { type: 'group', alert: true },
+            'output.admin': { type: 'group', alert: 'red' },
             'output.admin.reviewed.value': { type: 'checkbox' },
           }}
         />
@@ -88,7 +88,7 @@ export const ReviewForm = ({ record, formSchema }: ReviewFormProps) => {
           as={Link}
           to={`/${record.recordType}/${record.id}/update`}
           icon={<EditDocumentIcon />}
-          text={'Redigera post'}
+          text={'Redigera'}
         />
         <FloatingActionButton
           variant='primary'

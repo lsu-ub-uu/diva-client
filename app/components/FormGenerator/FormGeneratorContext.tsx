@@ -29,7 +29,7 @@ export interface EnhancedFieldsCheckboxConfig {
 
 export interface EnhancedGroupConfig {
   type: 'group';
-  alert: boolean;
+  alert: 'red' | 'green';
 }
 
 export interface EnhancedFieldsLinkConfig {

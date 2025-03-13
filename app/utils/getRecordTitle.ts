@@ -20,7 +20,7 @@ import type { BFFDataRecord } from '@/types/record';
 
 export const getRecordTitle = (record: BFFDataRecord): string | undefined => {
   const data = record.data;
-  const root = data[Object.keys(data)[0]];
+  const root = data.output;
 
   if (record.recordType === 'diva-output') {
     return root?.titleInfo?.title?.value;

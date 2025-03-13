@@ -34,10 +34,23 @@ export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
     defaultValues: record?.data,
   });
 
+  const reviewed =
+    new URLSearchParams(location.search).get('reviewed') !== null;
+
   return (
     <article className={styles['wrapper']}>
+      <div className={styles['record-wrapper']}></div>
       <RemixFormProvider {...methods}>
-        <FormGenerator formSchema={formSchema} boxGroups />
+        <FormGenerator
+          formSchema={formSchema}
+          boxGroups
+          enhancedFields={{
+            'output.admin': {
+              type: 'group',
+              alert: reviewed ? 'green' : 'red',
+            },
+          }}
+        />
       </RemixFormProvider>
     </article>
   );

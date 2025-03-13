@@ -89,15 +89,18 @@ export const Group = ({
     <section
       className={`${styles['component']} anchorLink`}
       data-colspan={component.gridColSpan ?? 12}
+      style={
+        enhancement?.type === 'group' && enhancement?.alert
+          ? { gridRow: 1 }
+          : undefined
+      }
       id={`anchor_${addAttributesToName(component, component.name)}`}
       {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card boxed={boxGroups && groupLevel !== 0}>
         <CardHeader
-          enhancedFields={
-            enhancement?.type === 'group' && enhancement?.alert === true
-          }
+          enhancedFields={enhancement?.type === 'group' && enhancement?.alert}
         >
           {component.showLabel && (
             <CardTitle>
@@ -118,9 +121,7 @@ export const Group = ({
           {actionButtonGroup}
         </CardHeader>
         <CardContent
-          enhancedFields={
-            enhancement?.type === 'group' && enhancement?.alert === true
-          }
+          enhancedFields={enhancement?.type === 'group' && enhancement?.alert}
         >
           <div
             className={styles['container']}
