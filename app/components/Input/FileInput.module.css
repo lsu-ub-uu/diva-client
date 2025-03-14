@@ -16,24 +16,41 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Input as HUIInput,
-  type InputProps as HUIInputProps,
-} from '@headlessui/react';
-import styles from './Input.module.css';
-import clsx from 'clsx';
-import type { Ref } from 'react';
+.wrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  padding: var(--gap-xl);
+  text-align: center;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--border-radius);
+  transition: background-color 0.1s;
 
-interface InputProps extends HUIInputProps {
-  ref?: Ref<HTMLInputElement>;
+  svg {
+    font-size: var(--font-size-icon);
+  }
+
+  &:hover {
+    background-color: rgb(0 0 0 / 8%);
+  }
+
+  &:active {
+    background-color: rgb(0 0 0 / 12%);
+  }
+
+  &[data-dragging='true'] {
+    border-style: solid;
+    border-color: var(--color-link);
+    background-color: var(--color-background);
+  }
 }
 
-export const Input = ({ className, ref, ...rest }: InputProps) => {
-  return (
-    <HUIInput /**/
-      className={clsx(styles['input'], className)}
-      ref={ref}
-      {...rest}
-    />
-  );
-};
+.file-input {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}

@@ -25,7 +25,8 @@ import { useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import type { loader } from '@/root';
 import axios from 'axios';
-import { LinearLoader } from '@/components/Loader/LinearLoader';
+import { Progress } from '@/components/Progress/Progress';
+import { FileInput } from '@/components/Input/FileInput';
 
 interface RecordLinkBinaryProps {
   component: FormComponentRecordLink;
@@ -36,7 +37,7 @@ export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
   const { t } = useTranslation();
   const { setValue } = useRemixFormContext();
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  const [progress, setProgress] = useState<number>(50);
+  const [progress, setProgress] = useState<number>(0);
 
   const authToken = rootLoaderData?.auth?.data.token;
 
@@ -76,7 +77,7 @@ export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
       data-colspan={component.gridColSpan ?? 12}
     >
       {progress ? (
-        <LinearLoader
+        <Progress
           value={progress}
           max={100}
           label={`Laddar upp. ${progress}`}
@@ -90,7 +91,7 @@ export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
         variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
         info={showTooltips ? component.tooltip : undefined}*/
         >
-          <input type='file' name={path} onChange={handleFileChange} />
+          <FileInput name={path} onChange={handleFileChange} />
         </Field>
       )}
     </div>
