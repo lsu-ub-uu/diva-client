@@ -23,7 +23,11 @@ import {
 } from '@/cora/helper.server';
 import axios from 'axios';
 
-export const createBinaryRecord = async (file: File, authToken?: string) => {
+export const createBinaryRecord = async (
+  fileName: string,
+  fileSize: string,
+  authToken?: string,
+) => {
   const payload = {
     name: 'binary',
     children: [
@@ -50,8 +54,8 @@ export const createBinaryRecord = async (file: File, authToken?: string) => {
         name: 'adminInfo',
         children: [{ name: 'visibility', value: 'unpublished' }],
       },
-      { name: 'originalFileName', value: file.name },
-      { name: 'expectedFileSize', value: String(file.size) },
+      { name: 'originalFileName', value: fileName },
+      { name: 'expectedFileSize', value: fileSize },
     ],
     attributes: { type: 'generic' },
   };

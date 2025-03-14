@@ -18,24 +18,17 @@
 import type { Route } from './+types/fileUpload';
 import { createBinaryRecord } from '@/cora/createBinaryRecord';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import type { ActionLink } from '@/cora/cora-data/types.server';
-import axios from 'axios';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
-import { uploadBinary } from '@/cora/uploadBinary';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
-  const formData = await request.formData();
-  const file = formData.get('file');
-
-  if (!file || !(file instanceof File)) {
-    throw new Error('No valid file upload');
-  }
+  const { fileName, fileSize } = await request.json();
 
   const createBinaryRecordResponse = await createBinaryRecord(
-    file,
+    fileName,
+    fileSize,
     auth?.data?.token,
   );
 
@@ -44,13 +37,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
     createBinaryRecordResponse.data,
   );
 
-  await uploadBinary(binaryRecord, file, auth?.data?.token);
-
-  return { binaryRecordId: binaryRecord.id };
+  return Response.json({
+    binaryRecord,
+  });
 };
-//{
-//   "requestMethod": "POST",
-//   "rel": "upload",
-//   "contentType": "multipart/form-data",
-//   "url": "https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:3118722940664362/master"
-// }
