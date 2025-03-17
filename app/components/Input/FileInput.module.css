@@ -46,7 +46,12 @@
     border-color: var(--color-link);
     background-color: var(--color-background);
   }
+
+  &:has([data-invalid]) {
+    border-color: var(--color-error-main);
 }
+}
+
 
 .file-input {
   opacity: 0;

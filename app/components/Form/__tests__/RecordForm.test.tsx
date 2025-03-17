@@ -78,6 +78,7 @@ import {
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithrecordLinkTypeBinary,
   formDefWithTextVar,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
@@ -993,6 +994,16 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a recordLink 1-1 with a fileupload', async () => {
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={formDefWithrecordLinkTypeBinary}
+        />,
+      );
+      const input = screen.getByText('divaClient_fileInputText');
+      expect(input).toBeInTheDocument();
     });
   });
 

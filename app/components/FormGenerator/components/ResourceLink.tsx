@@ -50,7 +50,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
           className={resourceLinkStyles['download-link']}
           type={data.mimeType}
         >
-          {t('divaClient_downloadFileText')}
+          {t('resourceLinkDownloadText')}
           <DownloadIcon />
         </a>
       )}

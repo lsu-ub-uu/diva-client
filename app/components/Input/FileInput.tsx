@@ -25,9 +25,10 @@ import { Input } from '@headlessui/react';
 interface FileInputProps {
   name: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  errorMessage: string | undefined;
 }
 
-export const FileInput = ({ name, onChange }: FileInputProps) => {
+export const FileInput = ({ name, onChange, errorMessage }: FileInputProps) => {
   const { t } = useTranslation();
   const [dragging, setDragging] = useState(false);
 
@@ -42,6 +43,7 @@ export const FileInput = ({ name, onChange }: FileInputProps) => {
       {/*Dra filer hit eller klicka för att välja fil*/}
       <Input
         className={styles['file-input']}
+        invalid={errorMessage !== undefined}
         type='file'
         name={name}
         onChange={onChange}

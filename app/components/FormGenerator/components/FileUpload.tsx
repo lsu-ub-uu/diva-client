@@ -21,25 +21,43 @@ import { Field } from '@/components/Input/Field';
 import styles from './FormComponent.module.css';
 import { useTranslation } from 'react-i18next';
 import { useRouteLoaderData } from 'react-router';
-import { useState } from 'react';
+import { type ReactNode, use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import type { loader } from '@/root';
 import axios from 'axios';
 import { Progress } from '@/components/Progress/Progress';
 import { FileInput } from '@/components/Input/FileInput';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RecordLinkBinaryProps {
   component: FormComponentRecordLink;
   path: string;
+  parentPresentationStyle: string | undefined;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
-export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
+export const FileUpload = ({
+  component,
+  path,
+  parentPresentationStyle,
+  attributes,
+  actionButtonGroup,
+}: RecordLinkBinaryProps) => {
   const { t } = useTranslation();
-  const { setValue } = useRemixFormContext();
+  const { getValues, setValue, formState } = useRemixFormContext();
+  const { showTooltips } = use(FormGeneratorContext);
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
   const [progress, setProgress] = useState<number>(0);
-
+  const value = getValues(path);
   const authToken = rootLoaderData?.auth?.data.token;
+
+  const errorMessage = getErrorMessageForField(formState, path);
+  if (component.mode === 'output' && !value) {
+    return null;
+  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -76,6 +94,8 @@ export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
       className={styles['component']}
       data-colspan={component.gridColSpan ?? 12}
     >
+      <DevInfo component={component} path={path} />
+
       {progress ? (
         <Progress
           value={progress}
@@ -87,11 +107,21 @@ export const FileUpload = ({ component, path }: RecordLinkBinaryProps) => {
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel && t(component.label)}
-          /* errorMessage={errorMessage}
-        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
-        info={showTooltips ? component.tooltip : undefined}*/
+          errorMessage={errorMessage}
+          variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+          info={showTooltips ? component.tooltip : undefined}
         >
-          <FileInput name={path} onChange={handleFileChange} />
+          <FileInput
+            name={path}
+            onChange={handleFileChange}
+            errorMessage={errorMessage}
+            adornment={
+              <>
+                {attributes}
+                {actionButtonGroup}
+              </>
+            }
+          />
         </Field>
       )}
     </div>
