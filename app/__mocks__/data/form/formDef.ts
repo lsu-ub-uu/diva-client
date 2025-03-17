@@ -5244,7 +5244,7 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
   },
 };
 
-export const formDefWithrecordLinkTypeBinary: RecordFormSchema = {
+export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',

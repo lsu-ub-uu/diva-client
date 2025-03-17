@@ -78,7 +78,7 @@ import {
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithTwoCollectionVars,
-  formDefWithrecordLinkTypeBinary,
+  formDefWithRecordLinkTypeBinary,
   formDefWithTextVar,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
@@ -578,6 +578,22 @@ describe('<Form />', () => {
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('renders a form from a given definition for fileUpload and and does NOT validate it', async () => {
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={formDefWithRecordLinkTypeBinary}
+        />,
+      );
+      const user = userEvent.setup();
+      screen.logTestingPlaygroundURL();
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      await user.click(submitButton);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
+    });
+
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
       render(
         <RecordFormWithRoutesStub
@@ -999,7 +1015,7 @@ describe('<Form />', () => {
     it('renders a recordLink 1-1 with a fileupload', async () => {
       render(
         <RecordFormWithRoutesStub
-          formSchema={formDefWithrecordLinkTypeBinary}
+          formSchema={formDefWithRecordLinkTypeBinary}
         />,
       );
       const input = screen.getByText('divaClient_fileInputText');
