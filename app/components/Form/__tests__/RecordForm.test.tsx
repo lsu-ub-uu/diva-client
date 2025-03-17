@@ -585,7 +585,6 @@ describe('<Form />', () => {
         />,
       );
       const user = userEvent.setup();
-      screen.logTestingPlaygroundURL();
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
