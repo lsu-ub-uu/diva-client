@@ -40,15 +40,17 @@ test('Create report', async ({ page, request, authtoken }) => {
 
   // Fill create form
   await page
-    .getByLabel(/^Record content source/)
-    .selectOption({ label: 'Uppsala universitet' });
+    .getByRole('combobox', { name: 'Record content source' })
+    .fill('Uppsala universitet');
+  await page.getByRole('option', { name: 'Uppsala universitet' }).click();
 
   await page
     .getByRole('region', {
       name: 'Språk för resursen',
     })
-    .getByLabel(/^Språk/)
-    .selectOption({ label: 'Svenska' });
+    .getByRole('combobox', { name: 'Språk' })
+    .fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
   await page
     .getByLabel(/^Typ av innehåll/)
@@ -57,7 +59,9 @@ test('Create report', async ({ page, request, authtoken }) => {
   const titleGroup = page.getByRole('region', {
     name: 'Titel',
   });
-  await titleGroup.getByLabel(/^Språk/).selectOption({ label: 'Svenska' });
+  await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
   await titleGroup.getByLabel('Huvudtitel').fill(mockTitle);
 
   await page

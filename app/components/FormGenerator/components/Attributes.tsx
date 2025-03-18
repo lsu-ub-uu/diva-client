@@ -20,6 +20,7 @@ import { AttributeSelect } from '@/components/FormGenerator/components/Attribute
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { useTranslation } from 'react-i18next';
 
 interface AttributesProps {
   component: FormComponentWithData;
@@ -27,16 +28,24 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
+  const { t } = useTranslation();
   const attributesToShow = getAttributesToShow(component);
   const { showTooltips } = use(FormGeneratorContext);
 
   return attributesToShow.map((attribute, index) => {
+    const options = [
+      {
+        value: '',
+        label: t(attribute.placeholder ?? 'divaClient_optionNoneText'),
+      },
+      ...attribute.options,
+    ];
     return (
       <AttributeSelect
         key={`${attribute.name}_${index}`}
         name={`${path}._${attribute.name}`}
         label={attribute.label ?? ''}
-        options={attribute.options}
+        options={options}
         showLabel={attribute.showLabel}
         placeholder={attribute.placeholder}
         tooltip={showTooltips ? attribute.tooltip : undefined}

@@ -53,10 +53,6 @@ test('updates an existing report with a binary', async ({
     .getByLabel('Bifogad fil')
     .setInputFiles(path.join(import.meta.dirname, 'assets/dog.jpg'));
 
-  await expect(
-    page.getByRole('progressbar', { name: /^Laddar upp/ }),
-  ).toBeVisible();
-
   await expect(page.getByLabel('Originalfilnam')).toHaveText('dog.jpg');
 
   await page

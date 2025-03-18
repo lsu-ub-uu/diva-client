@@ -46,8 +46,9 @@ test('Create report', async ({ page, request, authtoken }) => {
 
   // Fill create form
   await page
-    .getByLabel(/^Record content source/)
-    .selectOption({ label: 'Uppsala universitet' });
+    .getByRole('combobox', { name: 'Record content source' })
+    .fill('Uppsala universitet');
+  await page.getByRole('option', { name: 'Uppsala universitet' }).click();
 
   await page.getByLabel(/^Konstnärligt arbete/).selectOption({ label: 'Sant' });
 
@@ -55,8 +56,9 @@ test('Create report', async ({ page, request, authtoken }) => {
     .getByRole('region', {
       name: 'Språk för resursen',
     })
-    .getByLabel(/^Språk/)
-    .selectOption({ label: 'Svenska' });
+    .getByRole('combobox', { name: 'Språk' })
+    .fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
   await page
     .getByLabel(/^Typ av innehåll/)
@@ -65,7 +67,10 @@ test('Create report', async ({ page, request, authtoken }) => {
   const titleGroup = page.getByRole('region', {
     name: 'Titel',
   });
-  await titleGroup.getByLabel(/^Språk/).selectOption({ label: 'Engelska' });
+
+  await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
   await titleGroup.getByLabel('Huvudtitel').fill(mockTitle);
   await titleGroup.getByLabel('Undertitel').fill(mockSubtitle);
 
@@ -75,8 +80,10 @@ test('Create report', async ({ page, request, authtoken }) => {
     name: 'Alternativ Titel',
   });
   await alternativeTitleGroup
-    .getByLabel(/^Språk/)
-    .selectOption({ label: 'Svenska' });
+    .getByRole('combobox', { name: 'Språk' })
+    .fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
   await alternativeTitleGroup.getByLabel('Huvudtitel').fill(mockAltTitle);
   await alternativeTitleGroup.getByLabel('Undertitel').fill(mockAltSubtitle);
 
@@ -94,12 +101,23 @@ test('Create report', async ({ page, request, authtoken }) => {
   const keywordsGroup = page.getByRole('region', {
     name: 'Nyckelord',
   });
-  await keywordsGroup.getByLabel(/^Språk/).selectOption({ label: 'Svenska' });
+
+  await keywordsGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
   await keywordsGroup.getByLabel('nyckelord').fill(keywords);
 
   await page
-    .getByLabel(/^Standard för svensk indelning av forskningsämnen/)
-    .selectOption({ label: '(10302) Atom- och molekylfysik och optik' });
+    .getByRole('combobox', {
+      name: 'Standard för svensk indelning av forskningsämnen',
+    })
+    .fill('Atom- och molekylfysik och optik');
+  await page
+    .getByRole('option', {
+      name: '(10302) Atom- och molekylfysik och optik',
+      exact: true,
+    })
+    .click();
 
   const sustainableDevelopmentGroup = page.getByRole('region', {
     name: 'Hållbar utveckling',
