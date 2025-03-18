@@ -30,7 +30,7 @@ interface InputProps extends HUIInputProps {
 
 export const Input = ({ className, ref, ...rest }: InputProps) => {
   return (
-    <HUIInput
+    <HUIInput /**/
       className={clsx(styles['input'], className)}
       ref={ref}
       {...rest}

@@ -67,6 +67,13 @@ describe('recordInfoHelpers', () => {
             },
           },
         },
+        actionLinks: {
+          read: {
+            url: '',
+            rel: 'read',
+            requestMethod: 'GET',
+          },
+        },
       };
       const actual = getRecordInfo(response);
       expect(actual).toStrictEqual({

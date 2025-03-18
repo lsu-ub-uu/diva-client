@@ -10,6 +10,13 @@ export const dataListWithTwoRecords: DataListWrapper = {
             name: 'someNameInData',
             children: [],
           },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
+          },
         },
       },
       {
@@ -17,6 +24,13 @@ export const dataListWithTwoRecords: DataListWrapper = {
           data: {
             name: 'someNameInData2',
             children: [],
+          },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
           },
         },
       },
@@ -37,6 +51,13 @@ export const dataListWithThreeRecords: DataListWrapper = {
             name: 'someNameInData',
             children: [],
           },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
+          },
         },
       },
       {
@@ -45,6 +66,13 @@ export const dataListWithThreeRecords: DataListWrapper = {
             name: 'someNameInData2',
             children: [],
           },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
+          },
         },
       },
       {
@@ -52,6 +80,13 @@ export const dataListWithThreeRecords: DataListWrapper = {
           data: {
             name: 'someNameInData3',
             children: [],
+          },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
           },
         },
       },

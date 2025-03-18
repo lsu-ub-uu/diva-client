@@ -27,6 +27,13 @@ export const coraRecord: BFFDataRecord = {
   createdAt: '2023-10-11T09:24:30.511487Z',
   createdBy: 'coraUser:490742519075086',
   userRights: ['read', 'update', 'index', 'delete'],
+  actionLinks: {
+    read: {
+      url: '',
+      rel: 'read',
+      requestMethod: 'GET',
+    },
+  },
   updated: [],
   data: {
     someRootNameInData: {
@@ -258,6 +265,13 @@ export const authorRecord: BFFDataRecord = {
     },
   ],
   userRights: ['read', 'update', 'index', 'delete'],
+  actionLinks: {
+    read: {
+      url: '',
+      rel: 'read',
+      requestMethod: 'GET',
+    },
+  },
   data: {
     divaOutput: {
       recordInfo: {

@@ -267,6 +267,13 @@ export const dataListContainingOnePerson: DataListWrapper = {
             ],
             name: 'person',
           },
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
+          },
         },
       },
     ],
@@ -2242,6 +2249,13 @@ export const onePerson: RecordWrapper = {
         },
       ],
       name: 'person',
+    },
+    actionLinks: {
+      read: {
+        url: '',
+        rel: 'read',
+        requestMethod: 'GET',
+      },
     },
   },
 };

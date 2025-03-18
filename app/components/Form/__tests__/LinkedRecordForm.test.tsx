@@ -32,6 +32,13 @@ describe('<LinkedRecordForm />', () => {
           recordType: 'linkedRecordType',
           data: {},
           presentation: formDefWithTextVar as FormSchema,
+          actionLinks: {
+            read: {
+              url: '',
+              rel: 'read',
+              requestMethod: 'GET',
+            },
+          },
         }}
       />,
     );

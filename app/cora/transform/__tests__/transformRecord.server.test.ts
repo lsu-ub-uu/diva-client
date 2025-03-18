@@ -196,6 +196,59 @@ describe('transformRecord', () => {
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          delete: {
+            rel: 'delete',
+            requestMethod: 'DELETE',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+          },
+          index: {
+            accept: 'application/vnd.uub.record+json',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'divaOutput',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutput:519333261463755',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            rel: 'index',
+            requestMethod: 'POST',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+          },
+          read: {
+            accept: 'application/vnd.uub.record+json',
+            rel: 'read',
+            requestMethod: 'GET',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+          },
+          update: {
+            accept: 'application/vnd.uub.record+json',
+            contentType: 'application/vnd.uub.record+json',
+            rel: 'update',
+            requestMethod: 'POST',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+          },
+        },
         updated: [
           {
             updateAt: '2023-10-11T09:24:30.511487Z',
@@ -343,6 +396,59 @@ describe('transformRecord', () => {
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          update: {
+            requestMethod: 'POST',
+            rel: 'update',
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          index: {
+            requestMethod: 'POST',
+            rel: 'index',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'divaOutputSwepub',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutputSwepub:2087392797647370',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+            accept: 'application/vnd.uub.record+json',
+          },
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+          },
+        },
         updated: [
           {
             updateAt: '2024-09-13T11:49:37.288927Z',
@@ -438,6 +544,59 @@ describe('transformRecord', () => {
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          update: {
+            requestMethod: 'POST',
+            rel: 'update',
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          index: {
+            requestMethod: 'POST',
+            rel: 'index',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'divaOutputSwepub',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutputSwepub:2087392797647370',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+            accept: 'application/vnd.uub.record+json',
+          },
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+          },
+        },
         updated: [
           {
             updateAt: '2024-09-13T11:49:37.288927Z',
@@ -524,6 +683,59 @@ describe('transformRecord', () => {
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          update: {
+            requestMethod: 'POST',
+            rel: 'update',
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          index: {
+            requestMethod: 'POST',
+            rel: 'index',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'divaOutputSwepub',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutputSwepub:2087392797647370',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+            accept: 'application/vnd.uub.record+json',
+          },
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+          },
+        },
         updated: [
           {
             updateAt: '2024-09-13T11:49:37.288927Z',
@@ -611,6 +823,59 @@ describe('transformRecord', () => {
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          update: {
+            requestMethod: 'POST',
+            rel: 'update',
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+            accept: 'application/vnd.uub.record+json',
+          },
+          index: {
+            requestMethod: 'POST',
+            rel: 'index',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'divaOutputSwepub',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutputSwepub:2087392797647370',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+            accept: 'application/vnd.uub.record+json',
+          },
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
+          },
+        },
         updated: [
           {
             updateAt: '2024-09-13T11:49:37.288927Z',
@@ -695,6 +960,59 @@ describe('transformRecord', () => {
         recordType: 'namePartPartWithAttributesValidationTypeId',
         validationType: 'manuscript',
         userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+            accept: 'application/vnd.uub.record+json',
+          },
+          update: {
+            requestMethod: 'POST',
+            rel: 'update',
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+            accept: 'application/vnd.uub.record+json',
+          },
+          index: {
+            requestMethod: 'POST',
+            rel: 'index',
+            body: {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'namePartPartWithAttributesValidationTypeId',
+                    },
+                  ],
+                  name: 'recordType',
+                },
+                {
+                  name: 'recordId',
+                  value: 'divaOutput:519333261463755',
+                },
+                {
+                  name: 'type',
+                  value: 'index',
+                },
+              ],
+              name: 'workOrder',
+            },
+            contentType: 'application/vnd.uub.record+json',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+            accept: 'application/vnd.uub.record+json',
+          },
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
+          },
+        },
         updated: [],
         data: {
           divaOutput: {
