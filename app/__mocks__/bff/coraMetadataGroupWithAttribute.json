@@ -180,6 +180,13 @@
             "attributes": {
               "type": "group"
             }
+          },
+          "actionLinks": {
+            "read": {
+              "url": "",
+              "rel": "read",
+              "requestMethod": "GET"
+            }
           }
         }
       }

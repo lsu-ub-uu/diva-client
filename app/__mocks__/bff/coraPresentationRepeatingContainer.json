@@ -197,6 +197,13 @@
               "type": "container",
               "repeat": "this"
             }
+          },
+          "actionLinks": {
+            "read": {
+              "url": "",
+              "rel": "read",
+              "requestMethod": "GET"
+            }
           }
         }
       }

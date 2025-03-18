@@ -188,6 +188,13 @@
             "attributes": {
               "type": "recordLink"
             }
+          },
+          "actionLinks": {
+            "read": {
+              "url": "",
+              "rel": "read",
+              "requestMethod": "GET"
+            }
           }
         }
       }

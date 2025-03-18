@@ -412,7 +412,7 @@ describe('transformCoraPresentations', () => {
 
     it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pRecordLink, pNumVar, pVar and pCollVar) entries and skips other types', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationWithMiscTypes as DataListWrapper,
+        coraPresentationWithMiscTypes as unknown as DataListWrapper,
       );
       expect(transformData).toHaveLength(6);
     });

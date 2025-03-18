@@ -46,7 +46,15 @@ export const RecordLink = ({
 
   const { linkedData } = use(FormGeneratorContext);
   if (component.recordLinkType === 'binary' && !value) {
-    return <FileUpload component={component} path={name} />;
+    return (
+      <FileUpload
+        component={component}
+        path={name}
+        parentPresentationStyle={parentPresentationStyle}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+      />
+    );
   }
 
   if (

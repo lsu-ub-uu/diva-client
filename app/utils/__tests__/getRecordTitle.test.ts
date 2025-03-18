@@ -44,6 +44,7 @@ describe('getRecordTitle', () => {
           },
         },
       },
+      actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
     } satisfies BFFDataRecord;
     const actual = getRecordTitle(formData);
     expect(actual).toBe('someTitle');
@@ -74,6 +75,7 @@ describe('getRecordTitle', () => {
           recordInfo,
         },
       },
+      actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
     } satisfies BFFDataRecord;
 
     const actual = getRecordTitle(formData);
@@ -99,6 +101,7 @@ describe('getRecordTitle', () => {
           recordInfo,
         },
       },
+      actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
     } satisfies BFFDataRecord;
 
     const actual = getRecordTitle(formData);
