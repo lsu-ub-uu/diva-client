@@ -56,5 +56,6 @@ export { default as PersonsIcon } from './Persons.svg?react';
 export { default as SchemaIcon } from './Schema.svg?react';
 export { default as VisibilityIcon } from './Visibility.svg?react';
 export { default as MysteryIcon } from './Mystery.svg?react';
-export { default as SearchCheckIcon } from './SearchCheck.svg?react';
 export { default as ManageSearchIcon } from './ManageSearch.svg?react';
+export { default as SearchCheckIcon } from './SearchCheck.svg?react';
+export { default as UploadFileIcon } from './UploadFile.svg?react';

@@ -18,6 +18,7 @@
  */
 import css from './design-system.css?url';
 import { Button } from '@/components/Button/Button';
+import * as icons from '@/icons';
 import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { Field } from '@/components/Input/Field';
@@ -35,14 +36,14 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { LinearLoader } from '@/components/Loader/LinearLoader';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-import * as icons from '@/icons';
+import { Progress } from '@/components/Progress/Progress';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DesignSystem() {
   const [darkMode, setDarkMode] = useState(false);
   const [snacbkarOpen, setSnacbkarOpen] = useState(false);
-
+  const [progress, setProgress] = useState(50);
   useEffect(() => {
     document.querySelector('body')!.dataset.theme = darkMode ? 'dark' : 'light';
   }, [darkMode]);
@@ -387,15 +388,32 @@ export default function DesignSystem() {
           <h2>Loaders</h2>
           CircularLoader
           <CircularLoader />
-          LinearLoader
-          <LinearLoader />
-          SkeletonLoader
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-          >
-            <SkeletonLoader width='20ch' height='1.5rem' />
-            <SkeletonLoader width='45ch' height='1rem' />
-            <SkeletonLoader width='35ch' height='1rem' />
+          LinearLoader Indeterminate
+          <LinearLoader label='Loading infinitely' />
+          Progress Value{' '}
+          <input
+            type='number'
+            defaultValue={progress}
+            onChange={(e) => setProgress(Number(e.target.value))}
+          />
+          <Progress
+            id='progress'
+            value={progress}
+            label={`Uploaded ${progress}%`}
+          />
+          <div>
+            SkeletonLoader
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+              }}
+            >
+              <SkeletonLoader width='20ch' height='1.5rem' />
+              <SkeletonLoader width='45ch' height='1rem' />
+              <SkeletonLoader width='35ch' height='1rem' />
+            </div>
           </div>
         </section>
         <section>

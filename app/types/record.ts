@@ -18,6 +18,7 @@
  */
 
 import type { FormSchema } from '@/components/FormGenerator/types';
+import type { ActionLink } from '@/cora/cora-data/types.server';
 
 export interface BFFDataRecord {
   id: string;
@@ -31,6 +32,7 @@ export interface BFFDataRecord {
   presentation?: FormSchema;
   listPresentation?: FormSchema;
   autoCompletePresentation?: unknown;
+  actionLinks: Record<string, ActionLink>;
 }
 
 export type BFFDataRecordData = Record<string, Metadata>;

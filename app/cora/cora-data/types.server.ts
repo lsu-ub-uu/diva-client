@@ -57,7 +57,7 @@ export interface Permissions {
 export interface CoraRecord {
   data: DataGroup;
   permissions?: Permissions;
-  actionLinks?: ActionLinks;
+  actionLinks: Record<string, ActionLink>;
 }
 
 export interface AuthWrapper {

@@ -23,6 +23,12 @@ import { createUrl } from './util/createUrl';
 
 test('Create report', async ({ page, request, authtoken }) => {
   const mockTitle = faker.book.title();
+  const mockSubtitle = faker.book.title();
+  const mockAltTitle = faker.book.title();
+  const mockAltSubtitle = faker.book.title();
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const keywords = faker.lorem.words(10);
 
   // Go to start page
   await page.goto(createUrl('/'));
@@ -44,6 +50,8 @@ test('Create report', async ({ page, request, authtoken }) => {
     .fill('Uppsala universitet');
   await page.getByRole('option', { name: 'Uppsala universitet' }).click();
 
+  await page.getByLabel(/^Konstnärligt arbete/).selectOption({ label: 'Sant' });
+
   await page
     .getByRole('region', {
       name: 'Språk för resursen',
@@ -64,6 +72,61 @@ test('Create report', async ({ page, request, authtoken }) => {
   await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
   await titleGroup.getByLabel('Huvudtitel').fill(mockTitle);
+  await titleGroup.getByLabel('Undertitel').fill(mockSubtitle);
+
+  await page.getByRole('button', { name: 'Alternativ titel' }).click();
+
+  const alternativeTitleGroup = page.getByRole('region', {
+    name: 'Alternativ Titel',
+  });
+  await alternativeTitleGroup
+    .getByRole('combobox', { name: 'Språk' })
+    .fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+  await alternativeTitleGroup.getByLabel('Huvudtitel').fill(mockAltTitle);
+  await alternativeTitleGroup.getByLabel('Undertitel').fill(mockAltSubtitle);
+
+  const authorGroup = page.getByRole('region', {
+    name: 'Författare, redaktör eller annan roll',
+  });
+
+  await authorGroup.getByRole('button', { name: 'Efternamn' }).click();
+  await authorGroup.getByLabel('Efternamn').fill(lastName);
+  await authorGroup.getByRole('button', { name: 'Förnamn' }).click();
+  await authorGroup.getByLabel('Förnamn').fill(firstName);
+
+  await page.getByLabel('Antal upphovspersoner').fill('2');
+
+  const keywordsGroup = page.getByRole('region', {
+    name: 'Nyckelord',
+  });
+
+  await keywordsGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+  await keywordsGroup.getByLabel('nyckelord').fill(keywords);
+
+  await page
+    .getByRole('combobox', {
+      name: 'Standard för svensk indelning av forskningsämnen',
+    })
+    .fill('Atom- och molekylfysik och optik');
+  await page
+    .getByRole('option', {
+      name: '(10302) Atom- och molekylfysik och optik',
+      exact: true,
+    })
+    .click();
+
+  const sustainableDevelopmentGroup = page.getByRole('region', {
+    name: 'Hållbar utveckling',
+  });
+  await sustainableDevelopmentGroup
+    .getByLabel(/^Globalt mål för hållbar utveckling/)
+    .selectOption({
+      label: '8. Anständiga arbetsvillkor och ekonomisk tillväxt',
+    });
 
   await page
     .getByLabel('År')

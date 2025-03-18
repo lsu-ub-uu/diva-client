@@ -78,6 +78,7 @@ import {
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithRecordLinkTypeBinary,
   formDefWithTextVar,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
@@ -151,6 +152,9 @@ describe('<Form />', () => {
                 updatedBy: '161616',
               },
             ],
+            actionLinks: {
+              read: { url: '', requestMethod: 'get', rel: 'read' },
+            },
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               nationalSubjectCategory: {
@@ -411,6 +415,9 @@ describe('<Form />', () => {
                 updatedBy: '161616',
               },
             ],
+            actionLinks: {
+              read: { url: '', requestMethod: 'get', rel: 'read' },
+            },
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               nationalSubjectCategory: {
@@ -577,6 +584,21 @@ describe('<Form />', () => {
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('renders a form from a given definition for fileUpload and and does NOT validate it', async () => {
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={formDefWithRecordLinkTypeBinary}
+        />,
+      );
+      const user = userEvent.setup();
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      await user.click(submitButton);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
+    });
+
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
       render(
         <RecordFormWithRoutesStub
@@ -592,6 +614,9 @@ describe('<Form />', () => {
                 updatedBy: '161616',
               },
             ],
+            actionLinks: {
+              read: { url: '', requestMethod: 'get', rel: 'read' },
+            },
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               someRootNameInData: {
@@ -898,6 +923,7 @@ describe('<Form />', () => {
         id: 'id',
         validationType: 'validationType',
         recordType: 'recordType',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         data: {
           someRootNameInData: {
             recordInfo: {
@@ -994,6 +1020,16 @@ describe('<Form />', () => {
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
+
+    it('renders a recordLink 1-1 with a fileupload', async () => {
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={formDefWithRecordLinkTypeBinary}
+        />,
+      );
+      const input = screen.getByText('divaClient_fileInputText');
+      expect(input).toBeInTheDocument();
+    });
   });
 
   describe('textVariable', () => {
@@ -1045,6 +1081,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -1104,6 +1141,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -1260,6 +1298,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -1318,6 +1357,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -1388,7 +1428,6 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.type(inputNumberElement, '0');
       await user.click(submitButton);
-
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -1670,6 +1709,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -1728,6 +1768,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -2547,6 +2588,7 @@ describe('<Form />', () => {
             updatedBy: '161616',
           },
         ],
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         data: {
           divaOutput: {
@@ -2755,6 +2797,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -2817,6 +2860,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -2882,6 +2926,7 @@ describe('<Form />', () => {
         validationType: 'someValidationTypeId',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
+        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
@@ -3002,7 +3047,6 @@ describe('<Form />', () => {
       ]);
 
       await act(() => render(<RoutesStub />));
-
       expect(
         screen.getByRole('heading', {
           name: /attachmentgrouptext/i,
@@ -3017,7 +3061,7 @@ describe('<Form />', () => {
       expect(screen.getByText('cat.jpg')).toBeInTheDocument();
 
       const downloadLink = screen.getByRole('link', {
-        name: /divaclient_downloadfiletext/i,
+        name: /resourcelinkdownloadtext/i,
       });
 
       expect(downloadLink).toHaveAttribute(

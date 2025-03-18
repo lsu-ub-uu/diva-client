@@ -265,6 +265,13 @@
               "type": "container",
               "repeat": "children"
             }
+          },
+          "actionLinks": {
+            "read": {
+              "url": "",
+              "rel": "read",
+              "requestMethod": "GET"
+            }
           }
         }
       }

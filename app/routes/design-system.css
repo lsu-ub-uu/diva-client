@@ -81,6 +81,6 @@ main section {
   white-space: nowrap;
 
   svg {
-    font-size: 1.5rem;
+    font-size: var(--font-size-icon);
   }
 }

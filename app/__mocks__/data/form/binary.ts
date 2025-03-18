@@ -31,6 +31,7 @@ export const linkedBinaryMock = {
       updatedBy: '141414',
     },
   ],
+  actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
   userRights: ['read'],
   data: {
     binary: {
@@ -1272,6 +1273,7 @@ export const recordWithBinary = {
       updatedBy: '161616',
     },
   ],
+  actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
   userRights: ['read', 'update', 'index', 'delete'],
   data: {
     output: {

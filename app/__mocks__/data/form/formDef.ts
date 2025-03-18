@@ -5244,6 +5244,51 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
   },
 };
 
+export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    showLabel: true,
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: [''],
+        gridColSpan: 12,
+        name: 'attachmentFile',
+        type: 'recordLink',
+        mode: 'input',
+        tooltip: {
+          title: 'attachmentFileLinkText',
+          body: 'attachmentFileLinkDefText',
+        },
+        label: 'attachmentFileLinkText',
+        showLabel: true,
+        recordLinkType: 'binary',
+        linkedRecordPresentation: {
+          presentedRecordType: 'binary',
+          presentationId: 'imageGroupWhenLinkedOutputInInputPGroup',
+        },
+        presentationRecordLinkId: 'attachmentFilePLink',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneTextVariableBeingRepeating: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {

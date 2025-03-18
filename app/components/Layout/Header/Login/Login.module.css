@@ -38,6 +38,6 @@
   gap: var(--gap-s);
 
   svg {
-    font-size: 1.5rem;
+    font-size: var(--font-size-icon);
   }
 }
