@@ -21,9 +21,9 @@ import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraData
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { expect } from '@playwright/test';
 import { createUrl } from './util/createUrl';
-
-import file from '../app/__mocks__/data/dog.jpg';
 import path from 'node:path';
+
+let downloadLink: string | null = null;
 
 test('updates an existing report with a binary', async ({
   page,
@@ -50,12 +50,39 @@ test('updates an existing report with a binary', async ({
   await expect(page.getByLabel(/^Huvudtitel/)).toHaveValue(recordTitle);
 
   await page
-    .getByLabel('divaClient_fileInputText')
-    .setInputFiles(path.join(__dirname, 'dog.pdf'));
+    .getByLabel('Bifogad fil')
+    .setInputFiles(path.join(import.meta.dirname, 'assets/dog.jpg'));
+
+  await expect(
+    page.getByRole('progressbar', { name: /^Laddar upp/ }),
+  ).toBeVisible();
+
+  await expect(page.getByLabel('Originalfilnam')).toHaveText('dog.jpg');
+
+  await page
+    .getByRole('region', { name: 'Bilaga' })
+    .getByLabel('Typ')
+    .selectOption({ label: 'Bild' });
 
   await page.getByRole('button', { name: 'Skicka in' }).click();
 
   await expect(
     page.getByText(/^Record was successfully updated/),
   ).toBeVisible();
+
+  // Store binary record URL to use in cleanup step.
+  downloadLink = await page
+    .getByRole('link', { name: 'Ladda ner' })
+    .getAttribute('href');
+});
+
+test.afterAll(async ({ authtoken, request }) => {
+  /* Delete binary record */
+  const recordUrl = downloadLink?.replace(/\/master.*/, '');
+
+  if (recordUrl) {
+    await request.delete(recordUrl, {
+      headers: { authToken: authtoken },
+    });
+  }
 });

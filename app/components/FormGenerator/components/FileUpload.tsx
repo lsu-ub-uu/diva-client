@@ -50,7 +50,8 @@ export const FileUpload = ({
   const { getValues, setValue, formState } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState(0);
+  const [fileName, setFileName] = useState<string | undefined>(undefined);
   const value = getValues(path);
   const authToken = rootLoaderData?.auth?.data.token;
 
@@ -62,7 +63,7 @@ export const FileUpload = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-
+      setFileName(file.name);
       const response = await axios.post(
         `${import.meta.env.BASE_URL}fileUpload`,
         {
@@ -100,7 +101,7 @@ export const FileUpload = ({
         <Progress
           value={progress}
           max={100}
-          label={`Laddar upp. ${progress}`}
+          label={t('divaClient_uploadingFileText', { fileName, progress })}
         />
       ) : (
         <Field
@@ -110,17 +111,17 @@ export const FileUpload = ({
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
           info={showTooltips ? component.tooltip : undefined}
+          adornment={
+            <>
+              {attributes}
+              {actionButtonGroup}
+            </>
+          }
         >
           <FileInput
             name={path}
             onChange={handleFileChange}
             errorMessage={errorMessage}
-            adornment={
-              <>
-                {attributes}
-                {actionButtonGroup}
-              </>
-            }
           />
         </Field>
       )}

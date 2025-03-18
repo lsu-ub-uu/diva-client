@@ -58,10 +58,6 @@ test('Create report', async ({ page, request, authtoken }) => {
     .getByLabel(/^Språk/)
     .selectOption({ label: 'Svenska' });
 
-  /*  await page
-    .getByLabel(/^Publiceringsstatus/)
-    .selectOption({ label: 'Accepterad' });*/
-
   await page
     .getByLabel(/^Typ av innehåll/)
     .selectOption({ label: 'Sakkunniggranskat' });

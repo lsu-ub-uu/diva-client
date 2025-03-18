@@ -33,20 +33,16 @@ export const FileInput = ({ name, onChange, errorMessage }: FileInputProps) => {
   const [dragging, setDragging] = useState(false);
 
   return (
-    <div
-      className={styles['wrapper']}
-      data-dragging={dragging}
-      onDragEnter={() => setDragging(true)}
-      onDragLeave={() => setDragging(false)}
-    >
+    <div className={styles['wrapper']} data-dragging={dragging}>
       <UploadFileIcon /> {t('divaClient_fileInputText')}
-      {/*Dra filer hit eller klicka för att välja fil*/}
       <Input
         className={styles['file-input']}
         invalid={errorMessage !== undefined}
         type='file'
         name={name}
         onChange={onChange}
+        onDragEnter={() => setDragging(true)}
+        onDragLeave={() => setDragging(false)}
       />
     </div>
   );
