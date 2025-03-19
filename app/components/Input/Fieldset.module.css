@@ -1,0 +1,107 @@
+.fieldset {
+  legend {
+    opacity: 0;
+    height: 0;
+  }
+
+  display: grid;
+  grid-template-areas:
+    'label attributes actions'
+    'input input      input'
+    'error error      error';
+  grid-template-columns: 1fr auto auto;
+  grid-gap: var(--gap-s) var(--gap);
+}
+
+.fieldset[data-variant='inline'] {
+  grid-template-areas:
+    'label input attributes actions'
+    'error error error      error';
+  grid-template-columns: auto 1fr auto auto;
+}
+
+.label {
+  grid-area: label;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+.attributes {
+  grid-area: attributes;
+  justify-self: end;
+}
+
+.action-buttons {
+  grid-area: actions;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  grid-area: input;
+  position: relative;
+}
+
+.error-message {
+  grid-area: error;
+}
+
+.error-icon {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  position: absolute;
+  top: calc((var(--input-height) / 2) - 0.5em);
+  right: var(--gap);
+}
+
+.input:has(select),
+.input:has(input[role='combobox']) {
+  .error-icon {
+    right: var(--gap-xl);
+  }
+}
+
+.fieldset:has([data-invalid]) {
+  color: var(--color-error-main);
+
+  .error-icon {
+    opacity: 1;
+  }
+}
+
+@media (width < 600px) {
+  .fieldset,
+  .fieldset[data-variant='inline'] {
+    grid-template-areas:
+      'label      actions'
+      'attributes attributes'
+      'input      input'
+      'error      error';
+    grid-template-columns: 1fr auto;
+    grid-row-gap: var(--gap);
+  }
+
+  .attributes {
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-self: stretch;
+    padding-left: var(--gap);
+  }
+}
+
+.fieldset[data-size='small'] {
+  font-size: var(--font-size-s);
+
+  --input-height: var(--input-height-small);
+}
+
+.fieldset[data-size='medium'] {
+  font-size: var(--font-size-m);
+}
+
+.fieldset[data-size='large'] {
+  --input-height: var(--input-height-large);
+}

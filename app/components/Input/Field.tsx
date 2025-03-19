@@ -31,6 +31,8 @@ import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 interface FieldProps extends HUIFieldProps {
   label?: ReactNode;
   adornment?: ReactNode;
+  actionButtons?: ReactNode;
+  attributes?: ReactNode;
   children?: ReactNode;
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium' | 'large';

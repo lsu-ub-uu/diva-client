@@ -35,90 +35,9 @@
   }
 }
 
-.label-and-adornment-wrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-s);
-
-  &:has([data-invalid]) {
-    color: var(--color-error-main);
-
-    .error-icon {
-      opacity: 1;
-    }
-  }
-
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-
-    .error-icon {
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
-      position: absolute;
-      top: calc((var(--input-height) / 2) - 0.5em);
-      right: var(--gap);
-    }
-
-    &:has(.select-wrapper) .error-icon {
-      right: var(--gap-xl);
-    }
-  }
-
-  .label-and-children-wrapper {
-    display: flex;
-    gap: var(--gap-s);
-  }
-
-  &[data-variant='block'] {
-    .label-and-children-wrapper {
-      flex-direction: column;
-    }
-  }
-
-  &[data-variant='inline'] {
-    align-items: flex-end;
-
-    .label-and-children-wrapper {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  &[data-size='small'] {
-    font-size: var(--font-size-s);
-
-    --input-height: var(--input-height-small);
-
-    .input,
-    .combobox-input {
-      padding-left: var(--gap);
-      padding-right: calc(var(--gap) * 6);
-      background-position: right calc(var(--gap) / 2) center;
-    }
-  }
-
-  &[data-size='medium'] {
-    font-size: 1rem;
-
-    .input,
-    .combobox-input {
-      background-position: right var(--gap) center;
-      padding: 0 var(--gap);
-    }
-  }
-
-  &[data-size='large'] {
-    --input-height: var(--input-height-large);
-  }
+.input,
+.combobox-input {
+  padding-left: var(--gap);
 }
 
 .adornments {

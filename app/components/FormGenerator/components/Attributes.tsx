@@ -56,7 +56,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
   });
 };
 
-const getAttributesToShow = (component: FormComponentWithData) => {
+export const getAttributesToShow = (component: FormComponentWithData) => {
   if (component.attributesToShow === 'selectable') {
     return (component.attributes ?? []).filter(
       (attribute) => attribute.finalValue === undefined,

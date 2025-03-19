@@ -24,17 +24,16 @@ import type {
   FormComponentMode,
   FormComponentTooltip,
 } from '@/components/FormGenerator/types';
-import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import {
   findOptionLabelByValue,
   getErrorMessageForField,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { Controller } from 'react-hook-form';
 import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { useHydrated } from '@/utils/useHydrated';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 interface AttributeSelectProps {
   name: string;
@@ -86,13 +85,13 @@ export const AttributeSelect = ({
   }
 
   return (
-    <Field
-      className={styles['attributeSelect']}
-      label={showLabel && t(label)}
+    <Fieldset
+      className={styles['attribute-select']}
+      label={showLabel ? t(label) : undefined}
       variant='inline'
       size='small'
       errorMessage={errorMessage}
-      adornment={tooltip && <FieldInfo {...tooltip} />}
+      info={tooltip}
     >
       {hydrated && options.length > 20 ? (
         <Controller
@@ -122,6 +121,6 @@ export const AttributeSelect = ({
           ))}
         </Select>
       )}
-    </Field>
+    </Fieldset>
   );
 };

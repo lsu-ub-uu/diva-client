@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
 import { Button } from '@/components/Button/Button';
 import { ArrowDownwardIcon, ArrowUpwardIcon, CloseIcon } from '@/icons';
+
 interface ActionButtonGroupProps {
   entityName?: string;
   hideMoveButtons: boolean;
@@ -37,7 +38,11 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
   const { t } = useTranslation();
 
   return (
-    <div role='group' className={styles['action-button-group']}>
+    <div
+      role='group'
+      aria-label='Actions'
+      className={styles['action-button-group']}
+    >
       {!props.hideMoveButtons && (
         <Button
           size='small'

@@ -36,6 +36,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { useHydrated } from '@/utils/useHydrated';
+import { use } from 'react';
+import { FieldContext } from '@/components/Input/Fieldset';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -52,6 +54,7 @@ export const InputField = ({
   register,
   control,
 }: InputFieldProps) => {
+  const { ids } = use(FieldContext);
   const hydrated = useHydrated();
   const { t } = useTranslation();
 
@@ -72,6 +75,7 @@ export const InputField = ({
               onChange={onChange}
               invalid={errorMessage !== undefined}
               aria-label={!component.showLabel ? t(component.label) : undefined}
+              aria-details={ids.details}
               options={options}
             />
           )}
@@ -84,6 +88,7 @@ export const InputField = ({
         {...register(path)}
         invalid={errorMessage !== undefined}
         aria-label={!component.showLabel ? t(component.label) : undefined}
+        aria-details={ids.details}
       >
         {(options ?? []).map((item) => {
           return (
@@ -107,6 +112,7 @@ export const InputField = ({
         placeholder={component.placeholder}
         readOnly={!!component.finalValue}
         aria-label={!component.showLabel ? t(component.label) : undefined}
+        aria-details={ids.details}
       />
     );
   }
@@ -119,6 +125,7 @@ export const InputField = ({
       placeholder={component.placeholder}
       readOnly={!!component.finalValue}
       aria-label={!component.showLabel ? t(component.label) : undefined}
+      aria-details={ids.details}
     />
   );
 };

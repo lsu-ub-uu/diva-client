@@ -26,7 +26,6 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
-import { Field } from '@/components/Input/Field';
 import type { BFFDataRecord } from '@/types/record';
 import { ComboboxInput } from '@/components/Input/ComboboxInput';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
@@ -36,6 +35,7 @@ import {
   ComboboxOptions,
 } from '@/components/Input/Combobox';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
@@ -66,16 +66,12 @@ export const RecordLinkWithSearch = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} path={path} />
-      <Field
-        label={component.showLabel && t(component.label)}
+      <Fieldset
+        label={component.showLabel ? t(component.label) : undefined}
         errorMessage={errorMessage}
         info={showTooltips ? component.tooltip : undefined}
-        adornment={
-          <>
-            {attributes}
-            {actionButtonGroup}
-          </>
-        }
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       >
         <Combobox onChange={(recordId) => setValue(path, recordId)}>
           <ComboboxInput
@@ -112,7 +108,7 @@ export const RecordLinkWithSearch = ({
             )}
           </ComboboxOptions>
         </Combobox>
-      </Field>
+      </Fieldset>
     </div>
   );
 };

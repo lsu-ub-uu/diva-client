@@ -49,10 +49,11 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import styles from './FormComponent.module.css';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { useTranslation } from 'react-i18next';
-import { Field } from '@/components/Input/Field';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { InputField } from '@/components/FormGenerator/components/InputField';
+import { Fieldset } from '@/components/Input/Fieldset';
+import { getAttributesToShow } from '@/components/FormGenerator/components/Attributes';
 
 interface VariableProps {
   reactKey: string;
@@ -81,6 +82,7 @@ export const Variable = ({
   }
 
   const label = component.showLabel ? t(component.label) : undefined;
+  const hasVisibleAttributes = getAttributesToShow(component).length > 0;
 
   return (
     <div
@@ -112,19 +114,15 @@ export const Variable = ({
       {component.finalValue && <input type='hidden' {...register(path)} />}
 
       {!component.finalValue && component.mode === 'input' && (
-        <Field
+        <Fieldset
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
-          label={component.showLabel && t(component.label)}
+          label={component.showLabel ? t(component.label) : undefined}
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
           info={showTooltips ? component.tooltip : undefined}
-          adornment={
-            <>
-              {attributes}
-              {actionButtonGroup}
-            </>
-          }
+          attributes={hasVisibleAttributes ? attributes : undefined}
+          actionButtonGroup={actionButtonGroup}
         >
           <InputField
             component={component}
@@ -133,7 +131,7 @@ export const Variable = ({
             register={register}
             control={control}
           />
-        </Field>
+        </Fieldset>
       )}
     </div>
   );
