@@ -26,6 +26,7 @@ import presentationPGroupModeOutput from '@/__mocks__/bff/coraPresentationGroupW
 import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '@/__mocks__/bff/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '@/__mocks__/bff/coraPresentationGroup.json';
+import coraPresentationGroupAltPresentation from '@/__mocks__/bff/coraPresentationGroupAltPresentation.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '@/__mocks__/bff/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '@/__mocks__/bff/coraPresentationWithMiscTypes.json';
 import coraPresentationWithOneCollectionVariable from '@/__mocks__/bff/coraPresentationWithOneCollectionVariable.json';
@@ -213,6 +214,46 @@ describe('transformCoraPresentations', () => {
 
     it('Returns one BFFPresentationGroup for one entry', () => {
       const transformData = transformCoraPresentations(coraPresentationGroup);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someNewPGroup',
+        type: 'pGroup',
+        presentationOf: 'someNewGroup',
+        presentationStyle: 'inline',
+        mode: 'input',
+        children: [
+          {
+            childId: 'demoText',
+            type: 'text',
+            textStyle: 'h1TextStyle',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+          {
+            childId: 'recordInfoNewPGroup',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+          {
+            childId: 'bookTitleTextVarText',
+            type: 'text',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+          {
+            childId: 'bookTitleTextVarPVar',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+        ],
+      });
+    });
+
+    it('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationGroupAltPresentation,
+      );
       expect(transformData[0]).toStrictEqual({
         id: 'someNewPGroup',
         type: 'pGroup',
