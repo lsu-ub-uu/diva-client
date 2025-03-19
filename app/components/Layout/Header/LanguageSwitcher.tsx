@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
 
 import styles from './LanguageSwitcher.module.css';
-import { Field } from '@/components/Input/Field';
 import { LanguageIcon } from '@/icons';
 
 export const LanguageSwitcher = () => {
@@ -34,30 +33,28 @@ export const LanguageSwitcher = () => {
   return (
     <div className={styles['language-switcher']}>
       <Form method='post'>
-        <Field>
-          <Select
-            name='language'
-            value={language as string}
-            aria-label={t('divaClient_ChooseLanguageText')}
-            adornment={
-              <LanguageIcon
-                className={styles['language-icon']}
-                aria-description={t('divaClient_ChooseLanguageLabelText')}
-              />
-            }
-            onChange={(e) => {
-              const language = e.target.value as string;
-              i18n.changeLanguage(language);
-              fetcher.submit(
-                { language, intent: 'changeLanguage' },
-                { method: 'post' },
-              );
-            }}
-          >
-            <option value='en'>English</option>
-            <option value='sv'> Svenska</option>
-          </Select>
-        </Field>
+        <Select
+          name='language'
+          value={language as string}
+          aria-label={t('divaClient_ChooseLanguageText')}
+          adornment={
+            <LanguageIcon
+              className={styles['language-icon']}
+              aria-description={t('divaClient_ChooseLanguageLabelText')}
+            />
+          }
+          onChange={(e) => {
+            const language = e.target.value as string;
+            i18n.changeLanguage(language);
+            fetcher.submit(
+              { language, intent: 'changeLanguage' },
+              { method: 'post' },
+            );
+          }}
+        >
+          <option value='en'>English</option>
+          <option value='sv'> Svenska</option>
+        </Select>
       </Form>
     </div>
   );
