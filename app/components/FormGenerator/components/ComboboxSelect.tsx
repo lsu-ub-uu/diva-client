@@ -37,14 +37,13 @@
 import type { FormComponentCollItem } from '@/components/FormGenerator/types';
 import {
   Combobox,
+  ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
 import { useMemo, useState } from 'react';
-import { ComboboxInput } from '@/components/Input/ComboboxInput';
 import { useTranslation } from 'react-i18next';
-import { ManageSearchIcon } from '@/icons';
-import { ComboboxButton, type ComboboxInputProps } from '@headlessui/react';
+import { type ComboboxInputProps } from '@headlessui/react';
 
 import styles from './ComboboxSelect.module.css';
 
@@ -112,10 +111,6 @@ export const ComboboxSelect = ({
           {...(invalid ? { 'data-invalid': '' } : undefined)}
           {...rest}
         />
-
-        <ComboboxButton className={styles['combobox-button']}>
-          <ManageSearchIcon />
-        </ComboboxButton>
 
         <ComboboxOptions anchor='bottom start'>
           {({ option }) => (

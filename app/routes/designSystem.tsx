@@ -21,7 +21,6 @@ import { Button } from '@/components/Button/Button';
 import * as icons from '@/icons';
 import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { Field } from '@/components/Input/Field';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
 import { Card } from '@/components/Card/Card';
@@ -37,6 +36,7 @@ import { LinearLoader } from '@/components/Loader/LinearLoader';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Progress } from '@/components/Progress/Progress';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -224,68 +224,68 @@ export default function DesignSystem() {
         <section>
           <h2>Inputs</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-            <Field label='Input'>
+            <Fieldset label='Input'>
               <Input />
-            </Field>
-            <Field label='Input small' size='small'>
+            </Fieldset>
+            <Fieldset label='Input small' size='small'>
               <Input />
-            </Field>
-            <Field label='Inline input' variant='inline'>
+            </Fieldset>
+            <Fieldset label='Inline input' variant='inline'>
               <Input />
-            </Field>
-            <Field
+            </Fieldset>
+            <Fieldset
               label='Input with error'
               errorMessage='This field is required'
             >
               <Input invalid />
-            </Field>
-            <Field
+            </Fieldset>
+            <Fieldset
               label='Input small with error'
               errorMessage='This field is required'
               size='small'
             >
               <Input invalid />
-            </Field>
-            <Field label='Textarea'>
+            </Fieldset>
+            <Fieldset label='Textarea'>
               <Textarea />
-            </Field>
-            <Field label='Textarea with error'>
+            </Fieldset>
+            <Fieldset label='Textarea with error'>
               <Textarea invalid />
-            </Field>
-            <Field label='Select'>
+            </Fieldset>
+            <Fieldset label='Select'>
               <Select>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
+            </Fieldset>
 
-            <Field label='Select small' size='small'>
+            <Fieldset label='Select small' size='small'>
               <Select>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
-            <Field label='Inline select' variant='inline'>
+            </Fieldset>
+            <Fieldset label='Inline select' variant='inline'>
               <Select>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
-            <Field label='Inline select small' variant='inline' size='small'>
+            </Fieldset>
+            <Fieldset label='Inline select small' variant='inline' size='small'>
               <Select>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
-            <Field
+            </Fieldset>
+            <Fieldset
               label='Select with error'
               errorMessage='This field is required'
             >
@@ -295,8 +295,8 @@ export default function DesignSystem() {
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
-            <Field
+            </Fieldset>
+            <Fieldset
               label='Inline select with error'
               variant='inline'
               errorMessage='This field is required'
@@ -307,7 +307,7 @@ export default function DesignSystem() {
                 <option>Option 3</option>
                 <option>Option 4</option>
               </Select>
-            </Field>
+            </Fieldset>
           </div>
         </section>
         <section>

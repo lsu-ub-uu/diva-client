@@ -10,14 +10,7 @@
     'input input      input'
     'error error      error';
   grid-template-columns: 1fr auto auto;
-  grid-gap: var(--gap-s) var(--gap);
-}
-
-.fieldset[data-variant='inline'] {
-  grid-template-areas:
-    'label input attributes actions'
-    'error error error      error';
-  grid-template-columns: auto 1fr auto auto;
+  column-gap: var(--gap);
 }
 
 .label {
@@ -25,11 +18,24 @@
   display: flex;
   align-items: center;
   gap: var(--gap-s);
+  margin-bottom: var(--gap);
+}
+
+.fieldset[data-variant='inline'] {
+  grid-template-areas:
+    'label input attributes actions'
+    'error error error      error';
+  grid-template-columns: auto 1fr auto auto;
+
+  .label {
+    margin-bottom: 0;
+  }
 }
 
 .attributes {
   grid-area: attributes;
   justify-self: end;
+  margin-bottom: var(--gap);
 }
 
 .action-buttons {
@@ -57,18 +63,19 @@
   right: var(--gap);
 }
 
-.input:has(select),
-.input:has(input[role='combobox']) {
-  .error-icon {
-    right: var(--gap-xl);
-  }
-}
-
 .fieldset:has([data-invalid]) {
   color: var(--color-error-main);
 
   .error-icon {
     opacity: 1;
+  }
+}
+
+.input:has(select),
+.input:has(input[role='combobox']) {
+  /* stylelint-disable-next-line no-descending-specificity */
+  .error-icon {
+    right: var(--gap-xl);
   }
 }
 
@@ -81,7 +88,6 @@
       'input      input'
       'error      error';
     grid-template-columns: 1fr auto;
-    grid-row-gap: var(--gap);
   }
 
   .attributes {

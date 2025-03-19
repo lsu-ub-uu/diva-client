@@ -27,13 +27,13 @@ import { getErrorMessageForField } from '@/components/FormGenerator/formGenerato
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
-import { ComboboxInput } from '@/components/Input/ComboboxInput';
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import {
   Combobox,
+  ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
 

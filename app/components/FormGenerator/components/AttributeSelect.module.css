@@ -17,10 +17,6 @@
  */
 
 .attribute-select {
-  select {
-    max-width: 35ch;
-  }
-
   dt,
   label {
     font-style: italic;

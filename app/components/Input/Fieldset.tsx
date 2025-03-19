@@ -70,8 +70,12 @@ export const Fieldset = ({
             {label && <Label id={ids.label}>{label}</Label>}
             {info && <FieldInfo {...info} />}
           </div>
-          <div className={styles['attributes']}>{attributes}</div>
-          <div className={styles['action-buttons']}>{actionButtonGroup}</div>
+          {attributes && (
+            <div className={styles['attributes']}>{attributes}</div>
+          )}
+          {actionButtonGroup && (
+            <div className={styles['action-buttons']}>{actionButtonGroup}</div>
+          )}
           <div className={styles['input']}>
             {children}
             <WarningIcon className={styles['error-icon']} aria-hidden='true' />
@@ -89,7 +93,8 @@ export const Fieldset = ({
 
 export const FieldContext = createContext({ ids: { label: '', details: '' } });
 
-interface FieldsetRootProps extends HTMLProps<HTMLDivElement> {
+interface FieldsetRootProps
+  extends HTMLProps<HTMLDivElement & HTMLFieldSetElement> {
   hasAttributes: boolean;
   label?: string;
   children?: ReactNode;
