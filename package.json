@@ -9,6 +9,7 @@
     "dev": " NODE_ENV=development tsx server.ts",
     "start": "tsx server.ts",
     "typecheck": "react-router typegen && tsc",
+    "typecheck:w": "react-router typegen && tsc -w",
     "stylelint": "stylelint ./app/**/**/*.css",
     "lint": "eslint ./app/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix ./app/**/*.{ts,tsx}",

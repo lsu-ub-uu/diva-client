@@ -30,6 +30,7 @@ import { createCommonParameters } from '@/data/formDefinition/createCommonParame
 import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import type { FormComponent } from '@/components/FormGenerator/types';
 
 export const createGroup = (
   dependencies: Dependencies,
@@ -53,6 +54,19 @@ export const createGroup = (
     dependencies,
     metadata.children,
     presentationGroup.children,
+    false,
+  );
+
+  const presentationChildReferencesWithAlternativePresentations =
+    presentationGroup.children.filter(
+      (childReference) => childReference.refGroups.length > 1,
+    );
+
+  const alternativeComponents = createComponentsFromChildReferences(
+    dependencies,
+    metadata.children,
+    presentationChildReferencesWithAlternativePresentations,
+    true,
   );
 
   const commonParameters = createCommonParameters(metadata, presentation);
@@ -62,5 +76,18 @@ export const createGroup = (
     presentationStyle,
     attributes,
     components,
+    alternativeComponents: groupByName(alternativeComponents),
   });
+};
+
+export const groupByName = (alternativeComponents: FormComponent[]) => {
+  return alternativeComponents.reduce<Record<string, FormComponent>>(
+    (prev, curr) => {
+      return {
+        ...prev,
+        [curr.name]: curr,
+      };
+    },
+    {},
+  );
 };

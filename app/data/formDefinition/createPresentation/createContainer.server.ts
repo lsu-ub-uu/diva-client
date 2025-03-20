@@ -27,6 +27,7 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createRContainer } from '@/data/formDefinition/createPresentation/createRContainer.server';
 import { createSContainer } from '@/data/formDefinition/createPresentation/createSContainer.server';
+import { groupByName } from '@/data/formDefinition/createPresentation/createGroup.server';
 
 export const createContainer = (
   dependencies: Dependencies,
@@ -64,6 +65,18 @@ export const createContainer = (
     dependencies,
     definitionFilteredChildRefs,
     presentation.children,
+    false,
+  );
+
+  const presentationChildReferencesWithAlternativePresentations =
+    presentation.children.filter(
+      (childReference) => childReference.refGroups.length > 1,
+    );
+  const alternativeComponents = createComponentsFromChildReferences(
+    dependencies,
+    definitionFilteredChildRefs,
+    presentationChildReferencesWithAlternativePresentations,
+    true,
   );
 
   return removeEmpty({
@@ -72,6 +85,7 @@ export const createContainer = (
     presentationStyle,
     containerType,
     components,
+    alternativeComponents: groupByName(alternativeComponents),
   });
 };
 

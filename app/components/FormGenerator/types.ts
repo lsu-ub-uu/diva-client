@@ -166,6 +166,7 @@ export interface FormComponentResourceLink extends FormComponentMetadata {
 export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
   components?: FormComponent[];
+  alternativeComponents?: Record<string, FormComponent>;
   label: string;
   showLabel: boolean;
 }
@@ -173,6 +174,7 @@ export interface FormComponentContainer extends FormComponentMetadata {
 export interface FormComponentGroup extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   components?: FormComponent[];
+  alternativeComponents?: Record<string, FormComponent>;
   label: string;
   showLabel: boolean;
 }

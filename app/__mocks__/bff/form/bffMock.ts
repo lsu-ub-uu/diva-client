@@ -70,8 +70,12 @@ export const pSomeNewMetadataGroupForMissingChildId: BFFPresentationGroup = {
   presentationStyle: 'card',
   children: [
     {
-      childId: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
+          type: 'presentation',
+        },
+      ],
       childStyle: ['twelveChildStyle'],
     }, // pSomeMetadataCollectionVariableId
   ],
@@ -1018,8 +1022,9 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariableId', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
   ],
@@ -1035,8 +1040,9 @@ export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGr
     specifiedHeadlineLevel: 'h3',
     children: [
       {
-        childId: 'pSomeMetadataTextVariableId',
-        type: 'presentation',
+        refGroups: [
+          { childId: 'pSomeMetadataTextVariableId', type: 'presentation' },
+        ],
         childStyle: ['threeChildStyle'],
       },
     ],
@@ -1051,8 +1057,9 @@ export const pSomeMetadataChildGroupWithShowHeadlineFalse: BFFPresentationGroup 
     showHeadline: 'false',
     children: [
       {
-        childId: 'pSomeMetadataTextVariableId',
-        type: 'presentation',
+        refGroups: [
+          { childId: 'pSomeMetadataTextVariableId', type: 'presentation' },
+        ],
         childStyle: ['threeChildStyle'],
       },
     ],
@@ -1066,100 +1073,124 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   presentationStyle: 'card',
   children: [
     {
-      childId: 'someHeadlineTextId',
-      type: 'text',
+      refGroups: [{ childId: 'someHeadlineTextId', type: 'text' }],
       textStyle: 'bold',
       childStyle: ['twelveChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariableId', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariable2Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable2Id', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariable3Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable3Id', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariable6Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable6Id', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataNumberVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataNumberVariableId', type: 'presentation' },
+      ],
       minNumberOfRepeatingToShow: '1',
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataCollectionVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataCollectionVariableId', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataCollectionVariableWithAttributeId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataCollectionVariableWithAttributeId',
+          type: 'presentation',
+        },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataNumberWithAttributeVarId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataNumberWithAttributeVarId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataTextVariableWithAttributeVarId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataTextVariableWithAttributeVarId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataChildGroupId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'nationalSubjectCategoryPLinkId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'nationalSubjectCategoryPLinkId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'someNewRecordPLinkId',
-      type: 'presentation',
+      refGroups: [{ childId: 'someNewRecordPLinkId', type: 'presentation' }],
       childStyle: [],
     },
     {
-      childId: 'pSomeContainerId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pSomeContainerId', type: 'presentation' }],
       childStyle: [],
     },
     {
-      childId: 'pSomeGuiElementLinkId',
-      type: 'guiElement',
+      refGroups: [{ childId: 'pSomeGuiElementLinkId', type: 'guiElement' }],
       childStyle: [],
     },
     {
-      childId: 'pSomeRepeatingContainerId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeRepeatingContainerId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeManuscriptGroupId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pSomeManuscriptGroupId', type: 'presentation' }],
       childStyle: [],
     },
   ],
@@ -1173,85 +1204,110 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   presentationStyle: 'card',
   children: [
     {
-      childId: 'someEditHeadlineTextId',
-      type: 'text',
+      refGroups: [{ childId: 'someEditHeadlineTextId', type: 'text' }],
       textStyle: 'bold',
       childStyle: ['twelveChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariableId', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariable2Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable2Id', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataTextVariable3Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable3Id', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataNumberVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataNumberVariableId', type: 'presentation' },
+      ],
       minNumberOfRepeatingToShow: '1',
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataCollectionVariableId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataCollectionVariableId', type: 'presentation' },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataCollectionVariableWithAttributeId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataCollectionVariableWithAttributeId',
+          type: 'presentation',
+        },
+      ],
       childStyle: ['threeChildStyle'],
     },
     {
-      childId: 'pSomeMetadataNumberWithAttributeVarId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataNumberWithAttributeVarId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataTextVariableWithAttributeVarId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataTextVariableWithAttributeVarId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataChildGroupId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'nationalSubjectCategoryPLinkId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'nationalSubjectCategoryPLinkId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeContainerId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pSomeContainerId', type: 'presentation' }],
       childStyle: [],
     },
     {
-      childId: 'pSomeGuiElementLinkId',
-      type: 'guiElement',
+      refGroups: [{ childId: 'pSomeGuiElementLinkId', type: 'guiElement' }],
       childStyle: [],
     },
     {
-      childId: 'pSomeRepeatingContainerId',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeRepeatingContainerId', type: 'presentation' },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
     {
-      childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
-      type: 'presentation',
+      refGroups: [
+        {
+          childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
+          type: 'presentation',
+        },
+      ],
       childStyle: [],
     },
   ],
@@ -1265,8 +1321,9 @@ export const pSomeContainer: BFFPresentationSurroundingContainer = {
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariable4Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable4Id', type: 'presentation' },
+      ],
       childStyle: ['sixChildStyle'],
       minNumberOfRepeatingToShow: '1',
     },
@@ -1282,8 +1339,9 @@ export const pSomeRepeatingContainer: BFFPresentationContainer = {
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariable5Id',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeMetadataTextVariable5Id', type: 'presentation' },
+      ],
       childStyle: ['sixChildStyle'],
       minNumberOfRepeatingToShow: '1',
     },
@@ -1560,8 +1618,9 @@ export const pSomeManuscriptGroup: BFFPresentationGroup = {
   mode: 'input',
   children: [
     {
-      childId: 'pSomeManuscriptIdContainer',
-      type: 'presentation',
+      refGroups: [
+        { childId: 'pSomeManuscriptIdContainer', type: 'presentation' },
+      ],
       childStyle: [],
     },
   ],
@@ -1579,20 +1638,17 @@ export const pSomeManuscriptContainer: BFFPresentationSurroundingContainer = {
   mode: 'input',
   children: [
     {
-      childId: 'pArchiveNumberTextVarId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pArchiveNumberTextVarId', type: 'presentation' }],
       childStyle: [],
       minNumberOfRepeatingToShow: '1',
     },
     {
-      childId: 'pLocalIdTextVarId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pLocalIdTextVarId', type: 'presentation' }],
       childStyle: [],
       minNumberOfRepeatingToShow: '1',
     },
     {
-      childId: 'pScopusIdTextVarId',
-      type: 'presentation',
+      refGroups: [{ childId: 'pScopusIdTextVarId', type: 'presentation' }],
       childStyle: [],
       minNumberOfRepeatingToShow: '1',
     },
@@ -1776,12 +1832,10 @@ export const pNewNationSubjectCategoryMetadataGroup: BFFPresentationGroup = {
   mode: 'input',
   children: [
     {
-      childId: 'subjectSwePVar',
-      type: 'presentation',
+      refGroups: [{ childId: 'subjectSwePVar', type: 'presentation' }],
     },
     {
-      childId: 'subjectEngPVar',
-      type: 'presentation',
+      refGroups: [{ childId: 'subjectEngPVar', type: 'presentation' }],
     },
   ],
 };
@@ -2183,12 +2237,20 @@ export const pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFPresenta
     mode: 'input',
     children: [
       {
-        childId: 'someNewMetadataGroupTitleInfoGroup',
-        type: 'presentation',
+        refGroups: [
+          {
+            childId: 'someNewMetadataGroupTitleInfoGroup',
+            type: 'presentation',
+          },
+        ],
       },
       {
-        childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
-        type: 'presentation',
+        refGroups: [
+          {
+            childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
+            type: 'presentation',
+          },
+        ],
       },
     ],
   };
@@ -2220,8 +2282,7 @@ export const pSomeNewMetadataGroupTitleInfoPGroup: BFFPresentationGroup = {
   mode: 'input',
   children: [
     {
-      childId: 'someMainTitlePVar',
-      type: 'presentation',
+      refGroups: [{ childId: 'someMainTitlePVar', type: 'presentation' }],
     },
   ],
 };
@@ -2234,8 +2295,7 @@ export const pSomeNewMetadataGroupTitleInfoAlternativePGroup: BFFPresentationGro
     attributesToShow: 'selectable',
     children: [
       {
-        childId: 'someMainTitlePVar',
-        type: 'presentation',
+        refGroups: [{ childId: 'someMainTitlePVar', type: 'presentation' }],
       },
     ],
   };

@@ -24,7 +24,11 @@ export const createBFFPresentationReference = (
   type: 'presentation' | 'guiElement' | 'text' = 'presentation',
   childStyle = [],
 ): BFFPresentationChildReference => ({
-  childId,
-  type,
+  refGroups: [
+    {
+      childId,
+      type,
+    },
+  ],
   childStyle,
 });

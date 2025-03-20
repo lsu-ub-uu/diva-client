@@ -32,6 +32,7 @@ import type {
   BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFPresentationBase,
+  BFFPresentationChildRefGroup,
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
@@ -42,6 +43,7 @@ import { getChildReferencesListFromGroup } from './transformMetadata.server';
 import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
+  getAllDataGroupsWithNameInDataAndAttributes,
   getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes,
@@ -328,15 +330,26 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
   }) as BFFPresentationGroup;
 };
 
+const transformRefGroup = (
+  refGroup: DataGroup,
+): BFFPresentationChildRefGroup => {
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
+  const type = extractAttributeValueByName(
+    ref as DataGroup,
+    'type',
+  ) as BFFPresentationChildRefGroup['type'];
+
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+
+  return { childId, type };
+};
+
 // Group Child references
 const transformChildReference = (childReference: DataGroup) => {
-  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(
+  const refGroups = getAllDataGroupsWithNameInDataAndAttributes(
     childReference,
     'refGroup',
-  );
-  const ref = getFirstChildWithNameInData(refGroup, 'ref');
-  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
-  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+  ).map(transformRefGroup);
 
   const minNumberOfRepeatingToShow =
     extractAtomicValueByName(childReference, 'minNumberOfRepeatingToShow') ??
@@ -357,8 +370,7 @@ const transformChildReference = (childReference: DataGroup) => {
   );
 
   return removeEmpty({
-    childId,
-    type,
+    refGroups,
     minNumberOfRepeatingToShow,
     textStyle,
     presentationSize,

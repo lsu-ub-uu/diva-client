@@ -666,6 +666,7 @@ describe('formDefinition', () => {
               type: 'collectionVariable',
             },
           ],
+          alternativeComponents: {},
           components: [
             {
               type: 'text',
@@ -968,6 +969,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1049,6 +1051,7 @@ describe('formDefinition', () => {
               containerType: 'surrounding',
               gridColSpan: 12,
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1093,6 +1096,7 @@ describe('formDefinition', () => {
               containerType: 'repeating',
               gridColSpan: 12,
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1138,6 +1142,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1181,6 +1186,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1225,6 +1231,7 @@ describe('formDefinition', () => {
               },
               type: 'group',
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   containerType: 'surrounding',
@@ -1234,6 +1241,7 @@ describe('formDefinition', () => {
                   presentationStyle: '',
                   type: 'container',
                   childStyle: [''],
+                  alternativeComponents: {},
                   components: [
                     {
                       childStyle: [''],
@@ -1348,6 +1356,7 @@ describe('formDefinition', () => {
               type: 'collectionVariable',
             },
           ],
+          alternativeComponents: {},
           components: [
             {
               type: 'text',
@@ -1626,6 +1635,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1683,6 +1693,7 @@ describe('formDefinition', () => {
               containerType: 'surrounding',
               gridColSpan: 12,
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1727,6 +1738,7 @@ describe('formDefinition', () => {
               containerType: 'repeating',
               gridColSpan: 12,
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1772,6 +1784,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1815,6 +1828,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
+              alternativeComponents: {},
               components: [
                 {
                   type: 'textVariable',
@@ -1873,6 +1887,7 @@ describe('formDefinition', () => {
           },
           label: '',
           showLabel: true,
+          alternativeComponents: {},
           components: [
             {
               type: 'collectionVariable',
@@ -1917,8 +1932,9 @@ describe('formDefinition', () => {
       );
 
       const presentationChild = {
-        childId: 'pSomeMetadataTextVariable6Id',
-        type: 'presentation',
+        refGroups: [
+          { childId: 'pSomeMetadataTextVariable6Id', type: 'presentation' },
+        ],
       } as BFFPresentationChildReference;
       createPresentationGroup(
         recordType.presentationViewId,
@@ -1936,6 +1952,7 @@ describe('formDefinition', () => {
         validationTypeId,
         form: {
           childStyle: [''],
+          alternativeComponents: {},
           components: [
             {
               gridColSpan: 12,
@@ -1979,6 +1996,15 @@ describe('formDefinition', () => {
         },
       });
     });
+
+    it('should return a alternaive presentation for a children in a group', () => {
+      const formDefinition = createFormDefinition(
+        dependencies,
+        'validationTypeForAlternativePresentation',
+        FORM_MODE_VIEW,
+      );
+      expect(formDefinition).toStrictEqual({});
+    });
   });
 
   describe('linked record definition', () => {
@@ -1990,40 +2016,81 @@ describe('formDefinition', () => {
         'personWhenLinkedOutputPGroup',
       );
       createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
-        { childId: 'personNameLinkOutputPGroup', type: 'presentation' },
+        {
+          refGroups: [
+            {
+              childId: 'personNameLinkOutputPGroup',
+              type: 'presentation',
+            },
+          ],
+        },
       ]);
       createGroup('personGroup', 'personGroup', ['personNameGroup']);
       createPresentationGroup('personPGroup', 'personGroup', [
         {
-          childId: 'personNamePGroup',
-          type: 'presentation',
+          refGroups: [
+            {
+              childId: 'personNamePGroup',
+              type: 'presentation',
+            },
+          ],
         },
       ]);
       createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
         {
-          childId: 'personNameLinkOutputPGroup',
-          type: 'presentation',
+          refGroups: [
+            {
+              childId: 'personNameLinkOutputPGroup',
+              type: 'presentation',
+            },
+          ],
         },
       ]);
       createPresentationGroup('personNameLinkOutputPGroup', 'personNameGroup', [
-        { childId: 'personLastNameOutputPVar', type: 'presentation' },
-        { childId: 'personNameLinkSContainer', type: 'presentation' },
+        {
+          refGroups: [
+            {
+              childId: 'personLastNameOutputPVar',
+              type: 'presentation',
+            },
+          ],
+        },
+        {
+          refGroups: [
+            {
+              childId: 'personNameLinkSContainer',
+              type: 'presentation',
+            },
+          ],
+        },
       ]);
       createPresentationSContainer(
         'personNameLinkSContainer',
         ['personFirstNameTextVar'],
         [
           {
-            childId: 'commaText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'commaText',
+                type: 'text',
+              },
+            ],
           },
           {
-            childId: 'spaceText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'spaceText',
+                type: 'text',
+              },
+            ],
           },
           {
-            childId: 'personFirstNameOutputPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'personFirstNameOutputPVar',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       );
@@ -2058,13 +2125,16 @@ describe('formDefinition', () => {
         metadataGroup as BFFMetadataGroup,
         presentationGroup as BFFPresentationGroup,
       );
+
       expect(linkedRecordDefinition.form!.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
+          alternativeComponents: {},
           components: [
             {
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   gridColSpan: 12,
@@ -2089,6 +2159,7 @@ describe('formDefinition', () => {
                 },
                 {
                   childStyle: [''],
+                  alternativeComponents: {},
                   components: [
                     {
                       gridColSpan: 12,
@@ -2183,19 +2254,69 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryGroup',
         [
           {
-            childId: 'nationalSubjectCategoryNameOutputPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryNameOutputPGroup',
+                type: 'presentation',
+              },
+            ],
           },
-          { childId: 'semicolonText', type: 'text' },
-          { childId: 'spaceText', type: 'text' },
           {
-            childId: 'nationalSubjectCategoryAlternativeNameOutputPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'semicolonText',
+                type: 'text',
+              },
+            ],
           },
-          { childId: 'spaceText', type: 'text' },
-          { childId: 'firstHalfParenthesisText', type: 'text' },
-          { childId: 'subjectCodeOutputPVar', type: 'presentation' },
-          { childId: 'secondHalfParenthesisText', type: 'text' },
+          {
+            refGroups: [
+              {
+                childId: 'spaceText',
+                type: 'text',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryAlternativeNameOutputPGroup',
+                type: 'presentation',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'spaceText',
+                type: 'text',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'firstHalfParenthesisText',
+                type: 'text',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'subjectCodeOutputPVar',
+                type: 'presentation',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'secondHalfParenthesisText',
+                type: 'text',
+              },
+            ],
+          },
         ],
       );
       createGroup('nationalSubjectCategoryGroup', 'nationalSubjectCategory', [
@@ -2224,8 +2345,12 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryNameGroup',
         [
           {
-            childId: 'nationalSubjectCategoryNameOutputPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryNameOutputPVar',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       );
@@ -2234,8 +2359,12 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryAlternativeNameGroup',
         [
           {
-            childId: 'nationalSubjectCategoryNameOutputPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryNameOutputPVar',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       );
@@ -2250,24 +2379,44 @@ describe('formDefinition', () => {
         'nationalSubjectCategoryGroup',
         [
           {
-            childId: 'nationalSubjectCategoryText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryText',
+                type: 'text',
+              },
+            ],
           },
           {
-            childId: 'nationalSubjectCategoryNamePGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryNamePGroup',
+                type: 'presentation',
+              },
+            ],
           },
           {
-            childId: 'nationalSubjectCategoryAlternativeNamePGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'nationalSubjectCategoryAlternativeNamePGroup',
+                type: 'presentation',
+              },
+            ],
           },
           {
-            childId: 'subjectCodeTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'subjectCodeTextVarText',
+                type: 'text',
+              },
+            ],
           },
           {
-            childId: 'subjectCodePVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'subjectCodePVar',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       );
@@ -2296,9 +2445,11 @@ describe('formDefinition', () => {
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
+          alternativeComponents: {},
           components: [
             {
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   gridColSpan: 12,
@@ -2352,6 +2503,7 @@ describe('formDefinition', () => {
             },
             {
               childStyle: [''],
+              alternativeComponents: {},
               components: [
                 {
                   gridColSpan: 12,
@@ -2461,12 +2613,20 @@ describe('formDefinition', () => {
       'viewDefinitionPasswordGroup',
       [
         {
-          childId: 'loginIdPVar',
-          type: 'presentation',
+          refGroups: [
+            {
+              childId: 'loginIdPVar',
+              type: 'presentation',
+            },
+          ],
         },
         {
-          childId: 'loginPasswordPVar',
-          type: 'presentation',
+          refGroups: [
+            {
+              childId: 'loginPasswordPVar',
+              type: 'presentation',
+            },
+          ],
         },
       ],
       'input',
@@ -2511,14 +2671,22 @@ describe('formDefinition', () => {
         mode: 'input',
         children: [
           {
-            childId: 'loginIdPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'loginIdPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
             childStyle: [],
           },
           {
-            childId: 'loginPasswordPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'loginPasswordPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
             childStyle: [],
           },
@@ -2530,6 +2698,7 @@ describe('formDefinition', () => {
     expect(passwordGroup).toStrictEqual({
       form: {
         childStyle: [''],
+        alternativeComponents: {},
         components: [
           {
             childStyle: [''],
@@ -3247,6 +3416,7 @@ describe('formDefinition', () => {
       });
     });
   });
+
   describe('hasLinkedPresentation', () => {
     it('return true for link presentation with presentation', () => {
       const presentation = {
@@ -3303,12 +3473,20 @@ describe('formDefinition', () => {
         'divaOutputGroup',
         [
           {
-            childId: 'abstractPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'abstractPVar',
+                type: 'presentation',
+              },
+            ],
           },
           {
-            childId: 'abstract2PVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'abstract2PVar',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       );
@@ -3325,6 +3503,7 @@ describe('formDefinition', () => {
       expect(formDefinition).toStrictEqual({
         form: {
           childStyle: [''],
+          alternativeComponents: {},
           components: [
             {
               childStyle: [''],
@@ -3364,6 +3543,7 @@ describe('formDefinition', () => {
       });
     });
   });
+
   describe('finalValue no presentation', () => {
     it('generates a group with a textVar that has no presentation but finalValue', () => {
       // Metadata
@@ -3432,8 +3612,12 @@ describe('formDefinition', () => {
         mode: 'input',
         children: [
           {
-            childId: 'namePartPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'namePartPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '0',
             childStyle: [],
           },
@@ -3461,11 +3645,16 @@ describe('formDefinition', () => {
           },
         ],
         {
-          childId: 'agentPGroup',
-          type: 'presentation',
+          refGroups: [
+            {
+              childId: 'agentPGroup',
+              type: 'presentation',
+            },
+          ],
           minNumberOfRepeatingToShow: '0',
           childStyle: [],
         },
+        false,
       );
 
       expect(actual).toStrictEqual({
@@ -3486,6 +3675,7 @@ describe('formDefinition', () => {
         label: 'agentGroupText',
         showLabel: true,
         presentationStyle: '',
+        alternativeComponents: {},
         components: [
           {
             repeat: {

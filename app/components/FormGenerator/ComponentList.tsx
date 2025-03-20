@@ -30,6 +30,7 @@ interface FormComponentListGeneratorProps {
 
 export const ComponentList = ({
   components,
+  // alternativeComponents,
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps) => {

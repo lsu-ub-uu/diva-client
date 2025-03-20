@@ -22,12 +22,18 @@ import {
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
 } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 export const createText = (
   presentationChildReference: BFFPresentationChildReference,
   presentationChildType: string,
+  alternative: boolean,
 ) => {
-  const presentationChildId = presentationChildReference.childId;
+  const refGroup = getPresentationChildRefGroup(
+    presentationChildReference,
+    alternative,
+  );
+  const presentationChildId = refGroup.childId;
   return {
     name: presentationChildId,
     type: presentationChildType,

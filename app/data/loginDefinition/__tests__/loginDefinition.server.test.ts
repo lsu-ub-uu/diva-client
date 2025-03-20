@@ -118,14 +118,22 @@ describe('loginDefinition', () => {
         mode: 'input',
         children: [
           {
-            childId: 'loginIdPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'loginIdPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
             childStyle: [],
           },
           {
-            childId: 'loginPasswordPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'loginPasswordPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
             childStyle: [],
           },
@@ -177,6 +185,7 @@ describe('loginDefinition', () => {
       type: 'password',
       presentation: {
         form: {
+          alternativeComponents: {},
           childStyle: [''],
           components: [
             {

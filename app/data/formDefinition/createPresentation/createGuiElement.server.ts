@@ -25,12 +25,18 @@ import {
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
 } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 export const createGuiElement = (
   presentationChildReference: BFFPresentationChildReference,
   presentationPool: any,
+  alternative: boolean,
 ) => {
-  const presentationChildId = presentationChildReference.childId;
+  const refGroup = getPresentationChildRefGroup(
+    presentationChildReference,
+    alternative,
+  );
+  const presentationChildId = refGroup.childId;
   const presentation: BFFGuiElement = presentationPool.get(presentationChildId);
   return {
     name: presentationChildId,
