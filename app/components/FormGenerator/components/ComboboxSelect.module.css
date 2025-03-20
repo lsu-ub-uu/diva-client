@@ -19,14 +19,3 @@
 .combobox-input {
   cursor: pointer;
 }
-
-.combobox-button {
-  color: var(--color-primary);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: var(--gap);
-  font-size: 1.5rem;
-  background: none;
-  cursor: pointer;
-}

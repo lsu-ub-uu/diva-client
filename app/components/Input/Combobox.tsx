@@ -17,6 +17,8 @@
  */
 import {
   Combobox as HUICombobox,
+  ComboboxInput as HUIComboboxInput,
+  type ComboboxInputProps as HUIComboboxInputProps,
   ComboboxOption as HUIComboboxOption,
   type ComboboxOptionProps as HUIComboboxOptionProps,
   ComboboxOptions as HUIComboboxOptions,
@@ -24,8 +26,25 @@ import {
 } from '@headlessui/react';
 import clsx from 'clsx';
 import styles from './Combobox.module.css';
+import inputStyles from './Input.module.css';
+import { ManageSearchIcon } from '@/icons';
 
 export const Combobox = HUICombobox;
+
+export const ComboboxInput = ({
+  className,
+  ...rest
+}: HUIComboboxInputProps) => {
+  return (
+    <div className={styles['combobox-input-wrapper']}>
+      <HUIComboboxInput
+        className={clsx(inputStyles['combobox-input'], className)}
+        {...rest}
+      />
+      <ManageSearchIcon className={styles['combobox-input-icon']} />
+    </div>
+  );
+};
 
 export const ComboboxOptions = ({
   className,

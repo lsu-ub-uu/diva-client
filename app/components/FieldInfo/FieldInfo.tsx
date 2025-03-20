@@ -26,6 +26,8 @@ import { Button } from '@/components/Button/Button';
 import { CloseIcon, InfoIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './FieldInfo.module.css';
+import { FieldContext } from '@/components/Input/Fieldset';
+import { use } from 'react';
 
 interface FieldInfoProps {
   title: string;
@@ -34,7 +36,7 @@ interface FieldInfoProps {
 
 export const FieldInfo = ({ title, body }: FieldInfoProps) => {
   const { t } = useTranslation();
-
+  const { ids } = use(FieldContext);
   return (
     <Popover className={styles['popover']}>
       <PopoverButton
@@ -49,6 +51,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
         anchor='top'
         className={styles['field-info-panel']}
         role='definition'
+        unmount={false}
       >
         <div className={styles['label-wrapper']}>
           {title && <h4>{t(title)}</h4>}
@@ -61,7 +64,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
             <CloseIcon />
           </CloseButton>
         </div>
-        {body && <p>{t(body)}</p>}
+        {body && <p id={ids.details}>{t(body)}</p>}
       </PopoverPanel>
     </Popover>
   );

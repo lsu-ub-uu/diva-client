@@ -22,7 +22,7 @@ import {
 } from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import type { Ref } from 'react';
+import { type Ref } from 'react';
 
 interface InputProps extends HUIInputProps {
   ref?: Ref<HTMLInputElement>;
@@ -30,7 +30,7 @@ interface InputProps extends HUIInputProps {
 
 export const Input = ({ className, ref, ...rest }: InputProps) => {
   return (
-    <HUIInput /**/
+    <HUIInput
       className={clsx(styles['input'], className)}
       ref={ref}
       {...rest}

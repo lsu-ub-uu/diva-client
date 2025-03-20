@@ -42,9 +42,12 @@ test('updates an existing report', async ({ page, divaOutput }) => {
 
   //Assert update page info
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(recordTitle);
-  await expect(page.getByLabel(/^Huvudtitel/)).toHaveValue(recordTitle);
+  await expect(
+    page.getByRole('group', { name: 'Huvudtitel' }).getByLabel('Huvudtitel'),
+  ).toHaveValue(recordTitle);
 
   await page
+    .getByRole('group', { name: 'År' })
     .getByLabel('År')
     .fill(faker.date.recent().getFullYear().toString());
 

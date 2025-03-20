@@ -25,3 +25,16 @@
     color: var(--color-label);
   }
 }
+
+.combobox-input-wrapper {
+  position: relative;
+}
+
+.combobox-input-icon {
+  color: var(--color-primary);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: var(--gap);
+  font-size: var(--font-size-icon);
+}

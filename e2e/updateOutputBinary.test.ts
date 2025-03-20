@@ -47,7 +47,9 @@ test('updates an existing report with a binary', async ({
 
   //Assert update page info
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(recordTitle);
-  await expect(page.getByLabel(/^Huvudtitel/)).toHaveValue(recordTitle);
+  await expect(
+    page.getByRole('group', { name: 'Huvudtitel' }).getByLabel('Huvudtitel'),
+  ).toHaveValue(recordTitle);
 
   await page
     .getByLabel('Bifogad fil')
@@ -55,8 +57,11 @@ test('updates an existing report with a binary', async ({
 
   await expect(page.getByLabel('Originalfilnam')).toHaveText('dog.jpg');
 
-  await page
-    .getByRole('region', { name: 'Bilaga' })
+  const attachmentGroup = page.getByRole('region', {
+    name: 'Bilaga',
+  });
+  await attachmentGroup
+    .getByRole('group', { name: 'Typ' })
     .getByLabel('Typ')
     .selectOption({ label: 'Bild' });
 
