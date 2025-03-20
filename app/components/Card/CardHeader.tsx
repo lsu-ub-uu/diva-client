@@ -24,9 +24,16 @@ import { CardContext } from '@/components/Card/CardContext';
 interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
   enhancedFields?: boolean;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
-export const CardHeader = ({ children, enhancedFields }: CardHeaderProps) => {
+export const CardHeader = ({
+  children,
+  enhancedFields,
+  attributes,
+  actionButtonGroup,
+}: CardHeaderProps) => {
   const { boxed } = use(CardContext);
 
   return (
@@ -35,7 +42,9 @@ export const CardHeader = ({ children, enhancedFields }: CardHeaderProps) => {
       className={styles['card-header']}
       {...(boxed && { 'data-boxed': '' })}
     >
-      {children}
+      <div className={styles['title']}>{children}</div>
+      <div className={styles['attributes']}>{attributes}</div>
+      <div className={styles['actions']}>{actionButtonGroup}</div>
     </div>
   );
 };
