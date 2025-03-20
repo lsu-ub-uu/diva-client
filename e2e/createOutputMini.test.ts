@@ -53,26 +53,34 @@ test('Create report', async ({ page, request, authtoken }) => {
   await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
   await page
-    .getByLabel(/^Typ av innehåll/)
+    .getByRole('group', { name: 'Typ av innehåll' })
+    .getByLabel('Typ av innehåll')
     .selectOption({ label: 'Sakkunniggranskat' });
 
   const titleGroup = page.getByRole('region', {
     name: 'Titel',
   });
+
   await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
   await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
-  await titleGroup.getByLabel('Huvudtitel').fill(mockTitle);
+  await titleGroup
+    .getByRole('group', { name: 'Huvudtitel' })
+    .getByLabel('Huvudtitel')
+    .fill(mockTitle);
 
   await page
+    .getByRole('group', { name: 'År' })
     .getByLabel('År')
     .fill(faker.date.recent().getFullYear().toString());
 
   await page
+    .getByRole('group', { name: /^Bibliografiskt granskad/ })
     .getByLabel(/^Bibliografiskt granskad/)
     .selectOption({ label: 'Sant' });
 
   await page
+    .getByRole('group', { name: /^Postens synlighet/ })
     .getByLabel(/^Postens synlighet/)
     .selectOption({ label: 'Publicerad' });
 
