@@ -1997,13 +1997,162 @@ describe('formDefinition', () => {
       });
     });
 
-    it('should return a alternaive presentation for a children in a group', () => {
+    it('should return a alternative presentation for a children in a group', () => {
+      const validationTypeId = 'validationTypeForAlternativePresentation';
+      createValidationType(validationTypeId);
+      createRecordType(validationTypeId);
+
+      // Group from recordType
+      createGroup(
+        `${validationTypeId}OutputGroup`,
+        `${validationTypeId}OutputGroup`,
+        [`some${validationTypeId}MetadataGroupId`],
+      );
+      // Groups from validationType
+      createGroup(
+        `some${validationTypeId}MetadataGroupId`,
+        `some${validationTypeId}MetadataGroup`,
+        ['tempGroupId'],
+      );
+      createGroup(`tempGroupId`, `tempGroup`, ['titleVar', 'abstractVar']);
+      createPresentationGroup(`pTempGroupId`, `tempGroupId`, [
+        {
+          refGroups: [
+            {
+              childId: 'abstractMinimizedSContainer',
+              type: 'presentation',
+            },
+            /* {
+                childId: 'abstractSContainer',
+                type: 'presentation',
+              },*/
+          ],
+        },
+      ]);
+
+      createPresentationGroup(
+        `pSome${validationTypeId}EditMetadataGroupId`,
+        `some${validationTypeId}MetadataGroupId`,
+        [
+          {
+            refGroups: [
+              {
+                childId: 'pTempGroupId',
+                type: 'presentation',
+              },
+              /* {
+                childId: 'abstractSContainer',
+                type: 'presentation',
+              },*/
+            ],
+          },
+        ],
+      );
+      createPresentationSContainer(
+        'abstractMinimizedSContainer',
+        [`tempGroupId`],
+        [
+          {
+            refGroups: [
+              {
+                childId: 'titlePVar',
+                type: 'presentation',
+              },
+            ],
+          },
+        ],
+      );
+
+      /*createPresentationSContainer(
+        'abstractSContainer',
+        [`some${validationTypeId}MetadataGroupId`],
+        [
+          {
+            refGroups: [
+              {
+                childId: 'titlePVar',
+                type: 'presentation',
+              },
+              {
+                childId: 'abstractPVar',
+                type: 'presentation',
+              },
+            ],
+          },
+        ],
+      );*/
+      createTextVar('abstractVar', 'abstract', []);
+      createPresentationVar('abstractPVar', 'abstractVar', 'pVar', 'output');
+      createTextVar('titleVar', 'title', []);
+      createPresentationVar('titlePVar', 'titleVar', 'pVar', 'output');
+
+      createPresentationGroup(
+        `${validationTypeId}OutputPGroup`,
+        `${validationTypeId}OutputGroup`,
+        [
+          {
+            refGroups: [
+              {
+                childId: 'titlePVar',
+                type: 'presentation',
+              },
+              /* {
+                childId: 'abstractPVar',
+                type: 'presentation',
+              },*/
+            ],
+          },
+        ],
+      );
+
       const formDefinition = createFormDefinition(
         dependencies,
         'validationTypeForAlternativePresentation',
         FORM_MODE_VIEW,
       );
-      expect(formDefinition).toStrictEqual({});
+      expect(formDefinition).toStrictEqual({
+        form: {
+          alternativeComponents: {},
+          childStyle: [''],
+          components: [
+            {
+              childStyle: [''],
+              gridColSpan: 12,
+              type: 'container',
+              name: 'abstractMinimizedSContainer',
+              mode: 'output',
+              presentationStyle: '',
+              containerType: 'surrounding',
+              components: [
+                {
+                  name: 'titlePVar',
+                  type: 'text',
+                  textStyle: 'h3TextStyle',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+              ],
+              alternativeComponents: {},
+            },
+          ],
+          gridColSpan: 12,
+          label: 'someTextId',
+          mode: 'output',
+          name: 'validationTypeForAlternativePresentationOutputGroup',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'someDefTextId',
+            title: 'someTextId',
+          },
+          type: 'group',
+        },
+        validationTypeId: 'validationTypeForAlternativePresentation',
+      });
     });
   });
 
