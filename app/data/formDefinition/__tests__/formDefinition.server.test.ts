@@ -1999,6 +1999,7 @@ describe('formDefinition', () => {
 
     it('should return a alternative presentation for a children in a group', () => {
       const validationTypeId = 'validationTypeForAlternativePresentation';
+
       createValidationType(validationTypeId);
       createRecordType(validationTypeId);
 
@@ -2006,85 +2007,10 @@ describe('formDefinition', () => {
       createGroup(
         `${validationTypeId}OutputGroup`,
         `${validationTypeId}OutputGroup`,
-        [`some${validationTypeId}MetadataGroupId`],
-      );
-      // Groups from validationType
-      createGroup(
-        `some${validationTypeId}MetadataGroupId`,
-        `some${validationTypeId}MetadataGroup`,
-        ['tempGroupId'],
-      );
-      createGroup(`tempGroupId`, `tempGroup`, ['titleVar', 'abstractVar']);
-      createPresentationGroup(`pTempGroupId`, `tempGroupId`, [
-        {
-          refGroups: [
-            {
-              childId: 'abstractMinimizedSContainer',
-              type: 'presentation',
-            },
-            /* {
-                childId: 'abstractSContainer',
-                type: 'presentation',
-              },*/
-          ],
-        },
-      ]);
-
-      createPresentationGroup(
-        `pSome${validationTypeId}EditMetadataGroupId`,
-        `some${validationTypeId}MetadataGroupId`,
-        [
-          {
-            refGroups: [
-              {
-                childId: 'pTempGroupId',
-                type: 'presentation',
-              },
-              /* {
-                childId: 'abstractSContainer',
-                type: 'presentation',
-              },*/
-            ],
-          },
-        ],
-      );
-      createPresentationSContainer(
-        'abstractMinimizedSContainer',
-        [`tempGroupId`],
-        [
-          {
-            refGroups: [
-              {
-                childId: 'titlePVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
+        ['childGroup'],
       );
 
-      /*createPresentationSContainer(
-        'abstractSContainer',
-        [`some${validationTypeId}MetadataGroupId`],
-        [
-          {
-            refGroups: [
-              {
-                childId: 'titlePVar',
-                type: 'presentation',
-              },
-              {
-                childId: 'abstractPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );*/
-      createTextVar('abstractVar', 'abstract', []);
-      createPresentationVar('abstractPVar', 'abstractVar', 'pVar', 'output');
-      createTextVar('titleVar', 'title', []);
-      createPresentationVar('titlePVar', 'titleVar', 'pVar', 'output');
+      createGroup(`childGroup`, `child`, ['titleVar', 'abstractVar']);
 
       createPresentationGroup(
         `${validationTypeId}OutputPGroup`,
@@ -2093,21 +2019,64 @@ describe('formDefinition', () => {
           {
             refGroups: [
               {
-                childId: 'titlePVar',
+                childId: 'childGroupMinimizedSContainer',
                 type: 'presentation',
               },
-              /* {
-                childId: 'abstractPVar',
+              {
+                childId: 'childGroupMaximizedSContainer',
                 type: 'presentation',
-              },*/
+              },
             ],
           },
         ],
       );
 
+      createPresentationSContainer(
+        'childGroupMinimizedSContainer',
+        ['titleVar'],
+        [
+          {
+            refGroups: [
+              {
+                childId: 'titlePVar',
+                type: 'presentation',
+              },
+            ],
+          },
+        ],
+      );
+
+      createPresentationSContainer(
+        'childGroupMaximizedSContainer',
+        ['titleVar', 'abstractVar'],
+        [
+          {
+            refGroups: [
+              {
+                childId: 'titlePVar',
+                type: 'presentation',
+              },
+            ],
+          },
+          {
+            refGroups: [
+              {
+                childId: 'abstractPVar',
+                type: 'presentation',
+              },
+            ],
+          },
+        ],
+      );
+
+      createTextVar('abstractVar', 'abstract', []);
+      createPresentationVar('abstractPVar', 'abstractVar', 'pVar', 'output');
+      createTextVar('titleVar', 'title', []);
+      createPresentationVar('titlePVar', 'titleVar', 'pVar', 'output');
+
       const formDefinition = createFormDefinition(
         dependencies,
-        'validationTypeForAlternativePresentation',
+        validationTypeId,
         FORM_MODE_VIEW,
       );
       expect(formDefinition).toStrictEqual({
