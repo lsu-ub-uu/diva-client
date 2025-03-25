@@ -82,6 +82,7 @@ export const createGroupOrComponent = (
   let repeat;
   let metadata;
   let commonParameters;
+  let alternativePresentation;
 
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
@@ -98,6 +99,20 @@ export const createGroupOrComponent = (
   const presentation = presentationPool.get(
     presentationChildId,
   ) as BFFPresentationBase;
+
+  if (
+    alternative === false &&
+    presentationChildReference.refGroups.length > 1
+  ) {
+    alternativePresentation = createGroupOrComponent(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReference,
+      true,
+      metadataOverrideId,
+    );
+  }
+
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     const metadataFromPresentation = metadataPool.get(
@@ -129,6 +144,7 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
       ...textVar,
     }) as FormComponentTextVar;
   }
@@ -144,6 +160,7 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
       ...numVar,
     }) as FormComponentNumVar;
   }
@@ -159,6 +176,7 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
       ...collVar,
     }) as FormComponentCollVar;
   }
@@ -175,6 +193,7 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
       ...recordLink,
     }) as FormComponentRecordLink;
   }
@@ -190,6 +209,7 @@ export const createGroupOrComponent = (
       childStyle,
       gridColSpan,
       textStyle,
+      alternativePresentation,
       ...container,
     }) as FormComponentContainer;
   }
@@ -205,6 +225,7 @@ export const createGroupOrComponent = (
       childStyle,
       gridColSpan,
       textStyle,
+      alternativePresentation,
       ...group,
     }) as FormComponentGroup;
   }
@@ -219,6 +240,7 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
       ...resourceLink,
     }) as FormComponentResourceLink;
   }
@@ -229,6 +251,7 @@ export const createGroupOrComponent = (
     childStyle,
     textStyle,
     gridColSpan,
+    alternativePresentation,
   }) as FormComponentGroup;
 };
 

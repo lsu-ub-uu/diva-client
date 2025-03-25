@@ -478,12 +478,20 @@ Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
 }
 
 ### Log in with apptoken
-POST http://localhost:38182/login/rest/apptoken
+POST https://cora.epc.ub.uu.se/diva/login/rest/apptoken
 
 divaAdmin@cora.epc.ub.uu.se
-xxxx-xxx-xxxxx-xxxx
+49ce00fb-68b5-4089-a5f7-1c225d3cf156
 
 ### Renew authtoken
 POST http://localhost:38182/login/rest/authToken/ffb01845-3230-4ef8-b923-d7b775be2c2f
 Accept: application/vnd.uub.authToken+json
 Authtoken: b067564b-5694-4a3d-a7c6-456d3090c4a5
+
+### Create Report
+POST https://cora.epc.ub.uu.se/diva/rest/record/diva-output
+Accept: application/vnd.uub.record+json
+Content-Type: application/vnd.uub.record+json
+Authtoken: 97821a01-85c5-4802-836e-8bfc54c4a63a
+
+{"name":"output","children":[{"name":"recordInfo","children":[{"name":"validationType","children":[{"name":"linkedRecordType","value":"validationType"},{"name":"linkedRecordId","value":"publication_report"}]},{"name":"dataDivider","children":[{"name":"linkedRecordType","value":"system"},{"name":"linkedRecordId","value":"divaData"}]},{"name":"permissionUnit","children":[{"name":"linkedRecordType","value":"permissionUnit"},{"name":"linkedRecordId","value":"hig"}]},{"name":"visibility","value":"published"}]},{"name":"genre","value":"publication_report","attributes":{"type":"outputType"}},{"name":"language","repeatId":"0","children":[{"name":"languageTerm","value":"swe","attributes":{"type":"code","authority":"iso639-2b"}}]},{"name":"genre","value":"ref","attributes":{"type":"contentType"}},{"name":"titleInfo","children":[{"name":"title","value":"12346"}],"attributes":{"lang":"anp"}},{"name":"originInfo","children":[{"name":"dateIssued","children":[{"name":"year","value":"1234"}]}]},{"name":"admin","children":[{"name":"reviewed","value":"true"}]}]}

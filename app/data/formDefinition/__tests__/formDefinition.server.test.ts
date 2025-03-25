@@ -1997,117 +1997,324 @@ describe('formDefinition', () => {
       });
     });
 
-    it('should return a alternative presentation for a children in a group', () => {
-      const validationTypeId = 'validationTypeForAlternativePresentation';
+    it('should return a alternative presentation for a child group', () => {
+      validationTypePool.set('person', {
+        id: 'person',
+        validatesRecordTypeId: 'person',
+        newMetadataGroupId: 'personNewGroup',
+        newPresentationGroupId: 'personUpdatePGroup',
+        metadataGroupId: 'personUpdateGroup',
+        presentationGroupId: 'personUpdatePGroup',
+        nameTextId: 'someTextId',
+        defTextId: 'someDefTextId',
+      });
 
-      createValidationType(validationTypeId);
-      createRecordType(validationTypeId);
+      recordTypePool.set('person', {
+        id: 'person',
+        metadataId: 'personUpdateGroup',
+        presentationViewId: 'personUpdatePGroup',
+        listPresentationViewId: '',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+      });
 
-      // Group from recordType
-      createGroup(
-        `${validationTypeId}OutputGroup`,
-        `${validationTypeId}OutputGroup`,
-        ['childGroup'],
-      );
+      metadataPool.set('personUpdateGroup', {
+        id: 'personUpdateGroup',
+        nameInData: 'person',
+        type: 'group',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        children: [
+          {
+            childId: 'personNameGroup',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      });
 
-      createGroup(`childGroup`, `child`, ['titleVar', 'abstractVar']);
+      metadataPool.set('personNameGroup', {
+        id: 'personNameGroup',
+        nameInData: 'name',
+        type: 'group',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        children: [
+          {
+            childId: 'firstNameVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+          {
+            childId: 'lastNameVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+          {
+            childId: 'titleVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      });
 
-      createPresentationGroup(
-        `${validationTypeId}OutputPGroup`,
-        `${validationTypeId}OutputGroup`,
-        [
+      metadataPool.set('firstNameVar', {
+        id: 'firstNameVar',
+        nameInData: 'firstName',
+        type: 'textVariable',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        regEx: '.*',
+      });
+
+      metadataPool.set('lastNameVar', {
+        id: 'lastNameVar',
+        nameInData: 'lastName',
+        type: 'textVariable',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        regEx: '.*',
+      });
+
+      metadataPool.set('titleVar', {
+        id: 'titleVar',
+        nameInData: 'title',
+        type: 'textVariable',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        regEx: '.*',
+      });
+
+      presentationPool.set('personUpdatePGroup', {
+        id: 'personUpdatePGroup',
+        type: 'pGroup',
+        presentationOf: 'personUpdateGroup',
+        mode: 'input',
+        children: [
           {
             refGroups: [
               {
-                childId: 'childGroupMinimizedSContainer',
+                childId: 'personNameMinimizedPGroup',
                 type: 'presentation',
               },
-              {
-                childId: 'childGroupMaximizedSContainer',
-                type: 'presentation',
-              },
+              { childId: 'personNamePGroup', type: 'presentation' },
             ],
           },
         ],
-      );
+      });
 
-      createPresentationSContainer(
-        'childGroupMinimizedSContainer',
-        ['titleVar'],
-        [
+      presentationPool.set('personNameMinimizedPGroup', {
+        id: 'personNameMinimizedPGroup',
+        type: 'pGroup',
+        presentationOf: 'personNameGroup',
+        mode: 'input',
+        children: [
           {
-            refGroups: [
-              {
-                childId: 'titlePVar',
-                type: 'presentation',
-              },
-            ],
+            refGroups: [{ childId: 'firstNamePVar', type: 'presentation' }],
+          },
+          { refGroups: [{ childId: 'lastNamePVar', type: 'presentation' }] },
+        ],
+      });
+
+      presentationPool.set('personNamePGroup', {
+        id: 'personNamePGroup',
+        type: 'pGroup',
+        presentationOf: 'personNameGroup',
+        mode: 'input',
+        children: [
+          {
+            refGroups: [{ childId: 'firstNamePVar', type: 'presentation' }],
+          },
+          {
+            refGroups: [{ childId: 'lastNamePVar', type: 'presentation' }],
+          },
+          {
+            refGroups: [{ childId: 'titlePVar', type: 'presentation' }],
           },
         ],
-      );
+      });
 
-      createPresentationSContainer(
-        'childGroupMaximizedSContainer',
-        ['titleVar', 'abstractVar'],
-        [
-          {
-            refGroups: [
-              {
-                childId: 'titlePVar',
-                type: 'presentation',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'abstractPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );
+      presentationPool.set('firstNamePVar', {
+        id: 'firstNamePVar',
+        type: 'pVar',
+        mode: 'input',
+        presentationOf: 'firstNameVar',
+      });
 
-      createTextVar('abstractVar', 'abstract', []);
-      createPresentationVar('abstractPVar', 'abstractVar', 'pVar', 'output');
-      createTextVar('titleVar', 'title', []);
-      createPresentationVar('titlePVar', 'titleVar', 'pVar', 'output');
+      presentationPool.set('lastNamePVar', {
+        id: 'lastNamePVar',
+        type: 'pVar',
+        mode: 'input',
+        presentationOf: 'lastNameVar',
+      });
+
+      presentationPool.set('titlePVar', {
+        id: 'titlePVar',
+        type: 'pVar',
+        mode: 'input',
+        presentationOf: 'titleVar',
+      });
 
       const formDefinition = createFormDefinition(
         dependencies,
-        validationTypeId,
-        FORM_MODE_VIEW,
+        'person',
+        'update',
       );
+
       expect(formDefinition).toStrictEqual({
         form: {
-          alternativeComponents: {},
           childStyle: [''],
           components: [
             {
+              name: 'name',
               childStyle: [''],
               gridColSpan: 12,
-              type: 'container',
-              name: 'abstractMinimizedSContainer',
-              mode: 'output',
+              type: 'group',
+              mode: 'input',
+              label: 'someTextId',
               presentationStyle: '',
-              containerType: 'surrounding',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId',
+              },
               components: [
                 {
-                  name: 'titlePVar',
-                  type: 'text',
-                  textStyle: 'h3TextStyle',
-                  childStyle: [''],
+                  name: 'firstName',
+                  type: 'textVariable',
                   gridColSpan: 12,
+                  label: 'someTextId',
+                  mode: 'input',
+                  childStyle: [''],
+                  repeat: {
+                    repeatMax: 1,
+                    repeatMin: 1,
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId',
+                  },
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
+                },
+                {
+                  name: 'lastName',
+                  type: 'textVariable',
+                  label: 'someTextId',
+                  mode: 'input',
+                  gridColSpan: 12,
+                  childStyle: [''],
+                  repeat: {
+                    repeatMax: 1,
+                    repeatMin: 1,
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId',
+                  },
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
               ],
-              alternativeComponents: {},
+              alternativePresentation: {
+                name: 'name',
+                childStyle: [''],
+                gridColSpan: 12,
+                type: 'group',
+                mode: 'input',
+                label: 'someTextId',
+                presentationStyle: '',
+                repeat: {
+                  repeatMax: 1,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                components: [
+                  {
+                    name: 'firstName',
+                    type: 'textVariable',
+                    label: 'someTextId',
+                    mode: 'input',
+                    gridColSpan: 12,
+                    childStyle: [''],
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
+                    },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
+                    },
+                    validation: {
+                      pattern: '.*',
+                      type: 'regex',
+                    },
+                  },
+                  {
+                    name: 'lastName',
+                    type: 'textVariable',
+                    label: 'someTextId',
+                    mode: 'input',
+                    gridColSpan: 12,
+                    childStyle: [''],
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
+                    },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
+                    },
+                    validation: {
+                      pattern: '.*',
+                      type: 'regex',
+                    },
+                  },
+                  {
+                    name: 'title',
+                    type: 'textVariable',
+                    label: 'someTextId',
+                    mode: 'input',
+                    gridColSpan: 12,
+                    childStyle: [''],
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
+                    },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
+                    },
+                    validation: {
+                      pattern: '.*',
+                      type: 'regex',
+                    },
+                  },
+                ],
+              },
             },
           ],
           gridColSpan: 12,
           label: 'someTextId',
-          mode: 'output',
-          name: 'validationTypeForAlternativePresentationOutputGroup',
+          mode: 'input',
+          name: 'person',
           presentationStyle: '',
           repeat: {
             repeatMax: 1,
@@ -2120,7 +2327,7 @@ describe('formDefinition', () => {
           },
           type: 'group',
         },
-        validationTypeId: 'validationTypeForAlternativePresentation',
+        validationTypeId: 'person',
       });
     });
   });

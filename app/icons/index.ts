@@ -59,3 +59,5 @@ export { default as MysteryIcon } from './Mystery.svg?react';
 export { default as ManageSearchIcon } from './ManageSearch.svg?react';
 export { default as SearchCheckIcon } from './SearchCheck.svg?react';
 export { default as UploadFileIcon } from './UploadFile.svg?react';
+export { default as ExpandContentIcon } from './ExpandContent.svg?react';
+export { default as CollapseContentIcon } from './CollapseContent.svg?react';

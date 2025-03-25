@@ -40,6 +40,7 @@ import { Group } from '@/components/FormGenerator/components/Group';
 import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { ComponentPresentationSwitcher } from './ComponentPresentationSwitcher';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -56,6 +57,17 @@ export const Component = ({
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
+
+  if (component.alternativePresentation !== undefined) {
+    return (
+      <ComponentPresentationSwitcher
+        component={component}
+        idx={idx}
+        path={path}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  }
 
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 

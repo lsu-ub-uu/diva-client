@@ -66,6 +66,7 @@ export type FormComponentWithDataType = Omit<
 export interface FormComponentBase {
   type: FormComponentType;
   name: string;
+  alternativePresentation?: FormComponent;
 }
 
 export type TextStyle =
@@ -174,7 +175,6 @@ export interface FormComponentContainer extends FormComponentMetadata {
 export interface FormComponentGroup extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   components?: FormComponent[];
-  alternativeComponents?: Record<string, FormComponent>;
   label: string;
   showLabel: boolean;
 }
