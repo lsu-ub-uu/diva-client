@@ -261,6 +261,8 @@ describe('transformCoraPresentations', () => {
             ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
+            title: 'bookTitleChildRefTitleText',
+            titleHeadlineLevel: 'h3',
           },
         ],
       });

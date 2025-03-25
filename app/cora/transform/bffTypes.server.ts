@@ -182,6 +182,8 @@ export interface BFFPresentationChildReference {
   childStyle?: string[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
+  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+  addText?: string;
 }
 
 export interface BFFPresentationChildRefGroup {

@@ -47,6 +47,7 @@ import {
   getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes,
+  hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 
 export const transformCoraPresentations = (
@@ -365,6 +366,20 @@ const transformChildReference = (childReference: DataGroup) => {
     childReference,
     'childStyle',
   );
+
+  const title = hasChildWithNameInData(childReference, 'title')
+    ? extractLinkedRecordIdFromNamedRecordLink(childReference, 'title')
+    : undefined;
+  const titleHeadlineLevel = hasChildWithNameInData(
+    childReference,
+    'titleHeadlineLevel',
+  )
+    ? getFirstDataAtomicValueWithNameInData(
+        childReference,
+        'titleHeadlineLevel',
+      )
+    : undefined;
+
   const childStyle = childStyleAtomics.map(
     (childStyleAtomic) => childStyleAtomic.value,
   );
@@ -375,6 +390,8 @@ const transformChildReference = (childReference: DataGroup) => {
     textStyle,
     presentationSize,
     childStyle,
+    title,
+    titleHeadlineLevel,
   });
 };
 

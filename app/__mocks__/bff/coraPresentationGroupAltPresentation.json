@@ -313,19 +313,6 @@
                       {
                         "name": "minNumberOfRepeatingToShow",
                         "value": ""
-                      },
-                      {
-                        "name": "title",
-                        "children": [
-                          {
-                            "name": "linkedRecordType",
-                            "value": "text"
-                          },
-                          {
-                            "name": "linkedRecordId",
-                            "value": ""
-                          }
-                        ]
                       }
                     ]
                   }
