@@ -2092,6 +2092,9 @@ describe('formDefinition', () => {
         mode: 'input',
         children: [
           {
+            title: 'personRefTitle',
+            titleHeadlineLevel: '3',
+            presentationSize: 'firstSmaller',
             refGroups: [
               {
                 childId: 'personNameMinimizedPGroup',
@@ -2182,6 +2185,9 @@ describe('formDefinition', () => {
                 body: 'someDefTextId',
                 title: 'someTextId',
               },
+              title: 'personRefTitle',
+              titleHeadlineLevel: '3',
+              presentationSize: 'firstSmaller',
               components: [
                 {
                   name: 'firstName',
@@ -2243,6 +2249,9 @@ describe('formDefinition', () => {
                   body: 'someDefTextId',
                   title: 'someTextId',
                 },
+                title: 'personRefTitle',
+                titleHeadlineLevel: '3',
+                presentationSize: 'firstSmaller',
                 components: [
                   {
                     name: 'firstName',

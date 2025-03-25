@@ -91,6 +91,11 @@ export const createGroupOrComponent = (
   const gridColSpan = convertChildStylesToGridColSpan(
     presentationChildReference.childStyle ?? [],
   );
+
+  const presentationSize = presentationChildReference.presentationSize;
+  const title = presentationChildReference.title;
+  const titleHeadlineLevel = presentationChildReference.titleHeadlineLevel;
+
   const refGroup = getPresentationChildRefGroup(
     presentationChildReference,
     alternative,
@@ -145,6 +150,9 @@ export const createGroupOrComponent = (
       textStyle,
       gridColSpan,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...textVar,
     }) as FormComponentTextVar;
   }
@@ -161,6 +169,9 @@ export const createGroupOrComponent = (
       textStyle,
       gridColSpan,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...numVar,
     }) as FormComponentNumVar;
   }
@@ -177,6 +188,9 @@ export const createGroupOrComponent = (
       textStyle,
       gridColSpan,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...collVar,
     }) as FormComponentCollVar;
   }
@@ -194,6 +208,9 @@ export const createGroupOrComponent = (
       textStyle,
       gridColSpan,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...recordLink,
     }) as FormComponentRecordLink;
   }
@@ -210,6 +227,9 @@ export const createGroupOrComponent = (
       gridColSpan,
       textStyle,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...container,
     }) as FormComponentContainer;
   }
@@ -226,6 +246,9 @@ export const createGroupOrComponent = (
       gridColSpan,
       textStyle,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...group,
     }) as FormComponentGroup;
   }
@@ -241,6 +264,9 @@ export const createGroupOrComponent = (
       textStyle,
       gridColSpan,
       alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...resourceLink,
     }) as FormComponentResourceLink;
   }
@@ -252,6 +278,9 @@ export const createGroupOrComponent = (
     textStyle,
     gridColSpan,
     alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
   }) as FormComponentGroup;
 };
 

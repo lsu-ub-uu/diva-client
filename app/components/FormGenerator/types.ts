@@ -112,7 +112,10 @@ export interface FormComponentMetadata extends FormComponentBase {
   gridColSpan?: number;
   childStyle?: ChildStyle[];
   textStyle?: TextStyle;
-  presentationStyle?: string; // frame etc
+  presentationStyle?: string;
+  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  title?: string;
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 export interface FormComponentTextVar extends FormComponentMetadata {
