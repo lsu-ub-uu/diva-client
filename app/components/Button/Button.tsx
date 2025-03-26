@@ -33,6 +33,7 @@ interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   to?: string;
   href?: string;
   ref?: Ref<HTMLButtonElement>;
+  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export const Button = ({
@@ -40,6 +41,7 @@ export const Button = ({
   size = 'medium',
   fullWidth = false,
   className,
+  tooltipPosition = 'bottom',
   ref,
   ...rest
 }: ButtonProps) => {
@@ -48,6 +50,7 @@ export const Button = ({
       className={clsx(styles.button, className)}
       data-variant={variant}
       data-size={size}
+      data-tooltip-position={tooltipPosition}
       ref={ref}
       {...(fullWidth ? { 'data-fullwidth': '' } : {})}
       {...rest}
