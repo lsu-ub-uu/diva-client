@@ -30,7 +30,6 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@/components/Typography/Typography';
 import { headlineLevelToTypographyVariant } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -93,7 +92,7 @@ export const AlternativePresentationSwitcher = (
                 presentation === 'default' ? 'alternative' : 'default',
               );
             }}
-            aria-label={switchButtonProps.label}
+            aria-label={t(switchButtonProps.label)}
             tooltipPosition='right'
           >
             <Typography
@@ -127,8 +126,6 @@ export const AlternativePresentationSwitcher = (
       )}
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
     >
-      <DevInfo component={defaultPresentation} path={props.path} />
-      <DevInfo component={alternativePresentation} path={props.path} />
       <div
         className={clsx(styles['presentation'], componentStyles['container'])}
       >
@@ -149,7 +146,7 @@ export const AlternativePresentationSwitcher = (
             presentation === 'default' ? 'alternative' : 'default',
           );
         }}
-        aria-label={switchButtonProps.label}
+        aria-label={t(switchButtonProps.label)}
       >
         {switchButtonProps.icon}
       </Button>
@@ -162,17 +159,17 @@ const getSwitchButtonProps = (
   presentationSize: FormComponentMetadata['presentationSize'],
 ) => {
   if (presentationSize === 'bothEqual') {
-    return { label: 'Byt visningläge', icon: <SwapIcon /> };
+    return { label: 'divaClient_swapPresentationText', icon: <SwapIcon /> };
   }
 
   if (presentationSize === 'firstLarger') {
     return presentation === 'default'
-      ? { label: 'Visa mindre', icon: <CollapseContentIcon /> }
-      : { label: 'Visa mer', icon: <ExpandContentIcon /> };
+      ? { label: 'divaClient_showLessText', icon: <CollapseContentIcon /> }
+      : { label: 'divaClient_showMoreText', icon: <ExpandContentIcon /> };
   }
 
   // Default is 'firstSmaller'
   return presentation === 'default'
-    ? { label: 'Visa mer', icon: <ExpandContentIcon /> }
-    : { label: 'Visa mindre', icon: <CollapseContentIcon /> };
+    ? { label: 'divaClient_showMoreText', icon: <ExpandContentIcon /> }
+    : { label: 'divaClient_showLessText', icon: <CollapseContentIcon /> };
 };
