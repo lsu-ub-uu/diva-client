@@ -40,7 +40,7 @@ import { Group } from '@/components/FormGenerator/components/Group';
 import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { ComponentPresentationSwitcher } from './ComponentPresentationSwitcher';
+import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -60,7 +60,7 @@ export const Component = ({
 
   if (component.alternativePresentation !== undefined) {
     return (
-      <ComponentPresentationSwitcher
+      <AlternativePresentationSwitcher
         component={component}
         idx={idx}
         path={path}

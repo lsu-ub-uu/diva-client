@@ -200,6 +200,34 @@ export default function DesignSystem() {
             <Button variant='icon' disabled>
               <EditDocumentIcon />
             </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip left'
+              tooltipPosition='left'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip top'
+              tooltipPosition='top'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip bottom'
+              tooltipPosition='bottom'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip right'
+              tooltipPosition='right'
+            >
+              <EditDocumentIcon />
+            </Button>
             <FloatingActionButton
               text='FAB button'
               icon={<EditDocumentIcon />}
