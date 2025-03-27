@@ -28,9 +28,9 @@ import {
 } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Pagination.module.css';
-import { Field } from '@/components/Input/Field';
 import { Select } from '@/components/Input/Select';
 import { get } from 'lodash-es';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 interface PaginationProps {
   query: BFFDataRecordData;
@@ -68,7 +68,7 @@ export const Pagination = ({
           totalNo,
         })}
       </span>
-      <Field
+      <Fieldset
         label={t('divaClient_paginationRowsPerPageText')}
         variant='inline'
         size='small'
@@ -84,7 +84,7 @@ export const Pagination = ({
             </option>
           ))}
         </Select>
-      </Field>
+      </Fieldset>
       <span className={styles['pagination-buttons']}>
         <Button
           variant='icon'

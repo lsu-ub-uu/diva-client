@@ -977,8 +977,8 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-
-      const inputElement = screen.getByLabelText('someNameInData');
+      const group = screen.getByRole('group', { name: 'someNameInData' });
+      const inputElement = within(group).getByLabelText('someNameInData');
 
       expect(inputElement).toBeInTheDocument();
 
@@ -1272,13 +1272,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByLabelText('passwordLabel');
+      const group = screen.getByRole('group', { name: 'passwordLabel' });
+      const inputElement = within(group).getByLabelText('passwordLabel');
 
       const user = userEvent.setup();
       await user.type(inputElement, 'password');
       expect(inputElement).toHaveAttribute('type', 'password');
       await user.click(submitButton);
-
       await waitFor(() => {
         expect(actionSpy).toHaveBeenCalledTimes(1);
       });
@@ -1294,7 +1294,10 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputNumberElement = screen.getByLabelText(
+      const group = screen.getByRole('group', {
+        name: 'someNumberVariableNameInData',
+      });
+      const inputNumberElement = within(group).getByLabelText(
         'someNumberVariableNameInData',
       );
 
@@ -1847,7 +1850,8 @@ describe('<Form />', () => {
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
 
-      const attributeSelect = screen.getByLabelText('attribute colour');
+      const group = screen.getByRole('group', { name: 'attribute colour' });
+      const attributeSelect = within(group).getByLabelText('attribute colour');
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
       await user.type(numberInput, '12');
@@ -1874,7 +1878,8 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const attributeSelect = screen.getByLabelText('attribute colour');
+      const group = screen.getByRole('group', { name: 'attribute colour' });
+      const attributeSelect = within(group).getByLabelText('attribute colour');
       expect(attributeSelect).toBeInTheDocument();
 
       await user.type(numberInput, '12');
@@ -1905,7 +1910,10 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeSelect = screen.getByLabelText(
+      const group = screen.getByRole('group', {
+        name: 'someNumberVar2AttributeLabel',
+      });
+      const attributeSelect = within(group).getByLabelText(
         'someNumberVar2AttributeLabel',
       );
 
@@ -1934,10 +1942,12 @@ describe('<Form />', () => {
 
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
-      const attributeSelect = screen.getByLabelText(
+      const group = screen.getByRole('group', {
+        name: 'someNumberVar2AttributeLabel',
+      });
+      const attributeSelect = within(group).getByLabelText(
         'someNumberVar2AttributeLabel',
       );
-
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
       await user.selectOptions(attributeSelect, 'exampleBlueItemText');
@@ -1965,7 +1975,10 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
 
-      screen.getByLabelText('someNumberVar2AttributeLabel');
+      const group = screen.getByRole('group', {
+        name: 'someNumberVar2AttributeLabel',
+      });
+      within(group).getByLabelText('someNumberVar2AttributeLabel');
 
       await user.type(numberInput, '12');
 
@@ -1991,7 +2004,10 @@ describe('<Form />', () => {
         'someNumberVarIdPlaceholder',
       );
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-      screen.getByLabelText('someNumberVar2AttributeLabel');
+      const group = screen.getByRole('group', {
+        name: 'someNumberVar2AttributeLabel',
+      });
+      within(group).getByLabelText('someNumberVar2AttributeLabel');
       await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
@@ -2011,8 +2027,10 @@ describe('<Form />', () => {
         />,
       );
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
-
-      screen.getByLabelText('languageCollectionVarText');
+      const group = screen.getByRole('group', {
+        name: 'languageCollectionVarText',
+      });
+      within(group).getByLabelText('languageCollectionVarText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -2033,8 +2051,10 @@ describe('<Form />', () => {
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',
       );
-
-      const attributeSelect = screen.getByLabelText(
+      const group = screen.getByRole('group', {
+        name: 'languageCollectionVarText',
+      });
+      const attributeSelect = within(group).getByLabelText(
         'languageCollectionVarText',
       );
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
@@ -2096,10 +2116,13 @@ describe('<Form />', () => {
 
       await user.type(mainTitleElement, '1.25');
       await user.click(submitButton);
-
-      const attributeSelect = screen.getByLabelText(
+      const group = screen.getByRole('group', {
+        name: 'languageCollectionVarText',
+      });
+      const attributeSelect = within(group).getByLabelText(
         'languageCollectionVarText',
       );
+
       expect(attributeSelect).toBeInvalid();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2114,9 +2137,10 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.getByLabelText('someTitleGroupText');
+      screen.getByLabelText('mainTitleTextVarText');
 
-      screen.getByLabelText('Eye colour');
+      const attributeGroup = screen.getByRole('group', { name: 'Eye colour' });
+      within(attributeGroup).getByLabelText('Eye colour');
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
@@ -2140,11 +2164,17 @@ describe('<Form />', () => {
       );
 
       const textInput = screen.getByPlaceholderText('givenNameTextVarText');
-      const languageAttribute = screen.getByLabelText(
+      const languageGroup = screen.getByRole('group', {
+        name: 'languageCollectionVarText',
+      });
+      const languageAttribute = within(languageGroup).getByLabelText(
         'languageCollectionVarText',
       );
 
-      const titleTypeAttribute = screen.getByLabelText(
+      const titleGroup = screen.getByRole('group', {
+        name: 'titleTypeCollectionVarText',
+      });
+      const titleTypeAttribute = within(titleGroup).getByLabelText(
         'titleTypeCollectionVarText',
       );
 
@@ -2173,11 +2203,18 @@ describe('<Form />', () => {
           }
         />,
       );
-      const languageAttribute = screen.getByLabelText(
+
+      const languageGroup = screen.getByRole('group', {
+        name: 'languageCollectionVarText',
+      });
+      const languageAttribute = within(languageGroup).getByLabelText(
         'languageCollectionVarText',
       );
 
-      const titleTypeAttribute = screen.getByLabelText(
+      const titleGroup = screen.getByRole('group', {
+        name: 'titleTypeCollectionVarText',
+      });
+      const titleTypeAttribute = within(titleGroup).getByLabelText(
         'titleTypeCollectionVarText',
       );
 
@@ -2449,10 +2486,11 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      await user.selectOptions(
-        screen.getByLabelText('someCollectionVarText'),
-        'bthItemText',
-      );
+      const group = screen.getByRole('group', {
+        name: 'someCollectionVarText',
+      });
+      const collection = within(group).getByLabelText('someCollectionVarText');
+      await user.selectOptions(collection, 'bthItemText');
       await user.click(submitButton);
 
       expect(

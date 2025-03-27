@@ -21,7 +21,7 @@ import type { InitOptions } from 'i18next';
 export const i18nConfig: InitOptions = {
   fallbackLng: 'sv',
   supportedLngs: ['sv', 'en'],
-  debug: false, // TODO set to true if dev env
+  debug: import.meta.env.DEV,
   interpolation: {
     escapeValue: false,
   },

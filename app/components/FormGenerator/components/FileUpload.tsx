@@ -17,7 +17,6 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { Field } from '@/components/Input/Field';
 import styles from './FormComponent.module.css';
 import { useTranslation } from 'react-i18next';
 import { useRouteLoaderData } from 'react-router';
@@ -30,6 +29,7 @@ import { FileInput } from '@/components/Input/FileInput';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 interface RecordLinkBinaryProps {
   component: FormComponentRecordLink;
@@ -104,26 +104,22 @@ export const FileUpload = ({
           label={t('divaClient_uploadingFileText', { fileName, progress })}
         />
       ) : (
-        <Field
+        <Fieldset
           className={styles['component']}
           data-colspan={component.gridColSpan ?? 12}
-          label={component.showLabel && t(component.label)}
+          label={component.showLabel ? t(component.label) : undefined}
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
           info={showTooltips ? component.tooltip : undefined}
-          adornment={
-            <>
-              {attributes}
-              {actionButtonGroup}
-            </>
-          }
+          attributes={attributes}
+          actionButtonGroup={actionButtonGroup}
         >
           <FileInput
             name={path}
             onChange={handleFileChange}
             errorMessage={errorMessage}
           />
-        </Field>
+        </Fieldset>
       )}
     </div>
   );

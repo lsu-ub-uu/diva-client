@@ -91,6 +91,10 @@ export const Group = ({
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
           }
+          attributes={
+            <Attributes component={component} path={currentComponentNamePath} />
+          }
+          actionButtonGroup={actionButtonGroup}
         >
           {component.showLabel && (
             <CardTitle>
@@ -106,9 +110,6 @@ export const Group = ({
               )}
             </CardTitle>
           )}
-          <Attributes component={component} path={currentComponentNamePath} />
-
-          {actionButtonGroup}
         </CardHeader>
         <CardContent
           enhancedFields={
