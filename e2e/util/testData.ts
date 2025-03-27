@@ -21,13 +21,23 @@ export const divaOutputWithMinimalData: DataGroup = {
             { name: 'linkedRecordId', value: 'divaData' },
           ],
         },
-        { name: 'recordContentSource', value: 'hig' },
         {
-          name: 'genre',
-          value: 'publication_report',
-          attributes: { type: 'outputType' },
+          name: 'permissionUnit',
+          children: [
+            { name: 'linkedRecordType', value: 'permissionUnit' },
+            { name: 'linkedRecordId', value: 'uu' },
+          ],
+        },
+        {
+          name: 'visibility',
+          value: 'published',
         },
       ],
+    },
+    {
+      name: 'genre',
+      value: 'publication_report',
+      attributes: { type: 'outputType' },
     },
     {
       name: 'language',
@@ -61,9 +71,5 @@ export const divaOutputWithMinimalData: DataGroup = {
       ],
     },
     { name: 'admin', children: [{ name: 'reviewed', value: 'true' }] },
-    {
-      name: 'adminInfo',
-      children: [{ name: 'visibility', value: 'published' }],
-    },
   ],
 };

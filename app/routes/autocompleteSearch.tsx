@@ -36,24 +36,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
 
-  const searchTermName = getSearchTermNameFromSearchLink(
+  const query = createQuery(
     await context.dependencies,
     searchType,
+    searchTermValue,
   );
-
-  const query = {
-    search: {
-      include: {
-        includePart: {
-          [searchTermName]: [
-            {
-              value: searchTermValue,
-            },
-          ],
-        },
-      },
-    },
-  };
 
   try {
     const result = await searchRecords(
@@ -67,6 +54,41 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     console.error(error);
     return { result: [] };
   }
+};
+
+export const createQuery = (
+  dependencies: Dependencies,
+  searchType: string,
+  searchTermValue: string,
+) => {
+  const search = dependencies.searchPool.get(searchType);
+  const metadataGroup = dependencies.metadataPool.get(
+    search.metadataId,
+  ) as BFFMetadataGroup;
+
+  const includeGroup = dependencies.metadataPool.get(
+    metadataGroup.children[0].childId,
+  ) as BFFMetadataGroup;
+  const includePartGroup = dependencies.metadataPool.get(
+    includeGroup.children[0].childId,
+  ) as BFFMetadataGroup;
+  const firstSearchTerm = dependencies.metadataPool.get(
+    includePartGroup.children[0].childId,
+  );
+
+  return {
+    [metadataGroup.nameInData]: {
+      [includeGroup.nameInData]: {
+        [includePartGroup.nameInData]: {
+          [firstSearchTerm.nameInData]: [
+            {
+              value: searchTermValue,
+            },
+          ],
+        },
+      },
+    },
+  };
 };
 
 export const getSearchTermNameFromSearchLink = (
