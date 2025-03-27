@@ -39,10 +39,8 @@ test('Create report', async ({ page, request, authtoken }) => {
   await expect(page).toHaveTitle(/^Skapa publikation/);
 
   // Fill create form
-  await page
-    .getByRole('combobox', { name: 'Record content source' })
-    .fill('Uppsala universitet');
-  await page.getByRole('option', { name: 'Uppsala universitet' }).click();
+  await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
+  await page.getByRole('option', { name: 'Rättighetsenhet' }).click();
 
   await page
     .getByRole('region', {
