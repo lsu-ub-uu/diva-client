@@ -25,7 +25,7 @@ import styles from './Button.module.css';
 import clsx from 'clsx';
 import { type ElementType, type Ref } from 'react';
 
-interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
+export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;

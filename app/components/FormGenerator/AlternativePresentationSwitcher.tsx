@@ -16,20 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponent,
-  FormComponentMetadata,
-} from '@/components/FormGenerator/types';
+import type { FormComponent } from '@/components/FormGenerator/types';
 import { useState } from 'react';
 import { Component } from '@/components/FormGenerator/Component';
-import { Button } from '@/components/Button/Button';
-import { CollapseContentIcon, ExpandContentIcon, SwapIcon } from '@/icons';
 import componentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
-import styles from './AlternativePresentationSwitcher.module.css';
-import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@/components/Typography/Typography';
-import { headlineLevelToTypographyVariant } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Accordion } from '@/components/Accordion/Accordion';
+import { AccordionContent } from '@/components/Accordion/AccordionContent';
+import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
+import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -42,23 +37,11 @@ export const AlternativePresentationSwitcher = (
   props: ComponentPresentationSwitcherProps,
 ) => {
   const { t } = useTranslation();
-  const [presentation, setPresentation] = useState<'default' | 'alternative'>(
-    'default',
-  );
+  const [currentPresentation, setCurrentPresentation] = useState<
+    'default' | 'alternative'
+  >('default');
 
   const { component } = props;
-
-  const defaultPresentation = {
-    ...component,
-    alternativePresentation: undefined,
-  };
-
-  const alternativePresentation = component.alternativePresentation;
-
-  if (!alternativePresentation) {
-    return <Component {...props} />;
-  }
-
   const presentationSize =
     'presentationSize' in component ? component.presentationSize : undefined;
   const title = 'title' in component ? component.title : undefined;
@@ -67,109 +50,73 @@ export const AlternativePresentationSwitcher = (
       ? component.titleHeadlineLevel
       : undefined;
 
-  const switchButtonProps = getSwitchButtonProps(
-    presentation,
-    presentationSize,
-  );
+  const defaultPresentation = {
+    ...component,
+    alternativePresentation: undefined,
+    title: undefined,
+  };
 
-  if (title) {
+  const alternativePresentation = {
+    ...component.alternativePresentation,
+    title: undefined,
+  };
+
+  if (!component.alternativePresentation) {
+    if (!title) {
+      return <Component {...props} />;
+    }
+
     return (
-      <div
-        className={clsx(
-          componentStyles['component'],
-          styles['alternative-presentation-accordion'],
-        )}
+      <Accordion
+        expanded={currentPresentation === 'alternative'}
+        onChange={(expanded) =>
+          setCurrentPresentation(expanded ? 'alternative' : 'default')
+        }
+        className={componentStyles['component']}
         data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
+        presentationSize={presentationSize}
       >
-        <div className={styles['accordion-header']}>
-          <Button
-            variant='tertiary'
-            size='large'
-            className={styles['alternative-presentation-title-button']}
-            type='button'
-            onClick={() => {
-              setPresentation(
-                presentation === 'default' ? 'alternative' : 'default',
-              );
-            }}
-            aria-label={t(switchButtonProps.label)}
-            tooltipPosition='right'
-          >
-            <Typography
-              text={title}
-              variant={headlineLevelToTypographyVariant(titleHeadlineLevel)}
+        <AccordionTitle headlineLevel={titleHeadlineLevel}>
+          {t(title)}
+        </AccordionTitle>
+        {currentPresentation === 'alternative' && (
+          <AccordionContent className={componentStyles['container']}>
+            <Component
+              {...props}
+              component={{ ...component, title: undefined }}
             />
-            {switchButtonProps.icon}
-          </Button>
-        </div>
-        <div
-          className={clsx(styles['presentation'], componentStyles['container'])}
-        >
-          <Component
-            {...props}
-            component={
-              presentation === 'alternative'
-                ? alternativePresentation
-                : defaultPresentation
-            }
-          />
-        </div>
-      </div>
+          </AccordionContent>
+        )}
+      </Accordion>
     );
   }
 
   return (
-    <div
-      className={clsx(
-        componentStyles['component'],
-        styles['alternative-presentation-headless-switcher'],
-      )}
+    <Accordion
+      expanded={currentPresentation === 'alternative'}
+      onChange={(expanded) =>
+        setCurrentPresentation(expanded ? 'alternative' : 'default')
+      }
+      className={componentStyles['component']}
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
+      presentationSize={presentationSize}
     >
-      <div
-        className={clsx(styles['presentation'], componentStyles['container'])}
-      >
+      {title && (
+        <AccordionTitle headlineLevel={titleHeadlineLevel}>
+          {t(title)}
+        </AccordionTitle>
+      )}
+      <AccordionContent className={componentStyles['container']}>
         <Component
           {...props}
           component={
-            presentation === 'alternative'
+            currentPresentation === 'alternative'
               ? alternativePresentation
               : defaultPresentation
           }
         />
-      </div>
-      <Button
-        className={styles['switch-button']}
-        variant='icon'
-        onClick={() => {
-          setPresentation(
-            presentation === 'default' ? 'alternative' : 'default',
-          );
-        }}
-        aria-label={t(switchButtonProps.label)}
-      >
-        {switchButtonProps.icon}
-      </Button>
-    </div>
+      </AccordionContent>
+      {!title && <AccordionExpandButton />}
+    </Accordion>
   );
-};
-
-const getSwitchButtonProps = (
-  presentation: 'default' | 'alternative',
-  presentationSize: FormComponentMetadata['presentationSize'],
-) => {
-  if (presentationSize === 'bothEqual') {
-    return { label: 'divaClient_swapPresentationText', icon: <SwapIcon /> };
-  }
-
-  if (presentationSize === 'firstLarger') {
-    return presentation === 'default'
-      ? { label: 'divaClient_showLessText', icon: <CollapseContentIcon /> }
-      : { label: 'divaClient_showMoreText', icon: <ExpandContentIcon /> };
-  }
-
-  // Default is 'firstSmaller'
-  return presentation === 'default'
-    ? { label: 'divaClient_showMoreText', icon: <ExpandContentIcon /> }
-    : { label: 'divaClient_showLessText', icon: <CollapseContentIcon /> };
 };

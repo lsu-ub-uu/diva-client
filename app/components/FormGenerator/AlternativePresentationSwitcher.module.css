@@ -36,6 +36,7 @@
   display: flex;
   justify-content: space-between;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
+  padding: var(--gap);
 }
 
 .accordion-icon-wrapper {

@@ -113,10 +113,17 @@ export interface FormComponentMetadata extends FormComponentBase {
   childStyle?: ChildStyle[];
   textStyle?: TextStyle;
   presentationStyle?: string;
-  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
+
+export type PresentationSize =
+  | 'firstSmaller'
+  | 'firstLarger'
+  | 'bothEqual'
+  | 'singleInitiallyVisible'
+  | 'singleInitiallyHidden';
 
 export interface FormComponentTextVar extends FormComponentMetadata {
   inputType: 'input' | 'textarea';
