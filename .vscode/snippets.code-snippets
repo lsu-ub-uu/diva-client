@@ -19,7 +19,7 @@
     "prefix": "divaCopyright",
     "body": [
       "/*",
-      " * Copyright 2023 Uppsala University Library",
+      " * Copyright ${CURRENT_YEAR} Uppsala University Library",
       " *",
       " * This file is part of DiVA Client.",
       " *",
