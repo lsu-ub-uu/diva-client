@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponent } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  PresentationSize,
+} from '@/components/FormGenerator/types';
 import { useState } from 'react';
 import { Component } from '@/components/FormGenerator/Component';
 import componentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
@@ -41,6 +44,11 @@ export const AlternativePresentationSwitcher = (
     'default' | 'alternative'
   >('default');
 
+  const switchPresentation = () =>
+    setCurrentPresentation(
+      currentPresentation === 'alternative' ? 'default' : 'alternative',
+    );
+
   const { component } = props;
   const presentationSize =
     'presentationSize' in component ? component.presentationSize : undefined;
@@ -56,22 +64,25 @@ export const AlternativePresentationSwitcher = (
     title: undefined,
   };
 
-  const alternativePresentation = {
+  const alternativePresentation = component.alternativePresentation && {
     ...component.alternativePresentation,
     title: undefined,
   };
 
-  if (!component.alternativePresentation) {
+  if (!alternativePresentation) {
     if (!title) {
       return <Component {...props} />;
     }
 
+    const expanded = isSinglePresentationAccordionExpanded(
+      currentPresentation,
+      presentationSize,
+    );
+
     return (
       <Accordion
-        expanded={currentPresentation === 'alternative'}
-        onChange={(expanded) =>
-          setCurrentPresentation(expanded ? 'alternative' : 'default')
-        }
+        expanded={expanded}
+        onChange={switchPresentation}
         className={componentStyles['component']}
         data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
         presentationSize={presentationSize}
@@ -79,7 +90,7 @@ export const AlternativePresentationSwitcher = (
         <AccordionTitle headlineLevel={titleHeadlineLevel}>
           {t(title)}
         </AccordionTitle>
-        {currentPresentation === 'alternative' && (
+        {expanded && (
           <AccordionContent className={componentStyles['container']}>
             <Component
               {...props}
@@ -91,12 +102,15 @@ export const AlternativePresentationSwitcher = (
     );
   }
 
+  const expanded = isDualPresentationAccordionExpanded(
+    currentPresentation,
+    presentationSize,
+  );
+
   return (
     <Accordion
-      expanded={currentPresentation === 'alternative'}
-      onChange={(expanded) =>
-        setCurrentPresentation(expanded ? 'alternative' : 'default')
-      }
+      expanded={expanded}
+      onChange={switchPresentation}
       className={componentStyles['component']}
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
       presentationSize={presentationSize}
@@ -119,4 +133,25 @@ export const AlternativePresentationSwitcher = (
       {!title && <AccordionExpandButton />}
     </Accordion>
   );
+};
+
+export const isSinglePresentationAccordionExpanded = (
+  currentPresentation: 'default' | 'alternative',
+  presentationSize?: PresentationSize,
+) => {
+  if (presentationSize === 'singleInitiallyVisible') {
+    return currentPresentation === 'default';
+  }
+  return currentPresentation === 'alternative';
+};
+
+export const isDualPresentationAccordionExpanded = (
+  currentPresentation: 'default' | 'alternative',
+  presentationSize?: PresentationSize,
+) => {
+  if (presentationSize === 'firstLarger') {
+    return currentPresentation === 'default';
+  }
+
+  return currentPresentation === 'alternative';
 };

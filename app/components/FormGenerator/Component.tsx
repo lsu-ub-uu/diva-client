@@ -58,7 +58,7 @@ export const Component = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
 
-  if (hasClickableTitle(component) || hasAlerternativePresentation(component)) {
+  if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
     return (
       <AlternativePresentationSwitcher
         component={component}
@@ -163,7 +163,7 @@ const hasClickableTitle = (component: FormComponent) => {
   return 'title' in component && component.title;
 };
 
-const hasAlerternativePresentation = (component: FormComponent) => {
+const hasAlternativePresentation = (component: FormComponent) => {
   return component.alternativePresentation !== undefined;
 };
 

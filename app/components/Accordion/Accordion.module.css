@@ -23,6 +23,10 @@
   border-radius: var(--accordion-title-border-radius);
   background-color: var(--color-card-dark);
 
+  svg {
+    font-size: var(--font-size-icon);
+  }
+
   button {
     width: 100%;
     display: flex;
