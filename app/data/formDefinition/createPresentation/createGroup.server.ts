@@ -53,6 +53,7 @@ export const createGroup = (
     dependencies,
     metadata.children,
     presentationGroup.children,
+    false,
   );
 
   const commonParameters = createCommonParameters(metadata, presentation);

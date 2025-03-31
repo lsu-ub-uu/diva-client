@@ -32,6 +32,7 @@ import type {
   BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFPresentationBase,
+  BFFPresentationChildRefGroup,
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
@@ -42,9 +43,11 @@ import { getChildReferencesListFromGroup } from './transformMetadata.server';
 import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
+  getAllDataGroupsWithNameInDataAndAttributes,
   getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes,
+  hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 
 export const transformCoraPresentations = (
@@ -328,15 +331,26 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
   }) as BFFPresentationGroup;
 };
 
+const transformRefGroup = (
+  refGroup: DataGroup,
+): BFFPresentationChildRefGroup => {
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
+  const type = extractAttributeValueByName(
+    ref as DataGroup,
+    'type',
+  ) as BFFPresentationChildRefGroup['type'];
+
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+
+  return { childId, type };
+};
+
 // Group Child references
 const transformChildReference = (childReference: DataGroup) => {
-  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(
+  const refGroups = getAllDataGroupsWithNameInDataAndAttributes(
     childReference,
     'refGroup',
-  );
-  const ref = getFirstChildWithNameInData(refGroup, 'ref');
-  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
-  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+  ).map(transformRefGroup);
 
   const minNumberOfRepeatingToShow =
     extractAtomicValueByName(childReference, 'minNumberOfRepeatingToShow') ??
@@ -352,17 +366,32 @@ const transformChildReference = (childReference: DataGroup) => {
     childReference,
     'childStyle',
   );
+
+  const title = hasChildWithNameInData(childReference, 'title')
+    ? extractLinkedRecordIdFromNamedRecordLink(childReference, 'title')
+    : undefined;
+  const titleHeadlineLevel = hasChildWithNameInData(
+    childReference,
+    'titleHeadlineLevel',
+  )
+    ? getFirstDataAtomicValueWithNameInData(
+        childReference,
+        'titleHeadlineLevel',
+      )
+    : undefined;
+
   const childStyle = childStyleAtomics.map(
     (childStyleAtomic) => childStyleAtomic.value,
   );
 
   return removeEmpty({
-    childId,
-    type,
+    refGroups,
     minNumberOfRepeatingToShow,
     textStyle,
     presentationSize,
     childStyle,
+    title,
+    titleHeadlineLevel,
   });
 };
 

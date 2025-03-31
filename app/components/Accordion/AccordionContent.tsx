@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,21 +14,28 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
+import { type HTMLProps, use } from 'react';
+import styles from './Accordion.module.css';
+import { AccordionContext } from '@/components/Accordion/Accordion';
+import clsx from 'clsx';
 
-export const createBFFPresentationReference = (
-  childId: string,
-  type: 'presentation' | 'guiElement' | 'text' = 'presentation',
-  childStyle = [],
-): BFFPresentationChildReference => ({
-  refGroups: [
-    {
-      childId,
-      type,
-    },
-  ],
-  childStyle,
-});
+export const AccordionContent = ({
+  children,
+  className,
+  ...rest
+}: HTMLProps<HTMLDivElement>) => {
+  const { contentId, titleId } = use(AccordionContext);
+  return (
+    <div
+      id={contentId}
+      role='region'
+      aria-labelledby={titleId}
+      className={clsx(styles['content'], className)}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+};

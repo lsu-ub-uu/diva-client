@@ -1,0 +1,55 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+.alternative-presentation-accordion {
+  border-radius: var(--border-radius);
+
+  .presentation {
+    background-color: var(--color-card);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding: var(--gap);
+  }
+}
+
+.accordion-header {
+  background-color: var(--color-card-dark);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.alternative-presentation-title-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  padding: var(--gap);
+}
+
+.accordion-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.alternative-presentation-headless-switcher {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--gap);
+  padding: var(--gap);
+  background-color: var(--color-card);
+  border-radius: var(--border-radius);
+}

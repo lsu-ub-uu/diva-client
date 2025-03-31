@@ -26,6 +26,7 @@ import presentationPGroupModeOutput from '@/__mocks__/bff/coraPresentationGroupW
 import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '@/__mocks__/bff/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '@/__mocks__/bff/coraPresentationGroup.json';
+import coraPresentationGroupAltPresentation from '@/__mocks__/bff/coraPresentationGroupAltPresentation.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '@/__mocks__/bff/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '@/__mocks__/bff/coraPresentationWithMiscTypes.json';
 import coraPresentationWithOneCollectionVariable from '@/__mocks__/bff/coraPresentationWithOneCollectionVariable.json';
@@ -221,31 +222,83 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
+            title: 'bookTitleChildRefTitleText',
+            titleHeadlineLevel: 'h3',
           },
         ],
+      });
+    });
+
+    it('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationGroupAltPresentation,
+      );
+      expect(transformData[0]).toStrictEqual({
+        attributesToShow: '',
+        children: [
+          {
+            refGroups: [
+              {
+                childId: 'updatesMinimizedSContainer',
+                type: 'presentation',
+              },
+              {
+                childId: 'updatesSContainer',
+                type: 'presentation',
+              },
+            ],
+            childStyle: [''],
+            minNumberOfRepeatingToShow: '',
+            presentationSize: '',
+            textStyle: '',
+          },
+        ],
+        id: 'recordInfoOutputUpdateOutputPGroup',
+        mode: 'output',
+        presentationOf: 'recordInfoOutputUpdateGroup',
+        presentationStyle: '',
+        showHeadline: '',
+        specifiedHeadlineLevel: '',
+        type: 'pGroup',
       });
     });
 
@@ -261,27 +314,43 @@ describe('transformCoraPresentations', () => {
         specifiedHeadlineTextId: 'someSpecifiedTextVarText',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
@@ -301,27 +370,43 @@ describe('transformCoraPresentations', () => {
         showHeadline: 'false',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
@@ -341,27 +426,43 @@ describe('transformCoraPresentations', () => {
         specifiedHeadlineLevel: 'h3',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
@@ -380,30 +481,46 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             presentationSize: 'firstSmaller',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '99',
             textStyle: 'h5TextStyle',
-            type: 'presentation',
             childStyle: ['5', '3'],
           },
         ],
@@ -483,15 +600,23 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         children: [
           {
-            childId: 'labelHeadlineText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'labelHeadlineText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h2TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'showLabelPCollVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'showLabelPCollVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
@@ -511,21 +636,33 @@ describe('transformCoraPresentations', () => {
         presentationStyle: 'card',
         children: [
           {
-            childId: 'labelHeadlineText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'labelHeadlineText',
+                type: 'text',
+              },
+            ],
             minNumberOfRepeatingToShow: '99',
             childStyle: ['5'],
             textStyle: 'h2TextStyle',
           },
           {
-            childId: 'showLabelPCollVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'showLabelPCollVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'specifiedLabelTextPLink',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'specifiedLabelTextPLink',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
@@ -546,17 +683,24 @@ describe('transformCoraPresentations', () => {
         presentationOf: 'exampleCoordinatesGroup',
         mode: 'input',
         children: [
-          // do we need childStyle for Container children?
           {
-            childId: 'exampleCoordinatesPGroup',
+            refGroups: [
+              {
+                childId: 'exampleCoordinatesPGroup',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
-            type: 'presentation',
             childStyle: [],
           },
           {
-            childId: 'exampleCoordinatesAsMapPGroup',
+            refGroups: [
+              {
+                childId: 'exampleCoordinatesAsMapPGroup',
+                type: 'presentation',
+              },
+            ],
             minNumberOfRepeatingToShow: '1',
-            type: 'presentation',
             childStyle: [],
           },
         ],
@@ -619,27 +763,43 @@ describe('transformCoraPresentations', () => {
         mode: 'output',
         children: [
           {
-            childId: 'demoText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'demoText',
+                type: 'text',
+              },
+            ],
             textStyle: 'h1TextStyle',
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'recordInfoNewPGroup',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarText',
+                type: 'text',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },
           {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
+            refGroups: [
+              {
+                childId: 'bookTitleTextVarPVar',
+                type: 'presentation',
+              },
+            ],
             childStyle: [],
             minNumberOfRepeatingToShow: '1',
           },

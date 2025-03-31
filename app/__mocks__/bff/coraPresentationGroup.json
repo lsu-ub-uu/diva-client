@@ -456,6 +456,23 @@
                           }
                         ],
                         "name": "refGroup"
+                      },
+                      {
+                        "name": "title",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "text"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "bookTitleChildRefTitleText"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "titleHeadlineLevel",
+                        "value": "h3"
                       }
                     ],
                     "name": "childReference"

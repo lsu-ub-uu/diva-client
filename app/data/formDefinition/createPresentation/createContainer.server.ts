@@ -64,6 +64,7 @@ export const createContainer = (
     dependencies,
     definitionFilteredChildRefs,
     presentation.children,
+    false,
   );
 
   return removeEmpty({

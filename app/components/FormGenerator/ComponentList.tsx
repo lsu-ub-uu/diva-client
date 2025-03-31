@@ -33,13 +33,15 @@ export const ComponentList = ({
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps) => {
-  return components.map((component, i) => (
-    <Component
-      key={getCurrentComponentNamePath(component, path)}
-      component={component}
-      idx={i}
-      path={path}
-      parentPresentationStyle={parentPresentationStyle}
-    />
-  ));
+  return components.map((component, i) => {
+    return (
+      <Component
+        key={getCurrentComponentNamePath(component, path)}
+        component={component}
+        idx={i}
+        path={path}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  });
 };

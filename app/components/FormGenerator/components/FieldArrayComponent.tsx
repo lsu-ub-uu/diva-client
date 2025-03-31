@@ -112,6 +112,9 @@ export const FieldArrayComponent = ({
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
+              aria-label={t('divaClient_addFieldText', {
+                fieldName: t(component.label),
+              })}
             >
               <AddCircleIcon /> {t(component.label)}
             </Button>

@@ -66,6 +66,7 @@ export type FormComponentWithDataType = Omit<
 export interface FormComponentBase {
   type: FormComponentType;
   name: string;
+  alternativePresentation?: FormComponent;
 }
 
 export type TextStyle =
@@ -111,8 +112,18 @@ export interface FormComponentMetadata extends FormComponentBase {
   gridColSpan?: number;
   childStyle?: ChildStyle[];
   textStyle?: TextStyle;
-  presentationStyle?: string; // frame etc
+  presentationStyle?: string;
+  presentationSize?: PresentationSize;
+  title?: string;
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
+
+export type PresentationSize =
+  | 'firstSmaller'
+  | 'firstLarger'
+  | 'bothEqual'
+  | 'singleInitiallyVisible'
+  | 'singleInitiallyHidden';
 
 export interface FormComponentTextVar extends FormComponentMetadata {
   inputType: 'input' | 'textarea';
@@ -166,6 +177,7 @@ export interface FormComponentResourceLink extends FormComponentMetadata {
 export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
   components?: FormComponent[];
+  alternativeComponents?: Record<string, FormComponent>;
   label: string;
   showLabel: boolean;
 }

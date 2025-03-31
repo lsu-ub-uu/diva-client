@@ -1,10 +1,10 @@
 # DiVA Client 📚
 
-This is the client for DiVA on Cora. It uses the Cora REST API to enable users to search, view and manage metadata.
+This is the client for DiVA on Cora. It uses the Cora REST API to enable users to search, view and manage bibliographical metadata.
 
 It is a full stack React application with server side rendering, using the [React Router](https://reactrouter.com) framework in a custom Node.js Express server.
 
-As this project includes server side logic, the DiVA BFF (`diva-react-spa-bff`) is obsolete and no longer in use.
+The project is written in TypeScript. A code editor that supports real-time TypeScript checking is recommended. 
 
 ## Getting started
 
@@ -40,23 +40,39 @@ PORT=5173
 ```bash
 npm run dev
 ```
+If using WebStorm you can also use the run configuration named "server.ts" (supports debugging)
 
 Open http://0.0.0.0:5173/divaclient in a web browser
 
 ### Running code quality checks
-Unit tests
+#### Run unit tests
 ```bash
 npm test
 ```
 
-TypeScript check
+#### Run end-to-end tests
+```bash
+npm run e2e
+```
+
+#### Open end-to-end test UI
+```bash
+npm run e2e:ui
+```
+
+#### TypeScript check
 ```bash
 npm run typecheck
 ```
 
-Lint
+#### Eslint (TypeScript code quality control)
 ```bash
 npm run lint
+```
+
+#### Stylelint (CSS code quality control)
+```bash
+npm run stylelint
 ```
 
 ### Building and running production bundle
@@ -65,14 +81,20 @@ npm run build
 npm start
 ```
 
-### Building and running Docker image
+### Docker
+
+#### Build the Docker image
 ```bash
 docker build -t diva-client .
 ```
 
+#### Start the Docker container
 ```bash
+# Stop and remove any old containers
 docker kill diva-client
 docker rm diva-client
+
+# Create and run container, with environment variables and publishes port
 docker run -d --name diva-client \
       -e CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest \
       -e CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest \
