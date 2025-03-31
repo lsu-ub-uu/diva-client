@@ -19,8 +19,8 @@
 import { describe, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
-import { formDefWithTextVar } from '@/__mocks__/data/form/formDef';
 import type { FormSchema } from '@/components/FormGenerator/types';
+import { formDefWithTextVar } from '@/__mocks__/data/form/textVar';
 
 describe('<LinkedRecordForm />', () => {
   it('renders a form with linked data from a given definition', () => {

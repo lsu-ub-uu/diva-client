@@ -11,3 +11,13 @@
 .error-body {
   font-size: var(--font-size-l);
 }
+
+.accordion {
+  width: 60%;
+}
+
+@media (width < 900px) {
+  .accordion {
+    width: 100%;
+  }
+}

@@ -27,10 +27,6 @@ interface RouteErrorPageProps {
   status: 401 | 403 | 404 | 409 | 500;
   coraMessage?: string;
 }
-/*
- * divaClient_errorPageTitleText: '{{}} - '
- * divaClient_errorPageBodyText: ''
- * */
 
 export const RouteErrorPage = ({
   status,
@@ -45,14 +41,17 @@ export const RouteErrorPage = ({
       <p className={styles['error-body']}>
         {t(`divaClient_error${status}BodyText`)}
       </p>
+      <div className={styles['accordion']}>
       <Accordion expanded={detailsExpanded} onChange={setDetailsExpanded}>
         <AccordionTitle>{t('divaClient_showErrorDetailsText')}</AccordionTitle>
+
         {detailsExpanded && (
           <AccordionContent>
             <p>{coraMessage}</p>
           </AccordionContent>
         )}
       </Accordion>
+      </div>
     </main>
   );
 };

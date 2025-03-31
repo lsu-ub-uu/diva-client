@@ -23,7 +23,6 @@ import {
   removeComponentsWithoutValuesFromSchema,
   toShortString,
 } from '../utils';
-import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/formDef';
 import {
   authorAndTitleSchema,
   authorRecord,
@@ -31,6 +30,7 @@ import {
   coraRecord2,
   coraRecord3,
 } from './mocks';
+import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
 
 describe('removeComponentsWithoutValuesFromSchema', () => {
   it('returns someRootNameInData', () => {

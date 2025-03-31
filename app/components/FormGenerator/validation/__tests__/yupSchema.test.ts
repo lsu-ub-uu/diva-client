@@ -26,23 +26,23 @@ import {
   createYupNumberSchema,
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
-import {
-  formDefWithNestedSurroundingContainers,
-  formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithRepeatingCollectionVar,
-  formDefWithRepeatingGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
-  formDefWithSurroundingContainerAroundTextVariable,
-  formDefWithTextVar,
-  formDefWithTwoRepeatingVarsAndCollectionVar,
-} from '../../../../__mocks__/data/form/formDef';
 import type {
   FormComponent,
   FormComponentNumVar,
   FormSchema,
 } from '../../types';
-import { cleanFormData } from '../../../../utils/cleanFormData';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { formDefWithTextVar, formDefWithTwoRepeatingVarsAndCollectionVar } from '@/__mocks__/data/form/textVar';
+import {
+  formDefWithNestedSurroundingContainers,
+  formDefWithSurroundingContainerAroundTextVariable,
+} from '@/__mocks__/data/form/container';
+import {
+  formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithRepeatingGroup,
+  formDefWithRepeatingGroupWithRepeatingChildGroup, formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
+} from '@/__mocks__/data/form/group';
+import { formDefWithRepeatingCollectionVar } from '@/__mocks__/data/form/collVar';
 
 const numberValidationTests = (
   min: number,
