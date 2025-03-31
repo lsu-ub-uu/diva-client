@@ -89,7 +89,7 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import { parseFormData, useRemixForm } from 'remix-hook-form';
+import { parseFormData } from 'remix-hook-form';
 import {
   formSchemaWithBinary,
   linkedBinaryMock,
@@ -123,19 +123,7 @@ describe('<Form />', () => {
 
   describe('form', () => {
     it('renders a form from a given definition', () => {
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => {
-            const methods = useRemixForm({});
-            return <div>Hej</div>;
-          },
-        },
-      ]);
-
-      render(<RoutesStub />);
-
-      /* render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
+      render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toBeInTheDocument();
 
@@ -147,7 +135,7 @@ describe('<Form />', () => {
       const headerElement = screen.getByText(
         'presentationTypeTextCollectionVarDefText',
       );
-      expect(headerElement).toBeInTheDocument();*/
+      expect(headerElement).toBeInTheDocument();
     });
 
     it('renders a form from a given definition for a update definition with variables with same nameInData', () => {
