@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,11 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useRouteError } from 'react-router';
-import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
+import { isRouteErrorResponse } from 'react-router';
 
-export const RouteErrorBoundary = () => {
-  const error = useRouteError();
+const handledStatuses = [401, 403, 404, 409, 500];
 
-  return <ErrorAlert error={error} />;
+type HandledErrorResponse = {
+  status: 401 | 403 | 404 | 409 | 500;
+  data: any;
+};
+
+export const isRouteErrorResponseWithHandledStatus = (
+  error: unknown,
+): error is HandledErrorResponse => {
+  return isRouteErrorResponse(error) && handledStatuses.includes(error.status);
 };

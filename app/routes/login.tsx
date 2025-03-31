@@ -11,7 +11,7 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';

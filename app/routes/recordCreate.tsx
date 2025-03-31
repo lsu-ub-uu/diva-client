@@ -31,7 +31,6 @@ import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
@@ -43,6 +42,8 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -115,8 +116,8 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
 export const ErrorBoundary = RouteErrorBoundary;
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data.title }];
+export const meta = ({ data, error }: Route.MetaArgs) => {
+  return [{ title: error ? getMetaTitleFromError(error) : data?.title }];
 };
 
 export default function CreateRecordRoute({

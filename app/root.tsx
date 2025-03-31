@@ -18,6 +18,7 @@
 
 import {
   data,
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
@@ -37,7 +38,6 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
@@ -109,8 +109,29 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: rootCss },
 ];
 
-export const ErrorBoundary = RouteErrorBoundary;
-
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <h1>
+          ROOT {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>ROOT Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>ROOT Unknown Error</h1>;
+  }
+}
 export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.locale ?? 'sv';

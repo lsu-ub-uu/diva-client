@@ -39,6 +39,7 @@ export const getRecordByRecordTypeAndRecordId = async ({
   authToken,
   presentationRecordLinkId,
 }: GetRecordByRecordTypeAndRecordIdArgs) => {
+  console.log('getRecordByRecordTypeAndRecordId', recordType, recordId);
   const response = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
@@ -72,6 +73,8 @@ export const getRecordByRecordTypeAndRecordId = async ({
       );
     }
   }
+
+  console.log('getRecordByRecordTypeAndRecordId return');
 
   return record;
 };

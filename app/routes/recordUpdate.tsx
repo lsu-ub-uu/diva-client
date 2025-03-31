@@ -33,7 +33,7 @@ import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';

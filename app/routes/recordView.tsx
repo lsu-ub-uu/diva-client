@@ -16,12 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSessionFromCookie, getAuth } from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-
-import { getRecordTitle } from '@/utils/getRecordTitle';
+import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import {
@@ -46,7 +44,7 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
-
+  console.log('recordView Loadder');
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
@@ -56,7 +54,7 @@ export const loader = async ({
     authToken: auth?.data.token,
   });
 
-  const title = `${getRecordTitle(record)} | DiVA`;
+  console.log('recordView', { record });
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
@@ -65,11 +63,7 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition, title };
-};
-
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title ?? data.record.id }];
+  return { record, formDefinition };
 };
 
 export const ErrorBoundary = RouteErrorBoundary;

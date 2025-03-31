@@ -16,11 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Outlet } from 'react-router';
+import { data, isRouteErrorResponse, Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import type { Route } from './+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { AxiosError } from 'axios';
+import { isRouteErrorResponseWithHandledStatus } from '@/errorHandling/utils';
+import { RouteErrorPage } from '@/errorHandling/RouteErrorPage';
 
 export const loader = async ({
   request,
@@ -31,22 +35,62 @@ export const loader = async ({
   const auth = getAuth(session);
 
   const { recordType, recordId } = params;
+  console.log('record loader');
 
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
-    recordType,
-    recordId,
-    authToken: auth?.data.token,
-  });
+  try {
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies: await context.dependencies,
+      recordType,
+      recordId,
+      authToken: auth?.data.token,
+    });
 
-  const breadcrumb = getRecordTitle(record) ?? record.id;
-  const pageTitle = getRecordTitle(record);
+    console.log('record', { record });
+    const breadcrumb = getRecordTitle(record) ?? record.id;
+    const pageTitle = getRecordTitle(record);
 
-  return { record, breadcrumb, pageTitle };
+    return { record, breadcrumb, pageTitle };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log('CATCH', { error });
+      throw data(error?.response?.data, { status: error.status });
+    }
+    throw error;
+  }
 };
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data.pageTitle }];
+export const meta = ({ data, error }: Route.MetaArgs) => {
+  return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
+};
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  // 'divaClient_error404TitleText' // Resursen kunde inte hittas
+  // 'divaClient_error404BodyText' //
+  if (isRouteErrorResponseWithHandledStatus(error)) {
+    return <RouteErrorPage status={error.status} coraMessage={error.data} />;
+  }
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <h1>
+          Record.tsx {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Record.tsx Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Record.tsx Unknown Error</h1>;
+  }
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {

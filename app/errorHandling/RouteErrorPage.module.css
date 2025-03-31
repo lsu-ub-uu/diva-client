@@ -1,0 +1,13 @@
+.error-page {
+  display: grid;
+  place-items: center;
+  gap: var(--gap-l);
+  text-align: center;
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+.error-body {
+  font-size: var(--font-size-l);
+}

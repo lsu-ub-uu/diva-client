@@ -16,14 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { InitOptions } from 'i18next';
+import { useRouteError } from 'react-router';
+import { ErrorAlert } from '@/errorHandling/ErrorAlert';
 
-export const i18nConfig: InitOptions = {
-  fallbackLng: 'sv',
-  supportedLngs: ['sv', 'en'],
-  debug: false, // import.meta.env.DEV,
-  interpolation: {
-    escapeValue: false,
-  },
-  nsSeparator: false,
+export const RouteErrorBoundary = () => {
+  const error = useRouteError();
+
+  return <ErrorAlert error={error} />;
 };
