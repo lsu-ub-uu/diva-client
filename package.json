@@ -42,7 +42,7 @@
     "isbot": "^5.1.23",
     "lodash-es": "^4.17.21",
     "morgan": "^1.10.0",
-    "react": "^19.0.0",
+    "react": "^19.1.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-i18next": "^15.4.1",
