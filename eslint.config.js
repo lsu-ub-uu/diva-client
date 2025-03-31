@@ -4,6 +4,7 @@ import typescriptEslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import reactCompiler from 'eslint-plugin-react-compiler';
 
 const hooksPluginFlatConfig = {
   plugins: {
@@ -20,6 +21,14 @@ export default [
   pluginReact.configs.flat['jsx-runtime'],
   hooksPluginFlatConfig,
   jsxA11y.flatConfigs.recommended,
+  {
+    plugins: {
+      'react-compiler': reactCompiler,
+    },
+    rules: {
+      'react-compiler/react-compiler': 'error',
+    },
+  },
   {
     settings: {
       react: {

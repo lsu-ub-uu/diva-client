@@ -41,7 +41,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type ComboboxInputProps } from '@headlessui/react';
 
@@ -68,16 +68,12 @@ export const ComboboxSelect = ({
 
   const [query, setQuery] = useState('');
 
-  const optionMap: Record<string, string> = useMemo(
-    () =>
-      options.reduce((acc, curr) => {
-        return {
-          ...acc,
-          [curr.value]: t(curr.label),
-        };
-      }, {}),
-    [options, t],
-  );
+  const optionMap: Record<string, string> = options.reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr.value]: t(curr.label),
+    };
+  }, {});
 
   const filteredOptions =
     query === ''

@@ -23,7 +23,7 @@ import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
 import styles from './FormGenerator.module.css';
@@ -45,21 +45,18 @@ export const FormGenerator = ({
 }: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
 
-  const formContextValues = useMemo(
-    () => ({
-      linkedData,
-      boxGroups,
-      showDevInfo,
-      showTooltips,
-      enhancedFields,
-    }),
-    [linkedData, boxGroups, showDevInfo, showTooltips, enhancedFields],
-  );
-
   return (
     <div className={styles['wrapper']}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
-      <FormGeneratorContext value={formContextValues}>
+      <FormGeneratorContext
+        value={{
+          linkedData,
+          boxGroups,
+          showDevInfo,
+          showTooltips,
+          enhancedFields,
+        }}
+      >
         <Component component={props.formSchema.form} idx={0} path={''} />
       </FormGeneratorContext>
     </div>
