@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { faker } from '@faker-js/faker';
 import { Accordion } from '@/components/Accordion/Accordion';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
@@ -25,18 +25,21 @@ import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandBut
 
 describe('Accordion', () => {
   it('accordion with a title', () => {
+    const accordionExpanded = false
     render(
-      <Accordion expanded={accordionExpanded} onChange={setAccordionExpanded}>
+      <Accordion expanded={accordionExpanded} onChange={() => {}}>
         <AccordionTitle>Accordion title</AccordionTitle>
         {accordionExpanded && (
           <AccordionContent>
-            <p>{faker.lorem.paragraph()}</p>
-            <p>{faker.lorem.paragraph()}</p>
-            <p>{faker.lorem.paragraph()}</p>
+            <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+            <p>Voluptatem repellat consequatur deleniti qui quibusdam harum cumque.</p>
           </AccordionContent>
         )}
       </Accordion>,
     );
+    screen.debug()
+    const title = screen.getByRole('button', { name: 'Accordion title'})
+    expect(title).toBeInTheDocument()
   });
 
   it('Accordion with title and collapsed content', () => {
