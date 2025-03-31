@@ -666,7 +666,6 @@ describe('formDefinition', () => {
               type: 'collectionVariable',
             },
           ],
-          alternativeComponents: {},
           components: [
             {
               type: 'text',
@@ -969,7 +968,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1051,7 +1050,7 @@ describe('formDefinition', () => {
               containerType: 'surrounding',
               gridColSpan: 12,
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1096,7 +1095,7 @@ describe('formDefinition', () => {
               containerType: 'repeating',
               gridColSpan: 12,
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1142,7 +1141,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1186,7 +1185,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1231,7 +1230,7 @@ describe('formDefinition', () => {
               },
               type: 'group',
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   containerType: 'surrounding',
@@ -1241,7 +1240,7 @@ describe('formDefinition', () => {
                   presentationStyle: '',
                   type: 'container',
                   childStyle: [''],
-                  alternativeComponents: {},
+
                   components: [
                     {
                       childStyle: [''],
@@ -1356,7 +1355,7 @@ describe('formDefinition', () => {
               type: 'collectionVariable',
             },
           ],
-          alternativeComponents: {},
+
           components: [
             {
               type: 'text',
@@ -1635,7 +1634,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1693,7 +1692,7 @@ describe('formDefinition', () => {
               containerType: 'surrounding',
               gridColSpan: 12,
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1738,7 +1737,7 @@ describe('formDefinition', () => {
               containerType: 'repeating',
               gridColSpan: 12,
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1784,7 +1783,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1828,7 +1827,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-              alternativeComponents: {},
+
               components: [
                 {
                   type: 'textVariable',
@@ -1887,7 +1886,7 @@ describe('formDefinition', () => {
           },
           label: '',
           showLabel: true,
-          alternativeComponents: {},
+
           components: [
             {
               type: 'collectionVariable',
@@ -1952,7 +1951,7 @@ describe('formDefinition', () => {
         validationTypeId,
         form: {
           childStyle: [''],
-          alternativeComponents: {},
+
           components: [
             {
               gridColSpan: 12,
@@ -2464,11 +2463,11 @@ describe('formDefinition', () => {
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
-          alternativeComponents: {},
+
           components: [
             {
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   gridColSpan: 12,
@@ -2493,7 +2492,7 @@ describe('formDefinition', () => {
                 },
                 {
                   childStyle: [''],
-                  alternativeComponents: {},
+
                   components: [
                     {
                       gridColSpan: 12,
@@ -2779,11 +2778,11 @@ describe('formDefinition', () => {
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
-          alternativeComponents: {},
+
           components: [
             {
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   gridColSpan: 12,
@@ -2837,7 +2836,7 @@ describe('formDefinition', () => {
             },
             {
               childStyle: [''],
-              alternativeComponents: {},
+
               components: [
                 {
                   gridColSpan: 12,
@@ -3032,7 +3031,7 @@ describe('formDefinition', () => {
     expect(passwordGroup).toStrictEqual({
       form: {
         childStyle: [''],
-        alternativeComponents: {},
+
         components: [
           {
             childStyle: [''],
@@ -3837,7 +3836,7 @@ describe('formDefinition', () => {
       expect(formDefinition).toStrictEqual({
         form: {
           childStyle: [''],
-          alternativeComponents: {},
+
           components: [
             {
               childStyle: [''],
@@ -4009,7 +4008,7 @@ describe('formDefinition', () => {
         label: 'agentGroupText',
         showLabel: true,
         presentationStyle: '',
-        alternativeComponents: {},
+
         components: [
           {
             repeat: {

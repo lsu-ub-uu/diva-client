@@ -185,7 +185,6 @@ describe('loginDefinition', () => {
       type: 'password',
       presentation: {
         form: {
-          alternativeComponents: {},
           childStyle: [''],
           components: [
             {

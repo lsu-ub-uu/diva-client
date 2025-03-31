@@ -95,8 +95,6 @@ import {
   linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -1596,7 +1594,7 @@ describe('<Form />', () => {
       );
 
       const buttonElement = screen.getByRole('button', {
-        name: 'someNameInDataLabel',
+        name: 'divaClient_addFieldText',
       });
 
       const inputElements = screen.getAllByPlaceholderText('someEmptyTextId');

@@ -24,7 +24,6 @@ import clsx from 'clsx';
 interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
   expanded: boolean;
   onChange: (expanded: boolean) => void;
-  bothEqual?: boolean;
   children?: ReactNode;
   presentationSize?: PresentationSize;
 }
@@ -32,7 +31,6 @@ interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
 export const Accordion = ({
   expanded,
   onChange,
-  bothEqual,
   presentationSize,
   children,
   className,
@@ -50,7 +48,6 @@ export const Accordion = ({
         value={{
           expanded,
           onChange,
-          bothEqual,
           presentationSize,
           contentId: `${id}-content`,
           titleId: `${id}-title`,
@@ -65,7 +62,6 @@ export const Accordion = ({
 interface AccordionContextType {
   expanded: boolean;
   onChange: (expanded: boolean) => void;
-  bothEqual?: boolean;
   presentationSize?: PresentationSize;
   contentId: string;
   titleId: string;
