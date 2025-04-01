@@ -40,7 +40,6 @@ import { Fieldset } from '@/components/Input/Fieldset';
 import { Accordion } from '@/components/Accordion/Accordion';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { faker } from '@faker-js/faker';
 import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
@@ -482,9 +481,11 @@ export default function DesignSystem() {
             <AccordionTitle>Accordion title</AccordionTitle>
             {accordionExpanded && (
               <AccordionContent>
-                <p>{faker.lorem.paragraph()}</p>
-                <p>{faker.lorem.paragraph()}</p>
-                <p>{faker.lorem.paragraph()}</p>
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                <p>
+                  Voluptatem repellat consequatur deleniti qui quibusdam harum
+                  cumque.
+                </p>
               </AccordionContent>
             )}
           </Accordion>
@@ -497,12 +498,14 @@ export default function DesignSystem() {
             <AccordionContent>
               {accordionExpanded ? (
                 <>
-                  <p>{faker.lorem.paragraph()}</p>
-                  <p>{faker.lorem.paragraph()}</p>
-                  <p>{faker.lorem.paragraph()}</p>
+                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                  <p>
+                    Voluptatem repellat consequatur deleniti qui quibusdam harum
+                    cumque.
+                  </p>
                 </>
               ) : (
-                <p>{faker.lorem.paragraph()}</p>
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
               )}
             </AccordionContent>
           </Accordion>
@@ -514,12 +517,14 @@ export default function DesignSystem() {
             <AccordionContent>
               {accordionExpanded ? (
                 <>
-                  <p>{faker.lorem.paragraph()}</p>
-                  <p>{faker.lorem.paragraph()}</p>
-                  <p>{faker.lorem.paragraph()}</p>
+                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                  <p>
+                    Voluptatem repellat consequatur deleniti qui quibusdam harum
+                    cumque.
+                  </p>
                 </>
               ) : (
-                <p>{faker.lorem.paragraph()}</p>
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
               )}
             </AccordionContent>
             <AccordionExpandButton />

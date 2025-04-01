@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
+import babelPlugin from 'vite-plugin-babel';
 
 export default defineConfig(({ isSsrBuild }) => {
   const { BASE_PATH } = process.env;
@@ -10,6 +11,13 @@ export default defineConfig(({ isSsrBuild }) => {
     base: BASE_PATH ? `${BASE_PATH}/` : undefined,
     plugins: [
       !process.env.VITEST && reactRouter(),
+      babelPlugin({
+        filter: /\.tsx?$/,
+        babelConfig: {
+          presets: ['@babel/preset-typescript'],
+          plugins: ['babel-plugin-react-compiler'],
+        },
+      }),
       tsconfigPaths(),
       svgr({
         svgrOptions: {
