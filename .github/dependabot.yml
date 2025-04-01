@@ -15,4 +15,8 @@ updates:
         patterns:
           - "react-router"
           - "@react-router/*"
+      vitest-packages:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
 
