@@ -24,6 +24,9 @@ export const getFormDefinitionByValidationTypeId = async (
   validationTypeId: string,
   mode: 'create' | 'update' | 'view',
 ) => {
+  if (mode === 'create') {
+    throw new Error('haha');
+  }
   if (!dependencies.validationTypePool.has(validationTypeId)) {
     throw new Error(`Validation type [${validationTypeId}] does not exist`);
   }

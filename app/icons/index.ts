@@ -62,3 +62,8 @@ export { default as UploadFileIcon } from './UploadFile.svg?react';
 export { default as ExpandContentIcon } from './ExpandContent.svg?react';
 export { default as CollapseContentIcon } from './CollapseContent.svg?react';
 export { default as SwapIcon } from './SwapHoriz.svg?react';
+export { default as KeyOffIcon } from './KeyOff.svg?react';
+export { default as LockIcon } from './Lock.svg?react';
+export { default as SentimentCalmIcon } from './SentimentCalm.svg?react';
+export { default as SentimentStressedIcon } from './SentimentStressed.svg?react';
+export { default as SentimentVeryDissatisfiedIcon } from './SentimentVeryDissatisfied.svg?react';

@@ -3,8 +3,12 @@
   place-items: center;
   gap: var(--gap-l);
   text-align: center;
+  svg {
+    font-size: 8rem;
+    color: var(--color-accent);
+  }
   h1 {
-    font-size: 4rem;
+    font-size: var(--font-size-xxl);
   }
 }
 
@@ -20,4 +24,9 @@
   .accordion {
     width: 100%;
   }
+}
+
+.cora-message {
+  font-family: monospace;
+  font-size: var(--font-size-base);
 }

@@ -22,14 +22,28 @@ import { Accordion } from '@/components/Accordion/Accordion';
 import { useState } from 'react';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { AccordionContent } from '@/components/Accordion/AccordionContent';
+import { href, Link } from 'react-router';
+import {
+  KeyOffIcon,
+  LockIcon,
+  SentimentNeutralIcon,
+  SentimentStressedIcon,
+  SentimentVeryDissatisfiedIcon,
+} from '@/icons';
+
+type Status = 401 | 403 | 404 | 409 | 500;
 
 interface RouteErrorPageProps {
-  status: 401 | 403 | 404 | 409 | 500;
+  status: Status;
+  recordType: string;
+  recordId: string;
   coraMessage?: string;
 }
 
 export const RouteErrorPage = ({
   status,
+  recordType,
+  recordId,
   coraMessage,
 }: RouteErrorPageProps) => {
   const { t } = useTranslation();
@@ -37,21 +51,46 @@ export const RouteErrorPage = ({
 
   return (
     <main className={styles['error-page']}>
-      <h1>{t(`divaClient_error${status}TitleText`)}</h1>
-      <p className={styles['error-body']}>
-        {t(`divaClient_error${status}BodyText`)}
-      </p>
-      <div className={styles['accordion']}>
-      <Accordion expanded={detailsExpanded} onChange={setDetailsExpanded}>
-        <AccordionTitle>{t('divaClient_showErrorDetailsText')}</AccordionTitle>
+      {getIcon(status)}
 
-        {detailsExpanded && (
-          <AccordionContent>
-            <p>{coraMessage}</p>
-          </AccordionContent>
-        )}
-      </Accordion>
-      </div>
+      <h1>{t(`divaClient_error${status}TitleText`)}</h1>
+
+      <p className={styles['error-body']}>
+        {t(`divaClient_error${status}BodyText`, { recordType, recordId })}
+      </p>
+      <Link to={href('/:recordType', { recordType })}>
+        {t('divaClient_errorGoToSearchText', { recordType })}
+      </Link>
+      {coraMessage && (
+        <div className={styles['accordion']}>
+          <Accordion expanded={detailsExpanded} onChange={setDetailsExpanded}>
+            <AccordionTitle>
+              {t('divaClient_showErrorDetailsText')}
+            </AccordionTitle>
+
+            {detailsExpanded && (
+              <AccordionContent>
+                <p className={styles['cora-message']}>{coraMessage}</p>
+              </AccordionContent>
+            )}
+          </Accordion>
+        </div>
+      )}
     </main>
   );
 };
+
+function getIcon(status: Status) {
+  switch (status) {
+    case 401:
+      return <LockIcon />;
+    case 403:
+      return <KeyOffIcon />;
+    case 404:
+      return <SentimentNeutralIcon />;
+    case 409:
+      return <SentimentStressedIcon />;
+    case 500:
+      return <SentimentVeryDissatisfiedIcon />;
+  }
+}

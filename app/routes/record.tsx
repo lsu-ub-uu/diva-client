@@ -63,11 +63,16 @@ export const meta = ({ data, error }: Route.MetaArgs) => {
   return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
 };
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-  // 'divaClient_error404TitleText' // Resursen kunde inte hittas
-  // 'divaClient_error404BodyText' //
+export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   if (isRouteErrorResponseWithHandledStatus(error)) {
-    return <RouteErrorPage status={error.status} coraMessage={error.data} />;
+    return (
+      <RouteErrorPage
+        status={error.status}
+        recordType={params.recordType}
+        recordId={params.recordId}
+        coraMessage={error.data}
+      />
+    );
   }
 
   if (isRouteErrorResponse(error)) {
