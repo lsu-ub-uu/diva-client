@@ -44,6 +44,41 @@
       background-color: var(--color-button-secondary-active);
     }
   }
+
+  .title-icon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+  }
+
+  .value-icon,
+  .error-icon {
+    display: none;
+    font-size: 1rem;
+  }
+}
+
+.accordion[data-hasvalue='true'] {
+  .title button {
+    color: var(--color-accent-dark);
+  }
+
+  .value-icon {
+    display: block;
+  }
+}
+
+.accordion[data-invalid='true'] {
+  border: 1px solid var(--color-error-main);
+  border-radius: var(--border-radius);
+
+  .title button {
+    color: var(--color-error-main);
+  }
+
+  .error-icon {
+    display: block;
+  }
 }
 
 .content {

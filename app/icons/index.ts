@@ -62,3 +62,4 @@ export { default as UploadFileIcon } from './UploadFile.svg?react';
 export { default as ExpandContentIcon } from './ExpandContent.svg?react';
 export { default as CollapseContentIcon } from './CollapseContent.svg?react';
 export { default as SwapIcon } from './SwapHoriz.svg?react';
+export { default as CircleFilledIcon } from './CircleFilled.svg?react';

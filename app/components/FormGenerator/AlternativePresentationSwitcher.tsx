@@ -28,28 +28,110 @@ import { Accordion } from '@/components/Accordion/Accordion';
 import { AccordionContent } from '@/components/Accordion/AccordionContent';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { useRemixFormContext } from 'remix-hook-form';
+import { get, isEmpty } from 'lodash-es';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
   idx: number;
   path: string;
+  currentComponentNamePath: string;
   parentPresentationStyle?: string;
 }
+
+type PresentationState = 'default' | 'alternative';
 
 export const AlternativePresentationSwitcher = (
   props: ComponentPresentationSwitcherProps,
 ) => {
+  const { component, currentComponentNamePath } = props;
+
   const { t } = useTranslation();
-  const [currentPresentation, setCurrentPresentation] = useState<
-    'default' | 'alternative'
-  >('default');
 
-  const switchPresentation = () =>
-    setCurrentPresentation(
-      currentPresentation === 'alternative' ? 'default' : 'alternative',
-    );
+  const [currentPresentation, setCurrentPresentation] =
+    useState<PresentationState>('default');
 
-  const { component } = props;
+  const {
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    defaultPresentation,
+    alternativePresentation,
+    expanded,
+  } = getAccordionConfiguration(component, currentPresentation);
+
+  const [prevValidationErrors, setPrevValidationErrors] = useState(false);
+  const {
+    formState: { errors },
+    getValues,
+  } = useRemixFormContext();
+  const containsValidationError = !isEmpty(
+    get(errors, currentComponentNamePath),
+  );
+
+  const value = getValues(currentComponentNamePath);
+  const containsValue = !isEmpty(cleanFormData(value));
+
+  // For accordion with single presentation, expand it when validation errors appear
+  if (
+    !alternativePresentation &&
+    containsValidationError &&
+    !prevValidationErrors
+  ) {
+    setPrevValidationErrors(true);
+    setCurrentPresentation('alternative');
+  }
+
+  return (
+    <Accordion
+      expanded={expanded}
+      onChange={() =>
+        setCurrentPresentation(
+          currentPresentation === 'alternative' ? 'default' : 'alternative',
+        )
+      }
+      className={componentStyles['component']}
+      data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
+      presentationSize={presentationSize}
+      invalid={containsValidationError}
+      hasValue={containsValue}
+    >
+      {title && (
+        <AccordionTitle headlineLevel={titleHeadlineLevel}>
+          {t(title)}
+        </AccordionTitle>
+      )}
+      {alternativePresentation !== undefined ? ( // Switch between two presentations
+        <AccordionContent className={componentStyles['container']}>
+          <Component
+            {...props}
+            component={
+              currentPresentation === 'alternative'
+                ? alternativePresentation
+                : defaultPresentation
+            }
+          />
+        </AccordionContent>
+      ) : (
+        expanded && ( // Switch between no content and single presentation
+          <AccordionContent className={componentStyles['container']}>
+            <Component
+              {...props}
+              component={{ ...component, title: undefined }}
+            />
+          </AccordionContent>
+        )
+      )}
+      {!title && <AccordionExpandButton />}
+    </Accordion>
+  );
+};
+
+const getAccordionConfiguration = (
+  component: FormComponent,
+  currentPresentation: PresentationState,
+) => {
   const presentationSize =
     'presentationSize' in component ? component.presentationSize : undefined;
   const title = 'title' in component ? component.title : undefined;
@@ -69,74 +151,42 @@ export const AlternativePresentationSwitcher = (
     title: undefined,
   };
 
-  if (!alternativePresentation) {
-    if (!title) {
-      return <Component {...props} />;
-    }
+  const expanded = isExpanded(
+    currentPresentation,
+    presentationSize,
+    alternativePresentation,
+  );
 
-    const expanded = isSinglePresentationAccordionExpanded(
+  return {
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    defaultPresentation,
+    alternativePresentation,
+    expanded,
+  };
+};
+
+const isExpanded = (
+  currentPresentation: PresentationState,
+  presentationSize: PresentationSize | undefined,
+  alternativePresentation: FormComponent | undefined,
+) => {
+  if (alternativePresentation !== undefined) {
+    return isDualPresentationAccordionExpanded(
       currentPresentation,
       presentationSize,
     );
-
-    return (
-      <Accordion
-        expanded={expanded}
-        onChange={switchPresentation}
-        className={componentStyles['component']}
-        data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
-        presentationSize={presentationSize}
-      >
-        <AccordionTitle headlineLevel={titleHeadlineLevel}>
-          {t(title)}
-        </AccordionTitle>
-        {expanded && (
-          <AccordionContent className={componentStyles['container']}>
-            <Component
-              {...props}
-              component={{ ...component, title: undefined }}
-            />
-          </AccordionContent>
-        )}
-      </Accordion>
-    );
   }
 
-  const expanded = isDualPresentationAccordionExpanded(
+  return isSinglePresentationAccordionExpanded(
     currentPresentation,
     presentationSize,
-  );
-
-  return (
-    <Accordion
-      expanded={expanded}
-      onChange={switchPresentation}
-      className={componentStyles['component']}
-      data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
-      presentationSize={presentationSize}
-    >
-      {title && (
-        <AccordionTitle headlineLevel={titleHeadlineLevel}>
-          {t(title)}
-        </AccordionTitle>
-      )}
-      <AccordionContent className={componentStyles['container']}>
-        <Component
-          {...props}
-          component={
-            currentPresentation === 'alternative'
-              ? alternativePresentation
-              : defaultPresentation
-          }
-        />
-      </AccordionContent>
-      {!title && <AccordionExpandButton />}
-    </Accordion>
   );
 };
 
 export const isSinglePresentationAccordionExpanded = (
-  currentPresentation: 'default' | 'alternative',
+  currentPresentation: PresentationState,
   presentationSize?: PresentationSize,
 ) => {
   if (presentationSize === 'singleInitiallyVisible') {
@@ -146,7 +196,7 @@ export const isSinglePresentationAccordionExpanded = (
 };
 
 export const isDualPresentationAccordionExpanded = (
-  currentPresentation: 'default' | 'alternative',
+  currentPresentation: PresentationState,
   presentationSize?: PresentationSize,
 ) => {
   if (presentationSize === 'firstLarger') {

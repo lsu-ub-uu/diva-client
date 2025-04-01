@@ -18,7 +18,13 @@
 
 import { type HTMLProps, use } from 'react';
 import type { FormComponentMetadata } from '@/components/FormGenerator/types';
-import { CollapseContentIcon, ExpandContentIcon, SwapIcon } from '@/icons';
+import {
+  CircleFilledIcon,
+  CollapseContentIcon,
+  ExpandContentIcon,
+  SwapIcon,
+  WarningIcon,
+} from '@/icons';
 import { AccordionContext } from '@/components/Accordion/Accordion';
 import styles from './Accordion.module.css';
 import clsx from 'clsx';
@@ -46,7 +52,15 @@ export const AccordionTitle = ({
         aria-controls={contentId}
         onClick={() => onChange(!expanded)}
       >
-        {children} {icon}
+        {children}
+        <span className={styles['title-icon-wrapper']}>
+          <CircleFilledIcon
+            className={styles['value-icon']}
+            aria-hidden='true'
+          />
+          <WarningIcon className={styles['error-icon']} aria-hidden='true' />
+          {icon}
+        </span>
       </button>
     </HeadingElement>
   );

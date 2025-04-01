@@ -144,6 +144,22 @@ export const createDefaultValuesFromComponent = (
     }
   }
 
+  if (
+    'alternativePresentation' in component &&
+    component.alternativePresentation !== undefined
+  ) {
+    const alternativePresentationDefaultValues =
+      createDefaultValuesFromComponent({
+        ...component.alternativePresentation,
+        alternativePresentation: undefined,
+      } as FormComponentWithData);
+
+    defaultValues = mergeObjects(
+      defaultValues,
+      alternativePresentationDefaultValues,
+    );
+  }
+
   // remove surrounding container in or data structure
   if (isComponentContainer(component)) {
     return removeRootObject(defaultValues);

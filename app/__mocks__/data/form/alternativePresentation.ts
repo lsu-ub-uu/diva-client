@@ -84,3 +84,62 @@ export const createAlternativePresentationFormDef = (
     mode: 'input',
   },
 });
+
+export const alternativePresentationWithMinNumberRepeatingToShow: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      showLabel: true,
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someNameInData',
+          showLabel: true,
+          label: 'someLabelTextId',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          validation: {
+            type: 'regex',
+            pattern: '^[a-zA-Z]$',
+          },
+          inputType: 'input',
+          mode: 'input',
+          title: 'someTitle',
+          titleHeadlineLevel: 'h4',
+          alternativePresentation: {
+            type: 'textVariable',
+            name: 'someAlternativeNameInData',
+            showLabel: true,
+            label: 'someAlternativeLabelTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            validation: {
+              type: 'regex',
+              pattern: '^[a-zA-Z]$',
+            },
+            inputType: 'input',
+            mode: 'input',
+          },
+        },
+      ],
+      mode: 'input',
+    },
+  };
