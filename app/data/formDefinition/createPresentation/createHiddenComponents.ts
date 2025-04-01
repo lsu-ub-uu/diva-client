@@ -127,8 +127,8 @@ function getPresentation(
   metadata: BFFMetadata,
 ) {
   return presentationChildReferences
-    .filter((ref) => ref.type === 'presentation')
-    .map((ref) => dependencies.presentationPool.get(ref.childId))
+    .filter((ref) => ref.refGroups[0].type === 'presentation')
+    .map((ref) => dependencies.presentationPool.get(ref.refGroups[0].childId))
     .find(
       (presentation) =>
         'presentationOf' in presentation &&

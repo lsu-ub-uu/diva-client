@@ -176,12 +176,19 @@ export interface BFFPresentationGroup extends BFFPresentationBase {
 }
 
 export interface BFFPresentationChildReference {
-  childId: string;
-  type: 'text' | 'presentation' | 'guiElement';
+  refGroups: BFFPresentationChildRefGroup[];
   minNumberOfRepeatingToShow?: string;
   textStyle?: string;
   childStyle?: string[];
-  presentationSize?: string;
+  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  title?: string;
+  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+  addText?: string;
+}
+
+export interface BFFPresentationChildRefGroup {
+  childId: string;
+  type: 'text' | 'presentation' | 'guiElement';
 }
 
 export interface BFFText extends BFFBase {

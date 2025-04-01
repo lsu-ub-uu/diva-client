@@ -60,6 +60,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
             variant='icon'
             size='small'
             aria-label={t('divaClient_closeText')}
+            tooltipPosition='left'
           >
             <CloseIcon />
           </CloseButton>

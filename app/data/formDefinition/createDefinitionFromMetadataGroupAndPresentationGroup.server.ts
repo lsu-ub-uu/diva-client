@@ -22,6 +22,7 @@ export const createDefinitionFromMetadataGroupAndPresentationGroup = (
     dependencies,
     [formRootReference],
     formRootPresentationReference,
+    false,
     metadataGroup.id,
   ) as FormComponentGroup;
 

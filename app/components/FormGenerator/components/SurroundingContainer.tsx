@@ -23,6 +23,7 @@ import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/for
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
 import styles from './FormComponent.module.css';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface SurroundingContainerProps {
   reactKey: string;
@@ -41,6 +42,7 @@ export const SurroundingContainer = ({
 
   return (
     <React.Fragment key={reactKey}>
+      <DevInfo component={component} path={currentComponentNamePath} />
       <div
         id={`anchor_${addAttributesToName(component, component.name)}`}
         key={reactKey}

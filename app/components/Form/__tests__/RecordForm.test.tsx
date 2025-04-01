@@ -95,6 +95,7 @@ import {
   linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
+import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -1582,7 +1583,7 @@ describe('<Form />', () => {
       );
 
       const buttonElement = screen.getByRole('button', {
-        name: 'someNameInDataLabel',
+        name: 'divaClient_addFieldText',
       });
 
       const inputElements = screen.getAllByPlaceholderText('someEmptyTextId');
@@ -3107,6 +3108,230 @@ describe('<Form />', () => {
         'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
       );
       expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
+    });
+  });
+
+  describe('alternativePresentation', () => {
+    it('renders a headless presentation switcher when component has alternative presentation and no title', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'firstSmaller',
+                undefined,
+                true,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someAlternativeLabelTextId'),
+      ).not.toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole('button', {
+          name: 'divaClient_showMoreText',
+        }),
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'someAlternativeLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders a headed presentation switcher when component has alternative presentation a title', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'firstSmaller',
+                'someTitle',
+                true,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someAlternativeLabelTextId'),
+      ).not.toBeInTheDocument();
+
+      const accordionTitle = screen.getByRole('button', {
+        name: 'someTitle',
+      });
+      await user.click(accordionTitle);
+
+      expect(
+        screen.getByRole('textbox', { name: 'someAlternativeLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+      expect(accordionTitle).toBeVisible();
+    });
+
+    it('renders a headed presentation switcher when component a title but no alternative presentation', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'singleInitiallyHidden',
+                'someTitle',
+                false,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+
+      const accordionTitle = screen.getByRole('button', {
+        name: 'someTitle',
+      });
+      await user.click(accordionTitle);
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(accordionTitle).toBeVisible();
+    });
+
+    it('handles presentationSize firstLarger', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'firstLarger',
+                undefined,
+                true,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someAlternativeLabelTextId'),
+      ).not.toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole('button', {
+          name: 'divaClient_showLessText',
+        }),
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'someAlternativeLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+    });
+
+    it('handles presentationSize bothAreEqual', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'bothEqual',
+                undefined,
+                true,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someAlternativeLabelTextId'),
+      ).not.toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole('button', {
+          name: 'divaClient_swapPresentationText',
+        }),
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'someAlternativeLabelTextId' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+    });
+
+    it('handles presentationSize singleInitiallyShown', async () => {
+      const user = userEvent.setup();
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <RecordForm
+              formSchema={createAlternativePresentationFormDef(
+                'singleInitiallyVisible',
+                'someTitle',
+                false,
+              )}
+            />
+          ),
+        },
+      ]);
+      await act(() => render(<RoutesStub />));
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInTheDocument();
+
+      const accordionTitle = screen.getByRole('button', {
+        name: 'someTitle',
+      });
+      await user.click(accordionTitle);
+
+      expect(
+        screen.queryByLabelText('someLabelTextId'),
+      ).not.toBeInTheDocument();
+      expect(accordionTitle).toBeVisible();
     });
   });
 });

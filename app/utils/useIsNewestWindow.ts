@@ -44,7 +44,7 @@ export const useIsNewestWindow = (syncWindowTime: number = 500) => {
     },
   );
 
-  const isNewestWindow = () => {
+  const isNewestWindow = useCallback(() => {
     sendMessage({ id: myWindowId });
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -52,7 +52,7 @@ export const useIsNewestWindow = (syncWindowTime: number = 500) => {
         latestRequestId.current = myWindowId;
       }, syncWindowTime);
     });
-  };
+  }, [myWindowId, syncWindowTime, sendMessage]);
 
-  return useCallback(isNewestWindow, [myWindowId, syncWindowTime, sendMessage]);
+  return isNewestWindow;
 };

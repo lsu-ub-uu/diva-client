@@ -64,6 +64,8 @@
 /* Sections */
 main section {
   margin-bottom: var(--gap-xxl);
+  display: grid;
+  gap: var(--gap-l);
 }
 
 .icons {

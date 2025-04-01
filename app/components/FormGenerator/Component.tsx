@@ -40,6 +40,7 @@ import { Group } from '@/components/FormGenerator/components/Group';
 import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -56,6 +57,17 @@ export const Component = ({
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
+
+  if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
+    return (
+      <AlternativePresentationSwitcher
+        component={component}
+        idx={idx}
+        path={path}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  }
 
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
@@ -145,6 +157,14 @@ export const getCurrentComponentNamePath = (
       ? addAttributesForMatchingNameInDataWithoutPath
       : addAttributesForMatchingNameInDataWithPath;
   }
+};
+
+const hasClickableTitle = (component: FormComponent) => {
+  return 'title' in component && component.title;
+};
+
+const hasAlternativePresentation = (component: FormComponent) => {
+  return component.alternativePresentation !== undefined;
 };
 
 const isComponentSurroundingContainerAndNOTRepeating = (

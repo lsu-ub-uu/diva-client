@@ -25,7 +25,7 @@ import styles from './Button.module.css';
 import clsx from 'clsx';
 import { type ElementType, type Ref } from 'react';
 
-interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
+export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
@@ -33,6 +33,7 @@ interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   to?: string;
   href?: string;
   ref?: Ref<HTMLButtonElement>;
+  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export const Button = ({
@@ -40,6 +41,7 @@ export const Button = ({
   size = 'medium',
   fullWidth = false,
   className,
+  tooltipPosition = 'bottom',
   ref,
   ...rest
 }: ButtonProps) => {
@@ -48,6 +50,7 @@ export const Button = ({
       className={clsx(styles.button, className)}
       data-variant={variant}
       data-size={size}
+      data-tooltip-position={tooltipPosition}
       ref={ref}
       {...(fullWidth ? { 'data-fullwidth': '' } : {})}
       {...rest}

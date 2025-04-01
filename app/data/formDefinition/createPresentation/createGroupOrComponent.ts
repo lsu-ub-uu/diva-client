@@ -73,6 +73,7 @@ export const createGroupOrComponent = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
+  alternative: boolean,
   metadataOverrideId?: string,
 ): FormComponentGroup | FormComponent | undefined => {
   const { metadataPool, presentationPool } = dependencies;
@@ -81,6 +82,7 @@ export const createGroupOrComponent = (
   let repeat;
   let metadata;
   let commonParameters;
+  let alternativePresentation;
 
   const childStyle = convertChildStylesToShortName(
     presentationChildReference.childStyle,
@@ -89,10 +91,33 @@ export const createGroupOrComponent = (
   const gridColSpan = convertChildStylesToGridColSpan(
     presentationChildReference.childStyle ?? [],
   );
-  const presentationChildId = presentationChildReference.childId;
+
+  const presentationSize = presentationChildReference.presentationSize;
+  const title = presentationChildReference.title;
+  const titleHeadlineLevel = presentationChildReference.titleHeadlineLevel;
+
+  const refGroup = getPresentationChildRefGroup(
+    presentationChildReference,
+    alternative,
+  );
+  const presentationChildId = refGroup.childId;
   const presentation = presentationPool.get(
     presentationChildId,
   ) as BFFPresentationBase;
+
+  if (
+    alternative === false &&
+    presentationChildReference.refGroups.length > 1
+  ) {
+    alternativePresentation = createGroupOrComponent(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReference,
+      true,
+      metadataOverrideId,
+    );
+  }
+
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     const metadataFromPresentation = metadataPool.get(
@@ -124,6 +149,10 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...textVar,
     }) as FormComponentTextVar;
   }
@@ -139,6 +168,10 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...numVar,
     }) as FormComponentNumVar;
   }
@@ -154,6 +187,10 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...collVar,
     }) as FormComponentCollVar;
   }
@@ -170,6 +207,10 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...recordLink,
     }) as FormComponentRecordLink;
   }
@@ -180,10 +221,15 @@ export const createGroupOrComponent = (
       metadataChildReferences,
       presentation as BFFPresentationContainer,
     );
+
     return removeEmpty({
       childStyle,
       gridColSpan,
       textStyle,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...container,
     }) as FormComponentContainer;
   }
@@ -199,6 +245,10 @@ export const createGroupOrComponent = (
       childStyle,
       gridColSpan,
       textStyle,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...group,
     }) as FormComponentGroup;
   }
@@ -213,6 +263,10 @@ export const createGroupOrComponent = (
       childStyle,
       textStyle,
       gridColSpan,
+      alternativePresentation,
+      presentationSize,
+      title,
+      titleHeadlineLevel,
       ...resourceLink,
     }) as FormComponentResourceLink;
   }
@@ -223,6 +277,10 @@ export const createGroupOrComponent = (
     childStyle,
     textStyle,
     gridColSpan,
+    alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
   }) as FormComponentGroup;
 };
 
@@ -349,6 +407,7 @@ export const createComponentsFromChildReferences = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
+  alternative: boolean,
 ): FormComponent[] => {
   const components = presentationChildReferences.map(
     (presentationChildReference) => {
@@ -356,34 +415,54 @@ export const createComponentsFromChildReferences = (
         dependencies,
         metadataChildReferences,
         presentationChildReference,
+        alternative,
       );
     },
   ) as FormComponent[];
 
-  const hiddenComponents = createHiddenComponents(
-    dependencies,
-    metadataChildReferences,
-    presentationChildReferences,
-  );
+  const hiddenComponents = alternative
+    ? []
+    : createHiddenComponents(
+        dependencies,
+        metadataChildReferences,
+        presentationChildReferences,
+      );
 
   return [...components, ...hiddenComponents];
+};
+
+export const getPresentationChildRefGroup = (
+  presentationChildReference: BFFPresentationChildReference,
+  alternative: boolean,
+) => {
+  return presentationChildReference.refGroups[alternative ? 1 : 0];
 };
 
 const createComponentFromChildReference = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
+  alternative: boolean,
 ) => {
-  const presentationChildType = presentationChildReference.type;
+  const refGroup = getPresentationChildRefGroup(
+    presentationChildReference,
+    alternative,
+  );
+  const presentationChildType = refGroup.type;
 
   if (presentationChildType === 'text') {
-    return createText(presentationChildReference, presentationChildType);
+    return createText(
+      presentationChildReference,
+      presentationChildType,
+      alternative,
+    );
   }
 
   if (presentationChildType === 'guiElement') {
     return createGuiElement(
       presentationChildReference,
       dependencies.presentationPool,
+      alternative,
     );
   }
 
@@ -391,6 +470,7 @@ const createComponentFromChildReference = (
     dependencies,
     metadataChildReferences,
     presentationChildReference,
+    alternative,
   );
 };
 
@@ -398,10 +478,15 @@ const createFormPartsForGroupOrVariable = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
+  alternative: boolean,
 ) => {
   const { metadataPool, presentationPool } = dependencies;
   let metadataOverrideId;
-  const presentationChildId = presentationChildReference.childId;
+  const refGroup = getPresentationChildRefGroup(
+    presentationChildReference,
+    alternative,
+  );
+  const presentationChildId = refGroup.childId;
   const presentation = presentationPool.get(presentationChildId) as
     | BFFPresentationBase
     | BFFPresentationGroup;
@@ -429,6 +514,7 @@ const createFormPartsForGroupOrVariable = (
     dependencies,
     metadataChildReferences,
     presentationChildReference,
+    alternative,
     metadataOverrideId,
   );
 };

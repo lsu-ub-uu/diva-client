@@ -47,7 +47,9 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
         <Button
           size='small'
           variant='icon'
-          aria-label={t('divaClient_moveFieldUpText')}
+          aria-label={t('divaClient_moveFieldUpText', {
+            fieldName: props.entityName,
+          })}
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
         >
@@ -57,7 +59,9 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
       <Button
         size='small'
         variant='icon'
-        aria-label={t('divaClient_deleteFieldText')}
+        aria-label={t('divaClient_deleteFieldText', {
+          fieldName: props.entityName,
+        })}
         disabled={props.deleteButtonDisabled}
         onClick={props.deleteButtonAction}
       >
@@ -67,7 +71,9 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
         <Button
           size='small'
           variant='icon'
-          aria-label={t('divaClient_moveFieldDownText')}
+          aria-label={t('divaClient_moveFieldDownText', {
+            fieldName: props.entityName,
+          })}
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
         >

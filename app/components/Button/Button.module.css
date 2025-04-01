@@ -2,6 +2,8 @@
 
 @layer components {
   .button {
+    position: relative;
+    flex-shrink: 0;
     text-decoration: none;
     font-size: 1rem;
     line-height: 1;
@@ -91,6 +93,7 @@
     &[data-variant='icon'] {
       --icon-button-size: calc(var(--input-height) + 0.5rem);
 
+      position: relative;
       width: var(--icon-button-size);
       height: var(--icon-button-size);
       margin: -0.5rem;
@@ -111,6 +114,52 @@
       &[data-active] {
         background-color: var(--color-button-secondary-active);
       }
+    }
+
+    /** Tooltip for aria-label */
+
+    &[aria-label]::after {
+      content: attr(aria-label);
+      display: block;
+      position: absolute;
+      background-color: var(--color-background-inverted);
+      color: var(--color-text-inverted);
+      border-radius: var(--border-radius);
+      box-shadow: var(--elevation);
+      padding: var(--gap);
+      width: max-content;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.2s;
+      transition-delay: 0s;
+      pointer-events: none;
+    }
+
+    &[data-tooltip-position='bottom']::after {
+      top: calc(100% + var(--gap));
+    }
+
+    &[data-tooltip-position='top']::after {
+      bottom: calc(100% + var(--gap));
+    }
+
+    &[data-tooltip-position='left']::after {
+      right: calc(100% + var(--gap));
+    }
+
+    &[data-tooltip-position='right']::after {
+      left: calc(100% + var(--gap));
+    }
+
+    &[aria-label]:hover,
+    &[aria-label]:focus-visible {
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    &[aria-label]:hover::after {
+      transition-delay: 0.5s;
     }
   }
 }

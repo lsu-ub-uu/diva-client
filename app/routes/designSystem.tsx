@@ -37,6 +37,10 @@ import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Progress } from '@/components/Progress/Progress';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { Accordion } from '@/components/Accordion/Accordion';
+import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
+import { AccordionContent } from '@/components/Accordion/AccordionContent';
+import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -44,6 +48,8 @@ export default function DesignSystem() {
   const [darkMode, setDarkMode] = useState(false);
   const [snacbkarOpen, setSnacbkarOpen] = useState(false);
   const [progress, setProgress] = useState(50);
+  const [accordionExpanded, setAccordionExpanded] = useState(false);
+
   useEffect(() => {
     document.querySelector('body')!.dataset.theme = darkMode ? 'dark' : 'light';
   }, [darkMode]);
@@ -198,6 +204,34 @@ export default function DesignSystem() {
               <EditDocumentIcon />
             </Button>
             <Button variant='icon' disabled>
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip left'
+              tooltipPosition='left'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip top'
+              tooltipPosition='top'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip bottom'
+              tooltipPosition='bottom'
+            >
+              <EditDocumentIcon />
+            </Button>
+            <Button
+              variant='icon'
+              aria-label='Tooltip right'
+              tooltipPosition='right'
+            >
               <EditDocumentIcon />
             </Button>
             <FloatingActionButton
@@ -436,6 +470,65 @@ export default function DesignSystem() {
               </div>
             ))}
           </div>
+        </section>
+        <section>
+          <h2>Accordion</h2>
+          <h3>Accordion with title</h3>
+          <Accordion
+            expanded={accordionExpanded}
+            onChange={setAccordionExpanded}
+          >
+            <AccordionTitle>Accordion title</AccordionTitle>
+            {accordionExpanded && (
+              <AccordionContent>
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                <p>
+                  Voluptatem repellat consequatur deleniti qui quibusdam harum
+                  cumque.
+                </p>
+              </AccordionContent>
+            )}
+          </Accordion>
+          <h3>Accordion with title and collapsed content</h3>
+          <Accordion
+            expanded={accordionExpanded}
+            onChange={setAccordionExpanded}
+          >
+            <AccordionTitle>Accordion title</AccordionTitle>
+            <AccordionContent>
+              {accordionExpanded ? (
+                <>
+                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                  <p>
+                    Voluptatem repellat consequatur deleniti qui quibusdam harum
+                    cumque.
+                  </p>
+                </>
+              ) : (
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+              )}
+            </AccordionContent>
+          </Accordion>
+          <h3>Accordion without title</h3>
+          <Accordion
+            expanded={accordionExpanded}
+            onChange={setAccordionExpanded}
+          >
+            <AccordionContent>
+              {accordionExpanded ? (
+                <>
+                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+                  <p>
+                    Voluptatem repellat consequatur deleniti qui quibusdam harum
+                    cumque.
+                  </p>
+                </>
+              ) : (
+                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
+              )}
+            </AccordionContent>
+            <AccordionExpandButton />
+          </Accordion>
         </section>
       </main>
     </div>
