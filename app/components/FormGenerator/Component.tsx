@@ -57,6 +57,7 @@ export const Component = ({
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const reactKey = `key_${idx}`;
+  const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
   if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
     return (
@@ -64,12 +65,11 @@ export const Component = ({
         component={component}
         idx={idx}
         path={path}
+        currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
       />
     );
   }
-
-  const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
   if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
     return null;
