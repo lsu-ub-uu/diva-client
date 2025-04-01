@@ -12,3 +12,5 @@ prettier.xml
 vcs.xml
 diva-client.iml
 /codeStyles
+/jsLinters/
+/stylesheetLinters/
