@@ -28,15 +28,16 @@ import {
   LockIcon,
   SentimentNeutralIcon,
   SentimentStressedIcon,
-  SentimentVeryDissatisfiedIcon,
+  SentimentVeryDissatisfiedIcon, SentimentWorriedIcon,
 } from '@/icons';
 
-type Status = 401 | 403 | 404 | 409 | 500;
+type Status = 400 | 401 | 403 | 404 | 409 | 500;
 
 interface RouteErrorPageProps {
   status: Status;
   recordType: string;
   recordId: string;
+  otherMessage?: string;
   coraMessage?: string;
 }
 
@@ -44,6 +45,7 @@ export const RouteErrorPage = ({
   status,
   recordType,
   recordId,
+  otherMessage,
   coraMessage,
 }: RouteErrorPageProps) => {
   const { t } = useTranslation();
@@ -54,9 +56,8 @@ export const RouteErrorPage = ({
       {getIcon(status)}
 
       <h1>{t(`divaClient_error${status}TitleText`)}</h1>
-
       <p className={styles['error-body']}>
-        {t(`divaClient_error${status}BodyText`, { recordType, recordId })}
+        {otherMessage ? t(otherMessage) : t(`divaClient_error${status}BodyText`, { recordType, recordId })}
       </p>
       <Link to={href('/:recordType', { recordType })}>
         {t('divaClient_errorGoToSearchText', { recordType })}
@@ -82,6 +83,8 @@ export const RouteErrorPage = ({
 
 function getIcon(status: Status) {
   switch (status) {
+    case 400:
+      return <SentimentWorriedIcon />;
     case 401:
       return <LockIcon />;
     case 403:

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { data, isRouteErrorResponse } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
@@ -44,6 +44,9 @@ import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
+import { AxiosError } from 'axios';
+import { isRouteErrorResponseWithHandledStatus } from '@/errorHandling/utils';
+import { RouteErrorPage } from '@/errorHandling/RouteErrorPage';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -52,20 +55,27 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-  invariant(validationTypeId, 'Missing validationTypeId param');
+  invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
+  try {
+    const formDefinition = await getFormDefinitionByValidationTypeId(
+      await context.dependencies,
+      validationTypeId,
+      'create',
+    );
 
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
-    validationTypeId,
-    'create',
-  );
+    const title = t('divaClient_createRecordText');
+    const breadcrumb = t('divaClient_createRecordText');
 
-  const title = t('divaClient_createRecordText');
-  const breadcrumb = t('divaClient_createRecordText');
-  return data(
-    { formDefinition, notification, title, breadcrumb },
-    await getResponseInitWithSession(session),
-  );
+    return data(
+      { formDefinition, notification, title, breadcrumb },
+      await getResponseInitWithSession(session),
+    );
+  } catch (error) {
+    if (validationTypeId === undefined) {
+      throw data(error, { status: 400 });
+    }
+    throw error;
+  }
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
@@ -75,7 +85,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
-  invariant(validationTypeId, 'Missing validationTypeId param');
+  invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,
@@ -110,11 +120,25 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
     session.flash('notification', createNotificationFromAxiosError(error));
 
-    return data({}, await getResponseInitWithSession(session));
+    return data({ error }, await getResponseInitWithSession(session));
   }
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
+  const error2 = error as any;
+  const errorMessage = error2.message;
+
+  return (
+    <>
+      <RouteErrorPage
+        status={400} //400 - Bad Request?
+        recordType={params.recordType}
+        recordId={''}
+        otherMessage={errorMessage}
+      />
+    </>
+  );
+};
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
   return [{ title: error ? getMetaTitleFromError(error) : data?.title }];

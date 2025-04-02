@@ -67,3 +67,4 @@ export { default as LockIcon } from './Lock.svg?react';
 export { default as SentimentCalmIcon } from './SentimentCalm.svg?react';
 export { default as SentimentStressedIcon } from './SentimentStressed.svg?react';
 export { default as SentimentVeryDissatisfiedIcon } from './SentimentVeryDissatisfied.svg?react';
+export { default as SentimentWorriedIcon } from './SentimentWorried.svg?react';

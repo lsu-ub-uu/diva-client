@@ -24,8 +24,8 @@ export const getMetaTitleFromError = (error: unknown) => {
     return getTitleFromHTTPStatus(error.status);
   }
 
-  console.log({ error });
-  return 'Internal Error';
+  // console.log({ error });
+  return 'Internal Server Error';
 };
 
 const getTitleFromHTTPStatus = (status?: number) => {
@@ -41,7 +41,7 @@ const getTitleFromHTTPStatus = (status?: number) => {
     case 500:
     default: {
       console.log(status);
-      return 'Internal Error';
+      return 'Internal Server Error';
     }
   }
 };
