@@ -30,6 +30,8 @@ export const getMetaTitleFromError = (error: unknown) => {
 
 const getTitleFromHTTPStatus = (status?: number) => {
   switch (status) {
+    case 400:
+      return 'Bad Request';
     case 401:
       return 'Unauthorized';
     case 403:

@@ -25,7 +25,7 @@ export const getFormDefinitionByValidationTypeId = async (
   mode: 'create' | 'update' | 'view',
 ) => {
   if (!dependencies.validationTypePool.has(validationTypeId)) {
-    throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    throw new Error('divaClient_missingValidationTypeIdText');
   }
 
   return createFormDefinition(dependencies, validationTypeId, mode);

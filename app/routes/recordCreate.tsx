@@ -22,8 +22,15 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
-import { getNotification, getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
-import { getResponseInitWithSession, redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import {
+  getNotification,
+  getSessionFromCookie,
+  requireAuth,
+} from '@/auth/sessions.server';
+import {
+  getResponseInitWithSession,
+  redirectAndCommitSession,
+} from '@/utils/redirectAndCommitSession';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
@@ -45,15 +52,20 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-  //invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
+
   if (validationTypeId === null) {
-    throw data('divaClient_missingValidationTypeIdText', { status: 400 });
+    throw data('divaClient_missingValidationTypeParamText', { status: 400 });
   }
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
-    validationTypeId,
-    'create',
-  );
+  let formDefinition;
+  try {
+    formDefinition = await getFormDefinitionByValidationTypeId(
+      await context.dependencies,
+      validationTypeId,
+      'create',
+    );
+  } catch (error) {
+    throw data('divaClient_missingValidationTypeIdText', { status: 404 });
+  }
 
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
@@ -112,13 +124,13 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   const validationTypeError = error as any;
-  console.log({error})
+  console.log({ error });
   return (
     <>
       <RouteErrorPage
         status={validationTypeError.status} //400 - Bad Request?
-        recordType={''}
-        recordId={''}
+        recordType=''
+        recordId=''
         otherMessage={validationTypeError.data}
       />
     </>
