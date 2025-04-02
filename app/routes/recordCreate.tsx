@@ -16,21 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, isRouteErrorResponse } from 'react-router';
+import { data } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
-import {
-  getNotification,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
-import {
-  getResponseInitWithSession,
-  redirectAndCommitSession,
-} from '@/utils/redirectAndCommitSession';
+import { getNotification, getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
+import { getResponseInitWithSession, redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
@@ -43,9 +36,6 @@ import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
-import { AxiosError } from 'axios';
-import { isRouteErrorResponseWithHandledStatus } from '@/errorHandling/utils';
 import { RouteErrorPage } from '@/errorHandling/RouteErrorPage';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -55,27 +45,23 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-  invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
-  try {
-    const formDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
-      validationTypeId,
-      'create',
-    );
-
-    const title = t('divaClient_createRecordText');
-    const breadcrumb = t('divaClient_createRecordText');
-
-    return data(
-      { formDefinition, notification, title, breadcrumb },
-      await getResponseInitWithSession(session),
-    );
-  } catch (error) {
-    if (validationTypeId === undefined) {
-      throw data(error, { status: 400 });
-    }
-    throw error;
+  //invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
+  if (validationTypeId === null) {
+    throw data('divaClient_missingValidationTypeIdText', { status: 400 });
   }
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    await context.dependencies,
+    validationTypeId,
+    'create',
+  );
+
+  const title = t('divaClient_createRecordText');
+  const breadcrumb = t('divaClient_createRecordText');
+
+  return data(
+    { formDefinition, notification, title, breadcrumb },
+    await getResponseInitWithSession(session),
+  );
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
@@ -125,16 +111,15 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 };
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
-  const error2 = error as any;
-  const errorMessage = error2.message;
-
+  const validationTypeError = error as any;
+  console.log({error})
   return (
     <>
       <RouteErrorPage
-        status={400} //400 - Bad Request?
-        recordType={params.recordType}
+        status={validationTypeError.status} //400 - Bad Request?
+        recordType={''}
         recordId={''}
-        otherMessage={errorMessage}
+        otherMessage={validationTypeError.data}
       />
     </>
   );
