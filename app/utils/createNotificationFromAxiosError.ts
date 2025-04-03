@@ -18,21 +18,27 @@
 
 import { isAxiosError } from 'axios';
 import type { Notification } from '@/auth/sessions.server';
+import type { TFunction } from 'i18next';
 
 export const createNotificationFromAxiosError = (
+  t: TFunction,
   error: unknown,
 ): Notification => {
-  console.error(error);
-  const errorMessage = isAxiosError(error)
-    ? `${error.message}`
-    : error instanceof Error
-      ? error.message
-      : '';
+  if (isAxiosError(error)) {
+    return {
+      severity: 'error',
+      summary: t(`divaClient_error${error.status}TitleText`, {
+        defaultValue: error.message,
+      }),
+      details: t(`divaClient_error${error.status}BodyText`, {
+        defaultValue: error.response?.data ?? '',
+      }),
+    };
+  }
 
-  const errorDetails = isAxiosError(error) ? `${error.response?.data}` : '';
   return {
     severity: 'error',
-    summary: errorMessage,
-    details: errorDetails,
+    summary: t(`divaClient_unknownErrorTitleText`),
+    details: t(`divaClient_unknownErrorBodyText`),
   };
 };

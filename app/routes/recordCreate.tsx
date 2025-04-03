@@ -23,6 +23,7 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
 import {
+  getAuth,
   getNotification,
   getSessionFromCookie,
   requireAuth,
@@ -85,7 +86,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
+  const { t } = context.i18n;
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -121,12 +123,10 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     });
     return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
-    console.error(error);
-
-    session.flash('notification', createNotificationFromAxiosError(error));
-
-    return data({ error }, await getResponseInitWithSession(session));
+    session.flash('notification', createNotificationFromAxiosError(t, error));
   }
+
+  return data({}, await getResponseInitWithSession(session));
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {

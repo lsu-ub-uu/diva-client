@@ -58,7 +58,7 @@ export const createRecord = async (
   const response = await postRecordData<RecordWrapper>(
     transformData[0] as DataGroup,
     recordType,
-    auth.data.token,
+    auth?.data?.token,
   );
 
   return transformRecord(dependencies, response.data);
