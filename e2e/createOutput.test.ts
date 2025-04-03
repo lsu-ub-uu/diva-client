@@ -21,180 +21,265 @@ import { expect, type Page } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { createUrl } from './util/createUrl';
 
-test('Create report', async ({ page, request, authtoken }) => {
-  const mockTitle = faker.book.title();
-  const mockSubtitle = faker.book.title();
-  const mockAltTitle = faker.book.title();
-  const mockAltSubtitle = faker.book.title();
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
-  const keywords = faker.lorem.words(10);
-  const abstract = faker.lorem.paragraphs(1);
+test.describe('Create output', () => {
+  test('Create report mini', async ({ page, request, authtoken }) => {
+    const mockTitle = faker.book.title();
 
-  // Go to start page
-  await page.goto(createUrl('/'));
+    // Go to start page
+    await page.goto(createUrl('/'));
 
-  // Log in
-  await page.getByRole('button', { name: 'Logga in' }).click();
-  await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-  await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+    // Log in
+    await page.getByRole('button', { name: 'Logga in' }).click();
+    await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
+    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
 
-  // Select validation type
-  await page.getByRole('button', { name: 'Skapa output' }).click();
-  await page.getByRole('menuitem', { name: 'Rapport' }).click();
+    // Select validation type
+    await page.getByRole('button', { name: 'Skapa output' }).click();
+    await page.getByRole('menuitem', { name: 'Rapport' }).click();
 
-  await expect(page).toHaveTitle(/^Skapa publikation/);
+    await expect(page).toHaveTitle(/^Skapa publikation/);
 
-  // Fill create form
-  await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
-  await page.getByRole('option', { name: 'Rättighetsenhet' }).click();
+    // Fill create form
+    await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
+    await page.getByRole('option', { name: 'Rättighetsenhet' }).click();
 
-  await page
-    .getByRole('group', { name: 'Konstnärligt arbete' })
-    .getByLabel('Konstnärligt arbete')
-    .selectOption({ label: 'Sant' });
+    await page
+      .getByRole('region', {
+        name: 'Språk för resursen',
+      })
+      .getByRole('combobox', { name: 'Språk' })
+      .fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
-  await page
-    .getByRole('region', {
-      name: 'Språk för resursen',
-    })
-    .getByRole('combobox', { name: 'Språk' })
-    .fill('Tyska');
-  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+    await page
+      .getByRole('group', { name: 'Typ av innehåll' })
+      .getByLabel('Typ av innehåll')
+      .selectOption({ label: 'Sakkunniggranskat' });
 
-  await page
-    .getByRole('group', { name: 'Typ av innehåll' })
-    .getByLabel('Typ av innehåll')
-    .selectOption({ label: 'Sakkunniggranskat' });
-
-  const titleGroup = page.getByRole('region', {
-    name: 'Titel',
-  });
-
-  await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
-  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
-
-  await titleGroup
-    .getByRole('group', { name: 'Huvudtitel' })
-    .getByLabel('Huvudtitel')
-    .fill(mockTitle);
-  await titleGroup
-    .getByRole('group', { name: 'Undertitel' })
-    .getByLabel('Undertitel')
-    .fill(mockSubtitle);
-
-  await page.getByRole('button', { name: 'Alternativ titel' }).click();
-
-  const alternativeTitleGroup = page.getByRole('region', {
-    name: 'Alternativ Titel',
-  });
-  await alternativeTitleGroup
-    .getByRole('combobox', { name: 'Språk' })
-    .fill('Tyska');
-  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
-
-  await alternativeTitleGroup
-    .getByRole('group', { name: 'Huvudtitel' })
-    .getByLabel('Huvudtitel')
-    .fill(mockAltTitle);
-  await alternativeTitleGroup
-    .getByRole('group', { name: 'Undertitel' })
-    .getByLabel('Undertitel')
-    .fill(mockAltSubtitle);
-
-  const authorGroup = page.getByRole('region', {
-    name: 'Författare, redaktör eller annan roll',
-  });
-
-  await authorGroup.getByRole('button', { name: 'Efternamn' }).click();
-  await authorGroup
-    .getByRole('group', { name: 'Efternamn' })
-    .getByLabel('Efternamn')
-    .fill(lastName);
-  await authorGroup.getByRole('button', { name: 'Förnamn' }).click();
-  await authorGroup
-    .getByRole('group', { name: 'Förnamn' })
-    .getByLabel('Förnamn')
-    .fill(firstName);
-
-  await page
-    .getByRole('group', { name: 'Antal upphovspersoner' })
-    .getByLabel('Antal upphovspersoner')
-    .fill('2');
-
-  const abstractGroup = page.getByRole('group', { name: 'Abstract' });
-  await abstractGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
-  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
-  await abstractGroup.getByLabel('Abstract').fill(abstract);
-
-  const keywordsGroup = page.getByRole('region', {
-    name: 'Nyckelord',
-  });
-
-  await keywordsGroup
-    .getByRole('group', { name: 'Språk' })
-    .getByRole('combobox', { name: 'Språk' })
-    .fill('Tyska');
-  await page.getByRole('option', { name: 'Tyska', exact: true }).click();
-
-  await keywordsGroup
-    .getByRole('group', { name: 'Nyckelord' })
-    .getByLabel('Nyckelord')
-    .fill(keywords);
-
-  await page
-    .getByRole('group', {
-      name: 'Standard för svensk indelning av forskningsämnen',
-    })
-    .getByRole('combobox', {
-      name: 'Standard för svensk indelning av forskningsämnen',
-    })
-    .fill('Atom- och molekylfysik och optik');
-  await page
-    .getByRole('option', {
-      name: '(10302) Atom- och molekylfysik och optik',
-      exact: true,
-    })
-    .click();
-
-  const sustainableDevelopmentGroup = page.getByRole('region', {
-    name: 'Hållbar utveckling',
-  });
-  await sustainableDevelopmentGroup
-    .getByRole('group', { name: /^Globalt mål för hållbar utveckling/ })
-    .getByLabel(/^Globalt mål för hållbar utveckling/)
-    .selectOption({
-      label: '8. Anständiga arbetsvillkor och ekonomisk tillväxt',
+    const titleGroup = page.getByRole('region', {
+      name: 'Titel',
     });
 
-  await page
-    .getByRole('group', { name: 'År' })
-    .getByLabel('År')
-    .fill(faker.date.recent().getFullYear().toString());
+    await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
 
-  await page
-    .getByRole('group', { name: /^Bibliografiskt granskad/ })
-    .getByLabel(/^Bibliografiskt granskad/)
-    .selectOption({ label: 'Sant' });
+    await titleGroup
+      .getByRole('group', { name: 'Huvudtitel' })
+      .getByLabel('Huvudtitel')
+      .fill(mockTitle);
 
-  await page
-    .getByRole('group', { name: /^Postens synlighet/ })
-    .getByLabel(/^Postens synlighet/)
-    .selectOption({ label: 'Publicerad' });
+    await page
+      .getByRole('group', { name: 'År' })
+      .getByLabel('År')
+      .fill(faker.date.recent().getFullYear().toString());
 
-  // Submit
-  await page.getByRole('button', { name: 'Skicka in' }).click();
+    await page
+      .getByRole('group', { name: /^Bibliografiskt granskad/ })
+      .getByLabel(/^Bibliografiskt granskad/)
+      .selectOption({ label: 'Sant' });
 
-  // Assert redirected to update page
-  await expect(
-    page.getByText(/^Record was successfully created/),
-  ).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(mockTitle);
+    await page
+      .getByRole('group', { name: /^Postens synlighet/ })
+      .getByLabel(/^Postens synlighet/)
+      .selectOption({ label: 'Publicerad' });
 
-  // Clean up created record
-  const id = getRecordIdFromUpdatePageUrl(page);
-  await request.delete(`${process.env.CORA_API_URL}/record/diva-output/${id}`, {
-    headers: { Authtoken: authtoken },
+    // Submit
+    await page.getByRole('button', { name: 'Skicka in' }).click();
+
+    // Assert redirected to update page
+    await expect(
+      page.getByText(/^Record was successfully created/),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(mockTitle);
+
+    // Clean up created record
+    const id = getRecordIdFromUpdatePageUrl(page);
+    await request.delete(
+      `${process.env.CORA_API_URL}/record/diva-output/${id}`,
+      {
+        headers: { Authtoken: authtoken },
+      },
+    );
+  });
+
+  test('Create report', async ({ page, request, authtoken }) => {
+    const mockTitle = faker.book.title();
+    const mockSubtitle = faker.book.title();
+    const mockAltTitle = faker.book.title();
+    const mockAltSubtitle = faker.book.title();
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    const keywords = faker.lorem.words(10);
+    const abstract = faker.lorem.paragraphs(1);
+
+    // Go to start page
+    await page.goto(createUrl('/'));
+
+    // Log in
+    await page.getByRole('button', { name: 'Logga in' }).click();
+    await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
+    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+
+    // Select validation type
+    await page.getByRole('button', { name: 'Skapa output' }).click();
+    await page.getByRole('menuitem', { name: 'Rapport' }).click();
+
+    await expect(page).toHaveTitle(/^Skapa publikation/);
+
+    // Fill create form
+    await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
+    await page.getByRole('option', { name: 'Rättighetsenhet' }).click();
+
+    await page
+      .getByRole('group', { name: 'Konstnärligt arbete' })
+      .getByLabel('Konstnärligt arbete')
+      .selectOption({ label: 'Sant' });
+
+    await page
+      .getByRole('region', {
+        name: 'Språk för resursen',
+      })
+      .getByRole('combobox', { name: 'Språk' })
+      .fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+    await page
+      .getByRole('group', { name: 'Typ av innehåll' })
+      .getByLabel('Typ av innehåll')
+      .selectOption({ label: 'Sakkunniggranskat' });
+
+    const titleGroup = page.getByRole('region', {
+      name: 'Titel',
+    });
+
+    await titleGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+    await titleGroup
+      .getByRole('group', { name: 'Huvudtitel' })
+      .getByLabel('Huvudtitel')
+      .fill(mockTitle);
+    await titleGroup
+      .getByRole('group', { name: 'Undertitel' })
+      .getByLabel('Undertitel')
+      .fill(mockSubtitle);
+
+    await page.getByRole('button', { name: 'Alternativ titel' }).click();
+
+    const alternativeTitleGroup = page.getByRole('region', {
+      name: 'Alternativ Titel',
+    });
+    await alternativeTitleGroup
+      .getByRole('combobox', { name: 'Språk' })
+      .fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+    await alternativeTitleGroup
+      .getByRole('group', { name: 'Huvudtitel' })
+      .getByLabel('Huvudtitel')
+      .fill(mockAltTitle);
+    await alternativeTitleGroup
+      .getByRole('group', { name: 'Undertitel' })
+      .getByLabel('Undertitel')
+      .fill(mockAltSubtitle);
+
+    const authorGroup = page.getByRole('region', {
+      name: 'Författare, redaktör eller annan roll',
+    });
+
+    await authorGroup.getByRole('button', { name: 'Efternamn' }).click();
+    await authorGroup
+      .getByRole('group', { name: 'Efternamn' })
+      .getByLabel('Efternamn')
+      .fill(lastName);
+    await authorGroup.getByRole('button', { name: 'Förnamn' }).click();
+    await authorGroup
+      .getByRole('group', { name: 'Förnamn' })
+      .getByLabel('Förnamn')
+      .fill(firstName);
+
+    await page
+      .getByRole('group', { name: 'Antal upphovspersoner' })
+      .getByLabel('Antal upphovspersoner')
+      .fill('2');
+
+    const abstractGroup = page.getByRole('group', { name: 'Abstract' });
+    await abstractGroup.getByRole('combobox', { name: 'Språk' }).fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+    await abstractGroup.getByLabel('Abstract').fill(abstract);
+
+    const keywordsGroup = page.getByRole('region', {
+      name: 'Nyckelord',
+    });
+
+    await keywordsGroup
+      .getByRole('group', { name: 'Språk' })
+      .getByRole('combobox', { name: 'Språk' })
+      .fill('Tyska');
+    await page.getByRole('option', { name: 'Tyska', exact: true }).click();
+
+    await keywordsGroup
+      .getByRole('group', { name: 'Nyckelord' })
+      .getByLabel('Nyckelord')
+      .fill(keywords);
+
+    await page
+      .getByRole('group', {
+        name: 'Standard för svensk indelning av forskningsämnen',
+      })
+      .getByRole('combobox', {
+        name: 'Standard för svensk indelning av forskningsämnen',
+      })
+      .fill('Atom- och molekylfysik och optik');
+    await page
+      .getByRole('option', {
+        name: '(10302) Atom- och molekylfysik och optik',
+        exact: true,
+      })
+      .click();
+
+    const sustainableDevelopmentGroup = page.getByRole('region', {
+      name: 'Hållbar utveckling',
+    });
+    await sustainableDevelopmentGroup
+      .getByRole('group', { name: /^Globalt mål för hållbar utveckling/ })
+      .getByLabel(/^Globalt mål för hållbar utveckling/)
+      .selectOption({
+        label: '8. Anständiga arbetsvillkor och ekonomisk tillväxt',
+      });
+
+    await page
+      .getByRole('group', { name: 'År' })
+      .getByLabel('År')
+      .fill(faker.date.recent().getFullYear().toString());
+
+    await page
+      .getByRole('group', { name: /^Bibliografiskt granskad/ })
+      .getByLabel(/^Bibliografiskt granskad/)
+      .selectOption({ label: 'Sant' });
+
+    await page
+      .getByRole('group', { name: /^Postens synlighet/ })
+      .getByLabel(/^Postens synlighet/)
+      .selectOption({ label: 'Publicerad' });
+
+    // Submit
+    await page.getByRole('button', { name: 'Skicka in' }).click();
+
+    // Assert redirected to update page
+    await expect(
+      page.getByText(/^Record was successfully created/),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(mockTitle);
+
+    // Clean up created record
+    const id = getRecordIdFromUpdatePageUrl(page);
+    await request.delete(
+      `${process.env.CORA_API_URL}/record/diva-output/${id}`,
+      {
+        headers: { Authtoken: authtoken },
+      },
+    );
   });
 });
 
