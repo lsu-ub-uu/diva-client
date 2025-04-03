@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, isRouteErrorResponse, Outlet } from 'react-router';
+import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import type { Route } from './+types/record';
@@ -81,6 +81,11 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
         icon={getIconByHTTPStatus(status)}
         titleText={t(`divaClient_error${status}TitleText`)}
         bodyText={errorBodyText}
+        links={
+          <Link to={`/${recordType}/search`}>
+            {t('divaClient_errorGoToSearchText', { recordType })}
+          </Link>
+        }
         technicalInfo={error.data}
       />
     );
