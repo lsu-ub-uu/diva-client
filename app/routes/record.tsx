@@ -23,8 +23,9 @@ import type { Route } from './+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { AxiosError } from 'axios';
-import { isRouteErrorResponseWithHandledStatus } from '@/errorHandling/utils';
-import { RouteErrorPage } from '@/errorHandling/RouteErrorPage';
+import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import { useTranslation } from 'react-i18next';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 
 export const loader = async ({
   request,
@@ -35,7 +36,6 @@ export const loader = async ({
   const auth = getAuth(session);
 
   const { recordType, recordId } = params;
-  console.log('record loader');
 
   try {
     const record = await getRecordByRecordTypeAndRecordId({
@@ -45,14 +45,12 @@ export const loader = async ({
       authToken: auth?.data.token,
     });
 
-    console.log('record', { record });
     const breadcrumb = getRecordTitle(record) ?? record.id;
     const pageTitle = getRecordTitle(record);
 
     return { record, breadcrumb, pageTitle };
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log('CATCH', { error });
       throw data(error?.response?.data, { status: error.status });
     }
     throw error;
@@ -64,38 +62,31 @@ export const meta = ({ data, error }: Route.MetaArgs) => {
 };
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
-  if (isRouteErrorResponseWithHandledStatus(error)) {
+  const { t } = useTranslation();
+  const { recordType, recordId } = params;
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+
+    const errorBodyText =
+      status === 404
+        ? t(`divaClient_errorRecordNotFoundText`, {
+            recordType,
+            recordId,
+          })
+        : t(`divaClient_error${status}BodyText`);
+
     return (
-      <RouteErrorPage
-        status={error.status}
-        recordType={params.recordType}
-        recordId={params.recordId}
-        coraMessage={error.data}
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={errorBodyText}
+        technicalInfo={error.data}
       />
     );
   }
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <>
-        <h1>
-          Record.tsx {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <div>
-        <h1>Record.tsx Error</h1>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </div>
-    );
-  } else {
-    return <h1>Record.tsx Unknown Error</h1>;
-  }
+  return <UnhandledErrorPage error={error} />;
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {

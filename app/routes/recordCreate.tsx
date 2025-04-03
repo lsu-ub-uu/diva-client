@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { data, isRouteErrorResponse } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
@@ -43,7 +43,11 @@ import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { RouteErrorPage } from '@/errorHandling/RouteErrorPage';
+import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import { useTranslation } from 'react-i18next';
+import { SentimentWorriedIcon } from '@/icons';
+import { NotFoundError } from '@/errorHandling/NotFoundError';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -64,7 +68,10 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
       'create',
     );
   } catch (error) {
-    throw data('divaClient_missingValidationTypeIdText', { status: 404 });
+    if (error instanceof NotFoundError) {
+      throw data(error.message, { status: error.status });
+    }
+    throw error;
   }
 
   const title = t('divaClient_createRecordText');
@@ -122,19 +129,21 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   }
 };
 
-export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
-  const validationTypeError = error as any;
-  console.log({ error });
-  return (
-    <>
-      <RouteErrorPage
-        status={validationTypeError.status} //400 - Bad Request?
-        recordType=''
-        recordId=''
-        otherMessage={validationTypeError.data}
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={t(`divaClient_error${status}BodyText`)}
+        technicalInfo={t(error.data)}
       />
-    </>
-  );
+    );
+  }
+
+  return <UnhandledErrorPage error={error} />;
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {

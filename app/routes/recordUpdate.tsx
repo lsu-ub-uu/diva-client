@@ -152,8 +152,6 @@ export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
-
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {

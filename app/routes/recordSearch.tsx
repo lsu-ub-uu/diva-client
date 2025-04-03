@@ -24,7 +24,6 @@ import {
   getSessionFromCookie,
 } from '@/auth/sessions.server';
 import { Await, data } from 'react-router';
-import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +38,7 @@ import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { performSearch } from '@/routes/routeUtils/performSearch';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -93,8 +93,6 @@ export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
-
 export default function OutputSearchRoute({
   loaderData,
 }: Route.ComponentProps) {
@@ -131,7 +129,9 @@ export default function OutputSearchRoute({
           >
             <Await
               resolve={validationTypes}
-              errorElement={<AsyncErrorBoundary />}
+              errorElement={
+                <CreateRecordMenuError recordTypeTextId={recordTypeTextId} />
+              }
             >
               {(validationTypes) => (
                 <CreateRecordMenu

@@ -3,13 +3,15 @@
   place-items: center;
   gap: var(--gap-l);
   text-align: center;
-  svg {
-    font-size: 8rem;
-    color: var(--color-accent);
-  }
+
   h1 {
     font-size: var(--font-size-xxl);
   }
+}
+
+.error-icon {
+  font-size: 8rem;
+  color: var(--color-accent);
 }
 
 .error-body {
@@ -20,6 +22,10 @@
   width: 60%;
 }
 
+.accordion:has(pre) {
+  width: auto;
+}
+
 @media (width < 900px) {
   .accordion {
     width: 100%;
@@ -28,5 +34,6 @@
 
 .cora-message {
   font-family: monospace;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-s);
+  text-align: left;
 }

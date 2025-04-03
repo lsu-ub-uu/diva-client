@@ -16,17 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isRouteErrorResponse } from 'react-router';
+export class NotFoundError extends Error {
+  status: number;
 
-const handledStatuses = [401, 403, 404, 409, 500];
-
-type HandledErrorResponse = {
-  status: 401 | 403 | 404 | 409 | 500;
-  data: any;
-};
-
-export const isRouteErrorResponseWithHandledStatus = (
-  error: unknown,
-): error is HandledErrorResponse => {
-  return isRouteErrorResponse(error) && handledStatuses.includes(error.status);
-};
+  constructor(message: string) {
+    super(message);
+    this.status = 404;
+  }
+}

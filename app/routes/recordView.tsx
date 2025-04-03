@@ -19,7 +19,6 @@
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { RouteErrorBoundary } from '@/errorHandling/RouteErrorBoundary';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import {
@@ -65,8 +64,6 @@ export const loader = async ({
 
   return { record, formDefinition };
 };
-
-export const ErrorBoundary = RouteErrorBoundary;
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
