@@ -116,6 +116,11 @@
       }
     }
 
+    &[data-error] {
+      border-color: var(--color-error-main);
+      color: var(--color-error-main);
+    }
+
     /** Tooltip for aria-label */
 
     &[aria-label]::after {
