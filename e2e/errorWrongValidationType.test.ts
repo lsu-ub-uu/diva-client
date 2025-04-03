@@ -17,20 +17,16 @@
  */
 
 import { test } from './util/fixtures';
-import { expect, type Page } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+import { expect } from '@playwright/test';
 import { createUrl } from './util/createUrl';
 
-test('Error wrong validationType', async ({ page, request, authtoken }) => {
-  // Go to start page
-  await page.goto(createUrl('/'));
-
-  // Log in
-  await page.getByRole('button', { name: 'Logga in' }).click();
-  await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-  await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
-
-  await page.goto(
+test('Shows error page for invalid validationType', async ({ page }) => {
+  const response = await page.goto(
     createUrl('/diva-output/create?validationType=wrongValidationType'),
+  );
+  expect(response?.status()).toBe(404);
+
+  expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    '404 - Hittades inte',
   );
 });

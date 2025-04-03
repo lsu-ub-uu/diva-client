@@ -17,32 +17,14 @@
  */
 
 import { test } from './util/fixtures';
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import { createUrl } from './util/createUrl';
 
-test('updates an existing report', async ({ page, divaOutput }) => {
-  const recordId = getFirstDataAtomicValueWithNameInData(
-    getFirstDataGroupWithNameInData(divaOutput, 'recordInfo'),
-    'id',
+test('Shows error page for missing record id', async ({ page }) => {
+  const response = await page.goto(createUrl(`/diva-output/missingRecordId`));
+  expect(response?.status()).toBe(404);
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    '404 - Hittades inte',
   );
-  const recordTitle = getFirstDataAtomicValueWithNameInData(
-    getFirstDataGroupWithNameInData(divaOutput, 'titleInfo'),
-    'title',
-  );
-
-  await page.goto(createUrl(`/diva-output/${recordId}/update`));
-
-  // Log in
-  await page.getByRole('button', { name: 'Logga in' }).click();
-  await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-  await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
-
-  //Assert update page info
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(recordTitle);
-  await expect(
-    page.getByRole('group', { name: 'Huvudtitel' }).getByLabel('Huvudtitel'),
-  ).toHaveValue(recordTitle);
 });

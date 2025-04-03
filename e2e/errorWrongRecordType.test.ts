@@ -17,18 +17,15 @@
  */
 
 import { test } from './util/fixtures';
-import { expect, type Page } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+import { expect } from '@playwright/test';
 import { createUrl } from './util/createUrl';
 
-test('Error recordType', async ({ page, request, authtoken }) => {
+test('Shows error page for missing record type', async ({ page }) => {
   // Go to start page
-  await page.goto(createUrl('/'));
+  const response = await page.goto(createUrl('/wrong-record-type'));
+  expect(response?.status()).toBe(404);
 
-  // Log in
-  await page.getByRole('button', { name: 'Logga in' }).click();
-  await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-  await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
-
-  await page.goto(createUrl('/wrong-diva-output'));
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    '404 - Hittades inte',
+  );
 });
