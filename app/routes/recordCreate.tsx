@@ -26,7 +26,6 @@ import {
   getAuth,
   getNotification,
   getSessionFromCookie,
-  requireAuth,
 } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
@@ -44,9 +43,8 @@ import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
-import { SentimentWorriedIcon } from '@/icons';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 

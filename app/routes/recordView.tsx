@@ -43,7 +43,6 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
-  console.log('recordView Loadder');
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
@@ -52,8 +51,6 @@ export const loader = async ({
     recordId,
     authToken: auth?.data.token,
   });
-
-  console.log('recordView', { record });
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(

@@ -23,8 +23,6 @@ export const getMetaTitleFromError = (error: unknown) => {
   if (isRouteErrorResponse(error) || error instanceof AxiosError) {
     return getTitleFromHTTPStatus(error.status);
   }
-
-  // console.log({ error });
   return 'Internal Server Error';
 };
 
@@ -42,7 +40,6 @@ const getTitleFromHTTPStatus = (status?: number) => {
       return 'Conflict';
     case 500:
     default: {
-      console.log(status);
       return 'Internal Server Error';
     }
   }
