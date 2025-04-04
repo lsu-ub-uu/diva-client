@@ -18,7 +18,7 @@
 
 import { describe, expect } from 'vitest';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { act, render, screen, within } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import userEvent from '@testing-library/user-event';
 
