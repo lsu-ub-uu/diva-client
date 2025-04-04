@@ -66,6 +66,16 @@ export async function loader({ request, context }: Route.LoaderArgs) {
         { label: 'Output', to: '/diva-output' },
         { label: 'Personer', to: '/diva-person' },
         { label: 'Projekt', to: '/diva-project' },
+        { label: 'Kurs/ämne', to: '/diva-course' },
+        { label: 'Organisation', to: '/diva-organisation' },
+        { label: 'Tidsskrift', to: '/diva-journal' },
+        { label: 'Ämne', to: '/diva-subject' },
+        { label: 'Program', to: '/diva-programme' },
+        { label: 'Serie', to: '/diva-series' },
+        { label: 'Lokal generisk uppmärkning', to: '/diva-localGenericMarkup' },
+        { label: 'Förlag', to: '/diva-publisher' },
+        { label: 'Finansiär', to: '/diva-funder' },
+        { label: 'Tema', to: '/diva-theme' },
       ]
     : [];
 
@@ -194,14 +204,19 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   const theme = loaderData.theme;
+
   return (
     <>
-      <header>
+      <header className='member-bar'>
         <NavigationLoader />
         <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
+      </header>
+
+      <header className='nav-rail'>
         <Header topNavigationLinks={loaderData.topNavigationLinks} />
       </header>
-      <div className='container'>
+
+      <div className='content'>
         <Breadcrumbs />
         <Outlet />
       </div>

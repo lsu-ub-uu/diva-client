@@ -62,6 +62,8 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
             <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
           </picture>
         </Link>
+        <Login />
+        <LanguageSwitcher />
         <div className={styles['top-navigation']}>
           <TopNavigation links={topNavigationLinks} />
         </div>
@@ -82,10 +84,6 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
             </Button>
           </Form>
         )}
-
-        <LanguageSwitcher />
-
-        <Login />
       </div>
       <Button
         variant='icon'

@@ -22,9 +22,9 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-l);
-  padding: 0 var(--gap-xl);
-  height: 4rem;
-  border-bottom: 1px solid var(--color-thin-border);
+  padding: var(--gap);
+  border-right: 1px solid var(--color-thin-border);
+  flex-direction: column;
 
   @media (width < 600px) {
     padding: 0 1rem;
@@ -39,6 +39,7 @@
 
 .header-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: var(--gap-l);
 }
@@ -58,6 +59,7 @@
 .header-logo-wrapper {
   margin-right: auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: var(--gap-xl);
 }

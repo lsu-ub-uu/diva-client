@@ -112,3 +112,24 @@
     padding: 0 var(--gap-l);
   }
 }
+
+body {
+  display: grid;
+  grid-template-areas:
+    'member member'
+    'nav    main';
+  grid-template-columns: auto 1fr;
+}
+
+.member-bar {
+  grid-area: member;
+}
+
+.nav-rail {
+  grid-area: nav;
+}
+
+.content {
+  grid-area: main;
+  padding: 0 var(--gap-l);
+}
