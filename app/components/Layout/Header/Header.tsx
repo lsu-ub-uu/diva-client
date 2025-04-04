@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLocation, useNavigation } from 'react-router';
+import { Form, Link, NavLink, useLocation, useNavigation } from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
-import { CachedIcon, CloseIcon, MenuIcon } from '@/icons';
+import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
@@ -71,9 +71,10 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
 
       <div className={styles['header-content']}>
         {devMode && (
-          <Button as={Link} variant='tertiary' to='/design-system'>
-            Design system
-          </Button>
+          <NavLink to='/design-system'>
+            <DesignServicesIcon />
+            <span className={styles['label']}>Design system</span>
+          </NavLink>
         )}
 
         {devMode && (

@@ -78,3 +78,5 @@ export { default as SchoolIcon } from './School.svg?react';
 export { default as EditNoteIcon } from './EditNote.svg?react';
 export { default as PaletteIcon } from './Palette.svg?react';
 export { default as NewsstandIcon } from './Newsstand.svg?react';
+export { default as PreviewIcon } from './Preview.svg?react';
+export { default as DesignServicesIcon } from './DesignServices.svg?react';
