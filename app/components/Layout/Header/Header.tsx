@@ -44,7 +44,7 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
   const navigation = useNavigation();
 
   const [headerShown, setHeaderShown] = useState(false);
-
+  console.log(topNavigationLinks);
   useEffect(() => {
     if (navigation.state !== 'idle') {
       setHeaderShown(false);

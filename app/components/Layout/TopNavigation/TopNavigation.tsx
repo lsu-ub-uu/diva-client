@@ -23,7 +23,7 @@ export interface TopNavigationLink {
   to: string;
 }
 
-interface TopNavigationProps {
+export interface TopNavigationProps {
   links: TopNavigationLink[];
 }
 
