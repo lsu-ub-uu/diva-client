@@ -48,11 +48,8 @@ export const createBinaryRecord = async (
               { name: 'linkedRecordId', value: 'genericBinary' },
             ],
           },
+          { name: 'visibility', value: 'unpublished' },
         ],
-      },
-      {
-        name: 'adminInfo',
-        children: [{ name: 'visibility', value: 'unpublished' }],
       },
       { name: 'originalFileName', value: fileName },
       { name: 'expectedFileSize', value: fileSize },
