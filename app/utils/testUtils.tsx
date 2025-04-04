@@ -53,6 +53,7 @@ export const MockFormProvider = ({
       unregister={vi.fn()}
       control={mock<Control>()}
       setFocus={vi.fn()}
+      subscribe={vi.fn()}
       {...overrides}
     >
       {children}
