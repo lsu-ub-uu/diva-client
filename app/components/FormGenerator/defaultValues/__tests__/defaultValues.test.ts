@@ -54,6 +54,7 @@ import {
   formComponentGroupWithChildren, formComponentGroupWithinGroupWithAttributes, formComponentRepeatingTextVariable,
   formComponentTitleInfoGroup,
 } from '@/__mocks__/data/component/formComponent';
+import { alternativePresentationWithMinNumberRepeatingToShow } from '@/__mocks__/data/form/alternativePresentation';
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
@@ -1156,6 +1157,25 @@ describe('FormGenerator Utils', () => {
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+    });
+
+    it('creates default values for alternative presentation', () => {
+      const expectedDefaultValues = {
+        someRootNameInData: {
+          someAlternativeNameInData: [
+            {
+              value: '',
+            },
+          ],
+          someNameInData: {
+            value: '',
+          },
+        },
+      };
+      const actualDefaultValues = createDefaultValuesFromFormSchema(
+        alternativePresentationWithMinNumberRepeatingToShow as FormSchema,
+      );
+      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
   });
 
