@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20.18.3-slim AS builder
+FROM node:22.14.0-slim AS builder
 
 WORKDIR /usr/divaclient
 

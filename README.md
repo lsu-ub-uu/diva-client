@@ -9,7 +9,7 @@ The project is written in TypeScript. A code editor that supports real-time Type
 ## Getting started
 
 ### Prerequisites
-- Node.js (version 20 or later)
+- Node.js (version 22.14 or later)
 - npm (version 10.8 or later)
 - Alternatively you can [build and run with Docker](#building-and-running-docker-image)
 
