@@ -33,7 +33,6 @@ import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
@@ -98,6 +97,7 @@ export const action = async ({
   context,
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
+  const { t } = context.i18n;
 
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
@@ -142,7 +142,7 @@ export const action = async ({
     });
   } catch (error) {
     console.error(error);
-    session.flash('notification', createNotificationFromAxiosError(error));
+    session.flash('notification', createNotificationFromAxiosError(t, error));
   }
 
   return data({}, await getResponseInitWithSession(session));
@@ -151,8 +151,6 @@ export const action = async ({
 export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
-
-export const ErrorBoundary = RouteErrorBoundary;
 
 export default function UpdateRecordRoute({
   loaderData,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useRouteError } from 'react-router';
-import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
+export class NotFoundError extends Error {
+  status: number;
 
-export const RouteErrorBoundary = () => {
-  const error = useRouteError();
-
-  return <ErrorAlert error={error} />;
-};
+  constructor(message: string) {
+    super(message);
+    this.status = 404;
+  }
+}

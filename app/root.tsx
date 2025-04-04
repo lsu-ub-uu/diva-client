@@ -18,6 +18,7 @@
 
 import {
   data,
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
@@ -37,19 +38,20 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { ErrorPage } from '@/errorHandling/ErrorPage';
+import { SentimentVeryDissatisfiedIcon } from '@/icons';
+import divaLogo from '@/assets/divaLogo.svg';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
   const { hostname } = new URL(request.url);
-
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
   const theme = dependencies.themePool.has(hostname)
@@ -109,7 +111,57 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: rootCss },
 ];
 
-export const ErrorBoundary = RouteErrorBoundary;
+const RootErrorPage = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div>
+      <header style={{ padding: '1rem', borderBottom: '1px solid #eee' }}>
+        <a href='/'>
+          <img alt='' style={{ height: '2.5rem' }} src={divaLogo} />
+        </a>
+      </header>
+      {children}
+    </div>
+  );
+};
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <RootErrorPage>
+        <ErrorPage
+          icon={<SentimentVeryDissatisfiedIcon />}
+          titleText={`${error.status}`}
+          bodyText={JSON.stringify(error.data)}
+        />
+      </RootErrorPage>
+    );
+  }
+
+  if (error instanceof Error) {
+    const { stack } = error;
+    return (
+      <RootErrorPage>
+        <ErrorPage
+          icon={<SentimentVeryDissatisfiedIcon />}
+          titleText='Okänt fel'
+          bodyText='Ett okänt fel inträffade. Försök igen senare'
+          links={<a href='/'>Gå till startsidan</a>}
+        />
+        <pre>{stack}</pre>
+      </RootErrorPage>
+    );
+  }
+  return (
+    <RootErrorPage>
+      <ErrorPage
+        icon={<SentimentVeryDissatisfiedIcon />}
+        titleText='Okänt fel'
+        bodyText='Ett okänt fel inträffade. Försök igen senare'
+        links={<a href='/'>Gå till startsidan</a>}
+      />
+    </RootErrorPage>
+  );
+}
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');

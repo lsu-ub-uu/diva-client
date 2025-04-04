@@ -16,22 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { data, isRouteErrorResponse } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord.server';
 import type { BFFDataRecordData } from '@/types/record';
 import {
+  getAuth,
   getNotification,
   getSessionFromCookie,
-  requireAuth,
 } from '@/auth/sessions.server';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
@@ -43,6 +42,11 @@ import { invariant } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { useTranslation } from 'react-i18next';
+import { NotFoundError } from '@/errorHandling/NotFoundError';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -51,16 +55,27 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-  invariant(validationTypeId, 'Missing validationTypeId param');
 
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
-    validationTypeId,
-    'create',
-  );
+  if (validationTypeId === null) {
+    throw data('divaClient_missingValidationTypeParamText', { status: 400 });
+  }
+  let formDefinition;
+  try {
+    formDefinition = await getFormDefinitionByValidationTypeId(
+      await context.dependencies,
+      validationTypeId,
+      'create',
+    );
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      throw data(error.message, { status: error.status });
+    }
+    throw error;
+  }
 
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
+
   return data(
     { formDefinition, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
@@ -69,12 +84,13 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
+  const { t } = context.i18n;
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
-  invariant(validationTypeId, 'Missing validationTypeId param');
+  invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,
@@ -105,18 +121,31 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     });
     return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
-    console.error(error);
-
-    session.flash('notification', createNotificationFromAxiosError(error));
-
-    return data({}, await getResponseInitWithSession(session));
+    session.flash('notification', createNotificationFromAxiosError(t, error));
   }
+
+  return data({}, await getResponseInitWithSession(session));
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={t(`divaClient_error${status}BodyText`)}
+        technicalInfo={t(error.data)}
+      />
+    );
+  }
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data.title }];
+  return <UnhandledErrorPage error={error} />;
+};
+
+export const meta = ({ data, error }: Route.MetaArgs) => {
+  return [{ title: error ? getMetaTitleFromError(error) : data?.title }];
 };
 
 export default function CreateRecordRoute({

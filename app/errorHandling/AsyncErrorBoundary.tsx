@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
+import { ErrorAlert } from '@/errorHandling/ErrorAlert';
 import { useAsyncError } from 'react-router';
 
 export const AsyncErrorBoundary = () => {

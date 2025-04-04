@@ -33,27 +33,27 @@ import {
   mergeObjects,
   removeRootObject,
 } from '../defaultValues';
+import type { FormComponent, FormSchema } from '../../types';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { formDefWithOneRepeatingTextVariable, formDefWithTextVar } from '@/__mocks__/data/form/textVar';
 import {
-  formComponentGroup,
-  formComponentGroupAndTextVariableWithinGroup,
-  formComponentGroupWithChildren,
-  formComponentGroupWithinGroupWithAttributes,
-  formComponentRepeatingTextVariable,
-  formComponentTitleInfoGroup,
   formDefRealDemo,
   formDefRealDemoWithAttributes,
   formDefRealDemoWithAttributesButWithoutFinalValue,
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
-  formDefWithARepeatingContainer,
   formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithOneRepeatingTextVariable,
+} from '@/__mocks__/data/form/group';
+import {
+  formDefWithARepeatingContainer,
   formDefWithSurroundingContainerAroundTextVariable,
-  formDefWithTextVar,
-} from '@/__mocks__/data/form/formDef';
-import type { FormComponent, FormSchema } from '../../types';
-import { cleanFormData } from '@/utils/cleanFormData';
+} from '@/__mocks__/data/form/container';
+import {
+  formComponentGroup, formComponentGroupAndTextVariableWithinGroup,
+  formComponentGroupWithChildren, formComponentGroupWithinGroupWithAttributes, formComponentRepeatingTextVariable,
+  formComponentTitleInfoGroup,
+} from '@/__mocks__/data/component/formComponent';
 import { alternativePresentationWithMinNumberRepeatingToShow } from '@/__mocks__/data/form/alternativePresentation';
 
 describe('FormGenerator Utils', () => {

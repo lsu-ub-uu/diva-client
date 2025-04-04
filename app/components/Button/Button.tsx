@@ -34,6 +34,7 @@ export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   href?: string;
   ref?: Ref<HTMLButtonElement>;
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
+  error?: boolean;
 }
 
 export const Button = ({
@@ -43,6 +44,7 @@ export const Button = ({
   className,
   tooltipPosition = 'bottom',
   ref,
+  error,
   ...rest
 }: ButtonProps) => {
   return (
@@ -53,6 +55,7 @@ export const Button = ({
       data-tooltip-position={tooltipPosition}
       ref={ref}
       {...(fullWidth ? { 'data-fullwidth': '' } : {})}
+      {...(error ? { 'data-error': '' } : {})}
       {...rest}
     />
   );

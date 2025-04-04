@@ -32,7 +32,7 @@ export const createRecord = async (
   dependencies: Dependencies,
   formDefinition: RecordFormSchema,
   record: BFFDataRecord['data'],
-  auth: Auth,
+  auth: Auth | undefined,
 ) => {
   const validationTypeId = formDefinition.validationTypeId;
   const { validationTypePool } = dependencies;
@@ -58,7 +58,7 @@ export const createRecord = async (
   const response = await postRecordData<RecordWrapper>(
     transformData[0] as DataGroup,
     recordType,
-    auth.data.token,
+    auth?.data?.token,
   );
 
   return transformRecord(dependencies, response.data);

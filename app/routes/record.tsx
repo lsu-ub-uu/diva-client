@@ -16,11 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Outlet } from 'react-router';
+import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import type { Route } from './+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { AxiosError } from 'axios';
+import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import { useTranslation } from 'react-i18next';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 
 export const loader = async ({
   request,
@@ -32,21 +37,61 @@ export const loader = async ({
 
   const { recordType, recordId } = params;
 
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
-    recordType,
-    recordId,
-    authToken: auth?.data.token,
-  });
+  try {
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies: await context.dependencies,
+      recordType,
+      recordId,
+      authToken: auth?.data.token,
+    });
 
-  const breadcrumb = getRecordTitle(record) ?? record.id;
-  const pageTitle = getRecordTitle(record);
+    const breadcrumb = getRecordTitle(record) ?? record.id;
+    const pageTitle = getRecordTitle(record);
 
-  return { record, breadcrumb, pageTitle };
+    return { record, breadcrumb, pageTitle };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw data(error?.response?.data, { status: error.status });
+    }
+    throw error;
+  }
 };
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data.pageTitle }];
+export const meta = ({ data, error }: Route.MetaArgs) => {
+  return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
+};
+
+export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+  const { recordType, recordId } = params;
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+
+    const errorBodyText =
+      status === 404
+        ? t(`divaClient_errorRecordNotFoundText`, {
+            recordType,
+            recordId,
+          })
+        : t(`divaClient_error${status}BodyText`);
+
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={errorBodyText}
+        links={
+          <Link to={`/${recordType}/search`}>
+            {t('divaClient_errorGoToSearchText', { recordType })}
+          </Link>
+        }
+        technicalInfo={error.data}
+      />
+    );
+  }
+
+  return <UnhandledErrorPage error={error} />;
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {

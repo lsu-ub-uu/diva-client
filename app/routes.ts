@@ -5,9 +5,11 @@ export default [
 
   /* Generic record pages */
   route(':recordType', 'routes/recordType.tsx', [
+    // Sidan kunde inte hittas
     index('routes/recordSearch.tsx'),
     route('create', 'routes/recordCreate.tsx'),
     route(':recordId', 'routes/record.tsx', [
+      // Posten kunde inte hittas
       index('routes/recordView.tsx'),
       route('update', 'routes/recordUpdate.tsx'),
       route('delete', 'routes/recordDelete.tsx'),

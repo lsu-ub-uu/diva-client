@@ -1,0 +1,39 @@
+.error-page {
+  display: grid;
+  place-items: center;
+  gap: var(--gap-l);
+  text-align: center;
+
+  h1 {
+    font-size: var(--font-size-xxl);
+  }
+}
+
+.error-icon {
+  font-size: 8rem;
+  color: var(--color-accent);
+}
+
+.error-body {
+  font-size: var(--font-size-l);
+}
+
+.accordion {
+  width: 60%;
+}
+
+.accordion:has(pre) {
+  width: auto;
+}
+
+@media (width < 900px) {
+  .accordion {
+    width: 100%;
+  }
+}
+
+.cora-message {
+  font-family: monospace;
+  font-size: var(--font-size-s);
+  text-align: left;
+}

@@ -18,6 +18,7 @@
 
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
+import { NotFoundError } from '@/errorHandling/NotFoundError';
 
 export const getFormDefinitionByValidationTypeId = async (
   dependencies: Dependencies,
@@ -25,7 +26,7 @@ export const getFormDefinitionByValidationTypeId = async (
   mode: 'create' | 'update' | 'view',
 ) => {
   if (!dependencies.validationTypePool.has(validationTypeId)) {
-    throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    throw new NotFoundError('divaClient_missingValidationTypeIdText');
   }
 
   return createFormDefinition(dependencies, validationTypeId, mode);

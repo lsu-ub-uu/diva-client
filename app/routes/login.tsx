@@ -1,4 +1,10 @@
-import { data, Form, redirect, useSubmit } from 'react-router';
+import {
+  data,
+  Form,
+  isRouteErrorResponse,
+  redirect,
+  useSubmit,
+} from 'react-router';
 import {
   commitSession,
   getNotification,
@@ -11,7 +17,6 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
@@ -21,6 +26,8 @@ import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { useState } from 'react';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -123,7 +130,23 @@ export const action = async ({ request }: Route.ActionArgs) => {
   });
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={t(`divaClient_error${status}BodyText`)}
+        technicalInfo={error.data}
+      />
+    );
+  }
+
+  return <UnhandledErrorPage error={error} />;
+};
 
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, presentation, returnTo } = loaderData;

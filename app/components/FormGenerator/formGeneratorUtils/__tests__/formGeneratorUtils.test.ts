@@ -38,7 +38,7 @@ import {
 import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, vi } from 'vitest';
-import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/formDef';
+import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/textVar';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {

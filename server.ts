@@ -36,6 +36,10 @@ const app = express();
 app.use(compression());
 app.disable('x-powered-by');
 
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection', reason);
+});
+
 if (DEVELOPMENT) {
   console.info('Starting development server');
   const viteDevServer = await import('vite').then((vite) =>

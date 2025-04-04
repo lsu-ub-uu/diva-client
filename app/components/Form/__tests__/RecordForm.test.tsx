@@ -20,70 +20,6 @@
 import { describe, expect, vi } from 'vitest';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  formDefCollVarsWithSameNameInData,
-  formDefContributorGroupWithAuthorGroupAuthor,
-  formDefForCheckNumberValue,
-  formDefForCheckTextValue,
-  formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
-  formDefPreprintWithOnlyAuthorName,
-  formDefRequiredRepeatingCollection2Var,
-  formDefRequiredRepeatingCollectionVar,
-  formDefRequiredRepeatingNumber2Var,
-  formDefRequiredRepeatingNumberVar,
-  formDefRequiredRepeatingText2Var,
-  formDefRequiredRepeatingTextVar,
-  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
-  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
-  formDefTextVarsWithSameNameInData,
-  formDefTitleInfoGroup,
-  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
-  formDefTwoOptionalGroupsWithRequiredTextVars,
-  formDefWithGroupWithDefaultHeadlineLevel,
-  formDefWithGroupWithSpecifiedHeadlineLevel,
-  formDefWithHiddenInputs,
-  formDefWithOneCollectionVariable,
-  formDefWithOneCollectionVariableWithModeOutput,
-  formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithOneNumberVariable,
-  formDefWithOneNumberVariableAndGuiElementLink,
-  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
-  formDefWithOneNumberVariableBeingOptional,
-  formDefWithOneNumberVariableBeingOptionalOutput,
-  formDefWithOneNumberVariableHavingDecimals,
-  formDefWithOneNumberVariableModeOutput,
-  formDefWithOneNumberVariableWithAttributeCollection,
-  formDefWithOneOptionalGroupWithAttributeCollection,
-  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
-  formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOneOptionalNumberVariableWithAttributeCollection,
-  formDefWithOneRecordLinkBeingOptional,
-  formDefWithOneRecordLinkBeingRequired,
-  formDefWithOneRepeatingTextVariableWithModeOutput,
-  formDefWithOneRequiredGroupWithAttributeCollection,
-  formDefWithOneRequiredNumberVariableWithAttributeCollection,
-  formDefWithOneTextVariable,
-  formDefWithOneTextVariableBeingOptional,
-  formDefWithOneTextVariableBeingPassword,
-  formDefWithOneTextVariableBeingRepeating,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
-  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
-  formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLink,
-  formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithOptionalGroupWithTwoCollectionVars,
-  formDefWithRecordLinkTypeBinary,
-  formDefWithTextVar,
-  formDefWithTextVarAndNestedGroupsWithOneTextVar,
-  formDefWithTwoTextVariableHavingFinalValue,
-  formDefWithWithOptionalGroupWithRequiredVar,
-} from '@/__mocks__/data/form/formDef';
 import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createRoutesStub } from 'react-router';
@@ -96,6 +32,77 @@ import {
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
 import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
+import {
+  formDefWithOneRepeatingTextVariableWithModeOutput,
+  formDefWithOneTextVariable,
+  formDefWithOneTextVariableBeingOptional,
+  formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableBeingRepeating,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithTextVar,
+  formDefWithTwoTextVariableHavingFinalValue,
+  formDefRequiredRepeatingText2Var,
+  formDefRequiredRepeatingTextVar, formDefTextVarsWithSameNameInData,
+} from '@/__mocks__/data/form/textVar';
+import {
+  formDefCollVarsWithSameNameInData,
+  formDefWithOneCollectionVariable,
+  formDefWithOneCollectionVariableWithModeOutput,
+  formDefRequiredRepeatingCollectionVar,
+  formDefRequiredRepeatingCollection2Var
+} from '@/__mocks__/data/form/collVar';
+import {
+  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneNumberVariableWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+  formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneRequiredGroupWithAttributeCollection,
+  formDefWithOneRequiredNumberVariableWithAttributeCollection,
+  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
+} from '@/__mocks__/data/form/attributeCollection';
+import {
+  formDefWithOneNumberVariable,
+  formDefWithOneNumberVariableBeingOptional,
+  formDefWithOneNumberVariableBeingOptionalOutput,
+  formDefWithOneNumberVariableHavingDecimals,
+  formDefWithOneNumberVariableModeOutput,
+  formDefRequiredRepeatingNumber2Var,
+  formDefRequiredRepeatingNumberVar,
+} from '@/__mocks__/data/form/numVar';
+import { formDefWithGuiElementLink } from '@/__mocks__/data/form/guiElement';
+import {
+  formDefWithGroupWithDefaultHeadlineLevel,
+  formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
+  formDefWithWithOptionalGroupWithRequiredVar,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
+  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithTextVarAndNestedGroupsWithOneTextVar,
+  formDefTitleInfoGroup,
+  formDefContributorGroupWithAuthorGroupAuthor,
+  formDefPreprintWithOnlyAuthorName,
+  formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
+  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
+  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
+  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
+  formDefTwoOptionalGroupsWithRequiredTextVars,
+  formDefForCheckTextValue, formDefForCheckNumberValue,
+} from '@/__mocks__/data/form/group';
+import {
+  formDefWithOneRecordLinkBeingOptional, formDefWithOneRecordLinkBeingRequired,
+  formDefWithRecordLinkTypeBinary,
+} from '@/__mocks__/data/form/recordLink';
+import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -1212,7 +1219,7 @@ describe('<Form />', () => {
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('renders a textVariable 0-2 and minNumberOfRepeatingToShow 1', async () => {
+    it('renders a textVariable 0-2 and minNumberOfRepeatingToShow 1', async () => {
       render(
         <RecordFormWithRoutesStub
           formSchema={formDefWithOneTextVariableBeingRepeating}
@@ -2694,9 +2701,7 @@ describe('<Form />', () => {
   describe('guiElementLink', () => {
     it('renders a numberVariable 1-1 and guiElementLink', async () => {
       render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableAndGuiElementLink}
-        />,
+        <RecordFormWithRoutesStub formSchema={formDefWithGuiElementLink} />,
       );
 
       const link = screen.getByRole('link');
