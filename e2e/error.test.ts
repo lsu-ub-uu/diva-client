@@ -39,7 +39,6 @@ test.describe('Error', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       '400 - Felaktig begäran',
     );
-    await expect(page.getByText('Valideringstyp saknas i URL'));
   });
 
   test('Shows 404 error page for missing record type', async ({ page }) => {
