@@ -36,6 +36,7 @@ import {
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { Controller } from 'react-hook-form';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
@@ -53,7 +54,7 @@ export const RecordLinkWithSearch = ({
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { t } = useTranslation();
-  const { formState, setValue } = useRemixFormContext();
+  const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
   const fetcher = useFetcher();
@@ -73,41 +74,56 @@ export const RecordLinkWithSearch = ({
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       >
-        <Combobox onChange={(recordId) => setValue(path, recordId)}>
-          <ComboboxInput
-            aria-busy={fetcher.state !== 'idle'}
-            placeholder={t('divaClient_recordLinkAutocompletePlaceholderText')}
-            onChange={(event) =>
-              fetcher.load(
-                `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
-              )
-            }
-          />
-          <ComboboxOptions anchor='bottom'>
-            {fetcher.state === 'idle' &&
-              fetcher.data &&
-              fetcher.data.result.map((result: BFFDataRecord) => (
-                <ComboboxOption key={result.id} value={result.id}>
-                  <AutocompleteForm
-                    record={result}
-                    formSchema={result.presentation!}
-                  />
-                </ComboboxOption>
-              ))}
-            {fetcher.state === 'idle' &&
-              fetcher.data &&
-              fetcher.data.result.length === 0 && (
-                <ComboboxOption disabled value=''>
-                  {t('divaClient_recordLinkAutocompleteNoResultsText')}
-                </ComboboxOption>
-              )}
-            {fetcher.state === 'loading' && (
-              <ComboboxOption disabled value=''>
-                {t('divaClient_recordLinkAutocompleteSearchingText')}
-              </ComboboxOption>
-            )}
-          </ComboboxOptions>
-        </Combobox>
+        <Controller
+          control={control}
+          name={path}
+          render={({ field: { name, value, onChange } }) => (
+            <Combobox
+              name={name}
+              value={value}
+              onChange={(recordId) => onChange(recordId)}
+            >
+              <ComboboxInput
+                {...(errorMessage !== undefined
+                  ? { 'data-invalid': '' }
+                  : undefined)}
+                aria-busy={fetcher.state !== 'idle'}
+                placeholder={t(
+                  'divaClient_recordLinkAutocompletePlaceholderText',
+                )}
+                onChange={(event) =>
+                  fetcher.load(
+                    `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
+                  )
+                }
+              />
+              <ComboboxOptions anchor='bottom'>
+                {fetcher.state === 'idle' &&
+                  fetcher.data &&
+                  fetcher.data.result.map((result: BFFDataRecord) => (
+                    <ComboboxOption key={result.id} value={result.id}>
+                      <AutocompleteForm
+                        record={result}
+                        formSchema={result.presentation!}
+                      />
+                    </ComboboxOption>
+                  ))}
+                {fetcher.state === 'idle' &&
+                  fetcher.data &&
+                  fetcher.data.result.length === 0 && (
+                    <ComboboxOption disabled value=''>
+                      {t('divaClient_recordLinkAutocompleteNoResultsText')}
+                    </ComboboxOption>
+                  )}
+                {fetcher.state === 'loading' && (
+                  <ComboboxOption disabled value=''>
+                    {t('divaClient_recordLinkAutocompleteSearchingText')}
+                  </ComboboxOption>
+                )}
+              </ComboboxOptions>
+            </Combobox>
+          )}
+        />
       </Fieldset>
     </div>
   );
