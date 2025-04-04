@@ -60,7 +60,7 @@
     "@react-router/dev": "^7.4.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",
-    "@testing-library/react": "^16.2.0",
+    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/compression": "^1.7.5",
     "@types/express": "^5.0.0",
