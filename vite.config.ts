@@ -28,6 +28,15 @@ export default defineConfig(({ isSsrBuild }) => {
         },
       }),
     ],
+
+    /**
+     * Fix for issue with Vitest + remix-hook-form on Node 20.19+
+     * https://github.com/remix-run/react-router/issues/12785#issuecomment-2731496414
+     * */
+    resolve: {
+      conditions: ['module-sync'],
+    },
+
     test: {
       environment: 'jsdom',
       globals: true,
