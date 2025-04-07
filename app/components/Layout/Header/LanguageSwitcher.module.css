@@ -19,6 +19,9 @@
 
 .language-switcher {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+
+  button {
+    width: 100%;
+  }
 }

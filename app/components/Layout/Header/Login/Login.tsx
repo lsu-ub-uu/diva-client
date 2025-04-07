@@ -18,6 +18,7 @@
 
 import {
   Form,
+  useFetcher,
   useLoaderData,
   useLocation,
   useNavigation,
@@ -34,10 +35,10 @@ import { useTranslation } from 'react-i18next';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
+import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
-import { Menu, MenuButton } from '@headlessui/react';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 import styles from './Login.module.css';
@@ -47,6 +48,7 @@ export default function User() {
   const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
   const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
@@ -86,6 +88,20 @@ export default function User() {
     }
   };
 
+  /*
+
+  <Form action='/logout' method='post'>
+              <input type='hidden' name='returnTo' value={returnTo} />
+              <button type='submit' className={styles['logout-button']}>
+                {t('divaClient_LogoutText')}
+                <LogoutIcon />
+              </button>
+            </Form>
+   */
+  const logout = () => {
+    fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
+  };
+
   if (!auth) {
     return (
       <div className={styles['login']}>
@@ -113,21 +129,26 @@ export default function User() {
 
   return (
     <div className={styles['login']}>
-      <div className={styles['username']}>
-        <PersonIcon />
-        {printUserNameOnPage(auth)}
-      </div>
-      <Form action='/logout' method='post'>
-        <input type='hidden' name='returnTo' value={returnTo} />
-        <Button
-          type='submit'
+      <Menu>
+        <MenuButton
+          as={Button}
+          disabled={submitting || !hydrated}
+          aria-busy={submitting}
           variant='tertiary'
-          className={styles['logout-button']}
         >
-          {t('divaClient_LogoutText')}
-          <LogoutIcon />
-        </Button>
-      </Form>
+          <PersonIcon />
+          {printUserNameOnPage(auth)}
+          <ChevronDownIcon />
+        </MenuButton>
+        <DropdownMenu anchor='bottom'>
+          <MenuItem>
+            <button onClick={logout} className={styles['logout-button']}>
+              {t('divaClient_LogoutText')}
+              <LogoutIcon />
+            </button>
+          </MenuItem>
+        </DropdownMenu>
+      </Menu>
     </div>
   );
 }

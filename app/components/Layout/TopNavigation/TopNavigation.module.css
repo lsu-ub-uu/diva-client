@@ -5,7 +5,7 @@
     list-style: none;
     font-size: var(--font-size-h4);
     transform: translateY(var(--gap));
-    gap: var(--gap);
+    gap: var(--gap-s);
   }
 
   a {
@@ -21,7 +21,7 @@
       background-color: var(--color-card);
     }
 
-    padding: var(--gap) var(--gap-l);
+    padding: var(--gap-s) var(--gap-l);
     border-radius: 9999999px;
 
     &[aria-current='page'] {
@@ -36,6 +36,7 @@
       font-size: var(--font-size-s);
       max-width: 15ch;
       text-align: center;
+      line-height: 1;
     }
   }
 
