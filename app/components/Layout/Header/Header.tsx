@@ -18,6 +18,7 @@
 
 import { Form, Link, NavLink, useLocation, useNavigation } from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
+import divaLogoS from '@/assets/divaLogoS.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -31,6 +32,7 @@ import {
   TopNavigation,
   type TopNavigationLink,
 } from '@/components/Layout/TopNavigation/TopNavigation';
+import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 
 interface HeaderProps {
   topNavigationLinks: TopNavigationLink[];
@@ -44,7 +46,7 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
   const navigation = useNavigation();
 
   const [headerShown, setHeaderShown] = useState(false);
-  console.log(topNavigationLinks);
+
   useEffect(() => {
     if (navigation.state !== 'idle') {
       setHeaderShown(false);
@@ -56,14 +58,12 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
       <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
           <picture className={styles['logo']}>
-            {/*  <source srcSet={divaLogoS} media='(max-width: 600px)' />*/}
             <source srcSet={divaLogo} />
 
             <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
           </picture>
         </Link>
-        <Login />
-        <LanguageSwitcher />
+
         <div className={styles['top-navigation']}>
           <TopNavigation links={topNavigationLinks} />
         </div>
@@ -71,17 +71,18 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
 
       <div className={styles['header-content']}>
         {devMode && (
-          <NavLink to='/design-system'>
-            <DesignServicesIcon />
-            <span className={styles['label']}>Design system</span>
-          </NavLink>
+          <NavigationLink
+            to='/design-system'
+            label='Design system'
+            icon={<DesignServicesIcon />}
+          />
         )}
 
         {devMode && (
           <Form action='/refreshDefinitions' method='POST'>
             <input type='hidden' name='returnTo' value={returnTo} />
             <Button variant='tertiary' type='submit'>
-              Refresh Def <CachedIcon />
+              <CachedIcon /> Refresh Def
             </Button>
           </Form>
         )}
@@ -111,9 +112,9 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
             <CloseIcon />
           </Button>
           <Login />
+          <LanguageSwitcher />
 
           <TopNavigation links={topNavigationLinks} />
-          <LanguageSwitcher />
         </DialogPanel>
       </Dialog>
     </header>

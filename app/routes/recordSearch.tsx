@@ -40,6 +40,7 @@ import { performSearch } from '@/routes/routeUtils/performSearch';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 import css from './recordSearch.css?url';
+
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);

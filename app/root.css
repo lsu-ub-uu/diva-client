@@ -119,6 +119,13 @@ body {
     'member member'
     'nav    main';
   grid-template-columns: auto 1fr;
+
+  @media (width < 600px) {
+    grid-template-areas:
+      'member member'
+      'nav    nav'
+      'main main';
+  }
 }
 
 .member-bar {

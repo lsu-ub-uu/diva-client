@@ -22,25 +22,11 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--gap-s);
-
-  @media (width < 600px) {
-    flex-direction: column;
-    justify-content: flex-end;
-  }
 }
 
 .logout-button {
   display: flex;
   align-items: center;
   gap: var(--gap);
-}
-
-.username {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-
-  svg {
-    font-size: var(--font-size-icon);
-  }
+  width: max-content;
 }

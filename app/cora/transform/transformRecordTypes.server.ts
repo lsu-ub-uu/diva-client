@@ -8,7 +8,10 @@ import {
 } from '@/cora/cora-data/CoraDataTransforms.server';
 import type { BFFRecordType } from './bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { containsChildWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
+import {
+  containsChildWithNameInData,
+  getAllDataAtomicsWithNameInData,
+} from '@/cora/cora-data/CoraDataUtils.server';
 
 export const transformCoraRecordTypes = (
   dataListWrapper: DataListWrapper,
@@ -18,10 +21,10 @@ export const transformCoraRecordTypes = (
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(extractIdFromRecord);
+  return coraRecords.map(transformRecordType);
 };
 
-const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
+export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
@@ -66,6 +69,10 @@ const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
       'autocompletePresentationView',
     );
   }
+  const groupOfRecordType = getAllDataAtomicsWithNameInData(
+    dataRecordGroup,
+    'groupOfRecordType',
+  ).map((data) => data.value);
   return removeEmpty({
     id,
     metadataId,
@@ -76,5 +83,6 @@ const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
     searchId,
     textId,
     defTextId,
+    groupOfRecordType,
   }) satisfies BFFRecordType;
 };

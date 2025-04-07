@@ -14,9 +14,10 @@ import {
   PersonsIcon,
   SchemaIcon,
   SchoolIcon,
-  SentimentCalmIcon,
+  ScienceIcon,
 } from '@/icons';
 import type { ReactNode } from 'react';
+import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 
 export interface TopNavigationLink {
   label: string;
@@ -31,7 +32,7 @@ const icons: Record<string, ReactNode> = {
   '/diva-output': <ContractIcon />,
   '/diva-person': <PersonsIcon />,
   '/diva-project': <SchemaIcon />,
-  '/diva-course': <SentimentCalmIcon />,
+  '/diva-course': <ScienceIcon />,
   '/diva-organisation': <CorporateFareIcon />,
   '/diva-journal': <NewspaperIcon />,
   '/diva-subject': <HistoryEduIcon />,
@@ -53,10 +54,11 @@ export const TopNavigation = ({ links }: TopNavigationProps) => {
       <ul>
         {links.map((link) => (
           <li key={link.to}>
-            <NavLink to={link.to}>
-              {icons[link.to]}
-              <span className={styles['label']}> {link.label}</span>
-            </NavLink>
+            <NavigationLink
+              to={link.to}
+              label={link.label}
+              icon={icons[link.to]}
+            />
           </li>
         ))}
       </ul>

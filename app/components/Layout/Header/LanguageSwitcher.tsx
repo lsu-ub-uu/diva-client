@@ -48,7 +48,9 @@ export const LanguageSwitcher = () => {
           aria-label={t('divaClient_ChooseLanguageText')}
         >
           <LanguageIcon className={styles['language-icon']} />
-          {language === 'sv' ? 'Svenska' : 'English'}
+          <span className={styles['dropdown-label']}>
+            {language === 'sv' ? 'Svenska' : 'English'}
+          </span>
           <ChevronDownIcon />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>

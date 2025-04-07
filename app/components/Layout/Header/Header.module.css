@@ -26,15 +26,16 @@
   border-right: 1px solid var(--color-thin-border);
   flex-direction: column;
 
-  @media (width < 600px) {
-    padding: 0 1rem;
-  }
-
   @media (width >= 600px) {
     .header-menu-toggle-button {
       display: none;
     }
   }
+}
+
+.logo img {
+  height: 2rem;
+  margin: 0 auto;
 }
 
 .header-content {
@@ -65,67 +66,66 @@
     &:hover {
       background-color: var(--color-card);
       text-decoration: none;
-
-  }
+    }
   }
 }
 
 @media (width < 600px) {
+  .header-wrapper {
+    flex-direction: row;
+    border-bottom: 1px solid var(--color-thin-border);
+    border-right: none;
+  }
+
   .header-content,
   .top-navigation {
     display: none;
   }
-}
 
-.logo img {
-  width: 10em;
-  min-width: 10em;
-  margin-bottom: var(--gap-l);
-}
-
-.header-logo-wrapper {
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--gap);
-}
-
-.header-menu-dialog {
-  position: relative;
-}
-
-.header-menu-dialog-backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgb(0 0 0 / 30%);
-  transition: opacity 0.1s ease-in-out;
-  opacity: 1;
-
-  &[data-closed] {
-    opacity: 0;
-    transform: translateX(100%);
+  .header-logo-wrapper {
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap);
   }
-}
 
-.header-menu-dialog-panel {
-  transform: translateX(0%);
-  opacity: 1;
-  transition: all 0.1s ease-in-out;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-background);
-  box-shadow: var(--elevation);
-  padding: var(--gap-l);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--gap-l);
+  .header-menu-dialog {
+    position: relative;
+  }
 
-  &[data-closed] {
-    opacity: 0;
-    transform: translateX(100%);
+  .header-menu-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 30%);
+    transition: opacity 0.1s ease-in-out;
+    opacity: 1;
+
+    &[data-closed] {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  .header-menu-dialog-panel {
+    transform: translateX(0%);
+    opacity: 1;
+    transition: all 0.1s ease-in-out;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-background);
+    box-shadow: var(--elevation);
+    padding: var(--gap-l);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--gap-l);
+
+    &[data-closed] {
+      opacity: 0;
+      transform: translateX(100%);
+    }
   }
 }

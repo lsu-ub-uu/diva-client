@@ -46,11 +46,13 @@ import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import divaLogo from '@/assets/divaLogo.svg';
+import { getRecordTypes } from '@/data/getRecordTypes';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
+  const { t } = context.i18n;
   const { hostname } = new URL(request.url);
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
@@ -58,15 +60,19 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     ? dependencies.themePool.get(hostname)
     : undefined;
 
-  const loginUnits = getLoginUnits(await context.dependencies);
+  const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;
-
-  const topNavigationLinks: TopNavigationLink[] = auth
-    ? [
+  const recordTypes = await getRecordTypes(dependencies, auth);
+  const topNavigationLinks: TopNavigationLink[] = recordTypes.map(
+    (recordType) => ({
+      label: t(recordType.textId),
+      to: `/${recordType.id}`,
+    }),
+  ); /* [
         { label: 'Output', to: '/diva-output' },
         { label: 'Personer', to: '/diva-person' },
         { label: 'Projekt', to: '/diva-project' },
-        { label: 'Kurs/ämne', to: '/diva-course' },
+        { label: 'Forskningsämne', to: '/diva-course' },
         { label: 'Organisation', to: '/diva-organisation' },
         { label: 'Tidsskrift', to: '/diva-journal' },
         { label: 'Ämne', to: '/diva-subject' },
@@ -76,8 +82,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
         { label: 'Förlag', to: '/diva-publisher' },
         { label: 'Finansiär', to: '/diva-funder' },
         { label: 'Tema', to: '/diva-theme' },
-      ]
-    : [];
+      ]*/
 
   return { auth, locale, loginUnits, theme, topNavigationLinks };
 }

@@ -17,7 +17,6 @@
  */
 
 import {
-  Form,
   useFetcher,
   useLoaderData,
   useLocation,
@@ -137,10 +136,12 @@ export default function User() {
           variant='tertiary'
         >
           <PersonIcon />
-          {printUserNameOnPage(auth)}
+          <span className={styles['user-name']}>
+            {printUserNameOnPage(auth)}
+          </span>
           <ChevronDownIcon />
         </MenuButton>
-        <DropdownMenu anchor='bottom'>
+        <DropdownMenu anchor='bottom end'>
           <MenuItem>
             <button onClick={logout} className={styles['logout-button']}>
               {t('divaClient_LogoutText')}

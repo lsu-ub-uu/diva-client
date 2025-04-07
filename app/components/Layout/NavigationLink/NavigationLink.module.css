@@ -14,17 +14,36 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.search-layout {
-  display: grid;
-  grid-template-columns: 8fr 2fr;
-  gap: var(--gap-xl);
-}
+.navigation-link {
+  text-decoration: none;
+  color: var(--color-text);
+  border-bottom: 4px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background-color 0.1s;
 
-@media (width < 900px) {
-  .search-layout {
-    grid-template-columns: 1fr;
+  &:hover {
+    background-color: var(--color-card);
+  }
+
+  padding: var(--gap-s) var(--gap-l);
+  border-radius: 9999999px;
+
+  &[aria-current='page'] {
+    background-color: var(--color-card-dark);
+  }
+
+  svg {
+    font-size: var(--font-size-l);
+  }
+
+  .label {
+    font-size: var(--font-size-s);
+    max-width: 15ch;
+    text-align: center;
+    line-height: 1;
   }
 }
