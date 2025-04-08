@@ -57,7 +57,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
   const theme = dependencies.themePool.has(hostname)
-    ? dependencies.themePool.get(hostname)
+    ? { ...dependencies.themePool.get(hostname), memberPermissionUnit: 'uu' }
     : undefined;
 
   const loginUnits = getLoginUnits(dependencies);

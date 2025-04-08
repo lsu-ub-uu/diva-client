@@ -264,6 +264,7 @@ export interface BFFThemeLinkWrapper {
 
 export interface BFFTheme {
   id: string;
+  memberPermissionUnit?: string;
   pageTitle: {
     sv: string;
     en: string;

@@ -24,6 +24,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { useWatch } from 'react-hook-form';
 import { Variable } from '@/components/FormGenerator/components/Variable';
 import { FileUpload } from './FileUpload';
+import { PermissionUnitRecordLink } from '@/components/FormGenerator/components/PermissionUnitRecordLink';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -55,6 +56,11 @@ export const RecordLink = ({
         actionButtonGroup={actionButtonGroup}
       />
     );
+  }
+
+  // TODO check for presentAs instead of name
+  if (component.name === 'permissionUnit') {
+    return <PermissionUnitRecordLink component={component} path={name} />;
   }
 
   if (
