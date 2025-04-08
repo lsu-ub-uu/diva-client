@@ -16,12 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
+const subscribe = () => {
+  return () => {};
+};
 
 export const useHydrated = () => {
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => setHydrated(true), []);
-
-  return hydrated;
+  return useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
 };
