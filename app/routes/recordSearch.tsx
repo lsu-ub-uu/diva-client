@@ -25,7 +25,6 @@ import {
 } from '@/auth/sessions.server';
 import { Await, data } from 'react-router';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';

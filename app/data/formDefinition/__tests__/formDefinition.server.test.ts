@@ -444,6 +444,7 @@ describe('formDefinition', () => {
       listPresentationViewId: `${id}ListPGroup`,
       textId: 'someText',
       defTextId: 'someDefText',
+      groupOfRecordType: [],
     };
 
     recordTypePool.set(metadata.id, metadata);
@@ -2015,6 +2016,7 @@ describe('formDefinition', () => {
         listPresentationViewId: '',
         textId: 'someTextId',
         defTextId: 'someDefTextId',
+        groupOfRecordType: [],
       });
 
       metadataPool.set('personUpdateGroup', {

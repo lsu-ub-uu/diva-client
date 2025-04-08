@@ -284,4 +284,59 @@ describe('<MemberBar />', () => {
       screen.queryByRole('link', { name: 'Kontakta DiVA support' }),
     ).not.toBeInTheDocument();
   });
+
+  it('renders children', () => {
+    vi.mocked(useLanguage).mockReturnValue('sv');
+
+    const theme = {
+      id: 'uu-theme',
+      hostnames: ['uu.diva-portal.org'],
+      pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
+      backgroundColor: '#111111',
+      textColor: '#FFFFFF',
+      publicLinks: [
+        {
+          sv: {
+            url: 'https://www.uu.se/bibliotek',
+            displayLabel: 'Uppsala universitetsbibliotek',
+          },
+          en: {
+            url: 'https://www.uu.se/en/library',
+            displayLabel: 'Uppsala University Library',
+          },
+        },
+      ],
+      adminLinks: [
+        {
+          sv: {
+            url: 'https://www.diva-portal.org/support',
+            displayLabel: 'Kontakta DiVA support',
+          },
+          en: {
+            url: 'https://www.diva-portal.org/support',
+            displayLabel: 'Contect DiVA support',
+          },
+        },
+        {
+          sv: {
+            url: 'https://www.uu.se/en/faq',
+            displayLabel: 'Vanliga frågor',
+          },
+          en: {
+            url: 'https://www.uu.se/en/faq',
+            displayLabel: 'FAQ',
+          },
+        },
+      ],
+      logo: {},
+    };
+
+    render(
+      <MemberBar theme={theme} loggedIn={false}>
+        <p>Some children</p>
+      </MemberBar>,
+    );
+
+    expect(screen.getByText('Some children')).toBeInTheDocument();
+  });
 });

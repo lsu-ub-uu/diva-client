@@ -23,12 +23,12 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { ChevronDownIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
-import Login from '@/components/Layout/Header/Login/Login';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
+import type { ReactNode } from 'react';
 
 interface MemberBarProps {
   theme: BFFTheme | undefined;
   loggedIn: boolean;
+  children?: ReactNode;
 }
 
 const defaultTheme: BFFTheme = {
@@ -45,6 +45,7 @@ const defaultTheme: BFFTheme = {
 export const MemberBar = ({
   theme = defaultTheme,
   loggedIn,
+  children,
 }: MemberBarProps) => {
   const { t } = useTranslation();
   const lang = useLanguage();
@@ -115,10 +116,7 @@ export const MemberBar = ({
         </>
       )}
 
-      <div className={styles['button-wrapper']}>
-        <LanguageSwitcher />
-        <Login />
-      </div>
+      <div className={styles['button-wrapper']}>{children}</div>
     </section>
   );
 };

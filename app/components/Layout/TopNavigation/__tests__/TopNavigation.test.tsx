@@ -18,38 +18,43 @@
  */
 
 import { describe, expect } from 'vitest';
-import {
-  TopNavigation,
-  type TopNavigationProps,
-} from '@/components/Layout/TopNavigation/TopNavigation';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
+import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 
 describe('<TopNavigation />', () => {
-  const TopNavigationWithRoutesStub = ({ links }: TopNavigationProps) => {
+  const TopNavigationWithRoutesStub = ({
+    recordTypes,
+  }: {
+    recordTypes: BFFRecordType[];
+  }) => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <TopNavigation links={links} />,
+        Component: () => <TopNavigation recordTypes={recordTypes} />,
       },
     ]);
 
     return <RoutesStub />;
   };
   it('renders nothing when only one link in props', () => {
-    const topNavigationLinks = [{ label: 'Output', to: 'someLink' }];
-    render(<TopNavigationWithRoutesStub links={topNavigationLinks} />);
+    const recordTypes = [
+      { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
+    ];
+
+    render(<TopNavigationWithRoutesStub recordTypes={recordTypes} />);
     const output = screen.queryByRole('link', { name: 'Output' });
 
     expect(output).not.toBeInTheDocument();
   });
 
-  it('renders the topNavigation when more than one link in props', () => {
-    const topNavigationLinks = [
-      { label: 'Output', to: 'someLink' },
-      { label: 'Personer', to: 'someOtherLink' },
+  it('renders the topNavigation when more than one record type in props', () => {
+    const recordTypes = [
+      { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
+      { textId: 'Personer', id: 'someOtherLink' } as BFFRecordType,
     ];
-    render(<TopNavigationWithRoutesStub links={topNavigationLinks} />);
+    render(<TopNavigationWithRoutesStub recordTypes={recordTypes} />);
     const output = screen.getByRole('link', { name: 'Output' });
     const person = screen.getByRole('link', { name: 'Personer' });
 

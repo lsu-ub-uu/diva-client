@@ -46,6 +46,8 @@ import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import divaLogo from '@/assets/divaLogo.svg';
 import { getRecordTypes } from '@/data/getRecordTypes';
+import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
+import Login from '@/components/Layout/Header/Login/Login';
 
 const { MODE } = import.meta.env;
 
@@ -192,7 +194,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className='root-layout'>
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
+        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined}>
+          <LanguageSwitcher />
+          <Login />
+        </MemberBar>
       </header>
 
       <header className='nav-rail'>
