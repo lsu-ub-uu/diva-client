@@ -44,31 +44,6 @@
   flex-direction: column;
   align-items: center;
   gap: var(--gap-l);
-
-  a {
-    color: var(--color-primary);
-    font-size: var(--font-size-s);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: var(--gap) var(--gap-l);
-    border-radius: 9999999px;
-    transition: background-color 0.1s;
-
-    &[aria-current='page'] {
-      background-color: var(--color-card-dark);
-    }
-
-    svg {
-      font-size: var(--font-size-l);
-    }
-
-    &:hover {
-      background-color: var(--color-card);
-      text-decoration: none;
-    }
-  }
 }
 
 @media (width < 600px) {
