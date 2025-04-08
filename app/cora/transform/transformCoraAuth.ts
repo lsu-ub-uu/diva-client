@@ -20,6 +20,11 @@ import type { Auth } from '@/auth/Auth';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type { AuthWrapper } from '@/cora/cora-data/types.server';
 import { invariant } from '@/utils/invariant';
+import {
+  containsChildWithNameInData,
+  getAllRecordLinksWithNameInData,
+} from '../cora-data/CoraDataUtils.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
   const dataGroup = authentication.data;
@@ -39,7 +44,15 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
     'firstName',
   );
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
-
+  const permissionUnit = containsChildWithNameInData(
+    dataGroup,
+    'permissionUnit',
+  )
+    ? getAllRecordLinksWithNameInData(dataGroup, 'permissionUnit').map(
+        (recordLink) => recordLink.id,
+      )
+    : undefined;
+  console.log(JSON.stringify(permissionUnit, null, 2));
   invariant(authentication.actionLinks, 'Authentication actionLinks missing');
   invariant(
     authentication.actionLinks.renew,
@@ -50,7 +63,7 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
     'Authentication delete actionLink missing',
   );
 
-  return {
+  return removeEmpty({
     data: {
       token,
       validUntil,
@@ -59,10 +72,11 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
       loginId,
       firstName,
       lastName,
+      permissionUnit,
     },
     actionLinks: {
       delete: authentication.actionLinks.delete,
       renew: authentication.actionLinks.renew,
     },
-  };
+  });
 };

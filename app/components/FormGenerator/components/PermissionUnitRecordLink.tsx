@@ -21,6 +21,7 @@ import { useRouteLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { useEffect } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
+import { DevInfo } from './DevInfo';
 
 interface PermissionUnitRecordLinkProps {
   component: FormComponentRecordLink;
@@ -33,6 +34,8 @@ export const PermissionUnitRecordLink = ({
   const { setValue } = useRemixFormContext();
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
   const memberPermissionUnit = rootLoaderData?.theme?.memberPermissionUnit;
+  const auth = rootLoaderData?.auth
+  console.log({auth})
 
   // If theme.permissionUnit
   useEffect(() => {
@@ -41,8 +44,10 @@ export const PermissionUnitRecordLink = ({
     }
   }, [setValue, path, memberPermissionUnit]);
 
+  // if (!user.permissionUnits.contains(theme.permissionUnit))
+  
   if (memberPermissionUnit) {
-    return null;
+    return <><DevInfo component={component} path={path} /></>;
   }
 
   // If user has 1 permission unit, set it.
