@@ -40,7 +40,9 @@ test.describe('Update output', () => {
     // Log in
     await page.getByRole('button', { name: 'Logga in' }).click();
     await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'DiVA Admin' }),
+    ).toBeVisible();
 
     //Assert update page info
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -82,7 +84,9 @@ test.describe('Update output', () => {
     // Log in
     await page.getByRole('button', { name: 'Logga in' }).click();
     await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'DiVA Admin' }),
+    ).toBeVisible();
 
     //Assert update page info
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
