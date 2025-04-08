@@ -38,6 +38,7 @@ describe('transformCoraRecordType', () => {
       searchId: 'exampleSearch',
       textId: 'exampleDevOutputText',
       defTextId: 'exampleDevOutputDefText',
+      groupOfRecordType: ['publicationType'],
     };
     expect(firstRecordType).toStrictEqual(expected);
   });

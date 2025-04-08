@@ -4,6 +4,7 @@
   ul {
     position: relative;
     z-index: 0;
+    list-style: none;
   }
 
   ul::before {

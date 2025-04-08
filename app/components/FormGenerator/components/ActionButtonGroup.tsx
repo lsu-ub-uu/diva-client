@@ -50,6 +50,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           aria-label={t('divaClient_moveFieldUpText', {
             fieldName: props.entityName,
           })}
+          tooltipPosition='left'
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
         >
@@ -62,6 +63,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
         aria-label={t('divaClient_deleteFieldText', {
           fieldName: props.entityName,
         })}
+        tooltipPosition='left'
         disabled={props.deleteButtonDisabled}
         onClick={props.deleteButtonAction}
       >
@@ -74,6 +76,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           aria-label={t('divaClient_moveFieldDownText', {
             fieldName: props.entityName,
           })}
+          tooltipPosition='left'
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
         >

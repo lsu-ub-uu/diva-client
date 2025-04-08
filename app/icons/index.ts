@@ -69,3 +69,15 @@ export { default as SentimentStressedIcon } from './SentimentStressed.svg?react'
 export { default as SentimentVeryDissatisfiedIcon } from './SentimentVeryDissatisfied.svg?react';
 export { default as SentimentWorriedIcon } from './SentimentWorried.svg?react';
 export { default as CircleFilledIcon } from './CircleFilled.svg?react';
+export { default as AttachMoneyIcon } from './AttachMoney.svg?react';
+export { default as NewspaperIcon } from './Newspaper.svg?react';
+export { default as CorporateFareIcon } from './CorporateFare.svg?react';
+export { default as FullCoverageIcon } from './FullCoverage.svg?react';
+export { default as HistoryEduIcon } from './HistoryEdu.svg?react';
+export { default as SchoolIcon } from './School.svg?react';
+export { default as EditNoteIcon } from './EditNote.svg?react';
+export { default as PaletteIcon } from './Palette.svg?react';
+export { default as NewsstandIcon } from './Newsstand.svg?react';
+export { default as PreviewIcon } from './Preview.svg?react';
+export { default as DesignServicesIcon } from './DesignServices.svg?react';
+export { default as ScienceIcon } from './Science.svg?react';

@@ -488,6 +488,12 @@ POST http://localhost:38182/login/rest/authToken/ffb01845-3230-4ef8-b923-d7b775b
 Accept: application/vnd.uub.authToken+json
 Authtoken: b067564b-5694-4a3d-a7c6-456d3090c4a5
 
+
+### Get record type
+GET  https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-course
+Accept: application/vnd.uub.record+json
+Authtoken: af086c62-f05c-4892-a6d2-8f2bf3a0b960
+
 ### Create Report
 POST https://cora.epc.ub.uu.se/diva/rest/record/diva-output
 Accept: application/vnd.uub.record+json

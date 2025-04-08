@@ -16,27 +16,26 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLocation, useNavigation } from 'react-router';
+import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
-import { CachedIcon, CloseIcon, MenuIcon } from '@/icons';
+import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import {
-  TopNavigation,
-  type TopNavigationLink,
-} from '@/components/Layout/TopNavigation/TopNavigation';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
+import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 
 interface HeaderProps {
-  topNavigationLinks: TopNavigationLink[];
+  recordTypes: Promise<BFFRecordType[]>;
 }
 
-export const Header = ({ topNavigationLinks }: HeaderProps) => {
+export const Header = ({ recordTypes }: HeaderProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -56,36 +55,40 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
       <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
           <picture className={styles['logo']}>
-            {/*  <source srcSet={divaLogoS} media='(max-width: 600px)' />*/}
             <source srcSet={divaLogo} />
 
             <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
           </picture>
         </Link>
+
         <div className={styles['top-navigation']}>
-          <TopNavigation links={topNavigationLinks} />
+          <Suspense>
+            <Await resolve={recordTypes} errorElement={<div />}>
+              {(resolvedRecordType) => (
+                <TopNavigation recordTypes={resolvedRecordType} />
+              )}
+            </Await>
+          </Suspense>
         </div>
       </div>
 
       <div className={styles['header-content']}>
         {devMode && (
-          <Button as={Link} variant='tertiary' to='/design-system'>
-            Design system
-          </Button>
+          <NavigationLink
+            to='/design-system'
+            label='Design system'
+            icon={<DesignServicesIcon />}
+          />
         )}
 
         {devMode && (
           <Form action='/refreshDefinitions' method='POST'>
             <input type='hidden' name='returnTo' value={returnTo} />
             <Button variant='tertiary' type='submit'>
-              Refresh Def <CachedIcon />
+              <CachedIcon /> Refresh Def
             </Button>
           </Form>
         )}
-
-        <LanguageSwitcher />
-
-        <Login />
       </div>
       <Button
         variant='icon'
@@ -112,9 +115,15 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
             <CloseIcon />
           </Button>
           <Login />
-
-          <TopNavigation links={topNavigationLinks} />
           <LanguageSwitcher />
+
+          <Suspense>
+            <Await resolve={recordTypes} errorElement={<div />}>
+              {(resolvedRecordType) => (
+                <TopNavigation recordTypes={resolvedRecordType} />
+              )}
+            </Await>
+          </Suspense>
         </DialogPanel>
       </Dialog>
     </header>

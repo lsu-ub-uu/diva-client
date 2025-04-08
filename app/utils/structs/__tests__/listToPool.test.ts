@@ -28,6 +28,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     listPresentationViewId: '',
     textId: '',
     defTextId: '',
+    groupOfRecordType: [],
   },
   {
     id: '2',
@@ -36,6 +37,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     listPresentationViewId: '',
     textId: '',
     defTextId: '',
+    groupOfRecordType: [],
   },
   {
     id: '3',
@@ -44,6 +46,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     listPresentationViewId: '',
     textId: '',
     defTextId: '',
+    groupOfRecordType: [],
   },
 ];
 

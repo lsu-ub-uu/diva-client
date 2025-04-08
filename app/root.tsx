@@ -38,7 +38,6 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
-import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header/Header';
@@ -46,6 +45,9 @@ import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import divaLogo from '@/assets/divaLogo.svg';
+import { getRecordTypes } from '@/data/getRecordTypes';
+import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
+import Login from '@/components/Layout/Header/Login/Login';
 
 const { MODE } = import.meta.env;
 
@@ -58,18 +60,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     ? dependencies.themePool.get(hostname)
     : undefined;
 
-  const loginUnits = getLoginUnits(await context.dependencies);
+  const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;
+  const recordTypes = getRecordTypes(dependencies, auth);
 
-  const topNavigationLinks: TopNavigationLink[] = auth
-    ? [
-        { label: 'Output', to: '/diva-output' },
-        { label: 'Personer', to: '/diva-person' },
-        { label: 'Projekt', to: '/diva-project' },
-      ]
-    : [];
-
-  return { auth, locale, loginUnits, theme, topNavigationLinks };
+  return { auth, locale, loginUnits, theme, recordTypes };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -194,17 +189,25 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   const theme = loaderData.theme;
+
   return (
-    <>
-      <header>
+    <div className='root-layout'>
+      <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
-        <Header topNavigationLinks={loaderData.topNavigationLinks} />
+        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined}>
+          <LanguageSwitcher />
+          <Login />
+        </MemberBar>
       </header>
-      <div className='container'>
+
+      <header className='nav-rail'>
+        <Header recordTypes={loaderData.recordTypes} />
+      </header>
+
+      <div className='content'>
         <Breadcrumbs />
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

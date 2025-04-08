@@ -16,13 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, useFetcher, useLoaderData } from 'react-router';
+import { useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { useTranslation } from 'react-i18next';
-import { Select } from '@/components/Input/Select';
 
 import styles from './LanguageSwitcher.module.css';
-import { LanguageIcon } from '@/icons';
+import { ChevronDownIcon, LanguageIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { Button } from '@/components/Button/Button';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
@@ -30,32 +32,35 @@ export const LanguageSwitcher = () => {
   const fetcher = useFetcher();
   const language = fetcher.formData ? fetcher.formData.get('language') : locale;
 
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    fetcher.submit({ language, intent: 'changeLanguage' }, { method: 'post' });
+  };
+
   return (
     <div className={styles['language-switcher']}>
-      <Form method='post'>
-        <Select
-          name='language'
-          value={language as string}
+      <Menu>
+        <MenuButton
+          as={Button}
+          variant='tertiary'
           aria-label={t('divaClient_ChooseLanguageText')}
-          adornment={
-            <LanguageIcon
-              className={styles['language-icon']}
-              aria-description={t('divaClient_ChooseLanguageLabelText')}
-            />
-          }
-          onChange={(e) => {
-            const language = e.target.value as string;
-            i18n.changeLanguage(language);
-            fetcher.submit(
-              { language, intent: 'changeLanguage' },
-              { method: 'post' },
-            );
-          }}
         >
-          <option value='en'>English</option>
-          <option value='sv'> Svenska</option>
-        </Select>
-      </Form>
+          <LanguageIcon className={styles['language-icon']} />
+          <span className={styles['dropdown-label']}>
+            {language === 'sv' ? 'Svenska' : 'English'}
+          </span>
+          <ChevronDownIcon />
+        </MenuButton>
+        <DropdownMenu anchor='bottom end'>
+          <input type='hidden' name='intent' value='changeLanguage' />
+          <MenuItem>
+            <button onClick={() => changeLanguage('en')}>English</button>
+          </MenuItem>
+          <MenuItem>
+            <button onClick={() => changeLanguage('sv')}>Svenska</button>
+          </MenuItem>
+        </DropdownMenu>
+      </Menu>
     </div>
   );
 };

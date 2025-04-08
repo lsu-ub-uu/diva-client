@@ -112,3 +112,41 @@
     padding: 0 var(--gap-l);
   }
 }
+
+.root-layout {
+  display: grid;
+  grid-template:
+    'member member' auto
+    'nav main' 1fr;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+
+  @media (width < 600px) {
+    grid-template:
+      'member member' auto
+      'nav nav' auto
+      'main main' 1fr;
+    grid-template-columns: auto;
+  }
+}
+
+.member-bar {
+  grid-area: member;
+}
+
+.nav-rail {
+  grid-area: nav;
+
+  @media (width < 600px) {
+    border-bottom: 1px solid var(--color-thin-border);
+  }
+
+  @media (width >= 600px) {
+    border-right: 1px solid var(--color-thin-border);
+  }
+}
+
+.content {
+  grid-area: main;
+  padding: 0 var(--gap-l);
+}

@@ -25,7 +25,6 @@ import {
 } from '@/auth/sessions.server';
 import { Await, data } from 'react-router';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { useTranslation } from 'react-i18next';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
@@ -39,6 +38,7 @@ import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { performSearch } from '@/routes/routeUtils/performSearch';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
+import css from './recordSearch.css?url';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -92,6 +92,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
 export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
+export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function OutputSearchRoute({
   loaderData,
@@ -108,61 +109,63 @@ export default function OutputSearchRoute({
   const { t } = useTranslation();
 
   return (
-    <SidebarLayout
-      sidebarContent={
-        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
-      }
-    >
-      <NotificationSnackbar notification={notification} />
-      <div className={styles['search-wrapper']}>
-        <div className={styles['search-extras']}>
-          <h1>
-            {t('divaClient_searchText', {
-              type: t(recordTypeTextId).toLowerCase(),
-            })}
-          </h1>
+    <div className='search-layout'>
+      <main>
+        <NotificationSnackbar notification={notification} />
+        <div className={styles['search-wrapper']}>
+          <div className={styles['search-extras']}>
+            <h1>
+              {t('divaClient_searchText', {
+                type: t(recordTypeTextId).toLowerCase(),
+              })}
+            </h1>
+
+            <Suspense
+              fallback={
+                <SkeletonLoader height='var(--input-height)' width='10rem' />
+              }
+            >
+              <Await
+                resolve={validationTypes}
+                errorElement={
+                  <CreateRecordMenuError recordTypeTextId={recordTypeTextId} />
+                }
+              >
+                {(validationTypes) => (
+                  <CreateRecordMenu
+                    validationTypes={validationTypes}
+                    recordTypeTextId={recordTypeTextId}
+                  />
+                )}
+              </Await>
+            </Suspense>
+          </div>
 
           <Suspense
             fallback={
-              <SkeletonLoader height='var(--input-height)' width='10rem' />
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <SkeletonLoader height='var(--input-height)' width='88%' />
+                <SkeletonLoader height='var(--input-height)' width='12%' />
+              </div>
             }
           >
-            <Await
-              resolve={validationTypes}
-              errorElement={
-                <CreateRecordMenuError recordTypeTextId={recordTypeTextId} />
-              }
-            >
-              {(validationTypes) => (
-                <CreateRecordMenu
-                  validationTypes={validationTypes}
-                  recordTypeTextId={recordTypeTextId}
+            <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
+              {(searchForm) => (
+                <RecordSearch
+                  key={searchId}
+                  searchForm={searchForm}
+                  query={query}
+                  searchResults={searchResults}
                 />
               )}
             </Await>
           </Suspense>
         </div>
-
-        <Suspense
-          fallback={
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <SkeletonLoader height='var(--input-height)' width='88%' />
-              <SkeletonLoader height='var(--input-height)' width='12%' />
-            </div>
-          }
-        >
-          <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
-            {(searchForm) => (
-              <RecordSearch
-                key={searchId}
-                searchForm={searchForm}
-                query={query}
-                searchResults={searchResults}
-              />
-            )}
-          </Await>
-        </Suspense>
-      </div>
-    </SidebarLayout>
+      </main>
+      <aside>
+        <h2>Meddelanden</h2>
+        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
+      </aside>
+    </div>
   );
 }

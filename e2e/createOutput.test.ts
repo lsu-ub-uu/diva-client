@@ -31,7 +31,9 @@ test.describe('Create output', () => {
     // Log in
     await page.getByRole('button', { name: 'Logga in' }).click();
     await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'DiVA Admin' }),
+    ).toBeVisible();
 
     // Select validation type
     await page.getByRole('button', { name: 'Skapa output' }).click();
@@ -118,7 +120,9 @@ test.describe('Create output', () => {
     // Log in
     await page.getByRole('button', { name: 'Logga in' }).click();
     await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(page.getByRole('button', { name: 'Logga ut' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'DiVA Admin' }),
+    ).toBeVisible();
 
     // Select validation type
     await page.getByRole('button', { name: 'Skapa output' }).click();

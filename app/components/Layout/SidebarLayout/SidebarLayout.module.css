@@ -18,10 +18,10 @@
 
 .sidebar-layout {
   display: grid;
-  gap: calc(var(--gap) * 8);
+  gap: var(--gap-xl);
 
   @media (width >= 900px) {
-    grid-template-columns: 3fr 9fr;
+    grid-template-columns: auto 1fr;
   }
 
   aside {
@@ -29,15 +29,17 @@
       display: none;
     }
 
+    max-width: 300px;
     position: sticky;
     top: 0;
     max-height: 100vh;
-    padding: var(--gap) 0;
     overflow: hidden auto;
+    padding: var(--gap) 0;
   }
 
   main {
     /* Take account for toolbar height */
     padding-bottom: 64px;
+    max-width: 1200px;
   }
 }

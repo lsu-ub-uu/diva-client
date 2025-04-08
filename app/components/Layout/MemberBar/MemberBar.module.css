@@ -97,3 +97,12 @@
     text-decoration: underline;
   }
 }
+
+.button-wrapper {
+  margin-left: auto;
+  display: flex;
+
+  @media (width < 600px) {
+    display: none;
+  }
+}
