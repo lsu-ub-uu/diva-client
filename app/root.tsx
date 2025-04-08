@@ -51,7 +51,6 @@ const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
-  const { t } = context.i18n;
   const { hostname } = new URL(request.url);
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
@@ -62,21 +61,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;
   const recordTypes = getRecordTypes(dependencies, auth);
-  /* [
-        { label: 'Output', to: '/diva-output' },
-        { label: 'Personer', to: '/diva-person' },
-        { label: 'Projekt', to: '/diva-project' },
-        { label: 'Forskningsämne', to: '/diva-course' },
-        { label: 'Organisation', to: '/diva-organisation' },
-        { label: 'Tidsskrift', to: '/diva-journal' },
-        { label: 'Ämne', to: '/diva-subject' },
-        { label: 'Program', to: '/diva-programme' },
-        { label: 'Serie', to: '/diva-series' },
-        { label: 'Lokal generisk uppmärkning', to: '/diva-localGenericMarkup' },
-        { label: 'Förlag', to: '/diva-publisher' },
-        { label: 'Finansiär', to: '/diva-funder' },
-        { label: 'Tema', to: '/diva-theme' },
-      ]*/
 
   return { auth, locale, loginUnits, theme, recordTypes };
 }
@@ -205,7 +189,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   const theme = loaderData.theme;
 
   return (
-    <>
+    <div className='root-layout'>
       <header className='member-bar'>
         <NavigationLoader />
         <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined} />
@@ -219,6 +203,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <Breadcrumbs />
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

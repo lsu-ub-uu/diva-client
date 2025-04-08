@@ -21,6 +21,9 @@
   display: grid;
   grid-template-columns: 8fr 2fr;
   gap: var(--gap-xl);
+  max-width: 1800px;
+  margin: 0 auto;
+  padding-top: var(--gap-xl);
 }
 
 @media (width < 900px) {

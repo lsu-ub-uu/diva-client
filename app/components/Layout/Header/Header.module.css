@@ -25,7 +25,6 @@
   justify-content: space-between;
   gap: var(--gap-l);
   padding: var(--gap);
-  border-right: 1px solid var(--color-thin-border);
   flex-direction: column;
 
   @media (width >= 600px) {
@@ -75,8 +74,6 @@
 @media (width < 600px) {
   .header-wrapper {
     flex-direction: row;
-    border-bottom: 1px solid var(--color-thin-border);
-    border-right: none;
   }
 
   .header-content,
@@ -112,7 +109,9 @@
   .header-menu-dialog-panel {
     transform: translateX(0%);
     opacity: 1;
-    transition: all 0.1s ease-in-out;
+    transition:
+      transform 0.1s ease-in-out,
+      opacity 0.1s ease-in-out;
     position: fixed;
     top: 0;
     right: 0;

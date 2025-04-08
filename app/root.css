@@ -113,18 +113,20 @@
   }
 }
 
-body {
+.root-layout {
   display: grid;
-  grid-template-areas:
-    'member member'
-    'nav    main';
+  grid-template:
+    'member member' auto
+    'nav main' 1fr;
   grid-template-columns: auto 1fr;
+  min-height: 100vh;
 
   @media (width < 600px) {
-    grid-template-areas:
-      'member member'
-      'nav    nav'
-      'main main';
+    grid-template:
+      'member member' auto
+      'nav nav' auto
+      'main main' 1fr;
+    grid-template-columns: auto;
   }
 }
 
@@ -134,6 +136,14 @@ body {
 
 .nav-rail {
   grid-area: nav;
+
+  @media (width < 600px) {
+    border-bottom: 1px solid var(--color-thin-border);
+  }
+
+  @media (width >= 600px) {
+    border-right: 1px solid var(--color-thin-border);
+  }
 }
 
 .content {
