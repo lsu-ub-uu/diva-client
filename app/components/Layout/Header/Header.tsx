@@ -16,9 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, NavLink, useLocation, useNavigation } from 'react-router';
+import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
 import divaLogo from '@/assets/divaLogo.svg';
-import divaLogoS from '@/assets/divaLogoS.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -26,19 +25,17 @@ import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import {
-  TopNavigation,
-  type TopNavigationLink,
-} from '@/components/Layout/TopNavigation/TopNavigation';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
+import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 
 interface HeaderProps {
-  topNavigationLinks: TopNavigationLink[];
+  recordTypes: Promise<BFFRecordType[]>;
 }
 
-export const Header = ({ topNavigationLinks }: HeaderProps) => {
+export const Header = ({ recordTypes }: HeaderProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -65,7 +62,13 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
         </Link>
 
         <div className={styles['top-navigation']}>
-          <TopNavigation links={topNavigationLinks} />
+          <Suspense>
+            <Await resolve={recordTypes} errorElement={<div />}>
+              {(resolvedRecordType) => (
+                <TopNavigation recordTypes={resolvedRecordType} />
+              )}
+            </Await>
+          </Suspense>
         </div>
       </div>
 
@@ -114,7 +117,13 @@ export const Header = ({ topNavigationLinks }: HeaderProps) => {
           <Login />
           <LanguageSwitcher />
 
-          <TopNavigation links={topNavigationLinks} />
+          <Suspense>
+            <Await resolve={recordTypes} errorElement={<div />}>
+              {(resolvedRecordType) => (
+                <TopNavigation recordTypes={resolvedRecordType} />
+              )}
+            </Await>
+          </Suspense>
         </DialogPanel>
       </Dialog>
     </header>

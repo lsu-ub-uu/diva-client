@@ -38,7 +38,6 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { renewAuth } from '@/auth/renewAuth.server';
 
 import type { Route } from './+types/root';
-import type { TopNavigationLink } from '@/components/Layout/TopNavigation/TopNavigation';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header/Header';
@@ -62,13 +61,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;
-  const recordTypes = await getRecordTypes(dependencies, auth);
-  const topNavigationLinks: TopNavigationLink[] = recordTypes.map(
-    (recordType) => ({
-      label: t(recordType.textId),
-      to: `/${recordType.id}`,
-    }),
-  ); /* [
+  const recordTypes = getRecordTypes(dependencies, auth);
+  /* [
         { label: 'Output', to: '/diva-output' },
         { label: 'Personer', to: '/diva-person' },
         { label: 'Projekt', to: '/diva-project' },
@@ -84,7 +78,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
         { label: 'Tema', to: '/diva-theme' },
       ]*/
 
-  return { auth, locale, loginUnits, theme, topNavigationLinks };
+  return { auth, locale, loginUnits, theme, recordTypes };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -218,7 +212,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       </header>
 
       <header className='nav-rail'>
-        <Header topNavigationLinks={loaderData.topNavigationLinks} />
+        <Header recordTypes={loaderData.recordTypes} />
       </header>
 
       <div className='content'>

@@ -87,16 +87,6 @@ export default function User() {
     }
   };
 
-  /*
-
-  <Form action='/logout' method='post'>
-              <input type='hidden' name='returnTo' value={returnTo} />
-              <button type='submit' className={styles['logout-button']}>
-                {t('divaClient_LogoutText')}
-                <LogoutIcon />
-              </button>
-            </Form>
-   */
   const logout = () => {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
