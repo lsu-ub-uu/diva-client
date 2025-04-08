@@ -44,6 +44,22 @@ const icons: Record<string, ReactNode> = {
   'diva-funder': <AttachMoneyIcon />,
 };
 
+const sortOrder = [
+  'diva-output',
+  'diva-person',
+  'diva-project',
+  'diva-course',
+  'diva-organisation',
+  'diva-journal',
+  'diva-subject',
+  'diva-programme',
+  'diva-series',
+  'diva-localGenericMarkup',
+  'diva-publisher',
+  'diva-theme',
+  'diva-funder',
+];
+
 export const TopNavigation = ({ recordTypes }: TopNavigationProps) => {
   const { t } = useTranslation();
   if (recordTypes.length < 2) {
@@ -53,15 +69,24 @@ export const TopNavigation = ({ recordTypes }: TopNavigationProps) => {
   return (
     <nav className={styles['top-navigation']}>
       <ul>
-        {recordTypes.map((recordType) => (
-          <li key={recordType.id}>
-            <NavigationLink
-              to={`/${recordType.id}`}
-              label={t(recordType.textId)}
-              icon={icons[recordType.id]}
-            />
-          </li>
-        ))}
+        {recordTypes
+          .sort((a, b) => {
+            const aIndex = sortOrder.indexOf(a.id);
+            const bIndex = sortOrder.indexOf(b.id);
+            return (
+              (aIndex === -1 ? Infinity : aIndex) -
+              (bIndex === -1 ? Infinity : bIndex)
+            );
+          })
+          .map((recordType) => (
+            <li key={recordType.id}>
+              <NavigationLink
+                to={`/${recordType.id}`}
+                label={t(recordType.textId)}
+                icon={icons[recordType.id]}
+              />
+            </li>
+          ))}
       </ul>
     </nav>
   );
