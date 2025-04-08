@@ -138,6 +138,10 @@
       transition: opacity 0.2s;
       transition-delay: 0s;
       pointer-events: none;
+
+      @media (width < 600px) {
+        display: none;
+      }
     }
 
     &[data-tooltip-position='bottom']::after {

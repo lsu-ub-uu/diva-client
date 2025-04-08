@@ -18,6 +18,8 @@
  */
 
 .header-wrapper {
+  position: sticky;
+  top: var(--gap);
   display: flex;
   align-items: center;
   justify-content: space-between;
