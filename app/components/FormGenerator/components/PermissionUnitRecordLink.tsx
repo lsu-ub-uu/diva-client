@@ -16,12 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type { Auth } from '@/auth/Auth';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { useRouteLoaderData } from 'react-router';
+import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 import type { loader } from '@/root';
 import { useEffect } from 'react';
+import { useRouteLoaderData } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from './DevInfo';
+import { RecordLinkWithSearch } from './RecordLinkWithSearch';
+import { OutputField } from './OutputField';
 
 interface PermissionUnitRecordLinkProps {
   component: FormComponentRecordLink;
@@ -33,24 +37,46 @@ export const PermissionUnitRecordLink = ({
 }: PermissionUnitRecordLinkProps) => {
   const { setValue } = useRemixFormContext();
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  const memberPermissionUnit = rootLoaderData?.theme?.memberPermissionUnit;
-  const auth = rootLoaderData?.auth
-  console.log({auth})
+  const autoPermissionUnit = getAutoPermissionUnit(
+    rootLoaderData?.theme,
+    rootLoaderData?.auth,
+  );
 
-  // If theme.permissionUnit
   useEffect(() => {
-    if (memberPermissionUnit) {
-      setValue(path, memberPermissionUnit);
+    if (autoPermissionUnit) {
+      setValue(path, autoPermissionUnit);
     }
-  }, [setValue, path, memberPermissionUnit]);
+  }, [setValue, path, autoPermissionUnit]);
 
-  // if (!user.permissionUnits.contains(theme.permissionUnit))
-  
-  if (memberPermissionUnit) {
-    return <><DevInfo component={component} path={path} /></>;
+  if (autoPermissionUnit) {
+    return (
+      <>
+        <DevInfo component={component} path={path} />
+
+        <OutputField
+          label={component.label}
+          path={path}
+          value={autoPermissionUnit}
+          info={component.tooltip}
+        />
+        <input type='hidden' name={path} value={autoPermissionUnit} />
+      </>
+    );
   }
 
-  // If user has 1 permission unit, set it.
+  return <RecordLinkWithSearch component={component} path={path} />;
+};
 
-  // If user has multiple PU, render input <RecordLinkWithSearch />
+const getAutoPermissionUnit = (
+  theme: BFFTheme | undefined,
+  auth: Auth | undefined,
+) => {
+  const memberPermissionUnit = theme?.memberPermissionUnit;
+  if (memberPermissionUnit) {
+    return memberPermissionUnit;
+  }
+
+  if (auth?.data.permissionUnit && auth.data.permissionUnit.length === 1) {
+    return auth.data.permissionUnit[0];
+  }
 };

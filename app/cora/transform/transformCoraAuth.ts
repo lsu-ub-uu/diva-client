@@ -52,7 +52,7 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
         (recordLink) => recordLink.id,
       )
     : undefined;
-  console.log(JSON.stringify(permissionUnit, null, 2));
+
   invariant(authentication.actionLinks, 'Authentication actionLinks missing');
   invariant(
     authentication.actionLinks.renew,
