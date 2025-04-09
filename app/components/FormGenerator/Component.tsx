@@ -56,7 +56,6 @@ export const Component = ({
   parentPresentationStyle,
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
-  const reactKey = `key_${idx}`;
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
   if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
@@ -77,7 +76,6 @@ export const Component = ({
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
       <SurroundingContainer
-        reactKey={reactKey}
         component={component}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
@@ -99,7 +97,6 @@ export const Component = ({
     return (
       <RepeatingGroup
         currentComponentNamePath={currentComponentNamePath}
-        reactKey={reactKey}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
       />
@@ -109,7 +106,6 @@ export const Component = ({
   if (isComponentVariableAndRepeating(component)) {
     return (
       <RepeatingVariable
-        reactKey={reactKey}
         component={component}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
@@ -126,7 +122,6 @@ export const Component = ({
   return (
     <LeafComponent
       component={component}
-      reactKey={reactKey}
       name={`${currentComponentNamePath}.value`}
       parentPresentationStyle={parentPresentationStyle}
       attributes={

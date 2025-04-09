@@ -39,7 +39,6 @@ import { Fieldset } from '@/components/Input/Fieldset';
 import { Controller } from 'react-hook-form';
 
 interface RecordLinkWithSearchProps {
-  reactKey: string;
   component: FormComponentRecordLink;
   path: string;
   attributes?: ReactNode;
@@ -47,7 +46,6 @@ interface RecordLinkWithSearchProps {
 }
 
 export const RecordLinkWithSearch = ({
-  reactKey,
   component,
   path,
   attributes,
@@ -62,7 +60,6 @@ export const RecordLinkWithSearch = ({
   return (
     <div
       className={styles['component']}
-      key={reactKey}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >

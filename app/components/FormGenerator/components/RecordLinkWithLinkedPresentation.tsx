@@ -18,7 +18,7 @@
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
@@ -29,7 +29,6 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { useTranslation } from 'react-i18next';
 
 interface RecordLinkWithLinkedPresentationProps {
-  reactKey: string;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;
@@ -37,7 +36,6 @@ interface RecordLinkWithLinkedPresentationProps {
 }
 
 export const RecordLinkWithLinkedPresentation = ({
-  reactKey,
   component,
   name,
   attributes,
@@ -47,35 +45,30 @@ export const RecordLinkWithLinkedPresentation = ({
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
 
-  return (
-    <React.Fragment key={`${reactKey}_${name}`}>
-      {hasValue ? (
-        <div
-          key={reactKey}
-          className={styles['component']}
-          data-colspan={component.gridColSpan ?? 12}
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <DevInfo component={component} path={name} />
+  return hasValue ? (
+    <div
+      className={styles['component']}
+      data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
+    >
+      <DevInfo component={component} path={name} />
 
-          <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
-            {component.showLabel && (
-              <div className={linkedRecordStyles['label']}>
-                {t(component.label)}
-              </div>
-            )}
-            <div className={linkedRecordStyles['container']}>
-              {attributes} {actionButtonGroup}
-            </div>
+      <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+        {component.showLabel && (
+          <div className={linkedRecordStyles['label']}>
+            {t(component.label)}
           </div>
-          <ControlledLinkedRecord
-            control={control}
-            name={name}
-            recordType={component.recordLinkType ?? ''}
-            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-          />
+        )}
+        <div className={linkedRecordStyles['container']}>
+          {attributes} {actionButtonGroup}
         </div>
-      ) : null}
-    </React.Fragment>
-  );
+      </div>
+      <ControlledLinkedRecord
+        control={control}
+        name={name}
+        recordType={component.recordLinkType ?? ''}
+        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+      />
+    </div>
+  ) : null;
 };

@@ -56,7 +56,6 @@ import { Fieldset } from '@/components/Input/Fieldset';
 import { getAttributesToShow } from '@/components/FormGenerator/components/Attributes';
 
 interface VariableProps {
-  reactKey: string;
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
   parentPresentationStyle: string | undefined;
