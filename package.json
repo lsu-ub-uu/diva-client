@@ -28,7 +28,7 @@
     "node": "22.14.0"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.0",
+    "@headlessui/react": "^2.2.1",
     "@hookform/resolvers": "^5.0.1",
     "@react-router/express": "^7.5.0",
     "@react-router/node": "^7.5.0",
