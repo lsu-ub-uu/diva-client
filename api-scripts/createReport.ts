@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import login from './login';
+import login from './auth';
 import { readFileSync } from 'fs';
 
 export default async function createReport() {

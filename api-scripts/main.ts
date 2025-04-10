@@ -18,6 +18,3 @@
 import createReport from './createReport';
 
 createReport();
-createReport();
-createReport();
-createReport();

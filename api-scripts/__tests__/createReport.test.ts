@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import createReport from '../createReport';
-import login from '../login';
+import login from '../auth';
 import { readFileSync } from 'fs';
 import { mock } from 'vitest-mock-extended';
 

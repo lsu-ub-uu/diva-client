@@ -17,7 +17,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import login from '../login';
+import login from '../auth';
 
 const mockAuthResponse = {
   authentication: {
@@ -30,7 +30,7 @@ const mockAuthResponse = {
   },
 };
 
-describe('login function', () => {
+describe('login', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
