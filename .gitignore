@@ -17,14 +17,12 @@ build/
 tsconfig.tsbuildinfo
 
 # Editor directories and files
-!.vscode/extensions.json
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-/.vscode/settings.json
 
 # Storybook static
 storybook-static
