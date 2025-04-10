@@ -238,7 +238,7 @@ export const createGroupOrComponent = (
     const group = createGroup(
       dependencies,
       metadata as BFFMetadataGroup,
-      presentation,
+      presentation as BFFPresentationGroup,
     );
     return removeEmpty({
       repeat,

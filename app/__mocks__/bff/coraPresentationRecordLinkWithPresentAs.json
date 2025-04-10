@@ -12,7 +12,7 @@
                 "children": [
                   {
                     "name": "id",
-                    "value": "recordInfoOutputUpdateOutputPGroup"
+                    "value": "nationalSubjectCategoryPLink"
                   },
                   {
                     "name": "type",
@@ -36,7 +36,7 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "161616"
+                        "value": "coraUser:4412982402853626"
                       }
                     ]
                   },
@@ -55,7 +55,7 @@
                   },
                   {
                     "name": "tsCreated",
-                    "value": "2024-10-08T09:04:30.938763Z"
+                    "value": "2018-12-19T13:09:18.773000Z"
                   },
                   {
                     "name": "updated",
@@ -70,13 +70,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:4412982402853626"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-10-08T09:04:30.938763Z"
+                        "value": "2018-12-19T13:09:18.773000Z"
                       }
                     ]
                   },
@@ -93,13 +93,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:4412982402853626"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-10-08T09:25:36.665747Z"
+                        "value": "2018-12-19T13:13:23.582000Z"
                       }
                     ]
                   },
@@ -116,13 +116,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:4412982402853626"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-10-08T09:34:59.720684Z"
+                        "value": "2018-12-20T14:44:23.121000Z"
                       }
                     ]
                   },
@@ -139,13 +139,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:4412982402853626"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-10-24T14:25:05.768717Z"
+                        "value": "2018-12-20T14:45:40.529000Z"
                       }
                     ]
                   },
@@ -162,13 +162,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:4412982402853626"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-11-25T14:05:12.936794Z"
+                        "value": "2018-12-20T14:59:50.974000Z"
                       }
                     ]
                   },
@@ -185,36 +185,13 @@
                           },
                           {
                             "name": "linkedRecordId",
-                            "value": "161616"
+                            "value": "coraUser:490742519075086"
                           }
                         ]
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-12-06T13:37:12.810316Z"
-                      }
-                    ]
-                  },
-                  {
-                    "name": "updated",
-                    "repeatId": "6",
-                    "children": [
-                      {
-                        "name": "updatedBy",
-                        "children": [
-                          {
-                            "name": "linkedRecordType",
-                            "value": "user"
-                          },
-                          {
-                            "name": "linkedRecordId",
-                            "value": "161616"
-                          }
-                        ]
-                      },
-                      {
-                        "name": "tsUpdated",
-                        "value": "2025-01-13T13:39:46.770159Z"
+                        "value": "2023-03-03T13:22:21.154794Z"
                       }
                     ]
                   },
@@ -227,7 +204,7 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "presentationGroup"
+                        "value": "presentationRecordLink"
                       }
                     ]
                   }
@@ -242,78 +219,58 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "recordInfoOutputUpdateGroup"
+                    "value": "nationalSubjectCategoryLink"
                   }
                 ]
               },
               {
-                "name": "childReferences",
+                "name": "mode",
+                "value": "input"
+              },
+              {
+                "name": "linkedRecordPresentations",
                 "children": [
                   {
-                    "name": "childReference",
-                    "repeatId": "20",
+                    "name": "linkedRecordPresentation",
+                    "repeatId": "0",
                     "children": [
                       {
-                        "name": "refGroup",
-                        "repeatId": "2",
+                        "name": "presentedRecordType",
                         "children": [
                           {
-                            "name": "ref",
-                            "children": [
-                              {
-                                "name": "linkedRecordType",
-                                "value": "presentation"
-                              },
-                              {
-                                "name": "linkedRecordId",
-                                "value": "updatesMinimizedSContainer"
-                              }
-                            ],
-                            "attributes": {
-                              "type": "presentation"
-                            }
+                            "name": "linkedRecordType",
+                            "value": "recordType"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "nationalSubjectCategory"
                           }
                         ]
                       },
                       {
-                        "name": "refGroup",
-                        "repeatId": "0",
+                        "name": "presentation",
                         "children": [
                           {
-                            "name": "ref",
-                            "children": [
-                              {
-                                "name": "linkedRecordType",
-                                "value": "presentation"
-                              },
-                              {
-                                "name": "linkedRecordId",
-                                "value": "updatesSContainer"
-                              }
-                            ],
-                            "attributes": {
-                              "type": "presentation"
-                            }
+                            "name": "linkedRecordType",
+                            "value": "presentation"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "nationalSubjectCategoryWhenLinkedPGroup"
                           }
                         ]
-                      },
-
-                      {
-                        "name": "childStyle",
-                        "repeatId": "3",
-                        "value": ""
                       }
                     ]
                   }
                 ]
               },
               {
-                "name": "mode",
-                "value": "output"
+                "name": "presentAs",
+                "value": "permissionUnit"
               }
             ],
             "attributes": {
-              "type": "pGroup"
+              "type": "pRecordLink"
             }
           },
           "actionLinks": {
@@ -374,7 +331,7 @@
       }
     ],
     "totalNo": "1",
-    "containDataOfType": "recordType",
+    "containDataOfType": "someDataOfType",
     "toNo": "1"
   }
 }

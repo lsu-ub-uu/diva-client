@@ -18,6 +18,7 @@
  */
 
 import {
+  containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
@@ -43,6 +44,15 @@ export function getAllDataAtomicValuesWithNameInData(
     return dataAtomic.value;
   });
 }
+
+export const getOptionalAtomicValueByName = (
+  childReference: DataGroup,
+  nameInData: string,
+) => {
+  return containsChildWithNameInData(childReference, nameInData)
+    ? getFirstDataAtomicValueWithNameInData(childReference, nameInData)
+    : undefined;
+};
 
 export const extractFirstDataGroupWithAttributesFollowingNameInDatas = (
   dataGroup: DataGroup,

@@ -26,6 +26,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 import { CodeIcon } from '@/icons';
 
 interface DevInfoProps {
+  label?: string;
   component: FormComponent;
   path?: string;
 }
@@ -34,7 +35,7 @@ interface ToggleDevInfoButtonProps {
   onClick: () => void;
 }
 
-export const DevInfo = ({ component, path }: DevInfoProps) => {
+export const DevInfo = ({ label, component, path }: DevInfoProps) => {
   const { showDevInfo } = use(FormGeneratorContext);
   const [expanded, setExpanded] = useState(false);
   const { getValues } = useRemixFormContext();
@@ -45,7 +46,8 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
   return (
     <div className={styles['dev-info']}>
       <button type='button' onClick={() => setExpanded(!expanded)}>
-        {component.type} | {addAttributesToName(component, component.name)}
+        {label} | {component.type} |{' '}
+        {addAttributesToName(component, component.name)}
       </button>
 
       {expanded && (
@@ -57,7 +59,7 @@ export const DevInfo = ({ component, path }: DevInfoProps) => {
           </pre>
           {data && (
             <pre>
-              <strong>DATA</strong>
+              <strong>DATA ({path})</strong>
               {JSON.stringify(data, null, 2)}
             </pre>
           )}

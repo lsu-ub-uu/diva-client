@@ -544,6 +544,7 @@ describe('formDefinition', () => {
     id: string,
     presentedRecordType: string,
     presentationId: string,
+    presentAs?: BFFPresentationRecordLink['presentAs'],
   ): BFFPresentationRecordLink => {
     const linkedRecordPresentations: BFFLinkedRecordPresentation[] = [
       {
@@ -557,6 +558,7 @@ describe('formDefinition', () => {
       mode: 'output',
       presentationOf: id,
       linkedRecordPresentations,
+      presentAs,
     } as BFFPresentationRecordLink;
 
     presentationPool.set(id, pLink);

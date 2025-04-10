@@ -144,6 +144,7 @@ export interface BFFPresentationResourceLink
 export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
+  presentAs?: 'onlyTranslatedText' | 'permissionUnit';
 }
 
 export interface BFFLinkedRecordPresentation {
@@ -174,6 +175,11 @@ export interface BFFPresentationGroup extends BFFPresentationBase {
   specifiedHeadlineTextId?: string;
   specifiedHeadlineLevel?: string;
   showHeadline?: string;
+  presentAs?:
+    | 'map'
+    | 'recordRelation'
+    | 'externalLinkWithValue'
+    | 'onlyTranslatedText';
 }
 
 export interface BFFPresentationChildReference {

@@ -63,7 +63,11 @@ export const RecordLinkWithSearch = ({
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} path={path} />
+      <DevInfo
+        label='PermissionUnitRecordLink'
+        component={component}
+        path={path}
+      />
       <Fieldset
         label={component.showLabel ? t(component.label) : undefined}
         errorMessage={errorMessage}

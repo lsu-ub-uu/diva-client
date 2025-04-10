@@ -44,6 +44,7 @@ export const RecordLink = ({
   const value = useWatch({ name });
 
   const { linkedData } = use(FormGeneratorContext);
+
   if (component.recordLinkType === 'binary' && !value) {
     return (
       <FileUpload
@@ -57,7 +58,11 @@ export const RecordLink = ({
   }
 
   // TODO check for presentAs instead of name
-  if (component.name === 'permissionUnit' && component.mode === 'input') {
+  if (
+    component.name === 'permissionUnit' &&
+    component.mode === 'input' &&
+    !linkedData
+  ) {
     return <PermissionUnitRecordLink component={component} path={name} />;
   }
 

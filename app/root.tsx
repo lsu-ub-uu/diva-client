@@ -25,8 +25,9 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
+  useSearchParams,
 } from 'react-router';
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -163,6 +164,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const locale = data?.locale ?? 'sv';
   const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
   useChangeLanguage(locale);
+
+  const [searchParams] = useSearchParams();
+  const searchParam = searchParams.get('dev');
+
+  useEffect(() => {
+    if (searchParam === 'false') {
+      localStorage.removeItem('diva-dev');
+    } else if (searchParam === 'true') {
+      localStorage.setItem('diva-dev', 'true');
+    }
+  }, [searchParam]);
 
   return (
     <html lang={locale}>

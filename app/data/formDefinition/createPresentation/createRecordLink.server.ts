@@ -20,7 +20,6 @@
 import type {
   BFFMetadata,
   BFFMetadataRecordLink,
-  BFFPresentationBase,
   BFFPresentationRecordLink,
 } from '@/cora/transform/bffTypes.server';
 import { checkForAttributes } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
@@ -31,18 +30,16 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 export const createRecordLink = (
   metadataPool: Lookup<string, BFFMetadata>,
   metadata: BFFMetadataRecordLink,
-  presentation: BFFPresentationBase,
+  presentation: BFFPresentationRecordLink,
 ) => {
   const recordLinkType = metadata.linkedRecordType;
-  const presentationRecordLink = presentation as BFFPresentationRecordLink;
   let search;
-  if (presentationRecordLink.search !== undefined) {
-    search = presentationRecordLink.search;
+  if (presentation.search !== undefined) {
+    search = presentation.search;
   }
   let linkedRecordPresentation;
-  if (presentationRecordLink.linkedRecordPresentations !== undefined) {
-    linkedRecordPresentation =
-      presentationRecordLink.linkedRecordPresentations[0];
+  if (presentation.linkedRecordPresentations !== undefined) {
+    linkedRecordPresentation = presentation.linkedRecordPresentations[0];
   }
   const presentationRecordLinkId = presentation.id;
 
@@ -61,6 +58,7 @@ export const createRecordLink = (
     search,
     linkedRecordPresentation,
     presentationRecordLinkId,
+    presentAs: presentation.presentAs,
     attributes,
   });
 };

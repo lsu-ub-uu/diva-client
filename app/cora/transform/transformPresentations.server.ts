@@ -27,7 +27,10 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/cora/cora-data/CoraDataTransforms.server';
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import {
+  getFirstDataAtomicValueWithNameInData,
+  getOptionalAtomicValueByName,
+} from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
   BFFGuiElement,
   BFFLinkedRecordPresentation,
@@ -198,7 +201,7 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
 // Handle pRecordLink
 const transformCoraPresentationPLinkToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentationBase => {
+): BFFPresentationRecordLink => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic =
     transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
@@ -243,6 +246,9 @@ const transformCoraPresentationPLinkToBFFPresentation = (
     ...basic,
     linkedRecordPresentations,
     search,
+    presentAs: containsChildWithNameInData(dataRecordGroup, 'presentAs')
+      ? getOptionalAtomicValueByName(dataRecordGroup, 'presentAs')
+      : undefined,
   } as BFFPresentationRecordLink);
 };
 
@@ -277,45 +283,37 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     return transformChildReference(childReference);
   });
 
-  let presentationStyle;
-  if (containsChildWithNameInData(dataRecordGroup, 'presentationStyle')) {
-    presentationStyle = getFirstDataAtomicValueWithNameInData(
-      dataRecordGroup,
-      'presentationStyle',
-    );
-  }
+  const presentationStyle = getOptionalAtomicValueByName(
+    dataRecordGroup,
+    'presentationStyle',
+  );
 
-  let specifiedHeadlineTextId;
-  if (containsChildWithNameInData(dataRecordGroup, 'specifiedHeadlineText')) {
-    specifiedHeadlineTextId = extractLinkedRecordIdFromNamedRecordLink(
-      dataRecordGroup,
-      'specifiedHeadlineText',
-    );
-  }
+  const specifiedHeadlineTextId = containsChildWithNameInData(
+    dataRecordGroup,
+    'specifiedHeadlineText',
+  )
+    ? extractLinkedRecordIdFromNamedRecordLink(
+        dataRecordGroup,
+        'specifiedHeadlineText',
+      )
+    : undefined;
 
-  let specifiedHeadlineLevel;
-  if (containsChildWithNameInData(dataRecordGroup, 'specifiedHeadlineLevel')) {
-    specifiedHeadlineLevel = getFirstDataAtomicValueWithNameInData(
-      dataRecordGroup,
-      'specifiedHeadlineLevel',
-    );
-  }
+  const specifiedHeadlineLevel = getOptionalAtomicValueByName(
+    dataRecordGroup,
+    'specifiedHeadlineLevel',
+  );
 
-  let showHeadline;
-  if (containsChildWithNameInData(dataRecordGroup, 'showHeadline')) {
-    showHeadline = getFirstDataAtomicValueWithNameInData(
-      dataRecordGroup,
-      'showHeadline',
-    );
-  }
+  const showHeadline = getOptionalAtomicValueByName(
+    dataRecordGroup,
+    'showHeadline',
+  );
 
-  let attributesToShow;
-  if (containsChildWithNameInData(dataRecordGroup, 'attributesToShow')) {
-    attributesToShow = getFirstDataAtomicValueWithNameInData(
-      dataRecordGroup,
-      'attributesToShow',
-    );
-  }
+  const attributesToShow = getOptionalAtomicValueByName(
+    dataRecordGroup,
+    'attributesToShow',
+  );
+
+  const presentAs = getOptionalAtomicValueByName(dataRecordGroup, 'presentAs');
 
   return removeEmpty({
     id,
@@ -328,6 +326,7 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     mode,
     children,
     type,
+    presentAs,
   }) as BFFPresentationGroup;
 };
 
@@ -353,11 +352,13 @@ const transformChildReference = (childReference: DataGroup) => {
   ).map(transformRefGroup);
 
   const minNumberOfRepeatingToShow =
-    extractAtomicValueByName(childReference, 'minNumberOfRepeatingToShow') ??
-    '1';
+    getOptionalAtomicValueByName(
+      childReference,
+      'minNumberOfRepeatingToShow',
+    ) ?? '1';
 
-  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
-  const presentationSize = extractAtomicValueByName(
+  const textStyle = getOptionalAtomicValueByName(childReference, 'textStyle');
+  const presentationSize = getOptionalAtomicValueByName(
     childReference,
     'presentationSize',
   );
@@ -479,26 +480,12 @@ const transformCoraPresentationResourceLinkToBFFPresentation = (
     transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
 
   const dataRecordGroup = coraRecordWrapper.record.data;
-  const outputFormat = extractAtomicValueByName(
+  const outputFormat = getOptionalAtomicValueByName(
     dataRecordGroup,
     'outputFormat',
   );
 
   return { ...basicPresentation, outputFormat };
-};
-
-const extractAtomicValueByName = (
-  childReference: DataGroup,
-  nameInData: string,
-) => {
-  let atomicValue;
-  if (containsChildWithNameInData(childReference, nameInData)) {
-    atomicValue = getFirstDataAtomicValueWithNameInData(
-      childReference,
-      nameInData,
-    );
-  }
-  return atomicValue;
 };
 
 const getPresentationOfFromRecordLinks = (dataRecordGroup: DataGroup) => {

@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { mock } from 'vitest-mock-extended';
 
 // Mock dependencies
-vi.mock('../login');
+vi.mock('../auth');
 vi.mock('fs');
 
 describe('createReport', () => {

@@ -51,7 +51,11 @@ export const RecordLinkWithLinkedPresentation = ({
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo component={component} path={name} />
+      <DevInfo
+        label='RecordLinkWithLinkedPresentation'
+        component={component}
+        path={name}
+      />
 
       <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
         {component.showLabel && (

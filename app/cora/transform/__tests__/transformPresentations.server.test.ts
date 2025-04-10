@@ -38,14 +38,17 @@ import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '@/__m
 import coraPresentationRepeatingContainer from '@/__mocks__/bff/coraPresentationRepeatingContainer.json';
 import coraPresentationWithRecordLink from '@/__mocks__/bff/coraPresentationRecordLink.json';
 import coraPresentationWithRecordLinkWithSearch from '@/__mocks__/bff/coraPresentationRecordLinkWithSearch.json';
+import coraPresentationWithRecordLinkWithPresentAs from '@/__mocks__/bff/coraPresentationRecordLinkWithPresentAs.json';
 import coraPresentationWithGuiElementLink from '@/__mocks__/bff/coraPresentationGuiElement.json';
 import coraPresentationGroupSpecifiedHeadlineText from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineText.json';
 import coraPresentationGroupWithShowLabel from '@/__mocks__/bff/coraPresentationGroupWithShowLabel.json';
 import coraPresentationGroupSpecifiedHeadlineLevel from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineLevel.json';
+import coraPresentationGroupWithPresentAs from '@/__mocks__/bff/coraPresentationGroupWithPresentAs.json';
 import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
 import coraPresentationResourceLinkMasterImage from '@/__mocks__/bff/coraPresentationResourceLinkMasterImage.json';
 import coraPresentationResourceLinkThumbnail from '@/__mocks__/bff/coraPresentationResourceLinkThumbnail.json';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import type { BFFPresentationGroup } from '../bffTypes.server';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {
@@ -273,7 +276,6 @@ describe('transformCoraPresentations', () => {
         coraPresentationGroupAltPresentation,
       );
       expect(transformData[0]).toStrictEqual({
-        attributesToShow: '',
         children: [
           {
             refGroups: [
@@ -287,17 +289,13 @@ describe('transformCoraPresentations', () => {
               },
             ],
             childStyle: [''],
-            minNumberOfRepeatingToShow: '',
-            presentationSize: '',
-            textStyle: '',
+            minNumberOfRepeatingToShow: '1',
           },
         ],
         id: 'recordInfoOutputUpdateOutputPGroup',
         mode: 'output',
         presentationOf: 'recordInfoOutputUpdateGroup',
-        presentationStyle: '',
-        showHeadline: '',
-        specifiedHeadlineLevel: '',
+
         type: 'pGroup',
       });
     });
@@ -533,6 +531,16 @@ describe('transformCoraPresentations', () => {
       );
       expect(transformData).toHaveLength(6);
     });
+
+    it('Transforms a pGroup with presentAs', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationGroupWithPresentAs,
+      );
+
+      const pGroup = transformData[0] as BFFPresentationGroup;
+
+      expect(pGroup.presentAs).toEqual('onlyTranslatedText');
+    });
   });
 
   describe('pCollVar', () => {
@@ -584,6 +592,26 @@ describe('transformCoraPresentations', () => {
           },
         ],
         search: 'nationalSubjectCategorySearch',
+      });
+    });
+
+    it('Returns one BFFPresentation for one pRecordLink entry with presentAs', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationWithRecordLinkWithPresentAs,
+      );
+
+      expect(transformData[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'input',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedPGroup',
+          },
+        ],
+        presentAs: 'permissionUnit',
       });
     });
   });

@@ -26,6 +26,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from './DevInfo';
 import { RecordLinkWithSearch } from './RecordLinkWithSearch';
 import { OutputField } from './OutputField';
+import { RecordLinkWithLinkedPresentation } from './RecordLinkWithLinkedPresentation';
 
 interface PermissionUnitRecordLinkProps {
   component: FormComponentRecordLink;
@@ -44,6 +45,7 @@ export const PermissionUnitRecordLink = ({
 
   useEffect(() => {
     if (autoPermissionUnit) {
+      console.log('Auto setting permission unit', path, autoPermissionUnit);
       setValue(path, autoPermissionUnit);
     }
   }, [setValue, path, autoPermissionUnit]);
@@ -51,14 +53,13 @@ export const PermissionUnitRecordLink = ({
   if (autoPermissionUnit) {
     return (
       <>
-        <DevInfo component={component} path={path} />
-
-        <OutputField
-          label={component.label}
+        <DevInfo
+          label={'PermissionUnitRecordLink'}
+          component={component}
           path={path}
-          value={autoPermissionUnit}
-          info={component.tooltip}
         />
+
+        <RecordLinkWithLinkedPresentation component={component} name={path} />
         <input type='hidden' name={path} value={autoPermissionUnit} />
       </>
     );

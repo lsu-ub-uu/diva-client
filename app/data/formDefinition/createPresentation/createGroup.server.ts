@@ -34,13 +34,10 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 export const createGroup = (
   dependencies: Dependencies,
   metadata: BFFMetadataGroup,
-  presentation: BFFPresentationBase,
+  presentation: BFFPresentationGroup,
 ) => {
-  const presentationGroup = dependencies.presentationPool.get(
-    presentation.id,
-  ) as BFFPresentationGroup;
   const presentationStyle = convertStylesToShortName(
-    presentationGroup.presentationStyle ?? '',
+    presentation.presentationStyle ?? '',
   );
   const attributes = checkForAttributes(
     metadata,
@@ -52,7 +49,7 @@ export const createGroup = (
   const components = createComponentsFromChildReferences(
     dependencies,
     metadata.children,
-    presentationGroup.children,
+    presentation.children,
     false,
   );
 
