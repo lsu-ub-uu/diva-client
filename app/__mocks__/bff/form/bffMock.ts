@@ -12,6 +12,7 @@ import type {
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
+  BFFPresentationTextVar,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 
@@ -926,7 +927,7 @@ export const pSomeMetadataNumberWithAttributeVar: BFFPresentationBase = {
   attributesToShow: 'none',
 };
 
-export const pSomeMetadataTextVariable: BFFPresentationBase = {
+export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariableId',
   presentationOf: 'someMetadataTextVariableId',
   mode: 'input',
@@ -935,18 +936,19 @@ export const pSomeMetadataTextVariable: BFFPresentationBase = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentationBase = {
-  id: 'pSomeMetadataTextVariableWithAttributeVarId',
-  presentationOf: 'someMetadataTextVariableWithAttributeVarId',
-  mode: 'input',
-  inputType: 'input',
-  type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
-};
+export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentationTextVar =
+  {
+    id: 'pSomeMetadataTextVariableWithAttributeVarId',
+    presentationOf: 'someMetadataTextVariableWithAttributeVarId',
+    mode: 'input',
+    inputType: 'input',
+    type: 'pVar',
+    emptyTextId: 'someEmptyTextId',
+  };
 
 // used for repeatMax X (infinite test)
 
-export const pSomeMetadataTextVariable2: BFFPresentationBase = {
+export const pSomeMetadataTextVariable2: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariable2Id',
   presentationOf: 'someMetadataTextVariable2Id',
   mode: 'input',
@@ -955,7 +957,7 @@ export const pSomeMetadataTextVariable2: BFFPresentationBase = {
   emptyTextId: 'someEmptyTextId',
   specifiedLabelTextId: 'someOtherLabelTextId',
 };
-export const pSomeMetadataTextVariable3: BFFPresentationBase = {
+export const pSomeMetadataTextVariable3: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariable3Id',
   presentationOf: 'someMetadataTextVariable3Id',
   mode: 'input',
@@ -963,7 +965,7 @@ export const pSomeMetadataTextVariable3: BFFPresentationBase = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const pSomeMetadataTextVariable4: BFFPresentationBase = {
+export const pSomeMetadataTextVariable4: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariable4Id',
   presentationOf: 'someMetadataTextVariable4Id',
   mode: 'input',
@@ -971,7 +973,7 @@ export const pSomeMetadataTextVariable4: BFFPresentationBase = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const pSomeMetadataTextVariable5: BFFPresentationBase = {
+export const pSomeMetadataTextVariable5: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariable5Id',
   presentationOf: 'someMetadataTextVariable5Id',
   mode: 'input',
@@ -979,7 +981,7 @@ export const pSomeMetadataTextVariable5: BFFPresentationBase = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const pSomeMetadataTextVariable6: BFFPresentationBase = {
+export const pSomeMetadataTextVariable6: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariable6Id',
   presentationOf: 'someMetadataTextVariable6Id',
   mode: 'output',
@@ -1074,7 +1076,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   children: [
     {
       refGroups: [{ childId: 'someHeadlineTextId', type: 'text' }],
-      textStyle: 'bold',
+      textStyle: 'boldTextStyle',
       childStyle: ['twelveChildStyle'],
     },
     {
@@ -1192,7 +1194,7 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   children: [
     {
       refGroups: [{ childId: 'someEditHeadlineTextId', type: 'text' }],
-      textStyle: 'bold',
+      textStyle: 'boldTextStyle',
       childStyle: ['twelveChildStyle'],
     },
     {
@@ -1660,7 +1662,7 @@ export const someScopusIdTextVar: BFFMetadataTextVariable = {
   regEx: 'someRegex',
 };
 
-export const pSomeArchiveNumberTextVar: BFFPresentationBase = {
+export const pSomeArchiveNumberTextVar: BFFPresentationTextVar = {
   id: 'pArchiveNumberTextVarId',
   presentationOf: 'archiveNumberTextVarId',
   mode: 'input',
@@ -1668,7 +1670,7 @@ export const pSomeArchiveNumberTextVar: BFFPresentationBase = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const pSomeLocalIdTextVar: BFFPresentationBase = {
+export const pSomeLocalIdTextVar: BFFPresentationTextVar = {
   id: 'pLocalIdTextVarId',
   presentationOf: 'localIdTextVarId',
   mode: 'input',
@@ -1676,7 +1678,7 @@ export const pSomeLocalIdTextVar: BFFPresentationBase = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const pSomeScopusIdTextVar: BFFPresentationBase = {
+export const pSomeScopusIdTextVar: BFFPresentationTextVar = {
   id: 'pScopusIdTextVarId',
   presentationOf: 'scopusIdTextVarId',
   mode: 'input',

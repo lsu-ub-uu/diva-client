@@ -25,8 +25,8 @@ import type {
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-  BFFPresentationBase,
   BFFPresentationGroup,
+  BFFPresentationTextVar,
   BFFRecordType,
   BFFSearch,
   BFFText,
@@ -110,7 +110,7 @@ describe('loginDefinition', () => {
       ],
     );
     const presentationPool = listToPool<
-      BFFPresentationGroup | BFFPresentationBase
+      BFFPresentationGroup | BFFPresentationTextVar
     >([
       {
         id: 'viewDefinitionPasswordPGroup',

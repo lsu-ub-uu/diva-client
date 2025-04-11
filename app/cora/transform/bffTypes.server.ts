@@ -215,6 +215,11 @@ export type TextStyle =
   | 'italicTextStyle'
   | 'boldTextStyle';
 
+export type HeadLineStyle = Omit<
+  TextStyle,
+  'bodyTextStyle' | 'italicTextStyle' | 'boldTextStyle'
+>;
+
 export type ChildStyle =
   | 'zeroChildStyle'
   | 'oneChildStyle'
@@ -236,11 +241,11 @@ export type ChildStyle =
 export interface BFFPresentationChildReference {
   refGroups: BFFPresentationChildRefGroup[];
   minNumberOfRepeatingToShow?: string;
-  textStyle?: string;
+  textStyle?: TextStyle;
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6'; // kan vi köra HeadLineStyle?
   addText?: string;
 }
 
