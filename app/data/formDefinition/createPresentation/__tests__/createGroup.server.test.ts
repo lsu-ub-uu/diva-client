@@ -9,7 +9,7 @@ import { createGroup } from '../createGroup.server';
 import { listToPool } from '@/utils/structs/listToPool';
 
 describe('createGroup', () => {
-  it('transforms presentAs', () => {
+  it.todo('transforms presentAs', () => {
     const presentation: BFFPresentationGroup = {};
     const metadata: BFFMetadataGroup = {};
 

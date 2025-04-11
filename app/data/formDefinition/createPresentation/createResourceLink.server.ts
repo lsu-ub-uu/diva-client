@@ -18,21 +18,71 @@
  */
 
 import type {
+  BFFMetadataChildReference,
+  BFFPresentationChildReference,
   BFFPresentationResourceLink,
   BFFResourceLink,
 } from '@/cora/transform/bffTypes.server';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentResourceLink,
+} from '@/components/FormGenerator/types';
+import { createRepeat } from './createRepeat';
+import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 
 export const createResourceLink = (
   metadata: BFFResourceLink,
   presentation: BFFPresentationResourceLink,
-) => {
+  metadataChildReference: BFFMetadataChildReference,
+  presentationChildReference: BFFPresentationChildReference,
+  alternativePresentation: FormComponent | undefined,
+): FormComponentResourceLink => {
+  const type = metadata.type;
   const outputFormat = presentation.outputFormat;
-  const commonParameters = createCommonParameters(metadata, presentation);
+
+  const repeat = createRepeat(
+    presentationChildReference,
+    metadataChildReference,
+  );
+
+  const {
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  } = createPresentationChildReferenceParameters(presentationChildReference);
+
+  const {
+    name,
+    placeholder,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = createCommonParameters(metadata, presentation);
+
   return removeEmpty({
-    ...commonParameters,
+    type,
+    name,
+    placeholder,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
     outputFormat,
-  }) as FormComponentResourceLink;
+  });
 };

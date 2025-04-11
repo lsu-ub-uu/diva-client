@@ -67,7 +67,7 @@ export const pSomeNewMetadataGroupForMissingChildId: BFFPresentationGroup = {
   type: 'pGroup',
   presentationOf: 'someNewMetadataGroupForMissingChildIdId', // metadata
   mode: 'input',
-  presentationStyle: 'card',
+
   children: [
     {
       refGroups: [
@@ -1070,7 +1070,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   type: 'pGroup',
   presentationOf: 'someNewMetadataGroupId', // metadata
   mode: 'input',
-  presentationStyle: 'card',
+
   children: [
     {
       refGroups: [{ childId: 'someHeadlineTextId', type: 'text' }],
@@ -1099,7 +1099,6 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       refGroups: [
         { childId: 'pSomeMetadataTextVariable6Id', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1130,7 +1129,6 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1139,37 +1137,30 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'pSomeMetadataChildGroupId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'nationalSubjectCategoryPLinkId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'someNewRecordPLinkId', type: 'presentation' }],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'pSomeContainerId', type: 'presentation' }],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'pSomeGuiElementLinkId', type: 'guiElement' }],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'pSomeRepeatingContainerId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1178,7 +1169,6 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1187,11 +1177,9 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'pSomeManuscriptGroupId', type: 'presentation' }],
-      childStyle: [],
     },
   ],
 };
@@ -1255,7 +1243,6 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1264,33 +1251,27 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'pSomeMetadataChildGroupId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'nationalSubjectCategoryPLinkId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'pSomeContainerId', type: 'presentation' }],
-      childStyle: [],
     },
     {
       refGroups: [{ childId: 'pSomeGuiElementLinkId', type: 'guiElement' }],
-      childStyle: [],
     },
     {
       refGroups: [
         { childId: 'pSomeRepeatingContainerId', type: 'presentation' },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1299,7 +1280,6 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
     {
       refGroups: [
@@ -1308,7 +1288,6 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
           type: 'presentation',
         },
       ],
-      childStyle: [],
     },
   ],
 };
@@ -1316,7 +1295,7 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
 export const pSomeContainer: BFFPresentationSurroundingContainer = {
   id: 'pSomeContainerId',
   type: 'container',
-  presentationStyle: 'card',
+
   presentationsOf: ['someMetadataTextVariable4Id'], // metadata
   mode: 'input',
   children: [
@@ -1614,14 +1593,13 @@ export const pSomeManuscriptGroup: BFFPresentationGroup = {
   id: 'pSomeManuscriptGroupId',
   type: 'pGroup',
   presentationOf: 'someManuscriptGroupId', // metadata
-  presentationStyle: '',
+
   mode: 'input',
   children: [
     {
       refGroups: [
         { childId: 'pSomeManuscriptIdContainer', type: 'presentation' },
       ],
-      childStyle: [],
     },
   ],
 };
@@ -1629,7 +1607,7 @@ export const pSomeManuscriptGroup: BFFPresentationGroup = {
 export const pSomeManuscriptContainer: BFFPresentationSurroundingContainer = {
   id: 'pSomeManuscriptIdContainer',
   type: 'container',
-  presentationStyle: '',
+
   presentationsOf: [
     'archiveNumberTextVarId',
     'localIdTextVarId',
@@ -1639,17 +1617,17 @@ export const pSomeManuscriptContainer: BFFPresentationSurroundingContainer = {
   children: [
     {
       refGroups: [{ childId: 'pArchiveNumberTextVarId', type: 'presentation' }],
-      childStyle: [],
+
       minNumberOfRepeatingToShow: '1',
     },
     {
       refGroups: [{ childId: 'pLocalIdTextVarId', type: 'presentation' }],
-      childStyle: [],
+
       minNumberOfRepeatingToShow: '1',
     },
     {
       refGroups: [{ childId: 'pScopusIdTextVarId', type: 'presentation' }],
-      childStyle: [],
+
       minNumberOfRepeatingToShow: '1',
     },
   ],

@@ -18,36 +18,91 @@
  */
 
 import type {
+  FormComponent,
+  FormComponentTextVar,
+} from '@/components/FormGenerator/types';
+import type {
   BFFMetadata,
+  BFFMetadataChildReference,
   BFFMetadataTextVariable,
-  BFFPresentationBase,
+  BFFPresentationChildReference,
+  BFFPresentationTextVar,
 } from '@/cora/transform/bffTypes.server';
-import { createTextVariableValidation } from '@/data/formDefinition/formValidation.server';
-import { checkForAttributes } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
+import { createTextVariableValidation } from '@/data/formDefinition/formValidation.server';
+import type { Lookup } from '@/utils/structs/lookup';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import { createAttributes } from './createAttributes';
+import { createRepeat } from './createRepeat';
 
 export const createTextVar = (
   metadataPool: Lookup<string, BFFMetadata>,
   metadata: BFFMetadataTextVariable,
-  presentation: BFFPresentationBase,
-) => {
+  presentation: BFFPresentationTextVar,
+  metadataChildReference: BFFMetadataChildReference,
+  presentationChildReference: BFFPresentationChildReference,
+  alternativePresentation: FormComponent | undefined,
+): FormComponentTextVar => {
   const validation = createTextVariableValidation(metadata);
   const finalValue = metadata.finalValue;
   const inputFormat = presentation.inputFormat;
-  const attributes = checkForAttributes(
+  const type = metadata.type;
+  const attributes = createAttributes(
     metadata,
     metadataPool,
     undefined,
     presentation,
   );
-  const commonParameters = createCommonParameters(metadata, presentation);
+  const inputType = presentation.inputType;
+
+  const repeat = createRepeat(
+    presentationChildReference,
+    metadataChildReference,
+  );
+
+  const {
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  } = createPresentationChildReferenceParameters(presentationChildReference);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = createCommonParameters(metadata, presentation);
+
   return removeEmpty({
-    ...commonParameters,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
     validation,
     finalValue,
     inputFormat,
     attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    inputType,
+    alternativePresentation,
   });
 };

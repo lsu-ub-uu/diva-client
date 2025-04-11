@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import babelPlugin from 'vite-plugin-babel';
 
-export default defineConfig(({ isSsrBuild }) => {
+export default defineConfig(({ isSsrBuild, mode }) => {
   const { BASE_PATH } = process.env;
 
   return {
@@ -16,6 +16,7 @@ export default defineConfig(({ isSsrBuild }) => {
         babelConfig: {
           presets: ['@babel/preset-typescript'],
           plugins: ['babel-plugin-react-compiler'],
+          retainLines: true,
         },
       }),
       tsconfigPaths(),

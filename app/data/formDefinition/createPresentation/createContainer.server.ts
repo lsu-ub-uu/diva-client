@@ -18,31 +18,31 @@
  */
 
 import type {
+  FormComponent,
+  FormComponentContainer,
+} from '@/components/FormGenerator/types';
+import type {
   BFFMetadataChildReference,
+  BFFPresentationChildReference,
   BFFPresentationContainer,
 } from '@/cora/transform/bffTypes.server';
 import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createRContainer } from '@/data/formDefinition/createPresentation/createRContainer.server';
 import { createSContainer } from '@/data/formDefinition/createPresentation/createSContainer.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 
 export const createContainer = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentation: BFFPresentationContainer,
-) => {
+  presentationChildReference: BFFPresentationChildReference,
+  alternativePresentation: FormComponent | undefined,
+): FormComponentContainer => {
   const name = presentation.id; // container does not have a nameInData so use id instead.
   const { type, mode } = presentation;
   const containerType = getContainerType(presentation);
-  const presentationStyle = convertStylesToShortName(
-    presentation.presentationStyle ?? '',
-  );
-  let showLabel;
-  if (presentation.showLabel && presentation.showLabel === 'false') {
-    showLabel = false;
-  }
+  const presentationStyle = presentation.presentationStyle;
 
   let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
 
@@ -59,7 +59,6 @@ export const createContainer = (
     );
   }
 
-  const commonParameters = { type, name, mode };
   const components = createComponentsFromChildReferences(
     dependencies,
     definitionFilteredChildRefs,
@@ -67,13 +66,30 @@ export const createContainer = (
     false,
   );
 
-  return removeEmpty({
-    ...commonParameters,
-    showLabel,
+  const {
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  } = createPresentationChildReferenceParameters(presentationChildReference);
+
+  return {
+    type,
+    name,
+    mode,
     presentationStyle,
     containerType,
     components,
-  });
+    childStyle,
+    gridColSpan,
+    textStyle,
+    alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  };
 };
 
 const getContainerType = (presentationContainer: BFFPresentationContainer) => {

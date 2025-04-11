@@ -125,7 +125,6 @@ describe('loginDefinition', () => {
               },
             ],
             minNumberOfRepeatingToShow: '1',
-            childStyle: [],
           },
           {
             refGroups: [
@@ -135,7 +134,6 @@ describe('loginDefinition', () => {
               },
             ],
             minNumberOfRepeatingToShow: '1',
-            childStyle: [],
           },
         ],
         type: 'pGroup',
@@ -185,10 +183,8 @@ describe('loginDefinition', () => {
       type: 'password',
       presentation: {
         form: {
-          childStyle: [''],
           components: [
             {
-              childStyle: [''],
               gridColSpan: 12,
               inputType: 'input',
               label: 'loginIdTextVarText',
@@ -211,7 +207,6 @@ describe('loginDefinition', () => {
               },
             },
             {
-              childStyle: [''],
               gridColSpan: 12,
               inputType: 'input',
               label: 'loginPasswordTextVarText',
@@ -238,7 +233,6 @@ describe('loginDefinition', () => {
           label: 'viewDefinitionPasswordGroupText',
           mode: 'input',
           name: 'password',
-          presentationStyle: '',
           repeat: {
             repeatMax: 1,
             repeatMin: 1,

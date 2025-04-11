@@ -18,10 +18,7 @@
  */
 
 import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
-import {
-  convertChildStylesToGridColSpan,
-  convertChildStylesToShortName,
-} from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 export const createText = (
@@ -38,9 +35,7 @@ export const createText = (
     name: presentationChildId,
     type: presentationChildType,
     textStyle: presentationChildReference.textStyle,
-    childStyle: convertChildStylesToShortName(
-      presentationChildReference.childStyle,
-    ),
+    childStyle: presentationChildReference.childStyle,
     gridColSpan: convertChildStylesToGridColSpan(
       presentationChildReference.childStyle ?? [],
     ),

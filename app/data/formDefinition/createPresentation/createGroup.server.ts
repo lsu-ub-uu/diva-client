@@ -18,28 +18,34 @@
  */
 
 import type {
+  BFFMetadataChildReference,
   BFFMetadataGroup,
-  BFFPresentationBase,
+  BFFPresentationChildReference,
   BFFPresentationGroup,
 } from '@/cora/transform/bffTypes.server';
-import {
-  checkForAttributes,
-  createComponentsFromChildReferences,
-} from '@/data/formDefinition/createPresentation/createGroupOrComponent';
+import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
-import { convertStylesToShortName } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { createAttributes } from './createAttributes';
+import type {
+  FormComponent,
+  FormComponentGroup,
+} from '@/components/FormGenerator/types';
+import { createRepeat } from './createRepeat';
+import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 
 export const createGroup = (
   dependencies: Dependencies,
   metadata: BFFMetadataGroup,
   presentation: BFFPresentationGroup,
-) => {
-  const presentationStyle = convertStylesToShortName(
-    presentation.presentationStyle ?? '',
-  );
-  const attributes = checkForAttributes(
+  metadataChildReference: BFFMetadataChildReference,
+  presentationChildReference: BFFPresentationChildReference,
+  alternativePresentation: FormComponent | undefined,
+): FormComponentGroup => {
+  const type = metadata.type;
+  const presentationStyle = presentation.presentationStyle;
+  const attributes = createAttributes(
     metadata,
     dependencies.metadataPool,
     undefined,
@@ -53,12 +59,51 @@ export const createGroup = (
     false,
   );
 
-  const commonParameters = createCommonParameters(metadata, presentation);
+  const repeat = createRepeat(
+    presentationChildReference,
+    metadataChildReference,
+  );
+
+  const {
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  } = createPresentationChildReferenceParameters(presentationChildReference);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
-    ...commonParameters,
+    type,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
     presentationStyle,
     attributes,
     components,
+    repeat,
+    childStyle,
+    gridColSpan,
+    textStyle,
+    alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
   });
 };

@@ -22,7 +22,6 @@ import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.se
 export const createBFFPresentationReference = (
   childId: string,
   type: 'presentation' | 'guiElement' | 'text' = 'presentation',
-  childStyle = [],
 ): BFFPresentationChildReference => ({
   refGroups: [
     {
@@ -30,5 +29,4 @@ export const createBFFPresentationReference = (
       type,
     },
   ],
-  childStyle,
 });

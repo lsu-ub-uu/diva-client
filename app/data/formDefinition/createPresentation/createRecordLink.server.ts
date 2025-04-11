@@ -19,20 +19,32 @@
 
 import type {
   BFFMetadata,
+  BFFMetadataChildReference,
   BFFMetadataRecordLink,
+  BFFPresentationChildReference,
   BFFPresentationRecordLink,
 } from '@/cora/transform/bffTypes.server';
-import { checkForAttributes } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { createAttributes } from './createAttributes';
+import type {
+  FormComponent,
+  FormComponentRecordLink,
+} from '@/components/FormGenerator/types';
+import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import { createRepeat } from './createRepeat';
 
 export const createRecordLink = (
   metadataPool: Lookup<string, BFFMetadata>,
   metadata: BFFMetadataRecordLink,
   presentation: BFFPresentationRecordLink,
-) => {
+  metadataChildReference: BFFMetadataChildReference,
+  presentationChildReference: BFFPresentationChildReference,
+  alternativePresentation: FormComponent | undefined,
+): FormComponentRecordLink => {
   const recordLinkType = metadata.linkedRecordType;
+  const type = metadata.type;
   let search;
   if (presentation.search !== undefined) {
     search = presentation.search;
@@ -43,22 +55,61 @@ export const createRecordLink = (
   }
   const presentationRecordLinkId = presentation.id;
 
-  const attributes = checkForAttributes(
+  const repeat = createRepeat(
+    presentationChildReference,
+    metadataChildReference,
+  );
+
+  const attributes = createAttributes(
     metadata,
     metadataPool,
     undefined,
     presentation,
   );
 
-  const commonParameters = createCommonParameters(metadata, presentation);
+  const {
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+  } = createPresentationChildReferenceParameters(presentationChildReference);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
-    ...commonParameters,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
     recordLinkType,
     search,
     linkedRecordPresentation,
     presentationRecordLinkId,
     presentAs: presentation.presentAs,
     attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
   });
 };

@@ -21,10 +21,7 @@ import type {
   BFFGuiElement,
   BFFPresentationChildReference,
 } from '@/cora/transform/bffTypes.server';
-import {
-  convertChildStylesToGridColSpan,
-  convertChildStylesToShortName,
-} from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 export const createGuiElement = (
@@ -44,9 +41,7 @@ export const createGuiElement = (
     url: presentation.url,
     elementText: presentation.elementText,
     presentAs: presentation.presentAs,
-    childStyle: convertChildStylesToShortName(
-      presentationChildReference.childStyle,
-    ),
+    childStyle: presentationChildReference.childStyle,
     gridColSpan: convertChildStylesToGridColSpan(
       presentationChildReference.childStyle ?? [],
     ),
