@@ -305,8 +305,7 @@ describe('formDefinition', () => {
       | 'pCollVar'
       | 'container'
       | 'pRecordLink'
-      | 'pResourceLink'
-      | 'presentation',
+      | 'pResourceLink',
     mode: 'input' | 'output' = 'output',
     inputFormat?: 'password',
   ): BFFPresentationBase => {
@@ -628,7 +627,7 @@ describe('formDefinition', () => {
           label: 'textId345',
           showLabel: true,
           gridColSpan: 12,
-          childStyle: ['twelveChildStyle'],
+
           name: 'someNewMetadataGroupNameInData',
           repeat: {
             repeatMin: 1,
@@ -748,12 +747,11 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData6',
-
               label: 'someTextId',
               showLabel: true,
               placeholder: 'someEmptyTextId',
               gridColSpan: 12,
-              childStyle: ['twelveChildStyle'],
+
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -870,6 +868,7 @@ describe('formDefinition', () => {
               label: 'someNumberVarTextId',
               showLabel: true,
               gridColSpan: 12,
+
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMin: 1,
@@ -959,7 +958,7 @@ describe('formDefinition', () => {
               showLabel: true,
               gridColSpan: 12,
 
-              presentationStyle: 'frame',
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someChildGroupNameInData',
               repeat: {
                 repeatMin: 1,
@@ -1059,7 +1058,7 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
-
+                  childStyle: ['sixChildStyle'],
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1083,6 +1082,7 @@ describe('formDefinition', () => {
             {
               name: 'pSomeGuiElementLinkId',
               gridColSpan: 12,
+
               url: 'http://www.google.se',
               elementText: 'demoTestLinkGuiElementText',
               presentAs: 'link',
@@ -1091,7 +1091,7 @@ describe('formDefinition', () => {
             {
               type: 'container',
               name: 'pSomeRepeatingContainerId',
-
+              presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
 
@@ -1102,7 +1102,7 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
-
+                  childStyle: ['sixChildStyle'],
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1130,6 +1130,7 @@ describe('formDefinition', () => {
               headlineLevel: 'h3',
               gridColSpan: 12,
 
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
               repeat: {
                 repeatMin: 1,
@@ -1173,8 +1174,9 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: false,
               gridColSpan: 12,
-              childStyle: ['twelveChildStyle'],
+
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -1214,7 +1216,7 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
-              childStyle: ['twelveChildStyle'],
+
               label: 'textId345',
               showLabel: true,
               mode: 'input',
@@ -1234,14 +1236,15 @@ describe('formDefinition', () => {
                 {
                   containerType: 'surrounding',
                   gridColSpan: 12,
+
                   mode: 'input',
                   name: 'pSomeManuscriptIdContainer',
-
                   type: 'container',
 
                   components: [
                     {
                       gridColSpan: 12,
+
                       inputType: 'input',
                       label: 'someTextId',
                       showLabel: true,
@@ -1265,6 +1268,7 @@ describe('formDefinition', () => {
                     },
                     {
                       gridColSpan: 12,
+
                       inputType: 'input',
                       label: 'someTextId',
                       showLabel: true,
@@ -1357,6 +1361,7 @@ describe('formDefinition', () => {
               name: 'someEditHeadlineTextId',
               textStyle: 'bold',
               gridColSpan: 12,
+              childStyle: ['twelveChildStyle'],
             },
             {
               type: 'textVariable',
@@ -1633,7 +1638,7 @@ describe('formDefinition', () => {
                 title: 'someChildGroupTextId',
                 body: 'someChildGroupDefTextId',
               },
-
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               components: [
                 {
                   type: 'textVariable',
@@ -1699,7 +1704,7 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
-
+                  childStyle: ['sixChildStyle'],
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1731,7 +1736,7 @@ describe('formDefinition', () => {
             {
               type: 'container',
               name: 'pSomeRepeatingContainerId',
-
+              presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
 
@@ -1742,7 +1747,7 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
-
+                  childStyle: ['sixChildStyle'],
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1769,7 +1774,7 @@ describe('formDefinition', () => {
               showLabel: true,
               headlineLevel: 'h3',
               gridColSpan: 12,
-
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
               repeat: {
                 repeatMin: 1,
@@ -1813,7 +1818,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: false,
               gridColSpan: 12,
-
+              presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
               repeat: {
                 repeatMin: 1,
@@ -1870,7 +1875,6 @@ describe('formDefinition', () => {
         form: {
           type: 'group',
           gridColSpan: 12,
-          childStyle: ['twelveChildStyle'],
           name: 'divaOutput',
           repeat: {
             repeatMin: 1,
@@ -1888,8 +1892,8 @@ describe('formDefinition', () => {
               name: 'colour',
               label: 'exampleCollectionVarText',
               showLabel: true,
-              childStyle: [''],
-              gridColSpan: 12,  // no childStyle
+              childStyle: ['twelveChildStyle'],
+              gridColSpan: 12,
               finalValue: 'pink',
               placeholder: 'someEmptyTextId',
               repeat: {
@@ -3764,12 +3768,8 @@ describe('formDefinition', () => {
       createValidationType('divaOutput');
       createTextVar('abstractTextVar', 'abstract', []);
       createTextVar('abstract2TextVar', 'abstract2', []);
-      createPresentationVar('abstractPVar', 'abstractTextVar', 'presentation');
-      createPresentationVar(
-        'abstract2PVar',
-        'abstract2TextVar',
-        'presentation',
-      );
+      createPresentationVar('abstractPVar', 'abstractTextVar', 'pVar');
+      createPresentationVar('abstract2PVar', 'abstract2TextVar', 'pVar');
       createGroup('somethesisManuscriptMetadataGroupId', 'divaOutput', [
         'abstractTextVar',
       ]);
@@ -3823,6 +3823,10 @@ describe('formDefinition', () => {
                 title: 'someTextId',
               },
               type: 'textVariable',
+              validation: {
+                pattern: '.*',
+                type: 'regex',
+              },
             },
           ],
           gridColSpan: 12,

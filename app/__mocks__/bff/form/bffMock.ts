@@ -1189,7 +1189,6 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   type: 'pGroup',
   presentationOf: 'someEditMetadataGroupId', // metadata
   mode: 'input',
-  presentationStyle: 'card',
   children: [
     {
       refGroups: [{ childId: 'someEditHeadlineTextId', type: 'text' }],

@@ -659,9 +659,9 @@ describe('transformCoraPresentations', () => {
       expect(transformData[0]).toStrictEqual({
         id: 'labelInputSContainer',
         type: 'container',
+        presentationStyle: 'card',
         presentationsOf: ['showLabelCollectionVar', 'specifiedLabelTextLink'],
         mode: 'input',
-        presentationStyle: 'card',
         children: [
           {
             refGroups: [

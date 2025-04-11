@@ -129,8 +129,7 @@ export interface BFFPresentationBase extends BFFBase {
     | 'pCollVar'
     | 'container'
     | 'pRecordLink'
-    | 'pResourceLink'
-    | 'presentation';
+    | 'pResourceLink';
   presentationOf: string;
   mode: 'input' | 'output';
   emptyTextId?: string;

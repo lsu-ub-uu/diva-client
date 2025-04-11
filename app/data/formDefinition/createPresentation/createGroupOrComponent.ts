@@ -53,6 +53,9 @@ import { createTextVar } from '@/data/formDefinition/createPresentation/createTe
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { Lookup } from '@/utils/structs/lookup';
+import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
+import { createPresentationChildReferenceParameters } from '@/data/formDefinition/createPresentationChildReferenceParameters.server';
+import { createRepeat } from '@/data/formDefinition/createPresentation/createRepeat';
 
 export const createGroupOrComponent = (
   dependencies: Dependencies,
@@ -172,14 +175,12 @@ export const createGroupOrComponent = (
     );
   }
 
-  return createGroup(
-    dependencies,
-    metadata as BFFMetadataGroup,
-    presentation as BFFPresentationGroup,
-    metaDataChildReference,
-    presentationChildReference,
-    alternativePresentation,
-  );
+  // Fall back to "generic" presentation
+  return {
+    ...createCommonParameters(metadata, presentation),
+    repeat: createRepeat(presentationChildReference, metaDataChildReference),
+    ...createPresentationChildReferenceParameters(presentationChildReference),
+  };
 };
 
 const getPresentation = (
