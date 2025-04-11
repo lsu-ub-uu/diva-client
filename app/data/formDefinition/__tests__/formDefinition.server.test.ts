@@ -38,6 +38,7 @@ import type {
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
+  BFFPresentationTextVar,
   BFFRecordType,
   BFFSearch,
   BFFText,
@@ -2089,7 +2090,7 @@ describe('formDefinition', () => {
         children: [
           {
             title: 'personRefTitle',
-            titleHeadlineLevel: '3',
+            titleHeadlineLevel: 'h3',
             presentationSize: 'firstSmaller',
             refGroups: [
               {
@@ -3931,7 +3932,7 @@ describe('formDefinition', () => {
       };
       presentationPool.set('agentPGroup', agentPGroup);
 
-      const namePartPVar: BFFPresentationBase = {
+      const namePartPVar: BFFPresentationTextVar = {
         id: 'namePartPVar',
         presentationOf: 'namePartTextVar',
         mode: 'input',
