@@ -17,7 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { FormComponentGroup, FormComponentWithData } from '@/components/FormGenerator/types';
+import type {
+  FormComponentGroup,
+  FormComponentWithData,
+} from '@/components/FormGenerator/types';
 
 export const formComponentGroup: FormComponentGroup = {
   name: 'firstChildGroup',
@@ -490,12 +493,12 @@ export const formComponentTitleInfoGroup: FormComponentWithData = {
             repeatMin: 1,
             repeatMax: 1,
           },
-          childStyle: [''],
+          childStyle: [],
           gridColSpan: 12,
         },
       ],
       presentationStyle: '',
-      childStyle: [''],
+      childStyle: [],
       gridColSpan: 12,
     },
     {
@@ -577,12 +580,12 @@ export const formComponentTitleInfoGroup: FormComponentWithData = {
             repeatMin: 1,
             repeatMax: 1,
           },
-          childStyle: [''],
+          childStyle: [],
           gridColSpan: 12,
         },
       ],
       presentationStyle: '',
-      childStyle: [''],
+      childStyle: [],
       gridColSpan: 12,
     },
   ],

@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentContainer,
-  FormComponentGroup,
-} from '@/components/FormGenerator/types';
+import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import {
@@ -44,7 +41,7 @@ import { useTranslation } from 'react-i18next';
 
 interface GroupProps {
   currentComponentNamePath: string;
-  component: FormComponentContainer | FormComponentGroup;
+  component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
   actionButtonGroup?: ReactNode;
 }

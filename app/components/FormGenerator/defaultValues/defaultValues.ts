@@ -20,6 +20,7 @@
 import type {
   FormAttributeCollection,
   FormComponent,
+  FormComponentContainer,
   FormComponentGroup,
   FormComponentWithData,
   FormSchema,
@@ -49,9 +50,14 @@ export const removeRootObject = (obj: Record<string, any>) => {
 export const createDefaultValueFromFinalValue = (
   component: FormComponentWithData | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');
+
 export const generateComponentAttributes = (
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
 ) => {
+  if (!isComponentWithData(component)) {
+    return {};
+  }
+
   const attributeValues =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
@@ -72,14 +78,14 @@ export const generateRepeatingObject = (
 };
 
 export const getMinNumberOfRepeatingToShow = (
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
 ) =>
   component.repeat?.minNumberOfRepeatingToShow ??
   component.repeat?.repeatMin ??
   0;
 
 function createDefaultObjectForRepeating(
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
   defaultValues: {
     [p: string]:
       | string
@@ -100,7 +106,7 @@ function createDefaultObjectForRepeating(
 
 function createDefaultValueForNonRepeating(
   defaultValues: any,
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
   formDefaultObject:
     | { [p: string]: string; value: string }
     | { [p: string]: string },
@@ -110,7 +116,7 @@ function createDefaultValueForNonRepeating(
 }
 
 export const createDefaultValuesFromComponent = (
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
   forceDefaultValuesForAppend = false,
 ) => {
   let defaultValues: {
@@ -195,7 +201,9 @@ function createDefaultValuesForVariable(component: FormComponentWithData) {
   };
 }
 
-function createDefaultValuesForGroup(component: FormComponentGroup) {
+function createDefaultValuesForGroup(
+  component: FormComponentGroup | FormComponentContainer,
+) {
   return {
     // groups
     ...createDefaultValuesFromComponents(component.components),

@@ -63,7 +63,7 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
     'Authentication delete actionLink missing',
   );
 
-  return removeEmpty({
+  const auth: Auth = {
     data: {
       token,
       validUntil,
@@ -78,5 +78,7 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
       delete: authentication.actionLinks.delete,
       renew: authentication.actionLinks.renew,
     },
-  });
+  };
+
+  return removeEmpty(auth);
 };

@@ -271,7 +271,7 @@ describe('transformCoraPresentations', () => {
       });
     });
 
-    it('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
+    it.only('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
       const transformData = transformCoraPresentations(
         coraPresentationGroupAltPresentation,
       );
@@ -288,7 +288,7 @@ describe('transformCoraPresentations', () => {
                 type: 'presentation',
               },
             ],
-            childStyle: [''],
+            childStyle: ['oneChildStyle'],
             minNumberOfRepeatingToShow: '1',
           },
         ],

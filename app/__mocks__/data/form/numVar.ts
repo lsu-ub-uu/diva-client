@@ -222,7 +222,6 @@ export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
   },
 };
 
-
 export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
@@ -280,12 +279,12 @@ export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
           },
         ],
         presentationStyle: '',
-        childStyle: [''],
+        childStyle: [],
         gridColSpan: 12,
       },
     ],
     presentationStyle: '',
-    childStyle: [''],
+    childStyle: [],
     gridColSpan: 12,
   },
 };
@@ -347,12 +346,12 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
           },
         ],
         presentationStyle: '',
-        childStyle: [''],
+        childStyle: [],
         gridColSpan: 12,
       },
     ],
     presentationStyle: '',
-    childStyle: [''],
+    childStyle: [],
     gridColSpan: 12,
   },
 };

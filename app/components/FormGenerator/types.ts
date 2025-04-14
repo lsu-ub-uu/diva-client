@@ -136,6 +136,7 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   linkedRecordPresentation?: LinkedPresentation;
   label: string;
   showLabel: boolean;
+  presentAs?: 'onlyTranslatedText' | 'permissionUnit';
 }
 
 export interface FormComponentResourceLink extends FormComponentMetadata {
@@ -155,6 +156,11 @@ export interface FormComponentGroup extends FormComponentMetadata {
   components?: FormComponent[];
   label: string;
   showLabel: boolean;
+  presentAs?:
+    | 'map'
+    | 'recordRelation'
+    | 'externalLinkWithValue'
+    | 'onlyTranslatedText';
 }
 
 export type FormComponentText = FormComponentMetadata;
@@ -162,7 +168,7 @@ export type FormComponentText = FormComponentMetadata;
 export interface FormComponentGuiElement extends FormComponentBase {
   url: string;
   elementText: string;
-  presentAs: string;
+  presentAs: 'link' | 'image';
 }
 
 export type FormComponent =

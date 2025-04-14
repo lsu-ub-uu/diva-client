@@ -45,6 +45,8 @@ export const createGroup = (
 ): FormComponentGroup => {
   const type = metadata.type;
   const presentationStyle = presentation.presentationStyle;
+  const presentAs = presentation.presentAs;
+
   const attributes = createAttributes(
     metadata,
     dependencies.metadataPool,
@@ -105,5 +107,6 @@ export const createGroup = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    presentAs,
   });
 };

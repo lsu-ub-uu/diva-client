@@ -35,7 +35,10 @@ import {
 } from '../defaultValues';
 import type { FormComponent, FormSchema } from '../../types';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { formDefWithOneRepeatingTextVariable, formDefWithTextVar } from '@/__mocks__/data/form/textVar';
+import {
+  formDefWithOneRepeatingTextVariable,
+  formDefWithTextVar,
+} from '@/__mocks__/data/form/textVar';
 import {
   formDefRealDemo,
   formDefRealDemoWithAttributes,
@@ -50,8 +53,11 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
 } from '@/__mocks__/data/form/container';
 import {
-  formComponentGroup, formComponentGroupAndTextVariableWithinGroup,
-  formComponentGroupWithChildren, formComponentGroupWithinGroupWithAttributes, formComponentRepeatingTextVariable,
+  formComponentGroup,
+  formComponentGroupAndTextVariableWithinGroup,
+  formComponentGroupWithChildren,
+  formComponentGroupWithinGroupWithAttributes,
+  formComponentRepeatingTextVariable,
   formComponentTitleInfoGroup,
 } from '@/__mocks__/data/component/formComponent';
 import { alternativePresentationWithMinNumberRepeatingToShow } from '@/__mocks__/data/form/alternativePresentation';
@@ -510,7 +516,7 @@ describe('FormGenerator Utils', () => {
               },
             ],
             presentationStyle: '',
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           false,
@@ -647,7 +653,7 @@ describe('FormGenerator Utils', () => {
                   },
                 ],
                 presentationStyle: '',
-                childStyle: [''],
+                childStyle: [],
                 gridColSpan: 12,
               },
               {
@@ -741,7 +747,7 @@ describe('FormGenerator Utils', () => {
                   },
                 ],
                 presentationStyle: '',
-                childStyle: [''],
+                childStyle: [],
                 gridColSpan: 12,
               },
             ],
@@ -1811,7 +1817,7 @@ describe('FormGenerator Utils', () => {
               },
             ],
             presentationStyle: '',
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           {
@@ -1905,7 +1911,7 @@ describe('FormGenerator Utils', () => {
               },
             ],
             presentationStyle: '',
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
         ]);
@@ -2219,7 +2225,7 @@ describe('FormGenerator Utils', () => {
                 finalValue: 'eng',
               },
             ],
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           'nationalSubjectCategory.subject.value',
@@ -2275,7 +2281,7 @@ describe('FormGenerator Utils', () => {
                 ],
               },
             ],
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           'nationalSubjectCategory.subject.value',
@@ -2353,7 +2359,7 @@ describe('FormGenerator Utils', () => {
                 finalValue: 'swe',
               },
             ],
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           'nationalSubjectCategory.subject.value',
@@ -2385,7 +2391,7 @@ describe('FormGenerator Utils', () => {
               repeatMin: 1,
               repeatMax: 1,
             },
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           'nationalSubjectCategory.subject.value',
@@ -2539,7 +2545,7 @@ describe('FormGenerator Utils', () => {
           },
         ],
         presentationStyle: '',
-        childStyle: [''],
+        childStyle: [],
         gridColSpan: 12,
       };
 
@@ -2623,12 +2629,12 @@ describe('FormGenerator Utils', () => {
                   repeatMin: 0,
                   repeatMax: 1,
                 },
-                childStyle: [''],
+                childStyle: [],
                 gridColSpan: 12,
               },
             ],
             presentationStyle: '',
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
           {
@@ -2710,12 +2716,12 @@ describe('FormGenerator Utils', () => {
                   repeatMin: 1,
                   repeatMax: 1,
                 },
-                childStyle: [''],
+                childStyle: [],
                 gridColSpan: 12,
               },
             ],
             presentationStyle: '',
-            childStyle: [''],
+            childStyle: [],
             gridColSpan: 12,
           },
         ],
@@ -2841,7 +2847,7 @@ describe('FormGenerator Utils', () => {
           },
         ],
         presentationStyle: '',
-        childStyle: [''],
+        childStyle: [],
         gridColSpan: 12,
       };
 

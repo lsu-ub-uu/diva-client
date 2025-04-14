@@ -21,8 +21,8 @@ import type { ActionLink } from '@/cora/cora-data/types.server';
 
 export interface BFFRecordLink {
   name: string;
-  recordType: string | undefined;
-  id: string | undefined;
+  recordType: string;
+  id: string;
   readLink?: ActionLink;
 }
 
@@ -245,7 +245,7 @@ export interface BFFPresentationChildReference {
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6'; // kan vi köra HeadLineStyle?
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   addText?: string;
 }
 

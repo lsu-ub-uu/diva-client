@@ -41,7 +41,7 @@ export const formDefWithARepeatingContainer: RecordFormSchema = {
         name: 'pSomeRepeatingContainerId',
         presentationStyle: 'label',
         containerType: 'repeating',
-        childStyle: [''],
+        childStyle: [],
         components: [
           {
             type: 'textVariable',

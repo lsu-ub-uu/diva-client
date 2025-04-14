@@ -628,7 +628,6 @@ describe('formDefinition', () => {
           label: 'textId345',
           showLabel: true,
           gridColSpan: 12,
-
           name: 'someNewMetadataGroupNameInData',
           repeat: {
             repeatMin: 1,
@@ -671,7 +670,7 @@ describe('formDefinition', () => {
             {
               type: 'text',
               name: 'someHeadlineTextId',
-              textStyle: 'bold',
+              textStyle: 'boldTextStyle',
               gridColSpan: 12,
               childStyle: ['twelveChildStyle'],
             },
@@ -1316,7 +1315,7 @@ describe('formDefinition', () => {
           label: 'textId345',
           showLabel: true,
           gridColSpan: 12,
-
+          presentationStyle: 'card',
           name: 'someEditMetadataGroupNameInData',
           repeat: {
             repeatMin: 1,
@@ -1360,7 +1359,7 @@ describe('formDefinition', () => {
             {
               type: 'text',
               name: 'someEditHeadlineTextId',
-              textStyle: 'bold',
+              textStyle: 'boldTextStyle',
               gridColSpan: 12,
               childStyle: ['twelveChildStyle'],
             },
@@ -2182,7 +2181,7 @@ describe('formDefinition', () => {
                 title: 'someTextId',
               },
               title: 'personRefTitle',
-              titleHeadlineLevel: '3',
+              titleHeadlineLevel: 'h3',
               presentationSize: 'firstSmaller',
               components: [
                 {
@@ -2246,7 +2245,7 @@ describe('formDefinition', () => {
                   title: 'someTextId',
                 },
                 title: 'personRefTitle',
-                titleHeadlineLevel: '3',
+                titleHeadlineLevel: 'h3',
                 presentationSize: 'firstSmaller',
                 components: [
                   {

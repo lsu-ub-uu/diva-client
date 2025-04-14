@@ -301,7 +301,7 @@
                       {
                         "name": "childStyle",
                         "repeatId": "3",
-                        "value": ""
+                        "value": "oneChildStyle"
                       }
                     ]
                   }

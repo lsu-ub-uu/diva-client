@@ -43,14 +43,15 @@ import {
   formDefWithTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
   formDefRequiredRepeatingText2Var,
-  formDefRequiredRepeatingTextVar, formDefTextVarsWithSameNameInData,
+  formDefRequiredRepeatingTextVar,
+  formDefTextVarsWithSameNameInData,
 } from '@/__mocks__/data/form/textVar';
 import {
   formDefCollVarsWithSameNameInData,
   formDefWithOneCollectionVariable,
   formDefWithOneCollectionVariableWithModeOutput,
   formDefRequiredRepeatingCollectionVar,
-  formDefRequiredRepeatingCollection2Var
+  formDefRequiredRepeatingCollection2Var,
 } from '@/__mocks__/data/form/collVar';
 import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
@@ -96,10 +97,12 @@ import {
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
   formDefTwoOptionalGroupsWithRequiredTextVars,
-  formDefForCheckTextValue, formDefForCheckNumberValue,
+  formDefForCheckTextValue,
+  formDefForCheckNumberValue,
 } from '@/__mocks__/data/form/group';
 import {
-  formDefWithOneRecordLinkBeingOptional, formDefWithOneRecordLinkBeingRequired,
+  formDefWithOneRecordLinkBeingOptional,
+  formDefWithOneRecordLinkBeingRequired,
   formDefWithRecordLinkTypeBinary,
 } from '@/__mocks__/data/form/recordLink';
 import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
@@ -245,7 +248,7 @@ describe('<Form />', () => {
                     repeatMax: 1,
                   },
                   presentationStyle: '',
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -293,7 +296,7 @@ describe('<Form />', () => {
                       finalValue: 'swe',
                     },
                   ],
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -341,7 +344,7 @@ describe('<Form />', () => {
                       finalValue: 'eng',
                     },
                   ],
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -364,7 +367,7 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -382,7 +385,7 @@ describe('<Form />', () => {
                     repeatMin: 0,
                     repeatMax: 1,
                   },
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                   recordLinkType: 'nationalSubjectCategory',
                   presentationRecordLinkId:
@@ -391,7 +394,7 @@ describe('<Form />', () => {
                 },
               ],
               presentationStyle: '',
-              childStyle: [''],
+              childStyle: [],
               gridColSpan: 12,
             },
           }}
@@ -715,7 +718,7 @@ describe('<Form />', () => {
                     repeatMax: 1,
                   },
                   presentationStyle: '',
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -809,7 +812,7 @@ describe('<Form />', () => {
                     },
                   ],
                   presentationStyle: '',
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
                 {
@@ -903,12 +906,12 @@ describe('<Form />', () => {
                     },
                   ],
                   presentationStyle: '',
-                  childStyle: [''],
+                  childStyle: [],
                   gridColSpan: 12,
                 },
               ],
               presentationStyle: '',
-              childStyle: [''],
+              childStyle: [],
               gridColSpan: 12,
             },
           }}
@@ -2133,7 +2136,9 @@ describe('<Form />', () => {
 
       screen.getByLabelText('mainTitleTextVarText');
 
-      const attributeGroup = screen.getByRole('group', { name: 'Eye colour' });
+      const attributeGroup = screen.getByRole('group', {
+        name: 'Eye colour',
+      });
       within(attributeGroup).getByLabelText('Eye colour');
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');

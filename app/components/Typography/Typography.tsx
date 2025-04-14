@@ -19,9 +19,9 @@
 
 import { useTranslation } from 'react-i18next';
 import type { ElementType, HTMLProps } from 'react';
-import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import styles from './Typography.module.css';
+import type { TextStyle } from '@/cora/transform/bffTypes.server';
 
 interface TypographyProps extends Omit<HTMLProps<HTMLParagraphElement>, 'as'> {
   as?: ElementType;

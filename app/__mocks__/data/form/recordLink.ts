@@ -102,7 +102,7 @@ export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
           repeatMin: 1,
           repeatMax: 1,
         },
-        childStyle: [''],
+        childStyle: [],
         gridColSpan: 12,
         name: 'attachmentFile',
         type: 'recordLink',
@@ -124,5 +124,3 @@ export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
     mode: 'input',
   },
 };
-
-
