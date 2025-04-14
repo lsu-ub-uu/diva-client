@@ -46,8 +46,8 @@ export const DevInfo = ({ label, component, path }: DevInfoProps) => {
   return (
     <div className={styles['dev-info']}>
       <button type='button' onClick={() => setExpanded(!expanded)}>
-        {label} | {component.type} |{' '}
-        {addAttributesToName(component, component.name)}
+        {label ? `${label} | ` : ''}
+        {component.type} | {addAttributesToName(component, component.name)}
       </button>
 
       {expanded && (

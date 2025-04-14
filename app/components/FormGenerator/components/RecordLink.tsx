@@ -57,10 +57,10 @@ export const RecordLink = ({
     );
   }
 
-  // TODO check for presentAs instead of name
   if (
-    component.name === 'permissionUnit' &&
+    component.presentAs === 'permissionUnit' &&
     component.mode === 'input' &&
+    !value &&
     !linkedData
   ) {
     return <PermissionUnitRecordLink component={component} path={name} />;
