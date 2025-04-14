@@ -2360,7 +2360,7 @@ export const someMainTitleTitleInfoATextVariable: BFFMetadataTextVariable = {
   regEx: 'someRegex',
 };
 
-export const pSomeMainTitleTitleInfoTextVariable: BFFPresentationBase = {
+export const pSomeMainTitleTitleInfoTextVariable: BFFPresentationTextVar = {
   id: 'someMainTitlePVar',
   presentationOf: 'someMainTitleVar',
   mode: 'input',

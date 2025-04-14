@@ -95,6 +95,7 @@ export const isComponentGuiElement = (
 export const isComponentResourceLink = (
   component: FormComponent,
 ): component is FormComponentResourceLink => component.type === 'resourceLink';
+
 export const isComponentVariable = (
   component: FormComponent,
 ): component is FormComponentLeaf =>

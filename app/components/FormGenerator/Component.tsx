@@ -19,6 +19,7 @@ import type {
   FormComponent,
   FormComponentContainer,
   FormComponentGroup,
+  FormComponentLeaf,
 } from '@/components/FormGenerator/types';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import {
@@ -87,7 +88,7 @@ export const Component = ({
     return (
       <Group
         currentComponentNamePath={currentComponentNamePath}
-        component={component}
+        component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
       />
     );
@@ -186,6 +187,8 @@ const isComponentGroupAndRepeating = (
   return isComponentGroup(component) && isComponentRepeating(component);
 };
 
-const isComponentVariableAndRepeating = (component: FormComponent) => {
+const isComponentVariableAndRepeating = (
+  component: FormComponent,
+): component is FormComponentLeaf => {
   return isComponentVariable(component) && isComponentRepeating(component);
 };
