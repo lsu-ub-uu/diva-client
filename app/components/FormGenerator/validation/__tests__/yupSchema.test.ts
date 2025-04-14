@@ -32,7 +32,11 @@ import type {
   FormSchema,
 } from '../../types';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { formDefWithTextVar, formDefWithTwoRepeatingVarsAndCollectionVar } from '@/__mocks__/data/form/textVar';
+import {
+  formDefWithSingleTextVar,
+  formDefWithTextVar,
+  formDefWithTwoRepeatingVarsAndCollectionVar,
+} from '@/__mocks__/data/form/textVar';
 import {
   formDefWithNestedSurroundingContainers,
   formDefWithSurroundingContainerAroundTextVariable,
@@ -40,9 +44,11 @@ import {
 import {
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroup, formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
+  formDefWithRepeatingGroupWithRepeatingChildGroup,
+  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
 } from '@/__mocks__/data/form/group';
 import { formDefWithRepeatingCollectionVar } from '@/__mocks__/data/form/collVar';
+import { formDefWithOneNumberVariable } from '@/__mocks__/data/form/numVar';
 
 const numberValidationTests = (
   min: number,
@@ -141,41 +147,57 @@ const validationExclusiveExtras = (
 };
 
 describe('generate validation', () => {
-  it('should return correct validationSchema for one textVar and one numberVar', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithTextVar as FormSchema,
+  it('should return correct validationSchema for one textVar', () => {
+    const actualSchema = generateYupSchemaFromFormSchema(
+      formDefWithSingleTextVar as FormSchema,
     );
-    const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        type: 'object',
-        fields: {
-          someNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-                tests: [
-                  ...requiredValidationTests,
-                  ...stringValidationTests(/^[a-zA-Z]$/),
-                ],
-              },
-            },
-          },
-          someNumberVariableNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-                tests: numberValidationTests(0, 20, 0),
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    const expectedSchema = yup.object({
+      someRootNameInData: yup.object({
+        someNameInData: yup.object({
+          value: yup
+            .string()
+            .required()
+            .matches(/^[a-zA-Z]$/),
+        }),
+      }),
+    });
+    const actualData = actualSchema.describe();
+    const expectedData = expectedSchema.describe();
+    expect(actualData).toStrictEqual(expectedData);
+  });
+
+  it('should return correct validationSchema for one numVar', () => {
+    const actualSchema = generateYupSchemaFromFormSchema(
+      formDefWithOneNumberVariable as FormSchema,
+    );
+
+    /*
+ { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
+  { name: 'decimal-places', params: { numberOfDecimals } },
+  { name: 'min', params: { min } },
+  { name: 'max', params: { max } },
+    */
+    const expectedSchema = yup.object({
+      someRootNameInData: yup.object({
+        someNumberVariableNameInData: yup.object({
+          value: yup
+            .string()
+            .required()
+            .matches(/^[1-9]\d*(\.\d+)?$/)
+            .test({
+              name: 'decimal-places',
+              params: { numberOfDecimals: 0 },
+              test: vi.fn(),
+            })
+            .min(1)
+            .max(20),
+        }),
+      }),
+    });
+    const actualData = actualSchema.describe();
+    const expectedData = expectedSchema.describe();
+    expect(actualData).toStrictEqual(expectedData);
   });
 
   it('should return correct validationSchema for one textVar with a surrounding container', () => {

@@ -443,6 +443,7 @@ export const createYupNumberSchema = (
 
   return yup
     .string()
+    .required()
     .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
     .test(testDecimals)
     .test(testMin)
