@@ -28,7 +28,6 @@
     "types": [
       "@react-router/node",
       "vite/client",
-      "vitest/globals",
       "@testing-library/jest-dom",
       "vite-plugin-svgr/client"
     ],

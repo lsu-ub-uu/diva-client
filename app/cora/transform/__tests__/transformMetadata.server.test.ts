@@ -1,22 +1,23 @@
-import { transformMetadata } from '../transformMetadata.server';
-import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import testMetaData from '@/__mocks__/bff/coraMetadata.json';
-import testMetaDataWithFinalValue from '@/__mocks__/bff/coraMetadataWithFinalValue.json';
-import testMetaDataForGroupWithTwoChildren from '@/__mocks__/bff/coraMetadataForGroupWithTwoChildren.json';
-import testNumberVariableMetaData from '@/__mocks__/bff/coraMetadataNumberVariable.json';
-import testNumberVariableWithFinalValueMetaData from '@/__mocks__/bff/coraMetadataNumberVariableWithFinalValue.json';
+import testTestCollectionItem from '@/__mocks__/bff/coraMetadataCollectionItem.json';
 import testCollectionVariableMetaData from '@/__mocks__/bff/coraMetadataCollectionVariable.json';
 import testCollectionVariableMetaDataWithFinalValue from '@/__mocks__/bff/coraMetadataCollectionVariableWithFinalValue.json';
-import testItemCollection from '@/__mocks__/bff/coraMetadataItemCollection.json';
-import testTestCollectionItem from '@/__mocks__/bff/coraMetadataCollectionItem.json';
-import testTextWithOneAttribute from '@/__mocks__/bff/coraMetadataTextVarWithOneAttribute.json';
-import testTestWithTwoAttributes from '@/__mocks__/bff/coraMetadataTextVarWithTwoAttributes.json';
-import testNumberWithTwoAttributes from '@/__mocks__/bff/coraMetadataNumberVarWithTwoAttributes.json';
 import testCollectionWithTwoAttributes from '@/__mocks__/bff/coraMetadataCollectionVarWithTwoAttributes.json';
+import testMetaDataForGroupWithTwoChildren from '@/__mocks__/bff/coraMetadataForGroupWithTwoChildren.json';
 import testMetadataGroupWithAttribute from '@/__mocks__/bff/coraMetadataGroupWithAttribute.json';
+import testItemCollection from '@/__mocks__/bff/coraMetadataItemCollection.json';
+import testNumberVariableMetaData from '@/__mocks__/bff/coraMetadataNumberVariable.json';
+import testNumberVariableWithFinalValueMetaData from '@/__mocks__/bff/coraMetadataNumberVariableWithFinalValue.json';
+import testNumberWithTwoAttributes from '@/__mocks__/bff/coraMetadataNumberVarWithTwoAttributes.json';
 import testMetadataRecordLink from '@/__mocks__/bff/coraMetadataRecordLink.json';
 import testMetadataRecordLinkWithFinalValue from '@/__mocks__/bff/coraMetadataRecordLinkWithFinalValue.json';
 import testResourceLinkThumbnailMetaData from '@/__mocks__/bff/coraMetadataResourceLinkThumbnail.json';
+import testTextWithOneAttribute from '@/__mocks__/bff/coraMetadataTextVarWithOneAttribute.json';
+import testTestWithTwoAttributes from '@/__mocks__/bff/coraMetadataTextVarWithTwoAttributes.json';
+import testMetaDataWithFinalValue from '@/__mocks__/bff/coraMetadataWithFinalValue.json';
+import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
+import { describe, expect, it } from 'vitest';
+import { transformMetadata } from '../transformMetadata.server';
 
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 

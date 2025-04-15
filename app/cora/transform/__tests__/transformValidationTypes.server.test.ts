@@ -1,7 +1,8 @@
+import coraValidationTypeDataListSearch from '@/__mocks__/bff/coraValidationTypeDataListSearch.json';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import validationTypeList from '@/__mocks__/bff/validationTypeList.json';
 import validationTypeListWithTwo from '@/__mocks__/bff/validationTypeListWithTwo.json';
-import coraValidationTypeDataListSearch from '@/__mocks__/bff/coraValidationTypeDataListSearch.json';
+import { describe, expect, it } from 'vitest';
 import { transformCoraValidationTypes } from '../transformValidationTypes.server';
 
 describe('transformCoraValidationType', () => {

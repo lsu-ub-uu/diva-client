@@ -17,11 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { describe, expect } from 'vitest';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import { describe, expect, it } from 'vitest';
 
 describe('<TopNavigation />', () => {
   const TopNavigationWithRoutesStub = ({

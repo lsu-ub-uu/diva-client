@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import { describe, expect, it } from 'vitest';
 import {
   addAttributesToNameServer,
   addNamesToArray,

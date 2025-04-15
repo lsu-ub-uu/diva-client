@@ -15,15 +15,16 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import divaThemeListWithBinaryLogo from '@/__mocks__/bff/divaThemeListWithBinaryLogo.json';
-import divaThemeListWithSvgLogo from '@/__mocks__/bff/divaThemeListWithSvgLogo.json';
 import divaThemeListWithMemberPermissionUnit from '@/__mocks__/bff/divaThemeListWithMemberPermissionUnit.json';
+import divaThemeListWithSvgLogo from '@/__mocks__/bff/divaThemeListWithSvgLogo.json';
 import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
-import { transformThemes } from '@/cora/transform/transformThemes.server';
+import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { mock } from 'vitest-mock-extended';
+import { transformThemes } from '@/cora/transform/transformThemes.server';
 import type { AxiosResponse } from 'axios';
+import { describe, expect, it, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/cora/getRecordDataById.server');
 

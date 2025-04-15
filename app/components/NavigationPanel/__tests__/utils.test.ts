@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
+import { describe, expect, it } from 'vitest';
 import {
   flattenObject,
   getLastKeyFromString,
@@ -30,7 +32,6 @@ import {
   coraRecord2,
   coraRecord3,
 } from './mocks';
-import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
 
 describe('removeComponentsWithoutValuesFromSchema', () => {
   it('returns someRootNameInData', () => {

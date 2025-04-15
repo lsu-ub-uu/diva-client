@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { describe, expect, it, vi } from 'vitest';
 import getEnvironment from '../getEnvironment';
 
 describe('getEnvironment', () => {

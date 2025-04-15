@@ -17,8 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
 import type {
   BFFLoginPassword,
   BFFLoginUnit,
@@ -33,6 +31,9 @@ import type {
   BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createLoginDefinition } from '../loginDefinition.server';
 
 describe('loginDefinition', () => {

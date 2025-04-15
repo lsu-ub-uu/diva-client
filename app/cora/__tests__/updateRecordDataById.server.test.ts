@@ -1,7 +1,8 @@
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/cora/helper.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('updateRecordDataById', () => {
   let mockAxios: MockAdapter;

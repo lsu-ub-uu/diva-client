@@ -16,9 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { describe, expect, it } from 'vitest';
 
 describe('<FieldInfo />', () => {
   it('Renders tooltip when info button is clicked and can be closed', async () => {

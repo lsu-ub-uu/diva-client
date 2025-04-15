@@ -16,15 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { createMockAuth } from '@/auth/__mocks__/auth';
 import {
   getTimeUntilNextRenew,
   useSessionAutoRenew,
 } from '@/auth/useSessionAutoRenew';
-import { expect } from 'vitest';
-import { act, render } from '@testing-library/react';
-import { createMockAuth } from '@/auth/__mocks__/auth';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
+import { act, render } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/utils/useIsNewestWindow');
 

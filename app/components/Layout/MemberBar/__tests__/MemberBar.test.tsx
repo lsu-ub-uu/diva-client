@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { useLanguage } from '@/i18n/useLanguage';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/i18n/useLanguage');
 

@@ -17,17 +17,17 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as cdu from '../CoraDataUtils.server';
-import {
-  getAllDataAtomicValueFromDataGroup,
-  hasChildWithNameInData,
-} from '../CoraDataUtils.server';
-import { describe, expect } from 'vitest';
 import type {
   DataAtomic,
   DataElement,
   DataGroup,
 } from '@/cora/cora-data/types.server';
+import { describe, expect, it } from 'vitest';
+import * as cdu from '../CoraDataUtils.server';
+import {
+  getAllDataAtomicValueFromDataGroup,
+  hasChildWithNameInData,
+} from '../CoraDataUtils.server';
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',

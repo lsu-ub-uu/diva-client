@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { describe, expect, it } from 'vitest';
 import { removeEmpty } from '../removeEmpty';
 
 describe('removeEmpty', () => {
@@ -55,15 +56,17 @@ describe('removeEmpty', () => {
     expect(removeEmpty(false)).toBe(false);
     expect(removeEmpty(null)).toBe(null);
     expect(removeEmpty(undefined)).toBe(undefined);
-    expect(removeEmpty({
-      prop1: 'hello',
-      prop4: {
-        innerProp2: 'world',
-      },
-      prop5: [],
-      prop6: ['a'],
-      prop7: '',
-    })).toStrictEqual({
+    expect(
+      removeEmpty({
+        prop1: 'hello',
+        prop4: {
+          innerProp2: 'world',
+        },
+        prop5: [],
+        prop6: ['a'],
+        prop7: '',
+      }),
+    ).toStrictEqual({
       prop1: 'hello',
       prop4: {
         innerProp2: 'world',
@@ -72,6 +75,5 @@ describe('removeEmpty', () => {
       prop6: ['a'],
       prop7: '',
     });
-
   });
 });

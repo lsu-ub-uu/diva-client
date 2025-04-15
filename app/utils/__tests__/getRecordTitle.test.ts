@@ -17,6 +17,7 @@
  */
 import type { BFFDataRecord, RecordInfo } from '@/types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { describe, expect, it } from 'vitest';
 
 describe('getRecordTitle', () => {
   it('shows title for report', () => {

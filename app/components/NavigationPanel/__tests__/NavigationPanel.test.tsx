@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen } from '@testing-library/react';
-import { expect } from 'vitest';
 import {
   NavigationPanel,
   type NavigationPanelLink,
 } from '@/components/NavigationPanel/NavigationPanel';
+import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
+import { describe, expect, it } from 'vitest';
 
 describe('NavigationPanel', () => {
   const links: NavigationPanelLink[] = [

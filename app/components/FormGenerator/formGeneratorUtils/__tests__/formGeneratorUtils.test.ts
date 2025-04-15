@@ -17,6 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/textVar';
+import type { FormComponent } from '@/components/FormGenerator/types';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
 import {
   checkForExistingSiblings,
   checkIfComponentHasValue,
@@ -35,10 +39,6 @@ import {
   isComponentVariable,
   isFirstLevelGroup,
 } from '../formGeneratorUtils';
-import type { FormComponent } from '@/components/FormGenerator/types';
-import type { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { describe, expect, vi } from 'vitest';
-import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/textVar';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {

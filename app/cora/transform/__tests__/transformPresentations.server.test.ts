@@ -16,38 +16,39 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import presentationPGroupModeOutput from '@/__mocks__/bff/coraPresentationGroupWithModeOutput.json';
+import presentationListWithPCollVarsModeOutput from '@/__mocks__/bff/coraPresentationWithOneCollectionVariableWithModeOutput.json';
+import presentationListWithPVarsModeOutput from '@/__mocks__/bff/coraPresentationWithTextVariableModeOutput.json';
+import presentationListWithTwoPVars from '@/__mocks__/bff/coraPresentationWithTwoTextVariables.json';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations.server';
-import presentationListWithTwoPVars from '@/__mocks__/bff/coraPresentationWithTwoTextVariables.json';
-import presentationListWithPVarsModeOutput from '@/__mocks__/bff/coraPresentationWithTextVariableModeOutput.json';
-import presentationListWithPCollVarsModeOutput from '@/__mocks__/bff/coraPresentationWithOneCollectionVariableWithModeOutput.json';
-import presentationPGroupModeOutput from '@/__mocks__/bff/coraPresentationGroupWithModeOutput.json';
 
-import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
-import coraPresentationGroupWithMissingEmptyTextId from '@/__mocks__/bff/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '@/__mocks__/bff/coraPresentationGroup.json';
 import coraPresentationGroupAltPresentation from '@/__mocks__/bff/coraPresentationGroupAltPresentation.json';
-import coraPresentationGroupWithMinNumberOfRepeatingToShow from '@/__mocks__/bff/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
-import coraPresentationWithMiscTypes from '@/__mocks__/bff/coraPresentationWithMiscTypes.json';
-import coraPresentationWithOneCollectionVariable from '@/__mocks__/bff/coraPresentationWithOneCollectionVariable.json';
-import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '@/__mocks__/bff/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
-import coraPresentationWithOneTextVariableHavingShowLabelFalse from '@/__mocks__/bff/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
-import coraPresentationWithTextVariableInputFormat from '@/__mocks__/bff/coraPresentationWithTextVariableInputFormat.json';
-import coraPresentationSurroundingContainer from '@/__mocks__/bff/coraPresentationSurroundingContainer.json';
-import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '@/__mocks__/bff/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
-import coraPresentationRepeatingContainer from '@/__mocks__/bff/coraPresentationRepeatingContainer.json';
-import coraPresentationWithRecordLink from '@/__mocks__/bff/coraPresentationRecordLink.json';
-import coraPresentationWithRecordLinkWithSearch from '@/__mocks__/bff/coraPresentationRecordLinkWithSearch.json';
-import coraPresentationWithRecordLinkWithPresentAs from '@/__mocks__/bff/coraPresentationRecordLinkWithPresentAs.json';
-import coraPresentationWithGuiElementLink from '@/__mocks__/bff/coraPresentationGuiElement.json';
-import coraPresentationGroupSpecifiedHeadlineText from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineText.json';
-import coraPresentationGroupWithShowLabel from '@/__mocks__/bff/coraPresentationGroupWithShowLabel.json';
 import coraPresentationGroupSpecifiedHeadlineLevel from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineLevel.json';
+import coraPresentationGroupSpecifiedHeadlineText from '@/__mocks__/bff/coraPresentationGroupSpecifiedHeadlineText.json';
+import coraPresentationGroupWithMinNumberOfRepeatingToShow from '@/__mocks__/bff/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
+import coraPresentationGroupWithMissingEmptyTextId from '@/__mocks__/bff/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroupWithPresentAs from '@/__mocks__/bff/coraPresentationGroupWithPresentAs.json';
-import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
+import coraPresentationGroupWithShowLabel from '@/__mocks__/bff/coraPresentationGroupWithShowLabel.json';
+import coraPresentationWithGuiElementLink from '@/__mocks__/bff/coraPresentationGuiElement.json';
+import coraPresentationWithRecordLink from '@/__mocks__/bff/coraPresentationRecordLink.json';
+import coraPresentationWithRecordLinkWithPresentAs from '@/__mocks__/bff/coraPresentationRecordLinkWithPresentAs.json';
+import coraPresentationWithRecordLinkWithSearch from '@/__mocks__/bff/coraPresentationRecordLinkWithSearch.json';
+import coraPresentationRepeatingContainer from '@/__mocks__/bff/coraPresentationRepeatingContainer.json';
 import coraPresentationResourceLinkMasterImage from '@/__mocks__/bff/coraPresentationResourceLinkMasterImage.json';
 import coraPresentationResourceLinkThumbnail from '@/__mocks__/bff/coraPresentationResourceLinkThumbnail.json';
+import coraPresentationSurroundingContainer from '@/__mocks__/bff/coraPresentationSurroundingContainer.json';
+import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '@/__mocks__/bff/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
+import coraPresentationWithMiscTypes from '@/__mocks__/bff/coraPresentationWithMiscTypes.json';
+import coraPresentationWithOneCollectionVariable from '@/__mocks__/bff/coraPresentationWithOneCollectionVariable.json';
+import coraPresentationWithOneTextVariableHavingShowLabelFalse from '@/__mocks__/bff/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
+import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '@/__mocks__/bff/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
+import coraPresentationWithTextVariableInputFormat from '@/__mocks__/bff/coraPresentationWithTextVariableInputFormat.json';
+import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
+import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import { describe, expect, it } from 'vitest';
 import type { BFFPresentationGroup } from '../bffTypes.server';
 
 describe('transformCoraPresentations', () => {
@@ -271,7 +272,7 @@ describe('transformCoraPresentations', () => {
       });
     });
 
-    it.only('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
+    it('Returns one BFFPresentationGroup for one entry with alternative presentation', () => {
       const transformData = transformCoraPresentations(
         coraPresentationGroupAltPresentation,
       );

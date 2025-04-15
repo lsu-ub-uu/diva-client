@@ -17,9 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
 import { Typography } from '@/components/Typography/Typography';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('<Typography>', () => {
   vi.mock('react-i18next', () => ({
@@ -31,12 +31,7 @@ describe('<Typography>', () => {
     },
   }));
   it('should render a text translated into english', () => {
-    render(
-      <Typography
-        variant='h1TextStyle'
-        text='not translated'
-      />,
-    );
+    render(<Typography variant='h1TextStyle' text='not translated' />);
 
     const headingElement = screen.getByRole('heading', {
       level: 1,

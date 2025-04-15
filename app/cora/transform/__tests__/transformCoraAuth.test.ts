@@ -15,8 +15,9 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import type { AuthWrapper } from '@/cora/cora-data/types.server';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { describe, expect, it } from 'vitest';
 
 const authUser: AuthWrapper = {
   authentication: {

@@ -17,22 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
-import * as yup from 'yup';
-import {
-  createValidationForAttributesFromComponent,
-  createValidationFromComponentType,
-  createYupArrayFromSchema,
-  createYupNumberSchema,
-  generateYupSchemaFromFormSchema,
-} from '../yupSchema';
-import type {
-  FormComponent,
-  FormComponentNumVar,
-  FormSchema,
-} from '../../types';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { formDefWithTextVar, formDefWithTwoRepeatingVarsAndCollectionVar } from '@/__mocks__/data/form/textVar';
+import { formDefWithRepeatingCollectionVar } from '@/__mocks__/data/form/collVar';
 import {
   formDefWithNestedSurroundingContainers,
   formDefWithSurroundingContainerAroundTextVariable,
@@ -40,9 +25,29 @@ import {
 import {
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroup, formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
+  formDefWithRepeatingGroupWithRepeatingChildGroup,
+  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
 } from '@/__mocks__/data/form/group';
-import { formDefWithRepeatingCollectionVar } from '@/__mocks__/data/form/collVar';
+import {
+  formDefWithTextVar,
+  formDefWithTwoRepeatingVarsAndCollectionVar,
+} from '@/__mocks__/data/form/textVar';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { describe, expect, it, vi } from 'vitest';
+import type { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
+import * as yup from 'yup';
+import type {
+  FormComponent,
+  FormComponentNumVar,
+  FormSchema,
+} from '../../types';
+import {
+  createValidationForAttributesFromComponent,
+  createValidationFromComponentType,
+  createYupArrayFromSchema,
+  createYupNumberSchema,
+  generateYupSchemaFromFormSchema,
+} from '../yupSchema';
 
 const numberValidationTests = (
   min: number,

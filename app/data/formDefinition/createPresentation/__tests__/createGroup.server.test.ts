@@ -1,3 +1,4 @@
+import type { FormComponent } from '@/components/FormGenerator/types';
 import type {
   BFFMetadata,
   BFFMetadataChildReference,
@@ -6,10 +7,10 @@ import type {
   BFFPresentationChildReference,
   BFFPresentationGroup,
 } from '@/cora/transform/bffTypes.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import { describe, expect, it } from 'vitest';
 import type { Dependencies } from '../../formDefinitionsDep.server';
 import { createGroup } from '../createGroup.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { FormComponent } from '@/components/FormGenerator/types';
 
 describe('createGroup', () => {
   it('transforms group', () => {

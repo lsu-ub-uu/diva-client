@@ -1,9 +1,10 @@
-import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
-import testLoginWebRedirect from '@/__mocks__/bff/coraLoginWebRedirect.json';
-import testLoginWithTwoWebRedirect from '@/__mocks__/bff/coraLoginWithTwoWebRedirect.json';
 import testLoginLDAP from '@/__mocks__/bff/coraLoginLDAP.json';
-import testLoginWithTwoLDAP from '@/__mocks__/bff/coraLoginWithTwoLDAP.json';
 import testLoginMixed from '@/__mocks__/bff/coraLoginMixed.json';
+import testLoginWebRedirect from '@/__mocks__/bff/coraLoginWebRedirect.json';
+import testLoginWithTwoLDAP from '@/__mocks__/bff/coraLoginWithTwoLDAP.json';
+import testLoginWithTwoWebRedirect from '@/__mocks__/bff/coraLoginWithTwoWebRedirect.json';
+import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
+import { describe, expect, it } from 'vitest';
 import { transformLogin } from '../transformLogin.server';
 
 describe('transformLogin', () => {

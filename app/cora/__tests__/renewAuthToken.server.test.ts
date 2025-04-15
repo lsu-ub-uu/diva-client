@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
 import { createMockAuth, createMockCoraAuth } from '@/auth/__mocks__/auth';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import { expect } from 'vitest';
+import axios from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('axios');
 

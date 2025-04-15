@@ -1,3 +1,4 @@
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import type {
   BFFMetadata,
   BFFMetadataChildReference,
@@ -5,9 +6,9 @@ import type {
   BFFPresentationChildReference,
   BFFPresentationRecordLink,
 } from '@/cora/transform/bffTypes.server';
-import { createRecordLink } from '../createRecordLink.server';
 import { Lookup } from '@/utils/structs/lookup';
-import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
+import { describe, expect, it } from 'vitest';
+import { createRecordLink } from '../createRecordLink.server';
 
 describe('createRecordLink', () => {
   it('transforms recordLink', () => {

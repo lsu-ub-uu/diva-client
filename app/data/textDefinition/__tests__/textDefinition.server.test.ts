@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
@@ -29,7 +28,9 @@ import type {
   BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createTextDefinition } from '../textDefinition.server';
 
 describe('textDefinition', () => {

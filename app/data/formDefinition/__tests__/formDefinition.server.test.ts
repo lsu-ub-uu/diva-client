@@ -17,35 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { listToPool } from '@/utils/structs/listToPool';
-import type {
-  BFFAttributeReference,
-  BFFGuiElement,
-  BFFLinkedRecordPresentation,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMetadata,
-  BFFMetadataBase,
-  BFFMetadataChildReference,
-  BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
-  BFFMetadataItemCollection,
-  BFFMetadataRecordLink,
-  BFFMetadataTextVariable,
-  BFFPresentation,
-  BFFPresentationBase,
-  BFFPresentationChildReference,
-  BFFPresentationGroup,
-  BFFPresentationRecordLink,
-  BFFPresentationSurroundingContainer,
-  BFFPresentationTextVar,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFTheme,
-  BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
-import type { Lookup } from '@/utils/structs/lookup';
 import {
   createdByLink,
   dataDividerLink,
@@ -129,18 +100,48 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
+import type {
+  BFFAttributeReference,
+  BFFGuiElement,
+  BFFLinkedRecordPresentation,
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
+  BFFMetadata,
+  BFFMetadataBase,
+  BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataItemCollection,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable,
+  BFFPresentation,
+  BFFPresentationBase,
+  BFFPresentationChildReference,
+  BFFPresentationGroup,
+  BFFPresentationRecordLink,
+  BFFPresentationSurroundingContainer,
+  BFFPresentationTextVar,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFTheme,
+  BFFValidationType,
+} from '@/cora/transform/bffTypes.server';
+import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
+import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
+import {
+  findMetadataChildReferenceByNameInDataAndAttributes,
+  firstAttributesExistsInSecond,
+} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import type { Lookup } from '@/utils/structs/lookup';
+import { beforeEach, describe, expect, it } from 'vitest';
 import {
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
-import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
-import {
-  findMetadataChildReferenceByNameInDataAndAttributes,
-  firstAttributesExistsInSecond,
-} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
-import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

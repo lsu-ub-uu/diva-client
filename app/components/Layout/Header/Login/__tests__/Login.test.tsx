@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { expect, vi } from 'vitest';
+import Login from '@/components/Layout/Header/Login/Login';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import Login from '@/components/Layout/Header/Login/Login';
+import { describe, expect, it, vi } from 'vitest';
 
 const loginUnits = [
   {

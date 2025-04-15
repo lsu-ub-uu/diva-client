@@ -1,7 +1,8 @@
 import { deleteRecordDataById } from '@/cora/deleteRecordDataById.server';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 import { coraApiUrl } from '@/cora/helper.server';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('deleteRecordDataById', () => {
   let mockAxios: MockAdapter;

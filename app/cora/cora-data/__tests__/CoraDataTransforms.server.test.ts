@@ -1,14 +1,14 @@
+import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type { AxiosResponse } from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 import {
   extractAttributeValueByName,
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
   fetchLinkedRecordForRecordLinkWithNameInData,
 } from '../CoraDataTransforms.server';
-import type { DataGroup } from '@/cora/cora-data/types.server';
-import { expect } from 'vitest';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
-import type { AxiosResponse } from 'axios';
 
 vi.mock('@/cora/getRecordDataById.server');
 const someRecordGroup = {

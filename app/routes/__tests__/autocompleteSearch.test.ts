@@ -16,22 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { describe, vi } from 'vitest';
-import { getAuth } from '@/auth/sessions.server';
 import { createMockAuth } from '@/auth/__mocks__/auth';
-import { loader } from '@/routes/autocompleteSearch';
-import { mock } from 'vitest-mock-extended';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { i18n } from 'i18next';
+import { getAuth } from '@/auth/sessions.server';
 import type {
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
   BFFSearch,
 } from '@/cora/transform/bffTypes.server';
-import { searchRecords } from '@/data/searchRecords.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { searchRecords } from '@/data/searchRecords.server';
+import { loader } from '@/routes/autocompleteSearch';
 import type { BFFDataRecord } from '@/types/record';
+import { listToPool } from '@/utils/structs/listToPool';
+import type { i18n } from 'i18next';
+import { describe, expect, it, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/auth/sessions.server');
 vi.mock('@/data/searchRecords.server');

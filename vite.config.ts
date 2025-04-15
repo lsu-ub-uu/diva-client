@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import babelPlugin from 'vite-plugin-babel';
 
-export default defineConfig(({ isSsrBuild, mode }) => {
+export default defineConfig(({ isSsrBuild }) => {
   const { BASE_PATH } = process.env;
 
   return {
@@ -40,7 +40,6 @@ export default defineConfig(({ isSsrBuild, mode }) => {
 
     test: {
       environment: 'jsdom',
-      globals: true,
       include: ['**/*.{test,spec}.{js,ts,mts,cts,tsx}'],
       exclude: ['**/node_modules/**', '**/target/**', '**/e2e/**'],
       setupFiles: './setupTest.ts',

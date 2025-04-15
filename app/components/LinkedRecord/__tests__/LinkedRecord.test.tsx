@@ -17,15 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 import {
   act,
   render,
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { expect } from 'vitest';
-import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 import { createRoutesStub } from 'react-router';
+import { describe, expect, it } from 'vitest';
 
 const nationalSubjectCategory = {
   id: 'nationalSubjectCategory:6325370460697648',

@@ -17,42 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { describe, expect, vi } from 'vitest';
-import { act, render, screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import type { RecordFormProps } from '@/components/Form/RecordForm';
-import { RecordForm } from '@/components/Form/RecordForm';
-import { createRoutesStub } from 'react-router';
-import type { BFFDataRecord } from '@/types/record';
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import { parseFormData } from 'remix-hook-form';
-import {
-  formSchemaWithBinary,
-  linkedBinaryMock,
-  recordWithBinary,
-} from '@/__mocks__/data/form/binary';
 import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
-import {
-  formDefWithOneRepeatingTextVariableWithModeOutput,
-  formDefWithOneTextVariable,
-  formDefWithOneTextVariableBeingOptional,
-  formDefWithOneTextVariableBeingPassword,
-  formDefWithOneTextVariableBeingRepeating,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
-  formDefWithTextVar,
-  formDefWithTwoTextVariableHavingFinalValue,
-  formDefRequiredRepeatingText2Var,
-  formDefRequiredRepeatingTextVar,
-  formDefTextVarsWithSameNameInData,
-} from '@/__mocks__/data/form/textVar';
-import {
-  formDefCollVarsWithSameNameInData,
-  formDefWithOneCollectionVariable,
-  formDefWithOneCollectionVariableWithModeOutput,
-  formDefRequiredRepeatingCollectionVar,
-  formDefRequiredRepeatingCollection2Var,
-} from '@/__mocks__/data/form/collVar';
 import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOneNumberVariableWithAttributeCollection,
@@ -66,46 +31,81 @@ import {
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
 } from '@/__mocks__/data/form/attributeCollection';
 import {
+  formSchemaWithBinary,
+  linkedBinaryMock,
+  recordWithBinary,
+} from '@/__mocks__/data/form/binary';
+import {
+  formDefCollVarsWithSameNameInData,
+  formDefRequiredRepeatingCollection2Var,
+  formDefRequiredRepeatingCollectionVar,
+  formDefWithOneCollectionVariable,
+  formDefWithOneCollectionVariableWithModeOutput,
+} from '@/__mocks__/data/form/collVar';
+import {
+  formDefContributorGroupWithAuthorGroupAuthor,
+  formDefForCheckNumberValue,
+  formDefForCheckTextValue,
+  formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
+  formDefPreprintWithOnlyAuthorName,
+  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
+  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
+  formDefTitleInfoGroup,
+  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
+  formDefTwoOptionalGroupsWithRequiredTextVars,
+  formDefWithGroupWithDefaultHeadlineLevel,
+  formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
+  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
+  formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithTextVarAndNestedGroupsWithOneTextVar,
+  formDefWithWithOptionalGroupWithRequiredVar,
+} from '@/__mocks__/data/form/group';
+import { formDefWithGuiElementLink } from '@/__mocks__/data/form/guiElement';
+import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
+import {
+  formDefRequiredRepeatingNumber2Var,
+  formDefRequiredRepeatingNumberVar,
   formDefWithOneNumberVariable,
   formDefWithOneNumberVariableBeingOptional,
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneNumberVariableModeOutput,
-  formDefRequiredRepeatingNumber2Var,
-  formDefRequiredRepeatingNumberVar,
 } from '@/__mocks__/data/form/numVar';
-import { formDefWithGuiElementLink } from '@/__mocks__/data/form/guiElement';
-import {
-  formDefWithGroupWithDefaultHeadlineLevel,
-  formDefWithGroupWithSpecifiedHeadlineLevel,
-  formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLink,
-  formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithWithOptionalGroupWithRequiredVar,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
-  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-  formDefWithOptionalGroupWithTwoCollectionVars,
-  formDefWithTextVarAndNestedGroupsWithOneTextVar,
-  formDefTitleInfoGroup,
-  formDefContributorGroupWithAuthorGroupAuthor,
-  formDefPreprintWithOnlyAuthorName,
-  formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
-  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
-  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
-  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
-  formDefTwoOptionalGroupsWithRequiredTextVars,
-  formDefForCheckTextValue,
-  formDefForCheckNumberValue,
-} from '@/__mocks__/data/form/group';
 import {
   formDefWithOneRecordLinkBeingOptional,
   formDefWithOneRecordLinkBeingRequired,
   formDefWithRecordLinkTypeBinary,
 } from '@/__mocks__/data/form/recordLink';
-import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
+import {
+  formDefRequiredRepeatingText2Var,
+  formDefRequiredRepeatingTextVar,
+  formDefTextVarsWithSameNameInData,
+  formDefWithOneRepeatingTextVariableWithModeOutput,
+  formDefWithOneTextVariable,
+  formDefWithOneTextVariableBeingOptional,
+  formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableBeingRepeating,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithTextVar,
+  formDefWithTwoTextVariableHavingFinalValue,
+} from '@/__mocks__/data/form/textVar';
+import type { RecordFormProps } from '@/components/Form/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { createRoutesStub } from 'react-router';
+import { parseFormData } from 'remix-hook-form';
+import { describe, expect, it, vi } from 'vitest';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));

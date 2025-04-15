@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen } from '@testing-library/react';
 import { DevInfoButton } from '@/components/FormGenerator/components/DevInfo';
-import { expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('DevInfo', () => {
   it('does not render DevInfoButton when local storage does not contain diva-dev', () => {

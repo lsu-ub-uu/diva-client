@@ -15,7 +15,6 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-
 import type { ReactNode } from 'react';
 import type {
   Control,
@@ -24,6 +23,7 @@ import type {
   UseFormReturn,
 } from 'react-hook-form';
 import { RemixFormProvider } from 'remix-hook-form';
+import { vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 
 export * from '@testing-library/react';

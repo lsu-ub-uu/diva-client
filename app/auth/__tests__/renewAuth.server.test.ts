@@ -17,7 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { describe, expect } from 'vitest';
+import { createMockAuth } from '@/auth/__mocks__/auth';
+import { renewAuth } from '@/auth/renewAuth.server';
 import {
   commitSession,
   getAuth,
@@ -25,12 +26,11 @@ import {
   type SessionData,
   type SessionFlashData,
 } from '@/auth/sessions.server';
-import { createMockAuth } from '@/auth/__mocks__/auth';
-import { mock } from 'vitest-mock-extended';
-import { renewAuth } from '@/auth/renewAuth.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n } from 'i18next';
 import type { Session } from 'react-router';
+import { describe, expect, it, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/auth/sessions.server');
 vi.mock('@/cora/renewAuthToken.server');

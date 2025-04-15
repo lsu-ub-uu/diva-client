@@ -16,12 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen, within } from '@testing-library/react';
 import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { AccordionContent } from '@/components/Accordion/AccordionContent';
 import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('Accordion', () => {
   it('renders accordion with accessible html', async () => {

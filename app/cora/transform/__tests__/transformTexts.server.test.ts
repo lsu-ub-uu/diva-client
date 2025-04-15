@@ -17,10 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import coraTextWithOneChild from '@/__mocks__/bff/coraTextWithOneChild.json';
 import coraTextWithOneChildOnlySwedish from '@/__mocks__/bff/coraTextWithOneChildOnlySwedish.json';
 import coraTextWithOneChildThreeLanguages from '@/__mocks__/bff/coraTextWithOneChildThreeLanguages.json';
+import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
+import { describe, expect, it } from 'vitest';
 import { transformCoraTexts } from '../transformTexts.server';
 
 describe('transformTexts', () => {

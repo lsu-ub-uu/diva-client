@@ -16,9 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { renderHook } from '@testing-library/react';
-import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 import { useBroadcastChannel } from '@/utils/useBroadcastChannel';
+import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
+import { renderHook } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/utils/useBroadcastChannel');
 
@@ -28,7 +29,7 @@ describe('useIsNewestWindow', () => {
     let simulateMessageReceived;
 
     vi.mocked(useBroadcastChannel).mockImplementation(
-      (eventType, onMessageReceived) => {
+      (_eventType, onMessageReceived) => {
         simulateMessageReceived = onMessageReceived;
         return { sendMessage: vi.fn() };
       },
