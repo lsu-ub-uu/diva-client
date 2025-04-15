@@ -156,6 +156,10 @@ test.describe('Create output', () => {
       .getByRole('group', { name: 'Huvudtitel' })
       .getByLabel('Huvudtitel')
       .fill(mockTitle);
+
+    await titleGroup
+      .getByRole('button', { name: 'Lägg till Undertitel' })
+      .click();
     await titleGroup
       .getByRole('group', { name: 'Undertitel' })
       .getByLabel('Undertitel')
@@ -175,6 +179,7 @@ test.describe('Create output', () => {
       .getByRole('group', { name: 'Huvudtitel' })
       .getByLabel('Huvudtitel')
       .fill(mockAltTitle);
+
     await alternativeTitleGroup
       .getByRole('group', { name: 'Undertitel' })
       .getByLabel('Undertitel')
@@ -184,12 +189,11 @@ test.describe('Create output', () => {
       name: 'Författare, redaktör eller annan roll',
     });
 
-    await authorGroup.getByRole('button', { name: 'Efternamn' }).click();
     await authorGroup
       .getByRole('group', { name: 'Efternamn' })
       .getByLabel('Efternamn')
       .fill(lastName);
-    await authorGroup.getByRole('button', { name: 'Förnamn' }).click();
+
     await authorGroup
       .getByRole('group', { name: 'Förnamn' })
       .getByLabel('Förnamn')
