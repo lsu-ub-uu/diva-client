@@ -60,12 +60,14 @@ export const createYupValidationsFromComponent = (
   parentGroupOptional: boolean = false,
   parentGroupRepeating: boolean = false,
 ) => {
-  let validationRule: {
+  const validationRule: {
     [x: string]: any;
   } = {};
+
   if (isComponentContainer(component)) {
-    validationRule = removeSurroundingContainer(component, validationRule);
+    return removeSurroundingContainer(component, validationRule);
   }
+
   const currentNameInData = getNameInData(component);
 
   if (isComponentRepeating(component)) {
@@ -106,6 +108,7 @@ function removeSurroundingContainer(
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createYupValidationsFromComponent(formComponent));
   validationRule = Object.assign({}, ...validationsRules);
+
   return validationRule;
 }
 
