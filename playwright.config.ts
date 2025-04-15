@@ -7,7 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
 import 'dotenv/config';
 
 const {
-  DOMAIN = '0.0.0.0',
+  DOMAIN = 'localhost',
   PORT = '5173',
   BASE_PATH = '',
   E2E_TARGET,

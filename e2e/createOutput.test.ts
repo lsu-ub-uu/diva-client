@@ -20,6 +20,7 @@ import { test } from './util/fixtures';
 import { expect, type Page } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { createUrl } from './util/createUrl';
+import { logIn } from './util/logIn';
 
 test.describe('Create output', () => {
   test('Create report mini', async ({ page, request, authtoken }) => {
@@ -29,11 +30,7 @@ test.describe('Create output', () => {
     await page.goto(createUrl('/'));
 
     // Log in
-    await page.getByRole('button', { name: 'Logga in' }).click();
-    await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(
-      page.getByRole('button', { name: 'DiVA Admin' }),
-    ).toBeVisible();
+    await logIn(page);
 
     // Select validation type
     await page.getByRole('button', { name: 'Skapa output' }).click();
@@ -118,11 +115,7 @@ test.describe('Create output', () => {
     await page.goto(createUrl('/'));
 
     // Log in
-    await page.getByRole('button', { name: 'Logga in' }).click();
-    await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(
-      page.getByRole('button', { name: 'DiVA Admin' }),
-    ).toBeVisible();
+    await logIn(page);
 
     // Select validation type
     await page.getByRole('button', { name: 'Skapa output' }).click();

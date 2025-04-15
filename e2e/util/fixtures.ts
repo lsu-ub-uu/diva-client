@@ -1,15 +1,22 @@
-import { test as base } from '@playwright/test';
+import { test as base, type Page } from '@playwright/test';
 import { divaOutputWithMinimalData } from './testData';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
+const {
+  CORA_API_URL,
+  CORA_LOGIN_URL,
+  DOMAIN = 'localhost',
+  BASE_PATH = '',
+  PORT = '5173',
+} = process.env;
 
 interface Fixtures {
   authtoken: string;
   divaOutput: DataGroup;
+  kthPage: Page;
 }
 
 export const test = base.extend<Fixtures>({
@@ -46,5 +53,19 @@ export const test = base.extend<Fixtures>({
     await request.delete(responseBody.record.actionLinks.delete.url, {
       headers: { Authtoken: authtoken },
     });
+  },
+
+  kthPage: async ({ browser }, use) => {
+    // Set up
+    const context = await browser.newContext({
+      baseURL: `http://kth.${DOMAIN}:${PORT}${BASE_PATH}`,
+    });
+    const page = await context.newPage();
+
+    await use(page);
+
+    // Clean up
+    await page.close();
+    await context.close();
   },
 });

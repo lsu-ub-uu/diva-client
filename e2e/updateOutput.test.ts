@@ -23,6 +23,7 @@ import { expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { createUrl } from './util/createUrl';
 import path from 'node:path';
+import { logIn } from './util/logIn';
 
 test.describe('Update output', () => {
   test('updates an existing report', async ({ page, divaOutput }) => {
@@ -38,11 +39,7 @@ test.describe('Update output', () => {
     await page.goto(createUrl(`/diva-output/${recordId}/update`));
 
     // Log in
-    await page.getByRole('button', { name: 'Logga in' }).click();
-    await page.getByRole('menuitem', { name: 'DiVA Admin' }).click();
-    await expect(
-      page.getByRole('button', { name: 'DiVA Admin' }),
-    ).toBeVisible();
+    await logIn(page);
 
     //Assert update page info
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
