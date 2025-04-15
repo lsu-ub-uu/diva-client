@@ -16,15 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
+import { PermissionUnitRecordLink } from '@/components/FormGenerator/components/PermissionUnitRecordLink';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
+import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
+import { Variable } from '@/components/FormGenerator/components/Variable';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useWatch } from 'react-hook-form';
-import { Variable } from '@/components/FormGenerator/components/Variable';
 import { FileUpload } from './FileUpload';
-import { PermissionUnitRecordLink } from '@/components/FormGenerator/components/PermissionUnitRecordLink';
+import { RecordLinkOnlyTranslatedText } from './RecordLinkOnlyTranslatedText';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
@@ -80,6 +81,10 @@ export const RecordLink = ({
         actionButtonGroup={actionButtonGroup}
       />
     );
+  }
+
+  if (component.presentAs === 'onlyTranslatedText') {
+    return <RecordLinkOnlyTranslatedText component={component} path={name} />;
   }
 
   if (

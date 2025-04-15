@@ -16,17 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { type ReactNode } from 'react';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
+import { use, type ReactNode } from 'react';
 
-import { useRemixFormContext } from 'remix-hook-form';
+import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
-import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
-import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import { FormGeneratorContext } from '../FormGeneratorContext';
+import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -44,6 +46,7 @@ export const RecordLinkWithLinkedPresentation = ({
   const { t } = useTranslation();
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
+  const { showTooltips } = use(FormGeneratorContext);
 
   return hasValue ? (
     <div
@@ -63,15 +66,24 @@ export const RecordLinkWithLinkedPresentation = ({
             {t(component.label)}
           </div>
         )}
-        <div className={linkedRecordStyles['container']}>
+        {showTooltips && component.tooltip && (
+          <div className={linkedRecordStyles['field-info']}>
+            <FieldInfo {...component.tooltip} />
+          </div>
+        )}
+        <div className={linkedRecordStyles['adornment']}>
           {attributes} {actionButtonGroup}
         </div>
       </div>
       <ControlledLinkedRecord
         control={control}
         name={name}
-        recordType={component.recordLinkType ?? ''}
-        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+        recordType={
+          component.linkedRecordPresentation?.presentedRecordType ?? ''
+        }
+        presentationRecordLinkId={
+          component.linkedRecordPresentation?.presentationId ?? ''
+        }
       />
     </div>
   ) : null;

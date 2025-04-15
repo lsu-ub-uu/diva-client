@@ -38,6 +38,8 @@ export const loader = async ({
     const presentationRecordLinkId = url.searchParams.get(
       'presentationRecordLinkId',
     );
+
+    console.log('getRecord', { presentationRecordLinkId });
     invariant(
       presentationRecordLinkId,
       'Missing presentationRecordLinkId param',
@@ -50,6 +52,8 @@ export const loader = async ({
       authToken: auth?.data.token,
       presentationRecordLinkId,
     });
+
+    console.log('linkedRecord', record);
 
     return { record };
   } catch (error) {
