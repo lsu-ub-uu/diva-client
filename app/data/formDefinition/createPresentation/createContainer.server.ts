@@ -31,6 +31,7 @@ import { createRContainer } from '@/data/formDefinition/createPresentation/creat
 import { createSContainer } from '@/data/formDefinition/createPresentation/createSContainer.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createContainer = (
   dependencies: Dependencies,
@@ -75,7 +76,7 @@ export const createContainer = (
     titleHeadlineLevel,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
-  return {
+  const container: FormComponentContainer = {
     type,
     name,
     mode,
@@ -90,6 +91,8 @@ export const createContainer = (
     title,
     titleHeadlineLevel,
   };
+
+  return removeEmpty(container);
 };
 
 const getContainerType = (presentationContainer: BFFPresentationContainer) => {
