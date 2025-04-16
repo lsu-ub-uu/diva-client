@@ -35,7 +35,6 @@ export const CreateRecordMenuError = ({
 
   const error = useAsyncError();
 
-  console.error(error);
   if (
     isRouteErrorResponse(error) &&
     (error.status === 401 || error.status === 403)
