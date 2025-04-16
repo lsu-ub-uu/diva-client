@@ -39,7 +39,6 @@ export const loader = async ({
       'presentationRecordLinkId',
     );
 
-    console.log('getRecord', { presentationRecordLinkId });
     invariant(
       presentationRecordLinkId,
       'Missing presentationRecordLinkId param',
@@ -52,8 +51,6 @@ export const loader = async ({
       authToken: auth?.data.token,
       presentationRecordLinkId,
     });
-
-    console.log('linkedRecord', record);
 
     return { record };
   } catch (error) {
