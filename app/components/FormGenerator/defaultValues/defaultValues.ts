@@ -219,7 +219,12 @@ export const createDefaultValuesFromComponents = (
     .map((formComponent) =>
       createDefaultValuesFromComponent(formComponent, false),
     );
-  return Object.assign({}, ...formDefaultValuesArray);
+
+  return formDefaultValuesArray.reduce(
+    (accumulator, childDefaultValues) =>
+      mergeObjects(accumulator, childDefaultValues),
+    {},
+  );
 };
 
 export const createDefaultValuesFromFormSchema = (
