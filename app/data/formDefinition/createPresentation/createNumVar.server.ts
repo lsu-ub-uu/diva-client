@@ -34,6 +34,7 @@ import type { Lookup } from '@/utils/structs/lookup';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { createAttributes } from './createAttributes';
 import { createRepeat } from './createRepeat';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createNumVar = (
   metadataPool: Lookup<string, BFFMetadata>,
@@ -78,7 +79,7 @@ export const createNumVar = (
     attributesToShow,
   } = createCommonParameters(metadata, presentation);
 
-  return {
+  return removeEmpty({
     name,
     placeholder,
     mode,
@@ -99,5 +100,5 @@ export const createNumVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
-  };
+  });
 };
