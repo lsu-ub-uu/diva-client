@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { describe, expect } from 'vitest';
 import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
+import { describe, expect, it } from 'vitest';
 
 describe('getIdFromBFFRecordInfo', () => {
   it('returns the correct id for BFF RecordInfo', () => {

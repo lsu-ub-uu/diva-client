@@ -1,6 +1,7 @@
-import axios from 'axios';
 import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken.server';
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('axios');
 

@@ -1,6 +1,7 @@
 import testData from '@/__mocks__/bff/coraDivaRecordTypes.json';
 import testData2 from '@/__mocks__/bff/coraDivaRecordTypes2.json';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
+import { describe, expect, it } from 'vitest';
 import { transformCoraRecordTypes } from '../transformRecordTypes.server';
 
 describe('transformCoraRecordType', () => {

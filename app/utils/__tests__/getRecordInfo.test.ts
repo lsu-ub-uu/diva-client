@@ -17,8 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getRecordInfo, getValueFromRecordInfo } from '../getRecordInfo';
 import type { BFFDataRecord } from '@/types/record';
+import { describe, expect, it } from 'vitest';
+import { getRecordInfo, getValueFromRecordInfo } from '../getRecordInfo';
 
 describe('recordInfoHelpers', () => {
   describe('getRecordInfo', () => {

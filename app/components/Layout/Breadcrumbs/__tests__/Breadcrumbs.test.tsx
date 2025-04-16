@@ -18,6 +18,7 @@
 
 import { act, render, screen, within } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
+import { describe, expect, it } from 'vitest';
 import { Breadcrumbs } from '../Breadcrumbs';
 
 describe('<Breadcrumbs />', () => {

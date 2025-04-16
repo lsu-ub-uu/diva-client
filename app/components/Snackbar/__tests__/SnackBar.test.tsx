@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { expect } from 'vitest';
-import { screen, within } from '@testing-library/react';
-import { render } from '../../../utils/testUtils';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
+import { screen, within } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { render } from '../../../utils/testUtils';
 
 describe('<Snackbar />', () => {
   it('It renders a Snackbar when open', () => {

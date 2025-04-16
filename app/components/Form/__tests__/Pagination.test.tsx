@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen } from '@testing-library/react';
 import { Pagination } from '@/components/Form/Pagination';
-import { mock } from 'vitest-mock-extended';
 import type { BFFSearchResult } from '@/types/record';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 describe('<Pagination />', () => {
   it('renders rows per page select', async () => {

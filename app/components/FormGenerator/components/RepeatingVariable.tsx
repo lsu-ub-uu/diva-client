@@ -26,14 +26,12 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface RepeatingVariableProps {
-  reactKey: string;
   component: FormComponentWithData;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingVariable = ({
-  reactKey,
   component,
   currentComponentNamePath,
   parentPresentationStyle,
@@ -52,7 +50,6 @@ export const RepeatingVariable = ({
 
   return (
     <FieldArrayComponent
-      key={reactKey}
       control={control}
       component={component}
       name={currentComponentNamePath}
@@ -63,7 +60,6 @@ export const RepeatingVariable = ({
         return (
           <LeafComponent
             component={component}
-            reactKey={variableArrayPath}
             name={`${variableArrayPath}.value`}
             parentPresentationStyle={parentPresentationStyle}
             attributes={

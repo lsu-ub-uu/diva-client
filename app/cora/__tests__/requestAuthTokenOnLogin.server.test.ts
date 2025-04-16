@@ -1,6 +1,7 @@
-import axios from 'axios';
-import { requestAuthTokenOnLogin } from '@/cora/requestAuthTokenOnLogin.server';
 import { createMockAuth, createMockCoraAuth } from '@/auth/__mocks__/auth';
+import { requestAuthTokenOnLogin } from '@/cora/requestAuthTokenOnLogin.server';
+import axios from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('axios');
 

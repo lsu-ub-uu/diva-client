@@ -1,8 +1,9 @@
+import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/cora/helper.server';
+import { postRecordData } from '@/cora/postRecordData.server';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/cora/helper.server';
-import { postRecordData } from '@/cora/postRecordData.server';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('postRecordData', () => {
   let mockAxios: MockAdapter;

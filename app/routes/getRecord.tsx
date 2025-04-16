@@ -38,6 +38,7 @@ export const loader = async ({
     const presentationRecordLinkId = url.searchParams.get(
       'presentationRecordLinkId',
     );
+
     invariant(
       presentationRecordLinkId,
       'Missing presentationRecordLinkId param',

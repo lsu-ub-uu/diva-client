@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { describe, expect } from 'vitest';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { act, render, screen } from '@testing-library/react';
-import { createRoutesStub } from 'react-router';
 import userEvent from '@testing-library/user-event';
+import { createRoutesStub } from 'react-router';
+import { describe, expect, it } from 'vitest';
 
 describe('CreateRecordMenu', () => {
   it('renders a link when one validation type', async () => {

@@ -18,18 +18,19 @@
  */
 
 import {
-  getAllDataAtomicsWithNameInData,
-  getFirstDataAtomicWithNameInData,
-  getFirstDataGroupWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttributes,
-} from '../CoraDataUtils.server';
-import {
   extractDataGroupFollowingNameInDatas,
   extractFirstDataGroupWithAttributesFollowingNameInDatas,
   getAllDataAtomicValuesWithNameInData,
   getFirstDataAtomicValueWithNameInData,
 } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  getAllDataAtomicsWithNameInData,
+  getFirstDataAtomicWithNameInData,
+  getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInDataAndAttributes,
+} from '../CoraDataUtils.server';
 
 vi.mock('../CoraDataUtils.server');
 

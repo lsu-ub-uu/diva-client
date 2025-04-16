@@ -118,7 +118,7 @@ export const AlternativePresentationSwitcher = (
           <AccordionContent className={componentStyles['container']}>
             <Component
               {...props}
-              component={{ ...component, title: undefined }}
+              component={{ ...component, title: undefined } as FormComponent}
             />
           </AccordionContent>
         )

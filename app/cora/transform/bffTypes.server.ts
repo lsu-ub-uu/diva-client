@@ -21,8 +21,8 @@ import type { ActionLink } from '@/cora/cora-data/types.server';
 
 export interface BFFRecordLink {
   name: string;
-  recordType: string | undefined;
-  id: string | undefined;
+  recordType: string;
+  id: string;
   readLink?: ActionLink;
 }
 
@@ -69,12 +69,14 @@ export interface BFFAttributeReference {
 }
 
 export interface BFFMetadataTextVariable extends BFFMetadataBase {
+  type: 'textVariable';
   regEx: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }
 
 export interface BFFMetadataNumberVariable extends BFFMetadataBase {
+  type: 'numberVariable';
   min: string;
   max: string;
   warningMin: string;
@@ -85,12 +87,14 @@ export interface BFFMetadataNumberVariable extends BFFMetadataBase {
 }
 
 export interface BFFMetadataRecordLink extends BFFMetadataBase {
+  type: 'recordLink';
   linkedRecordType: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }
 
 export interface BFFMetadataCollectionVariable extends BFFMetadataBase {
+  type: 'collectionVariable';
   refCollection: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
@@ -105,6 +109,7 @@ export interface BFFMetadataItemCollection extends BFFMetadataBase {
 }
 
 export interface BFFMetadataGroup extends BFFMetadataBase {
+  type: 'group';
   attributeReferences?: BFFAttributeReference[];
   children: BFFMetadataChildReference[];
 }
@@ -124,11 +129,9 @@ export interface BFFPresentationBase extends BFFBase {
     | 'pCollVar'
     | 'container'
     | 'pRecordLink'
-    | 'pResourceLink'
-    | 'presentation';
+    | 'pResourceLink';
   presentationOf: string;
   mode: 'input' | 'output';
-  inputType?: 'input' | 'textarea';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;
@@ -136,14 +139,21 @@ export interface BFFPresentationBase extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
-export interface BFFPresentationResourceLink
-  extends Omit<BFFPresentationBase, 'mode'> {
+export interface BFFPresentationTextVar extends BFFPresentationBase {
+  type: 'pVar';
+  inputType: 'input' | 'textarea';
+}
+
+export interface BFFPresentationResourceLink extends BFFPresentationBase {
   outputFormat: 'image' | 'download';
+  type: 'pResourceLink';
+  mode: never;
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
+  presentAs?: 'onlyTranslatedText' | 'permissionUnit';
 }
 
 export interface BFFLinkedRecordPresentation {
@@ -152,6 +162,7 @@ export interface BFFLinkedRecordPresentation {
 }
 
 export interface BFFPresentationContainer extends BFFPresentationBase {
+  type: 'container';
   repeat: 'children' | 'this';
   presentationStyle?: string;
   children: BFFPresentationChildReference[];
@@ -168,22 +179,73 @@ export interface BFFPresentationSurroundingContainer
 }
 
 export interface BFFPresentationGroup extends BFFPresentationBase {
+  type: 'pGroup';
   presentationOf: string;
   presentationStyle?: string;
   children: BFFPresentationChildReference[];
   specifiedHeadlineTextId?: string;
   specifiedHeadlineLevel?: string;
   showHeadline?: string;
+  presentAs?:
+    | 'map'
+    | 'recordRelation'
+    | 'externalLinkWithValue'
+    | 'onlyTranslatedText';
 }
 
 export interface BFFPresentationChildReference {
   refGroups: BFFPresentationChildRefGroup[];
   minNumberOfRepeatingToShow?: string;
-  textStyle?: string;
-  childStyle?: string[];
+  textStyle?: TextStyle;
+  childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  addText?: string;
+}
+
+export type TextStyle =
+  | 'h1TextStyle'
+  | 'h2TextStyle'
+  | 'h3TextStyle'
+  | 'h4TextStyle'
+  | 'h5TextStyle'
+  | 'h6TextStyle'
+  | 'bodyTextStyle'
+  | 'italicTextStyle'
+  | 'boldTextStyle';
+
+export type HeadLineStyle = Omit<
+  TextStyle,
+  'bodyTextStyle' | 'italicTextStyle' | 'boldTextStyle'
+>;
+
+export type ChildStyle =
+  | 'zeroChildStyle'
+  | 'oneChildStyle'
+  | 'twoChildStyle'
+  | 'threeChildStyle'
+  | 'fourChildStyle'
+  | 'fiveChildStyle'
+  | 'sixChildStyle'
+  | 'sevenChildStyle'
+  | 'eightChildStyle'
+  | 'nineChildStyle'
+  | 'tenChildStyle'
+  | 'elevenChildStyle'
+  | 'twelveChildStyle'
+  | 'compactChildStyle'
+  | 'frameChildStyle'
+  | 'blockChildStyle';
+
+export interface BFFPresentationChildReference {
+  refGroups: BFFPresentationChildRefGroup[];
+  minNumberOfRepeatingToShow?: string;
+  textStyle?: TextStyle;
+  childStyle?: ChildStyle[];
+  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  title?: string;
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   addText?: string;
 }
 
@@ -250,7 +312,9 @@ export interface BFFLoginPassword extends BFFLogin {
   description: string;
 }
 
-export type BFFResourceLink = BFFMetadataBase;
+export interface BFFResourceLink extends BFFMetadataBase {
+  type: 'resourceLink';
+}
 
 export interface BFFThemeLink {
   url: string;
@@ -264,6 +328,7 @@ export interface BFFThemeLinkWrapper {
 
 export interface BFFTheme {
   id: string;
+  memberPermissionUnit?: string;
   pageTitle: {
     sv: string;
     en: string;

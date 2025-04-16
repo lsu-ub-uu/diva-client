@@ -19,36 +19,10 @@
 
 import recordManuscript from '@/__mocks__/bff/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '@/__mocks__/bff/coraRecordManuscriptPublicWithoutSensitiveData.json';
-import recordManuscriptWithSameNameInDataGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInData.json';
 import recordManuscriptWithSameNameInDataVar from '@/__mocks__/bff/coraRecordManuscriptWithNamePart.json';
 import recordManuscriptWithSameNameInDataVarWithoutAllVars from '@/__mocks__/bff/coraRecordManuscriptWithNamePartWithoutAllVars.json';
+import recordManuscriptWithSameNameInDataGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInData.json';
 import coraRecordManuscriptWithSameNameInDataWithOneGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInDataWithOneGroup.json';
-
-import {
-  transformDataGroup,
-  transformRecord,
-  transformRecordData,
-} from '../transformRecord.server';
-import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
-import type { Lookup } from '@/utils/structs/lookup';
-import type {
-  BFFGuiElement,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMetadata,
-  BFFPresentation,
-  BFFPresentationBase,
-  BFFPresentationGroup,
-  BFFPresentationResourceLink,
-  BFFPresentationSurroundingContainer,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFTheme,
-  BFFValidationType,
-} from '../bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
 import {
   createdByLink,
   dataDividerLink,
@@ -99,8 +73,33 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import { describe } from 'vitest';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import type { Lookup } from '@/utils/structs/lookup';
+import { beforeEach, describe, expect, it } from 'vitest';
+import type {
+  BFFGuiElement,
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
+  BFFMetadata,
+  BFFPresentation,
+  BFFPresentationBase,
+  BFFPresentationGroup,
+  BFFPresentationResourceLink,
+  BFFPresentationSurroundingContainer,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFTheme,
+  BFFValidationType,
+} from '../bffTypes.server';
+import {
+  transformDataGroup,
+  transformRecord,
+  transformRecordData,
+} from '../transformRecord.server';
 
 describe('transformRecord', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

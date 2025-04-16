@@ -17,11 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  convertChildStylesToGridColSpan,
-  convertChildStylesToShortName,
-  convertStylesToShortName,
-} from '../CoraDataUtilsPresentations.server';
+import { describe, expect, it } from 'vitest';
+import { convertChildStylesToGridColSpan } from '../CoraDataUtilsPresentations.server';
 
 describe('converting childStyles to gridColspan', () => {
   it.each([
@@ -39,59 +36,4 @@ describe('converting childStyles to gridColspan', () => {
       expect(gridColSpan).toStrictEqual(args2);
     },
   );
-
-  it.each([
-    [['compactChildStyle'], ['compact']],
-    [['frameChildStyle'], ['frame']],
-    [['blockChildStyle'], ['block']],
-    [['specificationChildStyle'], ['specification']],
-    [['rowBasedChildStyle'], ['row']],
-    [[''], ['']],
-    [undefined, ['']],
-    [['card'], ['card']],
-    [['label'], ['label']],
-    [
-      ['someMetadataChildGroupPresentationStyle'],
-      ['someMetadataChildGroupPresentationStyle'],
-    ],
-  ])(
-    'should be able to convert childStyle "%s" to short name %s',
-    (args1, args2) => {
-      const gridColSpan = convertChildStylesToShortName(args1);
-      expect(gridColSpan).toStrictEqual(args2);
-    },
-  );
-
-  it.each([
-    ['compactChildStyle', 'compact'],
-    ['frameChildStyle', 'frame'],
-    ['blockChildStyle', 'block'],
-    ['specificationChildStyle', 'specification'],
-    ['rowBasedChildStyle', 'row'],
-    ['', ''],
-    ['card', 'card'],
-    ['label', 'label'],
-    [
-      'someMetadataChildGroupPresentationStyle',
-      'someMetadataChildGroupPresentationStyle',
-    ],
-  ])(
-    'should be able to convert long name "%s" to short name %s',
-    (args1, args2) => {
-      const gridColSpan = convertStylesToShortName(args1);
-      expect(gridColSpan).toStrictEqual(args2);
-    },
-  );
-
-  it.each([
-    ['card', 'card'],
-    ['label', 'label'],
-    [
-      'someMetadataChildGroupPresentationStyle',
-      'someMetadataChildGroupPresentationStyle',
-    ],
-  ])('should be skip converting unknown long name "%s"', (args1, args2) => {
-    const gridColSpan = convertStylesToShortName(args1);
-    expect(gridColSpan).toStrictEqual(args2);
-  });
 });

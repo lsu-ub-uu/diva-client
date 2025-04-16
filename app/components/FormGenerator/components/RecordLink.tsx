@@ -16,18 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
+import { PermissionUnitRecordLink } from '@/components/FormGenerator/components/PermissionUnitRecordLink';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
+import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
+import { Variable } from '@/components/FormGenerator/components/Variable';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useWatch } from 'react-hook-form';
-import { Variable } from '@/components/FormGenerator/components/Variable';
 import { FileUpload } from './FileUpload';
+import { RecordLinkOnlyTranslatedText } from './RecordLinkOnlyTranslatedText';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
-  reactKey: string;
   name: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
@@ -37,7 +38,6 @@ interface RecordLinkProps {
 export const RecordLink = ({
   name,
   component,
-  reactKey,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
@@ -45,6 +45,7 @@ export const RecordLink = ({
   const value = useWatch({ name });
 
   const { linkedData } = use(FormGeneratorContext);
+
   if (component.recordLinkType === 'binary' && !value) {
     return (
       <FileUpload
@@ -58,6 +59,15 @@ export const RecordLink = ({
   }
 
   if (
+    component.presentAs === 'permissionUnit' &&
+    component.mode === 'input' &&
+    !value &&
+    !linkedData
+  ) {
+    return <PermissionUnitRecordLink component={component} path={name} />;
+  }
+
+  if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
     !value &&
@@ -65,7 +75,6 @@ export const RecordLink = ({
   ) {
     return (
       <RecordLinkWithSearch
-        reactKey={reactKey}
         component={component}
         path={name}
         attributes={attributes}
@@ -74,13 +83,16 @@ export const RecordLink = ({
     );
   }
 
+  if (component.presentAs === 'onlyTranslatedText') {
+    return <RecordLinkOnlyTranslatedText component={component} path={name} />;
+  }
+
   if (
     'linkedRecordPresentation' in component &&
     component.linkedRecordPresentation !== undefined
   ) {
     return (
       <RecordLinkWithLinkedPresentation
-        reactKey={reactKey}
         component={component}
         name={name}
         attributes={attributes}
@@ -91,7 +103,6 @@ export const RecordLink = ({
 
   return (
     <Variable
-      reactKey={reactKey}
       component={component}
       path={name}
       parentPresentationStyle={parentPresentationStyle}

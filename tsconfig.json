@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -25,15 +21,13 @@
     "strictNullChecks": true,
     "verbatimModuleSyntax": true,
     "allowArbitraryExtensions": true,
+    "sourceMap": true,
     "paths": {
-      "@/*": [
-        "./app/*"
-      ]
+      "@/*": ["./app/*"]
     },
     "types": [
       "@react-router/node",
       "vite/client",
-      "vitest/globals",
       "@testing-library/jest-dom",
       "vite-plugin-svgr/client"
     ],
@@ -47,6 +41,5 @@
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx",
     ".react-router/types/**/*"
-  ],
-
+  ]
 }

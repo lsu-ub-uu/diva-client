@@ -18,7 +18,6 @@
 
 import styles from './OutputField.module.css';
 import { Typography } from '@/components/Typography/Typography';
-import type { TextStyle } from '@/components/FormGenerator/types';
 import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
@@ -27,6 +26,7 @@ import {
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
 import { Link } from 'react-router';
+import type { TextStyle } from '@/cora/transform/bffTypes.server';
 
 interface OutputFieldProps {
   path: string;

@@ -31,7 +31,10 @@ import {
   hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { fetchLinkedRecordForRecordLinkWithNameInData } from '@/cora/cora-data/CoraDataTransforms.server';
+import {
+  extractLinkedRecordIdFromNamedRecordLink,
+  fetchLinkedRecordForRecordLinkWithNameInData,
+} from '@/cora/cora-data/CoraDataTransforms.server';
 
 export const transformThemes = (
   dataListWrapper: DataListWrapper,
@@ -48,6 +51,9 @@ const transformTheme = async (
       getFirstDataGroupWithNameInData(data, 'recordInfo'),
       'id',
     ),
+    memberPermissionUnit: hasChildWithNameInData(data, 'memberPermissionUnit')
+      ? extractLinkedRecordIdFromNamedRecordLink(data, 'memberPermissionUnit')
+      : undefined,
     pageTitle: {
       sv: getFirstDataAtomicValueWithNameInData(data, 'pageTitleSv'),
       en: getFirstDataAtomicValueWithNameInData(data, 'pageTitleEn'),

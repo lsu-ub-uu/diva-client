@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { describe, expect, it } from 'vitest';
 import { isComponentGroupAndSingularForStyling } from '../ActionButtonGroup';
 
 describe('ActionButtonGroup', () => {

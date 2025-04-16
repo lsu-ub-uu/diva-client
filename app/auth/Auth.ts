@@ -9,6 +9,7 @@ export interface Auth {
     loginId: string;
     lastName?: string;
     firstName?: string;
+    permissionUnit?: string[];
   };
   actionLinks: {
     renew: ActionLink;

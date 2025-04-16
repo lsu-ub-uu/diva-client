@@ -16,20 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import React, { type ReactNode } from 'react';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
+import { use, type ReactNode } from 'react';
 
-import { useRemixFormContext } from 'remix-hook-form';
+import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
-import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
-import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import { FormGeneratorContext } from '../FormGeneratorContext';
+import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
-  reactKey: string;
   component: FormComponentRecordLink;
   name: string;
   attributes?: ReactNode;
@@ -37,7 +38,6 @@ interface RecordLinkWithLinkedPresentationProps {
 }
 
 export const RecordLinkWithLinkedPresentation = ({
-  reactKey,
   component,
   name,
   attributes,
@@ -46,36 +46,45 @@ export const RecordLinkWithLinkedPresentation = ({
   const { t } = useTranslation();
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
+  const { showTooltips } = use(FormGeneratorContext);
 
-  return (
-    <React.Fragment key={`${reactKey}_${name}`}>
-      {hasValue ? (
-        <div
-          key={reactKey}
-          className={styles['component']}
-          data-colspan={component.gridColSpan ?? 12}
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <DevInfo component={component} path={name} />
+  return hasValue ? (
+    <div
+      className={styles['component']}
+      data-colspan={component.gridColSpan ?? 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
+    >
+      <DevInfo
+        label='RecordLinkWithLinkedPresentation'
+        component={component}
+        path={name}
+      />
 
-          <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
-            {component.showLabel && (
-              <div className={linkedRecordStyles['label']}>
-                {t(component.label)}
-              </div>
-            )}
-            <div className={linkedRecordStyles['container']}>
-              {attributes} {actionButtonGroup}
-            </div>
+      <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+        {component.showLabel && (
+          <div className={linkedRecordStyles['label']}>
+            {t(component.label)}
           </div>
-          <ControlledLinkedRecord
-            control={control}
-            name={name}
-            recordType={component.recordLinkType ?? ''}
-            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-          />
+        )}
+        {showTooltips && component.tooltip && (
+          <div className={linkedRecordStyles['field-info']}>
+            <FieldInfo {...component.tooltip} />
+          </div>
+        )}
+        <div className={linkedRecordStyles['adornment']}>
+          {attributes} {actionButtonGroup}
         </div>
-      ) : null}
-    </React.Fragment>
-  );
+      </div>
+      <ControlledLinkedRecord
+        control={control}
+        name={name}
+        recordType={
+          component.linkedRecordPresentation?.presentedRecordType ?? ''
+        }
+        presentationRecordLinkId={
+          component.linkedRecordPresentation?.presentationId ?? ''
+        }
+      />
+    </div>
+  ) : null;
 };

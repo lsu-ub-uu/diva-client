@@ -16,11 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
-import { transformCoraSearch } from '../transformCoraSearch.server';
 import coraSearch from '@/__mocks__/bff/coraSearch.json';
 import coraSearchWithSearchResultPresentation from '@/__mocks__/bff/coraSearchWithSearchResultPresentation.json';
 import coraSearchWithTwoRecordTypeToSearchIn from '@/__mocks__/bff/coraSearchWithTwoRecordTypeToSearchIn.json';
+import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
+import { describe, expect, it } from 'vitest';
+import { transformCoraSearch } from '../transformCoraSearch.server';
 
 describe('transformSearch', () => {
   it('Empty list should return empty list', () => {

@@ -15,14 +15,16 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import divaThemeListWithBinaryLogo from '@/__mocks__/bff/divaThemeListWithBinaryLogo.json';
+import divaThemeListWithMemberPermissionUnit from '@/__mocks__/bff/divaThemeListWithMemberPermissionUnit.json';
 import divaThemeListWithSvgLogo from '@/__mocks__/bff/divaThemeListWithSvgLogo.json';
 import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
-import { transformThemes } from '@/cora/transform/transformThemes.server';
+import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { mock } from 'vitest-mock-extended';
+import { transformThemes } from '@/cora/transform/transformThemes.server';
 import type { AxiosResponse } from 'axios';
+import { describe, expect, it, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/cora/getRecordDataById.server');
 
@@ -101,6 +103,32 @@ describe('transformTheme', () => {
       id: 'diva-theme',
       logo: {
         url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/master',
+      },
+      pageTitle: {
+        en: 'DiVA',
+        sv: 'DiVA',
+      },
+      textColor: '#ffffff',
+      hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+    });
+  });
+
+  it('transforms a theme memberPermissionUnit', async () => {
+    vi.mocked(getRecordDataById).mockResolvedValue(
+      mock<AxiosResponse>({
+        data: divaThemeLogoBinary,
+      }),
+    );
+    const transformData = await transformThemes(
+      divaThemeListWithMemberPermissionUnit,
+    );
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0]).toStrictEqual({
+      backgroundColor: '#75598e',
+      id: 'diva-theme',
+      memberPermissionUnit: 'uu',
+      logo: {
+        svg: '<svg></svg>',
       },
       pageTitle: {
         en: 'DiVA',

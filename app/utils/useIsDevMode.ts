@@ -7,5 +7,6 @@ export const useIsDevMode = () => {
     const isDev = localStorage.getItem('diva-dev');
     setDev(isDev !== null);
   }, []);
+
   return dev;
 };

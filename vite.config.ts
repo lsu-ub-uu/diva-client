@@ -16,6 +16,7 @@ export default defineConfig(({ isSsrBuild }) => {
         babelConfig: {
           presets: ['@babel/preset-typescript'],
           plugins: ['babel-plugin-react-compiler'],
+          retainLines: true,
         },
       }),
       tsconfigPaths(),
@@ -39,14 +40,8 @@ export default defineConfig(({ isSsrBuild }) => {
 
     test: {
       environment: 'jsdom',
-      globals: true,
-      include: ['**/*.{test,spec}.{ts,mts,cts,tsx}'],
-      exclude: [
-        '**/node_modules/**',
-        '**/target/**',
-        '**/*.{test,spec}.{js,mjs,cjs,jsx}',
-        '**/e2e/**',
-      ],
+      include: ['**/*.{test,spec}.{js,ts,mts,cts,tsx}'],
+      exclude: ['**/node_modules/**', '**/target/**', '**/e2e/**'],
       setupFiles: './setupTest.ts',
     },
     build: {

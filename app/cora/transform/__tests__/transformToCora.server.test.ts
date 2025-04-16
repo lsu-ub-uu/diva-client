@@ -18,38 +18,6 @@
  */
 
 import {
-  createLeaf,
-  createRecordLink,
-  findChildrenAttributes,
-  generateAtomicValue,
-  isRepeatingVariable,
-  isVariable,
-  removeAttributeFromName,
-  transformToCoraData,
-} from '../transformToCora.server';
-import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
-import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
-import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { Lookup } from '@/utils/structs/lookup';
-import type {
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
-  BFFMetadataNumberVariable,
-  BFFMetadataRecordLink,
-  BFFMetadataTextVariable,
-  BFFPresentationBase,
-  BFFPresentationGroup,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFTheme,
-  BFFValidationType,
-} from '../bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import {
   authorGroup,
   authorGroup2,
   authorityLanguageTermCollectionVar,
@@ -114,10 +82,42 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
-import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
-import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
+import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
+import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import { describe } from 'vitest';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import type { Lookup } from '@/utils/structs/lookup';
+import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
+import { beforeEach, describe, expect, it } from 'vitest';
+import type {
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable,
+  BFFPresentationBase,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFTheme,
+  BFFValidationType,
+} from '../bffTypes.server';
+import {
+  createLeaf,
+  createRecordLink,
+  findChildrenAttributes,
+  generateAtomicValue,
+  isRepeatingVariable,
+  isVariable,
+  removeAttributeFromName,
+  transformToCoraData,
+} from '../transformToCora.server';
 
 describe('transformToCora', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

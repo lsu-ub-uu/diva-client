@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<output>
+    <recordInfo>
+        <validationType>
+            <linkedRecordType>validationType</linkedRecordType>
+            <linkedRecordId>publication_report</linkedRecordId>
+        </validationType>
+        <dataDivider>
+            <linkedRecordType>system</linkedRecordType>
+            <linkedRecordId>divaData</linkedRecordId>
+        </dataDivider>
+        <permissionUnit>
+            <linkedRecordType>permissionUnit</linkedRecordType>
+            <linkedRecordId>uu</linkedRecordId>
+        </permissionUnit>
+        <visibility>published</visibility>
+    </recordInfo>
+    <genre type="outputType">publication_report</genre>
+    <language repeatId="0">
+        <languageTerm authority="iso639-2b" type="code">arc</languageTerm>
+    </language>
+    <genre type="contentType">ref</genre>
+    <titleInfo lang="anp">
+        <title>Created by script</title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued>
+            <year>2025</year>
+        </dateIssued>
+    </originInfo>
+    <admin>
+        <reviewed>true</reviewed>
+    </admin>
+</output>

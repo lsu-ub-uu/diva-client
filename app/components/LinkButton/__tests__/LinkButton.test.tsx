@@ -17,9 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
 import { LinkButton } from '@/components/LinkButton/LinkButton';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('<LinkButton>', () => {
   vi.mock('react-i18next', () => ({
@@ -31,12 +31,7 @@ describe('<LinkButton>', () => {
     },
   }));
   it('should render a link with text translated into english', () => {
-    render(
-      <LinkButton
-        text='not translated'
-        href='https://www.test.com'
-      />,
-    );
+    render(<LinkButton text='not translated' href='https://www.test.com' />);
 
     const linkElementButton = screen.getByRole('link');
     const translatedElement = screen.getByText('translated to english');

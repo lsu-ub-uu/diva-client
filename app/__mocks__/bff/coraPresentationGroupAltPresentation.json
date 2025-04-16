@@ -297,22 +297,11 @@
                           }
                         ]
                       },
-                      {
-                        "name": "presentationSize",
-                        "value": ""
-                      },
-                      {
-                        "name": "textStyle",
-                        "value": ""
-                      },
+
                       {
                         "name": "childStyle",
                         "repeatId": "3",
-                        "value": ""
-                      },
-                      {
-                        "name": "minNumberOfRepeatingToShow",
-                        "value": ""
+                        "value": "oneChildStyle"
                       }
                     ]
                   }
@@ -321,26 +310,6 @@
               {
                 "name": "mode",
                 "value": "output"
-              },
-              {
-                "name": "attributesToShow",
-                "value": ""
-              },
-              {
-                "name": "presentationStyle",
-                "value": ""
-              },
-              {
-                "name": "presentAs",
-                "value": ""
-              },
-              {
-                "name": "showHeadline",
-                "value": ""
-              },
-              {
-                "name": "specifiedHeadlineLevel",
-                "value": ""
               }
             ],
             "attributes": {

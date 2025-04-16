@@ -33,7 +33,6 @@ import type {
   FormComponentTextVar,
   FormComponentWithData,
   FormSchema,
-  TextStyle,
 } from '../types';
 import {
   addAttributesToName,
@@ -44,6 +43,7 @@ import {
 import { cleanFormData } from '@/utils/cleanFormData';
 import { get } from 'lodash-es';
 import type { Option } from '@/components';
+import type { TextStyle } from '@/cora/transform/bffTypes.server';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -95,6 +95,7 @@ export const isComponentGuiElement = (
 export const isComponentResourceLink = (
   component: FormComponent,
 ): component is FormComponentResourceLink => component.type === 'resourceLink';
+
 export const isComponentVariable = (
   component: FormComponent,
 ): component is FormComponentLeaf =>
@@ -256,7 +257,7 @@ export function getNameInData(component: FormComponent) {
 }
 
 export const checkIfPresentationStyleIsInline = (
-  component: FormComponentWithData,
+  component: FormComponentWithData | FormComponentContainer,
 ) => {
   return component.presentationStyle === 'inline';
 };

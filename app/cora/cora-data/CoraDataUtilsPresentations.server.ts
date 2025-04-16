@@ -57,30 +57,3 @@ export const convertChildStylesToGridColSpan = (styles: string[]): number => {
   const cleaned = removeEmpty(convertedColSpans)[0];
   return cleaned ?? DEFAULT_COLSPAN;
 };
-export const convertChildStylesToShortName = (
-  styles: string[] | undefined,
-): unknown[] | never[] => {
-  return styles?.length
-    ? styles.map((style) => {
-        return convertStylesToShortName(style);
-      })
-    : [''];
-};
-export const convertStylesToShortName = (styles: string): string => {
-  switch (styles) {
-    case 'compactChildStyle':
-      return 'compact';
-    case 'frameChildStyle':
-      return 'frame';
-    case 'blockChildStyle':
-      return 'block';
-    case 'specificationChildStyle':
-      return 'specification';
-    case 'rowBasedChildStyle':
-      return 'row';
-    case undefined:
-      return '';
-    default:
-      return styles;
-  }
-};

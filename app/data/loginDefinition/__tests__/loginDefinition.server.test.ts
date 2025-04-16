@@ -17,22 +17,23 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
 import type {
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-  BFFPresentationBase,
   BFFPresentationGroup,
+  BFFPresentationTextVar,
   BFFRecordType,
   BFFSearch,
   BFFText,
   BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createLoginDefinition } from '../loginDefinition.server';
 
 describe('loginDefinition', () => {
@@ -110,7 +111,7 @@ describe('loginDefinition', () => {
       ],
     );
     const presentationPool = listToPool<
-      BFFPresentationGroup | BFFPresentationBase
+      BFFPresentationGroup | BFFPresentationTextVar
     >([
       {
         id: 'viewDefinitionPasswordPGroup',
@@ -125,7 +126,6 @@ describe('loginDefinition', () => {
               },
             ],
             minNumberOfRepeatingToShow: '1',
-            childStyle: [],
           },
           {
             refGroups: [
@@ -135,7 +135,6 @@ describe('loginDefinition', () => {
               },
             ],
             minNumberOfRepeatingToShow: '1',
-            childStyle: [],
           },
         ],
         type: 'pGroup',
@@ -185,10 +184,8 @@ describe('loginDefinition', () => {
       type: 'password',
       presentation: {
         form: {
-          childStyle: [''],
           components: [
             {
-              childStyle: [''],
               gridColSpan: 12,
               inputType: 'input',
               label: 'loginIdTextVarText',
@@ -211,7 +208,6 @@ describe('loginDefinition', () => {
               },
             },
             {
-              childStyle: [''],
               gridColSpan: 12,
               inputType: 'input',
               label: 'loginPasswordTextVarText',
@@ -238,7 +234,6 @@ describe('loginDefinition', () => {
           label: 'viewDefinitionPasswordGroupText',
           mode: 'input',
           name: 'password',
-          presentationStyle: '',
           repeat: {
             repeatMax: 1,
             repeatMin: 1,

@@ -16,6 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { renewAuth } from '@/auth/renewAuth.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
+import { getLoginUnits } from '@/data/getLoginUnits.server';
+import { i18nCookie } from '@/i18n/i18nCookie.server';
+import { useChangeLanguage } from '@/i18n/useChangeLanguage';
+import dev_favicon from '@/images/diva-star-dev.svg';
+import favicon from '@/images/diva-star.svg';
+import { type ReactNode, useRef } from 'react';
 import {
   data,
   isRouteErrorResponse,
@@ -26,28 +35,20 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { type ReactNode, useRef } from 'react';
-import dev_favicon from '@/images/diva-star-dev.svg';
-import favicon from '@/images/diva-star.svg';
-import { i18nCookie } from '@/i18n/i18nCookie.server';
-import { getLoginUnits } from '@/data/getLoginUnits.server';
-import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import rootCss from './root.css?url';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
-import { renewAuth } from '@/auth/renewAuth.server';
 
-import type { Route } from './+types/root';
-import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import { Header } from '@/components/Layout/Header/Header';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import divaLogo from '@/assets/divaLogo.svg';
-import { getRecordTypes } from '@/data/getRecordTypes';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { Header } from '@/components/Layout/Header/Header';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import Login from '@/components/Layout/Header/Login/Login';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import { getRecordTypes } from '@/data/getRecordTypes';
+import { ErrorPage } from '@/errorHandling/ErrorPage';
+import { SentimentVeryDissatisfiedIcon } from '@/icons';
+import type { Route } from './+types/root';
+import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 
 const { MODE } = import.meta.env;
 
@@ -188,6 +189,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
+  useDevModeSearchParam();
+
   const theme = loaderData.theme;
 
   return (

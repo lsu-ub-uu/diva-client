@@ -18,29 +18,6 @@
  */
 
 import {
-  createFormMetaData,
-  createMetaDataFromChildReference,
-} from '../formMetadata.server';
-import type { FormMetaData } from '../formDefinition.server';
-import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
-import { listToPool } from '@/utils/structs/listToPool';
-import type {
-  BFFGuiElement,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMetadataBase,
-  BFFMetadataGroup,
-  BFFMetadataItemCollection,
-  BFFPresentationBase,
-  BFFPresentationGroup,
-  BFFPresentationSurroundingContainer,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFTheme,
-  BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
-import {
   authorGroup,
   authorGroup2,
   createdByLink,
@@ -105,8 +82,32 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
+import type {
+  BFFGuiElement,
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
+  BFFMetadataBase,
+  BFFMetadataGroup,
+  BFFMetadataItemCollection,
+  BFFPresentationBase,
+  BFFPresentationGroup,
+  BFFPresentationSurroundingContainer,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFTheme,
+  BFFValidationType,
+} from '@/cora/transform/bffTypes.server';
+import { listToPool } from '@/utils/structs/listToPool';
 import type { Lookup } from '@/utils/structs/lookup';
+import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
+import { beforeEach, describe, expect, it } from 'vitest';
+import type { FormMetaData } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
+import {
+  createFormMetaData,
+  createMetaDataFromChildReference,
+} from '../formMetadata.server';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

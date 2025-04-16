@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { ChildStyle, TextStyle } from '@/cora/transform/bffTypes.server';
+
 export interface FormSchema {
   form: FormComponentGroup;
 }
@@ -50,6 +52,7 @@ export type FormComponentType =
   | 'recordLink'
   | 'collectionVariable'
   | 'numberVariable'
+  | 'resourceLink'
   | 'textVariable'
   | 'group'
   | 'text'
@@ -68,38 +71,6 @@ export interface FormComponentBase {
   name: string;
   alternativePresentation?: FormComponent;
 }
-
-export type TextStyle =
-  | 'h1TextStyle'
-  | 'h2TextStyle'
-  | 'h3TextStyle'
-  | 'h4TextStyle'
-  | 'h5TextStyle'
-  | 'h6TextStyle'
-  | 'bodyTextStyle'
-  | 'italicTextStyle'
-  | 'boldTextStyle';
-
-export type ChildStyle =
-  | 'zeroChildStyle'
-  | 'oneChildStyle'
-  | 'twoChildStyle'
-  | 'threeChildStyle'
-  | 'fourChildStyle'
-  | 'fiveChildStyle'
-  | 'sixChildStyle'
-  | 'sevenChildStyle'
-  | 'eightChildStyle'
-  | 'nineChildStyle'
-  | 'tenChildStyle'
-  | 'elevenChildStyle'
-  | 'twelveChildStyle'
-  | 'compactChildStyle'
-  | 'frameChildStyle'
-  | 'specificationChildStyle'
-  | 'rowBasedChildStyle'
-  | 'compact'
-  | '';
 
 export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
@@ -165,6 +136,7 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   linkedRecordPresentation?: LinkedPresentation;
   label: string;
   showLabel: boolean;
+  presentAs?: 'onlyTranslatedText' | 'permissionUnit';
 }
 
 export interface FormComponentResourceLink extends FormComponentMetadata {
@@ -177,9 +149,6 @@ export interface FormComponentResourceLink extends FormComponentMetadata {
 export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
   components?: FormComponent[];
-  alternativeComponents?: Record<string, FormComponent>;
-  label: string;
-  showLabel: boolean;
 }
 
 export interface FormComponentGroup extends FormComponentMetadata {
@@ -187,6 +156,11 @@ export interface FormComponentGroup extends FormComponentMetadata {
   components?: FormComponent[];
   label: string;
   showLabel: boolean;
+  presentAs?:
+    | 'map'
+    | 'recordRelation'
+    | 'externalLinkWithValue'
+    | 'onlyTranslatedText';
 }
 
 export type FormComponentText = FormComponentMetadata;
@@ -194,7 +168,7 @@ export type FormComponentText = FormComponentMetadata;
 export interface FormComponentGuiElement extends FormComponentBase {
   url: string;
   elementText: string;
-  presentAs: string;
+  presentAs: 'link' | 'image';
 }
 
 export type FormComponent =

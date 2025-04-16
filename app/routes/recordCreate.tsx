@@ -99,6 +99,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   );
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
   const resolver = yupResolver(yupSchema);
+
   const {
     errors,
     data: validatedFormData,
@@ -107,7 +108,6 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   if (errors) {
     return { errors, defaultValues };
   }
-
   try {
     const { recordType, id } = await createRecord(
       await context.dependencies,
@@ -122,6 +122,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
   } catch (error) {
     session.flash('notification', createNotificationFromAxiosError(t, error));
+    console.error(error);
   }
 
   return data({}, await getResponseInitWithSession(session));

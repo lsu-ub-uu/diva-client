@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { expect, it } from 'vitest';
 import { renameObjectKey } from '../renameObjectKey';
 
 it('rename', () => {

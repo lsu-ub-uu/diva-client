@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { FormComponentType } from '@/components/FormGenerator/types';
 import type {
   BFFMetadata,
   BFFPresentation,
@@ -29,7 +30,7 @@ export const createCommonParameters = (
 ) => {
   return removeEmpty({
     name: metadata.nameInData,
-    type: metadata.type,
+    type: metadata.type as FormComponentType,
     placeholder: getPlaceholder(presentation),
     mode: getMode(presentation),
     inputType: getInputType(presentation),
@@ -87,7 +88,7 @@ const getLabel = (metadata: BFFMetadata, presentation: BFFPresentation) => {
   return metadata.textId;
 };
 
-const shouldShowLabel = (presentation: BFFPresentation) => {
+export const shouldShowLabel = (presentation: BFFPresentation) => {
   if ('showLabel' in presentation && presentation.showLabel === 'false') {
     return false;
   }

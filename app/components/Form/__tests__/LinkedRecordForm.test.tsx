@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { describe, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { formDefWithTextVar } from '@/__mocks__/data/form/textVar';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 import type { FormSchema } from '@/components/FormGenerator/types';
-import { formDefWithTextVar } from '@/__mocks__/data/form/textVar';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 describe('<LinkedRecordForm />', () => {
   it('renders a form with linked data from a given definition', () => {

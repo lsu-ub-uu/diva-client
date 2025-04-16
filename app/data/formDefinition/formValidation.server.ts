@@ -21,7 +21,10 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
 } from '@/cora/transform/bffTypes.server';
-import type { FormRegexValidation } from '@/components/FormGenerator/types';
+import type {
+  FormNumberValidation,
+  FormRegexValidation,
+} from '@/components/FormGenerator/types';
 
 export const createTextVariableValidation = (
   textVariable: BFFMetadataTextVariable,
@@ -32,11 +35,12 @@ export const createTextVariableValidation = (
 
 export const createNumberVariableValidation = (
   numberVariable: BFFMetadataNumberVariable,
-) => {
+): FormNumberValidation => {
   const min = parseInt(numberVariable.min);
   const max = parseInt(numberVariable.max);
   const warningMin = parseInt(numberVariable.warningMin);
   const warningMax = parseInt(numberVariable.warningMax);
   const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
+
   return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 };

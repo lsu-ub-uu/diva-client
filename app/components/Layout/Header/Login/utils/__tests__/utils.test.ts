@@ -16,15 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { expect } from 'vitest';
+import type { Auth } from '@/auth/Auth';
+import { describe, expect, it, vi } from 'vitest';
 import {
   convertLoginIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '../utils';
-import type { Auth } from '@/auth/Auth';
 
 describe('Login validation', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
