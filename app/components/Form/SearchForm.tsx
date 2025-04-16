@@ -49,7 +49,7 @@ export const SearchForm = ({
   });
 
   return (
-    <Form method='GET'>
+    <Form method='GET' onSubmit={methods.handleSubmit}>
       <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
           <FormGenerator
@@ -58,6 +58,9 @@ export const SearchForm = ({
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
+              'search.include.includePart.genericSearchTerm': {
+                type: 'notRemovable',
+              },
             }}
           />
           <SearchButton />

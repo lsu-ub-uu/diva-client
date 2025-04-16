@@ -59,7 +59,6 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   );
 
   const yupSchema = generateYupSchemaFromFormSchema(searchForm);
-
   const { query, searchResults, errors } = await performSearch(
     request,
     context,

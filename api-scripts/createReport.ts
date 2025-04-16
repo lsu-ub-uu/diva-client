@@ -16,11 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import login from './auth';
 import { readFileSync } from 'fs';
 
-export default async function createReport() {
-  const auth = await login();
+export default async function createReport(authtoken: string) {
   const body = readFileSync(
     new URL('./diva-report.xml', import.meta.url),
     'utf8',
@@ -34,7 +32,7 @@ export default async function createReport() {
         headers: {
           'Content-Type': 'application/vnd.uub.record+xml',
           Accept: 'application/vnd.uub.record+xml',
-          authToken: auth.token,
+          authToken: authtoken,
         },
         body,
       },
@@ -44,7 +42,5 @@ export default async function createReport() {
     console.info('Successfully created record', xml);
   } catch (error) {
     console.error(error);
-  } finally {
-    await auth.logout();
   }
 }

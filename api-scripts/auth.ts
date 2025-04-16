@@ -31,6 +31,8 @@ export default async function login() {
 
   const auth = await res.json();
 
+  console.info('Successfully logged in');
+
   return {
     token: auth.authentication.data.children.find(
       (child: any) => child.name === 'token',

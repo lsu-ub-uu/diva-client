@@ -17,6 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {
+  isComponentContainer,
+  isComponentRepeating,
+  isComponentValidForDataCarrying,
+  isComponentVariable,
+  isComponentWithData,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import type {
   FormAttributeCollection,
   FormComponent,
@@ -25,16 +33,6 @@ import type {
   FormComponentWithData,
   FormSchema,
 } from '../types';
-import {
-  isComponentContainer,
-  isComponentGroup,
-  isComponentRepeating,
-  isComponentValidForDataCarrying,
-  isComponentVariable,
-  isComponentWithData,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { uniq } from 'lodash-es';
-import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
 export interface RecordData {
   [key: string]: any;
@@ -174,26 +172,6 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-export const getChildNameInDataArray = (component: FormComponent) => {
-  if (!isComponentGroup(component)) {
-    return [];
-  }
-
-  const nameArray: any[] = [];
-  (component.components ?? []).forEach((childComponent) => {
-    nameArray.push(childComponent.name);
-  });
-  return nameArray;
-};
-
-export const getChildrenWithSameNameInData = (childArray: string[]) => {
-  const withoutSingles = childArray.filter(
-    (item, index) => childArray.lastIndexOf(item) !== index,
-  );
-
-  return uniq(withoutSingles);
-};
-
 function createDefaultValuesForVariable(component: FormComponentWithData) {
   return {
     value: createDefaultValueFromFinalValue(component),
@@ -304,11 +282,4 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
   }));
 
   return createFieldNameWithAttributes(name, attributes);
-};
-
-export const hasCurrentComponentSameNameInData = (
-  childArray: string[],
-  componentName: string,
-) => {
-  return childArray.includes(componentName);
 };

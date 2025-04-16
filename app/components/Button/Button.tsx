@@ -23,7 +23,7 @@ import {
 
 import styles from './Button.module.css';
 import clsx from 'clsx';
-import { type ElementType, type Ref } from 'react';
+import { type ElementType, type ReactNode, type Ref } from 'react';
 
 export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
@@ -35,6 +35,7 @@ export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   ref?: Ref<HTMLButtonElement>;
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
   error?: boolean;
+  children?: ReactNode;
 }
 
 export const Button = ({

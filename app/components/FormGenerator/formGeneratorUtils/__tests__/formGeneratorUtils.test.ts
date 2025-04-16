@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/form/textVar';
 import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, it, vi } from 'vitest';
@@ -27,7 +26,6 @@ import {
   checkIfSingularComponentHasValue,
   checkIfValueExists,
   exportForTesting,
-  getChildrenWithSameNameInDataFromSchema,
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
@@ -1683,15 +1681,6 @@ describe('helper methods', () => {
         'domain.value',
       );
       expect(actual).toStrictEqual(false);
-    });
-  });
-
-  describe('getChildrenWithSameNameInDataFromSchema', () => {
-    it('returns array without duplicates from schema', () => {
-      const actual = getChildrenWithSameNameInDataFromSchema(
-        formDefTextVarsWithSameNameInData,
-      );
-      expect(actual).toStrictEqual(['subject']);
     });
   });
 });

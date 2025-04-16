@@ -41,6 +41,7 @@ import { Accordion } from '@/components/Accordion/Accordion';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { AccordionContent } from '@/components/Accordion/AccordionContent';
 import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { AccordionExpandLink } from '@/components/Accordion/AccordionExpandLink';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -528,6 +529,37 @@ export default function DesignSystem() {
               )}
             </AccordionContent>
             <AccordionExpandButton />
+          </Accordion>
+          <h3>Accordion for search</h3>
+          <Accordion
+            expanded={accordionExpanded}
+            onChange={setAccordionExpanded}
+          >
+            <AccordionContent>
+              {accordionExpanded ? (
+                <div>
+                  <Fieldset label='Input'>
+                    <Input />
+                  </Fieldset>
+                  <Fieldset label='Input'>
+                    <Input />
+                  </Fieldset>
+                  <Fieldset label='Input'>
+                    <Input />
+                  </Fieldset>
+                  <Fieldset label='Input'>
+                    <Input />
+                  </Fieldset>
+                </div>
+              ) : (
+                <div>
+                  <Fieldset label='Input'>
+                    <Input />
+                  </Fieldset>
+                </div>
+              )}
+            </AccordionContent>
+            <AccordionExpandLink />
           </Accordion>
         </section>
       </main>

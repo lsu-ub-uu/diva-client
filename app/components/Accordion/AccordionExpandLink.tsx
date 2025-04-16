@@ -15,17 +15,27 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import login from './auth';
-import createReport from './createReport';
 
-const auth = await login();
+import { AccordionContext } from '@/components/Accordion/Accordion';
+import { Button, type ButtonProps } from '@/components/Button/Button';
+import { ChevronDownIcon } from '@/icons';
+import clsx from 'clsx';
+import { use } from 'react';
 
-try {
-  await Promise.all(
-    Array.from({ length: 100 }, () => createReport(auth.token)),
+export const AccordionExpandLink = (props: ButtonProps) => {
+  const { expanded, contentId, onChange } = use(AccordionContext);
+
+  return (
+    <Button
+      type='button'
+      className={clsx(props.className)}
+      variant='tertiary'
+      aria-controls={contentId}
+      aria-expanded={expanded}
+      onClick={() => onChange(!expanded)}
+      {...props}
+    >
+      {props.children} <ChevronDownIcon />
+    </Button>
   );
-
-  console.info('All reports created successfully');
-} finally {
-  await auth.logout();
-}
+};
