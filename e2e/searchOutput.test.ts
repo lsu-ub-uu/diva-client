@@ -23,7 +23,7 @@ test.describe('Search output', () => {
     await expect(
       await page.getByRole('textbox', { name: 'Fritext' }),
     ).toHaveValue(recordTitle);
-    await page.getByRole('button', { name: 'Sök' }).click();
+    await page.getByRole('button', { name: 'Sök', exact: true }).click();
 
     await expect(await page.getByText(recordId)).toBeVisible();
   });
