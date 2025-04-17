@@ -42,16 +42,6 @@ export const getRecordTypes = async (
     ),
   );
 
-  console.log(
-    'User record types:',
-    userRecordTypes
-      .map((response) => response.data)
-      .filter(
-        (recordType) => recordType.record.actionLinks.search !== undefined,
-      )
-      .map(transformRecordType),
-  );
-
   return userRecordTypes
     .map((response) => response.data)
     .filter((recordType) => recordType.record.actionLinks.search !== undefined)
