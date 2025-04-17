@@ -29,7 +29,7 @@ export const getRecordTypes = async (
   const divaClientRecordTypes = Array.from(
     dependencies.recordTypePool.values(),
   ).filter((recordType) =>
-    recordType.groupOfRecordType.includes('diva-client'),
+    recordType.recordTypeCategory.includes('clientNavigation'),
   );
 
   const userRecordTypes = await Promise.all(
