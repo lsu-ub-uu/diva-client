@@ -38,6 +38,7 @@ export interface BFFRecordType extends BFFBase {
   textId: string;
   defTextId: string;
   groupOfRecordType: string[];
+  recordTypeCategory: string[];
 }
 
 export interface BFFMetadataBase extends BFFBase {

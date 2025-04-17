@@ -30,6 +30,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     textId: '',
     defTextId: '',
     groupOfRecordType: [],
+    recordTypeCategory: [],
   },
   {
     id: '2',
@@ -39,6 +40,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     textId: '',
     defTextId: '',
     groupOfRecordType: [],
+    recordTypeCategory: [],
   },
   {
     id: '3',
@@ -48,6 +50,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     textId: '',
     defTextId: '',
     groupOfRecordType: [],
+    recordTypeCategory: [],
   },
 ];
 

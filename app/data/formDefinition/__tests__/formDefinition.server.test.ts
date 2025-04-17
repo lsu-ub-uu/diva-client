@@ -446,6 +446,7 @@ describe('formDefinition', () => {
       textId: 'someText',
       defTextId: 'someDefText',
       groupOfRecordType: [],
+      recordTypeCategory: [],
     };
 
     recordTypePool.set(metadata.id, metadata);
@@ -2013,6 +2014,7 @@ describe('formDefinition', () => {
         textId: 'someTextId',
         defTextId: 'someDefTextId',
         groupOfRecordType: [],
+        recordTypeCategory: [],
       });
 
       metadataPool.set('personUpdateGroup', {
