@@ -8,8 +8,6 @@ beforeAll(() => {
   vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
   vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
 
-  globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-
   global.ResizeObserver = class ResizeObserver {
     observe() {}
     unobserve() {}
