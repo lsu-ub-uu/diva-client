@@ -149,6 +149,11 @@
                 "value": "publicationType"
               },
               {
+                "name": "recordTypeCategory",
+                "repeatId": "1",
+                "value": "clientNavigation"
+              },
+              {
                 "name": "public",
                 "value": "true"
               },

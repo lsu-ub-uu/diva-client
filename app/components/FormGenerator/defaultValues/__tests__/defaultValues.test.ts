@@ -59,8 +59,9 @@ import {
   mergeObjects,
   removeRootObject,
 } from '../defaultValues';
+import { formDefWithMatchingTrees } from '@/__mocks__/data/form/matchingTrees';
 
-describe('FormGenerator Utils', () => {
+describe('defaultValues', () => {
   describe('generate defaultValues', () => {
     describe('createDefaultValuesFromFormSchema', () => {
       it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
@@ -180,7 +181,7 @@ describe('FormGenerator Utils', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      it('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
+      it('should construct a default value object for one single group having textVar as child component', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             someChildGroupNameInData: {
@@ -193,6 +194,25 @@ describe('FormGenerator Utils', () => {
 
         const actualDefaultValues = createDefaultValuesFromFormSchema(
           formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('merges two component trees with with same names', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someGroupNameInData: {
+              someNameInData: {
+                value: '',
+              },
+              someOtherNameInData: {
+                value: '',
+              },
+            },
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithMatchingTrees as FormSchema,
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
@@ -1324,6 +1344,7 @@ describe('FormGenerator Utils', () => {
       expect(expectedData).toStrictEqual(actualData);
     });
   });
+
   describe('util functions', () => {
     it('removeRootObject', () => {
       const expectedData = {

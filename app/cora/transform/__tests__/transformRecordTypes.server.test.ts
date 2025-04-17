@@ -40,6 +40,7 @@ describe('transformCoraRecordType', () => {
       textId: 'exampleDevOutputText',
       defTextId: 'exampleDevOutputDefText',
       groupOfRecordType: ['publicationType'],
+      recordTypeCategory: ['clientNavigation'],
     };
     expect(firstRecordType).toStrictEqual(expected);
   });

@@ -69,10 +69,17 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
       'autocompletePresentationView',
     );
   }
+
   const groupOfRecordType = getAllDataAtomicsWithNameInData(
     dataRecordGroup,
     'groupOfRecordType',
   ).map((data) => data.value);
+
+  const recordTypeCategory = getAllDataAtomicsWithNameInData(
+    dataRecordGroup,
+    'recordTypeCategory',
+  ).map((data) => data.value);
+
   return removeEmpty({
     id,
     metadataId,
@@ -84,5 +91,6 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     textId,
     defTextId,
     groupOfRecordType,
+    recordTypeCategory,
   }) satisfies BFFRecordType;
 };
