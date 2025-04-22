@@ -17,17 +17,18 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Button } from '@/components/Button/Button';
+import { Pagination } from '@/components/Form/Pagination';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { SearchIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { Form, useSubmit } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
-import { Pagination } from '@/components/Form/Pagination';
-import { Button } from '@/components/Button/Button';
-import { SearchIcon } from '@/icons';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { useTheme } from '@/utils/rootLoaderDataUtils';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -40,6 +41,7 @@ export const SearchForm = ({
   formSchema,
   searchResults,
 }: SearchFormProps) => {
+  const theme = useTheme();
   const submit = useSubmit();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -49,7 +51,7 @@ export const SearchForm = ({
   });
 
   return (
-    <Form method='GET' onSubmit={methods.handleSubmit}>
+    <Form method='GET'>
       <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
           <FormGenerator
@@ -58,9 +60,9 @@ export const SearchForm = ({
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
-              'search.include.includePart.permissionUnitSearchTerm': {
+              /* 'search.include.includePart.permissionUnitSearchTerm': {
                 type: 'hidden',
-              },
+              }, */
               'search.include.includePart.genericSearchTerm': {
                 type: 'notRemovable',
               },
@@ -70,7 +72,13 @@ export const SearchForm = ({
           {!searchResults && (
             <input type='hidden' name='search.rows[0].value' value='10' />
           )}
-
+          {theme?.memberPermissionUnit && (
+            <input
+              type='hidden'
+              name='search.include.includePart.permissionUnitSearchTerm.value'
+              value={`permissionUnit_${theme.memberPermissionUnit}`}
+            />
+          )}
           {data && searchResults && (
             <Pagination
               query={data}

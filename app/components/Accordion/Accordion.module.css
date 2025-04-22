@@ -90,7 +90,7 @@
   padding: var(--gap);
 }
 
-.accordion[data-expanded='false']:not(:has(.content)) .title {
+.accordion[data-expanded='false']:has(.content[hidden]) .title {
   --accordion-title-border-radius: var(--border-radius);
 }
 

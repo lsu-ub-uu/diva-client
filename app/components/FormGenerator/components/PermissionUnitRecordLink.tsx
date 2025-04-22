@@ -19,9 +19,8 @@
 import type { Auth } from '@/auth/Auth';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import type { BFFTheme } from '@/cora/transform/bffTypes.server';
-import type { loader } from '@/root';
+import { useAuth, useTheme } from '@/utils/rootLoaderDataUtils';
 import { useEffect } from 'react';
-import { useRouteLoaderData } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from './DevInfo';
 import { RecordLinkWithSearch } from './RecordLinkWithSearch';
@@ -35,11 +34,10 @@ export const PermissionUnitRecordLink = ({
   path,
 }: PermissionUnitRecordLinkProps) => {
   const { setValue } = useRemixFormContext();
-  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  const autoPermissionUnit = getAutoPermissionUnit(
-    rootLoaderData?.theme,
-    rootLoaderData?.auth,
-  );
+  const theme = useTheme();
+  const auth = useAuth();
+
+  const autoPermissionUnit = getAutoPermissionUnit(theme, auth);
 
   useEffect(() => {
     if (autoPermissionUnit) {

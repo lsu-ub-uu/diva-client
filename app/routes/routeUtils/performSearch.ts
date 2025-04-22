@@ -21,7 +21,7 @@ import type { Auth } from '@/auth/Auth';
 import { searchRecords } from '@/data/searchRecords.server';
 import { type ObjectSchema, ValidationError } from 'yup';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { getFormDataFromSearchParams } from 'remix-hook-form';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 
 export const performSearch = async (
   request: Request,
@@ -30,7 +30,8 @@ export const performSearch = async (
   auth: Auth | undefined,
   yupSchema: ObjectSchema<Record<string, any>>,
 ) => {
-  const query = getFormDataFromSearchParams(request);
+  const url = new URL(request.url);
+  const query = parseFormDataFromSearchParams(url.searchParams);
 
   try {
     if (isEmptySearch(query)) {

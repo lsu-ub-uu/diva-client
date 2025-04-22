@@ -16,16 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import styles from '@/components/FormGenerator/components/FormComponent.module.css';
-import resourceLinkStyles from './ResourceLink.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
+import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
 import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
-import { useRouteLoaderData } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { DownloadIcon } from '@/icons';
-import type { loader } from '@/root';
+import { useAuth } from '@/utils/rootLoaderDataUtils';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import resourceLinkStyles from './ResourceLink.module.css';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -35,9 +34,10 @@ interface ResourceLinkProps {
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
-  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
+  const auth = useAuth();
+
   const data: ResourceLinkType = getValues(path);
-  const authToken = rootLoaderData?.auth?.data.token;
+  const authToken = auth?.data.token;
 
   const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
   return (

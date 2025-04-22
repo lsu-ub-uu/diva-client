@@ -114,14 +114,16 @@ export const AlternativePresentationSwitcher = (
           />
         </AccordionContent>
       ) : (
-        expanded && ( // Switch between no content and single presentation
-          <AccordionContent className={componentStyles['container']}>
-            <Component
-              {...props}
-              component={{ ...component, title: undefined } as FormComponent}
-            />
-          </AccordionContent>
-        )
+        // Switch between no content and single presentation
+        <AccordionContent
+          className={componentStyles['container']}
+          hidden={!expanded}
+        >
+          <Component
+            {...props}
+            component={{ ...component, title: undefined } as FormComponent}
+          />
+        </AccordionContent>
       )}
       {!title && <AccordionExpandButton />}
     </Accordion>

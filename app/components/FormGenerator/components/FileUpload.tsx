@@ -16,20 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import styles from './FormComponent.module.css';
-import { useTranslation } from 'react-i18next';
-import { useRouteLoaderData } from 'react-router';
-import { type ReactNode, use, useState } from 'react';
-import { useRemixFormContext } from 'remix-hook-form';
-import type { loader } from '@/root';
-import axios from 'axios';
-import { Progress } from '@/components/Progress/Progress';
-import { FileInput } from '@/components/Input/FileInput';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { FileInput } from '@/components/Input/FileInput';
+import { Progress } from '@/components/Progress/Progress';
+import { useAuth } from '@/utils/rootLoaderDataUtils';
+import axios from 'axios';
+import { type ReactNode, use, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import styles from './FormComponent.module.css';
 
 interface RecordLinkBinaryProps {
   component: FormComponentRecordLink;
@@ -49,11 +48,11 @@ export const FileUpload = ({
   const { t } = useTranslation();
   const { getValues, setValue, formState } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
-  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
+  const auth = useAuth();
   const [progress, setProgress] = useState(0);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
   const value = getValues(path);
-  const authToken = rootLoaderData?.auth?.data.token;
+  const authToken = auth?.data.token;
 
   const errorMessage = getErrorMessageForField(formState, path);
   if (component.mode === 'output' && !value) {
