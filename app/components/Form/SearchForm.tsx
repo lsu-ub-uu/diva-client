@@ -56,13 +56,14 @@ export const SearchForm = ({
         <RemixFormProvider {...methods}>
           <FormGenerator
             formSchema={formSchema}
-            showTooltips={false}
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
-              'search.include.includePart.permissionUnitSearchTerm': {
-                type: 'hidden',
-              },
+              ...(theme?.memberPermissionUnit && {
+                'search.include.includePart.permissionUnitSearchTerm': {
+                  type: 'hidden',
+                },
+              }),
               'search.include.includePart.genericSearchTerm': {
                 type: 'notRemovable',
               },
@@ -70,13 +71,19 @@ export const SearchForm = ({
           />
           <SearchButton />
           {!searchResults && (
-            <input type='hidden' name='search.rows[0].value' value='10' />
+            <input
+              type='hidden'
+              name='search.rows[0].value'
+              value='10'
+              data-testid='rowsHiddenSearchTerm'
+            />
           )}
           {theme?.memberPermissionUnit && (
             <input
               type='hidden'
               name='search.include.includePart.permissionUnitSearchTerm[0].value'
               value={`permissionUnit_${theme.memberPermissionUnit}`}
+              data-testid='permissionUnitHiddenSearchTerm'
             />
           )}
           {data && searchResults && (
