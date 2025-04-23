@@ -60,9 +60,9 @@ export const SearchForm = ({
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
-              /* 'search.include.includePart.permissionUnitSearchTerm': {
+              'search.include.includePart.permissionUnitSearchTerm': {
                 type: 'hidden',
-              }, */
+              },
               'search.include.includePart.genericSearchTerm': {
                 type: 'notRemovable',
               },
