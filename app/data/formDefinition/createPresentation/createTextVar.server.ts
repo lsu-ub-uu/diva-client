@@ -82,6 +82,7 @@ export const createTextVar = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     name,
     placeholder,
     mode,

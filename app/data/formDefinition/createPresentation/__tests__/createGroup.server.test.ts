@@ -68,10 +68,11 @@ describe('createGroup', () => {
       repeat: { repeatMin: 1, repeatMax: 1 },
       gridColSpan: 12,
       presentAs: 'map',
+      presentationId: 'testPGroup',
     });
   });
 
-  it('transforms group', () => {
+  it('transforms presentAs', () => {
     const dependencies = {
       presentationPool: listToPool<BFFPresentation>([]),
       metadataPool: listToPool<BFFMetadata>([]),

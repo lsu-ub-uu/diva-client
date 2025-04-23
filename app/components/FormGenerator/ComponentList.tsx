@@ -34,9 +34,10 @@ export const ComponentList = ({
   path = '',
 }: FormComponentListGeneratorProps) => {
   return components.map((component, i) => {
+    const componentPath = getCurrentComponentNamePath(component, path);
     return (
       <Component
-        key={getCurrentComponentNamePath(component, path)}
+        key={`${componentPath}.${component.presentationId}`}
         component={component}
         idx={i}
         path={path}

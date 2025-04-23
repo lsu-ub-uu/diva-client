@@ -177,6 +177,7 @@ export const createGroupOrComponent = (
 
   // Fall back to "generic" presentation
   return {
+    presentationId: presentation.id,
     ...createCommonParameters(metadata, presentation),
     repeat: createRepeat(presentationChildReference, metaDataChildReference),
     ...createPresentationChildReferenceParameters(presentationChildReference),

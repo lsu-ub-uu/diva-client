@@ -167,6 +167,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
             components: [
               {
                 name: 'givenName',
+                presentationId: 'givenName',
+
                 type: 'textVariable',
                 mode: 'output',
                 inputType: 'input',

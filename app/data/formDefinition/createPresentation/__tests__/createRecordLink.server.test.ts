@@ -57,6 +57,7 @@ describe('createRecordLink', () => {
     );
 
     const expected: FormComponentRecordLink = {
+      presentationId: 'permissionUnitPLink',
       type: 'recordLink',
       name: 'permissionUnit',
       mode: 'input',

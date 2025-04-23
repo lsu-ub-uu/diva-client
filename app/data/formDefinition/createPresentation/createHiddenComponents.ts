@@ -108,6 +108,7 @@ function createHiddenVariable(
 
   if (isFinalValue && !hasPresentation) {
     return {
+      presentationId: metadata.id,
       type: 'hidden',
       name: currentPath,
       finalValue: metadata.finalValue!,

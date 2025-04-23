@@ -191,6 +191,7 @@ describe('loginDefinition', () => {
               label: 'loginIdTextVarText',
               mode: 'input',
               name: 'loginId',
+              presentationId: 'loginIdPVar',
               repeat: {
                 minNumberOfRepeatingToShow: 1,
                 repeatMax: 1,
@@ -213,6 +214,8 @@ describe('loginDefinition', () => {
               label: 'loginPasswordTextVarText',
               mode: 'input',
               name: 'password',
+              presentationId: 'loginPasswordPVar',
+
               repeat: {
                 minNumberOfRepeatingToShow: 1,
                 repeatMax: 1,
@@ -234,6 +237,7 @@ describe('loginDefinition', () => {
           label: 'viewDefinitionPasswordGroupText',
           mode: 'input',
           name: 'password',
+          presentationId: 'viewDefinitionPasswordPGroup',
           repeat: {
             repeatMax: 1,
             repeatMin: 1,

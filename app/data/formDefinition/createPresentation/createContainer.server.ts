@@ -77,6 +77,7 @@ export const createContainer = (
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const container: FormComponentContainer = {
+    presentationId: presentation.id,
     type,
     name,
     mode,

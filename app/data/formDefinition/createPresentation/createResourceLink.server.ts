@@ -67,6 +67,7 @@ export const createResourceLink = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     type,
     name,
     placeholder,

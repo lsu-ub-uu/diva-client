@@ -158,6 +158,7 @@ export const authorAndTitleSchema: RecordFormSchema = {
       {
         name: 'author',
         type: 'group',
+        presentationId: 'group',
         mode: 'output',
         tooltip: {
           title: 'authorGroupText',
@@ -175,6 +176,7 @@ export const authorAndTitleSchema: RecordFormSchema = {
             name: 'givenName',
             type: 'textVariable',
             mode: 'output',
+            presentationId: 'givenName',
             inputType: 'input',
             tooltip: {
               title: 'givenNameTextVarText',
@@ -196,6 +198,7 @@ export const authorAndTitleSchema: RecordFormSchema = {
           },
           {
             name: 'familyName',
+            presentationId: 'familyName',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',

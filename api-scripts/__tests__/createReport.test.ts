@@ -1,11 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import createReport from '../createReport';
-import login from '../auth';
 import { readFileSync } from 'fs';
 import { mock } from 'vitest-mock-extended';
 
 // Mock dependencies
-vi.mock('../auth');
 vi.mock('fs');
 
 describe('createReport', () => {
@@ -15,11 +13,6 @@ describe('createReport', () => {
 
   test('should successfully create a report and log the result', async () => {
     // Arrange
-    const mockAuth = {
-      token: 'mock-token',
-      logout: vi.fn(),
-    };
-    vi.mocked(login).mockResolvedValue(mockAuth);
 
     const mockBody = '<xml>mock data</xml>';
     vi.mocked(readFileSync).mockReturnValue(mockBody);
@@ -34,10 +27,9 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport();
+    await createReport('mock-token');
 
     // Assert
-    expect(login).toHaveBeenCalledOnce();
     expect(readFileSync).toHaveBeenCalledWith(
       new URL('../diva-report.xml', import.meta.url),
       'utf8',
@@ -59,7 +51,6 @@ describe('createReport', () => {
       'Successfully created record',
       '<xml>response data</xml>',
     );
-    expect(mockAuth.logout).toHaveBeenCalledOnce();
 
     // Cleanup
     consoleInfoSpy.mockRestore();
@@ -67,12 +58,6 @@ describe('createReport', () => {
 
   test('should log an error if the fetch fails', async () => {
     // Arrange
-    const mockAuth = {
-      token: 'mock-token',
-      logout: vi.fn(),
-    };
-    vi.mocked(login).mockResolvedValue(mockAuth);
-
     const mockBody = '<xml>mock data</xml>';
     vi.mocked(readFileSync).mockReturnValue(mockBody);
 
@@ -84,11 +69,10 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport();
+    await createReport('mock-token');
 
     // Assert
     expect(consoleErrorSpy).toHaveBeenCalledWith(mockError);
-    expect(mockAuth.logout).toHaveBeenCalledOnce();
 
     // Cleanup
     consoleErrorSpy.mockRestore();

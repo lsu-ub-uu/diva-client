@@ -88,6 +88,7 @@ export const createRecordLink = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     name,
     placeholder,
     mode,
