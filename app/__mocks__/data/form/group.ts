@@ -19,62 +19,208 @@
 
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 
-export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    showLabel: true,
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'group',
-        label: 'someChildGroupTextId',
-        name: 'someChildGroupNameInData',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someChildGroupTextId',
-          body: 'someChildGroupDefTextId',
-        },
-        components: [
-          {
-            type: 'textVariable',
-            name: 'someNameInData',
-            label: 'someTextId',
-            placeholder: 'someEmptyTextId',
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            tooltip: {
-              title: 'someTextId',
-              body: 'someDefTextId',
-            },
-            validation: {
-              type: 'regex',
-              pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{3,50}$)',
-            },
-            mode: 'input',
-            inputType: 'input',
-          },
-        ],
-        mode: 'input',
+export const generateFormWithGroupMockForTests = (
+  name: string,
+  components: any[],
+): RecordFormSchema => {
+  return {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    mode: 'input',
-  },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components,
+      mode: 'input',
+    },
+  };
 };
+
+const typeCollection = [
+  {
+    value: 'code',
+    label: 'codeItemText',
+  },
+  {
+    value: 'contentType',
+    label: 'contentTypeItemText',
+  },
+  {
+    value: 'creatorCount',
+    label: 'creatorCountItemText',
+  },
+  {
+    value: 'restrictionOnAccess',
+    label: 'restrictionOnAccessItemText',
+  },
+  {
+    value: 'publicationStatus',
+    label: 'publicationStatusItemText',
+  },
+  {
+    value: 'corporate',
+    label: 'corporateItemText',
+  },
+  {
+    value: 'personal',
+    label: 'personalItemText',
+  },
+  {
+    value: 'given',
+    label: 'givenItemText',
+  },
+  {
+    value: 'family',
+    label: 'familyItemText',
+  },
+  {
+    value: 'termsOfAddress',
+    label: 'termsOfAddressItemText',
+  },
+  {
+    value: 'series',
+    label: 'seriesItemText',
+  },
+  {
+    value: 'conference-publication',
+    label: 'conferencePublicationItemText',
+  },
+  {
+    value: 'statement_of_responsibility',
+    label: 'statementOfResponsibilityItemText',
+  },
+  {
+    value: 'book',
+    label: 'bookItemText',
+  },
+  {
+    value: 'journal',
+    label: 'journalItemText',
+  },
+  {
+    value: 'artNo',
+    label: 'artNoItemText',
+  },
+  {
+    value: 'issue',
+    label: 'issueItemText',
+  },
+  {
+    value: 'volume',
+    label: 'volumeItemText',
+  },
+  {
+    value: 'conference',
+    label: 'conferenceItemText',
+  },
+  {
+    value: 'initiative',
+    label: 'initiativeItemText',
+  },
+  {
+    value: 'funder',
+    label: 'funderItemText',
+  },
+  {
+    value: 'project',
+    label: 'projectItemText',
+  },
+  {
+    value: 'constituent',
+    label: 'constituentItemText',
+  },
+  {
+    value: 'thesis',
+    label: 'thesisItemText',
+  },
+  {
+    value: 'defence',
+    label: 'defenceItemText',
+  },
+  {
+    value: 'researchData',
+    label: 'researchDataItemText',
+  },
+  {
+    value: 'outputType',
+    label: 'outputTypeItemText',
+  },
+  {
+    value: 'internal',
+    label: 'internalItemText',
+  },
+  {
+    value: 'online',
+    label: 'onlineItemText',
+  },
+  {
+    value: 'biographical',
+    label: 'biographicalItemText',
+  },
+  {
+    value: 'patent',
+    label: 'patentItemText',
+  },
+];
+
+const languageCollection = [
+  {
+    value: 'eng',
+    label: 'engLangItemText',
+  },
+  {
+    value: 'swe',
+    label: 'sweLangItemText',
+  },
+];
+
+export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema =
+  generateFormWithGroupMockForTests('someRootNameInData', [
+    {
+      type: 'group',
+      label: 'someChildGroupTextId',
+      name: 'someChildGroupNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'someChildGroupTextId',
+        body: 'someChildGroupDefTextId',
+      },
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someNameInData',
+          label: 'someTextId',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
+          },
+          validation: {
+            type: 'regex',
+            pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{3,50}$)',
+          },
+          mode: 'input',
+          inputType: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  ]);
 
 export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
@@ -486,132 +632,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             },
             label: 'typeCollectionVarText',
             showLabel: true,
-            options: [
-              {
-                value: 'code',
-                label: 'codeItemText',
-              },
-              {
-                value: 'contentType',
-                label: 'contentTypeItemText',
-              },
-              {
-                value: 'creatorCount',
-                label: 'creatorCountItemText',
-              },
-              {
-                value: 'restrictionOnAccess',
-                label: 'restrictionOnAccessItemText',
-              },
-              {
-                value: 'publicationStatus',
-                label: 'publicationStatusItemText',
-              },
-              {
-                value: 'corporate',
-                label: 'corporateItemText',
-              },
-              {
-                value: 'personal',
-                label: 'personalItemText',
-              },
-              {
-                value: 'given',
-                label: 'givenItemText',
-              },
-              {
-                value: 'family',
-                label: 'familyItemText',
-              },
-              {
-                value: 'termsOfAddress',
-                label: 'termsOfAddressItemText',
-              },
-              {
-                value: 'series',
-                label: 'seriesItemText',
-              },
-              {
-                value: 'conference-publication',
-                label: 'conferencePublicationItemText',
-              },
-              {
-                value: 'statement_of_responsibility',
-                label: 'statementOfResponsibilityItemText',
-              },
-              {
-                value: 'book',
-                label: 'bookItemText',
-              },
-              {
-                value: 'journal',
-                label: 'journalItemText',
-              },
-              {
-                value: 'artNo',
-                label: 'artNoItemText',
-              },
-              {
-                value: 'issue',
-                label: 'issueItemText',
-              },
-              {
-                value: 'volume',
-                label: 'volumeItemText',
-              },
-              {
-                value: 'conference',
-                label: 'conferenceItemText',
-              },
-              {
-                value: 'initiative',
-                label: 'initiativeItemText',
-              },
-              {
-                value: 'funder',
-                label: 'funderItemText',
-              },
-              {
-                value: 'project',
-                label: 'projectItemText',
-              },
-              {
-                value: 'constituent',
-                label: 'constituentItemText',
-              },
-              {
-                value: 'thesis',
-                label: 'thesisItemText',
-              },
-              {
-                value: 'defence',
-                label: 'defenceItemText',
-              },
-              {
-                value: 'researchData',
-                label: 'researchDataItemText',
-              },
-              {
-                value: 'outputType',
-                label: 'outputTypeItemText',
-              },
-              {
-                value: 'internal',
-                label: 'internalItemText',
-              },
-              {
-                value: 'online',
-                label: 'onlineItemText',
-              },
-              {
-                value: 'biographical',
-                label: 'biographicalItemText',
-              },
-              {
-                value: 'patent',
-                label: 'patentItemText',
-              },
-            ],
+            options: typeCollection,
             finalValue: 'personal',
           },
         ],
@@ -650,132 +671,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
                 },
                 label: 'typeCollectionVarText',
                 showLabel: true,
-                options: [
-                  {
-                    value: 'code',
-                    label: 'codeItemText',
-                  },
-                  {
-                    value: 'contentType',
-                    label: 'contentTypeItemText',
-                  },
-                  {
-                    value: 'creatorCount',
-                    label: 'creatorCountItemText',
-                  },
-                  {
-                    value: 'restrictionOnAccess',
-                    label: 'restrictionOnAccessItemText',
-                  },
-                  {
-                    value: 'publicationStatus',
-                    label: 'publicationStatusItemText',
-                  },
-                  {
-                    value: 'corporate',
-                    label: 'corporateItemText',
-                  },
-                  {
-                    value: 'personal',
-                    label: 'personalItemText',
-                  },
-                  {
-                    value: 'given',
-                    label: 'givenItemText',
-                  },
-                  {
-                    value: 'family',
-                    label: 'familyItemText',
-                  },
-                  {
-                    value: 'termsOfAddress',
-                    label: 'termsOfAddressItemText',
-                  },
-                  {
-                    value: 'series',
-                    label: 'seriesItemText',
-                  },
-                  {
-                    value: 'conference-publication',
-                    label: 'conferencePublicationItemText',
-                  },
-                  {
-                    value: 'statement_of_responsibility',
-                    label: 'statementOfResponsibilityItemText',
-                  },
-                  {
-                    value: 'book',
-                    label: 'bookItemText',
-                  },
-                  {
-                    value: 'journal',
-                    label: 'journalItemText',
-                  },
-                  {
-                    value: 'artNo',
-                    label: 'artNoItemText',
-                  },
-                  {
-                    value: 'issue',
-                    label: 'issueItemText',
-                  },
-                  {
-                    value: 'volume',
-                    label: 'volumeItemText',
-                  },
-                  {
-                    value: 'conference',
-                    label: 'conferenceItemText',
-                  },
-                  {
-                    value: 'initiative',
-                    label: 'initiativeItemText',
-                  },
-                  {
-                    value: 'funder',
-                    label: 'funderItemText',
-                  },
-                  {
-                    value: 'project',
-                    label: 'projectItemText',
-                  },
-                  {
-                    value: 'constituent',
-                    label: 'constituentItemText',
-                  },
-                  {
-                    value: 'thesis',
-                    label: 'thesisItemText',
-                  },
-                  {
-                    value: 'defence',
-                    label: 'defenceItemText',
-                  },
-                  {
-                    value: 'researchData',
-                    label: 'researchDataItemText',
-                  },
-                  {
-                    value: 'outputType',
-                    label: 'outputTypeItemText',
-                  },
-                  {
-                    value: 'internal',
-                    label: 'internalItemText',
-                  },
-                  {
-                    value: 'online',
-                    label: 'onlineItemText',
-                  },
-                  {
-                    value: 'biographical',
-                    label: 'biographicalItemText',
-                  },
-                  {
-                    value: 'patent',
-                    label: 'patentItemText',
-                  },
-                ],
+                options: typeCollection,
                 finalValue: 'given',
               },
             ],
@@ -1686,16 +1582,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
             },
             label: 'languageCollectionVarText',
             showLabel: true,
-            options: [
-              {
-                value: 'eng',
-                label: 'engLangItemText',
-              },
-              {
-                value: 'swe',
-                label: 'sweLangItemText',
-              },
-            ],
+            options: languageCollection,
           },
         ],
         components: [
@@ -1755,16 +1642,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
             },
             label: 'languageCollectionVarText',
             showLabel: true,
-            options: [
-              {
-                value: 'eng',
-                label: 'engLangItemText',
-              },
-              {
-                value: 'swe',
-                label: 'sweLangItemText',
-              },
-            ],
+            options: languageCollection,
           },
           {
             name: 'type',
@@ -2446,16 +2324,7 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
               },
               label: 'languageCollectionVarText',
               showLabel: true,
-              options: [
-                {
-                  value: 'eng',
-                  label: 'engLangItemText',
-                },
-                {
-                  value: 'swe',
-                  label: 'sweLangItemText',
-                },
-              ],
+              options: languageCollection,
             },
           ],
           components: [
@@ -2491,16 +2360,7 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
                   },
                   label: 'languageCollectionVarText',
                   showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
+                  options: languageCollection,
                 },
               ],
               childStyle: [],
@@ -2564,16 +2424,7 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
               },
               label: 'languageCollectionVarText',
               showLabel: true,
-              options: [
-                {
-                  value: 'eng',
-                  label: 'engLangItemText',
-                },
-                {
-                  value: 'swe',
-                  label: 'sweLangItemText',
-                },
-              ],
+              options: languageCollection,
             },
           ],
           components: [
@@ -2609,16 +2460,7 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
                   },
                   label: 'languageCollectionVarText',
                   showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
+                  options: languageCollection,
                 },
               ],
               childStyle: [],
