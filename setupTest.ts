@@ -16,6 +16,11 @@ beforeAll(() => {
     disconnect() {}
   };
 
+  window.open = vi.fn();
+
+  // @ts-expect-error: this is fine
+  global.IS_REACT_ACT_ENVIRONMENT = true;
+
   i18n.use(initReactI18next).init({
     resources: {
       en: {
