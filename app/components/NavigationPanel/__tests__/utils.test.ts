@@ -158,6 +158,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
               body: 'authorGroupDefText',
             },
             label: 'authorGroupText',
+            presentationId: 'group',
+
             showLabel: true,
             repeat: {
               minNumberOfRepeatingToShow: 1,
@@ -194,6 +196,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
                 name: 'familyName',
                 type: 'textVariable',
                 mode: 'output',
+                presentationId: 'familyName',
                 inputType: 'input',
                 tooltip: {
                   title: 'familyNameTextVarText',
