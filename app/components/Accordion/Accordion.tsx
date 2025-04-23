@@ -36,8 +36,6 @@ export const Accordion = ({
   presentationSize,
   children,
   className,
-  invalid,
-  hasValue,
   ...rest
 }: AccordionProps) => {
   const id = useId();
@@ -46,8 +44,6 @@ export const Accordion = ({
     <div
       className={clsx(styles['accordion'], className)}
       data-expanded={expanded}
-      data-invalid={invalid}
-      data-hasvalue={hasValue}
       {...rest}
     >
       <AccordionContext

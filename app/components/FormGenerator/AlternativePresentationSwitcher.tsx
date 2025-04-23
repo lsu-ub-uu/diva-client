@@ -16,21 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { Accordion } from '@/components/Accordion/Accordion';
+import { AccordionContent } from '@/components/Accordion/AccordionContent';
+import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
+import { Component } from '@/components/FormGenerator/Component';
+import componentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
 import type {
   FormComponent,
   PresentationSize,
 } from '@/components/FormGenerator/types';
-import { useState } from 'react';
-import { Component } from '@/components/FormGenerator/Component';
-import componentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
-import { useTranslation } from 'react-i18next';
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
-import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
-import { useRemixFormContext } from 'remix-hook-form';
 import { get, isEmpty } from 'lodash-es';
-import { cleanFormData } from '@/utils/cleanFormData';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -64,14 +63,10 @@ export const AlternativePresentationSwitcher = (
   const [prevValidationErrors, setPrevValidationErrors] = useState(false);
   const {
     formState: { errors },
-    getValues,
   } = useRemixFormContext();
   const containsValidationError = !isEmpty(
     get(errors, currentComponentNamePath),
   );
-
-  const value = getValues(currentComponentNamePath);
-  const containsValue = !isEmpty(cleanFormData(value));
 
   // For accordion with single presentation, expand it when validation errors appear
   if (
@@ -94,8 +89,6 @@ export const AlternativePresentationSwitcher = (
       className={componentStyles['component']}
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
       presentationSize={presentationSize}
-      invalid={containsValidationError}
-      hasValue={containsValue}
     >
       {title && (
         <AccordionTitle headlineLevel={titleHeadlineLevel}>
