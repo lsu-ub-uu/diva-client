@@ -3060,6 +3060,7 @@ describe('<Form />', () => {
         showLabel: true,
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
+        presentationId: 'someRootNameInDataPGroup',
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -3073,6 +3074,7 @@ describe('<Form />', () => {
             type: 'hidden',
             name: 'role.roleTerm',
             finalValue: 'pbl',
+            presentationId: '',
           },
         ],
         mode: 'input',

@@ -9,6 +9,7 @@ import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import { mock } from 'vitest-mock-extended';
 import { useTheme } from '@/utils/rootLoaderDataUtils';
+import type { BFFTheme } from '@/cora/transform/bffTypes.server';
 
 vi.mock('@/utils/rootLoaderDataUtils', () => ({
   useTheme: vi.fn(),

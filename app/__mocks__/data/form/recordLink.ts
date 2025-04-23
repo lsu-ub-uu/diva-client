@@ -26,6 +26,7 @@ export const formDefWithOneRecordLinkBeingOptional: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -38,6 +39,7 @@ export const formDefWithOneRecordLinkBeingOptional: RecordFormSchema = {
       {
         type: 'recordLink',
         name: 'nationalSubjectCategory',
+        presentationId: 'somePLink',
         mode: 'input',
         repeat: {
           repeatMin: 0,
@@ -57,6 +59,7 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -69,6 +72,7 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
       {
         type: 'recordLink',
         name: 'nationalSubjectCategory',
+        presentationId: 'somePLink',
         mode: 'input',
         repeat: {
           repeatMin: 1,
@@ -84,6 +88,7 @@ export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'someRootNameInDataGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -105,6 +110,7 @@ export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
         childStyle: [],
         gridColSpan: 12,
         name: 'attachmentFile',
+        presentationId: 'somePLink',
         type: 'recordLink',
         mode: 'input',
         tooltip: {

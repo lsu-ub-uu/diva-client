@@ -23,6 +23,7 @@ export const formDefWithTextVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'someRootNameInDataGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -37,6 +38,7 @@ export const formDefWithTextVar: RecordFormSchema = {
     components: [
       {
         type: 'text',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
         name: 'presentationTypeTextCollectionVarDefText',
         repeat: {
           repeatMin: 1,
@@ -48,6 +50,7 @@ export const formDefWithTextVar: RecordFormSchema = {
         name: 'someNameInData',
         label: 'someLabelTextId',
         placeholder: 'someEmptyTextId',
+        presentationId: 'someNameInDataVar',
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -62,6 +65,7 @@ export const formDefWithTextVar: RecordFormSchema = {
       {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
+        presentationId: 'someNumberVariableNameInDataNumVar',
         label: 'someOtherLabelId',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
@@ -90,6 +94,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -102,6 +107,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
       {
         type: 'textVariable',
         name: 'someNameInData1',
+        presentationId: 'someTextPVar',
         label: 'label1',
         showLabel: true,
         finalValue: 'someFinalValue1',
@@ -120,6 +126,8 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
       {
         type: 'textVariable',
         name: 'someNameInData2',
+        presentationId: 'someTextPVar',
+
         label: 'label2',
         showLabel: true,
         finalValue: 'someFinalValue2',
@@ -148,6 +156,7 @@ export const formDefWithOneRepeatingTextVariableWithModeOutput: RecordFormSchema
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
+      presentationId: 'somePGroup',
       repeat: {
         repeatMin: 1,
         repeatMax: 1,
@@ -159,6 +168,7 @@ export const formDefWithOneRepeatingTextVariableWithModeOutput: RecordFormSchema
       components: [
         {
           name: 'exampleTextVar',
+          presentationId: 'exampleTextVar',
           type: 'textVariable',
           mode: 'output',
           inputType: 'input',
@@ -186,6 +196,7 @@ export const formDefWithOneTextVariableBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'someRootNameInDataPGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -200,6 +211,7 @@ export const formDefWithOneTextVariableBeingOptional: RecordFormSchema = {
     components: [
       {
         type: 'textVariable',
+        presentationId: 'someNameInData',
         name: 'someNameInData',
         placeholder: 'someEmptyTextId',
         showLabel: true,
@@ -224,6 +236,7 @@ export const formDefWithOneTextVariableBeingRepeating: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'someRootNameInDataPGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -238,6 +251,7 @@ export const formDefWithOneTextVariableBeingRepeating: RecordFormSchema = {
     components: [
       {
         type: 'textVariable',
+        presentationId: 'someNameInDataVar',
         name: 'someNameInData',
         placeholder: 'someEmptyTextId',
         repeat: {
@@ -261,6 +275,7 @@ export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
   form: {
     type: 'group',
     showLabel: true,
+    presentationId: 'someRootNameInDataGroup',
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -275,6 +290,7 @@ export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
       {
         type: 'textVariable',
         name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
         label: 'passwordLabel',
         showLabel: true,
         placeholder: 'loginPasswordTextVarText',
@@ -301,6 +317,7 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    presentationId: 'someRootNameInDataGroup',
     showLabel: true,
     name: 'someRootNameInData',
     repeat: {
@@ -315,10 +332,12 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
       {
         type: 'text',
         name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
       },
       {
         type: 'textVariable',
         name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
         showLabel: true,
         label: 'someLabelTextId',
         placeholder: 'someEmptyTextId',
@@ -343,6 +362,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow: RecordFor
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      presentationId: 'someRootNameInDataGroup',
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -358,6 +378,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow: RecordFor
         {
           type: 'text',
           name: 'presentationTypeTextCollectionVarDefText',
+          presentationId: 'presentationTypeTextCollectionVarDefText',
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -366,6 +387,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow: RecordFor
         {
           type: 'textVariable',
           mode: 'input',
+          presentationId: 'someNameInDataPVar',
           name: 'someNameInData',
           label: 'someNameInDataLabel',
           placeholder: 'someEmptyTextId',
@@ -391,6 +413,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
     form: {
       type: 'group',
       label: 'someRootFormGroupText',
+      presentationId: 'someRootNameInDataGroup',
       showLabel: true,
       name: 'someRootNameInData',
       repeat: {
@@ -406,12 +429,14 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
         {
           type: 'text',
           name: 'presentationTypeTextCollectionVarDefText',
+          presentationId: 'presentationTypeTextCollectionVarDefText',
         },
         {
           type: 'textVariable',
           mode: 'input',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
+          presentationId: 'someNameInDataVar',
           repeat: {
             repeatMin: 0,
             repeatMax: 1,
@@ -432,6 +457,7 @@ export const formDefRequiredRepeatingTextVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
+    presentationId: 'outputGroup',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -449,6 +475,7 @@ export const formDefRequiredRepeatingTextVar: RecordFormSchema = {
         name: 'language',
         type: 'group',
         mode: 'input',
+        presentationId: 'languageGroup',
         tooltip: {
           title: 'languageGroupText',
           body: 'languageGroupDefText',
@@ -470,6 +497,7 @@ export const formDefRequiredRepeatingTextVar: RecordFormSchema = {
               title: 'titleTextVarText',
               body: 'titleTextVarDefText',
             },
+            presentationId: 'titlePVar',
             label: 'titleTextVarText',
             placeholder: 'titleInfoVarText2',
             showLabel: true,
@@ -501,6 +529,7 @@ export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
+    presentationId: 'ouputPGroup',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -516,6 +545,7 @@ export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
     components: [
       {
         name: 'language',
+        presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
         tooltip: {
@@ -532,6 +562,7 @@ export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
         components: [
           {
             name: 'title',
+            presentationId: 'someTextPVar',
             type: 'textVariable',
             mode: 'input',
             inputType: 'input',
@@ -570,6 +601,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
   validationTypeId: 'nationalSubjectCategory',
   form: {
     name: 'nationalSubjectCategory',
+    presentationId: 'somePGroup',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -585,6 +617,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
     components: [
       {
         name: 'recordInfo',
+        presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
         tooltip: {
@@ -604,6 +637,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
       },
       {
         name: 'subject',
+        presentationId: 'someTextPVar',
         type: 'textVariable',
         mode: 'input',
         inputType: 'input',
@@ -625,6 +659,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
         },
         attributes: [
           {
+            presentationId: 'someFakeId',
             name: 'language',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
@@ -653,6 +688,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
       },
       {
         name: 'subject',
+        presentationId: 'someTextPVar',
         type: 'textVariable',
         mode: 'input',
         inputType: 'input',
@@ -674,6 +710,7 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
         },
         attributes: [
           {
+            presentationId: 'someFakeId',
             name: 'language',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
@@ -714,7 +751,7 @@ export const formDefWithOneRepeatingTextVariable: RecordFormSchema = {
     type: 'group',
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
-
+    presentationId: 'someRootNameInDataPGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -727,10 +764,12 @@ export const formDefWithOneRepeatingTextVariable: RecordFormSchema = {
       {
         type: 'text',
         name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'someText',
       },
       {
         type: 'textVariable',
         name: 'someNameInData',
+        presentationId: 'somePVar',
         placeholder: 'someEmptyTextId',
         repeat: {
           minNumberOfRepeatingToShow: 3,
@@ -755,6 +794,7 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'someRootNameInDataPGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -768,9 +808,11 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
       {
         type: 'text',
         name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
       },
       {
         type: 'textVariable',
+        presentationId: 'someTextPVar',
         name: 'someNameInData',
         label: 'someLabelTextId',
         placeholder: 'someEmptyTextId',
@@ -787,6 +829,7 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
       {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
+        presentationId: 'someNumberPVar',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
           type: 'number',
@@ -805,6 +848,7 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
         type: 'collectionVariable',
         name: 'colour',
         placeholder: 'emptyTextId',
+        presentationId: 'someCollectionPVar',
         tooltip: {
           title: 'exampleCollectionVarText',
           body: 'exampleCollectionVarDefText',
@@ -829,6 +873,7 @@ export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    presentationId: 'somePGroup',
     showLabel: true,
     name: 'someRootNameInData',
     repeat: {
@@ -842,6 +887,7 @@ export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
     components: [
       {
         name: 'someTextVar',
+        presentationId: 'someTextPVar',
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
@@ -862,6 +908,7 @@ export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
       {
         name: 'someOtherTextVar',
         type: 'textVariable',
+        presentationId: 'someTextPVar',
         mode: 'output',
         inputType: 'input',
         tooltip: {

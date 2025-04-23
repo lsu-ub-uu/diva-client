@@ -20,12 +20,13 @@
 import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
+import type { FormComponentText } from '@/components/FormGenerator/types';
 
 export const createText = (
   presentationChildReference: BFFPresentationChildReference,
   presentationChildType: string,
   alternative: boolean,
-) => {
+): FormComponentText => {
   const refGroup = getPresentationChildRefGroup(
     presentationChildReference,
     alternative,
@@ -33,7 +34,7 @@ export const createText = (
   const presentationChildId = refGroup.childId;
   return {
     name: presentationChildId,
-    type: presentationChildType,
+    type: 'text',
     textStyle: presentationChildReference.textStyle,
     childStyle: presentationChildReference.childStyle,
     gridColSpan: convertChildStylesToGridColSpan(

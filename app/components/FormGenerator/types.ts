@@ -164,7 +164,9 @@ export interface FormComponentGroup extends FormComponentMetadata {
     | 'onlyTranslatedText';
 }
 
-export type FormComponentText = FormComponentMetadata;
+export interface FormComponentText extends FormComponentMetadata {
+  type: 'text';
+}
 
 export interface FormComponentGuiElement extends FormComponentBase {
   url: string;

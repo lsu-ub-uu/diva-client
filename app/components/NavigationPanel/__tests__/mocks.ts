@@ -141,6 +141,7 @@ export const authorAndTitleSchema: RecordFormSchema = {
   validationTypeId: 'preprint',
   form: {
     name: 'divaOutput',
+    presentationId: 'divaOutputGroup',
     type: 'group',
     mode: 'output',
     tooltip: {
@@ -222,6 +223,7 @@ export const authorAndTitleSchema: RecordFormSchema = {
           },
           {
             name: 'birthYear',
+            presentationId: 'somePTextVar',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',

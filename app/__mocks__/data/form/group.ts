@@ -37,6 +37,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema = {
     components: [
       {
         type: 'group',
+        presentationId: 'someChildGroupNameInDataGroup',
         label: 'someChildGroupTextId',
         name: 'someChildGroupNameInData',
         repeat: {
@@ -51,6 +52,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema = {
           {
             type: 'textVariable',
             name: 'someNameInData',
+            presentationId: 'someNameInDataVar',
             label: 'someTextId',
             placeholder: 'someEmptyTextId',
             repeat: {
@@ -80,6 +82,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     label: 'someRootFormGroupText',
     showLabel: true,
     headlineLevel: 'h1',
@@ -96,6 +99,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
       {
         name: 'author',
         type: 'group',
+        presentationId: 'authorGroup',
         mode: 'input',
         headlineLevel: 'h3',
         showLabel: true,
@@ -112,6 +116,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
         attributes: [
           {
             type: 'collectionVariable',
+            presentationId: 'eyeColorCollVar',
             name: 'eyeColor',
             showLabel: true,
             placeholder: 'Select eye color',
@@ -132,10 +137,13 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
         components: [
           {
             type: 'text',
+            presentationId: 'somePText',
             name: 'presentationTypeTextCollectionVarDefText',
+            presentationId: 'presentationTypeTextCollectionVarDefText',
           },
           {
             type: 'textVariable',
+            presentationId: 'someNameInDataVar',
             name: 'someNameInData',
             placeholder: 'someEmptyTextId',
             repeat: {
@@ -159,6 +167,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     headlineLevel: 'h1',
@@ -174,6 +183,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
     components: [
       {
         name: 'author',
+        presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
         tooltip: {
@@ -189,7 +199,8 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'eyeColor',
             showLabel: true,
             placeholder: 'Select eye color',
@@ -210,11 +221,13 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
         components: [
           {
             type: 'text',
+            presentationId: 'somePText',
             name: 'presentationTypeTextCollectionVarDefText',
           },
           {
             type: 'textVariable',
             name: 'someNameInData',
+            presentationId: 'someNameInDataVar',
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -238,6 +251,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'thesisManuscriptNewGroupText',
@@ -254,6 +268,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
       {
         name: 'alternativeTitle',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'alternativeTitleGroupText',
@@ -269,7 +284,8 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
         components: [
           {
             name: 'mainTitle',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -307,6 +323,7 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'thesisManuscriptNewGroupText',
@@ -323,6 +340,7 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
       {
         name: 'alternativeTitle',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'alternativeTitleGroupText',
@@ -338,6 +356,7 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
         components: [
           {
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             name: 'someNameInDataNumberVar',
             label: 'someNumberVarTextId', // hidden
             showLabel: false,
@@ -381,6 +400,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -397,6 +417,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
         {
           name: 'alternativeTitle',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'alternativeTitleGroupText',
@@ -447,6 +468,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
   form: {
     name: 'output',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'outputNewGroupText',
@@ -462,6 +484,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
       {
         name: 'name',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'namePersonalGroupText',
@@ -477,7 +500,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
         attributes: [
           {
             name: 'type',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -618,7 +642,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
         components: [
           {
             name: 'namePart',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -641,7 +666,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             attributes: [
               {
                 name: 'type',
-                type: 'collectionVariable',
+                type: 'numberVariable',
+                presentationId: 'somePColVar',
                 placeholder: 'initialEmptyValueText',
                 mode: 'input',
                 tooltip: {
@@ -784,7 +810,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
           },
           {
             name: 'namePart',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -806,7 +833,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             attributes: [
               {
                 name: 'type',
-                type: 'collectionVariable',
+                type: 'numberVariable',
+                presentationId: 'somePColVar',
                 placeholder: 'initialEmptyValueText',
                 mode: 'input',
                 tooltip: {
@@ -965,6 +993,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -981,6 +1010,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
         {
           name: 'point',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'pointGroupText',
@@ -998,6 +1028,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
             {
               name: 'longitude',
               type: 'numberVariable',
+              presentationId: 'somePNumVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1026,6 +1057,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
             {
               name: 'latitude',
               type: 'numberVariable',
+              presentationId: 'somePNumVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1069,6 +1101,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -1085,6 +1118,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
         {
           name: 'point',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'pointGroupText',
@@ -1101,7 +1135,8 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
           components: [
             {
               name: 'longitude',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1126,7 +1161,8 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
             },
             {
               name: 'latitude',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1167,6 +1203,7 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordF
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -1183,6 +1220,7 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordF
         {
           name: 'point',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'pointGroupText',
@@ -1199,7 +1237,8 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordF
           components: [
             {
               name: 'longitude',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1224,7 +1263,8 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordF
             },
             {
               name: 'latitude',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -1265,6 +1305,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -1281,6 +1322,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
         {
           name: 'polygon',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'polygonGroupText',
@@ -1297,6 +1339,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
             {
               name: 'point',
               type: 'group',
+              presentationId: 'somePGroup',
               mode: 'input',
               tooltip: {
                 title: 'pointGroupText',
@@ -1313,7 +1356,8 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
               components: [
                 {
                   name: 'longitude',
-                  type: 'textVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
                   tooltip: {
@@ -1357,6 +1401,7 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'thesisManuscriptNewGroupText',
@@ -1373,6 +1418,7 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
       {
         name: 'point',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'pointGroupText',
@@ -1389,7 +1435,8 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
         components: [
           {
             name: 'someCollectionVar',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1414,7 +1461,8 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
           },
           {
             name: 'someOtherCollectionVar',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1455,6 +1503,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'thesisManuscriptNewGroupText',
@@ -1471,6 +1520,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
         {
           name: 'point',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'pointGroupText',
@@ -1488,6 +1538,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
             {
               name: 'point',
               type: 'group',
+              presentationId: 'somePGroup',
               mode: 'input',
               tooltip: {
                 title: 'pointGroupText',
@@ -1505,6 +1556,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                 {
                   name: 'longitude',
                   type: 'numberVariable',
+                  presentationId: 'somePNumVar',
                   mode: 'input',
                   inputType: 'input',
                   tooltip: {
@@ -1533,6 +1585,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                 {
                   name: 'point2',
                   type: 'group',
+                  presentationId: 'somePGroup',
                   mode: 'input',
                   tooltip: {
                     title: 'pointGroupText',
@@ -1550,6 +1603,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                     {
                       name: 'point3',
                       type: 'group',
+                      presentationId: 'somePGroup',
                       mode: 'input',
                       tooltip: {
                         title: 'pointGroupText',
@@ -1567,6 +1621,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                         {
                           name: 'point',
                           type: 'group',
+                          presentationId: 'somePGroup',
                           mode: 'input',
                           tooltip: {
                             title: 'pointGroupText',
@@ -1584,6 +1639,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                             {
                               name: 'latitude',
                               type: 'numberVariable',
+                              presentationId: 'somePNumVar',
                               mode: 'input',
                               inputType: 'input',
                               tooltip: {
@@ -1646,6 +1702,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'preprintNewGroupText',
@@ -1662,6 +1719,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
       {
         name: 'titleInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'titleInfoGroupText',
@@ -1677,7 +1735,8 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         attributes: [
           {
             name: 'lang',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1701,7 +1760,8 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         components: [
           {
             name: 'title',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -1731,6 +1791,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
       {
         name: 'titleInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'titleInfoGroupText',
@@ -1746,7 +1807,8 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         attributes: [
           {
             name: 'lang',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1768,7 +1830,8 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
           },
           {
             name: 'type',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1789,7 +1852,8 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         components: [
           {
             name: 'title',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -1828,6 +1892,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
   form: {
     name: 'contributor',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'contributorGroupText',
@@ -1844,6 +1909,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
       {
         name: 'author',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'authorGroupText',
@@ -1881,7 +1947,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'givenName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -1904,7 +1971,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'correspondingAuthor',
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
@@ -1933,7 +2001,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -1956,7 +2025,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'email',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -1979,7 +2049,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'birthYear',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2002,7 +2073,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'deathYear',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2025,7 +2097,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'localUserId',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2048,7 +2121,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'ORCID',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2093,6 +2167,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           {
             name: 'otherOrganisation',
             type: 'group',
+            presentationId: 'somePGroup',
             mode: 'input',
             tooltip: {
               title: 'otherOrganisationGroupText',
@@ -2108,7 +2183,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             components: [
               {
                 name: 'otherOrganisation',
-                type: 'textVariable',
+                type: 'numberVariable',
+                presentationId: 'somePTextVar',
                 mode: 'input',
                 inputType: 'input',
                 tooltip: {
@@ -2157,7 +2233,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'otherResearchGroup',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2195,6 +2272,7 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'output',
     tooltip: {
       title: 'divaOutputGroupText',
@@ -2211,6 +2289,7 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
       {
         name: 'author',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'output',
         tooltip: {
           title: 'authorGroupText',
@@ -2226,7 +2305,8 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
         components: [
           {
             name: 'givenName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'output',
             inputType: 'input',
             tooltip: {
@@ -2249,7 +2329,8 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'output',
             inputType: 'input',
             tooltip: {
@@ -2288,6 +2369,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'preprintNewGroupText',
@@ -2324,7 +2406,8 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           attributes: [
             {
               name: 'language',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -2370,7 +2453,8 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           attributes: [
             {
               name: 'language',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -2406,6 +2490,7 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'preprintNewGroupText',
@@ -2422,6 +2507,7 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
         {
           name: 'subject',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'keywordsGroupText',
@@ -2437,7 +2523,8 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
           attributes: [
             {
               name: 'lang',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -2461,7 +2548,8 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
           components: [
             {
               name: 'topic',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -2482,7 +2570,8 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
               attributes: [
                 {
                   name: 'lang',
-                  type: 'collectionVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePColVar',
                   placeholder: 'initialEmptyValueText',
                   mode: 'input',
                   tooltip: {
@@ -2524,6 +2613,7 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
     form: {
       name: 'divaOutput',
       type: 'group',
+      presentationId: 'somePGroup',
       mode: 'input',
       tooltip: {
         title: 'preprintNewGroupText',
@@ -2540,6 +2630,7 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
         {
           name: 'subject',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'keywordsGroupText',
@@ -2555,7 +2646,8 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
           attributes: [
             {
               name: 'lang',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -2579,7 +2671,8 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
           components: [
             {
               name: 'topic',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -2600,7 +2693,8 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
               attributes: [
                 {
                   name: 'lang',
-                  type: 'collectionVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePColVar',
                   placeholder: 'initialEmptyValueText',
                   mode: 'input',
                   tooltip: {
@@ -2641,6 +2735,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
   form: {
     name: 'divaOutput',
     type: 'group',
+    presentationId: 'somePGroup',
     mode: 'input',
     tooltip: {
       title: 'thesisManuscriptNewGroupText',
@@ -2657,6 +2752,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
       {
         name: 'author',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'authorGroupText',
@@ -2672,7 +2768,8 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
         components: [
           {
             name: 'givenName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2695,7 +2792,8 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2724,6 +2822,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
       {
         name: 'geoData',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'geoDataGroupText',
@@ -2739,7 +2838,8 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
         components: [
           {
             name: 'longitude',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -2763,6 +2863,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
           {
             name: 'polygon',
             type: 'group',
+            presentationId: 'somePGroup',
             mode: 'input',
             tooltip: {
               title: 'polygonGroupText',
@@ -2779,6 +2880,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
               {
                 name: 'point',
                 type: 'group',
+                presentationId: 'somePGroup',
                 mode: 'input',
                 tooltip: {
                   title: 'pointGroupText',
@@ -2796,7 +2898,8 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
                   {
                     name: 'longitude',
                     placeholder: 'longitude',
-                    type: 'textVariable',
+                    type: 'numberVariable',
+                    presentationId: 'somePTextVar',
                     mode: 'input',
                     inputType: 'input',
                     tooltip: {
@@ -2821,7 +2924,8 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
                   {
                     name: 'latitude',
                     placeholder: 'latitude',
-                    type: 'textVariable',
+                    type: 'numberVariable',
+                    presentationId: 'somePTextVar',
                     mode: 'input',
                     inputType: 'input',
                     tooltip: {
@@ -2870,6 +2974,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      presentationId: 'somePGroup',
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -2885,6 +2990,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
         {
           name: 'author',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'authorGroupText',
@@ -2900,7 +3006,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           attributes: [
             {
               name: 'language',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -2925,7 +3032,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           components: [
             {
               name: 'givenName',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -2949,7 +3057,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
             },
             {
               name: 'familyName',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -2979,6 +3088,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
         {
           name: 'author',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'authorGroupText',
@@ -2994,7 +3104,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           attributes: [
             {
               name: 'language',
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
@@ -3019,7 +3130,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           components: [
             {
               name: 'givenName',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -3043,7 +3155,8 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
             },
             {
               name: 'familyName',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -3079,6 +3192,7 @@ export const formDefRealDemo: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -3094,6 +3208,7 @@ export const formDefRealDemo: RecordFormSchema = {
       {
         name: 'recordInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'recordInfoText',
@@ -3107,7 +3222,8 @@ export const formDefRealDemo: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'textVariable',
+        type: 'numberVariable',
+        presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
         tooltip: {
@@ -3127,6 +3243,7 @@ export const formDefRealDemo: RecordFormSchema = {
       {
         name: 'keeptHis',
         type: 'numberVariable',
+        presentationId: 'somePNumVar',
         mode: 'input',
         tooltip: {
           title: 'keepThisNumberVarText',
@@ -3150,6 +3267,7 @@ export const formDefRealDemo: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -3164,6 +3282,7 @@ export const formDefRealDemo: RecordFormSchema = {
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             mode: 'input',
             tooltip: {
               title: 'exampleMetadataNumberVarText',
@@ -3185,7 +3304,8 @@ export const formDefRealDemo: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -3213,6 +3333,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -3228,6 +3349,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
       {
         name: 'recordInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'recordInfoText',
@@ -3241,7 +3363,8 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'textVariable',
+        type: 'numberVariable',
+        presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
         tooltip: {
@@ -3262,6 +3385,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
       {
         name: 'keeptHis',
         type: 'numberVariable',
+        presentationId: 'somePNumVar',
         mode: 'input',
         tooltip: {
           title: 'keepThisNumberVarText',
@@ -3286,6 +3410,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -3300,6 +3425,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             finalValue: '55',
             mode: 'input',
             tooltip: {
@@ -3322,7 +3448,8 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             finalValue: 'someText',
             mode: 'input',
             inputType: 'input',
@@ -3352,6 +3479,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
     validationTypeId: 'demo',
     form: {
       type: 'group',
+      presentationId: 'somePGroup',
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -3369,6 +3497,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
         {
           name: 'recordInfo',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'recordInfoText',
@@ -3382,7 +3511,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
         },
         {
           name: 'bookTitle',
-          type: 'textVariable',
+          type: 'numberVariable',
+          presentationId: 'somePTextVar',
           mode: 'input',
           inputType: 'input',
           tooltip: {
@@ -3401,7 +3531,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               name: 'colour',
               showLabel: true,
               label: 'colourLabel',
@@ -3422,6 +3553,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
         {
           name: 'keeptHis',
           type: 'numberVariable',
+          presentationId: 'somePNumVar',
           mode: 'input',
           tooltip: {
             title: 'keepThisNumberVarText',
@@ -3444,7 +3576,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               showLabel: true,
               label: 'colour',
               name: 'colour',
@@ -3465,6 +3598,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
         {
           name: 'firstChildGroup',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'exampleFirstChildGroupText',
@@ -3478,7 +3612,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               name: 'groupColour',
               showLabel: true,
               label: 'groupColourLabel',
@@ -3495,7 +3630,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               mode: 'input',
             },
             {
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               name: 'groupColourAgain',
               placeholder: 'emptyTextId',
               showLabel: true,
@@ -3516,6 +3652,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             {
               name: 'exampleNumberVar',
               type: 'numberVariable',
+              presentationId: 'somePNumVar',
               mode: 'input',
               tooltip: {
                 title: 'exampleMetadataNumberVarText',
@@ -3538,7 +3675,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             },
             {
               name: 'exampleTextVar',
-              type: 'textVariable',
+              type: 'numberVariable',
+              presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
               tooltip: {
@@ -3557,7 +3695,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               },
               attributes: [
                 {
-                  type: 'collectionVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePColVar',
                   name: 'colour',
                   placeholder: 'emptyTextId',
                   showLabel: true,
@@ -3574,7 +3713,8 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                   mode: 'input',
                 },
                 {
-                  type: 'collectionVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePColVar',
                   name: 'colourAgain',
                   showLabel: true,
                   label: 'groupColourAgainLabel',
@@ -3602,6 +3742,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -3619,6 +3760,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
       {
         name: 'recordInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'recordInfoText',
@@ -3632,7 +3774,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'textVariable',
+        type: 'numberVariable',
+        presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
         tooltip: {
@@ -3651,7 +3794,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'colour',
             showLabel: true,
             label: 'colourLabel',
@@ -3672,6 +3816,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
       {
         name: 'keeptHis',
         type: 'numberVariable',
+        presentationId: 'somePNumVar',
         mode: 'input',
         tooltip: {
           title: 'keepThisNumberVarText',
@@ -3694,7 +3839,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'colour',
             showLabel: true,
             label: 'colourLabel',
@@ -3715,6 +3861,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -3728,7 +3875,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'groupColour',
             placeholder: 'emptyTextId',
             showLabel: true,
@@ -3745,7 +3893,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             mode: 'input',
           },
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'groupColourAgain',
             showLabel: true,
             label: 'groupColourAgainLabel',
@@ -3767,6 +3916,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             mode: 'input',
             tooltip: {
               title: 'exampleMetadataNumberVarText',
@@ -3789,7 +3939,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             finalValue: 'exampleFinalValue',
@@ -3809,7 +3960,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             },
             attributes: [
               {
-                type: 'collectionVariable',
+                type: 'numberVariable',
+                presentationId: 'somePColVar',
                 name: 'colour',
                 placeholder: 'emptyTextId',
                 showLabel: true,
@@ -3826,7 +3978,8 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
                 mode: 'input',
               },
               {
-                type: 'collectionVariable',
+                type: 'numberVariable',
+                presentationId: 'somePColVar',
                 name: 'colourAgain',
                 finalValue: 'pink',
                 placeholder: 'emptyTextId',
@@ -3855,6 +4008,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -3871,6 +4025,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
       {
         name: 'recordInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'recordInfoText',
@@ -3884,7 +4039,8 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'textVariable',
+        type: 'numberVariable',
+        presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
         tooltip: {
@@ -3904,6 +4060,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
       {
         name: 'keeptHis',
         type: 'numberVariable',
+        presentationId: 'somePNumVar',
         mode: 'input',
         tooltip: {
           title: 'keepThisNumberVarText',
@@ -3926,7 +4083,8 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'collectionVariable',
+            type: 'numberVariable',
+            presentationId: 'somePColVar',
             name: 'colour',
             placeholder: 'emptyTextId',
             finalValue: 'blue',
@@ -3948,6 +4106,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -3963,6 +4122,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             mode: 'input',
             tooltip: {
               title: 'exampleMetadataNumberVarText',
@@ -3985,7 +4145,8 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
             },
             attributes: [
               {
-                type: 'collectionVariable',
+                type: 'numberVariable',
+                presentationId: 'somePColVar',
                 name: 'colour',
                 placeholder: 'emptyTextId',
                 finalValue: 'pink',
@@ -4006,7 +4167,8 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -4033,6 +4195,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -4050,6 +4213,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
       {
         name: 'recordInfo',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'recordInfoText',
@@ -4063,7 +4227,8 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'textVariable',
+        type: 'numberVariable',
+        presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
         tooltip: {
@@ -4083,6 +4248,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
       {
         name: 'keeptHis',
         type: 'numberVariable',
+        presentationId: 'somePNumVar',
         mode: 'input',
         tooltip: {
           title: 'keepThisNumberVarText',
@@ -4106,6 +4272,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -4121,6 +4288,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             mode: 'input',
             tooltip: {
               title: 'exampleMetadataNumberVarText',
@@ -4142,7 +4310,8 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'textVariable',
+            type: 'numberVariable',
+            presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
             tooltip: {
@@ -4169,6 +4338,7 @@ export const formDefWithRepeatingGroup: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'somePGroup',
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
@@ -4186,6 +4356,7 @@ export const formDefWithRepeatingGroup: RecordFormSchema = {
       {
         name: 'firstChildGroup',
         type: 'group',
+        presentationId: 'somePGroup',
         mode: 'input',
         tooltip: {
           title: 'exampleFirstChildGroupText',
@@ -4200,11 +4371,13 @@ export const formDefWithRepeatingGroup: RecordFormSchema = {
         components: [
           {
             type: 'text',
+            presentationId: 'somePText',
             name: 'presentationTypeTextCollectionVarDefText',
           },
           {
             name: 'exampleNumberVar',
             type: 'numberVariable',
+            presentationId: 'somePNumVar',
             mode: 'input',
             tooltip: {
               title: 'exampleMetadataNumberVarText',
@@ -4235,6 +4408,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      presentationId: 'somePGroup',
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -4251,6 +4425,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
         {
           name: 'author',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'authorGroupText',
@@ -4266,6 +4441,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
             {
               name: 'name',
               type: 'group',
+              presentationId: 'somePGroup',
               mode: 'input',
               tooltip: {
                 title: 'exampleFirstChildGroupText',
@@ -4281,10 +4457,12 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
                 {
                   name: 'shouldBeSkippedComponent',
                   type: 'text',
+                  presentationId: 'somePText',
                 },
                 {
                   name: 'firstName',
-                  type: 'textVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
                   mode: 'input',
                   tooltip: {
                     title: 'exampleMetadataVarText',
@@ -4302,7 +4480,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
                 },
                 {
                   name: 'lastName',
-                  type: 'textVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
                   tooltip: {
@@ -4321,6 +4500,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
                 },
                 {
                   type: 'numberVariable',
+                  presentationId: 'somePNumVar',
                   name: 'age',
                   placeholder: 'someNumberPlaceholderTextId',
                   validation: {
@@ -4349,6 +4529,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      presentationId: 'somePGroup',
       showLabel: false,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -4365,6 +4546,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
         {
           name: 'author',
           type: 'group',
+          presentationId: 'somePGroup',
           mode: 'input',
           tooltip: {
             title: 'authorGroupText',
@@ -4378,7 +4560,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           },
           attributes: [
             {
-              type: 'collectionVariable',
+              type: 'numberVariable',
+              presentationId: 'somePColVar',
               name: 'colourAttribute',
               placeholder: 'emptyTextId',
               showLabel: true,
@@ -4399,6 +4582,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
             {
               name: 'name',
               type: 'group',
+              presentationId: 'somePGroup',
               mode: 'input',
               tooltip: {
                 title: 'exampleFirstChildGroupText2',
@@ -4414,10 +4598,12 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 {
                   name: 'shouldBeSkippedComponent12',
                   type: 'text',
+                  presentationId: 'somePText',
                 },
                 {
                   name: 'firstName',
-                  type: 'textVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
                   mode: 'input',
                   tooltip: {
                     title: 'exampleMetadataVarText',
@@ -4434,7 +4620,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                   },
                   attributes: [
                     {
-                      type: 'collectionVariable',
+                      type: 'numberVariable',
+                      presentationId: 'somePColVar',
                       name: 'colourAttribute',
                       placeholder: 'emptyTextId',
                       label: 'colourAttribute',
@@ -4454,7 +4641,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 },
                 {
                   name: 'lastName',
-                  type: 'textVariable',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
                   tooltip: {
@@ -4473,6 +4661,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 },
                 {
                   type: 'numberVariable',
+                  presentationId: 'somePNumVar',
                   name: 'age',
                   placeholder: 'someNumberPlaceholderTextId',
                   validation: {
@@ -4497,6 +4686,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           label: 'someChildGroupTextId',
           showLabel: true,
           name: 'nonRepeatingGroup',
+          presentationId: 'somePGroup',
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -4507,6 +4697,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           },
           attributes: [
             {
+              presentationId: 'somePTextVar',
               type: 'collectionVariable',
               name: 'groupAttribute',
               showLabel: true,
@@ -4529,6 +4720,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
         },
         {
           type: 'numberVariable',
+          presentationId: 'somePNumVar',
           name: 'grade',
           placeholder: 'yourGrades',
           showLabel: true,
@@ -4543,6 +4735,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           },
           attributes: [
             {
+              presentationId: 'somePTextVar',
               type: 'collectionVariable',
               name: 'gradeAttribute',
               showLabel: true,
@@ -4575,6 +4768,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
     label: 'someRootFormGroupText',
     showLabel: true,
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -4587,6 +4781,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
     components: [
       {
         name: 'someTextVar',
+        presentationId: 'somePTextVar',
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
@@ -4608,6 +4803,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
       },
       {
         name: 'someOtherTextVar',
+        presentationId: 'somePTextVar',
         type: 'textVariable',
         mode: 'output',
         showLabel: true,
@@ -4639,6 +4835,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -4650,6 +4847,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
     components: [
       {
         name: 'someTextVar',
+        presentationId: 'somePTextVar',
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
@@ -4670,6 +4868,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
       },
       {
         name: 'someNumberVar',
+        presentationId: 'somePNumberVar',
         type: 'numberVariable',
         mode: 'output',
         inputType: 'input',
