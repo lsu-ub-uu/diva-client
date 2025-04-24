@@ -139,7 +139,6 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
             type: 'text',
             presentationId: 'somePText',
             name: 'presentationTypeTextCollectionVarDefText',
-            presentationId: 'presentationTypeTextCollectionVarDefText',
           },
           {
             type: 'textVariable',

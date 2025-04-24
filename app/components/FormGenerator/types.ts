@@ -67,7 +67,7 @@ export type FormComponentWithDataType = Omit<
 >;
 
 export interface FormComponentBase {
-  presentationId: string;
+  presentationId?: string;
   type: FormComponentType;
   name: string;
   alternativePresentation?: FormComponent;

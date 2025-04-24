@@ -24,7 +24,6 @@ import type { FormComponentText } from '@/components/FormGenerator/types';
 
 export const createText = (
   presentationChildReference: BFFPresentationChildReference,
-  presentationChildType: string,
   alternative: boolean,
 ): FormComponentText => {
   const refGroup = getPresentationChildRefGroup(

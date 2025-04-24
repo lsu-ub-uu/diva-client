@@ -966,6 +966,7 @@ export const formSchemaWithBinary: RecordFormSchema = {
             childStyle: [],
             gridColSpan: 12,
             name: 'updatesMinimizedSContainer',
+            type: 'container',
             presentationId: 'updatesMinimizedSContainer',
             mode: 'output',
             presentationStyle: '',

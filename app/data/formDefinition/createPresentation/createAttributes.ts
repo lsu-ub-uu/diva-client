@@ -45,7 +45,6 @@ export const createAttributes = (
       } = createCommonParameters(refCollectionVar, attributePresentation);
       options = createCollectionVariableOptions(metadataPool, refCollectionVar);
       return {
-        presentationId: attributePresentation.id,
         type,
         name,
         placeholder,
