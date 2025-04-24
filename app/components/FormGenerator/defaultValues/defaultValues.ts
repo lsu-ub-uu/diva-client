@@ -47,7 +47,7 @@ export const removeRootObject = (obj: Record<string, any>) => {
 
 export const createDefaultValueFromFinalValue = (
   component: FormComponentWithData | FormAttributeCollection,
-) => (component.finalValue ? component.finalValue : null);
+) => (component.finalValue ? component.finalValue : '');
 
 export const generateComponentAttributes = (
   component: FormComponentWithData | FormComponentContainer,

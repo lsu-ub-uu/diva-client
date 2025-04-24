@@ -45,6 +45,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
+        presentationId: 'somePGroup',
+
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -57,6 +59,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
         components: [
           {
             name: 'someTextVar',
+            presentationId: 'someTextPVar',
+
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -91,6 +95,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
+        presentationId: 'somePGroup',
+
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -103,6 +109,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
         components: [
           {
             name: 'someTextVar',
+            presentationId: 'someTextPVar',
+
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -135,6 +143,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
       validationTypeId: 'preprint',
       form: {
         name: 'divaOutput',
+        presentationId: 'divaOutputGroup',
+
         type: 'group',
         mode: 'output',
         tooltip: {
@@ -151,6 +161,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
         components: [
           {
             name: 'author',
+
             type: 'group',
             mode: 'output',
             tooltip: {
@@ -218,6 +229,8 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
               },
               {
                 name: 'birthYear',
+                presentationId: 'somePTextVar',
+
                 type: 'textVariable',
                 mode: 'output',
                 inputType: 'input',

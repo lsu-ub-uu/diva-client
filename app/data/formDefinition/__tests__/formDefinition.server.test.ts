@@ -4092,7 +4092,6 @@ describe('formDefinition', () => {
             type: 'hidden',
             name: 'role.roleTerm',
             finalValue: 'pbl',
-            presentationId: 'rolePublisherTextVar',
           },
         ],
       });

@@ -198,7 +198,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'eyeColor',
             showLabel: true,
@@ -283,7 +283,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
         components: [
           {
             name: 'mainTitle',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -499,7 +499,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
         attributes: [
           {
             name: 'type',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -641,7 +641,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
         components: [
           {
             name: 'namePart',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -809,7 +809,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
           },
           {
             name: 'namePart',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -1355,7 +1355,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
               components: [
                 {
                   name: 'longitude',
-                  type: 'numberVariable',
+                  type: 'textVariable',
                   presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
@@ -1434,7 +1434,7 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
         components: [
           {
             name: 'someCollectionVar',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -1460,7 +1460,7 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
           },
           {
             name: 'someOtherCollectionVar',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -1734,7 +1734,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         attributes: [
           {
             name: 'lang',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -1759,7 +1759,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         components: [
           {
             name: 'title',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -1806,7 +1806,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         attributes: [
           {
             name: 'lang',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -1829,7 +1829,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
           },
           {
             name: 'type',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -1851,7 +1851,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
         components: [
           {
             name: 'title',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -1946,7 +1946,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'givenName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -1970,7 +1970,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'correspondingAuthor',
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
@@ -2000,7 +2000,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2024,7 +2024,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'email',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2048,7 +2048,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'birthYear',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2072,7 +2072,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'deathYear',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2096,7 +2096,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'localUserId',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2120,7 +2120,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'ORCID',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2232,7 +2232,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
           },
           {
             name: 'otherResearchGroup',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2304,7 +2304,7 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
         components: [
           {
             name: 'givenName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'output',
             inputType: 'input',
@@ -2328,7 +2328,7 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'output',
             inputType: 'input',
@@ -2405,7 +2405,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           attributes: [
             {
               name: 'language',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -2452,7 +2452,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           attributes: [
             {
               name: 'language',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -2522,7 +2522,7 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
           attributes: [
             {
               name: 'lang',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -2645,7 +2645,7 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
           attributes: [
             {
               name: 'lang',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -2767,7 +2767,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
         components: [
           {
             name: 'givenName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2791,7 +2791,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
           },
           {
             name: 'familyName',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2837,7 +2837,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
         components: [
           {
             name: 'longitude',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2897,7 +2897,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
                   {
                     name: 'longitude',
                     placeholder: 'longitude',
-                    type: 'numberVariable',
+                    type: 'textVariable',
                     presentationId: 'somePTextVar',
                     mode: 'input',
                     inputType: 'input',
@@ -2923,7 +2923,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
                   {
                     name: 'latitude',
                     placeholder: 'latitude',
-                    type: 'numberVariable',
+                    type: 'textVariable',
                     presentationId: 'somePTextVar',
                     mode: 'input',
                     inputType: 'input',
@@ -3005,7 +3005,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           attributes: [
             {
               name: 'language',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -3031,7 +3031,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           components: [
             {
               name: 'givenName',
-              type: 'numberVariable',
+              type: 'textVariable',
               presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
@@ -3056,7 +3056,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
             },
             {
               name: 'familyName',
-              type: 'numberVariable',
+              type: 'textVariable',
               presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
@@ -3103,7 +3103,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           attributes: [
             {
               name: 'language',
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               placeholder: 'initialEmptyValueText',
               mode: 'input',
@@ -3129,7 +3129,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
           components: [
             {
               name: 'givenName',
-              type: 'numberVariable',
+              type: 'textVariable',
               presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
@@ -3154,7 +3154,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
             },
             {
               name: 'familyName',
-              type: 'numberVariable',
+              type: 'textVariable',
               presentationId: 'somePTextVar',
               mode: 'input',
               inputType: 'input',
@@ -3221,7 +3221,7 @@ export const formDefRealDemo: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'numberVariable',
+        type: 'textVariable',
         presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
@@ -3303,7 +3303,7 @@ export const formDefRealDemo: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -3362,7 +3362,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'numberVariable',
+        type: 'textVariable',
         presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
@@ -3447,7 +3447,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             finalValue: 'someText',
             mode: 'input',
@@ -3510,7 +3510,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
         },
         {
           name: 'bookTitle',
-          type: 'numberVariable',
+          type: 'textVariable',
           presentationId: 'somePTextVar',
           mode: 'input',
           inputType: 'input',
@@ -3530,7 +3530,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               name: 'colour',
               showLabel: true,
@@ -3575,7 +3575,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               showLabel: true,
               label: 'colour',
@@ -3611,7 +3611,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           },
           attributes: [
             {
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               name: 'groupColour',
               showLabel: true,
@@ -3629,7 +3629,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               mode: 'input',
             },
             {
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               name: 'groupColourAgain',
               placeholder: 'emptyTextId',
@@ -3773,7 +3773,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'numberVariable',
+        type: 'textVariable',
         presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
@@ -3793,7 +3793,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'colour',
             showLabel: true,
@@ -3838,7 +3838,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'colour',
             showLabel: true,
@@ -3874,7 +3874,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'groupColour',
             placeholder: 'emptyTextId',
@@ -3892,7 +3892,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             mode: 'input',
           },
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'groupColourAgain',
             showLabel: true,
@@ -3938,7 +3938,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -4038,7 +4038,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'numberVariable',
+        type: 'textVariable',
         presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
@@ -4082,7 +4082,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
         },
         attributes: [
           {
-            type: 'numberVariable',
+            type: 'collectionVariable',
             presentationId: 'somePColVar',
             name: 'colour',
             placeholder: 'emptyTextId',
@@ -4166,7 +4166,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -4226,7 +4226,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
       },
       {
         name: 'bookTitle',
-        type: 'numberVariable',
+        type: 'textVariable',
         presentationId: 'somePTextVar',
         mode: 'input',
         inputType: 'input',
@@ -4309,7 +4309,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
           },
           {
             name: 'exampleTextVar',
-            type: 'numberVariable',
+            type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -4460,7 +4460,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
                 },
                 {
                   name: 'firstName',
-                  type: 'numberVariable',
+                  type: 'textVariable',
                   presentationId: 'somePTextVar',
                   mode: 'input',
                   tooltip: {
@@ -4479,7 +4479,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
                 },
                 {
                   name: 'lastName',
-                  type: 'numberVariable',
+                  type: 'textVariable',
                   presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
@@ -4559,7 +4559,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           },
           attributes: [
             {
-              type: 'numberVariable',
+              type: 'collectionVariable',
               presentationId: 'somePColVar',
               name: 'colourAttribute',
               placeholder: 'emptyTextId',
@@ -4601,7 +4601,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 },
                 {
                   name: 'firstName',
-                  type: 'numberVariable',
+                  type: 'textVariable',
                   presentationId: 'somePTextVar',
                   mode: 'input',
                   tooltip: {
@@ -4640,7 +4640,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 },
                 {
                   name: 'lastName',
-                  type: 'numberVariable',
+                  type: 'textVariable',
                   presentationId: 'somePTextVar',
                   mode: 'input',
                   inputType: 'input',
