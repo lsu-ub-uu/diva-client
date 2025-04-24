@@ -45,6 +45,7 @@ export const removeRootObject = (obj: Record<string, any>) => {
   if (childKeys.length === 1) {
     return obj[childKeys[0]];
   }
+  return obj;
 };
 
 export const createDefaultValueFromFinalValue = (
@@ -168,6 +169,7 @@ export const createDefaultValuesFromComponent = (
 
   // remove surrounding container in or data structure
   if (isComponentContainer(component)) {
+    console.log('removeRootObject', { component, defaultValues });
     return removeRootObject(defaultValues);
   }
 

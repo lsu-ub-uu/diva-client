@@ -45,16 +45,16 @@ export const createContainer = (
   const containerType = getContainerType(presentation);
   const presentationStyle = presentation.presentationStyle;
 
-  let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
+  let metadataChildReferencecs: BFFMetadataChildReference[] = [];
 
   if (containerType === 'surrounding') {
-    definitionFilteredChildRefs = createSContainer(
+    metadataChildReferencecs = createSContainer(
       presentation,
       metadataChildReferences,
       dependencies,
     );
   } else if (containerType === 'repeating') {
-    definitionFilteredChildRefs = createRContainer(
+    metadataChildReferencecs = createRContainer(
       presentation,
       metadataChildReferences,
     );
@@ -62,7 +62,7 @@ export const createContainer = (
 
   const components = createComponentsFromChildReferences(
     dependencies,
-    definitionFilteredChildRefs,
+    metadataChildReferencecs,
     presentation.children,
     false,
   );
