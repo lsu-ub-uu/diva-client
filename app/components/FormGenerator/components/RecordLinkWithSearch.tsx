@@ -25,7 +25,7 @@ import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
-import { useFetcher } from 'react-router';
+import { href, useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import {
   Combobox,
@@ -37,6 +37,7 @@ import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Controller } from 'react-hook-form';
+import { useTheme } from '@/utils/rootLoaderDataUtils';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -55,7 +56,12 @@ export const RecordLinkWithSearch = ({
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
+  const theme = useTheme();
   const fetcher = useFetcher();
+  const recordLinkSearchPresentation = component.searchPresentation;
+  if (!recordLinkSearchPresentation) {
+    return 'OJOJOJ';
+  }
   return (
     <div
       className={styles['component']}
@@ -83,12 +89,24 @@ export const RecordLinkWithSearch = ({
               value={value}
               onChange={(recordId) => onChange(recordId)}
             >
-              <fetcher.Form action='/autocompleteSearch' method='GET'>
-                <input
-                  type='hidden'
-                  name='searchType'
-                  value={component.search}
-                />
+              <fetcher.Form
+                action={href('/autocompleteSearch/:searchType', {
+                  searchType: recordLinkSearchPresentation.searchType,
+                })}
+                method='GET'
+              >
+                {recordLinkSearchPresentation.permissionUnitSearchTerm &&
+                  theme?.memberPermissionUnit && (
+                    <input
+                      type='hidden'
+                      name={
+                        recordLinkSearchPresentation.permissionUnitSearchTerm
+                          .name
+                      }
+                      value={`permissionUnit_${theme?.memberPermissionUnit}`}
+                    />
+                  )}
+
                 <ComboboxInput
                   {...(errorMessage !== undefined
                     ? { 'data-invalid': '' }
@@ -97,7 +115,9 @@ export const RecordLinkWithSearch = ({
                   placeholder={t(
                     'divaClient_recordLinkAutocompletePlaceholderText',
                   )}
-                  name='searchTermValue'
+                  name={
+                    recordLinkSearchPresentation.autocompleteSearchTerm.name
+                  }
                   onChange={(event) => fetcher.submit(event.currentTarget.form)}
                 />
               </fetcher.Form>

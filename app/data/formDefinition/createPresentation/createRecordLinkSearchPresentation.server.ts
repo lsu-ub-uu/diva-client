@@ -7,6 +7,7 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type { Dependencies } from '../formDefinitionsDep.server';
 
 export interface RecordLinkSearchPresentation {
+  searchType: string;
   autocompleteSearchTerm: {
     name: string;
   };
@@ -72,12 +73,13 @@ export const createRecordLinkSearchPresentation = (
   );
 
   return removeEmpty({
+    searchType,
     autocompleteSearchTerm: {
-      name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${autocompleteSearchTermPath}`,
+      name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${autocompleteSearchTermPath}.value`,
     },
     permissionUnitSearchTerm: permissionUnitSearchTermPath
       ? {
-          name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${permissionUnitSearchTermPath}`,
+          name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${permissionUnitSearchTermPath}.value`,
         }
       : undefined,
   });

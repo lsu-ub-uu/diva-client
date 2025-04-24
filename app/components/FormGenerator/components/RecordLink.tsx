@@ -68,7 +68,7 @@ export const RecordLink = ({
   }
 
   if (
-    checkIfComponentContainsSearchId(component) &&
+    component.searchPresentation &&
     component.mode === 'input' &&
     !value &&
     !linkedData
@@ -110,10 +110,4 @@ export const RecordLink = ({
       actionButtonGroup={actionButtonGroup}
     />
   );
-};
-
-const checkIfComponentContainsSearchId = (
-  component: FormComponentRecordLink,
-) => {
-  return 'search' in component ? component.search !== undefined : undefined;
 };

@@ -45,13 +45,11 @@ export const createRecordLink = (
 ): FormComponentRecordLink => {
   const recordLinkType = metadata.linkedRecordType;
   const type = metadata.type;
-  let search;
   let searchPresentation;
   if (presentation.search !== undefined) {
-    search = presentation.search;
     searchPresentation = createRecordLinkSearchPresentation(
       dependencies,
-      search,
+      presentation.search,
     );
   }
   let linkedRecordPresentation;
@@ -104,7 +102,6 @@ export const createRecordLink = (
     attributesToShow,
     type,
     recordLinkType,
-    search,
     searchPresentation,
     linkedRecordPresentation,
     presentationRecordLinkId,

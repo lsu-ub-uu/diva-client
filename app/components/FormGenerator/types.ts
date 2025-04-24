@@ -134,7 +134,6 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   recordLinkType?: string;
   presentationRecordLinkId?: string;
-  search?: string;
   searchPresentation?: RecordLinkSearchPresentation;
   linkedRecordPresentation?: LinkedPresentation;
   label: string;
