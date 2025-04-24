@@ -18,25 +18,25 @@
  */
 
 import type {
-  BFFMetadata,
+  FormComponent,
+  FormComponentRecordLink,
+} from '@/components/FormGenerator/types';
+import type {
   BFFMetadataChildReference,
   BFFMetadataRecordLink,
   BFFPresentationChildReference,
   BFFPresentationRecordLink,
 } from '@/cora/transform/bffTypes.server';
-import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { createAttributes } from './createAttributes';
-import type {
-  FormComponent,
-  FormComponentRecordLink,
-} from '@/components/FormGenerator/types';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
-import { createRepeat } from './createRepeat';
+import type { Dependencies } from '../formDefinitionsDep.server';
+import { createAttributes } from './createAttributes';
+import { createRecordLinkSearchPresentation } from './createRecordLinkSearchPresentation.server';
+import { createRepeat } from './createRepeat.server';
 
 export const createRecordLink = (
-  metadataPool: Lookup<string, BFFMetadata>,
+  dependencies: Dependencies,
   metadata: BFFMetadataRecordLink,
   presentation: BFFPresentationRecordLink,
   metadataChildReference: BFFMetadataChildReference,
@@ -46,8 +46,13 @@ export const createRecordLink = (
   const recordLinkType = metadata.linkedRecordType;
   const type = metadata.type;
   let search;
+  let searchPresentation;
   if (presentation.search !== undefined) {
     search = presentation.search;
+    searchPresentation = createRecordLinkSearchPresentation(
+      dependencies,
+      search,
+    );
   }
   let linkedRecordPresentation;
   if (presentation.linkedRecordPresentations !== undefined) {
@@ -62,7 +67,7 @@ export const createRecordLink = (
 
   const attributes = createAttributes(
     metadata,
-    metadataPool,
+    dependencies.metadataPool,
     undefined,
     presentation,
   );
@@ -100,6 +105,7 @@ export const createRecordLink = (
     type,
     recordLinkType,
     search,
+    searchPresentation,
     linkedRecordPresentation,
     presentationRecordLinkId,
     presentAs: presentation.presentAs,

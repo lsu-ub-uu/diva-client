@@ -49,17 +49,15 @@ import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import type { Route } from './+types/root';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { getThemeFromHostname } from './utils/getThemeFromHostname';
 
 const { MODE } = import.meta.env;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
-  const { hostname } = new URL(request.url);
   const session = await getSessionFromCookie(request);
   const auth = getAuth(session);
-  const theme = dependencies.themePool.has(hostname)
-    ? dependencies.themePool.get(hostname)
-    : undefined;
+  const theme = getThemeFromHostname(request, dependencies);
 
   const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;

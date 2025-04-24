@@ -32,7 +32,7 @@ import type {
   FormComponent,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat';
+import { createRepeat } from './createRepeat.server';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 
 export const createGroup = (

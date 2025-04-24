@@ -34,7 +34,7 @@ import type {
   FormComponent,
   FormComponentCollVar,
 } from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat';
+import { createRepeat } from './createRepeat.server';
 
 export const createCollVar = (
   metadataPool: Lookup<string, BFFMetadata>,

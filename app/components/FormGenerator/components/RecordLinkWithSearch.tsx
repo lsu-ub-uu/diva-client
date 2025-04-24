@@ -56,7 +56,6 @@ export const RecordLinkWithSearch = ({
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
   const fetcher = useFetcher();
-
   return (
     <div
       className={styles['component']}
@@ -84,20 +83,24 @@ export const RecordLinkWithSearch = ({
               value={value}
               onChange={(recordId) => onChange(recordId)}
             >
-              <ComboboxInput
-                {...(errorMessage !== undefined
-                  ? { 'data-invalid': '' }
-                  : undefined)}
-                aria-busy={fetcher.state !== 'idle'}
-                placeholder={t(
-                  'divaClient_recordLinkAutocompletePlaceholderText',
-                )}
-                onChange={(event) =>
-                  fetcher.load(
-                    `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
-                  )
-                }
-              />
+              <fetcher.Form action='/autocompleteSearch' method='GET'>
+                <input
+                  type='hidden'
+                  name='searchType'
+                  value={component.search}
+                />
+                <ComboboxInput
+                  {...(errorMessage !== undefined
+                    ? { 'data-invalid': '' }
+                    : undefined)}
+                  aria-busy={fetcher.state !== 'idle'}
+                  placeholder={t(
+                    'divaClient_recordLinkAutocompletePlaceholderText',
+                  )}
+                  name='searchTermValue'
+                  onChange={(event) => fetcher.submit(event.currentTarget.form)}
+                />
+              </fetcher.Form>
               <ComboboxOptions anchor='bottom'>
                 {fetcher.state === 'idle' &&
                   fetcher.data &&
