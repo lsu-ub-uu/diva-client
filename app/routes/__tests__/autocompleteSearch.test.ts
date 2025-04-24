@@ -41,7 +41,7 @@ describe('autocompleteSearch', () => {
   describe('loader', () => {
     it('calls searchRecords with correct query', async () => {
       const request = mock<Request>({
-        url: 'http://example.com?searchType=nationalSubjectCategorySearch&searchTermValue=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
       });
 
       const mockDependencies = {
@@ -73,7 +73,9 @@ describe('autocompleteSearch', () => {
       const response = await loader({
         request,
         context: mockContext,
-        params: {},
+        params: {
+          searchType: 'nationalSubjectCategorySearch',
+        },
       });
 
       expect(searchRecords).toHaveBeenCalledWith(
@@ -100,7 +102,7 @@ describe('autocompleteSearch', () => {
 
     it('returns search results', async () => {
       const request = mock<Request>({
-        url: 'http://example.com?searchType=nationalSubjectCategorySearch&searchTermValue=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
       });
 
       const mockContext = {
@@ -129,7 +131,7 @@ describe('autocompleteSearch', () => {
       const response = await loader({
         request,
         context: mockContext,
-        params: {},
+        params: { searchType: 'nationalSubjectCategorySearch' },
       });
 
       expect(response.result).toEqual([{ id: 'result1' }, { id: 'result2' }]);

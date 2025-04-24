@@ -1060,7 +1060,6 @@ describe('formDefinition', () => {
                 title: 'someNewRecordLinkText',
                 body: 'someNewRecordLinkDefText',
               },
-              search: 'someNewRecordLinkSearch',
             },
             {
               type: 'container',
