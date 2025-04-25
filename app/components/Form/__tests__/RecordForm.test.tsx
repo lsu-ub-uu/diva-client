@@ -97,7 +97,6 @@ import {
   formDefWithTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
-import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
@@ -106,15 +105,30 @@ import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { parseFormData } from 'remix-hook-form';
 import { describe, expect, it, vi } from 'vitest';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
 
-const RecordFormWithRoutesStub = ({ formSchema, record }: RecordFormProps) => {
+const RecordFormWithRoutesStub = ({
+  formSchema,
+  record,
+}: {
+  formSchema: RecordFormSchema;
+  record?: BFFDataRecord;
+}) => {
   const RoutesStub = createRoutesStub([
     {
       path: '/',
-      Component: () => <RecordForm formSchema={formSchema} record={record} />,
+      Component: () => (
+        <RecordForm
+          formSchema={formSchema}
+          defaultValues={createDefaultValuesFromFormSchema(
+            formSchema,
+            record?.data,
+          )}
+        />
+      ),
       action: actionSpy,
     },
   ]);
@@ -407,6 +421,7 @@ describe('<Form />', () => {
           }}
         />,
       );
+
       const swedishElement = screen.getByDisplayValue(
         'Svensk Nationell ämneskategori',
       );
@@ -981,7 +996,10 @@ describe('<Form />', () => {
           Component: () => (
             <RecordForm
               formSchema={formDefWithHiddenInputs}
-              record={recordWithOldFinalValue}
+              defaultValues={createDefaultValuesFromFormSchema(
+                formDefWithHiddenInputs,
+                recordWithOldFinalValue.data,
+              )}
             />
           ),
         },
@@ -3102,7 +3120,10 @@ describe('<Form />', () => {
           Component: () => (
             <RecordForm
               formSchema={formSchemaWithBinary}
-              record={recordWithBinary}
+              defaultValues={createDefaultValuesFromFormSchema(
+                formSchemaWithBinary,
+                recordWithBinary.data,
+              )}
             />
           ),
         },
@@ -3143,21 +3164,18 @@ describe('<Form />', () => {
   describe('alternativePresentation', () => {
     it('renders a headless presentation switcher when component has alternative presentation and no title', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'firstSmaller',
-                undefined,
-                true,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'firstSmaller',
+              undefined,
+              true,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
@@ -3182,21 +3200,18 @@ describe('<Form />', () => {
 
     it('renders a headed presentation switcher when component has alternative presentation a title', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'firstSmaller',
-                'someTitle',
-                true,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'firstSmaller',
+              'someTitle',
+              true,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
@@ -3221,21 +3236,18 @@ describe('<Form />', () => {
 
     it('renders a headed presentation switcher when component a title but no alternative presentation', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'singleInitiallyHidden',
-                'someTitle',
-                false,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'singleInitiallyHidden',
+              'someTitle',
+              false,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.queryByRole('textbox', { name: 'someLabelTextId' }),
@@ -3254,21 +3266,18 @@ describe('<Form />', () => {
 
     it('handles presentationSize firstLarger', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'firstLarger',
-                undefined,
-                true,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'firstLarger',
+              undefined,
+              true,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
@@ -3293,21 +3302,18 @@ describe('<Form />', () => {
 
     it('handles presentationSize bothAreEqual', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'bothEqual',
-                undefined,
-                true,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'bothEqual',
+              undefined,
+              true,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
@@ -3332,21 +3338,18 @@ describe('<Form />', () => {
 
     it('handles presentationSize singleInitiallyShown', async () => {
       const user = userEvent.setup();
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: () => (
-            <RecordForm
-              formSchema={createAlternativePresentationFormDef(
-                'singleInitiallyVisible',
-                'someTitle',
-                false,
-              )}
-            />
-          ),
-        },
-      ]);
-      await act(() => render(<RoutesStub />));
+
+      await act(() =>
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={createAlternativePresentationFormDef(
+              'singleInitiallyVisible',
+              'someTitle',
+              false,
+            )}
+          />,
+        ),
+      );
 
       expect(
         screen.getByRole('textbox', { name: 'someLabelTextId' }),

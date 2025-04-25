@@ -52,11 +52,6 @@ export const createDefaultValuesFromFormSchema = (
       existingRecordData,
     );
 
-    console.log({
-      valuesFromForm: createDefaultValuesFromComponent(formSchema.form),
-      existingRecordData,
-      mergedDefaultValues,
-    });
     return mergedDefaultValues;
   }
 

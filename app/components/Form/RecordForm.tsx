@@ -19,11 +19,8 @@
 
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
-import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
@@ -35,18 +32,14 @@ import { FloatingActionButtonContainer } from '@/components/FloatingActionButton
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
 export interface RecordFormProps {
-  record?: BFFDataRecord;
   formSchema: RecordFormSchema;
+  defaultValues: Record<string, any>;
 }
 
-export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
+export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
-  const defaultValues = createDefaultValuesFromFormSchema(
-    formSchema,
-    record?.data as RecordData,
-  );
 
   const methods = useRemixForm({
     mode: 'onChange',
