@@ -60,6 +60,10 @@ import {
   removeRootObject,
 } from '../defaultValues';
 import { formDefWithMatchingTrees } from '@/__mocks__/data/form/matchingTrees';
+import {
+  formDefWithAlternativePresentationsWithSContainersFirstSmaller,
+  formDefWithAlternativePresentationsWithSContainersSecondSmaller,
+} from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
 describe('defaultValues', () => {
   describe('generate defaultValues', () => {
@@ -216,7 +220,44 @@ describe('defaultValues', () => {
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+
+      it('should merge a group with alternative presentations with SContainers fist smaller', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            affiliation: [
+              {
+                someTextVar: [{ value: '' }],
+                someOtherTextVar: [{ value: '' }],
+              },
+            ],
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithAlternativePresentationsWithSContainersFirstSmaller as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should merge a group with alternative presentations with SContainers fist smaller', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            affiliation: [
+              {
+                someTextVar: [{ value: '' }],
+                someOtherTextVar: [{ value: '' }],
+              },
+            ],
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithAlternativePresentationsWithSContainersSecondSmaller as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
+
     describe('createDefaultValuesFromComponent', () => {
       it('should construct a default value object for repeating component', () => {
         const expectedDefaultValues = {
@@ -2144,7 +2185,78 @@ describe('defaultValues', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
+      it('merge full', () => {
+        const base = {
+          output: {
+            name_type_personal: [
+              {
+                person: [{ value: '' }],
+                namePart_type_family: [{ value: '', _type: 'family' }],
+                namePart_type_given: [{ value: '', _type: 'given' }],
+                role: [{ roleTerm: [{ value: '' }] }],
+                affiliation: [
+                  {
+                    organisation: [{ value: '' }],
+                    name_type_corporate: [
+                      { namePart: { value: '' }, _type: 'corporate' },
+                    ],
+                    identifier_type_ror: [{ value: '', _type: 'ror' }],
+                    country: [{ value: '' }],
+                    description: [{ value: '' }],
+                  },
+                ],
+                _type: 'personal',
+              },
+            ],
+          },
+        };
+
+        const overlay = {
+          output: {
+            name_type_personal: [
+              {
+                affiliation: [
+                  {
+                    name_type_corporate: [
+                      { namePart: { value: 'Hej' }, _type: 'corporate' },
+                    ],
+                  },
+                ],
+                _type: 'personal',
+              },
+            ],
+          },
+        };
+
+        const actualData = mergeObjects(base, overlay);
+        expect(actualData).toStrictEqual({
+          output: {
+            name_type_personal: [
+              {
+                person: [{ value: '' }],
+                namePart_type_family: [{ value: '', _type: 'family' }],
+                namePart_type_given: [{ value: '', _type: 'given' }],
+                role: [{ roleTerm: [{ value: '' }] }],
+                affiliation: [
+                  {
+                    organisation: [{ value: '' }],
+                    name_type_corporate: [
+                      { namePart: { value: 'Hej' }, _type: 'corporate' },
+                    ],
+                    identifier_type_ror: [{ value: '', _type: 'ror' }],
+                    country: [{ value: '' }],
+                    description: [{ value: '' }],
+                  },
+                ],
+                _type: 'personal',
+              },
+            ],
+          },
+        });
+      });
     });
+
     describe('mergeArrays', () => {
       it('merges array with one object', () => {
         const expectedData = [

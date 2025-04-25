@@ -76,7 +76,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
-    record,
+    record.data,
   );
 
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
@@ -155,7 +155,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { record, formDefinition, notification } = loaderData;
+  const { record, formDefinition, notification, defaultValues } = loaderData;
 
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
@@ -180,7 +180,7 @@ export default function UpdateRecordRoute({
         )}
         <RecordForm
           key={lastUpdate}
-          record={record}
+          defaultValues={defaultValues}
           formSchema={formDefinition}
         />
       </div>

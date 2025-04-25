@@ -47,6 +47,7 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -73,11 +74,13 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     throw error;
   }
 
+  const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
+
   const title = t('divaClient_createRecordText');
   const breadcrumb = t('divaClient_createRecordText');
 
   return data(
-    { formDefinition, notification, title, breadcrumb },
+    { formDefinition, defaultValues, notification, title, breadcrumb },
     await getResponseInitWithSession(session),
   );
 };
@@ -152,7 +155,7 @@ export const meta = ({ data, error }: Route.MetaArgs) => {
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { formDefinition, notification } = loaderData;
+  const { formDefinition, notification, defaultValues } = loaderData;
 
   return (
     <SidebarLayout
@@ -173,7 +176,7 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <RecordForm formSchema={formDefinition} />
+        <RecordForm formSchema={formDefinition} defaultValues={defaultValues} />
       </div>
     </SidebarLayout>
   );
