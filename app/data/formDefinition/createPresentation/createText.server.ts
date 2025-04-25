@@ -24,6 +24,7 @@ import type { FormComponentText } from '@/components/FormGenerator/types';
 
 export const createText = (
   presentationChildReference: BFFPresentationChildReference,
+  presentationChildType: FormComponentText['type'],
   alternative: boolean,
 ): FormComponentText => {
   const refGroup = getPresentationChildRefGroup(
@@ -33,7 +34,7 @@ export const createText = (
   const presentationChildId = refGroup.childId;
   return {
     name: presentationChildId,
-    type: 'text',
+    type: presentationChildType,
     textStyle: presentationChildReference.textStyle,
     childStyle: presentationChildReference.childStyle,
     gridColSpan: convertChildStylesToGridColSpan(

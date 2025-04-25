@@ -263,7 +263,11 @@ const createComponentFromChildReference = (
   const presentationChildType = refGroup.type;
 
   if (presentationChildType === 'text') {
-    return createText(presentationChildReference, alternative);
+    return createText(
+      presentationChildReference,
+      presentationChildType,
+      alternative,
+    );
   }
 
   if (presentationChildType === 'guiElement') {
