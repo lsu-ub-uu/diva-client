@@ -44,7 +44,7 @@ import { createCollVar } from '@/data/formDefinition/createPresentation/createCo
 import { createContainer } from '@/data/formDefinition/createPresentation/createContainer.server';
 import { createGroup } from '@/data/formDefinition/createPresentation/createGroup.server';
 import { createGuiElement } from '@/data/formDefinition/createPresentation/createGuiElement.server';
-import { createHiddenComponents } from '@/data/formDefinition/createPresentation/createHiddenComponents';
+import { createHiddenComponents } from '@/data/formDefinition/createPresentation/createHiddenComponents.server';
 import { createNumVar } from '@/data/formDefinition/createPresentation/createNumVar.server';
 import { createRecordLink } from '@/data/formDefinition/createPresentation/createRecordLink.server';
 import { createResourceLink } from '@/data/formDefinition/createPresentation/createResourceLink.server';
@@ -55,7 +55,7 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 import type { Lookup } from '@/utils/structs/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { createPresentationChildReferenceParameters } from '@/data/formDefinition/createPresentationChildReferenceParameters.server';
-import { createRepeat } from '@/data/formDefinition/createPresentation/createRepeat';
+import { createRepeat } from '@/data/formDefinition/createPresentation/createRepeat.server';
 
 export const createGroupOrComponent = (
   dependencies: Dependencies,
@@ -145,7 +145,7 @@ export const createGroupOrComponent = (
 
   if (presentation.type === 'pRecordLink') {
     return createRecordLink(
-      metadataPool,
+      dependencies,
       metadata as BFFMetadataRecordLink,
       presentation,
       metaDataChildReference,
@@ -177,6 +177,7 @@ export const createGroupOrComponent = (
 
   // Fall back to "generic" presentation
   return {
+    presentationId: presentation.id,
     ...createCommonParameters(metadata, presentation),
     repeat: createRepeat(presentationChildReference, metaDataChildReference),
     ...createPresentationChildReferenceParameters(presentationChildReference),

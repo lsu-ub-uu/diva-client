@@ -19,7 +19,7 @@
 import type { Auth } from '@/auth/Auth';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type { AuthWrapper } from '@/cora/cora-data/types.server';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 import {
   containsChildWithNameInData,
   getAllRecordLinksWithNameInData,
@@ -53,12 +53,15 @@ export const transformCoraAuth = ({ authentication }: AuthWrapper): Auth => {
       )
     : undefined;
 
-  invariant(authentication.actionLinks, 'Authentication actionLinks missing');
-  invariant(
+  assertDefined(
+    authentication.actionLinks,
+    'Authentication actionLinks missing',
+  );
+  assertDefined(
     authentication.actionLinks.renew,
     'Authentication renew actionLink missing',
   );
-  invariant(
+  assertDefined(
     authentication.actionLinks.delete,
     'Authentication delete actionLink missing',
   );

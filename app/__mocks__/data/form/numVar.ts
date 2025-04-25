@@ -23,6 +23,7 @@ export const formDefWithOneNumberVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    presentationId: 'someRootNameInDataGroup',
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     showLabel: true,
@@ -37,6 +38,7 @@ export const formDefWithOneNumberVariable: RecordFormSchema = {
     components: [
       {
         type: 'numberVariable',
+        presentationId: 'someNumberVariableNameInDataNumVar',
         name: 'someNumberVariableNameInData',
         placeholder: 'someNumberPlaceholderTextId',
         label: 'someNumberVariableNameInData',
@@ -68,6 +70,7 @@ export const formDefWithOneNumberVariableModeOutput: RecordFormSchema = {
     label: 'someRootFormGroupText',
     showLabel: true,
     name: 'someRootNameInData',
+    presentationId: 'someRootNameInDataGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -80,6 +83,7 @@ export const formDefWithOneNumberVariableModeOutput: RecordFormSchema = {
       {
         type: 'numberVariable',
         mode: 'output',
+        presentationId: 'someNumberVariableNameInDataNumVar',
         name: 'someNumberVariableNameInData',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
@@ -105,6 +109,7 @@ export const formDefWithOneNumberVariableBeingOptionalOutput: RecordFormSchema =
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      presentationId: 'someRootNameInDataGroup',
       showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
@@ -120,6 +125,7 @@ export const formDefWithOneNumberVariableBeingOptionalOutput: RecordFormSchema =
         {
           type: 'numberVariable',
           name: 'someNumberVariableNameInData',
+          presentationId: 'somePNumVar',
           placeholder: 'someNumberPlaceholderTextId',
           validation: {
             type: 'number',
@@ -149,6 +155,7 @@ export const formDefWithOneNumberVariableBeingOptional: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'someRootNameInDataGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -161,6 +168,7 @@ export const formDefWithOneNumberVariableBeingOptional: RecordFormSchema = {
       {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
+        presentationId: 'somePNumVar',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
           type: 'number',
@@ -190,6 +198,7 @@ export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -202,6 +211,7 @@ export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
       {
         type: 'numberVariable',
         name: 'someNumberVariableNameInData',
+        presentationId: 'somePNumVar',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
           type: 'number',
@@ -226,6 +236,7 @@ export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
+    presentationId: 'somePGroup',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -241,6 +252,7 @@ export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
     components: [
       {
         name: 'language',
+        presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
         tooltip: {
@@ -257,6 +269,7 @@ export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
         components: [
           {
             name: 'exampleNumberVar',
+            presentationId: 'somePNumVar',
             type: 'numberVariable',
             mode: 'input',
             tooltip: {
@@ -293,6 +306,7 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
+    presentationId: 'somePGroup',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -308,6 +322,7 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
     components: [
       {
         name: 'language',
+        presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
         tooltip: {
@@ -324,6 +339,7 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
         components: [
           {
             name: 'exampleNumberVar',
+            presentationId: 'somePNumVar',
             type: 'numberVariable',
             mode: 'input',
             tooltip: {

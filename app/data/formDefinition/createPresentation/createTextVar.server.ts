@@ -34,7 +34,7 @@ import type { Lookup } from '@/utils/structs/lookup';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { createAttributes } from './createAttributes';
-import { createRepeat } from './createRepeat';
+import { createRepeat } from './createRepeat.server';
 
 export const createTextVar = (
   metadataPool: Lookup<string, BFFMetadata>,
@@ -82,6 +82,7 @@ export const createTextVar = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     name,
     placeholder,
     mode,

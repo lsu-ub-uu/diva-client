@@ -18,10 +18,10 @@
 
 import type { AppLoadContext } from 'react-router';
 import type { Auth } from '@/auth/Auth';
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { isEmpty } from 'lodash-es';
 import { searchRecords } from '@/data/searchRecords.server';
 import { type ObjectSchema, ValidationError } from 'yup';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 
 export const performSearch = async (
   request: Request,
@@ -34,11 +34,10 @@ export const performSearch = async (
   const query = parseFormDataFromSearchParams(url.searchParams);
 
   try {
-    if (isEmpty(query)) {
+    if (isEmptySearch(query)) {
       return { query };
     }
     await yupSchema.validate(query);
-
     const searchResults = await searchRecords(
       await context.dependencies,
       searchId,
@@ -53,4 +52,10 @@ export const performSearch = async (
     }
     throw error;
   }
+};
+
+const isEmptySearch = (query: Record<string, any>) => {
+  const cleaned = cleanFormData(query);
+  const rootKey = Object.keys(query)[0];
+  return cleaned[rootKey]?.include === undefined;
 };

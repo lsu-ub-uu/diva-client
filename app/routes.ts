@@ -23,7 +23,7 @@ export default [
   /* Resource routes */
   route('record/:recordType/:recordId', 'routes/getRecord.tsx'),
   route('refreshDefinitions', 'routes/refreshDefinitions.tsx'),
-  route('autocompleteSearch', 'routes/autocompleteSearch.tsx'),
+  route('autocompleteSearch/:searchType', 'routes/autocompleteSearch.tsx'),
   route('translations/:lang', 'routes/translations.tsx'),
   route('fileUpload', 'routes/fileUpload.tsx'),
 

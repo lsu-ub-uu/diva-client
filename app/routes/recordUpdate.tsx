@@ -41,7 +41,7 @@ import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from './+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
@@ -110,7 +110,7 @@ export const action = async ({
     authToken: auth.data.token,
   });
 
-  invariant(validationType, 'Failed to get validation type from record');
+  assertDefined(validationType, 'Failed to get validation type from record');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,

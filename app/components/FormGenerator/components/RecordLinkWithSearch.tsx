@@ -25,7 +25,7 @@ import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
-import { useFetcher } from 'react-router';
+import { href, useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import {
   Combobox,
@@ -37,6 +37,8 @@ import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Controller } from 'react-hook-form';
+import { useTheme } from '@/utils/rootLoaderDataUtils';
+import { assertDefined } from '@/utils/invariant';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -55,7 +57,40 @@ export const RecordLinkWithSearch = ({
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
+  const theme = useTheme();
   const fetcher = useFetcher();
+  const recordLinkSearchPresentation = component.searchPresentation;
+
+  assertDefined(
+    recordLinkSearchPresentation,
+    'Record link has no search presentation',
+  );
+
+  const handleComboboxInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const comboboxInputValue = event.currentTarget.value;
+
+    const data = {
+      [recordLinkSearchPresentation.autocompleteSearchTerm.name]:
+        comboboxInputValue,
+    };
+
+    if (
+      recordLinkSearchPresentation.permissionUnitSearchTerm &&
+      theme?.memberPermissionUnit
+    ) {
+      data[recordLinkSearchPresentation.permissionUnitSearchTerm.name] =
+        `permissionUnit_${theme?.memberPermissionUnit}`;
+    }
+
+    fetcher.submit(data, {
+      method: 'GET',
+      action: href('/autocompleteSearch/:searchType', {
+        searchType: recordLinkSearchPresentation.searchType,
+      }),
+    });
+  };
 
   return (
     <div
@@ -92,11 +127,8 @@ export const RecordLinkWithSearch = ({
                 placeholder={t(
                   'divaClient_recordLinkAutocompletePlaceholderText',
                 )}
-                onChange={(event) =>
-                  fetcher.load(
-                    `/autocompleteSearch?searchType=${component.search}&searchTermValue=${event.target.value}`,
-                  )
-                }
+                name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
+                onChange={handleComboboxInputChange}
               />
               <ComboboxOptions anchor='bottom'>
                 {fetcher.state === 'idle' &&

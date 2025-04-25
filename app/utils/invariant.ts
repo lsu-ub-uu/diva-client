@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export function invariant<T>(
+export function assertDefined<T>(
   value: T | null | undefined,
   message: string,
 ): asserts value is NonNullable<T> {

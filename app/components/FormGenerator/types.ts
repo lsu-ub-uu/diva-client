@@ -18,6 +18,7 @@
  */
 
 import type { ChildStyle, TextStyle } from '@/cora/transform/bffTypes.server';
+import type { RecordLinkSearchPresentation } from '@/data/formDefinition/createPresentation/createRecordLinkSearchPresentation.server';
 
 export interface FormSchema {
   form: FormComponentGroup;
@@ -67,6 +68,7 @@ export type FormComponentWithDataType = Omit<
 >;
 
 export interface FormComponentBase {
+  presentationId?: string;
   type: FormComponentType;
   name: string;
   alternativePresentation?: FormComponent;
@@ -132,7 +134,7 @@ export interface FormComponentRecordLink extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   recordLinkType?: string;
   presentationRecordLinkId?: string;
-  search?: string;
+  searchPresentation?: RecordLinkSearchPresentation;
   linkedRecordPresentation?: LinkedPresentation;
   label: string;
   showLabel: boolean;
@@ -163,7 +165,9 @@ export interface FormComponentGroup extends FormComponentMetadata {
     | 'onlyTranslatedText';
 }
 
-export type FormComponentText = FormComponentMetadata;
+export interface FormComponentText extends FormComponentMetadata {
+  type: 'text';
+}
 
 export interface FormComponentGuiElement extends FormComponentBase {
   url: string;

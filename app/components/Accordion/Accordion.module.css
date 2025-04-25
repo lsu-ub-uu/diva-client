@@ -58,7 +58,7 @@
   }
 }
 
-.accordion[data-hasvalue='true'] {
+.accordion:has([data-has-value]) {
   .title button {
     color: var(--color-accent-dark);
   }
@@ -68,7 +68,7 @@
   }
 }
 
-.accordion[data-invalid='true'] {
+.accordion:has([data-invalid]) {
   border: 1px solid var(--color-error-main);
   border-radius: var(--border-radius);
 
@@ -90,7 +90,7 @@
   padding: var(--gap);
 }
 
-.accordion[data-expanded='false']:not(:has(.content)) .title {
+.accordion[data-expanded='false']:has(.content[hidden]) .title {
   --accordion-title-border-radius: var(--border-radius);
 }
 

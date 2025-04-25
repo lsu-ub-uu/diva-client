@@ -39,6 +39,7 @@ export const formDefWithMatchingTrees: RecordFormSchema = {
       {
         type: 'group',
         name: 'someGroupNameInData',
+        presentationId: 'somePGroup',
         repeat: {
           minNumberOfRepeatingToShow: 1,
           repeatMin: 1,
@@ -48,6 +49,7 @@ export const formDefWithMatchingTrees: RecordFormSchema = {
           {
             type: 'textVariable',
             name: 'someNameInData',
+            presentationId: 'somePTextVar',
             label: 'someLabelTextId',
             placeholder: 'someEmptyTextId',
             repeat: {
@@ -66,10 +68,12 @@ export const formDefWithMatchingTrees: RecordFormSchema = {
       {
         type: 'group',
         name: 'someGroupNameInData',
+        presentationId: 'somePGroup',
         components: [
           {
             type: 'textVariable',
             name: 'someOtherNameInData',
+            presentationId: 'somePTextVar',
             label: 'someLabelTextId',
             placeholder: 'someEmptyTextId',
             repeat: {

@@ -16,28 +16,29 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import {
   isComponentCollVar,
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Select } from '@/components/Input/Select';
-import { Textarea } from '@/components/Input/Textarea';
-import { Input } from '@/components/Input/Input';
 import type {
   FormComponentNumVar,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
+import { FieldContext } from '@/components/Input/Fieldset';
+import { Input } from '@/components/Input/Input';
+import { Select } from '@/components/Input/Select';
+import { Textarea } from '@/components/Input/Textarea';
+import { useHydrated } from '@/utils/useHydrated';
+import { use } from 'react';
 import {
   type Control,
   Controller,
   type FieldValues,
   type UseFormRegister,
+  useWatch,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
-import { useHydrated } from '@/utils/useHydrated';
-import { use } from 'react';
-import { FieldContext } from '@/components/Input/Fieldset';
 
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -57,6 +58,7 @@ export const InputField = ({
   const { ids } = use(FieldContext);
   const hydrated = useHydrated();
   const { t } = useTranslation();
+  const value = useWatch({ name: path });
 
   if (isComponentCollVar(component)) {
     const options = [
@@ -77,6 +79,7 @@ export const InputField = ({
               aria-label={!component.showLabel ? t(component.label) : undefined}
               aria-details={ids.details}
               options={options}
+              {...(value && { 'data-has-value': '' })}
             />
           )}
         />
@@ -89,6 +92,7 @@ export const InputField = ({
         invalid={errorMessage !== undefined}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
+        {...(value && { 'data-has-value': '' })}
       >
         {(options ?? []).map((item) => {
           return (
@@ -113,6 +117,7 @@ export const InputField = ({
         readOnly={!!component.finalValue}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
+        {...(value && { 'data-has-value': '' })}
       />
     );
   }
@@ -126,6 +131,7 @@ export const InputField = ({
       readOnly={!!component.finalValue}
       aria-label={!component.showLabel ? t(component.label) : undefined}
       aria-details={ids.details}
+      {...(value && { 'data-has-value': '' })}
     />
   );
 };

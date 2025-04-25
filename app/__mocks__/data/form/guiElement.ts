@@ -26,6 +26,7 @@ export const formDefWithGuiElementLink: RecordFormSchema = {
     showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -38,6 +39,7 @@ export const formDefWithGuiElementLink: RecordFormSchema = {
       {
         type: 'guiElementLink',
         name: 'pSomeGuiElementLinkId',
+        presentationId: 'somePLink',
         url: 'http://www.google.se',
         elementText: 'demoTestLinkGuiElementText',
         presentAs: 'link',

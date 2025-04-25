@@ -23,6 +23,10 @@ export interface EnhancedFieldsHiddenConfig {
   type: 'hidden';
 }
 
+export interface EnhancedFieldsNotRemovableConfig {
+  type: 'notRemovable';
+}
+
 export interface EnhancedFieldsCheckboxConfig {
   type: 'checkbox';
 }
@@ -41,7 +45,8 @@ export type EnhancedFieldsConfig =
   | EnhancedFieldsHiddenConfig
   | EnhancedFieldsLinkConfig
   | EnhancedGroupConfig
-  | EnhancedFieldsCheckboxConfig;
+  | EnhancedFieldsCheckboxConfig
+  | EnhancedFieldsNotRemovableConfig;
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];

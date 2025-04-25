@@ -26,7 +26,7 @@ import {
   removeComponentsWithoutValuesFromSchema,
 } from '@/components/NavigationPanel/utils';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
@@ -52,7 +52,7 @@ export const loader = async ({
     authToken: auth?.data.token,
   });
 
-  invariant(record.validationType, 'Record has no validation type');
+  assertDefined(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,
     record.validationType,

@@ -18,7 +18,7 @@
 
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from './+types/getRecord';
 
@@ -39,7 +39,7 @@ export const loader = async ({
       'presentationRecordLinkId',
     );
 
-    invariant(
+    assertDefined(
       presentationRecordLinkId,
       'Missing presentationRecordLinkId param',
     );

@@ -264,6 +264,7 @@ export const linkedBinaryMock = {
       childStyle: [],
       gridColSpan: 12,
       name: 'binary',
+      presentationId: 'binaryGroup',
       type: 'group',
       mode: 'output',
       tooltip: {
@@ -276,6 +277,7 @@ export const linkedBinaryMock = {
       attributes: [
         {
           name: 'type',
+          presentationId: 'presentationIdForType',
           type: 'collectionVariable',
           placeholder: 'initialEmptyValueText',
           mode: 'output',
@@ -327,6 +329,7 @@ export const linkedBinaryMock = {
           childStyle: [],
           gridColSpan: 12,
           name: 'thumbnail',
+          presentationId: 'thumbnailGroup',
           type: 'group',
           mode: 'output',
           tooltip: {
@@ -346,6 +349,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'thumbnail',
+              presentationId: 'thumbnailResourceLink',
               type: 'resourceLink',
               tooltip: {
                 title: 'resourceLinkResLinkText',
@@ -366,6 +370,7 @@ export const linkedBinaryMock = {
           childStyle: [],
           gridColSpan: 12,
           name: 'master',
+          presentationId: 'masterGroup',
           type: 'group',
           mode: 'output',
           tooltip: {
@@ -385,6 +390,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'originalFileName',
+              presentationId: 'originalFileNameVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -408,6 +414,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'master',
+              presentationId: 'masterResourceLink',
               type: 'resourceLink',
               tooltip: {
                 title: 'resourceLinkResLinkText',
@@ -426,6 +433,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'resourceId',
+              presentationId: 'resourceInVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -449,6 +457,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'fileSize',
+              presentationId: 'fileSizeNumVar',
               type: 'numberVariable',
               mode: 'output',
               tooltip: {
@@ -475,6 +484,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'mimeType',
+              presentationId: 'mimeTypeVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -498,6 +508,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'height',
+              presentationId: 'heightNumVar',
               type: 'numberVariable',
               mode: 'output',
               tooltip: {
@@ -524,6 +535,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'width',
+              presentationId: 'widthNumVar',
               type: 'numberVariable',
               mode: 'output',
               tooltip: {
@@ -550,6 +562,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'resolution',
+              presentationId: 'resolutionVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -573,6 +586,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'checksumType',
+              presentationId: 'checksumTypeVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -597,6 +611,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'checksum',
+              presentationId: 'checksumVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -640,6 +655,7 @@ export const linkedBinaryMock = {
           type: 'collectionVariable',
           placeholder: 'initialEmptyValueText',
           mode: 'output',
+          presentationId: 'typeCollVar',
           tooltip: {
             title: 'binaryTypeCollectionVarText',
             body: 'binaryTypeCollectionVarDefText',
@@ -688,6 +704,7 @@ export const linkedBinaryMock = {
           childStyle: ['eightChildStyle'],
           gridColSpan: 8,
           name: 'recordInfo',
+          presentationId: 'recordInfoGroup',
           type: 'group',
           mode: 'output',
           tooltip: {
@@ -708,6 +725,7 @@ export const linkedBinaryMock = {
               textStyle: 'h4TextStyle',
               gridColSpan: 12,
               name: 'id',
+              presentationId: 'idVar',
               type: 'textVariable',
               mode: 'output',
               inputType: 'input',
@@ -734,6 +752,7 @@ export const linkedBinaryMock = {
           gridColSpan: 1,
           name: 'thumbnail',
           type: 'group',
+          presentationId: 'thumbnailGroup',
           mode: 'output',
           tooltip: {
             title: 'thumbnailGroupText',
@@ -752,6 +771,7 @@ export const linkedBinaryMock = {
               childStyle: [],
               gridColSpan: 12,
               name: 'thumbnail',
+              presentationId: 'thumbnailResourceLink',
               type: 'resourceLink',
               tooltip: {
                 title: 'resourceLinkResLinkText',
@@ -768,7 +788,7 @@ export const linkedBinaryMock = {
   },
 } satisfies BFFDataRecord;
 
-export const formSchemaWithBinary = {
+export const formSchemaWithBinary: RecordFormSchema = {
   validationTypeId: 'publication_report',
   form: {
     repeat: {
@@ -779,6 +799,7 @@ export const formSchemaWithBinary = {
     gridColSpan: 12,
     name: 'output',
     type: 'group',
+    presentationId: 'outputGroup',
     mode: 'output',
     tooltip: {
       title: 'outputUpdateGroupText',
@@ -797,6 +818,7 @@ export const formSchemaWithBinary = {
         childStyle: [],
         gridColSpan: 12,
         name: 'recordInfo',
+        presentationId: 'recordInfoGroup',
         type: 'group',
         mode: 'output',
         tooltip: {
@@ -816,6 +838,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'id',
+            presentationId: 'idVar',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -839,6 +862,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'type',
+            presentationId: 'typeRecordLink',
             type: 'recordLink',
             mode: 'output',
             tooltip: {
@@ -859,6 +883,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'validationType',
+            presentationId: 'validationTypeRecordLink',
             type: 'recordLink',
             mode: 'output',
             tooltip: {
@@ -879,6 +904,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'dataDivider',
+            presentationId: 'dataDividerRecordLink',
             type: 'recordLink',
             mode: 'output',
             tooltip: {
@@ -899,6 +925,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'createdBy',
+            presentationId: 'createdByRecordLink',
             type: 'recordLink',
             mode: 'output',
             tooltip: {
@@ -919,6 +946,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'tsCreated',
+            presentationId: 'tsCreatedVar',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -937,8 +965,9 @@ export const formSchemaWithBinary = {
           {
             childStyle: [],
             gridColSpan: 12,
-            type: 'container',
             name: 'updatesMinimizedSContainer',
+            type: 'container',
+            presentationId: 'updatesMinimizedSContainer',
             mode: 'output',
             presentationStyle: '',
             containerType: 'surrounding',
@@ -961,6 +990,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'recordContentSource',
+            presentationId: 'recordContentSourceCollVar',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
             mode: 'output',
@@ -986,6 +1016,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'genre',
+            presentationId: 'genreCollVar',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
             mode: 'output',
@@ -1004,6 +1035,7 @@ export const formSchemaWithBinary = {
             attributes: [
               {
                 name: 'type',
+                presentationId: 'typeCollVar',
                 type: 'collectionVariable',
                 placeholder: 'initialEmptyValueText',
                 mode: 'output',
@@ -1032,6 +1064,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'urn',
+            presentationId: 'urnVar',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -1055,6 +1088,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'oldId',
+            presentationId: 'oldIdVar',
             type: 'textVariable',
             mode: 'output',
             inputType: 'input',
@@ -1080,6 +1114,7 @@ export const formSchemaWithBinary = {
         childStyle: [],
         gridColSpan: 12,
         name: 'attachment',
+        presentationId: 'attachmentGroup',
         type: 'group',
         mode: 'output',
         tooltip: {
@@ -1099,6 +1134,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'attachmentFile',
+            presentationId: 'attachmentFileRecordLink',
             type: 'recordLink',
             mode: 'output',
             tooltip: {
@@ -1123,6 +1159,7 @@ export const formSchemaWithBinary = {
             childStyle: [],
             gridColSpan: 12,
             name: 'type',
+            presentationId: 'typeCollVar',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
             mode: 'output',
@@ -1209,6 +1246,7 @@ export const formSchemaWithBinary = {
             gridColSpan: 12,
             name: 'note',
             type: 'textVariable',
+            presentationId: 'noteVar',
             mode: 'output',
             inputType: 'input',
             tooltip: {
@@ -1225,6 +1263,7 @@ export const formSchemaWithBinary = {
               {
                 name: 'type',
                 type: 'collectionVariable',
+                presentationId: 'typeCollVar',
                 placeholder: 'initialEmptyValueText',
                 mode: 'output',
                 tooltip: {

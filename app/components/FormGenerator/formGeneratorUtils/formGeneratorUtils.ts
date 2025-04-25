@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
 import type {
   FormComponent,
@@ -32,18 +33,12 @@ import type {
   FormComponentText,
   FormComponentTextVar,
   FormComponentWithData,
-  FormSchema,
 } from '../types';
-import {
-  addAttributesToName,
-  getChildNameInDataArray,
-  getChildrenWithSameNameInData,
-} from '@/components/FormGenerator/defaultValues/defaultValues';
 
-import { cleanFormData } from '@/utils/cleanFormData';
-import { get } from 'lodash-es';
 import type { Option } from '@/components';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import { cleanFormData } from '@/utils/cleanFormData';
+import { get } from 'lodash-es';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -287,14 +282,6 @@ export const convertChildStyleToString = (
   childStyle: string[] | undefined,
 ): string | null => {
   return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
-};
-
-export const getChildrenWithSameNameInDataFromSchema = (
-  formSchema: FormSchema,
-) => {
-  return getChildrenWithSameNameInData(
-    getChildNameInDataArray(formSchema?.form),
-  );
 };
 
 export const getErrorMessageForField = (

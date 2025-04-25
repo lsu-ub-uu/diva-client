@@ -16,31 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import css from './design-system.css?url';
+import { Accordion } from '@/components/Accordion/Accordion';
+import { AccordionContent } from '@/components/Accordion/AccordionContent';
+import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
-import * as icons from '@/icons';
-import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
+import { Card } from '@/components/Card/Card';
+import { CardContent } from '@/components/Card/CardContent';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardTitle } from '@/components/Card/CardTitle';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
-import { Card } from '@/components/Card/Card';
-import { CardTitle } from '@/components/Card/CardTitle';
-import { CardHeader } from '@/components/Card/CardHeader';
-import { CardContent } from '@/components/Card/CardContent';
-import { useEffect, useState } from 'react';
 import { Textarea } from '@/components/Input/Textarea';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { Typography } from '@/components/Typography/Typography';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { LinearLoader } from '@/components/Loader/LinearLoader';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
-import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Progress } from '@/components/Progress/Progress';
-import { Fieldset } from '@/components/Input/Fieldset';
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
+import { Snackbar } from '@/components/Snackbar/Snackbar';
+import { Typography } from '@/components/Typography/Typography';
+import * as icons from '@/icons';
+import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
+import { useEffect, useState } from 'react';
+import css from './design-system.css?url';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 

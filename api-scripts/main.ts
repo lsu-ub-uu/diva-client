@@ -15,6 +15,17 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import login from './auth';
 import createReport from './createReport';
 
-createReport();
+const auth = await login();
+
+try {
+  await Promise.all(
+    Array.from({ length: 100 }, () => createReport(auth.token)),
+  );
+
+  console.info('All reports created successfully');
+} finally {
+  await auth.logout();
+}

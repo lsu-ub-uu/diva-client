@@ -1,19 +1,23 @@
 .search-form {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: var(--gap);
-  align-items: end;
-
-  --input-height: var(--input-height-large);
 
   @media (width < 600px) {
     display: flex;
     flex-direction: column;
     align-items: stretch;
   }
+
+  input[name='search.include.includePart.genericSearchTerm[0].value'] {
+    --input-height: var(--input-height-large);
+  }
 }
 
 .search-button {
   padding-left: var(--gap-xl);
   padding-right: var(--gap-xl);
+  align-self: flex-end;
+
+  --input-height: var(--input-height-large);
 }

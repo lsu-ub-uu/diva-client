@@ -217,6 +217,7 @@ describe('<Form />', () => {
             validationTypeId: 'nationalSubjectCategory',
             form: {
               name: 'nationalSubjectCategory',
+              presentationId: 'somePresentationIdNationalSubjectCategory',
               type: 'group',
               mode: 'input',
               tooltip: {
@@ -232,6 +233,7 @@ describe('<Form />', () => {
               components: [
                 {
                   name: 'recordInfo',
+                  presentationId: 'somePresentationIdRecordInfo',
                   type: 'group',
                   mode: 'input',
                   tooltip: {
@@ -253,6 +255,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'subject',
+                  presentationId: 'somePresentationIdSubject1',
                   type: 'textVariable',
                   mode: 'input',
                   inputType: 'input',
@@ -274,6 +277,7 @@ describe('<Form />', () => {
                   attributes: [
                     {
                       name: 'language',
+                      presentationId: 'somePresentationIdLanguage1',
                       type: 'collectionVariable',
                       placeholder: 'initialEmptyValueText',
                       mode: 'input',
@@ -301,6 +305,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'subject',
+                  presentationId: 'somePresentationIdSubject2',
                   type: 'textVariable',
                   mode: 'input',
                   inputType: 'input',
@@ -322,6 +327,7 @@ describe('<Form />', () => {
                   attributes: [
                     {
                       name: 'language',
+                      presentationId: 'somePresentationIdLanguage2',
                       type: 'collectionVariable',
                       placeholder: 'initialEmptyValueText',
                       mode: 'input',
@@ -349,6 +355,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'code',
+                  presentationId: 'somePresentationIdCode',
                   type: 'textVariable',
                   mode: 'input',
                   inputType: 'input',
@@ -372,6 +379,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'parent',
+                  presentationId: 'somePresentationIdParent',
                   type: 'recordLink',
                   mode: 'input',
                   tooltip: {
@@ -390,7 +398,6 @@ describe('<Form />', () => {
                   recordLinkType: 'nationalSubjectCategory',
                   presentationRecordLinkId:
                     'parentNationalSubjectCategoryPLink',
-                  search: 'nationalSubjectCategorySearch',
                 },
               ],
               presentationStyle: '',
@@ -690,6 +697,7 @@ describe('<Form />', () => {
               type: 'group',
               label: 'someRootFormGroupText',
               name: 'someRootNameInData',
+              presentationId: 'somePresentationIdsomeRootNameInData',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -702,6 +710,7 @@ describe('<Form />', () => {
               components: [
                 {
                   name: 'recordInfo',
+                  presentationId: 'somePresentationIdRecordInfo',
                   type: 'group',
                   mode: 'input',
                   tooltip: {
@@ -723,6 +732,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'author',
+                  presentationId: 'somePresentationIdAuthor',
                   type: 'group',
                   mode: 'input',
                   tooltip: {
@@ -739,6 +749,7 @@ describe('<Form />', () => {
                   attributes: [
                     {
                       name: 'language',
+                      presentationId: 'somePresentationIdLanguage',
                       type: 'collectionVariable',
                       placeholder: 'initialEmptyValueText',
                       mode: 'input',
@@ -764,6 +775,7 @@ describe('<Form />', () => {
                   components: [
                     {
                       name: 'givenName',
+                      presentationId: 'somePresentationIdGivenName',
                       type: 'textVariable',
                       mode: 'input',
                       inputType: 'input',
@@ -788,6 +800,7 @@ describe('<Form />', () => {
                     },
                     {
                       name: 'familyName',
+                      presentationId: 'somePresentationIdFamilyName',
                       type: 'textVariable',
                       mode: 'input',
                       inputType: 'input',
@@ -817,6 +830,7 @@ describe('<Form />', () => {
                 },
                 {
                   name: 'author',
+                  presentationId: 'somePresentationIdAuthor',
                   type: 'group',
                   mode: 'input',
                   tooltip: {
@@ -833,6 +847,7 @@ describe('<Form />', () => {
                   attributes: [
                     {
                       name: 'language',
+                      presentationId: 'somePresentationIdLanguage',
                       type: 'collectionVariable',
                       placeholder: 'initialEmptyValueText',
                       mode: 'input',
@@ -858,6 +873,7 @@ describe('<Form />', () => {
                   components: [
                     {
                       name: 'givenName',
+                      presentationId: 'somePresentationIdGivenName',
                       type: 'textVariable',
                       mode: 'input',
                       inputType: 'input',
@@ -882,6 +898,7 @@ describe('<Form />', () => {
                     },
                     {
                       name: 'familyName',
+                      presentationId: 'somePresentationIdFamilyName',
                       type: 'textVariable',
                       mode: 'input',
                       inputType: 'input',
@@ -3042,6 +3059,7 @@ describe('<Form />', () => {
         showLabel: true,
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
+        presentationId: 'someRootNameInDataPGroup',
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -3055,6 +3073,7 @@ describe('<Form />', () => {
             type: 'hidden',
             name: 'role.roleTerm',
             finalValue: 'pbl',
+            presentationId: '',
           },
         ],
         mode: 'input',
@@ -3219,7 +3238,7 @@ describe('<Form />', () => {
       await act(() => render(<RoutesStub />));
 
       expect(
-        screen.queryByLabelText('someLabelTextId'),
+        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
       ).not.toBeInTheDocument();
 
       const accordionTitle = screen.getByRole('button', {
@@ -3339,7 +3358,7 @@ describe('<Form />', () => {
       await user.click(accordionTitle);
 
       expect(
-        screen.queryByLabelText('someLabelTextId'),
+        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
       ).not.toBeInTheDocument();
       expect(accordionTitle).toBeVisible();
     });

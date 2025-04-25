@@ -33,7 +33,7 @@ import { createNumberVariableValidation } from '@/data/formDefinition/formValida
 import type { Lookup } from '@/utils/structs/lookup';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { createAttributes } from './createAttributes';
-import { createRepeat } from './createRepeat';
+import { createRepeat } from './createRepeat.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createNumVar = (
@@ -80,6 +80,7 @@ export const createNumVar = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     name,
     placeholder,
     mode,

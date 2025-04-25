@@ -42,6 +42,7 @@ import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink
 import { use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
+import { DevInfo } from './components/DevInfo';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -72,7 +73,13 @@ export const Component = ({
   }
 
   if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
-    return null;
+    return (
+      <DevInfo
+        component={component}
+        path={path}
+        label='Hidden by enhancement'
+      />
+    );
   }
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (

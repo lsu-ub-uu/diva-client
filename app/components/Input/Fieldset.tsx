@@ -66,10 +66,13 @@ export const Fieldset = ({
           data-variant={variant}
           data-size={size}
         >
-          <div className={styles['label']}>
-            {label && <Label id={ids.label}>{label}</Label>}
-            {info && <FieldInfo {...info} />}
-          </div>
+          {(label || info) && (
+            <div className={styles['label']}>
+              {label && <Label id={ids.label}>{label}</Label>}
+              {info && <FieldInfo {...info} />}
+            </div>
+          )}
+
           {attributes && (
             <div className={styles['attributes']}>{attributes}</div>
           )}

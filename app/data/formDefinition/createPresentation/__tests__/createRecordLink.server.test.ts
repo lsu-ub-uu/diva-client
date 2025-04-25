@@ -9,6 +9,7 @@ import type {
 import { Lookup } from '@/utils/structs/lookup';
 import { describe, expect, it } from 'vitest';
 import { createRecordLink } from '../createRecordLink.server';
+import type { Dependencies } from '../../formDefinitionsDep.server';
 
 describe('createRecordLink', () => {
   it('transforms recordLink', () => {
@@ -48,7 +49,7 @@ describe('createRecordLink', () => {
     const alternativePresentation = undefined;
 
     const actual = createRecordLink(
-      metadataPool,
+      { metadataPool } as Dependencies,
       metadata,
       presentation,
       metadataChildReference,
@@ -57,6 +58,7 @@ describe('createRecordLink', () => {
     );
 
     const expected: FormComponentRecordLink = {
+      presentationId: 'permissionUnitPLink',
       type: 'recordLink',
       name: 'permissionUnit',
       mode: 'input',
@@ -97,6 +99,7 @@ describe('createRecordLink', () => {
       id: 'permissionUnitPLink',
       type: 'pRecordLink',
       presentationOf: 'permissionUnitRecordLink',
+
       mode: 'input',
       presentAs: 'permissionUnit',
       linkedRecordPresentations: [
@@ -120,7 +123,7 @@ describe('createRecordLink', () => {
     const alternativePresentation = undefined;
 
     const actual = createRecordLink(
-      metadataPool,
+      { metadataPool } as Dependencies,
       metadata,
       presentation,
       metadataChildReference,

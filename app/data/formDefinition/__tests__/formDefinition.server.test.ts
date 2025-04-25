@@ -631,6 +631,7 @@ describe('formDefinition', () => {
           showLabel: true,
           gridColSpan: 12,
           name: 'someNewMetadataGroupNameInData',
+          presentationId: 'pSomeNewMetadataGroupId',
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -679,8 +680,9 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData',
-              placeholder: 'someEmptyTextId',
+              presentationId: 'pSomeMetadataTextVariableId',
               label: 'someTextId',
+              placeholder: 'someEmptyTextId',
               showLabel: true,
               gridColSpan: 3,
               childStyle: ['threeChildStyle'],
@@ -702,6 +704,8 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData2',
+              presentationId: 'pSomeMetadataTextVariable2Id',
+
               label: 'someOtherLabelTextId', // overridden label
               showLabel: true,
               placeholder: 'someEmptyTextId',
@@ -725,6 +729,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData3',
+              presentationId: 'pSomeMetadataTextVariable3Id',
               label: 'someTextId',
               showLabel: true,
               placeholder: 'someEmptyTextId',
@@ -749,6 +754,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData6',
+              presentationId: 'pSomeMetadataTextVariable6Id',
               label: 'someTextId',
               showLabel: true,
               placeholder: 'someEmptyTextId',
@@ -772,6 +778,8 @@ describe('formDefinition', () => {
             {
               type: 'numberVariable',
               name: 'someNameInDataNumberVar',
+              presentationId: 'pSomeMetadataNumberVariableId',
+
               label: 'someNumberVarTextId', // hidden
               showLabel: false,
               gridColSpan: 3,
@@ -809,6 +817,8 @@ describe('formDefinition', () => {
                 repeatMin: 1,
                 repeatMax: 1,
               },
+              presentationId: 'pSomeMetadataCollectionVariableId',
+
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText',
@@ -827,6 +837,7 @@ describe('formDefinition', () => {
               showLabel: true,
               gridColSpan: 3,
               childStyle: ['threeChildStyle'],
+              presentationId: 'pSomeMetadataCollectionVariableWithAttributeId',
 
               placeholder: 'someEmptyTextId',
               repeat: {
@@ -867,6 +878,7 @@ describe('formDefinition', () => {
             {
               type: 'numberVariable',
               name: 'someNameInDataNumberWithAttributeVar',
+              presentationId: 'pSomeMetadataNumberWithAttributeVarId',
               label: 'someNumberVarTextId',
               showLabel: true,
               gridColSpan: 12,
@@ -914,6 +926,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInDataTextWithAttrib',
+              presentationId: 'pSomeMetadataTextVariableWithAttributeVarId',
               label: 'someTextId',
               showLabel: true,
               gridColSpan: 12,
@@ -959,6 +972,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: true,
               gridColSpan: 12,
+              presentationId: 'pSomeMetadataChildGroupId',
 
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someChildGroupNameInData',
@@ -975,11 +989,11 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData',
-                  label: 'someTextId',
+                  presentationId: 'pSomeMetadataTextVariableId',
                   showLabel: true,
                   gridColSpan: 3,
                   childStyle: ['threeChildStyle'],
-
+                  label: 'someTextId',
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1003,6 +1017,7 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
               label: 'nationalSubjectCategoryLinkText',
+              presentationId: 'nationalSubjectCategoryPLinkId',
               linkedRecordPresentation: {
                 presentationId: 'someSubjectCategoryPresentation',
                 presentedRecordType: 'nationalSubjectCategory',
@@ -1025,6 +1040,7 @@ describe('formDefinition', () => {
             {
               type: 'recordLink',
               name: 'someNewRecordLink',
+              presentationId: 'someNewRecordPLinkId',
               label: 'someNewRecordLinkText',
               linkedRecordPresentation: {
                 presentationId: 'someNewRecordLink',
@@ -1044,11 +1060,11 @@ describe('formDefinition', () => {
                 title: 'someNewRecordLinkText',
                 body: 'someNewRecordLinkDefText',
               },
-              search: 'someNewRecordLinkSearch',
             },
             {
               type: 'container',
               name: 'pSomeContainerId',
+              presentationId: 'pSomeContainerId',
               // frame
               containerType: 'surrounding',
               gridColSpan: 12,
@@ -1057,6 +1073,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData4',
+                  presentationId: 'pSomeMetadataTextVariable4Id',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
@@ -1093,14 +1110,15 @@ describe('formDefinition', () => {
             {
               type: 'container',
               name: 'pSomeRepeatingContainerId',
+              presentationId: 'pSomeRepeatingContainerId',
               presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
-
               components: [
                 {
                   type: 'textVariable',
                   name: 'someNameInData5',
+                  presentationId: 'pSomeMetadataTextVariable5Id',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
@@ -1134,6 +1152,8 @@ describe('formDefinition', () => {
 
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
+              presentationId:
+                'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -1151,7 +1171,7 @@ describe('formDefinition', () => {
                   showLabel: true,
                   gridColSpan: 3,
                   childStyle: ['threeChildStyle'],
-
+                  presentationId: 'pSomeMetadataTextVariableId',
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1178,6 +1198,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
 
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+              presentationId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               repeat: {
                 repeatMin: 1,
@@ -1196,7 +1217,7 @@ describe('formDefinition', () => {
                   showLabel: true,
                   gridColSpan: 3,
                   childStyle: ['threeChildStyle'],
-
+                  presentationId: 'pSomeMetadataTextVariableId',
                   placeholder: 'someEmptyTextId',
                   repeat: {
                     repeatMin: 1,
@@ -1223,7 +1244,7 @@ describe('formDefinition', () => {
               showLabel: true,
               mode: 'input',
               name: 'someManuscriptGroupNameInData',
-
+              presentationId: 'pSomeManuscriptGroupId',
               repeat: {
                 repeatMax: 1,
                 repeatMin: 1,
@@ -1241,6 +1262,7 @@ describe('formDefinition', () => {
 
                   mode: 'input',
                   name: 'pSomeManuscriptIdContainer',
+                  presentationId: 'pSomeManuscriptIdContainer',
                   type: 'container',
 
                   components: [
@@ -1252,6 +1274,7 @@ describe('formDefinition', () => {
                       showLabel: true,
                       mode: 'input',
                       name: 'archiveNumber',
+                      presentationId: 'pArchiveNumberTextVarId',
                       placeholder: 'someEmptyTextId',
                       repeat: {
                         minNumberOfRepeatingToShow: 1,
@@ -1276,6 +1299,7 @@ describe('formDefinition', () => {
                       showLabel: true,
                       mode: 'input',
                       name: 'localId',
+                      presentationId: 'pLocalIdTextVarId',
                       placeholder: 'someEmptyTextId',
                       repeat: {
                         minNumberOfRepeatingToShow: 1,
@@ -1319,6 +1343,7 @@ describe('formDefinition', () => {
           gridColSpan: 12,
           presentationStyle: 'card',
           name: 'someEditMetadataGroupNameInData',
+          presentationId: 'pSomeEditMetadataGroupId',
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1368,6 +1393,8 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData',
+              presentationId: 'pSomeMetadataTextVariableId',
+
               placeholder: 'someEmptyTextId',
               label: 'someTextId',
               showLabel: true,
@@ -1392,6 +1419,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData2',
+              presentationId: 'pSomeMetadataTextVariable2Id',
               label: 'someOtherLabelTextId', // overridden label
               showLabel: true,
               placeholder: 'someEmptyTextId',
@@ -1421,6 +1449,7 @@ describe('formDefinition', () => {
               placeholder: 'someEmptyTextId',
               gridColSpan: 3,
               childStyle: ['threeChildStyle'],
+              presentationId: 'pSomeMetadataTextVariable3Id',
 
               repeat: {
                 repeatMin: 1,
@@ -1441,6 +1470,7 @@ describe('formDefinition', () => {
             {
               type: 'numberVariable',
               name: 'someNameInDataNumberVar',
+              presentationId: 'pSomeMetadataNumberVariableId',
               label: 'someNumberVarTextId', // hidden
               showLabel: false,
               gridColSpan: 3,
@@ -1469,6 +1499,7 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
+              presentationId: 'pSomeMetadataCollectionVariableId',
               finalValue: 'pink',
               label: 'exampleCollectionVarText',
               showLabel: true,
@@ -1494,6 +1525,7 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colourAttributeVar',
+              presentationId: 'pSomeMetadataCollectionVariableWithAttributeId',
               label: 'exampleCollectionVarText',
               showLabel: true,
               gridColSpan: 3,
@@ -1538,6 +1570,7 @@ describe('formDefinition', () => {
             {
               type: 'numberVariable',
               name: 'someNameInDataNumberWithAttributeVar',
+              presentationId: 'pSomeMetadataNumberWithAttributeVarId',
               label: 'someNumberVarTextId',
               showLabel: true,
               gridColSpan: 12,
@@ -1585,6 +1618,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInDataTextWithAttrib',
+              presentationId: 'pSomeMetadataTextVariableWithAttributeVarId',
               label: 'someTextId',
               showLabel: true,
               gridColSpan: 12,
@@ -1632,6 +1666,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
 
               name: 'someChildGroupNameInData',
+              presentationId: 'pSomeMetadataChildGroupId',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -1645,6 +1680,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData',
+                  presentationId: 'pSomeMetadataTextVariableId',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 3,
@@ -1672,6 +1708,7 @@ describe('formDefinition', () => {
             {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
+              presentationId: 'nationalSubjectCategoryPLinkId',
               label: 'nationalSubjectCategoryLinkText',
               linkedRecordPresentation: {
                 presentationId: 'someSubjectCategoryPresentation',
@@ -1695,6 +1732,7 @@ describe('formDefinition', () => {
             {
               type: 'container',
               name: 'pSomeContainerId',
+              presentationId: 'pSomeContainerId',
               // frame
               containerType: 'surrounding',
               gridColSpan: 12,
@@ -1703,6 +1741,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData4',
+                  presentationId: 'pSomeMetadataTextVariable4Id',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
@@ -1738,6 +1777,7 @@ describe('formDefinition', () => {
             {
               type: 'container',
               name: 'pSomeRepeatingContainerId',
+              presentationId: 'pSomeRepeatingContainerId',
               presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
@@ -1746,6 +1786,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData5',
+                  presentationId: 'pSomeMetadataTextVariable5Id',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 6,
@@ -1778,6 +1819,8 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
+              presentationId:
+                'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -1791,6 +1834,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData',
+                  presentationId: 'pSomeMetadataTextVariableId',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 3,
@@ -1822,6 +1866,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+              presentationId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -1835,6 +1880,7 @@ describe('formDefinition', () => {
                 {
                   type: 'textVariable',
                   name: 'someNameInData',
+                  presentationId: 'pSomeMetadataTextVariableId',
                   label: 'someTextId',
                   showLabel: true,
                   gridColSpan: 3,
@@ -1878,6 +1924,8 @@ describe('formDefinition', () => {
           type: 'group',
           gridColSpan: 12,
           name: 'divaOutput',
+          presentationId: 'pSomeNewMetadataGroupForMissingChildIdId',
+
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1898,6 +1946,8 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               finalValue: 'pink',
               placeholder: 'someEmptyTextId',
+              presentationId:
+                'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
               repeat: {
                 repeatMin: 0,
                 repeatMax: 1,
@@ -1960,6 +2010,8 @@ describe('formDefinition', () => {
 
               mode: 'output',
               name: 'someNameInData6',
+              presentationId: 'pSomeMetadataTextVariable6Id',
+
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMax: 1,
@@ -1981,6 +2033,8 @@ describe('formDefinition', () => {
           showLabel: true,
           mode: 'output',
           name: 'validationTypeIdOutputGroup',
+          presentationId: 'validationTypeIdOutputPGroup',
+
           repeat: {
             repeatMax: 1,
             repeatMin: 1,
@@ -2168,12 +2222,11 @@ describe('formDefinition', () => {
           components: [
             {
               name: 'name',
-
               gridColSpan: 12,
+              presentationId: 'personNameMinimizedPGroup',
               type: 'group',
               mode: 'input',
               label: 'someTextId',
-
               repeat: {
                 repeatMax: 1,
                 repeatMin: 1,
@@ -2189,11 +2242,11 @@ describe('formDefinition', () => {
               components: [
                 {
                   name: 'firstName',
+                  presentationId: 'firstNamePVar',
                   type: 'textVariable',
                   gridColSpan: 12,
                   label: 'someTextId',
                   mode: 'input',
-
                   repeat: {
                     repeatMax: 1,
                     repeatMin: 1,
@@ -2214,6 +2267,7 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   mode: 'input',
                   gridColSpan: 12,
+                  presentationId: 'lastNamePVar',
 
                   repeat: {
                     repeatMax: 1,
@@ -2232,6 +2286,7 @@ describe('formDefinition', () => {
               ],
               alternativePresentation: {
                 name: 'name',
+                presentationId: 'personNamePGroup',
 
                 gridColSpan: 12,
                 type: 'group',
@@ -2257,6 +2312,7 @@ describe('formDefinition', () => {
                     label: 'someTextId',
                     mode: 'input',
                     gridColSpan: 12,
+                    presentationId: 'firstNamePVar',
 
                     repeat: {
                       repeatMax: 1,
@@ -2278,6 +2334,7 @@ describe('formDefinition', () => {
                     label: 'someTextId',
                     mode: 'input',
                     gridColSpan: 12,
+                    presentationId: 'lastNamePVar',
 
                     repeat: {
                       repeatMax: 1,
@@ -2299,7 +2356,7 @@ describe('formDefinition', () => {
                     label: 'someTextId',
                     mode: 'input',
                     gridColSpan: 12,
-
+                    presentationId: 'titlePVar',
                     repeat: {
                       repeatMax: 1,
                       repeatMin: 1,
@@ -2322,6 +2379,7 @@ describe('formDefinition', () => {
           label: 'someTextId',
           mode: 'input',
           name: 'person',
+          presentationId: 'personUpdatePGroup',
 
           repeat: {
             repeatMax: 1,
@@ -2468,6 +2526,8 @@ describe('formDefinition', () => {
                   gridColSpan: 12,
                   label: 'someTextId',
                   mode: 'output',
+                  presentationId: 'personLastNameOutputPVar',
+
                   name: 'familyName',
                   repeat: {
                     repeatMax: 1,
@@ -2502,6 +2562,7 @@ describe('formDefinition', () => {
                       gridColSpan: 12,
                       label: 'someTextId',
                       mode: 'output',
+                      presentationId: 'personFirstNameOutputPVar',
 
                       name: 'givenName',
                       repeat: {
@@ -2524,6 +2585,7 @@ describe('formDefinition', () => {
                   gridColSpan: 12,
                   mode: 'output',
                   name: 'personNameLinkSContainer',
+                  presentationId: 'personNameLinkSContainer',
 
                   type: 'container',
                 },
@@ -2532,6 +2594,7 @@ describe('formDefinition', () => {
               label: 'someTextId',
               mode: 'output',
               name: 'personNameGroup',
+              presentationId: 'personNameLinkOutputPGroup',
 
               repeat: {
                 repeatMax: 1,
@@ -2549,6 +2612,7 @@ describe('formDefinition', () => {
           label: 'someTextId',
           mode: 'output',
           name: 'personGroup',
+          presentationId: 'personWhenLinkedOutputPGroup',
 
           repeat: {
             repeatMax: 1,
@@ -2778,6 +2842,8 @@ describe('formDefinition', () => {
                   label: 'someTextId',
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
+                  presentationId: 'nationalSubjectCategoryNameOutputPVar',
+
                   repeat: {
                     repeatMax: 1,
                     repeatMin: 1,
@@ -2798,6 +2864,7 @@ describe('formDefinition', () => {
               label: 'someTextId',
               mode: 'output',
               name: 'name',
+              presentationId: 'nationalSubjectCategoryNameOutputPGroup',
 
               repeat: {
                 repeatMax: 1,
@@ -2827,7 +2894,7 @@ describe('formDefinition', () => {
                 {
                   gridColSpan: 12,
                   label: 'someTextId',
-
+                  presentationId: 'nationalSubjectCategoryNameOutputPVar',
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
                   repeat: {
@@ -2850,6 +2917,8 @@ describe('formDefinition', () => {
               label: 'someTextId',
               mode: 'output',
               name: 'alternativeName',
+              presentationId:
+                'nationalSubjectCategoryAlternativeNameOutputPGroup',
 
               repeat: {
                 repeatMax: 1,
@@ -2876,6 +2945,7 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
+              presentationId: 'subjectCodeOutputPVar',
 
               label: 'someTextId',
               mode: 'output',
@@ -2906,6 +2976,7 @@ describe('formDefinition', () => {
           label: 'someTextId',
           mode: 'output',
           name: 'nationalSubjectCategory',
+          presentationId: 'nationalSubjectCategoryWhenLinkedPGroup',
 
           repeat: {
             repeatMax: 1,
@@ -3020,6 +3091,8 @@ describe('formDefinition', () => {
             label: 'someTextId',
             mode: 'input',
             name: 'loginId',
+            presentationId: 'loginIdPVar',
+
             repeat: {
               repeatMax: 1,
               repeatMin: 1,
@@ -3040,6 +3113,8 @@ describe('formDefinition', () => {
             label: 'someTextId',
             mode: 'input',
             name: 'password',
+            presentationId: 'loginPasswordPVar',
+
             inputFormat: 'password',
             repeat: {
               repeatMax: 1,
@@ -3061,6 +3136,7 @@ describe('formDefinition', () => {
         label: 'someTextId',
         mode: 'input',
         name: 'password',
+        presentationId: 'viewDefinitionPasswordPGroup',
 
         repeat: {
           repeatMax: 1,
@@ -3816,6 +3892,8 @@ describe('formDefinition', () => {
               label: 'someTextId',
               mode: 'output',
               name: 'abstract',
+              presentationId: 'abstractPVar',
+
               repeat: {
                 repeatMax: 1,
                 repeatMin: 1,
@@ -3836,6 +3914,7 @@ describe('formDefinition', () => {
           label: 'someTextId',
           mode: 'output',
           name: 'divaOutput',
+          presentationId: 'pSomedivaOutputNewMetadataGroupId',
 
           repeat: {
             repeatMax: 1,
@@ -3974,13 +4053,14 @@ describe('formDefinition', () => {
         name: 'agent',
         type: 'group',
         mode: 'input',
+        presentationId: 'agentPGroup',
+
         tooltip: {
           title: 'agentGroupText',
           body: 'agentGroupDefText',
         },
         label: 'agentGroupText',
         showLabel: true,
-
         components: [
           {
             repeat: {
@@ -3991,6 +4071,8 @@ describe('formDefinition', () => {
 
             gridColSpan: 12,
             name: 'namePart',
+            presentationId: 'namePartPVar',
+
             type: 'textVariable',
             mode: 'input',
             inputType: 'input',

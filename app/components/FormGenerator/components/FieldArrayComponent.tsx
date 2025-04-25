@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Fragment, type ReactNode } from 'react';
+import React, { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +31,7 @@ import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
+import { FormGeneratorContext } from '../FormGeneratorContext';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -46,6 +47,9 @@ export const FieldArrayComponent = ({
   renderCallback,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
+  const { enhancedFields } = use(FormGeneratorContext);
+  const notRemovableEnhancement =
+    enhancedFields?.[name]?.type === 'notRemovable';
 
   const { fields, append, move, remove } = useFieldArray({
     control: control,
@@ -77,22 +81,23 @@ export const FieldArrayComponent = ({
         )}
       />
       {fields.map((field, index) => {
-        const actionButtonGroup = component.mode === 'input' && (
-          <ActionButtonGroup
-            entityName={`${t(component.label ?? '')}`}
-            hideMoveButtons={isComponentSingularAndOptional(component)}
-            moveUpButtonDisabled={index === 0}
-            moveUpButtonAction={() => handleMove(index, index - 1)}
-            moveDownButtonDisabled={index === fields.length - 1}
-            moveDownButtonAction={() => handleMove(index, index + 1)}
-            deleteButtonDisabled={
-              fields.length <= (component.repeat?.repeatMin ?? 1)
-            }
-            deleteButtonAction={() => handleRemove(index)}
-            entityType={component.type}
-            key={`${field.id}_${index}_f`}
-          />
-        );
+        const actionButtonGroup = component.mode === 'input' &&
+          !notRemovableEnhancement && (
+            <ActionButtonGroup
+              entityName={`${t(component.label ?? '')}`}
+              hideMoveButtons={isComponentSingularAndOptional(component)}
+              moveUpButtonDisabled={index === 0}
+              moveUpButtonAction={() => handleMove(index, index - 1)}
+              moveDownButtonDisabled={index === fields.length - 1}
+              moveDownButtonAction={() => handleMove(index, index + 1)}
+              deleteButtonDisabled={
+                fields.length <= (component.repeat?.repeatMin ?? 1)
+              }
+              deleteButtonAction={() => handleRemove(index)}
+              entityType={component.type}
+              key={`${field.id}_${index}_f`}
+            />
+          );
 
         return (
           <Fragment key={`${field.id}_${index}_a`}>

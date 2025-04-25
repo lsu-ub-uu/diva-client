@@ -29,7 +29,7 @@ import type {
   FormComponent,
   FormComponentResourceLink,
 } from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat';
+import { createRepeat } from './createRepeat.server';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 
 export const createResourceLink = (
@@ -67,6 +67,7 @@ export const createResourceLink = (
   } = createCommonParameters(metadata, presentation);
 
   return removeEmpty({
+    presentationId: presentation.id,
     type,
     name,
     placeholder,
