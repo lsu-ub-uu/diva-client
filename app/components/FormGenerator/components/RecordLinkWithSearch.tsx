@@ -66,6 +66,32 @@ export const RecordLinkWithSearch = ({
     'Record link has no search presentation',
   );
 
+  const handleComboboxInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const comboboxInputValue = event.currentTarget.value;
+
+    const data = {
+      [recordLinkSearchPresentation.autocompleteSearchTerm.name]:
+        comboboxInputValue,
+    };
+
+    if (
+      recordLinkSearchPresentation.permissionUnitSearchTerm &&
+      theme?.memberPermissionUnit
+    ) {
+      data[recordLinkSearchPresentation.permissionUnitSearchTerm.name] =
+        `permissionUnit_${theme?.memberPermissionUnit}`;
+    }
+
+    fetcher.submit(data, {
+      method: 'GET',
+      action: href('/autocompleteSearch/:searchType', {
+        searchType: recordLinkSearchPresentation.searchType,
+      }),
+    });
+  };
+
   return (
     <div
       className={styles['component']}
@@ -93,38 +119,17 @@ export const RecordLinkWithSearch = ({
               value={value}
               onChange={(recordId) => onChange(recordId)}
             >
-              <fetcher.Form
-                action={href('/autocompleteSearch/:searchType', {
-                  searchType: recordLinkSearchPresentation.searchType,
-                })}
-                method='GET'
-              >
-                {recordLinkSearchPresentation.permissionUnitSearchTerm &&
-                  theme?.memberPermissionUnit && (
-                    <input
-                      type='hidden'
-                      name={
-                        recordLinkSearchPresentation.permissionUnitSearchTerm
-                          .name
-                      }
-                      value={`permissionUnit_${theme?.memberPermissionUnit}`}
-                    />
-                  )}
-
-                <ComboboxInput
-                  {...(errorMessage !== undefined
-                    ? { 'data-invalid': '' }
-                    : undefined)}
-                  aria-busy={fetcher.state !== 'idle'}
-                  placeholder={t(
-                    'divaClient_recordLinkAutocompletePlaceholderText',
-                  )}
-                  name={
-                    recordLinkSearchPresentation.autocompleteSearchTerm.name
-                  }
-                  onChange={(event) => fetcher.submit(event.currentTarget.form)}
-                />
-              </fetcher.Form>
+              <ComboboxInput
+                {...(errorMessage !== undefined
+                  ? { 'data-invalid': '' }
+                  : undefined)}
+                aria-busy={fetcher.state !== 'idle'}
+                placeholder={t(
+                  'divaClient_recordLinkAutocompletePlaceholderText',
+                )}
+                name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
+                onChange={handleComboboxInputChange}
+              />
               <ComboboxOptions anchor='bottom'>
                 {fetcher.state === 'idle' &&
                   fetcher.data &&
