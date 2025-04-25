@@ -1942,7 +1942,12 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             gridColSpan: 12,
             recordLinkType: 'person',
             presentationRecordLinkId: 'divaPersonPLink',
-            search: 'personSearch',
+            searchPresentation: {
+              searchType: 'personSearch',
+              autocompleteSearchTerm: {
+                name: 'search.include.includeGroup.genericSearchTerm[0].value',
+              },
+            },
           },
           {
             name: 'givenName',
@@ -2161,7 +2166,12 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             gridColSpan: 12,
             recordLinkType: 'organisation',
             presentationRecordLinkId: 'organisationPLink',
-            search: 'organisationSearch',
+            searchPresentation: {
+              searchType: 'organisationSearch',
+              autocompleteSearchTerm: {
+                name: 'search.include.includeGroup.genericSearchTerm[0].value',
+              },
+            },
           },
           {
             name: 'otherOrganisation',
@@ -2228,7 +2238,12 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             gridColSpan: 12,
             recordLinkType: 'researchGroup',
             presentationRecordLinkId: 'researchGroupPLink',
-            search: 'researchGroupSearch',
+            searchPresentation: {
+              searchType: 'researchGroupSearch',
+              autocompleteSearchTerm: {
+                name: 'search.include.includeGroup.genericSearchTerm[0].value',
+              },
+            },
           },
           {
             name: 'otherResearchGroup',
@@ -2401,7 +2416,12 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           gridColSpan: 12,
           recordLinkType: 'nationalSubjectCategory',
           presentationRecordLinkId: 'nationalSubjectCategoryPLink',
-          search: 'nationalSubjectCategorySearch',
+          searchPresentation: {
+            searchType: 'nationalSubjectCategorySearch',
+            autocompleteSearchTerm: {
+              name: 'search.include.includeGroup.genericSearchTerm[0].value',
+            },
+          },
           attributes: [
             {
               name: 'language',
@@ -2448,7 +2468,12 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           gridColSpan: 12,
           recordLinkType: 'nationalSubjectCategory',
           presentationRecordLinkId: 'nationalSubjectCategoryPLink',
-          search: 'nationalSubjectCategorySearch',
+          searchPresentation: {
+            searchType: 'nationalSubjectCategorySearch',
+            autocompleteSearchTerm: {
+              name: 'search.include.includeGroup.genericSearchTerm[0].value',
+            },
+          },
           attributes: [
             {
               name: 'language',

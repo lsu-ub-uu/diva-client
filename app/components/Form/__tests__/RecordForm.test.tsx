@@ -398,7 +398,6 @@ describe('<Form />', () => {
                   recordLinkType: 'nationalSubjectCategory',
                   presentationRecordLinkId:
                     'parentNationalSubjectCategoryPLink',
-                  search: 'nationalSubjectCategorySearch',
                 },
               ],
               presentationStyle: '',
