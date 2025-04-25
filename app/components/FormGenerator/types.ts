@@ -53,7 +53,6 @@ export type FormComponentType =
   | 'recordLink'
   | 'collectionVariable'
   | 'numberVariable'
-  | 'resourceLink'
   | 'textVariable'
   | 'group'
   | 'text'

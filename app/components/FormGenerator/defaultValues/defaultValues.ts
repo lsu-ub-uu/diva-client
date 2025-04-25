@@ -38,11 +38,94 @@ export interface RecordData {
   [key: string]: any;
 }
 
+export const createDefaultValuesFromFormSchema = (
+  formSchema: FormSchema,
+  existingRecordData: RecordData | undefined = undefined,
+) => {
+  const formSchemaDefaultValues = createDefaultValuesFromComponent(
+    formSchema.form,
+  );
+
+  if (existingRecordData !== undefined) {
+    const mergedDefaultValues = mergeObjects(
+      formSchemaDefaultValues,
+      existingRecordData,
+    );
+
+    console.log({
+      valuesFromForm: createDefaultValuesFromComponent(formSchema.form),
+      existingRecordData,
+      mergedDefaultValues,
+    });
+    return mergedDefaultValues;
+  }
+
+  return formSchemaDefaultValues;
+};
+
+export const createDefaultValuesFromComponent = (
+  component: FormComponentWithData | FormComponentContainer,
+  forceDefaultValuesForAppend = false,
+) => {
+  let defaultValues: {
+    [x: string]:
+      | string
+      | number
+      | (Record<string, never> | undefined)[]
+      | undefined
+      | unknown[];
+  } = {};
+
+  const formDefaultObject = isComponentVariable(component)
+    ? createDefaultValuesForVariable(component)
+    : createDefaultValuesForGroup(component);
+
+  if (forceDefaultValuesForAppend) {
+    defaultValues = formDefaultObject;
+  } else {
+    if (isComponentRepeating(component)) {
+      createDefaultObjectForRepeating(
+        component,
+        defaultValues,
+        formDefaultObject,
+      );
+    } else {
+      createDefaultValueForNonRepeating(
+        defaultValues,
+        component,
+        formDefaultObject,
+      );
+    }
+  }
+
+  // remove surrounding container in or data structure
+  if (isComponentContainer(component)) {
+    defaultValues = removeRootObject(defaultValues);
+  }
+
+  // Merge alternative presentation default values into component default values
+  if (
+    'alternativePresentation' in component &&
+    component.alternativePresentation !== undefined
+  ) {
+    const alternativePresentationDefaultValues =
+      createDefaultValuesFromComponent({
+        ...component.alternativePresentation,
+        alternativePresentation: undefined,
+      } as FormComponentWithData);
+
+    defaultValues = mergeObjects(
+      defaultValues,
+      alternativePresentationDefaultValues,
+    );
+  }
+
+  return defaultValues;
+};
+
 export const removeRootObject = (obj: Record<string, any>) => {
   const childKeys = Object.keys(obj);
-  if (childKeys.length === 1) {
-    return obj[childKeys[0]];
-  }
+  return obj[childKeys[0]];
 };
 
 export const createDefaultValueFromFinalValue = (
@@ -113,65 +196,6 @@ function createDefaultValueForNonRepeating(
     formDefaultObject;
 }
 
-export const createDefaultValuesFromComponent = (
-  component: FormComponentWithData | FormComponentContainer,
-  forceDefaultValuesForAppend = false,
-) => {
-  let defaultValues: {
-    [x: string]:
-      | string
-      | number
-      | (Record<string, never> | undefined)[]
-      | undefined
-      | unknown[];
-  } = {};
-
-  const formDefaultObject = isComponentVariable(component)
-    ? createDefaultValuesForVariable(component)
-    : createDefaultValuesForGroup(component);
-
-  if (forceDefaultValuesForAppend) {
-    defaultValues = formDefaultObject;
-  } else {
-    if (isComponentRepeating(component)) {
-      createDefaultObjectForRepeating(
-        component,
-        defaultValues,
-        formDefaultObject,
-      );
-    } else {
-      createDefaultValueForNonRepeating(
-        defaultValues,
-        component,
-        formDefaultObject,
-      );
-    }
-  }
-
-  if (
-    'alternativePresentation' in component &&
-    component.alternativePresentation !== undefined
-  ) {
-    const alternativePresentationDefaultValues =
-      createDefaultValuesFromComponent({
-        ...component.alternativePresentation,
-        alternativePresentation: undefined,
-      } as FormComponentWithData);
-
-    defaultValues = mergeObjects(
-      defaultValues,
-      alternativePresentationDefaultValues,
-    );
-  }
-
-  // remove surrounding container in or data structure
-  if (isComponentContainer(component)) {
-    return removeRootObject(defaultValues);
-  }
-
-  return defaultValues;
-};
-
 function createDefaultValuesForVariable(component: FormComponentWithData) {
   return {
     value: createDefaultValueFromFinalValue(component),
@@ -203,19 +227,6 @@ export const createDefaultValuesFromComponents = (
       mergeObjects(accumulator, childDefaultValues),
     {},
   );
-};
-
-export const createDefaultValuesFromFormSchema = (
-  formSchema: FormSchema,
-  existingRecordData: RecordData | undefined = undefined,
-) => {
-  let defaultValues = createDefaultValuesFromComponent(formSchema.form);
-
-  if (existingRecordData !== undefined) {
-    defaultValues = mergeObjects(defaultValues, existingRecordData);
-  }
-
-  return defaultValues;
 };
 
 export const mergeObjects = (
@@ -269,7 +280,7 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
 
   overlay.forEach((item, index) => {
     if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
-      result[index] = item;
+      result[index] = mergeObjects(target[index] || {}, item);
     }
   });
 
