@@ -38,6 +38,7 @@ import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Controller } from 'react-hook-form';
 import { useTheme } from '@/utils/rootLoaderDataUtils';
+import { assertDefined } from '@/utils/invariant';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -59,9 +60,12 @@ export const RecordLinkWithSearch = ({
   const theme = useTheme();
   const fetcher = useFetcher();
   const recordLinkSearchPresentation = component.searchPresentation;
-  if (!recordLinkSearchPresentation) {
-    return 'OJOJOJ';
-  }
+
+  assertDefined(
+    recordLinkSearchPresentation,
+    'Record link has no search presentation',
+  );
+
   return (
     <div
       className={styles['component']}

@@ -17,13 +17,13 @@
  */
 
 import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from './+types/translations';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;
-  invariant(lang, 'Missing param lang');
+  assertDefined(lang, 'Missing param lang');
 
   return Response.json(createTextDefinition(await context.dependencies, lang));
 };

@@ -38,7 +38,7 @@ import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { invariant } from '@/utils/invariant';
+import { assertDefined } from '@/utils/invariant';
 import type { Route } from './+types/recordCreate';
 import styles from './record.module.css';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
@@ -90,7 +90,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
-  invariant(validationTypeId, 'divaClient_missingValidationTypeIdText');
+  assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
     await context.dependencies,
