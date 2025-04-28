@@ -1,7 +1,8 @@
-import { test as base, type Page } from '@playwright/test';
-import { divaOutputWithMinimalData } from './testData';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { test as base, type Page } from '@playwright/test';
+import { createDivaOutput } from '../testData/divaOutput';
+import { createLocalGenericMarkup } from 'e2e/testData/localGenericMarkup';
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
@@ -15,8 +16,11 @@ const {
 
 interface Fixtures {
   authtoken: string;
-  divaOutput: DataGroup;
   kthPage: Page;
+  divaOutput: DataGroup;
+  kthDivaOutput: DataGroup;
+  uuLocalGenericMarkup: DataGroup;
+  kthLocalGenericMarkup: DataGroup;
 }
 
 export const test = base.extend<Fixtures>({
@@ -39,7 +43,25 @@ export const test = base.extend<Fixtures>({
 
   divaOutput: async ({ request, authtoken }, use) => {
     const response = await request.post(`${CORA_API_URL}/record/diva-output`, {
-      data: divaOutputWithMinimalData,
+      data: createDivaOutput(),
+      headers: {
+        Accept: 'application/vnd.uub.record+json',
+        'Content-Type': 'application/vnd.uub.record+json',
+        Authtoken: authtoken,
+      },
+    });
+    const responseBody = await response.json();
+
+    await use(responseBody.record.data);
+
+    await request.delete(responseBody.record.actionLinks.delete.url, {
+      headers: { Authtoken: authtoken },
+    });
+  },
+
+  kthDivaOutput: async ({ request, authtoken }, use) => {
+    const response = await request.post(`${CORA_API_URL}/record/diva-output`, {
+      data: createDivaOutput('kth'),
       headers: {
         Accept: 'application/vnd.uub.record+json',
         'Content-Type': 'application/vnd.uub.record+json',
@@ -67,5 +89,49 @@ export const test = base.extend<Fixtures>({
     // Clean up
     await page.close();
     await context.close();
+  },
+
+  uuLocalGenericMarkup: async ({ request, authtoken }, use) => {
+    const response = await request.post(
+      `${CORA_API_URL}/record/diva-localGenericMarkup`,
+      {
+        data: createLocalGenericMarkup('uu'),
+        headers: {
+          Accept: 'application/vnd.uub.record+json',
+          'Content-Type': 'application/vnd.uub.record+json',
+          Authtoken: authtoken,
+        },
+      },
+    );
+
+    const responseBody = await response.json();
+
+    await use(responseBody.record.data);
+
+    await request.delete(responseBody.record.actionLinks.delete.url, {
+      headers: { Authtoken: authtoken },
+    });
+  },
+
+  kthLocalGenericMarkup: async ({ request, authtoken }, use) => {
+    const response = await request.post(
+      `${CORA_API_URL}/record/diva-localGenericMarkup`,
+      {
+        data: createLocalGenericMarkup('kth'),
+        headers: {
+          Accept: 'application/vnd.uub.record+json',
+          'Content-Type': 'application/vnd.uub.record+json',
+          Authtoken: authtoken,
+        },
+      },
+    );
+
+    const responseBody = await response.json();
+
+    await use(responseBody.record.data);
+
+    await request.delete(responseBody.record.actionLinks.delete.url, {
+      headers: { Authtoken: authtoken },
+    });
   },
 });
