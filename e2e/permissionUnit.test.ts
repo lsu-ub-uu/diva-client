@@ -2,6 +2,8 @@ import { createUrl } from './util/createUrl';
 import { test } from './util/fixtures';
 import { expect } from '@playwright/test';
 import { logIn } from './util/logIn';
+import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
 test.describe('Permission unit', () => {
   test('Auto sets permission unit when on sub-domain from theme', async ({
@@ -79,5 +81,68 @@ test.describe('Permission unit', () => {
         .getByRole('region', { name: 'Rättighetsenhet' })
         .getByText('Uppsala universitet'),
     ).toBeVisible();
+  });
+
+  test('Auto filters permission unit when on search page for sub-domain', async ({
+    divaOutput,
+    kthDivaOutput,
+    kthPage,
+  }) => {
+    const uuRecordId = getFirstDataAtomicValueWithNameInData(
+      getFirstDataGroupWithNameInData(divaOutput, 'recordInfo'),
+      'id',
+    );
+    const kthRecordId = getFirstDataAtomicValueWithNameInData(
+      getFirstDataGroupWithNameInData(kthDivaOutput, 'recordInfo'),
+      'id',
+    );
+
+    await kthPage.goto(createUrl('/'));
+    await expect(
+      kthPage.getByRole('button', { name: 'Logga in' }),
+    ).toBeEnabled();
+
+    await kthPage.getByRole('textbox', { name: 'Fritext' }).fill('**');
+    await kthPage.getByRole('button', { name: 'Sök', exact: true }).click();
+
+    await expect(await kthPage.getByText(kthRecordId)).toBeVisible();
+    await expect(await kthPage.getByText(uuRecordId)).not.toBeVisible();
+  });
+
+  test('Auto filters autocomple searches in forms for sub-domain', async ({
+    kthPage,
+    uuLocalGenericMarkup,
+    kthLocalGenericMarkup,
+  }) => {
+    const uuRecordId = getFirstDataAtomicValueWithNameInData(
+      getFirstDataGroupWithNameInData(uuLocalGenericMarkup, 'recordInfo'),
+      'id',
+    );
+    const kthRecordId = getFirstDataAtomicValueWithNameInData(
+      getFirstDataGroupWithNameInData(kthLocalGenericMarkup, 'recordInfo'),
+      'id',
+    );
+
+    // Go to start page
+    await kthPage.goto(createUrl('/'));
+
+    // Log inw
+    await logIn(kthPage);
+
+    await kthPage.getByRole('button', { name: 'Skapa output' }).click();
+    await kthPage.getByRole('menuitem', { name: 'Rapport' }).click();
+
+    await expect(kthPage).toHaveTitle(/^Skapa publikation/);
+
+    await kthPage
+      .getByRole('combobox', {
+        name: 'DiVA-lokal generisk uppmärkning',
+      })
+      .fill('**');
+
+    await expect(kthPage.getByRole('option')).toBeVisible();
+
+    await expect(await kthPage.getByText(kthRecordId)).toBeVisible();
+    await expect(await kthPage.getByText(uuRecordId)).not.toBeVisible();
   });
 });

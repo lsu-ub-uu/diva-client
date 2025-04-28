@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { faker } from '@faker-js/faker';
 
-export const divaOutputWithMinimalData: DataGroup = {
+export const createDivaOutput = (permissionUnit: string = 'uu'): DataGroup => ({
   name: 'output',
   children: [
     {
@@ -25,7 +25,7 @@ export const divaOutputWithMinimalData: DataGroup = {
           name: 'permissionUnit',
           children: [
             { name: 'linkedRecordType', value: 'permissionUnit' },
-            { name: 'linkedRecordId', value: 'uu' },
+            { name: 'linkedRecordId', value: permissionUnit },
           ],
         },
         {
@@ -72,4 +72,4 @@ export const divaOutputWithMinimalData: DataGroup = {
     },
     { name: 'admin', children: [{ name: 'reviewed', value: 'true' }] },
   ],
-};
+});
