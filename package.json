@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.27.0",
-    "@eslint/js": "^9.20.0",
+    "@eslint/js": "^9.25.1",
     "@faker-js/faker": "^9.4.0",
     "@playwright/test": "^1.52.0",
     "@react-router/dev": "^7.5.2",
