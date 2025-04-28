@@ -126,10 +126,9 @@ test.describe('Permission unit', () => {
     // Go to start page
     await kthPage.goto(createUrl('/'));
 
-    // Log in
+    // Log inw
     await logIn(kthPage);
 
-    // Select validation type
     await kthPage.getByRole('button', { name: 'Skapa output' }).click();
     await kthPage.getByRole('menuitem', { name: 'Rapport' }).click();
 
