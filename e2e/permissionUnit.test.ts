@@ -145,20 +145,5 @@ test.describe('Permission unit', () => {
 
     await expect(await kthPage.getByText(kthRecordId)).toBeVisible();
     await expect(await kthPage.getByText(uuRecordId)).not.toBeVisible();
-
-    /* await page
-      .getByRole('group', {
-        name: 'Lokal generisk',
-      })
-      .getByRole('combobox', {
-        name: 'Standard för svensk indelning av forskningsämnen',
-      })
-      .fill('Atom- och molekylfysik och optik');
-    await page
-      .getByRole('option', {
-        name: '(10302) Atom- och molekylfysik och optik',
-        exact: true,
-      })
-      .click(); */
   });
 });
