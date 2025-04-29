@@ -17,8 +17,5 @@
  */
 
 .attribute-select {
-  dt,
-  label {
-    font-style: italic;
-  }
+  font-style: italic;
 }
