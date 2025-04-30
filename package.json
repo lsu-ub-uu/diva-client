@@ -41,7 +41,7 @@
     "i18next": "^25.0.1",
     "i18next-browser-languagedetector": "^8.0.5",
     "i18next-http-backend": "^3.0.2",
-    "isbot": "^5.1.26",
+    "isbot": "^5.1.27",
     "lodash-es": "^4.17.21",
     "morgan": "^1.10.0",
     "react": "^19.1.0",
