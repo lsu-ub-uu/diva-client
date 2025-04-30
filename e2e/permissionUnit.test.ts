@@ -123,10 +123,8 @@ test.describe('Permission unit', () => {
       'id',
     );
 
-    // Go to start page
     await kthPage.goto(createUrl('/'));
 
-    // Log inw
     await logIn(kthPage);
 
     await kthPage.getByRole('button', { name: 'Skapa output' }).click();
@@ -140,7 +138,10 @@ test.describe('Permission unit', () => {
       })
       .fill('**');
 
-    await expect(kthPage.getByRole('option')).toBeVisible();
+    // TODO use getByRole when options have accessible names
+    await expect(
+      kthPage.locator('[role="option"]', { hasText: kthRecordId }),
+    ).toBeVisible();
 
     await expect(await kthPage.getByText(kthRecordId)).toBeVisible();
     await expect(await kthPage.getByText(uuRecordId)).not.toBeVisible();
