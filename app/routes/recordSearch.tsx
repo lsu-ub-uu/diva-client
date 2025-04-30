@@ -16,28 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm.server';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
 import {
   getAuth,
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { Await, data } from 'react-router';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { useTranslation } from 'react-i18next';
-import { Suspense } from 'react';
-import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
+import { Messages } from '@/components/Messages/Messages';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
+import { getSearchForm } from '@/data/getSearchForm.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
+import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
+import { performSearch } from '@/routes/routeUtils/performSearch';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Await, data } from 'react-router';
 import type { Route } from './+types/recordSearch';
 import styles from './home.module.css';
-import { Alert } from '@/components/Alert/Alert';
-import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
-import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { performSearch } from '@/routes/routeUtils/performSearch';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 import css from './recordSearch.css?url';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
@@ -163,7 +163,7 @@ export default function OutputSearchRoute({
       </main>
       <aside>
         <h2>Meddelanden</h2>
-        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
+        <Messages />
       </aside>
     </div>
   );
