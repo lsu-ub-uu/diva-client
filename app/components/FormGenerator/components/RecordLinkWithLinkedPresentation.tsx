@@ -16,18 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { use, type ReactNode } from 'react';
 
-import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
+import { Button } from '@/components/Button/Button';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import formComponentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
+import { CloseIcon, LinkIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
+import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';
+import { isComponentRepeating } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
@@ -44,11 +47,27 @@ export const RecordLinkWithLinkedPresentation = ({
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { t } = useTranslation();
-  const { getValues, control } = useRemixFormContext();
-  const hasValue = checkIfComponentHasValue(getValues, name);
+  const { getValues, setValue } = useRemixFormContext();
+  const linkedRecordId = getValues(name);
   const { showTooltips } = use(FormGeneratorContext);
 
-  return hasValue ? (
+  const clearValue = () => {
+    setValue(name, '');
+  };
+
+  if (!linkedRecordId || !component.linkedRecordPresentation) {
+    return null;
+  }
+
+  const showClearButton =
+    component.mode === 'input' && !isComponentRepeating(component);
+
+  const recordHref = href('/:recordType/:recordId', {
+    recordType: component.linkedRecordPresentation.presentedRecordType,
+    recordId: linkedRecordId,
+  });
+
+  return (
     <div
       className={formComponentStyles['component']}
       data-colspan={component.gridColSpan ?? 12}
@@ -71,20 +90,35 @@ export const RecordLinkWithLinkedPresentation = ({
         )}
         <div className={styles['adornment']}>
           {attributes} {actionButtonGroup}
+          {showClearButton && (
+            <Button
+              variant='icon'
+              onClick={clearValue}
+              aria-label={t('divaClient_clearRecordLinkText')}
+            >
+              <CloseIcon />
+            </Button>
+          )}
+          <Button
+            as={Link}
+            variant='icon'
+            to={recordHref}
+            aria-label={t('divaClient_linkToRecordText')}
+          >
+            <LinkIcon />
+          </Button>
         </div>
       </div>
+
       <div className={styles['linked-record-wrapper']}>
-        <ControlledLinkedRecord
-          control={control}
-          name={name}
-          recordType={
-            component.linkedRecordPresentation?.presentedRecordType ?? ''
-          }
+        <LinkedRecord
+          recordType={component.linkedRecordPresentation.presentedRecordType}
+          id={linkedRecordId}
           presentationRecordLinkId={
-            component.linkedRecordPresentation?.presentationId ?? ''
+            component.linkedRecordPresentation.presentationId
           }
         />
       </div>
     </div>
-  ) : null;
+  );
 };

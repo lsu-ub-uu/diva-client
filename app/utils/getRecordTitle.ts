@@ -28,9 +28,9 @@ export const getRecordTitle = (record: BFFDataRecord): string | undefined => {
 
   if (record.recordType === 'diva-person') {
     const familyName =
-      root?.authority.name_type_personal.namePart_type_family[0]?.value;
+      root?.authority.name_type_personal.namePart_type_family?.[0]?.value;
     const givenName =
-      root?.authority.name_type_personal.namePart_type_given[0]?.value;
+      root?.authority.name_type_personal.namePart_type_given?.[0]?.value;
 
     if (!familyName && !givenName) {
       return undefined;
@@ -41,4 +41,6 @@ export const getRecordTitle = (record: BFFDataRecord): string | undefined => {
   if (record.recordType === 'diva-project') {
     return root.titleInfo.title.value;
   }
+
+  return record.id;
 };

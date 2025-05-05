@@ -3,6 +3,7 @@
   justify-content: flex-end;
   align-items: center;
   margin-left: auto;
+  gap: var(--gap);
 }
 
 .label {
