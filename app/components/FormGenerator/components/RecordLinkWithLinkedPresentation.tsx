@@ -23,12 +23,12 @@ import { use, type ReactNode } from 'react';
 import { ControlledLinkedRecord } from '@/components/Controlled/LinkedRecord/ControlledLinkedRecord';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import styles from '@/components/FormGenerator/components/FormComponent.module.css';
+import formComponentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';
-import linkedRecordStyles from './RecordLinkWithLinkedPresentation.module.css';
+import styles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -50,7 +50,7 @@ export const RecordLinkWithLinkedPresentation = ({
 
   return hasValue ? (
     <div
-      className={styles['component']}
+      className={formComponentStyles['component']}
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
@@ -60,31 +60,31 @@ export const RecordLinkWithLinkedPresentation = ({
         path={name}
       />
 
-      <div className={linkedRecordStyles['label-and-adornment-wrapper']}>
+      <div className={styles['label-and-adornment-wrapper']}>
         {component.showLabel && (
-          <div className={linkedRecordStyles['label']}>
-            {t(component.label)}
-          </div>
+          <div className={styles['label']}>{t(component.label)}</div>
         )}
         {showTooltips && component.tooltip && (
-          <div className={linkedRecordStyles['field-info']}>
+          <div className={styles['field-info']}>
             <FieldInfo {...component.tooltip} />
           </div>
         )}
-        <div className={linkedRecordStyles['adornment']}>
+        <div className={styles['adornment']}>
           {attributes} {actionButtonGroup}
         </div>
       </div>
-      <ControlledLinkedRecord
-        control={control}
-        name={name}
-        recordType={
-          component.linkedRecordPresentation?.presentedRecordType ?? ''
-        }
-        presentationRecordLinkId={
-          component.linkedRecordPresentation?.presentationId ?? ''
-        }
-      />
+      <div className={styles['linked-record-wrapper']}>
+        <ControlledLinkedRecord
+          control={control}
+          name={name}
+          recordType={
+            component.linkedRecordPresentation?.presentedRecordType ?? ''
+          }
+          presentationRecordLinkId={
+            component.linkedRecordPresentation?.presentationId ?? ''
+          }
+        />
+      </div>
     </div>
   ) : null;
 };
