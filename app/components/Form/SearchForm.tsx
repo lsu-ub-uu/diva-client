@@ -23,15 +23,12 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { SearchIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import { useTheme } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import type {
-  FormComponentGroup,
-  SearchFormSchema,
-} from '../FormGenerator/types';
+import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
-import { useTheme } from '@/utils/rootLoaderDataUtils';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
