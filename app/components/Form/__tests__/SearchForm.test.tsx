@@ -166,4 +166,39 @@ describe('SearchForm', () => {
       screen.queryByTestId('permissionUnitSearchTextVarText'),
     ).not.toBeInTheDocument();
   });
+
+  it('does not render hidden or visible permissionUnit input when formDef does not have permissionUnit but theme does', () => {
+    vi.mocked(useTheme).mockReturnValue(
+      mock<BFFTheme>({
+        memberPermissionUnit: 'testPermissionUnit',
+      }),
+    );
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <SearchForm
+            formSchema={searchFormWithoutPermissionUnit}
+            searchResults={{
+              containDataOfType: 'diva-theme',
+              fromNo: 1,
+              toNo: 10,
+              totalNo: 100,
+              data: [mock<BFFDataRecord>()],
+            }}
+          />
+        ),
+      },
+    ]);
+    render(<RoutesStub />);
+
+    expect(
+      screen.queryByTestId('permissionUnitHiddenSearchTerm'),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByTestId('permissionUnitSearchTextVarText'),
+    ).not.toBeInTheDocument();
+  });
 });

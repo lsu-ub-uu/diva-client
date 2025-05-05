@@ -26,7 +26,10 @@ import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import type { SearchFormSchema } from '../FormGenerator/types';
+import type {
+  FormComponentGroup,
+  SearchFormSchema,
+} from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { useTheme } from '@/utils/rootLoaderDataUtils';
 
@@ -78,14 +81,15 @@ export const SearchForm = ({
               data-testid='rowsHiddenSearchTerm'
             />
           )}
-          {theme?.memberPermissionUnit && (
-            <input
-              type='hidden'
-              name='search.include.includePart.permissionUnitSearchTerm[0].value'
-              value={`permissionUnit_${theme.memberPermissionUnit}`}
-              data-testid='permissionUnitHiddenSearchTerm'
-            />
-          )}
+          {formHasPermissionUnitSearchTerm(formSchema) &&
+            theme?.memberPermissionUnit && (
+              <input
+                type='hidden'
+                name='search.include.includePart.permissionUnitSearchTerm[0].value'
+                value={`permissionUnit_${theme.memberPermissionUnit}`}
+                data-testid='permissionUnitHiddenSearchTerm'
+              />
+            )}
           {data && searchResults && (
             <Pagination
               query={data}
@@ -107,4 +111,8 @@ const SearchButton = () => {
       <SearchIcon /> {t('divaClient_SearchButtonText')}
     </Button>
   );
+};
+
+const formHasPermissionUnitSearchTerm = (formSchema: SearchFormSchema) => {
+  return JSON.stringify(formSchema).includes('permissionUnitSearchTerm');
 };
