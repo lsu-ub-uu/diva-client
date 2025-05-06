@@ -35,7 +35,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import rootCss from './root.css?url';
+import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';

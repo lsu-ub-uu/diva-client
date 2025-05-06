@@ -81,3 +81,4 @@ export { default as NewsstandIcon } from './Newsstand.svg?react';
 export { default as PreviewIcon } from './Preview.svg?react';
 export { default as DesignServicesIcon } from './DesignServices.svg?react';
 export { default as ScienceIcon } from './Science.svg?react';
+export { default as LinkIcon } from './Link.svg?react';

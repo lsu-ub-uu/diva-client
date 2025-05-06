@@ -20,6 +20,7 @@ import type {
   Control,
   FieldValues,
   FormState,
+  UseFormGetValues,
   UseFormReturn,
 } from 'react-hook-form';
 import { RemixFormProvider } from 'remix-hook-form';
@@ -31,10 +32,13 @@ export * from '@testing-library/react';
 export const MockFormProvider = ({
   children,
   overrides = {},
+  mockValues = {},
 }: {
   children: ReactNode;
   overrides?: Partial<UseFormReturn<FieldValues>>;
+  mockValues?: Record<string, any>;
 }) => {
+  const getValuesMock = (key: string) => mockValues[key];
   return (
     <RemixFormProvider
       {...overrides}
@@ -42,7 +46,7 @@ export const MockFormProvider = ({
       register={vi.fn()}
       reset={vi.fn()}
       watch={vi.fn()}
-      getValues={vi.fn()}
+      getValues={getValuesMock as UseFormGetValues<FieldValues>}
       getFieldState={vi.fn()}
       setError={vi.fn()}
       clearErrors={vi.fn()}

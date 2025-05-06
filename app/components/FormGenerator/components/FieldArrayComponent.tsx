@@ -28,7 +28,6 @@ import {
 } from '../defaultValues/defaultValues';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import styles from './FormComponent.module.css';
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon } from '@/icons';
 import { FormGeneratorContext } from '../FormGeneratorContext';
@@ -110,7 +109,7 @@ export const FieldArrayComponent = ({
         component.label &&
         fields.length < (component.repeat?.repeatMax ?? 1) && (
           <div
-            className={styles['component']}
+            className='form-component-item'
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button

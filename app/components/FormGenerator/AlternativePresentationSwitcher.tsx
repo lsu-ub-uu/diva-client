@@ -21,7 +21,6 @@ import { AccordionContent } from '@/components/Accordion/AccordionContent';
 import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
 import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { Component } from '@/components/FormGenerator/Component';
-import componentStyles from '@/components/FormGenerator/components/FormComponent.module.css';
 import type {
   FormComponent,
   PresentationSize,
@@ -86,7 +85,7 @@ export const AlternativePresentationSwitcher = (
           currentPresentation === 'alternative' ? 'default' : 'alternative',
         )
       }
-      className={componentStyles['component']}
+      className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
       presentationSize={presentationSize}
     >
@@ -96,7 +95,7 @@ export const AlternativePresentationSwitcher = (
         </AccordionTitle>
       )}
       {alternativePresentation !== undefined ? ( // Switch between two presentations
-        <AccordionContent className={componentStyles['container']}>
+        <AccordionContent className='form-component-container'>
           <Component
             {...props}
             component={
@@ -109,7 +108,7 @@ export const AlternativePresentationSwitcher = (
       ) : (
         // Switch between no content and single presentation
         <AccordionContent
-          className={componentStyles['container']}
+          className='form-component-container'
           hidden={!expanded}
         >
           <Component
