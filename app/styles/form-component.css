@@ -20,6 +20,7 @@
 }
 
 .form-component-item {
+  align-self: end;
   grid-column: span 12;
 
   &[data-colspan='1'] {
