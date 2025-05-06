@@ -47,11 +47,11 @@ Authtoken: fdfe6de8-9d30-47a1-83d5-a5f2de3e640b
 
 ### List themes
 GET https://cora.epc.ub.uu.se/diva/rest/record/diva-theme
-Accept: application/vnd.uub.recordList+json
+Accept: application/vnd.cora.recordList+json
 
 ### Get binary record
 GET https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516
-Accept: application/vnd.uub.record+json
+Accept: application/vnd.cora.record+json
 
 ###
 GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
@@ -99,7 +99,7 @@ Authtoken: 2ffadcbb-d848-4fa8-8f69-15244232274b
 ###
 
 POST https://cora.epc.ub.uu.se/diva/login/apptoken
-Content-Type: application/vnd.uub.login
+Content-Type: application/vnd.cora.login
 
 divaAdmin@cora.epc.ub.uu.se
 xxxxx-xxxx-xxxx-xxxx-xxxxxxxx
@@ -485,24 +485,24 @@ divaAdmin@cora.epc.ub.uu.se
 
 ### Renew authtoken
 POST http://localhost:38182/login/rest/authToken/ffb01845-3230-4ef8-b923-d7b775be2c2f
-Accept: application/vnd.uub.authToken+json
+Accept: application/vnd.cora.authToken+json
 Authtoken: b067564b-5694-4a3d-a7c6-456d3090c4a5
 
 
 ### Get record type
 GET  https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-course
-Accept: application/vnd.uub.record+json
+Accept: application/vnd.cora.record+json
 Authtoken: af086c62-f05c-4892-a6d2-8f2bf3a0b960
 
 ### Get record
 GET  https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:5445228927321928
-Accept: application/vnd.uub.record+xml
+Accept: application/vnd.cora.record+xml
 Authtoken: f295c5dc-ed3b-433f-be91-628606c52c7b
 
 ### Create Report
 POST https://cora.epc.ub.uu.se/diva/rest/record/diva-output
-Accept: application/vnd.uub.record+json
-Content-Type: application/vnd.uub.record+json
+Accept: application/vnd.cora.record+json
+Content-Type: application/vnd.cora.record+json
 Authtoken: df4716a4-0793-4963-89fa-f66d712cb8ee
 
 {"name":"output","children":[{"name":"recordInfo","children":[{"name":"validationType","children":[{"name":"linkedRecordType","value":"validationType"},{"name":"linkedRecordId","value":"publication_report"}]},{"name":"dataDivider","children":[{"name":"linkedRecordType","value":"system"},{"name":"linkedRecordId","value":"divaData"}]},{"name":"permissionUnit","children":[{"name":"linkedRecordType","value":"permissionUnit"},{"name":"linkedRecordId","value":"hig"}]},{"name":"visibility","value":"published"}]},{"name":"genre","value":"publication_report","attributes":{"type":"outputType"}},{"name":"language","repeatId":"0","children":[{"name":"languageTerm","value":"swe","attributes":{"type":"code","authority":"iso639-2b"}}]},{"name":"genre","value":"ref","attributes":{"type":"contentType"}},{"name":"titleInfo","children":[{"name":"title","value":"12346"}],"attributes":{"lang":"anp"}},{"name":"originInfo","children":[{"name":"dateIssued","children":[{"name":"year","value":"1234"}]}]},{"name":"admin","children":[{"name":"reviewed","value":"true"}]}]}
@@ -511,8 +511,8 @@ Authtoken: df4716a4-0793-4963-89fa-f66d712cb8ee
 
 ### Create Report XML
 POST https://cora.epc.ub.uu.se/diva/rest/record/diva-output
-Accept: application/vnd.uub.record+xml
-Content-Type: application/vnd.uub.record+xml
+Accept: application/vnd.cora.record+xml
+Content-Type: application/vnd.cora.record+xml
 Authtoken: 5ef616ad-6910-47e6-b6c9-c8ee52d42181
 
 <?xml version="1.0" encoding="UTF-8"?>

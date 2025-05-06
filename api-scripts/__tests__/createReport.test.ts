@@ -39,8 +39,8 @@ describe('createReport', () => {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/vnd.uub.record+xml',
-          Accept: 'application/vnd.uub.record+xml',
+          'Content-Type': 'application/vnd.cora.record+xml',
+          Accept: 'application/vnd.cora.record+xml',
           authToken: 'mock-token',
         },
         body: mockBody,

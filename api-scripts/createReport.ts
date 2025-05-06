@@ -30,8 +30,8 @@ export default async function createReport(authtoken: string) {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/vnd.uub.record+xml',
-          Accept: 'application/vnd.uub.record+xml',
+          'Content-Type': 'application/vnd.cora.record+xml',
+          Accept: 'application/vnd.cora.record+xml',
           authToken: authtoken,
         },
         body,

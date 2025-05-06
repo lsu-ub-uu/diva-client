@@ -28,7 +28,7 @@ export const test = base.extend<Fixtures>({
     const response = await request.post(`${CORA_LOGIN_URL}/apptoken`, {
       data: 'divaAdmin@cora.epc.ub.uu.se\n49ce00fb-68b5-4089-a5f7-1c225d3cf156',
       headers: {
-        'Content-Type': 'application/vnd.uub.login',
+        'Content-Type': 'application/vnd.cora.login',
       },
     });
     const responseBody = await response.json();
@@ -45,8 +45,8 @@ export const test = base.extend<Fixtures>({
     const response = await request.post(`${CORA_API_URL}/record/diva-output`, {
       data: createDivaOutput(),
       headers: {
-        Accept: 'application/vnd.uub.record+json',
-        'Content-Type': 'application/vnd.uub.record+json',
+        Accept: 'application/vnd.cora.record+json',
+        'Content-Type': 'application/vnd.cora.record+json',
         Authtoken: authtoken,
       },
     });
@@ -63,8 +63,8 @@ export const test = base.extend<Fixtures>({
     const response = await request.post(`${CORA_API_URL}/record/diva-output`, {
       data: createDivaOutput('kth'),
       headers: {
-        Accept: 'application/vnd.uub.record+json',
-        'Content-Type': 'application/vnd.uub.record+json',
+        Accept: 'application/vnd.cora.record+json',
+        'Content-Type': 'application/vnd.cora.record+json',
         Authtoken: authtoken,
       },
     });
@@ -97,8 +97,8 @@ export const test = base.extend<Fixtures>({
       {
         data: createLocalGenericMarkup('uu'),
         headers: {
-          Accept: 'application/vnd.uub.record+json',
-          'Content-Type': 'application/vnd.uub.record+json',
+          Accept: 'application/vnd.cora.record+json',
+          'Content-Type': 'application/vnd.cora.record+json',
           Authtoken: authtoken,
         },
       },
@@ -119,8 +119,8 @@ export const test = base.extend<Fixtures>({
       {
         data: createLocalGenericMarkup('kth'),
         headers: {
-          Accept: 'application/vnd.uub.record+json',
-          'Content-Type': 'application/vnd.uub.record+json',
+          Accept: 'application/vnd.cora.record+json',
+          'Content-Type': 'application/vnd.cora.record+json',
           Authtoken: authtoken,
         },
       },

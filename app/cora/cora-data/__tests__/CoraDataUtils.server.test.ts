@@ -50,7 +50,7 @@ const dataGroupWithOneRecordLink: DataGroup = {
           requestMethod: 'GET',
           rel: 'read',
           url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
-          accept: 'application/vnd.uub.record+json',
+          accept: 'application/vnd.cora.record+json',
         },
       },
     },
@@ -269,7 +269,7 @@ describe('getAllRecordLinksWithNameInData', () => {
           requestMethod: 'GET',
           rel: 'read',
           url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
-          accept: 'application/vnd.uub.record+json',
+          accept: 'application/vnd.cora.record+json',
         },
       },
     ]);

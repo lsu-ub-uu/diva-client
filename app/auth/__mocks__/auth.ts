@@ -43,7 +43,7 @@ export const createMockAuth = (init: AuthMockInit = {}): Auth => {
         url: 'http://localhost:38180/login/rest/authToken/b01dab5e-50eb-492a-b40d-f416500f5e6f',
       },
       renew: {
-        accept: 'application/vnd.uub.authToken+json',
+        accept: 'application/vnd.cora.authToken+json',
         rel: 'renew',
         requestMethod: 'POST',
         url: 'http://130.238.171.95:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
@@ -94,7 +94,7 @@ export const createMockCoraAuth = (init: AuthMockInit = {}): AuthWrapper => {
           requestMethod: 'POST',
           rel: 'renew',
           url: 'http://130.238.171.95:38180/login/rest/authToken/b471b429-0306-4b06-b385-e7de434aa0d8',
-          accept: 'application/vnd.uub.authToken+json',
+          accept: 'application/vnd.cora.authToken+json',
         },
         delete: {
           requestMethod: 'DELETE',

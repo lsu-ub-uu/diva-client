@@ -29,8 +29,8 @@ export async function requestAuthTokenOnLogin(
   const url = coraLoginUrl(`/${loginType}`);
 
   const headers = {
-    'Content-Type': 'application/vnd.uub.login',
-    Accept: 'application/vnd.uub.authentication+json',
+    'Content-Type': 'application/vnd.cora.login',
+    Accept: 'application/vnd.cora.authentication+json',
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {

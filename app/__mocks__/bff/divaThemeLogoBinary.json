@@ -20,7 +20,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/genericBinary",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "validationType"
@@ -41,7 +41,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/diva",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "dataDivider"
@@ -66,7 +66,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/binary",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "type"
@@ -355,13 +355,13 @@
         "requestMethod": "GET",
         "rel": "read",
         "url": "https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "read_incoming_links": {
         "requestMethod": "GET",
         "rel": "read_incoming_links",
         "url": "https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/incomingLinks",
-        "accept": "application/vnd.uub.recordList+json"
+        "accept": "application/vnd.cora.recordList+json"
       }
     }
   }

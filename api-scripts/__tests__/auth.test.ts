@@ -55,8 +55,8 @@ describe('login', () => {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/vnd.uub.login',
-          Accept: 'application/vnd.uub.authentication+json',
+          'Content-Type': 'application/vnd.cora.login',
+          Accept: 'application/vnd.cora.authentication+json',
         },
         body: 'divaAdmin@cora.epc.ub.uu.se\n49ce00fb-68b5-4089-a5f7-1c225d3cf156',
       },

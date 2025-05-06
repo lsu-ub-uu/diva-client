@@ -19,8 +19,8 @@
 import type { ActionLink } from '@/cora/cora-data/types.server';
 import { type AxiosRequestConfig } from 'axios';
 
-export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
-export const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
+export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.cora.recordList+json';
+export const RECORD_CONTENT_TYPE = 'application/vnd.cora.record+json';
 
 export const createHeaders = (
   init: Record<string, string | undefined>,
