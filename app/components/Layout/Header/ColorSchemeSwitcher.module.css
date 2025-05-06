@@ -16,12 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.form {
-  width: 100%;
-  padding-bottom: calc(var(--gap) * 4);
-
-  &[data-submitting] {
-    opacity: 0.5;
-    pointer-events: none;
-  }
+.color-scheme-switcher {
+  display: grid;
+  place-items: center;
 }

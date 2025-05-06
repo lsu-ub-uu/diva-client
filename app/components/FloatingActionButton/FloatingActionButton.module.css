@@ -81,11 +81,20 @@
   }
 
   &[data-variant='primary'] {
-    background-color: var(--color-accent);
-    color: white;
+    background-color: var(--color-fab-primary-bg);
+    color: var(--color-fab-primary-text);
 
     &::before {
       background-color: #fff;
+    }
+  }
+
+  &[data-variant='secondary'] {
+    background-color: var(--color-fab-secondary-bg);
+    color: var(--color-fab-secondary-text);
+
+    &::before {
+      background-color: #f0f0f0;
     }
   }
 }

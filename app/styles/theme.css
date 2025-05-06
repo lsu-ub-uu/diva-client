@@ -56,6 +56,24 @@
   --color-button-secondary-active: rgb(0 0 0 / 20%);
   --color-label: rgb(0 0 0 / 60%);
   --color-input-border: rgb(153 153 153);
+  --color-alert-success-bg: rgb(237 247 237);
+  --color-alert-success-icon: rgb(46 125 50);
+  --color-alert-success-font: rgb(30 70 32);
+  --color-alert-info-bg: rgb(229 246 253);
+  --color-alert-info-icon: rgb(2 136 209);
+  --color-alert-info-font: rgb(1 67 97);
+  --color-alert-error-bg: rgb(255 236 240);
+  --color-alert-error-icon: rgb(255 23 68);
+  --color-alert-error-font: rgb(102 27 42);
+  --color-alert-warning-bg: rgb(255 244 229);
+  --color-alert-warning-icon: rgb(237 108 2);
+  --color-alert-warning-font: rgb(102 60 0);
+  --color-fab-primary-text: rgb(255 255 255);
+  --color-fab-primary-bg: rgb(117 89 142);
+  --color-fab-secondary-text: rgb(0 0 0);
+  --color-fab-secondary-bg: rgb(255 255 255);
+
+  /* Spacing */
   --gap-s: 0.25rem;
   --gap: 0.5rem;
   --gap-l: 1rem;
@@ -64,6 +82,8 @@
   --input-height-large: 3rem;
   --input-height: 2.2rem;
   --input-height-small: 1.8rem;
+
+  /* Typography */
   --font-family-main: 'Arial', sans-serif;
   --font-family-headings: 'Arial', sans-serif;
   --font-size-base: 16px;
@@ -73,38 +93,57 @@
   --font-size-l: 1.5rem;
   --font-size-xl: 2rem;
   --font-size-xxl: 4rem;
-  --font-size-h1: 2.5rem;
+  --font-size-h1: 2.3rem;
   --font-weight-h1: 400;
-  --font-size-h2: 1.6rem;
+  --font-size-h2: 1.4rem;
   --font-weight-h2: 400;
-  --font-size-h3: 1.4rem;
+  --font-size-h3: 1.3rem;
   --font-weight-h3: 400;
   --font-size-h4: 1.2rem;
   --font-weight-h4: 400;
   --font-size-h5: 1rem;
-  --font-weight-h5: 400;
+  --font-weight-h5: 6c00;
   --font-size-h6: 0.9rem;
-  --font-weight-h6: 400;
+  --font-weight-h6: 600;
   --font-size-bold: 1rem;
   --font-size-icon: 1.5rem;
   --font-weight-bold: 800;
   --line-height-base: 1.5;
+
+  /* Breakpoints */
   --desktop-breakpoint: 900px;
+
+  /* Shadows */
   --elevation:
     rgb(0 0 0 / 20%) 0 3px 5px -1px, rgb(0 0 0 / 14%) 0 6px 10px 0,
     rgb(0 0 0 / 12%) 0 1px 18px 0;
 
-  [data-theme='dark'] {
+  [data-color-scheme='dark'] {
     /* Color palette */
     --color-background: rgb(33 33 33);
-    --color-background-inverted: rgb(255 255 255);
-    --color-text: rgb(255 255 255);
+    --color-background-inverted: rgb(233 233 233);
+    --color-text: rgb(233 233 233);
     --color-text-inverted: rgb(66 66 66);
     --color-primary: rgb(231 227 222);
     --color-secondary: rgb(1 1 1);
     --color-button: rgb(255 255 255);
-    --color-accent-dark: rgb(150 136 162);
+    --color-accent-dark: var(--color-accent);
+    --color-accent: var(--color-accent-light);
     --color-label: rgb(255 255 255 / 60%);
+    --color-error-main: rgb(240 79 79);
+    --color-alert-success-font: rgb(237 247 237);
+    --color-alert-success-icon: rgb(59 168 65);
+    --color-alert-success-bg: rgb(30 70 32);
+    --color-alert-info-font: rgb(229 246 253);
+    --color-alert-info-icon: rgb(3 163 249);
+    --color-alert-info-bg: rgb(1 67 97);
+    --color-alert-error-font: rgb(255 236 240);
+    --color-alert-error-icon: rgb(251 47 88);
+    --color-alert-error-bg: rgb(102 27 42);
+    --color-alert-warning-font: rgb(255 244 229);
+    --color-alert-warning-icon: rgb(254 139 45);
+    --color-alert-warning-bg: rgb(102 60 0);
+    --color-thin-border: rgb(255 255 255 / 20%);
   }
 
   @media (width < 600px) {

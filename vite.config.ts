@@ -21,12 +21,16 @@ export default defineConfig(({ isSsrBuild }) => {
       }),
       tsconfigPaths(),
       svgr({
+        include: 'app/icons/**/*.svg?react',
         svgrOptions: {
           icon: true,
           replaceAttrValues: {
             '#e8eaed': 'currentColor',
           },
         },
+      }),
+      svgr({
+        exclude: 'app/icons/**/*.svg?react',
       }),
     ],
 

@@ -22,27 +22,27 @@
   border-radius: var(--border-radius-s);
 
   &[data-severity='success'] {
-    --color-alert-bg: rgb(237 247 237);
-    --color-alert-icon: #2e7d32;
-    --color-alert-font: rgb(30 70 32);
+    --color-alert-bg: var(--color-alert-success-bg);
+    --color-alert-icon: var(--color-alert-success-icon);
+    --color-alert-font: var(--color-alert-success-font);
   }
 
   &[data-severity='info'] {
-    --color-alert-bg: rgb(229 246 253);
-    --color-alert-icon: #0288d1;
-    --color-alert-font: rgb(1 67 97);
+    --color-alert-bg: var(--color-alert-info-bg);
+    --color-alert-icon: var(--color-alert-info-icon);
+    --color-alert-font: var(--color-alert-info-font);
   }
 
   &[data-severity='error'] {
-    --color-alert-bg: rgb(255 236 240);
-    --color-alert-icon: #ff1744;
-    --color-alert-font: rgb(102 27 42);
+    --color-alert-bg: var(--color-alert-error-bg);
+    --color-alert-icon: var(--color-alert-error-icon);
+    --color-alert-font: var(--color-alert-error-font);
   }
 
   &[data-severity='warning'] {
-    --color-alert-bg: rgb(255 244 229);
-    --color-alert-icon: #ed6c02;
-    --color-alert-font: rgb(102 60 0);
+    --color-alert-bg: var(--color-alert-warning-bg);
+    --color-alert-icon: var(--color-alert-warning-icon);
+    --color-alert-font: var(--color-alert-warning-font);
   }
 
   color: var(--color-alert-font);

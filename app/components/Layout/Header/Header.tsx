@@ -17,7 +17,7 @@
  */
 
 import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
-import divaLogo from '@/assets/divaLogo.svg';
+import DivaLogo from '@/assets/divaLogo.svg?react';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -54,11 +54,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
       <div className={styles['header-logo-wrapper']}>
         <Link to='/'>
-          <picture className={styles['logo']}>
-            <source srcSet={divaLogo} />
-
-            <img src={divaLogo} alt={t('divaClient_logotypeAltTextText')} />
-          </picture>
+          <DivaLogo className={styles['logo']} />
         </Link>
 
         <div className={styles['top-navigation']}>

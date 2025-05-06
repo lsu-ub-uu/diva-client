@@ -60,14 +60,7 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-          enhancedFields={{
-            'output.admin': { type: 'group', alert: true },
-            'output.admin.reviewed.value': { type: 'checkbox' },
-          }}
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
       <FloatingActionButtonContainer>
