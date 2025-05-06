@@ -39,7 +39,7 @@ describe('createReport', () => {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/vnd.cora.record+xml',
+          'Content-Type': 'application/vnd.cora.recordGroup+xml',
           Accept: 'application/vnd.cora.record+xml',
           authToken: 'mock-token',
         },

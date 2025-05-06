@@ -46,7 +46,7 @@ export const test = base.extend<Fixtures>({
       data: createDivaOutput(),
       headers: {
         Accept: 'application/vnd.cora.record+json',
-        'Content-Type': 'application/vnd.cora.record+json',
+        'Content-Type': 'application/vnd.cora.recordGroup+json',
         Authtoken: authtoken,
       },
     });
@@ -64,7 +64,7 @@ export const test = base.extend<Fixtures>({
       data: createDivaOutput('kth'),
       headers: {
         Accept: 'application/vnd.cora.record+json',
-        'Content-Type': 'application/vnd.cora.record+json',
+        'Content-Type': 'application/vnd.cora.recordGroup+json',
         Authtoken: authtoken,
       },
     });
@@ -98,7 +98,7 @@ export const test = base.extend<Fixtures>({
         data: createLocalGenericMarkup('uu'),
         headers: {
           Accept: 'application/vnd.cora.record+json',
-          'Content-Type': 'application/vnd.cora.record+json',
+          'Content-Type': 'application/vnd.cora.recordGroup+json',
           Authtoken: authtoken,
         },
       },
@@ -120,7 +120,7 @@ export const test = base.extend<Fixtures>({
         data: createLocalGenericMarkup('kth'),
         headers: {
           Accept: 'application/vnd.cora.record+json',
-          'Content-Type': 'application/vnd.cora.record+json',
+          'Content-Type': 'application/vnd.cora.recordGroup+json',
           Authtoken: authtoken,
         },
       },
