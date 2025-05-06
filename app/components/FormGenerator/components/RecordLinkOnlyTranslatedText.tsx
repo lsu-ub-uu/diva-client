@@ -3,7 +3,6 @@ import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '../defaultValues/defaultValues';
 import type { FormComponentRecordLink } from '../types';
 import { DevInfo } from './DevInfo';
-import styles from './FormComponent.module.css';
 
 interface RecordLinkOnlyTranslatedTextProps {
   component: FormComponentRecordLink;
@@ -20,7 +19,7 @@ export const RecordLinkOnlyTranslatedText = ({
   const { t } = useTranslation();
   return (
     <div
-      className={styles['component']}
+      className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >

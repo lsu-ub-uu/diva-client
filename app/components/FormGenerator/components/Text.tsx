@@ -22,8 +22,6 @@ import { convertChildStyleToString } from '@/components/FormGenerator/formGenera
 import { Typography } from '@/components/Typography/Typography';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
-import styles from './FormComponent.module.css';
-
 interface TextProps {
   component: FormComponentText;
 }
@@ -31,7 +29,7 @@ interface TextProps {
 export const Text = ({ component }: TextProps) => {
   return (
     <div
-      className={styles['component']}
+      className='form-component-item'
       data-colspan={component.gridColSpan}
       style={{
         flexBasis:

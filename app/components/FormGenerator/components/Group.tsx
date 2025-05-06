@@ -16,28 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentGroup } from '@/components/FormGenerator/types';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { Card } from '@/components/Card/Card';
+import { CardContent } from '@/components/Card/CardContent';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardTitle } from '@/components/Card/CardTitle';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
   checkIfPresentationStyleIsInline,
   getGroupLevel,
   headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { Card } from '@/components/Card/Card';
-import { CardHeader } from '@/components/Card/CardHeader';
-import { CardTitle } from '@/components/Card/CardTitle';
+import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { ComponentList } from '@/components/FormGenerator/ComponentList';
-import { useRemixFormContext } from 'remix-hook-form';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
-import { CardContent } from '@/components/Card/CardContent';
-import styles from './FormComponent.module.css';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -77,7 +76,7 @@ export const Group = ({
 
   return (
     <section
-      className={`${styles['component']} anchorLink`}
+      className='form-component-item anchorLink'
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
       {...groupAria}
@@ -114,7 +113,7 @@ export const Group = ({
           }
         >
           <div
-            className={styles['container']}
+            className='form-component-container'
             data-layout={inline ? 'inline' : 'grid'}
           >
             {component.components && (

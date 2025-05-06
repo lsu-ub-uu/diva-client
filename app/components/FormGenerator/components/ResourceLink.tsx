@@ -17,7 +17,6 @@
  */
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import styles from '@/components/FormGenerator/components/FormComponent.module.css';
 import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
 import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
 import { DownloadIcon } from '@/icons';
@@ -41,7 +40,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
 
   const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
   return (
-    <div className={styles['component']} data-colspan={component.gridColSpan}>
+    <div className='form-component-item' data-colspan={component.gridColSpan}>
       <DevInfo component={component} path={path} />
       {component.outputFormat === 'image' && <img src={resourceUrl} alt='' />}
       {component.outputFormat === 'download' && (

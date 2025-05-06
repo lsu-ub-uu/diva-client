@@ -21,7 +21,6 @@ import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { type ReactNode, use } from 'react';
 
-import styles from './FormComponent.module.css';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
@@ -94,7 +93,7 @@ export const RecordLinkWithSearch = ({
 
   return (
     <div
-      className={styles['component']}
+      className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >

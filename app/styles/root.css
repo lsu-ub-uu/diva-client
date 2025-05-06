@@ -18,6 +18,7 @@
 
 @import './theme.css' layer(root);
 @import './normalize.css' layer(root);
+@import './form-component.css' layer(components);
 
 @layer root, components;
 

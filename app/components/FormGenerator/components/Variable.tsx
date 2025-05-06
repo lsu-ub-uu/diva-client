@@ -28,7 +28,6 @@ import {
 import { useRemixFormContext } from 'remix-hook-form';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import styles from './FormComponent.module.css';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { useTranslation } from 'react-i18next';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
@@ -67,7 +66,7 @@ export const Variable = ({
 
   return (
     <div
-      className={styles['component']}
+      className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
@@ -75,7 +74,7 @@ export const Variable = ({
 
       {(component.mode === 'output' || component.finalValue) && (
         <OutputField
-          className={styles['component']}
+          className='form-component-item'
           data-colspan={component.gridColSpan ?? 12}
           label={label}
           value={getOutputDisplayValue(component, value)}
@@ -96,7 +95,7 @@ export const Variable = ({
 
       {!component.finalValue && component.mode === 'input' && (
         <Fieldset
-          className={styles['component']}
+          className='form-component-item'
           data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel ? t(component.label) : undefined}
           errorMessage={errorMessage}

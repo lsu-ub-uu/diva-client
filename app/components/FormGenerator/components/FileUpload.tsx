@@ -28,7 +28,6 @@ import axios from 'axios';
 import { type ReactNode, use, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
-import styles from './FormComponent.module.css';
 
 interface RecordLinkBinaryProps {
   component: FormComponentRecordLink;
@@ -91,7 +90,7 @@ export const FileUpload = ({
 
   return (
     <div
-      className={styles['component']}
+      className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
       <DevInfo component={component} path={path} />
@@ -104,7 +103,7 @@ export const FileUpload = ({
         />
       ) : (
         <Fieldset
-          className={styles['component']}
+          className='form-component-item'
           data-colspan={component.gridColSpan ?? 12}
           label={component.showLabel ? t(component.label) : undefined}
           errorMessage={errorMessage}

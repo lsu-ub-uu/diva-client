@@ -1,4 +1,4 @@
-.container {
+.form-component-container {
   gap: calc(var(--gap) * 2);
 
   &[data-layout='grid'] {
@@ -19,7 +19,7 @@
   }
 }
 
-.component {
+.form-component-item {
   grid-column: span 12;
 
   &[data-colspan='1'] {

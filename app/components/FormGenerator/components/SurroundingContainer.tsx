@@ -22,7 +22,6 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
-import styles from './FormComponent.module.css';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface SurroundingContainerProps {
@@ -43,7 +42,7 @@ export const SurroundingContainer = ({
       <DevInfo component={component} path={currentComponentNamePath} />
       <div
         id={`anchor_${addAttributesToName(component, component.name)}`}
-        className={`${styles['component']} ${styles['container']} anchorLink`}
+        className='form-component-container form-component-item anchorLink'
         data-colspan={component.gridColSpan ?? 12}
         data-layout={inline ? 'inline' : 'grid'}
       >
