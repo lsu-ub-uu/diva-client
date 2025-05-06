@@ -144,6 +144,8 @@
     --color-alert-warning-icon: rgb(254 139 45);
     --color-alert-warning-bg: rgb(102 60 0);
     --color-thin-border: rgb(255 255 255 / 20%);
+    --color-card-dark: rgb(13 110 253 / 12%);
+    --color-card: rgb(13 110 253/ 8%);
   }
 
   @media (width < 600px) {
