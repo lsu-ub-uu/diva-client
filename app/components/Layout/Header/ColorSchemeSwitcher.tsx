@@ -22,6 +22,7 @@ import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.se
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';
+import { useEffect, useState } from 'react';
 
 interface ColorThemeSwitcherProps {
   colorScheme: UserPreferences['colorScheme'];
@@ -30,8 +31,34 @@ interface ColorThemeSwitcherProps {
 export const ColorSchemeSwitcher = ({
   colorScheme,
 }: ColorThemeSwitcherProps) => {
+  const [preferredColorScheme, setPreferredColorScheme] =
+    useState<UserPreferences['colorScheme']>();
   const { t } = useTranslation();
   const fetcher = useFetcher();
+
+  useEffect(() => {
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const updatePreferredColorScheme = () => {
+        setPreferredColorScheme(mediaQuery.matches ? 'dark' : 'light');
+      };
+
+      updatePreferredColorScheme();
+
+      mediaQuery.addEventListener('change', updatePreferredColorScheme);
+      return () => {
+        mediaQuery.removeEventListener('change', updatePreferredColorScheme);
+      };
+    }
+  }, []);
+
+  const currentColorScheme =
+    colorScheme === 'auto' ? preferredColorScheme : colorScheme;
+
+  if (!currentColorScheme) {
+    return null;
+  }
+
   return (
     <fetcher.Form
       method='post'
@@ -43,14 +70,14 @@ export const ColorSchemeSwitcher = ({
         variant='icon'
         type='submit'
         name='colorScheme'
-        value={colorScheme === 'dark' ? 'light' : 'dark'}
+        value={currentColorScheme === 'dark' ? 'light' : 'dark'}
         aria-label={
-          colorScheme === 'dark'
+          currentColorScheme === 'dark'
             ? t('divaClient_switchToLightModeText')
             : t('divaClient_switchToDarkModeText')
         }
       >
-        {colorScheme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        {currentColorScheme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
       </Button>
     </fetcher.Form>
   );

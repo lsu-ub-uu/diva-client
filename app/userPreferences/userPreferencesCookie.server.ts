@@ -19,12 +19,13 @@
 import { createCookie } from 'react-router';
 
 export interface UserPreferences {
-  colorScheme: 'light' | 'dark';
+  colorScheme: 'light' | 'dark' | 'auto';
 }
 
 export const userPreferencesCookie = createCookie('userPreferences', {
   sameSite: 'lax',
   path: '/',
+  expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), // 14 days
 });
 
 export const parseUserPreferencesCookie = async (
@@ -32,7 +33,7 @@ export const parseUserPreferencesCookie = async (
 ): Promise<UserPreferences> => {
   const cookieHeader = request.headers.get('Cookie');
   const userPreferences = await userPreferencesCookie.parse(cookieHeader);
-  return userPreferences || { colorScheme: 'light' };
+  return userPreferences || ({ colorScheme: 'auto' } satisfies UserPreferences);
 };
 
 export const serializeUserPreferencesCookie = (
