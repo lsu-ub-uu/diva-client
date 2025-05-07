@@ -1,4 +1,8 @@
-import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/cora/helper.server';
+import {
+  coraApiUrl,
+  RECORD_CONTENT_TYPE,
+  RECORD_GROUP_CONTENT_TYPE,
+} from '@/cora/helper.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -89,7 +93,7 @@ describe('updateRecordDataById', () => {
       .onPost(apiUrl, actual, {
         headers: {
           Accept: RECORD_CONTENT_TYPE,
-          'Content-Type': RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_GROUP_CONTENT_TYPE,
           Authtoken: `${authToken}`,
         },
       })
