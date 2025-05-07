@@ -48,14 +48,13 @@ import { getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import type { Route } from './+types/root';
-import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
-  userPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
-import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
+import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 
 const { MODE } = import.meta.env;
 

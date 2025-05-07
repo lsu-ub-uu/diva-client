@@ -16,27 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
 import DivaLogo from '@/assets/divaLogo.svg?react';
-import Login from '@/components/Layout/Header/Login/Login';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import { useIsDevMode } from '@/utils/useIsDevMode';
-import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
-import styles from './Header.module.css';
-import { useTranslation } from 'react-i18next';
-import { Suspense, useEffect, useState } from 'react';
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
+import Login from '@/components/Layout/Header/Login/Login';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
+import { useIsDevMode } from '@/utils/useIsDevMode';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { Suspense, useEffect, useState } from 'react';
+import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
+import styles from './Header.module.css';
 
 interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
 }
 
 export const Header = ({ recordTypes }: HeaderProps) => {
-  const { t } = useTranslation();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
