@@ -24,7 +24,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "http://localhost:38082/diva/rest/record/recordType/exampleDevOutput",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "type"
@@ -49,7 +49,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "http://localhost:38082/diva/rest/record/system/diva",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "dataDivider"
@@ -70,7 +70,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "http://localhost:38082/diva/rest/record/validationType/exampleDevOutputValidationType",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "validationType"
@@ -94,7 +94,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -125,7 +125,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -156,7 +156,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -187,7 +187,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -218,7 +218,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -249,7 +249,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -280,7 +280,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -311,7 +311,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -342,7 +342,7 @@
                       "requestMethod": "GET",
                       "rel": "read",
                       "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                      "accept": "application/vnd.uub.record+json"
+                      "accept": "application/vnd.cora.record+json"
                     }
                   },
                   "name": "updatedBy"
@@ -370,7 +370,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "createdBy"
@@ -399,7 +399,7 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "http://localhost:38082/diva/rest/record/binary/binary:5539077429562763",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           },
           "name": "image"
@@ -422,7 +422,7 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "http://localhost:38082/diva/rest/record/binary/binary:5541930361396406",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           },
           "name": "image"
@@ -444,7 +444,7 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "http://localhost:38082/diva/rest/record/binary/binary:5544196564251830",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           },
           "name": "image"
@@ -457,14 +457,14 @@
         "requestMethod": "GET",
         "rel": "read",
         "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "update": {
         "requestMethod": "POST",
         "rel": "update",
-        "contentType": "application/vnd.uub.record+json",
+        "contentType": "application/vnd.cora.record+json",
         "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "index": {
         "requestMethod": "POST",
@@ -495,9 +495,9 @@
           ],
           "name": "workOrder"
         },
-        "contentType": "application/vnd.uub.record+json",
+        "contentType": "application/vnd.cora.record+json",
         "url": "http://localhost:38082/diva/rest/record/workOrder/",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "delete": {
         "requestMethod": "DELETE",

@@ -20,6 +20,7 @@ import {
   coraApiUrl,
   createHeaders,
   RECORD_CONTENT_TYPE,
+  RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import axios from 'axios';
 
@@ -58,7 +59,7 @@ export const createBinaryRecord = async (
   };
 
   const headers = createHeaders(
-    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
 

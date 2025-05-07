@@ -28,7 +28,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/validationType",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "type"
@@ -49,7 +49,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/validationType",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "validationType"
@@ -70,7 +70,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/diva",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "dataDivider"
@@ -117,7 +117,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/diva/rest/record/user/coraUser:490742519075086",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -171,7 +171,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/diva/rest/record/user/161616",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -202,7 +202,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/diva/rest/record/user/161616",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -250,7 +250,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/manuscriptText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "textId"
@@ -271,7 +271,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/manuscriptValidationDefText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "defTextId"
@@ -292,7 +292,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/metadata/manuscript2NewGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "newMetadataId"
@@ -313,7 +313,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/presentation/manuscript2NewPGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "newPresentationFormId"
@@ -334,7 +334,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/metadata/manuscriptUpdateGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "metadataId"
@@ -355,7 +355,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/presentation/manuscriptUpdatePGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "presentationFormId"
@@ -376,7 +376,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/divaOutput",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "validatesRecordType"
@@ -389,20 +389,20 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/manuscript",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "read_incoming_links": {
               "requestMethod": "GET",
               "rel": "read_incoming_links",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/manuscript/incomingLinks",
-              "accept": "application/vnd.uub.recordList+json"
+              "accept": "application/vnd.cora.recordList+json"
             },
             "update": {
               "requestMethod": "POST",
               "rel": "update",
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/manuscript",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "index": {
               "requestMethod": "POST",
@@ -433,9 +433,9 @@
                 ],
                 "name": "workOrder"
               },
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           }
         }

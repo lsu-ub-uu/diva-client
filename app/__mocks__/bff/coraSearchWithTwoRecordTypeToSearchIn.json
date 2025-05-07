@@ -22,7 +22,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/metadata/personAutocompleteSearchGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "metadataId"
@@ -49,7 +49,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/recordType/search",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "type"
@@ -70,7 +70,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/system/diva",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "dataDivider"
@@ -91,7 +91,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/validationType/search",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "validationType"
@@ -161,7 +161,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/user/coraUser:4412982402853626",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -192,7 +192,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/user/coraUser:490742519075086",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -240,7 +240,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/presentation/personAutocompleteSearchPGroup",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "presentationId"
@@ -262,7 +262,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/recordType/person",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "recordTypeToSearchIn"
@@ -285,7 +285,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/recordType/nationalSubjectCategory",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 }
               },
@@ -309,7 +309,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/text/personSearchText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "textId"
@@ -330,7 +330,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/text/personSearchDefText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "defTextId"
@@ -343,26 +343,26 @@
               "requestMethod": "GET",
               "rel": "search",
               "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/searchResult/personSearch",
-              "accept": "application/vnd.uub.recordList+json"
+              "accept": "application/vnd.cora.recordList+json"
             },
             "read": {
               "requestMethod": "GET",
               "rel": "read",
               "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "read_incoming_links": {
               "requestMethod": "GET",
               "rel": "read_incoming_links",
               "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch/incomingLinks",
-              "accept": "application/vnd.uub.recordList+json"
+              "accept": "application/vnd.cora.recordList+json"
             },
             "update": {
               "requestMethod": "POST",
               "rel": "update",
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/search/personSearch",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "index": {
               "requestMethod": "POST",
@@ -393,9 +393,9 @@
                 ],
                 "name": "workOrder"
               },
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/20240226/diva/rest/record/workOrder/",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           }
         }

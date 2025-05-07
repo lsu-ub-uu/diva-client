@@ -23,6 +23,7 @@ import {
   coraApiUrl,
   createHeaders,
   RECORD_CONTENT_TYPE,
+  RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
 export const updateRecordDataById = async <T>(
@@ -33,7 +34,7 @@ export const updateRecordDataById = async <T>(
 ): Promise<AxiosResponse<T>> => {
   const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
   const headers = createHeaders(
-    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
   return axios.post(apiUrl, payload, { headers });

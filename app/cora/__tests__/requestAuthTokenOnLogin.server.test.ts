@@ -32,8 +32,8 @@ describe('requestAuthTokenOnLogin', () => {
     );
     const expectedBody = `coraUser@ub.uu.se\naaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`;
     const expectedHeaders = {
-      Accept: 'application/vnd.uub.authentication+json',
-      'Content-Type': 'application/vnd.uub.login',
+      Accept: 'application/vnd.cora.authentication+json',
+      'Content-Type': 'application/vnd.cora.login',
     };
 
     requestAuthTokenOnLogin(
@@ -59,8 +59,8 @@ describe('requestAuthTokenOnLogin', () => {
     );
     const expectedBody = `coraUser@ub.uu.se\nhunter2`;
     const expectedHeaders = {
-      Accept: 'application/vnd.uub.authentication+json',
-      'Content-Type': 'application/vnd.uub.login',
+      Accept: 'application/vnd.cora.authentication+json',
+      'Content-Type': 'application/vnd.cora.login',
     };
 
     requestAuthTokenOnLogin(loginId, 'hunter2', 'password');

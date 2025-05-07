@@ -28,7 +28,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/metadata",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "type"
@@ -49,7 +49,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/systemone/rest/record/validationType/metadataCollectionVariable",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "validationType"
@@ -70,7 +70,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/systemone/rest/record/system/testSystem",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "dataDivider"
@@ -94,7 +94,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -125,7 +125,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -156,7 +156,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -187,7 +187,7 @@
                             "requestMethod": "GET",
                             "rel": "read",
                             "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
-                            "accept": "application/vnd.uub.record+json"
+                            "accept": "application/vnd.cora.record+json"
                           }
                         },
                         "name": "updatedBy"
@@ -215,7 +215,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "createdBy"
@@ -247,7 +247,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/exampleCollectionVarText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "textId"
@@ -268,7 +268,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/exampleCollectionVarDefText",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "defTextId"
@@ -289,7 +289,7 @@
                     "requestMethod": "GET",
                     "rel": "read",
                     "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleCollection",
-                    "accept": "application/vnd.uub.record+json"
+                    "accept": "application/vnd.cora.record+json"
                   }
                 },
                 "name": "refCollection"
@@ -305,20 +305,20 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleCollectionVar",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "read_incoming_links": {
               "requestMethod": "GET",
               "rel": "read_incoming_links",
               "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleCollectionVar/incomingLinks",
-              "accept": "application/vnd.uub.recordList+json"
+              "accept": "application/vnd.cora.recordList+json"
             },
             "update": {
               "requestMethod": "POST",
               "rel": "update",
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleCollectionVar",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "index": {
               "requestMethod": "POST",
@@ -349,9 +349,9 @@
                 ],
                 "name": "workOrder"
               },
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/systemone/rest/record/workOrder/",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           }
         }

@@ -18,7 +18,11 @@
 
 import type { Auth } from '@/auth/Auth';
 import axios from 'axios';
-import { coraLoginUrl } from '@/cora/helper.server';
+import {
+  AUTHENTICATION_CONTENT_TYPE,
+  coraLoginUrl,
+  LOGIN_CONTENT_TYPE,
+} from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 export async function requestAuthTokenOnLogin(
@@ -29,8 +33,8 @@ export async function requestAuthTokenOnLogin(
   const url = coraLoginUrl(`/${loginType}`);
 
   const headers = {
-    'Content-Type': 'application/vnd.uub.login',
-    Accept: 'application/vnd.uub.authentication+json',
+    'Content-Type': LOGIN_CONTENT_TYPE,
+    Accept: AUTHENTICATION_CONTENT_TYPE,
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {

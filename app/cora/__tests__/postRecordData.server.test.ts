@@ -1,4 +1,8 @@
-import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/cora/helper.server';
+import {
+  coraApiUrl,
+  RECORD_CONTENT_TYPE,
+  RECORD_GROUP_CONTENT_TYPE,
+} from '@/cora/helper.server';
 import { postRecordData } from '@/cora/postRecordData.server';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
@@ -26,7 +30,7 @@ describe('postRecordData', () => {
       .onPost(apiUrl, divaOutputData, {
         headers: {
           Accept: RECORD_CONTENT_TYPE,
-          'Content-Type': RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_GROUP_CONTENT_TYPE,
           Authtoken: `${authToken}`,
         },
       })
@@ -49,7 +53,7 @@ describe('postRecordData', () => {
       .onPost(apiUrl, divaOutputData, {
         headers: {
           Accept: RECORD_CONTENT_TYPE,
-          'Content-Type': RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_GROUP_CONTENT_TYPE,
           Authtoken: `${authToken}`,
         },
       })

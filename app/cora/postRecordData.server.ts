@@ -23,6 +23,7 @@ import {
   coraApiUrl,
   createHeaders,
   RECORD_CONTENT_TYPE,
+  RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
 export async function postRecordData<T>(
@@ -33,7 +34,7 @@ export async function postRecordData<T>(
   const apiUrl = coraApiUrl(`/record/${type}`);
 
   const headers = createHeaders(
-    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
 

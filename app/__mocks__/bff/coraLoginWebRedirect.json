@@ -28,7 +28,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/login",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "type"
@@ -49,7 +49,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/loginWebRedirect",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "validationType"
@@ -70,7 +70,7 @@
                         "requestMethod": "GET",
                         "rel": "read",
                         "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/divaPre",
-                        "accept": "application/vnd.uub.record+json"
+                        "accept": "application/vnd.cora.record+json"
                       }
                     },
                     "name": "dataDivider"
@@ -206,20 +206,20 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "read_incoming_links": {
               "requestMethod": "GET",
               "rel": "read_incoming_links",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr/incomingLinks",
-              "accept": "application/vnd.uub.recordList+json"
+              "accept": "application/vnd.cora.recordList+json"
             },
             "update": {
               "requestMethod": "POST",
               "rel": "update",
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             },
             "index": {
               "requestMethod": "POST",
@@ -250,9 +250,9 @@
                 ],
                 "name": "workOrder"
               },
-              "contentType": "application/vnd.uub.record+json",
+              "contentType": "application/vnd.cora.record+json",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           }
         }

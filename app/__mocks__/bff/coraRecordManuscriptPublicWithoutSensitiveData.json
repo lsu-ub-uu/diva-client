@@ -24,7 +24,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/divaOutput",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "type"
@@ -45,7 +45,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/diva",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "dataDivider"
@@ -66,7 +66,7 @@
                   "requestMethod": "GET",
                   "rel": "read",
                   "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/manuscript",
-                  "accept": "application/vnd.uub.record+json"
+                  "accept": "application/vnd.cora.record+json"
                 }
               },
               "name": "validationType"
@@ -120,7 +120,7 @@
               "requestMethod": "GET",
               "rel": "read",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/nationalSubjectCategory/nationalSubjectCategory:6325370460697648",
-              "accept": "application/vnd.uub.record+json"
+              "accept": "application/vnd.cora.record+json"
             }
           },
           "name": "nationalSubjectCategory"
@@ -141,14 +141,14 @@
         "requestMethod": "GET",
         "rel": "read",
         "url": "https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "update": {
         "requestMethod": "POST",
         "rel": "update",
-        "contentType": "application/vnd.uub.record+json",
+        "contentType": "application/vnd.cora.record+json",
         "url": "https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "index": {
         "requestMethod": "POST",
@@ -179,9 +179,9 @@
           ],
           "name": "workOrder"
         },
-        "contentType": "application/vnd.uub.record+json",
+        "contentType": "application/vnd.cora.record+json",
         "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
-        "accept": "application/vnd.uub.record+json"
+        "accept": "application/vnd.cora.record+json"
       },
       "delete": {
         "requestMethod": "DELETE",
