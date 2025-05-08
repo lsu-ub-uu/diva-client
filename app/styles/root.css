@@ -72,19 +72,17 @@
 
     h4 {
       font-size: var(--font-size-h4);
+      font-weight: var(--font-weight-h4);
     }
 
     h5 {
       font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-h5);
     }
 
     h6 {
       font-size: var(--font-size-h6);
-    }
-
-    h5,
-    h6 {
-      text-transform: uppercase;
+      font-weight: var(--font-weight-h6);
     }
 
     a {
@@ -104,6 +102,14 @@
       }
     }
   }
+}
+
+.diva-logo-text {
+  fill: var(--color-text);
+}
+
+.diva-logo-star {
+  fill: var(--color-accent);
 }
 
 @layer components {

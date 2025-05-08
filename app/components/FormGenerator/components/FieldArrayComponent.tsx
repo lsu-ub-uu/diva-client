@@ -110,6 +110,7 @@ export const FieldArrayComponent = ({
         fields.length < (component.repeat?.repeatMax ?? 1) && (
           <div
             className='form-component-item'
+            data-colspan={component.gridColSpan ?? 12}
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button

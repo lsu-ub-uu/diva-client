@@ -26,7 +26,7 @@
 }
 
 .card-content[data-boxed] {
-  padding: var(--gap) calc(var(--gap) * 2);
+  padding: var(--gap);
 
   &[data-alert='true'] {
     border-radius: var(--border-radius);
@@ -43,7 +43,7 @@
 
   &[data-boxed] {
     background-color: var(--color-card-dark);
-    padding: var(--gap) calc(var(--gap) * 2);
+    padding: var(--gap-s) var(--gap);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 

@@ -48,8 +48,13 @@ import { getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import type { Route } from './+types/root';
-import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
+import {
+  parseUserPreferencesCookie,
+  serializeUserPreferencesCookie,
+} from './userPreferences/userPreferencesCookie.server';
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 
 const { MODE } = import.meta.env;
 
@@ -63,7 +68,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const locale = context.i18n.language;
   const recordTypes = getRecordTypes(dependencies, auth);
 
-  return { auth, locale, loginUnits, theme, recordTypes };
+  const userPreferences = await parseUserPreferencesCookie(request);
+
+  return { auth, locale, loginUnits, theme, recordTypes, userPreferences };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -79,6 +86,10 @@ export async function action({ request, context }: Route.ActionArgs) {
     return await renewAuth(request, context.i18n);
   }
 
+  if (intent === 'changeColorScheme') {
+    return await changeColorScheme(formData);
+  }
+
   return {};
 }
 
@@ -90,6 +101,22 @@ const changeLanguage = async (formData: FormData) => {
       {
         headers: {
           'Set-Cookie': await i18nCookie.serialize(language),
+        },
+      },
+    );
+  }
+};
+
+const changeColorScheme = async (formData: FormData) => {
+  const colorScheme = formData.get('colorScheme');
+  if (colorScheme === 'light' || colorScheme === 'dark') {
+    return data(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await serializeUserPreferencesCookie({
+            colorScheme,
+          }),
         },
       },
     );
@@ -159,6 +186,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
+  const userPreferences = data?.userPreferences;
   const locale = data?.locale ?? 'sv';
   const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
   useChangeLanguage(locale);
@@ -176,7 +204,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           content='emotion-insertion-point'
         />
       </head>
-      <body>
+      <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -188,7 +216,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-
+  const userPreferences = loaderData.userPreferences;
   const theme = loaderData.theme;
 
   return (
@@ -196,6 +224,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       <header className='member-bar'>
         <NavigationLoader />
         <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined}>
+          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
           <Login />
         </MemberBar>

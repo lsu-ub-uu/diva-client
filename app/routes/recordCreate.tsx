@@ -76,7 +76,12 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
   const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
 
-  const title = t('divaClient_createRecordText');
+  const rootGroupTitleTextId =
+    formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
+
+  const title = t('divaClient_createRecordText', {
+    rootGroupTitle: t(rootGroupTitleTextId).toLowerCase(),
+  });
   const breadcrumb = t('divaClient_createRecordText');
 
   return data(
@@ -158,26 +163,33 @@ export default function CreateRecordRoute({
   const { formDefinition, notification, defaultValues } = loaderData;
 
   return (
-    <SidebarLayout
-      sidebarContent={
-        <NavigationPanel
-          links={
-            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
-          }
-        />
-      }
-    >
-      <NotificationSnackbar notification={notification} />
+    <>
+      <h1 style={{ marginBottom: '2rem' }}>{loaderData.title}</h1>
 
-      <div className={styles['record-wrapper']}>
-        {notification && notification.severity === 'error' && (
-          <Alert severity={notification.severity}>
-            <AlertTitle>{notification.summary}</AlertTitle>
-            {notification.details}
-          </Alert>
-        )}
-        <RecordForm formSchema={formDefinition} defaultValues={defaultValues} />
-      </div>
-    </SidebarLayout>
+      <SidebarLayout
+        sidebarContent={
+          <NavigationPanel
+            links={
+              formDefinition ? linksFromFormSchema(formDefinition) || [] : []
+            }
+          />
+        }
+      >
+        <NotificationSnackbar notification={notification} />
+
+        <div className={styles['record-wrapper']}>
+          {notification && notification.severity === 'error' && (
+            <Alert severity={notification.severity}>
+              <AlertTitle>{notification.summary}</AlertTitle>
+              {notification.details}
+            </Alert>
+          )}
+          <RecordForm
+            formSchema={formDefinition}
+            defaultValues={defaultValues}
+          />
+        </div>
+      </SidebarLayout>
+    </>
   );
 }

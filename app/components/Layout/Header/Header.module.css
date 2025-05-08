@@ -34,8 +34,9 @@
   }
 }
 
-.logo img {
+.logo {
   height: 2rem;
+  width: auto;
   margin: 0 auto;
 }
 

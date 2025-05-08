@@ -94,6 +94,7 @@ button,
 [type='submit'] {
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-appearance: button;
+  color: inherit;
 }
 
 legend {
