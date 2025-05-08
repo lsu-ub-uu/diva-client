@@ -160,7 +160,6 @@ export const meta = ({ data, error }: Route.MetaArgs) => {
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation();
   const { formDefinition, notification, defaultValues } = loaderData;
 
   return (
