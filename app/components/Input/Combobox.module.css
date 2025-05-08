@@ -2,7 +2,7 @@
   box-shadow: var(--elevation);
   border-right: var(--border-radius);
   border: 1px solid var(--color-input-border);
-  background-color: white;
+  background-color: var(--color-background);
 
   /* Variable defined by HeadlessUI */
   width: var(--input-width);

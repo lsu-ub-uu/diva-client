@@ -144,8 +144,12 @@
     --color-alert-warning-icon: rgb(254 139 45);
     --color-alert-warning-bg: rgb(102 60 0);
     --color-thin-border: rgb(255 255 255 / 20%);
-    --color-card-dark: rgb(13 110 253 / 12%);
-    --color-card: rgb(13 110 253/ 8%);
+    --color-card-dark: rgb(103 159 243 / 12%);
+    --color-card: rgb(103 159 243 / 8%);
+    --color-button-primary-hover: rgb(233 233 233);
+    --color-button-primary-active: rgb(255 255 255);
+    --color-button-secondary-hover: rgb(255 255 255 / 10%);
+    --color-button-secondary-active: rgb(255 255 255 / 20%);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -175,8 +179,12 @@
       --color-alert-warning-icon: rgb(254 139 45);
       --color-alert-warning-bg: rgb(102 60 0);
       --color-thin-border: rgb(255 255 255 / 20%);
-      --color-card-dark: rgb(13 110 253 / 12%);
-      --color-card: rgb(13 110 253 / 8%);
+      --color-card-dark: rgb(103 159 243 / 12%);
+      --color-card: rgb(103 159 243 / 8%);
+      --color-button-primary-hover: rgb(233 233 233);
+      --color-button-primary-active: rgb(255 255 255);
+      --color-button-secondary-hover: rgb(255 255 255 / 10%);
+      --color-button-secondary-active: rgb(255 255 255 / 20%);
     }
   }
 
