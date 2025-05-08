@@ -25,7 +25,6 @@ export interface UserPreferences {
 export const userPreferencesCookie = createCookie('userPreferences', {
   sameSite: 'lax',
   path: '/',
-  expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), // 14 days
 });
 
 export const parseUserPreferencesCookie = async (
