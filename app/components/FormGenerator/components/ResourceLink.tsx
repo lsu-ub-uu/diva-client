@@ -38,7 +38,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const data: ResourceLinkType = getValues(path);
   const authToken = auth?.data.token;
 
-  const resourceUrl = `${data.actionLinks.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
+  const resourceUrl = `${data.actionLinks!.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
   return (
     <div className='form-component-item' data-colspan={component.gridColSpan}>
       <DevInfo component={component} path={path} />

@@ -113,119 +113,13 @@ import {
   createRecordLink,
   findChildrenAttributes,
   generateAtomicValue,
-  isRepeatingVariable,
+  isRepeating,
   isVariable,
   removeAttributeFromName,
   transformToCoraData,
 } from '../transformToCora.server';
 
 describe('transformToCora', () => {
-  let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<
-    string,
-    | BFFMetadataGroup
-    | BFFMetadataTextVariable
-    | BFFMetadataNumberVariable
-    | BFFMetadataCollectionVariable
-    | BFFMetadataRecordLink
-  >;
-  let presentationPool: Lookup<
-    string,
-    BFFPresentationBase | BFFPresentationGroup
-  >;
-  const FORM_MODE_NEW = 'create';
-  let dependencies: Dependencies;
-
-  beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([
-      someSimpleValidationTypeData,
-      someSimpleValidationTypeDataWithAttributes,
-      someSimpleValidationTypeRepeatingGroups,
-      newNationSubjectCategoryValidationType,
-      divaOutputValidationType,
-      someValidationTypeForRepeatingGroupsNameInDataId,
-      someValidationTypeForRepeatingCollectionsNameInDataId,
-      someValidationTypeForRepeatingRecordLinksNameInDataId,
-      someValidationTypeForRequiredAndRepeatingId,
-    ]);
-    metadataPool = listToPool<
-      | BFFMetadataGroup
-      | BFFMetadataTextVariable
-      | BFFMetadataNumberVariable
-      | BFFMetadataCollectionVariable
-      | BFFMetadataRecordLink
-    >([
-      someMetadataTextVariable,
-      someMetadataRecordLink,
-      someMetadataChildGroup,
-      someNewSimpleMetadataGroup,
-      someNewSimpleMetadataGroupWithAttributes,
-      someMetadataNumberVar,
-      someNewSimpleMetadataGroupRepeatingGroups,
-      someMetadataTextVariableWithAttributeVar,
-      someMetadataNumberVarWithAttribute,
-      someMetadataRepeatingRecordLinkWithAttributes,
-      someMetadataRecordLinkWithAttributes,
-      someMetadataCollectionVariable,
-      newNationalSubjectCategoryRecordTypeNewGroup,
-      newNationalSubjectCategoryRecordTypeGroup,
-      newNationSubjectCategoryMetadataSubjectSweTextVariable,
-      newNationSubjectCategoryMetadataSubjectEngTextVariable,
-      newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
-      newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
-      preprintNewGroup,
-      domainCollectionVar,
-      outputTypeGroup,
-      outputTypeCollectionVar,
-      typeOutputTypeCollectionVar,
-      titleGroup,
-      mainTitleTextVar,
-      someNewMetadataGroupRepeatingGroupsNameInDataGroup,
-      authorGroup,
-      authorGroup2,
-      givenNameTextVar,
-      familyNameTextVar,
-      someNewMetadataGroupRepeatingCollectionNameInDataGroup,
-      genreCollectionVar,
-      genreOtherCollectionVar,
-      someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
-      someNewRecordLinkId,
-      someOtherNewRecordLinkId,
-      someNewMetadataRequiredAndRepeatingRootGroup,
-      someNewMetadataRequiredAndRepeatingGroup,
-      someLanguageTerm,
-      typeCodeCollectionVar,
-      authorityLanguageTermCollectionVar,
-      recordInfoMetadata,
-      createdByLink,
-      dataDividerLink,
-      idTextVar,
-      tsCreatedTextVar,
-      recordTypeLink,
-      updatedGroup,
-      updatedByLink,
-      tsUpdatedTextVar,
-      validationTypeLink,
-    ]);
-    presentationPool = listToPool<BFFPresentationBase | BFFPresentationGroup>([
-      pNewNationSubjectCategoryMetadataGroup,
-      pNewNationSubjectCategorySweVar,
-      pNewNationSubjectCategoryEngVar,
-    ]);
-
-    dependencies = {
-      validationTypePool,
-      metadataPool,
-      textPool: listToPool<BFFText>([]),
-      presentationPool,
-      recordTypePool: listToPool<BFFRecordType>([]),
-      searchPool: listToPool<BFFSearch>([]),
-      loginUnitPool: listToPool<BFFLoginUnit>([]),
-      loginPool: listToPool<BFFLoginWebRedirect>([]),
-      themePool: listToPool<BFFTheme>([]),
-    };
-  });
-
   describe('findChildrenAttributes', () => {
     it('skips atomics without attributes', () => {
       const expected = undefined;
@@ -554,6 +448,114 @@ describe('transformToCora', () => {
   });
 
   describe('transformToCoraData', () => {
+    let validationTypePool: Lookup<string, BFFValidationType>;
+    let metadataPool: Lookup<
+      string,
+      | BFFMetadataGroup
+      | BFFMetadataTextVariable
+      | BFFMetadataNumberVariable
+      | BFFMetadataCollectionVariable
+      | BFFMetadataRecordLink
+    >;
+    let presentationPool: Lookup<
+      string,
+      BFFPresentationBase | BFFPresentationGroup
+    >;
+    const FORM_MODE_NEW = 'create';
+    let dependencies: Dependencies;
+
+    beforeEach(() => {
+      validationTypePool = listToPool<BFFValidationType>([
+        someSimpleValidationTypeData,
+        someSimpleValidationTypeDataWithAttributes,
+        someSimpleValidationTypeRepeatingGroups,
+        newNationSubjectCategoryValidationType,
+        divaOutputValidationType,
+        someValidationTypeForRepeatingGroupsNameInDataId,
+        someValidationTypeForRepeatingCollectionsNameInDataId,
+        someValidationTypeForRepeatingRecordLinksNameInDataId,
+        someValidationTypeForRequiredAndRepeatingId,
+      ]);
+      metadataPool = listToPool<
+        | BFFMetadataGroup
+        | BFFMetadataTextVariable
+        | BFFMetadataNumberVariable
+        | BFFMetadataCollectionVariable
+        | BFFMetadataRecordLink
+      >([
+        someMetadataTextVariable,
+        someMetadataRecordLink,
+        someMetadataChildGroup,
+        someNewSimpleMetadataGroup,
+        someNewSimpleMetadataGroupWithAttributes,
+        someMetadataNumberVar,
+        someNewSimpleMetadataGroupRepeatingGroups,
+        someMetadataTextVariableWithAttributeVar,
+        someMetadataNumberVarWithAttribute,
+        someMetadataRepeatingRecordLinkWithAttributes,
+        someMetadataRecordLinkWithAttributes,
+        someMetadataCollectionVariable,
+        newNationalSubjectCategoryRecordTypeNewGroup,
+        newNationalSubjectCategoryRecordTypeGroup,
+        newNationSubjectCategoryMetadataSubjectSweTextVariable,
+        newNationSubjectCategoryMetadataSubjectEngTextVariable,
+        newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
+        newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+        preprintNewGroup,
+        domainCollectionVar,
+        outputTypeGroup,
+        outputTypeCollectionVar,
+        typeOutputTypeCollectionVar,
+        titleGroup,
+        mainTitleTextVar,
+        someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+        authorGroup,
+        authorGroup2,
+        givenNameTextVar,
+        familyNameTextVar,
+        someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+        genreCollectionVar,
+        genreOtherCollectionVar,
+        someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+        someNewRecordLinkId,
+        someOtherNewRecordLinkId,
+        someNewMetadataRequiredAndRepeatingRootGroup,
+        someNewMetadataRequiredAndRepeatingGroup,
+        someLanguageTerm,
+        typeCodeCollectionVar,
+        authorityLanguageTermCollectionVar,
+        recordInfoMetadata,
+        createdByLink,
+        dataDividerLink,
+        idTextVar,
+        tsCreatedTextVar,
+        recordTypeLink,
+        updatedGroup,
+        updatedByLink,
+        tsUpdatedTextVar,
+        validationTypeLink,
+      ]);
+      presentationPool = listToPool<BFFPresentationBase | BFFPresentationGroup>(
+        [
+          pNewNationSubjectCategoryMetadataGroup,
+          pNewNationSubjectCategorySweVar,
+          pNewNationSubjectCategoryEngVar,
+        ],
+      );
+
+      dependencies = {
+        validationTypePool,
+        metadataPool,
+        textPool: listToPool<BFFText>([]),
+        presentationPool,
+        recordTypePool: listToPool<BFFRecordType>([]),
+        searchPool: listToPool<BFFSearch>([]),
+        loginUnitPool: listToPool<BFFLoginUnit>([]),
+        loginPool: listToPool<BFFLoginWebRedirect>([]),
+        themePool: listToPool<BFFTheme>([]),
+      };
+    });
+
     it('should take a form payload with someRecordType group containing title group with a mainTitle text variable', () => {
       const expected: DataGroup = {
         name: 'someNewMetadataGroupNameInData',
@@ -1521,6 +1523,72 @@ describe('transformToCora', () => {
     });
   });
 
+  it('transforms a binary record', () => {
+    const formMetaDataPathLookup = {
+      'binary.master.master': {
+        name: 'master',
+        type: 'resourceLink',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      'binary.master': {
+        name: 'master',
+        type: 'group',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      },
+      binary: {
+        name: 'binary',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    } as Record<string, FormMetaData>;
+
+    const payload = {
+      binary: {
+        _type: 'generic',
+        master: [
+          {
+            master: {
+              name: 'master',
+              mimeType: 'image/webp',
+              actionLinks: {
+                read: {
+                  requestMethod: 'GET',
+                  rel: 'read',
+                  url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:8016649047742459/master',
+                  accept: 'image/webp',
+                },
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const result = transformToCoraData(formMetaDataPathLookup, payload);
+
+    expect(result).toStrictEqual([
+      {
+        name: 'binary',
+        children: [
+          {
+            name: 'master',
+            children: [{ name: 'master', mimeType: 'image/webp' }],
+          },
+        ],
+        attributes: { type: 'generic' },
+      },
+    ]);
+  });
+
   describe('removeAttributeFromName', () => {
     it('does not remove anything if no attribute', () => {
       const actual = removeAttributeFromName('subject', { language: 'eng' });
@@ -1537,14 +1605,14 @@ describe('transformToCora', () => {
 
   describe('isRepeatingVariable', () => {
     it('returns true if repeating', () => {
-      const actual = isRepeatingVariable([
+      const actual = isRepeating([
         { value: 'firstValue', name: 'someNameInData' },
       ]);
       expect(actual).toBe(true);
     });
 
     it('returns false if not repeating', () => {
-      const actual = isRepeatingVariable({
+      const actual = isRepeating({
         value: 'firstValue',
         name: 'someNameInData',
       });
