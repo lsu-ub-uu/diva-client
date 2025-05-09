@@ -85,6 +85,10 @@ export const FieldArrayComponent = ({
             <ActionButtonGroup
               entityName={`${t(component.label ?? '')}`}
               hideMoveButtons={isComponentSingularAndOptional(component)}
+              hideDeleteButton={
+                isComponentSingularAndOptional(component) &&
+                !component.showLabel
+              }
               moveUpButtonDisabled={index === 0}
               moveUpButtonAction={() => handleMove(index, index - 1)}
               moveDownButtonDisabled={index === fields.length - 1}

@@ -33,6 +33,7 @@ import {
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
+import { shouldShowLabel } from '@/data/formDefinition/createCommonParameters.server';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -82,7 +83,7 @@ export const Group = ({
       {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
-      <Card boxed={boxGroups && groupLevel !== 0}>
+      <Card boxed={boxGroups && groupLevel !== 0 && component.showLabel}>
         <CardHeader
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
