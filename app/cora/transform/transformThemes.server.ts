@@ -118,7 +118,7 @@ const transformLogo = async (data: DataGroup) => {
       binaryMasterGroup,
       'master',
     );
-    return masterResourceLink.actionLinks.read.url;
+    return masterResourceLink.actionLinks!.read.url;
   } catch (error) {
     console.error('Failed to fetch logo binary', error);
     return undefined;

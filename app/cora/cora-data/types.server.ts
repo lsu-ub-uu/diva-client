@@ -28,7 +28,7 @@ export interface RecordLink extends DataElement {
 export interface ResourceLink {
   name: string;
   mimeType: string;
-  actionLinks: { read: ActionLink };
+  actionLinks?: { read: ActionLink };
   attributes?: Attributes;
 }
 

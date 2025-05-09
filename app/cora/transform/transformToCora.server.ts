@@ -22,11 +22,13 @@ import type {
   DataAtomic,
   DataGroup,
   RecordLink,
+  ResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { isEmpty } from 'lodash-es';
 
-type Data = DataGroup | DataAtomic | RecordLink;
+type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
 
 interface TransformEntryArgs {
   lookup: Record<string, FormMetaData>;
@@ -86,8 +88,12 @@ export const transformEntry = ({
   const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
 
-  if (isRepeatingVariable(value)) {
-    return transformRepeatingVariable(fieldMetadata, value, lookup, key, path);
+  if (isRepeating(value)) {
+    return transformRepeating(fieldMetadata, value, lookup, key, path);
+  }
+
+  if (isResourceLink(fieldMetadata)) {
+    return transformResourceLink(key, attributes, value, repeatId);
   }
 
   if (isVariable(value)) {
@@ -130,7 +136,7 @@ export const findChildrenAttributes = (obj: any) => {
   return Object.assign({}, ...attributesArray);
 };
 
-const transformRepeatingVariable = (
+const transformRepeating = (
   fieldMetadata: FormMetaData,
   values: any[],
   lookup: Record<string, FormMetaData>,
@@ -151,6 +157,27 @@ const transformRepeatingVariable = (
   return {
     data: entries.flatMap((entry) => entry.data),
     hasValuableData: entries.some((entry) => entry.hasValuableData),
+  };
+};
+
+const isResourceLink = (fieldMetadata: FormMetaData) => {
+  return fieldMetadata.type === 'resourceLink';
+};
+
+const transformResourceLink = (
+  name: string,
+  attributes: undefined | Record<string, string>,
+  value: any,
+  repeatId: string | undefined,
+) => {
+  return {
+    data: removeEmpty({
+      name: removeAttributeFromName(name, attributes),
+      mimeType: value.mimeType,
+      attributes,
+      repeatId,
+    }),
+    hasValuableData: value.mimeType !== undefined,
   };
 };
 
@@ -204,7 +231,7 @@ const isOptional = (fieldMetadata: FormMetaData) => {
   return fieldMetadata.repeat.repeatMin === 0;
 };
 
-export const isRepeatingVariable = (value: any) => {
+export const isRepeating = (value: any) => {
   return Array.isArray(value);
 };
 
@@ -222,6 +249,7 @@ export const createLeaf = (
   if (isEmpty(value)) {
     return undefined;
   }
+
   if (
     ['numberVariable', 'textVariable', 'collectionVariable'].includes(
       metaData.type,
