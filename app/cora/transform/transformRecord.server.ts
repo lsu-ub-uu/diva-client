@@ -137,6 +137,8 @@ export const transformRecordData = (
   dataRecordGroup: DataGroup,
   formMetadata: FormMetaData,
 ) => {
+  //console.log('dataRecordGroup', JSON.stringify(dataRecordGroup, null, 2));
+  console.log('formMetadata', JSON.stringify(formMetadata, null, 2));
   return {
     [dataRecordGroup.name]: {
       ...transformDataGroup(dataRecordGroup, formMetadata),

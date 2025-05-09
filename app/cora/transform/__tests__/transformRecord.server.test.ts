@@ -2377,4 +2377,69 @@ describe('transformRecord', () => {
       expect(transformData).toStrictEqual(expected);
     });
   });
+
+  it('should handle attributes on outer groups', () => {
+    const data = {
+      children: [
+        {
+          children: [
+            {
+              name: 'resourceId',
+              value: 'binary:8037579210342018-master',
+            },
+          ],
+          name: 'master',
+        },
+      ],
+      name: 'binary',
+      attributes: {
+        type: 'sound',
+      },
+    };
+    const metadata: FormMetaData = {
+      name: 'binary',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      children: [
+        {
+          name: 'master',
+          type: 'group',
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          children: [
+            {
+              name: 'resourceId',
+              type: 'textVariable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+          ],
+        },
+      ],
+    } as unknown as FormMetaData;
+
+    const transformData = transformRecordData(data, metadata);
+
+    const expected = {
+      binary: {
+        _type: 'sound',
+        master: [
+          {
+            resourceId: {
+              value: 'binary:8037579210342018-master',
+            },
+          },
+        ],
+      },
+    };
+
+    expect(transformData).toStrictEqual(expected);
+  });
 });
