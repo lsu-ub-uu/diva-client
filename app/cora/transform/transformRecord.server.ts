@@ -138,7 +138,10 @@ export const transformRecordData = (
   formMetadata: FormMetaData,
 ) => {
   return {
-    [dataRecordGroup.name]: transformDataGroup(dataRecordGroup, formMetadata),
+    [dataRecordGroup.name]: {
+      ...transformDataGroup(dataRecordGroup, formMetadata),
+      ...transformAttributes(dataRecordGroup.attributes),
+    },
   };
 };
 
