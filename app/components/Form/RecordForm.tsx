@@ -25,11 +25,11 @@ import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
-
 import styles from './Form.module.css';
 import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { useFormBlocker } from './useBlocker';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -48,8 +48,9 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
     defaultValues,
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
+  const { handleSubmit, reset, formState } = methods;
 
-  const { handleSubmit, reset } = methods;
+  useFormBlocker(formState);
 
   return (
     <Form
