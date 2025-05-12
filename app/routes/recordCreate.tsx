@@ -116,6 +116,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   if (errors) {
     return { errors, defaultValues };
   }
+
   try {
     const { recordType, id } = await createRecord(
       await context.dependencies,

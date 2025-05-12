@@ -67,7 +67,7 @@ export const createRecordLink = (
     metadata,
     dependencies.metadataPool,
     undefined,
-    presentation,
+    presentation.mode,
   );
 
   const {

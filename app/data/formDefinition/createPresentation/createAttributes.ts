@@ -14,7 +14,7 @@ export const createAttributes = (
   metadataVariable: BFFMetadataTypes,
   metadataPool: Lookup<string, BFFMetadataBase>,
   options: any,
-  presentation: BFFPresentationBase,
+  presentationMode: 'input' | 'output',
 ): FormAttributeCollection[] | undefined => {
   if (metadataVariable.attributeReferences === undefined) {
     return undefined;
@@ -29,7 +29,7 @@ export const createAttributes = (
       const attributePresentation = createPresentationForAttributes(
         'someFakeId',
         refCollectionVar.id,
-        presentation.mode,
+        presentationMode,
       );
       const { finalValue } = refCollectionVar;
       const {

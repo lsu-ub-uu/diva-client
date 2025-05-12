@@ -34,7 +34,6 @@ import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { InputField } from '@/components/FormGenerator/components/InputField';
 import { Fieldset } from '@/components/Input/Fieldset';
-import { getAttributesToShow } from '@/components/FormGenerator/components/Attributes';
 
 interface VariableProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -62,7 +61,6 @@ export const Variable = ({
   }
 
   const label = component.showLabel ? t(component.label) : undefined;
-  const hasVisibleAttributes = getAttributesToShow(component).length > 0;
 
   return (
     <div
@@ -101,7 +99,7 @@ export const Variable = ({
           errorMessage={errorMessage}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
           info={showTooltips ? component.tooltip : undefined}
-          attributes={hasVisibleAttributes ? attributes : undefined}
+          attributes={attributes}
           actionButtonGroup={actionButtonGroup}
         >
           <InputField

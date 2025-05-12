@@ -52,7 +52,7 @@ export const createTextVar = (
     metadata,
     metadataPool,
     undefined,
-    presentation,
+    presentation.mode,
   );
   const inputType = presentation.inputType;
 

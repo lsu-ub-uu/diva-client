@@ -31,7 +31,7 @@ import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { RecordLink } from '@/components/FormGenerator/components/RecordLink';
 import type { ReactNode } from 'react';
-import { HiddenInput } from '@/components/FormGenerator/components/HiddenInput';
+import { HiddenComponent } from '@/components/FormGenerator/components/HiddenComponent';
 import { Variable } from '@/components/FormGenerator/components/Variable';
 
 interface LeafComponentProps {
@@ -50,7 +50,13 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps) => {
   if (isComponentHidden(component)) {
-    return <HiddenInput component={component} name={name} />;
+    return (
+      <HiddenComponent
+        component={component}
+        name={name}
+        attributes={attributes}
+      />
+    );
   }
 
   if (

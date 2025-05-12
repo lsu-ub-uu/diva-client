@@ -50,7 +50,7 @@ export const createCollVar = (
     metadata,
     metadataPool,
     undefined,
-    presentation,
+    presentation.mode,
   );
   const type = metadata.type;
   const repeat = createRepeat(
