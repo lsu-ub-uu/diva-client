@@ -94,6 +94,7 @@ import {
   formDefWithOneTextVariableBeingRepeating,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZeroShowLabelFalse,
   formDefWithTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
@@ -1686,7 +1687,7 @@ describe('<Form />', () => {
       expect(removeButtonElements[1]).toBeDisabled();
     });
 
-    it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
+    it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1 and showLabel is true', async () => {
       render(
         <RecordFormWithRoutesStub
           formSchema={
@@ -1702,6 +1703,20 @@ describe('<Form />', () => {
       expect(removeButtonElements).toHaveLength(1);
       expect(removeButtonElements[0]).toBeEnabled();
     });
+  });
+
+  it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1 and showLabel is false', async () => {
+    render(
+      <RecordFormWithRoutesStub
+        formSchema={
+          formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZeroShowLabelFalse
+        }
+      />,
+    );
+
+    expect(
+      screen.queryByLabelText('divaClient_deleteFieldText'),
+    ).not.toBeInTheDocument();
   });
 
   describe('collectionVariable', () => {

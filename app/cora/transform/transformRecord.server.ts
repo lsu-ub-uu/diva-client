@@ -17,16 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {
-  Attributes,
-  CoraData,
-  DataAtomic,
-  DataGroup,
-  DataListWrapper,
-  RecordLink,
-  RecordWrapper,
-  ResourceLink,
-} from '@/cora/cora-data/types.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
@@ -37,9 +27,18 @@ import {
   getFirstDataGroupWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import type {
+  Attributes,
+  CoraData,
+  DataAtomic,
+  DataGroup,
+  DataListWrapper,
+  RecordLink,
+  RecordWrapper,
+  ResourceLink,
+} from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
 import type {
   BFFDataRecord,
@@ -47,8 +46,9 @@ import type {
   BFFUserRight,
   Metadata,
 } from '@/types/record';
-import { mapKeys } from 'lodash-es';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { mapKeys } from 'lodash-es';
 
 /**
  * Transforms records
@@ -138,7 +138,10 @@ export const transformRecordData = (
   formMetadata: FormMetaData,
 ) => {
   return {
-    [dataRecordGroup.name]: transformDataGroup(dataRecordGroup, formMetadata),
+    [dataRecordGroup.name]: {
+      ...transformDataGroup(dataRecordGroup, formMetadata),
+      ...transformAttributes(dataRecordGroup.attributes),
+    },
   };
 };
 

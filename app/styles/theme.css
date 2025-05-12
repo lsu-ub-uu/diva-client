@@ -150,6 +150,8 @@
     --color-button-primary-active: rgb(255 255 255);
     --color-button-secondary-hover: rgb(255 255 255 / 10%);
     --color-button-secondary-active: rgb(255 255 255 / 20%);
+    --color-link: rgb(144 224 255);
+    --color-link-visited: rgb(204 178 227);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -185,6 +187,8 @@
       --color-button-primary-active: rgb(255 255 255);
       --color-button-secondary-hover: rgb(255 255 255 / 10%);
       --color-button-secondary-active: rgb(255 255 255 / 20%);
+      --color-link: rgb(144 224 255);
+      --color-link-visited: rgb(204 178 227);
     }
   }
 

@@ -437,6 +437,54 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           presentationId: 'someNameInDataVar',
+          showLabel: true,
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+            minNumberOfRepeatingToShow: 1,
+          },
+          validation: {
+            type: 'regex',
+            pattern: '^[a-zA-Z]$',
+          },
+          inputType: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+
+export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZeroShowLabelFalse: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      presentationId: 'someRootNameInDataGroup',
+      showLabel: true,
+      name: 'someRootNameInData',
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'text',
+          name: 'presentationTypeTextCollectionVarDefText',
+          presentationId: 'presentationTypeTextCollectionVarDefText',
+        },
+        {
+          type: 'textVariable',
+          mode: 'input',
+          name: 'someNameInData',
+          placeholder: 'someEmptyTextId',
+          presentationId: 'someNameInDataVar',
+          showLabel: false,
           repeat: {
             repeatMin: 0,
             repeatMax: 1,

@@ -25,6 +25,7 @@ import { ArrowDownwardIcon, ArrowUpwardIcon, CloseIcon } from '@/icons';
 interface ActionButtonGroupProps {
   entityName?: string;
   hideMoveButtons: boolean;
+  hideDeleteButton: boolean;
   moveUpButtonDisabled: boolean;
   moveUpButtonAction: () => void;
   moveDownButtonDisabled: boolean;
@@ -36,6 +37,10 @@ interface ActionButtonGroupProps {
 
 export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
   const { t } = useTranslation();
+
+  if (props.hideMoveButtons && props.hideDeleteButton) {
+    return null;
+  }
 
   return (
     <div
@@ -57,18 +62,20 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           <ArrowUpwardIcon />
         </Button>
       )}
-      <Button
-        size='small'
-        variant='icon'
-        aria-label={t('divaClient_deleteFieldText', {
-          fieldName: props.entityName,
-        })}
-        tooltipPosition='left'
-        disabled={props.deleteButtonDisabled}
-        onClick={props.deleteButtonAction}
-      >
-        <CloseIcon />
-      </Button>
+      {!props.hideDeleteButton && (
+        <Button
+          size='small'
+          variant='icon'
+          aria-label={t('divaClient_deleteFieldText', {
+            fieldName: props.entityName,
+          })}
+          tooltipPosition='left'
+          disabled={props.deleteButtonDisabled}
+          onClick={props.deleteButtonAction}
+        >
+          <CloseIcon />
+        </Button>
+      )}
       {!props.hideMoveButtons && (
         <Button
           size='small'

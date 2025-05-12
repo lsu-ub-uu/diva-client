@@ -82,7 +82,7 @@ export const Group = ({
       {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
-      <Card boxed={boxGroups && groupLevel !== 0}>
+      <Card boxed={boxGroups && groupLevel !== 0 && component.showLabel}>
         <CardHeader
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
