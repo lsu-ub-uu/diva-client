@@ -51,7 +51,7 @@ export const createNumVar = (
     metadata,
     metadataPool,
     undefined,
-    presentation,
+    presentation.mode,
   );
 
   const repeat = createRepeat(

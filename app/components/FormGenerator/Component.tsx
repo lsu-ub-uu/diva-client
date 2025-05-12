@@ -15,13 +15,15 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type {
-  FormComponent,
-  FormComponentContainer,
-  FormComponentGroup,
-  FormComponentLeaf,
-} from '@/components/FormGenerator/types';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { Group } from '@/components/FormGenerator/components/Group';
+import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
+import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
+import { RepeatingVariable } from '@/components/FormGenerator/components/RepeatingVariable';
+import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
+import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
   isComponentContainer,
   isComponentGroup,
@@ -32,15 +34,13 @@ import {
   isComponentVariable,
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
-import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
-import { RepeatingVariable } from '@/components/FormGenerator/components/RepeatingVariable';
-import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { Group } from '@/components/FormGenerator/components/Group';
-import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
+import type {
+  FormComponent,
+  FormComponentContainer,
+  FormComponentGroup,
+  FormComponentLeaf,
+} from '@/components/FormGenerator/types';
 import { use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
 

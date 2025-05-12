@@ -16,29 +16,30 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect } from 'react';
-import { useRemixFormContext } from 'remix-hook-form';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import type { FormComponentHidden } from '@/components/FormGenerator/types';
+import { HiddenInput } from './HiddenInput';
+import type { ReactNode } from 'react';
 
-interface HiddenInputProps {
+interface HiddenComponentProps {
   name: string;
-  value: string;
+  component: FormComponentHidden;
+  attributes?: ReactNode;
 }
 
-export const HiddenInput = ({ name, value }: HiddenInputProps) => {
-  const { register, getValues, setValue } = useRemixFormContext();
-  const formValue = getValues(name);
-
-  useEffect(() => {
-    if (formValue !== value) {
-      setValue(name, value);
-    }
-  }, [formValue, setValue, name, value]);
+export const HiddenComponent = ({
+  name,
+  component,
+  attributes,
+}: HiddenComponentProps) => {
+  const finalValue = component.finalValue;
 
   return (
-    <input
-      type='hidden'
-      data-testid={`${name}-hidden-input`}
-      {...register(name, { value })}
-    />
+    <>
+      <DevInfo component={component} path={name} />
+
+      <HiddenInput name={name} value={finalValue} />
+      {attributes}
+    </>
   );
 };

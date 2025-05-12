@@ -51,7 +51,7 @@ export const createGroup = (
     metadata,
     dependencies.metadataPool,
     undefined,
-    presentation,
+    presentation.mode,
   );
 
   const components = createComponentsFromChildReferences(

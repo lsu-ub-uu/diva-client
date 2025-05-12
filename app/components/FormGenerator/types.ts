@@ -109,6 +109,8 @@ export interface FormComponentTextVar extends FormComponentMetadata {
 export interface FormComponentHidden extends FormComponentBase {
   type: 'hidden';
   finalValue: string;
+  attributes?: FormAttributeCollection[];
+  attributesToShow: 'none';
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {

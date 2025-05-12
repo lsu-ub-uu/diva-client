@@ -26,10 +26,13 @@ import type {
   BFFPresentationGroup,
 } from '@/cora/transform/bffTypes.server';
 import type {
+  FormAttributeCollection,
   FormComponent,
   FormComponentHidden,
 } from '@/components/FormGenerator/types';
 import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { createAttributes } from './createAttributes';
+import type { BFFMetadataTypes } from '../formDefinition.server';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,
@@ -74,7 +77,16 @@ const createHiddenComponentsForMetadata = (
     );
   }
 
-  return [createHiddenVariable(presentation, metadata, currentPath)];
+  const attributes = createAttributes(
+    metadata as BFFMetadataTypes,
+    dependencies.metadataPool,
+    undefined,
+    'input',
+  );
+
+  return [
+    createHiddenVariable(presentation, metadata, currentPath, attributes),
+  ];
 };
 
 const createHiddenComponentsForGroup = (
@@ -101,6 +113,7 @@ function createHiddenVariable(
   presentation: BFFPresentation | undefined,
   metadata: BFFMetadata,
   currentPath: string,
+  attributes: FormAttributeCollection[] | undefined,
 ): FormComponentHidden | undefined {
   const hasPresentation = presentation !== undefined;
   const isFinalValue =
@@ -111,6 +124,8 @@ function createHiddenVariable(
       type: 'hidden',
       name: currentPath,
       finalValue: metadata.finalValue!,
+      attributes,
+      attributesToShow: 'none',
     };
   }
 }
