@@ -27,6 +27,7 @@ import { useState } from 'react';
 import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
 import styles from './FormGenerator.module.css';
+import clsx from 'clsx';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -46,7 +47,7 @@ export const FormGenerator = ({
   const [showDevInfo, setShowDevInfo] = useState(false);
 
   return (
-    <div className={styles['wrapper']}>
+    <div className={clsx(styles['wrapper'], 'form-component-container')}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
       <FormGeneratorContext
         value={{

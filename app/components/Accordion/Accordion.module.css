@@ -98,7 +98,7 @@
   --accordion-content-border-radius: var(--border-radius);
 }
 
-.accordion:has(.expand-button) {
+.accordion:has(> .expand-button) {
   display: flex;
 
   .content {
