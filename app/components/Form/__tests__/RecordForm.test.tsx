@@ -542,9 +542,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText(
-          'someRootNameInData.someNameInData.value is a required field',
-        ),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -563,10 +561,8 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText(
-          'divaOutput.titleInfo.title.value is a required field',
-        ),
-      ).toBeInTheDocument();
+        await screen.findAllByText('divaClient_fieldRequiredText'),
+      ).toHaveLength(2);
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -2406,7 +2402,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText('This variable is required'),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2491,7 +2487,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText('This variable is required'),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2519,7 +2515,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText('This variable is required'),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2543,7 +2539,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText('This variable is required'),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2569,7 +2565,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       expect(
-        await screen.findByText('This variable is required'),
+        await screen.findByText('divaClient_fieldRequiredText'),
       ).toBeInTheDocument();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
@@ -2782,9 +2778,7 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          await screen.findByText(
-            'output.language.title[0].value is a required field',
-          ),
+          await screen.findByText('divaClient_fieldRequiredText'),
         ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
@@ -2822,7 +2816,9 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(await screen.findByText('Invalid format')).toBeInTheDocument();
+        expect(
+          await screen.findByText('divaClient_fieldInvalidFormatText'),
+        ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
@@ -2861,9 +2857,7 @@ describe('<Form />', () => {
         await user.click(submitButton);
 
         expect(
-          await screen.findByText(
-            'output.language.languageTerm[0].value is a required field',
-          ),
+          await screen.findByText('divaClient_fieldRequiredText'),
         ).toBeInTheDocument();
         expect(actionSpy).toHaveBeenCalledTimes(0);
       });
