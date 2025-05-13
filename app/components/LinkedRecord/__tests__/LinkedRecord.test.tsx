@@ -325,7 +325,7 @@ describe('<LinkedRecord/>', () => {
     await act(() => render(<RoutesStub />));
 
     expect(
-      screen.getByText('divaClient_FailedToGetRecordText'),
+      screen.getByText('divaClient_failedToGetRecordText'),
     ).toBeInTheDocument();
   });
 });
