@@ -56,7 +56,7 @@ export const LinkedRecord = ({
   }
 
   if (error) {
-    return <div>{t('divaClient_FailedToGetRecordText')}</div>;
+    return <div>{t('divaClient_failedToGetRecordText')}</div>;
   }
 
   if (record) {
