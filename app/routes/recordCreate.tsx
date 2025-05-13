@@ -82,7 +82,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const title = t('divaClient_createRecordText', {
     rootGroupTitle: t(rootGroupTitleTextId).toLowerCase(),
   });
-  const breadcrumb = t('divaClient_createRecordText');
+  const breadcrumb = title;
 
   return data(
     { formDefinition, defaultValues, notification, title, breadcrumb },
