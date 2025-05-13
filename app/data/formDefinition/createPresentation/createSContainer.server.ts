@@ -32,40 +32,34 @@ export const createSContainer = (
   metadataChildReferences: BFFMetadataChildReference[],
   dependencies: Dependencies,
 ) => {
-  const presentationMetadataIds =
+  const presentationsOf =
     (presentation as BFFPresentationSurroundingContainer).presentationsOf ?? [];
-  return metadataChildReferences.filter((definitionChildRef) => {
-    if (
-      checkIfPresentationIncludesMetadataId(
-        presentationMetadataIds,
-        definitionChildRef,
-      )
-    ) {
-      return true;
-    }
 
-    return matchPresentationWithMetadata(
-      dependencies.metadataPool,
-      presentationMetadataIds,
-      definitionChildRef,
-    );
-  });
-};
+  return presentationsOf
+    .map((presentationMetadataId) => {
+      return metadataChildReferences.find((metadataChildRef) => {
+        // If ID matches, return true
+        if (metadataChildRef.childId === presentationMetadataId) {
+          return true;
+        }
 
-const checkIfPresentationIncludesMetadataId = (
-  presentationMetadataIds: string[],
-  definitionChildRef: BFFMetadataChildReference,
-) => {
-  return presentationMetadataIds.includes(definitionChildRef.childId);
+        return matchPresentationWithMetadata(
+          dependencies.metadataPool,
+          presentationMetadataId,
+          metadataChildRef,
+        );
+      });
+    })
+    .filter((metadata) => metadata !== undefined);
 };
 
 const matchPresentationWithMetadata = (
   metadataPool: Lookup<string, BFFMetadataBase>,
-  presentationMetadataIds: string[],
+  presentationMetadataId: string,
   definitionChildRef: BFFMetadataChildReference,
 ) => {
   const metadataFromCurrentPresentation = metadataPool.get(
-    presentationMetadataIds[0],
+    presentationMetadataId,
   );
 
   return findMetadataChildReferenceByNameInDataAndAttributes(
