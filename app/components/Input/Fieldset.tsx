@@ -22,13 +22,14 @@ import styles from './Fieldset.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { WarningIcon } from '@/icons';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 interface FieldsetProps {
   className?: string;
   label?: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
-  errorMessage?: ReactNode;
+  errorMessage?: string;
   children?: ReactNode;
   info?: {
     title: string;
@@ -49,6 +50,7 @@ export const Fieldset = ({
   variant,
   size,
 }: FieldsetProps) => {
+  const { t } = useTranslation();
   const id = useId();
 
   const ids = {
@@ -85,7 +87,7 @@ export const Fieldset = ({
           </div>
           {errorMessage && (
             <Description className={styles['error-message']}>
-              {errorMessage}
+              {t(errorMessage)}
             </Description>
           )}
         </FieldsetRoot>

@@ -17,12 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
-import { useFetcher } from 'react-router';
 import type { loader } from '@/routes/getRecord';
-import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { useEffect } from 'react';
+import { useFetcher } from 'react-router';
+import styles from './LinkedPresentationRecord.module.css';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -35,11 +34,8 @@ export const LinkedRecord = ({
   id,
   presentationRecordLinkId,
 }: LinkedRecordProps) => {
-  const { t } = useTranslation();
   const { load, data, state } = useFetcher<typeof loader>();
-  const isLoading = state === 'loading';
   const record = state === 'idle' && data?.record;
-  const error = state === 'idle' && data?.error;
 
   useEffect(() => {
     load(
@@ -47,19 +43,11 @@ export const LinkedRecord = ({
     );
   }, [load, recordType, id, presentationRecordLinkId]);
 
-  if (isLoading) {
+  if (record) {
     return (
-      <div>
-        {t('divaClient_loadingText')} <CircularLoader />
+      <div className={styles['linked-record-wrapper']}>
+        <LinkedRecordForm record={record} />
       </div>
     );
-  }
-
-  if (error) {
-    return <div>{t('divaClient_FailedToGetRecordText')}</div>;
-  }
-
-  if (record) {
-    return <LinkedRecordForm record={record} />;
   }
 };

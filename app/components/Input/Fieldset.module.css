@@ -24,7 +24,7 @@
 .fieldset[data-variant='inline'] {
   grid-template-areas:
     'label input attributes actions'
-    'error error error      error';
+    '.     error error      error';
   grid-template-columns: auto 1fr auto auto;
 
   .label {

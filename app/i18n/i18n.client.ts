@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import I18NextHttpBackend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import { i18nConfig } from '@/i18n/i18nConfig';
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import I18NextHttpBackend from 'i18next-http-backend';
+import { initReactI18next } from 'react-i18next';
 
 export const initClienti18n = () => {
   return i18n

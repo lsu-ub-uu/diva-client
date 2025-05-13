@@ -17,20 +17,20 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Button } from '@/components/Button/Button';
+import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
+import { AddCircleIcon } from '@/icons';
 import React, { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ActionButtonGroup } from './ActionButtonGroup';
 import {
   addAttributesToName,
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
-import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { Button } from '@/components/Button/Button';
-import { AddCircleIcon } from '@/icons';
 import { FormGeneratorContext } from '../FormGeneratorContext';
+import { ActionButtonGroup } from './ActionButtonGroup';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -68,17 +68,6 @@ export const FieldArrayComponent = ({
 
   return (
     <React.Fragment key={`${name}_fac`}>
-      <Controller
-        control={control}
-        name={name}
-        render={({ fieldState }) => (
-          <>
-            {fieldState.error && (
-              <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
-            )}
-          </>
-        )}
-      />
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (

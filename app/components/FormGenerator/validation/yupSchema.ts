@@ -49,9 +49,15 @@ import {
   isComponentValidForDataCarrying,
 } from '../formGeneratorUtils/formGeneratorUtils';
 
+const REQUIRED_TEXT_ID = 'divaClient_fieldRequiredText';
+const INVALID_FORMAT_TEXT_ID = 'divaClient_fieldInvalidFormatText';
+const INVALID_RANGE_MIN_TEXT_ID = 'divaClient_invalidRangeMinText';
+const INVALID_RANGE_MAX_TEXT_ID = 'divaClient_invalidRangeMaxText';
+
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
+
   return yup.object().shape(obj);
 };
 
@@ -299,7 +305,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       )
       .test(testOptionalParentAndRequiredSiblingWithValue);
   }
@@ -307,11 +313,11 @@ const createYupStringRegexpSchema = (
   if (!isParentGroupOptional && isComponentRequired(component)) {
     return yup
       .string()
-      .required()
+      .required(REQUIRED_TEXT_ID)
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -322,7 +328,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -333,7 +339,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -341,7 +347,7 @@ const createYupStringRegexpSchema = (
     .string()
     .matches(
       new RegExp(regexpValidation.pattern ?? '.+'),
-      'Invalid input format',
+      INVALID_FORMAT_TEXT_ID,
     );
 };
 
@@ -371,7 +377,7 @@ export const createYupNumberSchema = (
 
   const testMin: TestConfig<string | null | undefined, AnyObject> = {
     name: 'min',
-    message: 'Invalid range (min)',
+    message: INVALID_RANGE_MIN_TEXT_ID,
     params: { min },
     test: (value) => {
       if (!value) return true;
@@ -382,7 +388,7 @@ export const createYupNumberSchema = (
 
   const testMax: TestConfig<string | null | undefined, AnyObject> = {
     name: 'max',
-    message: 'Invalid range (max)',
+    message: INVALID_RANGE_MAX_TEXT_ID,
     params: { max },
     test: (value) => {
       if (!value) return true;
@@ -403,7 +409,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -420,7 +428,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -436,7 +446,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -446,7 +458,7 @@ export const createYupNumberSchema = (
 
   return yup
     .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+    .matches(/^[1-9]\d*(\.\d+)?$/, { message: INVALID_FORMAT_TEXT_ID })
     .test(testDecimals)
     .test(testMin)
     .test(testMax);
@@ -475,14 +487,14 @@ const createYupStringSchema = (
   }
 
   if (!isParentGroupOptional && isComponentRequired(component)) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (isComponentRepeating(component) || isParentGroupOptional) {
     return generateYupSchemaForCollections();
   }
 
-  return yup.string().required();
+  return yup.string().required(REQUIRED_TEXT_ID);
 };
 
 const createYupAttributeSchema = (
@@ -515,31 +527,31 @@ const createYupAttributeSchema = (
       if (value === null || value === '') {
         return yup.string().nullable();
       }
-      return yup.string().required();
+      return yup.string().required(REQUIRED_TEXT_ID);
     });
   }
 
   if (siblingRequired && !siblingRepeat) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (!siblingRequired) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup.string().nullable().test(testAttributeHasVariableWithValue)
-        : yup.string().required();
+        : yup.string().required(REQUIRED_TEXT_ID);
     });
   }
 
   if (!siblingRequired && isComponentRequired(component)) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (isComponentRepeating(component) || siblingRequired) {
     return generateYupSchemaForCollections();
   }
 
-  return yup.string().required();
+  return yup.string().required(REQUIRED_TEXT_ID);
 };
 
 const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
@@ -547,7 +559,7 @@ const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
-  message: 'This variable is required',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     if (
       !value &&
@@ -575,7 +587,7 @@ const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfStringVariableHasSiblingsWithValues',
-  message: 'This variable is required',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     if (
       !value &&
@@ -599,7 +611,7 @@ const testAttributeHasVariableWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfVariableHasSiblingsWithValues',
-  message: 'This attribute is for a variable with value',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     return (checkForExistingSiblings(value) ||
       testSiblingValueAndValueExistingValue(context, value) ||

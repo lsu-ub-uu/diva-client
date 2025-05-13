@@ -69,7 +69,7 @@ export const OutputField = ({
             id={`${path}-label`}
           />
         )}
-        {info && <FieldInfo {...info} />}
+        {label && info && <FieldInfo {...info} />}
         {adornment && (
           <div className={styles['adornment-wrapper']}>{adornment}</div>
         )}

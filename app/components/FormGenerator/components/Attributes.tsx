@@ -35,7 +35,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
     const options = [
       {
         value: '',
-        label: t(attribute.placeholder ?? 'divaClient_optionNoneText'),
+        label: t(attribute.placeholder ?? 'initialEmptyValueText'),
       },
       ...attribute.options,
     ];

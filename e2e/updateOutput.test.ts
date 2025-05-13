@@ -42,9 +42,7 @@ test.describe('Update output', () => {
     await logIn(page);
 
     //Assert update page info
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      recordTitle,
-    );
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Rapport');
     await expect(
       page.getByRole('group', { name: 'Huvudtitel' }).getByLabel('Huvudtitel'),
     ).toHaveValue(recordTitle);

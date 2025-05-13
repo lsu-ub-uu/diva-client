@@ -18,12 +18,7 @@
  */
 
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
-import {
-  act,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
@@ -246,33 +241,6 @@ const nationalSubjectCategory = {
 };
 
 describe('<LinkedRecord/>', () => {
-  it('renders with default loadingText', async () => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <LinkedRecord
-            id='nationalSubjectCategory:6325370460697648'
-            recordType='nationalSubjectCategory'
-            presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-          />
-        ),
-      },
-      {
-        path: '/record/:recordType/:recordId',
-        loader: () => {
-          return { record: nationalSubjectCategory };
-        },
-      },
-    ]);
-    render(<RoutesStub />);
-    const loadingText = screen.queryByText('divaClient_loadingText');
-    expect(loadingText).toBeInTheDocument();
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText('divaClient_loadingText'),
-    );
-  });
-
   it('renders the presentation for the linked record', async () => {
     const RoutesStub = createRoutesStub([
       {
@@ -298,34 +266,5 @@ describe('<LinkedRecord/>', () => {
     expect(fysik).toBeInTheDocument();
     const physics = screen.queryByText(/Physical Sciences/i);
     expect(physics).toBeInTheDocument();
-    expect(
-      screen.queryByText('divaClient_loadingText'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('renders an error message on fetch error', async () => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <LinkedRecord
-            id='nationalSubjectCategory:6325370460697648'
-            recordType='nationalSubjectCategory'
-            presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
-          />
-        ),
-      },
-      {
-        path: '/record/:recordType/:recordId',
-        loader: () => {
-          return { error: true };
-        },
-      },
-    ]);
-    await act(() => render(<RoutesStub />));
-
-    expect(
-      screen.getByText('divaClient_FailedToGetRecordText'),
-    ).toBeInTheDocument();
   });
 });

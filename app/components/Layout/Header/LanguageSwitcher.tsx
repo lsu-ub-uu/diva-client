@@ -43,7 +43,7 @@ export const LanguageSwitcher = () => {
         <MenuButton
           as={Button}
           variant='tertiary'
-          aria-label={t('divaClient_ChooseLanguageText')}
+          aria-label={t('divaClient_selectLanguageText')}
         >
           <LanguageIcon className={styles['language-icon']} />
           <span className={styles['dropdown-label']}>

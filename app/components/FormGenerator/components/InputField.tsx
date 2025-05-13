@@ -43,7 +43,7 @@ import { useTranslation } from 'react-i18next';
 interface InputFieldProps {
   component: FormComponentTextVar | FormComponentNumVar;
   path: string;
-  errorMessage: string | undefined;
+  invalid?: boolean;
   register: UseFormRegister<FieldValues>;
   control: Control;
 }
@@ -51,7 +51,7 @@ interface InputFieldProps {
 export const InputField = ({
   component,
   path,
-  errorMessage,
+  invalid = false,
   register,
   control,
 }: InputFieldProps) => {
@@ -62,7 +62,7 @@ export const InputField = ({
 
   if (isComponentCollVar(component)) {
     const options = [
-      { value: '', label: t('divaClient_optionNoneText') },
+      { value: '', label: t('initialEmptyValueText') },
       ...component.options,
     ];
     if (hydrated && component.options.length > 20) {
@@ -75,7 +75,7 @@ export const InputField = ({
               name={name}
               value={value}
               onChange={onChange}
-              invalid={errorMessage !== undefined}
+              invalid={invalid}
               aria-label={!component.showLabel ? t(component.label) : undefined}
               aria-details={ids.details}
               options={options}
@@ -89,7 +89,7 @@ export const InputField = ({
     return (
       <Select
         {...register(path)}
-        invalid={errorMessage !== undefined}
+        invalid={invalid}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
         {...(value && { 'data-has-value': '' })}
@@ -112,8 +112,8 @@ export const InputField = ({
     return (
       <Textarea
         {...register(path)}
-        invalid={errorMessage !== undefined}
-        placeholder={component.placeholder}
+        invalid={invalid}
+        placeholder={component.placeholder && t(component.placeholder)}
         readOnly={!!component.finalValue}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
@@ -126,8 +126,8 @@ export const InputField = ({
     <Input
       {...register(path)}
       type={isPasswordField(component) ? 'password' : 'text'}
-      invalid={errorMessage !== undefined}
-      placeholder={component.placeholder}
+      invalid={invalid}
+      placeholder={component.placeholder && t(component.placeholder)}
       readOnly={!!component.finalValue}
       aria-label={!component.showLabel ? t(component.label) : undefined}
       aria-details={ids.details}

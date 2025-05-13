@@ -109,15 +109,13 @@ export const RecordLinkWithLinkedPresentation = ({
         </div>
       </div>
 
-      <div className={styles['linked-record-wrapper']}>
-        <LinkedRecord
-          recordType={component.linkedRecordPresentation.presentedRecordType}
-          id={linkedRecordId}
-          presentationRecordLinkId={
-            component.linkedRecordPresentation.presentationId
-          }
-        />
-      </div>
+      <LinkedRecord
+        recordType={component.linkedRecordPresentation.presentedRecordType}
+        id={linkedRecordId}
+        presentationRecordLinkId={
+          component.linkedRecordPresentation.presentationId
+        }
+      />
     </div>
   );
 };
