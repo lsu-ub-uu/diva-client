@@ -49,9 +49,13 @@ import {
   isComponentValidForDataCarrying,
 } from '../formGeneratorUtils/formGeneratorUtils';
 
+const REQUIRED_TEXT_ID = 'divaClient_fieldRequiredText';
+const INVALID_FORMAT_TEXT_ID = 'divaClient_fieldInvalidFormatText';
+
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
+
   return yup.object().shape(obj);
 };
 
@@ -299,7 +303,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       )
       .test(testOptionalParentAndRequiredSiblingWithValue);
   }
@@ -307,11 +311,11 @@ const createYupStringRegexpSchema = (
   if (!isParentGroupOptional && isComponentRequired(component)) {
     return yup
       .string()
-      .required()
+      .required(REQUIRED_TEXT_ID)
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -322,7 +326,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -333,7 +337,7 @@ const createYupStringRegexpSchema = (
       .transform((value) => (value === '' ? null : value))
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
+        INVALID_FORMAT_TEXT_ID,
       );
   }
 
@@ -341,7 +345,7 @@ const createYupStringRegexpSchema = (
     .string()
     .matches(
       new RegExp(regexpValidation.pattern ?? '.+'),
-      'Invalid input format',
+      INVALID_FORMAT_TEXT_ID,
     );
 };
 
@@ -475,14 +479,14 @@ const createYupStringSchema = (
   }
 
   if (!isParentGroupOptional && isComponentRequired(component)) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (isComponentRepeating(component) || isParentGroupOptional) {
     return generateYupSchemaForCollections();
   }
 
-  return yup.string().required();
+  return yup.string().required(REQUIRED_TEXT_ID);
 };
 
 const createYupAttributeSchema = (
@@ -515,31 +519,31 @@ const createYupAttributeSchema = (
       if (value === null || value === '') {
         return yup.string().nullable();
       }
-      return yup.string().required();
+      return yup.string().required(REQUIRED_TEXT_ID);
     });
   }
 
   if (siblingRequired && !siblingRepeat) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (!siblingRequired) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup.string().nullable().test(testAttributeHasVariableWithValue)
-        : yup.string().required();
+        : yup.string().required(REQUIRED_TEXT_ID);
     });
   }
 
   if (!siblingRequired && isComponentRequired(component)) {
-    return yup.string().required();
+    return yup.string().required(REQUIRED_TEXT_ID);
   }
 
   if (isComponentRepeating(component) || siblingRequired) {
     return generateYupSchemaForCollections();
   }
 
-  return yup.string().required();
+  return yup.string().required(REQUIRED_TEXT_ID);
 };
 
 const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<

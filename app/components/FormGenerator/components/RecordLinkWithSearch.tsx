@@ -59,6 +59,7 @@ export const RecordLinkWithSearch = ({
   const theme = useTheme();
   const fetcher = useFetcher();
   const recordLinkSearchPresentation = component.searchPresentation;
+  const label = t(component.label);
 
   assertDefined(
     recordLinkSearchPresentation,
@@ -103,7 +104,7 @@ export const RecordLinkWithSearch = ({
         path={path}
       />
       <Fieldset
-        label={component.showLabel ? t(component.label) : undefined}
+        label={component.showLabel ? label : undefined}
         errorMessage={errorMessage}
         info={showTooltips ? component.tooltip : undefined}
         attributes={attributes}
@@ -125,6 +126,7 @@ export const RecordLinkWithSearch = ({
                 aria-busy={fetcher.state !== 'idle'}
                 placeholder={t(
                   'divaClient_recordLinkAutocompletePlaceholderText',
+                  { recordType: label.toLowerCase() },
                 )}
                 name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
                 onChange={handleComboboxInputChange}

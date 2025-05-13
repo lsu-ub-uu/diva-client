@@ -68,17 +68,6 @@ export const FieldArrayComponent = ({
 
   return (
     <React.Fragment key={`${name}_fac`}>
-      <Controller
-        control={control}
-        name={name}
-        render={({ fieldState }) => (
-          <>
-            {fieldState.error && (
-              <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
-            )}
-          </>
-        )}
-      />
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (

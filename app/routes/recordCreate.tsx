@@ -105,7 +105,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     validationTypeId,
     'create',
   );
-  const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
+  const yupSchema = generateYupSchemaFromFormSchema(formDefinition, t);
   const resolver = yupResolver(yupSchema);
 
   const {

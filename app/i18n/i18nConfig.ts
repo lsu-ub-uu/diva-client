@@ -21,7 +21,7 @@ import type { InitOptions } from 'i18next';
 export const i18nConfig: InitOptions = {
   fallbackLng: 'sv',
   supportedLngs: ['sv', 'en'],
-  debug: false,
+  debug: true,
   interpolation: {
     escapeValue: false,
   },

@@ -55,6 +55,7 @@ import {
 } from './userPreferences/userPreferencesCookie.server';
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { setLocale } from 'yup';
 
 const { MODE } = import.meta.env;
 

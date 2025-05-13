@@ -105,7 +105,7 @@ export const Variable = ({
           <InputField
             component={component}
             path={path}
-            errorMessage={errorMessage}
+            invalid={errorMessage !== undefined}
             register={register}
             control={control}
           />
