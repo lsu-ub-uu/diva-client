@@ -36,7 +36,7 @@ test.describe('Create output', () => {
     await page.getByRole('button', { name: 'Skapa output' }).click();
     await page.getByRole('menuitem', { name: 'Rapport' }).click();
 
-    await expect(page).toHaveTitle(/^Skapa publikation/);
+    await expect(page).toHaveTitle(/^Rapport/);
 
     // Fill create form
     await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
@@ -121,7 +121,7 @@ test.describe('Create output', () => {
     await page.getByRole('button', { name: 'Skapa output' }).click();
     await page.getByRole('menuitem', { name: 'Rapport' }).click();
 
-    await expect(page).toHaveTitle(/^Skapa publikation/);
+    await expect(page).toHaveTitle(/^Rapport/);
 
     // Fill create form
     await page.getByRole('combobox', { name: 'Rättighetsenhet' }).fill('uu');
