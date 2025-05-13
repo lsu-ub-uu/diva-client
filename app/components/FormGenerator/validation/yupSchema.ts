@@ -51,6 +51,8 @@ import {
 
 const REQUIRED_TEXT_ID = 'divaClient_fieldRequiredText';
 const INVALID_FORMAT_TEXT_ID = 'divaClient_fieldInvalidFormatText';
+const INVALID_RANGE_MIN_TEXT_ID = 'divaClient_invalidRangeMinText';
+const INVALID_RANGE_MAX_TEXT_ID = 'divaClient_invalidRangeMaxText';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
@@ -375,7 +377,7 @@ export const createYupNumberSchema = (
 
   const testMin: TestConfig<string | null | undefined, AnyObject> = {
     name: 'min',
-    message: 'Invalid range (min)',
+    message: INVALID_RANGE_MIN_TEXT_ID,
     params: { min },
     test: (value) => {
       if (!value) return true;
@@ -386,7 +388,7 @@ export const createYupNumberSchema = (
 
   const testMax: TestConfig<string | null | undefined, AnyObject> = {
     name: 'max',
-    message: 'Invalid range (max)',
+    message: INVALID_RANGE_MAX_TEXT_ID,
     params: { max },
     test: (value) => {
       if (!value) return true;
@@ -407,7 +409,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -424,7 +428,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -440,7 +446,9 @@ export const createYupNumberSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .matches(/^[1-9]\d*(\.\d+)?$/, {
+                message: INVALID_FORMAT_TEXT_ID,
+              })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
@@ -450,7 +458,7 @@ export const createYupNumberSchema = (
 
   return yup
     .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+    .matches(/^[1-9]\d*(\.\d+)?$/, { message: INVALID_FORMAT_TEXT_ID })
     .test(testDecimals)
     .test(testMin)
     .test(testMax);
@@ -551,7 +559,7 @@ const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
-  message: 'This variable is required',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     if (
       !value &&
@@ -579,7 +587,7 @@ const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfStringVariableHasSiblingsWithValues',
-  message: 'This variable is required',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     if (
       !value &&
@@ -603,7 +611,7 @@ const testAttributeHasVariableWithValue: TestConfig<
   AnyObject
 > = {
   name: 'checkIfVariableHasSiblingsWithValues',
-  message: 'This attribute is for a variable with value',
+  message: REQUIRED_TEXT_ID,
   test: (value, context) => {
     return (checkForExistingSiblings(value) ||
       testSiblingValueAndValueExistingValue(context, value) ||

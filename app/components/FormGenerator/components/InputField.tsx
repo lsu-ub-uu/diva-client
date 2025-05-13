@@ -62,7 +62,7 @@ export const InputField = ({
 
   if (isComponentCollVar(component)) {
     const options = [
-      { value: '', label: t('divaClient_optionNoneText') },
+      { value: '', label: t('initialEmptyValueText') },
       ...component.options,
     ];
     if (hydrated && component.options.length > 20) {
