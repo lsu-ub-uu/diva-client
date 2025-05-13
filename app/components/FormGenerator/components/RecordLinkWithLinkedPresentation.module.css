@@ -10,9 +10,3 @@
   font-style: italic;
   color: var(--color-label);
 }
-
-.label-and-adornment-wrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--gap);
-}
