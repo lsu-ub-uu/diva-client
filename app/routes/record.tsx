@@ -94,10 +94,9 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   return <UnhandledErrorPage error={error} />;
 };
 
-export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
+export default function RecordTypeRoute() {
   return (
     <div>
-      <h1 style={{ marginBottom: '2rem' }}>{loaderData.pageTitle}</h1>
       <Outlet />
     </div>
   );

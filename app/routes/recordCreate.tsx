@@ -165,8 +165,6 @@ export default function CreateRecordRoute({
 
   return (
     <>
-      <h1 style={{ marginBottom: '2rem' }}>{loaderData.title}</h1>
-
       <SidebarLayout
         sidebarContent={
           <NavigationPanel
