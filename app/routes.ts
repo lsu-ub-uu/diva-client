@@ -28,7 +28,7 @@ export default [
   route('fileUpload', 'routes/fileUpload.tsx'),
 
   route('design-system', 'routes/designSystem.tsx'),
-  route('api-docs', 'routes/api-docs/apiDocsRecordTypes.tsx', [
+  route('api-docs', 'routes/api-docs/apiDocs.tsx', [
     route(':recordType', 'routes/api-docs/apiDocsRecordType.tsx', [
       route(':validationType', 'routes/api-docs/apiDocsValidationType.tsx'),
     ]),
