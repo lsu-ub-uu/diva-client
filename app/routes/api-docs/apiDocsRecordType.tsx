@@ -8,7 +8,7 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 import type { Route } from './+types/apiDocsRecordType';
-import { ValidationType } from './components/ValidationTypeDoc';
+import { ValidationType } from './components/MetadataDoc';
 import { useTranslation } from 'react-i18next';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {

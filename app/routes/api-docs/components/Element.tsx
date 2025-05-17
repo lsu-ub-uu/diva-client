@@ -12,6 +12,7 @@ import {
 } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { CloseIcon } from '@/icons';
+import { NameInData } from './ NameInData';
 
 interface ElementProps {
   children?: ReactNode;
@@ -34,7 +35,11 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
         >
           +
         </button>
-        &lt;{metadata.nameInData} ... /&gt;&nbsp;
+        &lt;{metadata.nameInData}
+        {'attributeReferences' in metadata && (
+          <AttributesDoc attributeReferences={metadata.attributeReferences} />
+        )}{' '}
+        ... /&gt;&nbsp;
         <span style={{ color: 'hotpink' }}>
           ({childRef.repeatMin} - {childRef.repeatMax})
         </span>
@@ -52,19 +57,7 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
           -
         </button>
         &lt;
-        <Popover style={{ display: 'inline-block' }}>
-          <PopoverButton className='element-popover-button'>
-            {metadata.nameInData}
-          </PopoverButton>
-          <PopoverPanel
-            anchor='top'
-            role='definition'
-            className='element-popover-panel'
-          >
-            <h4>{t(metadata.textId)}</h4>
-            <p>{t(metadata.defTextId)}</p>
-          </PopoverPanel>
-        </Popover>
+        <NameInData metadata={metadata} />
         {'attributeReferences' in metadata && (
           <AttributesDoc attributeReferences={metadata.attributeReferences} />
         )}
@@ -73,7 +66,7 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
           ({childRef.repeatMin} - {childRef.repeatMax})
         </span>
       </div>
-      <div style={{ paddingLeft: '1rem' }}>
+      <div style={{ paddingLeft: '1.5rem' }}>
         {finalValue ? (
           <span style={{ color: 'darkorange' }}>{finalValue}</span>
         ) : (

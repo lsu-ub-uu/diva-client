@@ -9,7 +9,10 @@
     background: rgb(255 255 255 / 30%);
   }
 }
-
+.h3 {
+  font-family: monospace;
+  text-transform: uppercase;
+}
 .element {
   position: relative;
 }
@@ -59,7 +62,7 @@
   }
 }
 
-nav {
+.api-docs-nav {
   ul {
     list-style: none;
   }

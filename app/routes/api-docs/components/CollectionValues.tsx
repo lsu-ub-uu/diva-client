@@ -1,33 +1,41 @@
-import { useState } from 'react';
+import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
+import { Fragment, useState } from 'react';
+import { NameInData } from './ NameInData';
+import { PreviousPageIcon } from '@/icons';
 
 export interface CollectionValuesProps {
-  collectionValues: string[];
+  collectionItems: BFFMetadata[];
   max?: number;
 }
 
 export const CollectionValues = ({
-  collectionValues,
+  collectionItems,
   max = 8,
 }: CollectionValuesProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  const valuesToShow = expanded
-    ? collectionValues
-    : collectionValues.slice(0, max);
-  console.log('valuesToShow', valuesToShow);
+  const itemsToShow = expanded
+    ? collectionItems
+    : collectionItems.slice(0, max);
+  console.log('valuesToShow', itemsToShow);
   return (
     <span style={{ color: 'deepskyblue' }}>
-      {collectionValues.length > max ? (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className='collection-variable-expand'
-        >
-          {valuesToShow.join(' | ')}
-          {!expanded && ' | ...'}
-        </button>
-      ) : (
-        collectionValues.join(' | ')
-      )}
+      <span>
+        {itemsToShow.map((item, index) => (
+          <Fragment key={item.id}>
+            <NameInData metadata={item} />
+            {index < collectionItems.length - 1 && ' | '}
+          </Fragment>
+        ))}
+        {collectionItems.length > max && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className='collection-variable-expand'
+          >
+            {expanded ? ' [-]' : '...'}
+          </button>
+        )}
+      </span>
     </span>
   );
 };

@@ -8,11 +8,10 @@ import { GroupDoc } from './GroupDoc';
 import { useTranslation } from 'react-i18next';
 
 export function ValidationType({
-  validationType,
+  metadataGroupId,
 }: {
-  validationType: BFFValidationType;
+  metadataGroupId: string;
 }) {
-  const { t } = useTranslation();
   const loaderData = useRouteLoaderData<typeof loader>(
     'routes/api-docs/apiDocs',
   );
@@ -21,13 +20,10 @@ export function ValidationType({
   }
 
   const { metadataPool } = loaderData;
-  const newMetadataGroup = metadataPool[
-    validationType.newMetadataGroupId
-  ] as BFFMetadataGroup;
+  const newMetadataGroup = metadataPool[metadataGroupId] as BFFMetadataGroup;
 
   return (
     <div>
-      <h2>{t(validationType.nameTextId)}</h2>
       <div
         style={{
           padding: '1rem',

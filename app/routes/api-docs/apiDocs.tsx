@@ -39,7 +39,7 @@ export default function ApiDocs({ loaderData }: Route.ComponentProps) {
       <div style={{ display: 'flex', gap: '1rem' }}>
         <div>
           <h2>Record types</h2>
-          <nav>
+          <nav className='api-docs-nav'>
             <ul>
               {recordTypes.map((recordType) => (
                 <li key={recordType.id}>

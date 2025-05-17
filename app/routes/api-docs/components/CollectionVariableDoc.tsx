@@ -1,4 +1,5 @@
 import type {
+  BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
 } from '@/cora/transform/bffTypes.server';
@@ -9,15 +10,15 @@ import { CollectionValues } from './CollectionValues';
 export function CollectionVariableDoc({
   metadata,
   childRef,
-  collectionValues,
+  collectionItems,
 }: {
   metadata: BFFMetadataCollectionVariable;
   childRef: BFFMetadataChildReference;
-  collectionValues: string[];
+  collectionItems: BFFMetadata[];
 }) {
   return (
     <Element metadata={metadata} childRef={childRef}>
-      <CollectionValues collectionValues={collectionValues} max={12} />
+      <CollectionValues collectionItems={collectionItems} max={12} />
     </Element>
   );
 }

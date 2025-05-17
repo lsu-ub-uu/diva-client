@@ -59,14 +59,14 @@ function ChildDoc({
         (childMetadata as BFFMetadataCollectionVariable).refCollection
       ] as BFFMetadataItemCollection;
 
-      const collectionValues = itemCollection.collectionItemReferences.map(
-        (ref) => metadataPool[ref.refCollectionItemId].nameInData,
+      const collectionItems = itemCollection.collectionItemReferences.map(
+        (ref) => metadataPool[ref.refCollectionItemId],
       );
 
       return (
         <CollectionVariableDoc
           metadata={childMetadata as BFFMetadataCollectionVariable}
-          collectionValues={collectionValues}
+          collectionItems={collectionItems}
           childRef={childRef}
         />
       );

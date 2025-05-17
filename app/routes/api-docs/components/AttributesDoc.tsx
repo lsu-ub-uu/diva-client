@@ -7,6 +7,7 @@ import { useRouteLoaderData } from 'react-router';
 import type { loader } from '../apiDocs';
 import { useState } from 'react';
 import { CollectionValues } from './CollectionValues';
+import { NameInData } from './ NameInData';
 
 export function AttributesDoc({
   attributeReferences,
@@ -29,21 +30,21 @@ export function AttributesDoc({
       attributeMetadata.refCollection
     ] as BFFMetadataItemCollection;
 
-    const collectionValues = itemCollection.collectionItemReferences.map(
-      (ref) => metadataPool[ref.refCollectionItemId].nameInData,
+    const collectionItems = itemCollection.collectionItemReferences.map(
+      (ref) => metadataPool[ref.refCollectionItemId],
     );
 
     return (
       <span key={attributeMetadata.id}>
         {' '}
-        {attributeMetadata.nameInData}=
+        <NameInData metadata={attributeMetadata} />=
         {attributeMetadata.finalValue ? (
           <span style={{ color: 'darkorange' }}>
             "{attributeMetadata.finalValue}"
           </span>
         ) : (
           <span>
-            "<CollectionValues collectionValues={collectionValues} />"
+            "<CollectionValues collectionItems={collectionItems} />"
           </span>
         )}
       </span>
