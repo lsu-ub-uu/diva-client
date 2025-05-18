@@ -13,8 +13,8 @@ import { useTranslation } from 'react-i18next';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const pathname = url.pathname;
 
+  const { t } = context.i18n;
   const dependencies = await context.dependencies;
   const recordType = dependencies.recordTypePool.get(params.recordType);
   const validationTypes = Array.from(
@@ -28,7 +28,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     throw data('Record type not found', { status: 404 });
   }
 
-  return { recordType, validationTypes, breadcrumb: recordType.id };
+  return { recordType, validationTypes, breadcrumb: t(recordType.textId) };
 }
 
 export default function RecordType({ loaderData }: Route.ComponentProps) {

@@ -30,7 +30,9 @@ export default [
   route('design-system', 'routes/designSystem.tsx'),
   route('api-docs', 'routes/api-docs/apiDocs.tsx', [
     route(':recordType', 'routes/api-docs/apiDocsRecordType.tsx', [
-      route(':validationType', 'routes/api-docs/apiDocsValidationType.tsx'),
+      route(':validationType', 'routes/api-docs/apiDocsValidationType.tsx', [
+        route(':method', 'routes/api-docs/apiDocsMethod.tsx'),
+      ]),
     ]),
   ]),
 ] satisfies RouteConfig;

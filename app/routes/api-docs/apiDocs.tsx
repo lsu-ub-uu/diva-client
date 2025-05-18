@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next';
 import css from './apiDocs.css?url';
 import { useState } from 'react';
 import { ChevronDownIcon } from '@/icons';
+import type {
+  BFFRecordType,
+  BFFValidationType,
+} from '@/cora/transform/bffTypes.server';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -45,7 +49,7 @@ export default function ApiDocs({ loaderData }: Route.ComponentProps) {
                 <li key={recordType.id}>
                   {recordType.validationTypes.length === 1 ? (
                     <NavLink
-                      to={`/api-docs/${recordType.id}/${recordType.validationTypes[0].id}`}
+                      to={`/api-docs/${recordType.id}/${recordType.validationTypes[0].id}/read`}
                     >
                       {t(recordType.textId)}
                     </NavLink>
@@ -63,7 +67,11 @@ export default function ApiDocs({ loaderData }: Route.ComponentProps) {
   );
 }
 
-const ExpandableRecordTypeNavItem = ({ recordType }) => {
+const ExpandableRecordTypeNavItem = ({
+  recordType,
+}: {
+  recordType: BFFRecordType & { validationTypes: BFFValidationType[] };
+}) => {
   const [expanded, setExpanded] = useState(false);
   const { t } = useTranslation();
 
@@ -85,7 +93,7 @@ const ExpandableRecordTypeNavItem = ({ recordType }) => {
         <ul style={{ paddingLeft: '1rem' }}>
           {recordType.validationTypes.map((type) => (
             <li key={type.id}>
-              <NavLink to={`/api-docs/${recordType.id}/${type.id}`}>
+              <NavLink to={`/api-docs/${recordType.id}/${type.id}/read`}>
                 {t(type.nameTextId)}
               </NavLink>
             </li>

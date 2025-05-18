@@ -47,6 +47,24 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
     );
   }
 
+  if (finalValue) {
+    return (
+      <div className='element'>
+        <button
+          onClick={() => setExpanded(false)}
+          className='element-expand-button'
+        >
+          -
+        </button>
+        &lt;
+        <NameInData metadata={metadata} />
+        &gt;
+        <span style={{ color: 'darkorange' }}>{finalValue}</span>
+        &lt;/{metadata.nameInData}&gt;
+      </div>
+    );
+  }
+
   return (
     <div className='element'>
       <div>

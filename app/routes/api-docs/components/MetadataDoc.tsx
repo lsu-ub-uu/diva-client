@@ -24,18 +24,7 @@ export function ValidationType({
 
   return (
     <div>
-      <div
-        style={{
-          padding: '1rem',
-          paddingLeft: '2rem',
-          fontFamily: 'monospace',
-          color: '#fefefe',
-          backgroundColor: '#333',
-          borderRadius: '0.5rem',
-          maxWidth: '1200px',
-          overflowX: 'auto',
-        }}
-      >
+      <div className='code-block'>
         <GroupDoc
           group={newMetadataGroup}
           metadataPool={metadataPool}

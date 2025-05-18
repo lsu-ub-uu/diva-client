@@ -1,3 +1,13 @@
+.code-block {
+  padding: 1rem;
+  padding-left: 2rem;
+  font-family: monospace;
+  color: #fefefe;
+  background-color: #333;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .collection-variable-expand {
   cursor: pointer;
   background: rgb(255 255 255 / 10%);
@@ -63,6 +73,7 @@
 }
 
 .api-docs-nav {
+  width: 12rem;
   ul {
     list-style: none;
   }
