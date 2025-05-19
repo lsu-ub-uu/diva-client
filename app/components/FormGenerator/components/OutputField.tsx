@@ -32,7 +32,8 @@ interface OutputFieldProps {
   path: string;
   className?: string;
   label?: string;
-  value: string;
+  value?: string;
+  valueNode?: ReactNode;
   variant?: 'inline' | 'block';
   textStyle?: TextStyle;
   info?: {
@@ -47,6 +48,7 @@ export const OutputField = ({
   className,
   label,
   value,
+  valueNode,
   variant = 'block',
   textStyle,
   info,
@@ -75,13 +77,20 @@ export const OutputField = ({
         )}
       </div>
       <Enhancement enhancement={enhancement}>
-        <Typography
-          className={styles['value']}
-          as='p'
-          text={value}
-          variant={textStyle ?? 'bodyTextStyle'}
-          aria-labelledby={`${path}-label`}
-        />
+        {valueNode && (
+          <p className={styles['value']} aria-labelledby={`${path}-label`}>
+            {valueNode}
+          </p>
+        )}
+        {value && (
+          <Typography
+            className={styles['value']}
+            as='p'
+            text={value}
+            variant={textStyle ?? 'bodyTextStyle'}
+            aria-labelledby={`${path}-label`}
+          />
+        )}
       </Enhancement>
     </div>
   );

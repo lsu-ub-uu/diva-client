@@ -27,5 +27,7 @@ export default [
   route('translations/:lang', 'routes/translations.tsx'),
   route('fileUpload', 'routes/fileUpload.tsx'),
 
+  route('output-prototype', 'routes/outputPrototype.tsx'),
+
   route('design-system', 'routes/designSystem.tsx'),
 ] satisfies RouteConfig;
