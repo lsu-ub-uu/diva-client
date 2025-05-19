@@ -13,11 +13,7 @@ export function TextVariableDoc({
 }) {
   return (
     <Element metadata={metadata} childRef={childRef}>
-      <span
-        style={{
-          color: 'Aquamarine',
-        }}
-      >{`/${metadata.regEx}/`}</span>
+      <span className='regex'>{`/${metadata.regEx}/`}</span>
     </Element>
   );
 }

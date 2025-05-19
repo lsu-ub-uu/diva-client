@@ -3,16 +3,8 @@ import type {
   BFFMetadataChildReference,
 } from '@/cora/transform/bffTypes.server';
 import { useState, type ReactNode } from 'react';
+import { NameInData } from './NameInData';
 import { AttributesDoc } from './AttributesDoc';
-import {
-  CloseButton,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from '@headlessui/react';
-import { useTranslation } from 'react-i18next';
-import { CloseIcon } from '@/icons';
-import { NameInData } from './ NameInData';
 
 interface ElementProps {
   children?: ReactNode;
@@ -22,7 +14,6 @@ interface ElementProps {
 
 export const Element = ({ children, metadata, childRef }: ElementProps) => {
   const [expanded, setExpanded] = useState(true);
-  const { t } = useTranslation();
 
   const finalValue = 'finalValue' in metadata ? metadata.finalValue : undefined;
 
@@ -40,7 +31,7 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
           <AttributesDoc attributeReferences={metadata.attributeReferences} />
         )}{' '}
         ... /&gt;&nbsp;
-        <span style={{ color: 'hotpink' }}>
+        <span className='multiplicity'>
           ({childRef.repeatMin} - {childRef.repeatMax})
         </span>
       </div>
@@ -59,7 +50,7 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
         &lt;
         <NameInData metadata={metadata} />
         &gt;
-        <span style={{ color: 'darkorange' }}>{finalValue}</span>
+        <span className='final-value'>{finalValue}</span>
         &lt;/{metadata.nameInData}&gt;
       </div>
     );
@@ -80,13 +71,13 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
           <AttributesDoc attributeReferences={metadata.attributeReferences} />
         )}
         &gt;&nbsp;
-        <span style={{ color: 'hotpink' }}>
+        <span className='multiplicity'>
           ({childRef.repeatMin} - {childRef.repeatMax})
         </span>
       </div>
       <div style={{ paddingLeft: '1.5rem' }}>
         {finalValue ? (
-          <span style={{ color: 'darkorange' }}>{finalValue}</span>
+          <span className='final-value'>{finalValue}</span>
         ) : (
           children
         )}

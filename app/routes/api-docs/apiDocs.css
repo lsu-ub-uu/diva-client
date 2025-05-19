@@ -12,17 +12,21 @@
   cursor: pointer;
   background: rgb(255 255 255 / 10%);
   border-radius: 2px;
+
   &:hover {
     background: rgb(255 255 255 / 20%);
   }
+
   &:active {
     background: rgb(255 255 255 / 30%);
   }
 }
+
 .h3 {
   font-family: monospace;
   text-transform: uppercase;
 }
+
 .element {
   position: relative;
 }
@@ -36,20 +40,28 @@
   cursor: pointer;
   background: none;
   border-radius: 50%;
+
   &:hover {
     background: rgb(255 255 255 / 20%);
   }
+
   &:active {
     background: rgb(255 255 255 / 30%);
   }
 }
 
+.element-popover {
+  display: inline-block;
+}
+
 .element-popover-button {
   background: none;
   cursor: pointer;
+
   &:hover {
     background: rgb(255 255 255 / 20%);
   }
+
   &:active {
     background: rgb(255 255 255 / 30%);
   }
@@ -74,13 +86,34 @@
 
 .api-docs-nav {
   width: 12rem;
+
   ul {
     list-style: none;
   }
+
+  button,
   a {
-    color: inherit;
+    background: none;
+    color: var(--color-text);
+
     &.active {
       color: coral;
     }
   }
+}
+
+.final-value {
+  color: darkorange;
+}
+
+.collection-value {
+  color: deepskyblue;
+}
+
+.multiplicity {
+  color: hotpink;
+}
+
+.regex {
+  color: aquamarine;
 }

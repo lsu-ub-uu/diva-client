@@ -1,6 +1,6 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import { Fragment, useState } from 'react';
-import { NameInData } from './ NameInData';
+import { NameInData } from './NameInData';
 
 export interface CollectionValuesProps {
   collectionItems: BFFMetadata[];
@@ -17,7 +17,7 @@ export const CollectionValues = ({
     ? collectionItems
     : collectionItems.slice(0, max);
   return (
-    <span style={{ color: 'deepskyblue' }}>
+    <span className='collection-value'>
       <span>
         {itemsToShow.map((item, index) => (
           <Fragment key={item.id}>

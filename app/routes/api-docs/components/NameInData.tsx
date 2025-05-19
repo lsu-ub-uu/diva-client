@@ -9,7 +9,7 @@ interface NameInDataProps {
 export const NameInData = ({ metadata }: NameInDataProps) => {
   const { t } = useTranslation();
   return (
-    <Popover style={{ display: 'inline-block' }}>
+    <Popover className='element-popover'>
       <PopoverButton className='element-popover-button'>
         {metadata.nameInData}
       </PopoverButton>

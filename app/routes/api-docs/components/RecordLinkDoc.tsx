@@ -15,12 +15,12 @@ export function RecordLinkDoc({
     <Element metadata={metadata} childRef={childRef}>
       <div>
         &lt;linkedRecordType&gt;
-        <span style={{ color: 'darkorange' }}>{metadata.linkedRecordType}</span>
+        <span className='final-value'>{metadata.linkedRecordType}</span>
         &lt;/linkedRecordType&gt;
       </div>
       <div>
         &lt;linkedRecordId&gt;
-        <span style={{ color: 'darkorange' }}>{metadata.finalValue ?? ''}</span>
+        <span className='final-value'>{metadata.finalValue ?? ''}</span>
         &lt;/linkedRecordId&gt;
       </div>
     </Element>

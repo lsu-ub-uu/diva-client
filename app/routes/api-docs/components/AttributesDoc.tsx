@@ -5,7 +5,7 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import { useRouteLoaderData } from 'react-router';
 import { loader } from '../apiDocs';
-import { NameInData } from './ NameInData';
+import { NameInData } from './NameInData';
 import { CollectionValues } from './CollectionValues';
 
 export function AttributesDoc({
@@ -41,7 +41,7 @@ export function AttributesDoc({
         {' '}
         <NameInData metadata={attributeMetadata} />=
         {attributeMetadata.finalValue ? (
-          <span style={{ color: 'darkorange' }}>
+          <span className='final-value'>
             &quot;{attributeMetadata.finalValue}&quot;
           </span>
         ) : (

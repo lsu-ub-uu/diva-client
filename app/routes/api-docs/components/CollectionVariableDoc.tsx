@@ -3,9 +3,8 @@ import type {
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
 } from '@/cora/transform/bffTypes.server';
-import { AttributesDoc } from './AttributesDoc';
-import { Element } from './Element';
 import { CollectionValues } from './CollectionValues';
+import { Element } from './Element';
 
 export function CollectionVariableDoc({
   metadata,
