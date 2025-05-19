@@ -17,13 +17,23 @@
  */
 import login from './auth';
 import createReport from './createReport';
+// const coraApiUrl = 'https://cora.epc.ub.uu.se/diva/rest';
+// const coraLoginUrl = 'https://cora.epc.ub.uu.se/diva/login';
 
-const auth = await login();
+const coraApiUrl = 'https://pre.diva-portal.org/rest';
+const coraLoginUrl = 'https://pre.diva-portal.org/login';
+const auth = await login(
+  coraLoginUrl,
+  'divaAdmin@cora.epc.ub.uu.se',
+  '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
+);
 
 try {
-  await Promise.all(
-    Array.from({ length: 100 }, () => createReport(auth.token)),
-  );
+  await Promise.all([
+    createReport(auth.token, coraApiUrl, './norden1.xml'),
+    createReport(auth.token, coraApiUrl, './norden2.xml'),
+    createReport(auth.token, coraApiUrl, './norden3.xml'),
+  ]);
 
   console.info('All reports created successfully');
 } finally {
