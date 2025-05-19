@@ -1,12 +1,10 @@
-import { useTranslation } from 'react-i18next';
-import type { Route } from './+types/apiDocsMethod';
-import { ValidationType } from './components/MetadataDoc';
 import {
   coraApiUrl,
-  createHeaders,
   RECORD_CONTENT_TYPE,
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
+import type { Route } from './+types/apiDocsMethod';
+import { ValidationType } from './components/MetadataDoc';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
@@ -41,7 +39,6 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 export default function ValidationTypeRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation();
   const { validationType, request, method } = loaderData;
   return (
     <div>

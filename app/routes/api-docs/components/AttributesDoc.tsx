@@ -4,20 +4,22 @@ import type {
   BFFMetadataItemCollection,
 } from '@/cora/transform/bffTypes.server';
 import { useRouteLoaderData } from 'react-router';
-import type { loader } from '../apiDocs';
-import { useState } from 'react';
-import { CollectionValues } from './CollectionValues';
+import { loader } from '../apiDocs';
 import { NameInData } from './ NameInData';
+import { CollectionValues } from './CollectionValues';
 
 export function AttributesDoc({
   attributeReferences,
 }: {
   attributeReferences: BFFAttributeReference[] | undefined;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const loaderData = useRouteLoaderData<typeof loader>(
     'routes/api-docs/apiDocs',
   );
+
+  if (!loaderData) {
+    return null;
+  }
 
   const { metadataPool } = loaderData;
 
@@ -40,11 +42,13 @@ export function AttributesDoc({
         <NameInData metadata={attributeMetadata} />=
         {attributeMetadata.finalValue ? (
           <span style={{ color: 'darkorange' }}>
-            "{attributeMetadata.finalValue}"
+            &quot;{attributeMetadata.finalValue}&quot;
           </span>
         ) : (
           <span>
-            "<CollectionValues collectionItems={collectionItems} />"
+            &quot;
+            <CollectionValues collectionItems={collectionItems} />
+            &quot;
           </span>
         )}
       </span>

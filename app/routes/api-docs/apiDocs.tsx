@@ -1,13 +1,13 @@
-import { Link, NavLink, Outlet } from 'react-router';
-import type { Route } from './+types/apiDocs';
-import { useTranslation } from 'react-i18next';
-import css from './apiDocs.css?url';
-import { useState } from 'react';
-import { ChevronDownIcon } from '@/icons';
 import type {
   BFFRecordType,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
+import { ChevronDownIcon } from '@/icons';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NavLink, Outlet } from 'react-router';
+import type { Route } from './+types/apiDocs';
+import css from './apiDocs.css?url';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -77,7 +77,7 @@ const ExpandableRecordTypeNavItem = ({
 
   return (
     <div>
-      <span
+      <button
         onClick={() => setExpanded(!expanded)}
         style={{ cursor: 'pointer' }}
       >
@@ -88,7 +88,7 @@ const ExpandableRecordTypeNavItem = ({
             transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         />
-      </span>
+      </button>
       {expanded && (
         <ul style={{ paddingLeft: '1rem' }}>
           {recordType.validationTypes.map((type) => (

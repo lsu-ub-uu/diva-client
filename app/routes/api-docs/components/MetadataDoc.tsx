@@ -1,11 +1,7 @@
-import type {
-  BFFMetadataGroup,
-  BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { useRouteLoaderData } from 'react-router';
 import { loader } from '../apiDocs';
 import { GroupDoc } from './GroupDoc';
-import { useTranslation } from 'react-i18next';
 
 export function ValidationType({
   metadataGroupId,

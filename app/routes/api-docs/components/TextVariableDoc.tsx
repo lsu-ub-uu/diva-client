@@ -2,7 +2,6 @@ import type {
   BFFMetadataChildReference,
   BFFMetadataTextVariable,
 } from '@/cora/transform/bffTypes.server';
-import { AttributesDoc } from './AttributesDoc';
 import { Element } from './Element';
 
 export function TextVariableDoc({

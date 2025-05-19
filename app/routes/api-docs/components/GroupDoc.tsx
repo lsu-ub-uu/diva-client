@@ -7,11 +7,10 @@ import type {
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
 } from '@/cora/transform/bffTypes.server';
-import { TextVariableDoc } from './TextVariableDoc';
 import { CollectionVariableDoc } from './CollectionVariableDoc';
-import { RecordLinkDoc } from './RecordLinkDoc';
-import { AttributesDoc } from './AttributesDoc';
 import { Element } from './Element';
+import { RecordLinkDoc } from './RecordLinkDoc';
+import { TextVariableDoc } from './TextVariableDoc';
 
 export function GroupDoc({
   group,
@@ -22,7 +21,6 @@ export function GroupDoc({
   metadataPool: Record<string, BFFMetadata>;
   childRef: BFFMetadataChildReference;
 }) {
-  group.attributeReferences;
   return (
     <Element metadata={group} childRef={childRef}>
       {group.children.map((child) => (

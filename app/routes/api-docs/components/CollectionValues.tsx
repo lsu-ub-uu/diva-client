@@ -1,7 +1,6 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import { Fragment, useState } from 'react';
 import { NameInData } from './ NameInData';
-import { PreviousPageIcon } from '@/icons';
 
 export interface CollectionValuesProps {
   collectionItems: BFFMetadata[];
@@ -17,7 +16,6 @@ export const CollectionValues = ({
   const itemsToShow = expanded
     ? collectionItems
     : collectionItems.slice(0, max);
-  console.log('valuesToShow', itemsToShow);
   return (
     <span style={{ color: 'deepskyblue' }}>
       <span>
