@@ -75,7 +75,7 @@ export const Element = ({ children, metadata, childRef }: ElementProps) => {
           ({childRef.repeatMin} - {childRef.repeatMax})
         </span>
       </div>
-      <div style={{ paddingLeft: '1.5rem' }}>
+      <div className='element-children'>
         {finalValue ? (
           <span className='final-value'>{finalValue}</span>
         ) : (

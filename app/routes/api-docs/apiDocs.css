@@ -1,3 +1,9 @@
+.api-docs {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 1rem;
+}
+
 .code-block {
   padding: 1rem;
   padding-left: 2rem;
@@ -29,6 +35,10 @@
 
 .element {
   position: relative;
+}
+
+.element-children {
+  padding-left: 1.5rem;
 }
 
 .element-expand-button {
@@ -100,6 +110,17 @@
       color: coral;
     }
   }
+
+  &.method-nav {
+    ul {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}
+
+.api-docs-nav-children {
+  padding-left: 1rem;
 }
 
 .final-value {

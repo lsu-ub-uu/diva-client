@@ -40,7 +40,7 @@ export default function ApiDocs({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <h1>API Documentation</h1>
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div className='api-docs'>
         <div>
           <h2>Record types</h2>
           <nav className='api-docs-nav'>
@@ -77,10 +77,7 @@ const ExpandableRecordTypeNavItem = ({
 
   return (
     <div>
-      <button
-        onClick={() => setExpanded(!expanded)}
-        style={{ cursor: 'pointer' }}
-      >
+      <button onClick={() => setExpanded(!expanded)}>
         {t(recordType.textId)}{' '}
         <ChevronDownIcon
           style={{
@@ -90,7 +87,7 @@ const ExpandableRecordTypeNavItem = ({
         />
       </button>
       {expanded && (
-        <ul style={{ paddingLeft: '1rem' }}>
+        <ul className='api-docs-nav-children'>
           {recordType.validationTypes.map((type) => (
             <li key={type.id}>
               <NavLink to={`/api-docs/${recordType.id}/${type.id}/read`}>

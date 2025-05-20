@@ -73,7 +73,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
       </div>
 
       <div className={styles['header-content']}>
-        <NavigationLink to='/api-docs' label='API Docs' icon={<CodeIcon />} />
+        <NavigationLink to='/api-docs' label='API' icon={<CodeIcon />} />
         {devMode && (
           <NavigationLink
             to='/design-system'

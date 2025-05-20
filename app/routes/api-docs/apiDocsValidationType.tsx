@@ -23,8 +23,8 @@ export default function ValidationTypeRoute({
   return (
     <div>
       <h2>{t(validationType.nameTextId)}</h2>
-      <nav className='api-docs-nav'>
-        <ul style={{ display: 'flex', gap: '1rem' }}>
+      <nav className='api-docs-nav method-nav'>
+        <ul>
           <li>
             <NavLink to='read' preventScrollReset>
               Read
