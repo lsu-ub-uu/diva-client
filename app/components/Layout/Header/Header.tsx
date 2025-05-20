@@ -23,7 +23,13 @@ import Login from '@/components/Layout/Header/Login/Login';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
+import {
+  CachedIcon,
+  CloseIcon,
+  CodeIcon,
+  DesignServicesIcon,
+  MenuIcon,
+} from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Suspense, useEffect, useState } from 'react';
@@ -67,6 +73,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
       </div>
 
       <div className={styles['header-content']}>
+        <NavigationLink to='/api-docs' label='API' icon={<CodeIcon />} />
         {devMode && (
           <NavigationLink
             to='/design-system'
