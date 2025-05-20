@@ -33,6 +33,7 @@ export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
   to?: string;
   href?: string;
   ref?: Ref<HTMLButtonElement>;
+  target?: string;
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
   error?: boolean;
   children?: ReactNode;

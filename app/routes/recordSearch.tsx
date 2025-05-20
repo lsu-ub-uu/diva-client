@@ -39,6 +39,8 @@ import { performSearch } from '@/routes/routeUtils/performSearch';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 import css from './recordSearch.css?url';
+import { coraApiUrl } from '@/cora/helper.server';
+import { createCoraSearchQuery } from '@/data/searchRecords.server';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -66,6 +68,13 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     auth,
     yupSchema,
   );
+  const apiUrl =
+    query &&
+    encodeURI(
+      coraApiUrl(
+        `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
+      ),
+    );
 
   const validationTypes = getValidationTypes(
     params.recordType,
@@ -83,6 +92,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
       title: `DiVA | ${t(recordType.textId)}`,
       notification: getNotification(session),
       errors,
+      apiUrl,
     },
     await getResponseInitWithSession(session),
   );
@@ -155,6 +165,7 @@ export default function OutputSearchRoute({
                   searchForm={searchForm}
                   query={query}
                   searchResults={searchResults}
+                  apiUrl={loaderData.apiUrl}
                 />
               )}
             </Await>

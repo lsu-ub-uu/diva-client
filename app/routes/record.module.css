@@ -22,3 +22,7 @@
   flex-direction: column;
   gap: var(--gap-l);
 }
+
+.api-button {
+  align-self: flex-end;
+}
