@@ -65,6 +65,7 @@ export const loader = async ({
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
   const { t } = useTranslation();
+
   return (
     <main>
       <div className={styles['record-wrapper']}>

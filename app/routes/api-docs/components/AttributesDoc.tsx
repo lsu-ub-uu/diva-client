@@ -38,7 +38,7 @@ export function AttributesDoc({
 
     return (
       <span key={attributeMetadata.id}>
-        &nbsp;
+        {' '}
         <NameInData metadata={attributeMetadata} />=
         {attributeMetadata.finalValue ? (
           <span className='final-value'>

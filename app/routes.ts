@@ -16,6 +16,8 @@ export default [
     ]),
   ]),
 
+  // route('diva-output/:recordId', 'routes/divaOutputView.tsx'),
+
   /* Auth */
   route('login', 'routes/login.tsx'),
   route('logout', 'routes/logout.tsx'),
