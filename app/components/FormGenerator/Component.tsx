@@ -43,6 +43,7 @@ import type {
 import { use } from 'react';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
+import { OutputTitle } from './components/OutputTitle';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;

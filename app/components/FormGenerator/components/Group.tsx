@@ -37,6 +37,7 @@ import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
+import { OutputTitle } from './OutputTitle';
 
 interface GroupProps {
   currentComponentNamePath: string;
@@ -56,7 +57,17 @@ export const Group = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
     enhancedFields && enhancedFields[currentComponentNamePath];
+
   const { getValues } = useRemixFormContext();
+
+  if (currentComponentNamePath.includes('titleInfo')) {
+    console.log(currentComponentNamePath);
+  }
+  if (enhancedFields?.[currentComponentNamePath]?.type === 'outputTitle') {
+    return (
+      <OutputTitle component={component} path={currentComponentNamePath} />
+    );
+  }
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
   const inline = checkIfPresentationStyleIsInline(component);

@@ -41,12 +41,22 @@ export interface EnhancedFieldsLinkConfig {
   to: string;
 }
 
+export interface EnhancedOutputTitleConfig {
+  type: 'outputTitle';
+}
+
+export interface EnhancedFieldsAttributesInLabelConfig {
+  type: 'attributesInLabel';
+}
+
 export type EnhancedFieldsConfig =
   | EnhancedFieldsHiddenConfig
   | EnhancedFieldsLinkConfig
   | EnhancedGroupConfig
   | EnhancedFieldsCheckboxConfig
-  | EnhancedFieldsNotRemovableConfig;
+  | EnhancedFieldsNotRemovableConfig
+  | EnhancedOutputTitleConfig
+  | EnhancedFieldsAttributesInLabelConfig;
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];

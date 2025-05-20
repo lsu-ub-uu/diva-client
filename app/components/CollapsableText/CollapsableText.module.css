@@ -1,0 +1,20 @@
+.collapsable-text[aria-expanded='true'] {
+  .expand-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.expand-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap);
+  margin-left: var(--gap);
+  cursor: pointer;
+  color: var(--color-link);
+  background: none;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

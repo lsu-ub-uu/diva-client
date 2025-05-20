@@ -38,6 +38,10 @@
   margin-left: var(--gap-l);
 }
 
+.value {
+  white-space: pre-wrap;
+}
+
 .output-field[data-variant='inline'] {
   align-items: center;
 

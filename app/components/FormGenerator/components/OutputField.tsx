@@ -27,6 +27,8 @@ import {
 } from '@/components/FormGenerator/FormGeneratorContext';
 import { Link } from 'react-router';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
+import { useTranslation } from 'react-i18next';
 
 interface OutputFieldProps {
   path: string;
@@ -56,6 +58,11 @@ export const OutputField = ({
 }: OutputFieldProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement = enhancedFields?.[path];
+
+  const { t } = useTranslation();
+
+  const collapsable = value?.length && value.length > 300;
+
   return (
     <div
       className={clsx(styles['output-field'], className)}
@@ -82,7 +89,12 @@ export const OutputField = ({
             {valueNode}
           </p>
         )}
-        {value && (
+        {collapsable && value && (
+          <div className={styles['value']} aria-labelledby={`${path}-label`}>
+            <CollapsableText text={value} />
+          </div>
+        )}
+        {!collapsable && value && (
           <Typography
             className={styles['value']}
             as='p'

@@ -66,15 +66,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
   const { t } = useTranslation();
   return (
-    <SidebarLayout
-      sidebarContent={
-        <NavigationPanel
-          links={linksFromFormSchema(
-            removeComponentsWithoutValuesFromSchema(formDefinition, record),
-          )}
-        />
-      }
-    >
+    <main>
       <div className={styles['record-wrapper']}>
         <ReadOnlyForm
           record={record}
@@ -101,6 +93,6 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
           </Form>
         )}
       </FloatingActionButtonContainer>
-    </SidebarLayout>
+    </main>
   );
 }
