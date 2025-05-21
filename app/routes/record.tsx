@@ -45,8 +45,6 @@ export const loader = async ({
       authToken: auth?.data.token,
     });
 
-    console.log('Record:', record);
-
     const breadcrumb = getRecordTitle(record) ?? record.id;
     const pageTitle = getRecordTitle(record);
 

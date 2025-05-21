@@ -17,24 +17,18 @@
  */
 
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
-import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
-import {
-  linksFromFormSchema,
-  removeComponentsWithoutValuesFromSchema,
-} from '@/components/NavigationPanel/utils';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
 
-import type { Route } from './+types/recordView';
-import styles from '@/routes/record.module.css';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { DeleteIcon, EditDocumentIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { Form, Link } from 'react-router';
+import { DeleteIcon, EditDocumentIcon } from '@/icons';
+import styles from '@/routes/record.module.css';
 import { useTranslation } from 'react-i18next';
+import { Form, Link } from 'react-router';
+import type { Route } from './+types/recordView';
 
 export const loader = async ({
   request,
