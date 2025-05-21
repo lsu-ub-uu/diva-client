@@ -212,6 +212,7 @@ const transformRecordLink = (data: RecordLink) => {
     data,
     'linkedRecordId',
   );
+
   return { value: recordLinkId };
 };
 

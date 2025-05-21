@@ -1,0 +1,30 @@
+.diva-output-view {
+  display: grid;
+  gap: var(--gap-xl);
+  grid-template-columns: 3fr 1fr;
+}
+
+h1 {
+  max-width: 60ch;
+  font-family: Georgia, serif;
+  font-size: 1.8rem;
+}
+
+article {
+  display: grid;
+  gap: var(--gap);
+  padding-right: var(--gap-xl);
+  border-right: 1px solid var(--color-thin-border);
+}
+
+dl {
+  display: grid;
+}
+
+dt {
+  color: var(--color-label);
+}
+
+dd {
+  padding-left: var(--gap);
+}

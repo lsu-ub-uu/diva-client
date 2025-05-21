@@ -17,11 +17,11 @@
  */
 import login from './auth';
 import createReport from './createReport';
-// const coraApiUrl = 'https://cora.epc.ub.uu.se/diva/rest';
-// const coraLoginUrl = 'https://cora.epc.ub.uu.se/diva/login';
+const coraApiUrl = 'https://cora.epc.ub.uu.se/diva/rest';
+const coraLoginUrl = 'https://cora.epc.ub.uu.se/diva/login';
 
-const coraApiUrl = 'https://pre.diva-portal.org/rest';
-const coraLoginUrl = 'https://pre.diva-portal.org/login';
+//const coraApiUrl = 'https://pre.diva-portal.org/rest';
+//const coraLoginUrl = 'https://pre.diva-portal.org/login';
 const auth = await login(
   coraLoginUrl,
   'divaAdmin@cora.epc.ub.uu.se',
