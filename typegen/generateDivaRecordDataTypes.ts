@@ -16,6 +16,10 @@ import { get } from 'http';
 import { transformMetadata } from '@/cora/transform/transformMetadata.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
+import { getValueForRepeat } from './utils/getValueForRepeat';
+import { generateInterfaceName } from './utils/generateInterfaceName';
+import type { Lookup } from '@/utils/structs/lookup';
+import { generateValidationTypeInterface } from './generateValidationTypeInterface';
 
 const VALIDATION_TYPES = [
   'diva-series',
@@ -48,7 +52,11 @@ let code = `
   `;
 
 VALIDATION_TYPES.forEach((validationType) =>
-  generateValidationTypeInterface(validationType),
+  generateValidationTypeInterface(
+    validationTypePool,
+    metadataPool,
+    validationType,
+  ),
 );
 
 const outputPath = new URL(
@@ -81,67 +89,4 @@ async function getValidationTypePool() {
   const validationTypes = transformCoraValidationTypes(coraMetadata.data);
 
   return listToPool<BFFValidationType>(validationTypes);
-}
-
-function generateValidationTypeInterface(validationTypeId: string) {
-  try {
-    const validationType = validationTypePool.get(validationTypeId);
-    const metadataGroup = metadataPool.get(validationType.metadataGroupId);
-    const interfaceName = generateInterfaceName(validationTypeId);
-    const groupInterface = `
-      export interface ${interfaceName} {
-          ${createGroupType(metadataGroup as BFFMetadataGroup)}
-      }
-      `;
-    code += groupInterface;
-  } catch (error) {
-    console.error(
-      `Failed to generate types for validation type ${validationTypeId}`,
-    );
-  }
-}
-
-function createChildType(childRef: BFFMetadataChildReference): string {
-  const childMetadata = metadataPool.get(childRef.childId);
-
-  if (childMetadata.type === 'group') {
-    return createGroupType(childMetadata as BFFMetadataGroup);
-  }
-  return ` ${getNameFromMetadata(childMetadata)}:{ value: string; }`;
-}
-
-function createGroupType(group: BFFMetadataGroup): string {
-  const children = group.children.map((childRef) => {
-    return `${createChildType(childRef)}`;
-  });
-
-  return `${getNameFromMetadata(group)}: { ${children.join(';')}}`;
-}
-
-function getNameFromMetadata(metadata: BFFMetadata): string {
-  if (!('attributeReferences' in metadata)) {
-    return `'${metadata.nameInData}'`;
-  }
-
-  const attributes =
-    metadata.attributeReferences
-      ?.map(
-        (attrRef) =>
-          metadataPool.get(
-            attrRef.refCollectionVarId,
-          ) as BFFMetadataCollectionVariable,
-      )
-      .map((attribute) => ({
-        name: attribute.nameInData,
-        value: attribute.finalValue,
-      })) ?? [];
-
-  return `'${createFieldNameWithAttributes(metadata.nameInData, attributes)}'`;
-}
-
-function generateInterfaceName(validationTypeId: string): string {
-  return validationTypeId
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('');
 }
