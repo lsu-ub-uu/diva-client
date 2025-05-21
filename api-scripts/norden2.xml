@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<output>
+    <recordInfo>
+        <validationType>
+            <linkedRecordType>validationType</linkedRecordType>
+            <linkedRecordId>publication_book</linkedRecordId>
+        </validationType>
+        <dataDivider>
+            <linkedRecordType>system</linkedRecordType>
+            <linkedRecordId>divaData</linkedRecordId>
+        </dataDivider>
+        <permissionUnit>
+            <linkedRecordType>permissionUnit</linkedRecordType>
+            <linkedRecordId>norden</linkedRecordId>
+        </permissionUnit>
+        <visibility>published</visibility>
+    </recordInfo>
+    <genre type="outputType">publication_book</genre>
+    <language repeatId="0">
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <genre type="contentType">pop</genre>
+    <titleInfo lang="eng">
+        <title>Trans People’s Working Life in Figures: Nordicresults from the EU LGBTIQ Survey III
+        </title>
+    </titleInfo>
+    <originInfo>
+        <dateIssued>
+            <year>2025</year>
+        </dateIssued>
+    </originInfo>
+    <abstract repeatId="0" lang="eng">In the Nordic countries the living conditions of many LGBTI people are worse than those of the majority population. Trans people are a particularly vulnerable group who face various obstacles in life, not least working life. Prejudice and poor treatment affect recruitment processes, working environments and opportunities for career development. These conditions, characterised by significant barriers, can have serious consequences for trans people’s financial situation, quality of life and health. This publication summarises data on the working life conditions of trans people in the Nordic countries produced by the European Union Agency for Human Rights. The findings show that LGBTIQ people, and in particular trans and intersex people, continue to face hate-motivated violence, direct and indirect discrimination and other forms of victimisation, despite legal protections. </abstract>
+    <admin>
+        <reviewed>true</reviewed>
+    </admin>
+    <name type="personal" repeatId="0">
+        <namePart type="family">Yong Håkansson</namePart>
+        <namePart type="given">Susanna</namePart>
+        <role><roleTerm repeatId="0">aut</roleTerm></role>
+    </name>
+    <name type="corporate" repeatId="7">
+        <namePart>Nordic Council of Ministers</namePart>
+        <role><roleTerm repeatId="5">aut</roleTerm></role>
+    </name>
+    <classification authority="ssif" repeatId="0">1</classification>
+    <identifier type="isbn" displayLabel="online" repeatId="0" >978-92-893-8293-9</identifier>
+    <identifier type="isbn" displayLabel="online"  repeatId="1">978-92-893-8294-6</identifier>
+    <identifier type="doi">10.6027/nord2025-019</identifier>
+</output>

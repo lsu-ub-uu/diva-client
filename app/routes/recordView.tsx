@@ -26,8 +26,8 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { DeleteIcon, EditDocumentIcon } from '@/icons';
 import styles from '@/routes/record.module.css';
+import { Form, href, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Form, Link } from 'react-router';
 import type { Route } from './+types/recordView';
 
 export const loader = async ({
@@ -73,7 +73,10 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
         {record.userRights?.includes('update') && (
           <FloatingActionButton
             as={Link}
-            to='update'
+            to={href('/:recordType/:recordId/update', {
+              recordType: record.recordType,
+              recordId: record.id,
+            })}
             text={t('divaClient_editRecordText')}
             icon={<EditDocumentIcon />}
           />

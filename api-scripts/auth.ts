@@ -21,18 +21,19 @@ import {
   LOGIN_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
-export default async function login() {
-  const res = await fetch(
-    'https://cora.epc.ub.uu.se/diva/login/rest/apptoken',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': LOGIN_CONTENT_TYPE,
-        Accept: AUTHENTICATION_CONTENT_TYPE,
-      },
-      body: `divaAdmin@cora.epc.ub.uu.se\n49ce00fb-68b5-4089-a5f7-1c225d3cf156`,
+export default async function login(
+  coraLoginUrl: string,
+  username: string,
+  apptoken: string,
+) {
+  const res = await fetch(`${coraLoginUrl}/rest/apptoken`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': LOGIN_CONTENT_TYPE,
+      Accept: AUTHENTICATION_CONTENT_TYPE,
     },
-  );
+    body: `${username}\n${apptoken}`,
+  });
 
   const auth = await res.json();
 
