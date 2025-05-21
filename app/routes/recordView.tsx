@@ -31,10 +31,12 @@ import { assertDefined } from '@/utils/invariant';
 import type { Route } from './+types/recordView';
 import styles from '@/routes/record.module.css';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { DeleteIcon, EditDocumentIcon } from '@/icons';
+import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { Form, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { coraApiUrl } from '@/cora/helper.server';
+import { Button } from '@/components/Button/Button';
 
 export const loader = async ({
   request,
@@ -45,6 +47,7 @@ export const loader = async ({
   const auth = getAuth(session);
   const { recordType, recordId } = params;
 
+  const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies: await context.dependencies,
     recordType,
@@ -59,11 +62,11 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition };
+  return { record, formDefinition, apiUrl };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
+  const { record, formDefinition, apiUrl } = loaderData;
   const { t } = useTranslation();
   return (
     <SidebarLayout
@@ -76,6 +79,17 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
       }
     >
       <div className={styles['record-wrapper']}>
+        <Button
+          className={styles['api-button']}
+          variant='tertiary'
+          as='a'
+          href={apiUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <CodeIcon />
+          {t('divaClient_viewInApiText')}
+        </Button>
         <ReadOnlyForm
           record={record}
           formSchema={formDefinition}
