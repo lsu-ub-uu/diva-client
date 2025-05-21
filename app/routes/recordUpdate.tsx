@@ -156,7 +156,7 @@ export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
   const { record, formDefinition, notification, defaultValues } = loaderData;
-
+  console.log({ record });
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
   return (

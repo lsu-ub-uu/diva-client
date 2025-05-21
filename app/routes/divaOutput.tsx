@@ -21,8 +21,11 @@ import type { Route } from './+types/recordType';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const data: DivaOutput;
+
   return { breadcrumb: 'Output' };
 };
 
