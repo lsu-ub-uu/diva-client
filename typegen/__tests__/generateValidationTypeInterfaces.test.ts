@@ -4,8 +4,11 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFMetadataItemCollection,
+  BFFMetadataBase,
 } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
+import { format } from 'prettier';
 import {
   generateValidationTypeInterface,
   getNameFromMetadata,
@@ -13,7 +16,7 @@ import {
 import { describe, expect, it } from 'vitest';
 
 describe('generateValidationTypeInterface', () => {
-  it('should generate an interface', () => {
+  it('should generate an interface', async () => {
     const validationTypePool = listToPool<BFFValidationType>([
       {
         id: 'validationTypeId',
@@ -25,10 +28,11 @@ describe('generateValidationTypeInterface', () => {
       {
         id: 'metadataGroupId',
         type: 'group',
+        nameInData: 'root',
         children: [
           {
             childId: 'fooVar',
-            repeatMin: '1',
+            repeatMin: '0',
             repeatMax: '1',
           },
           {
@@ -42,11 +46,13 @@ describe('generateValidationTypeInterface', () => {
         id: 'fooVar',
         nameInData: 'foo',
         type: 'textVariable',
+        attributeReferences: [{ refCollectionVarId: 'langVar' }],
       } as BFFMetadataTextVariable,
       {
         id: 'barGroup',
         nameInData: 'bar',
         type: 'group',
+        attributeReferences: [{ refCollectionVarId: 'typeVar' }],
         children: [
           {
             childId: 'bazVar',
@@ -61,17 +67,50 @@ describe('generateValidationTypeInterface', () => {
         type: 'collectionVariable',
         refCollection: 'foo-bar',
       } as BFFMetadataCollectionVariable,
+      {
+        id: 'typeVar',
+        nameInData: 'type',
+        type: 'collectionVariable',
+        finalValue: 'code',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'langVar',
+        nameInData: 'lang',
+        type: 'collectionVariable',
+        refCollection: 'langCollection',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'langCollection',
+        type: 'itemCollection',
+        collectionItemReferences: [
+          { refCollectionItemId: 'enItem' },
+          { refCollectionItemId: 'svItem' },
+        ],
+      } as BFFMetadataItemCollection,
+      {
+        id: 'enItem',
+        nameInData: 'en',
+        type: 'collectionItem',
+      } as BFFMetadataBase,
+      {
+        id: 'svItem',
+        nameInData: 'sv',
+        type: 'collectionItem',
+      } as BFFMetadataBase,
     ]);
 
-    expect(
-      generateValidationTypeInterface(
-        validationTypePool,
-        metadataPool,
-        'validationTypeId',
-      ).trim(),
-    ).toEqual(
-      `export interface ValidationTypeId 
-            {  'foo':{ value: string; }; 'bar':{  'baz':{ value: string; }[] | undefined } }`.trim(),
+    const actual = generateValidationTypeInterface(
+      validationTypePool,
+      metadataPool,
+      'validationTypeId',
+    );
+
+    const expected = `export interface ValidationTypeId {
+      'root': { foo?: [{ value: string; _lang: 'en' | 'sv'; }];  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
+    }`;
+
+    expect(await format(actual, { parser: 'typescript' })).toEqual(
+      await format(expected, { parser: 'typescript' }),
     );
   });
 });

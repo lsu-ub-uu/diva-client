@@ -8,11 +8,11 @@ export function getValueForRepeat(
   }
 
   if (repeatMin === '0' && repeatMax === '1') {
-    return `[${value}] | undefined`;
+    return `[${value}]`;
   }
 
   if (repeatMin === '0' && repeatMax === 'X') {
-    return `${value}[] | undefined`;
+    return `${value}[]`;
   }
 
   return `${value}[]`;

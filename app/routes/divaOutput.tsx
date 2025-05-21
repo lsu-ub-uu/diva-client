@@ -24,8 +24,6 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const data: DivaOutput;
-
   return { breadcrumb: 'Output' };
 };
 

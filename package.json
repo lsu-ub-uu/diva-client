@@ -8,7 +8,7 @@
     "build": "react-router build",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
     "start": "tsx server.ts",
-    "typegen": "tsx typegen/generate.ts",
+    "typegen": "tsx typegen/generateDivaRecordDataTypes.ts",
     "typecheck": "react-router typegen && tsc",
     "typecheck:w": "react-router typegen && tsc -w",
     "stylelint": "stylelint ./app/**/**/*.css",

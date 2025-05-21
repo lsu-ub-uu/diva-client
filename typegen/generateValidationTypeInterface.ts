@@ -1,8 +1,10 @@
 import type {
   BFFMetadata,
+  BFFMetadataBase,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
+  BFFMetadataItemCollection,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
@@ -17,14 +19,13 @@ export function generateValidationTypeInterface(
 ): string {
   try {
     const validationType = validationTypePool.get(validationTypeId);
-    const metadataGroup = metadataPool.get(validationType.metadataGroupId);
     const interfaceName = generateInterfaceName(validationTypeId);
     const groupInterface = `
-        export interface ${interfaceName} 
-            ${createGroupType(metadataPool, metadataGroup as BFFMetadataGroup)}
-        `;
+        export interface ${interfaceName} extends BFFDataRecordData {
+            ${createChildRef(metadataPool, { childId: validationType.metadataGroupId, repeatMin: '1', repeatMax: '1' })}
+        }`;
     return groupInterface;
-  } catch (error) {
+  } catch {
     console.error(
       `Failed to generate types for validation type ${validationTypeId}`,
     );
@@ -39,13 +40,44 @@ function createChildRef(
   const childMetadata = metadataPool.get(childRef.childId);
 
   const { repeatMin, repeatMax } = childRef;
-
+  const attributes = createAttributes(metadataPool, childMetadata);
   const value =
     childMetadata.type === 'group'
-      ? createGroupType(metadataPool, childMetadata as BFFMetadataGroup)
-      : '{ value: string; }';
+      ? `{ ${createGroupType(metadataPool, childMetadata as BFFMetadataGroup)}; ${attributes} }`
+      : `{ value: string; ${attributes} }`;
 
-  return ` ${getNameFromMetadata(metadataPool, childMetadata)}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+  return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+}
+
+function createAttributes(
+  metadataPool: Lookup<string, BFFMetadata>,
+  metadata: BFFMetadata,
+): string {
+  if (!('attributeReferences' in metadata)) {
+    return '';
+  }
+
+  const attributes = metadata.attributeReferences?.map((attrRef) => {
+    const attributeCollectionVariable = metadataPool.get(
+      attrRef.refCollectionVarId,
+    ) as BFFMetadataCollectionVariable;
+
+    if (attributeCollectionVariable.finalValue) {
+      return `_${attributeCollectionVariable.nameInData}: '${attributeCollectionVariable.finalValue}';`;
+    }
+
+    const itemCollection = metadataPool.get(
+      attributeCollectionVariable.refCollection,
+    ) as BFFMetadataItemCollection;
+
+    const collectionItems = itemCollection.collectionItemReferences.map(
+      (itemRef) => metadataPool.get(itemRef.refCollectionItemId),
+    ) as BFFMetadataBase[];
+
+    return `'_${attributeCollectionVariable.nameInData}': ${collectionItems.map((item) => `'${item.nameInData}'`).join('|')};`;
+  });
+
+  return attributes?.join('') ?? '';
 }
 
 function createGroupType(
@@ -56,7 +88,7 @@ function createGroupType(
     return `${createChildRef(metadataPool, childRef)}`;
   });
 
-  return `{ ${children.join(';')} }`;
+  return children.join(';');
 }
 
 export function getNameFromMetadata(

@@ -10,13 +10,13 @@ describe('getValueForRepeat', () => {
 
   it('should return the correct value for a 0-1', () => {
     expect(getValueForRepeat('{ value: string; }', '0', '1')).toStrictEqual(
-      '[{ value: string; }] | undefined',
+      '[{ value: string; }]',
     );
   });
 
   it('should return the correct value for a 0-X', () => {
     expect(getValueForRepeat('{ value: string; }', '0', 'X')).toStrictEqual(
-      '{ value: string; }[] | undefined',
+      '{ value: string; }[]',
     );
   });
 

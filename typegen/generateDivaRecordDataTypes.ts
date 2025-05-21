@@ -1,24 +1,15 @@
-import 'dotenv/config';
-import path from 'path';
-import fs from 'fs';
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
   BFFMetadata,
-  BFFMetadataChildReference,
-  BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
-import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
-import * as prettier from 'prettier';
-import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
-import { get } from 'http';
 import { transformMetadata } from '@/cora/transform/transformMetadata.server';
-import { listToPool } from '@/utils/structs/listToPool';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import { getValueForRepeat } from './utils/getValueForRepeat';
-import { generateInterfaceName } from './utils/generateInterfaceName';
-import type { Lookup } from '@/utils/structs/lookup';
+import { listToPool } from '@/utils/structs/listToPool';
+import 'dotenv/config';
+import fs from 'fs';
+import * as prettier from 'prettier';
 import { generateValidationTypeInterface } from './generateValidationTypeInterface';
 
 const VALIDATION_TYPES = [
@@ -49,15 +40,17 @@ let code = `
    * Date: ${new Date().toISOString()}
    */ 
    
+  import type { BFFDataRecordData } from '@/types/record';
+
   `;
 
-VALIDATION_TYPES.forEach((validationType) =>
-  generateValidationTypeInterface(
+VALIDATION_TYPES.forEach((validationType) => {
+  code += generateValidationTypeInterface(
     validationTypePool,
     metadataPool,
     validationType,
-  ),
-);
+  );
+});
 
 const outputPath = new URL(
   '../app/generatedTypes/divaTypes.ts',
@@ -68,10 +61,10 @@ const formattedCode = await prettier.format(code, {
   parser: 'typescript',
   singleQuote: true,
 });
-// Write types to file
+
 fs.writeFileSync(outputPath, formattedCode, 'utf8');
 
-console.log('Types generated at:', outputPath.pathname);
+console.info('Types generated at:', outputPath.pathname);
 
 async function getMetadataPool() {
   const coraMetadata =
