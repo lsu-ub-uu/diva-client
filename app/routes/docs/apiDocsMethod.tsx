@@ -53,6 +53,7 @@ export default function ValidationTypeRoute({
         ))}
       </div>
       <h3>Data format</h3>
+
       <ValidationType
         metadataGroupId={
           method === 'create'

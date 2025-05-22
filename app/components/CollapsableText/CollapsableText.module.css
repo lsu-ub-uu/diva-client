@@ -1,4 +1,6 @@
 .collapsable-text[aria-expanded='true'] {
+  white-space: pre-wrap;
+
   .expand-icon {
     transform: rotate(180deg);
   }

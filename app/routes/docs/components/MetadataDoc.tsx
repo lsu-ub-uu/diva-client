@@ -8,9 +8,7 @@ export function ValidationType({
 }: {
   metadataGroupId: string;
 }) {
-  const loaderData = useRouteLoaderData<typeof loader>(
-    'routes/api-docs/apiDocs',
-  );
+  const loaderData = useRouteLoaderData<typeof loader>('routes/docs/apiDocs');
   if (!loaderData) {
     return;
   }

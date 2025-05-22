@@ -19,7 +19,7 @@ export const CollapsableText = ({ text }: CollapsableTextProps) => {
   };
 
   return (
-    <div aria-expanded={expanded} className={styles['collapsable-text']}>
+    <p aria-expanded={expanded} className={styles['collapsable-text']}>
       {!expanded ? `${text.slice(0, MAX_LENGTH)}...` : text}
       {text.length > MAX_LENGTH && (
         <button onClick={toggleExpanded} className={styles['expand-button']}>
@@ -29,6 +29,6 @@ export const CollapsableText = ({ text }: CollapsableTextProps) => {
           <ChevronDownIcon className={styles['expand-icon']} />
         </button>
       )}
-    </div>
+    </p>
   );
 };
