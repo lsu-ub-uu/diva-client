@@ -21,7 +21,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import type { Auth } from '@/auth/Auth';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
-import type { Route } from './+types/login';
+import type { Route } from '../auth/+types/login';
 import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
@@ -29,7 +29,10 @@ import { useState } from 'react';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 
-export async function loader({ request }: Route.LoaderArgs) {
+import css from './login.css?url';
+
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const { t } = context.i18n;
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
@@ -42,6 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   return data(
     {
+      breadcrumb: t('divaClient_LoginText'),
       presentation,
       notification: getNotification(session),
       returnTo,
@@ -53,6 +57,21 @@ export async function loader({ request }: Route.LoaderArgs) {
     },
   );
 }
+
+export const meta = ({ data }: Route.MetaArgs) => {
+  return [
+    {
+      title: `DiVA | ${data.breadcrumb}`,
+    },
+  ];
+};
+
+export const links: Route.LinksFunction = () => [
+  {
+    rel: 'stylesheet',
+    href: css,
+  },
+];
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -163,7 +182,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   const { handleSubmit } = methods;
 
   return (
-    <div>
+    <main>
       <Snackbar
         open={validationErrorShown}
         onClose={() => setValidationErrorShown(false)}
@@ -192,16 +211,21 @@ export default function Login({ loaderData }: Route.ComponentProps) {
         <div>
           {presentation !== null ? (
             <FormProvider {...methods}>
-              <FormGenerator formSchema={presentation} />
+              <FormGenerator formSchema={presentation} showTooltips={false} />
             </FormProvider>
           ) : (
             <span />
           )}
         </div>
-        <Button type='submit' variant='primary'>
+        <Button
+          type='submit'
+          variant='primary'
+          size='large'
+          className='login-button'
+        >
           {t('divaClient_LoginText')}
         </Button>
       </Form>
-    </div>
+    </main>
   );
 }

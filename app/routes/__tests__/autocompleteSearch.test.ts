@@ -26,7 +26,7 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { loader } from '@/routes/autocompleteSearch';
+import { loader } from '@/routes/resourceRoutes/autocompleteSearch';
 import type { BFFDataRecord } from '@/types/record';
 import { listToPool } from '@/utils/structs/listToPool';
 import type { i18n } from 'i18next';

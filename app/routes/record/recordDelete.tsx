@@ -17,29 +17,35 @@
  */
 
 import { redirect } from 'react-router';
-import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
-import { deleteSession } from '@/data/deleteSession.server';
+import { deleteRecord } from '@/data/deleteRecord.server';
+import {
+  commitSession,
+  getSessionFromCookie,
+  requireAuth,
+} from '@/auth/sessions.server';
 
-import type { Route } from './+types/logout';
+import type { Route } from '../record/+types/recordDelete';
 
-export async function action({ request }: Route.ActionArgs) {
-  const session = await getSession(request.headers.get('Cookie'));
-  const auth = getAuth(session);
-  const form = await request.formData();
-  const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
-  if (auth) {
-    try {
-      await deleteSession(auth);
-    } catch (error) {
-      console.error('Failed to delete session', error);
-    }
-  }
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.ActionArgs) => {
+  const { recordType, recordId } = params;
 
-  return redirect(returnTo ?? '/', {
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuth(session);
+
+  await deleteRecord(await context.dependencies, recordType, recordId, auth);
+
+  session.flash('notification', {
+    severity: 'success',
+    summary: 'Successfully deleted record',
+  });
+
+  return redirect(`/${recordType}`, {
     headers: {
-      'Set-Cookie': await destroySession(session),
+      'Set-Cookie': await commitSession(session),
     },
   });
-}
-
-export const loader = async () => redirect('/');
+};

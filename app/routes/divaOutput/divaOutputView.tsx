@@ -1,5 +1,5 @@
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type { Route } from './+types/divaOutputView';
+import type { Route } from '../divaOutput/+types/divaOutputView';
 import type { BFFDataRecord } from '@/types/record';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
@@ -52,6 +52,12 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                     </Fragment>
                   ))}
                 </dd>
+              </>
+            )}
+            {output.note_type_creatorCount?.[0]?.value && (
+              <>
+                <dt>Totalt antal upphovspersoner</dt>
+                <dd>{output.note_type_creatorCount?.[0]?.value}</dd>
               </>
             )}
           </dl>

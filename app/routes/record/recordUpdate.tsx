@@ -43,9 +43,8 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { assertDefined } from '@/utils/invariant';
 
-import type { Route } from './+types/recordUpdate';
+import type { Route } from '../record/+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import styles from '@/routes/record.module.css';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -170,7 +169,7 @@ export default function UpdateRecordRoute({
     >
       <NotificationSnackbar notification={notification} />
 
-      <div className={styles['record-wrapper']}>
+      <div className='record-wrapper'>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity}>
             <AlertTitle>{notification.summary}</AlertTitle>

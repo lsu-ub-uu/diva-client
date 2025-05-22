@@ -25,10 +25,9 @@ import { assertDefined } from '@/utils/invariant';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { DeleteIcon, EditDocumentIcon } from '@/icons';
-import styles from '@/routes/record.module.css';
 import { Form, href, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import type { Route } from './+types/recordView';
+import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({
   request,
@@ -62,7 +61,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <div className={styles['record-wrapper']}>
+      <div className='record-wrapper'>
         <ReadOnlyForm
           record={record}
           formSchema={formDefinition}

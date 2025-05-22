@@ -18,7 +18,7 @@
  */
 
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
-import type { loader } from '@/routes/getRecord';
+import type { loader } from '@/routes/resourceRoutes/getRecord';
 import { useEffect } from 'react';
 import { useFetcher } from 'react-router';
 import styles from './LinkedPresentationRecord.module.css';

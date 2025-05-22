@@ -19,7 +19,7 @@
 import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
 import { assertDefined } from '@/utils/invariant';
 
-import type { Route } from './+types/translations';
+import type { Route } from '../resourceRoutes/+types/translations';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;

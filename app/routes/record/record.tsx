@@ -19,13 +19,14 @@
 import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type { Route } from './+types/record';
+import type { Route } from '../record/+types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { AxiosError } from 'axios';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import css from './record.css?url';
 
 export const loader = async ({
   request,
@@ -56,6 +57,10 @@ export const loader = async ({
     throw error;
   }
 };
+
+export const links: Route.LinksFunction = () => [
+  { rel: 'stylesheet', href: css },
+];
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
   return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];

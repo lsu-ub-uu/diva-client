@@ -30,12 +30,11 @@ import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import type { Route } from './+types/recordSearch';
-import styles from './home.module.css';
+import type { Route } from '../record/+types/recordSearch';
 import { Alert } from '@/components/Alert/Alert';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { performSearch } from '@/routes/routeUtils/performSearch';
+import { performSearch } from '@/routes/record/utils/performSearch';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 import css from './recordSearch.css?url';
@@ -111,8 +110,8 @@ export default function OutputSearchRoute({
     <div className='search-layout'>
       <main>
         <NotificationSnackbar notification={notification} />
-        <div className={styles['search-wrapper']}>
-          <div className={styles['search-extras']}>
+        <div className='search-wrapper'>
+          <div className='search-extras'>
             <h1>
               {t('divaClient_searchText', {
                 type: t(recordTypeTextId).toLowerCase(),

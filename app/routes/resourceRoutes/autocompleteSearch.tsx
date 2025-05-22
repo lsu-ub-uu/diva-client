@@ -16,36 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
-import { deleteRecord } from '@/data/deleteRecord.server';
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
+import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { searchRecords } from '@/data/searchRecords.server';
 
-import type { Route } from './+types/recordDelete';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
-export const action = async ({
-  request,
+export const loader = async ({
   params,
+  request,
   context,
-}: Route.ActionArgs) => {
-  const { recordType, recordId } = params;
-
+}: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+  const query = parseFormDataFromSearchParams(url.searchParams);
   const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = getAuth(session);
 
-  await deleteRecord(await context.dependencies, recordType, recordId, auth);
-
-  session.flash('notification', {
-    severity: 'success',
-    summary: 'Successfully deleted record',
-  });
-
-  return redirect(`/${recordType}`, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  try {
+    const result = await searchRecords(
+      await context.dependencies,
+      params.searchType,
+      query,
+      auth,
+    );
+    return { result: result.data };
+  } catch (error) {
+    console.error(error);
+    return { result: [] };
+  }
 };

@@ -1,0 +1,12 @@
+main {
+  max-width: 50rem;
+}
+
+form {
+  display: grid;
+  gap: var(--gap-l);
+}
+
+.login-button {
+  justify-self: flex-end;
+}

@@ -15,7 +15,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type { Route } from './+types/fileUpload';
+import type { Route } from '../resourceRoutes/+types/fileUpload';
 import { createBinaryRecord } from '@/cora/createBinaryRecord';
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';

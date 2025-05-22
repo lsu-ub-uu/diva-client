@@ -17,6 +17,21 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+.search-layout {
+  display: grid;
+  grid-template-columns: 8fr 2fr;
+  gap: var(--gap-xl);
+  max-width: 1800px;
+  margin: 0 auto;
+  padding-top: var(--gap-xl);
+}
+
+@media (width < 900px) {
+  .search-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 .search-wrapper {
   display: flex;
   flex-direction: column;

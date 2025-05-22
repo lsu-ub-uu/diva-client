@@ -23,6 +23,7 @@ dl {
 
 dt {
   color: var(--color-label);
+  margin-top: var(--gap-l);
 }
 
 dd {

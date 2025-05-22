@@ -39,8 +39,7 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { assertDefined } from '@/utils/invariant';
-import type { Route } from './+types/recordCreate';
-import styles from './record.module.css';
+import type { Route } from '../record/+types/recordCreate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
@@ -176,7 +175,7 @@ export default function CreateRecordRoute({
       >
         <NotificationSnackbar notification={notification} />
 
-        <div className={styles['record-wrapper']}>
+        <div className='record-wrapper'>
           {notification && notification.severity === 'error' && (
             <Alert severity={notification.severity}>
               <AlertTitle>{notification.summary}</AlertTitle>

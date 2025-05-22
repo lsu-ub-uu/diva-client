@@ -17,7 +17,7 @@
  */
 
 import { data, isRouteErrorResponse, Outlet } from 'react-router';
-import type { Route } from './+types/recordType';
+import type { Route } from '../record/+types/recordType';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';

@@ -1,6 +1,6 @@
 /**
  * Auto-generated types
- * Date: 2025-05-21T12:25:29.511Z
+ * Date: 2025-05-22T08:06:42.870Z
  */
 
 import type { BFFDataRecordData } from '@/types/record';
@@ -4724,6 +4724,22 @@ export interface DivaOutput extends BFFDataRecordData {
       _type: 'personal';
     }[];
     examiner_type_personal?: {
+      person?: [{ value: string }];
+      namePart_type_family?: [{ value: string; _type: 'family' }];
+      namePart_type_given?: [{ value: string; _type: 'given' }];
+      role?: [{ roleTerm: { value: string } }];
+      affiliation?: {
+        organisation?: [{ value: string }];
+        name_type_corporate?: [
+          { namePart: { value: string }; _type: 'corporate' },
+        ];
+        identifier_type_ror?: [{ value: string; _type: 'ror' }];
+        country?: [{ value: string }];
+        description?: [{ value: string }];
+      }[];
+      _type: 'personal';
+    }[];
+    opponent_type_personal?: {
       person?: [{ value: string }];
       namePart_type_family?: [{ value: string; _type: 'family' }];
       namePart_type_given?: [{ value: string; _type: 'given' }];

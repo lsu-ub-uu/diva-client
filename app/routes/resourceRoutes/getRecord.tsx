@@ -17,31 +17,44 @@
  */
 
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { searchRecords } from '@/data/searchRecords.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { assertDefined } from '@/utils/invariant';
 
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { Route } from './+types/autocompleteSearch';
+import type { Route } from '../resourceRoutes/+types/getRecord';
 
 export const loader = async ({
-  params,
   request,
+  params,
   context,
 }: Route.LoaderArgs) => {
-  const url = new URL(request.url);
-  const query = parseFormDataFromSearchParams(url.searchParams);
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-
   try {
-    const result = await searchRecords(
-      await context.dependencies,
-      params.searchType,
-      query,
-      auth,
+    const session = await getSessionFromCookie(request);
+    const auth = getAuth(session);
+
+    const { recordType, recordId } = params;
+
+    const url = new URL(request.url);
+
+    const presentationRecordLinkId = url.searchParams.get(
+      'presentationRecordLinkId',
     );
-    return { result: result.data };
+
+    assertDefined(
+      presentationRecordLinkId,
+      'Missing presentationRecordLinkId param',
+    );
+
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies: await context.dependencies,
+      recordType,
+      recordId,
+      authToken: auth?.data.token,
+      presentationRecordLinkId,
+    });
+
+    return { record };
   } catch (error) {
     console.error(error);
-    return { result: [] };
+    return { error: true };
   }
 };

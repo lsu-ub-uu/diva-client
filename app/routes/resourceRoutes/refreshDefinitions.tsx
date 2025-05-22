@@ -18,7 +18,7 @@
 
 import { redirect } from 'react-router';
 
-import type { Route } from './+types/refreshDefinitions';
+import type { Route } from '../resourceRoutes/+types/refreshDefinitions';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
