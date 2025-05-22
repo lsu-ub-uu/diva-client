@@ -96,7 +96,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Term
               label='Abstract'
               value={
-                <CollapsableText text={output.abstract?.value ?? ''} />
+                <CollapsableText text={output.abstract?.[0]?.value ?? ''} />
               }
             />
           </dl>
@@ -117,14 +117,12 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
             <Term
               label='Copyright'
-              value={<Date date={output.originInfo.copyrightDate?.} />}
+              value={<Date date={output.originInfo.copyrightDate} />}
             />
 
             <Term
               label='Online'
-              value={
-                <Date date={output.originInfo.dateOther_type_online?.} />
-              }
+              value={<Date date={output.originInfo.dateOther_type_online} />}
             />
 
             <Term
@@ -134,10 +132,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 .join(', ')} //Todo add linked publishers
             />
 
-            <Term
-              label='Upplaga'
-              value={output.originInfo.edition?.value}
-            />
+            <Term label='Upplaga' value={output.originInfo.edition?.value} />
 
             <Term label='Fysisk omfattning' value={output.extent?.value} />
           </dl>
@@ -153,10 +148,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               />
             ))}
 
-            <Term
-              label={'ISRN'}
-              value={output.identifier_type_isrn?.value}
-            />
+            <Term label={'ISRN'} value={output.identifier_type_isrn?.value} />
             {output.identifier_type_ismn?.map((identifier, index) => (
               <Term
                 key={index}
@@ -164,18 +156,9 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 value={identifier.value}
               />
             ))}
-            <Term
-              label={'DOI'}
-              value={output.identifier_type_doi?.value}
-            />
-            <Term
-              label={'PMID'}
-              value={output.identifier_type_pmid?.value}
-            />
-            <Term
-              label={'WOS'}
-              value={output.identifier_type_wos?.value}
-            />
+            <Term label={'DOI'} value={output.identifier_type_doi?.value} />
+            <Term label={'PMID'} value={output.identifier_type_pmid?.value} />
+            <Term label={'WOS'} value={output.identifier_type_wos?.value} />
             <Term
               label={'SCOPUS'}
               value={output.identifier_type_scopus?.value}
@@ -190,7 +173,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
             <Term
               label={'Lokal identifier'}
-              value={output['identifier_type_localId']?.value}
+              value={output['identifier_type_localId']?.[0]?.value}
             />
           </dl>
         </article>
@@ -258,8 +241,7 @@ const Person = ({ person }: PersonProps) => {
 
   return (
     <span>
-      {person.namePart_type_given?.value}{' '}
-      {person.namePart_type_family?.value}
+      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
     </span>
   );
 };
@@ -310,16 +292,12 @@ interface DateProps {
     year: {
       value: string;
     };
-    month?: [
-      {
-        value: string;
-      },
-    ];
-    day?: [
-      {
-        value: string;
-      },
-    ];
+    month?: {
+      value: string;
+    };
+    day?: {
+      value: string;
+    };
   };
 }
 

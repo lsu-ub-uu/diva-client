@@ -33,17 +33,19 @@ export const OptionalComponent = ({
           return (
             <>
               {renderCallback(
-                <Button
-                  size='small'
-                  variant='icon'
-                  aria-label={t('divaClient_deleteFieldText', {
-                    fieldName: t(component.label),
-                  })}
-                  tooltipPosition='left'
-                  onClick={() => field.onChange(null)}
-                >
-                  <CloseIcon />
-                </Button>,
+                component.mode === 'input' && (
+                  <Button
+                    size='small'
+                    variant='icon'
+                    aria-label={t('divaClient_deleteFieldText', {
+                      fieldName: t(component.label),
+                    })}
+                    tooltipPosition='left'
+                    onClick={() => field.onChange(null)}
+                  >
+                    <CloseIcon />
+                  </Button>
+                ),
               )}
             </>
           );
@@ -55,17 +57,19 @@ export const OptionalComponent = ({
             data-colspan={component.gridColSpan ?? 12}
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
-            <Button
-              variant='tertiary'
-              onClick={() =>
-                field.onChange(createDefaultValuesFromComponent(component))
-              }
-              aria-label={t('divaClient_addFieldText', {
-                fieldName: t(component.label),
-              })}
-            >
-              <AddCircleIcon /> {t(component.label)}
-            </Button>
+            {component.mode === 'input' && (
+              <Button
+                variant='tertiary'
+                onClick={() =>
+                  field.onChange(createDefaultValuesFromComponent(component))
+                }
+                aria-label={t('divaClient_addFieldText', {
+                  fieldName: t(component.label),
+                })}
+              >
+                <AddCircleIcon /> {t(component.label)}
+              </Button>
+            )}
           </div>
         );
       }}
