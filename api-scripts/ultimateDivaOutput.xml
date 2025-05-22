@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<output>
+    <recordInfo>
+        <validationType>
+            <linkedRecordType>validationType</linkedRecordType>
+            <linkedRecordId>diva-output</linkedRecordId>
+        </validationType>
+        <dataDivider>
+            <linkedRecordType>system</linkedRecordType>
+            <linkedRecordId>divaData</linkedRecordId>
+        </dataDivider>
+        <permissionUnit>
+            <linkedRecordType>permissionUnit</linkedRecordType>
+            <linkedRecordId>norden</linkedRecordId>
+        </permissionUnit>
+        <visibility>published</visibility>
+        <tsVisibility>2025-05-22T07:27:25.344865Z</tsVisibility>
+    </recordInfo>
+    <genre type="outputType">publication_report</genre>
+    <genre type="subcateogory">policyDocument</genre>
+    <language repeatId="0">
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <language repeatId="19">
+        <languageTerm authority="iso639-2b" type="code">ara</languageTerm>
+    </language>
+    <language repeatId="20">
+        <languageTerm authority="iso639-2b" type="code">ath</languageTerm>
+    </language>
+    <note type="publicationStatus">submitted</note>
+    <artisticWork type="outputType">true</artisticWork>
+    <genre type="contentType">pop</genre>
+    <genre type="reviewed">refereed</genre>
+    <titleInfo lang="eng">
+        <title>Future fisheries</title>
+        <subTitle>Status, trends and future perspectives concerning the energy transition of fisheries with focus on Nordic countries</subTitle>
+    </titleInfo>
+    <titleInfo lang="abk" repeatId="24" type="alternative">
+        <title>Framtidens fiske</title>
+        <subTitle>Status, trender och framtidsperspektiv gällande energiomställningen inom fisket med fokus på Norden odefinierad</subTitle>
+    </titleInfo>
+    <titleInfo lang="uwu" repeatId="25" type="alternative">
+      <title>Mancing masa depan</title>
+      <subTitle>Status, tren bân perspektif masa depan tentang transisi energi è perikanan kalabân fokus è wilayah Nordik sè ta' èjhârbâ'aghi</subTitle>
+    </titleInfo>
+    <name repeatId="0" type="personal">
+        <namePart type="family">Hornborg</namePart>
+        <namePart type="given">Sara</namePart>
+        <role><roleTerm repeatId="0">aut</roleTerm></role>
+        <role><roleTerm repeatId="1">edt</roleTerm></role>
+        <affiliation repeatId="0">
+            <name type="corporate"><namePart>Nordic Council of Ministers</namePart></name>
+            <identifier type="ror">0lenejf45</identifier>
+            <country>aa</country>
+            <description>Lorem ipsum</description>
+        </affiliation> 
+    </name>
+    <name repeatId="1" type="personal">
+        <namePart type="family">Aarsæther</namePart>
+        <namePart type="given">Karl Gunnar</namePart>
+        <role><roleTerm repeatId="1">edt</roleTerm></role>
+        <affiliation repeatId="0">
+            <name type="corporate"><namePart>Nordic Council of Ministers</namePart></name>
+            <identifier type="ror">0lenejf45</identifier>
+            <country>aa</country>
+            <description>Lorem ipsum</description>
+        </affiliation> 
+    </name>
+    <name repeatId="2" type="personal">
+        <namePart type="family">Bastardie</namePart>
+        <namePart type="given">François</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+        </role>
+    </name>
+    <name repeatId="3" type="personal">
+        <namePart type="family">Jafarzadeh</namePart>
+        <namePart type="given">Sepideh</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+            <roleTerm repeatId="2">aut</roleTerm>
+            <roleTerm repeatId="1">edt</roleTerm>
+        </role>
+        <affiliation repeatId="0">
+            <name type="corporate"><namePart>Nordic Council of Ministers</namePart></name>
+            <identifier type="ror">0lenejf45</identifier>
+            <country>aa</country>
+            <description>Lorem ipsum</description>
+        </affiliation> 
+         <role><roleTerm repeatId="0">aut</roleTerm><roleTerm repeatId="1">edt</roleTerm></role>
+        <affiliation repeatId="1">
+            <name type="corporate"><namePart>Nordic Council of Ministers</namePart></name>
+            <identifier type="ror">0lenejf45</identifier>
+            <country>aa</country>
+            <description>Lorem ipsum</description>
+        </affiliation> 
+    </name>
+    <name repeatId="4" type="personal">
+        <namePart type="family">Aarsæther</namePart>
+        <namePart type="given">Karl Gunnar</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+        </role>
+    </name>
+    <name repeatId="5" type="personal">
+        <namePart type="family">Bastardie</namePart>
+        <namePart type="given">François</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+        </role>
+    </name>
+    <name repeatId="6" type="personal">
+        <namePart type="family">Hornborg</namePart>
+        <namePart type="given">Sara</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+        </role>
+    </name>
+    <name repeatId="0" type="corporate">
+        <namePart>Nordic Council of Ministers</namePart>
+        <role>
+            <roleTerm repeatId="0">aut</roleTerm>
+        </role>
+    </name>
+    <note type="creatorCount">12</note>
+    <abstract lang="eng" repeatId="0">The energy transition of the fishing sector has gained
+        increasing attention in recent years. With focus on Nordic countries, status,
+        trends, opportunities and challenges are summarized to provide recommendations for
+        how to effectively enable an energy transition towards carbon-neutral fisheries. Key
+        challenges today include inadequate data collection and reporting of greenhouse gas
+        emissions, low uptake of available technologies, reversed financial incentives
+        fostering use of fossil fuels, and obstructing fishing regulations. To foster an
+        effective energy transition, short term (before 2030) and long-term actions (before
+        2040) are identified. Overall, co-developing effective roadmaps for the energy
+        transition of a highly diverse sector will be essential.
+
+        The energy transition of the fishing sector has gained increasing attention in
+        recent years. With focus on Nordic countries, status, trends, opportunities and
+        challenges are summarized to provide recommendations for how to effectively enable
+        an energy transition towards carbon-neutral fisheries. Key challenges today include
+        inadequate data collection and reporting of greenhouse gas emissions, low uptake of
+        available technologies, reversed financial incentives fostering use of fossil fuels,
+        and obstructing fishing regulations. To foster an effective energy transition, short
+        term (before 2030) and long-term actions (before 2040) are identified. Overall,
+        co-developing effective roadmaps for the energy transition of a highly diverse
+        sector will be essential.
+
+        The energy transition of the fishing sector has gained increasing attention in
+        recent years. With focus on Nordic countries, status, trends, opportunities and
+        challenges are summarized to provide recommendations for how to effectively enable
+        an energy transition towards carbon-neutral fisheries. Key challenges today include
+        inadequate data collection and reporting of greenhouse gas emissions, low uptake of
+        available technologies, reversed financial incentives fostering use of fossil fuels,
+        and obstructing fishing regulations. To foster an effective energy transition, short
+        term (before 2030) and long-term actions (before 2040) are identified. Overall,
+        co-developing effective roadmaps for the energy transition of a highly diverse
+        sector will be essential.</abstract>
+    <subject lang="alb" repeatId="9">
+        <topic>Digitization, Integration, Welfare and Gender Equality</topic>
+    </subject>
+    <originInfo>
+        <dateIssued>
+            <year>2025</year>
+        </dateIssued>
+        <copyrightDate>
+            <year>2024</year>
+            <month>10</month>
+            <day>12</day>
+        </copyrightDate>
+        <dateOther type="online">
+            <year>1310</year>
+            <month>01</month>
+            <day>02</day>
+        </dateOther>
+        <agent>
+            <publisher repeatId="0">
+                <linkedRecordType>diva-publisher</linkedRecordType>
+                <linkedRecordId>diva-publisher:1437068056503025</linkedRecordId>
+                <actionLinks>
+                    <read>
+                        <requestMethod>GET</requestMethod>
+                        <rel>read</rel>
+                        <url>
+                            https://cora.epc.ub.uu.se/diva/rest/record/diva-publisher/diva-publisher:1437068056503025</url>
+                        <accept>application/vnd.cora.record+xml</accept>
+                    </read>
+                </actionLinks>
+            </publisher>
+            <namePart repeatId="1">Penguin</namePart>
+            <namePart repeatId="2">Bloomsbury</namePart>
+            <role>
+                <roleTerm>pbl</roleTerm>
+            </role>
+        </agent>
+        <place repeatId="0">
+            <placeTerm>Uppsala</placeTerm>
+        </place>
+        <place repeatId="1">
+            <placeTerm>Stockholm</placeTerm>
+        </place>
+    </originInfo>
+    <extent>100s</extent>
+    <classification authority="ssif" repeatId="0">1</classification>
+    <identifier displayLabel="print" repeatId="12" type="isbn">978-92-893-8293-9</identifier>
+    <identifier displayLabel="online" repeatId="15" type="isbn">978-92-893-8293-2</identifier>
+    <identifier type="isrn">978-92-893-8293-9</identifier>
+    <identifier type="doi">10.6027/nord2025-019</identifier>
+    <identifier type="openAlex">W3123306174</identifier>
+    <identifier type="se-libr">onr:19769763</identifier>
+    <identifier type="archiveNumber">sa12456456</identifier>
+    <identifier repeatId="13" type="localId">123456</identifier>
+    <admin>
+        <reviewed>true</reviewed>
+    </admin>
+</output>

@@ -3,6 +3,12 @@
   gap: var(--gap-xxl);
   grid-template-columns: 3fr 1fr;
   font-variant-numeric: tabular-nums;
+
+  @media (width < 800px) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 aside {
@@ -21,6 +27,11 @@ h1 {
   font-size: 1.8rem;
 }
 
+h2 {
+  font-size: 1.3rem;
+  margin-top: var(--gap-l);
+}
+
 article {
   display: grid;
   gap: var(--gap);
@@ -30,11 +41,28 @@ article {
 
 dt {
   color: var(--color-label);
-  margin-top: var(--gap-l);
+
+  &:not(:first-child) {
+    margin-top: var(--gap-l);
+  }
 }
 
 dd {
   padding-left: var(--gap);
+}
+
+.identifiers {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  row-gap: var(--gap-s);
+
+  dt {
+    margin-top: 0;
+
+    &::after {
+      content: ':';
+    }
+  }
 }
 
 .pill-container {

@@ -54,7 +54,7 @@
   --color-button-primary-active: rgb(0 0 0);
   --color-button-secondary-hover: rgb(0 0 0 / 10%);
   --color-button-secondary-active: rgb(0 0 0 / 20%);
-  --color-label: rgb(0 0 0 / 60%);
+  --color-label: rgb(0 0 0 / 66%);
   --color-input-border: rgb(153 153 153);
   --color-alert-success-bg: rgb(237 247 237);
   --color-alert-success-icon: rgb(46 125 50);
@@ -129,7 +129,7 @@
     --color-button: rgb(255 255 255);
     --color-accent-dark: var(--color-accent);
     --color-accent: var(--color-accent-light);
-    --color-label: rgb(255 255 255 / 60%);
+    --color-label: rgb(255 255 255 / 66%);
     --color-error-main: rgb(240 79 79);
     --color-alert-success-font: rgb(237 247 237);
     --color-alert-success-icon: rgb(59 168 65);
@@ -166,7 +166,7 @@
       --color-button: rgb(255 255 255);
       --color-accent-dark: var(--color-accent);
       --color-accent: var(--color-accent-light);
-      --color-label: rgb(255 255 255 / 60%);
+      --color-label: rgb(255 255 255 / 66%);
       --color-error-main: rgb(240 79 79);
       --color-alert-success-font: rgb(237 247 237);
       --color-alert-success-icon: rgb(59 168 65);

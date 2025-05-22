@@ -12,7 +12,7 @@ const MAX_LENGTH = 300;
 
 export const CollapsableText = ({ text }: CollapsableTextProps) => {
   const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
