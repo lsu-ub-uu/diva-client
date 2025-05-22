@@ -49,7 +49,6 @@ export const searchRecords = async (
   const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
   const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
   const transformData = transformToCoraData(formMetaDataPathLookup, query);
-
   const response = await getSearchResultDataListBySearchType<DataListWrapper>(
     searchType,
     transformData[0] as DataGroup,

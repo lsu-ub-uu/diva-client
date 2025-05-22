@@ -31,6 +31,7 @@ import {
   isComponentGroupAndOptional,
   isComponentRepeating,
   isComponentRepeatingContainer,
+  isComponentRequired,
   isComponentSingularAndOptional,
   isComponentSurroundingContainer,
   isComponentValidForDataCarrying,
@@ -1332,7 +1333,7 @@ describe('helper methods', () => {
         false,
       ],
     ])('check if %s is required', (arg1, arg2, arg3) => {
-      const expected = isComponentRepeating(arg2 as FormComponent);
+      const expected = isComponentRequired(arg2 as FormComponent);
       expect(expected).toStrictEqual(arg3);
     });
   });

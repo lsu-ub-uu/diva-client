@@ -73,7 +73,7 @@ export const SearchForm = ({
           {!searchResults && (
             <input
               type='hidden'
-              name='search.rows[0].value'
+              name='search.rows.value'
               value='10'
               data-testid='rowsHiddenSearchTerm'
             />
@@ -82,7 +82,7 @@ export const SearchForm = ({
             theme?.memberPermissionUnit && (
               <input
                 type='hidden'
-                name='search.include.includePart.permissionUnitSearchTerm[0].value'
+                name='search.include.includePart.permissionUnitSearchTerm.value'
                 value={`permissionUnit_${theme.memberPermissionUnit}`}
                 data-testid='permissionUnitHiddenSearchTerm'
               />

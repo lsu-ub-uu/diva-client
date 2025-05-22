@@ -59,9 +59,9 @@ describe('parseFormDaraFormSearchParam', () => {
     });
   });
 
-  it('handles arrays', () => {
+  it('handles optional values', () => {
     const searchParams = new URLSearchParams(
-      'search.include.includePart.genericSearchTerm.value=**&search.rows[0].value=10&search.start[0].value=11',
+      'search.include.includePart.genericSearchTerm.value=**&search.rows.value=10&search.start.value=11',
     );
     const actual = parseFormDataFromSearchParams(searchParams);
     expect(actual).toStrictEqual({
@@ -73,8 +73,8 @@ describe('parseFormDaraFormSearchParam', () => {
             },
           },
         },
-        rows: [{ value: '10' }],
-        start: [{ value: '11' }],
+        rows: { value: '10' },
+        start: { value: '11' },
       },
     });
   });

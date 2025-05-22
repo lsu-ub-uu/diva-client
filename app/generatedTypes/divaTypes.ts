@@ -1,6 +1,6 @@
 /**
  * Auto-generated types
- * Date: 2025-05-22T08:06:42.870Z
+ * Date: 2025-05-22T21:21:18.169Z
  */
 
 import type { BFFDataRecordData } from '@/types/record';

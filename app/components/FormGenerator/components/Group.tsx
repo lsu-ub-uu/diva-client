@@ -60,9 +60,6 @@ export const Group = ({
 
   const { getValues } = useRemixFormContext();
 
-  if (currentComponentNamePath.includes('titleInfo')) {
-    console.log(currentComponentNamePath);
-  }
   if (enhancedFields?.[currentComponentNamePath]?.type === 'outputTitle') {
     return (
       <OutputTitle component={component} path={currentComponentNamePath} />

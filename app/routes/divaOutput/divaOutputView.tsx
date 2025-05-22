@@ -214,7 +214,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               <div className='pill-container'>
                 {subject.topic.value.split(',').map((topicPart) => (
                   <Link
-                    to={`/diva-output?search.include.includePart.keywordsSearchTerm[0].value=${topicPart}&search.rows[0].value=10`}
+                    to={`/diva-output?search.include.includePart.keywordsSearchTerm[0].value=${topicPart}&search.rows.value=10`}
                     key={topicPart}
                     className='pill'
                   >

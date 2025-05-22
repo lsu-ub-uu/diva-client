@@ -49,7 +49,7 @@ export const Pagination = ({
 
   const { fromNo, toNo, totalNo } = searchResults;
   const rowsPerPage =
-    Number(get(query, 'search.rows[0].value')) || toNo - fromNo + 1;
+    Number(get(query, 'search.rows.value')) || toNo - fromNo + 1;
 
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
@@ -74,7 +74,7 @@ export const Pagination = ({
         size='small'
       >
         <Select
-          name='search.rows[0].value'
+          name='search.rows.value'
           onChange={onRowsPerPageChange}
           defaultValue={rowsPerPage}
         >

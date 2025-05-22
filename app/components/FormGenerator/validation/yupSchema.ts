@@ -43,6 +43,7 @@ import {
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
+  isComponentOptional,
   isComponentRepeating,
   isComponentRequired,
   isComponentSingularAndOptional,
@@ -148,10 +149,13 @@ function createSchemaForRepeatingVariable(
     isComponentGroupAndOptional(component),
   );
 
-  const extendedSchema = yup.object().shape({
-    value: createValidationFromComponentType(component, parentGroupOptional),
-    ...attributesValidationRules,
-  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+  const extendedSchema = yup
+    .object()
+    .nullable()
+    .shape({
+      value: createValidationFromComponentType(component, parentGroupOptional),
+      ...attributesValidationRules,
+    }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
   return createYupArrayFromSchema(extendedSchema, component.repeat);
 }
@@ -163,7 +167,7 @@ function createSchemaForNonRepeatingGroup(
 ) {
   const innerSchema = generateYupSchema(
     component.components,
-    parentGroupOptional,
+    isComponentGroupAndOptional(component) || parentGroupOptional,
     false,
   );
   return yup.object().shape({
@@ -181,18 +185,21 @@ function createSchemaForNonRepeatingVariable(
   component: FormComponentWithData,
   parentGroupOptional: boolean,
 ) {
-  return yup.object().shape({
-    value: createValidationFromComponentType(
-      component,
-      parentGroupOptional,
-      isComponentRequired(component),
-    ),
-    ...createValidationForAttributesFromComponent(
-      component,
-      isComponentRepeating(component),
-      isComponentRequired(component),
-    ),
-  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+  return yup
+    .object()
+    .nullable()
+    .shape({
+      value: createValidationFromComponentType(
+        component,
+        parentGroupOptional,
+        isComponentRequired(component),
+      ),
+      ...createValidationForAttributesFromComponent(
+        component,
+        isComponentRepeating(component),
+        isComponentRequired(component),
+      ),
+    }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 }
 
 export const generateYupSchema = (
@@ -332,7 +339,7 @@ const createYupStringRegexpSchema = (
       );
   }
 
-  if (isComponentRepeating(component)) {
+  if (isComponentOptional(component)) {
     return yup
       .string()
       .nullable()
@@ -345,6 +352,7 @@ const createYupStringRegexpSchema = (
 
   return yup
     .string()
+    .nullable()
     .matches(
       new RegExp(regexpValidation.pattern ?? '.+'),
       INVALID_FORMAT_TEXT_ID,
@@ -443,17 +451,10 @@ export const createYupNumberSchema = (
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull
-          ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, {
-                message: INVALID_FORMAT_TEXT_ID,
-              })
-              .test(testDecimals)
-              .test(testMax)
-              .test(testMin)
-          : field,
-      );
+      .matches(/^[1-9]\d*(\.\d+)?$/, { message: INVALID_FORMAT_TEXT_ID })
+      .test(testDecimals)
+      .test(testMin)
+      .test(testMax);
   }
 
   return yup
@@ -490,7 +491,7 @@ const createYupStringSchema = (
     return yup.string().required(REQUIRED_TEXT_ID);
   }
 
-  if (isComponentRepeating(component) || isParentGroupOptional) {
+  if (isComponentOptional(component) || isParentGroupOptional) {
     return generateYupSchemaForCollections();
   }
 

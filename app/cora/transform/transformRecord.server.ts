@@ -308,5 +308,5 @@ export const transformAttributes = (attributes: Attributes | undefined) => {
 };
 
 export const isRepeating = (metadata: FormMetaData) => {
-  return metadata.repeat.repeatMin !== 1 || metadata.repeat.repeatMax !== 1;
+  return metadata.repeat.repeatMax > 1;
 };

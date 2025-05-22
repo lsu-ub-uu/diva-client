@@ -85,6 +85,10 @@ export const transformEntry = ({
 }: TransformEntryArgs): ValuableDataWrapper<
   Data | undefined | (Data | undefined)[]
 > => {
+  if (!value) {
+    return { data: undefined, hasValuableData: false };
+  }
+
   const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
 
@@ -123,6 +127,9 @@ const getFieldMetadata = (
 };
 
 export const findChildrenAttributes = (obj: any) => {
+  if (!obj) {
+    return undefined;
+  }
   const attributesArray: Record<string, string>[] = [];
   Object.keys(obj).forEach((key) => {
     if (Object.hasOwn(obj, key) && key.startsWith('_')) {

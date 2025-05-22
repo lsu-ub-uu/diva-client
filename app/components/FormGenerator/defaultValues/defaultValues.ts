@@ -78,7 +78,16 @@ export const createDefaultValuesFromComponent = (
   if (forceDefaultValuesForAppend) {
     defaultValues = formDefaultObject;
   } else {
-    if (isComponentRepeating(component)) {
+    if (
+      component.repeat?.repeatMin === 0 &&
+      component.repeat?.repeatMax === 1
+    ) {
+      createDefaultObjectForOptional(
+        component,
+        defaultValues,
+        formDefaultObject,
+      );
+    } else if (isComponentRepeating(component)) {
       createDefaultObjectForRepeating(
         component,
         defaultValues,
@@ -159,6 +168,21 @@ export const getMinNumberOfRepeatingToShow = (
   component.repeat?.minNumberOfRepeatingToShow ??
   component.repeat?.repeatMin ??
   0;
+
+function createDefaultObjectForOptional(
+  component: FormComponentWithData | FormComponentContainer,
+  defaultValues: any,
+  formDefaultObject:
+    | { [p: string]: string; value: string }
+    | { [p: string]: string },
+) {
+  const addedByDefault = getMinNumberOfRepeatingToShow(component) > 0;
+
+  if (addedByDefault) {
+    defaultValues[addAttributesToName(component, component.name)] =
+      formDefaultObject;
+  }
+}
 
 function createDefaultObjectForRepeating(
   component: FormComponentWithData | FormComponentContainer,

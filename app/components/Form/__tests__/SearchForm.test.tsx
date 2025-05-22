@@ -30,7 +30,7 @@ describe('SearchForm', () => {
 
     const hiddenInput = screen.getByTestId('rowsHiddenSearchTerm');
     expect(hiddenInput).toHaveAttribute('type', 'hidden');
-    expect(hiddenInput).toHaveAttribute('name', 'search.rows[0].value');
+    expect(hiddenInput).toHaveAttribute('name', 'search.rows.value');
     expect(hiddenInput).toHaveValue('10');
 
     expect(
@@ -98,7 +98,7 @@ describe('SearchForm', () => {
     expect(hiddenInput).toHaveAttribute('type', 'hidden');
     expect(hiddenInput).toHaveAttribute(
       'name',
-      'search.include.includePart.permissionUnitSearchTerm[0].value',
+      'search.include.includePart.permissionUnitSearchTerm.value',
     );
     expect(hiddenInput).toHaveValue('permissionUnit_testPermissionUnit');
   });
