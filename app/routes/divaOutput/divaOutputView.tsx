@@ -50,7 +50,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
             <Term
               label='Totalt antal upphovspersoner'
-              value={output.note_type_creatorCount?.[0]?.value}
+              value={output.note_type_creatorCount?.value}
             />
             <Term
               label='Upphovsorganisationer'
@@ -73,7 +73,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Term label='Typ' value={output.genre_type_outputType.value} />
             <Term
               label='Underkategori'
-              value={output.genre_type_subcategory?.[0]?.value}
+              value={output.genre_type_subcategory?.value}
             />
             <Term
               label='Språk'
@@ -96,7 +96,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Term
               label='Abstract'
               value={
-                <CollapsableText text={output.abstract?.[0]?.value ?? ''} />
+                <CollapsableText text={output.abstract?.value ?? ''} />
               }
             />
           </dl>
@@ -117,34 +117,34 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
             <Term
               label='Copyright'
-              value={<Date date={output.originInfo.copyrightDate?.[0]} />}
+              value={<Date date={output.originInfo.copyrightDate?.} />}
             />
 
             <Term
               label='Online'
               value={
-                <Date date={output.originInfo.dateOther_type_online?.[0]} />
+                <Date date={output.originInfo.dateOther_type_online?.} />
               }
             />
 
             <Term
               label='Förlag'
-              value={output.originInfo.agent?.[0]?.namePart
+              value={output.originInfo.agent?.namePart
                 ?.map((namePart) => namePart.value)
                 .join(', ')} //Todo add linked publishers
             />
 
             <Term
               label='Upplaga'
-              value={output.originInfo.edition?.[0]?.value}
+              value={output.originInfo.edition?.value}
             />
 
-            <Term label='Fysisk omfattning' value={output.extent?.[0]?.value} />
+            <Term label='Fysisk omfattning' value={output.extent?.value} />
           </dl>
           <h2>Identifierare</h2>
           <dl className='identifiers'>
             <Term label='DiVA-id' value={output.recordInfo.id.value} />
-            <Term label={'URN'} value={output.recordInfo.urn?.[0]?.value} />
+            <Term label={'URN'} value={output.recordInfo.urn?.value} />
             {output.identifier_type_isbn?.map((identifier, index) => (
               <Term
                 key={index}
@@ -155,7 +155,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
             <Term
               label={'ISRN'}
-              value={output.identifier_type_isrn?.[0]?.value}
+              value={output.identifier_type_isrn?.value}
             />
             {output.identifier_type_ismn?.map((identifier, index) => (
               <Term
@@ -166,31 +166,31 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             ))}
             <Term
               label={'DOI'}
-              value={output.identifier_type_doi?.[0]?.value}
+              value={output.identifier_type_doi?.value}
             />
             <Term
               label={'PMID'}
-              value={output.identifier_type_pmid?.[0]?.value}
+              value={output.identifier_type_pmid?.value}
             />
             <Term
               label={'WOS'}
-              value={output.identifier_type_wos?.[0]?.value}
+              value={output.identifier_type_wos?.value}
             />
             <Term
               label={'SCOPUS'}
-              value={output.identifier_type_scopus?.[0]?.value}
+              value={output.identifier_type_scopus?.value}
             />
             <Term
               label={'OpenAlex'}
-              value={output.identifier_type_openAlex?.[0]?.value}
+              value={output.identifier_type_openAlex?.value}
             />
             <Term
               label={'Libris'}
-              value={output['identifier_type_se-libr']?.[0]?.value}
+              value={output['identifier_type_se-libr']?.value}
             />
             <Term
               label={'Lokal identifier'}
-              value={output['identifier_type_localId']?.[0]?.value}
+              value={output['identifier_type_localId']?.value}
             />
           </dl>
         </article>
@@ -214,7 +214,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               <div className='pill-container'>
                 {subject.topic.value.split(',').map((topicPart) => (
                   <Link
-                    to={`/diva-output?search.include.includePart.keywordsSearchTerm[0].value=${topicPart}&search.rows.value=10`}
+                    to={`/diva-output?search.include.includePart.keywordsSearchTerm.value=${topicPart}&search.rows.value=10`}
                     key={topicPart}
                     className='pill'
                   >
@@ -231,7 +231,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 }
 
 const createTitle = (titleInfo: DivaOutput['output']['titleInfo']) => {
-  return `${titleInfo.title.value}${titleInfo.subTitle && `: ${titleInfo.subTitle[0].value}`}`;
+  return `${titleInfo.title.value}${titleInfo.subTitle && `: ${titleInfo.subTitle.value}`}`;
 };
 
 interface PersonProps {
@@ -245,12 +245,12 @@ const Person = ({ person }: PersonProps) => {
       <Link
         to={href('/:recordType/:recordId', {
           recordType: 'diva-person',
-          recordId: person.person[0].value,
+          recordId: person.person.value,
         })}
       >
         <span>
-          {person.namePart_type_given?.[0]?.value}{' '}
-          {person.namePart_type_family?.[0]?.value}
+          {person.namePart_type_given?.value}{' '}
+          {person.namePart_type_family?.value}
         </span>
       </Link>
     );
@@ -258,8 +258,8 @@ const Person = ({ person }: PersonProps) => {
 
   return (
     <span>
-      {person.namePart_type_given?.[0]?.value}{' '}
-      {person.namePart_type_family?.[0]?.value}
+      {person.namePart_type_given?.value}{' '}
+      {person.namePart_type_family?.value}
     </span>
   );
 };
@@ -276,15 +276,15 @@ const Organisation = ({ organisation }: OrganisationProps) => {
       <Link
         to={href('/:recordType/:recordId', {
           recordType: 'diva-organisation',
-          recordId: organisation.organisation?.[0]?.value,
+          recordId: organisation.organisation?.value,
         })}
       >
-        <span>{organisation.namePart?.[0]?.value}</span>
+        <span>{organisation.namePart?.value}</span>
       </Link>
     );
   }
 
-  return <span>{organisation.namePart?.[0]?.value}</span>;
+  return <span>{organisation.namePart?.value}</span>;
 };
 
 interface TermProps {
@@ -333,8 +333,8 @@ const Date = ({ date }: DateProps) => {
   return (
     <span>
       {year.value}
-      {month && `-${month[0].value}`}
-      {day && `-${day[0].value}`}
+      {month && `-${month.value}`}
+      {day && `-${day.value}`}
     </span>
   );
 };

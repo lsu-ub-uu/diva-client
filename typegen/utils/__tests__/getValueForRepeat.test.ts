@@ -10,7 +10,7 @@ describe('getValueForRepeat', () => {
 
   it('should return the correct value for a 0-1', () => {
     expect(getValueForRepeat('{ value: string; }', '0', '1')).toStrictEqual(
-      '[{ value: string; }]',
+      '{ value: string; }',
     );
   });
 

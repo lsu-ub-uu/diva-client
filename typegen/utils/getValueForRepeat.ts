@@ -3,17 +3,8 @@ export function getValueForRepeat(
   repeatMin: string,
   repeatMax: string,
 ) {
-  if (repeatMin === '1' && repeatMax === '1') {
-    return value;
-  }
-
-  if (repeatMin === '0' && repeatMax === '1') {
-    return `[${value}]`;
-  }
-
-  if (repeatMin === '0' && repeatMax === 'X') {
+  if (repeatMax !== '1') {
     return `${value}[]`;
   }
-
-  return `${value}[]`;
+  return value;
 }

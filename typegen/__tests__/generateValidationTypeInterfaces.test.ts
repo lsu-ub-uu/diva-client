@@ -105,8 +105,8 @@ describe('generateValidationTypeInterface', () => {
       'validationTypeId',
     );
 
-    const expected = `export interface ValidationTypeId {
-      'root': { foo?: [{ value: string; _lang: 'en' | 'sv'; }];  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
+    const expected = `export interface ValidationTypeId extends BFFDataRecordData{
+      'root': { foo?: { value: string; _lang: 'en' | 'sv'; };  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
     }`;
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(
