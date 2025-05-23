@@ -1,1061 +1,124 @@
 /**
  * Auto-generated types
- * Date: 2025-05-23T09:59:51.362Z
+ * Date: 2025-05-23T11:05:22.019Z
  */
 
 import type { BFFDataRecordData } from '@/types/record';
 
 export interface DivaSeries extends BFFDataRecordData {
-  series: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-series' };
-      validationType: { value: 'diva-series' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    titleInfo: { title: { value: string }; subTitle?: { value: string } };
-    titleInfo_type_alternative?: {
-      title: { value: string };
-      subTitle?: { value: string };
-      _type: 'alternative';
-    };
-    originInfo?: {
-      dateIssued_point_start?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        _point: 'start';
-      };
-      dateIssued_point_end?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        _point: 'end';
-      };
-    };
-    identifier_displayLabel_pissn_type_issn?: {
-      value: string;
-      _type: 'issn';
-      _displayLabel: 'pissn';
-    };
-    identifier_displayLabel_eissn_type_issn?: {
-      value: string;
-      _type: 'issn';
-      _displayLabel: 'eissn';
-    };
-    related?: {
-      series: { value: string };
-      _type: RelatedSeriesTypeCollection;
-    }[];
-    location?: { url: { value: string }; displayLabel?: { value: string } };
-    note_type_external?: { value: string; _type: 'external' };
-    genre_type_outputType?: {
-      value: OutputTypeCollection;
-      _type: 'outputType';
-    }[];
-    organisation?: { value: string };
-  };
+  series: SeriesUpdateGroup;
 }
 
 export interface DivaPublisher extends BFFDataRecordData {
-  publisher: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-publisher' };
-      validationType: { value: 'diva-publisher' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      oldId?: { value: string };
-    };
-    name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-  };
+  publisher: PublisherUpdateGroup;
 }
 
 export interface DivaProject extends BFFDataRecordData {
-  project: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-project' };
-      validationType: { value: 'diva-project' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      oldId?: { value: string };
-    };
-    titleInfo: {
-      title: { value: string };
-      subTitle?: { value: string };
-      _lang: LanguageSweEngCollection;
-    };
-    titleInfo_type_alternative?: {
-      title: { value: string };
-      subTitle?: { value: string };
-      _type: 'alternative';
-      _lang: LanguageSweEngCollection;
-    };
-    name_type_personal: {
-      person?: { value: string };
-      namePart_type_family?: { value: string; _type: 'family' };
-      namePart_type_given?: { value: string; _type: 'given' };
-      role?: { roleTerm: { value: RoleProjectPersonalCollection }[] };
-      affiliation?: {
-        organisation?: { value: string };
-        name_type_corporate?: {
-          namePart: { value: string };
-          _type: 'corporate';
-        };
-        identifier_type_ror?: { value: string; _type: 'ror' };
-        country?: { value: CountryCollection };
-        description?: { value: string };
-      }[];
-      _type: 'personal';
-    }[];
-    name_type_corporate?: {
-      organisation?: { value: string };
-      namePart: { value: string };
-      role: { roleTerm: { value: 'pdr' } };
-      identifier_type_ror?: { value: string; _type: 'ror' };
-      _type: 'corporate';
-    };
-    abstract?: { value: string; _lang: LanguageCollection }[];
-    subject?: { topic: { value: string }; _lang: LanguageCollection }[];
-    subject_authority_diva?: { topic: { value: string }[]; _authority: 'diva' };
-    classification_authority_ssif?: {
-      value: SsifCollection;
-      _authority: 'ssif';
-    }[];
-    subject_authority_sdg?: {
-      topic: { value: SdgCollection }[];
-      _authority: 'sdg';
-    };
-    location?: { url: { value: string }; displayLabel?: { value: string } }[];
-    identifier_type_localId?: { value: string; _type: 'localId' };
-    identifier_type_project: { value: string; _type: 'project' };
-    identifier_type_raid?: { value: string; _type: 'raid' };
-    identifier_type_reference?: { value: string; _type: 'reference' };
-    note_type_external?: { value: string; _type: 'external' };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    relatedItem_type_funder?: { funder: { value: string }; _type: 'funder' }[];
-    typeOfAward: { value: TypeOfAwardCollection };
-    fundingAmount?: { value: string; _currency: CurrencyCollection };
-    relatedItem_type_output?: { output?: { value: string }; _type: 'output' }[];
-    note_type_internal?: { value: string; _type: 'internal' };
-  };
+  project: ProjectUpdateGroup;
 }
 
 export interface DivaOutput extends BFFDataRecordData {
-  output: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-output' };
-      validationType: { value: 'diva-output' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      visibility: { value: VisibilityCollection };
-      tsVisibility?: { value: string };
-      urn?: { value: string };
-      oldId?: { value: string };
-    };
-    genre_type_outputType: { value: OutputTypeCollection; _type: 'outputType' };
-    genre_type_subcategory?: {
-      value: SubcategoryOtherCollection;
-      _type: 'subcategory';
-    };
-    language: {
-      'languageTerm_authority_iso639-2b_type_code': {
-        value: LanguageCollection;
-        _type: 'code';
-        _authority: 'iso639-2b';
-      };
-    }[];
-    note_type_publicationStatus?: {
-      value: PublicationStatusCollection;
-      _type: 'publicationStatus';
-    };
-    artisticWork_type_outputType?: {
-      value: OutputTypeArtisticWorkCollection;
-      _type: 'outputType';
-    };
-    genre_type_contentType: {
-      value: GenreContentTypeCollection;
-      _type: 'contentType';
-    };
-    genre_type_reviewed?: {
-      value: GenreArtisticReviewedCollection;
-      _type: 'reviewed';
-    };
-    titleInfo: {
-      title: { value: string };
-      subTitle?: { value: string };
-      _lang: LanguageCollection;
-    };
-    titleInfo_type_alternative?: {
-      title: { value: string };
-      subTitle?: { value: string };
-      _type: 'alternative';
-      _lang: LanguageCollection;
-    }[];
-    name_type_personal?: {
-      person?: { value: string };
-      namePart_type_family?: { value: string; _type: 'family' };
-      namePart_type_given?: { value: string; _type: 'given' };
-      role?: { roleTerm: { value: RoleCollection }[] };
-      affiliation?: {
-        organisation?: { value: string };
-        name_type_corporate?: {
-          namePart: { value: string };
-          _type: 'corporate';
-        };
-        identifier_type_ror?: { value: string; _type: 'ror' };
-        country?: { value: CountryCollection };
-        description?: { value: string };
-      }[];
-      _type: 'personal';
-    }[];
-    name_type_corporate?: {
-      organisation?: { value: string };
-      role?: { roleTerm: { value: RoleCollection }[] };
-      namePart?: { value: string };
-      identifier_type_ror?: { value: string; _type: 'ror' };
-      description?: { value: string };
-      _type: 'corporate';
-    }[];
-    note_type_creatorCount?: { value: string; _type: 'creatorCount' };
-    typeOfResource?: { value: TypeOfResourceCollection };
-    type?: { value: string; _lang: LanguageCollection }[];
-    material?: { value: string; _lang: LanguageCollection }[];
-    technique?: { value: string; _lang: LanguageCollection }[];
-    size?: { value: string };
-    duration?: {
-      hh?: { value: string };
-      mm?: { value: string };
-      ss?: { value: string };
-    };
-    physicalDescription?: { extent: { value: string } };
-    abstract?: { value: string; _lang: LanguageCollection }[];
-    subject?: { topic: { value: string }; _lang: LanguageCollection }[];
-    dateOther_type_patent?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-      _type: 'patent';
-    };
-    originInfo: {
-      dateIssued: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-      copyrightDate?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-      dateOther_type_online?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        _type: 'online';
-      };
-      agent?: {
-        publisher?: { value: string }[];
-        namePart?: { value: string }[];
-        role: { roleTerm: { value: 'pbl' } };
-      };
-      place?: { placeTerm: { value: string } }[];
-      edition?: { value: string };
-    };
-    imprint?: { value: string };
-    extent?: { value: string };
-    classification_authority_ssif?: {
-      value: SsifCollection;
-      _authority: 'ssif';
-    }[];
-    subject_authority_diva?: { topic: { value: string }[]; _authority: 'diva' };
-    subject_authority_sdg?: {
-      topic: { value: SdgCollection }[];
-      _authority: 'sdg';
-    };
-    identifier_type_isbn?: {
-      value: string;
-      _type: 'isbn';
-      _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    }[];
-    identifier_type_isrn?: { value: string; _type: 'isrn' };
-    identifier_type_ismn?: {
-      value: string;
-      _type: 'ismn';
-      _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    }[];
-    identifier_type_patentNumber?: { value: string; _type: 'patentNumber' };
-    identifier_type_doi?: { value: string; _type: 'doi' };
-    identifier_type_pmid?: { value: string; _type: 'pmid' };
-    identifier_type_wos?: { value: string; _type: 'wos' };
-    identifier_type_scopus?: { value: string; _type: 'scopus' };
-    identifier_type_openAlex?: { value: string; _type: 'openAlex' };
-    'identifier_type_se-libr'?: { value: string; _type: 'se-libr' };
-    identifier_type_archiveNumber?: { value: string; _type: 'archiveNumber' };
-    identifier_type_localId?: { value: string; _type: 'localId' }[];
-    location?: { url: { value: string }; displayLabel?: { value: string } }[];
-    location_displayLabel_orderLink?: {
-      url: { value: string };
-      displayLabel?: { value: string };
-      _displayLabel: 'orderLink';
-    };
-    note_type_external?: { value: string; _type: 'external' };
-    academicSemester?: {
-      year?: { value: string };
-      semester?: { value: SemesterCollection };
-    };
-    studentDegree?: {
-      degreeLevel: { value: DegreeLevelCollection };
-      universityPoints: { value: UniversityPointsCollection };
-      course?: { value: string };
-      programme?: { value: string };
-    };
-    externalCollaboration?: { namePart?: { value: string }[] };
-    degreeGrantingInstitution_type_corporate?: {
-      organisation?: { value: string };
-      namePart?: { value: string };
-      role: { roleTerm: { value: 'dgg' } };
-      identifier_type_ror?: { value: string; _type: 'ror' };
-      _type: 'corporate';
-    };
-    supervisor_type_personal?: {
-      person?: { value: string };
-      namePart_type_family?: { value: string; _type: 'family' };
-      namePart_type_given?: { value: string; _type: 'given' };
-      role?: { roleTerm: { value: 'ths' } };
-      affiliation?: {
-        organisation?: { value: string };
-        name_type_corporate?: {
-          namePart: { value: string };
-          _type: 'corporate';
-        };
-        identifier_type_ror?: { value: string; _type: 'ror' };
-        country?: { value: CountryCollection };
-        description?: { value: string };
-      }[];
-      _type: 'personal';
-    }[];
-    examiner_type_personal?: {
-      person?: { value: string };
-      namePart_type_family?: { value: string; _type: 'family' };
-      namePart_type_given?: { value: string; _type: 'given' };
-      role?: { roleTerm: { value: 'dgs' } };
-      affiliation?: {
-        organisation?: { value: string };
-        name_type_corporate?: {
-          namePart: { value: string };
-          _type: 'corporate';
-        };
-        identifier_type_ror?: { value: string; _type: 'ror' };
-        country?: { value: CountryCollection };
-        description?: { value: string };
-      }[];
-      _type: 'personal';
-    }[];
-    opponent_type_personal?: {
-      person?: { value: string };
-      namePart_type_family?: { value: string; _type: 'family' };
-      namePart_type_given?: { value: string; _type: 'given' };
-      role?: { roleTerm: { value: 'opn' } };
-      affiliation?: {
-        organisation?: { value: string };
-        name_type_corporate?: {
-          namePart: { value: string };
-          _type: 'corporate';
-        };
-        identifier_type_ror?: { value: string; _type: 'ror' };
-        country?: { value: CountryCollection };
-        description?: { value: string };
-      }[];
-      _type: 'personal';
-    }[];
-    presentation?: {
-      language?: {
-        'languageTerm_authority_iso639-2b_type_code': {
-          value: LanguageCollection;
-          _type: 'code';
-          _authority: 'iso639-2b';
-        };
-      };
-      dateOther_type_defence?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        hh?: { value: string };
-        mm?: { value: string };
-        _type: 'defence';
-      };
-      location?: { value: string };
-      address?: { value: string };
-      place?: { placeTerm: { value: string } };
-    };
-    defence?: {
-      dateOther_type_defence?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        hh?: { value: string };
-        mm?: { value: string };
-        _type: 'defence';
-      };
-      location?: { value: string };
-      address?: { value: string };
-      place?: { placeTerm: { value: string } };
-      language?: {
-        'languageTerm_authority_iso639-2b_type_code': {
-          value: LanguageCollection;
-          _type: 'code';
-          _authority: 'iso639-2b';
-        };
-      };
-    };
-    relatedItem_type_journal?: {
-      journal?: { value: string };
-      titleInfo?: { title: { value: string }; subTitle?: { value: string } };
-      identifier_displayLabel_pissn_type_issn?: {
-        value: string;
-        _type: 'issn';
-        _displayLabel: 'pissn';
-      };
-      identifier_displayLabel_eissn_type_issn?: {
-        value: string;
-        _type: 'issn';
-        _displayLabel: 'eissn';
-      };
-      part?: {
-        detail_type_volume?: { number?: { value: string }; _type: 'volume' };
-        detail_type_issue?: { number?: { value: string }; _type: 'issue' };
-        detail_type_artNo?: { number?: { value: string }; _type: 'artNo' };
-        extent?: { start?: { value: string }; end?: { value: string } };
-      };
-      _type: 'journal';
-    };
-    relatedItem_type_book?: {
-      titleInfo?: {
-        title: { value: string };
-        subTitle?: { value: string };
-        _lang: LanguageCollection;
-      };
-      note_type_statementOfResponsibility?: {
-        value: string;
-        _type: 'statementOfResponsibility';
-      };
-      originInfo?: {
-        dateIssued: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-        };
-        copyrightDate?: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-        };
-        dateOther_type_online?: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-          _type: 'online';
-        };
-        agent?: {
-          publisher?: { value: string }[];
-          namePart?: { value: string }[];
-          role: { roleTerm: { value: 'pbl' } };
-        };
-        place?: { placeTerm: { value: string } }[];
-        edition?: { value: string };
-      };
-      identifier_type_isbn?: {
-        value: string;
-        _type: 'isbn';
-        _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-      }[];
-      part?: {
-        extent?: { start?: { value: string }; end?: { value: string } };
-      };
-      relatedItem_type_series?: {
-        series?: { value: string };
-        titleInfo?: { title: { value: string }; subTitle?: { value: string } };
-        identifier_type_issn?: {
-          value: string;
-          _type: 'issn';
-          _displayLabel: IdentifierDisplayLabelIssnCollection;
-        };
-        identifier_displayLabel_eissn_type_issn?: {
-          value: string;
-          _type: 'issn';
-          _displayLabel: 'eissn';
-        };
-        partNumber?: { value: string };
-        _type: 'series';
-      }[];
-      _type: 'book';
-    };
-    relatedItem_type_conferencePublication?: {
-      titleInfo?: {
-        title: { value: string };
-        subTitle?: { value: string };
-        _lang: LanguageCollection;
-      };
-      note_type_statementOfResponsibility?: {
-        value: string;
-        _type: 'statementOfResponsibility';
-      };
-      originInfo?: {
-        dateIssued: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-        };
-        copyrightDate?: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-        };
-        dateOther_type_online?: {
-          year: { value: string };
-          month?: { value: string };
-          day?: { value: string };
-          _type: 'online';
-        };
-        agent?: {
-          publisher?: { value: string }[];
-          namePart?: { value: string }[];
-          role: { roleTerm: { value: 'pbl' } };
-        };
-        place?: { placeTerm: { value: string } }[];
-        edition?: { value: string };
-      };
-      identifier_type_isbn?: {
-        value: string;
-        _type: 'isbn';
-        _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-      }[];
-      part?: {
-        extent?: { start?: { value: string }; end?: { value: string } };
-      };
-      relatedItem_type_series?: {
-        series?: { value: string };
-        titleInfo?: { title: { value: string }; subTitle?: { value: string } };
-        identifier_type_issn?: {
-          value: string;
-          _type: 'issn';
-          _displayLabel: IdentifierDisplayLabelIssnCollection;
-        };
-        identifier_displayLabel_eissn_type_issn?: {
-          value: string;
-          _type: 'issn';
-          _displayLabel: 'eissn';
-        };
-        partNumber?: { value: string };
-        _type: 'series';
-      }[];
-      _type: 'conferencePublication';
-    };
-    relatedItem_type_conference?: {
-      conference?: { value: string };
-      _type: 'conference';
-    };
-    relatedItem_type_series?: {
-      series?: { value: string };
-      titleInfo?: { title: { value: string }; subTitle?: { value: string } };
-      identifier_type_issn?: {
-        value: string;
-        _type: 'issn';
-        _displayLabel: IdentifierDisplayLabelIssnCollection;
-      };
-      identifier_displayLabel_eissn_type_issn?: {
-        value: string;
-        _type: 'issn';
-        _displayLabel: 'eissn';
-      };
-      partNumber?: { value: string };
-      _type: 'series';
-    }[];
-    relatedItem_type_researchData?: {
-      titleInfo: {
-        title: { value: string };
-        subTitle?: { value: string };
-        _lang: LanguageCollection;
-      };
-      identifier_type_doi?: { value: string; _type: 'doi' };
-      location?: { url: { value: string }; displayLabel?: { value: string } }[];
-      _type: 'researchData';
-    }[];
-    relatedItem_type_project?: {
-      project?: { value: string };
-      titleInfo?: {
-        title: { value: string };
-        subTitle?: { value: string };
-        _lang: LanguageSweEngCollection;
-      };
-      _type: 'project';
-    }[];
-    relatedItem_type_funder?: {
-      funder: { value: string };
-      identifier_type_project?: { value: string; _type: 'project' };
-      _type: 'funder';
-    }[];
-    relatedItem_type_initiative?: {
-      initiative?: { value: SfoCollection }[];
-      _type: 'initiative';
-    };
-    related?: {
-      output?: { value: string };
-      _type: RelatedOutputTypeCollection;
-    }[];
-    'accessCondition_authority_kb-se'?: {
-      value: AccessConditionCollection;
-      _authority: 'kb.se';
-    };
-    localGenericMarkup?: { value: string }[];
-    admin: {
-      note_type_internal?: { value: string; _type: 'internal' };
-      reviewed: { value: TrueFalseDivaCollection };
-    };
-    attachment?: {
-      attachmentFile: { value: string };
-      type: { value: AttachmentTypeCollection };
-      note_type_userMessage?: { value: string; _type: 'userMessage' };
-    }[];
-  };
+  output: OutputUpdateGroup;
 }
 
 export interface DivaJournal extends BFFDataRecordData {
-  journal: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-journal' };
-      validationType: { value: 'diva-journal' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      oldId?: { value: string };
-    };
-    titleInfo: { title: { value: string }; subTitle?: { value: string } };
-    originInfo?: {
-      dateIssued_point_start?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        _point: 'start';
-      };
-      dateIssued_point_end?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-        _point: 'end';
-      };
-    };
-    identifier_displayLabel_pissn_type_issn?: {
-      value: string;
-      _type: 'issn';
-      _displayLabel: 'pissn';
-    };
-    identifier_displayLabel_eissn_type_issn?: {
-      value: string;
-      _type: 'issn';
-      _displayLabel: 'eissn';
-    };
-    location?: { url: { value: string }; displayLabel?: { value: string } };
-  };
+  journal: JournalUpdateGroup;
 }
 
 export interface DivaTopOrganisation extends BFFDataRecordData {
-  organisation: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-organisation' };
-      validationType: { value: 'diva-topOrganisation' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    authority_lang_swe: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'swe';
-    };
-    variant_lang_eng?: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'eng';
-    };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    address?: {
-      postOfficeBox?: { value: string };
-      street?: { value: string };
-      postcode?: { value: string };
-      place?: { value: string };
-      country?: { value: CountryCollection };
-    };
-    identifier_type_organisationCode?: {
-      value: string;
-      _type: 'organisationCode';
-    };
-    identifier_type_organisationNumber?: {
-      value: string;
-      _type: 'organisationNumber';
-    };
-    identifier_type_ror?: { value: string; _type: 'ror' };
-    location?: { url: { value: string }; displayLabel?: { value: string } };
-    note_type_internal?: { value: string; _type: 'internal' };
-    related_type_earlier?: {
-      organisation?: { value: string };
-      _type: 'earlier';
-    };
-  };
+  organisation: TopOrganisationUpdateGroup;
 }
 
 export interface DivaCourse extends BFFDataRecordData {
-  course: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-course' };
-      validationType: { value: 'diva-course' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    authority_lang_swe: { topic: { value: string }; _lang: 'swe' };
-    variant_lang_eng?: { topic: { value: string }; _lang: 'eng' };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    identifier_type_localId?: { value: string; _type: 'localId' };
-    related?: {
-      course?: { value: string };
-      _type: RelatedTypeTopicCollection;
-    }[];
-  };
+  course: CourseUpdateGroup;
 }
 
 export interface DivaProgramme extends BFFDataRecordData {
-  programme: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-programme' };
-      validationType: { value: 'diva-programme' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    authority_lang_swe: { topic: { value: string }; _lang: 'swe' };
-    variant_lang_eng?: { topic: { value: string }; _lang: 'eng' };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    identifier_type_localId?: { value: string; _type: 'localId' };
-    related?: {
-      programme?: { value: string };
-      _type: RelatedTypeTopicCollection;
-    }[];
-  };
+  programme: ProgrammeUpdateGroup;
 }
 
 export interface DivaPartOfOrganisation extends BFFDataRecordData {
-  organisation: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-organisation' };
-      validationType: { value: 'diva-partOfOrganisation' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    authority_lang_swe: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'swe';
-    };
-    variant_lang_eng?: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'eng';
-    };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    address?: {
-      postOfficeBox?: { value: string };
-      street?: { value: string };
-      postcode?: { value: string };
-      place?: { value: string };
-      country?: { value: CountryCollection };
-    };
-    identifier_type_organisationCode?: {
-      value: string;
-      _type: 'organisationCode';
-    };
-    identifier_type_organisationNumber?: {
-      value: string;
-      _type: 'organisationNumber';
-    };
-    location?: { url: { value: string }; displayLabel?: { value: string } };
-    note_type_internal?: { value: string; _type: 'internal' };
-    related_type_parent?: { organisation: { value: string }; _type: 'parent' };
-    related_type_earlier?: {
-      organisation?: { value: string };
-      _type: 'earlier';
-    }[];
-  };
+  organisation: PartOfOrganisationUpdateGroup;
 }
 
 export interface DivaSubject extends BFFDataRecordData {
-  subject: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-subject' };
-      validationType: { value: 'diva-subject' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-      oldId?: { value: string };
-    };
-    authority_lang_swe: { topic: { value: string }; _lang: 'swe' };
-    variant_lang_eng?: { topic: { value: string }; _lang: 'eng' };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    identifier_type_localId?: { value: string; _type: 'localId' };
-    related?: { topic: { value: string }; _type: RelatedTypeTopicCollection }[];
-  };
+  subject: SubjectUpdateGroup;
 }
 
 export interface DivaLocalGenericMarkup extends BFFDataRecordData {
-  localGenericMarkup: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-localGenericMarkup' };
-      validationType: { value: 'diva-localGenericMarkup' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      permissionUnit: { value: string };
-    };
-    localGenericMarkup: { value: string };
-    description?: { value: string };
-  };
+  localGenericMarkup: LocalGenericMarkupUpdateGroup;
 }
 
 export interface DivaFunder extends BFFDataRecordData {
-  funder: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-funder' };
-      validationType: { value: 'diva-funder' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      oldId?: { value: string };
-    };
-    authority_lang_swe: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'swe';
-    };
-    variant_lang_eng?: {
-      name_type_corporate: { namePart: { value: string }; _type: 'corporate' };
-      _lang: 'eng';
-    };
-    startDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    endDate?: {
-      year: { value: string };
-      month?: { value: string };
-      day?: { value: string };
-    };
-    identifier_type_organisationNumber?: {
-      value: string;
-      _type: 'organisationNumber';
-    };
-    identifier_type_doi?: { value: string; _type: 'doi' };
-    identifier_type_ror?: { value: string; _type: 'ror' };
-  };
+  funder: FunderUpdateGroup;
 }
 
 export interface DivaPerson extends BFFDataRecordData {
-  person: {
-    recordInfo: {
-      id: { value: string };
-      type: { value: 'diva-person' };
-      validationType: { value: 'diva-person' };
-      dataDivider: { value: 'divaData' };
-      createdBy: { value: string };
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-      oldId?: { value: string };
-    };
-    authority: {
-      name_type_personal: {
-        namePart_type_family?: { value: string; _type: 'family' };
-        namePart_type_given?: { value: string; _type: 'given' };
-        namePart_type_termsOfAddress?: {
-          value: string;
-          _type: 'termsOfAddress';
-        };
-        _type: 'personal';
-      };
-    };
-    variant?: {
-      name_type_personal: {
-        namePart_type_family?: { value: string; _type: 'family' };
-        namePart_type_given?: { value: string; _type: 'given' };
-        _type: 'personal';
-      }[];
-    };
-    personInfo?: {
-      birthDate?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-      deathDate?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-    };
-    email?: { value: string }[];
-    note_type_biographical?: {
-      value: string;
-      _type: 'biographical';
-      _lang: LanguageCollection;
-    }[];
-    location?: { url: { value: string }; displayLabel?: { value: string } }[];
-    identifier_type_orcid?: { value: string; _type: 'orcid' }[];
-    identifier_type_localId?: { value: string; _type: 'localId' }[];
-    'identifier_type_se-libr'?: { value: string; _type: 'se-libr' }[];
-    identifier_type_openAlex?: { value: string; _type: 'openAlex' };
-    identifier_type_scopus?: { value: string; _type: 'scopus' };
-    identifier_type_viaf?: { value: string; _type: 'viaf' }[];
-    affiliation?: {
-      organisation?: { value: string };
-      name_type_corporate?: { namePart: { value: string }; _type: 'corporate' };
-      identifier_type_ror?: { value: string; _type: 'ror' };
-      country?: { value: CountryCollection };
-      description?: { value: string };
-      startDate?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-      endDate?: {
-        year: { value: string };
-        month?: { value: string };
-        day?: { value: string };
-      };
-    }[];
-  };
+  person: PersonUpdateGroup;
 }
 
 export interface DivaTheme extends BFFDataRecordData {
-  'diva-theme': {
-    memberPermissionUnit?: { value: string };
-    recordInfo: {
-      id: { value: string };
-      type: { value: string };
-      validationType: { value: string };
-      dataDivider: { value: string };
-      createdBy: { value: string };
-      permissionUnit?: { value: string }[];
-      tsCreated: { value: string };
-      updated: { updatedBy: { value: string }; tsUpdated: { value: string } }[];
-    };
-    backgroundColor: { value: string };
-    textColor: { value: string };
-    logo?: { value: string };
-    logoSvg?: { value: string };
-    linkAdmin?: {
-      linkSv: { url: { value: string }; displayLabel: { value: string } };
-      linkEn: { url: { value: string }; displayLabel: { value: string } };
-    }[];
-    linkPublic?: {
-      linkSv: { url: { value: string }; displayLabel: { value: string } };
-      linkEn: { url: { value: string }; displayLabel: { value: string } };
-    }[];
-    pageTitleSv: { value: string };
-    pageTitleEn: { value: string };
-    hostname: { value: string }[];
-  };
+  'diva-theme': ThemeUpdateGroup;
+}
+
+export interface UpdatedDivaGroup {
+  updatedBy: { value: string };
+  tsUpdated: { value: string };
+}
+
+export interface RecordInfoSeriesUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-series' };
+  validationType: { value: 'diva-series' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface TitleInfoGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+}
+
+export interface TitleInfoAlternativeGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+  _type: 'alternative';
+}
+
+export interface DateIssuedStartGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+  _point: 'start';
+}
+
+export interface DateIssuedEndGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+  _point: 'end';
+}
+
+export interface OriginInfoDateIssuedStartEndGroup {
+  dateIssued_point_start?: DateIssuedStartGroup;
+  dateIssued_point_end?: DateIssuedEndGroup;
 }
 
 export type RelatedSeriesTypeCollection = 'host' | 'preceding';
+
+export interface RelatedSeriesGroup {
+  series: { value: string };
+  _type: RelatedSeriesTypeCollection;
+}
+
+export interface LocationGroup {
+  url: { value: string };
+  displayLabel?: { value: string };
+}
 
 export type OutputTypeCollection =
   | 'artistic-work_original-creative-work'
@@ -1093,7 +156,77 @@ export type OutputTypeCollection =
   | 'diva_manuscript-thesis'
   | 'diva_dissertation';
 
+export interface SeriesUpdateGroup {
+  recordInfo: RecordInfoSeriesUpdateGroup;
+  titleInfo: TitleInfoGroup;
+  titleInfo_type_alternative?: TitleInfoAlternativeGroup;
+  originInfo?: OriginInfoDateIssuedStartEndGroup;
+  identifier_displayLabel_pissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'pissn';
+  };
+  identifier_displayLabel_eissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'eissn';
+  };
+  related?: RelatedSeriesGroup[];
+  location?: LocationGroup;
+  note_type_external?: { value: string; _type: 'external' };
+  genre_type_outputType?: {
+    value: OutputTypeCollection;
+    _type: 'outputType';
+  }[];
+  organisation?: { value: string };
+}
+
+export interface RecordInfoPublisherUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-publisher' };
+  validationType: { value: 'diva-publisher' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string };
+}
+
+export interface NameCorporateGroup {
+  namePart: { value: string };
+  _type: 'corporate';
+}
+
+export interface PublisherUpdateGroup {
+  recordInfo: RecordInfoPublisherUpdateGroup;
+  name_type_corporate: NameCorporateGroup;
+}
+
+export interface RecordInfoProjectUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-project' };
+  validationType: { value: 'diva-project' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string };
+}
+
 export type LanguageSweEngCollection = 'swe' | 'eng';
+
+export interface TitleInfoLangSweEngGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+  _lang: LanguageSweEngCollection;
+}
+
+export interface TitleInfoAlternativeLangSweEngGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+  _type: 'alternative';
+  _lang: LanguageSweEngCollection;
+}
 
 export type RoleProjectPersonalCollection =
   | 'principalInvestigator'
@@ -1102,6 +235,10 @@ export type RoleProjectPersonalCollection =
   | 'projectOfficer'
   | 'highlyQualifiedPersonel'
   | 'researchStudent';
+
+export interface RoleProjectPersonalGroup {
+  roleTerm: { value: RoleProjectPersonalCollection }[];
+}
 
 export type CountryCollection =
   | 'aa'
@@ -1350,6 +487,35 @@ export type CountryCollection =
   | 'ye'
   | 'yu'
   | 'za';
+
+export interface AffiliationPersonalGroup {
+  organisation?: { value: string };
+  name_type_corporate?: NameCorporateGroup;
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  country?: { value: CountryCollection };
+  description?: { value: string };
+}
+
+export interface NamePersonalProjectGroup {
+  person?: { value: string };
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  role?: RoleProjectPersonalGroup;
+  affiliation?: AffiliationPersonalGroup[];
+  _type: 'personal';
+}
+
+export interface RoleProjectOrganisationGroup {
+  roleTerm: { value: 'pdr' };
+}
+
+export interface NameOrganisationProjectGroup {
+  organisation?: { value: string };
+  namePart: { value: string };
+  role: RoleProjectOrganisationGroup;
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  _type: 'corporate';
+}
 
 export type LanguageCollection =
   | 'swe'
@@ -1836,6 +1002,16 @@ export type LanguageCollection =
   | 'zxx'
   | 'zza';
 
+export interface SubjectKeywordsGroup {
+  topic: { value: string };
+  _lang: LanguageCollection;
+}
+
+export interface SubjectSubjectGroup {
+  topic: { value: string }[];
+  _authority: 'diva';
+}
+
 export type SsifCollection =
   | '1'
   | '101'
@@ -2202,6 +1378,28 @@ export type SdgCollection =
   | 'sdg16'
   | 'sdg17';
 
+export interface SubjectSdgGroup {
+  topic: { value: SdgCollection }[];
+  _authority: 'sdg';
+}
+
+export interface StartDateGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface EndDateGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface RelatedItemFunderProjectGroup {
+  funder: { value: string };
+  _type: 'funder';
+}
+
 export type TypeOfAwardCollection =
   | 'projectGrant'
   | 'grantForEmploymentOrScholarship'
@@ -2213,9 +1411,66 @@ export type TypeOfAwardCollection =
 
 export type CurrencyCollection = 'eur' | 'sek';
 
+export interface RelatedItemOutputGroup {
+  output?: { value: string };
+  _type: 'output';
+}
+
+export interface ProjectUpdateGroup {
+  recordInfo: RecordInfoProjectUpdateGroup;
+  titleInfo: TitleInfoLangSweEngGroup;
+  titleInfo_type_alternative?: TitleInfoAlternativeLangSweEngGroup;
+  name_type_personal: NamePersonalProjectGroup[];
+  name_type_corporate?: NameOrganisationProjectGroup;
+  abstract?: { value: string; _lang: LanguageCollection }[];
+  subject?: SubjectKeywordsGroup[];
+  subject_authority_diva?: SubjectSubjectGroup;
+  classification_authority_ssif?: {
+    value: SsifCollection;
+    _authority: 'ssif';
+  }[];
+  subject_authority_sdg?: SubjectSdgGroup;
+  location?: LocationGroup[];
+  identifier_type_localId?: { value: string; _type: 'localId' };
+  identifier_type_project: { value: string; _type: 'project' };
+  identifier_type_raid?: { value: string; _type: 'raid' };
+  identifier_type_reference?: { value: string; _type: 'reference' };
+  note_type_external?: { value: string; _type: 'external' };
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  relatedItem_type_funder?: RelatedItemFunderProjectGroup[];
+  typeOfAward: { value: TypeOfAwardCollection };
+  fundingAmount?: { value: string; _currency: CurrencyCollection };
+  relatedItem_type_output?: RelatedItemOutputGroup[];
+  note_type_internal?: { value: string; _type: 'internal' };
+}
+
 export type VisibilityCollection = 'published' | 'unpublished' | 'hidden';
 
+export interface RecordInfoOutputUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-output' };
+  validationType: { value: 'diva-output' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  visibility: { value: VisibilityCollection };
+  tsVisibility?: { value: string };
+  urn?: { value: string };
+  oldId?: { value: string };
+}
+
 export type SubcategoryOtherCollection = 'policyDocument' | 'exhibitionCatalog';
+
+export interface LanguageGroup {
+  'languageTerm_authority_iso639-2b_type_code': {
+    value: LanguageCollection;
+    _type: 'code';
+    _authority: 'iso639-2b';
+  };
+}
 
 export type PublicationStatusCollection =
   | 'submitted'
@@ -2229,6 +1484,19 @@ export type OutputTypeArtisticWorkCollection = 'false' | 'true';
 export type GenreContentTypeCollection = 'ref' | 'vet' | 'pop';
 
 export type GenreArtisticReviewedCollection = 'refereed' | 'unrefereed';
+
+export interface TitleInfoLangGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+  _lang: LanguageCollection;
+}
+
+export interface TitleInfoAlternativeLangGroup {
+  title: { value: string };
+  subTitle?: { value: string };
+  _type: 'alternative';
+  _lang: LanguageCollection;
+}
 
 export type RoleCollection =
   | 'aut'
@@ -2303,6 +1571,28 @@ export type RoleCollection =
   | 'wam'
   | 'wdc';
 
+export interface RoleGroup {
+  roleTerm: { value: RoleCollection }[];
+}
+
+export interface NamePersonalGroup {
+  person?: { value: string };
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  role?: RoleGroup;
+  affiliation?: AffiliationPersonalGroup[];
+  _type: 'personal';
+}
+
+export interface NameOrganisationGroup {
+  organisation?: { value: string };
+  role?: RoleGroup;
+  namePart?: { value: string };
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  description?: { value: string };
+  _type: 'corporate';
+}
+
 export type TypeOfResourceCollection =
   | 'artifact'
   | 'cartographic'
@@ -2316,12 +1606,82 @@ export type TypeOfResourceCollection =
   | 'stillImage'
   | 'text';
 
+export interface DurationGroup {
+  hh?: { value: string };
+  mm?: { value: string };
+  ss?: { value: string };
+}
+
+export interface PhysicalDescriptionGroup {
+  extent: { value: string };
+}
+
+export interface DateOtherPatentGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+  _type: 'patent';
+}
+
+export interface DateIssuedGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface CopyrightDateGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface DateOtherOnlineGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+  _type: 'online';
+}
+
+export interface RolePublisherGroup {
+  roleTerm: { value: 'pbl' };
+}
+
+export interface AgentGroup {
+  publisher?: { value: string }[];
+  namePart?: { value: string }[];
+  role: RolePublisherGroup;
+}
+
+export interface PlaceGroup {
+  placeTerm: { value: string };
+}
+
+export interface OriginInfoGroup {
+  dateIssued: DateIssuedGroup;
+  copyrightDate?: CopyrightDateGroup;
+  dateOther_type_online?: DateOtherOnlineGroup;
+  agent?: AgentGroup;
+  place?: PlaceGroup[];
+  edition?: { value: string };
+}
+
 export type IdentifierDisplayLabelIsbnIsmnCollection =
   | 'print'
   | 'online'
   | 'invalid';
 
+export interface LocationOrderLinkGroup {
+  url: { value: string };
+  displayLabel?: { value: string };
+  _displayLabel: 'orderLink';
+}
+
 export type SemesterCollection = 'ht' | 'vt';
+
+export interface AcademicSemesterGroup {
+  year?: { value: string };
+  semester?: { value: SemesterCollection };
+}
 
 export type DegreeLevelCollection =
   | 'L1'
@@ -2365,7 +1725,217 @@ export type UniversityPointsCollection =
   | '300'
   | '330';
 
+export interface StudentDegreeGroup {
+  degreeLevel: { value: DegreeLevelCollection };
+  universityPoints: { value: UniversityPointsCollection };
+  course?: { value: string };
+  programme?: { value: string };
+}
+
+export interface NameOrganisationExternalCollaborationGroup {
+  namePart?: { value: string }[];
+}
+
+export interface RoleDegreeGrantingInstitutionGroup {
+  roleTerm: { value: 'dgg' };
+}
+
+export interface NameOrganisationDegreeGrantingInstitutionGroup {
+  organisation?: { value: string };
+  namePart?: { value: string };
+  role: RoleDegreeGrantingInstitutionGroup;
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  _type: 'corporate';
+}
+
+export interface RoleThesisAdvisorGroup {
+  roleTerm: { value: 'ths' };
+}
+
+export interface NamePersonalThesisAdvisorGroup {
+  person?: { value: string };
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  role?: RoleThesisAdvisorGroup;
+  affiliation?: AffiliationPersonalGroup[];
+  _type: 'personal';
+}
+
+export interface RoleDegreeSupervisorGroup {
+  roleTerm: { value: 'dgs' };
+}
+
+export interface NamePersonalDegreeSupervisorGroup {
+  person?: { value: string };
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  role?: RoleDegreeSupervisorGroup;
+  affiliation?: AffiliationPersonalGroup[];
+  _type: 'personal';
+}
+
+export interface RoleOpponentGroup {
+  roleTerm: { value: 'opn' };
+}
+
+export interface NamePersonalOpponentGroup {
+  person?: { value: string };
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  role?: RoleOpponentGroup;
+  affiliation?: AffiliationPersonalGroup[];
+  _type: 'personal';
+}
+
+export interface DateOtherDefenceGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+  hh?: { value: string };
+  mm?: { value: string };
+  _type: 'defence';
+}
+
+export interface PresentationDivaGroup {
+  language?: LanguageGroup;
+  dateOther_type_defence?: DateOtherDefenceGroup;
+  location?: { value: string };
+  address?: { value: string };
+  place?: PlaceGroup;
+}
+
+export interface DefenceGroup {
+  dateOther_type_defence?: DateOtherDefenceGroup;
+  location?: { value: string };
+  address?: { value: string };
+  place?: PlaceGroup;
+  language?: LanguageGroup;
+}
+
+export interface DetailVolumeGroup {
+  number?: { value: string };
+  _type: 'volume';
+}
+
+export interface DetailIssueGroup {
+  number?: { value: string };
+  _type: 'issue';
+}
+
+export interface DetailArtNoGroup {
+  number?: { value: string };
+  _type: 'artNo';
+}
+
+export interface ExtentGroup {
+  start?: { value: string };
+  end?: { value: string };
+}
+
+export interface RelatedItemPartJournalGroup {
+  detail_type_volume?: DetailVolumeGroup;
+  detail_type_issue?: DetailIssueGroup;
+  detail_type_artNo?: DetailArtNoGroup;
+  extent?: ExtentGroup;
+}
+
+export interface RelatedItemJournalGroup {
+  journal?: { value: string };
+  titleInfo?: TitleInfoGroup;
+  identifier_displayLabel_pissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'pissn';
+  };
+  identifier_displayLabel_eissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'eissn';
+  };
+  part?: RelatedItemPartJournalGroup;
+  _type: 'journal';
+}
+
+export interface RelatedItemPartBookGroup {
+  extent?: ExtentGroup;
+}
+
 export type IdentifierDisplayLabelIssnCollection = 'eissn' | 'pissn';
+
+export interface RelatedItemSeriesGroup {
+  series?: { value: string };
+  titleInfo?: TitleInfoGroup;
+  identifier_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: IdentifierDisplayLabelIssnCollection;
+  };
+  identifier_displayLabel_eissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'eissn';
+  };
+  partNumber?: { value: string };
+  _type: 'series';
+}
+
+export interface RelatedItemBookGroup {
+  titleInfo?: TitleInfoLangGroup;
+  note_type_statementOfResponsibility?: {
+    value: string;
+    _type: 'statementOfResponsibility';
+  };
+  originInfo?: OriginInfoGroup;
+  identifier_type_isbn?: {
+    value: string;
+    _type: 'isbn';
+    _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+  }[];
+  part?: RelatedItemPartBookGroup;
+  relatedItem_type_series?: RelatedItemSeriesGroup[];
+  _type: 'book';
+}
+
+export interface RelatedItemConferencePublicationGroup {
+  titleInfo?: TitleInfoLangGroup;
+  note_type_statementOfResponsibility?: {
+    value: string;
+    _type: 'statementOfResponsibility';
+  };
+  originInfo?: OriginInfoGroup;
+  identifier_type_isbn?: {
+    value: string;
+    _type: 'isbn';
+    _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+  }[];
+  part?: RelatedItemPartBookGroup;
+  relatedItem_type_series?: RelatedItemSeriesGroup[];
+  _type: 'conferencePublication';
+}
+
+export interface RelatedItemConferenceGroup {
+  conference?: { value: string };
+  _type: 'conference';
+}
+
+export interface RelatedItemResearchDataGroup {
+  titleInfo: TitleInfoLangGroup;
+  identifier_type_doi?: { value: string; _type: 'doi' };
+  location?: LocationGroup[];
+  _type: 'researchData';
+}
+
+export interface RelatedItemProjectGroup {
+  project?: { value: string };
+  titleInfo?: TitleInfoLangSweEngGroup;
+  _type: 'project';
+}
+
+export interface RelatedItemFunderGroup {
+  funder: { value: string };
+  identifier_type_project?: { value: string; _type: 'project' };
+  _type: 'funder';
+}
 
 export type SfoCollection =
   | 'cancer'
@@ -2389,14 +1959,29 @@ export type SfoCollection =
   | 'securityAndEmergencyPreparedness'
   | 'politicalImportantGeographicalRegions';
 
+export interface RelatedItemInitiativeGroup {
+  initiative?: { value: SfoCollection }[];
+  _type: 'initiative';
+}
+
 export type RelatedOutputTypeCollection =
   | 'retracted'
   | 'constituent'
   | 'thesis';
 
+export interface RelatedOutputGroup {
+  output?: { value: string };
+  _type: RelatedOutputTypeCollection;
+}
+
 export type AccessConditionCollection = 'gratis' | 'restricted';
 
 export type TrueFalseDivaCollection = 'true' | 'false';
+
+export interface AdminGroup {
+  note_type_internal?: { value: string; _type: 'internal' };
+  reviewed: { value: TrueFalseDivaCollection };
+}
 
 export type AttachmentTypeCollection =
   | 'fullText'
@@ -2416,4 +2001,494 @@ export type AttachmentTypeCollection =
   | 'summary'
   | 'toc';
 
+export interface AttachmentGroup {
+  attachmentFile: { value: string };
+  type: { value: AttachmentTypeCollection };
+  note_type_userMessage?: { value: string; _type: 'userMessage' };
+}
+
+export interface OutputUpdateGroup {
+  recordInfo: RecordInfoOutputUpdateGroup;
+  genre_type_outputType: { value: OutputTypeCollection; _type: 'outputType' };
+  genre_type_subcategory?: {
+    value: SubcategoryOtherCollection;
+    _type: 'subcategory';
+  };
+  language: LanguageGroup[];
+  note_type_publicationStatus?: {
+    value: PublicationStatusCollection;
+    _type: 'publicationStatus';
+  };
+  artisticWork_type_outputType?: {
+    value: OutputTypeArtisticWorkCollection;
+    _type: 'outputType';
+  };
+  genre_type_contentType: {
+    value: GenreContentTypeCollection;
+    _type: 'contentType';
+  };
+  genre_type_reviewed?: {
+    value: GenreArtisticReviewedCollection;
+    _type: 'reviewed';
+  };
+  titleInfo: TitleInfoLangGroup;
+  titleInfo_type_alternative?: TitleInfoAlternativeLangGroup[];
+  name_type_personal?: NamePersonalGroup[];
+  name_type_corporate?: NameOrganisationGroup[];
+  note_type_creatorCount?: { value: string; _type: 'creatorCount' };
+  typeOfResource?: { value: TypeOfResourceCollection };
+  type?: { value: string; _lang: LanguageCollection }[];
+  material?: { value: string; _lang: LanguageCollection }[];
+  technique?: { value: string; _lang: LanguageCollection }[];
+  size?: { value: string };
+  duration?: DurationGroup;
+  physicalDescription?: PhysicalDescriptionGroup;
+  abstract?: { value: string; _lang: LanguageCollection }[];
+  subject?: SubjectKeywordsGroup[];
+  dateOther_type_patent?: DateOtherPatentGroup;
+  originInfo: OriginInfoGroup;
+  imprint?: { value: string };
+  extent?: { value: string };
+  classification_authority_ssif?: {
+    value: SsifCollection;
+    _authority: 'ssif';
+  }[];
+  subject_authority_diva?: SubjectSubjectGroup;
+  subject_authority_sdg?: SubjectSdgGroup;
+  identifier_type_isbn?: {
+    value: string;
+    _type: 'isbn';
+    _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+  }[];
+  identifier_type_isrn?: { value: string; _type: 'isrn' };
+  identifier_type_ismn?: {
+    value: string;
+    _type: 'ismn';
+    _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+  }[];
+  identifier_type_patentNumber?: { value: string; _type: 'patentNumber' };
+  identifier_type_doi?: { value: string; _type: 'doi' };
+  identifier_type_pmid?: { value: string; _type: 'pmid' };
+  identifier_type_wos?: { value: string; _type: 'wos' };
+  identifier_type_scopus?: { value: string; _type: 'scopus' };
+  identifier_type_openAlex?: { value: string; _type: 'openAlex' };
+  'identifier_type_se-libr'?: { value: string; _type: 'se-libr' };
+  identifier_type_archiveNumber?: { value: string; _type: 'archiveNumber' };
+  identifier_type_localId?: { value: string; _type: 'localId' }[];
+  location?: LocationGroup[];
+  location_displayLabel_orderLink?: LocationOrderLinkGroup;
+  note_type_external?: { value: string; _type: 'external' };
+  academicSemester?: AcademicSemesterGroup;
+  studentDegree?: StudentDegreeGroup;
+  externalCollaboration?: NameOrganisationExternalCollaborationGroup;
+  degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
+  supervisor_type_personal?: NamePersonalThesisAdvisorGroup[];
+  examiner_type_personal?: NamePersonalDegreeSupervisorGroup[];
+  opponent_type_personal?: NamePersonalOpponentGroup[];
+  presentation?: PresentationDivaGroup;
+  defence?: DefenceGroup;
+  relatedItem_type_journal?: RelatedItemJournalGroup;
+  relatedItem_type_book?: RelatedItemBookGroup;
+  relatedItem_type_conferencePublication?: RelatedItemConferencePublicationGroup;
+  relatedItem_type_conference?: RelatedItemConferenceGroup;
+  relatedItem_type_series?: RelatedItemSeriesGroup[];
+  relatedItem_type_researchData?: RelatedItemResearchDataGroup[];
+  relatedItem_type_project?: RelatedItemProjectGroup[];
+  relatedItem_type_funder?: RelatedItemFunderGroup[];
+  relatedItem_type_initiative?: RelatedItemInitiativeGroup;
+  related?: RelatedOutputGroup[];
+  'accessCondition_authority_kb-se'?: {
+    value: AccessConditionCollection;
+    _authority: 'kb.se';
+  };
+  localGenericMarkup?: { value: string }[];
+  admin: AdminGroup;
+  attachment?: AttachmentGroup[];
+}
+
+export interface RecordInfoJournalUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-journal' };
+  validationType: { value: 'diva-journal' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string };
+}
+
+export interface JournalUpdateGroup {
+  recordInfo: RecordInfoJournalUpdateGroup;
+  titleInfo: TitleInfoGroup;
+  originInfo?: OriginInfoDateIssuedStartEndGroup;
+  identifier_displayLabel_pissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'pissn';
+  };
+  identifier_displayLabel_eissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'eissn';
+  };
+  location?: LocationGroup;
+}
+
+export interface RecordInfoTopOrganisationUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-organisation' };
+  validationType: { value: 'diva-topOrganisation' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface AuthorityCorporateLangGroup {
+  name_type_corporate: NameCorporateGroup;
+  _lang: 'swe';
+}
+
+export interface VariantCorporateLangGroup {
+  name_type_corporate: NameCorporateGroup;
+  _lang: 'eng';
+}
+
+export interface AddressGroup {
+  postOfficeBox?: { value: string };
+  street?: { value: string };
+  postcode?: { value: string };
+  place?: { value: string };
+  country?: { value: CountryCollection };
+}
+
+export interface RelatedOrganisationEarlierGroup {
+  organisation?: { value: string };
+  _type: 'earlier';
+}
+
+export interface TopOrganisationUpdateGroup {
+  recordInfo: RecordInfoTopOrganisationUpdateGroup;
+  authority_lang_swe: AuthorityCorporateLangGroup;
+  variant_lang_eng?: VariantCorporateLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  address?: AddressGroup;
+  identifier_type_organisationCode?: {
+    value: string;
+    _type: 'organisationCode';
+  };
+  identifier_type_organisationNumber?: {
+    value: string;
+    _type: 'organisationNumber';
+  };
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  location?: LocationGroup;
+  note_type_internal?: { value: string; _type: 'internal' };
+  related_type_earlier?: RelatedOrganisationEarlierGroup;
+}
+
+export interface RecordInfoCourseUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-course' };
+  validationType: { value: 'diva-course' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface AuthorityTopicLangGroup {
+  topic: { value: string };
+  _lang: 'swe';
+}
+
+export interface VariantTopicLangGroup {
+  topic: { value: string };
+  _lang: 'eng';
+}
+
 export type RelatedTypeTopicCollection = 'earlier' | 'broader';
+
+export interface RelatedCourseGroup {
+  course?: { value: string };
+  _type: RelatedTypeTopicCollection;
+}
+
+export interface CourseUpdateGroup {
+  recordInfo: RecordInfoCourseUpdateGroup;
+  authority_lang_swe: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  identifier_type_localId?: { value: string; _type: 'localId' };
+  related?: RelatedCourseGroup[];
+}
+
+export interface RecordInfoProgrammeUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-programme' };
+  validationType: { value: 'diva-programme' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface RelatedProgrammeGroup {
+  programme?: { value: string };
+  _type: RelatedTypeTopicCollection;
+}
+
+export interface ProgrammeUpdateGroup {
+  recordInfo: RecordInfoProgrammeUpdateGroup;
+  authority_lang_swe: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  identifier_type_localId?: { value: string; _type: 'localId' };
+  related?: RelatedProgrammeGroup[];
+}
+
+export interface RecordInfoPartOfOrganisationUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-organisation' };
+  validationType: { value: 'diva-partOfOrganisation' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface RelatedOrganisationParentGroup {
+  organisation: { value: string };
+  _type: 'parent';
+}
+
+export interface PartOfOrganisationUpdateGroup {
+  recordInfo: RecordInfoPartOfOrganisationUpdateGroup;
+  authority_lang_swe: AuthorityCorporateLangGroup;
+  variant_lang_eng?: VariantCorporateLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  address?: AddressGroup;
+  identifier_type_organisationCode?: {
+    value: string;
+    _type: 'organisationCode';
+  };
+  identifier_type_organisationNumber?: {
+    value: string;
+    _type: 'organisationNumber';
+  };
+  location?: LocationGroup;
+  note_type_internal?: { value: string; _type: 'internal' };
+  related_type_parent?: RelatedOrganisationParentGroup;
+  related_type_earlier?: RelatedOrganisationEarlierGroup[];
+}
+
+export interface RecordInfoSubjectUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-subject' };
+  validationType: { value: 'diva-subject' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+  oldId?: { value: string };
+}
+
+export interface RelatedSubjectGroup {
+  topic: { value: string };
+  _type: RelatedTypeTopicCollection;
+}
+
+export interface SubjectUpdateGroup {
+  recordInfo: RecordInfoSubjectUpdateGroup;
+  authority_lang_swe: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  identifier_type_localId?: { value: string; _type: 'localId' };
+  related?: RelatedSubjectGroup[];
+}
+
+export interface RecordInfoLocalGenericMarkupUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-localGenericMarkup' };
+  validationType: { value: 'diva-localGenericMarkup' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string };
+}
+
+export interface LocalGenericMarkupUpdateGroup {
+  recordInfo: RecordInfoLocalGenericMarkupUpdateGroup;
+  localGenericMarkup: { value: string };
+  description?: { value: string };
+}
+
+export interface RecordInfoFunderUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-funder' };
+  validationType: { value: 'diva-funder' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string };
+}
+
+export interface FunderUpdateGroup {
+  recordInfo: RecordInfoFunderUpdateGroup;
+  authority_lang_swe: AuthorityCorporateLangGroup;
+  variant_lang_eng?: VariantCorporateLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+  identifier_type_organisationNumber?: {
+    value: string;
+    _type: 'organisationNumber';
+  };
+  identifier_type_doi?: { value: string; _type: 'doi' };
+  identifier_type_ror?: { value: string; _type: 'ror' };
+}
+
+export interface RecordInfoPersonUpdateGroup {
+  id: { value: string };
+  type: { value: 'diva-person' };
+  validationType: { value: 'diva-person' };
+  dataDivider: { value: 'divaData' };
+  createdBy: { value: string };
+  tsCreated: { value: string };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string };
+}
+
+export interface NamePersonGroup {
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_termsOfAddress?: { value: string; _type: 'termsOfAddress' };
+  _type: 'personal';
+}
+
+export interface AuthorityPersonalGroup {
+  name_type_personal: NamePersonGroup;
+}
+
+export interface NamePersonVariantGroup {
+  namePart_type_family?: { value: string; _type: 'family' };
+  namePart_type_given?: { value: string; _type: 'given' };
+  _type: 'personal';
+}
+
+export interface VariantPersonalGroup {
+  name_type_personal: NamePersonVariantGroup[];
+}
+
+export interface BirthDateGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface DeathDateGroup {
+  year: { value: string };
+  month?: { value: string };
+  day?: { value: string };
+}
+
+export interface PersonInfoGroup {
+  birthDate?: BirthDateGroup;
+  deathDate?: DeathDateGroup;
+}
+
+export interface AffiliationGroup {
+  organisation?: { value: string };
+  name_type_corporate?: NameCorporateGroup;
+  identifier_type_ror?: { value: string; _type: 'ror' };
+  country?: { value: CountryCollection };
+  description?: { value: string };
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
+}
+
+export interface PersonUpdateGroup {
+  recordInfo: RecordInfoPersonUpdateGroup;
+  authority: AuthorityPersonalGroup;
+  variant?: VariantPersonalGroup;
+  personInfo?: PersonInfoGroup;
+  email?: { value: string }[];
+  note_type_biographical?: {
+    value: string;
+    _type: 'biographical';
+    _lang: LanguageCollection;
+  }[];
+  location?: LocationGroup[];
+  identifier_type_orcid?: { value: string; _type: 'orcid' }[];
+  identifier_type_localId?: { value: string; _type: 'localId' }[];
+  'identifier_type_se-libr'?: { value: string; _type: 'se-libr' }[];
+  identifier_type_openAlex?: { value: string; _type: 'openAlex' };
+  identifier_type_scopus?: { value: string; _type: 'scopus' };
+  identifier_type_viaf?: { value: string; _type: 'viaf' }[];
+  affiliation?: AffiliationGroup[];
+}
+
+export interface UpdatedGroup {
+  updatedBy: { value: string };
+  tsUpdated: { value: string };
+}
+
+export interface RecordInfoGroup {
+  id: { value: string };
+  type: { value: string };
+  validationType: { value: string };
+  dataDivider: { value: string };
+  createdBy: { value: string };
+  permissionUnit?: { value: string }[];
+  tsCreated: { value: string };
+  updated: UpdatedGroup[];
+}
+
+export interface ThemeLinkSweGroup {
+  url: { value: string };
+  displayLabel: { value: string };
+}
+
+export interface ThemeLinkEngGroup {
+  url: { value: string };
+  displayLabel: { value: string };
+}
+
+export interface ThemeLinkAdminGroup {
+  linkSv: ThemeLinkSweGroup;
+  linkEn: ThemeLinkEngGroup;
+}
+
+export interface ThemeLinkPublicGroup {
+  linkSv: ThemeLinkSweGroup;
+  linkEn: ThemeLinkEngGroup;
+}
+
+export interface ThemeUpdateGroup {
+  memberPermissionUnit?: { value: string };
+  recordInfo: RecordInfoGroup;
+  backgroundColor: { value: string };
+  textColor: { value: string };
+  logo?: { value: string };
+  logoSvg?: { value: string };
+  linkAdmin?: ThemeLinkAdminGroup[];
+  linkPublic?: ThemeLinkPublicGroup[];
+  pageTitleSv: { value: string };
+  pageTitleEn: { value: string };
+  hostname: { value: string }[];
+}

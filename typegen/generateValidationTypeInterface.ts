@@ -12,33 +12,17 @@ import { generateInterfaceName as generateTypeName } from './utils/generateInter
 import { getValueForRepeat } from './utils/getValueForRepeat';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
-const VALIDATION_TYPES = [
-  'diva-series',
-  'diva-publisher',
-  'diva-project',
-  'diva-output',
-  'diva-journal',
-  'diva-topOrganisation',
-  'diva-course',
-  'diva-programme',
-  'diva-partOfOrganisation',
-  'diva-subject',
-  'diva-localGenericMarkup',
-  'diva-funder',
-  'diva-person',
-  'diva-theme',
-];
-
-const collectionVariableTypes = new Map<string, string>();
+const metadataTypes = new Map<string, string>();
 
 export function generateValidationTypeInterface(
   validationTypePool: Lookup<string, BFFValidationType>,
   metadataPool: Lookup<string, BFFMetadata>,
+  validationTypeIds: string[],
 ): string {
   let outputString = '';
 
   try {
-    VALIDATION_TYPES.forEach((validationTypeId) => {
+    validationTypeIds.forEach((validationTypeId) => {
       const validationType = validationTypePool.get(validationTypeId);
       const interfaceName = generateTypeName(validationTypeId);
 
@@ -48,7 +32,7 @@ export function generateValidationTypeInterface(
         }\n\n`;
     });
 
-    collectionVariableTypes.values().forEach((type) => {
+    metadataTypes.values().forEach((type) => {
       outputString += `${type}\n\n`;
     });
 
@@ -70,7 +54,11 @@ function createChildRef(
 
   const value =
     childMetadata.type === 'group'
-      ? `{ ${createGroupType(metadataPool, childMetadata as BFFMetadataGroup)}; ${attributes} }`
+      ? createGroupType(
+          metadataPool,
+          childMetadata as BFFMetadataGroup,
+          attributes,
+        )
       : `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
 
   return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
@@ -127,7 +115,7 @@ const createCollectionVariableItems = (
 ) => {
   const typeName = generateTypeName(collectionVariable.refCollection);
 
-  if (!collectionVariableTypes.has(collectionVariable.refCollection)) {
+  if (!metadataTypes.has(collectionVariable.refCollection)) {
     const itemCollection = metadataPool.get(
       collectionVariable.refCollection,
     ) as BFFMetadataItemCollection;
@@ -140,7 +128,7 @@ const createCollectionVariableItems = (
       .map((item) => `'${item.nameInData}'`)
       .join('|');
 
-    collectionVariableTypes.set(
+    metadataTypes.set(
       collectionVariable.refCollection,
       `export type ${typeName} = ${items}`,
     );
@@ -152,12 +140,22 @@ const createCollectionVariableItems = (
 function createGroupType(
   metadataPool: Lookup<string, BFFMetadata>,
   group: BFFMetadataGroup,
+  attributes: string,
 ): string {
-  const children = group.children.map((childRef) => {
-    return `${createChildRef(metadataPool, childRef)}`;
-  });
+  const typeName = generateTypeName(group.id);
 
-  return children.join(';');
+  if (!metadataTypes.has(group.id)) {
+    const children = group.children.map((childRef) => {
+      return `${createChildRef(metadataPool, childRef)}`;
+    });
+
+    metadataTypes.set(
+      group.id,
+      `export interface ${typeName} { ${children.join(';')}; ${attributes} }`,
+    );
+  }
+
+  return typeName;
 }
 
 export function getNameFromMetadata(

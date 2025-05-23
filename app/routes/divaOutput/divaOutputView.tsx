@@ -4,6 +4,8 @@ import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAn
 import type {
   DivaOutput,
   LanguageCollection,
+  NameOrganisationGroup,
+  NamePersonalGroup,
 } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 import type { ReactNode } from 'react';
@@ -235,7 +237,7 @@ const createTitle = (titleInfo: DivaOutput['output']['titleInfo']) => {
 };
 
 interface PersonProps {
-  person: NonNullable<DivaOutput['output']['name_type_personal']>[number];
+  person: NamePersonalGroup;
 }
 
 const Person = ({ person }: PersonProps) => {
@@ -264,9 +266,7 @@ const Person = ({ person }: PersonProps) => {
 };
 
 interface OrganisationProps {
-  organisation: NonNullable<
-    DivaOutput['output']['name_type_corporate']
-  >[number];
+  organisation: NameOrganisationGroup;
 }
 
 const Organisation = ({ organisation }: OrganisationProps) => {

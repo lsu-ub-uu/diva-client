@@ -17,6 +17,23 @@ const [metadataPool, validationTypePool] = await Promise.all([
   getValidationTypePool(),
 ]);
 
+const VALIDATION_TYPES = [
+  'diva-series',
+  'diva-publisher',
+  'diva-project',
+  'diva-output',
+  'diva-journal',
+  'diva-topOrganisation',
+  'diva-course',
+  'diva-programme',
+  'diva-partOfOrganisation',
+  'diva-subject',
+  'diva-localGenericMarkup',
+  'diva-funder',
+  'diva-person',
+  'diva-theme',
+];
+
 let code = `
   /**
    * Auto-generated types
@@ -27,21 +44,29 @@ let code = `
 
   `;
 
-code += generateValidationTypes(validationTypePool, metadataPool);
+code += generateValidationTypes(
+  validationTypePool,
+  metadataPool,
+  VALIDATION_TYPES,
+);
 
 const outputPath = new URL(
   '../app/generatedTypes/divaTypes.ts',
   import.meta.url,
 );
 
-const formattedCode = await prettier.format(code, {
-  parser: 'typescript',
-  singleQuote: true,
-});
+try {
+  const formattedCode = await prettier.format(code, {
+    parser: 'typescript',
+    singleQuote: true,
+  });
+  fs.writeFileSync(outputPath, formattedCode, 'utf8');
 
-fs.writeFileSync(outputPath, formattedCode, 'utf8');
-
-console.info('Types generated at:', outputPath.pathname);
+  console.info('Types generated at:', outputPath.pathname);
+} catch (error) {
+  console.error('Error formatting code:', code, error);
+  process.exit(1);
+}
 
 async function getMetadataPool() {
   const coraMetadata =
