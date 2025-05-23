@@ -67,7 +67,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               value={output.note_type_creatorCount?.value}
             />
             <Term
-              label='Upphovsorganisationer'
+              label={output.name_type_corporate?.[0]?.__text[language]}
               value={output.name_type_corporate?.map((organisation, index) => (
                 <Fragment key={index}>
                   <Organisation organisation={organisation} key={index} />
@@ -79,7 +79,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {output.titleInfo_type_alternative?.map((title, index) => (
               <Term
                 key={index}
-                label={`Alternativ titel (${t(`${title._lang}LangItemText`)})`}
+                label={`${title.__text[language]} (${t(`${title._lang}LangItemText`)})`}
                 value={createTitle(title)}
                 lang={title._lang}
               />
@@ -93,6 +93,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               label={output.genre_type_subcategory?.__text[language]}
               value={output.genre_type_subcategory?.__valueText[language]}
             />
+
             <Term
               label={
                 output.language[0]?.[
@@ -100,10 +101,10 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 ]?.__text[language]
               }
               value={output.language
-                .map(
-                  (language) =>
-                    language['languageTerm_authority_iso639-2b_type_code']
-                      .value,
+                .map((language) =>
+                  t(
+                    `${language['languageTerm_authority_iso639-2b_type_code'].value}LangItemText`,
+                  ),
                 )
                 .join(', ')}
             />
@@ -111,21 +112,20 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {output.artisticWork_type_outputType && (
               <Term label='Konstnärligt arbete' value='Ja' />
             )}
-
             <Term
-              label='Typ av innehåll'
-              value={output.genre_type_contentType.value}
+              label={output.genre_type_contentType?.__text[language]}
+              value={output.genre_type_contentType?.__valueText[language]}
             />
             {output.abstract?.map((abstract, index) => (
               <Term
                 key={index}
-                label={`Abstract (${abstract._lang})`}
+                label={`${abstract?.__text[language]} (${t(`${abstract._lang}LangItemText`)})`}
                 value={<CollapsableText text={abstract.value ?? ''} />}
                 lang={abstract._lang}
               />
             ))}
             <Term
-              label='Publiceringsstatus'
+              label={output.note_type_publicationStatus?.__text[language]}
               value={output.note_type_publicationStatus?.value}
             />
           </dl>
@@ -150,7 +150,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
 
             <Term
-              label='Online'
+              label={output.originInfo.dateOther_type_online?.__text[language]} //'Online'
               value={<Date date={output.originInfo.dateOther_type_online} />}
             />
 
@@ -168,7 +168,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           <h2>Identifierare</h2>
           <dl className='identifiers'>
             <Term label='DiVA-id' value={output.recordInfo.id.value} />
-            <Term label={'URN'} value={output.recordInfo.urn?.value} />
+            <Term label='URN' value={output.recordInfo.urn?.value} />
             {output.identifier_type_isbn?.map((identifier, index) => (
               <Term
                 key={index}
@@ -177,27 +177,39 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               />
             ))}
 
-            <Term label={'ISRN'} value={output.identifier_type_isrn?.value} />
+            <Term
+              label={output.identifier_type_isrn?.__text[language]}
+              value={output.identifier_type_isrn?.value}
+            />
             {output.identifier_type_ismn?.map((identifier, index) => (
               <Term
                 key={index}
-                label={`ISMN (${identifier._displayLabel})`}
+                label={`${identifier.__text[language]} (${identifier._displayLabel})`}
                 value={identifier.value}
               />
             ))}
-            <Term label={'DOI'} value={output.identifier_type_doi?.value} />
-            <Term label={'PMID'} value={output.identifier_type_pmid?.value} />
-            <Term label={'WOS'} value={output.identifier_type_wos?.value} />
             <Term
-              label={'SCOPUS'}
+              label={output.identifier_type_doi?.__text[language]}
+              value={output.identifier_type_doi?.value}
+            />
+            <Term
+              label={output.identifier_type_pmid?.__text[language]}
+              value={output.identifier_type_pmid?.value}
+            />
+            <Term
+              label={output.identifier_type_wos?.__text[language]}
+              value={output.identifier_type_wos?.value}
+            />
+            <Term
+              label={output.identifier_type_scopus?.__text[language]}
               value={output.identifier_type_scopus?.value}
             />
             <Term
-              label={'OpenAlex'}
+              label={output.identifier_type_openAlex?.__text[language]}
               value={output.identifier_type_openAlex?.value}
             />
             <Term
-              label={'Libris'}
+              label={output['identifier_type_se-libr']?.__text[language]}
               value={output['identifier_type_se-libr']?.value}
             />
             {output['identifier_type_localId']?.map((identifier, index) => (
@@ -225,7 +237,9 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div>
           {output.subject?.map((subject, index) => (
             <div key={index}>
-              <h3>Nyckelord ({subject._lang})</h3>
+              <h3>
+                {subject.__text[language]} ({t(`${subject._lang}LangItemText`)})
+              </h3>
               <ul className='pill-container' lang={subject._lang}>
                 {subject.topic.value.split(',').map((topicPart) => (
                   <li className='pill' key={topicPart}>
