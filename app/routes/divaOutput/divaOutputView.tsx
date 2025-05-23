@@ -7,14 +7,15 @@ import type {
   NameOrganisationGroup,
   NamePersonalGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 import type { BFFDataRecord } from '@/types/record';
-import type { ReactNode } from 'react';
+import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 import { Fragment } from 'react/jsx-runtime';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
-import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
-import { useLanguage } from '@/i18n/useLanguage';
 export const loader = async ({
   request,
   params,
@@ -40,9 +41,8 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const language = useLanguage();
+  const { t } = useTranslation();
   const output = loaderData.record.data.output;
-
-  console.log('output', output);
 
   return (
     <div className='diva-output-view'>
@@ -79,7 +79,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {output.titleInfo_type_alternative?.map((title, index) => (
               <Term
                 key={index}
-                label={`Alternativ titel (${title._lang})`}
+                label={`Alternativ titel (${t(`${title._lang}LangItemText`)})`}
                 value={createTitle(title)}
                 lang={title._lang}
               />
