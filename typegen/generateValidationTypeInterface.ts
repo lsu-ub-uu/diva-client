@@ -14,7 +14,7 @@ import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttrib
 
 const metadataTypes = new Map<string, string>();
 
-export function generateValidationTypeInterface(
+export function generateValidationTypeInterfaces(
   validationTypePool: Lookup<string, BFFValidationType>,
   metadataPool: Lookup<string, BFFMetadata>,
   validationTypeIds: string[],
@@ -81,6 +81,13 @@ function createValue(
   return 'string';
 }
 
+function createTextTypes(value: boolean = false) {
+  if (value) {
+    return '__text: { sv: string; en: string; }; __valueText: { sv: string; en: string; }';
+  }
+  return '__text: { sv: string; en: string; }';
+}
+
 function createAttributes(
   metadataPool: Lookup<string, BFFMetadata>,
   metadata: BFFMetadata,
@@ -106,7 +113,11 @@ function createAttributes(
     return `'_${attributeCollectionVariable.nameInData}': ${collectionItems};`;
   });
 
-  return attributes?.join('') ?? '';
+  const textTypes = createTextTypes(metadata.type === 'collectionVariable');
+
+  const attributeTypes = attributes?.join('') ?? '';
+
+  return `${attributeTypes} ${textTypes}`;
 }
 
 const createCollectionVariableItems = (

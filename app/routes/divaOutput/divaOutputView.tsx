@@ -14,6 +14,7 @@ import { Fragment } from 'react/jsx-runtime';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { useLanguage } from '@/i18n/useLanguage';
 export const loader = async ({
   request,
   params,
@@ -29,6 +30,7 @@ export const loader = async ({
     recordType: 'diva-output',
     recordId,
     authToken: auth?.data.token,
+    decorated: true,
   })) as BFFDataRecord<DivaOutput>;
 
   return { record, breadcrumb: t(record.data.output.titleInfo.title.value) };
@@ -37,7 +39,11 @@ export const loader = async ({
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
+  const language = useLanguage();
   const output = loaderData.record.data.output;
+
+  console.log('output', output);
+
   return (
     <div className='diva-output-view'>
       <main>
@@ -48,7 +54,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
           <dl>
             <Term
-              label='Upphovspersoner'
+              label={output.name_type_personal?.[0]?.__text[language]}
               value={output.name_type_personal?.map((person, index) => (
                 <Fragment key={index}>
                   <Person person={person} key={index} />
@@ -57,7 +63,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               ))}
             />
             <Term
-              label='Totalt antal upphovspersoner'
+              label={output.note_type_creatorCount?.__text[language]}
               value={output.note_type_creatorCount?.value}
             />
             <Term
@@ -79,13 +85,20 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               />
             ))}
 
-            <Term label='Typ' value={output.genre_type_outputType.value} />
             <Term
-              label='Underkategori'
-              value={output.genre_type_subcategory?.value}
+              label={output.genre_type_outputType.__text[language]}
+              value={output.genre_type_outputType.__valueText[language]}
             />
             <Term
-              label='Språk'
+              label={output.genre_type_subcategory?.__text[language]}
+              value={output.genre_type_subcategory?.__valueText[language]}
+            />
+            <Term
+              label={
+                output.language[0]?.[
+                  'languageTerm_authority_iso639-2b_type_code'
+                ]?.__text[language]
+              }
               value={output.language
                 .map(
                   (language) =>
@@ -287,13 +300,13 @@ const Organisation = ({ organisation }: OrganisationProps) => {
 };
 
 interface TermProps {
-  label: string;
+  label?: string;
   value?: ReactNode;
   lang?: LanguageCollection;
 }
 
 const Term = ({ label, value, lang }: TermProps) => {
-  if (!value) {
+  if (!label || !value) {
     return null;
   }
 

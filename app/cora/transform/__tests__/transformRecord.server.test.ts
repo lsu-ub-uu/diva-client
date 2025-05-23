@@ -96,6 +96,7 @@ import type {
   BFFValidationType,
 } from '../bffTypes.server';
 import {
+  transformAttributes,
   transformDataGroup,
   transformRecord,
   transformRecordData,
@@ -2441,5 +2442,42 @@ describe('transformRecord', () => {
     };
 
     expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should handle DiVA decorated format for data', () => {});
+
+  describe('it should transform attributes', () => {
+    it('it shoud return undefind when undefined', () => {
+      expect(transformAttributes(undefined)).toStrictEqual({});
+    });
+    it('transform regular attributes', () => {
+      expect(transformAttributes({ key: 'value' })).toStrictEqual({
+        _key: 'value',
+      });
+    });
+
+    it('transforms decortated texts', () => {
+      expect(
+        transformAttributes({ _sv: 'Rättighetsenhet', _en: 'Permission unit' }),
+      ).toStrictEqual({
+        __text: {
+          sv: 'Rättighetsenhet',
+          en: 'Permission unit',
+        },
+      });
+    });
+    it('transforms decortated values', () => {
+      expect(
+        transformAttributes({
+          _value_en: 'Published',
+          _value_sv: 'Publicerad',
+        }),
+      ).toStrictEqual({
+        __valueText: {
+          sv: 'Publicerad',
+          en: 'Published',
+        },
+      });
+    });
   });
 });

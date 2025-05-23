@@ -21,6 +21,8 @@ import { type AxiosRequestConfig } from 'axios';
 
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.cora.recordList+json';
 export const RECORD_CONTENT_TYPE = 'application/vnd.cora.record+json';
+export const RECORD_CONTENT_TYPE_DECORATED = 'application/vnd.cora.record-decorated+json';
+
 export const RECORD_GROUP_CONTENT_TYPE =
   'application/vnd.cora.recordGroup+json';
 export const LOGIN_CONTENT_TYPE = 'application/vnd.cora.login';

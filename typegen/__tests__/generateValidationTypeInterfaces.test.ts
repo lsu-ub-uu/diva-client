@@ -10,7 +10,7 @@ import type {
 import { listToPool } from '@/utils/structs/listToPool';
 import { format } from 'prettier';
 import {
-  generateValidationTypeInterface,
+  generateValidationTypeInterfaces,
   getNameFromMetadata,
 } from 'typegen/generateValidationTypeInterface';
 import { describe, expect, it } from 'vitest';
@@ -99,15 +99,17 @@ describe('generateValidationTypeInterface', () => {
       } as BFFMetadataBase,
     ]);
 
-    const actual = generateValidationTypeInterface(
+    const actual = generateValidationTypeInterfaces(
       validationTypePool,
       metadataPool,
-      'validationTypeId',
+      ['validationTypeId'],
     );
 
     const expected = `export interface ValidationTypeId extends BFFDataRecordData{
       'root': { foo?: { value: string; _lang: 'en' | 'sv'; };  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
     }`;
+
+    console.log('actual', actual);
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(
       await format(expected, { parser: 'typescript' }),

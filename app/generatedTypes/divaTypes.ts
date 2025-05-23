@@ -1,6 +1,6 @@
 /**
  * Auto-generated types
- * Date: 2025-05-23T11:05:22.019Z
+ * Date: 2025-05-23T12:45:08.998Z
  */
 
 import type { BFFDataRecordData } from '@/types/record';
@@ -87,6 +87,7 @@ export interface TitleInfoAlternativeGroup {
   title: { value: string };
   subTitle?: { value: string };
   _type: 'alternative';
+  __text: { sv: string; en: string };
 }
 
 export interface DateIssuedStartGroup {
@@ -94,6 +95,7 @@ export interface DateIssuedStartGroup {
   month?: { value: string };
   day?: { value: string };
   _point: 'start';
+  __text: { sv: string; en: string };
 }
 
 export interface DateIssuedEndGroup {
@@ -101,6 +103,7 @@ export interface DateIssuedEndGroup {
   month?: { value: string };
   day?: { value: string };
   _point: 'end';
+  __text: { sv: string; en: string };
 }
 
 export interface OriginInfoDateIssuedStartEndGroup {
@@ -113,6 +116,7 @@ export type RelatedSeriesTypeCollection = 'host' | 'preceding';
 export interface RelatedSeriesGroup {
   series: { value: string };
   _type: RelatedSeriesTypeCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface LocationGroup {
@@ -165,18 +169,26 @@ export interface SeriesUpdateGroup {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
+    __text: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
+    __text: { sv: string; en: string };
   };
   related?: RelatedSeriesGroup[];
   location?: LocationGroup;
-  note_type_external?: { value: string; _type: 'external' };
+  note_type_external?: {
+    value: string;
+    _type: 'external';
+    __text: { sv: string; en: string };
+  };
   genre_type_outputType?: {
     value: OutputTypeCollection;
     _type: 'outputType';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   }[];
   organisation?: { value: string };
 }
@@ -195,6 +207,7 @@ export interface RecordInfoPublisherUpdateGroup {
 export interface NameCorporateGroup {
   namePart: { value: string };
   _type: 'corporate';
+  __text: { sv: string; en: string };
 }
 
 export interface PublisherUpdateGroup {
@@ -219,6 +232,7 @@ export interface TitleInfoLangSweEngGroup {
   title: { value: string };
   subTitle?: { value: string };
   _lang: LanguageSweEngCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangSweEngGroup {
@@ -226,6 +240,7 @@ export interface TitleInfoAlternativeLangSweEngGroup {
   subTitle?: { value: string };
   _type: 'alternative';
   _lang: LanguageSweEngCollection;
+  __text: { sv: string; en: string };
 }
 
 export type RoleProjectPersonalCollection =
@@ -491,18 +506,31 @@ export type CountryCollection =
 export interface AffiliationPersonalGroup {
   organisation?: { value: string };
   name_type_corporate?: NameCorporateGroup;
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   country?: { value: CountryCollection };
   description?: { value: string };
 }
 
 export interface NamePersonalProjectGroup {
   person?: { value: string };
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   role?: RoleProjectPersonalGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface RoleProjectOrganisationGroup {
@@ -513,8 +541,13 @@ export interface NameOrganisationProjectGroup {
   organisation?: { value: string };
   namePart: { value: string };
   role: RoleProjectOrganisationGroup;
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   _type: 'corporate';
+  __text: { sv: string; en: string };
 }
 
 export type LanguageCollection =
@@ -1005,11 +1038,13 @@ export type LanguageCollection =
 export interface SubjectKeywordsGroup {
   topic: { value: string };
   _lang: LanguageCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface SubjectSubjectGroup {
   topic: { value: string }[];
   _authority: 'diva';
+  __text: { sv: string; en: string };
 }
 
 export type SsifCollection =
@@ -1381,6 +1416,7 @@ export type SdgCollection =
 export interface SubjectSdgGroup {
   topic: { value: SdgCollection }[];
   _authority: 'sdg';
+  __text: { sv: string; en: string };
 }
 
 export interface StartDateGroup {
@@ -1398,6 +1434,7 @@ export interface EndDateGroup {
 export interface RelatedItemFunderProjectGroup {
   funder: { value: string };
   _type: 'funder';
+  __text: { sv: string; en: string };
 }
 
 export type TypeOfAwardCollection =
@@ -1414,6 +1451,7 @@ export type CurrencyCollection = 'eur' | 'sek';
 export interface RelatedItemOutputGroup {
   output?: { value: string };
   _type: 'output';
+  __text: { sv: string; en: string };
 }
 
 export interface ProjectUpdateGroup {
@@ -1422,27 +1460,61 @@ export interface ProjectUpdateGroup {
   titleInfo_type_alternative?: TitleInfoAlternativeLangSweEngGroup;
   name_type_personal: NamePersonalProjectGroup[];
   name_type_corporate?: NameOrganisationProjectGroup;
-  abstract?: { value: string; _lang: LanguageCollection }[];
+  abstract?: {
+    value: string;
+    _lang: LanguageCollection;
+    __text: { sv: string; en: string };
+  }[];
   subject?: SubjectKeywordsGroup[];
   subject_authority_diva?: SubjectSubjectGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   }[];
   subject_authority_sdg?: SubjectSdgGroup;
   location?: LocationGroup[];
-  identifier_type_localId?: { value: string; _type: 'localId' };
-  identifier_type_project: { value: string; _type: 'project' };
-  identifier_type_raid?: { value: string; _type: 'raid' };
-  identifier_type_reference?: { value: string; _type: 'reference' };
-  note_type_external?: { value: string; _type: 'external' };
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_project: {
+    value: string;
+    _type: 'project';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_raid?: {
+    value: string;
+    _type: 'raid';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_reference?: {
+    value: string;
+    _type: 'reference';
+    __text: { sv: string; en: string };
+  };
+  note_type_external?: {
+    value: string;
+    _type: 'external';
+    __text: { sv: string; en: string };
+  };
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   relatedItem_type_funder?: RelatedItemFunderProjectGroup[];
   typeOfAward: { value: TypeOfAwardCollection };
-  fundingAmount?: { value: string; _currency: CurrencyCollection };
+  fundingAmount?: {
+    value: string;
+    _currency: CurrencyCollection;
+    __text: { sv: string; en: string };
+  };
   relatedItem_type_output?: RelatedItemOutputGroup[];
-  note_type_internal?: { value: string; _type: 'internal' };
+  note_type_internal?: {
+    value: string;
+    _type: 'internal';
+    __text: { sv: string; en: string };
+  };
 }
 
 export type VisibilityCollection = 'published' | 'unpublished' | 'hidden';
@@ -1469,6 +1541,8 @@ export interface LanguageGroup {
     value: LanguageCollection;
     _type: 'code';
     _authority: 'iso639-2b';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
 }
 
@@ -1489,6 +1563,7 @@ export interface TitleInfoLangGroup {
   title: { value: string };
   subTitle?: { value: string };
   _lang: LanguageCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangGroup {
@@ -1496,6 +1571,7 @@ export interface TitleInfoAlternativeLangGroup {
   subTitle?: { value: string };
   _type: 'alternative';
   _lang: LanguageCollection;
+  __text: { sv: string; en: string };
 }
 
 export type RoleCollection =
@@ -1577,20 +1653,34 @@ export interface RoleGroup {
 
 export interface NamePersonalGroup {
   person?: { value: string };
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   role?: RoleGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface NameOrganisationGroup {
   organisation?: { value: string };
   role?: RoleGroup;
   namePart?: { value: string };
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   description?: { value: string };
   _type: 'corporate';
+  __text: { sv: string; en: string };
 }
 
 export type TypeOfResourceCollection =
@@ -1621,6 +1711,7 @@ export interface DateOtherPatentGroup {
   month?: { value: string };
   day?: { value: string };
   _type: 'patent';
+  __text: { sv: string; en: string };
 }
 
 export interface DateIssuedGroup {
@@ -1640,6 +1731,7 @@ export interface DateOtherOnlineGroup {
   month?: { value: string };
   day?: { value: string };
   _type: 'online';
+  __text: { sv: string; en: string };
 }
 
 export interface RolePublisherGroup {
@@ -1674,6 +1766,7 @@ export interface LocationOrderLinkGroup {
   url: { value: string };
   displayLabel?: { value: string };
   _displayLabel: 'orderLink';
+  __text: { sv: string; en: string };
 }
 
 export type SemesterCollection = 'ht' | 'vt';
@@ -1744,8 +1837,13 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
   organisation?: { value: string };
   namePart?: { value: string };
   role: RoleDegreeGrantingInstitutionGroup;
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   _type: 'corporate';
+  __text: { sv: string; en: string };
 }
 
 export interface RoleThesisAdvisorGroup {
@@ -1754,11 +1852,20 @@ export interface RoleThesisAdvisorGroup {
 
 export interface NamePersonalThesisAdvisorGroup {
   person?: { value: string };
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   role?: RoleThesisAdvisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface RoleDegreeSupervisorGroup {
@@ -1767,11 +1874,20 @@ export interface RoleDegreeSupervisorGroup {
 
 export interface NamePersonalDegreeSupervisorGroup {
   person?: { value: string };
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   role?: RoleDegreeSupervisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface RoleOpponentGroup {
@@ -1780,11 +1896,20 @@ export interface RoleOpponentGroup {
 
 export interface NamePersonalOpponentGroup {
   person?: { value: string };
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   role?: RoleOpponentGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface DateOtherDefenceGroup {
@@ -1794,6 +1919,7 @@ export interface DateOtherDefenceGroup {
   hh?: { value: string };
   mm?: { value: string };
   _type: 'defence';
+  __text: { sv: string; en: string };
 }
 
 export interface PresentationDivaGroup {
@@ -1815,16 +1941,19 @@ export interface DefenceGroup {
 export interface DetailVolumeGroup {
   number?: { value: string };
   _type: 'volume';
+  __text: { sv: string; en: string };
 }
 
 export interface DetailIssueGroup {
   number?: { value: string };
   _type: 'issue';
+  __text: { sv: string; en: string };
 }
 
 export interface DetailArtNoGroup {
   number?: { value: string };
   _type: 'artNo';
+  __text: { sv: string; en: string };
 }
 
 export interface ExtentGroup {
@@ -1846,14 +1975,17 @@ export interface RelatedItemJournalGroup {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
+    __text: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
+    __text: { sv: string; en: string };
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemPartBookGroup {
@@ -1869,14 +2001,17 @@ export interface RelatedItemSeriesGroup {
     value: string;
     _type: 'issn';
     _displayLabel: IdentifierDisplayLabelIssnCollection;
+    __text: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
+    __text: { sv: string; en: string };
   };
   partNumber?: { value: string };
   _type: 'series';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemBookGroup {
@@ -1884,16 +2019,19 @@ export interface RelatedItemBookGroup {
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
+    __text: { sv: string; en: string };
   };
   originInfo?: OriginInfoGroup;
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+    __text: { sv: string; en: string };
   }[];
   part?: RelatedItemPartBookGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'book';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemConferencePublicationGroup {
@@ -1901,40 +2039,55 @@ export interface RelatedItemConferencePublicationGroup {
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
+    __text: { sv: string; en: string };
   };
   originInfo?: OriginInfoGroup;
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+    __text: { sv: string; en: string };
   }[];
   part?: RelatedItemPartBookGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'conferencePublication';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemConferenceGroup {
   conference?: { value: string };
   _type: 'conference';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemResearchDataGroup {
   titleInfo: TitleInfoLangGroup;
-  identifier_type_doi?: { value: string; _type: 'doi' };
+  identifier_type_doi?: {
+    value: string;
+    _type: 'doi';
+    __text: { sv: string; en: string };
+  };
   location?: LocationGroup[];
   _type: 'researchData';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemProjectGroup {
   project?: { value: string };
   titleInfo?: TitleInfoLangSweEngGroup;
   _type: 'project';
+  __text: { sv: string; en: string };
 }
 
 export interface RelatedItemFunderGroup {
   funder: { value: string };
-  identifier_type_project?: { value: string; _type: 'project' };
+  identifier_type_project?: {
+    value: string;
+    _type: 'project';
+    __text: { sv: string; en: string };
+  };
   _type: 'funder';
+  __text: { sv: string; en: string };
 }
 
 export type SfoCollection =
@@ -1962,6 +2115,7 @@ export type SfoCollection =
 export interface RelatedItemInitiativeGroup {
   initiative?: { value: SfoCollection }[];
   _type: 'initiative';
+  __text: { sv: string; en: string };
 }
 
 export type RelatedOutputTypeCollection =
@@ -1972,6 +2126,7 @@ export type RelatedOutputTypeCollection =
 export interface RelatedOutputGroup {
   output?: { value: string };
   _type: RelatedOutputTypeCollection;
+  __text: { sv: string; en: string };
 }
 
 export type AccessConditionCollection = 'gratis' | 'restricted';
@@ -1979,7 +2134,11 @@ export type AccessConditionCollection = 'gratis' | 'restricted';
 export type TrueFalseDivaCollection = 'true' | 'false';
 
 export interface AdminGroup {
-  note_type_internal?: { value: string; _type: 'internal' };
+  note_type_internal?: {
+    value: string;
+    _type: 'internal';
+    __text: { sv: string; en: string };
+  };
   reviewed: { value: TrueFalseDivaCollection };
 }
 
@@ -2004,46 +2163,85 @@ export type AttachmentTypeCollection =
 export interface AttachmentGroup {
   attachmentFile: { value: string };
   type: { value: AttachmentTypeCollection };
-  note_type_userMessage?: { value: string; _type: 'userMessage' };
+  note_type_userMessage?: {
+    value: string;
+    _type: 'userMessage';
+    __text: { sv: string; en: string };
+  };
 }
 
 export interface OutputUpdateGroup {
   recordInfo: RecordInfoOutputUpdateGroup;
-  genre_type_outputType: { value: OutputTypeCollection; _type: 'outputType' };
+  genre_type_outputType: {
+    value: OutputTypeCollection;
+    _type: 'outputType';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
   genre_type_subcategory?: {
     value: SubcategoryOtherCollection;
     _type: 'subcategory';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   language: LanguageGroup[];
   note_type_publicationStatus?: {
     value: PublicationStatusCollection;
     _type: 'publicationStatus';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   artisticWork_type_outputType?: {
     value: OutputTypeArtisticWorkCollection;
     _type: 'outputType';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   genre_type_contentType: {
     value: GenreContentTypeCollection;
     _type: 'contentType';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   genre_type_reviewed?: {
     value: GenreArtisticReviewedCollection;
     _type: 'reviewed';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   titleInfo: TitleInfoLangGroup;
   titleInfo_type_alternative?: TitleInfoAlternativeLangGroup[];
   name_type_personal?: NamePersonalGroup[];
   name_type_corporate?: NameOrganisationGroup[];
-  note_type_creatorCount?: { value: string; _type: 'creatorCount' };
+  note_type_creatorCount?: {
+    value: string;
+    _type: 'creatorCount';
+    __text: { sv: string; en: string };
+  };
   typeOfResource?: { value: TypeOfResourceCollection };
-  type?: { value: string; _lang: LanguageCollection }[];
-  material?: { value: string; _lang: LanguageCollection }[];
-  technique?: { value: string; _lang: LanguageCollection }[];
+  type?: {
+    value: string;
+    _lang: LanguageCollection;
+    __text: { sv: string; en: string };
+  }[];
+  material?: {
+    value: string;
+    _lang: LanguageCollection;
+    __text: { sv: string; en: string };
+  }[];
+  technique?: {
+    value: string;
+    _lang: LanguageCollection;
+    __text: { sv: string; en: string };
+  }[];
   size?: { value: string };
   duration?: DurationGroup;
   physicalDescription?: PhysicalDescriptionGroup;
-  abstract?: { value: string; _lang: LanguageCollection }[];
+  abstract?: {
+    value: string;
+    _lang: LanguageCollection;
+    __text: { sv: string; en: string };
+  }[];
   subject?: SubjectKeywordsGroup[];
   dateOther_type_patent?: DateOtherPatentGroup;
   originInfo: OriginInfoGroup;
@@ -2052,6 +2250,8 @@ export interface OutputUpdateGroup {
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   }[];
   subject_authority_diva?: SubjectSubjectGroup;
   subject_authority_sdg?: SubjectSdgGroup;
@@ -2059,25 +2259,71 @@ export interface OutputUpdateGroup {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+    __text: { sv: string; en: string };
   }[];
-  identifier_type_isrn?: { value: string; _type: 'isrn' };
+  identifier_type_isrn?: {
+    value: string;
+    _type: 'isrn';
+    __text: { sv: string; en: string };
+  };
   identifier_type_ismn?: {
     value: string;
     _type: 'ismn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
+    __text: { sv: string; en: string };
   }[];
-  identifier_type_patentNumber?: { value: string; _type: 'patentNumber' };
-  identifier_type_doi?: { value: string; _type: 'doi' };
-  identifier_type_pmid?: { value: string; _type: 'pmid' };
-  identifier_type_wos?: { value: string; _type: 'wos' };
-  identifier_type_scopus?: { value: string; _type: 'scopus' };
-  identifier_type_openAlex?: { value: string; _type: 'openAlex' };
-  'identifier_type_se-libr'?: { value: string; _type: 'se-libr' };
-  identifier_type_archiveNumber?: { value: string; _type: 'archiveNumber' };
-  identifier_type_localId?: { value: string; _type: 'localId' }[];
+  identifier_type_patentNumber?: {
+    value: string;
+    _type: 'patentNumber';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_doi?: {
+    value: string;
+    _type: 'doi';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_pmid?: {
+    value: string;
+    _type: 'pmid';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_wos?: {
+    value: string;
+    _type: 'wos';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_scopus?: {
+    value: string;
+    _type: 'scopus';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_openAlex?: {
+    value: string;
+    _type: 'openAlex';
+    __text: { sv: string; en: string };
+  };
+  'identifier_type_se-libr'?: {
+    value: string;
+    _type: 'se-libr';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_archiveNumber?: {
+    value: string;
+    _type: 'archiveNumber';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  }[];
   location?: LocationGroup[];
   location_displayLabel_orderLink?: LocationOrderLinkGroup;
-  note_type_external?: { value: string; _type: 'external' };
+  note_type_external?: {
+    value: string;
+    _type: 'external';
+    __text: { sv: string; en: string };
+  };
   academicSemester?: AcademicSemesterGroup;
   studentDegree?: StudentDegreeGroup;
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
@@ -2100,6 +2346,8 @@ export interface OutputUpdateGroup {
   'accessCondition_authority_kb-se'?: {
     value: AccessConditionCollection;
     _authority: 'kb.se';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   localGenericMarkup?: { value: string }[];
   admin: AdminGroup;
@@ -2125,11 +2373,13 @@ export interface JournalUpdateGroup {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
+    __text: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
+    __text: { sv: string; en: string };
   };
   location?: LocationGroup;
 }
@@ -2149,11 +2399,13 @@ export interface RecordInfoTopOrganisationUpdateGroup {
 export interface AuthorityCorporateLangGroup {
   name_type_corporate: NameCorporateGroup;
   _lang: 'swe';
+  __text: { sv: string; en: string };
 }
 
 export interface VariantCorporateLangGroup {
   name_type_corporate: NameCorporateGroup;
   _lang: 'eng';
+  __text: { sv: string; en: string };
 }
 
 export interface AddressGroup {
@@ -2167,6 +2419,7 @@ export interface AddressGroup {
 export interface RelatedOrganisationEarlierGroup {
   organisation?: { value: string };
   _type: 'earlier';
+  __text: { sv: string; en: string };
 }
 
 export interface TopOrganisationUpdateGroup {
@@ -2179,14 +2432,24 @@ export interface TopOrganisationUpdateGroup {
   identifier_type_organisationCode?: {
     value: string;
     _type: 'organisationCode';
+    __text: { sv: string; en: string };
   };
   identifier_type_organisationNumber?: {
     value: string;
     _type: 'organisationNumber';
+    __text: { sv: string; en: string };
   };
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   location?: LocationGroup;
-  note_type_internal?: { value: string; _type: 'internal' };
+  note_type_internal?: {
+    value: string;
+    _type: 'internal';
+    __text: { sv: string; en: string };
+  };
   related_type_earlier?: RelatedOrganisationEarlierGroup;
 }
 
@@ -2205,11 +2468,13 @@ export interface RecordInfoCourseUpdateGroup {
 export interface AuthorityTopicLangGroup {
   topic: { value: string };
   _lang: 'swe';
+  __text: { sv: string; en: string };
 }
 
 export interface VariantTopicLangGroup {
   topic: { value: string };
   _lang: 'eng';
+  __text: { sv: string; en: string };
 }
 
 export type RelatedTypeTopicCollection = 'earlier' | 'broader';
@@ -2217,6 +2482,7 @@ export type RelatedTypeTopicCollection = 'earlier' | 'broader';
 export interface RelatedCourseGroup {
   course?: { value: string };
   _type: RelatedTypeTopicCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface CourseUpdateGroup {
@@ -2225,7 +2491,11 @@ export interface CourseUpdateGroup {
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
-  identifier_type_localId?: { value: string; _type: 'localId' };
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   related?: RelatedCourseGroup[];
 }
 
@@ -2244,6 +2514,7 @@ export interface RecordInfoProgrammeUpdateGroup {
 export interface RelatedProgrammeGroup {
   programme?: { value: string };
   _type: RelatedTypeTopicCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface ProgrammeUpdateGroup {
@@ -2252,7 +2523,11 @@ export interface ProgrammeUpdateGroup {
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
-  identifier_type_localId?: { value: string; _type: 'localId' };
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   related?: RelatedProgrammeGroup[];
 }
 
@@ -2271,6 +2546,7 @@ export interface RecordInfoPartOfOrganisationUpdateGroup {
 export interface RelatedOrganisationParentGroup {
   organisation: { value: string };
   _type: 'parent';
+  __text: { sv: string; en: string };
 }
 
 export interface PartOfOrganisationUpdateGroup {
@@ -2283,13 +2559,19 @@ export interface PartOfOrganisationUpdateGroup {
   identifier_type_organisationCode?: {
     value: string;
     _type: 'organisationCode';
+    __text: { sv: string; en: string };
   };
   identifier_type_organisationNumber?: {
     value: string;
     _type: 'organisationNumber';
+    __text: { sv: string; en: string };
   };
   location?: LocationGroup;
-  note_type_internal?: { value: string; _type: 'internal' };
+  note_type_internal?: {
+    value: string;
+    _type: 'internal';
+    __text: { sv: string; en: string };
+  };
   related_type_parent?: RelatedOrganisationParentGroup;
   related_type_earlier?: RelatedOrganisationEarlierGroup[];
 }
@@ -2309,6 +2591,7 @@ export interface RecordInfoSubjectUpdateGroup {
 export interface RelatedSubjectGroup {
   topic: { value: string };
   _type: RelatedTypeTopicCollection;
+  __text: { sv: string; en: string };
 }
 
 export interface SubjectUpdateGroup {
@@ -2317,7 +2600,11 @@ export interface SubjectUpdateGroup {
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
-  identifier_type_localId?: { value: string; _type: 'localId' };
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   related?: RelatedSubjectGroup[];
 }
 
@@ -2358,9 +2645,18 @@ export interface FunderUpdateGroup {
   identifier_type_organisationNumber?: {
     value: string;
     _type: 'organisationNumber';
+    __text: { sv: string; en: string };
   };
-  identifier_type_doi?: { value: string; _type: 'doi' };
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_doi?: {
+    value: string;
+    _type: 'doi';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
 }
 
 export interface RecordInfoPersonUpdateGroup {
@@ -2375,10 +2671,23 @@ export interface RecordInfoPersonUpdateGroup {
 }
 
 export interface NamePersonGroup {
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
-  namePart_type_termsOfAddress?: { value: string; _type: 'termsOfAddress' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text: { sv: string; en: string };
+  };
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface AuthorityPersonalGroup {
@@ -2386,9 +2695,18 @@ export interface AuthorityPersonalGroup {
 }
 
 export interface NamePersonVariantGroup {
-  namePart_type_family?: { value: string; _type: 'family' };
-  namePart_type_given?: { value: string; _type: 'given' };
+  namePart_type_family?: {
+    value: string;
+    _type: 'family';
+    __text: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
+    __text: { sv: string; en: string };
+  };
   _type: 'personal';
+  __text: { sv: string; en: string };
 }
 
 export interface VariantPersonalGroup {
@@ -2415,7 +2733,11 @@ export interface PersonInfoGroup {
 export interface AffiliationGroup {
   organisation?: { value: string };
   name_type_corporate?: NameCorporateGroup;
-  identifier_type_ror?: { value: string; _type: 'ror' };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text: { sv: string; en: string };
+  };
   country?: { value: CountryCollection };
   description?: { value: string };
   startDate?: StartDateGroup;
@@ -2432,14 +2754,39 @@ export interface PersonUpdateGroup {
     value: string;
     _type: 'biographical';
     _lang: LanguageCollection;
+    __text: { sv: string; en: string };
   }[];
   location?: LocationGroup[];
-  identifier_type_orcid?: { value: string; _type: 'orcid' }[];
-  identifier_type_localId?: { value: string; _type: 'localId' }[];
-  'identifier_type_se-libr'?: { value: string; _type: 'se-libr' }[];
-  identifier_type_openAlex?: { value: string; _type: 'openAlex' };
-  identifier_type_scopus?: { value: string; _type: 'scopus' };
-  identifier_type_viaf?: { value: string; _type: 'viaf' }[];
+  identifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  }[];
+  identifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  }[];
+  'identifier_type_se-libr'?: {
+    value: string;
+    _type: 'se-libr';
+    __text: { sv: string; en: string };
+  }[];
+  identifier_type_openAlex?: {
+    value: string;
+    _type: 'openAlex';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_scopus?: {
+    value: string;
+    _type: 'scopus';
+    __text: { sv: string; en: string };
+  };
+  identifier_type_viaf?: {
+    value: string;
+    _type: 'viaf';
+    __text: { sv: string; en: string };
+  }[];
   affiliation?: AffiliationGroup[];
 }
 

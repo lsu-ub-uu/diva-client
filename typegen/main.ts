@@ -10,7 +10,7 @@ import { listToPool } from '@/utils/structs/listToPool';
 import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
-import { generateValidationTypeInterface as generateValidationTypes } from './generateValidationTypeInterface';
+import { generateValidationTypeInterfaces } from './generateValidationTypeInterface';
 
 const [metadataPool, validationTypePool] = await Promise.all([
   getMetadataPool(),
@@ -44,7 +44,7 @@ let code = `
 
   `;
 
-code += generateValidationTypes(
+code += generateValidationTypeInterfaces(
   validationTypePool,
   metadataPool,
   VALIDATION_TYPES,

@@ -4,7 +4,7 @@ export interface DataElement {
 }
 
 export interface Attributes {
-  [key: string]: string;
+  [key: string]: string | Record<string, string> | undefined;
 }
 
 export type CoraData = DataGroup | DataAtomic | RecordLink | ResourceLink;

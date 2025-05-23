@@ -48,7 +48,6 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { mapKeys } from 'lodash-es';
 
 /**
  * Transforms records
@@ -304,7 +303,18 @@ export const transformAttributes = (attributes: Attributes | undefined) => {
     return {};
   }
 
-  return mapKeys(attributes, (_value, key) => `_${key}`);
+  return Object.entries(attributes).reduce((accumulator: any, [key, value]) => {
+    if (key.startsWith('_value_')) {
+      accumulator['__valueText'] ??= {};
+      accumulator['__valueText'][key.replace('_value_', '')] = value;
+    } else if (key.startsWith('_')) {
+      accumulator['__text'] ??= {};
+      accumulator['__text'][key.replace('_', '')] = value;
+    } else {
+      accumulator[`_${key}`] = value;
+    }
+    return accumulator;
+  }, {});
 };
 
 export const isRepeating = (metadata: FormMetaData) => {
