@@ -1,8 +1,10 @@
-export const mapISO639_2b_to_ISO639_1 = (code: string): string => {
+import type { LanguageCollection } from '@/generatedTypes/divaTypes';
+
+export const mapISO639_2b_to_ISO639_1 = (code: LanguageCollection): string => {
   return iso639_2b_to_iso639_1.get(code) || code;
 };
 
-const iso639_2b_to_iso639_1 = new Map<string, string>([
+const iso639_2b_to_iso639_1 = new Map<LanguageCollection, string>([
   ['abk', 'ab'],
   ['aar', 'aa'],
   ['afr', 'af'],

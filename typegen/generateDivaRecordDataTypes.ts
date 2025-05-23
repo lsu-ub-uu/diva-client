@@ -10,24 +10,7 @@ import { listToPool } from '@/utils/structs/listToPool';
 import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
-import { generateValidationTypeInterface } from './generateValidationTypeInterface';
-
-const VALIDATION_TYPES = [
-  'diva-series',
-  'diva-publisher',
-  'diva-project',
-  'diva-output',
-  'diva-journal',
-  'diva-topOrganisation',
-  'diva-course',
-  'diva-programme',
-  'diva-partOfOrganisation',
-  'diva-subject',
-  'diva-localGenericMarkup',
-  'diva-funder',
-  'diva-person',
-  'diva-theme',
-];
+import { generateValidationTypeInterface as generateValidationTypes } from './generateValidationTypeInterface';
 
 const [metadataPool, validationTypePool] = await Promise.all([
   getMetadataPool(),
@@ -44,13 +27,7 @@ let code = `
 
   `;
 
-VALIDATION_TYPES.forEach((validationType) => {
-  code += generateValidationTypeInterface(
-    validationTypePool,
-    metadataPool,
-    validationType,
-  );
-});
+code += generateValidationTypes(validationTypePool, metadataPool);
 
 const outputPath = new URL(
   '../app/generatedTypes/divaTypes.ts',

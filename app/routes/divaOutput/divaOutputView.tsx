@@ -1,7 +1,10 @@
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type { DivaOutput } from '@/generatedTypes/divaTypes';
+import type {
+  DivaOutput,
+  LanguageCollection,
+} from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 import type { ReactNode } from 'react';
 import { href, Link } from 'react-router';
@@ -9,7 +12,6 @@ import { Fragment } from 'react/jsx-runtime';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
-import { ab } from 'node_modules/@faker-js/faker/dist/airline-BUL6NtOJ';
 export const loader = async ({
   request,
   params,
@@ -38,10 +40,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
     <div className='diva-output-view'>
       <main>
         <article>
-          <h1
-            lang={mapISO639_2b_to_ISO639_1(output.titleInfo._lang)}
-            dir='auto'
-          >
+          <h1 lang={output.titleInfo._lang} dir='auto'>
             {createTitle(output.titleInfo)}
           </h1>
 
@@ -74,7 +73,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 key={index}
                 label={`Alternativ titel (${title._lang})`}
                 value={createTitle(title)}
-                lang={mapISO639_2b_to_ISO639_1(title._lang)}
+                lang={title._lang}
               />
             ))}
 
@@ -97,6 +96,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {output.artisticWork_type_outputType && (
               <Term label='Konstnärligt arbete' value='Ja' />
             )}
+
             <Term
               label='Typ av innehåll'
               value={output.genre_type_contentType.value}
@@ -106,9 +106,13 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 key={index}
                 label={`Abstract (${abstract._lang})`}
                 value={<CollapsableText text={abstract.value ?? ''} />}
-                lang={mapISO639_2b_to_ISO639_1(abstract._lang)}
+                lang={abstract._lang}
               />
             ))}
+            <Term
+              label='Publiceringsstatus'
+              value={output.note_type_publicationStatus?.value}
+            />
           </dl>
 
           <h2>Ursprung</h2>
@@ -207,10 +211,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           {output.subject?.map((subject, index) => (
             <div key={index}>
               <h3>Nyckelord ({subject._lang})</h3>
-              <ul
-                className='pill-container'
-                lang={mapISO639_2b_to_ISO639_1(subject._lang)}
-              >
+              <ul className='pill-container' lang={subject._lang}>
                 {subject.topic.value.split(',').map((topicPart) => (
                   <li className='pill' key={topicPart}>
                     <Link
@@ -288,7 +289,7 @@ const Organisation = ({ organisation }: OrganisationProps) => {
 interface TermProps {
   label: string;
   value?: ReactNode;
-  lang?: string;
+  lang?: LanguageCollection;
 }
 
 const Term = ({ label, value, lang }: TermProps) => {
@@ -299,7 +300,7 @@ const Term = ({ label, value, lang }: TermProps) => {
   return (
     <>
       <dt>{label}</dt>
-      <dd {...(lang && { lang })} dir='auto'>
+      <dd {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })} dir='auto'>
         {value}
       </dd>
     </>
