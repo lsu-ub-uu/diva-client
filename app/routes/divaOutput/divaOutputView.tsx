@@ -8,6 +8,8 @@ import { href, Link } from 'react-router';
 import { Fragment } from 'react/jsx-runtime';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
+import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { ab } from 'node_modules/@faker-js/faker/dist/airline-BUL6NtOJ';
 export const loader = async ({
   request,
   params,
@@ -36,7 +38,12 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
     <div className='diva-output-view'>
       <main>
         <article>
-          <h1>{createTitle(output.titleInfo)}</h1>
+          <h1
+            lang={mapISO639_2b_to_ISO639_1(output.titleInfo._lang)}
+            dir='auto'
+          >
+            {createTitle(output.titleInfo)}
+          </h1>
 
           <dl>
             <Term
@@ -67,6 +74,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 key={index}
                 label={`Alternativ titel (${title._lang})`}
                 value={createTitle(title)}
+                lang={mapISO639_2b_to_ISO639_1(title._lang)}
               />
             ))}
 
@@ -93,12 +101,14 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               label='Typ av innehåll'
               value={output.genre_type_contentType.value}
             />
-            <Term
-              label='Abstract'
-              value={
-                <CollapsableText text={output.abstract?.[0]?.value ?? ''} />
-              }
-            />
+            {output.abstract?.map((abstract, index) => (
+              <Term
+                key={index}
+                label={`Abstract (${abstract._lang})`}
+                value={<CollapsableText text={abstract.value ?? ''} />}
+                lang={mapISO639_2b_to_ISO639_1(abstract._lang)}
+              />
+            ))}
           </dl>
 
           <h2>Ursprung</h2>
@@ -171,10 +181,13 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               label={'Libris'}
               value={output['identifier_type_se-libr']?.value}
             />
-            <Term
-              label={'Lokal identifier'}
-              value={output['identifier_type_localId']?.[0]?.value}
-            />
+            {output['identifier_type_localId']?.map((identifier, index) => (
+              <Term
+                key={index}
+                label={`Lokal identifier`}
+                value={identifier.value}
+              />
+            ))}
           </dl>
         </article>
       </main>
@@ -194,17 +207,20 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           {output.subject?.map((subject, index) => (
             <div key={index}>
               <h3>Nyckelord ({subject._lang})</h3>
-              <div className='pill-container'>
+              <ul
+                className='pill-container'
+                lang={mapISO639_2b_to_ISO639_1(subject._lang)}
+              >
                 {subject.topic.value.split(',').map((topicPart) => (
-                  <Link
-                    to={`/diva-output?search.include.includePart.keywordsSearchTerm.value=${topicPart}&search.rows.value=10`}
-                    key={topicPart}
-                    className='pill'
-                  >
-                    {topicPart}
-                  </Link>
+                  <li className='pill' key={topicPart}>
+                    <Link
+                      to={`/diva-output?search.include.includePart.keywordsSearchTerm.value=${topicPart}&search.rows.value=10`}
+                    >
+                      {topicPart}
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>
@@ -272,9 +288,10 @@ const Organisation = ({ organisation }: OrganisationProps) => {
 interface TermProps {
   label: string;
   value?: ReactNode;
+  lang?: string;
 }
 
-const Term = ({ label, value }: TermProps) => {
+const Term = ({ label, value, lang }: TermProps) => {
   if (!value) {
     return null;
   }
@@ -282,7 +299,9 @@ const Term = ({ label, value }: TermProps) => {
   return (
     <>
       <dt>{label}</dt>
-      <dd>{value}</dd>
+      <dd {...(lang && { lang })} dir='auto'>
+        {value}
+      </dd>
     </>
   );
 };

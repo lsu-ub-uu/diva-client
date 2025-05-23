@@ -69,9 +69,11 @@ dd {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap);
+  list-style: none;
 }
 
 .pill {
+  display: inline-block;
   padding: var(--gap-s) var(--gap-l);
   background: var(--color-card-dark);
   color: var(--color-text);
