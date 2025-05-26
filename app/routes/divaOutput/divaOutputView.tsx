@@ -1,41 +1,23 @@
 import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type {
-  DivaOutput,
-  LanguageCollection,
-  NameOrganisationGroup,
-  NamePersonalGroup,
-} from '@/generatedTypes/divaTypes';
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import type { BFFDataRecord } from '@/types/record';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
-import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, href, isRouteErrorResponse, Link } from 'react-router';
-import { Fragment } from 'react/jsx-runtime';
+import { data, isRouteErrorResponse, Link } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 import { AxiosError } from 'axios';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import sdg1 from '@/images/sdg/sdg1.png';
-import sdg2 from '@/images/sdg/sdg2.png';
-import sdg3 from '@/images/sdg/sdg3.png';
-import sdg4 from '@/images/sdg/sdg4.png';
-import sdg5 from '@/images/sdg/sdg5.png';
-import sdg6 from '@/images/sdg/sdg6.png';
-import sdg7 from '@/images/sdg/sdg7.png';
-import sdg8 from '@/images/sdg/sdg8.png';
-import sdg9 from '@/images/sdg/sdg9.png';
-import sdg10 from '@/images/sdg/sdg10.png';
-import sdg11 from '@/images/sdg/sdg11.png';
-import sdg12 from '@/images/sdg/sdg12.png';
-import sdg13 from '@/images/sdg/sdg13.png';
-import sdg14 from '@/images/sdg/sdg14.png';
-import sdg15 from '@/images/sdg/sdg15.png';
-import sdg16 from '@/images/sdg/sdg16.png';
-import sdg17 from '@/images/sdg/sdg17.png';
+
+import { Term } from './components/Term';
+import { Person } from './components/Person';
+import { Organisation } from './components/Organisation';
+import { Date } from './components/Date';
+import { SdgImage } from './components/SdgImage';
 
 export const loader = async ({
   request,
@@ -78,31 +60,31 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           <h1 lang={output.titleInfo._lang} dir='auto'>
             {createTitle(output.titleInfo)}
           </h1>
-
           <dl>
-            <Term
-              label={output.name_type_personal?.[0]?.__text[language]}
-              value={output.name_type_personal?.map((person, index) => (
-                <Fragment key={index}>
-                  <Person person={person} key={index} />
-                  {index < output.name_type_personal!.length - 1 && ', '}
-                </Fragment>
-              ))}
-            />
+            {output.name_type_personal && (
+              <>
+                <dt>{output.name_type_personal?.[0]?.__text[language]}</dt>
+                {output.name_type_personal?.map((person, index) => (
+                  <dd key={index} className='comma-separated'>
+                    <Person person={person} key={index} />
+                  </dd>
+                ))}
+              </>
+            )}
             <Term
               label={output.note_type_creatorCount?.__text[language]}
               value={output.note_type_creatorCount?.value}
             />
-            <Term
-              label={output.name_type_corporate?.[0]?.__text[language]}
-              value={output.name_type_corporate?.map((organisation, index) => (
-                <Fragment key={index}>
-                  <Organisation organisation={organisation} key={index} />
-
-                  {index < output.name_type_corporate!.length - 1 && ', '}
-                </Fragment>
-              ))}
-            />
+            {output.name_type_corporate && (
+              <>
+                <dt>{output.name_type_corporate?.[0]?.__text[language]}</dt>
+                {output.name_type_corporate?.map((organisation, index) => (
+                  <dd className='comma-separated' key={index}>
+                    <Organisation organisation={organisation} />
+                  </dd>
+                ))}
+              </>
+            )}
             {output.titleInfo_type_alternative?.map((title, index) => (
               <Term
                 key={index}
@@ -111,7 +93,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 lang={title._lang}
               />
             ))}
-
             <Term
               label={output.genre_type_outputType.__text[language]}
               value={output.genre_type_outputType.__valueText[language]}
@@ -121,20 +102,19 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               value={output.genre_type_subcategory?.__valueText[language]}
             />
 
-            <Term
-              label={
-                output.language[0]?.[
-                  'languageTerm_authority_iso639-2b_type_code'
-                ]?.__text[language]
+            <dt>
+              {
+                output.language[0]['languageTerm_authority_iso639-2b_type_code']
+                  ?.__text[language]
               }
-              value={output.language
-                .map((language) =>
-                  t(
-                    `${language['languageTerm_authority_iso639-2b_type_code'].value}LangItemText`,
-                  ),
-                )
-                .join(', ')}
-            />
+            </dt>
+            {output.language.map((language, index) => (
+              <dd className='comma-separated' key={index}>
+                {t(
+                  `${language['languageTerm_authority_iso639-2b_type_code'].value}LangItemText`,
+                )}
+              </dd>
+            ))}
 
             {output.artisticWork_type_outputType && (
               <Term
@@ -158,113 +138,121 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             ))}
             <Term
               label={output.note_type_publicationStatus?.__text[language]}
-              value={output.note_type_publicationStatus?.value}
+              value={output.note_type_publicationStatus?.__valueText[language]}
             />
           </dl>
 
-          <h2>{output.originInfo.__text[language]}</h2>
-          <dl className='origin-info'>
+          <dl>
             <Term
-              label={output.originInfo.place?.[0]?.__text[language]}
-              value={output.originInfo.place
-                ?.map((place) => place?.placeTerm.value)
-                .join(', ')}
+              label={output.note_type_external?.__text[language]}
+              value={output.note_type_external?.value}
+            />
+            <Term
+              label={output.typeOfResource?.__text[language]}
+              value={output.typeOfResource?.__valueText[language]}
+            />
+
+            {output.type && (
+              <>
+                <dt>{output.type[0].__text[language]}</dt>
+                {output.type.map((type) => (
+                  <dd
+                    className='comma-separated'
+                    key={type.value}
+                    lang={mapISO639_2b_to_ISO639_1(type._lang)}
+                    dir='auto'
+                  >
+                    {type.value}
+                  </dd>
+                ))}
+              </>
+            )}
+            {output.material && (
+              <>
+                <dt>{output.material[0].__text[language]}</dt>
+                {output.material.map((material) => (
+                  <dd
+                    className='comma-separated'
+                    key={material.value}
+                    lang={mapISO639_2b_to_ISO639_1(material._lang)}
+                    dir='auto'
+                  >
+                    {material.value}
+                  </dd>
+                ))}
+              </>
+            )}
+            {output.technique && (
+              <>
+                <dt>{output.technique[0].__text[language]}</dt>
+                {output.technique.map((technique) => (
+                  <dd
+                    className='comma-separated'
+                    key={technique.value}
+                    lang={mapISO639_2b_to_ISO639_1(technique._lang)}
+                    dir='auto'
+                  >
+                    {technique.value}
+                  </dd>
+                ))}
+              </>
+            )}
+            <Term
+              label={output.size?.__text[language]}
+              value={output.size?.value}
+            />
+            <Term
+              label={output.duration?.__text[language]}
+              value={[
+                output.duration?.hh?.value,
+                output.duration?.mm?.value,
+                output.duration?.ss?.value,
+              ].join(':')}
+            />
+            <Term
+              label={output.physicalDescription?.__text[language]}
+              value={output.physicalDescription?.extent.value}
             />
 
             <Term
-              label={output.originInfo.dateIssued.__text[language]}
-              value={<Date date={output.originInfo.dateIssued} />}
-            />
-
-            <Term
-              label={output.originInfo?.copyrightDate?.__text[language]}
-              value={<Date date={output.originInfo.copyrightDate} />}
-            />
-
-            <Term
-              label={output.originInfo.dateOther_type_online?.__text[language]} //'Online'
-              value={<Date date={output.originInfo.dateOther_type_online} />}
-            />
-
-            <Term
-              label={output.originInfo.agent?.__text[language]}
-              value={output.originInfo.agent?.namePart
-                ?.map((namePart) => namePart.value)
-                .join(', ')} //Todo add linked publishers
-            />
-
-            <Term
-              label={output.originInfo.edition?.__text[language]}
-              value={output.originInfo.edition?.value}
-            />
-
-            <Term
-              label={output.extent?.__text[language]}
-              value={output.extent?.value}
+              label={output.academicSemester?.__text[language]}
+              value={[
+                output.academicSemester?.semester?.__valueText[language],
+                output.academicSemester?.year?.__text[language],
+              ]
+                .filter(Boolean)
+                .join(' ')}
             />
           </dl>
-
-          <h2>{t('divaClient_identifierText')}</h2>
-          <dl className='identifiers'>
-            <Term
-              label={t('divaClient_divaIdText')}
-              value={output.recordInfo.id.value}
-            />
-            <Term
-              label={output.recordInfo.urn?.__text[language]}
-              value={output.recordInfo.urn?.value}
-            />
-            {output.identifier_type_isbn?.map((identifier, index) => (
-              <Term
-                key={index}
-                label={`${output.identifier_type_isbn?.[0]?.__text[language]}} (${identifier._displayLabel})`}
-                value={identifier.value}
-              />
-            ))}
-
-            <Term
-              label={output.identifier_type_isrn?.__text[language]}
-              value={output.identifier_type_isrn?.value}
-            />
-            {output.identifier_type_ismn?.map((identifier, index) => (
-              <Term
-                key={index}
-                label={`${identifier.__text[language]} (${identifier._displayLabel})`}
-                value={identifier.value}
-              />
-            ))}
-            <Term
-              label={output.identifier_type_doi?.__text[language]}
-              value={output.identifier_type_doi?.value}
-            />
-            <Term
-              label={output.identifier_type_pmid?.__text[language]}
-              value={output.identifier_type_pmid?.value}
-            />
-            <Term
-              label={output.identifier_type_wos?.__text[language]}
-              value={output.identifier_type_wos?.value}
-            />
-            <Term
-              label={output.identifier_type_scopus?.__text[language]}
-              value={output.identifier_type_scopus?.value}
-            />
-            <Term
-              label={output.identifier_type_openAlex?.__text[language]}
-              value={output.identifier_type_openAlex?.value}
-            />
-            <Term
-              label={output['identifier_type_se-libr']?.__text[language]}
-              value={output['identifier_type_se-libr']?.value}
-            />
-            {output['identifier_type_localId']?.map((identifier, index) => (
-              <Term
-                key={index}
-                label={output.identifier_type_localId?.[0]?.__text[language]}
-                value={identifier.value}
-              />
-            ))}
-          </dl>
+          {output.studentDegree && (
+            <>
+              <h2>{output.studentDegree.__text[language]}</h2>
+              <dl>
+                <Term
+                  label={output.studentDegree.course?.__text[language]}
+                  value={output.studentDegree.course?.value} // TODO linked record
+                />
+                <Term
+                  label={output.studentDegree.degreeLevel?.__text[language]}
+                  value={
+                    output.studentDegree.degreeLevel?.__valueText[language]
+                  }
+                />
+                <Term
+                  label={
+                    output.studentDegree.universityPoints?.__text[language]
+                  }
+                  value={
+                    output.studentDegree.universityPoints?.__valueText[language]
+                  }
+                />
+                <Term
+                  label={output.studentDegree.programme?.__text[language]}
+                  value={output.studentDegree.programme?.value} // TODO linked record
+                />
+              </dl>
+            </>
+          )}
         </article>
       </main>
       <aside>
@@ -278,7 +266,108 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <p>FULLTEXT.pdf (432 kB)</p>
 
         <a href='/asdf'>Ladda ner</a>*/}
+        <h2>{output.originInfo.__text[language]}</h2>
+        <dl className='origin-info'>
+          <Term
+            label={output.originInfo.place?.[0]?.__text[language]}
+            value={output.originInfo.place
+              ?.map((place) => place?.placeTerm.value)
+              .join(', ')}
+          />
 
+          <Term
+            label={output.originInfo.dateIssued.__text[language]}
+            value={<Date date={output.originInfo.dateIssued} />}
+          />
+
+          <Term
+            label={output.originInfo?.copyrightDate?.__text[language]}
+            value={<Date date={output.originInfo.copyrightDate} />}
+          />
+
+          <Term
+            label={output.originInfo.dateOther_type_online?.__text[language]} //'Online'
+            value={<Date date={output.originInfo.dateOther_type_online} />}
+          />
+
+          <Term
+            label={output.originInfo.agent?.__text[language]}
+            value={output.originInfo.agent?.namePart
+              ?.map((namePart) => namePart.value)
+              .join(', ')} //Todo add linked publishers
+          />
+
+          <Term
+            label={output.originInfo.edition?.__text[language]}
+            value={output.originInfo.edition?.value}
+          />
+
+          <Term
+            label={output.extent?.__text[language]}
+            value={output.extent?.value}
+          />
+        </dl>
+        <h2>{t('divaClient_identifierText')}</h2>
+        <dl className='identifiers'>
+          <Term
+            label={t('divaClient_divaIdText')}
+            value={output.recordInfo.id.value}
+          />
+          <Term
+            label={output.recordInfo.urn?.__text[language]}
+            value={output.recordInfo.urn?.value}
+          />
+          {output.identifier_type_isbn?.map((identifier, index) => (
+            <Term
+              key={index}
+              label={`${output.identifier_type_isbn?.[0]?.__text[language]}} (${identifier._displayLabel})`}
+              value={identifier.value}
+            />
+          ))}
+
+          <Term
+            label={output.identifier_type_isrn?.__text[language]}
+            value={output.identifier_type_isrn?.value}
+          />
+          {output.identifier_type_ismn?.map((identifier, index) => (
+            <Term
+              key={index}
+              label={`${identifier.__text[language]} (${identifier._displayLabel})`}
+              value={identifier.value}
+            />
+          ))}
+          <Term
+            label={output.identifier_type_doi?.__text[language]}
+            value={output.identifier_type_doi?.value}
+          />
+          <Term
+            label={output.identifier_type_pmid?.__text[language]}
+            value={output.identifier_type_pmid?.value}
+          />
+          <Term
+            label={output.identifier_type_wos?.__text[language]}
+            value={output.identifier_type_wos?.value}
+          />
+          <Term
+            label={output.identifier_type_scopus?.__text[language]}
+            value={output.identifier_type_scopus?.value}
+          />
+          <Term
+            label={output.identifier_type_openAlex?.__text[language]}
+            value={output.identifier_type_openAlex?.value}
+          />
+          <Term
+            label={output['identifier_type_se-libr']?.__text[language]}
+            value={output['identifier_type_se-libr']?.value}
+          />
+          {output['identifier_type_localId']?.map((identifier, index) => (
+            <Term
+              key={index}
+              label={output.identifier_type_localId?.[0]?.__text[language]}
+              value={identifier.value}
+            />
+          ))}
+        </dl>
         <div>
           {output.subject?.map((subject, index) => (
             <div key={index}>
@@ -330,12 +419,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                   <Link
                     to={`/diva-output?search.include.includePart.subjectSearchTerm.value=${topic.value}&search.rows.value=10`}
                   >
-                    {/* {topic.__valueText[language].replace(/^\d+\. /, '')} */}
-                    <img
-                      src={sdgImage(topic.value)}
-                      alt={topic.__valueText[language]}
-                      className='sdg-image'
-                    />
+                    <SdgImage topic={topic} />
                   </Link>
                 </li>
               ))}
@@ -349,107 +433,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
 const createTitle = (titleInfo: DivaOutput['output']['titleInfo']) => {
   return `${titleInfo.title.value}${titleInfo.subTitle ? `: ${titleInfo.subTitle.value}` : ''}`;
-};
-
-interface PersonProps {
-  person: NamePersonalGroup;
-}
-
-const Person = ({ person }: PersonProps) => {
-  // TODO show affiliation and role
-  if (person.person) {
-    return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: 'diva-person',
-          recordId: person.person.value,
-        })}
-      >
-        <span>
-          {person.namePart_type_given?.value}{' '}
-          {person.namePart_type_family?.value}
-        </span>
-      </Link>
-    );
-  }
-
-  return (
-    <span>
-      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
-    </span>
-  );
-};
-
-interface OrganisationProps {
-  organisation: NameOrganisationGroup;
-}
-
-const Organisation = ({ organisation }: OrganisationProps) => {
-  if (organisation.organisation) {
-    return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: 'diva-organisation',
-          recordId: organisation.organisation?.value,
-        })}
-      >
-        <span>{organisation.namePart?.value}</span>
-      </Link>
-    );
-  }
-
-  return <span>{organisation.namePart?.value}</span>;
-};
-
-interface TermProps {
-  label?: string;
-  value?: ReactNode;
-  lang?: LanguageCollection;
-}
-
-const Term = ({ label, value, lang }: TermProps) => {
-  if (!label || !value) {
-    return null;
-  }
-
-  return (
-    <>
-      <dt>{label}</dt>
-      <dd {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })} dir='auto'>
-        {value}
-      </dd>
-    </>
-  );
-};
-
-interface DateProps {
-  date?: {
-    year: {
-      value: string;
-    };
-    month?: {
-      value: string;
-    };
-    day?: {
-      value: string;
-    };
-  };
-}
-
-const Date = ({ date }: DateProps) => {
-  if (!date) {
-    return null;
-  }
-
-  const { year, month, day } = date;
-
-  return (
-    <span>
-      {year.value}
-      {month && `-${month.value}`}
-      {day && `-${day.value}`}
-    </span>
-  );
 };
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
@@ -483,43 +466,4 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   }
 
   return <UnhandledErrorPage error={error} />;
-};
-
-const sdgImage = (value: string) => {
-  switch (value) {
-    case 'sdg1':
-      return sdg1;
-    case 'sdg2':
-      return sdg2;
-    case 'sdg3':
-      return sdg3;
-    case 'sdg4':
-      return sdg4;
-    case 'sdg5':
-      return sdg5;
-    case 'sdg6':
-      return sdg6;
-    case 'sdg7':
-      return sdg7;
-    case 'sdg8':
-      return sdg8;
-    case 'sdg9':
-      return sdg9;
-    case 'sdg10':
-      return sdg10;
-    case 'sdg11':
-      return sdg11;
-    case 'sdg12':
-      return sdg12;
-    case 'sdg13':
-      return sdg13;
-    case 'sdg14':
-      return sdg14;
-    case 'sdg15':
-      return sdg15;
-    case 'sdg16':
-      return sdg16;
-    case 'sdg17':
-      return sdg17;
-  }
 };

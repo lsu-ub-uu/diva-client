@@ -1,117 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <output>
-    <recordInfo>
-        <validationType>
-            <linkedRecordType>validationType</linkedRecordType>
-            <linkedRecordId>publication_report</linkedRecordId>
-            <actionLinks>
-                <read>
-                    <requestMethod>GET</requestMethod>
-                    <rel>read</rel>
-                    <url>https://cora.epc.ub.uu.se/diva/rest/record/validationType/publication_report</url>
-                    <accept>application/vnd.cora.record+xml</accept>
-                </read>
-            </actionLinks>
-        </validationType>
-        <dataDivider>
-            <linkedRecordType>system</linkedRecordType>
-            <linkedRecordId>divaData</linkedRecordId>
-            <actionLinks>
-                <read>
-                    <requestMethod>GET</requestMethod>
-                    <rel>read</rel>
-                    <url>https://cora.epc.ub.uu.se/diva/rest/record/system/divaData</url>
-                    <accept>application/vnd.cora.record+xml</accept>
-                </read>
-            </actionLinks>
-        </dataDivider>
-        <permissionUnit>
-            <linkedRecordType>permissionUnit</linkedRecordType>
-            <linkedRecordId>norden</linkedRecordId>
-            <actionLinks>
-                <read>
-                    <requestMethod>GET</requestMethod>
-                    <rel>read</rel>
-                    <url>https://cora.epc.ub.uu.se/diva/rest/record/permissionUnit/norden</url>
-                    <accept>application/vnd.cora.record+xml</accept>
-                </read>
-            </actionLinks>
-        </permissionUnit>
-        <visibility>published</visibility>
-    </recordInfo>
-    <genre type="outputType">publication_report</genre>
-    <language repeatId="0">
-        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
-    </language>
-    <language repeatId="19">
-        <languageTerm authority="iso639-2b" type="code">ara</languageTerm>
-    </language>
-    <language repeatId="20">
-        <languageTerm authority="iso639-2b" type="code">ath</languageTerm>
-    </language>
-    <genre type="contentType">pop</genre>
-    <titleInfo lang="eng">
-        <title>Future fisheries</title>
-        <subTitle>Status, trends and future perspectives concerning the energy transition of fisheries with focus on Nordic countries
+	<recordInfo>
+		<validationType>
+			<linkedRecordType>validationType</linkedRecordType>
+			<linkedRecordId>diva-output</linkedRecordId>
+			<actionLinks>
+				<read>
+					<requestMethod>GET</requestMethod>
+					<rel>read</rel>
+					<url>https://cora.epc.ub.uu.se/diva/rest/record/validationType/publication_report</url>
+					<accept>application/vnd.cora.record+xml</accept>
+				</read>
+			</actionLinks>
+		</validationType>
+		<dataDivider>
+			<linkedRecordType>system</linkedRecordType>
+			<linkedRecordId>divaData</linkedRecordId>
+			<actionLinks>
+				<read>
+					<requestMethod>GET</requestMethod>
+					<rel>read</rel>
+					<url>https://cora.epc.ub.uu.se/diva/rest/record/system/divaData</url>
+					<accept>application/vnd.cora.record+xml</accept>
+				</read>
+			</actionLinks>
+		</dataDivider>
+		<permissionUnit>
+			<linkedRecordType>permissionUnit</linkedRecordType>
+			<linkedRecordId>norden</linkedRecordId>
+			<actionLinks>
+				<read>
+					<requestMethod>GET</requestMethod>
+					<rel>read</rel>
+					<url>https://cora.epc.ub.uu.se/diva/rest/record/permissionUnit/norden</url>
+					<accept>application/vnd.cora.record+xml</accept>
+				</read>
+			</actionLinks>
+		</permissionUnit>
+		<visibility>published</visibility>
+	</recordInfo>
+	<genre type="outputType">publication_report</genre>
+	<language repeatId="0">
+		<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+	</language>
+	<language repeatId="19">
+		<languageTerm authority="iso639-2b" type="code">ara</languageTerm>
+	</language>
+	<language repeatId="20">
+		<languageTerm authority="iso639-2b" type="code">ath</languageTerm>
+	</language>
+	<genre type="contentType">pop</genre>
+	<titleInfo lang="eng">
+		<title>Future fisheries</title>
+		<subTitle>Status, trends and future perspectives concerning the energy transition of fisheries with focus on Nordic countries
         </subTitle>
-    </titleInfo>
-    <titleInfo lang="abk" repeatId="24" type="alternative">
-        <title>Framtidens fiske</title>
-        <subTitle>Status, trender och framtidsperspektiv gällande energiomställningen inom fisket med fokus på Norden odefinierad
+	</titleInfo>
+	<titleInfo lang="abk" repeatId="24" type="alternative">
+		<title>Framtidens fiske</title>
+		<subTitle>Status, trender och framtidsperspektiv gällande energiomställningen inom fisket med fokus på Norden odefinierad
         </subTitle>
-    </titleInfo>
-    <name repeatId="0" type="personal">
-        <namePart type="family">Hornborg</namePart>
-        <namePart type="given">Sara</namePart>
-    </name>
-    <name repeatId="1" type="personal">
-        <namePart type="family">Aarsæther</namePart>
-        <namePart type="given">Karl Gunnar</namePart>
-    </name>
-    <name repeatId="2" type="personal">
-        <namePart type="family">Bastardie</namePart>
-        <namePart type="given">François</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <name repeatId="3" type="personal">
-        <namePart type="family">Jafarzadeh</namePart>
-        <namePart type="given">Sepideh</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <name repeatId="4" type="personal">
-        <namePart type="family">Aarsæther</namePart>
-        <namePart type="given">Karl Gunnar</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <name repeatId="5" type="personal">
-        <namePart type="family">Bastardie</namePart>
-        <namePart type="given">François</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <name repeatId="6" type="personal">
-        <namePart type="family">Hornborg</namePart>
-        <namePart type="given">Sara</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <name repeatId="0" type="corporate">
-        <namePart>Nordic Council of Ministers</namePart>
-        <role>
-            <roleTerm repeatId="0">aut</roleTerm>
-        </role>
-    </name>
-    <note type="creatorCount">12</note>
-    <abstract lang="eng" repeatId="0">The energy transition of the fishing sector has gained
+	</titleInfo>
+	<name repeatId="0" type="personal">
+		<namePart type="family">Hornborg</namePart>
+		<namePart type="given">Sara</namePart>
+	</name>
+	<name repeatId="1" type="personal">
+		<namePart type="family">Aarsæther</namePart>
+		<namePart type="given">Karl Gunnar</namePart>
+	</name>
+	<name repeatId="2" type="personal">
+		<namePart type="family">Bastardie</namePart>
+		<namePart type="given">François</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<name repeatId="3" type="personal">
+		<namePart type="family">Jafarzadeh</namePart>
+		<namePart type="given">Sepideh</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<name repeatId="4" type="personal">
+		<namePart type="family">Aarsæther</namePart>
+		<namePart type="given">Karl Gunnar</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<name repeatId="5" type="personal">
+		<namePart type="family">Bastardie</namePart>
+		<namePart type="given">François</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<name repeatId="6" type="personal">
+		<namePart type="family">Hornborg</namePart>
+		<namePart type="given">Sara</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<name repeatId="0" type="corporate">
+		<namePart>Nordic Council of Ministers</namePart>
+		<role>
+			<roleTerm repeatId="0">aut</roleTerm>
+		</role>
+	</name>
+	<note type="creatorCount">12</note>
+	<typeOfResource>artifact</typeOfResource>
+	<type lang="swe" repeatId="9">Partitur</type>
+	<type lang="eng" repeatId="19">Partiture</type>
+	<material lang="swe" repeatId="6">sten</material>
+	<material lang="swe" repeatId="7">gips</material>
+	<material lang="eng" repeatId="8">stone</material>
+	<technique lang="swe" repeatId="4">acqvarell</technique>
+	<size>130*20cm</size>
+	<duration>
+		<hh>10</hh>
+		<mm>23</mm>
+		<ss>05</ss>
+	</duration>
+	<physicalDescription>
+		<extent>239sidor</extent>
+	</physicalDescription>
+	<dateOther type="patent">
+		<year>2012</year>
+		<month>10</month>
+		<day>23</day>
+	</dateOther>
+	<abstract lang="eng" repeatId="0">The energy transition of the fishing sector has gained
         increasing attention in recent years. With focus on Nordic countries, status,
         trends, opportunities and challenges are summarized to provide recommendations for
         how to effectively enable an energy transition towards carbon-neutral fisheries. Key
@@ -144,7 +164,7 @@
         co-developing effective roadmaps for the energy transition of a highly diverse
         sector will be essential.
     </abstract>
-    <abstract lang="ara" repeatId="28">اكتسب تحول الطاقة في قطاع صيد الأسماك اهتمامًا متزايدًا في السنوات الأخيرة. مع
+	<abstract lang="ara" repeatId="28">اكتسب تحول الطاقة في قطاع صيد الأسماك اهتمامًا متزايدًا في السنوات الأخيرة. مع
         التركيز على دول الشمال الأوروبي، يُلخص هذا التقرير الوضع والاتجاهات والفرص والتحديات لتقديم توصيات حول كيفية
         تمكين تحول الطاقة بفعالية نحو مصائد أسماك محايدة للكربون. تشمل التحديات الرئيسية اليوم ضعف جمع البيانات والإبلاغ
         عنها بشأن انبعاثات غازات الاحتباس الحراري، وانخفاض استخدام التقنيات المتاحة، وتراجع الحوافز المالية التي تُشجع
@@ -152,65 +172,107 @@
         (قبل عام 2030) وطويلة الأجل (قبل عام 2040). بشكل عام، يُعدّ التعاون في وضع خرائط طريق فعّالة لتحول الطاقة في
         قطاع شديد التنوع أمرًا بالغ الأهمية.
     </abstract>
-    <subject lang="alb" repeatId="9">
-        <topic>Digitization, Integration, Welfare and Gender Equality</topic>
-    </subject>
-    <originInfo>
-        <dateIssued>
-            <year>2025</year>
-        </dateIssued>
-        <copyrightDate>
-            <year>2024</year>
-            <month>10</month>
-            <day>12</day>
-        </copyrightDate>
-        <dateOther type="online">
-            <year>1310</year>
-            <month>01</month>
-            <day>02</day>
-        </dateOther>
-        <agent>
-            <publisher repeatId="0">
-                <linkedRecordType>diva-publisher</linkedRecordType>
-                <linkedRecordId>diva-publisher:1437068056503025</linkedRecordId>
-                <actionLinks>
-                    <read>
-                        <requestMethod>GET</requestMethod>
-                        <rel>read</rel>
-                        <url>https://cora.epc.ub.uu.se/diva/rest/record/diva-publisher/diva-publisher:1437068056503025
+	<subject lang="alb" repeatId="9">
+		<topic>Digitization, Integration, Welfare and Gender Equality</topic>
+	</subject>
+	<originInfo>
+		<dateIssued>
+			<year>2025</year>
+		</dateIssued>
+		<copyrightDate>
+			<year>2024</year>
+			<month>10</month>
+			<day>12</day>
+		</copyrightDate>
+		<dateOther type="online">
+			<year>1310</year>
+			<month>01</month>
+			<day>02</day>
+		</dateOther>
+		<agent>
+			<publisher repeatId="0">
+				<linkedRecordType>diva-publisher</linkedRecordType>
+				<linkedRecordId>diva-publisher:1437068056503025</linkedRecordId>
+				<actionLinks>
+					<read>
+						<requestMethod>GET</requestMethod>
+						<rel>read</rel>
+						<url>https://cora.epc.ub.uu.se/diva/rest/record/diva-publisher/diva-publisher:1437068056503025
                         </url>
-                        <accept>application/vnd.cora.record+xml</accept>
-                    </read>
-                </actionLinks>
-            </publisher>
-            <namePart repeatId="1">Penguin</namePart>
-            <namePart repeatId="2">Bloomsbury</namePart>
-            <role>
-                <roleTerm>pbl</roleTerm>
-            </role>
-        </agent>
-        <place repeatId="0">
-            <placeTerm>Uppsala</placeTerm>
-        </place>
-        <place repeatId="1">
-            <placeTerm>Stockholm</placeTerm>
-        </place>
-    </originInfo>
-    <extent>100s</extent>
-    <classification authority="ssif" repeatId="0">1</classification>
-    <identifier displayLabel="print" repeatId="12" type="isbn">978-92-893-8293-9</identifier>
-    <identifier displayLabel="online" repeatId="15" type="isbn">978-92-893-8293-2</identifier>
-    <identifier type="isrn">978-92-893-8293-9</identifier>
-    <identifier type="doi">10.6027/nord2025-019</identifier>
-    <identifier type="openAlex">W3123306174</identifier>
-    <identifier type="se-libr">onr:19769763</identifier>
-    <identifier type="archiveNumber">sa12456456</identifier>
-    <identifier repeatId="13" type="localId">123456</identifier>
-    <admin>
-        <reviewed>true</reviewed>
-    </admin>
-    <titleInfo lang="heb" repeatId="32" type="alternative">
-        <title>דיג עתידי</title>
-        <subTitle>מצב, מגמות ופרספקטיבות עתידיות בנוגע למעבר האנרגטי של דיג בדגש על מדינות סקנדינביות</subTitle>
-    </titleInfo>
+						<accept>application/vnd.cora.record+xml</accept>
+					</read>
+				</actionLinks>
+			</publisher>
+			<namePart repeatId="1">Penguin</namePart>
+			<namePart repeatId="2">Bloomsbury</namePart>
+			<role>
+				<roleTerm>pbl</roleTerm>
+			</role>
+		</agent>
+		<place repeatId="0">
+			<placeTerm>Uppsala</placeTerm>
+		</place>
+		<place repeatId="1">
+			<placeTerm>Stockholm</placeTerm>
+		</place>
+	</originInfo>
+	<imprint>Hamburg, Tyskland</imprint>
+	<extent>100s</extent>
+	<classification authority="ssif" repeatId="0">1</classification>
+	<identifier displayLabel="print" repeatId="12" type="isbn">978-92-893-8293-9</identifier>
+	<identifier displayLabel="online" repeatId="15" type="isbn">978-92-893-8293-2</identifier>
+	<identifier type="isrn">978-92-893-8293-9</identifier>
+	<identifier type="doi">10.6027/nord2025-019</identifier>
+	<identifier type="openAlex">W3123306174</identifier>
+	<identifier type="se-libr">onr:19769763</identifier>
+	<identifier type="archiveNumber">sa12456456</identifier>
+	<identifier repeatId="13" type="localId">123456</identifier>
+	<location repeatId="5">
+		<url>google.com</url>
+		<displayLabel>Google</displayLabel>
+	</location>
+	<location displayLabel="orderLink">
+		<url>google.com</url>
+		<displayLabel>Google</displayLabel>
+	</location>
+	<note type="external">
+        External note
+    </note>
+	<academicSemester>
+		<year>1234</year>
+		<semester>vt</semester>
+	</academicSemester>
+	<studentDegree>
+		<degreeLevel>M1</degreeLevel>
+		<universityPoints>7,5</universityPoints>
+	</studentDegree>
+	<externalCollaboration>
+		<namePart repeatId="0">Externt Namn</namePart>
+	</externalCollaboration>
+	<degreeGrantingInstitution type="corporate">
+		<namePart>Uppsala Univertitet</namePart>
+		<identifier type="ror">0488q6085</identifier>
+        <role>
+            <roleTerm>dgg</roleTerm>
+        </role>
+	</degreeGrantingInstitution>
+	<supervisor type="personal" repeatId="1">
+		<namePart type="given">Supervisorförnamn</namePart>
+		<namePart type="family">Efternamn</namePart>
+	</supervisor>
+	<examiner type="personal" repeatId="2">
+		<namePart type="given">Examinerförnamn</namePart>
+		<namePart type="family">Efternamn</namePart>
+	</examiner>
+	<examiner type="personal" repeatId="3">
+		<namePart type="given">Opponentförnamn</namePart>
+		<namePart type="family">Efternamn</namePart>
+	</examiner>
+	<admin>
+		<reviewed>true</reviewed>
+	</admin>
+	<titleInfo lang="heb" repeatId="32" type="alternative">
+		<title>דיג עתידי</title>
+		<subTitle>מצב, מגמות ופרספקטיבות עתידיות בנוגע למעבר האנרגטי של דיג בדגש על מדינות סקנדינביות</subTitle>
+	</titleInfo>
 </output>
