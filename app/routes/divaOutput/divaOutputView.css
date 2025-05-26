@@ -86,4 +86,10 @@ dd {
   list-style: none;
   display: flex;
   gap: var(--gap);
+  flex-wrap: wrap;
+}
+
+.sdg-image {
+  height: 6rem;
+  width: auto;
 }
