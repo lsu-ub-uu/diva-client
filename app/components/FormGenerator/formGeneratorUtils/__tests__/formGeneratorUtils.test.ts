@@ -1181,7 +1181,7 @@ describe('helper methods', () => {
   describe('isComponentRepeating', () => {
     it.each([
       [
-        'numberVariable',
+        'numberVariable 1-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1205,7 +1205,7 @@ describe('helper methods', () => {
         false,
       ],
       [
-        'numberVariable',
+        'numberVariable 0-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1226,10 +1226,10 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        true,
+        false,
       ],
       [
-        'numberVariable',
+        'numberVariable 1-2',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1253,7 +1253,7 @@ describe('helper methods', () => {
         true,
       ],
       [
-        'numberVariable',
+        'numberVariable 0-X',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1285,7 +1285,7 @@ describe('helper methods', () => {
   describe('isComponentRequired', () => {
     it.each([
       [
-        'numberVariable',
+        'numberVariable 0-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1306,10 +1306,10 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        true,
+        false,
       ],
       [
-        'numberVariable',
+        'numberVariable 1-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1330,7 +1330,7 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        false,
+        true,
       ],
     ])('check if %s is required', (arg1, arg2, arg3) => {
       const expected = isComponentRequired(arg2 as FormComponent);

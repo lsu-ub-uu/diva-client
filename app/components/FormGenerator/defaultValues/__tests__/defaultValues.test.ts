@@ -125,11 +125,10 @@ describe('defaultValues', () => {
             bookTitle: {
               value: '',
             },
-            keeptHis: [
-              {
-                value: '',
-              },
-            ],
+            keeptHis: {
+              value: '',
+            },
+
             firstChildGroup: {
               exampleNumberVar: {
                 value: '',
@@ -153,11 +152,10 @@ describe('defaultValues', () => {
             bookTitle: {
               value: '',
             },
-            keeptHis: [
-              {
-                value: '',
-              },
-            ],
+            keeptHis: {
+              value: '',
+            },
+
             firstChildGroup: [
               {
                 exampleNumberVar: {
@@ -226,8 +224,8 @@ describe('defaultValues', () => {
           someRootNameInData: {
             affiliation: [
               {
-                someTextVar: [{ value: '' }],
-                someOtherTextVar: [{ value: '' }],
+                someTextVar: { value: '' },
+                someOtherTextVar: { value: '' },
               },
             ],
           },
@@ -239,13 +237,13 @@ describe('defaultValues', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      it('should merge a group with alternative presentations with SContainers fist smaller', () => {
+      it('should merge a group with alternative presentations with SContainers second smaller', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             affiliation: [
               {
-                someTextVar: [{ value: '' }],
-                someOtherTextVar: [{ value: '' }],
+                someTextVar: { value: '' },
+                someOtherTextVar: { value: '' },
               },
             ],
           },
@@ -1019,11 +1017,9 @@ describe('defaultValues', () => {
             bookTitle: {
               value: 'testBookTitle',
             },
-            keeptHis: [
-              {
-                value: 'override',
-              },
-            ],
+            keeptHis: {
+              value: 'override',
+            },
             firstChildGroup: {
               exampleNumberVar: {
                 value: '12',
@@ -1133,11 +1129,9 @@ describe('defaultValues', () => {
             bookTitle: {
               value: 'Moby Dick',
             },
-            keeptHis: [
-              {
-                value: '',
-              },
-            ],
+            keeptHis: {
+              value: '',
+            },
             firstChildGroup: [
               {
                 exampleNumberVar: {
@@ -1191,11 +1185,9 @@ describe('defaultValues', () => {
             bookTitle: {
               value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
             },
-            keeptHis: [
-              {
-                value: '12',
-              },
-            ],
+            keeptHis: {
+              value: '12',
+            },
             firstChildGroup: {
               exampleNumberVar: {
                 value: '55',
@@ -1227,11 +1219,9 @@ describe('defaultValues', () => {
     it('creates default values for alternative presentation', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
-          someAlternativeNameInData: [
-            {
-              value: '',
-            },
-          ],
+          someAlternativeNameInData: {
+            value: '',
+          },
           someNameInData: {
             value: '',
           },

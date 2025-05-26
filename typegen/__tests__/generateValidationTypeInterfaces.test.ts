@@ -1,11 +1,11 @@
 import type {
   BFFMetadata,
-  BFFValidationType,
+  BFFMetadataBase,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
-  BFFMetadataTextVariable,
   BFFMetadataItemCollection,
-  BFFMetadataBase,
+  BFFMetadataTextVariable,
+  BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { format } from 'prettier';
@@ -108,8 +108,6 @@ describe('generateValidationTypeInterface', () => {
     const expected = `export interface ValidationTypeId extends BFFDataRecordData{
       'root': { foo?: { value: string; _lang: 'en' | 'sv'; };  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
     }`;
-
-    console.log('actual', actual);
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(
       await format(expected, { parser: 'typescript' }),

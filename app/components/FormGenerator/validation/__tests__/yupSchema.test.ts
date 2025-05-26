@@ -250,7 +250,7 @@ describe('generate validation', () => {
             someNameInData: undefined,
             someNumberVariableNameInData: undefined,
           },
-          false,
+          true,
         ),
 
         fields: {
