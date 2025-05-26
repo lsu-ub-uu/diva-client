@@ -81,3 +81,9 @@ dd {
   color: var(--color-text);
   border-radius: var(--border-radius);
 }
+
+.sdg-container {
+  list-style: none;
+  display: flex;
+  gap: var(--gap);
+}
