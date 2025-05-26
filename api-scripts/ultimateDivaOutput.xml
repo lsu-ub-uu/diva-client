@@ -175,6 +175,10 @@
 	<subject lang="alb" repeatId="9">
 		<topic>Digitization, Integration, Welfare and Gender Equality</topic>
 	</subject>
+    <subject authority="sdg">
+        <topic repeatId="1">sdg1</topic>
+        <topic repeatId="2">sdg2</topic>
+    </subject>
 	<originInfo>
 		<dateIssued>
 			<year>2025</year>
