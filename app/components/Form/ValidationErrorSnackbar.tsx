@@ -30,6 +30,7 @@ export const ValidationErrorSnackbar = () => {
 
   useEffect(() => {
     if (!isEmpty(errors)) {
+      console.log('validation errors', errors);
       setSnackbarOpen(true);
     }
   }, [errors]);

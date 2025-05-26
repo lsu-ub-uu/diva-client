@@ -12,10 +12,14 @@ import type { BFFDataRecord } from '@/types/record';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
+import { data, href, isRouteErrorResponse, Link } from 'react-router';
 import { Fragment } from 'react/jsx-runtime';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
+import { AxiosError } from 'axios';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+
 export const loader = async ({
   request,
   params,
@@ -26,15 +30,21 @@ export const loader = async ({
   const auth = getAuth(session);
   const dependencies = await context.dependencies;
   const { recordId } = params;
-  const record = (await getRecordByRecordTypeAndRecordId({
-    dependencies,
-    recordType: 'diva-output',
-    recordId,
-    authToken: auth?.data.token,
-    decorated: true,
-  })) as BFFDataRecord<DivaOutput>;
-
-  return { record, breadcrumb: t(record.data.output.titleInfo.title.value) };
+  try {
+    const record = (await getRecordByRecordTypeAndRecordId({
+      dependencies,
+      recordType: 'diva-output',
+      recordId,
+      authToken: auth?.data.token,
+      decorated: true,
+    })) as BFFDataRecord<DivaOutput>;
+    return { record, breadcrumb: t(record.data.output.titleInfo.title.value) };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw data(error?.response?.data, { status: error.status });
+    }
+    throw error;
+  }
 };
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
@@ -110,7 +120,12 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
 
             {output.artisticWork_type_outputType && (
-              <Term label='Konstnärligt arbete' value='Ja' />
+              <Term
+                label={output.artisticWork_type_outputType.__text[language]}
+                value={
+                  output.artisticWork_type_outputType.__valueText[language]
+                }
+              />
             )}
             <Term
               label={output.genre_type_contentType?.__text[language]}
@@ -130,22 +145,22 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
           </dl>
 
-          <h2>Ursprung</h2>
+          <h2>{output.originInfo.__text[language]}</h2>
           <dl className='origin-info'>
             <Term
-              label='Ort'
+              label={output.originInfo.place?.[0]?.__text[language]}
               value={output.originInfo.place
                 ?.map((place) => place?.placeTerm.value)
                 .join(', ')}
             />
 
             <Term
-              label='Utgiven'
+              label={output.originInfo.dateIssued.__text[language]}
               value={<Date date={output.originInfo.dateIssued} />}
             />
 
             <Term
-              label='Copyright'
+              label={output.originInfo?.copyrightDate?.__text[language]}
               value={<Date date={output.originInfo.copyrightDate} />}
             />
 
@@ -155,24 +170,37 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             />
 
             <Term
-              label='Förlag'
+              label={output.originInfo.agent?.__text[language]}
               value={output.originInfo.agent?.namePart
                 ?.map((namePart) => namePart.value)
                 .join(', ')} //Todo add linked publishers
             />
 
-            <Term label='Upplaga' value={output.originInfo.edition?.value} />
+            <Term
+              label={output.originInfo.edition?.__text[language]}
+              value={output.originInfo.edition?.value}
+            />
 
-            <Term label='Fysisk omfattning' value={output.extent?.value} />
+            <Term
+              label={output.extent?.__text[language]}
+              value={output.extent?.value}
+            />
           </dl>
-          <h2>Identifierare</h2>
+
+          <h2>{t('divaClient_identifierText')}</h2>
           <dl className='identifiers'>
-            <Term label='DiVA-id' value={output.recordInfo.id.value} />
-            <Term label='URN' value={output.recordInfo.urn?.value} />
+            <Term
+              label={t('divaClient_divaIdText')}
+              value={output.recordInfo.id.value}
+            />
+            <Term
+              label={output.recordInfo.urn?.__text[language]}
+              value={output.recordInfo.urn?.value}
+            />
             {output.identifier_type_isbn?.map((identifier, index) => (
               <Term
                 key={index}
-                label={`ISBN (${identifier._displayLabel})`}
+                label={`${output.identifier_type_isbn?.[0]?.__text[language]}} (${identifier._displayLabel})`}
                 value={identifier.value}
               />
             ))}
@@ -215,7 +243,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {output['identifier_type_localId']?.map((identifier, index) => (
               <Term
                 key={index}
-                label={`Lokal identifier`}
+                label={output.identifier_type_localId?.[0]?.__text[language]}
                 value={identifier.value}
               />
             ))}
@@ -223,7 +251,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         </article>
       </main>
       <aside>
-        <div>
+        {/*<div>
           <h3>Bilaga</h3>
           <img
             alt='fulltext'
@@ -232,17 +260,17 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         </div>
         <p>FULLTEXT.pdf (432 kB)</p>
 
-        <a href='/asdf'>Ladda ner</a>
+        <a href='/asdf'>Ladda ner</a>*/}
 
         <div>
           {output.subject?.map((subject, index) => (
             <div key={index}>
-              <h3>
+              <h2>
                 {subject.__text[language]} ({t(`${subject._lang}LangItemText`)})
-              </h3>
+              </h2>
               <ul className='pill-container' lang={subject._lang}>
                 {subject.topic.value.split(',').map((topicPart) => (
-                  <li className='pill' key={topicPart}>
+                  <li key={topicPart} className='pill'>
                     <Link
                       to={`/diva-output?search.include.includePart.keywordsSearchTerm.value=${topicPart}&search.rows.value=10`}
                     >
@@ -254,13 +282,51 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             </div>
           ))}
         </div>
+        {output.classification_authority_ssif &&
+          output.classification_authority_ssif.length > 0 && (
+            <div>
+              <h2>
+                {output.classification_authority_ssif?.[0].__text[language]}
+              </h2>
+              <ul className='pill-container'>
+                {output.classification_authority_ssif.map((classification) => (
+                  <li key={classification.value} className='pill'>
+                    <Link
+                      to={`/diva-output?search.include.includePart.subjectSearchTerm.value=${classification.value}&search.rows.value=10`}
+                    >
+                      {classification.__valueText[language].replace(
+                        /^\(\d+\) /,
+                        '',
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        {output.subject_authority_sdg && (
+          <div>
+            <h2>{output.subject_authority_sdg.__text[language]}</h2>
+            <ul className='pill-container'>
+              {output.subject_authority_sdg.topic.map((topic) => (
+                <li key={topic.value} className='pill'>
+                  <Link
+                    to={`/diva-output?search.include.includePart.subjectSearchTerm.value=${topic.value}&search.rows.value=10`}
+                  >
+                    {topic.__valueText[language].replace(/^\d+\. /, '')}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </aside>
     </div>
   );
 }
 
 const createTitle = (titleInfo: DivaOutput['output']['titleInfo']) => {
-  return `${titleInfo.title.value}${titleInfo.subTitle && `: ${titleInfo.subTitle.value}`}`;
+  return `${titleInfo.title.value}${titleInfo.subTitle ? `: ${titleInfo.subTitle.value}` : ''}`;
 };
 
 interface PersonProps {
@@ -362,4 +428,37 @@ const Date = ({ date }: DateProps) => {
       {day && `-${day.value}`}
     </span>
   );
+};
+
+export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+  const { recordId } = params;
+  const recordType = 'diva-output';
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+
+    const errorBodyText =
+      status === 404
+        ? t('divaClient_errorDivaOutputNotFoundText', {
+            recordId,
+          })
+        : t(`divaClient_error${status}BodyText`);
+
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={errorBodyText}
+        links={
+          <Link to={`/${recordType}/search`}>
+            {t('divaClient_errorGoToSearchText', { recordType })}
+          </Link>
+        }
+        technicalInfo={error.data}
+      />
+    );
+  }
+
+  return <UnhandledErrorPage error={error} />;
 };

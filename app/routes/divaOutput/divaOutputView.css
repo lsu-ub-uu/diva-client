@@ -37,6 +37,7 @@ article {
   gap: var(--gap);
   border-right: 1px solid var(--color-thin-border);
   padding-bottom: var(--gap-xxl);
+  max-width: 1200px;
 }
 
 dt {
@@ -75,7 +76,8 @@ dd {
 .pill {
   display: inline-block;
   padding: var(--gap-s) var(--gap-l);
-  background: var(--color-card-dark);
+  background: var(--color-card);
+  border: 1px solid var(--color-link);
   color: var(--color-text);
-  border-radius: 9999px;
+  border-radius: var(--border-radius);
 }

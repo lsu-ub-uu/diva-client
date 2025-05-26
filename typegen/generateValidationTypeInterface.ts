@@ -92,33 +92,44 @@ function createAttributes(
   metadataPool: Lookup<string, BFFMetadata>,
   metadata: BFFMetadata,
 ): string {
+  const attributeTypes = createAttributeTypes(metadataPool, metadata);
+
+  const textTypes = createTextTypes(metadata.type === 'collectionVariable');
+
+  return `${attributeTypes} ${textTypes}`;
+}
+
+const createAttributeTypes = (
+  metadataPool: Lookup<string, BFFMetadata>,
+  metadata: BFFMetadata,
+) => {
   if (!('attributeReferences' in metadata)) {
     return '';
   }
 
-  const attributes = metadata.attributeReferences?.map((attrRef) => {
-    const attributeCollectionVariable = metadataPool.get(
-      attrRef.refCollectionVarId,
-    ) as BFFMetadataCollectionVariable;
+  if (!metadata.attributeReferences) {
+    return '';
+  }
 
-    if (attributeCollectionVariable.finalValue) {
-      return `_${attributeCollectionVariable.nameInData}: '${attributeCollectionVariable.finalValue}';`;
-    }
+  return metadata.attributeReferences
+    .map((attrRef) => {
+      const attributeCollectionVariable = metadataPool.get(
+        attrRef.refCollectionVarId,
+      ) as BFFMetadataCollectionVariable;
 
-    const collectionItems = createCollectionVariableItems(
-      metadataPool,
-      attributeCollectionVariable,
-    );
+      if (attributeCollectionVariable.finalValue) {
+        return `_${attributeCollectionVariable.nameInData}: '${attributeCollectionVariable.finalValue}';`;
+      }
 
-    return `'_${attributeCollectionVariable.nameInData}': ${collectionItems};`;
-  });
+      const collectionItems = createCollectionVariableItems(
+        metadataPool,
+        attributeCollectionVariable,
+      );
 
-  const textTypes = createTextTypes(metadata.type === 'collectionVariable');
-
-  const attributeTypes = attributes?.join('') ?? '';
-
-  return `${attributeTypes} ${textTypes}`;
-}
+      return `'_${attributeCollectionVariable.nameInData}': ${collectionItems};`;
+    })
+    .join('');
+};
 
 const createCollectionVariableItems = (
   metadataPool: Lookup<string, BFFMetadata>,

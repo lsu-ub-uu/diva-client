@@ -33,7 +33,14 @@ import {
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Suspense, useEffect, useState } from 'react';
-import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
+import {
+  Await,
+  Form,
+  href,
+  Link,
+  useLocation,
+  useNavigation,
+} from 'react-router';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -73,22 +80,25 @@ export const Header = ({ recordTypes }: HeaderProps) => {
       </div>
 
       <div className={styles['header-content']}>
-        <NavigationLink to='/api-docs' label='API' icon={<CodeIcon />} />
         {devMode && (
-          <NavigationLink
-            to='/design-system'
-            label='Design system'
-            icon={<DesignServicesIcon />}
-          />
-        )}
-
-        {devMode && (
-          <Form action='/refreshDefinitions' method='POST'>
-            <input type='hidden' name='returnTo' value={returnTo} />
-            <Button variant='tertiary' type='submit'>
-              <CachedIcon /> Refresh Def
-            </Button>
-          </Form>
+          <>
+            <NavigationLink
+              to={href('/api-docs')}
+              label='API'
+              icon={<CodeIcon />}
+            />
+            <NavigationLink
+              to={href('/design-system')}
+              label='Design system'
+              icon={<DesignServicesIcon />}
+            />
+            <Form action={href('/refreshDefinitions')} method='POST'>
+              <input type='hidden' name='returnTo' value={returnTo} />
+              <Button variant='tertiary' type='submit'>
+                <CachedIcon /> Refresh Def
+              </Button>
+            </Form>
+          </>
         )}
       </div>
       <Button
