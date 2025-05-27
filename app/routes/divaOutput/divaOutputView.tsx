@@ -9,11 +9,11 @@ import type { BFFDataRecord } from '@/types/record';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse, Link } from 'react-router';
+import { data, Form, href, isRouteErrorResponse, Link } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
-import { ShoppingCartIcon } from '@/icons';
+import { DeleteIcon, EditDocumentIcon, ShoppingCartIcon } from '@/icons';
 import { Date } from './components/Date';
 import { Location } from './components/Location';
 import { Organisation } from './components/Organisation';
@@ -22,6 +22,8 @@ import { SdgImage } from './components/SdgImage';
 import { Term } from './components/Term';
 import { getLanguageTextId } from './utils/translateLanguage';
 import { Event } from './components/Event';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 
 export const loader = async ({
   request,
@@ -55,7 +57,8 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const language = useLanguage();
   const { t } = useTranslation();
-  const output = loaderData.record.data.output;
+  const record = loaderData.record;
+  const output = record.data.output;
 
   return (
     <div className='diva-output-view'>
@@ -533,6 +536,28 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           />
         </dl>
       </aside>
+      <FloatingActionButtonContainer>
+        {record.userRights?.includes('update') && (
+          <FloatingActionButton
+            as={Link}
+            to={href('/:recordType/:recordId/update', {
+              recordType: record.recordType,
+              recordId: record.id,
+            })}
+            text={t('divaClient_editRecordText')}
+            icon={<EditDocumentIcon />}
+          />
+        )}
+        {record.userRights?.includes('delete') && (
+          <Form method='POST' action='delete'>
+            <FloatingActionButton
+              type='submit'
+              text={t('divaClient_deleteRecordText')}
+              icon={<DeleteIcon />}
+            />
+          </Form>
+        )}
+      </FloatingActionButtonContainer>
     </div>
   );
 }
