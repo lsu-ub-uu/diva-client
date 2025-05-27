@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import createReport from '../createReport';
+import createOutput from '../createReport';
 import { readFileSync } from 'fs';
 import { mock } from 'vitest-mock-extended';
 
@@ -27,7 +27,7 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport('mock-token');
+    await createOutput('mock-token');
 
     // Assert
     expect(readFileSync).toHaveBeenCalledWith(
@@ -69,7 +69,7 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport('mock-token');
+    await createOutput('mock-token');
 
     // Assert
     expect(consoleErrorSpy).toHaveBeenCalledWith(mockError);

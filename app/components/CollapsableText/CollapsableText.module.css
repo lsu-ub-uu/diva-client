@@ -10,7 +10,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--gap);
-  margin-left: var(--gap);
+  margin: 0 var(--gap);
   cursor: pointer;
   color: var(--color-link);
   background: none;

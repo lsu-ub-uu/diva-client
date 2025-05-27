@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 import login from './auth';
-import createReport from './createReport';
+import createOutput from './createReport';
 const coraApiUrl = 'https://cora.epc.ub.uu.se/diva/rest';
 const coraLoginUrl = 'https://cora.epc.ub.uu.se/diva/login';
 
@@ -30,7 +30,7 @@ const auth = await login(
 
 try {
   await Promise.all([
-    createReport(auth.token, coraApiUrl, './ultimateDivaOutput.xml'),
+    createOutput(auth.token, coraApiUrl, './ultimateDivaOutput.xml'),
   ]);
 
   console.info('All reports created successfully');

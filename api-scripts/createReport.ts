@@ -18,7 +18,7 @@
 
 import { readFileSync } from 'fs';
 
-export default async function createReport(
+export default async function createOutput(
   authtoken: string,
   coraApiUrl: string,
   file: string,
@@ -37,7 +37,9 @@ export default async function createReport(
     });
     const xml = await res.text();
 
-    console.info('Response', res.status, xml);
+    const id = xml.match(/<id>(.*?)<\/id>/)?.[1];
+
+    console.info('Created output with id', id);
   } catch (error) {
     console.error(error);
   }

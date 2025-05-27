@@ -1,8 +1,13 @@
 import { href, Link } from 'react-router';
-import type { NameOrganisationGroup } from '@/generatedTypes/divaTypes';
+import type {
+  NameOrganisationDegreeGrantingInstitutionGroup,
+  NameOrganisationGroup,
+} from '@/generatedTypes/divaTypes';
 
 interface OrganisationProps {
-  organisation: NameOrganisationGroup;
+  organisation:
+    | NameOrganisationGroup
+    | NameOrganisationDegreeGrantingInstitutionGroup;
 }
 
 export const Organisation = ({ organisation }: OrganisationProps) => {

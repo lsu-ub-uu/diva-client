@@ -16,11 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { NamePersonalGroup } from '@/generatedTypes/divaTypes';
+import type {
+  NamePersonalDegreeSupervisorGroup,
+  NamePersonalGroup,
+  NamePersonalOpponentGroup,
+  NamePersonalThesisAdvisorGroup,
+} from '@/generatedTypes/divaTypes';
 import { href, Link } from 'react-router';
 
 interface PersonProps {
-  person: NamePersonalGroup;
+  person:
+    | NamePersonalGroup
+    | NamePersonalDegreeSupervisorGroup
+    | NamePersonalThesisAdvisorGroup
+    | NamePersonalOpponentGroup;
 }
 
 export const Person = ({ person }: PersonProps) => {

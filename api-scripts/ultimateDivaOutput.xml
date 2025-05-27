@@ -231,9 +231,14 @@
 	<identifier type="se-libr">onr:19769763</identifier>
 	<identifier type="archiveNumber">sa12456456</identifier>
 	<identifier repeatId="13" type="localId">123456</identifier>
+	<identifier type="patentNumber">SE 7713829-5</identifier>
 	<location repeatId="5">
-		<url>google.com</url>
+		<url>https://www.google.com</url>
 		<displayLabel>Google</displayLabel>
+	</location>
+	<location repeatId="6">
+		<url>www.uu.se</url>
+		<displayLabel>Uppsala Universitet</displayLabel>
 	</location>
 	<location displayLabel="orderLink">
 		<url>google.com</url>
@@ -268,12 +273,42 @@
 		<namePart type="given">Examinerförnamn</namePart>
 		<namePart type="family">Efternamn</namePart>
 	</examiner>
-	<examiner type="personal" repeatId="3">
+	<opponent type="personal" repeatId="3">
 		<namePart type="given">Opponentförnamn</namePart>
 		<namePart type="family">Efternamn</namePart>
-	</examiner>
+	</opponent>
+	<presentation>
+		<language><languageTerm type="code" authority="iso639-2b">swe</languageTerm></language>
+		<dateOther type="defence">
+			<year>2025</year>
+			<month>10</month>
+			<day>23</day>
+			<hh>12</hh>
+			<mm>30</mm>
+		</dateOther>
+		<location>Polhemsalen, Ångströmslaboratoriet</location>
+		<address>Regementsvägen 10</address>
+		<place><placeTerm>Uppsala</placeTerm></place>
+	</presentation>
+	<defence>
+		<language><languageTerm type="code" authority="iso639-2b">swe</languageTerm></language>
+		<dateOther type="defence">
+			<year>2026</year>
+			<month>01</month>
+			<day>04</day> 
+			<hh>15</hh>
+			<mm>30</mm>
+		</dateOther>
+		<location>Polhemsalen, Ångströmslaboratoriet</location>
+		<address>Regementsvägen 10</address>
+		<place><placeTerm>Uppsala</placeTerm></place>
+	</defence>
+	<accessCondition authority="kb.se">
+		gratis
+	</accessCondition>
 	<admin>
 		<reviewed>true</reviewed>
+		<note type="internal">Leo och Egil was here</note>
 	</admin>
 	<titleInfo lang="heb" repeatId="32" type="alternative">
 		<title>דיג עתידי</title>

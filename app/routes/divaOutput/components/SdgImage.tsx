@@ -29,6 +29,7 @@ export const SdgImage = ({ topic }: SdgImageProps) => {
     <img
       src={sdgImage(topic.value)}
       alt={topic.__valueText[language]}
+      title={topic.__valueText[language]}
       className='sdg-image'
     />
   );

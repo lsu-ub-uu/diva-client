@@ -84,3 +84,5 @@ export { default as ScienceIcon } from './Science.svg?react';
 export { default as LinkIcon } from './Link.svg?react';
 export { default as DarkModeIcon } from './DarkMode.svg?react';
 export { default as LightModeIcon } from './LightMode.svg?react';
+export { default as ShoppingCartIcon } from './ShoppingCart.svg?react';
+export { default as LockOpenIcon } from './LockOpen.svg?react';

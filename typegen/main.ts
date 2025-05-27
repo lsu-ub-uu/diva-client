@@ -37,7 +37,6 @@ const VALIDATION_TYPES = [
 let code = `
   /**
    * Auto-generated types
-   * Date: ${new Date().toISOString()}
    */ 
    
   import type { BFFDataRecordData } from '@/types/record';

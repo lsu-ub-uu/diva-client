@@ -9,6 +9,12 @@ interface DateProps {
     day?: {
       value: string;
     };
+    hh?: {
+      value: string;
+    };
+    mm?: {
+      value: string;
+    };
   };
 }
 
@@ -17,13 +23,16 @@ export const Date = ({ date }: DateProps) => {
     return null;
   }
 
-  const { year, month, day } = date;
+  const { year, month, day, hh, mm } = date;
 
-  return (
-    <span>
-      {year.value}
-      {month && `-${month.value}`}
-      {day && `-${day.value}`}
-    </span>
-  );
+  const dateString = [year.value, month?.value, day?.value]
+    .filter(Boolean)
+    .join('-');
+
+  const timeString = [hh?.value, mm?.value].filter(Boolean).join(':');
+
+  const isoDateTime = [dateString, timeString].filter(Boolean).join('T');
+  const formattedDateTime = [dateString, timeString].filter(Boolean).join(' ');
+
+  return <time dateTime={isoDateTime}>{formattedDateTime}</time>;
 };
