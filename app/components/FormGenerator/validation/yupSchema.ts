@@ -135,7 +135,11 @@ function createSchemaForRepeatingGroup(
     ...createValidationForAttributesFromComponent(component),
   }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
-  return createYupArrayFromSchema(extendedSchema, component.repeat);
+  return createYupArrayFromSchema(
+    extendedSchema,
+    component.repeat,
+    parentGroupOptional,
+  );
 }
 
 function createSchemaForRepeatingVariable(
@@ -157,7 +161,11 @@ function createSchemaForRepeatingVariable(
       ...attributesValidationRules,
     }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
-  return createYupArrayFromSchema(extendedSchema, component.repeat);
+  return createYupArrayFromSchema(
+    extendedSchema,
+    component.repeat,
+    parentGroupOptional,
+  );
 }
 
 function createSchemaForNonRepeatingGroup(
@@ -254,11 +262,12 @@ export const createYupArrayFromSchema = (
       >
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
+  parentGroupOptional: boolean,
 ) => {
   return yup
     .array()
     .of(schema)
-    .min(repeat?.repeatMin ?? 1)
+    .min(parentGroupOptional ? 0 : (repeat?.repeatMin ?? 1))
     .max(repeat?.repeatMax ?? 1);
 };
 

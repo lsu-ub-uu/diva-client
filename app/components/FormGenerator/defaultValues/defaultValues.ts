@@ -295,7 +295,7 @@ const assignNonObjectValues = (
 };
 
 export const mergeArrays = (target: any[], overlay: any[]): any[] => {
-  const result = [...target];
+  const result = Array.isArray(target) ? [...target] : [target];
 
   overlay.forEach((item, index) => {
     if (typeof item === 'object' && item !== null && !Array.isArray(item)) {

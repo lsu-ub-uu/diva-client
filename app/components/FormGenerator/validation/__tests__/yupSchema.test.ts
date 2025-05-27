@@ -250,7 +250,7 @@ describe('generate validation', () => {
             someNameInData: undefined,
             someNumberVariableNameInData: undefined,
           },
-          true,
+          false,
         ),
 
         fields: {
@@ -270,7 +270,7 @@ describe('generate validation', () => {
                 {
                   value: undefined,
                 },
-                false,
+                true,
               ),
               fields: {
                 value: {
@@ -288,8 +288,6 @@ describe('generate validation', () => {
                     undefined,
                     true,
                   ),
-
-                  nullable: true,
                 },
               },
             },
@@ -315,7 +313,7 @@ describe('generate validation', () => {
                 {
                   value: undefined,
                 },
-                false,
+                true,
               ),
             },
             ...validationTestsExtras(
@@ -334,7 +332,7 @@ describe('generate validation', () => {
               {
                 value: undefined,
               },
-              false,
+              true,
             ),
 
             fields: {

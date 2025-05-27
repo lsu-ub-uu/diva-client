@@ -8,6 +8,7 @@ import {
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
 import type { FormComponentWithData } from '../types';
+import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface OptionalComponentProps {
   control?: Control<any>;
@@ -23,6 +24,7 @@ export const OptionalComponent = ({
   renderCallback,
 }: OptionalComponentProps) => {
   const { t } = useTranslation();
+  const showDeleteButton = component.mode === 'input' && component.showLabel;
 
   return (
     <Controller
@@ -33,7 +35,7 @@ export const OptionalComponent = ({
           return (
             <>
               {renderCallback(
-                component.mode === 'input' && (
+                showDeleteButton && (
                   <Button
                     size='small'
                     variant='icon'

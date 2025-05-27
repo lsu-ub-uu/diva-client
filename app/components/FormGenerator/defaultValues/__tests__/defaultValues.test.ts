@@ -823,11 +823,9 @@ describe('defaultValues', () => {
             bookTitle: {
               value: 'someFinalValue',
             },
-            keeptHis: [
-              {
-                value: '12',
-              },
-            ],
+            keeptHis: {
+              value: '12',
+            },
             firstChildGroup: {
               exampleNumberVar: {
                 value: '55',
@@ -854,12 +852,10 @@ describe('defaultValues', () => {
               value: '',
               _colour: '',
             },
-            keeptHis: [
-              {
-                value: '',
-                _colour: '',
-              },
-            ],
+            keeptHis: {
+              value: '',
+              _colour: '',
+            },
             firstChildGroup_groupColourAgain_pink: {
               exampleNumberVar: {
                 value: '',
@@ -1037,11 +1033,10 @@ describe('defaultValues', () => {
             bookTitle: {
               value: 'testBookTitle',
             },
-            keeptHis: [
-              {
-                value: 'override',
-              },
-            ],
+            keeptHis: {
+              value: 'override',
+            },
+
             firstChildGroup: {
               exampleNumberVar: {
                 value: '12',
