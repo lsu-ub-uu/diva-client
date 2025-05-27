@@ -13,7 +13,12 @@ import { data, Form, href, isRouteErrorResponse, Link } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
-import { DeleteIcon, EditDocumentIcon, ShoppingCartIcon } from '@/icons';
+import {
+  CodeIcon,
+  DeleteIcon,
+  EditDocumentIcon,
+  ShoppingCartIcon,
+} from '@/icons';
 import { Date } from './components/Date';
 import { Location } from './components/Location';
 import { Organisation } from './components/Organisation';
@@ -24,6 +29,8 @@ import { getLanguageTextId } from './utils/translateLanguage';
 import { Event } from './components/Event';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { coraApiUrl } from '@/cora/helper.server';
+import { Button } from '@/components/Button/Button';
 
 export const loader = async ({
   request,
@@ -35,6 +42,8 @@ export const loader = async ({
   const auth = getAuth(session);
   const dependencies = await context.dependencies;
   const { recordId } = params;
+  const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);
+
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
       dependencies,
@@ -43,7 +52,11 @@ export const loader = async ({
       authToken: auth?.data.token,
       decorated: true,
     })) as BFFDataRecord<DivaOutput>;
-    return { record, breadcrumb: t(record.data.output.titleInfo.title.value) };
+    return {
+      record,
+      breadcrumb: t(record.data.output.titleInfo.title.value),
+      apiUrl,
+    };
   } catch (error) {
     if (error instanceof AxiosError) {
       throw data(error?.response?.data, { status: error.status });
@@ -319,6 +332,17 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         </article>
       </main>
       <aside>
+        <Button
+          className='api-button'
+          variant='tertiary'
+          as='a'
+          href={loaderData.apiUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <CodeIcon />
+          {t('divaClient_viewInApiText')}
+        </Button>
         {/*<div>
           <h3>Bilaga</h3>
           <img
