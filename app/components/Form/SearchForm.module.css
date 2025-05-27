@@ -21,3 +21,9 @@
 
   --input-height: var(--input-height-large);
 }
+
+.search-result-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

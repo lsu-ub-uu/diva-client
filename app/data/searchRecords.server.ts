@@ -23,6 +23,7 @@ import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
+  BFFSearch,
 } from '@/cora/transform/bffTypes.server';
 import {
   createBFFMetadataReference,
@@ -46,12 +47,11 @@ export const searchRecords = async (
   }
 
   const search = dependencies.searchPool.get(searchType);
-  const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
-  const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
-  const transformData = transformToCoraData(formMetaDataPathLookup, query);
+  const coraQuery = createCoraSearchQuery(dependencies, search, query);
+
   const response = await getSearchResultDataListBySearchType<DataListWrapper>(
     searchType,
-    transformData[0] as DataGroup,
+    coraQuery,
     auth?.data.token,
   );
 
@@ -85,6 +85,16 @@ export const searchRecords = async (
     containDataOfType,
     data: transformedRecords,
   } as BFFSearchResult;
+};
+
+export const createCoraSearchQuery = (
+  dependencies: Dependencies,
+  search: BFFSearch,
+  query: any,
+) => {
+  const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
+  const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
+  return transformToCoraData(formMetaDataPathLookup, query)[0] as DataGroup;
 };
 
 const createSearchMetaData = (

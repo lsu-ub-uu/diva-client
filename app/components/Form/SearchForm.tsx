@@ -21,7 +21,7 @@ import { Button } from '@/components/Button/Button';
 import { Pagination } from '@/components/Form/Pagination';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { SearchIcon } from '@/icons';
+import { CodeIcon, SearchIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTheme } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
@@ -34,14 +34,17 @@ interface SearchFormProps {
   data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
+  apiUrl?: string;
 }
 
 export const SearchForm = ({
   data,
   formSchema,
   searchResults,
+  apiUrl,
 }: SearchFormProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const submit = useSubmit();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -88,11 +91,25 @@ export const SearchForm = ({
               />
             )}
           {data && searchResults && (
-            <Pagination
-              query={data}
-              searchResults={searchResults}
-              onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
-            />
+            <div className={styles['search-result-wrapper']}>
+              {apiUrl && (
+                <Button
+                  variant='tertiary'
+                  as='a'
+                  href={apiUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <CodeIcon />
+                  {t('divaClient_viewInApiText')}
+                </Button>
+              )}
+              <Pagination
+                query={data}
+                searchResults={searchResults}
+                onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
+              />
+            </div>
           )}
         </RemixFormProvider>
       </div>

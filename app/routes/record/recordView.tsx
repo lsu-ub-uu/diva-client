@@ -21,12 +21,13 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
-
+import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { DeleteIcon, EditDocumentIcon } from '@/icons';
-import { Form, href, Link } from 'react-router';
+import { coraApiUrl } from '@/cora/helper.server';
+import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
+import { Form, href, Link } from 'react-router';
 import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({
@@ -38,6 +39,7 @@ export const loader = async ({
   const auth = getAuth(session);
   const { recordType, recordId } = params;
 
+  const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies: await context.dependencies,
     recordType,
@@ -52,16 +54,27 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition };
+  return { record, formDefinition, apiUrl };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
+  const { record, formDefinition, apiUrl } = loaderData;
   const { t } = useTranslation();
 
   return (
     <main>
       <div className='record-wrapper'>
+        <Button
+          className='api-button'
+          variant='tertiary'
+          as='a'
+          href={apiUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <CodeIcon />
+          {t('divaClient_viewInApiText')}
+        </Button>
         <ReadOnlyForm
           record={record}
           formSchema={formDefinition}

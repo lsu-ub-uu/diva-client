@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponent } from '@/components/FormGenerator/types';
-import styles from './DevInfo.module.css';
-import { use, useState } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { useIsDevMode } from '@/utils/useIsDevMode';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import type { FormComponent } from '@/components/FormGenerator/types';
+import { DataObjectIcon } from '@/icons';
+import { useIsDevMode } from '@/utils/useIsDevMode';
+import { use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
-import { CodeIcon } from '@/icons';
+import styles from './DevInfo.module.css';
 
 interface DevInfoProps {
   label?: string;
@@ -82,7 +82,7 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
       className={styles['dev-info-button']}
       onClick={onClick}
     >
-      <CodeIcon />
+      <DataObjectIcon />
     </button>
   );
 };

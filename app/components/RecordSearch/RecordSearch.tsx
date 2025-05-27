@@ -16,26 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { SearchFormSchema } from '@/components/FormGenerator/types';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { SearchForm } from '@/components/Form/SearchForm';
+import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { SentimentNeutralIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
-import { SentimentNeutralIcon } from '@/icons';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
   query: BFFDataRecordData;
   searchResults: BFFSearchResult | undefined;
+  apiUrl?: string;
 }
 
 export const RecordSearch = ({
   searchForm,
   query,
   searchResults,
+  apiUrl,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
   return (
@@ -44,6 +46,7 @@ export const RecordSearch = ({
         formSchema={searchForm}
         data={query}
         searchResults={searchResults}
+        apiUrl={apiUrl}
       />
       {searchResults && (
         <>

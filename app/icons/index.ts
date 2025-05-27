@@ -86,3 +86,4 @@ export { default as DarkModeIcon } from './DarkMode.svg?react';
 export { default as LightModeIcon } from './LightMode.svg?react';
 export { default as ShoppingCartIcon } from './ShoppingCart.svg?react';
 export { default as LockOpenIcon } from './LockOpen.svg?react';
+export { default as DataObjectIcon } from './DataObject.svg?react';
