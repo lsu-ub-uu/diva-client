@@ -31,6 +31,7 @@ import { FloatingActionButtonContainer } from '@/components/FloatingActionButton
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { coraApiUrl } from '@/cora/helper.server';
 import { Button } from '@/components/Button/Button';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 
 export const loader = async ({
   request,
@@ -54,6 +55,7 @@ export const loader = async ({
     })) as BFFDataRecord<DivaOutput>;
     return {
       record,
+      pageTitle: createTitle(record.data.output.titleInfo),
       breadcrumb: t(record.data.output.titleInfo.title.value),
       apiUrl,
     };
@@ -63,6 +65,10 @@ export const loader = async ({
     }
     throw error;
   }
+};
+
+export const meta = ({ data, error }: Route.MetaArgs) => {
+  return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
 };
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
@@ -78,7 +84,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
       <main>
         <article>
           <h1 lang={output.titleInfo._lang} dir='auto'>
-            {createTitle(output.titleInfo)}
+            {loaderData.pageTitle}
           </h1>
           <dl>
             {output.name_type_personal && (
