@@ -21,11 +21,11 @@ import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, it, vi } from 'vitest';
 import {
-  checkForExistingSiblings,
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
   checkIfValueExists,
   exportForTesting,
+  hasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
@@ -1545,21 +1545,21 @@ describe('helper methods', () => {
 
   describe('checkForSiblingValue', () => {
     it('checkForSiblingValue', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         latitude: { value: '' },
         longitude: { value: 'a' },
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue2', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         latitude: { value: '' },
         longitude: { value: '' },
       });
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue3', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: 'a' },
@@ -1567,14 +1567,14 @@ describe('helper methods', () => {
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue4', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         maintitle: { value: '' },
         subtitle: [{ value: 'a' }],
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue5', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: '' },
@@ -1582,7 +1582,7 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue6', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         longitude: {
           value: '',
         },
@@ -1593,7 +1593,7 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue7', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         longitude: {
           value: '1',
         },

@@ -42,7 +42,6 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
   const submitting = navigation.state === 'submitting';
 
   const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-  console.log(yupSchema.describe());
 
   const methods = useRemixForm({
     mode: 'onChange',

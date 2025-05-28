@@ -106,6 +106,7 @@ export const formDefWithOneOptionalNumberVariableWithAttributeCollection: Record
           name: 'numberVar2',
           label: 'someNumberVar2IdLabel',
           placeholder: 'someNumberVar2IdPlaceholder',
+          showLabel: true,
           repeat: {
             minNumberOfRepeatingToShow: 1,
             repeatMin: 0,
@@ -240,6 +241,7 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
             body: 'keepThisNumberVarDefText',
           },
           label: 'someNumberVarIdLabel',
+          showLabel: true,
           placeholder: 'someNumberVarIdPlaceholder',
           validation: {
             type: 'number',
@@ -258,6 +260,7 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
           type: 'numberVariable',
           name: 'numberVar2',
           label: 'someNumberVar2IdLabel',
+          showLabel: true,
           placeholder: 'someNumberVar2IdPlaceholder',
           repeat: {
             minNumberOfRepeatingToShow: 1,

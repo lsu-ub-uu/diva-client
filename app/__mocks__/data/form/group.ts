@@ -4572,11 +4572,12 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
           type: 'group',
           presentationId: 'somePGroup',
           mode: 'input',
+          label: 'authorGroupText',
+          showLabel: true,
           tooltip: {
             title: 'authorGroupText',
             body: 'authorGroupDefText',
           },
-          label: 'authorGroupText',
           repeat: {
             minNumberOfRepeatingToShow: 1,
             repeatMin: 1,
@@ -4613,6 +4614,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 body: 'exampleFirstChildGroupDefText2',
               },
               label: 'exampleFirstChildGroupText',
+              showLabel: true,
               repeat: {
                 minNumberOfRepeatingToShow: 1,
                 repeatMin: 1,
@@ -4634,6 +4636,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                     body: 'exampleMetadataVarDefText',
                   },
                   label: 'firstName',
+                  showLabel: true,
                   validation: {
                     type: 'regex',
                     pattern: '^[a-zA-Z]$',
@@ -4674,6 +4677,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                     body: 'exampleMetadataTextVarDefText',
                   },
                   label: 'exampleMetadataTextVarText',
+                  showLabel: true,
                   validation: {
                     type: 'regex',
                     pattern: '^[a-zA-Z]$',
@@ -4686,6 +4690,8 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                 {
                   type: 'numberVariable',
                   presentationId: 'somePNumVar',
+                  label: 'numvar',
+                  showLabel: true,
                   name: 'age',
                   placeholder: 'someNumberPlaceholderTextId',
                   validation: {
@@ -4696,6 +4702,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                     warningMax: 100,
                     numberOfDecimals: 0,
                   },
+                  mode: 'input',
                   repeat: {
                     repeatMin: 1,
                     repeatMax: 1,
@@ -4704,82 +4711,6 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
               ],
             },
           ],
-        },
-        {
-          type: 'group',
-          label: 'someChildGroupTextId',
-          showLabel: true,
-          name: 'nonRepeatingGroup',
-          presentationId: 'somePGroup',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          tooltip: {
-            title: 'someChildGroupTextId',
-            body: 'someChildGroupDefTextId',
-          },
-          attributes: [
-            {
-              presentationId: 'somePTextVar',
-              type: 'collectionVariable',
-              name: 'groupAttribute',
-              showLabel: true,
-              label: 'groupAttrLabel',
-              placeholder: 'emptyTextId',
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' },
-              ],
-              mode: 'input',
-            },
-          ],
-          components: [],
-          mode: 'input',
-        },
-        {
-          type: 'numberVariable',
-          presentationId: 'somePNumVar',
-          name: 'grade',
-          placeholder: 'yourGrades',
-          showLabel: true,
-          label: 'gradeLabel',
-          validation: {
-            type: 'number',
-            min: 1,
-            max: 5,
-            warningMin: 2,
-            warningMax: 4,
-            numberOfDecimals: 0,
-          },
-          attributes: [
-            {
-              presentationId: 'somePTextVar',
-              type: 'collectionVariable',
-              name: 'gradeAttribute',
-              showLabel: true,
-              label: 'gradeAttributeLabel',
-              placeholder: 'emptyTextId',
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              options: [
-                { value: 'strong', label: 'someStrongLabelText' },
-                { value: 'weak', label: 'someWeakLabelText' },
-              ],
-              mode: 'input',
-            },
-          ],
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 12,
-          },
         },
       ],
     },

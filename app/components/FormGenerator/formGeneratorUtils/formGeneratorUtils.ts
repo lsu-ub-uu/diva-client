@@ -235,7 +235,7 @@ const isGVValueEmptyString = (
   return getValues(componentValue)[0].value !== '';
 };
 
-export const checkForExistingSiblings = (formValues: any) => {
+export const hasValue = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
       .filter((objKey) => !objKey.startsWith('_'))
