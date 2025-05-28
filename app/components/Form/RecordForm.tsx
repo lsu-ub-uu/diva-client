@@ -41,14 +41,12 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
 
-  const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: true,
     defaultValues,
-    resolver: yupResolver(yupSchema),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
   const { handleSubmit, reset } = methods;

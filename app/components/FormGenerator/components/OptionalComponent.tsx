@@ -8,7 +8,6 @@ import {
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
 import type { FormComponentWithData } from '../types';
-import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface OptionalComponentProps {
   control?: Control<any>;

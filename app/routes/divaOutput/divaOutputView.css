@@ -53,18 +53,6 @@ dd {
   padding-left: var(--gap);
 }
 
-/* dd.comma-separated {
-  display: inline;
-}
-
-dd.comma-separated + dd.comma-separated {
-  padding-left: 0;
-
-  &::before {
-    content: ', ';
-  }
-} */
-
 dd:has(+ dd),
 dd + dd {
   display: inline;

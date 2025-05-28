@@ -35,21 +35,7 @@ export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
   return (
     <article className={styles['wrapper']}>
       <RemixFormProvider {...methods}>
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-          enhancedFields={{
-            'output.titleInfo': {
-              type: 'outputTitle',
-            },
-            'output.titleInfo_type_alternative[0]': {
-              type: 'outputTitle',
-            },
-            'output.subject[0].topic.value': {
-              type: 'attributesInLabel',
-            },
-          }}
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
     </article>
   );

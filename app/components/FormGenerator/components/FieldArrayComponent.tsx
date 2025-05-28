@@ -69,9 +69,6 @@ export const FieldArrayComponent = ({
   return (
     <React.Fragment key={`${name}_fac`}>
       {fields.map((field, index) => {
-        const fieldName =
-          component.repeat?.repeatMax === 1 ? name : `${name}[${index}]`;
-
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
             <ActionButtonGroup
@@ -96,7 +93,7 @@ export const FieldArrayComponent = ({
 
         return (
           <Fragment key={`${field.id}_${index}_a`}>
-            {renderCallback(fieldName, actionButtonGroup)}
+            {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
       })}

@@ -11,7 +11,7 @@ describe('mapISO639_2b_to_ISO639_1', () => {
   });
 
   it('returns the ISO 639-2b code if no corresponding ISO 639-1 code is found', () => {
-    expect(mapISO639_2b_to_ISO639_1('uwu')).toBe('uwu');
+    expect(mapISO639_2b_to_ISO639_1('ara')).toBe('ara');
     expect(mapISO639_2b_to_ISO639_1('tlh')).toBe('tlh');
   });
 });
