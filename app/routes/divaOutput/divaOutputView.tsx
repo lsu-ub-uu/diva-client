@@ -235,8 +235,8 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Term
               label={output.academicSemester?.__text[language]}
               value={[
-                output.academicSemester?.semester?.__valueText[language],
-                output.academicSemester?.year?.__text[language],
+                output.academicSemester?.semester?.value?.toUpperCase(),
+                output.academicSemester?.year?.value,
               ]
                 .filter(Boolean)
                 .join(' ')}

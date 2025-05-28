@@ -31,6 +31,10 @@ const auth = await login(
 try {
   await Promise.all([
     createOutput(auth.token, coraApiUrl, './ultimateDivaOutput.xml'),
+    createOutput(auth.token, coraApiUrl, './norden1.xml'),
+    createOutput(auth.token, coraApiUrl, './norden2.xml'),
+    createOutput(auth.token, coraApiUrl, './norden3.xml'),
+    createOutput(auth.token, coraApiUrl, './norden4.xml'),
   ]);
 
   console.info('All reports created successfully');
