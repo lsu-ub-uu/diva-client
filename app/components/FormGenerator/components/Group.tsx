@@ -56,6 +56,7 @@ export const Group = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
     enhancedFields && enhancedFields[currentComponentNamePath];
+
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);

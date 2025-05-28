@@ -1,0 +1,1088 @@
+{
+  "record": {
+    "data": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "validationType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "publication_report"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/publication_report",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "validationType",
+              "attributes": {
+                "_sv": "Valideringstyp",
+                "_en": "Validation type"
+              }
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "system"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "divaData"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/divaData",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "dataDivider",
+              "attributes": {
+                "_sv": "Datadelare",
+                "_en": "Data divider"
+              }
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "permissionUnit"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "norden"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "https://cora.epc.ub.uu.se/diva/rest/record/permissionUnit/norden",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "permissionUnit",
+              "attributes": {
+                "_no": "Rettighetsenhet",
+                "_sv": "Rättighetsenhet",
+                "_en": "Permission unit"
+              }
+            },
+            {
+              "name": "visibility",
+              "attributes": {
+                "_value_en": "Published",
+                "_no": "Postens synlighet",
+                "_sv": "Postens synlighet",
+                "_value_sv": "Publicerad",
+                "_en": "Visibility of the record",
+                "_value_no": "Publisert"
+              },
+              "value": "published"
+            },
+
+            {
+              "name": "tsCreated",
+              "attributes": {
+                "_no": "Tidsstempel for når posten ble opprettet",
+                "_sv": "Tidsstämpel för när posten skapades",
+                "_en": "Timestamp for when the record was created"
+              },
+              "value": "2025-05-22T07:27:25.349080Z"
+            },
+            {
+              "name": "tsVisibility",
+              "attributes": {
+                "_no": "Tidsstempel for endring av synlighetsverdi",
+                "_sv": "Tidsstämpel för ändring av synlighetsvärde",
+                "_en": "Timestamp for visibility value update"
+              },
+              "value": "2025-05-22T07:27:25.344865Z"
+            },
+            {
+              "name": "id",
+              "attributes": {
+                "_sv": "Id",
+                "_en": "Id"
+              },
+              "value": "diva-output:9139778232124249"
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "recordType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "diva-output"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-output",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "type",
+              "attributes": {
+                "_sv": "Posttyp",
+                "_en": "Record type"
+              }
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "user"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "161616"
+                }
+              ],
+              "name": "createdBy",
+              "attributes": {
+                "_sv": "Skapad av",
+                "_en": "Created by"
+              }
+            },
+            {
+              "name": "tsCreated",
+              "attributes": {
+                "_sv": "Tidsstämpel för när posten skapades",
+                "_en": "Timestamp for when the record was created"
+              },
+              "value": "2025-05-22T07:27:25.349080Z"
+            },
+            {
+              "repeatId": "0",
+              "children": [
+                {
+                  "name": "tsUpdated",
+                  "attributes": {
+                    "_sv": "Uppdateringstid",
+                    "_en": "Update time"
+                  },
+                  "value": "2025-05-23T09:05:27.206685Z"
+                },
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "161616"
+                    }
+                  ],
+                  "name": "updatedBy",
+                  "attributes": {
+                    "_sv": "Uppdaterad av",
+                    "_en": "Updated by"
+                  }
+                }
+              ],
+              "name": "updated",
+              "attributes": {
+                "_sv": "Uppdatering",
+                "_en": "Update"
+              }
+            }
+          ],
+          "name": "recordInfo",
+          "attributes": {
+            "_sv": "Postinformation",
+            "_en": "Record info"
+          }
+        },
+        {
+          "name": "genre",
+          "attributes": {
+            "_value_en": "Report",
+            "_sv": "Publikations-/Outputtyp",
+            "_value_sv": "Rapport",
+            "_en": "Publication-/Output Type",
+            "type": "outputType"
+          },
+          "value": "publication_report"
+        },
+        {
+          "repeatId": "0",
+          "children": [
+            {
+              "name": "languageTerm",
+              "attributes": {
+                "_value_en": "English",
+                "_sv": "Språk",
+                "_value_sv": "Engelska",
+                "authority": "iso639-2b",
+                "_en": "Language",
+                "type": "code"
+              },
+              "value": "eng"
+            }
+          ],
+          "name": "language",
+          "attributes": {
+            "_sv": "Språk för resursen",
+            "_en": "Language of the resource"
+          }
+        },
+        {
+          "repeatId": "19",
+          "children": [
+            {
+              "name": "languageTerm",
+              "attributes": {
+                "_value_en": "Arabic",
+                "_sv": "Språk",
+                "authority": "iso639-2b",
+                "_value_sv": "Arabiska",
+                "_en": "Language",
+                "type": "code"
+              },
+              "value": "ara"
+            }
+          ],
+          "name": "language",
+          "attributes": {
+            "_sv": "Språk för resursen",
+            "_en": "Language of the resource"
+          }
+        },
+        {
+          "repeatId": "20",
+          "children": [
+            {
+              "name": "languageTerm",
+              "attributes": {
+                "_value_en": "Athapascan (Other)",
+                "_sv": "Språk",
+                "_value_sv": "Athapaskiskt språk",
+                "authority": "iso639-2b",
+                "_en": "Language",
+                "type": "code"
+              },
+              "value": "ath"
+            }
+          ],
+          "name": "language",
+          "attributes": {
+            "_sv": "Språk för resursen",
+            "_en": "Language of the resource"
+          }
+        },
+        {
+          "name": "genre",
+          "attributes": {
+            "_value_en": "Popular scientific",
+            "_sv": "Typ av innehåll",
+            "_value_sv": "Övrigt (populärvetenskap, debatt) ",
+            "_en": "Content type",
+            "type": "contentType"
+          },
+          "value": "pop"
+        },
+        {
+          "children": [
+            {
+              "name": "title",
+              "attributes": {
+                "_sv": "Huvudtitel",
+                "_en": "Main title"
+              },
+              "value": "Future fisheries"
+            },
+            {
+              "name": "subTitle",
+              "attributes": {
+                "_sv": "Undertitel",
+                "_en": "Subtitle"
+              },
+              "value": "Status, trends and future perspectives concerning the energy transition of fisheries with focus on Nordic countries"
+            }
+          ],
+          "name": "titleInfo",
+          "attributes": {
+            "_sv": "Titel",
+            "_en": "Title",
+            "lang": "eng"
+          }
+        },
+        {
+          "repeatId": "24",
+          "children": [
+            {
+              "name": "title",
+              "attributes": {
+                "_sv": "Huvudtitel",
+                "_en": "Main title"
+              },
+              "value": "Framtidens fiske"
+            },
+            {
+              "name": "subTitle",
+              "attributes": {
+                "_sv": "Undertitel",
+                "_en": "Subtitle"
+              },
+              "value": "Status, trender och framtidsperspektiv gällande energiomställningen inom fisket med fokus på Norden odefinierad"
+            }
+          ],
+          "name": "titleInfo",
+          "attributes": {
+            "_sv": "Alternativ titel",
+            "_en": "Alternative title",
+            "lang": "abk",
+            "type": "alternative"
+          }
+        },
+        {
+          "repeatId": "0",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Hornborg"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "Sara"
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "1",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Aarsæther"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "Karl Gunnar"
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "2",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Bastardie"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "François"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "3",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Jafarzadeh"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "Sepideh"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "4",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Aarsæther"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "Karl Gunnar"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "5",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Bastardie"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "François"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "6",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Efternamn",
+                "_en": "Family name",
+                "type": "family"
+              },
+              "value": "Hornborg"
+            },
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Förnamn",
+                "_en": "Given name",
+                "type": "given"
+              },
+              "value": "Sara"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Författare, redaktör eller annan roll",
+            "_en": "Author, editor or other role",
+            "type": "personal"
+          }
+        },
+        {
+          "repeatId": "0",
+          "children": [
+            {
+              "name": "namePart",
+              "attributes": {
+                "_sv": "Namn",
+                "_en": "Name"
+              },
+              "value": "Nordic Council of Ministers"
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "name": "roleTerm",
+                  "attributes": {
+                    "_value_en": "Author",
+                    "_sv": "Roll",
+                    "_value_sv": "Författare",
+                    "_en": "Role"
+                  },
+                  "value": "aut"
+                }
+              ],
+              "name": "role",
+              "attributes": {
+                "_sv": "Roller",
+                "_en": "Roles"
+              }
+            }
+          ],
+          "name": "name",
+          "attributes": {
+            "_sv": "Organisation som författare, redaktör eller annan roll",
+            "_en": "Organisation as author, editor or other role",
+            "type": "corporate"
+          }
+        },
+        {
+          "name": "note",
+          "attributes": {
+            "_sv": "Antal upphovspersoner",
+            "_en": "Number of creators",
+            "type": "creatorCount"
+          },
+          "value": "12"
+        },
+        {
+          "repeatId": "0",
+          "name": "abstract",
+          "attributes": {
+            "_sv": "Abstract",
+            "_en": "Abstract",
+            "lang": "eng"
+          },
+          "value": "The energy transition of the fishing sector has gained increasing attention in recent years. With focus on Nordic countries, status, trends, opportunities and challenges are summarized to provide recommendations for how to effectively enable an energy transition towards carbon-neutral fisheries. Key challenges today include inadequate data collection and reporting of greenhouse gas emissions, low uptake of available technologies, reversed financial incentives fostering use of fossil fuels, and obstructing fishing regulations. To foster an effective energy transition, short term (before 2030) and long-term actions (before 2040) are identified. Overall, co-developing effective roadmaps for the energy transition of a highly diverse sector will be essential.\n\nThe energy transition of the fishing sector has gained increasing attention in recent years. With focus on Nordic countries, status, trends, opportunities and challenges are summarized to provide recommendations for how to effectively enable an energy transition towards carbon-neutral fisheries. Key challenges today include inadequate data collection and reporting of greenhouse gas emissions, low uptake of available technologies, reversed financial incentives fostering use of fossil fuels, and obstructing fishing regulations. To foster an effective energy transition, short term (before 2030) and long-term actions (before 2040) are identified. Overall, co-developing effective roadmaps for the energy transition of a highly diverse sector will be essential.\n\nThe energy transition of the fishing sector has gained increasing attention in recent years. With focus on Nordic countries, status, trends, opportunities and challenges are summarized to provide recommendations for how to effectively enable an energy transition towards carbon-neutral fisheries. Key challenges today include inadequate data collection and reporting of greenhouse gas emissions, low uptake of available technologies, reversed financial incentives fostering use of fossil fuels, and obstructing fishing regulations. To foster an effective energy transition, short term (before 2030) and long-term actions (before 2040) are identified. Overall, co-developing effective roadmaps for the energy transition of a highly diverse sector will be essential."
+        },
+        {
+          "repeatId": "28",
+          "name": "abstract",
+          "attributes": {
+            "_sv": "Abstract",
+            "_en": "Abstract",
+            "lang": "ara"
+          },
+          "value": "اكتسب تحول الطاقة في قطاع صيد الأسماك اهتمامًا متزايدًا في السنوات الأخيرة. مع التركيز على دول الشمال الأوروبي، يُلخص هذا التقرير الوضع والاتجاهات والفرص والتحديات لتقديم توصيات حول كيفية تمكين تحول الطاقة بفعالية نحو مصائد أسماك محايدة للكربون. تشمل التحديات الرئيسية اليوم ضعف جمع البيانات والإبلاغ عنها بشأن انبعاثات غازات الاحتباس الحراري، وانخفاض استخدام التقنيات المتاحة، وتراجع الحوافز المالية التي تُشجع على استخدام الوقود الأحفوري، وعرقلة لوائح الصيد. لتعزيز تحول فعال في مجال الطاقة، يتم تحديد إجراءات قصيرة الأجل (قبل عام 2030) وطويلة الأجل (قبل عام 2040). بشكل عام، يُعدّ التعاون في وضع خرائط طريق فعّالة لتحول الطاقة في قطاع شديد التنوع أمرًا بالغ الأهمية."
+        },
+        {
+          "repeatId": "9",
+          "children": [
+            {
+              "name": "topic",
+              "attributes": {
+                "_sv": "Nyckelord",
+                "_en": "Keyword"
+              },
+              "value": "Digitization, Integration, Welfare and Gender Equality"
+            }
+          ],
+          "name": "subject",
+          "attributes": {
+            "_sv": "Nyckelord",
+            "_en": "Keywords",
+            "lang": "alb"
+          }
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "name": "year",
+                  "attributes": {
+                    "_sv": "År",
+                    "_en": "Year"
+                  },
+                  "value": "2025"
+                }
+              ],
+              "name": "dateIssued",
+              "attributes": {
+                "_sv": "Utgivningsdatum",
+                "_en": "Date of issue"
+              }
+            },
+            {
+              "children": [
+                {
+                  "name": "year",
+                  "attributes": {
+                    "_sv": "År",
+                    "_en": "Year"
+                  },
+                  "value": "2024"
+                },
+                {
+                  "name": "month",
+                  "attributes": {
+                    "_sv": "Månad",
+                    "_en": "Month"
+                  },
+                  "value": "10"
+                },
+                {
+                  "name": "day",
+                  "attributes": {
+                    "_sv": "Dag",
+                    "_en": "Day"
+                  },
+                  "value": "12"
+                }
+              ],
+              "name": "copyrightDate",
+              "attributes": {
+                "_sv": "Upphovsrättsdatum",
+                "_en": "Copyright date"
+              }
+            },
+            {
+              "children": [
+                {
+                  "name": "year",
+                  "attributes": {
+                    "_sv": "År",
+                    "_en": "Year"
+                  },
+                  "value": "1310"
+                },
+                {
+                  "name": "month",
+                  "attributes": {
+                    "_sv": "Månad",
+                    "_en": "Month"
+                  },
+                  "value": "01"
+                },
+                {
+                  "name": "day",
+                  "attributes": {
+                    "_sv": "Dag",
+                    "_en": "Day"
+                  },
+                  "value": "02"
+                }
+              ],
+              "name": "dateOther",
+              "attributes": {
+                "_sv": "Datum för online först",
+                "_en": "Date for online first ",
+                "type": "online"
+              }
+            },
+            {
+              "children": [
+                {
+                  "repeatId": "0",
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "diva-publisher"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "diva-publisher:1437068056503025"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-publisher/diva-publisher:1437068056503025",
+                      "accept": "application/vnd.cora.record+json"
+                    }
+                  },
+                  "name": "publisher",
+                  "attributes": {
+                    "_sv": "Förlag",
+                    "_en": "Publisher"
+                  }
+                },
+                {
+                  "repeatId": "1",
+                  "name": "namePart",
+                  "attributes": {
+                    "_sv": "Namn",
+                    "_en": "Name"
+                  },
+                  "value": "Penguin"
+                },
+                {
+                  "repeatId": "2",
+                  "name": "namePart",
+                  "attributes": {
+                    "_sv": "Namn",
+                    "_en": "Name"
+                  },
+                  "value": "Bloomsbury"
+                },
+                {
+                  "repeatId": "3",
+                  "name": "namePart",
+                  "attributes": {
+                    "_sv": "Namn",
+                    "_en": "Name"
+                  },
+                  "value": "I want to lay out a dl horizontally, so that dts are on top and dds are on bottom"
+                },
+                {
+                  "children": [
+                    {
+                      "name": "roleTerm",
+                      "attributes": {
+                        "_value_en": "Publisher",
+                        "_sv": "Roll",
+                        "_value_sv": "Förlag",
+                        "_en": "Role"
+                      },
+                      "value": "pbl"
+                    }
+                  ],
+                  "name": "role",
+                  "attributes": {
+                    "_sv": "Roll",
+                    "_en": "Role"
+                  }
+                }
+              ],
+              "name": "agent",
+              "attributes": {
+                "_sv": "Förlag",
+                "_en": "Publisher"
+              }
+            },
+            {
+              "repeatId": "0",
+              "children": [
+                {
+                  "name": "placeTerm",
+                  "attributes": {
+                    "_sv": "Ort",
+                    "_en": "Place"
+                  },
+                  "value": "Uppsala"
+                }
+              ],
+              "name": "place",
+              "attributes": {
+                "_sv": "Ort",
+                "_en": "Place"
+              }
+            },
+            {
+              "repeatId": "1",
+              "children": [
+                {
+                  "name": "placeTerm",
+                  "attributes": {
+                    "_sv": "Ort",
+                    "_en": "Place"
+                  },
+                  "value": "Stockholm"
+                }
+              ],
+              "name": "place",
+              "attributes": {
+                "_sv": "Ort",
+                "_en": "Place"
+              }
+            }
+          ],
+          "name": "originInfo",
+          "attributes": {
+            "_sv": "Ursprung",
+            "_en": "Origin info"
+          }
+        },
+        {
+          "name": "extent",
+          "attributes": {
+            "_sv": "Omfattning",
+            "_en": "Extent"
+          },
+          "value": "100s"
+        },
+        {
+          "repeatId": "0",
+          "name": "classification",
+          "attributes": {
+            "_value_en": "(1) Natural sciences",
+            "_sv": "Standard för svensk indelning av forskningsämnen (SSIF)",
+            "_value_sv": "(1) Naturvetenskap",
+            "authority": "ssif",
+            "_en": "Standard for Swedish classification of research topics (SSIF)"
+          },
+          "value": "1"
+        },
+        {
+          "repeatId": "12",
+          "name": "identifier",
+          "attributes": {
+            "displayLabel": "print",
+            "_sv": "ISBN",
+            "_en": "ISBN",
+            "type": "isbn"
+          },
+          "value": "978-92-893-8293-9"
+        },
+        {
+          "repeatId": "15",
+          "name": "identifier",
+          "attributes": {
+            "displayLabel": "online",
+            "_sv": "ISBN",
+            "_en": "ISBN",
+            "type": "isbn"
+          },
+          "value": "978-92-893-8293-2"
+        },
+        {
+          "name": "identifier",
+          "attributes": {
+            "_sv": "ISRN",
+            "_en": "ISRN",
+            "type": "isrn"
+          },
+          "value": "978-92-893-8293-9"
+        },
+        {
+          "name": "identifier",
+          "attributes": {
+            "_sv": "DOI",
+            "_en": "DOI",
+            "type": "doi"
+          },
+          "value": "10.6027/nord2025-019"
+        },
+        {
+          "name": "identifier",
+          "attributes": {
+            "_sv": "OpenAlex",
+            "_en": "OpenAlex",
+            "type": "openAlex"
+          },
+          "value": "W3123306174"
+        },
+        {
+          "name": "identifier",
+          "attributes": {
+            "_sv": "Libris Id",
+            "_en": "Libris Id",
+            "type": "se-libr"
+          },
+          "value": "onr:19769763"
+        },
+        {
+          "name": "identifier",
+          "attributes": {
+            "_sv": "Arkivnummer",
+            "_en": "Archive number",
+            "type": "archiveNumber"
+          },
+          "value": "sa12456456"
+        },
+        {
+          "repeatId": "13",
+          "name": "identifier",
+          "attributes": {
+            "_sv": "Lokalt Id",
+            "_en": "Local Id",
+            "type": "localId"
+          },
+          "value": "123456"
+        },
+        {
+          "children": [
+            {
+              "name": "reviewed",
+              "attributes": {
+                "_value_en": "True/Yes",
+                "_sv": "Bibliografiskt granskad",
+                "_value_sv": "Sant/Ja",
+                "_en": "Bibliographically reviewed"
+              },
+              "value": "true"
+            }
+          ],
+          "name": "admin",
+          "attributes": {
+            "_sv": "Administrativ information",
+            "_en": "Administrative information"
+          }
+        }
+      ],
+      "name": "output",
+      "attributes": {
+        "_sv": "DiVA-output",
+        "_en": "DiVA-output"
+      }
+    },
+    "actionLinks": {
+      "read": {
+        "requestMethod": "GET",
+        "rel": "read",
+        "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:9139778232124249",
+        "accept": "application/vnd.cora.record+json"
+      }
+    }
+  }
+}

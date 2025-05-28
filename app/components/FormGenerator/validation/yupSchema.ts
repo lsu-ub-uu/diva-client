@@ -16,13 +16,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {
-  AnyObject,
-  ObjectSchema,
-  ObjectShape,
-  TestConfig,
-  TestContext,
-} from 'yup';
+import type { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
 import * as yup from 'yup';
 import type {
   FormAttributeCollection,
@@ -38,11 +32,12 @@ import type {
   FormSchema,
 } from '../types';
 import {
-  checkForExistingSiblings,
   getNameInData,
+  hasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
+  isComponentOptional,
   isComponentRepeating,
   isComponentRequired,
   isComponentSingularAndOptional,
@@ -64,7 +59,6 @@ export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
 export const createYupValidationsFromComponent = (
   component: FormComponent,
   parentGroupOptional: boolean = false,
-  parentGroupRepeating: boolean = false,
 ) => {
   const validationRule: {
     [x: string]: any;
@@ -93,7 +87,6 @@ export const createYupValidationsFromComponent = (
       validationRule[currentNameInData] = createSchemaForNonRepeatingGroup(
         component,
         parentGroupOptional,
-        parentGroupRepeating,
       );
     } else {
       validationRule[currentNameInData] = createSchemaForNonRepeatingVariable(
@@ -125,16 +118,22 @@ function createSchemaForRepeatingGroup(
   const innerObjectSchema = generateYupSchema(
     component.components,
     isComponentGroupAndOptional(component) || parentGroupOptional,
-    isComponentRepeating(component),
   );
 
   // Create a new schema by merging the existing schema and attribute fields
   const extendedSchema = yup.object().shape({
     ...innerObjectSchema.fields,
-    ...createValidationForAttributesFromComponent(component),
+    ...createValidationForAttributesFromComponent(
+      component,
+      !parentGroupOptional && isComponentRequired(component),
+    ),
   }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
-  return createYupArrayFromSchema(extendedSchema, component.repeat);
+  return createYupArrayFromSchema(
+    extendedSchema,
+    component.repeat,
+    parentGroupOptional,
+  );
 }
 
 function createSchemaForRepeatingVariable(
@@ -143,36 +142,37 @@ function createSchemaForRepeatingVariable(
 ) {
   const attributesValidationRules = createValidationForAttributesFromComponent(
     component,
-    false,
-    isComponentRequired(component),
-    isComponentGroupAndOptional(component),
+    !parentGroupOptional && isComponentRequired(component),
   );
 
-  const extendedSchema = yup.object().shape({
-    value: createValidationFromComponentType(component, parentGroupOptional),
-    ...attributesValidationRules,
-  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+  const extendedSchema = yup
+    .object()
+    .nullable()
+    .shape({
+      value: createValidationFromComponentType(component, parentGroupOptional),
+      ...attributesValidationRules,
+    }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
-  return createYupArrayFromSchema(extendedSchema, component.repeat);
+  return createYupArrayFromSchema(
+    extendedSchema,
+    component.repeat,
+    parentGroupOptional,
+  );
 }
 
 function createSchemaForNonRepeatingGroup(
   component: FormComponentGroup,
   parentGroupOptional: boolean,
-  parentGroupRepeating: boolean,
 ) {
   const innerSchema = generateYupSchema(
     component.components,
-    parentGroupOptional,
-    false,
+    isComponentGroupAndOptional(component) || parentGroupOptional,
   );
   return yup.object().shape({
     ...innerSchema.fields,
     ...createValidationForAttributesFromComponent(
       component,
-      parentGroupOptional,
-      false,
-      parentGroupRepeating,
+      !parentGroupOptional && isComponentRequired(component),
     ),
   }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 }
@@ -181,24 +181,25 @@ function createSchemaForNonRepeatingVariable(
   component: FormComponentWithData,
   parentGroupOptional: boolean,
 ) {
-  return yup.object().shape({
-    value: createValidationFromComponentType(
-      component,
-      parentGroupOptional,
-      isComponentRequired(component),
-    ),
-    ...createValidationForAttributesFromComponent(
-      component,
-      isComponentRepeating(component),
-      isComponentRequired(component),
-    ),
-  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+  return yup
+    .object()
+    .nullable()
+    .shape({
+      value: createValidationFromComponentType(
+        component,
+        parentGroupOptional,
+        isComponentRequired(component),
+      ),
+      ...createValidationForAttributesFromComponent(
+        component,
+        !parentGroupOptional && isComponentRequired(component),
+      ),
+    }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 }
 
 export const generateYupSchema = (
   components: FormComponent[] | undefined,
   parentGroupOptional: boolean,
-  parentGroupRepeating: boolean,
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
@@ -206,7 +207,6 @@ export const generateYupSchema = (
       return createYupValidationsFromComponent(
         formComponent,
         parentGroupOptional,
-        parentGroupRepeating,
       );
     });
 
@@ -215,20 +215,14 @@ export const generateYupSchema = (
 };
 
 export const createValidationForAttributesFromComponent = (
-  component: FormComponentWithData,
-  siblingRepeat?: boolean,
-  siblingRequired?: boolean,
-  parentGroupRequired?: boolean,
+  hostComponent: FormComponentWithData,
+  hostComponentRequired: boolean,
 ) => {
   const attributeValidation =
-    component.attributes?.map(
+    hostComponent.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]: createYupAttributeSchema(
-          attributeCollection,
-          isComponentRequired(component),
-          siblingRepeat,
-          siblingRequired,
-          parentGroupRequired,
+        [`_${attributeCollection.name}`]: createAttributeSchema(
+          hostComponentRequired,
         ),
       }),
     ) ?? [];
@@ -247,11 +241,12 @@ export const createYupArrayFromSchema = (
       >
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
+  parentGroupOptional: boolean,
 ) => {
   return yup
     .array()
     .of(schema)
-    .min(repeat?.repeatMin ?? 1)
+    .min(parentGroupOptional ? 0 : (repeat?.repeatMin ?? 1))
     .max(repeat?.repeatMax ?? 1);
 };
 
@@ -332,7 +327,7 @@ const createYupStringRegexpSchema = (
       );
   }
 
-  if (isComponentRepeating(component)) {
+  if (isComponentOptional(component)) {
     return yup
       .string()
       .nullable()
@@ -345,6 +340,7 @@ const createYupStringRegexpSchema = (
 
   return yup
     .string()
+    .nullable()
     .matches(
       new RegExp(regexpValidation.pattern ?? '.+'),
       INVALID_FORMAT_TEXT_ID,
@@ -443,17 +439,10 @@ export const createYupNumberSchema = (
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull
-          ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, {
-                message: INVALID_FORMAT_TEXT_ID,
-              })
-              .test(testDecimals)
-              .test(testMax)
-              .test(testMin)
-          : field,
-      );
+      .matches(/^[1-9]\d*(\.\d+)?$/, { message: INVALID_FORMAT_TEXT_ID })
+      .test(testDecimals)
+      .test(testMin)
+      .test(testMax);
   }
 
   return yup
@@ -490,68 +479,32 @@ const createYupStringSchema = (
     return yup.string().required(REQUIRED_TEXT_ID);
   }
 
-  if (isComponentRepeating(component) || isParentGroupOptional) {
+  if (isComponentOptional(component) || isParentGroupOptional) {
     return generateYupSchemaForCollections();
   }
 
   return yup.string().required(REQUIRED_TEXT_ID);
 };
 
-const createYupAttributeSchema = (
-  component: FormComponent,
-  siblingRequired: boolean = false,
-  siblingRepeat: boolean = false,
-  siblingComponentRequired: boolean = false,
-  parentGroupOptional: boolean = false,
-) => {
-  if (parentGroupOptional) {
-    return yup
-      .string()
-      .nullable()
-      .test(testOptionalParentAndRequiredSiblingWithValue);
-  }
-
-  if (
-    siblingRequired &&
-    siblingComponentRequired &&
-    isComponentRequired(component)
-  ) {
-    return yup
-      .string()
-      .nullable()
-      .test(testOptionalParentAndRequiredSiblingWithValue);
-  }
-
-  if (siblingRequired && siblingComponentRequired) {
-    return yup.string().when('value', ([value]) => {
-      if (value === null || value === '') {
-        return yup.string().nullable();
-      }
-      return yup.string().required(REQUIRED_TEXT_ID);
-    });
-  }
-
-  if (siblingRequired && !siblingRepeat) {
+const createAttributeSchema = (hostRequired: boolean) => {
+  if (hostRequired) {
     return yup.string().required(REQUIRED_TEXT_ID);
   }
 
-  if (!siblingRequired) {
-    return yup.string().when('value', ([value]) => {
-      return value !== null || value !== ''
-        ? yup.string().nullable().test(testAttributeHasVariableWithValue)
-        : yup.string().required(REQUIRED_TEXT_ID);
+  return yup
+    .string()
+    .nullable()
+    .test({
+      name: 'attributeRequiredIfHostHasValue',
+      message: REQUIRED_TEXT_ID,
+      test: (value, context) => {
+        const hostHasValue = hasValue(context.parent);
+        if (hostHasValue) {
+          return !!value;
+        }
+        return true;
+      },
     });
-  }
-
-  if (!siblingRequired && isComponentRequired(component)) {
-    return yup.string().required(REQUIRED_TEXT_ID);
-  }
-
-  if (isComponentRepeating(component) || siblingRequired) {
-    return generateYupSchemaForCollections();
-  }
-
-  return yup.string().required(REQUIRED_TEXT_ID);
 };
 
 const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
@@ -563,17 +516,13 @@ const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
   test: (value, context) => {
     if (
       !value &&
-      !checkForExistingSiblings(
-        context.from && context.from[context.from.length - 2].value,
-      )
+      !hasValue(context.from && context.from[context.from.length - 2].value)
     ) {
       return true;
     }
     if (
       !value &&
-      checkForExistingSiblings(
-        context.from && context.from[context.from.length - 2].value,
-      )
+      hasValue(context.from && context.from[context.from.length - 2].value)
     ) {
       return false;
     }
@@ -589,33 +538,14 @@ const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
   name: 'checkIfStringVariableHasSiblingsWithValues',
   message: REQUIRED_TEXT_ID,
   test: (value, context) => {
-    if (
-      !value &&
-      !checkForExistingSiblings(context.from && context.from[1].value)
-    ) {
+    if (!value && !hasValue(context.from && context.from[1].value)) {
       return true;
     }
-    if (
-      !value &&
-      checkForExistingSiblings(context.from && context.from[1].value)
-    ) {
+    if (!value && hasValue(context.from && context.from[1].value)) {
       return false;
     }
 
     return true;
-  },
-};
-
-const testAttributeHasVariableWithValue: TestConfig<
-  string | null | undefined,
-  AnyObject
-> = {
-  name: 'checkIfVariableHasSiblingsWithValues',
-  message: REQUIRED_TEXT_ID,
-  test: (value, context) => {
-    return (checkForExistingSiblings(value) ||
-      testSiblingValueAndValueExistingValue(context, value) ||
-      testSiblingValueAndValueForNotExistingValue(context, value)) as boolean;
   },
 };
 
@@ -627,22 +557,4 @@ const generateYupSchemaForCollections = () => {
     .when('$isNotNull', (isNotNull, field) =>
       isNotNull[0] ? field.required('not valid') : field,
     );
-};
-
-const testSiblingValueAndValueForNotExistingValue = (
-  context: TestContext<AnyObject>,
-  value: string | undefined | null,
-): boolean => {
-  return (
-    !checkForExistingSiblings(context.from && context.from[0].value) && !value
-  );
-};
-
-const testSiblingValueAndValueExistingValue = (
-  context: TestContext<AnyObject>,
-  value: string | undefined | null,
-) => {
-  return (
-    checkForExistingSiblings(context.from && context.from[0].value) && value
-  );
 };

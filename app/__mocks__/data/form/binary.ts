@@ -75,184 +75,174 @@ export const linkedBinaryMock = {
           },
         ],
       },
-      master: [
-        {
-          resourceId: {
-            value: 'binary:1283806137807105-master',
-          },
-          master: {
-            name: 'master',
-            mimeType: 'image/jpeg',
-            actionLinks: {
-              read: {
-                requestMethod: 'GET',
-                rel: 'read',
-                url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
-                accept: 'image/jpeg',
-              },
-            },
-          },
-          fileSize: {
-            value: '12648',
-          },
-          mimeType: {
-            value: 'image/jpeg',
-          },
-          checksum: [
-            {
-              value:
-                '6722a33db068eae235f8d6a0748e3213597ff2243da5d9b913eef46f3ec3ddf6897f8bcec61eb94a7cd3f7b21f9a0f2b1995238157263c1b46b02b784f1da005',
-            },
-          ],
-          checksumType: [
-            {
-              value: 'SHA-512',
-            },
-          ],
-          originalFileName: {
-            value: 'cat.jpg',
-          },
-          height: [
-            {
-              value: '312',
-            },
-          ],
-          width: [
-            {
-              value: '312',
-            },
-          ],
-          resolution: [
-            {
-              value: '72x72',
-            },
-          ],
+      master: {
+        resourceId: {
+          value: 'binary:1283806137807105-master',
         },
-      ],
-      large: [
-        {
-          resourceId: {
-            value: 'binary:1283806137807105-large',
-          },
-          large: {
-            name: 'large',
-            mimeType: 'image/jpeg',
-            actionLinks: {
-              read: {
-                requestMethod: 'GET',
-                rel: 'read',
-                url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/large',
-                accept: 'image/jpeg',
-              },
+        master: {
+          name: 'master',
+          mimeType: 'image/jpeg',
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
+              accept: 'image/jpeg',
             },
-          },
-          fileSize: {
-            value: '75541',
-          },
-          mimeType: {
-            value: 'image/jpeg',
-          },
-          height: {
-            value: '600',
-          },
-          width: {
-            value: '600',
           },
         },
-      ],
-      medium: [
-        {
-          resourceId: {
-            value: 'binary:1283806137807105-medium',
-          },
-          medium: {
-            name: 'medium',
-            mimeType: 'image/jpeg',
-            actionLinks: {
-              read: {
-                requestMethod: 'GET',
-                rel: 'read',
-                url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/medium',
-                accept: 'image/jpeg',
-              },
-            },
-          },
-          fileSize: {
-            value: '27689',
-          },
-          mimeType: {
-            value: 'image/jpeg',
-          },
-          height: {
-            value: '300',
-          },
-          width: {
-            value: '300',
-          },
+        fileSize: {
+          value: '12648',
         },
-      ],
-      thumbnail: [
-        {
-          resourceId: {
-            value: 'binary:1283806137807105-thumbnail',
-          },
-          thumbnail: {
-            name: 'thumbnail',
-            mimeType: 'image/jpeg',
-            actionLinks: {
-              read: {
-                requestMethod: 'GET',
-                rel: 'read',
-                url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
-                accept: 'image/jpeg',
-              },
-            },
-          },
-          fileSize: {
-            value: '4522',
-          },
-          mimeType: {
-            value: 'image/jpeg',
-          },
-          height: {
-            value: '100',
-          },
-          width: {
-            value: '100',
-          },
+        mimeType: {
+          value: 'image/jpeg',
         },
-      ],
-      jp2: [
-        {
-          resourceId: {
-            value: 'binary:1283806137807105-jp2',
+        checksum: [
+          {
+            value:
+              '6722a33db068eae235f8d6a0748e3213597ff2243da5d9b913eef46f3ec3ddf6897f8bcec61eb94a7cd3f7b21f9a0f2b1995238157263c1b46b02b784f1da005',
           },
-          jp2: {
-            name: 'jp2',
-            mimeType: 'image/jp2',
-            actionLinks: {
-              read: {
-                requestMethod: 'GET',
-                rel: 'read',
-                url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/jp2',
-                accept: 'image/jp2',
-              },
-            },
+        ],
+        checksumType: [
+          {
+            value: 'SHA-512',
           },
-          fileSize: {
-            value: '81289',
-          },
-          mimeType: {
-            value: 'image/jp2',
-          },
-          height: {
+        ],
+        originalFileName: {
+          value: 'cat.jpg',
+        },
+        height: [
+          {
             value: '312',
           },
-          width: {
+        ],
+        width: [
+          {
             value: '312',
           },
+        ],
+        resolution: [
+          {
+            value: '72x72',
+          },
+        ],
+      },
+      large: {
+        resourceId: {
+          value: 'binary:1283806137807105-large',
         },
-      ],
+        large: {
+          name: 'large',
+          mimeType: 'image/jpeg',
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/large',
+              accept: 'image/jpeg',
+            },
+          },
+        },
+        fileSize: {
+          value: '75541',
+        },
+        mimeType: {
+          value: 'image/jpeg',
+        },
+        height: {
+          value: '600',
+        },
+        width: {
+          value: '600',
+        },
+      },
+      medium: {
+        resourceId: {
+          value: 'binary:1283806137807105-medium',
+        },
+        medium: {
+          name: 'medium',
+          mimeType: 'image/jpeg',
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/medium',
+              accept: 'image/jpeg',
+            },
+          },
+        },
+        fileSize: {
+          value: '27689',
+        },
+        mimeType: {
+          value: 'image/jpeg',
+        },
+        height: {
+          value: '300',
+        },
+        width: {
+          value: '300',
+        },
+      },
+      thumbnail: {
+        resourceId: {
+          value: 'binary:1283806137807105-thumbnail',
+        },
+        thumbnail: {
+          name: 'thumbnail',
+          mimeType: 'image/jpeg',
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
+              accept: 'image/jpeg',
+            },
+          },
+        },
+        fileSize: {
+          value: '4522',
+        },
+        mimeType: {
+          value: 'image/jpeg',
+        },
+        height: {
+          value: '100',
+        },
+        width: {
+          value: '100',
+        },
+      },
+      jp2: {
+        resourceId: {
+          value: 'binary:1283806137807105-jp2',
+        },
+        jp2: {
+          name: 'jp2',
+          mimeType: 'image/jp2',
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/jp2',
+              accept: 'image/jp2',
+            },
+          },
+        },
+        fileSize: {
+          value: '81289',
+        },
+        mimeType: {
+          value: 'image/jp2',
+        },
+        height: {
+          value: '312',
+        },
+        width: {
+          value: '312',
+        },
+      },
     },
   },
   presentation: {

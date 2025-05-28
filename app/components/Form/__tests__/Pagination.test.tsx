@@ -275,7 +275,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '5' }],
+            rows: { value: '5' },
           },
         }}
       />,

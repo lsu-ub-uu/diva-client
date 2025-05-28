@@ -20,6 +20,8 @@ import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { useRemixFormContext } from 'remix-hook-form';
 import { Group } from '@/components/FormGenerator/components/Group';
+import { isComponentSingularAndOptional } from '../formGeneratorUtils/formGeneratorUtils';
+import { OptionalComponent } from './OptionalComponent';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -33,6 +35,26 @@ export const RepeatingGroup = ({
   parentPresentationStyle,
 }: RepeatingGroupProps) => {
   const { control } = useRemixFormContext();
+
+  if (isComponentSingularAndOptional(component)) {
+    return (
+      <OptionalComponent
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(actionButtonGroup) => {
+          return (
+            <Group
+              currentComponentNamePath={currentComponentNamePath}
+              component={component}
+              parentPresentationStyle={parentPresentationStyle}
+              actionButtonGroup={actionButtonGroup}
+            />
+          );
+        }}
+      />
+    );
+  }
   return (
     <FieldArrayComponent
       control={control}

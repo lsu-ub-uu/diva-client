@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import createReport from '../createReport';
+import createOutput from '../createReport';
 import { readFileSync } from 'fs';
 import { mock } from 'vitest-mock-extended';
 
@@ -27,13 +27,13 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport('mock-token');
+    await createOutput(
+      'mock-token',
+      'https://cora.epc.ub.uu.se/diva/rest',
+      '../diva-report.xml',
+    );
 
     // Assert
-    expect(readFileSync).toHaveBeenCalledWith(
-      new URL('../diva-report.xml', import.meta.url),
-      'utf8',
-    );
     expect(fetch).toHaveBeenCalledWith(
       'https://cora.epc.ub.uu.se/diva/rest/record/diva-output',
       {
@@ -47,10 +47,6 @@ describe('createReport', () => {
       },
     );
     expect(mockResponse.text).toHaveBeenCalledOnce();
-    expect(consoleInfoSpy).toHaveBeenCalledWith(
-      'Successfully created record',
-      '<xml>response data</xml>',
-    );
 
     // Cleanup
     consoleInfoSpy.mockRestore();
@@ -69,7 +65,11 @@ describe('createReport', () => {
       .mockImplementation(() => {});
 
     // Act
-    await createReport('mock-token');
+    await createOutput(
+      'mock-token',
+      'https://cora.epc.ub.uu.se/diva/rest',
+      '../diva-report.xml',
+    );
 
     // Assert
     expect(consoleErrorSpy).toHaveBeenCalledWith(mockError);

@@ -49,12 +49,13 @@
   --color-link-visited: var(--color-accent);
   --color-card-dark: rgb(5 85 164 / 12%);
   --color-card: rgb(5 85 164/ 8%);
+
   --color-button: var(--color-primary);
   --color-button-primary-hover: rgb(17 17 17);
   --color-button-primary-active: rgb(0 0 0);
   --color-button-secondary-hover: rgb(0 0 0 / 10%);
   --color-button-secondary-active: rgb(0 0 0 / 20%);
-  --color-label: rgb(0 0 0 / 60%);
+  --color-label: rgb(0 0 0 / 66%);
   --color-input-border: rgb(153 153 153);
   --color-alert-success-bg: rgb(237 247 237);
   --color-alert-success-icon: rgb(46 125 50);
@@ -93,7 +94,7 @@
   --font-size-l: 1.5rem;
   --font-size-xl: 2rem;
   --font-size-xxl: 4rem;
-  --font-size-h1: 2.3rem;
+  --font-size-h1: 2rem;
   --font-weight-h1: 400;
   --font-size-h2: 1.4rem;
   --font-weight-h2: 400;
@@ -129,7 +130,7 @@
     --color-button: rgb(255 255 255);
     --color-accent-dark: var(--color-accent);
     --color-accent: var(--color-accent-light);
-    --color-label: rgb(255 255 255 / 60%);
+    --color-label: rgb(255 255 255 / 66%);
     --color-error-main: rgb(240 79 79);
     --color-alert-success-font: rgb(237 247 237);
     --color-alert-success-icon: rgb(59 168 65);
@@ -166,7 +167,7 @@
       --color-button: rgb(255 255 255);
       --color-accent-dark: var(--color-accent);
       --color-accent: var(--color-accent-light);
-      --color-label: rgb(255 255 255 / 60%);
+      --color-label: rgb(255 255 255 / 66%);
       --color-error-main: rgb(240 79 79);
       --color-alert-success-font: rgb(237 247 237);
       --color-alert-success-icon: rgb(59 168 65);

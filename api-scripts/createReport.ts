@@ -18,28 +18,28 @@
 
 import { readFileSync } from 'fs';
 
-export default async function createReport(authtoken: string) {
-  const body = readFileSync(
-    new URL('./diva-report.xml', import.meta.url),
-    'utf8',
-  );
-
+export default async function createOutput(
+  authtoken: string,
+  coraApiUrl: string,
+  file: string,
+) {
+  const body = readFileSync(new URL(file, import.meta.url), 'utf8');
+  console.info('Creating report with file', file);
   try {
-    const res = await fetch(
-      'https://cora.epc.ub.uu.se/diva/rest/record/diva-output',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/vnd.cora.recordGroup+xml',
-          Accept: 'application/vnd.cora.record+xml',
-          authToken: authtoken,
-        },
-        body,
+    const res = await fetch(`${coraApiUrl}/record/diva-output`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/vnd.cora.recordGroup+xml',
+        Accept: 'application/vnd.cora.record+xml',
+        authToken: authtoken,
       },
-    );
+      body,
+    });
     const xml = await res.text();
 
-    console.info('Successfully created record', xml);
+    const id = xml.match(/<id>(.*?)<\/id>/)?.[1];
+
+    console.info('Created output with id', id);
   } catch (error) {
     console.error(error);
   }

@@ -133,13 +133,20 @@ export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentGroup(component) ||
   isComponentContainer(component); // a container can have children that are data carriers
 
+export const isComponentOptional = (component: FormComponent) => {
+  if (!isComponentWithData(component)) {
+    return false;
+  }
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMin === 0;
+};
+
 export const isComponentRepeating = (component: FormComponent) => {
   if (!isComponentWithData(component)) {
     return false;
   }
   const rMax = component.repeat?.repeatMax ?? 1;
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return !(rMax === 1 && rMin === 1);
+  return rMax > 1;
 };
 
 export const isComponentRequired = (component: FormComponent) => {
@@ -228,7 +235,7 @@ const isGVValueEmptyString = (
   return getValues(componentValue)[0].value !== '';
 };
 
-export const checkForExistingSiblings = (formValues: any) => {
+export const hasValue = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
       .filter((objKey) => !objKey.startsWith('_'))

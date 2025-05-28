@@ -27,6 +27,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import {
   isComponentContainer,
   isComponentGroup,
+  isComponentOptional,
   isComponentRepeating,
   isComponentRepeatingContainer,
   isComponentResourceLink,
@@ -191,11 +192,17 @@ const isComponentGroupOrRepeatingContainerAndNOTRepeating = (
 const isComponentGroupAndRepeating = (
   component: FormComponent,
 ): component is FormComponentGroup => {
-  return isComponentGroup(component) && isComponentRepeating(component);
+  return (
+    isComponentGroup(component) &&
+    (isComponentRepeating(component) || isComponentOptional(component))
+  );
 };
 
 const isComponentVariableAndRepeating = (
   component: FormComponent,
 ): component is FormComponentLeaf => {
-  return isComponentVariable(component) && isComponentRepeating(component);
+  return (
+    isComponentVariable(component) &&
+    (isComponentRepeating(component) || isComponentOptional(component))
+  );
 };

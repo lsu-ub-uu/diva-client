@@ -23,11 +23,24 @@ import Login from '@/components/Layout/Header/Login/Login';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { CachedIcon, CloseIcon, DesignServicesIcon, MenuIcon } from '@/icons';
+import {
+  CachedIcon,
+  CloseIcon,
+  CodeIcon,
+  DesignServicesIcon,
+  MenuIcon,
+} from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Suspense, useEffect, useState } from 'react';
-import { Await, Form, Link, useLocation, useNavigation } from 'react-router';
+import {
+  Await,
+  Form,
+  href,
+  Link,
+  useLocation,
+  useNavigation,
+} from 'react-router';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -68,20 +81,24 @@ export const Header = ({ recordTypes }: HeaderProps) => {
 
       <div className={styles['header-content']}>
         {devMode && (
-          <NavigationLink
-            to='/design-system'
-            label='Design system'
-            icon={<DesignServicesIcon />}
-          />
-        )}
-
-        {devMode && (
-          <Form action='/refreshDefinitions' method='POST'>
-            <input type='hidden' name='returnTo' value={returnTo} />
-            <Button variant='tertiary' type='submit'>
-              <CachedIcon /> Refresh Def
-            </Button>
-          </Form>
+          <>
+            <NavigationLink
+              to={href('/api-docs')}
+              label='API'
+              icon={<CodeIcon />}
+            />
+            <NavigationLink
+              to={href('/design-system')}
+              label='Design system'
+              icon={<DesignServicesIcon />}
+            />
+            <Form action={href('/refreshDefinitions')} method='POST'>
+              <input type='hidden' name='returnTo' value={returnTo} />
+              <Button variant='tertiary' type='submit'>
+                <CachedIcon /> Refresh Def
+              </Button>
+            </Form>
+          </>
         )}
       </div>
       <Button

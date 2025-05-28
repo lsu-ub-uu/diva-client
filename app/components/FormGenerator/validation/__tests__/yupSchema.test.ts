@@ -33,117 +33,13 @@ import {
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '@/__mocks__/data/form/textVar';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { describe, expect, it, vi } from 'vitest';
-import type { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
+import { describe, expect, it } from 'vitest';
 import * as yup from 'yup';
-import type {
-  FormComponent,
-  FormComponentNumVar,
-  FormSchema,
-} from '../../types';
+import type { FormSchema } from '../../types';
 import {
-  createValidationForAttributesFromComponent,
-  createValidationFromComponentType,
   createYupArrayFromSchema,
-  createYupNumberSchema,
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
-
-const numberValidationTests = (
-  min: number,
-  max: number,
-  numberOfDecimals: number,
-) => [
-  { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
-  { name: 'decimal-places', params: { numberOfDecimals } },
-  { name: 'min', params: { min } },
-  { name: 'max', params: { max } },
-];
-
-const stringValidationTests = (regex: RegExp) => [
-  { name: 'matches', params: { regex } },
-];
-
-const requiredValidationTests = [{ name: 'required', params: undefined }];
-
-const minMaxValidationTests = (min: number, max: number) => [
-  {
-    name: 'min',
-    params: {
-      min,
-    },
-  },
-  {
-    name: 'max',
-    params: {
-      max,
-    },
-  },
-];
-
-const validationTestsExtras = (
-  optional: boolean,
-  type: 'string' | 'array' | 'object',
-  tests: unknown[],
-  defaultParam: object | undefined,
-  nullable: boolean,
-) => {
-  return {
-    optional,
-    type,
-    tests,
-    default: defaultParam,
-    label: undefined,
-    meta: undefined,
-    notOneOf: [],
-    nullable,
-    oneOf: [],
-  };
-};
-
-const validationSpecExtras = (
-  optional: boolean,
-  tests: unknown[],
-  transforms: unknown[],
-  type: 'string' | 'array' | 'object',
-) => {
-  return {
-    spec: {
-      abortEarly: true,
-      coerce: true,
-      nullable: false,
-      optional,
-      recursive: true,
-      strict: false,
-      strip: false,
-    },
-    tests,
-    transforms,
-    type,
-  };
-};
-const validationExclusiveExtras = (
-  _excludedEdges: boolean,
-  _sortErrors: boolean,
-) => {
-  const obj: any = {
-    _blacklist: new Set([]),
-    _mutate: undefined,
-    _typeCheck: function check() {},
-    _whitelist: new Set([]),
-    conditions: [],
-    deps: [],
-    exclusiveTests: {},
-  };
-  if (_excludedEdges) {
-    obj._excludedEdges = [];
-  }
-  if (_sortErrors) {
-    obj._sortErrors = function anonymous() {};
-  }
-
-  return obj;
-};
 
 describe('generate validation', () => {
   it('should return correct validationSchema for one textVar and one numberVar', () => {
@@ -152,35 +48,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        type: 'object',
-        fields: {
-          someNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-                tests: [
-                  ...requiredValidationTests,
-                  ...stringValidationTests(/^[a-zA-Z]$/),
-                ],
-              },
-            },
-          },
-          someNumberVariableNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-                tests: numberValidationTests(0, 20, 0),
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for one textVar with a surrounding container', () => {
@@ -189,22 +57,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        type: 'object',
-        fields: {
-          someNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for with nested surrounding containers', () => {
@@ -213,22 +66,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        type: 'object',
-        fields: {
-          someNameInData: {
-            type: 'object',
-            fields: {
-              value: {
-                type: 'string',
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for two repeating variables', () => {
@@ -237,127 +75,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        ...validationTestsExtras(
-          true,
-          'object',
-          [],
-          {
-            colour: {
-              value: undefined,
-            },
-            someNameInData: undefined,
-            someNumberVariableNameInData: undefined,
-          },
-          false,
-        ),
-
-        fields: {
-          someNameInData: {
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(0, 2),
-              undefined,
-              false,
-            ),
-            innerType: {
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  value: undefined,
-                },
-                false,
-              ),
-              fields: {
-                value: {
-                  ...validationTestsExtras(
-                    true,
-                    'string',
-                    [
-                      {
-                        name: 'matches',
-                        params: {
-                          regex: /^[a-zA-Z]$/,
-                        },
-                      },
-                    ],
-                    undefined,
-                    true,
-                  ),
-
-                  nullable: true,
-                },
-              },
-            },
-          },
-          someNumberVariableNameInData: {
-            innerType: {
-              fields: {
-                value: {
-                  ...validationTestsExtras(
-                    true,
-                    'string',
-                    numberValidationTests(0, 20, 2),
-                    undefined,
-                    false,
-                  ),
-                },
-              },
-
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  value: undefined,
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(1, 5),
-              undefined,
-              false,
-            ),
-          },
-          colour: {
-            ...validationTestsExtras(
-              true,
-              'object',
-              [],
-              {
-                value: undefined,
-              },
-              false,
-            ),
-
-            fields: {
-              value: {
-                ...validationTestsExtras(
-                  false,
-                  'string',
-                  [
-                    {
-                      name: 'required',
-                      params: undefined,
-                    },
-                  ],
-                  undefined,
-                  false,
-                ),
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for one repeating collectionVariable', () => {
@@ -366,48 +84,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        fields: {
-          colour: {
-            innerType: {
-              fields: {
-                value: {
-                  ...validationTestsExtras(true, 'string', [], undefined, true),
-                  nullable: true,
-                },
-              },
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  value: undefined,
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(0, 3),
-              undefined,
-              false,
-            ),
-          },
-        },
-        ...validationTestsExtras(
-          true,
-          'object',
-          [],
-          {
-            colour: undefined,
-          },
-          false,
-        ),
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for one group having a text variable', () => {
@@ -416,27 +93,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        type: 'object',
-        fields: {
-          someChildGroupNameInData: {
-            type: 'object',
-            fields: {
-              someNameInData: {
-                type: 'object',
-                fields: {
-                  value: {
-                    type: 'string',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for repeating group having a text variable', () => {
@@ -445,74 +102,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        fields: {
-          firstChildGroup: {
-            innerType: {
-              fields: {
-                exampleNumberVar: {
-                  fields: {
-                    value: {
-                      ...validationTestsExtras(
-                        true,
-                        'string',
-                        [
-                          {
-                            name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
-                            params: undefined,
-                          },
-                        ],
-                        undefined,
-                        true,
-                      ),
-                    },
-                  },
-                  ...validationTestsExtras(
-                    true,
-                    'object',
-                    [],
-                    {
-                      value: undefined,
-                    },
-                    false,
-                  ),
-                },
-              },
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  exampleNumberVar: {
-                    value: undefined,
-                  },
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(0, 10),
-              undefined,
-              false,
-            ),
-          },
-        },
-        ...validationTestsExtras(
-          true,
-          'object',
-          [],
-          {
-            firstChildGroup: undefined,
-          },
-          false,
-        ),
-      },
-    };
-
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
@@ -521,100 +111,7 @@ describe('generate validation', () => {
     );
     const actualSchema = yupSchema.describe().fields;
 
-    const expectedSchema = {
-      someRootNameInData: {
-        fields: {
-          author: {
-            innerType: {
-              fields: {
-                name: {
-                  innerType: {
-                    fields: {
-                      firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
-                        fields: {
-                          value: {
-                            type: 'string',
-                          },
-                        },
-                      },
-                      lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
-                        fields: {
-                          value: {
-                            type: 'string',
-                          },
-                        },
-                      },
-                      age: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
-                        fields: {
-                          value: {
-                            type: 'string',
-                            tests: numberValidationTests(0, 125, 0),
-                          },
-                        },
-                      },
-                    },
-                    ...validationTestsExtras(
-                      true,
-                      'object',
-                      [],
-                      {
-                        age: {
-                          value: undefined,
-                        },
-                        firstName: {
-                          value: undefined,
-                        },
-                        lastName: {
-                          value: undefined,
-                        },
-                      },
-                      false,
-                    ),
-                  },
-                  ...validationTestsExtras(
-                    true,
-                    'array',
-                    minMaxValidationTests(1, 100),
-                    undefined,
-                    false,
-                  ),
-                },
-              },
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  name: undefined,
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(1, 10),
-              undefined,
-              false,
-            ),
-          },
-        },
-        ...validationTestsExtras(
-          true,
-          'object',
-          [],
-          {
-            author: undefined,
-          },
-          false,
-        ),
-      },
-    };
-
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 
   it('should return correct validationSchema for repeating group having repeating child group with two name fields and different attributes', () => {
@@ -622,254 +119,7 @@ describe('generate validation', () => {
       formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes as FormSchema,
     );
     const actualSchema = yupSchema.describe().fields;
-
-    const expectedSchema = {
-      someRootNameInData: {
-        ...validationTestsExtras(
-          true,
-          'object',
-          [],
-          {
-            author: undefined,
-            grade: undefined,
-            nonRepeatingGroup: {
-              _groupAttribute: undefined,
-            },
-          },
-          false,
-        ),
-        fields: {
-          grade: {
-            innerType: {
-              fields: {
-                _gradeAttribute: {
-                  ...validationTestsExtras(
-                    true,
-                    'string',
-                    [
-                      {
-                        name: 'checkIfStringVariableHasSiblingsWithValues',
-                        params: undefined,
-                      },
-                    ],
-                    undefined,
-                    true,
-                  ),
-                },
-                value: {
-                  ...validationTestsExtras(
-                    true,
-                    'string',
-                    numberValidationTests(1, 5, 0),
-                    undefined,
-                    false,
-                  ),
-                },
-              },
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  _gradeAttribute: undefined,
-                  value: undefined,
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(1, 12),
-              undefined,
-              false,
-            ),
-          },
-          nonRepeatingGroup: {
-            ...validationTestsExtras(
-              true,
-              'object',
-              [],
-              {
-                _groupAttribute: undefined,
-              },
-              false,
-            ),
-            fields: {
-              _groupAttribute: {
-                type: 'string',
-                default: undefined,
-                label: undefined,
-                meta: undefined,
-                notOneOf: [],
-                nullable: false,
-                oneOf: [],
-                optional: false,
-                tests: requiredValidationTests,
-              },
-            },
-          },
-          author: {
-            innerType: {
-              fields: {
-                _colourAttribute: {
-                  ...validationTestsExtras(
-                    false,
-                    'string',
-                    [
-                      {
-                        name: 'required',
-                        params: undefined,
-                      },
-                    ],
-                    undefined,
-                    false,
-                  ),
-                },
-                name: {
-                  innerType: {
-                    fields: {
-                      firstName: {
-                        ...validationTestsExtras(
-                          true,
-                          'object',
-                          [],
-                          {
-                            _colourAttribute: undefined,
-                            value: undefined,
-                          },
-                          false,
-                        ),
-                        fields: {
-                          value: {
-                            ...validationTestsExtras(
-                              false,
-                              'string',
-                              [
-                                ...requiredValidationTests,
-                                {
-                                  name: 'matches',
-                                  params: {
-                                    regex: /^[a-zA-Z]$/,
-                                  },
-                                },
-                              ],
-                              undefined,
-                              false,
-                            ),
-                          },
-                          _colourAttribute: {
-                            ...validationTestsExtras(
-                              true,
-                              'string',
-                              [
-                                {
-                                  name: 'checkIfStringVariableHasSiblingsWithValues',
-                                  params: undefined,
-                                },
-                              ],
-                              undefined,
-                              true,
-                            ),
-                          },
-                        },
-                      },
-                      lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
-                        fields: {
-                          value: {
-                            ...validationTestsExtras(
-                              false,
-                              'string',
-                              [
-                                ...requiredValidationTests,
-                                {
-                                  name: 'matches',
-                                  params: {
-                                    regex: /^[a-zA-Z]$/,
-                                  },
-                                },
-                              ],
-                              undefined,
-                              false,
-                            ),
-                          },
-                        },
-                      },
-                      age: {
-                        ...validationTestsExtras(
-                          true,
-                          'object',
-                          [],
-                          {
-                            value: undefined,
-                          },
-                          false,
-                        ),
-                        fields: {
-                          value: {
-                            ...validationTestsExtras(
-                              true,
-                              'string',
-                              numberValidationTests(0, 125, 0),
-                              undefined,
-                              false,
-                            ),
-                          },
-                        },
-                      },
-                    },
-                    ...validationTestsExtras(
-                      true,
-                      'object',
-                      [],
-                      {
-                        age: {
-                          value: undefined,
-                        },
-                        firstName: {
-                          _colourAttribute: undefined,
-                          value: undefined,
-                        },
-                        lastName: {
-                          value: undefined,
-                        },
-                      },
-                      false,
-                    ),
-                  },
-                  ...validationTestsExtras(
-                    true,
-                    'array',
-                    minMaxValidationTests(1, 100),
-                    undefined,
-                    false,
-                  ),
-                },
-              },
-              ...validationTestsExtras(
-                true,
-                'object',
-                [],
-                {
-                  _colourAttribute: undefined,
-                  name: undefined,
-                },
-                false,
-              ),
-            },
-            ...validationTestsExtras(
-              true,
-              'array',
-              minMaxValidationTests(1, 10),
-              undefined,
-              false,
-            ),
-          },
-        },
-      },
-    };
-    expect(actualSchema).toMatchObject(expectedSchema);
+    expect(actualSchema).toMatchSnapshot();
   });
 });
 
@@ -912,165 +162,22 @@ describe('custom validate yupSchemas for array schemas', () => {
 });
 describe('util functions', () => {
   describe('createYupArrayFromSchema', () => {
-    it.todo('creates one Yup Array', () => {
-      const expectedSchema = <ArraySchema<any, any, undefined, ''>>(<unknown>{
-        _blacklist: new Set([]),
-        _typeCheck: function check() {},
-        _whitelist: new Set([]),
-        conditions: [],
-        deps: [],
-        exclusiveTests: {
-          max: true,
-          min: true,
-        },
-        innerType: <ObjectSchema<any, AnyObject, any, ''>>{
-          ...validationExclusiveExtras(true, true),
-          _nodes: ['person'],
-          fields: {
-            person: {
-              ...validationExclusiveExtras(true, true),
-              _nodes: ['firstName'],
-              fields: {
-                firstName: {
-                  ...validationExclusiveExtras(false, false),
-                  _mutate: undefined,
-                  exclusiveTests: {
-                    required: false,
-                  },
-                  internalTests: {
-                    nullable: function validate() {},
-                    optionality: function validate() {},
-                    typeError: function validate() {},
-                  },
-                  ...validationSpecExtras(
-                    false,
-                    [function validate() {}],
-                    [() => {}],
-                    'string',
-                  ),
-                } as StringSchema<string | undefined, AnyObject, undefined, ''>,
-              },
-              internalTests: {
-                nullable: function validate() {},
-                typeError: function validate() {},
-              },
-              ...validationSpecExtras(true, [], [], 'object'),
-            } as ObjectSchema<any, AnyObject, any, ''>,
-          },
-          internalTests: {
-            nullable: function validate() {},
-            typeError: function validate() {},
-          },
-          ...validationSpecExtras(true, [], [], 'object'),
-        },
-        internalTests: {
-          nullable: function validate() {},
-          typeError: function validate() {},
-        },
-        ...validationSpecExtras(
-          true,
-          [function validate() {}, function validate() {}],
-          [],
-          'array',
-        ),
-      });
-
+    it('creates one Yup Array', () => {
       const schema = yup.object().shape({
         person: yup.object().shape({
           firstName: yup.string().required(),
         }),
       });
-      const actualData = createYupArrayFromSchema(schema, {
-        minNumberOfRepeatingToShow: 0,
-        repeatMin: 0,
-        repeatMax: 10,
-      });
-      expect(expectedSchema).toMatchObject(actualData);
-    });
-  });
-  describe('createValidationForAttributesFromComponent', () => {
-    it.todo('creates one validation for a attribute', () => {
-      const expectedData = {};
-      const actualData = createValidationForAttributesFromComponent({
-        name: 'firstName',
-        type: 'textVariable',
-        mode: 'input',
-        tooltip: {
-          title: 'exampleMetadataVarText',
-          body: 'exampleMetadataVarDefText',
+      const actualData = createYupArrayFromSchema(
+        schema,
+        {
+          minNumberOfRepeatingToShow: 0,
+          repeatMin: 0,
+          repeatMax: 10,
         },
-        label: 'firstName',
-        validation: {
-          type: 'regex',
-          pattern: '^[a-zA-Z]$',
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        showLabel: true,
-        attributes: [
-          {
-            label: 'exampleLabel',
-            type: 'collectionVariable',
-            showLabel: true,
-            name: 'colourAttribute',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              {
-                value: 'blue',
-                label: 'exampleBlueItemText',
-              },
-              {
-                value: 'pink',
-                label: 'examplePinkItemText',
-              },
-              {
-                value: 'yellow',
-                label: 'exampleYellowItemText',
-              },
-            ],
-            mode: 'input',
-          },
-        ],
-      });
-      expect(expectedData).toMatchObject(actualData);
-    });
-  });
-  describe('createValidationFromComponentType', () => {
-    it.todo('textVariable', () => {
-      const component: FormComponent = {
-        name: 'exampleNumberVar',
-        type: 'numberVariable',
-        mode: 'input',
-        tooltip: {
-          title: 'exampleMetadataNumberVarText',
-          body: 'exampleMetadataNumberVarDefText',
-        },
-        label: 'exampleMetadataNumberVarText',
-        finalValue: '12',
-        showLabel: true,
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 100,
-          warningMin: 10,
-          warningMax: 90,
-          numberOfDecimals: 2,
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-      };
-      createValidationFromComponentType(component);
-      const mock = vi.fn();
-      createYupNumberSchema(component as FormComponentNumVar);
-      expect(mock).toHaveBeenCalledTimes(1);
+        true,
+      );
+      expect(actualData).toMatchSnapshot();
     });
   });
 });

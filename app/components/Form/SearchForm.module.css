@@ -9,7 +9,7 @@
     align-items: stretch;
   }
 
-  input[name='search.include.includePart.genericSearchTerm[0].value'] {
+  input[name='search.include.includePart.genericSearchTerm.value'] {
     --input-height: var(--input-height-large);
   }
 }

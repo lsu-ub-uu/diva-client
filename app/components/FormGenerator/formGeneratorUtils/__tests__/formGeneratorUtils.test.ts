@@ -21,16 +21,17 @@ import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, it, vi } from 'vitest';
 import {
-  checkForExistingSiblings,
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
   checkIfValueExists,
   exportForTesting,
+  hasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
   isComponentRepeating,
   isComponentRepeatingContainer,
+  isComponentRequired,
   isComponentSingularAndOptional,
   isComponentSurroundingContainer,
   isComponentValidForDataCarrying,
@@ -1180,7 +1181,7 @@ describe('helper methods', () => {
   describe('isComponentRepeating', () => {
     it.each([
       [
-        'numberVariable',
+        'numberVariable 1-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1204,7 +1205,7 @@ describe('helper methods', () => {
         false,
       ],
       [
-        'numberVariable',
+        'numberVariable 0-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1225,10 +1226,10 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        true,
+        false,
       ],
       [
-        'numberVariable',
+        'numberVariable 1-2',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1252,7 +1253,7 @@ describe('helper methods', () => {
         true,
       ],
       [
-        'numberVariable',
+        'numberVariable 0-X',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1284,7 +1285,7 @@ describe('helper methods', () => {
   describe('isComponentRequired', () => {
     it.each([
       [
-        'numberVariable',
+        'numberVariable 0-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1305,10 +1306,10 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        true,
+        false,
       ],
       [
-        'numberVariable',
+        'numberVariable 1-1',
         {
           type: 'numberVariable',
           name: 'someNumberVariable',
@@ -1329,10 +1330,10 @@ describe('helper methods', () => {
           },
           mode: 'input',
         },
-        false,
+        true,
       ],
     ])('check if %s is required', (arg1, arg2, arg3) => {
-      const expected = isComponentRepeating(arg2 as FormComponent);
+      const expected = isComponentRequired(arg2 as FormComponent);
       expect(expected).toStrictEqual(arg3);
     });
   });
@@ -1544,21 +1545,21 @@ describe('helper methods', () => {
 
   describe('checkForSiblingValue', () => {
     it('checkForSiblingValue', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         latitude: { value: '' },
         longitude: { value: 'a' },
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue2', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         latitude: { value: '' },
         longitude: { value: '' },
       });
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue3', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: 'a' },
@@ -1566,14 +1567,14 @@ describe('helper methods', () => {
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue4', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         maintitle: { value: '' },
         subtitle: [{ value: 'a' }],
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue5', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: '' },
@@ -1581,7 +1582,7 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue6', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         longitude: {
           value: '',
         },
@@ -1592,7 +1593,7 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue7', () => {
-      const actual = checkForExistingSiblings({
+      const actual = hasValue({
         longitude: {
           value: '1',
         },

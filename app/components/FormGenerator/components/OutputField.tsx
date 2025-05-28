@@ -16,23 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import styles from './OutputField.module.css';
-import { Typography } from '@/components/Typography/Typography';
-import clsx from 'clsx';
-import { type ReactNode, use } from 'react';
+import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
-import { Link } from 'react-router';
+import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import clsx from 'clsx';
+import { type ReactNode, use } from 'react';
+import { Link } from 'react-router';
+import styles from './OutputField.module.css';
 
 interface OutputFieldProps {
   path: string;
   className?: string;
   label?: string;
-  value: string;
+  value?: string;
   variant?: 'inline' | 'block';
   textStyle?: TextStyle;
   info?: {
@@ -54,6 +55,9 @@ export const OutputField = ({
 }: OutputFieldProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement = enhancedFields?.[path];
+
+  const collapsable = value?.length && value.length > 300;
+
   return (
     <div
       className={clsx(styles['output-field'], className)}
@@ -75,13 +79,20 @@ export const OutputField = ({
         )}
       </div>
       <Enhancement enhancement={enhancement}>
-        <Typography
-          className={styles['value']}
-          as='p'
-          text={value}
-          variant={textStyle ?? 'bodyTextStyle'}
-          aria-labelledby={`${path}-label`}
-        />
+        {collapsable && value && (
+          <div className={styles['value']} aria-labelledby={`${path}-label`}>
+            <CollapsableText text={value} />
+          </div>
+        )}
+        {!collapsable && value && (
+          <Typography
+            className={styles['value']}
+            as='p'
+            text={value}
+            variant={textStyle ?? 'bodyTextStyle'}
+            aria-labelledby={`${path}-label`}
+          />
+        )}
       </Enhancement>
     </div>
   );

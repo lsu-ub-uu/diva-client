@@ -17,13 +17,17 @@
  */
 
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { checkIfSingularComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  checkIfSingularComponentHasValue,
+  isComponentSingularAndOptional,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { type ReactNode, use } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useRemixFormContext } from 'remix-hook-form';
+import { OptionalComponent } from './OptionalComponent';
 
 interface RepeatingVariableProps {
   component: FormComponentWithData;
@@ -38,6 +42,32 @@ export const RepeatingVariable = ({
 }: RepeatingVariableProps) => {
   const { control, getValues } = useRemixFormContext();
   const { linkedData } = use(FormGeneratorContext);
+
+  if (isComponentSingularAndOptional(component)) {
+    return (
+      <OptionalComponent
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(actionButtonGroup) => {
+          return (
+            <LeafComponent
+              component={component}
+              name={`${currentComponentNamePath}.value`}
+              parentPresentationStyle={parentPresentationStyle}
+              attributes={
+                <Attributes
+                  component={component}
+                  path={currentComponentNamePath}
+                />
+              }
+              actionButtonGroup={actionButtonGroup}
+            />
+          );
+        }}
+      />
+    );
+  }
 
   const hasLinkedDataValue = checkIfSingularComponentHasValue(
     getValues,

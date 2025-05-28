@@ -30,6 +30,7 @@ interface GetRecordByRecordTypeAndRecordIdArgs {
   recordId: string;
   authToken?: string;
   presentationRecordLinkId?: string;
+  decorated?: boolean;
 }
 
 export const getRecordByRecordTypeAndRecordId = async ({
@@ -38,11 +39,13 @@ export const getRecordByRecordTypeAndRecordId = async ({
   recordId,
   authToken,
   presentationRecordLinkId,
+  decorated = false,
 }: GetRecordByRecordTypeAndRecordIdArgs) => {
   const response = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
     authToken,
+    decorated,
   );
   const recordWrapper = response.data;
   const record = transformRecord(dependencies, recordWrapper);

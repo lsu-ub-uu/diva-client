@@ -144,7 +144,6 @@ export const getDependencies = async () => {
   if (!poolsInitialized) {
     await loadDependencies();
   }
-
   return dependencies;
 };
 

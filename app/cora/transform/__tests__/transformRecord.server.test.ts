@@ -96,6 +96,7 @@ import type {
   BFFValidationType,
 } from '../bffTypes.server';
 import {
+  transformAttributes,
   transformDataGroup,
   transformRecord,
   transformRecordData,
@@ -352,31 +353,26 @@ describe('transformRecord', () => {
               },
               _language: 'kal',
             },
-            alternativeTitle: [
-              {
-                mainTitle: {
-                  value: 'bbbbb',
-                },
-                subTitle: [
-                  {
-                    value: 'subTitle1',
-                  },
-                ],
-                _language: 'epo',
-                _titleType: 'alternativeTitle',
+            alternativeTitle: {
+              mainTitle: {
+                value: 'bbbbb',
               },
-            ],
-            nationalSubjectCategory: [
-              {
-                value: 'nationalSubjectCategory:6325370460697648',
+              subTitle: {
+                value: 'subTitle1',
               },
-            ],
-            abstract: [
-              {
-                value: 'hej!',
-                _language: 'fao',
-              },
-            ],
+
+              _language: 'epo',
+              _titleType: 'alternativeTitle',
+            },
+
+            nationalSubjectCategory: {
+              value: 'nationalSubjectCategory:6325370460697648',
+            },
+
+            abstract: {
+              value: 'hej!',
+              _language: 'fao',
+            },
           },
         },
       };
@@ -516,15 +512,13 @@ describe('transformRecord', () => {
                 value: 'EN utmärkt titel',
               },
             },
-            titleInfo_type_alternative: [
-              {
-                _lang: 'amh',
-                _type: 'alternative',
-                title: {
-                  value: 'EN utmärkt alternativ titel',
-                },
+            titleInfo_type_alternative: {
+              _lang: 'amh',
+              _type: 'alternative',
+              title: {
+                value: 'EN utmärkt alternativ titel',
               },
-            ],
+            },
           },
         },
       };
@@ -937,12 +931,10 @@ describe('transformRecord', () => {
                 value: 'namePartPartWithAttributesValidationTypeId',
               },
             },
-            namePart_language_eng: [
-              {
-                value: 'value2',
-                _language: 'eng',
-              },
-            ],
+            namePart_language_eng: {
+              value: 'value2',
+              _language: 'eng',
+            },
           },
         },
       };
@@ -1036,31 +1028,26 @@ describe('transformRecord', () => {
               },
               _language: 'kal',
             },
-            alternativeTitle: [
-              {
-                mainTitle: {
-                  value: 'bbbbb',
-                },
-                subTitle: [
-                  {
-                    value: 'subTitle1',
-                  },
-                ],
-                _language: 'epo',
-                _titleType: 'alternativeTitle',
+            alternativeTitle: {
+              mainTitle: {
+                value: 'bbbbb',
               },
-            ],
-            nationalSubjectCategory: [
-              {
-                value: 'nationalSubjectCategory:6325370460697648',
+              subTitle: {
+                value: 'subTitle1',
               },
-            ],
-            abstract: [
-              {
-                value: 'hej!',
-                _language: 'fao',
-              },
-            ],
+
+              _language: 'epo',
+              _titleType: 'alternativeTitle',
+            },
+
+            nationalSubjectCategory: {
+              value: 'nationalSubjectCategory:6325370460697648',
+            },
+
+            abstract: {
+              value: 'hej!',
+              _language: 'fao',
+            },
           },
         },
       };
@@ -2290,18 +2277,16 @@ describe('transformRecord', () => {
       const expected = {
         name_type_personal: [
           {
-            namePart_type_family: [
-              {
-                value: 'eeeeeee',
-                _type: 'family',
-              },
-            ],
-            namePart_type_given: [
-              {
-                value: 'gil',
-                _type: 'given',
-              },
-            ],
+            namePart_type_family: {
+              value: 'eeeeeee',
+              _type: 'family',
+            },
+
+            namePart_type_given: {
+              value: 'gil',
+              _type: 'given',
+            },
+
             _type: 'personal',
           },
         ],
@@ -2430,16 +2415,51 @@ describe('transformRecord', () => {
     const expected = {
       binary: {
         _type: 'sound',
-        master: [
-          {
-            resourceId: {
-              value: 'binary:8037579210342018-master',
-            },
+        master: {
+          resourceId: {
+            value: 'binary:8037579210342018-master',
           },
-        ],
+        },
       },
     };
 
     expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should handle DiVA decorated format for data', () => {});
+
+  describe('it should transform attributes', () => {
+    it('it shoud return undefind when undefined', () => {
+      expect(transformAttributes(undefined)).toStrictEqual({});
+    });
+    it('transform regular attributes', () => {
+      expect(transformAttributes({ key: 'value' })).toStrictEqual({
+        _key: 'value',
+      });
+    });
+
+    it('transforms decortated texts', () => {
+      expect(
+        transformAttributes({ _sv: 'Rättighetsenhet', _en: 'Permission unit' }),
+      ).toStrictEqual({
+        __text: {
+          sv: 'Rättighetsenhet',
+          en: 'Permission unit',
+        },
+      });
+    });
+    it('transforms decortated values', () => {
+      expect(
+        transformAttributes({
+          _value_en: 'Published',
+          _value_sv: 'Publicerad',
+        }),
+      ).toStrictEqual({
+        __valueText: {
+          sv: 'Publicerad',
+          en: 'Published',
+        },
+      });
+    });
   });
 });

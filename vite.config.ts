@@ -11,14 +11,15 @@ export default defineConfig(({ isSsrBuild }) => {
     base: BASE_PATH ? `${BASE_PATH}/` : undefined,
     plugins: [
       !process.env.VITEST && reactRouter(),
-      babelPlugin({
-        filter: /\.tsx?$/,
-        babelConfig: {
-          presets: ['@babel/preset-typescript'],
-          plugins: ['babel-plugin-react-compiler'],
-          retainLines: true,
-        },
-      }),
+      !process.env.VITEST &&
+        babelPlugin({
+          filter: /\.tsx?$/,
+          babelConfig: {
+            presets: ['@babel/preset-typescript'],
+            plugins: ['babel-plugin-react-compiler'],
+            retainLines: true,
+          },
+        }),
       tsconfigPaths(),
       svgr({
         include: 'app/icons/**/*.svg?react',
