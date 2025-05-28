@@ -32,8 +32,6 @@ export default [
   route('translations/:lang', 'routes/resourceRoutes/translations.tsx'),
   route('fileUpload', 'routes/resourceRoutes/fileUpload.tsx'),
 
-  route('output-prototype', 'routes/outputPrototype.tsx'),
-
   route('design-system', 'routes/docs/designSystem.tsx'),
   route('api-docs', 'routes/docs/apiDocs.tsx', [
     route(':recordType', 'routes/docs/apiDocsRecordType.tsx', [
