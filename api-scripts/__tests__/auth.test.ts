@@ -48,7 +48,11 @@ describe('login', () => {
   });
 
   it('should make a POST request with correct parameters', async () => {
-    await login();
+    await login(
+      'https://cora.epc.ub.uu.se/diva/login',
+      'divaAdmin@cora.epc.ub.uu.se',
+      '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
+    );
 
     expect(fetch).toHaveBeenCalledWith(
       'https://cora.epc.ub.uu.se/diva/login/rest/apptoken',
@@ -64,7 +68,11 @@ describe('login', () => {
   });
 
   it('should return the correct token and logout function', async () => {
-    const result = await login();
+    const result = await login(
+      'https://cora.epc.ub.uu.se/diva/login',
+      'divaAdmin@cora.epc.ub.uu.se',
+      '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
+    );
 
     expect(result.token).toBe('mock-token-123');
     expect(typeof result.logout).toBe('function');
@@ -72,7 +80,11 @@ describe('login', () => {
 
   describe('logout', () => {
     it('should call DELETE endpoint and log success', async () => {
-      const { logout } = await login();
+      const { logout } = await login(
+        'https://cora.epc.ub.uu.se/diva/login',
+        'divaAdmin@cora.epc.ub.uu.se',
+        '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
+      );
       await logout();
 
       expect(fetch).toHaveBeenCalledWith('https://logout.url', {

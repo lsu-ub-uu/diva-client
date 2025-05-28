@@ -12,7 +12,7 @@ import { format } from 'prettier';
 import {
   generateValidationTypeInterfaces,
   getNameFromMetadata,
-} from 'typegen/generateValidationTypeInterface';
+} from '../generateValidationTypeInterface';
 import { describe, expect, it } from 'vitest';
 
 describe('generateValidationTypeInterface', () => {
@@ -64,9 +64,8 @@ describe('generateValidationTypeInterface', () => {
       {
         id: 'bazVar',
         nameInData: 'baz',
-        type: 'collectionVariable',
-        refCollection: 'foo-bar',
-      } as BFFMetadataCollectionVariable,
+        type: 'textVariable',
+      } as BFFMetadataTextVariable,
       {
         id: 'typeVar',
         nameInData: 'type',
@@ -105,9 +104,29 @@ describe('generateValidationTypeInterface', () => {
       ['validationTypeId'],
     );
 
-    const expected = `export interface ValidationTypeId extends BFFDataRecordData{
-      'root': { foo?: { value: string; _lang: 'en' | 'sv'; };  bar_type_code: { baz?: { value: string }[]; _type: 'code'; } };
-    }`;
+    const expected = `
+      export interface ValidationTypeId extends BFFDataRecordData {
+        root: MetadataGroupId;
+      }
+      
+      export type LangCollection = "en" | "sv";
+      
+      export interface BarGroup {
+        baz?: { value: string; __text: { sv: string; en: string } }[];
+        _type: "code";
+        __text: { sv: string; en: string };
+      }
+      
+      export interface MetadataGroupId {
+        foo?: {
+          value: string;
+          _lang: LangCollection;
+          __text: { sv: string; en: string };
+        };
+        bar_type_code: BarGroup;
+        __text: { sv: string; en: string };
+      }
+    `;
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(
       await format(expected, { parser: 'typescript' }),

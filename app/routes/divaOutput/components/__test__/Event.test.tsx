@@ -39,6 +39,6 @@ describe('Event', () => {
       '2023-10-05T14:30',
     );
     expect(screen.getByRole('time')).toHaveTextContent('2023-10-05 14:30');
-    expect(screen.getByText('(eng)')).toBeInTheDocument();
+    expect(screen.getByText(/.*engLangItemText.*/)).toBeInTheDocument();
   });
 });

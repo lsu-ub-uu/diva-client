@@ -382,7 +382,7 @@ describe('generate validation', () => {
                 {
                   value: undefined,
                 },
-                false,
+                true,
               ),
             },
             ...validationTestsExtras(
@@ -473,7 +473,7 @@ describe('generate validation', () => {
                     {
                       value: undefined,
                     },
-                    false,
+                    true,
                   ),
                 },
               },
@@ -529,7 +529,7 @@ describe('generate validation', () => {
                   innerType: {
                     fields: {
                       firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -537,7 +537,7 @@ describe('generate validation', () => {
                         },
                       },
                       lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -545,7 +545,7 @@ describe('generate validation', () => {
                         },
                       },
                       age: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -672,7 +672,7 @@ describe('generate validation', () => {
                   _gradeAttribute: undefined,
                   value: undefined,
                 },
-                false,
+                true,
               ),
             },
             ...validationTestsExtras(
@@ -736,7 +736,7 @@ describe('generate validation', () => {
                             _colourAttribute: undefined,
                             value: undefined,
                           },
-                          false,
+                          true,
                         ),
                         fields: {
                           value: {
@@ -773,7 +773,7 @@ describe('generate validation', () => {
                         },
                       },
                       lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             ...validationTestsExtras(
@@ -802,7 +802,7 @@ describe('generate validation', () => {
                           {
                             value: undefined,
                           },
-                          false,
+                          true,
                         ),
                         fields: {
                           value: {
