@@ -1,7 +1,9 @@
 pipeline {
-    agent docker {
-        image 'node:22.14.0'
+  agent {
+    docker {
+      image 'node:22.14.0'
     }
+  }
 
   environment {
     // Customize as needed
