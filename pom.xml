@@ -31,7 +31,7 @@
     <name>DiVA Client</name>
 
     <properties>
-        <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
+        <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
         <basename>/divaclient</basename>
         <docker-repo-url>dev-maven-repo:19003</docker-repo-url>
         <docker-image-tag>${project.artifactId}:${project.version}</docker-image-tag>
