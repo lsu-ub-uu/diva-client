@@ -35,6 +35,8 @@
         <basename>/divaclient</basename>
         <docker-repo-url>dev-maven-repo:19003</docker-repo-url>
         <docker-image-tag>${project.artifactId}:${project.version}</docker-image-tag>
+        <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
+        <nodeVersion>v22.14.0</nodeVersion>
     </properties>
 
 
@@ -46,63 +48,80 @@
     </scm>
 
     <build>
+        <resources>
+			<resource>
+				<directory>dist</directory>
+				<targetPath>dist</targetPath>
+				<includes><include>**/*</include></includes>
+			</resource>
+            <resource>
+				<directory>server</directory>
+				<targetPath>server</targetPath>
+				<includes><include>**/*</include></includes>
+			</resource>
+            <resource>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>server.ts</include>
+                    <include>package.json</include>
+                    <include>package-lock.json</include>
+                </includes>
+            </resource>
+		</resources>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${exec-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>docker-build</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${frontend-maven-plugin.version}</version>
+				<configuration>
+					<installDirectory>${project.build.directory}/nodeJs</installDirectory>
+					<workingDirectory>${project.build.directory}/nodeJs</workingDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>${nodeVersion}</nodeVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm ci</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
                         <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>build</argument>
-                                <argument>-t</argument>
-                                <argument>${docker-image-tag}</argument>
-                                <argument>--build-arg</argument>
-                                <argument>BASE_PATH=${basename}</argument>
-                                <argument>.</argument>
-                            </arguments>
+                            <arguments>ci</arguments>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>docker-tag</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>tag</argument>
-                                <argument>${docker-image-tag}</argument>
-                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>docker-push</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>image</argument>
-                                <argument>push</argument>
-                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+					</execution>
+
+					<execution>
+						<id>npm run build</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+                            <environmentVariables>
+                                <BASE_PATH>${env.BASE_PATH}</BASE_PATH>
+                            </environmentVariables>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>${frontend-maven-plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+            
         </plugins>
     </build>
 </project>
-
