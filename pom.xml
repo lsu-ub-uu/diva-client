@@ -31,10 +31,7 @@
     <name>DiVA Client</name>
 
     <properties>
-        <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
         <basename>/divaclient</basename>
-        <docker-repo-url>dev-maven-repo:19003</docker-repo-url>
-        <docker-image-tag>${project.artifactId}:${project.version}</docker-image-tag>
         <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
         <nodeVersion>v22.14.0</nodeVersion>
     </properties>
@@ -108,7 +105,7 @@
 						<configuration>
 							<arguments>run build</arguments>
                             <environmentVariables>
-                                <BASE_PATH>${env.BASE_PATH}</BASE_PATH>
+                                <BASE_PATH>${basename}</BASE_PATH>
                             </environmentVariables>
 						</configuration>
 					</execution>
