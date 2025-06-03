@@ -3,5 +3,8 @@
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
   "npm.autoDetect": "on",
-  "terminal.explorerKind": "external"
+  "terminal.explorerKind": "external",
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
 }
