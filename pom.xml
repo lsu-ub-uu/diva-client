@@ -34,7 +34,7 @@
 
   <properties>
     <basename>/divaclient</basename>
-    <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
+    <frontend-maven-plugin.version>1.15.10-atlassian-2</frontend-maven-plugin.version>
     <nodeVersion>v22.14.0</nodeVersion>
   </properties>
 
