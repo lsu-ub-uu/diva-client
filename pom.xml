@@ -18,91 +18,111 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>se.uu.ub.cora</groupId>
-        <artifactId>cora-parent</artifactId>
-        <version>2.7.0</version>
-    </parent>
+  <parent>
+    <groupId>se.uu.ub.cora</groupId>
+    <artifactId>cora-parent</artifactId>
+    <version>2.7.0</version>
+  </parent>
 
-    <artifactId>diva-client</artifactId>
-    <version>1.23-SNAPSHOT</version>
-    <name>DiVA Client</name>
+  <artifactId>diva-client</artifactId>
+  <version>1.25-SNAPSHOT</version>
+  <name>DiVA Client</name>
 
-    <properties>
-        <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
-        <basename>/divaclient</basename>
-        <docker-repo-url>dev-maven-repo:19003</docker-repo-url>
-        <docker-image-tag>${project.artifactId}:${project.version}</docker-image-tag>
-    </properties>
+  <properties>
+    <basename>/divaclient</basename>
+    <frontend-maven-plugin.version>1.15.10-atlassian-2</frontend-maven-plugin.version>
+    <nodeVersion>v22.14.0</nodeVersion>
+  </properties>
 
 
-    <scm>
-        <connection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</connection>
-        <developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</developerConnection>
-        <url>https://github.com/lsu-ub-uu/diva-client.git</url>
-        <tag>HEAD</tag>
-    </scm>
+  <scm>
+    <connection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</connection>
+    <developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</developerConnection>
+    <url>https://github.com/lsu-ub-uu/diva-client.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${exec-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>docker-build</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>build</argument>
-                                <argument>-t</argument>
-                                <argument>${docker-image-tag}</argument>
-                                <argument>--build-arg</argument>
-                                <argument>BASE_PATH=${basename}</argument>
-                                <argument>.</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>docker-tag</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>tag</argument>
-                                <argument>${docker-image-tag}</argument>
-                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>docker-push</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker</executable>
-                            <arguments>
-                                <argument>image</argument>
-                                <argument>push</argument>
-                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <resources>
+      <resource>
+        <directory>dist</directory>
+        <targetPath>dist</targetPath>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>server</directory>
+        <targetPath>server</targetPath>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>server.ts</include>
+          <include>package.json</include>
+          <include>package-lock.json</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <configuration>
+          <installDirectory>${project.build.directory}/nodeJs</installDirectory>
+          <workingDirectory>${project.build.directory}/nodeJs</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install node and npm</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>${nodeVersion}</nodeVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm ci</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>ci</arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>npm run build</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+              <environmentVariables>
+                <BASE_PATH>${basename}</BASE_PATH>
+              </environmentVariables>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>${frontend-maven-plugin.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+    </plugins>
+  </build>
 </project>
-

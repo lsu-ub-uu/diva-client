@@ -12,7 +12,6 @@ The project is written in TypeScript. A code editor that supports real-time Type
 
 - Node.js (version 22.14 or later)
 - npm (version 10.8 or later)
-- Alternatively you can [build and run with Docker](#building-and-running-docker-image)
 
 ### Installation
 
@@ -82,31 +81,6 @@ npm run stylelint
 npm run build
 npm start
 ```
-
-### Docker
-
-#### Build the Docker image
-
-```bash
-docker build -t diva-client .
-```
-
-#### Start the Docker container
-
-```bash
-# Stop and remove any old containers
-docker kill diva-client
-docker rm diva-client
-
-# Create and run container, with environment variables and publishes port
-docker run -d --name diva-client \
-      -e CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest \
-      -e CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest \
-      -p 9876:5173 \
-      diva-client
-```
-
-Docker container should now be accessible at http://localhost:9876
 
 ### Enable in-app devtools
 
