@@ -17,8 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import getEnvironment from '@/utils/getEnvironment';
-
 export interface Account {
   appToken: string;
   id?: string;
@@ -29,7 +27,7 @@ export interface Account {
   firstName?: string;
 }
 
-const divaUser = {
+const divaAdmin = {
   appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
   userId: '161616',
   idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
@@ -69,16 +67,10 @@ const kthDomainAdmin = {
   firstName: 'domainAdmin',
 };
 
-export const preAccounts: Account[] = [divaUser];
-
 export const devAccounts: Account[] = [
-  divaUser,
+  divaAdmin,
   divaEverything,
   systemAdmin,
   uuDomainAdmin,
   kthDomainAdmin,
 ];
-
-export const getDevAccounts = () => {
-  return getEnvironment() === 'pre' ? preAccounts : devAccounts;
-};
