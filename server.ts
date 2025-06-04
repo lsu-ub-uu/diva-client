@@ -27,7 +27,6 @@ import path from 'node:path';
 const BUILD_PATH = './dist/server/index.js';
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 const BASE_PATH = process.env.BASE_PATH ?? '';
-const DOMAIN = process.env.DOMAIN ?? 'localhost';
 
 const PORT = Number.parseInt(process.env.PORT || '5173');
 
@@ -75,11 +74,8 @@ if (DEVELOPMENT) {
 app.use(morgan('tiny'));
 
 app.listen(PORT, () => {
-  console.info(`Cora API-url ${process.env.CORA_API_URL}`);
-  console.info(`CORA_LOGIN_URL-url ${process.env.CORA_LOGIN_URL}`);
+  console.info(`CORA_API_URL ${process.env.CORA_API_URL}`);
+  console.info(`CORA_LOGIN_URL ${process.env.CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
-  console.info(`DOMAIN ${DOMAIN}`);
-  console.info(
-    `Server is running on  http://${DOMAIN}:${PORT}${BASE_PATH ?? ''}`,
-  );
+  console.info(`Server is started and listening on port ${PORT} ${BASE_PATH}`);
 });

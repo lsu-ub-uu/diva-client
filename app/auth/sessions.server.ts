@@ -37,7 +37,6 @@ const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
     cookie: {
       name: '__session',
-      domain: import.meta.env.DOMAIN,
       httpOnly: true,
       maxAge: 60 * 60 * 8, // 8h
       path: '/',
