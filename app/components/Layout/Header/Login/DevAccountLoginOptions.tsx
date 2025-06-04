@@ -18,7 +18,7 @@
 
 import { useTranslation } from 'react-i18next';
 import type { Account } from './devAccounts';
-import { getDevAccounts } from './devAccounts';
+import { devAccounts } from './devAccounts';
 import { MenuItem } from '@headlessui/react';
 
 interface DevAccountsProps {
@@ -30,7 +30,7 @@ export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
   return (
     <>
       <h6>{t('divaClient_LoginDevAccountText')}</h6>
-      {getDevAccounts().map((devAccount) => (
+      {devAccounts.map((devAccount) => (
         <MenuItem key={devAccount.id}>
           <button key={devAccount.userId} onClick={() => onSelect(devAccount)}>
             {devAccount.lastName} {devAccount.firstName}

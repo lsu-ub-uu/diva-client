@@ -19,11 +19,6 @@
     "test:ci": "vitest run",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "e2e": "PORT=5174 playwright test --project firefox",
-    "e2e:ui": "PORT=5174 playwright test --ui",
-    "e2e:preview": "E2E_TARGET=https://cora.epc.ub.uu.se BASE_PATH=/divaclient playwright test --project firefox --project chromium",
-    "e2e:ci": "playwright test",
-    "e2e:report": "playwright show-report",
     "api-script": "tsx api-scripts/main.ts"
   },
   "engines": {
@@ -58,7 +53,6 @@
     "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.25.1",
     "@faker-js/faker": "^9.4.0",
-    "@playwright/test": "^1.52.0",
     "@react-router/dev": "^7.5.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",

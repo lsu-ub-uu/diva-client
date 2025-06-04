@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2025 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,12 +14,19 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-export type Environment = 'pre' | 'preview' | 'local';
 
-export default function getEnvironment(): Environment {
-  const { ENVIRONMENT } = import.meta.env;
+export const getSessionCookieOptions = () => {
+  const secrets = process.env.SESSION_SECRETS?.split(',');
+  const secure = process.env.SESSION_SECURE !== 'false';
 
-  return (ENVIRONMENT as Environment) ?? 'local';
-}
+  return {
+    name: '__session',
+    httpOnly: true,
+    maxAge: 60 * 60 * 8, // 8h
+    path: '/',
+    sameSite: 'lax' as const,
+    secrets,
+    secure,
+  };
+};

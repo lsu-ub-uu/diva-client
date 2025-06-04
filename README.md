@@ -33,10 +33,8 @@ npm install
 # Cora API URLs (mandatory)
 CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest
 CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest
-DOMAIN=0.0.0.0
 
 # Additional variables (optional)
-ENVIRONMENT=local
 BASE_PATH=/divaclient
 PORT=5173
 ```
@@ -57,18 +55,6 @@ Open http://0.0.0.0:5173/divaclient in a web browser
 
 ```bash
 npm test
-```
-
-#### Run end-to-end tests
-
-```bash
-npm run e2e
-```
-
-#### Open end-to-end test UI
-
-```bash
-npm run e2e:ui
 ```
 
 #### TypeScript check

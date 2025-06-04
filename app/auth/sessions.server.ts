@@ -18,6 +18,7 @@
 
 import { createCookieSessionStorage, data, type Session } from 'react-router';
 import type { Auth } from '@/auth/Auth';
+import { getSessionCookieOptions } from './getSessionCookieOptions.server';
 
 export type SessionData = {
   auth: Auth;
@@ -35,16 +36,7 @@ export type SessionFlashData = {
 
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
-    cookie: {
-      name: '__session',
-      domain: import.meta.env.DOMAIN,
-      httpOnly: true,
-      maxAge: 60 * 60 * 8, // 8h
-      path: '/',
-      sameSite: 'lax',
-      secrets: ['s3cret1'],
-      secure: import.meta.env.PROD,
-    },
+    cookie: getSessionCookieOptions(),
   });
 
 async function getSessionFromCookie(request: Request) {

@@ -80,41 +80,6 @@ describe('<Login/>', () => {
       });
     });
 
-    it('returns only DiVAAdmin when environment is pre', async () => {
-      vi.stubEnv('ENVIRONMENT', 'pre');
-      const user = userEvent.setup();
-
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          Component: Login,
-          loader() {
-            return { loginUnits };
-          },
-        },
-      ]);
-
-      render(<RoutesStub />);
-
-      const loginButton = await waitFor(() =>
-        screen.getByRole('button', {
-          name: 'divaClient_LoginText',
-        }),
-      );
-      await user.click(loginButton);
-
-      await waitFor(() => {
-        const userNameList = screen.queryAllByRole('menuitem');
-        const listItems = userNameList.map((item) => item.textContent);
-        expect(listItems).toEqual([
-          'DiVA Admin',
-          'rkhTestDiVALoginUnitText',
-          'skhTestDiVALoginUnitText',
-          'ltuDiVALoginUnitText',
-        ]);
-      });
-    });
-
     describe('webRedirect accounts opens a link to Shibboleth', async () => {
       it.each(
         loginUnits.map((loginUnit) => [
