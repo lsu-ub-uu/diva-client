@@ -2027,11 +2027,11 @@ export interface PresentationDivaGroup {
 }
 
 export interface DefenceGroup {
+  language?: LanguageGroup;
   dateOther_type_defence?: DateOtherDefenceGroup;
   location?: { value: string; __text: { sv: string; en: string } };
   address?: { value: string; __text: { sv: string; en: string } };
   place?: PlaceGroup;
-  language?: LanguageGroup;
   __text: { sv: string; en: string };
 }
 
