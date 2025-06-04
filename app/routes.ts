@@ -31,6 +31,7 @@ export default [
   ),
   route('translations/:lang', 'routes/resourceRoutes/translations.tsx'),
   route('fileUpload', 'routes/resourceRoutes/fileUpload.tsx'),
+  route('binary/download/:id/:name', 'routes/resourceRoutes/binaryDownload.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
   route('api-docs', 'routes/docs/apiDocs.tsx', [

@@ -219,11 +219,17 @@ const transformDataAtomic = (data: DataAtomic) => {
   return { value: data.value };
 };
 
+// https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:10283653549229923/large
 const transformResourceLink = (data: ResourceLink) => {
+  console.log('transformResourceLink', { data: JSON.stringify(data) });
+  const readLinkParts = data.actionLinks?.read.url.split('/');
+  const name = readLinkParts?.pop();
+  const id = readLinkParts?.pop();
+
   return {
     name: data.name,
     mimeType: data.mimeType,
-    actionLinks: data.actionLinks,
+    downloadLink: `/binary/download/${id}/${name}`,
   };
 };
 
