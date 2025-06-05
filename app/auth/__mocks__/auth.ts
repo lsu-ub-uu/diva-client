@@ -18,6 +18,7 @@
 
 import type { Auth } from '@/auth/Auth';
 import type { ActionLinks, AuthWrapper } from '@/cora/cora-data/types.server';
+import type { User } from '../createUser';
 
 interface AuthMockInit {
   data?: Partial<Auth['data']>;
@@ -50,6 +51,18 @@ export const createMockAuth = (init: AuthMockInit = {}): Auth => {
       },
       ...(init.actionLinks ?? {}),
     },
+  };
+};
+
+export const createMockUser = (init: Partial<User> = {}): User => {
+  return {
+    renewUntil: '1736431339581',
+    validUntil: '1736345539581',
+    userId: 'coraUser:111111111111111',
+    loginId: 'user@domain.x',
+    lastName: 'DiVA',
+    firstName: 'Everything',
+    ...(init ?? {}),
   };
 };
 

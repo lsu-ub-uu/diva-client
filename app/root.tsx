@@ -55,6 +55,7 @@ import {
 } from './userPreferences/userPreferencesCookie.server';
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { createUser } from './auth/createUser';
 
 const { MODE } = import.meta.env;
 
@@ -67,10 +68,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies);
   const locale = context.i18n.language;
   const recordTypes = getRecordTypes(dependencies, auth);
-
+  const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
 
-  return { auth, locale, loginUnits, theme, recordTypes, userPreferences };
+  return { user, locale, loginUnits, theme, recordTypes, userPreferences };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -223,7 +224,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className='root-layout'>
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.auth !== undefined}>
+        <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
           <Login />

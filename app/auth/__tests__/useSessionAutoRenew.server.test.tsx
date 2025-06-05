@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createMockAuth } from '@/auth/__mocks__/auth';
+import { createMockUser } from '@/auth/__mocks__/auth';
 import {
   getTimeUntilNextRenew,
   useSessionAutoRenew,
@@ -25,6 +25,7 @@ import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 import { act, render } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
+import type { User } from '../createUser';
 
 vi.mock('@/utils/useIsNewestWindow');
 
@@ -47,12 +48,11 @@ describe('useSessionAutoRenew', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
+        id: 'root',
         Component: TestComponent,
         loader: vi.fn().mockReturnValue({
-          auth: createMockAuth({
-            data: {
-              validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
-            },
+          user: createMockUser({
+            validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
           }),
         }),
         action: renewAuthTokenActionSpy,
@@ -72,10 +72,8 @@ describe('useSessionAutoRenew', () => {
     vi.useFakeTimers();
 
     vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
-    const mockAuth = createMockAuth({
-      data: {
-        validUntil: new Date('2025-01-09T00:00:29Z').getTime().toString(),
-      },
+    const user: User = createMockUser({
+      validUntil: new Date('2025-01-09T00:00:29Z').getTime().toString(),
     });
 
     const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
@@ -83,8 +81,9 @@ describe('useSessionAutoRenew', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
+        id: 'root',
         Component: TestComponent,
-        loader: () => ({ auth: mockAuth }),
+        loader: () => ({ user }),
         action: renewAuthTokenActionSpy,
       },
     ]);
@@ -108,10 +107,11 @@ describe('useSessionAutoRenew', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
+        id: 'root',
         Component: TestComponent,
         action: renewAuthTokenActionSpy,
         loader: vi.fn().mockReturnValue({
-          auth: undefined,
+          user: undefined,
         }),
       },
     ]);
@@ -132,16 +132,15 @@ describe('useSessionAutoRenew', () => {
 
     const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
     const loaderSpy = vi.fn().mockReturnValue({
-      auth: createMockAuth({
-        data: {
-          validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
-        },
+      user: createMockUser({
+        validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
       }),
     });
 
     const RoutesStub = createRoutesStub([
       {
         path: '/',
+        id: 'root',
         Component: TestComponent,
         loader: loaderSpy,
         action: renewAuthTokenActionSpy,

@@ -18,6 +18,7 @@
  */
 
 import type { Auth } from '@/auth/Auth';
+import type { User } from '@/auth/createUser';
 
 export const messageIsFromWindowOpenedFromHere = (event: MessageEvent<any>) => {
   return event.origin === window.location.origin;
@@ -33,12 +34,12 @@ export const convertLoginIdToShortForm = (loginId: string) => {
   return loginId.split('@')[0];
 };
 
-export const getName = (user: Auth) => {
-  if (user.data.firstName || user.data.lastName) {
-    return `${user.data.firstName} ${user.data.lastName}`;
+export const getName = (user: User) => {
+  if (user.firstName || user.lastName) {
+    return `${user.firstName} ${user.lastName}`;
   }
 };
 
-export const printUserNameOnPage = (user: Auth) => {
-  return getName(user) ?? user.data.loginId;
+export const printUserNameOnPage = (user: User) => {
+  return getName(user) ?? user.loginId;
 };

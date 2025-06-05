@@ -6,7 +6,7 @@ export const useTheme = () => {
   return rootLoaderData?.theme;
 };
 
-export const useAuth = () => {
+export const useUser = () => {
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  return rootLoaderData?.auth;
+  return rootLoaderData?.user;
 };

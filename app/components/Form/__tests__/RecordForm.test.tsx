@@ -3142,6 +3142,12 @@ describe('<Form />', () => {
             return { record: linkedBinaryMock };
           },
         },
+        {
+          path: '/binary/:id/:name',
+          loader: () => {
+            return '';
+          },
+        },
       ]);
 
       await act(() => render(<RoutesStub />));
@@ -3153,7 +3159,7 @@ describe('<Form />', () => {
 
       expect(screen.getByRole('presentation')).toHaveAttribute(
         'src',
-        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
+        '/binary/binary:1283806137807105/thumbnail',
       );
 
       expect(screen.getByText('cat.jpg')).toBeInTheDocument();
@@ -3164,7 +3170,7 @@ describe('<Form />', () => {
 
       expect(downloadLink).toHaveAttribute(
         'href',
-        'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
+        '/binary/binary:1283806137807105/master',
       );
       expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
     });
