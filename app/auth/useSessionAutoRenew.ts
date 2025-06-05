@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useCallback, useEffect, useRef } from 'react';
-import { type action, type loader } from '@/root';
+import { type action } from '@/root';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
-import { useFetcher, useLoaderData, useRevalidator } from 'react-router';
+import { useCallback, useEffect, useRef } from 'react';
+import { useFetcher, useRevalidator } from 'react-router';
 
 /**
  * How long before token expiry to start the renewal process
@@ -39,7 +40,7 @@ const WINDOW_SYNC_BUFFER = 1000;
 const REVALIDATE_TIME_BUFFER = 5000;
 
 export const useSessionAutoRenew = () => {
-  const { auth } = useLoaderData<typeof loader>();
+  const user = useUser();
   const { submit } = useFetcher<typeof action>();
   const renewTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -47,7 +48,7 @@ export const useSessionAutoRenew = () => {
   const { revalidate } = useRevalidator();
 
   const isNewestWindow = useIsNewestWindow(WINDOW_SYNC_BUFFER);
-  const validUntil = Number(auth?.data.validUntil);
+  const validUntil = Number(user?.validUntil);
 
   /**
    * Only the newest window/tab renews the auth token.

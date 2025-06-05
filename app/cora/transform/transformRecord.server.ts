@@ -220,10 +220,14 @@ const transformDataAtomic = (data: DataAtomic) => {
 };
 
 const transformResourceLink = (data: ResourceLink) => {
+  const readLinkParts = data.actionLinks?.read.url.split('/');
+  const name = readLinkParts?.pop();
+  const id = readLinkParts?.pop();
+
   return {
-    name: data.name,
+    name,
     mimeType: data.mimeType,
-    actionLinks: data.actionLinks,
+    id,
   };
 };
 

@@ -100,51 +100,21 @@ describe('Login validation', () => {
   it.each([
     [
       {
-        data: {
-          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validUntil: '1736342825558',
-          renewUntil: '1738972800000',
-          userId: 'coraUser:111111111111111',
-          loginId: 'coraUser:111111111111111',
-          firstName: 'Everything',
-          lastName: 'DiVA',
-        },
-        actionLinks: {
-          delete: {
-            requestMethod: 'DELETE',
-            rel: 'delete',
-            url: '',
-          },
-          renew: {
-            requestMethod: 'POST',
-            rel: 'renew',
-            url: '',
-          },
-        },
+        validUntil: '1736342825558',
+        renewUntil: '1738972800000',
+        userId: 'coraUser:111111111111111',
+        loginId: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
       },
       'Everything DiVA',
     ],
     [
       {
-        data: {
-          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-          validUntil: '1736342825558',
-          renewUntil: '1738972800000',
-          userId: 'coraUser:222222222222',
-          loginId: 'johdo290@user.uu.se',
-        },
-        actionLinks: {
-          delete: {
-            requestMethod: 'DELETE',
-            rel: 'delete',
-            url: '',
-          },
-          renew: {
-            requestMethod: 'POST',
-            rel: 'renew',
-            url: '',
-          },
-        },
+        validUntil: '1736342825558',
+        renewUntil: '1738972800000',
+        userId: 'coraUser:222222222222',
+        loginId: 'johdo290@user.uu.se',
       },
       'johdo290@user.uu.se',
     ],

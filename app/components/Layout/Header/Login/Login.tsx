@@ -18,12 +18,10 @@
 
 import {
   useFetcher,
-  useLoaderData,
   useLocation,
   useNavigation,
   useSubmit,
 } from 'react-router';
-import type { loader } from '@/root';
 import {
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
@@ -42,11 +40,12 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 import styles from './Login.module.css';
 import { useHydrated } from '@/utils/useHydrated';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 
 export default function User() {
   const hydrated = useHydrated();
   const { MODE } = import.meta.env;
-  const { auth } = useLoaderData<typeof loader>();
+  const user = useUser();
   const fetcher = useFetcher();
   const submit = useSubmit();
   const { t } = useTranslation();
@@ -91,7 +90,7 @@ export default function User() {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
 
-  if (!auth) {
+  if (!user) {
     return (
       <div className={styles['login']}>
         <Menu>
@@ -127,7 +126,7 @@ export default function User() {
         >
           <PersonIcon />
           <span className={styles['user-name']}>
-            {printUserNameOnPage(auth)}
+            {printUserNameOnPage(user)}
           </span>
           <ChevronDownIcon />
         </MenuButton>

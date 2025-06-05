@@ -80,16 +80,9 @@ export const linkedBinaryMock = {
           value: 'binary:1283806137807105-master',
         },
         master: {
+          id: 'binary:1283806137807105',
           name: 'master',
           mimeType: 'image/jpeg',
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/master',
-              accept: 'image/jpeg',
-            },
-          },
         },
         fileSize: {
           value: '12648',
@@ -134,14 +127,7 @@ export const linkedBinaryMock = {
         large: {
           name: 'large',
           mimeType: 'image/jpeg',
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/large',
-              accept: 'image/jpeg',
-            },
-          },
+          id: 'binary:1283806137807105',
         },
         fileSize: {
           value: '75541',
@@ -163,14 +149,7 @@ export const linkedBinaryMock = {
         medium: {
           name: 'medium',
           mimeType: 'image/jpeg',
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/medium',
-              accept: 'image/jpeg',
-            },
-          },
+          id: 'binary:1283806137807105',
         },
         fileSize: {
           value: '27689',
@@ -192,14 +171,7 @@ export const linkedBinaryMock = {
         thumbnail: {
           name: 'thumbnail',
           mimeType: 'image/jpeg',
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/thumbnail',
-              accept: 'image/jpeg',
-            },
-          },
+          id: 'binary:1283806137807105',
         },
         fileSize: {
           value: '4522',
@@ -221,14 +193,7 @@ export const linkedBinaryMock = {
         jp2: {
           name: 'jp2',
           mimeType: 'image/jp2',
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1283806137807105/jp2',
-              accept: 'image/jp2',
-            },
-          },
+          id: 'binary:1283806137807105',
         },
         fileSize: {
           value: '81289',

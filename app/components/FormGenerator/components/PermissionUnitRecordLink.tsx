@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Auth } from '@/auth/Auth';
+import type { User } from '@/auth/createUser';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import type { BFFTheme } from '@/cora/transform/bffTypes.server';
-import { useAuth, useTheme } from '@/utils/rootLoaderDataUtils';
+import { useTheme, useUser } from '@/utils/rootLoaderDataUtils';
 import { useEffect } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from './DevInfo';
@@ -30,14 +30,14 @@ interface PermissionUnitRecordLinkProps {
   path: string;
 }
 export const PermissionUnitRecordLink = ({
-  component,
+  component /*  */,
   path,
 }: PermissionUnitRecordLinkProps) => {
   const { setValue } = useRemixFormContext();
   const theme = useTheme();
-  const auth = useAuth();
+  const user = useUser();
 
-  const autoPermissionUnit = getAutoPermissionUnit(theme, auth);
+  const autoPermissionUnit = getAutoPermissionUnit(theme, user);
 
   useEffect(() => {
     if (autoPermissionUnit) {
@@ -64,14 +64,14 @@ export const PermissionUnitRecordLink = ({
 
 const getAutoPermissionUnit = (
   theme: BFFTheme | undefined,
-  auth: Auth | undefined,
+  user: User | undefined,
 ) => {
   const memberPermissionUnit = theme?.memberPermissionUnit;
   if (memberPermissionUnit) {
     return memberPermissionUnit;
   }
 
-  if (auth?.data.permissionUnit && auth.data.permissionUnit.length === 1) {
-    return auth.data.permissionUnit[0];
+  if (user?.permissionUnit && user?.permissionUnit.length === 1) {
+    return user.permissionUnit[0];
   }
 };

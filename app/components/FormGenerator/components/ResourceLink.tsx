@@ -18,10 +18,10 @@
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
-import type { ResourceLink as ResourceLinkType } from '@/cora/cora-data/types.server';
 import { DownloadIcon } from '@/icons';
-import { useAuth } from '@/utils/rootLoaderDataUtils';
+import { withBaseName } from '@/utils/withBasename';
 import { useTranslation } from 'react-i18next';
+import { href } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import resourceLinkStyles from './ResourceLink.module.css';
 
@@ -33,19 +33,20 @@ interface ResourceLinkProps {
 export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
-  const auth = useAuth();
 
-  const data: ResourceLinkType = getValues(path);
-  const authToken = auth?.data.token;
+  const data = getValues(path);
 
-  const resourceUrl = `${data.actionLinks!.read.url}${authToken ? `?authToken=${authToken}` : ''}`;
+  const downloadLink = withBaseName(
+    href('/binary/:id/:name', { id: data.id, name: data.name }),
+  );
+
   return (
     <div className='form-component-item' data-colspan={component.gridColSpan}>
       <DevInfo component={component} path={path} />
-      {component.outputFormat === 'image' && <img src={resourceUrl} alt='' />}
+      {component.outputFormat === 'image' && <img src={downloadLink} alt='' />}
       {component.outputFormat === 'download' && (
         <a
-          href={resourceUrl}
+          href={downloadLink}
           className={resourceLinkStyles['download-link']}
           type={data.mimeType}
         >
