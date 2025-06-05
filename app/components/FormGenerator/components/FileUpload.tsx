@@ -23,10 +23,12 @@ import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { FileInput } from '@/components/Input/FileInput';
 import { Progress } from '@/components/Progress/Progress';
-import { useAuth } from '@/utils/rootLoaderDataUtils';
+import type { BFFDataRecord } from '@/types/record';
+import { withBaseName } from '@/utils/withBasename';
 import axios from 'axios';
 import { type ReactNode, use, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { href } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface RecordLinkBinaryProps {
@@ -47,11 +49,9 @@ export const FileUpload = ({
   const { t } = useTranslation();
   const { getValues, setValue, formState } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
-  const auth = useAuth();
   const [progress, setProgress] = useState(0);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
   const value = getValues(path);
-  const authToken = auth?.data.token;
 
   const errorMessage = getErrorMessageForField(formState, path);
   if (component.mode === 'output' && !value) {
@@ -62,27 +62,32 @@ export const FileUpload = ({
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setFileName(file.name);
-      const response = await axios.post(
-        `${import.meta.env.BASE_URL}fileUpload`,
-        {
-          fileName: file.name,
-          fileSize: String(file.size),
-        },
-      );
-      const binaryRecord = response.data.binaryRecord;
+      const response = await axios.post(withBaseName(href('/binaryRecord')), {
+        fileName: file.name,
+        fileSize: String(file.size),
+      });
+      const binaryRecord: BFFDataRecord = response.data.binaryRecord;
 
       const formData = new FormData();
       formData.append('file', file);
+      const uploadUrlParts = binaryRecord.actionLinks.upload.url.split('/');
+      const name = uploadUrlParts.pop() as string;
+      const id = uploadUrlParts.pop() as string;
 
-      await axios.post(binaryRecord.actionLinks.upload.url, formData, {
-        headers: {
-          'content-type': 'multipart/form-data',
-          Authtoken: authToken,
+      await axios.post(
+        withBaseName(href('/binary/:id/:name', { id, name })),
+        formData,
+        {
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+
+          onUploadProgress: (event) =>
+            setProgress(
+              Math.round((100 * event.loaded) / (event.total ?? 100)),
+            ),
         },
-
-        onUploadProgress: (event) =>
-          setProgress(Math.round((100 * event.loaded) / (event.total ?? 100))),
-      });
+      );
 
       setValue(path, binaryRecord.id);
     }

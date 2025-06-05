@@ -30,8 +30,8 @@ export default [
     'routes/resourceRoutes/autocompleteSearch.tsx',
   ),
   route('translations/:lang', 'routes/resourceRoutes/translations.tsx'),
-  route('fileUpload', 'routes/resourceRoutes/fileUpload.tsx'),
-  route('binary/download/:id/:name', 'routes/resourceRoutes/binaryDownload.ts'),
+  route('binaryRecord', 'routes/resourceRoutes/binaryRecord.ts'),
+  route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
   route('api-docs', 'routes/docs/apiDocs.tsx', [
