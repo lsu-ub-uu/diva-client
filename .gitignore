@@ -40,3 +40,6 @@ target
 vite.config.ts.timestamp-*
 
 .react-router
+
+# Test
+junit-report.xml
