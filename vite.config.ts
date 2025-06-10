@@ -46,7 +46,7 @@ export default defineConfig(({ isSsrBuild }) => {
     test: {
       environment: 'jsdom',
       include: ['**/*.{test,spec}.{js,ts,mts,cts,tsx}'],
-      exclude: ['**/node_modules/**', '**/target/**', '**/e2e/**'],
+      exclude: ['**/node_modules/**', '**/target/**'],
       setupFiles: './setupTest.ts',
     },
     build: {
