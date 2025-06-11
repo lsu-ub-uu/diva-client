@@ -2007,19 +2007,19 @@ export interface NamePersonalOpponentGroup {
   __text: { sv: string; en: string };
 }
 
-export interface DateOtherDefenceGroup {
+export interface DateOtherPresentationGroup {
   year: { value: string; __text: { sv: string; en: string } };
   month?: { value: string; __text: { sv: string; en: string } };
   day?: { value: string; __text: { sv: string; en: string } };
   hh?: { value: string; __text: { sv: string; en: string } };
   mm?: { value: string; __text: { sv: string; en: string } };
-  _type: 'defence';
+  _type: 'presentation';
   __text: { sv: string; en: string };
 }
 
 export interface PresentationDivaGroup {
   language?: LanguageGroup;
-  dateOther_type_defence?: DateOtherDefenceGroup;
+  dateOther_type_presentation?: DateOtherPresentationGroup;
   location?: { value: string; __text: { sv: string; en: string } };
   address?: { value: string; __text: { sv: string; en: string } };
   place?: PlaceGroup;
@@ -2028,7 +2028,7 @@ export interface PresentationDivaGroup {
 
 export interface DefenceGroup {
   language?: LanguageGroup;
-  dateOther_type_defence?: DateOtherDefenceGroup;
+  dateOther_type_presentation?: DateOtherPresentationGroup;
   location?: { value: string; __text: { sv: string; en: string } };
   address?: { value: string; __text: { sv: string; en: string } };
   place?: PlaceGroup;
@@ -2092,15 +2092,13 @@ export interface RelatedItemPartBookGroup {
   __text: { sv: string; en: string };
 }
 
-export type IdentifierDisplayLabelIssnCollection = 'eissn' | 'pissn';
-
 export interface RelatedItemSeriesGroup {
   series?: { value: string; __text: { sv: string; en: string } };
   titleInfo?: TitleInfoGroup;
-  identifier_type_issn?: {
+  identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
-    _displayLabel: IdentifierDisplayLabelIssnCollection;
+    _displayLabel: 'pissn';
     __text: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
@@ -2115,19 +2113,24 @@ export interface RelatedItemSeriesGroup {
 }
 
 export interface RelatedItemBookGroup {
+  book?: { value: string; __text: { sv: string; en: string } };
   titleInfo?: TitleInfoLangGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
     __text: { sv: string; en: string };
   };
-  originInfo?: OriginInfoGroup;
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
     __text: { sv: string; en: string };
   }[];
+  identifier_type_doi?: {
+    value: string;
+    _type: 'doi';
+    __text: { sv: string; en: string };
+  };
   part?: RelatedItemPartBookGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'book';
@@ -2135,20 +2138,25 @@ export interface RelatedItemBookGroup {
 }
 
 export interface RelatedItemConferencePublicationGroup {
+  proceeding?: { value: string; __text: { sv: string; en: string } };
   titleInfo?: TitleInfoLangGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
     __text: { sv: string; en: string };
   };
-  originInfo?: OriginInfoGroup;
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
     __text: { sv: string; en: string };
   }[];
-  part?: RelatedItemPartBookGroup;
+  identifier_type_doi?: {
+    value: string;
+    _type: 'doi';
+    __text: { sv: string; en: string };
+  };
+  part?: RelatedItemPartJournalGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'conferencePublication';
   __text: { sv: string; en: string };
@@ -2222,14 +2230,20 @@ export interface RelatedItemInitiativeGroup {
   __text: { sv: string; en: string };
 }
 
-export type RelatedOutputTypeCollection =
-  | 'retracted'
-  | 'constituent'
-  | 'thesis';
-
 export interface RelatedOutputGroup {
   output?: { value: string; __text: { sv: string; en: string } };
-  _type: RelatedOutputTypeCollection;
+  __text: { sv: string; en: string };
+}
+
+export interface RelatedOutputRetractedGroup {
+  output?: { value: string; __text: { sv: string; en: string } };
+  _type: 'retracted';
+  __text: { sv: string; en: string };
+}
+
+export interface RelatedOutputConstituentGroup {
+  output?: { value: string; __text: { sv: string; en: string } };
+  _type: 'constituent';
   __text: { sv: string; en: string };
 }
 
@@ -2451,7 +2465,7 @@ export interface OutputUpdateGroup {
   opponent_type_personal?: NamePersonalOpponentGroup[];
   presentation?: PresentationDivaGroup;
   defence?: DefenceGroup;
-  relatedItem_type_journal?: RelatedItemJournalGroup;
+  relatedItem_type_journal: RelatedItemJournalGroup;
   relatedItem_type_book?: RelatedItemBookGroup;
   relatedItem_type_conferencePublication?: RelatedItemConferencePublicationGroup;
   relatedItem_type_conference?: RelatedItemConferenceGroup;
@@ -2461,6 +2475,8 @@ export interface OutputUpdateGroup {
   relatedItem_type_funder?: RelatedItemFunderGroup[];
   relatedItem_type_initiative?: RelatedItemInitiativeGroup;
   related?: RelatedOutputGroup[];
+  related_type_retracted?: RelatedOutputRetractedGroup[];
+  related_type_constituent?: RelatedOutputConstituentGroup[];
   'accessCondition_authority_kb-se'?: {
     value: AccessConditionCollection;
     _authority: 'kb.se';
@@ -2942,12 +2958,12 @@ export interface PersonUpdateGroup {
     value: string;
     _type: 'openAlex';
     __text: { sv: string; en: string };
-  };
+  }[];
   identifier_type_scopus?: {
     value: string;
     _type: 'scopus';
     __text: { sv: string; en: string };
-  };
+  }[];
   identifier_type_viaf?: {
     value: string;
     _type: 'viaf';

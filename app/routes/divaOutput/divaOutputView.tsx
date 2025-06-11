@@ -32,6 +32,8 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 import { coraApiUrl } from '@/cora/helper.server';
 import { Button } from '@/components/Button/Button';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { createTitle } from './utils/createTitle';
+import { generateSEOMeta } from './utils/generateSEOMeta';
 
 export const loader = async ({
   request,
@@ -68,7 +70,10 @@ export const loader = async ({
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
-  return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
+  return [
+    { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
+    ...generateSEOMeta(data.record.data),
+  ];
 };
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
@@ -591,10 +596,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
-
-const createTitle = (titleInfo: DivaOutput['output']['titleInfo']) => {
-  return `${titleInfo.title.value}${titleInfo.subTitle ? `: ${titleInfo.subTitle.value}` : ''}`;
-};
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation();
