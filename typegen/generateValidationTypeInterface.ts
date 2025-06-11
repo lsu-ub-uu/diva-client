@@ -5,6 +5,8 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
+  BFFMetadataRecordLink,
+  BFFRecordType,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Lookup } from '@/utils/structs/lookup';
@@ -37,8 +39,8 @@ export function generateValidationTypeInterfaces(
     });
 
     return outputString;
-  } catch {
-    console.error(`Failed to generate types`);
+  } catch (error) {
+    console.error(`Failed to generate types`, error);
     return '';
   }
 }
@@ -59,9 +61,35 @@ function createChildRef(
           childMetadata as BFFMetadataGroup,
           attributes,
         )
-      : `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
+      : childMetadata.type === 'recordLink'
+        ? createRecordLinkType(
+            metadataPool,
+            recordTypePool,
+            childMetadata as BFFMetadataRecordLink,
+            attributes,
+          )
+        : `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
 
   return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+}
+
+function createRecordLinkType(
+  metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
+  childMetadata: BFFMetadataRecordLink,
+  attributes: string,
+): string {
+  console.log(
+    'recordLink',
+    childMetadata.nameInData,
+    childMetadata.linkedRecordType,
+  );
+
+  const linkedRecordType = recordTypePool.get(childMetadata.linkedRecordType);
+
+  console.log(createGroupType(metadataPool, linkedRecordMetadata, attributes));
+
+  return `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
 }
 
 function createValue(

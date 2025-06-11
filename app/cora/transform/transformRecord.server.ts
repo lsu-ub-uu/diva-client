@@ -25,6 +25,7 @@ import {
   containsChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataGroupWithNameInData,
+  hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
@@ -48,6 +49,7 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { dependencies } from 'server/depencencies';
 
 /**
  * Transforms records
@@ -77,8 +79,39 @@ export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper,
 ): BFFDataRecord => {
+  const {
+    id,
+    recordType,
+    validationType,
+    createdAt,
+    createdBy,
+    updated,
+    data,
+  } = transformRecordDataGroup(recordWrapper.record.data, dependencies);
+
   const coraRecord = recordWrapper.record;
-  const dataRecordGroup = coraRecord.data;
+  let userRights: BFFUserRight[] = [];
+  if (coraRecord.actionLinks !== undefined) {
+    userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
+  }
+
+  return removeEmpty({
+    id,
+    recordType,
+    validationType,
+    createdAt,
+    createdBy,
+    updated,
+    userRights,
+    actionLinks: coraRecord.actionLinks,
+    data,
+  });
+};
+
+const transformRecordDataGroup = (
+  dataRecordGroup: DataGroup,
+  dependencies: Dependencies,
+) => {
   let createdAt;
   let createdBy;
 
@@ -106,18 +139,13 @@ export const transformRecord = (
   }
   const updated = extractRecordUpdates(recordInfo);
 
-  let userRights: BFFUserRight[] = [];
-  if (coraRecord.actionLinks !== undefined) {
-    userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
-  }
-
   const formMetadata = createFormMetaData(
     dependencies,
     validationType,
     'update',
   );
 
-  const data = transformRecordData(dataRecordGroup, formMetadata);
+  const data = transformRecordData(dataRecordGroup, formMetadata, dependencies);
 
   return removeEmpty({
     id,
@@ -126,8 +154,6 @@ export const transformRecord = (
     createdAt,
     createdBy,
     updated,
-    userRights,
-    actionLinks: coraRecord.actionLinks,
     data,
   });
 };
@@ -135,10 +161,11 @@ export const transformRecord = (
 export const transformRecordData = (
   dataRecordGroup: DataGroup,
   formMetadata: FormMetaData,
+  dependencies: Dependencies,
 ) => {
   return {
     [dataRecordGroup.name]: {
-      ...transformDataGroup(dataRecordGroup, formMetadata),
+      ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
       ...transformAttributes(dataRecordGroup.attributes),
     },
   };
@@ -147,6 +174,7 @@ export const transformRecordData = (
 export const transformDataGroup = (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
+  dependencies: Dependencies,
 ): Metadata => {
   const init = {} as Metadata;
   return dataGroup.children.reduce<Metadata>((group, dataChild) => {
@@ -160,7 +188,7 @@ export const transformDataGroup = (
     const name = createDataName(dataChild, matchingMetadata);
 
     const transformedChild = {
-      ...transformData(dataChild, matchingMetadata),
+      ...transformData(dataChild, matchingMetadata, dependencies),
       ...transformAttributes(dataChild.attributes),
     };
     const repeating = isRepeating(matchingMetadata);
@@ -181,13 +209,17 @@ const createDataName = (data: CoraData, metadata: FormMetaData) => {
   return createFieldNameWithAttributes(data.name, metadataAttributes);
 };
 
-const transformData = (data: CoraData, metadata: FormMetaData) => {
+const transformData = (
+  data: CoraData,
+  metadata: FormMetaData,
+  dependencies: Dependencies,
+) => {
   if (metadata.type === 'group') {
-    return transformDataGroup(data as DataGroup, metadata);
+    return transformDataGroup(data as DataGroup, metadata, dependencies);
   }
 
   if (metadata.type === 'recordLink') {
-    return transformRecordLink(data as RecordLink);
+    return transformRecordLink(data as RecordLink, dependencies);
   }
 
   if (
@@ -206,13 +238,33 @@ const transformData = (data: CoraData, metadata: FormMetaData) => {
   return transformDataAtomic(data as DataAtomic);
 };
 
-const transformRecordLink = (data: RecordLink) => {
+const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
   const recordLinkId = getFirstDataAtomicValueWithNameInData(
     data,
     'linkedRecordId',
   );
 
-  return { value: recordLinkId };
+  const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
+    ? transformLinkedRecord(data, dependencies)
+    : undefined;
+
+  return {
+    value: recordLinkId,
+    linkedRecord,
+    actionLinks: data.actionLinks,
+    attributes: data.attributes,
+  };
+};
+
+const transformLinkedRecord = (
+  data: RecordLink,
+  dependencies: Dependencies,
+) => {
+  const linkedRecordGroup = getFirstDataGroupWithNameInData(
+    data,
+    'linkedRecord',
+  ).children[0] as DataGroup;
+  return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
 
 const transformDataAtomic = (data: DataAtomic) => {

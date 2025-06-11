@@ -23,6 +23,7 @@ export interface RecordLink extends DataElement {
   actionLinks?: ActionLinks;
   children: DataAtomic[];
   attributes?: Attributes;
+  linkedRecord?: DataGroup;
 }
 
 export interface ResourceLink {

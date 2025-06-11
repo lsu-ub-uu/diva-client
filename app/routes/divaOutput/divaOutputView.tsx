@@ -83,7 +83,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const record = loaderData.record;
   const output = record.data.output;
-
+  console.log({ output });
   return (
     <div className='diva-output-view'>
       <main>
