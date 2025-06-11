@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { generateSEOMeta } from '../generateSEOMeta';
+import { generateCitationMeta } from '../generateCitationMeta';
 import type {
   DateIssuedGroup,
+  DateOtherOnlineGroup,
   DivaOutput,
   TitleInfoLangGroup,
 } from '@/generatedTypes/divaTypes';
@@ -13,11 +14,17 @@ const divaOutput = {
       title: { value: 'Quantum Entanglement in Superconducting Qubits' },
       subTitle: { value: 'A Breakthrough Study' },
     },
+
     originInfo: {
       dateIssued: {
         year: { value: '2024' },
         month: { value: '03' },
         day: { value: '15' },
+      },
+      dateOther_type_online: {
+        year: { value: '2024' },
+        month: { value: '03' },
+        day: { value: '20' },
       },
     },
     relatedItem_type_journal: {
@@ -63,9 +70,9 @@ const divaOutput = {
   },
 } as DivaOutput;
 
-describe('generateSEOMeta', () => {
+describe('generateCitationMeta', () => {
   it('generates citation_title', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_title',
       content:
@@ -78,7 +85,7 @@ describe('generateSEOMeta', () => {
     divaOutputWithoutSubtitle.output.titleInfo.subTitle = {
       value: '',
     } as TitleInfoLangGroup['subTitle'];
-    const result = generateSEOMeta(divaOutputWithoutSubtitle);
+    const result = generateCitationMeta(divaOutputWithoutSubtitle);
     expect(result).toContainEqual({
       name: 'citation_title',
       content: 'Quantum Entanglement in Superconducting Qubits',
@@ -86,7 +93,7 @@ describe('generateSEOMeta', () => {
   });
 
   it('generates citation_author for authors only', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_author',
       content: 'Quantum, Emily',
@@ -102,7 +109,7 @@ describe('generateSEOMeta', () => {
   });
 
   it('generates citation_publication_date from originInfo', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_publication_date',
       content: '2024/03/15',
@@ -115,15 +122,36 @@ describe('generateSEOMeta', () => {
       year: { value: '2024' },
     } as DateIssuedGroup;
 
-    const result = generateSEOMeta(divaOutputWithYearOnly);
+    const result = generateCitationMeta(divaOutputWithYearOnly);
     expect(result).toContainEqual({
       name: 'citation_publication_date',
       content: '2024',
     });
   });
 
+  it('generates citation_online_date', () => {
+    const result = generateCitationMeta(divaOutput);
+    expect(result).toContainEqual({
+      name: 'citation_online_date',
+      content: '2024/03/20',
+    });
+  });
+
+  it('generates citation_online_date with only year', () => {
+    const divaOutputWithYearOnly = cloneDeep(divaOutput);
+    divaOutputWithYearOnly.output.originInfo.dateOther_type_online = {
+      year: { value: '2024' },
+    } as DateOtherOnlineGroup;
+
+    const result = generateCitationMeta(divaOutputWithYearOnly);
+    expect(result).toContainEqual({
+      name: 'citation_online_date',
+      content: '2024',
+    });
+  });
+
   it('generates citation_journal_title', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_journal_title',
       content: 'Journal of Quantum Physics: Advances in Quantum Mechanics',
@@ -131,7 +159,7 @@ describe('generateSEOMeta', () => {
   });
 
   it('generates citation_firstpage', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_firstpage',
       content: '256',
@@ -139,7 +167,7 @@ describe('generateSEOMeta', () => {
   });
 
   it('generates citation_lastpage', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_lastpage',
       content: '289',
@@ -147,28 +175,32 @@ describe('generateSEOMeta', () => {
   });
 
   it('generates citation_volume', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_volume',
       content: '42',
     });
   });
   it('generates citation_issue', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_issue',
       content: '3',
     });
   });
   it('generates citation_issn', () => {
-    const result = generateSEOMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_issn',
       content: '1234-5678',
     });
+    expect(result).toContainEqual({
+      name: 'citation_issn',
+      content: '2345-6789',
+    });
   });
-  it('generates doi', () => {
-    const result = generateSEOMeta(divaOutput);
+  it('generates citation_doi', () => {
+    const result = generateCitationMeta(divaOutput);
     expect(result).toContainEqual({
       name: 'citation_doi',
       content: '10.1234/jqp.2024.42.3.256',

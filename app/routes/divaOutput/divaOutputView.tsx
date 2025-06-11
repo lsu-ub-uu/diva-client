@@ -33,7 +33,7 @@ import { coraApiUrl } from '@/cora/helper.server';
 import { Button } from '@/components/Button/Button';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { createTitle } from './utils/createTitle';
-import { generateSEOMeta } from './utils/generateSEOMeta';
+import { generateCitationMeta } from './utils/generateCitationMeta';
 
 export const loader = async ({
   request,
@@ -72,7 +72,7 @@ export const loader = async ({
 export const meta = ({ data, error }: Route.MetaArgs) => {
   return [
     { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
-    ...generateSEOMeta(data.record.data),
+    ...generateCitationMeta(data.record.data),
   ];
 };
 
