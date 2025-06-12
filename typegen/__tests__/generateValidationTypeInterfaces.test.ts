@@ -4,24 +4,29 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
+  BFFMetadataRecordLink,
   BFFMetadataTextVariable,
-  BFFValidationType,
+  BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { format } from 'prettier';
-import {
-  generateValidationTypeInterfaces,
-  getNameFromMetadata,
-} from '../generateValidationTypeInterface';
 import { describe, expect, it } from 'vitest';
+import {
+  generateTypesForRecordTypes,
+  getNameFromMetadata,
+} from '../generateTypesForRecordTypes';
 
 describe('generateValidationTypeInterface', () => {
   it('should generate an interface', async () => {
-    const validationTypePool = listToPool<BFFValidationType>([
+    const recordTypePool = listToPool<BFFRecordType>([
       {
-        id: 'validationTypeId',
-        metadataGroupId: 'metadataGroupId',
-      } as BFFValidationType,
+        id: 'recordTypeId',
+        metadataId: 'metadataGroupId',
+      } as BFFRecordType,
+      {
+        id: 'anotherRecordTypeId',
+        metadataId: 'anotherMetadataGroupId',
+      } as BFFRecordType,
     ]);
 
     const metadataPool = listToPool<BFFMetadata>([
@@ -40,8 +45,15 @@ describe('generateValidationTypeInterface', () => {
             repeatMin: '1',
             repeatMax: '1',
           },
+          { childId: 'aRecordLink', repeatMin: '1', repeatMax: '1' },
         ],
       } as BFFMetadataGroup,
+      {
+        id: 'aRecordLink',
+        nameInData: 'anotherRecord',
+        linkedRecordType: 'anotherRecordTypeId',
+        type: 'recordLink',
+      } as BFFMetadataRecordLink,
       {
         id: 'fooVar',
         nameInData: 'foo',
@@ -96,16 +108,26 @@ describe('generateValidationTypeInterface', () => {
         nameInData: 'sv',
         type: 'collectionItem',
       } as BFFMetadataBase,
+      {
+        id: 'anotherMetadataGroupId',
+        type: 'group',
+        nameInData: 'anotherRoot',
+        children: [
+          {
+            childId: 'fooVar',
+            repeatMin: '0',
+            repeatMax: '1',
+          },
+        ],
+      } as BFFMetadataGroup,
     ]);
 
-    const actual = generateValidationTypeInterfaces(
-      validationTypePool,
-      metadataPool,
-      ['validationTypeId'],
-    );
+    const actual = generateTypesForRecordTypes(recordTypePool, metadataPool, [
+      'recordTypeId',
+    ]);
 
     const expected = `
-      export interface ValidationTypeId extends BFFDataRecordData {
+      export interface RecordTypeId extends BFFDataRecordData {
         root: MetadataGroupId;
       }
       
@@ -116,16 +138,36 @@ describe('generateValidationTypeInterface', () => {
         _type: "code";
         __text: { sv: string; en: string };
       }
+
+       export interface AnotherRecordTypeId extends BFFDataRecordData {
+         anotherRoot: AnotherMetadataGroupId;
+       }
       
-      export interface MetadataGroupId {
-        foo?: {
-          value: string;
-          _lang: LangCollection;
-          __text: { sv: string; en: string };
-        };
-        bar_type_code: BarGroup;
-        __text: { sv: string; en: string };
-      }
+       export interface AnotherMetadataGroupId {
+         foo?: {
+           value: string;
+           _lang: LangCollection;
+           __text: { sv: string; en: string };
+         };
+         __text: { sv: string; en: string };
+       }
+      
+       export interface MetadataGroupId {
+         foo?: {
+           value: string;
+           _lang: LangCollection;
+           __text: { sv: string; en: string };
+         };
+         bar_type_code: BarGroup;
+         anotherRecord: {
+           value: string;
+           linkedRecord: {
+             anotherRoot: AnotherMetadataGroupId;
+           };
+           __text: { sv: string; en: string };
+         };
+         __text: { sv: string; en: string };
+        }
     `;
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(

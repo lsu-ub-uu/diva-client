@@ -5,31 +5,31 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
-  BFFValidationType,
+  BFFMetadataRecordLink,
+  BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
+import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import type { Lookup } from '@/utils/structs/lookup';
 import { generateInterfaceName as generateTypeName } from './utils/generateInterfaceName';
 import { getValueForRepeat } from './utils/getValueForRepeat';
-import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
 const metadataTypes = new Map<string, string>();
 
-export function generateValidationTypeInterfaces(
-  validationTypePool: Lookup<string, BFFValidationType>,
+export function generateTypesForRecordTypes(
+  recordTypePool: Lookup<string, BFFRecordType>,
   metadataPool: Lookup<string, BFFMetadata>,
-  validationTypeIds: string[],
+  recordTypeIds: string[],
 ): string {
   let outputString = '';
-
   try {
-    validationTypeIds.forEach((validationTypeId) => {
-      const validationType = validationTypePool.get(validationTypeId);
-      const interfaceName = generateTypeName(validationTypeId);
-
-      outputString += `
-        export interface ${interfaceName} extends BFFDataRecordData {
-            ${createChildRef(metadataPool, { childId: validationType.metadataGroupId, repeatMin: '1', repeatMax: '1' })}
-        }\n\n`;
+    recordTypeIds.forEach((recordTypeId) => {
+      if (!metadataTypes.has(recordTypeId)) {
+        outputString += createRecordType(
+          recordTypePool,
+          metadataPool,
+          recordTypeId,
+        );
+      }
     });
 
     metadataTypes.values().forEach((type) => {
@@ -37,31 +37,106 @@ export function generateValidationTypeInterfaces(
     });
 
     return outputString;
-  } catch {
-    console.error(`Failed to generate types`);
+  } catch (error) {
+    console.error(`Failed to generate types`, error);
     return '';
   }
 }
 
+function createRecordType(
+  recordTypePool: Lookup<string, BFFRecordType>,
+  metadataPool: Lookup<string, BFFMetadata>,
+  recordTypeId: string,
+) {
+  const recordType = recordTypePool.get(recordTypeId);
+  const interfaceName = generateTypeName(recordTypeId);
+
+  return `
+        export interface ${interfaceName} extends BFFDataRecordData {
+            ${createChildRef(metadataPool, recordTypePool, { childId: recordType.metadataId, repeatMin: '1', repeatMax: '1' })}
+        }\n\n`;
+}
+
 function createChildRef(
   metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
   childRef: BFFMetadataChildReference,
+  shouldIncludeLinkedRecords: boolean = true,
 ): string {
   const childMetadata = metadataPool.get(childRef.childId);
 
   const { repeatMin, repeatMax } = childRef;
-  const attributes = createAttributes(metadataPool, childMetadata);
 
-  const value =
-    childMetadata.type === 'group'
-      ? createGroupType(
-          metadataPool,
-          childMetadata as BFFMetadataGroup,
-          attributes,
-        )
-      : `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
+  const value = createValueForMetadata(
+    metadataPool,
+    recordTypePool,
+    childMetadata,
+    shouldIncludeLinkedRecords,
+  );
 
   return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+}
+
+function createValueForMetadata(
+  metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
+  metadata: BFFMetadata,
+  shouldIncludeLinkedRecords: boolean = true,
+) {
+  const attributes = createAttributes(metadataPool, metadata);
+
+  if (metadata.type === 'group') {
+    return createGroupType(
+      metadataPool,
+      recordTypePool,
+      metadata as BFFMetadataGroup,
+      attributes,
+    );
+  }
+  if (metadata.type === 'recordLink' && shouldIncludeLinkedRecords) {
+    return createRecordLinkType(
+      metadataPool,
+      recordTypePool,
+      metadata as BFFMetadataRecordLink,
+      attributes,
+    );
+  }
+  if (metadata.type === 'resourceLink') {
+    return '{id: string; mimeType: string; name: string; }';
+  }
+
+  return `{ value: ${createValue(metadataPool, metadata)}; ${attributes} }`;
+}
+
+function createRecordLinkType(
+  metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
+  childMetadata: BFFMetadataRecordLink,
+  attributes: string,
+): string {
+  const linkedRecordType = recordTypePool.get(childMetadata.linkedRecordType);
+  const linkedRecordTypeName = generateTypeName(linkedRecordType.metadataId);
+  const linkedRecordMetadataGroup = metadataPool.get(
+    linkedRecordType.metadataId,
+  );
+
+  if (!metadataTypes.has(linkedRecordType.id)) {
+    metadataTypes.set(linkedRecordType.id, 'placeholder');
+    const recordTypeInterface = createRecordType(
+      recordTypePool,
+      metadataPool,
+      linkedRecordType.id,
+    );
+    metadataTypes.set(linkedRecordType.id, recordTypeInterface);
+  }
+
+  return `{
+      value: ${createValue(metadataPool, childMetadata)};
+      linkedRecord: { 
+        ${getNameFromMetadata(metadataPool, linkedRecordMetadataGroup)}: ${linkedRecordTypeName};
+      };
+      ${attributes}
+    }`;
 }
 
 function createValue(
@@ -161,14 +236,17 @@ const createCollectionVariableItems = (
 
 function createGroupType(
   metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
   group: BFFMetadataGroup,
   attributes: string,
 ): string {
   const typeName = generateTypeName(group.id);
 
   if (!metadataTypes.has(group.id)) {
+    const shouldIncludeLinkedRecords = group.nameInData !== 'recordInfo';
+
     const children = group.children.map((childRef) => {
-      return `${createChildRef(metadataPool, childRef)}`;
+      return `${createChildRef(metadataPool, recordTypePool, childRef, shouldIncludeLinkedRecords)}`;
     });
 
     metadataTypes.set(

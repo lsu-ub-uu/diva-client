@@ -43,7 +43,7 @@ export const Person = ({ person }: PersonProps) => {
         })}
       >
         <span>
-          {person.namePart_type_given?.value}{' '}
+          {person.namePart_type_given?.value}
           {person.namePart_type_family?.value}
         </span>
       </Link>

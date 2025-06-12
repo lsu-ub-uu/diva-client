@@ -19,9 +19,8 @@
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
 import { DownloadIcon } from '@/icons';
-import { withBaseName } from '@/utils/withBasename';
+import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { useTranslation } from 'react-i18next';
-import { href } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import resourceLinkStyles from './ResourceLink.module.css';
 
@@ -36,9 +35,7 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
 
   const data = getValues(path);
 
-  const downloadLink = withBaseName(
-    href('/binary/:id/:name', { id: data.id, name: data.name }),
-  );
+  const downloadLink = createDownloadLinkFromResourceLink(data);
 
   return (
     <div className='form-component-item' data-colspan={component.gridColSpan}>

@@ -32,8 +32,8 @@ export const Event = ({ event }: EventProps) => {
   );
 
   const eventParts = [
-    event.dateOther_type_defence && (
-      <Date date={event.dateOther_type_defence} />
+    event.dateOther_type_presentation && (
+      <Date date={event.dateOther_type_presentation} />
     ),
     address,
     eventLanguage ? `(${t(getLanguageTextId(eventLanguage))})` : '',

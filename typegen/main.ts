@@ -2,31 +2,30 @@ import type { DataListWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
   BFFMetadata,
-  BFFValidationType,
+  BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
 import { transformMetadata } from '@/cora/transform/transformMetadata.server';
-import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
+import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
-import { generateValidationTypeInterfaces } from './generateValidationTypeInterface';
+import { generateTypesForRecordTypes } from './generateTypesForRecordTypes';
 
-const [metadataPool, validationTypePool] = await Promise.all([
+const [metadataPool, recordTypePool] = await Promise.all([
   getMetadataPool(),
-  getValidationTypePool(),
+  getRecordTypePool(),
 ]);
 
-const VALIDATION_TYPES = [
+const RECORD_TYPES = [
   'diva-series',
   'diva-publisher',
   'diva-project',
   'diva-output',
   'diva-journal',
-  'diva-topOrganisation',
+  'diva-organisation',
   'diva-course',
   'diva-programme',
-  'diva-partOfOrganisation',
   'diva-subject',
   'diva-localGenericMarkup',
   'diva-funder',
@@ -43,11 +42,7 @@ let code = `
 
   `;
 
-code += generateValidationTypeInterfaces(
-  validationTypePool,
-  metadataPool,
-  VALIDATION_TYPES,
-);
+code += generateTypesForRecordTypes(recordTypePool, metadataPool, RECORD_TYPES);
 
 const outputPath = new URL(
   '../app/generatedTypes/divaTypes.ts',
@@ -76,11 +71,11 @@ async function getMetadataPool() {
   return listToPool<BFFMetadata>(metadata);
 }
 
-async function getValidationTypePool() {
+async function getRecordTypePool() {
   const coraMetadata =
-    await getRecordDataListByType<DataListWrapper>('validationType');
+    await getRecordDataListByType<DataListWrapper>('recordType');
 
-  const validationTypes = transformCoraValidationTypes(coraMetadata.data);
+  const recordTypes = transformCoraRecordTypes(coraMetadata.data);
 
-  return listToPool<BFFValidationType>(validationTypes);
+  return listToPool<BFFRecordType>(recordTypes);
 }

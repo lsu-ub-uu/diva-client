@@ -12,7 +12,7 @@ describe('Event', () => {
   it('should render event with date, location, address, and language', () => {
     const event = {
       __text: { en: 'Defence', sv: 'Försvar' },
-      dateOther_type_defence: {
+      dateOther_type_presentation: {
         year: { value: '2023' },
         month: { value: '10' },
         day: { value: '05' },
