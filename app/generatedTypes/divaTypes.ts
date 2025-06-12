@@ -3275,7 +3275,7 @@ export interface RecordInfoBinaryGroup {
 export interface MasterGroup {
   originalFileName: { value: string; __text: { sv: string; en: string } };
   resourceId: { value: string; __text: { sv: string; en: string } };
-  master: { value: string; __text: { sv: string; en: string } };
+  master: { id: string; mimeType: string; name: string };
   fileSize: { value: string; __text: { sv: string; en: string } };
   mimeType: { value: string; __text: { sv: string; en: string } };
   width?: { value: string; __text: { sv: string; en: string } };
@@ -3288,7 +3288,7 @@ export interface MasterGroup {
 
 export interface ThumbnailGroup {
   resourceId: { value: string; __text: { sv: string; en: string } };
-  thumbnail: { value: string; __text: { sv: string; en: string } };
+  thumbnail: { id: string; mimeType: string; name: string };
   fileSize: { value: string; __text: { sv: string; en: string } };
   mimeType: { value: string; __text: { sv: string; en: string } };
   height: { value: string; __text: { sv: string; en: string } };
@@ -3298,7 +3298,7 @@ export interface ThumbnailGroup {
 
 export interface MediumGroup {
   resourceId: { value: string; __text: { sv: string; en: string } };
-  medium: { value: string; __text: { sv: string; en: string } };
+  medium: { id: string; mimeType: string; name: string };
   fileSize: { value: string; __text: { sv: string; en: string } };
   mimeType: { value: string; __text: { sv: string; en: string } };
   height: { value: string; __text: { sv: string; en: string } };
@@ -3308,7 +3308,7 @@ export interface MediumGroup {
 
 export interface LargeGroup {
   resourceId: { value: string; __text: { sv: string; en: string } };
-  large: { value: string; __text: { sv: string; en: string } };
+  large: { id: string; mimeType: string; name: string };
   fileSize: { value: string; __text: { sv: string; en: string } };
   mimeType: { value: string; __text: { sv: string; en: string } };
   height: { value: string; __text: { sv: string; en: string } };
@@ -3318,7 +3318,7 @@ export interface LargeGroup {
 
 export interface Jp2Group {
   resourceId: { value: string; __text: { sv: string; en: string } };
-  jp2: { value: string; __text: { sv: string; en: string } };
+  jp2: { id: string; mimeType: string; name: string };
   fileSize: { value: string; __text: { sv: string; en: string } };
   mimeType: { value: string; __text: { sv: string; en: string } };
   height: { value: string; __text: { sv: string; en: string } };

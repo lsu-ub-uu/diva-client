@@ -13,6 +13,11 @@ import { data, Form, href, isRouteErrorResponse, Link } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
+import { Button } from '@/components/Button/Button';
+import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { coraApiUrl } from '@/cora/helper.server';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import {
   CodeIcon,
   DeleteIcon,
@@ -20,20 +25,15 @@ import {
   ShoppingCartIcon,
 } from '@/icons';
 import { Date } from './components/Date';
+import { Event } from './components/Event';
 import { Location } from './components/Location';
 import { Organisation } from './components/Organisation';
 import { Person } from './components/Person';
 import { SdgImage } from './components/SdgImage';
 import { Term } from './components/Term';
-import { getLanguageTextId } from './utils/translateLanguage';
-import { Event } from './components/Event';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { coraApiUrl } from '@/cora/helper.server';
-import { Button } from '@/components/Button/Button';
-import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { getLanguageTextId } from './utils/translateLanguage';
 
 export const loader = async ({
   request,
@@ -46,6 +46,8 @@ export const loader = async ({
   const dependencies = await context.dependencies;
   const { recordId } = params;
   const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);
+
+  const origin = new URL(request.url).origin;
 
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
@@ -60,6 +62,7 @@ export const loader = async ({
       pageTitle: createTitle(record.data.output.titleInfo),
       breadcrumb: t(record.data.output.titleInfo.title.value),
       apiUrl,
+      origin,
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -72,7 +75,7 @@ export const loader = async ({
 export const meta = ({ data, error }: Route.MetaArgs) => {
   return [
     { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
-    ...generateCitationMeta(data.record.data),
+    ...generateCitationMeta(data.record.data, data.origin),
   ];
 };
 
@@ -83,7 +86,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const record = loaderData.record;
   const output = record.data.output;
-  console.log({ output });
   return (
     <div className='diva-output-view'>
       <main>
@@ -354,16 +356,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           <CodeIcon />
           {t('divaClient_viewInApiText')}
         </Button>
-        {/*<div>
-          <h3>Bilaga</h3>
-          <img
-            alt='fulltext'
-            src='https://pre.diva-portal.org/rest/record/binary/binary:15459311940110593/thumbnail'
-          />
-        </div>
-        <p>FULLTEXT.pdf (432 kB)</p>
 
-        <a href='/asdf'>Ladda ner</a>*/}
         <Term
           label={output['accessCondition_authority_kb-se']?.__text[language]}
           value={

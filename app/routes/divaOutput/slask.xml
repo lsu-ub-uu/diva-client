@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record>
+    <data>
+        <output _en="DiVA-output" _sv="DiVA-output">
+            <attachment _en="File" _sv="Fil" repeatId="0">
+                <type _en="Type" _sv="Typ" _value_en="Attachment" _value_sv="Bilaga">attachment</type>
+                <attachmentFile _en="Attachment file" _sv="Bifogad fil">
+                    <linkedRecordType>binary</linkedRecordType>
+                    <linkedRecordId>binary:10971556502205926</linkedRecordId>
+                    <linkedRecord>
+                        <binary _en="Binary" _sv="Binär" type="document">
+                            <recordInfo _en="Record info" _sv="Postinformation">
+                                <dataDivider _en="Data divider" _sv="Datadelare">
+                                    <linkedRecordType>system</linkedRecordType>
+                                    <linkedRecordId>divaData</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/system/divaData</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </dataDivider>
+                                <validationType _en="Validation type" _sv="Valideringstyp">
+                                    <linkedRecordType>validationType</linkedRecordType>
+                                    <linkedRecordId>genericBinary</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/validationType/genericBinary</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </validationType>
+                                <visibility _en="Visibility of the record" _no="Postens synlighet"
+                                    _sv="Postens synlighet" _value_en="Published"
+                                    _value_no="Publisert" _value_sv="Publicerad">published</visibility>
+                                <id _en="Id" _no="Id" _sv="Id">binary:10971556502205926</id>
+                                <type _en="RecordType" _no="" _sv="Posttyp">
+                                    <linkedRecordType>recordType</linkedRecordType>
+                                    <linkedRecordId>binary</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/recordType/binary</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </type>
+                                <createdBy _en="Text for:createdByLinkText"
+                                    _sv="Text för:createdByLinkText">
+                                    <linkedRecordType>user</linkedRecordType>
+                                    <linkedRecordId>161616</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </createdBy>
+                                <tsCreated _en="Timestamp for when the record was created"
+                                    _sv="Tidsstämpel för när posten skapades">
+                                    2025-06-12T12:17:03.619155Z</tsCreated>
+                                <updated _en="Update" _sv="Uppdatering" repeatId="0">
+                                    <tsUpdated _en="Update time" _sv="Uppdateringstid">
+                                        2025-06-12T12:31:16.138466Z</tsUpdated>
+                                    <updatedBy _en="Updated by" _no="Oppdatert av"
+                                        _sv="Uppdaterad av">
+                                        <linkedRecordType>user</linkedRecordType>
+                                        <linkedRecordId>161616</linkedRecordId>
+                                        <actionLinks>
+                                            <read>
+                                                <requestMethod>GET</requestMethod>
+                                                <rel>read</rel>
+                                                <url>
+                                                    https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                                                <accept>application/vnd.cora.record+xml</accept>
+                                            </read>
+                                        </actionLinks>
+                                    </updatedBy>
+                                </updated>
+                                <tsVisibility _en="Timestamp for visibility value update"
+                                    _no="Tidsstempel for endring av synlighetsverdi"
+                                    _sv="Tidsstämpel för ändring av synlighetsvärde">
+                                    2025-06-12T12:31:16.138749Z</tsVisibility>
+                            </recordInfo>
+                            <master _en="Master" _sv="Master">
+                                <resourceId _en="Resource ID" _sv="Resurs ID">
+                                    binary:10971556502205926-master</resourceId>
+                                <master _en="Resource link" _sv="Resurslänk">
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011/master</url>
+                                            <accept>application/pdf</accept>
+                                        </read>
+                                    </actionLinks>
+                                    <mimeType>application/pdf</mimeType>
+                                </master>
+                                <fileSize _en="File size" _sv="Filstorlek">3722483</fileSize>
+                                <mimeType _en="Mimetype" _sv="Mimetype">application/pdf</mimeType>
+                                <checksum _en="Checksum" _sv="Checksum">
+                                    aaaefdfab31f1813ce7a7c8295f6a6e5a99fb3e80570b703df2af4bb8da9c6217cefad325b946c42db3833210b6eb14d81998b2ce123b5cd5a3d40554e31f7aa</checksum>
+                                <checksumType _en="Checksum type" _sv="Checksum typ">SHA-512</checksumType>
+                                <originalFileName _en="Original filename" _sv="Originalfilnamn">
+                                    FULLTEXT01.pdf</originalFileName>
+                            </master>
+                            <large _en="Large" _sv="Stor">
+                                <resourceId _en="Resource ID" _sv="Resurs ID">
+                                    binary:10971556502205926-large</resourceId>
+                                <large _en="Resource link" _sv="Resurslänk">
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:10971556502205926/large</url>
+                                            <accept>image/jpeg</accept>
+                                        </read>
+                                    </actionLinks>
+                                    <mimeType>image/jpeg</mimeType>
+                                </large>
+                                <fileSize _en="File size" _sv="Filstorlek">81251</fileSize>
+                                <mimeType _en="Mimetype" _sv="Mimetype">image/jpeg</mimeType>
+                                <height _en="Height" _sv="Höjd">849</height>
+                                <width _en="Width" _sv="Bredd">600</width>
+                            </large>
+                            <medium _en="Medium" _sv="Medium">
+                                <resourceId _en="Resource ID" _sv="Resurs ID">
+                                    binary:10971556502205926-medium</resourceId>
+                                <medium _en="Resource link" _sv="Resurslänk">
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011/medium</url>
+                                            <accept>image/jpeg</accept>
+                                        </read>
+                                    </actionLinks>
+                                    <mimeType>image/jpeg</mimeType>
+                                </medium>
+                                <fileSize _en="File size" _sv="Filstorlek">36032</fileSize>
+                                <mimeType _en="Mimetype" _sv="Mimetype">image/jpeg</mimeType>
+                                <height _en="Height" _sv="Höjd">425</height>
+                                <width _en="Width" _sv="Bredd">300</width>
+                            </medium>
+                            <thumbnail _en="Thumbnail" _sv="Thumbnail">
+                                <resourceId _en="Resource ID" _sv="Resurs ID">
+                                    binary:10971556502205926-thumbnail</resourceId>
+                                <thumbnail _en="Resource link" _sv="Resurslänk">
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011/thumbnail</url>
+                                            <accept>image/jpeg</accept>
+                                        </read>
+                                    </actionLinks>
+                                    <mimeType>image/jpeg</mimeType>
+                                </thumbnail>
+                                <fileSize _en="File size" _sv="Filstorlek">16117</fileSize>
+                                <mimeType _en="Mimetype" _sv="Mimetype">image/jpeg</mimeType>
+                                <height _en="Height" _sv="Höjd">142</height>
+                                <width _en="Width" _sv="Bredd">100</width>
+                            </thumbnail>
+                        </binary>
+                    </linkedRecord>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>
+                                https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:10971556502205926</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </attachmentFile>
+            </attachment>
+            <admin _en="Administrative information" _sv="Administrativ information">
+                <reviewed _en="Bibliographically reviewed" _sv="Bibliografiskt granskad"
+                    _value_en="True" _value_sv="Sant">true</reviewed>
+            </admin>
+            <originInfo _en="Origin info" _sv="Ursprung">
+                <dateIssued _en="Date of issue" _sv="Utgivningsdatum">
+                    <year _en="Year" _sv="År">1234</year>
+                </dateIssued>
+            </originInfo>
+            <name _en="Author, editor or other role" _sv="Författare, redaktör eller annan roll"
+                repeatId="0" type="personal">
+                <namePart _en="Given name" _sv="Förnamn" type="given">förnamniposten</namePart>
+                <namePart _en="Family name" _sv="Efternamn" type="family">efternamnipostensson</namePart>
+                <person _en="DiVA-person" _sv="DiVA-person">
+                    <linkedRecordType>diva-person</linkedRecordType>
+                    <linkedRecordId>diva-person:10961347146655919</linkedRecordId>
+                    <linkedRecord>
+                        <person _en="DiVA-person" _sv="DiVA-person">
+                            <recordInfo _en="Record info" _sv="Postinformation">
+                                <validationType _en="Validation type" _sv="Valideringstyp">
+                                    <linkedRecordType>validationType</linkedRecordType>
+                                    <linkedRecordId>diva-person</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-person</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </validationType>
+                                <dataDivider _en="Data divider" _sv="Datadelare">
+                                    <linkedRecordType>system</linkedRecordType>
+                                    <linkedRecordId>divaData</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/system/divaData</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </dataDivider>
+                                <id _en="Id" _sv="Id">diva-person:10961347146655919</id>
+                                <type _en="Record type" _sv="Posttyp">
+                                    <linkedRecordType>recordType</linkedRecordType>
+                                    <linkedRecordId>diva-person</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-person</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </type>
+                                <createdBy _en="Created by" _sv="Skapad av">
+                                    <linkedRecordType>user</linkedRecordType>
+                                    <linkedRecordId>161616</linkedRecordId>
+                                    <actionLinks>
+                                        <read>
+                                            <requestMethod>GET</requestMethod>
+                                            <rel>read</rel>
+                                            <url>
+                                                https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                                            <accept>application/vnd.cora.record+xml</accept>
+                                        </read>
+                                    </actionLinks>
+                                </createdBy>
+                                <tsCreated _en="Timestamp for when the record was created"
+                                    _sv="Tidsstämpel för när posten skapades">
+                                    2025-06-12T09:26:54.263654Z</tsCreated>
+                                <updated _en="Update" _sv="Uppdatering" repeatId="0">
+                                    <tsUpdated _en="Update time" _sv="Uppdateringstid">
+                                        2025-06-12T09:49:58.504769Z</tsUpdated>
+                                    <updatedBy _en="Updated by" _sv="Uppdaterad av">
+                                        <linkedRecordType>user</linkedRecordType>
+                                        <linkedRecordId>161616</linkedRecordId>
+                                        <actionLinks>
+                                            <read>
+                                                <requestMethod>GET</requestMethod>
+                                                <rel>read</rel>
+                                                <url>
+                                                    https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                                                <accept>application/vnd.cora.record+xml</accept>
+                                            </read>
+                                        </actionLinks>
+                                    </updatedBy>
+                                </updated>
+                            </recordInfo>
+                            <personInfo _en="Person information" _sv="Personinformation">
+                                <birthDate _en="Year of birth" _sv="Födelseår">
+                                    <year _en="Year" _sv="År">1234</year>
+                                </birthDate>
+                            </personInfo>
+                            <authority _en="Personal name" _sv="Personnamn">
+                                <name _en="Name" _sv="Namn" type="personal">
+                                    <namePart _en="Given name" _sv="Förnamn" type="given">Swenning
+                                        Leyser</namePart>
+                                    <namePart _en="Family name" _sv="Efternamn" type="family">
+                                        Egilson</namePart>
+                                </name>
+                            </authority>
+                        </person>
+                    </linkedRecord>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>
+                                https://cora.epc.ub.uu.se/diva/rest/record/diva-person/diva-person:10961347146655919</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </person>
+            </name>
+            <titleInfo _en="Title" _sv="Titel" lang="eng">
+                <title _en="Main title" _sv="Huvudtitel">aAAAAAA</title>
+            </titleInfo>
+            <genre _en="Content type" _sv="Typ av innehåll" _value_en="Peer-reviewed"
+                _value_sv="Sakkunniggranskat" type="contentType">ref</genre>
+            <language _en="Language of the resource" _sv="Verkets språk" repeatId="0">
+                <languageTerm _en="Language" _sv="Språk" _value_en="Swedish" _value_sv="Svenska"
+                    authority="iso639-2b" type="code">swe</languageTerm>
+            </language>
+            <genre _en="Publication-/Output Type" _sv="Publikations-/Outputtyp" _value_en="Report"
+                _value_sv="Rapport" type="outputType">publication_report</genre>
+            <recordInfo _en="Record info" _sv="Postinformation">
+                <permissionUnit _en="Permission unit" _no="Rettighetsenhet" _sv="Rättighetsenhet">
+                    <linkedRecordType>permissionUnit</linkedRecordType>
+                    <linkedRecordId>uu</linkedRecordId>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>https://cora.epc.ub.uu.se/diva/rest/record/permissionUnit/uu</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </permissionUnit>
+                <visibility _en="Visibility of the record" _no="Postens synlighet"
+                    _sv="Postens synlighet" _value_en="Published" _value_no="Publisert"
+                    _value_sv="Publicerad">published</visibility>
+                <validationType _en="Validation type" _sv="Valideringstyp">
+                    <linkedRecordType>validationType</linkedRecordType>
+                    <linkedRecordId>publication_report</linkedRecordId>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>
+                                https://cora.epc.ub.uu.se/diva/rest/record/validationType/publication_report</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </validationType>
+                <dataDivider _en="Data divider" _sv="Datadelare">
+                    <linkedRecordType>system</linkedRecordType>
+                    <linkedRecordId>divaData</linkedRecordId>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>https://cora.epc.ub.uu.se/diva/rest/record/system/divaData</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </dataDivider>
+                <tsVisibility _en="Timestamp for visibility value update"
+                    _no="Tidsstempel for endring av synlighetsverdi"
+                    _sv="Tidsstämpel för ändring av synlighetsvärde">2025-06-12T09:27:12.266619Z</tsVisibility>
+                <id _en="Id" _sv="Id">diva-output:10961365152150011</id>
+                <type _en="Record type" _sv="Posttyp">
+                    <linkedRecordType>recordType</linkedRecordType>
+                    <linkedRecordId>diva-output</linkedRecordId>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-output</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </type>
+                <createdBy _en="Created by" _sv="Skapad av">
+                    <linkedRecordType>user</linkedRecordType>
+                    <linkedRecordId>161616</linkedRecordId>
+                    <actionLinks>
+                        <read>
+                            <requestMethod>GET</requestMethod>
+                            <rel>read</rel>
+                            <url>https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                            <accept>application/vnd.cora.record+xml</accept>
+                        </read>
+                    </actionLinks>
+                </createdBy>
+                <tsCreated _en="Timestamp for when the record was created"
+                    _sv="Tidsstämpel för när posten skapades">2025-06-12T09:27:12.269109Z</tsCreated>
+                <updated _en="Update" _sv="Uppdatering" repeatId="0">
+                    <tsUpdated _en="Update time" _sv="Uppdateringstid">2025-06-12T12:17:06.621538Z</tsUpdated>
+                    <updatedBy _en="Updated by" _sv="Uppdaterad av">
+                        <linkedRecordType>user</linkedRecordType>
+                        <linkedRecordId>161616</linkedRecordId>
+                        <actionLinks>
+                            <read>
+                                <requestMethod>GET</requestMethod>
+                                <rel>read</rel>
+                                <url>https://cora.epc.ub.uu.se/diva/rest/record/user/161616</url>
+                                <accept>application/vnd.cora.record+xml</accept>
+                            </read>
+                        </actionLinks>
+                    </updatedBy>
+                </updated>
+            </recordInfo>
+        </output>
+    </data>
+    <actionLinks>
+        <read>
+            <requestMethod>GET</requestMethod>
+            <rel>read</rel>
+            <url>
+                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011</url>
+            <accept>application/vnd.cora.record+xml</accept>
+        </read>
+        <update>
+            <requestMethod>POST</requestMethod>
+            <rel>update</rel>
+            <url>
+                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011</url>
+            <contentType>application/vnd.cora.recordgroup+xml</contentType>
+            <accept>application/vnd.cora.record+xml</accept>
+        </update>
+        <delete>
+            <requestMethod>DELETE</requestMethod>
+            <rel>delete</rel>
+            <url>
+                https://cora.epc.ub.uu.se/diva/rest/record/diva-output/diva-output:10961365152150011</url>
+        </delete>
+        <index>
+            <requestMethod>POST</requestMethod>
+            <rel>index</rel>
+            <url>https://cora.epc.ub.uu.se/diva/rest/record/workOrder</url>
+            <contentType>application/vnd.cora.recordgroup+xml</contentType>
+            <accept>application/vnd.cora.record+xml</accept>
+            <body>
+                <workOrder>
+                    <recordType>
+                        <linkedRecordType>recordType</linkedRecordType>
+                        <linkedRecordId>diva-output</linkedRecordId>
+                        <recordId>diva-output:10961365152150011</recordId>
+                        <type>index</type>
+                    </recordType>
+                </workOrder>
+            </body>
+        </index>
+    </actionLinks>
+</record>

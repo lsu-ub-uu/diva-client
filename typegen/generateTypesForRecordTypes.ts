@@ -66,26 +66,46 @@ function createChildRef(
   const childMetadata = metadataPool.get(childRef.childId);
 
   const { repeatMin, repeatMax } = childRef;
-  const attributes = createAttributes(metadataPool, childMetadata);
 
-  const value =
-    childMetadata.type === 'group'
-      ? createGroupType(
-          metadataPool,
-          recordTypePool,
-          childMetadata as BFFMetadataGroup,
-          attributes,
-        )
-      : childMetadata.type === 'recordLink' && shouldIncludeLinkedRecords
-        ? createRecordLinkType(
-            metadataPool,
-            recordTypePool,
-            childMetadata as BFFMetadataRecordLink,
-            attributes,
-          )
-        : `{ value: ${createValue(metadataPool, childMetadata)}; ${attributes} }`;
+  const value = createValueForMetadata(
+    metadataPool,
+    recordTypePool,
+    childMetadata,
+    shouldIncludeLinkedRecords,
+  );
 
   return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+}
+
+function createValueForMetadata(
+  metadataPool: Lookup<string, BFFMetadata>,
+  recordTypePool: Lookup<string, BFFRecordType>,
+  metadata: BFFMetadata,
+  shouldIncludeLinkedRecords: boolean = true,
+) {
+  const attributes = createAttributes(metadataPool, metadata);
+
+  if (metadata.type === 'group') {
+    return createGroupType(
+      metadataPool,
+      recordTypePool,
+      metadata as BFFMetadataGroup,
+      attributes,
+    );
+  }
+  if (metadata.type === 'recordLink' && shouldIncludeLinkedRecords) {
+    return createRecordLinkType(
+      metadataPool,
+      recordTypePool,
+      metadata as BFFMetadataRecordLink,
+      attributes,
+    );
+  }
+  if (metadata.type === 'resourceLink') {
+    return '{id: string; mimeType: string; name: string; }';
+  }
+
+  return `{ value: ${createValue(metadataPool, metadata)}; ${attributes} }`;
 }
 
 function createRecordLinkType(

@@ -27,6 +27,11 @@ const divaOutput = {
         day: { value: '20' },
       },
     },
+    identifier_type_isbn: [
+      { value: '978-3-16-148410-0', _displayLabel: 'online' },
+      { value: '978-1-23-456789-7', _displayLabel: 'print' },
+      { value: '(╯°□°)╯︵ ┻━┻', _displayLabel: 'invalid' },
+    ],
     relatedItem_type_journal: {
       titleInfo: {
         title: { value: 'Journal of Quantum Physics' },
@@ -67,12 +72,64 @@ const divaOutput = {
         role: { roleTerm: [{ value: 'edt' }, { value: 'aut' }] },
       },
     ],
+    attachment: [
+      {
+        type: { value: 'movie' },
+        attachmentFile: {
+          linkedRecord: {
+            binary: {
+              master: {
+                master: {
+                  mimeType: 'video/mp4',
+                  id: 'binary:iamavideo',
+                  name: 'master',
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        type: { value: 'fulltext' },
+        attachmentFile: {
+          linkedRecord: {
+            binary: {
+              master: {
+                master: {
+                  mimeType: 'application/pdf',
+                  id: 'binary:iamafulltext',
+                  name: 'master',
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        type: { value: 'fulltext' },
+        attachmentFile: {
+          linkedRecord: {
+            binary: {
+              master: {
+                master: {
+                  mimeType: 'application/pdf',
+                  id: 'binary:iamafulltext',
+                  name: 'master',
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
   },
 } as DivaOutput;
 
+const origin = 'https://example.com';
+
 describe('generateCitationMeta', () => {
   it('generates citation_title', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_title',
       content:
@@ -85,7 +142,7 @@ describe('generateCitationMeta', () => {
     divaOutputWithoutSubtitle.output.titleInfo.subTitle = {
       value: '',
     } as TitleInfoLangGroup['subTitle'];
-    const result = generateCitationMeta(divaOutputWithoutSubtitle);
+    const result = generateCitationMeta(divaOutputWithoutSubtitle, origin);
     expect(result).toContainEqual({
       name: 'citation_title',
       content: 'Quantum Entanglement in Superconducting Qubits',
@@ -93,7 +150,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_author for authors only', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_author',
       content: 'Quantum, Emily',
@@ -109,7 +166,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_publication_date from originInfo', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_publication_date',
       content: '2024/03/15',
@@ -122,7 +179,7 @@ describe('generateCitationMeta', () => {
       year: { value: '2024' },
     } as DateIssuedGroup;
 
-    const result = generateCitationMeta(divaOutputWithYearOnly);
+    const result = generateCitationMeta(divaOutputWithYearOnly, origin);
     expect(result).toContainEqual({
       name: 'citation_publication_date',
       content: '2024',
@@ -130,7 +187,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_online_date', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_online_date',
       content: '2024/03/20',
@@ -143,7 +200,7 @@ describe('generateCitationMeta', () => {
       year: { value: '2024' },
     } as DateOtherOnlineGroup;
 
-    const result = generateCitationMeta(divaOutputWithYearOnly);
+    const result = generateCitationMeta(divaOutputWithYearOnly, origin);
     expect(result).toContainEqual({
       name: 'citation_online_date',
       content: '2024',
@@ -151,7 +208,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_journal_title', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_journal_title',
       content: 'Journal of Quantum Physics: Advances in Quantum Mechanics',
@@ -159,7 +216,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_firstpage', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_firstpage',
       content: '256',
@@ -167,7 +224,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_lastpage', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_lastpage',
       content: '289',
@@ -175,21 +232,21 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_volume', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_volume',
       content: '42',
     });
   });
   it('generates citation_issue', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_issue',
       content: '3',
     });
   });
   it('generates citation_issn', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_issn',
       content: '1234-5678',
@@ -200,10 +257,37 @@ describe('generateCitationMeta', () => {
     });
   });
   it('generates citation_doi', () => {
-    const result = generateCitationMeta(divaOutput);
+    const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_doi',
       content: '10.1234/jqp.2024.42.3.256',
+    });
+  });
+  it('generates citation_isbn', () => {
+    const result = generateCitationMeta(divaOutput, origin);
+    expect(result).toContainEqual({
+      name: 'citation_isbn',
+      content: '978-3-16-148410-0',
+    });
+    expect(result).toContainEqual({
+      name: 'citation_isbn',
+      content: '978-1-23-456789-7',
+    });
+    expect(result).toContainEqual({
+      name: 'citation_isbn',
+      content: '(╯°□°)╯︵ ┻━┻',
+    });
+  });
+
+  it('generates citation_pdf_url for fulltext attachments', () => {
+    const result = generateCitationMeta(divaOutput, origin);
+    expect(result).toContainEqual({
+      name: 'citation_pdf_url',
+      content: 'https://example.com/binary/iamafulltext/master',
+    });
+    expect(result).not.toContainEqual({
+      name: 'citation_pdf_url',
+      content: 'https://example.com/binary/iamavideo/master',
     });
   });
 });

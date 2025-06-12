@@ -4,9 +4,11 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import type { MetaDescriptors } from 'react-router/route-module';
 import { createTitle } from './createTitle';
+import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 
 export const generateCitationMeta = (
   divaOutput: DivaOutput,
+  origin: string,
 ): MetaDescriptors => {
   const meta = [];
 
@@ -54,12 +56,39 @@ export const generateCitationMeta = (
     addMetaJournalInfo(meta, divaOutput.output.relatedItem_type_journal);
   }
 
+  if (divaOutput.output.identifier_type_isbn) {
+    divaOutput.output.identifier_type_isbn.forEach((isbn) => {
+      meta.push({
+        name: 'citation_isbn',
+        content: isbn.value,
+      });
+    });
+  }
+
   if (divaOutput.output.identifier_type_doi) {
     meta.push({
       name: 'citation_doi',
       content: divaOutput.output.identifier_type_doi.value,
     });
   }
+
+  const pdfFulltextAttachements = (divaOutput.output.attachment || []).filter(
+    (attachment) =>
+      attachment.type.value === 'fullText' &&
+      attachment.attachmentFile.linkedRecord.binary.master?.master?.mimeType ===
+        'application/pdf',
+  );
+
+  pdfFulltextAttachements.forEach((attachment) => {
+    meta.push({
+      name: 'citation_pdf_url',
+      content:
+        origin +
+        createDownloadLinkFromResourceLink(
+          attachment.attachmentFile.linkedRecord.binary.master!.master,
+        ),
+    });
+  });
 
   return meta;
 };
