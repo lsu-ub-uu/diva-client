@@ -90,7 +90,7 @@ const divaOutput = {
         },
       },
       {
-        type: { value: 'fulltext' },
+        type: { value: 'fullText' },
         attachmentFile: {
           linkedRecord: {
             binary: {
@@ -106,7 +106,7 @@ const divaOutput = {
         },
       },
       {
-        type: { value: 'fulltext' },
+        type: { value: 'fullText' },
         attachmentFile: {
           linkedRecord: {
             binary: {
@@ -283,11 +283,11 @@ describe('generateCitationMeta', () => {
     const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_pdf_url',
-      content: 'https://example.com/binary/iamafulltext/master',
+      content: 'https://example.com/binary/binary:iamafulltext/master',
     });
     expect(result).not.toContainEqual({
       name: 'citation_pdf_url',
-      content: 'https://example.com/binary/iamavideo/master',
+      content: 'https://example.com/binary/binary:iamavideo/master',
     });
   });
 });
