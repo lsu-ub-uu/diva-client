@@ -160,7 +160,6 @@ export const transformRecordData = (
     },
   };
 };
-
 export const transformDataGroup = (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
@@ -238,12 +237,10 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     ? transformLinkedRecord(data, dependencies)
     : undefined;
 
-  return {
+  return removeEmpty({
     value: recordLinkId,
     linkedRecord,
-    actionLinks: data.actionLinks,
-    attributes: data.attributes,
-  };
+  });
 };
 
 const transformLinkedRecord = (

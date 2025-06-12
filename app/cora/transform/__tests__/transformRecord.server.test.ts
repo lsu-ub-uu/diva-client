@@ -1079,7 +1079,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1127,7 +1127,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           childGroup: {
@@ -1173,7 +1173,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1226,7 +1226,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1281,7 +1281,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1344,7 +1344,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1415,7 +1415,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           childGroup: [
@@ -1467,7 +1467,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           nationalSubjectCategory: {
@@ -1531,7 +1531,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           nationalSubjectCategory: [
@@ -1593,7 +1593,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           subject_language_eng: {
@@ -1647,7 +1647,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         divaOutput: {
           subject: {
@@ -1728,7 +1728,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
       const expected = {
         output: {
           titleInfo: {
@@ -1795,7 +1795,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1875,7 +1875,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -1960,7 +1960,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -2019,7 +2019,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         output: {
@@ -2029,6 +2029,115 @@ describe('transformRecord', () => {
           namePart_language_swe: {
             value: 'value1',
             _language: 'swe',
+          },
+        },
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should handle linked records', () => {
+      const data = {
+        name: 'someRootGroup',
+        children: [
+          {
+            name: 'someRecordLink',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'someRecordType',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'someRecordId',
+              },
+              {
+                name: 'linkedRecord',
+                children: [
+                  {
+                    name: 'someLinkedRecordRootGroup',
+                    children: [
+                      {
+                        name: 'recordInfo',
+                        children: [
+                          {
+                            name: 'validationType',
+                            children: [
+                              {
+                                name: 'linkedRecordId',
+                                value: 'someLinkedRecordValidationTypeId',
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        name: 'someTextVariable',
+                        value: 'value1',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'someRootGroup',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'recordLink',
+            name: 'someRecordLink',
+            linkedRecordType: 'someLinkedRecordRootGroupId',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+        ],
+      };
+
+      dependencies.validationTypePool.set('someLinkedRecordValidationTypeId', {
+        id: 'someLinkedRecordValidationTypeId',
+        metadataGroupId: 'someLinkedRecordRootGroupId',
+      } as BFFValidationType);
+
+      dependencies.metadataPool.set('someLinkedRecordRootGroupId', {
+        id: 'someLinkedRecordRootGroupId',
+        type: 'group',
+        nameInData: 'someLinkedRecordRootGroup',
+        textId: '',
+        defTextId: '',
+        children: [
+          {
+            childId: 'someTextVariableId',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      });
+
+      dependencies.metadataPool.set('someTextVariableId', {
+        id: 'someTextVariableId',
+        type: 'textVariable',
+        nameInData: 'someTextVariable',
+        textId: '',
+        defTextId: '',
+      });
+
+      const transformData = transformRecordData(data, metadata, dependencies);
+
+      const expected = {
+        someRootGroup: {
+          someRecordLink: {
+            value: 'someRecordId',
+            linkedRecord: {
+              someLinkedRecordRootGroup: {
+                someTextVariable: {
+                  value: 'value1',
+                },
+              },
+            },
           },
         },
       };
@@ -2272,7 +2381,11 @@ describe('transformRecord', () => {
         ],
       } satisfies FormMetaData;
 
-      const actual = transformDataGroup(dataRecordGroup, formMetaData);
+      const actual = transformDataGroup(
+        dataRecordGroup,
+        formMetaData,
+        dependencies,
+      );
 
       const expected = {
         name_type_personal: [
@@ -2317,7 +2430,7 @@ describe('transformRecord', () => {
         ],
       };
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {},
@@ -2349,7 +2462,7 @@ describe('transformRecord', () => {
         ],
       } as unknown as FormMetaData;
 
-      const transformData = transformRecordData(data, metadata);
+      const transformData = transformRecordData(data, metadata, dependencies);
 
       const expected = {
         divaOutput: {
@@ -2410,7 +2523,7 @@ describe('transformRecord', () => {
       ],
     } as unknown as FormMetaData;
 
-    const transformData = transformRecordData(data, metadata);
+    const transformData = transformRecordData(data, metadata, dependencies);
 
     const expected = {
       binary: {
