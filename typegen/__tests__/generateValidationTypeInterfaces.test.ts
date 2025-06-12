@@ -10,9 +10,9 @@ import type {
 import { listToPool } from '@/utils/structs/listToPool';
 import { format } from 'prettier';
 import {
-  generateValidationTypeInterfaces,
+  generateTypesForRecordTypes,
   getNameFromMetadata,
-} from '../generateValidationTypeInterface';
+} from '../generateTypesForRecordTypes';
 import { describe, expect, it } from 'vitest';
 
 describe('generateValidationTypeInterface', () => {
@@ -98,7 +98,7 @@ describe('generateValidationTypeInterface', () => {
       } as BFFMetadataBase,
     ]);
 
-    const actual = generateValidationTypeInterfaces(
+    const actual = generateTypesForRecordTypes(
       validationTypePool,
       metadataPool,
       ['validationTypeId'],
