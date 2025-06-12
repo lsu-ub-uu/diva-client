@@ -49,7 +49,6 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { dependencies } from 'server/depencencies';
 
 /**
  * Transforms records
@@ -79,15 +78,36 @@ export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper,
 ): BFFDataRecord => {
-  const {
-    id,
-    recordType,
-    validationType,
-    createdAt,
-    createdBy,
-    updated,
-    data,
-  } = transformRecordDataGroup(recordWrapper.record.data, dependencies);
+  let createdAt;
+  let createdBy;
+  const id = extractIdFromRecordInfo(recordWrapper.record.data);
+  const recordInfo = extractRecordInfoDataGroup(recordWrapper.record.data);
+
+  const recordType = extractLinkedRecordIdFromNamedRecordLink(
+    recordInfo,
+    'type',
+  );
+  const validationType = extractLinkedRecordIdFromNamedRecordLink(
+    recordInfo,
+    'validationType',
+  );
+
+  if (containsChildWithNameInData(recordInfo, 'tsCreated')) {
+    createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
+  }
+
+  if (containsChildWithNameInData(recordInfo, 'createdBy')) {
+    createdBy = extractLinkedRecordIdFromNamedRecordLink(
+      recordInfo,
+      'createdBy',
+    );
+  }
+  const updated = extractRecordUpdates(recordInfo);
+
+  const data = transformRecordDataGroup(
+    recordWrapper.record.data,
+    dependencies,
+  );
 
   const coraRecord = recordWrapper.record;
   let userRights: BFFUserRight[] = [];
@@ -112,32 +132,12 @@ const transformRecordDataGroup = (
   dataRecordGroup: DataGroup,
   dependencies: Dependencies,
 ) => {
-  let createdAt;
-  let createdBy;
-
-  const id = extractIdFromRecordInfo(dataRecordGroup);
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
-  const recordType = extractLinkedRecordIdFromNamedRecordLink(
-    recordInfo,
-    'type',
-  );
   const validationType = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
     'validationType',
   );
-
-  if (containsChildWithNameInData(recordInfo, 'tsCreated')) {
-    createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
-  }
-
-  if (containsChildWithNameInData(recordInfo, 'createdBy')) {
-    createdBy = extractLinkedRecordIdFromNamedRecordLink(
-      recordInfo,
-      'createdBy',
-    );
-  }
-  const updated = extractRecordUpdates(recordInfo);
 
   const formMetadata = createFormMetaData(
     dependencies,
@@ -145,17 +145,7 @@ const transformRecordDataGroup = (
     'update',
   );
 
-  const data = transformRecordData(dataRecordGroup, formMetadata, dependencies);
-
-  return removeEmpty({
-    id,
-    recordType,
-    validationType,
-    createdAt,
-    createdBy,
-    updated,
-    data,
-  });
+  return transformRecordData(dataRecordGroup, formMetadata, dependencies);
 };
 
 export const transformRecordData = (
