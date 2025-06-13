@@ -73,9 +73,12 @@ export const loader = async ({
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
+  const citationMeta = data
+    ? generateCitationMeta(data?.record.data, data?.origin)
+    : [];
   return [
     { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
-    ...generateCitationMeta(data.record.data, data.origin),
+    ...citationMeta,
   ];
 };
 
