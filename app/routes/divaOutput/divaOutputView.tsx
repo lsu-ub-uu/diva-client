@@ -34,6 +34,7 @@ import { Term } from './components/Term';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
 import { getLanguageTextId } from './utils/translateLanguage';
+import { Authors } from './components/Authors';
 
 export const loader = async ({
   request,
@@ -97,16 +98,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             {loaderData.pageTitle}
           </h1>
           <dl>
-            {output.name_type_personal && (
-              <>
-                <dt>{output.name_type_personal?.[0]?.__text[language]}</dt>
-                {output.name_type_personal?.map((person, index) => (
-                  <dd key={index}>
-                    <Person person={person} key={index} />
-                  </dd>
-                ))}
-              </>
-            )}
+            <Authors authors={output.name_type_personal} />
             <Term
               label={output.note_type_creatorCount?.__text[language]}
               value={output.note_type_creatorCount?.value}

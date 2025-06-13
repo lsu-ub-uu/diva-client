@@ -24,12 +24,14 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { href, Link } from 'react-router';
 
+type Person =
+  | NamePersonalGroup
+  | NamePersonalDegreeSupervisorGroup
+  | NamePersonalThesisAdvisorGroup
+  | NamePersonalOpponentGroup;
+
 interface PersonProps {
-  person:
-    | NamePersonalGroup
-    | NamePersonalDegreeSupervisorGroup
-    | NamePersonalThesisAdvisorGroup
-    | NamePersonalOpponentGroup;
+  person: Person;
 }
 
 export const Person = ({ person }: PersonProps) => {
@@ -42,17 +44,24 @@ export const Person = ({ person }: PersonProps) => {
           recordId: person.person.value,
         })}
       >
-        <span>
-          {person.namePart_type_given?.value}
-          {person.namePart_type_family?.value}
-        </span>
+        <span>{formatPersonName(person)}</span>
       </Link>
     );
   }
 
-  return (
-    <span>
-      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
-    </span>
-  );
+  return <span>{formatPersonName(person)}</span>;
 };
+
+function formatPersonName(person: Person): string {
+  const linkedName =
+    person.person?.linkedRecord?.person?.authority?.name_type_personal;
+
+  const givenName =
+    person.namePart_type_given?.value ?? linkedName?.namePart_type_given?.value;
+
+  const familyName =
+    person.namePart_type_family?.value ??
+    linkedName?.namePart_type_family?.value;
+
+  return [givenName, familyName].filter(Boolean).join(' ');
+}
