@@ -32,7 +32,6 @@ import {
   kalCollectionItem,
   languageCollectionVar,
   nationalSubjectCategoryLink,
-  nationSubjectCategoryValidationTypeData,
   newLangCollVariable,
   newLangItemCollection,
   newLangItemCollectionItemEng,
