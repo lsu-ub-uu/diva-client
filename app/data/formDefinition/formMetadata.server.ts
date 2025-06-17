@@ -54,6 +54,20 @@ export const createFormMetaData = (
   return createMetaDataFromChildReference(formRootReference, metadataPool);
 };
 
+export const createViewMetadata = (
+  dependencies: Dependencies,
+  recordTypeId: string,
+) => {
+  const { recordTypePool, metadataPool } = dependencies;
+  const recordType = recordTypePool.get(recordTypeId);
+  const metadataGroup = metadataPool.get(
+    recordType.metadataId,
+  ) as BFFMetadataGroup;
+
+  const formRootReference = createBFFMetadataReference(metadataGroup.id);
+  return createMetaDataFromChildReference(formRootReference, metadataPool);
+};
+
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
   metadataPool: Dependencies['metadataPool'],
