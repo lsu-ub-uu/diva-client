@@ -49,9 +49,10 @@ import {
   someMainTitleTextVariable,
   someMainTitleTitleInfoATextVariable,
   someManuscriptEditMetadataGroup,
-  someManuscriptValidationTypeData,
+  someManuscriptRecordType,
   someNamePartTextVariable,
   someNamePartWithAttributesTextVariable,
+  someNationalSubjectCategoryRecordType,
   someNewMetadataGroupRepeatingNamePartGroup,
   someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
   someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
@@ -61,9 +62,9 @@ import {
   someOtherNamePartWithAttributesTextVariable,
   someSubTitleTextVariable,
   sometitleMetadataChildGroup,
-  someValidationTypeForRepeatingTitleInfoId,
-  someValidationTypeNamePartId,
-  someValidationTypeNamePartWithAttributesId,
+  someRecordTypeForRepeatingTitleInfo,
+  someRecordTypeNamePart,
+  someRecordTypeNamePartWithAttributes,
   tsCreatedTextVar,
   tsUpdatedTextVar,
   typeCollectionItemAlternative,
@@ -103,7 +104,6 @@ import {
 } from '../transformRecord.server';
 
 describe('transformRecord', () => {
-  let validationTypePool: Lookup<string, BFFValidationType>;
   let metadataPool: Lookup<string, BFFMetadata>;
   let presentationPool: Lookup<
     string,
@@ -113,15 +113,16 @@ describe('transformRecord', () => {
     | BFFGuiElement
     | BFFPresentationResourceLink
   >;
+  let recordTypePool: Lookup<string, BFFRecordType>;
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([
-      someManuscriptValidationTypeData,
-      nationSubjectCategoryValidationTypeData,
-      someValidationTypeForRepeatingTitleInfoId,
-      someValidationTypeNamePartId,
-      someValidationTypeNamePartWithAttributesId,
+    recordTypePool = listToPool<BFFRecordType>([
+      someManuscriptRecordType,
+      someNationalSubjectCategoryRecordType,
+      someRecordTypeForRepeatingTitleInfo,
+      someRecordTypeNamePart,
+      someRecordTypeNamePartWithAttributes,
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someManuscriptEditMetadataGroup,
@@ -173,10 +174,10 @@ describe('transformRecord', () => {
 
     dependencies = {
       textPool: listToPool<BFFText>([]),
-      validationTypePool,
+      validationTypePool: listToPool<BFFValidationType>([]),
       metadataPool,
       presentationPool,
-      recordTypePool: listToPool<BFFRecordType>([]),
+      recordTypePool: recordTypePool,
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
@@ -191,7 +192,7 @@ describe('transformRecord', () => {
       );
       const expected = {
         id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
+        recordType: 'manuscriptRecordTypeId',
         validationType: 'manuscript',
         createdAt: '2023-10-11T09:24:30.511487Z',
         createdBy: 'coraUser:490742519075086',
@@ -291,7 +292,7 @@ describe('transformRecord', () => {
                 value: '2023-10-11T09:24:30.511487Z',
               },
               type: {
-                value: 'divaOutput',
+                value: 'manuscriptRecordTypeId',
               },
               updated: [
                 {
@@ -811,7 +812,7 @@ describe('transformRecord', () => {
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
-        recordType: 'namePartPartWithAttributesValidationTypeId',
+        recordType: 'namePartPartWithAttributesRecordTypeId',
         validationType: 'namePartPartWithAttributesValidationTypeId',
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
@@ -899,7 +900,7 @@ describe('transformRecord', () => {
                 value: '2024-09-13T11:49:37.288927Z',
               },
               type: {
-                value: 'namePartPartWithAttributesValidationTypeId',
+                value: 'namePartPartWithAttributesRecordTypeId',
               },
               updated: [
                 {
@@ -948,7 +949,7 @@ describe('transformRecord', () => {
       );
       const expected = {
         id: 'divaOutput:519333261463755',
-        recordType: 'namePartPartWithAttributesValidationTypeId',
+        recordType: 'manuscriptRecordTypeId',
         validationType: 'manuscript',
         userRights: ['read', 'update', 'index', 'delete'],
         actionLinks: {
@@ -978,7 +979,7 @@ describe('transformRecord', () => {
                     },
                     {
                       name: 'linkedRecordId',
-                      value: 'namePartPartWithAttributesValidationTypeId',
+                      value: 'manuscriptRecordTypeId',
                     },
                   ],
                   name: 'recordType',
@@ -1016,7 +1017,7 @@ describe('transformRecord', () => {
               },
 
               type: {
-                value: 'namePartPartWithAttributesValidationTypeId',
+                value: 'manuscriptRecordTypeId',
               },
               validationType: {
                 value: 'manuscript',
@@ -2044,7 +2045,7 @@ describe('transformRecord', () => {
             children: [
               {
                 name: 'linkedRecordType',
-                value: 'someRecordType',
+                value: 'someLinkedRecordTypeId',
               },
               {
                 name: 'linkedRecordId',
@@ -2059,6 +2060,15 @@ describe('transformRecord', () => {
                       {
                         name: 'recordInfo',
                         children: [
+                          {
+                            name: 'type',
+                            children: [
+                              {
+                                name: 'linkedRecordId',
+                                value: 'someLinkedRecordTypeId',
+                              },
+                            ],
+                          },
                           {
                             name: 'validationType',
                             children: [
@@ -2097,10 +2107,10 @@ describe('transformRecord', () => {
         ],
       };
 
-      dependencies.validationTypePool.set('someLinkedRecordValidationTypeId', {
-        id: 'someLinkedRecordValidationTypeId',
-        metadataGroupId: 'someLinkedRecordRootGroupId',
-      } as BFFValidationType);
+      dependencies.recordTypePool.set('someLinkedRecordTypeId', {
+        id: 'someLinkedRecordTypeId',
+        metadataId: 'someLinkedRecordRootGroupId',
+      } as BFFRecordType);
 
       dependencies.metadataPool.set('someLinkedRecordRootGroupId', {
         id: 'someLinkedRecordRootGroupId',
