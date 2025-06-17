@@ -3255,7 +3255,7 @@ export type BinaryTypeCollection =
   | 'compressed';
 
 export interface RecordInfoBinaryGroup {
-  id?: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text: { sv: string; en: string } };
   type?: { value: string; __text: { sv: string; en: string } };
   validationType: { value: string; __text: { sv: string; en: string } };
   dataDivider: { value: string; __text: { sv: string; en: string } };
@@ -3538,7 +3538,7 @@ export interface OutputUpdateGroup {
     __text: { sv: string; en: string };
   };
   academicSemester?: AcademicSemesterGroup;
-  studentDegree?: StudentDegreeGroup;
+  studentDegree?: StudentDegreeGroup[];
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
   degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
   supervisor_type_personal?: NamePersonalThesisAdvisorGroup[];
