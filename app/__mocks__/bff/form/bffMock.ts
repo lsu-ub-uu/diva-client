@@ -13,6 +13,7 @@ import type {
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
   BFFPresentationTextVar,
+  BFFRecordType,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 
@@ -82,17 +83,15 @@ export const pSomeNewMetadataGroupForMissingChildId: BFFPresentationGroup = {
   ],
 };
 
-export const someManuscriptValidationTypeData: BFFValidationType = {
-  id: 'manuscript',
-  validatesRecordTypeId: 'divaOutput',
-  // New
-  newMetadataGroupId: '',
-  newPresentationGroupId: '',
-  // Update/Edit
-  metadataGroupId: 'someManuscriptEditMetadataGroupId',
-  presentationGroupId: '',
-  nameTextId: '',
+export const someManuscriptRecordType: BFFRecordType = {
+  id: 'manuscriptRecordTypeId',
+  metadataId: 'someManuscriptEditMetadataGroupId',
+  textId: '',
   defTextId: '',
+  presentationViewId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
 };
 
 export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
@@ -1688,19 +1687,6 @@ export const pSomeScopusIdTextVar: BFFPresentationTextVar = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const nationSubjectCategoryValidationTypeData: BFFValidationType = {
-  id: 'nationalSubjectCategory',
-  validatesRecordTypeId: 'record123',
-  // New
-  newMetadataGroupId: 'someNewMetadataGroupId',
-  newPresentationGroupId: 'pSomeNewMetadataGroupId',
-  // Update/Edit
-  metadataGroupId: 'someEditMetadataGroupId',
-  presentationGroupId: 'pSomeEditMetadataGroupId',
-  nameTextId: 'name123',
-  defTextId: 'defName456',
-};
-
 export const newNationSubjectCategoryValidationType: BFFValidationType = {
   id: 'nationalSubjectCategory',
   validatesRecordTypeId: 'record123',
@@ -1712,6 +1698,20 @@ export const newNationSubjectCategoryValidationType: BFFValidationType = {
   presentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
   nameTextId: 'name123',
   defTextId: 'defName456',
+};
+
+export const someNationalSubjectCategoryRecordType: BFFRecordType = {
+  id: 'nationalSubjectCategory',
+  // New
+  // Update/Edit
+  metadataId: 'someEditMetadataGroupId',
+  presentationViewId: 'pSomeEditMetadataGroupId',
+
+  textId: '',
+  defTextId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
 };
 
 export const newNationalSubjectCategoryRecordTypeNewGroup: BFFMetadataGroup = {
@@ -2187,6 +2187,17 @@ export const someValidationTypeForRepeatingTitleInfoId: BFFValidationType = {
   defTextId: 'defName456',
 };
 
+export const someRecordTypeForRepeatingTitleInfo: BFFRecordType = {
+  id: 'divaOutputSwepub',
+  metadataId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup',
+  textId: 'name123',
+  defTextId: 'defName456',
+  presentationViewId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
+};
+
 export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataGroup =
   {
     id: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup',
@@ -2369,17 +2380,15 @@ export const pSomeMainTitleTitleInfoTextVariable: BFFPresentationTextVar = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const someValidationTypeNamePartId: BFFValidationType = {
+export const someRecordTypeNamePart: BFFRecordType = {
   id: 'namePartValidationTypeId',
-  validatesRecordTypeId: 'namePartValidationTypeId',
-  // New
-  newMetadataGroupId: 'someNewMetadataGroupNamePartGroup',
-  newPresentationGroupId: 'someNewMetadataGroupNamePartPGroup',
-  // Update/Edit
-  metadataGroupId: 'someNewMetadataGroupNamePartGroup',
-  presentationGroupId: 'someNewMetadataGroupNamePartPGroup',
-  nameTextId: 'name123',
+  metadataId: 'someNewMetadataGroupNamePartGroup',
+  textId: 'name123',
   defTextId: 'defName456',
+  presentationViewId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
 };
 
 export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
@@ -2426,19 +2435,15 @@ export const someOtherNamePartTextVariable: BFFMetadataTextVariable = {
   ],
 };
 
-export const someValidationTypeNamePartWithAttributesId: BFFValidationType = {
-  id: 'namePartPartWithAttributesValidationTypeId',
-  validatesRecordTypeId: 'namePartPartWithAttributesValidationTypeId',
-  // New
-  newMetadataGroupId:
-    'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
-  newPresentationGroupId:
-    'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
-  // Update/Edit
-  metadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
-  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
-  nameTextId: 'name123',
+export const someRecordTypeNamePartWithAttributes: BFFRecordType = {
+  id: 'namePartPartWithAttributesRecordTypeId',
+  metadataId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  textId: 'name123',
   defTextId: 'defName456',
+  presentationViewId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
 };
 
 export const someNewMetadataGroupRepeatingNamePartWithAttributesGroup: BFFMetadataGroup =

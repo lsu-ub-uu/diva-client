@@ -40,7 +40,7 @@ import type {
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
+import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFUpdate,
@@ -134,16 +134,12 @@ const transformRecordDataGroup = (
 ) => {
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
-  const validationType = extractLinkedRecordIdFromNamedRecordLink(
+  const recordTypeId = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
-    'validationType',
+    'type',
   );
 
-  const formMetadata = createFormMetaData(
-    dependencies,
-    validationType,
-    'update',
-  );
+  const formMetadata = createViewMetadata(dependencies, recordTypeId);
 
   return transformRecordData(dataRecordGroup, formMetadata, dependencies);
 };

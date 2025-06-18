@@ -16,7 +16,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "namePartPartWithAttributesValidationTypeId"
+                  "value": "manuscriptRecordTypeId"
                 }
               ],
               "actionLinks": {
@@ -163,7 +163,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "namePartPartWithAttributesValidationTypeId"
+                  "value": "manuscriptRecordTypeId"
                 }
               ],
               "name": "recordType"

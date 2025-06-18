@@ -18,7 +18,10 @@ export const generateCitationMeta = (
   });
 
   divaOutput.output.name_type_personal?.forEach((person) => {
-    if (person.role?.roleTerm.some((role) => role.value === 'aut')) {
+    if (
+      person.role &&
+      person.role.roleTerm.some((role) => role.value === 'aut')
+    ) {
       const family = person.namePart_type_family?.value || '';
       const given = person.namePart_type_given?.value || '';
       meta.push({

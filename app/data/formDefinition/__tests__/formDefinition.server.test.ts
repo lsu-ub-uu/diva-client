@@ -93,7 +93,6 @@ import {
   someValidationTypeData,
   someValidationTypeDataFaultyChildReference,
   someValidationTypeForMissingChildIdTypeData,
-  someValidationTypeForRepeatingTitleInfoId,
   tsCreatedTextVar,
   tsUpdatedTextVar,
   updatedByLink,
@@ -164,7 +163,6 @@ describe('formDefinition', () => {
       someValidationTypeDataFaultyChildReference,
       someSimpleValidationTypeData,
       someValidationTypeForMissingChildIdTypeData,
-      someValidationTypeForRepeatingTitleInfoId,
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,

@@ -3538,7 +3538,7 @@ export interface OutputUpdateGroup {
     __text: { sv: string; en: string };
   };
   academicSemester?: AcademicSemesterGroup;
-  studentDegree?: StudentDegreeGroup;
+  studentDegree?: StudentDegreeGroup[];
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
   degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
   supervisor_type_personal?: NamePersonalThesisAdvisorGroup[];

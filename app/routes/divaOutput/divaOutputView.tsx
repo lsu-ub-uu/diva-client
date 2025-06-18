@@ -313,38 +313,32 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 ))}
               </>
             )}
+            <Event event={output.defence} />
+            <Event event={output.presentation} />
           </dl>
-          {output.studentDegree && (
+          {output.studentDegree?.map((studentDegree) => (
             <>
-              <h2>{output.studentDegree.__text[language]}</h2>
+              <h2>{studentDegree.__text[language]}</h2>
               <dl>
                 <Term
-                  label={output.studentDegree.course?.__text[language]}
-                  value={output.studentDegree.course?.value} // TODO linked record
+                  label={studentDegree.course?.__text[language]}
+                  value={studentDegree.course?.value} // TODO linked record
                 />
                 <Term
-                  label={output.studentDegree.degreeLevel?.__text[language]}
-                  value={
-                    output.studentDegree.degreeLevel?.__valueText[language]
-                  }
+                  label={studentDegree.degreeLevel?.__text[language]}
+                  value={studentDegree.degreeLevel?.__valueText[language]}
                 />
                 <Term
-                  label={
-                    output.studentDegree.universityPoints?.__text[language]
-                  }
-                  value={
-                    output.studentDegree.universityPoints?.__valueText[language]
-                  }
+                  label={studentDegree.universityPoints?.__text[language]}
+                  value={studentDegree.universityPoints?.__valueText[language]}
                 />
                 <Term
-                  label={output.studentDegree.programme?.__text[language]}
-                  value={output.studentDegree.programme?.value} // TODO linked record
+                  label={studentDegree.programme?.__text[language]}
+                  value={studentDegree.programme?.value} // TODO linked record
                 />
-                <Event event={output.defence} />
-                <Event event={output.presentation} />
               </dl>
             </>
-          )}
+          ))}
         </article>
       </main>
       <aside>
