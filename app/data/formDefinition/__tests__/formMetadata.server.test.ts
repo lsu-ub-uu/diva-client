@@ -70,7 +70,7 @@ import {
   someValidationTypeForRepeatingCollectionsNameInDataId,
   someValidationTypeForRepeatingGroupsNameInDataId,
   someValidationTypeForRepeatingRecordLinksNameInDataId,
-  someRecordTypeForRepeatingTitleInfo,
+  someValidationTypeForRepeatingTitleInfoId,
   titleGroup,
   tsCreatedTextVar,
   tsUpdatedTextVar,
@@ -81,7 +81,6 @@ import {
   updatedByLink,
   updatedGroup,
   validationTypeLink,
-  someValidationTypeForRepeatingTitleInfoId,
 } from '@/__mocks__/bff/form/bffMock';
 import type {
   BFFGuiElement,
