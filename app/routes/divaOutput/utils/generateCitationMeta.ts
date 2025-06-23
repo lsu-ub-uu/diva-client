@@ -2,14 +2,14 @@ import type {
   DivaOutput,
   RelatedItemJournalGroup,
 } from '@/generatedTypes/divaTypes';
-import type { MetaDescriptors } from 'react-router/route-module';
 import { createTitle } from './createTitle';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import type { MetaDescriptor } from 'react-router';
 
 export const generateCitationMeta = (
   divaOutput: DivaOutput,
   origin: string,
-): MetaDescriptors => {
+): MetaDescriptor[] => {
   const meta = [];
 
   meta.push({
@@ -97,7 +97,7 @@ export const generateCitationMeta = (
 };
 
 const addMetaJournalInfo = (
-  meta: MetaDescriptors,
+  meta: MetaDescriptor[],
   journal: RelatedItemJournalGroup,
 ) => {
   // TODO Handle linked journal

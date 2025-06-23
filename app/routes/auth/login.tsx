@@ -61,7 +61,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export const meta = ({ data }: Route.MetaArgs) => {
   return [
     {
-      title: `DiVA | ${data.breadcrumb}`,
+      title: ['DiVA', `${data?.breadcrumb}`].filter(Boolean).join(' | '),
     },
   ];
 };
