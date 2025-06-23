@@ -2,9 +2,9 @@ import type {
   DivaOutput,
   RelatedItemJournalGroup,
 } from '@/generatedTypes/divaTypes';
-import type { MetaDescriptors } from 'react-router/route-module';
 import { createTitle } from './createTitle';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import type { MetaDescriptors } from 'react-router/route-module';
 
 export const generateCitationMeta = (
   divaOutput: DivaOutput,
