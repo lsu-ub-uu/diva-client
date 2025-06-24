@@ -23,6 +23,7 @@ import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFr
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import resourceLinkStyles from './ResourceLink.module.css';
+import type { BFFDataResourceLink } from '@/types/record';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;
@@ -33,7 +34,11 @@ export const ResourceLink = ({ component, path }: ResourceLinkProps) => {
   const { getValues } = useRemixFormContext();
   const { t } = useTranslation();
 
-  const data = getValues(path);
+  const data = getValues(path) as BFFDataResourceLink | undefined;
+
+  if (!data) {
+    return null;
+  }
 
   const downloadLink = createDownloadLinkFromResourceLink(data);
 

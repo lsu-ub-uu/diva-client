@@ -2483,6 +2483,57 @@ describe('transformRecord', () => {
 
       expect(transformData).toStrictEqual(expected);
     });
+
+    it('should handle resourceLink', () => {
+      const data = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'master',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'binary',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'binary:8037579210342018',
+              },
+              {
+                name: 'mimeType',
+                value: 'audio/mpeg',
+              },
+            ],
+          },
+        ],
+      };
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'divaOutput',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            type: 'resourceLink',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            name: 'master',
+          },
+        ],
+      } as unknown as FormMetaData;
+      const transformData = transformRecordData(data, metadata, dependencies);
+
+      const expected = {
+        divaOutput: {
+          master: {
+            id: 'binary:8037579210342018',
+            mimeType: 'audio/mpeg',
+            name: 'master',
+          },
+        },
+      };
+
+      expect(transformData).toStrictEqual(expected);
+    });
   });
 
   it('should handle attributes on outer groups', () => {

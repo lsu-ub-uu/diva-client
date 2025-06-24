@@ -1559,14 +1559,7 @@ describe('transformToCora', () => {
             master: {
               name: 'master',
               mimeType: 'image/webp',
-              actionLinks: {
-                read: {
-                  requestMethod: 'GET',
-                  rel: 'read',
-                  url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:8016649047742459/master',
-                  accept: 'image/webp',
-                },
-              },
+              id: 'binary:8016649047742459',
             },
           },
         ],
@@ -1581,7 +1574,19 @@ describe('transformToCora', () => {
         children: [
           {
             name: 'master',
-            children: [{ name: 'master', mimeType: 'image/webp' }],
+            children: [
+              {
+                name: 'master',
+                children: [
+                  { name: 'linkedRecordType', value: 'binary' },
+                  { name: 'linkedRecordId', value: 'binary:8016649047742459' },
+                  {
+                    name: 'mimeType',
+                    value: 'image/webp',
+                  },
+                ],
+              },
+            ],
           },
         ],
         attributes: { type: 'generic' },

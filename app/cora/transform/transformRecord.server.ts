@@ -46,6 +46,7 @@ import type {
   BFFUpdate,
   BFFUserRight,
   Metadata,
+  BFFDataResourceLink,
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -254,14 +255,14 @@ const transformDataAtomic = (data: DataAtomic) => {
   return { value: data.value };
 };
 
-const transformResourceLink = (data: ResourceLink) => {
-  const readLinkParts = data.actionLinks?.read.url.split('/');
-  const name = readLinkParts?.pop();
-  const id = readLinkParts?.pop();
+const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {
+  const name = data.name;
+  const id = getFirstDataAtomicValueWithNameInData(data, 'linkedRecordId');
+  const mimeType = getFirstDataAtomicValueWithNameInData(data, 'mimeType');
 
   return {
     name,
-    mimeType: data.mimeType,
+    mimeType,
     id,
   };
 };
