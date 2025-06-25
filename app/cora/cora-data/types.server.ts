@@ -26,11 +26,14 @@ export interface RecordLink extends DataElement {
   linkedRecord?: DataGroup;
 }
 
-export interface ResourceLink {
-  name: string;
-  mimeType: string;
+export interface ResourceLink extends DataElement {
   actionLinks?: { read: ActionLink };
   attributes?: Attributes;
+  children: [
+    { name: 'linkedRecordType'; value: 'binary' },
+    { name: 'linkedRecordId'; value: string },
+    { name: 'mimeType'; value: string },
+  ];
 }
 
 export interface ActionLink {

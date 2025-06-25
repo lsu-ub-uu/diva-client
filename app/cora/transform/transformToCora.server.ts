@@ -25,6 +25,7 @@ import type {
   ResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { BFFDataResourceLink } from '@/types/record';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { isEmpty } from 'lodash-es';
 
@@ -97,7 +98,12 @@ export const transformEntry = ({
   }
 
   if (isResourceLink(fieldMetadata)) {
-    return transformResourceLink(key, attributes, value, repeatId);
+    return transformResourceLink(
+      key,
+      attributes,
+      value as BFFDataResourceLink,
+      repeatId,
+    );
   }
 
   if (isVariable(value)) {
@@ -174,16 +180,25 @@ const isResourceLink = (fieldMetadata: FormMetaData) => {
 const transformResourceLink = (
   name: string,
   attributes: undefined | Record<string, string>,
-  value: any,
+  value: BFFDataResourceLink,
   repeatId: string | undefined,
-) => {
+): ValuableDataWrapper<ResourceLink> => {
+  const resourceLink: ResourceLink = {
+    name: removeAttributeFromName(name, attributes),
+    children: [
+      { name: 'linkedRecordType', value: 'binary' },
+      { name: 'linkedRecordId', value: value.id },
+      {
+        name: 'mimeType',
+        value: value.mimeType,
+      },
+    ],
+    attributes,
+    repeatId,
+  };
+
   return {
-    data: removeEmpty({
-      name: removeAttributeFromName(name, attributes),
-      mimeType: value.mimeType,
-      attributes,
-      repeatId,
-    }),
+    data: removeEmpty(resourceLink),
     hasValuableData: value.mimeType !== undefined,
   };
 };

@@ -84,3 +84,9 @@ export interface Value {
   value: string;
   [key: string]: any;
 }
+
+export interface BFFDataResourceLink {
+  name: string;
+  mimeType: string;
+  id: string;
+}
