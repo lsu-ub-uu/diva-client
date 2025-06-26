@@ -83,7 +83,9 @@ export const loader = async ({
 export const meta = ({ data, error }: Route.MetaArgs) => {
   let citationMeta: MetaDescriptor[] = [];
   try {
-    citationMeta = generateCitationMeta(data?.record.data, data?.origin);
+    if (data) {
+      citationMeta = generateCitationMeta(data?.record.data, data?.origin);
+    }
   } catch (error) {
     console.error('Failed to generate citation meta:', error);
   }
