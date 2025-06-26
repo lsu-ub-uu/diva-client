@@ -39,6 +39,13 @@ process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
 });
 
+// Redirect root path to BASE_PATH if it is set
+if (BASE_PATH && BASE_PATH !== '/') {
+  app.get('/', (_req, res) => {
+    res.redirect(BASE_PATH);
+  });
+}
+
 if (DEVELOPMENT) {
   console.info('Starting development server');
   const viteDevServer = await import('vite').then((vite) =>
@@ -77,5 +84,14 @@ app.listen(PORT, () => {
   console.info(`CORA_API_URL ${process.env.CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL ${process.env.CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
-  console.info(`Server is started and listening on port ${PORT} ${BASE_PATH}`);
+
+  if (DEVELOPMENT) {
+    console.info(
+      `Development server is running on \`http://localhost:${PORT}${BASE_PATH}`,
+    );
+  } else {
+    console.info(
+      `Server is started and listening on port ${PORT} ${BASE_PATH}`,
+    );
+  }
 });

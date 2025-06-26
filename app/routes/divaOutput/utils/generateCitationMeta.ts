@@ -78,8 +78,8 @@ export const generateCitationMeta = (
   const pdfFulltextAttachements = (divaOutput.output.attachment || []).filter(
     (attachment) =>
       attachment.type.value === 'fullText' &&
-      attachment.attachmentFile.linkedRecord.binary.master?.master?.mimeType ===
-        'application/pdf',
+      attachment.attachmentFile.linkedRecord?.binary.master?.master
+        ?.mimeType === 'application/pdf',
   );
 
   pdfFulltextAttachements.forEach((attachment) => {
@@ -88,7 +88,7 @@ export const generateCitationMeta = (
       content:
         origin +
         createDownloadLinkFromResourceLink(
-          attachment.attachmentFile.linkedRecord.binary.master!.master,
+          attachment.attachmentFile.linkedRecord?.binary.master!.master,
         ),
     });
   });

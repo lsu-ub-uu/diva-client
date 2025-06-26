@@ -469,7 +469,6 @@ export type OutputTypeCollection =
   | 'intellectual-property_other'
   | 'other_software'
   | 'diva_degree-project'
-  | 'diva_manuscript-thesis'
   | 'diva_dissertation';
 
 export interface DivaOrganisation extends BFFDataRecordData {
@@ -2220,7 +2219,7 @@ export type PublicationStatusCollection =
   | 'aheadOfPrint'
   | 'retracted';
 
-export type OutputTypeArtisticWorkCollection = 'false' | 'true';
+export type OutputTypeArtisticWorkCollection = 'true' | 'false' | 'undefined';
 
 export type GenreContentTypeCollection = 'ref' | 'vet' | 'pop';
 
@@ -2466,6 +2465,7 @@ export interface OriginInfoGroup {
 export type IdentifierDisplayLabelIsbnIsmnCollection =
   | 'print'
   | 'online'
+  | 'undefined'
   | 'invalid';
 
 export interface LocationOrderLinkGroup {
@@ -2475,12 +2475,12 @@ export interface LocationOrderLinkGroup {
   __text: { sv: string; en: string };
 }
 
-export type SemesterCollection = 'ht' | 'vt';
+export type AcademicSemesterCollection = 'ht' | 'vt';
 
 export interface AcademicSemesterGroup {
   year?: { value: string; __text: { sv: string; en: string } };
-  semester?: {
-    value: SemesterCollection;
+  academicSemester?: {
+    value: AcademicSemesterCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
@@ -3225,18 +3225,25 @@ export interface LocalGenericMarkupUpdateGroup {
   __text: { sv: string; en: string };
 }
 
-export type TrueFalseDivaCollection = 'true' | 'false';
+export type FailedCollection = 'true';
 
-export interface AdminGroup {
+export type ReviewedCollection = 'true' | 'false';
+
+export interface AdminThesisGroup {
+  failed?: {
+    value: FailedCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  reviewed: {
+    value: ReviewedCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
   note_type_internal?: {
     value: string;
     _type: 'internal';
     __text: { sv: string; en: string };
-  };
-  reviewed: {
-    value: TrueFalseDivaCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
   };
   __text: { sv: string; en: string };
 }
@@ -3358,6 +3365,33 @@ export type AttachmentTypeCollection =
   | 'summary'
   | 'toc';
 
+export type AttachmentAvailabilityCollection =
+  | 'archiveOnly'
+  | 'availableNow'
+  | 'availableLater';
+
+export interface DateAttachmentAvailabilityGroup {
+  year: { value: string; __text: { sv: string; en: string } };
+  month?: { value: string; __text: { sv: string; en: string } };
+  day?: { value: string; __text: { sv: string; en: string } };
+  __text: { sv: string; en: string };
+}
+
+export interface AdminAttachmentGroup {
+  availability: {
+    value: AttachmentAvailabilityCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  dateAvailability?: DateAttachmentAvailabilityGroup;
+  note_type_attachment?: {
+    value: string;
+    _type: 'attachment';
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
 export interface AttachmentGroup {
   attachmentFile: {
     value: string;
@@ -3371,11 +3405,8 @@ export interface AttachmentGroup {
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
-  note_type_userMessage?: {
-    value: string;
-    _type: 'userMessage';
-    __text: { sv: string; en: string };
-  };
+  displayLabel?: { value: string; __text: { sv: string; en: string } };
+  admin: AdminAttachmentGroup;
   __text: { sv: string; en: string };
 }
 
@@ -3400,7 +3431,7 @@ export interface OutputUpdateGroup {
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
-  artisticWork_type_outputType?: {
+  artisticWork_type_outputType: {
     value: OutputTypeArtisticWorkCollection;
     _type: 'outputType';
     __text: { sv: string; en: string };
@@ -3460,7 +3491,7 @@ export interface OutputUpdateGroup {
   originInfo: OriginInfoGroup;
   imprint?: { value: string; __text: { sv: string; en: string } };
   extent?: { value: string; __text: { sv: string; en: string } };
-  classification_authority_ssif?: {
+  classification_authority_ssif: {
     value: SsifCollection;
     _authority: 'ssif';
     __text: { sv: string; en: string };
@@ -3571,7 +3602,7 @@ export interface OutputUpdateGroup {
     };
     __text: { sv: string; en: string };
   }[];
-  admin: AdminGroup;
+  admin: AdminThesisGroup;
   attachment?: AttachmentGroup[];
   __text: { sv: string; en: string };
 }

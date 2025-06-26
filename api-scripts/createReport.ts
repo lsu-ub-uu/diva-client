@@ -37,6 +37,11 @@ export default async function createOutput(
     });
     const xml = await res.text();
 
+    if (res.status !== 201) {
+      console.error(`Failed to create output: ${res.status} ${res.statusText}`);
+      console.error(xml);
+    }
+
     const id = xml.match(/<id>(.*?)<\/id>/)?.[1];
 
     console.info('Created output with id', id);

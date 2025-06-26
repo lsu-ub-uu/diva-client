@@ -19,6 +19,7 @@
     <language repeatId="0">
         <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
     </language>
+    <artisticWork type="outputType">false</artisticWork>
     <genre type="contentType">pop</genre>
     <titleInfo lang="eng">
         <title>Future fisheries: Status, trends and future perspectives concerning the energy transition of fisheries with focus on Nordic countries</title>
