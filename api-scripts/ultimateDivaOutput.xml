@@ -49,6 +49,9 @@
 	<language repeatId="20">
 		<languageTerm authority="iso639-2b" type="code">ath</languageTerm>
 	</language>
+	<artisticWork type="outputType">
+		true
+	</artisticWork>
 	<genre type="contentType">pop</genre>
 	<titleInfo lang="eng">
 		<title>Future fisheries</title>
@@ -249,9 +252,9 @@
     </note>
 	<academicSemester>
 		<year>1234</year>
-		<semester>vt</semester>
+		<academicSemester>vt</academicSemester>
 	</academicSemester>
-	<studentDegree>
+	<studentDegree repeatId="0">
 		<degreeLevel>M1</degreeLevel>
 		<universityPoints>7,5</universityPoints>
 	</studentDegree>
@@ -279,7 +282,7 @@
 	</opponent>
 	<presentation>
 		<language><languageTerm type="code" authority="iso639-2b">swe</languageTerm></language>
-		<dateOther type="defence">
+		<dateOther type="presentation">
 			<year>2025</year>
 			<month>10</month>
 			<day>23</day>
@@ -292,7 +295,7 @@
 	</presentation>
 	<defence>
 		<language><languageTerm type="code" authority="iso639-2b">swe</languageTerm></language>
-		<dateOther type="defence">
+		<dateOther type="presentation">
 			<year>2026</year>
 			<month>01</month>
 			<day>04</day> 
@@ -314,4 +317,7 @@
 		<title>דיג עתידי</title>
 		<subTitle>מצב, מגמות ופרספקטיבות עתידיות בנוגע למעבר האנרגטי של דיג בדגש על מדינות סקנדינביות</subTitle>
 	</titleInfo>
+	<relatedItem type="journal">
+		<titleInfo><title>Some journal</title></titleInfo>
+	</relatedItem>
 </output>

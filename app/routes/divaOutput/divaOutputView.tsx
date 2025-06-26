@@ -9,7 +9,14 @@ import type { BFFDataRecord } from '@/types/record';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { data, Form, href, isRouteErrorResponse, Link } from 'react-router';
+import {
+  data,
+  Form,
+  href,
+  isRouteErrorResponse,
+  Link,
+  type MetaDescriptor,
+} from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
@@ -24,6 +31,7 @@ import {
   EditDocumentIcon,
   ShoppingCartIcon,
 } from '@/icons';
+import { Attachement } from './components/Attachment';
 import { Date } from './components/Date';
 import { Event } from './components/Event';
 import { Location } from './components/Location';
@@ -73,9 +81,12 @@ export const loader = async ({
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
-  const citationMeta = data
-    ? generateCitationMeta(data?.record.data, data?.origin)
-    : [];
+  let citationMeta: MetaDescriptor[] = [];
+  try {
+    citationMeta = generateCitationMeta(data?.record.data, data?.origin);
+  } catch (error) {
+    console.error('Failed to generate citation meta:', error);
+  }
   return [
     { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
     ...citationMeta,
@@ -251,7 +262,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Term
               label={output.academicSemester?.__text[language]}
               value={[
-                output.academicSemester?.semester?.value?.toUpperCase(),
+                output.academicSemester?.academicSemester?.value?.toUpperCase(),
                 output.academicSemester?.year?.value,
               ]
                 .filter(Boolean)
@@ -353,6 +364,10 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
           <CodeIcon />
           {t('divaClient_viewInApiText')}
         </Button>
+
+        {output.attachment?.map((attachment, index) => {
+          return <Attachement attachement={attachment} key={index} />;
+        })}
 
         <Term
           label={output['accessCondition_authority_kb-se']?.__text[language]}
