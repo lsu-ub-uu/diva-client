@@ -39,6 +39,13 @@ process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
 });
 
+// Redirect root path to BASE_PATH if it is set
+if (BASE_PATH && BASE_PATH !== '/') {
+  app.get('/', (_req, res) => {
+    res.redirect(BASE_PATH);
+  });
+}
+
 if (DEVELOPMENT) {
   console.info('Starting development server');
   const viteDevServer = await import('vite').then((vite) =>
