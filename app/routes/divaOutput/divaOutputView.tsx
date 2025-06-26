@@ -192,10 +192,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
           <dl>
             <Term
-              label={output.note_type_external?.__text[language]}
-              value={output.note_type_external?.value}
-            />
-            <Term
               label={output.typeOfResource?.__text[language]}
               value={output.typeOfResource?.__valueText[language]}
             />
