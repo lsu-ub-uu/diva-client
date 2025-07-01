@@ -38,6 +38,7 @@
   height: 2rem;
   width: auto;
   margin: 0 auto;
+  max-width: 100px;
 }
 
 .header-content {

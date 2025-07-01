@@ -23,7 +23,7 @@ export const OptionalComponent = ({
   renderCallback,
 }: OptionalComponentProps) => {
   const { t } = useTranslation();
-  const showDeleteButton = component.mode === 'input' && component.showLabel;
+  const showDeleteButton = component.mode === 'input';
 
   return (
     <Controller
