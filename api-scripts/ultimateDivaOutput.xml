@@ -309,10 +309,10 @@
 	<accessCondition authority="kb.se">
 		gratis
 	</accessCondition>
-	<admin>
+	<adminInfo>
 		<reviewed>true</reviewed>
 		<note type="internal">Leo och Egil was here</note>
-	</admin>
+	</adminInfo>
 	<titleInfo lang="heb" repeatId="32" type="alternative">
 		<title>דיג עתידי</title>
 		<subTitle>מצב, מגמות ופרספקטיבות עתידיות בנוגע למעבר האנרגטי של דיג בדגש על מדינות סקנדינביות</subTitle>

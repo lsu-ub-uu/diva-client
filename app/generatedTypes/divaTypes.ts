@@ -3229,7 +3229,7 @@ export type FailedCollection = 'true';
 
 export type ReviewedCollection = 'true' | 'false';
 
-export interface AdminThesisGroup {
+export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
     __text: { sv: string; en: string };
@@ -3365,6 +3365,11 @@ export type AttachmentTypeCollection =
   | 'summary'
   | 'toc';
 
+export type AttachmentVersionCollection =
+  | 'submitted'
+  | 'accepted'
+  | 'published';
+
 export type AttachmentAvailabilityCollection =
   | 'archiveOnly'
   | 'availableNow'
@@ -3377,13 +3382,25 @@ export interface DateAttachmentAvailabilityGroup {
   __text: { sv: string; en: string };
 }
 
-export interface AdminAttachmentGroup {
+export type SecrecyCollection = 'true';
+
+export interface AdminInfoAttachmentGroup {
   availability: {
     value: AttachmentAvailabilityCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
   dateAvailability?: DateAttachmentAvailabilityGroup;
+  secrecy?: {
+    value: SecrecyCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  identifier_type_registrationNumber?: {
+    value: string;
+    _type: 'registrationNumber';
+    __text: { sv: string; en: string };
+  };
   note_type_attachment?: {
     value: string;
     _type: 'attachment';
@@ -3406,7 +3423,13 @@ export interface AttachmentGroup {
     __valueText: { sv: string; en: string };
   };
   displayLabel?: { value: string; __text: { sv: string; en: string } };
-  admin: AdminAttachmentGroup;
+  note_type_attachmentVersion: {
+    value: AttachmentVersionCollection;
+    _type: 'attachmentVersion';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  adminInfo: AdminInfoAttachmentGroup;
   __text: { sv: string; en: string };
 }
 
@@ -3602,7 +3625,7 @@ export interface OutputUpdateGroup {
     };
     __text: { sv: string; en: string };
   }[];
-  admin: AdminThesisGroup;
+  adminInfo: AdminInfoDivaGroup;
   attachment?: AttachmentGroup[];
   __text: { sv: string; en: string };
 }

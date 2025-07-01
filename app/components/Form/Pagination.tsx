@@ -38,6 +38,8 @@ interface PaginationProps {
   onRowsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
+const ROWS_START_INPUT_NAME = 'search.start.value';
+const ROWS_PER_PAGE_INPUT_NAME = 'search.rows.value';
 const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
 export const Pagination = ({
@@ -74,7 +76,7 @@ export const Pagination = ({
         size='small'
       >
         <Select
-          name='search.rows.value'
+          name={ROWS_PER_PAGE_INPUT_NAME}
           onChange={onRowsPerPageChange}
           defaultValue={rowsPerPage}
         >
@@ -90,7 +92,7 @@ export const Pagination = ({
           variant='icon'
           type='submit'
           aria-label={t('divaClient_paginationFirstPageText')}
-          name='search.start[0].value'
+          name={ROWS_START_INPUT_NAME}
           value={firstPageStart}
           disabled={isOnFirstPage}
         >
@@ -100,7 +102,7 @@ export const Pagination = ({
           variant='icon'
           type='submit'
           aria-label={t('divaClient_paginationPreviousPageText')}
-          name='search.start[0].value'
+          name={ROWS_START_INPUT_NAME}
           value={previousPageStart}
           disabled={isOnFirstPage}
         >
@@ -110,7 +112,7 @@ export const Pagination = ({
           variant='icon'
           type='submit'
           aria-label={t('divaClient_paginationNextPageText')}
-          name='search.start[0].value'
+          name={ROWS_START_INPUT_NAME}
           value={nextPageStart}
           disabled={isOnLastPage}
         >
@@ -120,7 +122,7 @@ export const Pagination = ({
           variant='icon'
           aria-label={t('divaClient_paginationLastPageText')}
           type='submit'
-          name='search.start[0].value'
+          name={ROWS_START_INPUT_NAME}
           value={lastPageStart}
           disabled={isOnLastPage}
         >
