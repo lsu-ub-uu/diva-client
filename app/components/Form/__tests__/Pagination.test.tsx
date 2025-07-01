@@ -38,7 +38,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
@@ -65,15 +65,18 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
     );
 
-    expect(
-      screen.getByLabelText('divaClient_paginationNextPageText'),
-    ).toHaveValue('11');
+    const nextPageButton = screen.getByRole('button', {
+      name: 'divaClient_paginationNextPageText',
+    });
+    expect(nextPageButton).toHaveAttribute('name', 'search.start.value');
+    expect(nextPageButton).toHaveAttribute('type', 'submit');
+    expect(nextPageButton).toHaveValue('11');
   });
 
   it('renders previous page button with correct value', () => {
@@ -88,15 +91,17 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
     );
-
-    expect(
-      screen.getByLabelText('divaClient_paginationPreviousPageText'),
-    ).toHaveValue('11');
+    const prevPageButton = screen.getByRole('button', {
+      name: 'divaClient_paginationPreviousPageText',
+    });
+    expect(prevPageButton).toHaveAttribute('name', 'search.start.value');
+    expect(prevPageButton).toHaveAttribute('type', 'submit');
+    expect(prevPageButton).toHaveValue('11');
   });
 
   it('renders first page button with correct value', () => {
@@ -111,15 +116,18 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
     );
 
-    expect(
-      screen.getByLabelText('divaClient_paginationFirstPageText'),
-    ).toHaveValue('1');
+    const firstPageButton = screen.getByRole('button', {
+      name: 'divaClient_paginationFirstPageText',
+    });
+    expect(firstPageButton).toHaveAttribute('name', 'search.start.value');
+    expect(firstPageButton).toHaveAttribute('type', 'submit');
+    expect(firstPageButton).toHaveValue('1');
   });
 
   it('renders last page button with correct value', () => {
@@ -134,15 +142,18 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
     );
 
-    expect(
-      screen.getByLabelText('divaClient_paginationLastPageText'),
-    ).toHaveValue('91');
+    const lastPageButton = screen.getByRole('button', {
+      name: 'divaClient_paginationLastPageText',
+    });
+    expect(lastPageButton).toHaveAttribute('name', 'search.start.value');
+    expect(lastPageButton).toHaveAttribute('type', 'submit');
+    expect(lastPageButton).toHaveValue('91');
   });
 
   it('disables first and previous page buttons when on first page', () => {
@@ -157,7 +168,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
@@ -189,7 +200,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
@@ -220,7 +231,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
@@ -252,7 +263,7 @@ describe('<Pagination />', () => {
         query={{
           search: {
             recordInfo: { dataDivider: { value: '' }, id: { value: '' } },
-            rows: [{ value: '10' }],
+            rows: { value: '10' },
           },
         }}
       />,
