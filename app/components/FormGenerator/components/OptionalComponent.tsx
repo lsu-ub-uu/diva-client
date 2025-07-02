@@ -62,7 +62,9 @@ export const OptionalComponent = ({
               <Button
                 variant='tertiary'
                 onClick={() =>
-                  field.onChange(createDefaultValuesFromComponent(component))
+                  field.onChange(
+                    createDefaultValuesFromComponent(component, true),
+                  )
                 }
                 aria-label={t('divaClient_addFieldText', {
                   fieldName: t(component.label),
