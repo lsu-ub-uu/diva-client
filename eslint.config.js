@@ -14,7 +14,20 @@ const hooksPluginFlatConfig = {
 };
 
 export default [
-  { files: ['**/*.{ts,jsx,tsx}'] },
+  {
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      '.react-router/**',
+      'target/**',
+      'coverage/**',
+    ],
+  },
+
+  {
+    files: ['**/*.{ts,tsx}'],
+  },
+
   pluginJs.configs.recommended,
   ...typescriptEslint.configs.recommended,
   pluginReact.configs.flat.recommended,
