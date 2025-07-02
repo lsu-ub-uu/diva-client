@@ -16,32 +16,33 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { Group } from '@/components/FormGenerator/components/Group';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
+import { OptionalComponent } from './OptionalComponent';
 
-interface RepeatingGroupProps {
+interface OptionalGroupProps {
   currentComponentNamePath: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
 }
 
-export const RepeatingGroup = ({
+export const OptionalGroup = ({
   currentComponentNamePath,
   component,
   parentPresentationStyle,
-}: RepeatingGroupProps) => {
+}: OptionalGroupProps) => {
   const { control } = useRemixFormContext();
+
   return (
-    <FieldArrayComponent
+    <OptionalComponent
       control={control}
       component={component}
       name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
+      renderCallback={(actionButtonGroup) => {
         return (
           <Group
-            currentComponentNamePath={arrayPath}
+            currentComponentNamePath={currentComponentNamePath}
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}

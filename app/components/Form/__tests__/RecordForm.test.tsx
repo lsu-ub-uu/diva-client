@@ -94,11 +94,11 @@ import {
   formDefWithOneTextVariableBeingRepeating,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZeroShowLabelFalse,
   formDefWithTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
 import { RecordForm } from '@/components/Form/RecordForm';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
@@ -106,7 +106,6 @@ import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { parseFormData } from 'remix-hook-form';
 import { describe, expect, it, vi } from 'vitest';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
@@ -1682,37 +1681,6 @@ describe('<Form />', () => {
       expect(removeButtonElements[0]).toBeDisabled();
       expect(removeButtonElements[1]).toBeDisabled();
     });
-
-    it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1 and showLabel is true', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
-          }
-        />,
-      );
-
-      const removeButtonElements = screen.getAllByLabelText(
-        'divaClient_deleteFieldText',
-      );
-
-      expect(removeButtonElements).toHaveLength(1);
-      expect(removeButtonElements[0]).toBeEnabled();
-    });
-  });
-
-  it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1 and showLabel is false', async () => {
-    render(
-      <RecordFormWithRoutesStub
-        formSchema={
-          formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZeroShowLabelFalse
-        }
-      />,
-    );
-
-    expect(
-      screen.queryByLabelText('divaClient_deleteFieldText'),
-    ).not.toBeInTheDocument();
   });
 
   describe('collectionVariable', () => {
@@ -3379,6 +3347,200 @@ describe('<Form />', () => {
         screen.queryByRole('textbox', { name: 'someLabelTextId' }),
       ).not.toBeInTheDocument();
       expect(accordionTitle).toBeVisible();
+    });
+  });
+
+  describe('optionalComponent', () => {
+    it('renders an optional variable with minNumberRepeatingToShow 1', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              mode: 'input',
+              showLabel: true,
+              type: 'textVariable',
+              name: 'someTextVar',
+              label: 'Text Variable',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+                minNumberOfRepeatingToShow: 1,
+              },
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+            },
+          ],
+        },
+      };
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      expect(
+        screen.getByRole('button', { name: 'divaClient_deleteFieldText' }),
+      ).toBeInTheDocument();
+      expect(screen.getByLabelText('Text Variable')).toBeInTheDocument();
+    });
+
+    it('renders an optional variable with minNumberRepeatingToShow', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              mode: 'input',
+              showLabel: true,
+              type: 'textVariable',
+              name: 'someTextVar',
+              label: 'Text Variable',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+                minNumberOfRepeatingToShow: 0,
+              },
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+            },
+          ],
+        },
+      };
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      expect(screen.queryByLabelText('Text Variable')).not.toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'divaClient_addFieldText' }),
+      ).toBeInTheDocument();
+    });
+
+    it('renders an optional group with minNumberRepeatingToShow 1', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'group',
+              mode: 'input',
+              name: 'optionalGroup',
+              label: 'Optional Group',
+              showLabel: true,
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+                minNumberOfRepeatingToShow: 1,
+              },
+              components: [
+                {
+                  mode: 'input',
+                  showLabel: true,
+                  type: 'textVariable',
+                  name: 'someTextVar',
+                  label: 'Text Variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      expect(screen.getByLabelText('Optional Group')).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'divaClient_deleteFieldText' }),
+      ).toBeInTheDocument();
+      expect(screen.getByLabelText('Text Variable')).toBeInTheDocument();
+    });
+
+    it('renders an optional group with minNumberRepeatingToShow 0', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'group',
+              mode: 'input',
+              name: 'optionalGroup',
+              label: 'Optional Group',
+              showLabel: true,
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+                minNumberOfRepeatingToShow: 0,
+              },
+              components: [
+                {
+                  mode: 'input',
+                  showLabel: true,
+                  type: 'textVariable',
+                  name: 'someTextVar',
+                  label: 'Text Variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      expect(screen.queryByLabelText('Optional Group')).not.toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'divaClient_addFieldText' }),
+      ).toBeInTheDocument();
+      expect(screen.queryByLabelText('Text Variable')).not.toBeInTheDocument();
     });
   });
 });

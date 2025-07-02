@@ -95,7 +95,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
             <Form action={href('/refreshDefinitions')} method='POST'>
               <input type='hidden' name='returnTo' value={returnTo} />
               <Button variant='tertiary' type='submit'>
-                <CachedIcon /> Refresh Def
+                <CachedIcon />
               </Button>
             </Form>
           </>

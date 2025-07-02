@@ -31,6 +31,7 @@ import {
   isComponentRepeating,
   isComponentRepeatingContainer,
   isComponentResourceLink,
+  isComponentSingularAndOptional,
   isComponentSurroundingContainer,
   isComponentVariable,
   isComponentWithData,
@@ -44,6 +45,7 @@ import type {
 import { use } from 'react';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
+import { OptionalGroup } from './components/OptionalGroup';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -92,9 +94,12 @@ export const Component = ({
     );
   }
 
-  if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
+  if (
+    isComponentGroup(component) &&
+    isComponentSingularAndOptional(component)
+  ) {
     return (
-      <Group
+      <OptionalGroup
         currentComponentNamePath={currentComponentNamePath}
         component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
@@ -107,6 +112,16 @@ export const Component = ({
       <RepeatingGroup
         currentComponentNamePath={currentComponentNamePath}
         component={component}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  }
+
+  if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
+    return (
+      <Group
+        currentComponentNamePath={currentComponentNamePath}
+        component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
       />
     );
