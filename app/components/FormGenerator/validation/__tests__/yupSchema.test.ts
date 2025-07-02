@@ -38,10 +38,8 @@ import * as yup from 'yup';
 import type { FormComponentGroup, FormSchema } from '../../types';
 import {
   createYupArrayFromSchema,
-  generateYupSchema,
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
-import { group } from 'console';
 
 describe('generate validation', () => {
   it('should return correct validationSchema for one textVar and one numberVar', () => {

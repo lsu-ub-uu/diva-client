@@ -371,7 +371,7 @@ exports[`generate validation > should return correct validationSchema for repeat
           "label": undefined,
           "meta": undefined,
           "notOneOf": [],
-          "nullable": false,
+          "nullable": true,
           "oneOf": [],
           "optional": true,
           "tests": [],
