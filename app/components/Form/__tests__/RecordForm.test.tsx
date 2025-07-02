@@ -3348,6 +3348,35 @@ describe('<Form />', () => {
       ).not.toBeInTheDocument();
       expect(accordionTitle).toBeVisible();
     });
+
+    it('expands accordion when validation error ', async () => {
+      const user = userEvent.setup();
+
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={createAlternativePresentationFormDef(
+            'singleInitiallyHidden',
+            'someTitle',
+            false,
+          )}
+        />,
+      );
+
+      expect(
+        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
+      ).not.toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeVisible();
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeInvalid();
+    });
   });
 
   describe('optionalComponent', () => {

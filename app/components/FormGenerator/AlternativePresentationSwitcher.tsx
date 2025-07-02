@@ -74,7 +74,9 @@ export const AlternativePresentationSwitcher = (
     !prevValidationErrors
   ) {
     setPrevValidationErrors(true);
-    setCurrentPresentation('alternative');
+    setCurrentPresentation(
+      presentationSize === 'singleInitiallyVisible' ? 'default' : 'alternative',
+    );
   }
 
   return (
