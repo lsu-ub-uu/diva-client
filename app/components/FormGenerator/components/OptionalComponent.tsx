@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button/Button';
 import { AddCircleIcon, CloseIcon } from '@/icons';
-import type { ReactNode } from 'react';
+import { use, type ReactNode } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,6 +8,7 @@ import {
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
 import type { FormComponentWithData } from '../types';
+import { FormGeneratorContext } from '../FormGeneratorContext';
 
 interface OptionalComponentProps {
   control?: Control<any>;
@@ -23,7 +24,13 @@ export const OptionalComponent = ({
   renderCallback,
 }: OptionalComponentProps) => {
   const { t } = useTranslation();
-  const showDeleteButton = component.mode === 'input';
+  const { enhancedFields } = use(FormGeneratorContext);
+
+  const notRemovableEnhancement =
+    enhancedFields?.[name]?.type === 'notRemovable';
+
+  const showDeleteButton =
+    component.mode === 'input' && !notRemovableEnhancement;
 
   return (
     <Controller
