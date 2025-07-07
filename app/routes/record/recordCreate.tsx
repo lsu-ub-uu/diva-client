@@ -17,10 +17,6 @@
  */
 
 import {
-  formDefWithOneRecordLinkBeingRequired1_1,
-  formDefWithRecordLinkTypeBinary,
-} from '@/__mocks__/data/form/recordLink';
-import {
   getAuth,
   getNotification,
   getSessionFromCookie,
@@ -65,7 +61,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   }
   let formDefinition;
   try {
-    formDefinition = formDefWithRecordLinkTypeBinary;
+    formDefinition = await getFormDefinitionByValidationTypeId(
+      await context.dependencies,
+      validationTypeId,
+      'create',
+    );
   } catch (error) {
     if (error instanceof NotFoundError) {
       throw data(error.message, { status: error.status });
@@ -74,7 +74,6 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   }
 
   const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
-  console.log(JSON.stringify(defaultValues, null, 2));
 
   const rootGroupTitleTextId =
     formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
@@ -107,7 +106,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   );
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
   const resolver = yupResolver(yupSchema);
-  console.log({ yupSchema });
+
   const {
     errors,
     data: validatedFormData,
