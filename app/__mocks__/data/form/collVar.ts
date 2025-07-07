@@ -434,10 +434,10 @@ export const formDefWithOneCollectionVariableWithModeOutput: RecordFormSchema =
     },
   };
 
-export const formDefRequiredRepeatingCollectionVar: RecordFormSchema = {
+export const formDefRequiredRepeatingCollectionVar1_X: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
-    name: 'output',
+    name: 'root',
     type: 'group',
     mode: 'input',
     tooltip: {
@@ -452,53 +452,32 @@ export const formDefRequiredRepeatingCollectionVar: RecordFormSchema = {
     },
     components: [
       {
-        name: 'language',
-        type: 'group',
+        name: 'languageTerm',
+        type: 'collectionVariable',
+        placeholder: 'initialEmptyValueText',
         mode: 'input',
         tooltip: {
-          title: 'languageGroupText',
-          body: 'languageGroupDefText',
+          title: 'languageCollectionVarText',
+          body: 'languageCollectionVarDefText',
         },
-        label: 'languageGroupText',
+        label: 'languageCollectionVarText',
         showLabel: true,
+        attributesToShow: 'selectable',
         repeat: {
           minNumberOfRepeatingToShow: 1,
           repeatMin: 1,
-          repeatMax: 1,
+          repeatMax: 1.7976931348623157e308,
         },
-        components: [
+        options: [
           {
-            name: 'languageTerm',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            attributesToShow: 'selectable',
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1.7976931348623157e308,
-            },
-            options: [
-              {
-                value: 'eng',
-                label: 'engLangItemText',
-              },
-              {
-                value: 'swe',
-                label: 'sweLangItemText',
-              },
-            ],
-            childStyle: [],
-            gridColSpan: 12,
+            value: 'eng',
+            label: 'engLangItemText',
+          },
+          {
+            value: 'swe',
+            label: 'sweLangItemText',
           },
         ],
-        presentationStyle: '',
         childStyle: [],
         gridColSpan: 12,
       },

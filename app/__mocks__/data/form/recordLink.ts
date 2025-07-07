@@ -84,6 +84,70 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
   },
 };
 
+export const formDefWithOneRecordLinkBeingRequired1_X: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    showLabel: true,
+    label: 'someRootFormGroupText',
+    name: 'root',
+    presentationId: 'somePGroup',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'recordLink',
+        name: 'link',
+        presentationId: 'somePLink',
+        mode: 'input',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneRecordLinkBeingRequired1_1: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    showLabel: true,
+    label: 'someRootFormGroupText',
+    name: 'root',
+    presentationId: 'somePGroup',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'recordLink',
+        name: 'link',
+        presentationId: 'somePLink',
+        mode: 'input',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithRecordLinkTypeBinary: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {

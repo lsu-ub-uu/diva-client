@@ -16,49 +16,41 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, isRouteErrorResponse } from 'react-router';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { getValidatedFormData } from 'remix-hook-form';
-import { createRecord } from '@/data/createRecord.server';
-import type { BFFDataRecordData } from '@/types/record';
+import {
+  formDefWithOneRecordLinkBeingRequired1_1,
+  formDefWithRecordLinkTypeBinary,
+} from '@/__mocks__/data/form/recordLink';
 import {
   getAuth,
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { RecordForm } from '@/components/Form/RecordForm';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
+import { createRecord } from '@/data/createRecord.server';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { NotFoundError } from '@/errorHandling/NotFoundError';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import type { BFFDataRecordData } from '@/types/record';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { assertDefined } from '@/utils/invariant';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
-import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
-import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
-import { RecordForm } from '@/components/Form/RecordForm';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { assertDefined } from '@/utils/invariant';
-import type { Route } from '../record/+types/recordCreate';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
-import { NotFoundError } from '@/errorHandling/NotFoundError';
-import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import {
-  formDefTextVarsWithSameNameInData,
-  formDefTextVarsWithSameNameInDataNew,
-  formDefWithOneTextVariableNEW1_1,
-  formDefWithOneTextVariableNEW1_X,
-} from '@/__mocks__/data/form/textVar';
-import { formDefCollVarsWithSameNameInDataNEW } from '@/__mocks__/data/form/collVar';
-import { formDefTitleInfoGroupSameNameInData } from '@/__mocks__/data/form/group';
-import {
-  formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
-  formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
-} from '@/__mocks__/data/form/attributeCollection';
+import { data, isRouteErrorResponse } from 'react-router';
+import { getValidatedFormData } from 'remix-hook-form';
+import type { Route } from '../record/+types/recordCreate';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -73,8 +65,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   }
   let formDefinition;
   try {
-    formDefinition =
-      formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW;
+    formDefinition = formDefWithRecordLinkTypeBinary;
   } catch (error) {
     if (error instanceof NotFoundError) {
       throw data(error.message, { status: error.status });

@@ -265,7 +265,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
     },
     components: [
       {
-        name: 'alternativeTitle',
+        name: 'group',
         type: 'group',
         presentationId: 'somePGroup',
         mode: 'input',
@@ -282,7 +282,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
         },
         components: [
           {
-            name: 'mainTitle',
+            name: 'variable',
             type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
@@ -320,7 +320,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
 export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
-    name: 'divaOutput',
+    name: 'root',
     type: 'group',
     presentationId: 'somePGroup',
     mode: 'input',
@@ -337,7 +337,7 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
     },
     components: [
       {
-        name: 'alternativeTitle',
+        name: 'group',
         type: 'group',
         presentationId: 'somePGroup',
         mode: 'input',
@@ -356,7 +356,7 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
           {
             type: 'numberVariable',
             presentationId: 'somePNumVar',
-            name: 'someNameInDataNumberVar',
+            name: 'numberVariable',
             label: 'someNumberVarTextId', // hidden
             showLabel: false,
             gridColSpan: 3,
@@ -397,7 +397,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       presentationId: 'somePGroup',
       mode: 'input',
@@ -414,7 +414,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
       },
       components: [
         {
-          name: 'alternativeTitle',
+          name: 'group',
           type: 'group',
           presentationId: 'somePGroup',
           mode: 'input',
@@ -431,7 +431,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
           },
           components: [
             {
-              name: 'funder',
+              name: 'link',
               type: 'recordLink',
               mode: 'input',
               tooltip: {
@@ -465,7 +465,7 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
 export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
-    name: 'output',
+    name: 'root',
     type: 'group',
     presentationId: 'somePGroup',
     mode: 'input',
@@ -481,7 +481,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
     },
     components: [
       {
-        name: 'name',
+        name: 'mainGroup',
         type: 'group',
         presentationId: 'somePGroup',
         mode: 'input',
@@ -511,128 +511,8 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             showLabel: true,
             options: [
               {
-                value: 'code',
-                label: 'codeItemText',
-              },
-              {
-                value: 'contentType',
-                label: 'contentTypeItemText',
-              },
-              {
-                value: 'creatorCount',
-                label: 'creatorCountItemText',
-              },
-              {
-                value: 'restrictionOnAccess',
-                label: 'restrictionOnAccessItemText',
-              },
-              {
-                value: 'publicationStatus',
-                label: 'publicationStatusItemText',
-              },
-              {
-                value: 'corporate',
-                label: 'corporateItemText',
-              },
-              {
                 value: 'personal',
                 label: 'personalItemText',
-              },
-              {
-                value: 'given',
-                label: 'givenItemText',
-              },
-              {
-                value: 'family',
-                label: 'familyItemText',
-              },
-              {
-                value: 'termsOfAddress',
-                label: 'termsOfAddressItemText',
-              },
-              {
-                value: 'series',
-                label: 'seriesItemText',
-              },
-              {
-                value: 'conference-publication',
-                label: 'conferencePublicationItemText',
-              },
-              {
-                value: 'statement_of_responsibility',
-                label: 'statementOfResponsibilityItemText',
-              },
-              {
-                value: 'book',
-                label: 'bookItemText',
-              },
-              {
-                value: 'journal',
-                label: 'journalItemText',
-              },
-              {
-                value: 'artNo',
-                label: 'artNoItemText',
-              },
-              {
-                value: 'issue',
-                label: 'issueItemText',
-              },
-              {
-                value: 'volume',
-                label: 'volumeItemText',
-              },
-              {
-                value: 'conference',
-                label: 'conferenceItemText',
-              },
-              {
-                value: 'initiative',
-                label: 'initiativeItemText',
-              },
-              {
-                value: 'funder',
-                label: 'funderItemText',
-              },
-              {
-                value: 'project',
-                label: 'projectItemText',
-              },
-              {
-                value: 'constituent',
-                label: 'constituentItemText',
-              },
-              {
-                value: 'thesis',
-                label: 'thesisItemText',
-              },
-              {
-                value: 'defence',
-                label: 'defenceItemText',
-              },
-              {
-                value: 'researchData',
-                label: 'researchDataItemText',
-              },
-              {
-                value: 'outputType',
-                label: 'outputTypeItemText',
-              },
-              {
-                value: 'internal',
-                label: 'internalItemText',
-              },
-              {
-                value: 'online',
-                label: 'onlineItemText',
-              },
-              {
-                value: 'biographical',
-                label: 'biographicalItemText',
-              },
-              {
-                value: 'patent',
-                label: 'patentItemText',
               },
             ],
             finalValue: 'personal',
@@ -640,7 +520,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
         ],
         components: [
           {
-            name: 'namePart',
+            name: 'textVar1',
             type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
@@ -677,138 +557,22 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
                 showLabel: true,
                 options: [
                   {
-                    value: 'code',
-                    label: 'codeItemText',
+                    value: 'first',
+                    label: 'firstItemText',
                   },
                   {
-                    value: 'contentType',
-                    label: 'contentTypeItemText',
-                  },
-                  {
-                    value: 'creatorCount',
-                    label: 'creatorCountItemText',
-                  },
-                  {
-                    value: 'restrictionOnAccess',
-                    label: 'restrictionOnAccessItemText',
-                  },
-                  {
-                    value: 'publicationStatus',
-                    label: 'publicationStatusItemText',
-                  },
-                  {
-                    value: 'corporate',
-                    label: 'corporateItemText',
-                  },
-                  {
-                    value: 'personal',
-                    label: 'personalItemText',
-                  },
-                  {
-                    value: 'given',
-                    label: 'givenItemText',
-                  },
-                  {
-                    value: 'family',
-                    label: 'familyItemText',
-                  },
-                  {
-                    value: 'termsOfAddress',
-                    label: 'termsOfAddressItemText',
-                  },
-                  {
-                    value: 'series',
-                    label: 'seriesItemText',
-                  },
-                  {
-                    value: 'conference-publication',
-                    label: 'conferencePublicationItemText',
-                  },
-                  {
-                    value: 'statement_of_responsibility',
-                    label: 'statementOfResponsibilityItemText',
-                  },
-                  {
-                    value: 'book',
-                    label: 'bookItemText',
-                  },
-                  {
-                    value: 'journal',
-                    label: 'journalItemText',
-                  },
-                  {
-                    value: 'artNo',
-                    label: 'artNoItemText',
-                  },
-                  {
-                    value: 'issue',
-                    label: 'issueItemText',
-                  },
-                  {
-                    value: 'volume',
-                    label: 'volumeItemText',
-                  },
-                  {
-                    value: 'conference',
-                    label: 'conferenceItemText',
-                  },
-                  {
-                    value: 'initiative',
-                    label: 'initiativeItemText',
-                  },
-                  {
-                    value: 'funder',
-                    label: 'funderItemText',
-                  },
-                  {
-                    value: 'project',
-                    label: 'projectItemText',
-                  },
-                  {
-                    value: 'constituent',
-                    label: 'constituentItemText',
-                  },
-                  {
-                    value: 'thesis',
-                    label: 'thesisItemText',
-                  },
-                  {
-                    value: 'defence',
-                    label: 'defenceItemText',
-                  },
-                  {
-                    value: 'researchData',
-                    label: 'researchDataItemText',
-                  },
-                  {
-                    value: 'outputType',
-                    label: 'outputTypeItemText',
-                  },
-                  {
-                    value: 'internal',
-                    label: 'internalItemText',
-                  },
-                  {
-                    value: 'online',
-                    label: 'onlineItemText',
-                  },
-                  {
-                    value: 'biographical',
-                    label: 'biographicalItemText',
-                  },
-                  {
-                    value: 'patent',
-                    label: 'patentItemText',
+                    value: 'second',
+                    label: 'secondItemText',
                   },
                 ],
-                finalValue: 'given',
+                finalValue: 'first',
               },
             ],
             childStyle: [],
             gridColSpan: 12,
           },
           {
-            name: 'namePart',
+            name: 'textVar2',
             type: 'textVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
@@ -844,131 +608,15 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
                 showLabel: true,
                 options: [
                   {
-                    value: 'code',
-                    label: 'codeItemText',
+                    value: 'first',
+                    label: 'firstItemText',
                   },
                   {
-                    value: 'contentType',
-                    label: 'contentTypeItemText',
-                  },
-                  {
-                    value: 'creatorCount',
-                    label: 'creatorCountItemText',
-                  },
-                  {
-                    value: 'restrictionOnAccess',
-                    label: 'restrictionOnAccessItemText',
-                  },
-                  {
-                    value: 'publicationStatus',
-                    label: 'publicationStatusItemText',
-                  },
-                  {
-                    value: 'corporate',
-                    label: 'corporateItemText',
-                  },
-                  {
-                    value: 'personal',
-                    label: 'personalItemText',
-                  },
-                  {
-                    value: 'given',
-                    label: 'givenItemText',
-                  },
-                  {
-                    value: 'family',
-                    label: 'familyItemText',
-                  },
-                  {
-                    value: 'termsOfAddress',
-                    label: 'termsOfAddressItemText',
-                  },
-                  {
-                    value: 'series',
-                    label: 'seriesItemText',
-                  },
-                  {
-                    value: 'conference-publication',
-                    label: 'conferencePublicationItemText',
-                  },
-                  {
-                    value: 'statement_of_responsibility',
-                    label: 'statementOfResponsibilityItemText',
-                  },
-                  {
-                    value: 'book',
-                    label: 'bookItemText',
-                  },
-                  {
-                    value: 'journal',
-                    label: 'journalItemText',
-                  },
-                  {
-                    value: 'artNo',
-                    label: 'artNoItemText',
-                  },
-                  {
-                    value: 'issue',
-                    label: 'issueItemText',
-                  },
-                  {
-                    value: 'volume',
-                    label: 'volumeItemText',
-                  },
-                  {
-                    value: 'conference',
-                    label: 'conferenceItemText',
-                  },
-                  {
-                    value: 'initiative',
-                    label: 'initiativeItemText',
-                  },
-                  {
-                    value: 'funder',
-                    label: 'funderItemText',
-                  },
-                  {
-                    value: 'project',
-                    label: 'projectItemText',
-                  },
-                  {
-                    value: 'constituent',
-                    label: 'constituentItemText',
-                  },
-                  {
-                    value: 'thesis',
-                    label: 'thesisItemText',
-                  },
-                  {
-                    value: 'defence',
-                    label: 'defenceItemText',
-                  },
-                  {
-                    value: 'researchData',
-                    label: 'researchDataItemText',
-                  },
-                  {
-                    value: 'outputType',
-                    label: 'outputTypeItemText',
-                  },
-                  {
-                    value: 'internal',
-                    label: 'internalItemText',
-                  },
-                  {
-                    value: 'online',
-                    label: 'onlineItemText',
-                  },
-                  {
-                    value: 'biographical',
-                    label: 'biographicalItemText',
-                  },
-                  {
-                    value: 'patent',
-                    label: 'patentItemText',
+                    value: 'second',
+                    label: 'secondItemText',
                   },
                 ],
-                finalValue: 'family',
+                finalValue: 'second',
               },
             ],
             childStyle: [],
@@ -990,7 +638,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       presentationId: 'somePGroup',
       mode: 'input',
@@ -1302,7 +950,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       presentationId: 'somePGroup',
       mode: 'input',
@@ -1377,6 +1025,279 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
                   },
                   childStyle: ['sixChildStyle'],
                   gridColSpan: 6,
+                },
+                {
+                  name: 'latitude',
+                  type: 'textVariable',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'latitudeTextVarText',
+                    body: 'latiudeTextVarDefText',
+                  },
+                  label: 'latitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'root',
+      type: 'group',
+      presentationId: 'somePGroup',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'polygon',
+          type: 'group',
+          presentationId: 'somePGroup',
+          mode: 'input',
+          tooltip: {
+            title: 'polygonGroupText',
+            body: 'polygonGroupDefText',
+          },
+          label: 'polygonGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              presentationId: 'somePGroup',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
+              },
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0, // For the test
+                repeatMax: 1.7976931348623157e308,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'longitudeTextVarText',
+                    body: 'longitudeTextVarDefText',
+                  },
+                  label: 'longitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  placeholder: 'someLongitudeTextId',
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'latitude',
+                  type: 'numberVariable',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'latitudeTextVarText',
+                    body: 'latitudeTextVarDefText',
+                  },
+                  label: 'latitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  placeholder: 'someLatitudeTextId',
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'root',
+      type: 'group',
+      presentationId: 'somePGroup',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'polygon',
+          type: 'group',
+          presentationId: 'somePGroup',
+          mode: 'input',
+          tooltip: {
+            title: 'polygonGroupText',
+            body: 'polygonGroupDefText',
+          },
+          label: 'polygonGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              presentationId: 'somePGroup',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
+              },
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0, // For the test
+                repeatMax: 1.7976931348623157e308,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'collectionVariable',
+                  presentationId: 'somePColVar',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'domainCollectionVarText',
+                    body: 'domainCollectionVarDefText',
+                  },
+                  label: 'someOtherCollectionVarText',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  options: [
+                    {
+                      value: '17',
+                      label: 'bthItemText',
+                    },
+                  ],
+                  childStyle: [],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'latitude',
+                  type: 'collectionVariable',
+                  presentationId: 'somePColVar',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'domainCollectionVarText',
+                    body: 'domainCollectionVarDefText',
+                  },
+                  label: 'someOtherCollectionVarText',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  options: [
+                    {
+                      value: '59',
+                      label: 'bthItemText',
+                    },
+                  ],
+                  childStyle: [],
+                  gridColSpan: 12,
                 },
               ],
               presentationStyle: '',
@@ -2079,7 +2000,7 @@ export const formDefTitleInfoGroupSameNameInData: RecordFormSchema = {
 export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
-    name: 'contributor',
+    name: 'root',
     type: 'group',
     presentationId: 'somePGroup',
     mode: 'input',
@@ -2096,7 +2017,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
     },
     components: [
       {
-        name: 'author',
+        name: 'mainGroup',
         type: 'group',
         presentationId: 'somePGroup',
         mode: 'input',
@@ -2194,56 +2115,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             gridColSpan: 4,
           },
           {
-            name: 'familyName',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'familyNameTextVarText',
-              body: 'familyNameTextVarDefText',
-            },
-            label: 'familyNameTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'email',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'contributorEmailTextVarText',
-              body: 'contributorEmailTextVarDefText',
-            },
-            label: 'contributorEmailTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
             name: 'birthYear',
-            type: 'textVariable',
+            type: 'numberVariable',
             presentationId: 'somePTextVar',
             mode: 'input',
             inputType: 'input',
@@ -2264,200 +2137,6 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             },
             childStyle: ['sixChildStyle'],
             gridColSpan: 6,
-          },
-          {
-            name: 'deathYear',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'deathYearTextVarText',
-              body: 'deathYearTextVarDefText',
-            },
-            label: 'deathYearTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '^[0-9]{4}$',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'localUserId',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'localUserIdTextVarText',
-              body: 'localUserIdTextVarDefText',
-            },
-            label: 'localUserIdTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'ORCID',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'orcidTextVarText',
-              body: 'orcidTextVarDefText',
-            },
-            label: 'orcidTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'organisation',
-            type: 'recordLink',
-            mode: 'input',
-            tooltip: {
-              title: 'organisationLinkText',
-              body: 'organisationLinkDefText',
-            },
-            label: 'organisationLinkText',
-            showLabel: true,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-            recordLinkType: 'organisation',
-            presentationRecordLinkId: 'organisationPLink',
-            searchPresentation: {
-              searchType: 'organisationSearch',
-              autocompleteSearchTerm: {
-                name: 'search.include.includeGroup.genericSearchTerm[0].value',
-              },
-            },
-          },
-          {
-            name: 'otherOrganisation',
-            type: 'group',
-            presentationId: 'somePGroup',
-            mode: 'input',
-            tooltip: {
-              title: 'otherOrganisationGroupText',
-              body: 'otherOrganisationGroupDefText',
-            },
-            label: 'otherOrganisationGroupText',
-            showLabel: false,
-            repeat: {
-              minNumberOfRepeatingToShow: 0,
-              repeatMin: 0,
-              repeatMax: 1.7976931348623157e308,
-            },
-            components: [
-              {
-                name: 'otherOrganisation',
-                type: 'numberVariable',
-                presentationId: 'somePTextVar',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'otherOrganisationTextVarText',
-                  body: 'otherOrganisationTextVarDefText',
-                },
-                label: 'otherOrganisationTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: [],
-                gridColSpan: 12,
-              },
-            ],
-            presentationStyle: '',
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'researchGroup',
-            type: 'recordLink',
-            mode: 'input',
-            tooltip: {
-              title: 'researchGroupLinkText',
-              body: 'researchGroupLinkDefText',
-            },
-            label: 'researchGroupLinkText',
-            showLabel: true,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1.7976931348623157e308,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-            recordLinkType: 'researchGroup',
-            presentationRecordLinkId: 'researchGroupPLink',
-            searchPresentation: {
-              searchType: 'researchGroupSearch',
-              autocompleteSearchTerm: {
-                name: 'search.include.includeGroup.genericSearchTerm[0].value',
-              },
-            },
-          },
-          {
-            name: 'otherResearchGroup',
-            type: 'textVariable',
-            presentationId: 'somePTextVar',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'otherResearchGroupTextVarText',
-              body: 'otherResearchGroupTextVarDefText',
-            },
-            label: 'otherResearchGroupTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 0,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
           },
         ],
         presentationStyle: '',

@@ -755,7 +755,7 @@ export const formDefRequiredRepeatingTextVar: RecordFormSchema = {
 export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
-    name: 'output',
+    name: 'root',
     presentationId: 'ouputPGroup',
     type: 'group',
     mode: 'input',
@@ -771,7 +771,7 @@ export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
     },
     components: [
       {
-        name: 'language',
+        name: 'mainG',
         presentationId: 'somePGroup',
         type: 'group',
         mode: 'input',
