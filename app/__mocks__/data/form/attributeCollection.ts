@@ -1167,7 +1167,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       mode: 'input',
       tooltip: {
@@ -1183,7 +1183,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
       },
       components: [
         {
-          name: 'alternativeTitle',
+          name: 'mainGroup',
           type: 'group',
           mode: 'input',
           tooltip: {
@@ -1219,7 +1219,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
           ],
           components: [
             {
-              name: 'mainTitle',
+              name: 'variable',
               type: 'textVariable',
               mode: 'input',
               placeholder: 'mainTitleTextVarPlaceholderText',
@@ -1231,7 +1231,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
               attributes: [
                 {
                   type: 'collectionVariable',
-                  name: 'eyeColour',
+                  name: 'variableAttribute',
                   placeholder: 'Select eye colour',
                   showLabel: true,
                   tooltip: {
@@ -1273,11 +1273,11 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
     },
   };
 
-export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection: RecordFormSchema =
+export const formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       mode: 'input',
       tooltip: {
@@ -1293,7 +1293,7 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection: 
       },
       components: [
         {
-          name: 'author',
+          name: 'mainGroup',
           type: 'group',
           mode: 'input',
           tooltip: {
@@ -1348,7 +1348,7 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection: 
           ],
           components: [
             {
-              name: 'givenName',
+              name: 'variable',
               type: 'textVariable',
               mode: 'input',
               inputType: 'input',
@@ -1387,7 +1387,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
   {
     validationTypeId: 'thesisManuscript',
     form: {
-      name: 'divaOutput',
+      name: 'root',
       type: 'group',
       mode: 'input',
       tooltip: {
@@ -1405,7 +1405,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
         {
           type: 'group',
           label: 'someChildGroupTextId',
-          name: 'someChildGroupNameInData',
+          name: 'mainGroup',
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1416,7 +1416,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
           },
           components: [
             {
-              name: 'alternativeTitle',
+              name: 'nestedGroup',
               type: 'group',
               mode: 'input',
               tooltip: {

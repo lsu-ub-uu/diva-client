@@ -18,7 +18,18 @@
  */
 
 import {
+  formDefWithOneNumberVariableWithAttributeCollection0_1,
+  formDefWithOneNumberVariableWithAttributeCollection1_1,
+  formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
+  formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1,
+  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+  formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes,
+  formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
+} from '@/__mocks__/data/form/attributeCollection';
+import {
   formDefCollVarsWithSameNameInDataNEW,
+  formDefRequiredRepeatingCollectionVar1_X,
   formDefWithOneCollectionVariable1_1,
   formDefWithRepeatingCollectionVar,
 } from '@/__mocks__/data/form/collVar';
@@ -27,12 +38,31 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
 } from '@/__mocks__/data/form/container';
 import {
+  formDefContributorGroupWithAuthorGroupAuthor,
   formDefTitleInfoGroupSameNameInData,
   formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithRepeatingGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
+  formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/form/group';
+import {
+  formDefWithOneNumberVariable0_1,
+  formDefWithOneNumberVariable1_1,
+  formDefWithOneNumberVariable1_X,
+} from '@/__mocks__/data/form/numVar';
+import {
+  formDefWithOneRecordLinkBeingOptional,
+  formDefWithOneRecordLinkBeingRequired,
+  formDefWithOneRecordLinkBeingRequired1_1,
+  formDefWithOneRecordLinkBeingRequired1_X,
+  formDefWithRecordLinkTypeBinary,
+} from '@/__mocks__/data/form/recordLink';
 import {
   formDefTextVarsWithSameNameInDataNew,
   formDefWithOneTextVariableNEW0_1,
@@ -51,21 +81,6 @@ import {
   createYupArrayFromSchema,
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
-import {
-  formDefWithOneRecordLinkBeingOptional,
-  formDefWithOneRecordLinkBeingRequired,
-} from '@/__mocks__/data/form/recordLink';
-import {
-  formDefWithOneNumberVariable0_1,
-  formDefWithOneNumberVariable1_1,
-} from '@/__mocks__/data/form/numVar';
-import {
-  formDefWithOneNumberVariableWithAttributeCollection0_1,
-  formDefWithOneNumberVariableWithAttributeCollection1_1,
-  formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
-  formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1,
-  formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
-} from '@/__mocks__/data/form/attributeCollection';
 
 describe('generate validation', () => {
   it('should return correct validationSchema for one textVar and one numberVar', () => {
@@ -113,7 +128,7 @@ describe('generate validation', () => {
     expect(actualSchema).toMatchSnapshot();
   });
 
-  it('should return correct validationSchema for one group having a text variable', () => {
+  it('should return correct validationSchema for one group having a textVar', () => {
     const yupSchema = generateYupSchemaFromFormSchema(
       formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
     );
@@ -122,7 +137,7 @@ describe('generate validation', () => {
     expect(actualSchema).toMatchSnapshot();
   });
 
-  it('should return correct validationSchema for repeating group having a text variable', () => {
+  it('should return correct validationSchema for repeating group having a textVar', () => {
     const yupSchema = generateYupSchemaFromFormSchema(
       formDefWithRepeatingGroup as FormSchema,
     );
@@ -340,7 +355,7 @@ describe('yupSchema', async () => {
       });
     });
     describe('numberVariable', () => {
-      it('is valid for one textVar 0-1 with no value', async () => {
+      it('is valid for one numberVar 0-1 with no value', async () => {
         const yupSchema = generateYupSchemaFromFormSchema(
           formDefWithOneNumberVariable0_1,
         );
@@ -354,7 +369,7 @@ describe('yupSchema', async () => {
         ).resolves.toBe(true);
       });
 
-      it('is valid for one textVar 0-1 with value', async () => {
+      it('is valid for one numberVar 0-1 with value', async () => {
         const yupSchema = generateYupSchemaFromFormSchema(
           formDefWithOneNumberVariable0_1,
         );
@@ -431,6 +446,44 @@ describe('yupSchema', async () => {
           'Invalid number of decimals',
         );
       });
+
+      it('is valid for one numberVar 1-X with value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneNumberVariable1_X,
+        );
+
+        await expect(
+          yupSchema.isValid({
+            someRootNameInData: {
+              someNumberVariableNameInData: [
+                {
+                  value: '2',
+                },
+              ],
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is invalid for one numberVar 1-X without value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneNumberVariable1_X,
+        );
+
+        const data = {
+          someRootNameInData: {
+            someNumberVariableNameInData: [
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldInvalidFormatText',
+        );
+      });
     });
 
     describe('recordLink', () => {
@@ -470,6 +523,112 @@ describe('yupSchema', async () => {
           'divaClient_fieldRequiredText',
         );
       });
+
+      it('is valid for one recordLink 1-1 with value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneRecordLinkBeingRequired1_1,
+        );
+
+        await expect(
+          yupSchema.isValid({
+            root: {
+              link: {
+                value: 'someLink',
+              },
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is invalid for one recordLink 1-1 without value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneRecordLinkBeingRequired1_1,
+        );
+
+        const data = {
+          root: {
+            link: {
+              value: '',
+            },
+          },
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldRequiredText',
+        );
+      });
+
+      it('is valid for one recordLink 1-X with value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneRecordLinkBeingRequired1_X,
+        );
+
+        await expect(
+          yupSchema.isValid({
+            root: {
+              link: [
+                {
+                  value: 'someLink',
+                },
+              ],
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is invalid for one recordLink 1-X without value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithOneRecordLinkBeingRequired1_X,
+        );
+
+        const data = {
+          root: {
+            link: [
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldRequiredText',
+        );
+      });
+
+      it('is valid for one recordLink 1-1 for a binary with value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithRecordLinkTypeBinary,
+        );
+
+        await expect(
+          yupSchema.isValid({
+            someRootNameInData: {
+              attachmentFile: {
+                value: 'someValue.pdf',
+              },
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is invalid for one recordLink 1-1 for a binary without value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefWithRecordLinkTypeBinary,
+        );
+
+        const data = {
+          someRootNameInData: {
+            attachmentFile: {
+              value: '',
+            },
+          },
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldRequiredText',
+        );
+      });
     });
 
     describe('collectionVariable', () => {
@@ -495,6 +654,44 @@ describe('yupSchema', async () => {
         const data = {
           someRootNameInData: {
             colour: { value: '' },
+          },
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldRequiredText',
+        );
+      });
+
+      it('is valid for one collectionVar 1-X with value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefRequiredRepeatingCollectionVar1_X,
+        );
+
+        await expect(
+          yupSchema.isValid({
+            root: {
+              languageTerm: [
+                {
+                  value: 'eng',
+                },
+              ],
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is invalid for one collectionVar 1-X without value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(
+          formDefRequiredRepeatingCollectionVar1_X,
+        );
+
+        const data = {
+          root: {
+            languageTerm: [
+              {
+                value: '',
+              },
+            ],
           },
         };
 
@@ -614,7 +811,248 @@ describe('yupSchema', async () => {
     });
   });
   describe('group', () => {
-    it('is valid for one group 0-1 with one text variable 1-1', async () => {
+    it('is valid for one group 0-1 and one textVar 1-1', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithRequiredTextVar,
+      );
+
+      const data = {
+        root: {
+          group: {
+            variable: {
+              value: '',
+            },
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-1 and one number variable 1-1', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithRequiredNumberVar,
+      );
+
+      const data = {
+        root: {
+          group: {
+            numberVariable: {
+              value: '12',
+            },
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-1 and one recordLink 1-1', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithRequiredRecordLink,
+      );
+
+      const data = {
+        root: {
+          group: {
+            link: {
+              value: 'someLink',
+            },
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-X and two textVar with attribute without value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithWithOptionalGroupWithRequiredVar,
+      );
+
+      const data = {
+        root: {
+          mainGroup_type_personal: [
+            {
+              textVar1_type_first: {
+                value: '',
+                _type: 'first',
+              },
+              textVar2_type_second: {
+                value: '',
+                _type: 'second',
+              },
+              _type: 'personal',
+            },
+          ],
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-X and two textVar 1-1 without value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+      );
+
+      const data = {
+        root: {
+          polygon: {
+            point: [
+              {
+                longitude: {
+                  value: '',
+                },
+                latitude: {
+                  value: '',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-X and two textVar 1-1 with value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+      );
+
+      const data = {
+        root: {
+          polygon: {
+            point: [
+              {
+                longitude: {
+                  value: '17.631091',
+                },
+                latitude: {
+                  value: '59.855239',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-X and two textVar 1-1 with partial value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+      );
+
+      const data = {
+        root: {
+          polygon: {
+            point: [
+              {
+                longitude: {
+                  value: '17.631091',
+                },
+                latitude: {
+                  value: '',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+
+    it('is valid for one group 0-X and two numberVar 1-1 with partial value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
+      );
+
+      const data = {
+        root: {
+          polygon: {
+            point: [
+              {
+                longitude: {
+                  value: '17',
+                },
+                latitude: {
+                  value: '',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+
+    it('is valid for one group 0-X and two collVar 1-1 with partial value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
+      );
+
+      const data = {
+        root: {
+          polygon: {
+            point: [
+              {
+                longitude: {
+                  value: '17',
+                },
+                latitude: {
+                  value: '',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+
+    it('is invalid for one group 0-X and two textVar 1-1 with partial value2', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefContributorGroupWithAuthorGroupAuthor,
+      );
+
+      const data = {
+        root: {
+          mainGroup: [
+            {
+              divaPerson: {
+                value: '',
+              },
+              givenName: {
+                value: '',
+              },
+              correspondingAuthor: {
+                value: '',
+              },
+              birthYear: {
+                value: '',
+              },
+            },
+          ],
+        },
+      };
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+
+    it('is valid for one group 0-1 with attribute and one textVar 1-1', async () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
       );
@@ -633,7 +1071,7 @@ describe('yupSchema', async () => {
       await expect(yupSchema.isValid(data)).resolves.toBe(true);
     });
 
-    it('is valid for one group 1-1 with one text variable 1-1', async () => {
+    it('is valid for one group 1-1 attribute and with one textVar 1-1', async () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1,
       );
@@ -652,7 +1090,7 @@ describe('yupSchema', async () => {
       await expect(yupSchema.isValid(data)).resolves.toBe(true);
     });
 
-    it('is valid for one group 1-1 nested group 1-1 with one text variable 1-1', async () => {
+    it('is valid for one group 1-1 and nested group 1-1 with attribute with one textVar 1-1 with value', async () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
       );
@@ -673,7 +1111,7 @@ describe('yupSchema', async () => {
       await expect(yupSchema.isValid(data)).resolves.toBe(true);
     });
 
-    it('is invalid for one group 1-1 nested group 1-1 with one text variable 1-1 without value', async () => {
+    it('is invalid for one group 1-1 and nested group 1-1 with attribute with one textVar 1-1 without value', async () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
       );
@@ -691,11 +1129,73 @@ describe('yupSchema', async () => {
         },
       };
 
-      //await expect(yupSchema.isValid(data)).resolves.toBe(true);
-
       await expect(yupSchema.validate(data)).rejects.toThrow(
         'divaClient_fieldRequiredText',
       );
+    });
+
+    it('is valid for one group 0-1 with attribute with one textVariable 1-1 with attribute and with value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+      );
+
+      const data = {
+        root: {
+          mainGroup: {
+            variable: {
+              value: 'someValue',
+              _variableAttribute: 'blue',
+            },
+            _language: 'nau',
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 0-X with attribute with one textVar 1-1 with two attributes and with value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes,
+      );
+
+      const data = {
+        root: {
+          mainGroup: [
+            {
+              variable: {
+                value: 'someValue',
+              },
+              _language: 'aar',
+              _titleType: 'type',
+            },
+          ],
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+
+    it('is valid for one group 1-1 nested group 0-1 with attribute with one textVar 1-1 with two attributes and without value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+      );
+
+      const data = {
+        root: {
+          mainGroup: {
+            nestedGroup: {
+              mainTitle: {
+                value: '',
+              },
+              _language: '',
+              _titleType: '',
+            },
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
     });
   });
 
