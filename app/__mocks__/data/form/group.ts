@@ -1886,6 +1886,196 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
   },
 };
 
+export const formDefTitleInfoGroupSameNameInData: RecordFormSchema = {
+  validationTypeId: 'preprint',
+  form: {
+    name: 'root',
+    type: 'group',
+    presentationId: 'somePGroup',
+    mode: 'input',
+    tooltip: {
+      title: 'preprintNewGroupText',
+      body: 'preprintNewGroupDefText',
+    },
+    label: 'preprintNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'titleInfo',
+        type: 'group',
+        presentationId: 'somePGroup',
+        mode: 'input',
+        tooltip: {
+          title: 'titleInfoGroupText',
+          body: 'titleInfoGroupDefText',
+        },
+        label: 'titleInfoGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'lang',
+            type: 'collectionVariable',
+            presentationId: 'somePColVar',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            presentationId: 'somePTextVar',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [],
+        gridColSpan: 12,
+      },
+      {
+        name: 'titleInfo',
+        type: 'group',
+        presentationId: 'somePGroup',
+        mode: 'input',
+        tooltip: {
+          title: 'titleInfoGroupText',
+          body: 'titleInfoGroupDefText',
+        },
+        label: 'titleInfoGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1.7976931348623157e308,
+        },
+        attributes: [
+          {
+            name: 'lang',
+            type: 'collectionVariable',
+            presentationId: 'somePColVar',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+          },
+          {
+            name: 'type',
+            type: 'collectionVariable',
+            presentationId: 'somePColVar',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'titleTypeCollectionVarText',
+              body: 'titleTypeCollectionVarDefText',
+            },
+            label: 'titleTypeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'alternative',
+                label: 'alternativeTitleItemText',
+              },
+            ],
+            finalValue: 'alternative',
+          },
+        ],
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            presentationId: 'somePTextVar',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {

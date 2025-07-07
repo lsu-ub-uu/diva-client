@@ -19,7 +19,51 @@
 
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 
-export const formDefWithOneNumberVariable: RecordFormSchema = {
+export const formDefWithOneNumberVariable0_1: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    presentationId: 'someRootNameInDataGroup',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        presentationId: 'someNumberVariableNameInDataNumVar',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        label: 'someNumberVariableNameInData',
+        showLabel: true,
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneNumberVariable1_1: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',

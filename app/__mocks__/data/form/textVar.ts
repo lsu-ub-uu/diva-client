@@ -93,7 +93,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
     type: 'group',
     showLabel: true,
     label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
+    name: 'root',
     presentationId: 'somePGroup',
     repeat: {
       repeatMin: 1,
@@ -106,7 +106,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
     components: [
       {
         type: 'textVariable',
-        name: 'someNameInData1',
+        name: 'someNameInData',
         presentationId: 'someTextPVar',
         label: 'label1',
         showLabel: true,
@@ -125,7 +125,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
       },
       {
         type: 'textVariable',
-        name: 'someNameInData2',
+        name: 'someOtherNameInData',
         presentationId: 'someTextPVar',
 
         label: 'label2',
@@ -348,6 +348,185 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
         validation: {
           type: 'regex',
           pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneTextVariableNEW0_1: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    presentationId: 'someRootNameInDataGroup',
+    showLabel: true,
+    name: 'root',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
+        showLabel: true,
+        label: 'someLabelTextId',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        inputType: 'input',
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithOneTextVariableNEW0_1REGEX: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    presentationId: 'someRootNameInDataGroup',
+    showLabel: true,
+    name: 'root',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
+        showLabel: true,
+        label: 'someLabelTextId',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneTextVariableNEW1_1: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    presentationId: 'someRootNameInDataGroup',
+    showLabel: true,
+    name: 'root',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
+        showLabel: true,
+        label: 'someLabelTextId',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        inputType: 'input',
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneTextVariableNEW1_X: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    presentationId: 'someRootNameInDataGroup',
+    showLabel: true,
+    name: 'root',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+        presentationId: 'presentationTypeTextCollectionVarDefText',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        presentationId: 'someNameInDataVar',
+        showLabel: true,
+        label: 'someLabelTextId',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
         },
         inputType: 'input',
         mode: 'input',
@@ -683,6 +862,133 @@ export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
         childStyle: [],
         gridColSpan: 12,
       },
+      {
+        name: 'subject',
+        presentationId: 'someTextPVar',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectSweTextVarText',
+          body: 'subjectSweTextVarDefText',
+        },
+        label: 'subjectSweTextVarText',
+        placeholder: 'subjectSweTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            presentationId: 'someFakeId',
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            finalValue: 'swe',
+          },
+        ],
+        childStyle: [],
+        gridColSpan: 12,
+      },
+      {
+        name: 'subject',
+        presentationId: 'someTextPVar',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectEngTextVarText',
+          body: 'subjectEngTextVarDefText',
+        },
+        label: 'subjectEngTextVarText',
+        placeholder: 'subjectEngTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            presentationId: 'someFakeId',
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            finalValue: 'eng',
+          },
+        ],
+        childStyle: [],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefTextVarsWithSameNameInDataNew: RecordFormSchema = {
+  validationTypeId: 'nationalSubjectCategory',
+  form: {
+    name: 'root',
+    presentationId: 'somePGroup',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+      body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+    },
+    label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
       {
         name: 'subject',
         presentationId: 'someTextPVar',

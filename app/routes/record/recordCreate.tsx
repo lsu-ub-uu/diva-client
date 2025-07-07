@@ -47,6 +47,18 @@ import { useTranslation } from 'react-i18next';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import {
+  formDefTextVarsWithSameNameInData,
+  formDefTextVarsWithSameNameInDataNew,
+  formDefWithOneTextVariableNEW1_1,
+  formDefWithOneTextVariableNEW1_X,
+} from '@/__mocks__/data/form/textVar';
+import { formDefCollVarsWithSameNameInDataNEW } from '@/__mocks__/data/form/collVar';
+import { formDefTitleInfoGroupSameNameInData } from '@/__mocks__/data/form/group';
+import {
+  formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
+  formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
+} from '@/__mocks__/data/form/attributeCollection';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -61,11 +73,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   }
   let formDefinition;
   try {
-    formDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
-      validationTypeId,
-      'create',
-    );
+    formDefinition =
+      formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW;
   } catch (error) {
     if (error instanceof NotFoundError) {
       throw data(error.message, { status: error.status });
@@ -74,6 +83,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   }
 
   const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
+  console.log(JSON.stringify(defaultValues, null, 2));
 
   const rootGroupTitleTextId =
     formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
@@ -106,7 +116,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   );
   const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
   const resolver = yupResolver(yupSchema);
-
+  console.log({ yupSchema });
   const {
     errors,
     data: validatedFormData,

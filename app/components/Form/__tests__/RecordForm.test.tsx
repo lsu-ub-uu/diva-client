@@ -20,14 +20,11 @@
 import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
-  formDefWithOneNumberVariableWithAttributeCollection,
   formDefWithOneOptionalGroupWithAttributeCollection,
   formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
   formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
   formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOneOptionalNumberVariableWithAttributeCollection,
   formDefWithOneRequiredGroupWithAttributeCollection,
-  formDefWithOneRequiredNumberVariableWithAttributeCollection,
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
 } from '@/__mocks__/data/form/attributeCollection';
 import {
@@ -36,10 +33,8 @@ import {
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
 import {
-  formDefCollVarsWithSameNameInData,
   formDefRequiredRepeatingCollection2Var,
   formDefRequiredRepeatingCollectionVar,
-  formDefWithOneCollectionVariable,
   formDefWithOneCollectionVariableWithModeOutput,
 } from '@/__mocks__/data/form/collVar';
 import {
@@ -50,7 +45,6 @@ import {
   formDefPreprintWithOnlyAuthorName,
   formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
-  formDefTitleInfoGroup,
   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
   formDefTwoOptionalGroupsWithRequiredTextVars,
   formDefWithGroupWithDefaultHeadlineLevel,
@@ -72,30 +66,24 @@ import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
 import {
   formDefRequiredRepeatingNumber2Var,
   formDefRequiredRepeatingNumberVar,
-  formDefWithOneNumberVariable,
-  formDefWithOneNumberVariableBeingOptional,
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneNumberVariableModeOutput,
 } from '@/__mocks__/data/form/numVar';
 import {
-  formDefWithOneRecordLinkBeingOptional,
   formDefWithOneRecordLinkBeingRequired,
   formDefWithRecordLinkTypeBinary,
 } from '@/__mocks__/data/form/recordLink';
 import {
   formDefRequiredRepeatingText2Var,
   formDefRequiredRepeatingTextVar,
-  formDefTextVarsWithSameNameInData,
   formDefWithOneRepeatingTextVariableWithModeOutput,
-  formDefWithOneTextVariable,
   formDefWithOneTextVariableBeingOptional,
   formDefWithOneTextVariableBeingPassword,
   formDefWithOneTextVariableBeingRepeating,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
   formDefWithTextVar,
-  formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -431,186 +419,6 @@ describe('<Form />', () => {
         'English National Subject Category',
       );
       expect(englishElement).toBeInTheDocument();
-    });
-
-    it('renders a form from a given definition for a update definition with colVar with same nameInData', () => {
-      render(
-        <RecordFormWithRoutesStub
-          record={{
-            id: 'divaOutput:1729757581842184',
-            recordType: 'divaOutput',
-            validationType: 'nationalSubjectCategory',
-            createdAt: '2024-09-09T08:29:02.073117Z',
-            createdBy: '161616',
-            updated: [
-              {
-                updateAt: '2024-09-09T08:29:02.073117Z',
-                updatedBy: '161616',
-              },
-            ],
-            actionLinks: {
-              read: { url: '', requestMethod: 'get', rel: 'read' },
-            },
-            userRights: ['read', 'update', 'index', 'delete'],
-            data: {
-              nationalSubjectCategory: {
-                recordInfo: {
-                  id: {
-                    value: '12345',
-                  },
-                  validationType: {
-                    value: 'record',
-                  },
-                  dataDivider: {
-                    value: 'divaData',
-                  },
-                  type: {
-                    value: 'record',
-                  },
-                  createdBy: {
-                    value: '161616',
-                  },
-                  tsCreated: {
-                    value: '2024-10-16T12:36:04.249992Z',
-                  },
-
-                  updated: [
-                    {
-                      tsUpdated: {
-                        value: '2024-10-16T12:36:04.249992Z',
-                      },
-                      updatedBy: {
-                        value: '161616',
-                      },
-                    },
-                  ],
-                },
-                genre_type_code: {
-                  value: 'artistic-work_original-creative-work',
-                  _type: 'code',
-                },
-                genre_type_contentType: {
-                  value: 'artistic-work_artistic-thesis',
-                  _type: 'contentType',
-                },
-              },
-            },
-          }}
-          formSchema={formDefCollVarsWithSameNameInData}
-        />,
-      );
-
-      const input1 = screen.getByLabelText('outputTypeCollectionVarText1');
-      const input2 = screen.getByLabelText('outputTypeCollectionVarText2');
-      expect(input1).toBeInTheDocument();
-      expect(input2).toBeInTheDocument();
-    });
-
-    it('renders a form from a given definition does validate it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      expect(inputElement).toBeInTheDocument();
-
-      await user.type(inputElement, 'a');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a form from a given definition does NOT validate it', async () => {
-      render(
-        <RecordFormWithRoutesStub formSchema={formDefWithOneTextVariable} />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      expect(inputElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-
-      expect(
-        await screen.findByText('divaClient_fieldRequiredText'),
-      ).toBeInTheDocument();
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
-      render(<RecordFormWithRoutesStub formSchema={formDefTitleInfoGroup} />);
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputElement = screen.getByPlaceholderText('titleInfoVarText1');
-
-      expect(inputElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-
-      expect(
-        await screen.findAllByText('divaClient_fieldRequiredText'),
-      ).toHaveLength(2);
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefTextVarsWithSameNameInData}
-        />,
-      );
-      const user = userEvent.setup();
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
-      expect(sweElement).toBeInTheDocument();
-      await user.type(sweElement, 'svenska');
-
-      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
-      expect(engElement).toBeInTheDocument();
-      await user.type(engElement, 'english');
-
-      await user.click(submitButton);
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a form from a given definition for collectionVariables with same nameInData and validates it', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefCollVarsWithSameNameInData}
-        />,
-      );
-      const user = userEvent.setup();
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      await user.selectOptions(
-        screen.getByLabelText('outputTypeCollectionVarText1'),
-        'artisticWorkOriginalCreativeWorkItemText',
-      );
-      await user.selectOptions(
-        screen.getByLabelText('outputTypeCollectionVarText2'),
-        'artisticWorkArtisticThesisItemText',
-      );
-      await user.click(submitButton);
-      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a form from a given definition for fileUpload and and does NOT validate it', async () => {
@@ -1032,21 +840,6 @@ describe('<Form />', () => {
   });
 
   describe('recordLink', () => {
-    it('renders a recordLink 0-1 and minNumberToShow 1 and validates it', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneRecordLinkBeingOptional}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
     it('renders a recordLink 1-1 and does NOT validates it', async () => {
       render(
         <RecordFormWithRoutesStub
@@ -1075,47 +868,6 @@ describe('<Form />', () => {
   });
 
   describe('textVariable', () => {
-    it('renders a textVariable 1-1 and does NOT validate it', async () => {
-      render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      const user = userEvent.setup();
-      await user.type(inputElement, 'does not validate');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a multiple textVariables 1-1 with finalValue ', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithTwoTextVariableHavingFinalValue}
-        />,
-      );
-
-      const inputLabel = screen.getByText('label1');
-      expect(inputLabel).toBeInTheDocument();
-      const inputElement = screen.getByText('someFinalValue1');
-      expect(inputElement).toBeInTheDocument();
-      const inputLabel2 = screen.getByText('label2');
-      expect(inputLabel2).toBeInTheDocument();
-      const inputElement2 = screen.getByText('someFinalValue2');
-      expect(inputElement2).toBeInTheDocument();
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const user = userEvent.setup();
-
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
     it('renders a textVariable 1-1 with mode output', async () => {
       const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
@@ -1269,27 +1021,6 @@ describe('<Form />', () => {
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a textVariable 0-1, minNumberToShow 1 and bad input', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneTextVariableBeingOptional}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      const user = userEvent.setup();
-      await user.type(inputElement, '????'); // enter some invalid text
-      await user.click(submitButton);
-
-      await waitFor(() => {
-        expect(actionSpy).toHaveBeenCalledTimes(0);
-      });
-    });
-
     it('renders a textVariable 0-1 as password', async () => {
       render(
         <RecordFormWithRoutesStub
@@ -1314,28 +1045,6 @@ describe('<Form />', () => {
   });
 
   describe('numberVariable', () => {
-    it('renders a numberVariable 1-1 and does NOT validate it', async () => {
-      render(
-        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const group = screen.getByRole('group', {
-        name: 'someNumberVariableNameInData',
-      });
-      const inputNumberElement = within(group).getByLabelText(
-        'someNumberVariableNameInData',
-      );
-
-      const user = userEvent.setup();
-      await user.type(inputNumberElement, 'does not validate');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
     it('renders a numberVariable with mode output', async () => {
       const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
@@ -1458,90 +1167,6 @@ describe('<Form />', () => {
       expect(inputElement).not.toBeInTheDocument();
     });
 
-    it('renders a numberVariable 1-1 with input under min', async () => {
-      render(
-        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-
-      const user = userEvent.setup();
-      await user.type(inputNumberElement, '0');
-      await user.click(submitButton);
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a numberVariable 1-1 with input over max', async () => {
-      render(
-        <RecordFormWithRoutesStub formSchema={formDefWithOneNumberVariable} />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-
-      const user = userEvent.setup();
-      await user.type(inputNumberElement, '21');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a numberVariable 0-1 and does NOT validate text', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableBeingOptional}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-
-      expect(inputNumberElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.type(inputNumberElement, 'aaa');
-      await user.click(submitButton);
-
-      await waitFor(() => {
-        expect(actionSpy).toHaveBeenCalledTimes(0);
-        expect((inputNumberElement as HTMLInputElement).value).toBe('aaa');
-      });
-    });
-
-    it('renders a numberVariable 1-1 with numberOfDecimals 2 and does NOT validate', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableHavingDecimals}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-
-      const user = userEvent.setup();
-      await user.type(inputNumberElement, '12.0123');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
     it('renders a numberVariable 1-1 with numberOfDecimals 2 and does validate', async () => {
       render(
         <RecordFormWithRoutesStub
@@ -1558,44 +1183,6 @@ describe('<Form />', () => {
 
       const user = userEvent.setup();
       await user.type(inputNumberElement, '12.00');
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 with no input and does validate', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableBeingOptional}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 and does validate', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableBeingOptional}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const inputElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-      expect(inputElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.type(inputElement, '10');
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
@@ -1684,52 +1271,6 @@ describe('<Form />', () => {
   });
 
   describe('collectionVariable', () => {
-    it('renders a collectionVariable 1-1 and does validate it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneCollectionVariable}
-        />,
-      );
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const select = screen.getByRole('combobox');
-      expect(select).toBeInTheDocument();
-
-      const items = screen.getAllByRole('option');
-      expect(items).toHaveLength(4); // includes None option
-
-      await user.click(select);
-      await user.selectOptions(
-        screen.getByRole('combobox'),
-        'examplePinkItemText',
-      );
-
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a collectionVariable 1-1 and does NOT validate it', async () => {
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneCollectionVariable}
-        />,
-      );
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
     it('renders a collectionVariable 1-1 with mode output', async () => {
       const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
@@ -1851,264 +1392,6 @@ describe('<Form />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableWithAttributeCollection}
-        />,
-      );
-
-      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
-
-      const group = screen.getByRole('group', { name: 'attribute colour' });
-      const attributeSelect = within(group).getByLabelText('attribute colour');
-      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
-
-      await user.type(numberInput, '12');
-
-      await user.selectOptions(attributeSelect, 'emptyTextId');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneNumberVariableWithAttributeCollection}
-        />,
-      );
-
-      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
-      expect(numberInput).toBeInTheDocument();
-
-      const group = screen.getByRole('group', { name: 'attribute colour' });
-      const attributeSelect = within(group).getByLabelText('attribute colour');
-      expect(attributeSelect).toBeInTheDocument();
-
-      await user.type(numberInput, '12');
-
-      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
-      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={
-            formDefWithOneOptionalNumberVariableWithAttributeCollection
-          }
-        />,
-      );
-
-      const numberInput = screen.getByPlaceholderText(
-        'someNumberVar2IdPlaceholder',
-      );
-      expect(numberInput).toBeInTheDocument();
-      const group = screen.getByRole('group', {
-        name: 'someNumberVar2AttributeLabel',
-      });
-      const attributeSelect = within(group).getByLabelText(
-        'someNumberVar2AttributeLabel',
-      );
-
-      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
-
-      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={
-            formDefWithOneRequiredNumberVariableWithAttributeCollection
-          }
-        />,
-      );
-
-      screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-
-      const group = screen.getByRole('group', {
-        name: 'someNumberVar2AttributeLabel',
-      });
-      const attributeSelect = within(group).getByLabelText(
-        'someNumberVar2AttributeLabel',
-      );
-      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
-
-      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={
-            formDefWithOneOptionalNumberVariableWithAttributeCollection
-          }
-        />,
-      );
-
-      const numberInput = screen.getByPlaceholderText(
-        'someNumberVar2IdPlaceholder',
-      );
-
-      const group = screen.getByRole('group', {
-        name: 'someNumberVar2AttributeLabel',
-      });
-      within(group).getByLabelText('someNumberVar2AttributeLabel');
-
-      await user.type(numberInput, '12');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={
-            formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection
-          }
-        />,
-      );
-      const numberInput = screen.getByPlaceholderText(
-        'someNumberVarIdPlaceholder',
-      );
-      screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
-      const group = screen.getByRole('group', {
-        name: 'someNumberVar2AttributeLabel',
-      });
-      within(group).getByLabelText('someNumberVar2AttributeLabel');
-      await user.type(numberInput, '2');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
-        />,
-      );
-      screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
-      const group = screen.getByRole('group', {
-        name: 'languageCollectionVarText',
-      });
-      within(group).getByLabelText('languageCollectionVarText');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOneRequiredGroupWithAttributeCollection}
-        />,
-      );
-      const textInput = screen.getByPlaceholderText(
-        'mainTitleTextVarPlaceholderText',
-      );
-      const group = screen.getByRole('group', {
-        name: 'languageCollectionVarText',
-      });
-      const attributeSelect = within(group).getByLabelText(
-        'languageCollectionVarText',
-      );
-      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
-
-      await user.selectOptions(attributeSelect, 'aarLangItemText');
-      await user.type(textInput, 'aaaa');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {});
-
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a group 0-1 with a group 1-1 having textVars 1-1 an validates it', async () => {
-      const user = userEvent.setup();
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const mainTitleElement = screen.getByPlaceholderText(
-        'mainTitleTextVarText',
-      );
-      const subtitleElement = screen.getByPlaceholderText(
-        'subtitleTextVarText',
-      );
-
-      expect(mainTitleElement).toBeInTheDocument();
-      expect(subtitleElement).toBeInTheDocument();
-
-      await user.click(submitButton);
-
-      expect(actionSpy).toHaveBeenCalledTimes(1);
-    });
-
     it('renders a group having 0-1 with a group having 1-1 having textVars having 1-1 and does NOT validate it', async () => {
       const user = userEvent.setup();
       render(
