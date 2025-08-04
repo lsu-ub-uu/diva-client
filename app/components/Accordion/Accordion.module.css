@@ -17,14 +17,20 @@
  */
 
 .accordion {
-  border: 1px solid var(--color-gray-main);
   border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray-main);
+  transition: border-color 0.2s ease-in-out;
+
+  &:has(.title:hover) {
+    border-color: var(--color-gray-dark);
+  }
 }
 
 .title {
   --accordion-title-border-radius: var(--border-radius) var(--border-radius) 0 0;
 
   display: block;
+  background-color: var(--color-card);
   border-radius: var(--accordion-title-border-radius);
 
   svg {
@@ -39,8 +45,8 @@
     border-radius: var(--accordion-title-border-radius);
     padding: var(--gap);
     cursor: pointer;
-    background-color: transparent;
     transition: background-color 0.2s;
+    background-color: transparent;
 
     &:hover {
       background-color: var(--color-button-secondary-hover);
