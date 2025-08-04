@@ -17,25 +17,26 @@
  */
 
 .card {
-  border-radius: var(--border-radius);
   position: relative;
   transition: background-color 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out;
 
   &[data-boxed] {
+    border-left: 3px solid var(--color-card-dark);
+    padding: 0 var(--gap);
+
     &:has(> .card-header button:hover),
     &:has(> .card-header button:focus),
     &:has(> .card-header input:hover),
     &:has(> .card-header input:focus),
     &:has(> .card-content button:focus),
     &:has(> .card-content input:focus) {
-      background-color: var(--color-card);
+      border-color: var(--color-link-selected);
     }
   }
 }
 
 .card-content[data-boxed] {
-  padding: var(--gap);
-
   &[data-alert='true'] {
     border-radius: var(--border-radius);
     background-color: rgb(255 236 240);
@@ -50,8 +51,6 @@
   width: 100%;
 
   &[data-boxed] {
-    /* background-color: var(--color-card-dark); */
-    padding: var(--gap-s);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 

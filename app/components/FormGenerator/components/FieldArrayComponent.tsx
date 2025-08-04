@@ -21,7 +21,7 @@ import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { AddCircleIcon } from '@/icons';
-import React, { Fragment, use, type ReactNode } from 'react';
+import { Fragment, use, useRef, useEffect, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +31,9 @@ import {
 } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
+
+import styles from './FieldArrayComponent.module.css';
+import clsx from 'clsx';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -49,11 +52,22 @@ export const FieldArrayComponent = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const notRemovableEnhancement =
     enhancedFields?.[name]?.type === 'notRemovable';
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFieldsLengthRef = useRef(0);
 
   const { fields, append, move, remove } = useFieldArray({
     control: control,
     name: name,
   });
+
+  // Track when new fields are added to maintain focus flow
+  useEffect(() => {
+    if (fields.length > previousFieldsLengthRef.current) {
+      // New field was added, keep focus on add button for proper tab flow
+      addButtonRef.current?.focus();
+    }
+    previousFieldsLengthRef.current = fields.length;
+  }, [fields.length]);
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(component, true));
   };
@@ -67,7 +81,10 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <React.Fragment key={`${name}_fac`}>
+    <div
+      key={`${name}_fac`}
+      className={clsx(styles['field-array'], 'form-component-item')}
+    >
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -107,6 +124,8 @@ export const FieldArrayComponent = ({
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button
+              key={fields.length}
+              ref={addButtonRef}
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
@@ -118,6 +137,6 @@ export const FieldArrayComponent = ({
             </Button>
           </div>
         )}
-    </React.Fragment>
+    </div>
   );
 };
