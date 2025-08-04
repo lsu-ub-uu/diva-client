@@ -19,9 +19,17 @@
 .card {
   border-radius: var(--border-radius);
   position: relative;
+  transition: background-color 0.2s ease-in-out;
 
   &[data-boxed] {
-    background-color: var(--color-card);
+    &:has(> .card-header button:hover),
+    &:has(> .card-header button:focus),
+    &:has(> .card-header input:hover),
+    &:has(> .card-header input:focus),
+    &:has(> .card-content button:focus),
+    &:has(> .card-content input:focus) {
+      background-color: var(--color-card);
+    }
   }
 }
 
@@ -42,8 +50,8 @@
   width: 100%;
 
   &[data-boxed] {
-    background-color: var(--color-card-dark);
-    padding: var(--gap-s) var(--gap);
+    /* background-color: var(--color-card-dark); */
+    padding: var(--gap-s);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 

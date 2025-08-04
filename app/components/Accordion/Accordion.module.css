@@ -16,12 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+.accordion {
+  border: 1px solid var(--color-gray-main);
+  border-radius: var(--border-radius);
+}
+
 .title {
   --accordion-title-border-radius: var(--border-radius) var(--border-radius) 0 0;
 
   display: block;
   border-radius: var(--accordion-title-border-radius);
-  background-color: var(--color-card-dark);
 
   svg {
     font-size: var(--font-size-icon);
@@ -31,10 +35,12 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-radius: var(--accordion-title-border-radius);
     padding: var(--gap);
     cursor: pointer;
     background-color: transparent;
+    transition: background-color 0.2s;
 
     &:hover {
       background-color: var(--color-button-secondary-hover);
@@ -70,7 +76,6 @@
 
 .accordion:has([data-invalid]) {
   border: 1px solid var(--color-error-main);
-  border-radius: var(--border-radius);
 
   .title button {
     color: var(--color-error-main);
@@ -82,11 +87,6 @@
 }
 
 .content {
-  --accordion-content-border-radius: 0 0 var(--border-radius)
-    var(--border-radius);
-
-  background-color: var(--color-card);
-  border-radius: var(--accordion-content-border-radius);
   padding: var(--gap);
 }
 
