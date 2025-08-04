@@ -16,16 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Button as HUIButton,
-  type ButtonProps as HUIButtonProps,
-} from '@headlessui/react';
-
 import styles from './Button.module.css';
 import clsx from 'clsx';
-import { type ElementType, type ReactNode, type Ref } from 'react';
+import {
+  type ElementType,
+  type HTMLProps,
+  type ReactNode,
+  type Ref,
+} from 'react';
 
-export interface ButtonProps extends Omit<HUIButtonProps, 'as'> {
+export interface ButtonProps
+  extends Omit<HTMLProps<HTMLButtonElement>, 'as' | 'size'> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
@@ -47,15 +48,18 @@ export const Button = ({
   tooltipPosition = 'bottom',
   ref,
   error,
+  as,
   ...rest
 }: ButtonProps) => {
+  const Root = as || 'button';
   return (
-    <HUIButton
+    <Root
       className={clsx(styles.button, className)}
       data-variant={variant}
       data-size={size}
       data-tooltip-position={tooltipPosition}
       ref={ref}
+      type='button'
       {...(fullWidth ? { 'data-fullwidth': '' } : {})}
       {...(error ? { 'data-error': '' } : {})}
       {...rest}

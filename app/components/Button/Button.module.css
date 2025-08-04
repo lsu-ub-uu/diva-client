@@ -31,7 +31,7 @@
       width: 100%;
     }
 
-    &[data-disabled] {
+    &:disabled {
       opacity: 0.5;
       pointer-events: none;
     }
@@ -55,11 +55,11 @@
       border-color: var(--color-button);
       color: var(--color-text-inverted);
 
-      &[data-hover] {
+      &:hover {
         --primary-button-color: var(--color-button-primary-hover);
       }
 
-      &[data-active] {
+      &:active {
         background-color: var(--color-button-primary-active);
       }
     }
@@ -68,11 +68,11 @@
       background-color: transparent;
       border-color: var(--color-button);
 
-      &[data-hover] {
+      &:hover {
         background-color: var(--color-button-secondary-hover);
       }
 
-      &[data-active] {
+      &:active {
         background-color: var(--color-button-secondary-active);
       }
     }
@@ -81,22 +81,21 @@
       border-color: transparent;
       background: transparent;
 
-      &[data-hover] {
+      &:hover {
         background-color: var(--color-button-secondary-hover);
       }
 
-      &[data-active] {
+      &:active {
         background-color: var(--color-button-secondary-active);
       }
     }
 
     &[data-variant='icon'] {
-      --icon-button-size: calc(var(--input-height) + 0.5rem);
+      --icon-button-size: var(--input-height);
 
       position: relative;
       width: var(--icon-button-size);
       height: var(--icon-button-size);
-      margin: -0.5rem;
       font-size: 1em;
       align-items: center;
       justify-content: center;
@@ -107,11 +106,11 @@
       line-height: 1;
       outline-offset: -2px;
 
-      &[data-hover] {
+      &:hover {
         background-color: var(--color-button-secondary-hover);
       }
 
-      &[data-active] {
+      &:active {
         background-color: var(--color-button-secondary-active);
       }
     }
