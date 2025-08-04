@@ -87,7 +87,7 @@ app.listen(PORT, () => {
 
   if (DEVELOPMENT) {
     console.info(
-      `Development server is running on \`http://localhost:${PORT}${BASE_PATH}`,
+      `Development server is running on http://localhost:${PORT}${BASE_PATH}`,
     );
   } else {
     console.info(
