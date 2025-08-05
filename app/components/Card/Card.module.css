@@ -18,20 +18,37 @@
 
 .card {
   position: relative;
-  transition: background-color 0.2s ease-in-out;
-  transition: border-color 0.2s ease-in-out;
+  transition: background-color 0.2s;
+  transition: border-color 0.2s;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
 
   &[data-boxed] {
-    border-left: 3px solid var(--color-card-dark);
+    border-left: 3px solid var(--color-gray-main);
     padding: 0 var(--gap);
 
-    &:has(> .card-header button:hover),
-    &:has(> .card-header button:focus),
+    &:has([aria-invalid='true']) {
+      border-color: var(--color-error-main);
+    }
+
     &:has(> .card-header input:hover),
     &:has(> .card-header input:focus),
-    &:has(> .card-content button:focus),
-    &:has(> .card-content input:focus) {
-      border-color: var(--color-link-selected);
+    &:has(> .card-header select:focus),
+    &:has(> .card-header textarea:focus),
+    &:has(> .card-content input:focus),
+    &:has(> .card-content select:focus),
+    &:has(> .card-content textarea:focus) {
+      border-color: var(--color-accent);
+    }
+
+    &:has(> .card-header [data-action-button]:hover),
+    &:has(> .card-header [data-action-button]:focus) {
+      border-color: var(--color-link);
+    }
+
+    &:has(> .card-header [data-action-button='delete']:hover),
+    &:has(> .card-header [data-action-button='delete']:focus) {
+      background-color: var(--color-alert-error-bg);
+      border-color: var(--color-error-main);
     }
   }
 }

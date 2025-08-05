@@ -19,18 +19,13 @@
 .accordion {
   border-radius: var(--border-radius);
   border: 1px solid var(--color-gray-main);
-  transition: border-color 0.2s ease-in-out;
-
-  &:has(.title:hover) {
-    border-color: var(--color-gray-dark);
-  }
+  transition: border-color 0.2s;
 }
 
 .title {
   --accordion-title-border-radius: var(--border-radius) var(--border-radius) 0 0;
 
   display: block;
-  background-color: var(--color-card);
   border-radius: var(--accordion-title-border-radius);
 
   svg {
@@ -45,15 +40,15 @@
     border-radius: var(--accordion-title-border-radius);
     padding: var(--gap);
     cursor: pointer;
-    transition: background-color 0.2s;
     background-color: transparent;
+    transition: background-color 0.2s;
 
     &:hover {
-      background-color: var(--color-button-secondary-hover);
+      background-color: rgb(0 0 0 / 5%);
     }
 
     &:active {
-      background-color: var(--color-button-secondary-active);
+      background-color: rgb(0 0 0 / 8%);
     }
   }
 
@@ -80,7 +75,7 @@
   }
 }
 
-.accordion:has([data-invalid]) {
+.accordion:has([aria-invalid='true']) {
   border: 1px solid var(--color-error-main);
 
   .title button {
@@ -110,4 +105,8 @@
   .content {
     flex-grow: 1;
   }
+}
+
+.accordion:has(.title:hover) {
+  border-color: var(--color-gray-dark);
 }
