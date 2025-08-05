@@ -16,21 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Input as HUIInput,
-  type InputProps as HUIInputProps,
-} from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type Ref } from 'react';
+import { use, type HTMLProps, type Ref } from 'react';
+import { FieldContext } from './Fieldset';
 
-interface InputProps extends HUIInputProps {
+interface InputProps extends HTMLProps<HTMLInputElement> {
   ref?: Ref<HTMLInputElement>;
 }
 
 export const Input = ({ className, ref, ...rest }: InputProps) => {
+  const { ids } = use(FieldContext);
   return (
-    <HUIInput
+    <input
+      id={ids.input}
       className={clsx(styles['input'], className)}
       ref={ref}
       {...rest}

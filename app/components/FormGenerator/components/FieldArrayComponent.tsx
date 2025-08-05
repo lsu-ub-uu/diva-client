@@ -53,21 +53,12 @@ export const FieldArrayComponent = ({
   const notRemovableEnhancement =
     enhancedFields?.[name]?.type === 'notRemovable';
   const addButtonRef = useRef<HTMLButtonElement>(null);
-  const previousFieldsLengthRef = useRef(0);
 
   const { fields, append, move, remove } = useFieldArray({
     control: control,
     name: name,
   });
 
-  // Track when new fields are added to maintain focus flow
-  useEffect(() => {
-    if (fields.length > previousFieldsLengthRef.current) {
-      // New field was added, keep focus on add button for proper tab flow
-      addButtonRef.current?.focus();
-    }
-    previousFieldsLengthRef.current = fields.length;
-  }, [fields.length]);
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(component, true));
   };

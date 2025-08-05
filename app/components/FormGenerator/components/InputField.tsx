@@ -89,7 +89,7 @@ export const InputField = ({
     return (
       <Select
         {...register(path)}
-        invalid={invalid}
+        aria-invalid={invalid}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
         {...(value && { 'data-has-value': '' })}
@@ -112,9 +112,9 @@ export const InputField = ({
     return (
       <Textarea
         {...register(path)}
-        invalid={invalid}
         placeholder={component.placeholder && t(component.placeholder)}
         readOnly={!!component.finalValue}
+        aria-invalid={invalid}
         aria-label={!component.showLabel ? t(component.label) : undefined}
         aria-details={ids.details}
         {...(value && { 'data-has-value': '' })}
@@ -126,9 +126,9 @@ export const InputField = ({
     <Input
       {...register(path)}
       type={isPasswordField(component) ? 'password' : 'text'}
-      invalid={invalid}
       placeholder={component.placeholder && t(component.placeholder)}
       readOnly={!!component.finalValue}
+      aria-invalid={invalid}
       aria-label={!component.showLabel ? t(component.label) : undefined}
       aria-details={ids.details}
       {...(value && { 'data-has-value': '' })}

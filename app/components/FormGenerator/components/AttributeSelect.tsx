@@ -124,7 +124,7 @@ export const AttributeSelect = ({
         <Select
           {...register(name)}
           disabled={disabled}
-          invalid={errorMessage !== undefined}
+          aria-invalid={errorMessage !== undefined}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>

@@ -63,7 +63,7 @@
   right: var(--gap);
 }
 
-.fieldset:has([data-invalid]) {
+.fieldset:has([aria-invalid='true']) {
   color: var(--color-error-main);
 
   .error-icon {

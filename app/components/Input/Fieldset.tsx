@@ -17,7 +17,6 @@
  */
 
 import { createContext, type HTMLProps, type ReactNode, useId } from 'react';
-import { Description, Field, Label } from '@headlessui/react';
 import styles from './Fieldset.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { WarningIcon } from '@/icons';
@@ -55,48 +54,52 @@ export const Fieldset = ({
 
   const ids = {
     label: `${id}-label`,
+    input: `${id}-input`,
     details: `${id}-details`,
+    error: `${id}-error`,
   };
 
   return (
     <FieldContext value={{ ids }}>
-      <Field>
-        <FieldsetRoot
-          label={label}
-          hasAttributes={attributes !== undefined}
-          className={clsx(styles['fieldset'], className)}
-          data-variant={variant}
-          data-size={size}
-        >
-          {(label || info) && (
-            <div className={styles['label']}>
-              {label && <Label id={ids.label}>{label}</Label>}
-              {info && <FieldInfo {...info} />}
-            </div>
-          )}
-
-          {attributes && (
-            <div className={styles['attributes']}>{attributes}</div>
-          )}
-          {actionButtonGroup && (
-            <div className={styles['action-buttons']}>{actionButtonGroup}</div>
-          )}
-          <div className={styles['input']}>
-            {children}
-            <WarningIcon className={styles['error-icon']} aria-hidden='true' />
+      <FieldsetRoot
+        label={label}
+        hasAttributes={attributes !== undefined}
+        className={clsx(styles['fieldset'], className)}
+        data-variant={variant}
+        data-size={size}
+      >
+        {(label || info) && (
+          <div className={styles['label']}>
+            {label && (
+              <label id={ids.label} htmlFor={ids.input}>
+                {label}
+              </label>
+            )}
+            {info && <FieldInfo {...info} />}
           </div>
-          {errorMessage && (
-            <Description className={styles['error-message']}>
-              {t(errorMessage)}
-            </Description>
-          )}
-        </FieldsetRoot>
-      </Field>
+        )}
+
+        {attributes && <div className={styles['attributes']}>{attributes}</div>}
+        {actionButtonGroup && (
+          <div className={styles['action-buttons']}>{actionButtonGroup}</div>
+        )}
+        <div className={styles['input']}>
+          {children}
+          <WarningIcon className={styles['error-icon']} aria-hidden='true' />
+        </div>
+        {errorMessage && (
+          <p id={ids.error} className={styles['error-message']}>
+            {t(errorMessage)}
+          </p>
+        )}
+      </FieldsetRoot>
     </FieldContext>
   );
 };
 
-export const FieldContext = createContext({ ids: { label: '', details: '' } });
+export const FieldContext = createContext({
+  ids: { label: '', details: '', input: '', error: '' },
+});
 
 interface FieldsetRootProps
   extends HTMLProps<HTMLDivElement & HTMLFieldSetElement> {

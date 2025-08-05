@@ -16,11 +16,11 @@
   padding: var(--gap);
   width: 100%;
 
-  &[data-focus] {
+  &:focus-visible {
     background-color: var(--color-button-secondary-hover);
   }
 
-  &[data-disabled] {
+  &:disabled {
     pointer-events: none;
     color: var(--color-label);
   }

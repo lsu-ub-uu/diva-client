@@ -72,11 +72,11 @@
     background-color: #000;
   }
 
-  &[data-hover]::before {
+  &:hover::before {
     opacity: 0.08;
   }
 
-  &[data-active]::before {
+  &:active::before {
     opacity: 0.12;
   }
 

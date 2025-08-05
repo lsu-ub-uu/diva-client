@@ -47,11 +47,10 @@
     background-color: var(--color-background);
   }
 
-  &:has([data-invalid]) {
+  &:has([aria-invalid='true']) {
     border-color: var(--color-error-main);
+  }
 }
-}
-
 
 .file-input {
   opacity: 0;

@@ -16,21 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Select as HUISelect,
-  type SelectProps as HUISelectProps,
-} from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type ReactNode, type Ref } from 'react';
+import { use, type HTMLProps, type ReactNode, type Ref } from 'react';
 import { ChevronDownIcon } from '@/icons';
+import { FieldContext } from './Fieldset';
 
-interface SelectProps extends HUISelectProps {
+interface SelectProps extends HTMLProps<HTMLSelectElement> {
   ref?: Ref<HTMLSelectElement>;
   adornment?: ReactNode;
 }
 
 export const Select = ({ className, adornment, ref, ...rest }: SelectProps) => {
+  const { ids } = use(FieldContext);
   return (
     <div className={clsx(styles['select-wrapper'], className)}>
       {adornment && (
@@ -40,7 +38,7 @@ export const Select = ({ className, adornment, ref, ...rest }: SelectProps) => {
         className={styles['select-chevron']}
         aria-hidden='true'
       />
-      <HUISelect {...rest} ref={ref} />
+      <select id={ids.input} {...rest} ref={ref} />
     </div>
   );
 };
