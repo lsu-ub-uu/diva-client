@@ -54,6 +54,7 @@ export const FieldArrayComponent = ({
     control: control,
     name: name,
   });
+
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(component, true));
   };

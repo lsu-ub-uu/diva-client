@@ -28,13 +28,13 @@ describe('<FieldInfo />', () => {
     const body = 'body content';
     render(<FieldInfo title={title} body={body} />);
 
-    expect(screen.queryByRole('definition')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
     await user.click(
       screen.getByRole('button', { name: 'divaClient_fieldInfoText' }),
     );
 
-    expect(screen.getByRole('definition')).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
 
     screen.getByText('Test Title');
     screen.getByText('body content');
@@ -45,6 +45,6 @@ describe('<FieldInfo />', () => {
       }),
     );
 
-    expect(screen.queryByRole('definition')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

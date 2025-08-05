@@ -34,7 +34,7 @@
     cursor: pointer;
 
     &:hover,
-    &[data-focus] {
+    &:focus-visible {
       background-color: var(--color-button-secondary-hover);
     }
   }

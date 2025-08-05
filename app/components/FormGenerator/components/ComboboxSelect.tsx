@@ -104,7 +104,6 @@ export const ComboboxSelect = ({
           onChange={(event) => setQuery(event.target.value)}
           onFocus={(e) => e.target.select()}
           aria-invalid={invalid}
-          {...(invalid ? { 'data-invalid': '' } : undefined)}
           {...rest}
         />
 

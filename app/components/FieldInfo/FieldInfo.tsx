@@ -60,7 +60,6 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
           <FloatingFocusManager context={context}>
             <div
               className={styles['field-info-panel']}
-              role='definition'
               ref={refs.setFloating}
               style={floatingStyles}
               {...getFloatingProps()}

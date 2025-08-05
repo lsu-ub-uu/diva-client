@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { type ChangeEvent, useState } from 'react';
+import { type ChangeEvent, use, useState } from 'react';
 import styles from './FileInput.module.css';
 import { UploadFileIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
-import { Input } from '@headlessui/react';
+import { FieldContext } from './Fieldset';
 
 interface FileInputProps {
   name: string;
@@ -29,15 +29,18 @@ interface FileInputProps {
 }
 
 export const FileInput = ({ name, onChange, errorMessage }: FileInputProps) => {
+  const { ids } = use(FieldContext);
+
   const { t } = useTranslation();
   const [dragging, setDragging] = useState(false);
 
   return (
     <div className={styles['wrapper']} data-dragging={dragging}>
       <UploadFileIcon /> {t('divaClient_fileInputText')}
-      <Input
+      <input
+        id={ids.input}
         className={styles['file-input']}
-        invalid={errorMessage !== undefined}
+        aria-invalid={errorMessage !== undefined}
         type='file'
         name={name}
         onChange={onChange}

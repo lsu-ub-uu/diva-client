@@ -28,6 +28,8 @@ import clsx from 'clsx';
 import styles from './Combobox.module.css';
 import inputStyles from './Input.module.css';
 import { ManageSearchIcon } from '@/icons';
+import { use } from 'react';
+import { FieldContext } from './Fieldset';
 
 export const Combobox = HUICombobox;
 
@@ -35,9 +37,12 @@ export const ComboboxInput = ({
   className,
   ...rest
 }: HUIComboboxInputProps) => {
+  const { ids } = use(FieldContext);
+
   return (
     <div className={styles['combobox-input-wrapper']}>
       <HUIComboboxInput
+        id={ids.input}
         className={clsx(inputStyles['combobox-input'], className)}
         {...rest}
       />

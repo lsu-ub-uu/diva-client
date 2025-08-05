@@ -30,8 +30,9 @@
   font-size: inherit;
   color: var(--color-text);
 
-  &[data-invalid] {
+  &[aria-invalid='true'] {
     border-color: var(--color-error-main);
+    color: var(--color-error-main);
   }
 }
 

@@ -271,20 +271,20 @@ export default function DesignSystem() {
               label='Input with error'
               errorMessage='This field is required'
             >
-              <Input invalid />
+              <Input aria-invalid />
             </Fieldset>
             <Fieldset
               label='Input small with error'
               errorMessage='This field is required'
               size='small'
             >
-              <Input invalid />
+              <Input aria-invalid />
             </Fieldset>
             <Fieldset label='Textarea'>
               <Textarea />
             </Fieldset>
             <Fieldset label='Textarea with error'>
-              <Textarea invalid />
+              <Textarea aria-invalid />
             </Fieldset>
             <Fieldset label='Select'>
               <Select>
@@ -323,7 +323,7 @@ export default function DesignSystem() {
               label='Select with error'
               errorMessage='This field is required'
             >
-              <Select invalid>
+              <Select aria-invalid>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
@@ -335,7 +335,7 @@ export default function DesignSystem() {
               variant='inline'
               errorMessage='This field is required'
             >
-              <Select invalid>
+              <Select aria-invalid>
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>

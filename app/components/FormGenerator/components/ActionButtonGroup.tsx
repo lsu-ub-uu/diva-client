@@ -58,6 +58,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           tooltipPosition='left'
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
+          data-action-button='move-up'
         >
           <ArrowUpwardIcon />
         </Button>
@@ -72,6 +73,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           tooltipPosition='left'
           disabled={props.deleteButtonDisabled}
           onClick={props.deleteButtonAction}
+          data-action-button='delete'
         >
           <CloseIcon />
         </Button>
@@ -86,6 +88,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           tooltipPosition='left'
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
+          data-action-button='move-down'
         >
           <ArrowDownwardIcon />
         </Button>
