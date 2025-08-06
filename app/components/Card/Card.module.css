@@ -20,11 +20,10 @@
   position: relative;
   transition: background-color 0.2s;
   transition: border-color 0.2s;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 
   &[data-boxed] {
-    border-left: 3px solid var(--color-gray-main);
-    padding: 0 var(--gap);
+    border-left: 3px solid var(--color-card-dark);
 
     &:has([aria-invalid='true']) {
       border-color: var(--color-error-main);
@@ -37,7 +36,8 @@
     &:has(> .card-content input:focus),
     &:has(> .card-content select:focus),
     &:has(> .card-content textarea:focus) {
-      border-color: var(--color-accent);
+      border-color: var(--color-link-selected);
+      background-color: var(--color-card);
     }
 
     &:has(> .card-header [data-action-button]:hover),
@@ -54,6 +54,8 @@
 }
 
 .card-content[data-boxed] {
+  padding: var(--gap);
+
   &[data-alert='true'] {
     border-radius: var(--border-radius);
     background-color: rgb(255 236 240);
@@ -66,9 +68,12 @@
   grid-template-areas: 'title attributes actions';
   align-items: center;
   width: 100%;
+  padding: var(--gap-s);
 
   &[data-boxed] {
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-radius: var(--border-radius) var(--border-radius)
+      var(--border-radius) 0;
+    background-color: var(--color-card-dark);
   }
 
   &[data-alert='true'] {
@@ -110,4 +115,12 @@
   display: flex;
   align-items: center;
   gap: var(--gap);
+}
+
+:target > .card {
+  border-color: var(--color-link-selected);
+
+  > .card-header {
+    color: var(--color-link-selected);
+  }
 }

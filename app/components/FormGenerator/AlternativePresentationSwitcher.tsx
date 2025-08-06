@@ -29,6 +29,7 @@ import { get, isEmpty } from 'lodash-es';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
+import { addAttributesToName } from './defaultValues/defaultValues';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -92,7 +93,10 @@ export const AlternativePresentationSwitcher = (
       presentationSize={presentationSize}
     >
       {title && (
-        <AccordionTitle headlineLevel={titleHeadlineLevel}>
+        <AccordionTitle
+          headlineLevel={titleHeadlineLevel}
+          id={`anchor_${addAttributesToName(component, component.name)}`}
+        >
           {t(title)}
         </AccordionTitle>
       )}

@@ -18,8 +18,13 @@
 
 .accordion {
   border-radius: var(--border-radius);
-  border: 1px solid var(--color-gray-main);
+  border: 1px solid var(--color-gray-dark);
   transition: border-color 0.2s;
+
+  &:has(> .title:target) {
+    outline: 1px solid var(--color-link-selected);
+    border-color: var(--color-link-selected);
+  }
 }
 
 .title {
@@ -27,9 +32,16 @@
 
   display: block;
   border-radius: var(--accordion-title-border-radius);
+  background-color: var(--color-card-dark);
+  scroll-margin-top: var(--gap-l);
 
   svg {
     font-size: var(--font-size-icon);
+  }
+
+  &:target {
+    color: var(--color-link-selected);
+    background-color: var(--color-card-dark);
   }
 
   button {
@@ -67,7 +79,7 @@
 
 .accordion:has([data-has-value]) {
   .title button {
-    color: var(--color-accent-dark);
+    color: var(--color-link);
   }
 
   .value-icon {
