@@ -10,13 +10,14 @@
 
 .combobox-option {
   background-color: var(--color-background);
+  color: var(--color-text);
   cursor: pointer;
   overflow-x: hidden;
-  transition: background-color 0.2s;
+  transition: background-color 0.1s;
   padding: var(--gap);
   width: 100%;
 
-  &:focus-visible {
+  &[data-focus] {
     background-color: var(--color-button-secondary-hover);
   }
 
