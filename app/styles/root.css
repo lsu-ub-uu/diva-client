@@ -27,6 +27,7 @@
   *::before,
   *::after {
     box-sizing: border-box;
+    outline-offset: -2px;
   }
 
   html {
@@ -62,6 +63,7 @@
     h1 {
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-h1);
+      margin-bottom: var(--gap);
     }
 
     h2 {
@@ -86,7 +88,6 @@
     h4 {
       font-size: var(--font-size-h4);
       font-weight: var(--font-weight-h4);
-      font-family: var(--font-family-main);
     }
 
     h5 {
@@ -160,6 +161,7 @@
 
 .nav-rail {
   grid-area: nav;
+  background-color: var(--color-nav-rail);
 
   @media (width < 600px) {
     border-bottom: 1px solid var(--color-thin-border);
