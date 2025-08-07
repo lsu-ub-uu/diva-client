@@ -21,6 +21,7 @@
   transition: background-color 0.2s;
   transition: border-color 0.2s;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
+  overflow: clip;
 
   &[data-boxed] {
     border-left: 3px solid var(--color-card-dark);
@@ -65,8 +66,7 @@
 
   &[data-boxed] {
     padding: var(--gap-s) var(--gap);
-    border-radius: var(--border-radius) var(--border-radius)
-      var(--border-radius) 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
     background-color: var(--color-card-dark);
   }
 
