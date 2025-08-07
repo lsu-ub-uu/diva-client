@@ -22,6 +22,7 @@ import { describe, expect, it } from 'vitest';
 import {
   flattenObject,
   getLastKeyFromString,
+  linksFromFormSchema,
   removeComponentsWithoutValuesFromSchema,
   toShortString,
 } from '../utils';
@@ -32,6 +33,241 @@ import {
   coraRecord2,
   coraRecord3,
 } from './mocks';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+
+describe('linksFromFormSchema', () => {
+  it('returns an empty array for an empty form schema', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        showLabel: true,
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [],
+        mode: 'output',
+      },
+    };
+    const links = linksFromFormSchema(formSchema);
+    expect(links).toEqual([]);
+  });
+
+  it('returns links to top level variables, groups and containers with labels in the form schema', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        showLabel: true,
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'textVariable',
+            name: 'someTextVar',
+            label: 'Some Text Variable',
+          },
+          {
+            type: 'group',
+            name: 'someGroup',
+            label: 'Some Group',
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNestedTextVar',
+                label: 'Some Nested Text Variable',
+              },
+            ],
+          },
+          {
+            type: 'group',
+            name: 'someGroupWithoutLabel',
+            showLabel: false,
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNestedTextVar',
+                label: 'Some Nested Text Variable',
+              },
+            ],
+          },
+          {
+            type: 'container',
+            name: 'someContainer',
+            label: 'Some Container',
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someContainerTextVar',
+              },
+            ],
+          },
+          {
+            type: 'container',
+            name: 'someContainerWithoutLabel',
+            showLabel: false,
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someContainerTextVar',
+              },
+            ],
+          },
+        ],
+        mode: 'output',
+      },
+    };
+    const links = linksFromFormSchema(formSchema);
+    expect(links).toEqual([
+      {
+        label: 'Some Text Variable',
+        name: 'someTextVar',
+      },
+      {
+        label: 'Some Group',
+        name: 'someGroup',
+      },
+      {
+        label: 'Some Container',
+        name: 'someContainer',
+      },
+    ]);
+  });
+
+  it('adds attributes to the name', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        showLabel: true,
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'group',
+            name: 'someGroup',
+            label: 'Some Group With Attributes',
+            attributes: [
+              {
+                name: 'someAttribute',
+                finalValue: 'someFinalValue',
+                label: 'Some Attribute',
+                showLabel: true,
+                type: 'collectionVariable',
+                options: [
+                  { label: 'Some final value', value: 'someFinalValue' },
+                ],
+              },
+            ],
+          },
+        ],
+        mode: 'output',
+      },
+    };
+    const links = linksFromFormSchema(formSchema);
+    expect(links).toEqual([
+      {
+        label: 'Some Group With Attributes',
+        name: 'someGroup_someAttribute_someFinalValue',
+      },
+    ]);
+  });
+
+  it('creates entries for components with title but no label', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        showLabel: true,
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'container',
+            name: 'someContainerWithTitle',
+            showLabel: false,
+            title: 'Some container title',
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someTextVar',
+                label: 'Some Text Variable',
+              },
+            ],
+          },
+        ],
+        mode: 'output',
+      },
+    };
+
+    const links = linksFromFormSchema(formSchema);
+
+    expect(links).toEqual([
+      {
+        label: 'Some container title',
+        name: 'someContainerWithTitle',
+      },
+    ]);
+  });
+
+  it('creates entries for h2 texts', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        showLabel: true,
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'text',
+            name: 'SomeH2Text',
+            textStyle: 'h2TextStyle',
+          },
+          {
+            type: 'text',
+            name: 'SomeH3Text',
+            textStyle: 'h3TextStyle',
+          },
+          {
+            type: 'text',
+            name: 'SomeBodyText',
+            textStyle: 'bodyTextStyle',
+          },
+        ],
+        mode: 'output',
+      },
+    };
+
+    const links = linksFromFormSchema(formSchema);
+
+    expect(links).toEqual([
+      {
+        label: 'SomeH2Text',
+        name: 'SomeH2Text',
+      },
+    ]);
+  });
+});
 
 describe('removeComponentsWithoutValuesFromSchema', () => {
   it('returns someRootNameInData', () => {

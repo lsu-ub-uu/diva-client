@@ -17,28 +17,55 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
-import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecord } from '@/types/record';
-import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
 import type { NavigationPanelLink } from '@/components/NavigationPanel/NavigationPanel';
+import type { BFFDataRecord } from '@/types/record';
+import { useEffect, useState } from 'react';
+import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
+import {
+  isComponentGroup,
+  isComponentText,
+} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { FormComponent, RecordFormSchema } from '../FormGenerator/types';
 
 export const linksFromFormSchema = (
   formSchema: RecordFormSchema,
 ): NavigationPanelLink[] => {
   return (formSchema.form.components ?? [])
-    .filter((c) => !['text', 'container'].includes(c.type))
-    .map((c) => {
-      if (!('label' in c)) {
-        return undefined;
-      }
-
-      return {
-        name: `${addAttributesToName(c, c.name)}`,
-        label: c.label,
-      } as NavigationPanelLink;
+    .map((component) => {
+      return createNavigationPanelLink(component);
     })
-    .filter((c) => c !== undefined);
+    .filter((link) => link !== undefined);
+};
+
+const createNavigationPanelLink = (
+  component: FormComponent,
+): NavigationPanelLink | undefined => {
+  if (isComponentText(component) && component.textStyle === 'h2TextStyle') {
+    return {
+      label: component.name,
+      name: component.name,
+    };
+  }
+
+  if ('title' in component && component.title !== undefined) {
+    return {
+      label: component.title,
+      name: addAttributesToName(component, component.name),
+    };
+  }
+
+  if (
+    isComponentGroup(component) &&
+    component.label &&
+    component.showLabel !== false
+  ) {
+    return {
+      label: component.label,
+      name: addAttributesToName(component, component.name),
+    };
+  }
+
+  return undefined;
 };
 
 export const removeComponentsWithoutValuesFromSchema = (
