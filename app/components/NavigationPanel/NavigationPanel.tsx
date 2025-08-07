@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './NavigationPanel.module.css';
 import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 export interface NavigationPanelLink {
   name: string;
@@ -38,8 +39,8 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
   return (
     <nav className={styles['navigation-panel']}>
       <ul>
-        {links.map((item, index) => (
-          <li key={index}>
+        {links.map((item) => (
+          <li key={item.name}>
             <a
               href={`#anchor_${item.name}`}
               {...(hash === `#anchor_${item.name}`

@@ -68,6 +68,7 @@ export const OptionalComponent = ({
           >
             {component.mode === 'input' && (
               <Button
+                className='add-button'
                 variant='tertiary'
                 onClick={() =>
                   field.onChange(

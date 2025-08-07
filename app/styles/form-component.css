@@ -89,3 +89,8 @@
     grid-column: span 12;
   }
 }
+
+:target > .add-button {
+  color: var(--color-link-selected);
+  outline: 2px solid var(--color-link-selected);
+}

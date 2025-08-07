@@ -35,7 +35,7 @@
 
   :root {
     *:focus-visible {
-      outline: 1px solid var(--color-link-selected);
+      outline: 2px solid var(--color-link-selected);
     }
 
     body {
@@ -55,20 +55,27 @@
     h4,
     h5,
     h6 {
-      font-family: var(--font-family-headings), sans-serif;
+      font-family: var(--font-family-headings);
       margin: 0;
     }
 
     h1 {
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-h1);
-      font-family: Georgia, serif;
-      color: var(--color-accent-dark);
     }
 
     h2 {
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-h2);
+    }
+
+    :target {
+      scroll-margin-top: var(--gap-l);
+    }
+
+    h2:target,
+    :target > h2 {
+      color: var(--color-link-selected);
     }
 
     h3 {

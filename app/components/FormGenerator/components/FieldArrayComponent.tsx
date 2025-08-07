@@ -120,6 +120,7 @@ export const FieldArrayComponent = ({
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
+              className='add-button'
               aria-label={t('divaClient_addFieldText', {
                 fieldName: t(component.label),
               })}

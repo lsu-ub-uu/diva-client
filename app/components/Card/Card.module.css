@@ -35,14 +35,11 @@
     &:has(> .card-header textarea:focus),
     &:has(> .card-content input:focus),
     &:has(> .card-content select:focus),
-    &:has(> .card-content textarea:focus) {
-      border-color: var(--color-link-selected);
-      background-color: var(--color-card);
-    }
-
+    &:has(> .card-content textarea:focus),
     &:has(> .card-header [data-action-button]:hover),
     &:has(> .card-header [data-action-button]:focus) {
-      border-color: var(--color-link);
+      border-color: var(--color-link-selected);
+      background-color: var(--color-card);
     }
 
     &:has(> .card-header [data-action-button='delete']:hover),
@@ -68,16 +65,15 @@
   grid-template-areas: 'title attributes actions';
   align-items: center;
   width: 100%;
-  padding: var(--gap-s);
 
   &[data-boxed] {
+    padding: var(--gap-s) var(--gap);
     border-radius: var(--border-radius) var(--border-radius)
       var(--border-radius) 0;
     background-color: var(--color-card-dark);
   }
 
   &[data-alert='true'] {
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
     background-color: rgb(210 175 182);
   }
 
