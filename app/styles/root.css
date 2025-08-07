@@ -86,16 +86,20 @@
     h4 {
       font-size: var(--font-size-h4);
       font-weight: var(--font-weight-h4);
+      font-family: var(--font-family-main);
     }
 
     h5 {
       font-size: var(--font-size-h5);
       font-weight: var(--font-weight-h5);
+      font-family: var(--font-family-main);
     }
 
     h6 {
       font-size: var(--font-size-h6);
       font-weight: var(--font-weight-h6);
+      font-family: var(--font-family-main);
+      text-transform: uppercase;
     }
 
     a {

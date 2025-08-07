@@ -29,13 +29,10 @@
       border-color: var(--color-error-main);
     }
 
+    &:has(input:focus),
+    &:has(select:focus),
+    &:has(textarea:focus),
     &:has(> .card-header input:hover),
-    &:has(> .card-header input:focus),
-    &:has(> .card-header select:focus),
-    &:has(> .card-header textarea:focus),
-    &:has(> .card-content input:focus),
-    &:has(> .card-content select:focus),
-    &:has(> .card-content textarea:focus),
     &:has(> .card-header [data-action-button]:hover),
     &:has(> .card-header [data-action-button]:focus) {
       border-color: var(--color-link-selected);

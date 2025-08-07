@@ -85,7 +85,9 @@
 
   /* Typography */
   --font-family-main: 'Arial', sans-serif;
-  --font-family-headings: 'Arial', sans-serif;
+  --font-family-headings:
+    'Georgia', 'Bitstream Charter', 'Noto Serif', 'Times New Roman', 'Times',
+    serif;
   --font-size-base: 16px;
   --font-size-xs: 0.8rem;
   --font-size-s: 0.9rem;
@@ -97,10 +99,10 @@
   --font-weight-h1: 400;
   --font-size-h2: 1.6rem;
   --font-weight-h2: 400;
-  --font-size-h3: 1.4rem;
+  --font-size-h3: 1.3rem;
   --font-weight-h3: 400;
   --font-size-h4: 1.2rem;
-  --font-weight-h4: 400;
+  --font-weight-h4: 600;
   --font-size-h5: 1rem;
   --font-weight-h5: 600;
   --font-size-h6: 0.9rem;
@@ -151,6 +153,7 @@
     --color-button-secondary-hover: rgb(255 255 255 / 10%);
     --color-button-secondary-active: rgb(255 255 255 / 20%);
     --color-link: rgb(144 224 255);
+    --color-link-selected: rgb(198 237 250);
     --color-link-visited: rgb(204 178 227);
   }
 
@@ -181,13 +184,14 @@
       --color-alert-warning-icon: rgb(254 139 45);
       --color-alert-warning-bg: rgb(102 60 0);
       --color-thin-border: rgb(255 255 255 / 20%);
-      --color-card-dark: rgb(103 159 243 / 12%);
+      --color-card-dark: rgb(103 159 243 / 30%);
       --color-card: rgb(103 159 243 / 8%);
       --color-button-primary-hover: rgb(233 233 233);
       --color-button-primary-active: rgb(255 255 255);
       --color-button-secondary-hover: rgb(255 255 255 / 10%);
       --color-button-secondary-active: rgb(255 255 255 / 20%);
       --color-link: rgb(144 224 255);
+      --color-link-selected: rgb(198 237 250);
       --color-link-visited: rgb(204 178 227);
     }
   }
