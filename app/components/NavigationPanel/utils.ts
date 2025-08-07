@@ -68,28 +68,6 @@ const createNavigationPanelLink = (
   return undefined;
 };
 
-export const removeComponentsWithoutValuesFromSchema = (
-  formSchema: RecordFormSchema,
-  record: BFFDataRecord,
-): RecordFormSchema => {
-  let componentsFromSchema = formSchema.form.components;
-
-  const flattenedRecord = flattenObject(record.data);
-  const keysAsString = toShortString(flattenedRecord);
-  const lastKeyFromString = getLastKeyFromString(keysAsString);
-
-  componentsFromSchema = componentsFromSchema?.filter((component) => {
-    return [...lastKeyFromString].includes(component.name);
-  });
-  return {
-    ...formSchema,
-    form: {
-      ...formSchema.form,
-      components: componentsFromSchema,
-    },
-  };
-};
-
 export const flattenObject = (obj: any, prefix = '') => {
   return Object.keys(obj).reduce((acc: any, k) => {
     const pre = prefix.length ? `${prefix}.` : '';
@@ -102,60 +80,4 @@ export const flattenObject = (obj: any, prefix = '') => {
     else acc[pre + k] = obj[k];
     return acc;
   }, {});
-};
-
-export const toShortString = (objects: any) => {
-  const shortStrings = Object.entries(objects).map((object) => {
-    return `${object[0].split('.')[0]}.${object[0].split('.')[1]}`;
-  });
-  return [...new Set(shortStrings)];
-};
-
-export const getLastKeyFromString = (keys: string[]) => {
-  return keys.map((key: string) => {
-    const stringArray = key.split('.');
-    return stringArray[stringArray.length - 1];
-  });
-};
-
-export const useSectionScroller = () => {
-  const [activeSection, setActiveSection] = useState<string>('');
-
-  useEffect(() => {
-    const debounce = (func: (...args: any[]) => void, wait: number) => {
-      let timeoutId: number;
-
-      return function (this: any, ...args: any[]) {
-        clearTimeout(timeoutId);
-        timeoutId = window.setTimeout(() => {
-          func.apply(this, args);
-        }, wait);
-      };
-    };
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const sections =
-        document.querySelectorAll<HTMLSpanElement>('span.anchorLink');
-
-      sections.forEach((section) => {
-        const sectionBottom = section.offsetHeight + section.offsetTop;
-        if (
-          scrollPosition >= section.offsetTop - 5 &&
-          scrollPosition <= sectionBottom + 5
-        ) {
-          setActiveSection(section.id.replace('anchor_', ''));
-        }
-      });
-    };
-
-    window.addEventListener('scroll', debounce(handleScroll, 10));
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return activeSection;
 };
