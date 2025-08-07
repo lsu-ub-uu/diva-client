@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './NavigationPanel.module.css';
 import { useLocation } from 'react-router';
-import { useEffect } from 'react';
 
 export interface NavigationPanelLink {
   name: string;
