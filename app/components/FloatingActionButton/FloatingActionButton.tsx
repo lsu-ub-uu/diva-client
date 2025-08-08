@@ -17,14 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  Button as HUIButton,
-  type ButtonProps as HUIButtonProps,
-} from '@headlessui/react';
 import styles from './FloatingActionButton.module.css';
-import type { ElementType, ReactNode } from 'react';
+import type { ElementType, HTMLProps, ReactNode } from 'react';
 
-interface FloatingActionButtonProps extends Omit<HUIButtonProps, 'as'> {
+interface FloatingActionButtonProps
+  extends Omit<HTMLProps<HTMLButtonElement>, 'as'> {
   variant?: 'primary' | 'secondary';
   text: string;
   icon: ReactNode;
@@ -37,15 +34,17 @@ export const FloatingActionButton = ({
   variant = 'secondary',
   icon,
   text,
+  as,
   ...rest
 }: FloatingActionButtonProps) => {
+  const Root = as || 'button';
   return (
-    <HUIButton
+    <Root
       className={styles['floating-action-button']}
       data-variant={variant}
       {...rest}
     >
       {icon} <span className={styles['content']}>{text}</span>
-    </HUIButton>
+    </Root>
   );
 };

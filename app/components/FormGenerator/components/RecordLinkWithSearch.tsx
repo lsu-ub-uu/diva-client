@@ -120,9 +120,7 @@ export const RecordLinkWithSearch = ({
               onChange={(recordId) => onChange(recordId)}
             >
               <ComboboxInput
-                {...(errorMessage !== undefined
-                  ? { 'data-invalid': '' }
-                  : undefined)}
+                aria-invalid={errorMessage !== undefined}
                 aria-busy={fetcher.state !== 'idle'}
                 placeholder={t(
                   'divaClient_recordLinkAutocompletePlaceholderText',

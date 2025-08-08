@@ -50,6 +50,7 @@ export const OptionalComponent = ({
                     })}
                     tooltipPosition='left'
                     onClick={() => field.onChange(null)}
+                    data-action-button='delete'
                   >
                     <CloseIcon />
                   </Button>

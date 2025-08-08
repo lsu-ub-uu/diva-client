@@ -16,21 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Textarea as HUITextarea,
-  type TextareaProps as HUITextareaProps,
-} from '@headlessui/react';
 import styles from './Input.module.css';
 import clsx from 'clsx';
-import { type Ref } from 'react';
+import { use, type HTMLProps, type Ref } from 'react';
+import { FieldContext } from './Fieldset';
 
-interface TextareaProps extends HUITextareaProps {
+interface TextareaProps extends HTMLProps<HTMLTextAreaElement> {
   ref?: Ref<HTMLTextAreaElement>;
 }
 
 export const Textarea = ({ className, ref, ...rest }: TextareaProps) => {
+  const { ids } = use(FieldContext);
+
   return (
-    <HUITextarea
+    <textarea
+      id={ids.input}
       className={clsx(styles['textarea'], className)}
       {...rest}
       ref={ref}
