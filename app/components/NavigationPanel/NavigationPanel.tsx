@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import styles from './NavigationPanel.module.css';
 
 export interface NavigationPanelLink {
@@ -34,76 +34,22 @@ export interface NavigationPanelProps {
 export const NavigationPanel = ({ links }: NavigationPanelProps) => {
   const { t } = useTranslation();
   const [activeLink, setActiveLink] = useState<string | null>(links[0]?.name);
-  const isScrolling = useRef(false);
+  const observerEnabledRef = useRef(true);
 
-  useEffect(() => {
-    const anchors = document.querySelectorAll('[id^="anchor_"]');
-
-    if (anchors.length === 0) return;
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -80% 0px',
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      if (isScrolling.current) return;
-
-      const intersectingEntries = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-
-      if (intersectingEntries.length > 0) {
-        const closestAnchor = intersectingEntries[0];
-        const anchorId = closestAnchor.target.id;
-        setActiveLink(anchorId.replace('anchor_', ''));
-      }
-    }, observerOptions);
-
-    anchors.forEach((anchor) => observer.observe(anchor));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  useSectionObserver(setActiveLink, observerEnabledRef);
 
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
-    const target = document.querySelector(
-      event.currentTarget.getAttribute('href') || '',
-    );
+    const href = event.currentTarget.getAttribute('href');
+    const target = document.querySelector(href || '');
 
-    if (target) {
-      target.classList.add('flash');
-      setTimeout(() => {
-        target.classList.remove('flash');
-      }, 1000);
+    if (!target) return;
 
-      isScrolling.current = true;
-
-      setActiveLink(
-        event.currentTarget.getAttribute('href')?.replace('#anchor_', '') ||
-          null,
-      );
-
-      // Fallback for browsers that don't support scrollend
-      const fallbackTimeout = setTimeout(() => {
-        isScrolling.current = false;
-        window.removeEventListener('scrollend', handleScrollEnd);
-      }, 2000);
-
-      const handleScrollEnd = () => {
-        clearTimeout(fallbackTimeout);
-        isScrolling.current = false;
-        window.removeEventListener('scrollend', handleScrollEnd);
-      };
-
-      window.addEventListener('scrollend', handleScrollEnd);
-
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    setActiveLink(href?.replace('#anchor_', '') || null);
+    highlightElement(target);
+    disableObserver(observerEnabledRef);
+    target.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -126,3 +72,63 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
     </nav>
   );
 };
+
+const useSectionObserver = (
+  onSectionChange: (name: string) => void,
+  observerEnabledRef: RefObject<boolean>,
+) => {
+  useEffect(() => {
+    const anchors = document.querySelectorAll('[id^="anchor_"]');
+
+    if (anchors.length === 0) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -80% 0px',
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      if (observerEnabledRef.current === false) return;
+
+      const intersectingEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+      if (intersectingEntries.length > 0) {
+        const closestAnchor = intersectingEntries[0];
+        const anchorId = closestAnchor.target.id;
+        onSectionChange(anchorId.replace('anchor_', ''));
+      }
+    }, observerOptions);
+
+    anchors.forEach((anchor) => observer.observe(anchor));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [onSectionChange, observerEnabledRef]);
+};
+
+const highlightElement = (element: Element) => {
+  element.classList.add('flash');
+  setTimeout(() => {
+    element.classList.remove('flash');
+  }, 1000);
+};
+
+function disableObserver(observerEnabledRef: RefObject<boolean>) {
+  observerEnabledRef.current = false;
+
+  const enableObserver = () => {
+    clearTimeout(fallbackTimeout);
+    window.removeEventListener('scrollend', enableObserver);
+
+    observerEnabledRef.current = true;
+  };
+
+  // Fallback for browsers that don't support scrollend
+  const fallbackTimeout = setTimeout(enableObserver, 1500);
+
+  window.addEventListener('scrollend', enableObserver);
+}
