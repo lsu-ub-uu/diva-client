@@ -21,13 +21,16 @@ import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { AddCircleIcon } from '@/icons';
-import React, { Fragment, use, type ReactNode } from 'react';
+import { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
+
+import clsx from 'clsx';
+import styles from './FieldArrayComponent.module.css';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -67,7 +70,10 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <React.Fragment key={`${name}_fac`}>
+    <div
+      key={`${name}_fac`}
+      className={clsx(styles['field-array'], 'form-component-item')}
+    >
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -110,14 +116,16 @@ export const FieldArrayComponent = ({
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
+              className='add-button'
               aria-label={t('divaClient_addFieldText', {
                 fieldName: t(component.label),
               })}
+              tooltipPosition='top'
             >
               <AddCircleIcon /> {t(component.label)}
             </Button>
           </div>
         )}
-    </React.Fragment>
+    </div>
   );
 };

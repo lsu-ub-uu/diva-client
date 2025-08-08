@@ -26,12 +26,13 @@ dd {
 
 h1 {
   max-width: 60ch;
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 h2 {
   font-size: 1.3rem;
   margin-top: var(--gap-l);
+  font-family: var(--font-family-main);
 }
 
 h3 {
@@ -45,6 +46,7 @@ article {
 
   @media (width >= 800px) {
     border-right: 1px solid var(--color-thin-border);
+    padding-right: var(--gap-xxl);
   }
 }
 

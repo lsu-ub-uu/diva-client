@@ -52,8 +52,8 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
   return (
     <nav className={styles['navigation-panel']}>
       <ul>
-        {links.map((item, index) => (
-          <li key={index}>
+        {links.map((item) => (
+          <li key={item.name}>
             <a
               href={`#anchor_${item.name}`}
               onClick={(e) => {

@@ -33,7 +33,6 @@
     background-color: var(--color-background);
     cursor: pointer;
 
-    &:hover,
     &[data-focus] {
       background-color: var(--color-button-secondary-hover);
     }

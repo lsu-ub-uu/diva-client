@@ -76,6 +76,7 @@ export const OptionalComponent = ({
                 aria-label={t('divaClient_addFieldText', {
                   fieldName: t(component.label),
                 })}
+                tooltipPosition='top'
               >
                 <AddCircleIcon /> {t(component.label)}
               </Button>

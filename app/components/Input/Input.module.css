@@ -89,10 +89,6 @@
   appearance: none;
   cursor: pointer;
   width: 100%;
-
-  &:focus {
-    border-color: var(--color-text);
-  }
 }
 
 .select-wrapper:has(.select-adornment) select {

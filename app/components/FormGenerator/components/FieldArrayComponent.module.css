@@ -1,0 +1,6 @@
+.field-array {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
+  width: 100%;
+}
