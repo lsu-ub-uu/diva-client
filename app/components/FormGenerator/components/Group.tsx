@@ -24,7 +24,6 @@ import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
   checkIfPresentationStyleIsInline,

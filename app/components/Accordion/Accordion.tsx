@@ -22,22 +22,22 @@ import styles from './Accordion.module.css';
 import clsx from 'clsx';
 
 interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
-  anchorId: string | undefined;
   expanded: boolean;
   onChange: (expanded: boolean) => void;
   children?: ReactNode;
   presentationSize?: PresentationSize;
   invalid?: boolean;
   hasValue?: boolean;
+  anchorId?: string;
 }
 
 export const Accordion = ({
-  anchorId,
   expanded,
   onChange,
   presentationSize,
   children,
   className,
+  anchorId,
   ...rest
 }: AccordionProps) => {
   const id = useId();
