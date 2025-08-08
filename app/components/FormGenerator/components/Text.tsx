@@ -16,11 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentText } from '@/components/FormGenerator/types';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Typography } from '@/components/Typography/Typography';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { FormComponentText } from '@/components/FormGenerator/types';
+import { Typography } from '@/components/Typography/Typography';
 
 interface TextProps {
   component: FormComponentText;
@@ -37,7 +36,6 @@ export const Text = ({ component }: TextProps) => {
             ? 'auto'
             : '2em',
       }}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} />
 

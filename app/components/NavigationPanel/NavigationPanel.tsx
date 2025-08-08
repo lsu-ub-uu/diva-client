@@ -19,8 +19,8 @@
 
 import { useTranslation } from 'react-i18next';
 
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import styles from './NavigationPanel.module.css';
-import { useLocation } from 'react-router';
 
 export interface NavigationPanelLink {
   name: string;
@@ -32,8 +32,22 @@ export interface NavigationPanelProps {
 }
 
 export const NavigationPanel = ({ links }: NavigationPanelProps) => {
-  const { hash } = useLocation();
   const { t } = useTranslation();
+  const [activeLink, setActiveLink] = useState<string | null>(links[0]?.name);
+  const observerEnabledRef = useRef(true);
+
+  useSectionObserver(setActiveLink, observerEnabledRef);
+
+  const handleLinkClick = (itemName: string) => {
+    const target = document.getElementById(`anchor_${itemName}`);
+
+    if (!target) return;
+
+    setActiveLink(itemName);
+    highlightElement(target);
+    disableObserver(observerEnabledRef);
+    target.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <nav className={styles['navigation-panel']}>
@@ -42,8 +56,12 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
           <li key={index}>
             <a
               href={`#anchor_${item.name}`}
-              {...(hash === `#anchor_${item.name}`
-                ? { 'aria-current': 'page' }
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick(item.name);
+              }}
+              {...(activeLink === item.name
+                ? { 'aria-current': 'location' }
                 : undefined)}
             >
               {t(item.label)}
@@ -54,3 +72,63 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
     </nav>
   );
 };
+
+const useSectionObserver = (
+  onSectionChange: (name: string) => void,
+  observerEnabledRef: RefObject<boolean>,
+) => {
+  useEffect(() => {
+    const anchors = document.querySelectorAll('[id^="anchor_"]');
+
+    if (anchors.length === 0) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -80% 0px',
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      if (observerEnabledRef.current === false) return;
+
+      const intersectingEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+      if (intersectingEntries.length > 0) {
+        const closestAnchor = intersectingEntries[0];
+        const anchorId = closestAnchor.target.id;
+        onSectionChange(anchorId.replace('anchor_', ''));
+      }
+    }, observerOptions);
+
+    anchors.forEach((anchor) => observer.observe(anchor));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [onSectionChange, observerEnabledRef]);
+};
+
+const highlightElement = (element: Element) => {
+  element.classList.add('flash');
+  setTimeout(() => {
+    element.classList.remove('flash');
+  }, 1000);
+};
+
+function disableObserver(observerEnabledRef: RefObject<boolean>) {
+  observerEnabledRef.current = false;
+
+  const enableObserver = () => {
+    clearTimeout(fallbackTimeout);
+    window.removeEventListener('scrollend', enableObserver);
+
+    observerEnabledRef.current = true;
+  };
+
+  // Fallback for browsers that don't support scrollend
+  const fallbackTimeout = setTimeout(enableObserver, 1500);
+
+  window.addEventListener('scrollend', enableObserver);
+}

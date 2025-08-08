@@ -17,27 +17,26 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { useRemixFormContext } from 'remix-hook-form';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { type ReactNode, use } from 'react';
+import { useRemixFormContext } from 'remix-hook-form';
 
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useTranslation } from 'react-i18next';
-import { href, useFetcher } from 'react-router';
-import type { BFFDataRecord } from '@/types/record';
 import {
   Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { Fieldset } from '@/components/Input/Fieldset';
-import { Controller } from 'react-hook-form';
-import { useTheme } from '@/utils/rootLoaderDataUtils';
+import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
+import { useTheme } from '@/utils/rootLoaderDataUtils';
+import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { href, useFetcher } from 'react-router';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -96,7 +95,6 @@ export const RecordLinkWithSearch = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo
         label='PermissionUnitRecordLink'

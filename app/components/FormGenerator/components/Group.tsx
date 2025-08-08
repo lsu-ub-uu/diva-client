@@ -24,7 +24,6 @@ import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
   checkIfPresentationStyleIsInline,
@@ -43,6 +42,7 @@ interface GroupProps {
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
   actionButtonGroup?: ReactNode;
+  anchorId?: string;
 }
 
 export const Group = ({
@@ -50,6 +50,7 @@ export const Group = ({
   component,
   parentPresentationStyle,
   actionButtonGroup,
+  anchorId,
 }: GroupProps) => {
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
@@ -77,9 +78,9 @@ export const Group = ({
 
   return (
     <section
+      id={anchorId}
       className='form-component-item anchorLink'
       data-colspan={component.gridColSpan ?? 12}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
       {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
@@ -124,6 +125,7 @@ export const Group = ({
                   component.presentationStyle ?? parentPresentationStyle
                 }
                 path={currentComponentNamePath}
+                isRoot={groupLevel === 0}
               />
             )}
           </div>

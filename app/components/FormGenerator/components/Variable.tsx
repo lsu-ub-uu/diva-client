@@ -16,24 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentNumVar,
-  FormComponentTextVar,
-} from '@/components/FormGenerator/types';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { InputField } from '@/components/FormGenerator/components/InputField';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import {
   findOptionLabelByValue,
   getErrorMessageForField,
   isComponentCollVar,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useRemixFormContext } from 'remix-hook-form';
-import { type ReactNode, use } from 'react';
-import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { OutputField } from '@/components/FormGenerator/components/OutputField';
-import { useTranslation } from 'react-i18next';
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { InputField } from '@/components/FormGenerator/components/InputField';
+import type {
+  FormComponentNumVar,
+  FormComponentTextVar,
+} from '@/components/FormGenerator/types';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { type ReactNode, use } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface VariableProps {
   component: FormComponentTextVar | FormComponentNumVar;
@@ -66,7 +65,6 @@ export const Variable = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} path={path} />
 

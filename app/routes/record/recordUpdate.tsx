@@ -38,7 +38,7 @@ import { getRecordTitle } from '@/utils/getRecordTitle';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
-import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
+import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { assertDefined } from '@/utils/invariant';

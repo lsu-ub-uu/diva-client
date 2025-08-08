@@ -16,11 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
+import {
+  checkIfPresentationStyleIsInline,
+  getGroupLevel,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentContainer } from '@/components/FormGenerator/types';
 import React from 'react';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
@@ -41,7 +43,6 @@ export const SurroundingContainer = ({
     <React.Fragment>
       <DevInfo component={component} path={currentComponentNamePath} />
       <div
-        id={`anchor_${addAttributesToName(component, component.name)}`}
         className='form-component-container form-component-item anchorLink'
         data-colspan={component.gridColSpan ?? 12}
         data-layout={inline ? 'inline' : 'grid'}
@@ -53,6 +54,7 @@ export const SurroundingContainer = ({
               component.presentationStyle ?? parentPresentationStyle
             }
             path={currentComponentNamePath}
+            isRoot={getGroupLevel(currentComponentNamePath) === 0}
           />
         )}
       </div>

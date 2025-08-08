@@ -28,6 +28,7 @@ interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
   presentationSize?: PresentationSize;
   invalid?: boolean;
   hasValue?: boolean;
+  anchorId?: string;
 }
 
 export const Accordion = ({
@@ -36,12 +37,14 @@ export const Accordion = ({
   presentationSize,
   children,
   className,
+  anchorId,
   ...rest
 }: AccordionProps) => {
   const id = useId();
 
   return (
     <div
+      id={anchorId}
       className={clsx(styles['accordion'], className)}
       data-expanded={expanded}
       {...rest}

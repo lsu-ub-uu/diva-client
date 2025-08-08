@@ -157,3 +157,10 @@
   grid-area: main;
   padding: 0 var(--gap-l);
 }
+
+.flash {
+  outline: 2px solid var(--color-link-selected);
+  scroll-margin: var(--gap-l);
+  transition: outline 0.2s ease-in-out;
+  border-radius: var(--border-radius);
+}
