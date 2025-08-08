@@ -18,8 +18,6 @@
  */
 
 import type { NavigationPanelLink } from '@/components/NavigationPanel/NavigationPanel';
-import type { BFFDataRecord } from '@/types/record';
-import { useEffect, useState } from 'react';
 import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
 import {
   isComponentGroup,
