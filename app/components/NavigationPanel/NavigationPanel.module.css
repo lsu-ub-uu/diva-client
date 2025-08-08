@@ -44,7 +44,7 @@
       color: var(--color-text);
 
       &::before {
-        background-color: var(--color-link-selected);
+        background-color: var(--color-link);
       }
     }
   }

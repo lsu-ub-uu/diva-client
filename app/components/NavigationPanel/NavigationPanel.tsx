@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './NavigationPanel.module.css';
 import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 export interface NavigationPanelLink {
   name: string;
@@ -34,6 +35,16 @@ export interface NavigationPanelProps {
 export const NavigationPanel = ({ links }: NavigationPanelProps) => {
   const { hash } = useLocation();
   const { t } = useTranslation();
+
+  // Workaround for native hash link scroll into view not working on Firefox
+  useEffect(() => {
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView();
+      }
+    }
+  }, [hash]);
 
   return (
     <nav className={styles['navigation-panel']}>

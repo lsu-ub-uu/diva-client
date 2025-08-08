@@ -20,18 +20,13 @@
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   border-left: 3px solid var(--color-card-dark);
   transition: border-color 0.2s;
-
-  &:has(> .title:target) {
-    border-color: var(--color-link-selected);
-  }
+  overflow: clip;
 }
 
 .title {
   display: block;
-  border-radius: var(--border-radius) var(--border-radius) var(--border-radius)
-    0;
+  border-radius: 2px var(--border-radius) var(--border-radius) 0;
   background-color: var(--color-card-dark);
-  scroll-margin-top: var(--gap-l);
 
   svg {
     font-size: var(--font-size-icon);
@@ -79,7 +74,7 @@
   }
 }
 
-.accordion:has([data-has-value]) {
+.accordion[data-expanded='false']:has([data-has-value]) {
   .title button {
     color: var(--color-link);
   }
@@ -90,14 +85,16 @@
 }
 
 .accordion:has([aria-invalid='true']) {
-  border: 1px solid var(--color-error-main);
+  border-color: var(--color-error-main);
 
-  .title button {
-    color: var(--color-error-main);
-  }
+  &[data-expanded='false'] {
+    .title button {
+      color: var(--color-error-main);
+    }
 
-  .error-icon {
-    display: block;
+    .error-icon {
+      display: block;
+    }
   }
 }
 
@@ -107,18 +104,10 @@
 
 .accordion[data-expanded='false']:has(.content[hidden]) {
   border-radius: var(--border-radius);
-
-  .title {
-    border-radius: var(--border-radius);
-  }
 }
 
 .accordion:not(:has(.title)) .content {
   border-radius: var(--border-radius);
-}
-
-.accordion:has(.title:hover) {
-  border-color: var(--color-link);
 }
 
 .accordion:has(> .expand-button) {
@@ -127,4 +116,13 @@
   .content {
     flex-grow: 1;
   }
+}
+
+.accordion:has(:focus-visible),
+.accordion:has(.title:target) {
+  border-color: var(--color-link-selected);
+}
+
+.accordion:has(.title:hover) {
+  border-color: var(--color-link);
 }

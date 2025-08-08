@@ -21,6 +21,7 @@
   transition: background-color 0.2s;
   transition: border-color 0.2s;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
+  overflow: clip;
 
   &[data-boxed] {
     border-left: 3px solid var(--color-card-dark);
@@ -29,13 +30,10 @@
       border-color: var(--color-error-main);
     }
 
+    &:has(input:focus),
+    &:has(select:focus),
+    &:has(textarea:focus),
     &:has(> .card-header input:hover),
-    &:has(> .card-header input:focus),
-    &:has(> .card-header select:focus),
-    &:has(> .card-header textarea:focus),
-    &:has(> .card-content input:focus),
-    &:has(> .card-content select:focus),
-    &:has(> .card-content textarea:focus),
     &:has(> .card-header [data-action-button]:hover),
     &:has(> .card-header [data-action-button]:focus) {
       border-color: var(--color-link-selected);
@@ -68,8 +66,7 @@
 
   &[data-boxed] {
     padding: var(--gap-s) var(--gap);
-    border-radius: var(--border-radius) var(--border-radius)
-      var(--border-radius) 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
     background-color: var(--color-card-dark);
   }
 
