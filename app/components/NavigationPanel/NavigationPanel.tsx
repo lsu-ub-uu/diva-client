@@ -38,15 +38,12 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
 
   useSectionObserver(setActiveLink, observerEnabledRef);
 
-  const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-
-    const href = event.currentTarget.getAttribute('href');
-    const target = document.querySelector(href || '');
+  const handleLinkClick = (itemName: string) => {
+    const target = document.getElementById(`anchor_${itemName}`);
 
     if (!target) return;
 
-    setActiveLink(href?.replace('#anchor_', '') || null);
+    setActiveLink(itemName);
     highlightElement(target);
     disableObserver(observerEnabledRef);
     target.scrollIntoView({ behavior: 'smooth' });
@@ -58,8 +55,11 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
         {links.map((item, index) => (
           <li key={index}>
             <a
-              onClick={handleLinkClick}
               href={`#anchor_${item.name}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick(item.name);
+              }}
               {...(activeLink === item.name
                 ? { 'aria-current': 'location' }
                 : undefined)}
