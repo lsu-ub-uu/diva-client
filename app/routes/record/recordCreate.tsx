@@ -27,7 +27,7 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
-import { linksFromFormSchema } from '@/components/NavigationPanel/utils';
+import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';

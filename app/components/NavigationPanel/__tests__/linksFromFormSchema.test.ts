@@ -19,7 +19,7 @@
 
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { describe, expect, it } from 'vitest';
-import { linksFromFormSchema } from '../utils';
+import { linksFromFormSchema } from '../linksFromFormSchema';
 
 describe('linksFromFormSchema', () => {
   it('returns an empty array for an empty form schema', () => {
@@ -42,7 +42,7 @@ describe('linksFromFormSchema', () => {
     expect(links).toEqual([]);
   });
 
-  it('returns links to top level variables, groups and containers with labels in the form schema', () => {
+  it('returns links to top level groups and not variables or containers without title', () => {
     const formSchema: RecordFormSchema = {
       validationTypeId: 'someValidationTypeId',
       form: {
@@ -113,16 +113,8 @@ describe('linksFromFormSchema', () => {
     const links = linksFromFormSchema(formSchema);
     expect(links).toEqual([
       {
-        label: 'Some Text Variable',
-        name: 'someTextVar',
-      },
-      {
         label: 'Some Group',
         name: 'someGroup',
-      },
-      {
-        label: 'Some Container',
-        name: 'someContainer',
       },
     ]);
   });
