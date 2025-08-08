@@ -22,6 +22,7 @@ import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface RepeatingGroupProps {
+  anchorId?: string;
   currentComponentNamePath: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
@@ -31,23 +32,31 @@ export const RepeatingGroup = ({
   currentComponentNamePath,
   component,
   parentPresentationStyle,
+  anchorId,
 }: RepeatingGroupProps) => {
   const { control } = useRemixFormContext();
   return (
-    <FieldArrayComponent
-      control={control}
-      component={component}
-      name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
-        return (
-          <Group
-            currentComponentNamePath={arrayPath}
-            component={component}
-            parentPresentationStyle={parentPresentationStyle}
-            actionButtonGroup={actionButtonGroup}
-          />
-        );
-      }}
-    />
+    <section
+      id={anchorId}
+      className='form-component-item form-component-container'
+      data-colspan={component.gridColSpan ?? 12}
+      data-layout='grid'
+    >
+      <FieldArrayComponent
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(arrayPath, actionButtonGroup) => {
+          return (
+            <Group
+              currentComponentNamePath={arrayPath}
+              component={component}
+              parentPresentationStyle={parentPresentationStyle}
+              actionButtonGroup={actionButtonGroup}
+            />
+          );
+        }}
+      />
+    </section>
   );
 };

@@ -33,7 +33,7 @@ import { addAttributesToName } from './defaultValues/defaultValues';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
-  idx: number;
+  anchorId: string | undefined;
   path: string;
   currentComponentNamePath: string;
   parentPresentationStyle?: string;
@@ -82,6 +82,7 @@ export const AlternativePresentationSwitcher = (
 
   return (
     <Accordion
+      anchorId={props.anchorId}
       expanded={expanded}
       onChange={() =>
         setCurrentPresentation(

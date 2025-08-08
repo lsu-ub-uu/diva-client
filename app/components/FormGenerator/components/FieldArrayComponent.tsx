@@ -21,25 +21,23 @@ import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { AddCircleIcon } from '@/icons';
-import { Fragment, use, useRef, useEffect, type ReactNode } from 'react';
+import { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
+import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
 
-import styles from './FieldArrayComponent.module.css';
 import clsx from 'clsx';
+import styles from './FieldArrayComponent.module.css';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponentWithData;
   renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
+  anchorId?: string;
 }
 
 export const FieldArrayComponent = ({
@@ -47,12 +45,12 @@ export const FieldArrayComponent = ({
   name,
   component,
   renderCallback,
+  anchorId,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
   const notRemovableEnhancement =
     enhancedFields?.[name]?.type === 'notRemovable';
-  const addButtonRef = useRef<HTMLButtonElement>(null);
 
   const { fields, append, move, remove } = useFieldArray({
     control: control,
@@ -112,11 +110,9 @@ export const FieldArrayComponent = ({
           <div
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button
-              key={fields.length}
-              ref={addButtonRef}
+              id={fields.length === 0 ? anchorId : undefined}
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}

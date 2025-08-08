@@ -3,14 +3,12 @@ import { AddCircleIcon, CloseIcon } from '@/icons';
 import { use, type ReactNode } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
-import type { FormComponentWithData } from '../types';
+import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
+import type { FormComponentWithData } from '../types';
 
 interface OptionalComponentProps {
+  anchorId?: string;
   control?: Control<any>;
   name: string;
   component: FormComponentWithData;
@@ -18,6 +16,7 @@ interface OptionalComponentProps {
 }
 
 export const OptionalComponent = ({
+  anchorId,
   control,
   name,
   component,
@@ -64,11 +63,10 @@ export const OptionalComponent = ({
           <div
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             {component.mode === 'input' && (
               <Button
-                className='add-button'
+                id={field.value ? undefined : anchorId}
                 variant='tertiary'
                 onClick={() =>
                   field.onChange(

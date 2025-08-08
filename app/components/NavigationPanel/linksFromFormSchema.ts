@@ -20,31 +20,39 @@
 import type { NavigationPanelLink } from '@/components/NavigationPanel/NavigationPanel';
 import { addAttributesToName } from '../FormGenerator/defaultValues/defaultValues';
 import {
+  isComponentContainer,
   isComponentGroup,
-  isComponentText,
 } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type { FormComponent, RecordFormSchema } from '../FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentContainer,
+  RecordFormSchema,
+} from '../FormGenerator/types';
 
 export const linksFromFormSchema = (
   formSchema: RecordFormSchema,
 ): NavigationPanelLink[] => {
   return (formSchema.form.components ?? [])
-    .map((component) => {
-      return createNavigationPanelLink(component);
+    .flatMap((component) => {
+      if (isComponentContainer(component) && !component.title) {
+        return createLinkFromContainer(component);
+      }
+      return [createNavigationPanelLink(component)];
     })
+    .filter((link) => link !== undefined);
+};
+
+const createLinkFromContainer = (
+  component: FormComponentContainer,
+): NavigationPanelLink[] => {
+  return (component.components ?? [])
+    .map(createNavigationPanelLink)
     .filter((link) => link !== undefined);
 };
 
 const createNavigationPanelLink = (
   component: FormComponent,
 ): NavigationPanelLink | undefined => {
-  if (isComponentText(component) && component.textStyle === 'h2TextStyle') {
-    return {
-      label: component.name,
-      name: component.name,
-    };
-  }
-
   if ('title' in component && component.title !== undefined) {
     return {
       label: component.title,
@@ -64,18 +72,4 @@ const createNavigationPanelLink = (
   }
 
   return undefined;
-};
-
-export const flattenObject = (obj: any, prefix = '') => {
-  return Object.keys(obj).reduce((acc: any, k) => {
-    const pre = prefix.length ? `${prefix}.` : '';
-    if (
-      typeof obj[k] === 'object' &&
-      obj[k] !== null &&
-      Object.keys(obj[k]).length > 0
-    )
-      Object.assign(acc, flattenObject(obj[k], pre + k));
-    else acc[pre + k] = obj[k];
-    return acc;
-  }, {});
 };

@@ -22,12 +22,14 @@ import { useRemixFormContext } from 'remix-hook-form';
 import { OptionalComponent } from './OptionalComponent';
 
 interface OptionalGroupProps {
+  anchorId: string | undefined;
   currentComponentNamePath: string;
   component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
 }
 
 export const OptionalGroup = ({
+  anchorId,
   currentComponentNamePath,
   component,
   parentPresentationStyle,
@@ -35,20 +37,28 @@ export const OptionalGroup = ({
   const { control } = useRemixFormContext();
 
   return (
-    <OptionalComponent
-      control={control}
-      component={component}
-      name={currentComponentNamePath}
-      renderCallback={(actionButtonGroup) => {
-        return (
-          <Group
-            currentComponentNamePath={currentComponentNamePath}
-            component={component}
-            parentPresentationStyle={parentPresentationStyle}
-            actionButtonGroup={actionButtonGroup}
-          />
-        );
-      }}
-    />
+    <section
+      id={anchorId}
+      className='form-component-item'
+      data-colspan={component.gridColSpan ?? 12}
+    >
+      <OptionalComponent
+        anchorId={anchorId}
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(actionButtonGroup) => {
+          return (
+            <Group
+              currentComponentNamePath={currentComponentNamePath}
+              component={component}
+              parentPresentationStyle={parentPresentationStyle}
+              actionButtonGroup={actionButtonGroup}
+              anchorId={anchorId}
+            />
+          );
+        }}
+      />
+    </section>
   );
 };
