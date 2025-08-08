@@ -40,7 +40,7 @@
       background-color: var(--color-background);
     }
 
-    &[aria-current='page'] {
+    &[aria-current='location'] {
       color: var(--color-text);
 
       &::before {

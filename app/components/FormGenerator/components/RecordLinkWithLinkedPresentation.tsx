@@ -22,7 +22,6 @@ import { use, type ReactNode } from 'react';
 import { Button } from '@/components/Button/Button';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 import { CloseIcon, LinkIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
@@ -70,7 +69,6 @@ export const RecordLinkWithLinkedPresentation = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
-      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo
         label='RecordLinkWithLinkedPresentation'

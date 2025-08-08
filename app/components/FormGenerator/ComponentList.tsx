@@ -16,33 +16,42 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { Fragment } from 'react';
 import type { FormComponent } from '@/components/FormGenerator/types';
 import {
   Component,
   getCurrentComponentNamePath,
 } from '@/components/FormGenerator/Component';
+import { addAttributesToName } from './defaultValues/defaultValues';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
   parentPresentationStyle?: string;
   path?: string;
+  isRoot?: boolean;
 }
 
 export const ComponentList = ({
   components,
   parentPresentationStyle,
   path = '',
+  isRoot = false,
 }: FormComponentListGeneratorProps) => {
-  return components.map((component, i) => {
+  return components.map((component) => {
     const componentPath = getCurrentComponentNamePath(component, path);
     return (
-      <Component
-        key={`${componentPath}.${component.presentationId}`}
-        component={component}
-        idx={i}
-        path={path}
-        parentPresentationStyle={parentPresentationStyle}
-      />
+      <Fragment key={`${componentPath}.${component.presentationId}`}>
+        <Component
+          component={component}
+          path={path}
+          parentPresentationStyle={parentPresentationStyle}
+          anchorId={
+            isRoot
+              ? `anchor_${addAttributesToName(component, component.name)}`
+              : undefined
+          }
+        />
+      </Fragment>
     );
   });
 };

@@ -49,16 +49,16 @@ import { OptionalGroup } from './components/OptionalGroup';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
-  idx: number;
   path: string;
   parentPresentationStyle?: string;
+  anchorId?: string;
 }
 
 export const Component = ({
   component,
-  idx,
   path,
   parentPresentationStyle,
+  anchorId,
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
@@ -67,7 +67,7 @@ export const Component = ({
     return (
       <AlternativePresentationSwitcher
         component={component}
-        idx={idx}
+        anchorId={anchorId}
         path={path}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
@@ -103,6 +103,7 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
+        anchorId={anchorId}
       />
     );
   }
@@ -113,6 +114,7 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         component={component}
         parentPresentationStyle={parentPresentationStyle}
+        anchorId={anchorId}
       />
     );
   }
@@ -123,6 +125,7 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
+        anchorId={anchorId}
       />
     );
   }

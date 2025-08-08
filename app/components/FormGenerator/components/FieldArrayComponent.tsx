@@ -25,10 +25,7 @@ import React, { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  addAttributesToName,
-  createDefaultValuesFromComponent,
-} from '../defaultValues/defaultValues';
+import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
 
@@ -37,6 +34,7 @@ interface FieldArrayComponentProps {
   name: string;
   component: FormComponentWithData;
   renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
+  anchorId?: string;
 }
 
 export const FieldArrayComponent = ({
@@ -44,6 +42,7 @@ export const FieldArrayComponent = ({
   name,
   component,
   renderCallback,
+  anchorId,
 }: FieldArrayComponentProps) => {
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
@@ -105,9 +104,9 @@ export const FieldArrayComponent = ({
           <div
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             <Button
+              id={fields.length === 0 ? anchorId : undefined}
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}

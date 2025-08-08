@@ -22,6 +22,7 @@ import styles from './Accordion.module.css';
 import clsx from 'clsx';
 
 interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
+  anchorId: string | undefined;
   expanded: boolean;
   onChange: (expanded: boolean) => void;
   children?: ReactNode;
@@ -31,6 +32,7 @@ interface AccordionProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
 }
 
 export const Accordion = ({
+  anchorId,
   expanded,
   onChange,
   presentationSize,
@@ -42,6 +44,7 @@ export const Accordion = ({
 
   return (
     <div
+      id={anchorId}
       className={clsx(styles['accordion'], className)}
       data-expanded={expanded}
       {...rest}

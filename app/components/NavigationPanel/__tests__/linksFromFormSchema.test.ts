@@ -203,7 +203,7 @@ describe('linksFromFormSchema', () => {
     ]);
   });
 
-  it('creates entries for h2 texts', () => {
+  it('create entries from groups inside first level container without title', () => {
     const formSchema: RecordFormSchema = {
       validationTypeId: 'someValidationTypeId',
       form: {
@@ -217,31 +217,25 @@ describe('linksFromFormSchema', () => {
         },
         components: [
           {
-            type: 'text',
-            name: 'SomeH2Text',
-            textStyle: 'h2TextStyle',
-          },
-          {
-            type: 'text',
-            name: 'SomeH3Text',
-            textStyle: 'h3TextStyle',
-          },
-          {
-            type: 'text',
-            name: 'SomeBodyText',
-            textStyle: 'bodyTextStyle',
+            type: 'container',
+            name: 'someContainer',
+            components: [
+              {
+                type: 'group',
+                name: 'someGroup',
+                label: 'Some Group Inside Container',
+              },
+            ],
           },
         ],
         mode: 'output',
       },
     };
-
     const links = linksFromFormSchema(formSchema);
-
     expect(links).toEqual([
       {
-        label: 'SomeH2Text',
-        name: 'SomeH2Text',
+        label: 'Some Group Inside Container',
+        name: 'someGroup',
       },
     ]);
   });
