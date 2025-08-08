@@ -36,11 +36,6 @@
     background: none;
   }
 
-  :target {
-    color: var(--color-link-selected);
-    background-color: var(--color-card-dark);
-  }
-
   button {
     width: 100%;
     display: flex;
@@ -118,8 +113,7 @@
   }
 }
 
-.accordion:has(:focus-visible),
-.accordion:has(.title:target) {
+.accordion:has(:focus-visible) {
   border-color: var(--color-link-selected);
 }
 

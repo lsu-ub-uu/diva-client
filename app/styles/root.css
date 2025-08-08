@@ -71,15 +71,6 @@
       font-weight: var(--font-weight-h2);
     }
 
-    :target {
-      scroll-margin-top: var(--gap-l);
-    }
-
-    h2:target,
-    :target > h2 {
-      color: var(--color-link-selected);
-    }
-
     h3 {
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-h3);

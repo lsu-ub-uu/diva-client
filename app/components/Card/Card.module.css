@@ -109,11 +109,3 @@
   align-items: center;
   gap: var(--gap);
 }
-
-:target > .card {
-  border-color: var(--color-link-selected);
-
-  > .card-header {
-    color: var(--color-link-selected);
-  }
-}
