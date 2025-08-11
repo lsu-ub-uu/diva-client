@@ -26,11 +26,11 @@ import {
 import { data } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData } from 'remix-hook-form';
+import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
@@ -45,6 +45,9 @@ import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from '../record/+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { useState, useTransition } from 'react';
+import { start } from 'repl';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -73,6 +76,12 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     'update',
   );
 
+  const previewFormDefinition = await getFormDefinitionByValidationTypeId(
+    await context.dependencies,
+    record.validationType,
+    'view',
+  );
+
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
     record.data,
@@ -81,7 +90,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
 
   return data(
-    { record, formDefinition, defaultValues, notification, title, breadcrumb },
+    {
+      record,
+      formDefinition,
+      previewFormDefinition,
+      defaultValues,
+      notification,
+      title,
+      breadcrumb,
+    },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -116,6 +133,7 @@ export const action = async ({
     validationType,
     'update',
   );
+
   const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
   const {
     errors,
@@ -154,9 +172,31 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { record, formDefinition, notification, defaultValues } = loaderData;
+  const {
+    record,
+    formDefinition,
+    previewFormDefinition,
+    notification,
+    defaultValues,
+  } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
+  const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
+    record.data,
+  );
+  const [isPending, startTransition] = useTransition();
+  console.log('Preview data:', previewData);
+  const handleFormChange = async (
+    event: React.ChangeEvent<HTMLFormElement>,
+  ) => {
+    const formData = await parseFormData(new FormData(event.currentTarget));
+
+    startTransition(() => {
+      setPreviewData(formData as BFFDataRecordData);
+    });
+    console.log('Updated preview data:', formData);
+  };
+
   return (
     <SidebarLayout
       sidebarContent={
@@ -176,11 +216,23 @@ export default function UpdateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <RecordForm
-          key={lastUpdate}
-          defaultValues={defaultValues}
-          formSchema={formDefinition}
-        />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          <RecordForm
+            key={lastUpdate}
+            defaultValues={defaultValues}
+            formSchema={formDefinition}
+            onChange={handleFormChange}
+          />
+          {previewData && (
+            <div className='preview' style={isPending ? { opacity: 0.5 } : {}}>
+              <h2>Preview</h2>
+              <ReadOnlyForm
+                recordData={previewData}
+                formSchema={previewFormDefinition}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </SidebarLayout>
   );

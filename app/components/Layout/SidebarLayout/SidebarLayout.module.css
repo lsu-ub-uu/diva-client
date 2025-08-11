@@ -40,6 +40,5 @@
   main {
     /* Take account for toolbar height */
     padding-bottom: 64px;
-    max-width: 1000px;
   }
 }

@@ -34,9 +34,14 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
   defaultValues: Record<string, any>;
+  onChange?: (event: React.ChangeEvent<HTMLFormElement>) => void;
 }
 
-export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
+export const RecordForm = ({
+  defaultValues,
+  formSchema,
+  onChange,
+}: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
@@ -57,6 +62,7 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
+      onChange={onChange}
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
