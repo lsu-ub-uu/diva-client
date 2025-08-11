@@ -56,7 +56,6 @@
     h4,
     h5,
     h6 {
-      font-family: var(--font-family-headings);
       margin: 0;
     }
 
@@ -64,6 +63,7 @@
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-h1);
       margin-bottom: var(--gap);
+      font-family: var(--font-family-serif);
     }
 
     h2 {
