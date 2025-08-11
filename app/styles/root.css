@@ -27,11 +27,12 @@
   *::before,
   *::after {
     box-sizing: border-box;
+    outline-offset: -2px;
   }
 
   :root {
     *:focus-visible {
-      outline: 2px solid var(--color-accent);
+      outline: 2px solid var(--color-link-selected);
     }
 
     body {
@@ -51,13 +52,14 @@
     h4,
     h5,
     h6 {
-      font-family: var(--font-family-headings), sans-serif;
       margin: 0;
     }
 
     h1 {
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-h1);
+      margin-bottom: var(--gap);
+      font-family: var(--font-family-serif);
     }
 
     h2 {
@@ -78,11 +80,14 @@
     h5 {
       font-size: var(--font-size-h5);
       font-weight: var(--font-weight-h5);
+      font-family: var(--font-family-main);
     }
 
     h6 {
       font-size: var(--font-size-h6);
       font-weight: var(--font-weight-h6);
+      font-family: var(--font-family-main);
+      text-transform: uppercase;
     }
 
     a {
@@ -143,6 +148,7 @@
 
 .nav-rail {
   grid-area: nav;
+  background-color: var(--color-nav-rail);
 
   @media (width < 600px) {
     border-bottom: 1px solid var(--color-thin-border);

@@ -49,7 +49,6 @@
   --color-link-visited: var(--color-accent);
   --color-card-dark: rgb(5 85 164 / 12%);
   --color-card: rgb(5 85 164/ 8%);
-
   --color-button: var(--color-primary);
   --color-button-primary-hover: rgb(17 17 17);
   --color-button-primary-active: rgb(0 0 0);
@@ -73,6 +72,7 @@
   --color-fab-primary-bg: rgb(117 89 142);
   --color-fab-secondary-text: rgb(0 0 0);
   --color-fab-secondary-bg: rgb(255 255 255);
+  --color-nav-rail: var(--color-gray-light);
 
   /* Spacing */
   --gap-s: 0.25rem;
@@ -86,7 +86,9 @@
 
   /* Typography */
   --font-family-main: 'Arial', sans-serif;
-  --font-family-headings: 'Arial', sans-serif;
+  --font-family-serif:
+    'Georgia', 'Bitstream Charter', 'Noto Serif', 'Times New Roman', 'Times',
+    serif;
   --font-size-base: 16px;
   --font-size-xs: 0.8rem;
   --font-size-s: 0.9rem;
@@ -94,16 +96,16 @@
   --font-size-l: 1.5rem;
   --font-size-xl: 2rem;
   --font-size-xxl: 4rem;
-  --font-size-h1: 2rem;
+  --font-size-h1: 3rem;
   --font-weight-h1: 400;
-  --font-size-h2: 1.4rem;
+  --font-size-h2: 1.6rem;
   --font-weight-h2: 400;
   --font-size-h3: 1.3rem;
   --font-weight-h3: 400;
-  --font-size-h4: 1.2rem;
+  --font-size-h4: 1rem;
   --font-weight-h4: 400;
   --font-size-h5: 1rem;
-  --font-weight-h5: 6c00;
+  --font-weight-h5: 600;
   --font-size-h6: 0.9rem;
   --font-weight-h6: 600;
   --font-size-bold: 1rem;
@@ -145,14 +147,15 @@
     --color-alert-warning-icon: rgb(254 139 45);
     --color-alert-warning-bg: rgb(102 60 0);
     --color-thin-border: rgb(255 255 255 / 20%);
-    --color-card-dark: rgb(103 159 243 / 12%);
+    --color-card-dark: rgb(103 159 243 / 30%);
     --color-card: rgb(103 159 243 / 8%);
-    --color-button-primary-hover: rgb(233 233 233);
     --color-button-primary-active: rgb(255 255 255);
     --color-button-secondary-hover: rgb(255 255 255 / 10%);
     --color-button-secondary-active: rgb(255 255 255 / 20%);
     --color-link: rgb(144 224 255);
+    --color-link-selected: rgb(198 237 250);
     --color-link-visited: rgb(204 178 227);
+    --color-nav-rail: rgb(26 26 22);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -182,14 +185,15 @@
       --color-alert-warning-icon: rgb(254 139 45);
       --color-alert-warning-bg: rgb(102 60 0);
       --color-thin-border: rgb(255 255 255 / 20%);
-      --color-card-dark: rgb(103 159 243 / 12%);
+      --color-card-dark: rgb(103 159 243 / 30%);
       --color-card: rgb(103 159 243 / 8%);
-      --color-button-primary-hover: rgb(233 233 233);
       --color-button-primary-active: rgb(255 255 255);
       --color-button-secondary-hover: rgb(255 255 255 / 10%);
       --color-button-secondary-active: rgb(255 255 255 / 20%);
       --color-link: rgb(144 224 255);
+      --color-link-selected: rgb(198 237 250);
       --color-link-visited: rgb(204 178 227);
+      --color-nav-rail: rgb(26 26 22);
     }
   }
 

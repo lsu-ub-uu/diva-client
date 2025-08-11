@@ -16,11 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.title {
-  --accordion-title-border-radius: var(--border-radius) var(--border-radius) 0 0;
+.accordion {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-left: 3px solid var(--color-card-dark);
+  transition: border-color 0.2s;
+  overflow: clip;
+}
 
+.title {
   display: block;
-  border-radius: var(--accordion-title-border-radius);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
   background-color: var(--color-card-dark);
 
   svg {
@@ -31,10 +36,10 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-radius: var(--accordion-title-border-radius);
     padding: var(--gap);
     cursor: pointer;
     background-color: transparent;
+    transition: background-color 0.2s;
 
     &:hover {
       background-color: var(--color-button-secondary-hover);
@@ -58,9 +63,9 @@
   }
 }
 
-.accordion:has([data-has-value]) {
+.accordion[data-expanded='false']:has([data-has-value]) {
   .title button {
-    color: var(--color-accent-dark);
+    color: var(--color-link);
   }
 
   .value-icon {
@@ -68,34 +73,30 @@
   }
 }
 
-.accordion:has([data-invalid]) {
-  border: 1px solid var(--color-error-main);
-  border-radius: var(--border-radius);
+.accordion:has([aria-invalid='true']) {
+  border-color: var(--color-error-main);
 
-  .title button {
-    color: var(--color-error-main);
-  }
+  &[data-expanded='false'] {
+    .title button {
+      color: var(--color-error-main);
+    }
 
-  .error-icon {
-    display: block;
+    .error-icon {
+      display: block;
+    }
   }
 }
 
 .content {
-  --accordion-content-border-radius: 0 0 var(--border-radius)
-    var(--border-radius);
-
-  background-color: var(--color-card);
-  border-radius: var(--accordion-content-border-radius);
   padding: var(--gap);
 }
 
-.accordion[data-expanded='false']:has(.content[hidden]) .title {
-  --accordion-title-border-radius: var(--border-radius);
+.accordion[data-expanded='false']:has(.content[hidden]) {
+  border-radius: var(--border-radius);
 }
 
 .accordion:not(:has(.title)) .content {
-  --accordion-content-border-radius: var(--border-radius);
+  border-radius: var(--border-radius);
 }
 
 .accordion:has(> .expand-button) {
@@ -104,4 +105,12 @@
   .content {
     flex-grow: 1;
   }
+}
+
+.accordion:has(:focus-visible) {
+  border-color: var(--color-link-selected);
+}
+
+.accordion:has(.title:hover) {
+  border-color: var(--color-link);
 }

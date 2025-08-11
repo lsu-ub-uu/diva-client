@@ -21,7 +21,7 @@ import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { AddCircleIcon } from '@/icons';
-import React, { Fragment, use, type ReactNode } from 'react';
+import { Fragment, use, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -67,7 +67,7 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <React.Fragment key={`${name}_fac`}>
+    <Fragment key={`${name}_fac`}>
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -113,11 +113,12 @@ export const FieldArrayComponent = ({
               aria-label={t('divaClient_addFieldText', {
                 fieldName: t(component.label),
               })}
+              tooltipPosition='top'
             >
               <AddCircleIcon /> {t(component.label)}
             </Button>
           </div>
         )}
-    </React.Fragment>
+    </Fragment>
   );
 };
