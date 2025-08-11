@@ -32,7 +32,6 @@ h1 {
 h2 {
   font-size: 1.3rem;
   margin-top: var(--gap-l);
-  font-family: var(--font-family-main);
 }
 
 h3 {

@@ -29,9 +29,6 @@ import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
 
-import clsx from 'clsx';
-import styles from './FieldArrayComponent.module.css';
-
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
@@ -70,10 +67,7 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <div
-      key={`${name}_fac`}
-      className={clsx(styles['field-array'], 'form-component-item')}
-    >
+    <Fragment key={`${name}_fac`}>
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -116,7 +110,6 @@ export const FieldArrayComponent = ({
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
-              className='add-button'
               aria-label={t('divaClient_addFieldText', {
                 fieldName: t(component.label),
               })}
@@ -126,6 +119,6 @@ export const FieldArrayComponent = ({
             </Button>
           </div>
         )}
-    </div>
+    </Fragment>
   );
 };

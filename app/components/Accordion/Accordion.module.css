@@ -25,34 +25,28 @@
 
 .title {
   display: block;
-  border-radius: 2px var(--border-radius) var(--border-radius) 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
   background-color: var(--color-card-dark);
 
   svg {
     font-size: var(--font-size-icon);
   }
 
-  h2 {
-    background: none;
-  }
-
   button {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-radius: var(--border-radius);
     padding: var(--gap);
     cursor: pointer;
     background-color: transparent;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: rgb(0 0 0 / 5%);
+      background-color: var(--color-button-secondary-hover);
     }
 
     &:active {
-      background-color: rgb(0 0 0 / 8%);
+      background-color: var(--color-button-secondary-active);
     }
   }
 
