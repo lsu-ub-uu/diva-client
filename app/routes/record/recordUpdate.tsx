@@ -23,30 +23,30 @@ import {
   getSessionFromCookie,
   requireAuth,
 } from '@/auth/sessions.server';
-import { data } from 'react-router';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData, parseFormData } from 'remix-hook-form';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { data } from 'react-router';
+import { getValidatedFormData } from 'remix-hook-form';
 
-import { getRecordTitle } from '@/utils/getRecordTitle';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
-import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
-import type { Route } from '../record/+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { useState, useTransition } from 'react';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { useDeferredValue, useState } from 'react';
+import type { Route } from '../record/+types/recordUpdate';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -140,11 +140,6 @@ export const action = async ({
     receivedValues: defaultValues,
   } = await getValidatedFormData(formData, resolver);
 
-  console.log(
-    'Validated form data:',
-    JSON.stringify(validatedFormData, null, 2),
-  );
-
   if (errors) {
     return { errors, defaultValues };
   }
@@ -188,10 +183,10 @@ export default function UpdateRecordRoute({
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     record.data,
   );
-  const [, startTransition] = useTransition();
+  const deferredPreviewData = useDeferredValue(previewData);
 
   const handleFormChange = (data: BFFDataRecordData) => {
-    startTransition(() => setPreviewData(data));
+    setPreviewData(data);
   };
 
   return (
@@ -226,11 +221,11 @@ export default function UpdateRecordRoute({
             formSchema={formDefinition}
             onChange={handleFormChange}
           />
-          {previewData && (
+          {deferredPreviewData && (
             <div className='preview'>
               <h2>Förhandsgranskning</h2>
               <ReadOnlyForm
-                recordData={previewData}
+                recordData={deferredPreviewData}
                 formSchema={previewFormDefinition}
               />
             </div>
