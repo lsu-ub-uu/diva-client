@@ -59,11 +59,11 @@ import {
   someNewMetadataGroupTitleInfoGroup,
   someOtherNamePartTextVariable,
   someOtherNamePartWithAttributesTextVariable,
-  someSubTitleTextVariable,
-  sometitleMetadataChildGroup,
   someRecordTypeForRepeatingTitleInfo,
   someRecordTypeNamePart,
   someRecordTypeNamePartWithAttributes,
+  someSubTitleTextVariable,
+  sometitleMetadataChildGroup,
   tsCreatedTextVar,
   tsUpdatedTextVar,
   typeCollectionItemAlternative,
@@ -295,6 +295,7 @@ describe('transformRecord', () => {
               },
               updated: [
                 {
+                  repeatId: '0',
                   tsUpdated: {
                     value: '2023-10-11T09:24:30.511487Z',
                   },
@@ -303,6 +304,8 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '1',
+
                   tsUpdated: {
                     value: '2023-10-18T09:09:13.554736Z',
                   },
@@ -311,6 +314,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '2',
                   tsUpdated: {
                     value: '2023-10-26T12:33:22.260532Z',
                   },
@@ -319,6 +323,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '3',
                   tsUpdated: {
                     value: '2023-10-26T12:35:28.748398Z',
                   },
@@ -327,6 +332,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '4',
                   tsUpdated: {
                     value: '2023-10-26T12:35:40.545698Z',
                   },
@@ -335,6 +341,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '5',
                   tsUpdated: {
                     value: '2023-10-26T12:35:52.293623Z',
                   },
@@ -478,6 +485,7 @@ describe('transformRecord', () => {
               },
               updated: [
                 {
+                  repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
                   },
@@ -486,6 +494,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
                   },
@@ -494,6 +503,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
                   },
@@ -624,6 +634,7 @@ describe('transformRecord', () => {
               },
               updated: [
                 {
+                  repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
                   },
@@ -632,6 +643,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
                   },
@@ -640,6 +652,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
                   },
@@ -763,6 +776,7 @@ describe('transformRecord', () => {
               },
               updated: [
                 {
+                  repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
                   },
@@ -771,6 +785,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
                   },
@@ -779,6 +794,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
                   },
@@ -903,6 +919,7 @@ describe('transformRecord', () => {
               },
               updated: [
                 {
+                  repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
                   },
@@ -911,6 +928,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
                   },
@@ -919,6 +937,7 @@ describe('transformRecord', () => {
                   },
                 },
                 {
+                  repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
                   },
@@ -1232,9 +1251,11 @@ describe('transformRecord', () => {
         divaOutput: {
           exampleNumberVar: [
             {
+              repeatId: '0',
               value: '12.99',
             },
             {
+              repeatId: '1',
               value: '1.34',
             },
           ],
@@ -1289,10 +1310,12 @@ describe('transformRecord', () => {
             {
               value: '12.99',
               _language: 'kal',
+              repeatId: '0',
             },
             {
               value: '1.34',
               _language: 'eng',
+              repeatId: '1',
             },
           ],
         },
@@ -1350,17 +1373,21 @@ describe('transformRecord', () => {
         divaOutput: {
           exampleNumberVar: [
             {
+              repeatId: '0',
               value: '12.99',
             },
             {
+              repeatId: '1',
               value: '1.34',
             },
           ],
           exampleNumberVarTwo: [
             {
+              repeatId: '0',
               value: '99.00',
             },
             {
+              repeatId: '1',
               value: '101.00',
             },
           ],
@@ -1420,11 +1447,13 @@ describe('transformRecord', () => {
         divaOutput: {
           childGroup: [
             {
+              repeatId: '0',
               title: {
                 value: 'testTitleVal1',
               },
             },
             {
+              repeatId: '1',
               title: {
                 value: 'testTitleVal2',
               },
@@ -1538,10 +1567,12 @@ describe('transformRecord', () => {
             {
               value: 'nationalSubjectCategory:6325370460697648',
               _language: 'eng',
+              repeatId: '0',
             },
             {
               value: 'nationalSubjectCategory:6325370460697641',
               _language: 'swe',
+              repeatId: '1',
             },
           ],
         },
@@ -1741,6 +1772,7 @@ describe('transformRecord', () => {
             {
               _lang: 'amh',
               _type: 'alternative',
+              repeatId: '7',
               title: {
                 value: 'EN utmärkt alternativ titel',
               },
@@ -2408,7 +2440,7 @@ describe('transformRecord', () => {
               value: 'gil',
               _type: 'given',
             },
-
+            repeatId: '0',
             _type: 'personal',
           },
         ],

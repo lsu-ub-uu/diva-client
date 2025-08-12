@@ -64,6 +64,7 @@ export const RecordForm = ({
       formState: {
         values: true,
       },
+      // @ts-expect-error incorrect typing in react-hook-form
       callback: ({ values }) => {
         if (onChange) {
           onChange(values as BFFDataRecordData);

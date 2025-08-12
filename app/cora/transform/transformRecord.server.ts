@@ -176,11 +176,11 @@ export const transformDataGroup = (
     const transformedChild = {
       ...transformData(dataChild, matchingMetadata, dependencies),
       ...transformAttributes(dataChild.attributes),
-      repeatId: dataChild.repeatId,
     };
     const repeating = isRepeating(matchingMetadata);
     if (repeating) {
       group[name] ??= [];
+      transformedChild.repeatId = dataChild.repeatId;
       group[name].push(transformedChild);
     } else {
       group[name] = transformedChild;

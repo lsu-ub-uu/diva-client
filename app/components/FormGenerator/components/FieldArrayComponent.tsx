@@ -37,6 +37,11 @@ interface FieldArrayComponentProps {
   anchorId?: string;
 }
 
+type RepeatingField = {
+  repeatId?: string;
+  id: string;
+};
+
 export const FieldArrayComponent = ({
   control,
   name,
@@ -94,7 +99,7 @@ export const FieldArrayComponent = ({
           );
 
         return (
-          <Fragment key={field.repeatId ?? field.id}>
+          <Fragment key={(field as RepeatingField).repeatId ?? field.id}>
             {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
