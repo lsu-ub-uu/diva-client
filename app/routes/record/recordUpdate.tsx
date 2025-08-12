@@ -189,10 +189,9 @@ export default function UpdateRecordRoute({
     record.data,
   );
   const [, startTransition] = useTransition();
-  const handleFormChange = async (data: BFFDataRecordData) => {
-    startTransition(() => {
-      setPreviewData(data);
-    });
+
+  const handleFormChange = (data: BFFDataRecordData) => {
+    startTransition(() => setPreviewData(data));
   };
 
   return (
