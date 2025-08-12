@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import styles from './NavigationPanel.module.css';
-import { findFirstFocusableElement } from '@/utils/findFirstFocusableElement';
+import { findFocusableElements } from '@/utils/findFirstFocusableElement';
 
 export interface NavigationPanelLink {
   name: string;
@@ -48,7 +48,7 @@ export const NavigationPanel = ({ links }: NavigationPanelProps) => {
     highlightElement(target);
     disableObserver(observerEnabledRef);
     target.scrollIntoView({ behavior: 'smooth' });
-    findFirstFocusableElement(target)?.focus({ preventScroll: true });
+    findFocusableElements(target)[0]?.focus({ preventScroll: true });
   };
 
   return (

@@ -30,17 +30,22 @@ import styles from './Form.module.css';
 import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { useWatch } from 'react-hook-form';
+import { ReadOnlyForm } from './ReadOnlyForm';
+import type { BFFDataRecordData } from '@/types/record';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
+  previewFormSchema?: RecordFormSchema;
   defaultValues: Record<string, any>;
-  onChange?: (event: React.ChangeEvent<HTMLFormElement>) => void;
+  onChange?: (data: BFFDataRecordData) => void;
 }
 
 export const RecordForm = ({
   defaultValues,
   formSchema,
   onChange,
+  previewFormSchema,
 }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -56,16 +61,22 @@ export const RecordForm = ({
 
   const { handleSubmit, reset } = methods;
 
+  methods.watch((data) => {
+    if (onChange) {
+      onChange(data);
+    }
+  });
+
   return (
     <Form
       method='POST'
       className={styles['form']}
       {...(submitting && { 'data-submitting': '' })}
       onSubmit={handleSubmit}
-      onChange={onChange}
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
+
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
@@ -85,5 +96,17 @@ export const RecordForm = ({
         />
       </FloatingActionButtonContainer>
     </Form>
+  );
+};
+
+const Preview = ({
+  previewFormSchema,
+}: {
+  previewFormSchema: RecordFormSchema;
+}) => {
+  const watchedValue = useWatch();
+
+  return (
+    <ReadOnlyForm recordData={watchedValue} formSchema={previewFormSchema} />
   );
 };

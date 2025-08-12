@@ -63,7 +63,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <div className='record-wrapper'>
+      <div className='record-wrapper' style={{ maxWidth: '1200px' }}>
         <Button
           className='api-button'
           variant='tertiary'
@@ -76,7 +76,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
           {t('divaClient_viewInApiText')}
         </Button>
         <ReadOnlyForm
-          record={record}
+          recordData={record.data}
           formSchema={formDefinition}
           key={record?.id}
         />

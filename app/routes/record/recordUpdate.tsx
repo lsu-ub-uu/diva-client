@@ -46,7 +46,6 @@ import { assertDefined } from '@/utils/invariant';
 import type { Route } from '../record/+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { useState, useTransition } from 'react';
-import { start } from 'repl';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
@@ -141,6 +140,11 @@ export const action = async ({
     receivedValues: defaultValues,
   } = await getValidatedFormData(formData, resolver);
 
+  console.log(
+    'Validated form data:',
+    JSON.stringify(validatedFormData, null, 2),
+  );
+
   if (errors) {
     return { errors, defaultValues };
   }
@@ -185,16 +189,10 @@ export default function UpdateRecordRoute({
     record.data,
   );
   const [isPending, startTransition] = useTransition();
-  console.log('Preview data:', previewData);
-  const handleFormChange = async (
-    event: React.ChangeEvent<HTMLFormElement>,
-  ) => {
-    const formData = await parseFormData(new FormData(event.currentTarget));
-
+  const handleFormChange = async (data: BFFDataRecordData) => {
     startTransition(() => {
-      setPreviewData(formData as BFFDataRecordData);
+      setPreviewData(data);
     });
-    console.log('Updated preview data:', formData);
   };
 
   return (
@@ -216,7 +214,13 @@ export default function UpdateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '3rem',
+          }}
+        >
           <RecordForm
             key={lastUpdate}
             defaultValues={defaultValues}
@@ -224,7 +228,7 @@ export default function UpdateRecordRoute({
             onChange={handleFormChange}
           />
           {previewData && (
-            <div className='preview' style={isPending ? { opacity: 0.5 } : {}}>
+            <div className='preview'>
               <h2>Preview</h2>
               <ReadOnlyForm
                 recordData={previewData}
