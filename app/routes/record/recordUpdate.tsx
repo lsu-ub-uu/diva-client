@@ -188,7 +188,7 @@ export default function UpdateRecordRoute({
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     record.data,
   );
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const handleFormChange = async (data: BFFDataRecordData) => {
     startTransition(() => {
       setPreviewData(data);
@@ -229,7 +229,7 @@ export default function UpdateRecordRoute({
           />
           {previewData && (
             <div className='preview'>
-              <h2>Preview</h2>
+              <h2>Förhandsgranskning</h2>
               <ReadOnlyForm
                 recordData={previewData}
                 formSchema={previewFormDefinition}

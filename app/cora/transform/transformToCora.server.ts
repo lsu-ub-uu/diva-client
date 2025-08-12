@@ -59,6 +59,7 @@ const transformToCoraDataRecursively = (
 ): ValuableDataWrapper<Data[]> => {
   const transformedEntries = Object.entries(payload)
     .filter(([key]) => !isAttribute(key))
+    .filter(([key]) => key !== 'repeatId')
     .map(([key, value]) =>
       transformEntry({
         lookup,
@@ -163,7 +164,9 @@ const transformRepeating = (
       key,
       value: item,
       path,
-      repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
+      repeatId: shouldDataHaveRepeatId
+        ? (item.repeatId ?? index.toString())
+        : undefined,
     }),
   );
 

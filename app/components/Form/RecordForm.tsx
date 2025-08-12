@@ -17,22 +17,21 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { RecordFormSchema } from '../FormGenerator/types';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
+import { Form, useNavigation } from 'react-router';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import type { RecordFormSchema } from '../FormGenerator/types';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
-import styles from './Form.module.css';
-import { RestartAltIcon, UpgradeIcon } from '@/icons';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { useWatch } from 'react-hook-form';
-import { ReadOnlyForm } from './ReadOnlyForm';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import type { BFFDataRecordData } from '@/types/record';
+import { useEffect } from 'react';
+import styles from './Form.module.css';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -45,7 +44,6 @@ export const RecordForm = ({
   defaultValues,
   formSchema,
   onChange,
-  previewFormSchema,
 }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -59,13 +57,22 @@ export const RecordForm = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, subscribe } = methods;
 
-  methods.watch((data) => {
-    if (onChange) {
-      onChange(data);
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = subscribe({
+      formState: {
+        values: true,
+      },
+      callback: ({ values }) => {
+        if (onChange) {
+          onChange(values as BFFDataRecordData);
+        }
+      },
+    });
+
+    return unsubscribe;
+  }, [subscribe, onChange]);
 
   return (
     <Form
@@ -96,17 +103,5 @@ export const RecordForm = ({
         />
       </FloatingActionButtonContainer>
     </Form>
-  );
-};
-
-const Preview = ({
-  previewFormSchema,
-}: {
-  previewFormSchema: RecordFormSchema;
-}) => {
-  const watchedValue = useWatch();
-
-  return (
-    <ReadOnlyForm recordData={watchedValue} formSchema={previewFormSchema} />
   );
 };

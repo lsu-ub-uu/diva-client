@@ -55,7 +55,10 @@ export const FieldArrayComponent = ({
   });
 
   const handleAppend = async () => {
-    append(createDefaultValuesFromComponent(component, true));
+    append({
+      ...createDefaultValuesFromComponent(component, true),
+      repeatId: Date.now().toString(),
+    });
   };
 
   const handleMove = async (prev: number, next: number) => {
@@ -67,7 +70,7 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <Fragment key={`${name}_fac`}>
+    <>
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -87,12 +90,11 @@ export const FieldArrayComponent = ({
               }
               deleteButtonAction={() => handleRemove(index)}
               entityType={component.type}
-              key={`${field.id}_${index}_f`}
             />
           );
 
         return (
-          <Fragment key={`${field.id}_${index}_a`}>
+          <Fragment key={field.repeatId ?? field.id}>
             {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
@@ -119,6 +121,6 @@ export const FieldArrayComponent = ({
             </Button>
           </div>
         )}
-    </Fragment>
+    </>
   );
 };

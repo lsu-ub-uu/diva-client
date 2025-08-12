@@ -21,7 +21,6 @@ import type { BFFDataRecordData } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import styles from './ReadOnlyForm.module.css';
-import { useEffect } from 'react';
 
 export interface RecordFormProps {
   recordData?: BFFDataRecordData;
@@ -30,14 +29,8 @@ export interface RecordFormProps {
 
 export const ReadOnlyForm = ({ recordData, formSchema }: RecordFormProps) => {
   const methods = useRemixForm({
-    defaultValues: recordData,
+    values: recordData,
   });
-  const { reset } = methods;
-
-  useEffect(() => {
-    reset(recordData);
-  }, [recordData, reset]);
-
   return (
     <article className={styles['wrapper']}>
       <RemixFormProvider {...methods}>
