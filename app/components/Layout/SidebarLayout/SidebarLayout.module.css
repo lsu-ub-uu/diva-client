@@ -36,9 +36,4 @@
     overflow: hidden auto;
     padding: var(--gap) 0;
   }
-
-  main {
-    /* Take account for toolbar height */
-    padding-bottom: 64px;
-  }
 }

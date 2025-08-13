@@ -49,6 +49,8 @@
   --color-link-visited: var(--color-accent);
   --color-card-dark: rgb(5 85 164 / 12%);
   --color-card: rgb(5 85 164/ 8%);
+  --color-card-inactive-dark: rgb(0 0 0 / 12%);
+  --color-card-inactive: rgb(0 0 0 / 8%);
   --color-button: var(--color-primary);
   --color-button-primary-hover: rgb(17 17 17);
   --color-button-primary-active: rgb(0 0 0);
@@ -149,6 +151,8 @@
     --color-thin-border: rgb(255 255 255 / 20%);
     --color-card-dark: rgb(103 159 243 / 30%);
     --color-card: rgb(103 159 243 / 8%);
+    --color-card-inactive-dark: rgb(255 255 255 / 12%);
+    --color-card-inactive: rgb(255 255 255 / 8%);
     --color-button-primary-active: rgb(255 255 255);
     --color-button-secondary-hover: rgb(255 255 255 / 10%);
     --color-button-secondary-active: rgb(255 255 255 / 20%);

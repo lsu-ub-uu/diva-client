@@ -35,6 +35,29 @@ export const RepeatingGroup = ({
   anchorId,
 }: RepeatingGroupProps) => {
   const { control } = useRemixFormContext();
+
+  const fieldArrray = (
+    <FieldArrayComponent
+      control={control}
+      component={component}
+      name={currentComponentNamePath}
+      renderCallback={(arrayPath, actionButtonGroup) => {
+        return (
+          <Group
+            currentComponentNamePath={arrayPath}
+            component={component}
+            parentPresentationStyle={parentPresentationStyle}
+            actionButtonGroup={actionButtonGroup}
+          />
+        );
+      }}
+    />
+  );
+
+  if (component.mode === 'output') {
+    return fieldArrray;
+  }
+
   return (
     <section
       id={anchorId}
@@ -42,21 +65,7 @@ export const RepeatingGroup = ({
       data-colspan={component.gridColSpan ?? 12}
       data-layout='grid'
     >
-      <FieldArrayComponent
-        control={control}
-        component={component}
-        name={currentComponentNamePath}
-        renderCallback={(arrayPath, actionButtonGroup) => {
-          return (
-            <Group
-              currentComponentNamePath={arrayPath}
-              component={component}
-              parentPresentationStyle={parentPresentationStyle}
-              actionButtonGroup={actionButtonGroup}
-            />
-          );
-        }}
-      />
+      {fieldArrray}
     </section>
   );
 };

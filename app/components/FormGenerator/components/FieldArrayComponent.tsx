@@ -60,10 +60,7 @@ export const FieldArrayComponent = ({
   });
 
   const handleAppend = async () => {
-    append({
-      ...createDefaultValuesFromComponent(component, true),
-      repeatId: Date.now().toString(),
-    });
+    append(createDefaultValuesFromComponent(component, true));
   };
 
   const handleMove = async (prev: number, next: number) => {

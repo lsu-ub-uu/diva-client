@@ -36,29 +36,37 @@ export const OptionalGroup = ({
 }: OptionalGroupProps) => {
   const { control } = useRemixFormContext();
 
+  const optionalComponent = (
+    <OptionalComponent
+      anchorId={anchorId}
+      control={control}
+      component={component}
+      name={currentComponentNamePath}
+      renderCallback={(actionButtonGroup) => {
+        return (
+          <Group
+            currentComponentNamePath={currentComponentNamePath}
+            component={component}
+            parentPresentationStyle={parentPresentationStyle}
+            actionButtonGroup={actionButtonGroup}
+            anchorId={anchorId}
+          />
+        );
+      }}
+    />
+  );
+
+  if (component.mode === 'output') {
+    return optionalComponent;
+  }
+
   return (
     <section
       id={anchorId}
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
-      <OptionalComponent
-        anchorId={anchorId}
-        control={control}
-        component={component}
-        name={currentComponentNamePath}
-        renderCallback={(actionButtonGroup) => {
-          return (
-            <Group
-              currentComponentNamePath={currentComponentNamePath}
-              component={component}
-              parentPresentationStyle={parentPresentationStyle}
-              actionButtonGroup={actionButtonGroup}
-              anchorId={anchorId}
-            />
-          );
-        }}
-      />
+      {optionalComponent}
     </section>
   );
 };

@@ -180,6 +180,7 @@ export default function UpdateRecordRoute({
   } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
+
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     record.data,
   );
@@ -208,29 +209,21 @@ export default function UpdateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '3rem',
-          }}
-        >
-          <RecordForm
-            key={lastUpdate}
-            defaultValues={defaultValues}
-            formSchema={formDefinition}
-            onChange={handleFormChange}
-          />
-          {deferredPreviewData && (
-            <div className='preview'>
-              <h2>Förhandsgranskning</h2>
-              <ReadOnlyForm
-                recordData={deferredPreviewData}
-                formSchema={previewFormDefinition}
-              />
-            </div>
-          )}
-        </div>
+        <RecordForm
+          key={lastUpdate}
+          defaultValues={defaultValues}
+          formSchema={formDefinition}
+          onChange={handleFormChange}
+        />
+        {deferredPreviewData && (
+          <div className='preview'>
+            <h2 className='preview-heading'>Förhandsgranskning</h2>
+            <ReadOnlyForm
+              recordData={deferredPreviewData}
+              formSchema={previewFormDefinition}
+            />
+          </div>
+        )}
       </div>
     </SidebarLayout>
   );

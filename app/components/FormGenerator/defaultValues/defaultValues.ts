@@ -76,7 +76,7 @@ export const createDefaultValuesFromComponent = (
     : createDefaultValuesForGroup(component);
 
   if (forceDefaultValuesForAppend) {
-    defaultValues = formDefaultObject;
+    defaultValues = { ...formDefaultObject, repeatId: crypto.randomUUID() };
   } else {
     if (
       component.repeat?.repeatMin === 0 &&
@@ -157,9 +157,12 @@ export const generateComponentAttributes = (
 
 export const generateRepeatingObject = (
   size: number,
-  obj: unknown,
+  obj: object,
 ): unknown[] => {
-  return Array.from({ length: size }, () => obj);
+  return Array.from({ length: size }, () => ({
+    ...obj,
+    repeatId: crypto.randomUUID(),
+  }));
 };
 
 export const getMinNumberOfRepeatingToShow = (

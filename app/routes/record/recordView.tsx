@@ -63,7 +63,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <div className='record-wrapper' style={{ maxWidth: '1200px' }}>
+      <div className='record-wrapper'>
         <Button
           className='api-button'
           variant='tertiary'
