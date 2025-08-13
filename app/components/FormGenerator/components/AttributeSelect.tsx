@@ -31,7 +31,7 @@ import {
   getErrorMessageForField,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
-import { Controller } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { useHydrated } from '@/utils/useHydrated';
 import { Fieldset } from '@/components/Input/Fieldset';
@@ -63,10 +63,11 @@ export const AttributeSelect = ({
 }: AttributeSelectProps) => {
   const hydrated = useHydrated();
   const { t } = useTranslation();
-  const { register, getValues, control, formState } = useRemixFormContext();
+  const { register, control, formState } = useRemixFormContext();
 
   const errorMessage = getErrorMessageForField(formState, name);
-  const value = finalValue ?? getValues(name);
+  const formValue = useWatch({ name });
+  const value = finalValue ?? formValue;
 
   if (displayMode === 'output' && !value) {
     return null;
