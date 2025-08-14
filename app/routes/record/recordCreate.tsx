@@ -204,13 +204,13 @@ export default function CreateRecordRoute({
       >
         <NotificationSnackbar notification={notification} />
 
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity} className='error-alert'>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
         <div className='record-wrapper'>
-          {notification && notification.severity === 'error' && (
-            <Alert severity={notification.severity}>
-              <AlertTitle>{notification.summary}</AlertTitle>
-              {notification.details}
-            </Alert>
-          )}
           <RecordForm
             formSchema={formDefinition}
             defaultValues={defaultValues}

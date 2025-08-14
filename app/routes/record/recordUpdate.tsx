@@ -202,13 +202,13 @@ export default function UpdateRecordRoute({
     >
       <NotificationSnackbar notification={notification} />
 
+      {notification && notification.severity === 'error' && (
+        <Alert severity={notification.severity} className='error-alert'>
+          <AlertTitle>{notification.summary}</AlertTitle>
+          {notification.details}
+        </Alert>
+      )}
       <div className='record-wrapper'>
-        {notification && notification.severity === 'error' && (
-          <Alert severity={notification.severity}>
-            <AlertTitle>{notification.summary}</AlertTitle>
-            {notification.details}
-          </Alert>
-        )}
         <RecordForm
           key={lastUpdate}
           defaultValues={defaultValues}

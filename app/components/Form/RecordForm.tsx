@@ -35,7 +35,6 @@ import styles from './Form.module.css';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
-  previewFormSchema?: RecordFormSchema;
   defaultValues: Record<string, any>;
   onChange?: (data: BFFDataRecordData) => void;
 }

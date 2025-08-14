@@ -20,11 +20,13 @@
 import type { ReactNode } from 'react';
 import { CheckCircleIcon, ErrorIcon, InfoIcon, WarningIcon } from '@/icons';
 import styles from './Alert.module.css';
+import clsx from 'clsx';
 
 export interface AlertProps {
   icon?: ReactNode;
   severity: 'success' | 'info' | 'warning' | 'error';
   children: ReactNode;
+  className?: string;
 }
 
 interface AlertTitleProps {
@@ -52,9 +54,9 @@ const GetIcons = ({ severity }: GetIconProps) => {
   }
 };
 
-export const Alert = ({ icon, severity, children }: AlertProps) => {
+export const Alert = ({ icon, severity, children, className }: AlertProps) => {
   return (
-    <div className={styles['alert']} data-severity={severity}>
+    <div className={clsx(styles['alert'], className)} data-severity={severity}>
       <div className={styles['icon']}>
         {icon === undefined ? <GetIcons severity={severity} /> : icon}
       </div>
