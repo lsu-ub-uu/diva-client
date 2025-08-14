@@ -47,6 +47,9 @@ import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import type { Route } from '../record/+types/recordCreate';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { useDeferredValue, useState } from 'react';
+import css from './record.css?url';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -60,11 +63,17 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     throw data('divaClient_missingValidationTypeParamText', { status: 400 });
   }
   let formDefinition;
+  let previewFormDefinition;
   try {
     formDefinition = await getFormDefinitionByValidationTypeId(
       await context.dependencies,
       validationTypeId,
       'create',
+    );
+    previewFormDefinition = await getFormDefinitionByValidationTypeId(
+      await context.dependencies,
+      validationTypeId,
+      'view',
     );
   } catch (error) {
     if (error instanceof NotFoundError) {
@@ -84,7 +93,14 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const breadcrumb = title;
 
   return data(
-    { formDefinition, defaultValues, notification, title, breadcrumb },
+    {
+      formDefinition,
+      previewFormDefinition,
+      defaultValues,
+      notification,
+      title,
+      breadcrumb,
+    },
     await getResponseInitWithSession(session),
   );
 };
@@ -157,11 +173,25 @@ export const meta = ({ data, error }: Route.MetaArgs) => {
   return [{ title: error ? getMetaTitleFromError(error) : data?.title }];
 };
 
+export const links: Route.LinksFunction = () => [
+  { rel: 'stylesheet', href: css },
+];
+
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { formDefinition, notification, defaultValues } = loaderData;
+  const { t } = useTranslation();
+  const { formDefinition, previewFormDefinition, notification, defaultValues } =
+    loaderData;
 
+  const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
+    null,
+  );
+  const deferredPreviewData = useDeferredValue(previewData);
+
+  const handleFormChange = (data: BFFDataRecordData) => {
+    setPreviewData(data);
+  };
   return (
     <>
       <SidebarLayout
@@ -175,17 +205,30 @@ export default function CreateRecordRoute({
       >
         <NotificationSnackbar notification={notification} />
 
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity} className='error-alert'>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
         <div className='record-wrapper'>
-          {notification && notification.severity === 'error' && (
-            <Alert severity={notification.severity}>
-              <AlertTitle>{notification.summary}</AlertTitle>
-              {notification.details}
-            </Alert>
-          )}
           <RecordForm
             formSchema={formDefinition}
             defaultValues={defaultValues}
+            onChange={handleFormChange}
           />
+
+          {deferredPreviewData && (
+            <div className='preview'>
+              <h2 className='preview-heading'>
+                {t('divaClient_formPreviewHeadingText')}
+              </h2>
+              <ReadOnlyForm
+                recordData={deferredPreviewData}
+                formSchema={previewFormDefinition}
+              />
+            </div>
+          )}
         </div>
       </SidebarLayout>
     </>

@@ -23,28 +23,31 @@ import {
   getSessionFromCookie,
   requireAuth,
 } from '@/auth/sessions.server';
-import { data } from 'react-router';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getValidatedFormData } from 'remix-hook-form';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord } from '@/types/record';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { updateRecord } from '@/data/updateRecord.server';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
+import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { data } from 'react-router';
+import { getValidatedFormData } from 'remix-hook-form';
 
-import { getRecordTitle } from '@/utils/getRecordTitle';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
-import { RecordForm } from '@/components/Form/RecordForm';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
-import type { Route } from '../record/+types/recordUpdate';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { useDeferredValue, useState } from 'react';
+import type { Route } from '../record/+types/recordUpdate';
+import { useTranslation } from 'react-i18next';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -73,6 +76,12 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     'update',
   );
 
+  const previewFormDefinition = await getFormDefinitionByValidationTypeId(
+    await context.dependencies,
+    record.validationType,
+    'view',
+  );
+
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
     record.data,
@@ -81,7 +90,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
 
   return data(
-    { record, formDefinition, defaultValues, notification, title, breadcrumb },
+    {
+      record,
+      formDefinition,
+      previewFormDefinition,
+      defaultValues,
+      notification,
+      title,
+      breadcrumb,
+    },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -116,6 +133,7 @@ export const action = async ({
     validationType,
     'update',
   );
+
   const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
   const {
     errors,
@@ -154,9 +172,26 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { record, formDefinition, notification, defaultValues } = loaderData;
+  const { t } = useTranslation();
+  const {
+    record,
+    formDefinition,
+    previewFormDefinition,
+    notification,
+    defaultValues,
+  } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
+
+  const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
+    record.data,
+  );
+  const deferredPreviewData = useDeferredValue(previewData);
+
+  const handleFormChange = (data: BFFDataRecordData) => {
+    setPreviewData(data);
+  };
+
   return (
     <SidebarLayout
       sidebarContent={
@@ -169,18 +204,30 @@ export default function UpdateRecordRoute({
     >
       <NotificationSnackbar notification={notification} />
 
+      {notification && notification.severity === 'error' && (
+        <Alert severity={notification.severity} className='error-alert'>
+          <AlertTitle>{notification.summary}</AlertTitle>
+          {notification.details}
+        </Alert>
+      )}
       <div className='record-wrapper'>
-        {notification && notification.severity === 'error' && (
-          <Alert severity={notification.severity}>
-            <AlertTitle>{notification.summary}</AlertTitle>
-            {notification.details}
-          </Alert>
-        )}
         <RecordForm
           key={lastUpdate}
           defaultValues={defaultValues}
           formSchema={formDefinition}
+          onChange={handleFormChange}
         />
+        {deferredPreviewData && (
+          <div className='preview'>
+            <h2 className='preview-heading'>
+              {t('divaClient_formPreviewHeadingText')}
+            </h2>
+            <ReadOnlyForm
+              recordData={deferredPreviewData}
+              formSchema={previewFormDefinition}
+            />
+          </div>
+        )}
       </div>
     </SidebarLayout>
   );

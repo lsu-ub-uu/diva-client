@@ -44,7 +44,7 @@ import {
   formDefWithTextVar,
 } from '@/__mocks__/data/form/textVar';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as yup from 'yup';
 import type { FormSchema } from '../../types';
 import {
@@ -66,6 +66,11 @@ import {
 } from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
 describe('defaultValues', () => {
+  beforeEach(() => {
+    vi.stubGlobal('crypto', {
+      randomUUID: vi.fn().mockReturnValue('uuid-mock'),
+    });
+  });
   describe('generate defaultValues', () => {
     describe('createDefaultValuesFromFormSchema', () => {
       it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
@@ -105,9 +110,11 @@ describe('defaultValues', () => {
             someNameInData: [
               {
                 value: '',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
+                repeatId: 'uuid-mock',
               },
             ],
           },
@@ -164,6 +171,7 @@ describe('defaultValues', () => {
                 exampleTextVar: {
                   value: '',
                 },
+                repeatId: 'uuid-mock',
               },
               {
                 exampleNumberVar: {
@@ -172,6 +180,7 @@ describe('defaultValues', () => {
                 exampleTextVar: {
                   value: '',
                 },
+                repeatId: 'uuid-mock',
               },
             ],
             recordInfo: {},
@@ -224,6 +233,7 @@ describe('defaultValues', () => {
           someRootNameInData: {
             affiliation: [
               {
+                repeatId: 'uuid-mock',
                 someTextVar: { value: '' },
                 someOtherTextVar: { value: '' },
               },
@@ -242,6 +252,7 @@ describe('defaultValues', () => {
           someRootNameInData: {
             affiliation: [
               {
+                repeatId: 'uuid-mock',
                 someTextVar: { value: '' },
                 someOtherTextVar: { value: '' },
               },
@@ -265,6 +276,7 @@ describe('defaultValues', () => {
           exampleTextVar: {
             value: '',
           },
+          repeatId: 'uuid-mock',
         };
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentGroup,
@@ -275,6 +287,7 @@ describe('defaultValues', () => {
 
       it('should construct a default value object for groups with same nameInData', () => {
         const expectedDefaultValues = {
+          repeatId: 'uuid-mock',
           titleInfo: {
             title: {
               value: '',
@@ -285,6 +298,7 @@ describe('defaultValues', () => {
             {
               _lang: '',
               _type: 'alternative',
+              repeatId: 'uuid-mock',
               title: {
                 value: '',
               },
@@ -302,17 +316,21 @@ describe('defaultValues', () => {
         const expectedDefaultValues = {
           exampleNumberVar: [
             {
+              repeatId: 'uuid-mock',
               value: '',
             },
           ],
           exampleTextVar: [
             {
+              repeatId: 'uuid-mock',
               value: '',
             },
             {
+              repeatId: 'uuid-mock',
               value: '',
             },
           ],
+          repeatId: 'uuid-mock',
         };
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentGroupWithChildren,
@@ -329,79 +347,42 @@ describe('defaultValues', () => {
           innerChildGroup: [
             {
               exampleNumberVar: [
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
               ],
               exampleTextVar: {
                 value: '',
               },
+              repeatId: 'uuid-mock',
             },
             {
               exampleNumberVar: [
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
-                {
-                  value: '12',
-                },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', value: '12' },
               ],
               exampleTextVar: {
                 value: '',
               },
+              repeatId: 'uuid-mock',
             },
           ],
+          repeatId: 'uuid-mock',
         };
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentGroupAndTextVariableWithinGroup,
@@ -414,6 +395,7 @@ describe('defaultValues', () => {
         const expectedDefaultValues = {
           _firstChildGroupColor: 'yellow',
           _firstChildGroupSecondAttribute: '',
+          repeatId: 'uuid-mock',
           secondChildGroup: [
             {
               exampleNumberVar: {
@@ -423,6 +405,7 @@ describe('defaultValues', () => {
                 _colour: '',
                 value: '',
               },
+              repeatId: 'uuid-mock',
             },
           ],
         };
@@ -436,6 +419,7 @@ describe('defaultValues', () => {
       it('should construct a default value object for textVariable component', () => {
         const expectedDefaultValues = {
           value: '',
+          repeatId: 'uuid-mock',
         };
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentRepeatingTextVariable,
@@ -890,22 +874,27 @@ describe('defaultValues', () => {
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
             ],
             firstChildGroup: {
@@ -913,22 +902,27 @@ describe('defaultValues', () => {
                 {
                   value: '',
                   _colour: 'pink',
+                  repeatId: 'uuid-mock',
                 },
                 {
                   value: '',
                   _colour: 'pink',
+                  repeatId: 'uuid-mock',
                 },
                 {
                   value: '',
                   _colour: 'pink',
+                  repeatId: 'uuid-mock',
                 },
                 {
                   value: '',
                   _colour: 'pink',
+                  repeatId: 'uuid-mock',
                 },
                 {
                   value: '',
                   _colour: 'pink',
+                  repeatId: 'uuid-mock',
                 },
               ],
               exampleTextVar: [],
@@ -978,12 +972,15 @@ describe('defaultValues', () => {
             someNameInData: [
               {
                 value: 'testValue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
+                repeatId: 'uuid-mock',
               },
             ],
           },
@@ -1063,10 +1060,12 @@ describe('defaultValues', () => {
               {
                 value: '',
                 _colour: 'blue',
+                repeatId: 'uuid-mock',
               },
               {
                 value: '',
                 _colour: '',
+                repeatId: 'uuid-mock',
               },
             ],
             firstChildGroup: {
@@ -1135,6 +1134,7 @@ describe('defaultValues', () => {
                 exampleTextVar: {
                   value: 'SomeTextVar',
                 },
+                repeatId: 'uuid-mock',
               },
               {
                 exampleNumberVar: {
@@ -1143,6 +1143,7 @@ describe('defaultValues', () => {
                 exampleTextVar: {
                   value: '',
                 },
+                repeatId: 'uuid-mock',
               },
             ],
             recordInfo: {},
@@ -1449,6 +1450,7 @@ describe('defaultValues', () => {
       it('one repeat', () => {
         const expectedData = [
           {
+            repeatId: 'uuid-mock',
             value: '',
           },
         ];
@@ -1460,9 +1462,11 @@ describe('defaultValues', () => {
       it('two repeats', () => {
         const expectedData = [
           {
+            repeatId: 'uuid-mock',
             value: '',
           },
           {
+            repeatId: 'uuid-mock',
             value: '',
           },
         ];

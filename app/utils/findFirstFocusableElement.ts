@@ -1,7 +1,9 @@
-export const findFirstFocusableElement = (
+export const findFocusableElements = (
   container: HTMLElement,
-): HTMLElement | null => {
-  return container.querySelector(
-    'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), details, [tabindex]:not([tabindex="-1"])',
+): HTMLElement[] => {
+  return Array.from(
+    container.querySelectorAll(
+      'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), details, [tabindex]:not([tabindex="-1"])',
+    ),
   );
 };

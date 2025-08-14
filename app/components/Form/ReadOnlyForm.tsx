@@ -16,22 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { RecordFormSchema } from '../FormGenerator/types';
-import type { BFFDataRecord } from '@/types/record';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import type { BFFDataRecordData } from '@/types/record';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import type { RecordFormSchema } from '../FormGenerator/types';
 import styles from './ReadOnlyForm.module.css';
 
 export interface RecordFormProps {
-  record?: BFFDataRecord;
+  recordData?: BFFDataRecordData;
   formSchema: RecordFormSchema;
 }
 
-export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
+export const ReadOnlyForm = ({ recordData, formSchema }: RecordFormProps) => {
   const methods = useRemixForm({
-    defaultValues: record?.data,
+    values: recordData,
   });
-
   return (
     <article className={styles['wrapper']}>
       <RemixFormProvider {...methods}>

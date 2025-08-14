@@ -17,26 +17,33 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { RecordFormSchema } from '../FormGenerator/types';
-import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from 'react-router';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
+import { Form, useNavigation } from 'react-router';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import type { RecordFormSchema } from '../FormGenerator/types';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
-import styles from './Form.module.css';
-import { RestartAltIcon, UpgradeIcon } from '@/icons';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { RestartAltIcon, UpgradeIcon } from '@/icons';
+import type { BFFDataRecordData } from '@/types/record';
+import { useEffect } from 'react';
+import styles from './Form.module.css';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
   defaultValues: Record<string, any>;
+  onChange?: (data: BFFDataRecordData) => void;
 }
 
-export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
+export const RecordForm = ({
+  defaultValues,
+  formSchema,
+  onChange,
+}: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
@@ -49,7 +56,22 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, subscribe } = methods;
+
+  useEffect(() => {
+    const unsubscribe = subscribe({
+      formState: {
+        values: true,
+      },
+      callback: ({ values }) => {
+        if (onChange) {
+          onChange(values as BFFDataRecordData);
+        }
+      },
+    });
+
+    return unsubscribe;
+  }, [subscribe, onChange]);
 
   return (
     <Form
@@ -60,6 +82,7 @@ export const RecordForm = ({ defaultValues, formSchema }: RecordFormProps) => {
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
+
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 

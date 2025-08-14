@@ -59,28 +59,30 @@ export const OptionalComponent = ({
           );
         }
 
+        if (component.mode === 'output') {
+          return <></>;
+        }
+
         return (
           <div
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
           >
-            {component.mode === 'input' && (
-              <Button
-                id={field.value ? undefined : anchorId}
-                variant='tertiary'
-                onClick={() =>
-                  field.onChange(
-                    createDefaultValuesFromComponent(component, true),
-                  )
-                }
-                aria-label={t('divaClient_addFieldText', {
-                  fieldName: t(component.label),
-                })}
-                tooltipPosition='top'
-              >
-                <AddCircleIcon /> {t(component.label)}
-              </Button>
-            )}
+            <Button
+              id={field.value ? undefined : anchorId}
+              variant='tertiary'
+              onClick={() =>
+                field.onChange(
+                  createDefaultValuesFromComponent(component, true),
+                )
+              }
+              aria-label={t('divaClient_addFieldText', {
+                fieldName: t(component.label),
+              })}
+              tooltipPosition='top'
+            >
+              <AddCircleIcon /> {t(component.label)}
+            </Button>
           </div>
         );
       }}

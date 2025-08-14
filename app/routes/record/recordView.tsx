@@ -76,7 +76,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
           {t('divaClient_viewInApiText')}
         </Button>
         <ReadOnlyForm
-          record={record}
+          recordData={record.data}
           formSchema={formDefinition}
           key={record?.id}
         />

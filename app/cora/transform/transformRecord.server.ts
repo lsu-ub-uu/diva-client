@@ -43,10 +43,10 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
 import type {
   BFFDataRecord,
+  BFFDataResourceLink,
   BFFUpdate,
   BFFUserRight,
   Metadata,
-  BFFDataResourceLink,
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -180,6 +180,7 @@ export const transformDataGroup = (
     const repeating = isRepeating(matchingMetadata);
     if (repeating) {
       group[name] ??= [];
+      transformedChild.repeatId = dataChild.repeatId;
       group[name].push(transformedChild);
     } else {
       group[name] = transformedChild;

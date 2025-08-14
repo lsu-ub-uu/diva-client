@@ -37,6 +37,11 @@ interface FieldArrayComponentProps {
   anchorId?: string;
 }
 
+type RepeatingField = {
+  repeatId?: string;
+  id: string;
+};
+
 export const FieldArrayComponent = ({
   control,
   name,
@@ -67,7 +72,7 @@ export const FieldArrayComponent = ({
   };
 
   return (
-    <Fragment key={`${name}_fac`}>
+    <>
       {fields.map((field, index) => {
         const actionButtonGroup = component.mode === 'input' &&
           !notRemovableEnhancement && (
@@ -87,12 +92,11 @@ export const FieldArrayComponent = ({
               }
               deleteButtonAction={() => handleRemove(index)}
               entityType={component.type}
-              key={`${field.id}_${index}_f`}
             />
           );
 
         return (
-          <Fragment key={`${field.id}_${index}_a`}>
+          <Fragment key={(field as RepeatingField).repeatId ?? field.id}>
             {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
           </Fragment>
         );
@@ -119,6 +123,6 @@ export const FieldArrayComponent = ({
             </Button>
           </div>
         )}
-    </Fragment>
+    </>
   );
 };
