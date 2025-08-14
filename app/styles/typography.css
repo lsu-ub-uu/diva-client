@@ -1,0 +1,40 @@
+:root {
+  --font-family-main: 'Arial', sans-serif;
+  --font-family-serif:
+    'Georgia', 'Bitstream Charter', 'Noto Serif', 'Times New Roman', 'Times',
+    serif;
+  --font-size-base: 16px;
+  --font-size-xs: 0.8rem;
+  --font-size-s: 0.9rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 4rem;
+  --font-size-h1: 3rem;
+  --font-weight-h1: 400;
+  --font-size-h2: 1.6rem;
+  --font-weight-h2: 400;
+  --font-size-h3: 1.3rem;
+  --font-weight-h3: 400;
+  --font-size-h4: 1rem;
+  --font-weight-h4: 400;
+  --font-size-h5: 1rem;
+  --font-weight-h5: 600;
+  --font-size-h6: 0.9rem;
+  --font-weight-h6: 600;
+  --font-size-bold: 1rem;
+  --font-size-icon: 1.5rem;
+  --font-weight-bold: 800;
+  --line-height-base: 1.5;
+
+  @media (width < 600px) {
+    --font-size-h1: 2rem;
+    --font-size-h2: 1.4rem;
+    --font-size-h3: 1.2rem;
+    --font-size-h4: 1rem;
+    --font-size-h5: 0.9rem;
+    --font-size-h6: 0.8rem;
+    --font-size-xxl: 2.5rem;
+    --font-size-l: 1.2rem;
+  }
+}

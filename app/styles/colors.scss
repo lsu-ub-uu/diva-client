@@ -1,0 +1,104 @@
+:root {
+  /* Color palette */
+  --color-background: rgb(255 255 255);
+  --color-background-inverted: rgb(33 33 33);
+  --color-text: rgb(33 33 33);
+  --color-text-inverted: rgb(255 255 255);
+  --color-primary: rgb(51 51 51);
+  --color-secondary: rgb(1 1 1);
+  --color-accent-light: rgb(150 136 162);
+  --color-accent: rgb(117 89 142);
+  --color-accent-dark: rgb(97 57 133);
+  --color-error-light: rgb(238 220 219);
+  --color-error-main: rgb(153 0 0);
+  --color-error-dark: rgb(115 0 0);
+  --color-success-light: rgb(217 234 219);
+  --color-success-main: rgb(0 112 15);
+  --color-gray-light: rgb(250 249 248);
+  --color-gray-main: rgb(231 227 222);
+  --color-gray-dark: rgb(155 138 122);
+  --color-warning-light: rgb(253 243 209);
+  --color-warning-main: rgb(246 194 68);
+  --color-thin-border: rgb(238 238 238);
+
+  /* Component colors */
+  --color-link: rgb(5 85 164);
+  --color-link-selected: rgb(13 110 253);
+  --color-link-visited: var(--color-accent);
+  --color-card-dark: rgb(5 85 164 / 12%);
+  --color-card: rgb(5 85 164 / 8%);
+  --color-card-inactive-dark: rgb(0 0 0 / 12%);
+  --color-card-inactive: rgb(0 0 0 / 8%);
+  --color-button: var(--color-primary);
+  --color-button-primary-hover: rgb(17 17 17);
+  --color-button-primary-active: rgb(0 0 0);
+  --color-button-secondary-hover: rgb(0 0 0 / 10%);
+  --color-button-secondary-active: rgb(0 0 0 / 20%);
+  --color-label: rgb(0 0 0 / 66%);
+  --color-input-border: rgb(153 153 153);
+  --color-alert-success-bg: rgb(237 247 237);
+  --color-alert-success-icon: rgb(46 125 50);
+  --color-alert-success-font: rgb(30 70 32);
+  --color-alert-info-bg: rgb(229 246 253);
+  --color-alert-info-icon: rgb(2 136 209);
+  --color-alert-info-font: rgb(1 67 97);
+  --color-alert-error-bg: rgb(255 236 240);
+  --color-alert-error-icon: rgb(255 23 68);
+  --color-alert-error-font: rgb(102 27 42);
+  --color-alert-warning-bg: rgb(255 244 229);
+  --color-alert-warning-icon: rgb(237 108 2);
+  --color-alert-warning-font: rgb(102 60 0);
+  --color-fab-primary-text: rgb(255 255 255);
+  --color-fab-primary-bg: rgb(117 89 142);
+  --color-fab-secondary-text: rgb(0 0 0);
+  --color-fab-secondary-bg: rgb(255 255 255);
+  --color-nav-rail: var(--color-gray-light);
+
+  @mixin dark-color-scheme {
+    --color-background: rgb(33 33 33);
+    --color-background-inverted: rgb(233 233 233);
+    --color-text: rgb(233 233 233);
+    --color-text-inverted: rgb(66 66 66);
+    --color-primary: rgb(231 227 222);
+    --color-secondary: rgb(1 1 1);
+    --color-button: rgb(255 255 255);
+    --color-accent-dark: var(--color-accent);
+    --color-accent: var(--color-accent-light);
+    --color-label: rgb(255 255 255 / 66%);
+    --color-error-main: rgb(240 79 79);
+    --color-alert-success-font: rgb(237 247 237);
+    --color-alert-success-icon: rgb(59 168 65);
+    --color-alert-success-bg: rgb(30 70 32);
+    --color-alert-info-font: rgb(229 246 253);
+    --color-alert-info-icon: rgb(3 163 249);
+    --color-alert-info-bg: rgb(1 67 97);
+    --color-alert-error-font: rgb(255 236 240);
+    --color-alert-error-icon: rgb(251 47 88);
+    --color-alert-error-bg: rgb(102 27 42);
+    --color-alert-warning-font: rgb(255 244 229);
+    --color-alert-warning-icon: rgb(254 139 45);
+    --color-alert-warning-bg: rgb(102 60 0);
+    --color-thin-border: rgb(255 255 255 / 20%);
+    --color-card-dark: rgb(103 159 243 / 30%);
+    --color-card: rgb(103 159 243 / 8%);
+    --color-card-inactive-dark: rgb(255 255 255 / 12%);
+    --color-card-inactive: rgb(255 255 255 / 8%);
+    --color-button-primary-active: rgb(255 255 255);
+    --color-button-secondary-hover: rgb(255 255 255 / 10%);
+    --color-button-secondary-active: rgb(255 255 255 / 20%);
+    --color-link: rgb(144 224 255);
+    --color-link-selected: rgb(198 237 250);
+    --color-link-visited: rgb(204 178 227);
+    --color-nav-rail: rgb(26 26 22);
+  }
+
+  [data-color-scheme='dark'] {
+    @include dark-color-scheme;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-color-scheme='auto'] {
+      @include dark-color-scheme;
+    }
+  }
+}

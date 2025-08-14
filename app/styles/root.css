@@ -16,7 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-@import './theme.css' layer(root);
+@import './colors.scss' layer(root);
+@import './typography.css' layer(root);
+@import './spacing.css' layer(root);
 @import './normalize.css' layer(root);
 @import './form-component.css' layer(components);
 
@@ -31,6 +33,15 @@
   }
 
   :root {
+    /* Border radius */
+    --border-radius: 8px;
+    --border-radius-s: 4px;
+
+    /* Shadows */
+    --elevation:
+      rgb(0 0 0 / 20%) 0 3px 5px -1px, rgb(0 0 0 / 14%) 0 6px 10px 0,
+      rgb(0 0 0 / 12%) 0 1px 18px 0;
+
     *:focus-visible {
       outline: 2px solid var(--color-link-selected);
     }

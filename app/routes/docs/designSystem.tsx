@@ -45,18 +45,12 @@ import css from './design-system.css?url';
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DesignSystem() {
-  const [darkMode, setDarkMode] = useState(false);
   const [snacbkarOpen, setSnacbkarOpen] = useState(false);
   const [progress, setProgress] = useState(50);
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
-  useEffect(() => {
-    document.querySelector('body')!.dataset.theme = darkMode ? 'dark' : 'light';
-  }, [darkMode]);
-
   return (
     <div>
-      <button onClick={() => setDarkMode(!darkMode)}> Toggle dark mode</button>
       <header className='header'>
         <h1>Design System Demo</h1>
       </header>
@@ -79,7 +73,43 @@ export default function DesignSystem() {
             </div>
             <div
               className='color-swatch'
-              style={{ backgroundColor: 'var(--color-primary)' }}
+              style={{
+                backgroundColor: 'var(--color-background-inverted)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Background Inverted</div>
+              <div className='color-rgb'>rgb(33 33 33)</div>
+              <div className='color-hex'>#212121</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-text)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Text</div>
+              <div className='color-rgb'>rgb(33 33 33)</div>
+              <div className='color-hex'>#212121</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-text-inverted)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Text Inverted</div>
+              <div className='color-rgb'>rgb(255 255 255)</div>
+              <div className='color-hex'>#ffffff</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                color: 'var(--color-text-inverted)',
+              }}
             >
               <div className='color-name'>Primary</div>
               <div className='color-rgb'>rgb(51 51 51)</div>
@@ -87,7 +117,32 @@ export default function DesignSystem() {
             </div>
             <div
               className='color-swatch'
-              style={{ backgroundColor: 'var(--color-accent)' }}
+              style={{
+                backgroundColor: 'var(--color-secondary)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Secondary</div>
+              <div className='color-rgb'>rgb(1 1 1)</div>
+              <div className='color-hex'>#010101</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-accent-light)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Accent Light</div>
+              <div className='color-rgb'>rgb(150 136 162)</div>
+              <div className='color-hex'>#9688A2</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-accent)',
+                color: 'var(--color-text-inverted)',
+              }}
             >
               <div className='color-name'>Accent</div>
               <div className='color-rgb'>rgb(117 89 142)</div>
@@ -95,7 +150,33 @@ export default function DesignSystem() {
             </div>
             <div
               className='color-swatch'
-              style={{ backgroundColor: 'var(--color-error-main)' }}
+              style={{
+                backgroundColor: 'var(--color-accent-dark)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Accent Dark</div>
+              <div className='color-rgb'>rgb(97 57 133)</div>
+              <div className='color-hex'>#613985</div>
+            </div>
+
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-error-light)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Error Light</div>
+              <div className='color-rgb'>rgb(238 220 219)</div>
+              <div className='color-hex'>#EEDCDB</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-error-main)',
+                color: 'var(--color-text-inverted)',
+              }}
             >
               <div className='color-name'>Error Main</div>
               <div className='color-rgb'>rgb(153 0 0)</div>
@@ -103,11 +184,47 @@ export default function DesignSystem() {
             </div>
             <div
               className='color-swatch'
-              style={{ backgroundColor: 'var(--color-success-main)' }}
+              style={{
+                backgroundColor: 'var(--color-error-dark)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Error Dark</div>
+              <div className='color-rgb'>rgb(115 0 0)</div>
+              <div className='color-hex'>#730000</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-success-light)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Success Light</div>
+              <div className='color-rgb'>rgb(217 234 219)</div>
+              <div className='color-hex'>#D9EADB</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-success-main)',
+                color: 'var(--color-text-inverted)',
+              }}
             >
               <div className='color-name'>Success Main</div>
               <div className='color-rgb'>rgb(0 112 15)</div>
               <div className='color-hex'>#00700F</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-warning-light)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Warning Light</div>
+              <div className='color-rgb'>rgb(253 243 209)</div>
+              <div className='color-hex'>#FDF3D1</div>
             </div>
             <div
               className='color-swatch'
@@ -120,6 +237,18 @@ export default function DesignSystem() {
               <div className='color-rgb'>rgb(246 194 68)</div>
               <div className='color-hex'>#F6C244</div>
             </div>
+
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-gray-light)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Gray Light</div>
+              <div className='color-rgb'>rgb(250 249 248)</div>
+              <div className='color-hex'>#FAF9F8</div>
+            </div>
             <div
               className='color-swatch'
               style={{
@@ -130,6 +259,140 @@ export default function DesignSystem() {
               <div className='color-name'>Gray Main</div>
               <div className='color-rgb'>rgb(231 227 222)</div>
               <div className='color-hex'>#E7E3DE</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-gray-dark)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Gray Dark</div>
+              <div className='color-rgb'>rgb(155 138 122)</div>
+              <div className='color-hex'>#9B8A7A</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-thin-border)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Thin Border</div>
+              <div className='color-rgb'>rgb(238 238 238)</div>
+              <div className='color-hex'>#EEEEEE</div>
+            </div>
+
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-link)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Link</div>
+              <div className='color-rgb'>rgb(5 85 164)</div>
+              <div className='color-hex'>#0555A4</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-link-selected)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Link Selected</div>
+              <div className='color-rgb'>rgb(13 110 253)</div>
+              <div className='color-hex'>#0D6EFD</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-link-visited)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Link Visited</div>
+              <div className='color-rgb'>rgb(117 89 142)</div>
+              <div className='color-hex'>#75598E</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-input-border)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Input Border</div>
+              <div className='color-rgb'>rgb(153 153 153)</div>
+              <div className='color-hex'>#999999</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-label)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>Label</div>
+              <div className='color-rgb'>rgb(0 0 0 / 66%)</div>
+              <div className='color-hex'>rgba(0,0,0,0.66)</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-nav-rail)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>Nav Rail</div>
+              <div className='color-rgb'>rgb(250 249 248)</div>
+              <div className='color-hex'>#FAF9F8</div>
+            </div>
+
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-fab-primary-bg)',
+                color: 'var(--color-fab-primary-text)',
+              }}
+            >
+              <div className='color-name'>FAB Primary Background</div>
+              <div className='color-rgb'>rgb(117 89 142)</div>
+              <div className='color-hex'>#75598E</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-fab-primary-text)',
+                color: 'var(--color-text)',
+              }}
+            >
+              <div className='color-name'>FAB Primary Text</div>
+              <div className='color-rgb'>rgb(255 255 255)</div>
+              <div className='color-hex'>#FFFFFF</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-fab-secondary-bg)',
+                color: 'var(--color-fab-secondary-text)',
+              }}
+            >
+              <div className='color-name'>FAB Secondary Background</div>
+              <div className='color-rgb'>rgb(255 255 255)</div>
+              <div className='color-hex'>#FFFFFF</div>
+            </div>
+            <div
+              className='color-swatch'
+              style={{
+                backgroundColor: 'var(--color-fab-secondary-text)',
+                color: 'var(--color-text-inverted)',
+              }}
+            >
+              <div className='color-name'>FAB Secondary Text</div>
+              <div className='color-rgb'>rgb(0 0 0)</div>
+              <div className='color-hex'>#000000</div>
             </div>
           </div>
         </section>

@@ -1,0 +1,10 @@
+:root {
+  --gap-s: 0.25rem;
+  --gap: 0.5rem;
+  --gap-l: 1rem;
+  --gap-xl: 2rem;
+  --gap-xxl: 4rem;
+  --input-height-large: 3rem;
+  --input-height: 2.2rem;
+  --input-height-small: 1.8rem;
+}

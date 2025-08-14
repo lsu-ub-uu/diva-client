@@ -1,6 +1,10 @@
 {
-  "extends": [
-    "stylelint-config-standard"
+  "extends": ["stylelint-config-standard"],
+  "overrides": [
+    {
+      "files": ["**/*.scss"],
+      "extends": ["stylelint-config-standard-scss"]
+    }
   ],
   "rules": {
     "import-notation": null
