@@ -180,6 +180,7 @@ export const links: Route.LinksFunction = () => [
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
+  const { t } = useTranslation();
   const { formDefinition, previewFormDefinition, notification, defaultValues } =
     loaderData;
 
@@ -219,7 +220,9 @@ export default function CreateRecordRoute({
 
           {deferredPreviewData && (
             <div className='preview'>
-              <h2 className='preview-heading'>Förhandsgranskning</h2>
+              <h2 className='preview-heading'>
+                {t('divaClient_formPreviewHeadingText')}
+              </h2>
               <ReadOnlyForm
                 recordData={deferredPreviewData}
                 formSchema={previewFormDefinition}

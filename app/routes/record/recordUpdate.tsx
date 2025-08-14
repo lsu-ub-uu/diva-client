@@ -47,6 +47,7 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { useDeferredValue, useState } from 'react';
 import type { Route } from '../record/+types/recordUpdate';
+import { useTranslation } from 'react-i18next';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -171,6 +172,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
+  const { t } = useTranslation();
   const {
     record,
     formDefinition,
@@ -217,7 +219,9 @@ export default function UpdateRecordRoute({
         />
         {deferredPreviewData && (
           <div className='preview'>
-            <h2 className='preview-heading'>Förhandsgranskning</h2>
+            <h2 className='preview-heading'>
+              {t('divaClient_formPreviewHeadingText')}
+            </h2>
             <ReadOnlyForm
               recordData={deferredPreviewData}
               formSchema={previewFormDefinition}

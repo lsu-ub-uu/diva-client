@@ -191,6 +191,8 @@
       --color-thin-border: rgb(255 255 255 / 20%);
       --color-card-dark: rgb(103 159 243 / 30%);
       --color-card: rgb(103 159 243 / 8%);
+      --color-card-inactive-dark: rgb(255 255 255 / 12%);
+      --color-card-inactive: rgb(255 255 255 / 8%);
       --color-button-primary-active: rgb(255 255 255);
       --color-button-secondary-hover: rgb(255 255 255 / 10%);
       --color-button-secondary-active: rgb(255 255 255 / 20%);
