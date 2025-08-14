@@ -16,13 +16,6 @@ beforeAll(() => {
 
   window.open = vi.fn();
 
-  // Mock crypto.randomUUID for consistent test results
-  Object.defineProperty(global, 'crypto', {
-    value: {
-      randomUUID: vi.fn(() => 'mocked-uuid-1234-5678-9012'),
-    },
-  });
-
   // @ts-expect-error: this is fine
   global.IS_REACT_ACT_ENVIRONMENT = true;
 

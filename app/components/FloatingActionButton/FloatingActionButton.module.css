@@ -18,7 +18,7 @@
  */
 
 .container {
-  z-index: 100;
+  z-index: 1;
   position: fixed;
   bottom: calc(var(--gap) * 1.5);
   right: calc(var(--gap) * 1.5);
