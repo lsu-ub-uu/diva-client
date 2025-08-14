@@ -65,11 +65,13 @@ import {
   formDefWithAlternativePresentationsWithSContainersSecondSmaller,
 } from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
+import * as generateRepeatIdModule from '../generateRepeatId';
+
 describe('defaultValues', () => {
   beforeEach(() => {
-    vi.stubGlobal('crypto', {
-      randomUUID: vi.fn().mockReturnValue('uuid-mock'),
-    });
+    vi.spyOn(generateRepeatIdModule, 'generateRepeatId').mockReturnValue(
+      'uuid-mock',
+    );
   });
   describe('generate defaultValues', () => {
     describe('createDefaultValuesFromFormSchema', () => {

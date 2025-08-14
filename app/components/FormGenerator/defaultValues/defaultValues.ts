@@ -33,6 +33,7 @@ import type {
   FormComponentWithData,
   FormSchema,
 } from '../types';
+import { generateRepeatId } from './generateRepeatId';
 
 export interface RecordData {
   [key: string]: any;
@@ -76,7 +77,7 @@ export const createDefaultValuesFromComponent = (
     : createDefaultValuesForGroup(component);
 
   if (forceDefaultValuesForAppend) {
-    defaultValues = { ...formDefaultObject, repeatId: crypto.randomUUID() };
+    defaultValues = { ...formDefaultObject, repeatId: generateRepeatId() };
   } else {
     if (
       component.repeat?.repeatMin === 0 &&
@@ -161,7 +162,7 @@ export const generateRepeatingObject = (
 ): unknown[] => {
   return Array.from({ length: size }, () => ({
     ...obj,
-    repeatId: crypto.randomUUID(),
+    repeatId: generateRepeatId(),
   }));
 };
 
