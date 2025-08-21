@@ -39,7 +39,7 @@ import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Typography } from '@/components/Typography/Typography';
 import * as icons from '@/icons';
 import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import css from './design-system.css?url';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
