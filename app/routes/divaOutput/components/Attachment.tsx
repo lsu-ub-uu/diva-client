@@ -12,7 +12,7 @@ export const Attachement = ({ attachement }: AttachementProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
 
-  if (!attachement.attachmentFile?.linkedRecord) {
+  if (!attachement.attachmentFile?.linkedRecord.binary.master) {
     return null;
   }
 
@@ -34,7 +34,7 @@ export const Attachement = ({ attachement }: AttachementProps) => {
       <a
         className='download-link'
         href={createDownloadLinkFromResourceLink(
-          attachement.attachmentFile.linkedRecord.binary.master!.master,
+          attachement.attachmentFile.linkedRecord.binary.master.master,
         )}
         type={
           attachement.attachmentFile.linkedRecord.binary.master?.mimeType.value
@@ -42,7 +42,7 @@ export const Attachement = ({ attachement }: AttachementProps) => {
       >
         <DownloadIcon />
         {`${t('resourceLinkDownloadText')} (${formatBytes(
-          attachement.attachmentFile.linkedRecord.binary.master!.fileSize.value,
+          attachement.attachmentFile.linkedRecord.binary.master.fileSize.value,
         )})`}
       </a>
     </div>
