@@ -12,7 +12,7 @@ const divaOutput = {
   output: {
     titleInfo: {
       title: { value: 'Quantum Entanglement in Superconducting Qubits' },
-      subTitle: { value: 'A Breakthrough Study' },
+      subtitle: { value: 'A Breakthrough Study' },
     },
 
     originInfo: {
@@ -35,7 +35,7 @@ const divaOutput = {
     relatedItem_type_journal: {
       titleInfo: {
         title: { value: 'Journal of Quantum Physics' },
-        subTitle: { value: 'Advances in Quantum Mechanics' },
+        subtitle: { value: 'Advances in Quantum Mechanics' },
       },
       identifier_displayLabel_eissn_type_issn: {
         value: '2345-6789',
@@ -139,9 +139,9 @@ describe('generateCitationMeta', () => {
 
   it('generates citation_title without subtitle', () => {
     const divaOutputWithoutSubtitle = cloneDeep(divaOutput);
-    divaOutputWithoutSubtitle.output.titleInfo.subTitle = {
+    divaOutputWithoutSubtitle.output.titleInfo.subtitle = {
       value: '',
-    } as TitleInfoLangGroup['subTitle'];
+    } as TitleInfoLangGroup['subtitle'];
     const result = generateCitationMeta(divaOutputWithoutSubtitle, origin);
     expect(result).toContainEqual({
       name: 'citation_title',

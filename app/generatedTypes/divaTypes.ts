@@ -379,13 +379,13 @@ export interface RecordInfoSeriesUpdateGroup {
 
 export interface TitleInfoGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   __text: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   _type: 'alternative';
   __text: { sv: string; en: string };
 }
@@ -915,14 +915,14 @@ export type LanguageSweEngCollection = 'swe' | 'eng';
 
 export interface TitleInfoLangSweEngGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   _lang: LanguageSweEngCollection;
   __text: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangSweEngGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   _type: 'alternative';
   _lang: LanguageSweEngCollection;
   __text: { sv: string; en: string };
@@ -1693,7 +1693,7 @@ export interface VariantTopicLangGroup {
   __text: { sv: string; en: string };
 }
 
-export type RelatedTypeTopicCollection = 'earlier' | 'broader';
+export type RelatedTypeEarlierBroaderCollection = 'earlier' | 'broader';
 
 export interface RelatedSubjectGroup {
   topic: {
@@ -1703,7 +1703,7 @@ export interface RelatedSubjectGroup {
     };
     __text: { sv: string; en: string };
   };
-  _type: RelatedTypeTopicCollection;
+  _type: RelatedTypeEarlierBroaderCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2219,7 +2219,7 @@ export type PublicationStatusCollection =
   | 'aheadOfPrint'
   | 'retracted';
 
-export type OutputTypeArtisticWorkCollection = 'true' | 'false' | 'undefined';
+export type OutputTypeArtisticWorkCollection = 'true' | 'false';
 
 export type GenreContentTypeCollection = 'ref' | 'vet' | 'pop';
 
@@ -2227,14 +2227,14 @@ export type GenreArtisticReviewedCollection = 'refereed' | 'unrefereed';
 
 export interface TitleInfoLangGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   _lang: LanguageCollection;
   __text: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangGroup {
   title: { value: string; __text: { sv: string; en: string } };
-  subTitle?: { value: string; __text: { sv: string; en: string } };
+  subtitle?: { value: string; __text: { sv: string; en: string } };
   _type: 'alternative';
   _lang: LanguageCollection;
   __text: { sv: string; en: string };
@@ -2554,7 +2554,7 @@ export interface RelatedCourseGroup {
     };
     __text: { sv: string; en: string };
   };
-  _type: RelatedTypeTopicCollection;
+  _type: RelatedTypeEarlierBroaderCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2601,7 +2601,7 @@ export interface RelatedProgrammeGroup {
     };
     __text: { sv: string; en: string };
   };
-  _type: RelatedTypeTopicCollection;
+  _type: RelatedTypeEarlierBroaderCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3227,7 +3227,7 @@ export interface LocalGenericMarkupUpdateGroup {
 
 export type FailedCollection = 'true';
 
-export type ReviewedCollection = 'true' | 'false';
+export type ReviewedCollection = 'true';
 
 export interface AdminInfoDivaGroup {
   failed?: {
@@ -3454,7 +3454,7 @@ export interface OutputUpdateGroup {
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
-  artisticWork_type_outputType: {
+  artisticWork_type_outputType?: {
     value: OutputTypeArtisticWorkCollection;
     _type: 'outputType';
     __text: { sv: string; en: string };
@@ -3600,7 +3600,7 @@ export interface OutputUpdateGroup {
   opponent_type_personal?: NamePersonalOpponentGroup[];
   presentation?: PresentationDivaGroup;
   defence?: DefenceGroup;
-  relatedItem_type_journal: RelatedItemJournalGroup;
+  relatedItem_type_journal?: RelatedItemJournalGroup;
   relatedItem_type_book?: RelatedItemBookGroup;
   relatedItem_type_conferencePublication?: RelatedItemConferencePublicationGroup;
   relatedItem_type_conference?: RelatedItemConferenceGroup;
