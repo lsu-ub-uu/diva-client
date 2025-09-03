@@ -7,6 +7,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
+    "dev:notypegen": "NODE_ENV=development tsx server.ts",
     "start": "tsx server.ts",
     "typegen": "tsx typegen/main.ts",
     "typecheck": "react-router typegen && tsc",

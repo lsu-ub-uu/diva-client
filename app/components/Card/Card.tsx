@@ -16,19 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
 export interface CardProps {
   children: ReactNode;
   boxed?: boolean;
+  label?: string;
 }
 
-export const Card = ({ children, boxed = false }: CardProps) => {
+export const Card = ({ children, boxed = false, label }: CardProps) => {
+  const id = useId();
+  const ids = {
+    heading: `card-heading-${id}`,
+    section: `card-section-${id}`,
+  };
   return (
-    <div className={styles['card']} {...(boxed && { 'data-boxed': '' })}>
-      <CardContext value={{ boxed }}>{children}</CardContext>
-    </div>
+    <section
+      id={ids.section}
+      aria-labelledby={ids.heading}
+      aria-label={label}
+      className={styles['card']}
+      {...(boxed && { 'data-boxed': '' })}
+    >
+      <CardContext value={{ boxed, ids }}>{children}</CardContext>
+    </section>
   );
 };

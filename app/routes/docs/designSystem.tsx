@@ -41,6 +41,7 @@ import * as icons from '@/icons';
 import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { useState } from 'react';
 import css from './design-system.css?url';
+import { CardExpandButton } from '@/components/Card/CardExpandButton';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -609,47 +610,108 @@ export default function DesignSystem() {
         </section>
         <section>
           <h2>Cards</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-            <Card boxed={false}>
-              <CardHeader>
-                <CardTitle>
-                  <h3>I&#39;m a card that&#39;s not boxed</h3>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <span>Card content</span>
-                <Card boxed={false}>
-                  <CardHeader>
-                    <CardTitle>
-                      <h4>I&#39;m nested card</h4>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <span>Card content</span>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
-            <Card boxed={true}>
-              <CardHeader>
-                <CardTitle>
-                  <h3>I&#39;m a card that&#39;s boxed</h3>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <span>Card content</span>
-                <Card boxed={true}>
-                  <CardHeader>
-                    <CardTitle>
-                      <h4>I&#39;m nested card</h4>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <span>Card content</span>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
+          <div
+            style={{
+              display: 'grid',
+              gap: '1rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            }}
+          >
+            <div>
+              <h3>Unboxed card</h3>
+              <Card boxed={false}>
+                <CardHeader>
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card that&#39;s not boxed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                  <Card boxed={false}>
+                    <CardHeader>
+                      <CardTitle level='h4'>I&#39;m nested card</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <span>Card content</span>
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Boxed card</h3>
+
+              <Card boxed={true}>
+                <CardHeader>
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card that&#39;s boxed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                  <Card boxed={true}>
+                    <CardHeader>
+                      <CardTitle level='h4'>I&#39;m nested card</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <span>Card content</span>
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Card with action button and attributes</h3>
+              <Card boxed>
+                <CardHeader
+                  attributes={
+                    <Fieldset size='small'>
+                      <Select value='option1'>
+                        <option value='option1'>Option 1</option>
+                      </Select>
+                    </Fieldset>
+                  }
+                  actionButtonGroup={
+                    <Button variant='icon'>
+                      <icons.CloseIcon />
+                    </Button>
+                  }
+                >
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card with an action button
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Card with clickable title</h3>
+
+              <ClickableCardDemo />
+            </div>
           </div>
         </section>
         <section>
@@ -797,3 +859,45 @@ export default function DesignSystem() {
     </div>
   );
 }
+
+const ClickableCardDemo = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <Card boxed>
+      <CardHeader
+        attributes={
+          expanded && (
+            <Fieldset size='small'>
+              <Select value='option1'>
+                <option value='option1'>Option 1</option>
+              </Select>
+            </Fieldset>
+          )
+        }
+        actionButtonGroup={
+          <Button variant='icon'>
+            <icons.CloseIcon />
+          </Button>
+        }
+      >
+        <CardTitle
+          level='h3'
+          info={
+            <Button variant='icon' size='small'>
+              <icons.InfoIcon />
+            </Button>
+          }
+        >
+          <CardExpandButton
+            expanded={expanded}
+            onClick={() => setExpanded(!expanded)}
+          >
+            Click me
+          </CardExpandButton>
+        </CardTitle>
+      </CardHeader>
+      {expanded && <CardContent>This is the expanded content!</CardContent>}
+    </Card>
+  );
+};

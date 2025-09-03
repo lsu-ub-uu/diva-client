@@ -104,8 +104,16 @@
 
 .card-title {
   max-width: 75ch;
-  margin-right: auto;
   display: flex;
   align-items: center;
   gap: var(--gap);
+}
+
+.expand-button {
+  cursor: pointer;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: inherit;
 }

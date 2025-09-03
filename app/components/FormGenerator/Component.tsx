@@ -62,7 +62,7 @@ export const Component = ({
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
-
+  /* 
   if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
     return (
       <AlternativePresentationSwitcher
@@ -73,7 +73,7 @@ export const Component = ({
         parentPresentationStyle={parentPresentationStyle}
       />
     );
-  }
+  } */
 
   if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
     return (
