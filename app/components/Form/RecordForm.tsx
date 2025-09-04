@@ -32,6 +32,7 @@ import { RestartAltIcon, UpgradeIcon } from '@/icons';
 import type { BFFDataRecordData } from '@/types/record';
 import { useEffect } from 'react';
 import styles from './Form.module.css';
+import { ValidationErrorAlert } from './ValidationErrorAlert';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -82,7 +83,7 @@ export const RecordForm = ({
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-
+        <ValidationErrorAlert />
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 

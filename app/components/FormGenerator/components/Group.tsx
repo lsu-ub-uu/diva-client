@@ -69,15 +69,6 @@ export const Group = ({
   onExpandButtonClick,
   childrenHidden,
 }: GroupProps) => {
-  /*   const {
-    presentationSize,
-    title,
-    titleHeadlineLevel,
-    defaultPresentation,
-    alternativePresentation,
-    expanded,
-    currentPresentation,
-  } = useAlternativePresentationSwitcher(component, currentComponentNamePath); */
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
@@ -95,29 +86,11 @@ export const Group = ({
     cleanFormData(getValues(currentComponentNamePath)),
   );
 
-  /* if (alternativePresentation && currentPresentation === 'alternative') {
-    return (
-      <Component
-        component={alternativePresentation}
-        currentComponentNamePath={currentComponentNamePath}
-      />
-    );
-  } */
-
-  /*   if (expanded && alternativePresentation) {
-    return (
-      <Group
-        component={alternativePresentation}
-        currentComponentNamePath={currentComponentNamePath}
-      />
-    );
-  } */
-
   if (component.mode === 'output' && hasNoValues) {
     return null;
   }
 
-  const showCardTitle = component.title || component.showLabel;
+  const showCardTitle = component.title !== undefined || component.showLabel;
 
   return (
     <div
@@ -127,7 +100,7 @@ export const Group = ({
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card
-        boxed={boxGroups && groupLevel !== 0}
+        boxed={boxGroups && groupLevel !== 0 && showCardTitle}
         label={!showCardTitle ? component.label : undefined}
       >
         <CardHeader

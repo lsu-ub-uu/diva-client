@@ -37,7 +37,7 @@ import { Group } from './components/Group';
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
   anchorId: string | undefined;
-  path: string;
+  parentPath: string;
   currentComponentNamePath: string;
   actionButtonGroup?: React.ReactNode;
   parentPresentationStyle?: string;

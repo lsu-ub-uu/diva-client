@@ -58,7 +58,11 @@ export const FormGenerator = ({
           enhancedFields,
         }}
       >
-        <Component component={props.formSchema.form} path={''} />
+        <Component
+          component={props.formSchema.form}
+          parentPath={''}
+          currentComponentNamePath={props.formSchema.form.name}
+        />
       </FormGeneratorContext>
     </div>
   );

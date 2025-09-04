@@ -25,27 +25,22 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import {
   isComponentContainer,
   isComponentGroup,
-  isComponentOptional,
-  isComponentRepeating,
-  isComponentRepeatingContainer,
   isComponentResourceLink,
   isComponentSurroundingContainer,
-  isComponentVariable,
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponent,
-  FormComponentContainer,
   FormComponentGroup,
-  FormComponentLeaf,
 } from '@/components/FormGenerator/types';
 import { use } from 'react';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
 
-interface FormComponentGeneratorProps {
+interface ComponentProps {
   component: FormComponent;
-  path: string;
+  parentPath: string;
+  currentComponentNamePath: string;
   parentPresentationStyle?: string;
   anchorId?: string;
   actionButtonGroup?: React.ReactNode;
@@ -53,20 +48,20 @@ interface FormComponentGeneratorProps {
 
 export const Component = ({
   component,
-  path,
+  parentPath,
+  currentComponentNamePath,
   parentPresentationStyle,
   anchorId,
   actionButtonGroup,
-}: FormComponentGeneratorProps) => {
+}: ComponentProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
-  const currentComponentNamePath = getCurrentComponentNamePath(component, path);
 
   if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
     return (
       <AlternativePresentationSwitcher
         component={component}
         anchorId={anchorId}
-        path={path}
+        parentPath={parentPath}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
       />
@@ -77,7 +72,7 @@ export const Component = ({
     return (
       <DevInfo
         component={component}
-        path={path}
+        path={currentComponentNamePath}
         label='Hidden by enhancement'
       />
     );
@@ -153,22 +148,4 @@ const hasClickableTitle = (component: FormComponent) => {
 
 const hasAlternativePresentation = (component: FormComponent) => {
   return component.alternativePresentation !== undefined;
-};
-
-const isComponentSurroundingContainerAndNOTRepeating = (
-  component: FormComponent,
-): component is FormComponentContainer => {
-  return (
-    isComponentSurroundingContainer(component) &&
-    !isComponentRepeating(component)
-  );
-};
-
-const isComponentGroupOrRepeatingContainerAndNOTRepeating = (
-  component: FormComponent,
-): component is FormComponentGroup | FormComponentContainer => {
-  return (
-    (isComponentGroup(component) || isComponentRepeatingContainer(component)) &&
-    !isComponentRepeating(component)
-  );
 };

@@ -16,31 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect, useState } from 'react';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { isEmpty } from 'lodash-es';
 import { useFormState } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Snackbar } from '@/components/Snackbar/Snackbar';
 
-export const ValidationErrorSnackbar = () => {
+export const ValidationErrorAlert = () => {
   const { t } = useTranslation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { errors } = useFormState();
 
-  useEffect(() => {
-    if (!isEmpty(errors)) {
-      console.error('Validation errors:', errors);
-      setSnackbarOpen(true);
-    }
-  }, [errors]);
-
-  return (
-    <Snackbar
-      open={snackbarOpen}
-      onClose={() => setSnackbarOpen(false)}
-      severity='error'
-      text={t('divaClient_formValidationErrorsText')}
-    />
-  );
+  if (!isEmpty(errors)) {
+    return (
+      <Alert severity='error'>
+        <AlertTitle>{t('divaClient_formValidationErrorsTitle')}</AlertTitle>
+      </Alert>
+    );
+  }
 };

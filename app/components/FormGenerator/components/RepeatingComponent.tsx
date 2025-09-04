@@ -17,28 +17,30 @@
  */
 
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
-import type {
-  FormComponent,
-  FormComponentWithData,
-} from '@/components/FormGenerator/types';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
-import { Component } from '../Component';
+import { Component, getCurrentComponentNamePath } from '../Component';
 import { isComponentSingularAndOptional } from '../formGeneratorUtils/formGeneratorUtils';
 import { OptionalComponent } from './OptionalComponent';
 
 interface RepeatingComponentProps {
   anchorId?: string;
-  currentComponentNamePath: string;
+  parentPath: string;
   component: FormComponentWithData;
   parentPresentationStyle: string | undefined;
 }
 
 export const RepeatingComponent = ({
-  currentComponentNamePath,
+  parentPath,
   component,
   parentPresentationStyle,
   anchorId,
 }: RepeatingComponentProps) => {
+  const currentComponentNamePath = getCurrentComponentNamePath(
+    component,
+    parentPath,
+  );
+
   const { control } = useRemixFormContext();
 
   const fieldArrray = isComponentSingularAndOptional(component) ? (
@@ -50,7 +52,8 @@ export const RepeatingComponent = ({
       renderCallback={(actionButtonGroup) => {
         return (
           <Component
-            path={currentComponentNamePath}
+            parentPath={parentPath}
+            currentComponentNamePath={currentComponentNamePath}
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
@@ -66,7 +69,8 @@ export const RepeatingComponent = ({
       renderCallback={(arrayPath, actionButtonGroup) => {
         return (
           <Component
-            path={arrayPath}
+            parentPath={parentPath}
+            currentComponentNamePath={arrayPath}
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
@@ -80,7 +84,8 @@ export const RepeatingComponent = ({
     return fieldArrray;
   }
 
-  return (
+  return fieldArrray;
+  /* return (
     <section
       id={anchorId}
       className='form-component-item form-component-container'
@@ -89,5 +94,5 @@ export const RepeatingComponent = ({
     >
       {fieldArrray}
     </section>
-  );
+  ); */
 };

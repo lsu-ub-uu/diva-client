@@ -20,24 +20,14 @@ import {
   Component,
   getCurrentComponentNamePath,
 } from '@/components/FormGenerator/Component';
-import type {
-  FormComponent,
-  FormComponentGroup,
-  FormComponentLeaf,
-} from '@/components/FormGenerator/types';
+import type { FormComponent } from '@/components/FormGenerator/types';
+import { RepeatingComponent } from './components/RepeatingComponent';
 import { addAttributesToName } from './defaultValues/defaultValues';
 import {
-  isComponentGroup,
-  isComponentOptional,
   isComponentRepeating,
   isComponentSingularAndOptional,
-  isComponentVariable,
   isComponentWithData,
 } from './formGeneratorUtils/formGeneratorUtils';
-import { RepeatingGroup } from './components/RepeatingGroup';
-import { RepeatingVariable } from './components/RepeatingVariable';
-import { OptionalGroup } from './components/OptionalGroup';
-import { RepeatingComponent } from './components/RepeatingComponent';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -64,7 +54,7 @@ export const ComponentList = ({
       return (
         <RepeatingComponent
           key={key}
-          currentComponentNamePath={componentPath}
+          parentPath={path}
           component={component}
           parentPresentationStyle={parentPresentationStyle}
           anchorId={
@@ -75,11 +65,13 @@ export const ComponentList = ({
         />
       );
     }
+
     return (
       <Component
         key={key}
         component={component}
-        path={path}
+        parentPath={path}
+        currentComponentNamePath={componentPath}
         parentPresentationStyle={parentPresentationStyle}
         anchorId={
           isRoot
@@ -89,22 +81,4 @@ export const ComponentList = ({
       />
     );
   });
-};
-
-const isComponentGroupAndRepeating = (
-  component: FormComponent,
-): component is FormComponentGroup => {
-  return (
-    isComponentGroup(component) &&
-    (isComponentRepeating(component) || isComponentOptional(component))
-  );
-};
-
-const isComponentVariableAndRepeating = (
-  component: FormComponent,
-): component is FormComponentLeaf => {
-  return (
-    isComponentVariable(component) &&
-    (isComponentRepeating(component) || isComponentOptional(component))
-  );
 };
