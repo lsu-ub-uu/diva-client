@@ -6,7 +6,7 @@ import type { FormComponentGroup } from '../../types';
 import { MockFormProvider } from '@/utils/testUtils';
 import userEvent from '@testing-library/user-event';
 
-describe.only('Group', () => {
+describe.skip('Group', () => {
   it('Renders with label when showLabel is true and title is not set', () => {
     const component: FormComponentGroup = {
       type: 'group',

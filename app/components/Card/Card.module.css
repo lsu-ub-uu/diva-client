@@ -22,26 +22,6 @@
   transition: border-color 0.2s;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   overflow: clip;
-
-  &[data-boxed] {
-    border-left: 3px solid var(--color-card-dark);
-
-    &:has(input:focus),
-    &:has(select:focus),
-    &:has(textarea:focus),
-    &:has(> .card-header input:hover),
-    &:has(> .card-header [data-action-button]:hover),
-    &:has(> .card-header [data-action-button]:focus-visible) {
-      border-color: var(--color-link-selected);
-      background-color: var(--color-card);
-    }
-
-    &:has(> .card-header [data-action-button='delete']:hover),
-    &:has(> .card-header [data-action-button='delete']:focus) {
-      background-color: var(--color-alert-error-bg);
-      border-color: var(--color-error-main);
-    }
-  }
 }
 
 .card-title {
@@ -51,11 +31,31 @@
   gap: var(--gap);
 }
 
-.card:has([aria-invalid='true']) {
-  border-color: var(--color-error-main);
+.card[data-boxed] {
+  border-left: 3px solid var(--color-card-dark);
 
-  .card-title {
-    color: var(--color-error-main);
+  &:has([aria-invalid='true']) {
+    border-color: var(--color-error-main);
+
+    & > .card-header .card-title {
+      color: var(--color-error-main);
+    }
+  }
+
+  &:has(input:focus),
+  &:has(select:focus),
+  &:has(textarea:focus),
+  &:has(> .card-header input:hover),
+  &:has(> .card-header [data-action-button]:hover),
+  &:has(> .card-header [data-action-button]:focus-visible) {
+    border-color: var(--color-link-selected);
+    background-color: var(--color-card);
+  }
+
+  &:has(> .card-header [data-action-button='delete']:hover),
+  &:has(> .card-header [data-action-button='delete']:focus) {
+    background-color: var(--color-alert-error-bg);
+    border-color: var(--color-error-main);
   }
 }
 

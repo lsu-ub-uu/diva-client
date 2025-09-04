@@ -9,6 +9,7 @@ import { clsx } from 'clsx';
 import { use, type HTMLProps } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from './CardContext';
+import { useTranslation } from 'react-i18next';
 
 interface CardExpandButtonProps extends HTMLProps<HTMLButtonElement> {
   expanded: boolean | 'bothEqual';
@@ -20,6 +21,7 @@ export const CardExpandButton = ({
   className,
   ...rest
 }: CardExpandButtonProps) => {
+  const { t } = useTranslation();
   const { ids } = use(CardContext);
 
   const getIcon = () => {
@@ -29,6 +31,13 @@ export const CardExpandButton = ({
     return expanded ? <CollapseContentIcon /> : <ExpandContentIcon />;
   };
 
+  const getAriaLabel = () => {
+    if (expanded === 'bothEqual') {
+      return 'divaClient_swapPresentationText';
+    }
+    return expanded ? 'divaClient_showLessText' : 'divaClient_showMoreText';
+  };
+
   return (
     <button
       {...rest}
@@ -36,6 +45,7 @@ export const CardExpandButton = ({
       aria-expanded={expanded === 'bothEqual' ? undefined : expanded}
       id={ids.heading}
       aria-controls={ids.section}
+      aria-label={t(getAriaLabel())}
       type='button'
       data-action-button
     >

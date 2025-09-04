@@ -64,6 +64,7 @@ export const Component = ({
         parentPath={parentPath}
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
+        actionButtonGroup={actionButtonGroup}
       />
     );
   }
