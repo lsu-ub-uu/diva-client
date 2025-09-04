@@ -39,7 +39,7 @@ interface FormGeneratorProps {
 
 export const FormGenerator = ({
   linkedData,
-  boxGroups = false,
+  boxGroups = true,
   showTooltips = true,
   enhancedFields,
   ...props

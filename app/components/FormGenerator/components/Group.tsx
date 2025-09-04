@@ -80,8 +80,20 @@ export const Group = ({
     return null;
   }
 
-  const showCardTitle = component.title !== undefined || component.showLabel;
-
+  const getCardTitle = () => {
+    if (component.title !== undefined) {
+      return t(component.title);
+    }
+    if (component.showLabel) {
+      return t(component.label);
+    }
+    return undefined;
+  };
+  const cardTitle = getCardTitle();
+  console.log(component.name, component.presentationId, {
+    cardTitle,
+    component,
+  });
   return (
     <div
       id={anchorId}
@@ -90,8 +102,8 @@ export const Group = ({
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card
-        boxed={boxGroups && groupLevel !== 0 && showCardTitle}
-        label={!showCardTitle ? component.label : undefined}
+        boxed={boxGroups && groupLevel !== 0 && cardTitle !== undefined}
+        label={!cardTitle ? component.label : undefined}
       >
         <CardHeader
           enhancedFields={
@@ -102,26 +114,29 @@ export const Group = ({
           }
           actionButtonGroup={actionButtonGroup}
         >
-          {showCardTitle && (
-            <CardTitle
-              level={component.headlineLevel}
-              info={
-                component.tooltip &&
-                showTooltips && <FieldInfo {...component.tooltip} />
-              }
-            >
-              {expandable ? (
-                <CardExpandButton
-                  expanded={expanded}
-                  onClick={onExpandButtonClick}
-                >
-                  {t(component.title ?? component?.label)}
-                </CardExpandButton>
-              ) : (
-                t(component?.label)
-              )}
-            </CardTitle>
-          )}
+          <CardTitle
+            level={
+              component.title
+                ? component.titleHeadlineLevel
+                : component.headlineLevel
+            }
+            info={
+              component.tooltip &&
+              cardTitle !== undefined &&
+              showTooltips && <FieldInfo {...component.tooltip} />
+            }
+          >
+            {expandable ? (
+              <CardExpandButton
+                expanded={expanded}
+                onClick={onExpandButtonClick}
+              >
+                {cardTitle}
+              </CardExpandButton>
+            ) : (
+              cardTitle
+            )}
+          </CardTitle>
         </CardHeader>
         <CardContent
           hidden={childrenHidden}

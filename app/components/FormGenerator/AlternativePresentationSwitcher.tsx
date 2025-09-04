@@ -123,7 +123,7 @@ export const AlternativePresentationSwitcher = (
               currentPresentation === 'alternative' ? 'default' : 'alternative',
             )
           }
-          component={{ ...component, title: undefined }}
+          component={component}
           actionButtonGroup={props.actionButtonGroup}
           currentComponentNamePath={currentComponentNamePath}
           anchorId={props.anchorId}

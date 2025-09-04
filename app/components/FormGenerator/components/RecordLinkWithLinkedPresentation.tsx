@@ -28,7 +28,10 @@ import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';
-import { isComponentRepeating } from '../formGeneratorUtils/formGeneratorUtils';
+import {
+  isComponentOptional,
+  isComponentRepeating,
+} from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
@@ -58,7 +61,9 @@ export const RecordLinkWithLinkedPresentation = ({
   }
 
   const showClearButton =
-    component.mode === 'input' && !isComponentRepeating(component);
+    component.mode === 'input' &&
+    !isComponentRepeating(component) &&
+    !isComponentOptional(component);
 
   const recordHref = href('/:recordType/:recordId', {
     recordType: component.linkedRecordPresentation.presentedRecordType,
@@ -90,6 +95,7 @@ export const RecordLinkWithLinkedPresentation = ({
           {showClearButton && (
             <Button
               variant='icon'
+              size='small'
               onClick={clearValue}
               aria-label={t('divaClient_clearRecordLinkText')}
             >
@@ -98,6 +104,7 @@ export const RecordLinkWithLinkedPresentation = ({
           )}
           <Button
             as={Link}
+            size='small'
             variant='icon'
             to={recordHref}
             aria-label={t('divaClient_linkToRecordText')}
