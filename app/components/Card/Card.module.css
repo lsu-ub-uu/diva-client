@@ -26,16 +26,12 @@
   &[data-boxed] {
     border-left: 3px solid var(--color-card-dark);
 
-    &:has([aria-invalid='true']) {
-      border-color: var(--color-error-main);
-    }
-
     &:has(input:focus),
     &:has(select:focus),
     &:has(textarea:focus),
     &:has(> .card-header input:hover),
     &:has(> .card-header [data-action-button]:hover),
-    &:has(> .card-header [data-action-button]:focus) {
+    &:has(> .card-header [data-action-button]:focus-visible) {
       border-color: var(--color-link-selected);
       background-color: var(--color-card);
     }
@@ -48,7 +44,57 @@
   }
 }
 
-.card-content[data-boxed] {
+.card-title {
+  max-width: 75ch;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.card:has([aria-invalid='true']) {
+  border-color: var(--color-error-main);
+
+  .card-title {
+    color: var(--color-error-main);
+  }
+}
+
+.expand-button {
+  cursor: pointer;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: inherit;
+}
+
+.value-icon,
+.error-icon {
+  display: none;
+  font-size: 1rem;
+}
+
+.card[data-expanded='false']:has([data-has-value]) {
+  .expand-button {
+    color: var(--color-link);
+  }
+
+  .value-icon {
+    display: block;
+  }
+}
+
+.card[data-expanded='false']:has([aria-invalid='true']) {
+  .expand-button {
+    color: var(--color-error-main);
+  }
+
+  .error-icon {
+    display: block;
+  }
+}
+
+.card .card-content[data-boxed] {
   padding: var(--gap);
 
   &[data-alert='true'] {
@@ -100,20 +146,4 @@
       justify-self: stretch;
     }
   }
-}
-
-.card-title {
-  max-width: 75ch;
-  display: flex;
-  align-items: center;
-  gap: var(--gap);
-}
-
-.expand-button {
-  cursor: pointer;
-  background: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  line-height: inherit;
 }

@@ -1,4 +1,10 @@
-import { CollapseContentIcon, ExpandContentIcon, SwapIcon } from '@/icons';
+import {
+  CircleFilledIcon,
+  CollapseContentIcon,
+  ExpandContentIcon,
+  SwapIcon,
+  WarningIcon,
+} from '@/icons';
 import { clsx } from 'clsx';
 import { use, type HTMLProps } from 'react';
 import styles from './Card.module.css';
@@ -35,6 +41,8 @@ export const CardExpandButton = ({
     >
       {getIcon()}
       {children}
+      <CircleFilledIcon className={styles['value-icon']} aria-hidden='true' />
+      <WarningIcon className={styles['error-icon']} aria-hidden='true' />
     </button>
   );
 };

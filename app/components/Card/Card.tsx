@@ -25,6 +25,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   boxed?: boolean;
   label?: string;
+  expanded?: boolean;
 }
 
 export const Card = ({
@@ -32,6 +33,7 @@ export const Card = ({
   boxed = false,
   label,
   className,
+  expanded = true,
   ...rest
 }: CardProps) => {
   const id = useId();
@@ -45,6 +47,7 @@ export const Card = ({
       aria-labelledby={ids.heading}
       aria-label={label}
       className={clsx(styles['card'], className)}
+      data-expanded={expanded}
       {...rest}
       {...(boxed && { 'data-boxed': '' })}
     >

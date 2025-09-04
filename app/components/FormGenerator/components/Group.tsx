@@ -90,10 +90,7 @@ export const Group = ({
     return undefined;
   };
   const cardTitle = getCardTitle();
-  console.log(component.name, component.presentationId, {
-    cardTitle,
-    component,
-  });
+
   return (
     <div
       id={anchorId}
@@ -104,6 +101,7 @@ export const Group = ({
       <Card
         boxed={boxGroups && groupLevel !== 0 && cardTitle !== undefined}
         label={!cardTitle ? component.label : undefined}
+        expanded={expanded !== false}
       >
         <CardHeader
           enhancedFields={
