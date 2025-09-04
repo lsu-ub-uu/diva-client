@@ -44,20 +44,10 @@ interface GroupProps {
   parentPresentationStyle?: string;
   actionButtonGroup?: ReactNode;
   anchorId?: string;
-  expanded?: boolean;
+  expanded?: boolean | 'bothEqual';
   onExpandButtonClick?: () => void;
   childrenHidden?: boolean;
 }
-
-/*
- presentaitonToShow : default, alternative
-
- expanded:
-  if single presentation 
-
-
-  
-*/
 
 export const Group = ({
   currentComponentNamePath,

@@ -1,11 +1,11 @@
-import { CollapseContentIcon, ExpandContentIcon } from '@/icons';
+import { CollapseContentIcon, ExpandContentIcon, SwapIcon } from '@/icons';
 import { clsx } from 'clsx';
 import { use, type HTMLProps } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from './CardContext';
 
 interface CardExpandButtonProps extends HTMLProps<HTMLButtonElement> {
-  expanded: boolean;
+  expanded: boolean | 'bothEqual';
 }
 
 export const CardExpandButton = ({
@@ -15,16 +15,24 @@ export const CardExpandButton = ({
   ...rest
 }: CardExpandButtonProps) => {
   const { ids } = use(CardContext);
+
+  const getIcon = () => {
+    if (expanded === 'bothEqual') {
+      return <SwapIcon />;
+    }
+    return expanded ? <CollapseContentIcon /> : <ExpandContentIcon />;
+  };
+
   return (
     <button
       {...rest}
       className={clsx(styles['expand-button'], className)}
-      aria-expanded={expanded}
+      aria-expanded={expanded === 'bothEqual' ? undefined : expanded}
       id={ids.heading}
       aria-controls={ids.section}
       type='button'
     >
-      {expanded ? <CollapseContentIcon /> : <ExpandContentIcon />}
+      {getIcon()}
       {children}
     </button>
   );

@@ -57,6 +57,7 @@ export const RepeatingComponent = ({
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
+            anchorId={anchorId}
           />
         );
       }}
@@ -66,7 +67,8 @@ export const RepeatingComponent = ({
       control={control}
       component={component}
       name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
+      anchorId={anchorId}
+      renderCallback={(arrayPath, actionButtonGroup, index) => {
         return (
           <Component
             parentPath={parentPath}
@@ -74,6 +76,7 @@ export const RepeatingComponent = ({
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
+            anchorId={index === 0 ? anchorId : undefined}
           />
         );
       }}

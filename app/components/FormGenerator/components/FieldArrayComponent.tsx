@@ -33,7 +33,11 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponentWithData;
-  renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
+  renderCallback: (
+    path: string,
+    actionButtonGroup: ReactNode,
+    index: number,
+  ) => ReactNode;
   anchorId?: string;
 }
 
@@ -97,7 +101,11 @@ export const FieldArrayComponent = ({
 
         return (
           <Fragment key={(field as RepeatingField).repeatId ?? field.id}>
-            {renderCallback(`${name}[${index}]` as const, actionButtonGroup)}
+            {renderCallback(
+              `${name}[${index}]` as const,
+              actionButtonGroup,
+              index,
+            )}
           </Fragment>
         );
       })}

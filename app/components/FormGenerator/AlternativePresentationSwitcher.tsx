@@ -98,7 +98,7 @@ export const AlternativePresentationSwitcher = (
     if (alternativePresentation !== undefined) {
       return (
         <Group
-          expanded={expanded}
+          expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
           onExpandButtonClick={() =>
             setCurrentPresentation(
               currentPresentation === 'alternative' ? 'default' : 'alternative',
@@ -117,7 +117,7 @@ export const AlternativePresentationSwitcher = (
     } else {
       return (
         <Group
-          expanded={expanded}
+          expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
           onExpandButtonClick={() =>
             setCurrentPresentation(
               currentPresentation === 'alternative' ? 'default' : 'alternative',
@@ -143,7 +143,7 @@ export const AlternativePresentationSwitcher = (
       <CardHeader>
         <CardTitle level={titleHeadlineLevel}>
           <CardExpandButton
-            expanded={expanded}
+            expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
             onClick={() =>
               setCurrentPresentation(
                 currentPresentation === 'alternative'
