@@ -135,7 +135,7 @@ export const AlternativePresentationSwitcher = (
 
   return (
     <Card
-      /*  anchorId={props.anchorId} */
+      id={props.anchorId}
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
       boxed

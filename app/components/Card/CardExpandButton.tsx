@@ -31,6 +31,7 @@ export const CardExpandButton = ({
       id={ids.heading}
       aria-controls={ids.section}
       type='button'
+      data-action-button
     >
       {getIcon()}
       {children}
