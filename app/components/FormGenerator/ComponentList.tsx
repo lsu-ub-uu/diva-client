@@ -20,8 +20,24 @@ import {
   Component,
   getCurrentComponentNamePath,
 } from '@/components/FormGenerator/Component';
-import type { FormComponent } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentGroup,
+  FormComponentLeaf,
+} from '@/components/FormGenerator/types';
 import { addAttributesToName } from './defaultValues/defaultValues';
+import {
+  isComponentGroup,
+  isComponentOptional,
+  isComponentRepeating,
+  isComponentSingularAndOptional,
+  isComponentVariable,
+  isComponentWithData,
+} from './formGeneratorUtils/formGeneratorUtils';
+import { RepeatingGroup } from './components/RepeatingGroup';
+import { RepeatingVariable } from './components/RepeatingVariable';
+import { OptionalGroup } from './components/OptionalGroup';
+import { RepeatingComponent } from './components/RepeatingComponent';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -38,9 +54,30 @@ export const ComponentList = ({
 }: FormComponentListGeneratorProps) => {
   return components.map((component) => {
     const componentPath = getCurrentComponentNamePath(component, path);
+    const key = `${componentPath}.${component.presentationId}`;
+
+    if (
+      isComponentWithData(component) &&
+      (isComponentRepeating(component) ||
+        isComponentSingularAndOptional(component))
+    ) {
+      return (
+        <RepeatingComponent
+          key={key}
+          currentComponentNamePath={componentPath}
+          component={component}
+          parentPresentationStyle={parentPresentationStyle}
+          anchorId={
+            isRoot
+              ? `anchor_${addAttributesToName(component, component.name)}`
+              : undefined
+          }
+        />
+      );
+    }
     return (
       <Component
-        key={`${componentPath}.${component.presentationId}`}
+        key={key}
         component={component}
         path={path}
         parentPresentationStyle={parentPresentationStyle}
@@ -52,4 +89,22 @@ export const ComponentList = ({
       />
     );
   });
+};
+
+const isComponentGroupAndRepeating = (
+  component: FormComponent,
+): component is FormComponentGroup => {
+  return (
+    isComponentGroup(component) &&
+    (isComponentRepeating(component) || isComponentOptional(component))
+  );
+};
+
+const isComponentVariableAndRepeating = (
+  component: FormComponent,
+): component is FormComponentLeaf => {
+  return (
+    isComponentVariable(component) &&
+    (isComponentRepeating(component) || isComponentOptional(component))
+  );
 };

@@ -125,7 +125,7 @@ export const alternativePresentationWithMinNumberRepeatingToShow: RecordFormSche
             name: 'someAlternativeNameInData',
             showLabel: true,
             label: 'someAlternativeLabelTextId',
-            placeholder: 'someEmptyTextId'app/__mocks__,
+            placeholder: 'someEmptyTextId',
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 0,

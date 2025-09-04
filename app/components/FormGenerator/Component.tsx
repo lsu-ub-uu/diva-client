@@ -18,8 +18,6 @@
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Group } from '@/components/FormGenerator/components/Group';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
-import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
-import { RepeatingVariable } from '@/components/FormGenerator/components/RepeatingVariable';
 import { ResourceLink } from '@/components/FormGenerator/components/ResourceLink';
 import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -31,7 +29,6 @@ import {
   isComponentRepeating,
   isComponentRepeatingContainer,
   isComponentResourceLink,
-  isComponentSingularAndOptional,
   isComponentSurroundingContainer,
   isComponentVariable,
   isComponentWithData,
@@ -45,13 +42,13 @@ import type {
 import { use } from 'react';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
-import { OptionalGroup } from './components/OptionalGroup';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
   path: string;
   parentPresentationStyle?: string;
   anchorId?: string;
+  actionButtonGroup?: React.ReactNode;
 }
 
 export const Component = ({
@@ -59,10 +56,11 @@ export const Component = ({
   path,
   parentPresentationStyle,
   anchorId,
+  actionButtonGroup,
 }: FormComponentGeneratorProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
   const currentComponentNamePath = getCurrentComponentNamePath(component, path);
-  /* 
+
   if (hasClickableTitle(component) || hasAlternativePresentation(component)) {
     return (
       <AlternativePresentationSwitcher
@@ -73,7 +71,7 @@ export const Component = ({
         parentPresentationStyle={parentPresentationStyle}
       />
     );
-  } */
+  }
 
   if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
     return (
@@ -84,7 +82,7 @@ export const Component = ({
       />
     );
   }
-  if (isComponentSurroundingContainerAndNOTRepeating(component)) {
+  if (isComponentSurroundingContainer(component)) {
     return (
       <SurroundingContainer
         component={component}
@@ -94,52 +92,19 @@ export const Component = ({
     );
   }
 
-  if (
-    isComponentGroup(component) &&
-    isComponentSingularAndOptional(component)
-  ) {
-    return (
-      <OptionalGroup
-        currentComponentNamePath={currentComponentNamePath}
-        component={component as FormComponentGroup}
-        parentPresentationStyle={parentPresentationStyle}
-        anchorId={anchorId}
-      />
-    );
-  }
-
-  if (isComponentGroupAndRepeating(component)) {
-    return (
-      <RepeatingGroup
-        currentComponentNamePath={currentComponentNamePath}
-        component={component}
-        parentPresentationStyle={parentPresentationStyle}
-        anchorId={anchorId}
-      />
-    );
-  }
-
-  if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
+  if (isComponentGroup(component)) {
     return (
       <Group
         currentComponentNamePath={currentComponentNamePath}
         component={component as FormComponentGroup}
         parentPresentationStyle={parentPresentationStyle}
         anchorId={anchorId}
+        actionButtonGroup={actionButtonGroup}
       />
     );
   }
 
-  if (isComponentVariableAndRepeating(component)) {
-    return (
-      <RepeatingVariable
-        component={component}
-        currentComponentNamePath={currentComponentNamePath}
-        parentPresentationStyle={parentPresentationStyle}
-      />
-    );
-  }
-
+  /** TODO: move into LeafComponent */
   if (isComponentResourceLink(component)) {
     return (
       <ResourceLink component={component} path={currentComponentNamePath} />
@@ -156,6 +121,7 @@ export const Component = ({
           <Attributes component={component} path={currentComponentNamePath} />
         )
       }
+      actionButtonGroup={actionButtonGroup}
     />
   );
 };
@@ -204,23 +170,5 @@ const isComponentGroupOrRepeatingContainerAndNOTRepeating = (
   return (
     (isComponentGroup(component) || isComponentRepeatingContainer(component)) &&
     !isComponentRepeating(component)
-  );
-};
-
-const isComponentGroupAndRepeating = (
-  component: FormComponent,
-): component is FormComponentGroup => {
-  return (
-    isComponentGroup(component) &&
-    (isComponentRepeating(component) || isComponentOptional(component))
-  );
-};
-
-const isComponentVariableAndRepeating = (
-  component: FormComponent,
-): component is FormComponentLeaf => {
-  return (
-    isComponentVariable(component) &&
-    (isComponentRepeating(component) || isComponentOptional(component))
   );
 };

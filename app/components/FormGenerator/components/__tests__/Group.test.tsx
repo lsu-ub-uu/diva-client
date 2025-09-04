@@ -441,6 +441,23 @@ describe.only('Group', () => {
             inputType: 'input',
             mode: 'input',
           },
+          {
+            type: 'textVariable',
+            name: 'someAdditionalNameInData',
+            showLabel: true,
+            label: 'someAdditionalVarLabelTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            validation: {
+              type: 'regex',
+              pattern: '^[a-zA-Z]$',
+            },
+            inputType: 'input',
+            mode: 'input',
+          },
         ],
       },
     };
@@ -456,6 +473,9 @@ describe.only('Group', () => {
     ).toBeVisible();
     expect(
       screen.queryByRole('textbox', { name: 'someVarLabelTextId' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('textbox', { name: 'someAdditionalVarLabelTextId' }),
     ).not.toBeInTheDocument();
 
     await user.click(
@@ -467,6 +487,9 @@ describe.only('Group', () => {
     ).toBeVisible();
     expect(
       screen.getByRole('textbox', { name: 'someVarLabelTextId' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('textbox', { name: 'someAdditionalVarLabelTextId' }),
     ).toBeVisible();
   });
 });

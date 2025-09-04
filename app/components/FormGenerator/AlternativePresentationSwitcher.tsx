@@ -16,25 +16,30 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { Component } from '@/components/FormGenerator/Component';
 import type {
   FormComponent,
+  FormComponentGroup,
   PresentationSize,
 } from '@/components/FormGenerator/types';
 import { get, isEmpty } from 'lodash-es';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
+import { Card } from '../Card/Card';
+import { CardContent } from '../Card/CardContent';
+import { CardExpandButton } from '../Card/CardExpandButton';
+import { CardHeader } from '../Card/CardHeader';
+import { CardTitle } from '../Card/CardTitle';
+import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
+import { Group } from './components/Group';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
   anchorId: string | undefined;
   path: string;
   currentComponentNamePath: string;
+  actionButtonGroup?: React.ReactNode;
   parentPresentationStyle?: string;
 }
 
@@ -49,7 +54,7 @@ export const AlternativePresentationSwitcher = (
 
   const [currentPresentation, setCurrentPresentation] =
     useState<PresentationState>('default');
-
+  //  console.log(props.currentComponentNamePath, { currentPresentation });
   const {
     presentationSize,
     title,
@@ -79,26 +84,80 @@ export const AlternativePresentationSwitcher = (
     );
   }
 
+  /*
+    if group
+
+    return
+
+    <Group expanded={expanded} onExpandButtonClick={() => setCurrentPresentation('alternative')}>
+      {title && t(title)}
+    </Group>
+  */
+
+  if (isComponentGroup(component)) {
+    if (alternativePresentation !== undefined) {
+      return (
+        <Group
+          expanded={expanded}
+          onExpandButtonClick={() =>
+            setCurrentPresentation(
+              currentPresentation === 'alternative' ? 'default' : 'alternative',
+            )
+          }
+          component={
+            currentPresentation === 'alternative'
+              ? (alternativePresentation as FormComponentGroup)
+              : (defaultPresentation as FormComponentGroup)
+          }
+          actionButtonGroup={props.actionButtonGroup}
+          currentComponentNamePath={currentComponentNamePath}
+          anchorId={props.anchorId}
+        />
+      );
+    } else {
+      return (
+        <Group
+          expanded={expanded}
+          onExpandButtonClick={() =>
+            setCurrentPresentation(
+              currentPresentation === 'alternative' ? 'default' : 'alternative',
+            )
+          }
+          component={{ ...component, title: undefined }}
+          actionButtonGroup={props.actionButtonGroup}
+          currentComponentNamePath={currentComponentNamePath}
+          anchorId={props.anchorId}
+          childrenHidden={!expanded}
+        />
+      );
+    }
+  }
+
   return (
-    <Accordion
-      anchorId={props.anchorId}
-      expanded={expanded}
-      onChange={() =>
-        setCurrentPresentation(
-          currentPresentation === 'alternative' ? 'default' : 'alternative',
-        )
-      }
+    <Card
+      /*  anchorId={props.anchorId} */
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
-      presentationSize={presentationSize}
+      boxed
     >
-      {title && (
-        <AccordionTitle headlineLevel={titleHeadlineLevel}>
-          {t(title)}
-        </AccordionTitle>
-      )}
+      <CardHeader>
+        <CardTitle level={titleHeadlineLevel}>
+          <CardExpandButton
+            expanded={expanded}
+            onClick={() =>
+              setCurrentPresentation(
+                currentPresentation === 'alternative'
+                  ? 'default'
+                  : 'alternative',
+              )
+            }
+          >
+            {title && t(title)}
+          </CardExpandButton>
+        </CardTitle>
+      </CardHeader>
       {alternativePresentation !== undefined ? ( // Switch between two presentations
-        <AccordionContent className='form-component-container'>
+        <CardContent className='form-component-container'>
           <Component
             {...props}
             component={
@@ -107,21 +166,17 @@ export const AlternativePresentationSwitcher = (
                 : defaultPresentation
             }
           />
-        </AccordionContent>
+        </CardContent>
       ) : (
         // Switch between no content and single presentation
-        <AccordionContent
-          className='form-component-container'
-          hidden={!expanded}
-        >
+        <CardContent className='form-component-container' hidden={!expanded}>
           <Component
             {...props}
             component={{ ...component, title: undefined } as FormComponent}
           />
-        </AccordionContent>
+        </CardContent>
       )}
-      {!title && <AccordionExpandButton />}
-    </Accordion>
+    </Card>
   );
 };
 

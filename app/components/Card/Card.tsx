@@ -19,14 +19,21 @@
 import { useId, type ReactNode } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
+import { clsx } from 'clsx';
 
-export interface CardProps {
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   boxed?: boolean;
   label?: string;
 }
 
-export const Card = ({ children, boxed = false, label }: CardProps) => {
+export const Card = ({
+  children,
+  boxed = false,
+  label,
+  className,
+  ...rest
+}: CardProps) => {
   const id = useId();
   const ids = {
     heading: `card-heading-${id}`,
@@ -37,7 +44,8 @@ export const Card = ({ children, boxed = false, label }: CardProps) => {
       id={ids.section}
       aria-labelledby={ids.heading}
       aria-label={label}
-      className={styles['card']}
+      className={clsx(styles['card'], className)}
+      {...rest}
       {...(boxed && { 'data-boxed': '' })}
     >
       <CardContext value={{ boxed, ids }}>{children}</CardContext>

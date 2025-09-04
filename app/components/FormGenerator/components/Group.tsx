@@ -34,7 +34,7 @@ import {
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
-import { type ReactNode, use, useState } from 'react';
+import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -44,7 +44,20 @@ interface GroupProps {
   parentPresentationStyle?: string;
   actionButtonGroup?: ReactNode;
   anchorId?: string;
+  expanded?: boolean;
+  onExpandButtonClick?: () => void;
+  childrenHidden?: boolean;
 }
+
+/*
+ presentaitonToShow : default, alternative
+
+ expanded:
+  if single presentation 
+
+
+  
+*/
 
 export const Group = ({
   currentComponentNamePath,
@@ -52,16 +65,26 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
   anchorId,
+  expanded,
+  onExpandButtonClick,
+  childrenHidden,
 }: GroupProps) => {
-  const [expanded, setExpanded] = useState(
-    component.presentationSize !== 'singleInitiallyHidden',
-  );
+  /*   const {
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    defaultPresentation,
+    alternativePresentation,
+    expanded,
+    currentPresentation,
+  } = useAlternativePresentationSwitcher(component, currentComponentNamePath); */
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
     enhancedFields && enhancedFields[currentComponentNamePath];
-
+  const expandable =
+    onExpandButtonClick !== undefined && expanded !== undefined;
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
@@ -71,6 +94,24 @@ export const Group = ({
   const hasNoValues = hasOnlyAttributes(
     cleanFormData(getValues(currentComponentNamePath)),
   );
+
+  /* if (alternativePresentation && currentPresentation === 'alternative') {
+    return (
+      <Component
+        component={alternativePresentation}
+        currentComponentNamePath={currentComponentNamePath}
+      />
+    );
+  } */
+
+  /*   if (expanded && alternativePresentation) {
+    return (
+      <Group
+        component={alternativePresentation}
+        currentComponentNamePath={currentComponentNamePath}
+      />
+    );
+  } */
 
   if (component.mode === 'output' && hasNoValues) {
     return null;
@@ -106,20 +147,21 @@ export const Group = ({
                 showTooltips && <FieldInfo {...component.tooltip} />
               }
             >
-              {component.title && (
+              {expandable ? (
                 <CardExpandButton
                   expanded={expanded}
-                  onClick={() => setExpanded(!expanded)}
+                  onClick={onExpandButtonClick}
                 >
-                  {t(component.title)}
+                  {t(component.title ?? component?.label)}
                 </CardExpandButton>
+              ) : (
+                t(component?.label)
               )}
-              {!component.title && t(component?.label)}
             </CardTitle>
           )}
         </CardHeader>
         <CardContent
-          hidden={!expanded}
+          hidden={childrenHidden}
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
           }
