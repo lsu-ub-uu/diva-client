@@ -48,9 +48,11 @@ const getAttributesToShow = (presentation: BFFPresentation) => {
     : undefined;
 };
 
-const getHeadlineLevel = (presentation: BFFPresentation) => {
+type HeadlineLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined;
+
+const getHeadlineLevel = (presentation: BFFPresentation): HeadlineLevel => {
   return 'specifiedHeadlineLevel' in presentation
-    ? presentation.specifiedHeadlineLevel
+    ? (presentation.specifiedHeadlineLevel as HeadlineLevel)
     : undefined;
 };
 
