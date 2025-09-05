@@ -81,10 +81,12 @@ async function main() {
     let modifiedCount = 0;
 
     for (const file of files) {
+      // Replace basename in server bundle
+
       const wasModified = await replaceInFile(
         file,
-        '/TEMP_BASE',
-        process.env.BASE_PATH,
+        '/@BASENAME@',
+        process.env.BASE_PATH ?? '',
       );
       if (wasModified) {
         modifiedCount++;
@@ -92,9 +94,9 @@ async function main() {
       }
     }
 
-    console.info(`Postbuild complete. Modified ${modifiedCount} files.`);
+    console.info(`Prestart complete. Modified ${modifiedCount} files.`);
   } catch (error) {
-    console.error('Error during postbuild:', error.message);
+    console.error('Error during prestart:', error.message);
     process.exit(1);
   }
 }

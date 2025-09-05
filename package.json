@@ -5,8 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "react-router build && npm run postbuild",
-    "postbuild": "node scripts/postbuild.js",
+    "build": "BASE_PATH=/@BASENAME@ react-router build",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
     "prestart": "node scripts/prestart.js",
     "start": "npm run prestart && tsx server.ts",
