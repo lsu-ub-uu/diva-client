@@ -6,7 +6,6 @@ import babelPlugin from 'vite-plugin-babel';
 
 export default defineConfig(({ isSsrBuild }) => {
   const { BASE_PATH } = process.env;
-
   return {
     base: BASE_PATH ? `${BASE_PATH}/` : undefined,
     plugins: [

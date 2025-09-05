@@ -27,11 +27,10 @@
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.60-SNAPSHOT</version>
+  <version>1.64-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>
-    <basename>/divaclient</basename>
     <frontend-maven-plugin.version>1.15.10-atlassian-2</frontend-maven-plugin.version>
     <nodeVersion>v22.14.0</nodeVersion>
   </properties>
@@ -56,6 +55,13 @@
       <resource>
         <directory>server</directory>
         <targetPath>server</targetPath>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>scripts</directory>
+        <targetPath>scripts</targetPath>
         <includes>
           <include>**/*</include>
         </includes>
@@ -117,9 +123,6 @@
             </goals>
             <configuration>
               <arguments>run build</arguments>
-              <environmentVariables>
-                <BASE_PATH>${basename}</BASE_PATH>
-              </environmentVariables>
             </configuration>
           </execution>
         </executions>
