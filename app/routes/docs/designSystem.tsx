@@ -16,14 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Card } from '@/components/Card/Card';
 import { CardContent } from '@/components/Card/CardContent';
+import { CardExpandButton } from '@/components/Card/CardExpandButton';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
@@ -41,14 +38,12 @@ import * as icons from '@/icons';
 import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { useState } from 'react';
 import css from './design-system.css?url';
-import { CardExpandButton } from '@/components/Card/CardExpandButton';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DesignSystem() {
   const [snacbkarOpen, setSnacbkarOpen] = useState(false);
   const [progress, setProgress] = useState(50);
-  const [accordionExpanded, setAccordionExpanded] = useState(false);
 
   return (
     <div>

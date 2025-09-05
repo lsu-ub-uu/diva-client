@@ -31,24 +31,15 @@ import {
   formDefCollVarsWithSameNameInDataNEW,
   formDefRequiredRepeatingCollectionVar1_X,
   formDefWithOneCollectionVariable1_1,
-  formDefWithRepeatingCollectionVar,
 } from '@/__mocks__/data/form/collVar';
-import {
-  formDefWithNestedSurroundingContainers,
-  formDefWithSurroundingContainerAroundTextVariable,
-} from '@/__mocks__/data/form/container';
 import {
   formDefContributorGroupWithAuthorGroupAuthor,
   formDefTitleInfoGroupSameNameInData,
-  formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
   formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
   formDefWithOptionalGroupWithRequiredNumberVar,
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithRepeatingGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/form/group';
 import {
@@ -69,8 +60,6 @@ import {
   formDefWithOneTextVariableNEW0_1REGEX,
   formDefWithOneTextVariableNEW1_1,
   formDefWithOneTextVariableNEW1_X,
-  formDefWithTextVar,
-  formDefWithTwoRepeatingVarsAndCollectionVar,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
 import { cleanFormData } from '@/utils/cleanFormData';
