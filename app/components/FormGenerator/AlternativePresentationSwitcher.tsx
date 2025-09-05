@@ -54,7 +54,6 @@ export const AlternativePresentationSwitcher = (
 
   const [currentPresentation, setCurrentPresentation] =
     useState<PresentationState>('default');
-  //  console.log(props.currentComponentNamePath, { currentPresentation });
   const {
     presentationSize,
     title,
@@ -84,53 +83,28 @@ export const AlternativePresentationSwitcher = (
     );
   }
 
-  /*
-    if group
-
-    return
-
-    <Group expanded={expanded} onExpandButtonClick={() => setCurrentPresentation('alternative')}>
-      {title && t(title)}
-    </Group>
-  */
-
   if (isComponentGroup(component)) {
-    if (alternativePresentation !== undefined) {
-      return (
-        <Group
-          expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
-          onExpandButtonClick={() =>
-            setCurrentPresentation(
-              currentPresentation === 'alternative' ? 'default' : 'alternative',
-            )
-          }
-          component={
-            currentPresentation === 'alternative'
+    return (
+      <Group
+        expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
+        onExpandButtonClick={() =>
+          setCurrentPresentation(
+            currentPresentation === 'alternative' ? 'default' : 'alternative',
+          )
+        }
+        component={
+          alternativePresentation === undefined
+            ? component
+            : currentPresentation === 'alternative'
               ? (alternativePresentation as FormComponentGroup)
               : (defaultPresentation as FormComponentGroup)
-          }
-          actionButtonGroup={props.actionButtonGroup}
-          currentComponentNamePath={currentComponentNamePath}
-          anchorId={props.anchorId}
-        />
-      );
-    } else {
-      return (
-        <Group
-          expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
-          onExpandButtonClick={() =>
-            setCurrentPresentation(
-              currentPresentation === 'alternative' ? 'default' : 'alternative',
-            )
-          }
-          component={component}
-          actionButtonGroup={props.actionButtonGroup}
-          currentComponentNamePath={currentComponentNamePath}
-          anchorId={props.anchorId}
-          childrenHidden={!expanded}
-        />
-      );
-    }
+        }
+        actionButtonGroup={props.actionButtonGroup}
+        currentComponentNamePath={currentComponentNamePath}
+        anchorId={props.anchorId}
+        childrenHidden={alternativePresentation === undefined && !expanded}
+      />
+    );
   }
 
   return (

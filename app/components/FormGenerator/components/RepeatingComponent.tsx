@@ -43,7 +43,7 @@ export const RepeatingComponent = ({
 
   const { control } = useRemixFormContext();
 
-  const fieldArrray = isComponentSingularAndOptional(component) ? (
+  return isComponentSingularAndOptional(component) ? (
     <OptionalComponent
       anchorId={anchorId}
       control={control}
@@ -82,20 +82,4 @@ export const RepeatingComponent = ({
       }}
     />
   );
-
-  if (component.mode === 'output') {
-    return fieldArrray;
-  }
-
-  return fieldArrray;
-  /* return (
-    <section
-      id={anchorId}
-      className='form-component-item form-component-container'
-      data-colspan={component.gridColSpan ?? 12}
-      data-layout='grid'
-    >
-      {fieldArrray}
-    </section>
-  ); */
 };
