@@ -8,11 +8,6 @@ import process from 'process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-/**
- * Recursively find all files in a directory
- * @param {string} dir - Directory to search
- * @returns {Promise<string[]>} Array of file paths
- */
 async function findFiles(dir) {
   const files = [];
 
@@ -37,13 +32,6 @@ async function findFiles(dir) {
   return files;
 }
 
-/**
- * Replace text in a file
- * @param {string} filePath - Path to the file
- * @param {string} searchText - Text to search for
- * @param {string} replaceText - Text to replace with
- * @returns {Promise<boolean>} True if file was modified
- */
 async function replaceInFile(filePath, searchText, replaceText) {
   try {
     const content = await readFile(filePath, 'utf8');
@@ -64,9 +52,6 @@ async function replaceInFile(filePath, searchText, replaceText) {
   }
 }
 
-/**
- * Main function to replace @BASENAME@ with process.env.BASE_PATH in dist/server files
- */
 async function main() {
   const projectRoot = join(__dirname, '..');
   const distPath = join(projectRoot, 'dist');
@@ -81,8 +66,6 @@ async function main() {
     let modifiedCount = 0;
 
     for (const file of files) {
-      // Replace basename in server bundle
-
       const wasModified = await replaceInFile(
         file,
         '/@BASENAME@',
