@@ -44,7 +44,7 @@ export const Card = ({
   return (
     <section
       id={ids.section}
-      aria-labelledby={ids.heading}
+      aria-labelledby={label ? undefined : ids.heading}
       aria-label={label}
       className={clsx(styles['card'], className)}
       data-expanded={expanded}

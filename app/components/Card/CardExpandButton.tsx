@@ -45,7 +45,7 @@ export const CardExpandButton = ({
       aria-expanded={expanded === 'bothEqual' ? undefined : expanded}
       id={ids.heading}
       aria-controls={ids.section}
-      aria-label={t(getAriaLabel())}
+      aria-label={children ? undefined : t(getAriaLabel())}
       type='button'
       data-action-button
     >

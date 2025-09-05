@@ -270,7 +270,9 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               <>
                 <dt>{output.externalCollaboration.__text[language]}</dt>
                 {output.externalCollaboration.namePart?.map(
-                  (namePart, index) => <dd key={index}>{namePart.value}</dd>,
+                  (namePart, index) => (
+                    <dd key={index}>{namePart.value}</dd>
+                  ),
                 )}
               </>
             )}
@@ -621,7 +623,7 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
         titleText={t(`divaClient_error${status}TitleText`)}
         bodyText={errorBodyText}
         links={
-          <Link to={`/${recordType}/search`}>
+          <Link to={href('/:recordType', { recordType })}>
             {t('divaClient_errorGoToSearchText', { recordType })}
           </Link>
         }

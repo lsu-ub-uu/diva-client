@@ -31,7 +31,9 @@ export const CardTitle = ({ children, level = 'h2', info }: CardTitleProps) => {
   const { ids } = use(CardContext);
   return (
     <div className={styles['card-title']}>
-      <HeadingElement id={ids.heading}>{children}</HeadingElement>
+      <HeadingElement id={ids.heading} className={styles['card-heading']}>
+        {children}
+      </HeadingElement>
       {info}
     </div>
   );

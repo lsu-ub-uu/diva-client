@@ -134,50 +134,52 @@ export const AlternativePresentationSwitcher = (
   }
 
   return (
-    <Card
+    <div
       id={props.anchorId}
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
-      boxed
-      expanded={expanded}
     >
-      <CardHeader>
-        <CardTitle level={titleHeadlineLevel}>
-          <CardExpandButton
-            expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
-            onClick={() =>
-              setCurrentPresentation(
+      <Card boxed expanded={expanded}>
+        <CardHeader>
+          <CardTitle level={titleHeadlineLevel}>
+            <CardExpandButton
+              expanded={
+                presentationSize === 'bothEqual' ? 'bothEqual' : expanded
+              }
+              onClick={() =>
+                setCurrentPresentation(
+                  currentPresentation === 'alternative'
+                    ? 'default'
+                    : 'alternative',
+                )
+              }
+            >
+              {title && t(title)}
+            </CardExpandButton>
+          </CardTitle>
+        </CardHeader>
+        {alternativePresentation !== undefined ? ( // Switch between two presentations
+          <CardContent className='form-component-container'>
+            <Component
+              {...props}
+              component={
                 currentPresentation === 'alternative'
-                  ? 'default'
-                  : 'alternative',
-              )
-            }
-          >
-            {title && t(title)}
-          </CardExpandButton>
-        </CardTitle>
-      </CardHeader>
-      {alternativePresentation !== undefined ? ( // Switch between two presentations
-        <CardContent className='form-component-container'>
-          <Component
-            {...props}
-            component={
-              currentPresentation === 'alternative'
-                ? alternativePresentation
-                : defaultPresentation
-            }
-          />
-        </CardContent>
-      ) : (
-        // Switch between no content and single presentation
-        <CardContent className='form-component-container' hidden={!expanded}>
-          <Component
-            {...props}
-            component={{ ...component, title: undefined } as FormComponent}
-          />
-        </CardContent>
-      )}
-    </Card>
+                  ? alternativePresentation
+                  : defaultPresentation
+              }
+            />
+          </CardContent>
+        ) : (
+          // Switch between no content and single presentation
+          <CardContent className='form-component-container' hidden={!expanded}>
+            <Component
+              {...props}
+              component={{ ...component, title: undefined } as FormComponent}
+            />
+          </CardContent>
+        )}
+      </Card>
+    </div>
   );
 };
 

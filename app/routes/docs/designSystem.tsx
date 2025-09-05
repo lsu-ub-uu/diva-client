@@ -796,65 +796,6 @@ export default function DesignSystem() {
             ))}
           </div>
         </section>
-        <section>
-          <h2>Accordion</h2>
-          <h3>Accordion with title</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionTitle>Accordion title</AccordionTitle>
-            {accordionExpanded && (
-              <AccordionContent>
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                <p>
-                  Voluptatem repellat consequatur deleniti qui quibusdam harum
-                  cumque.
-                </p>
-              </AccordionContent>
-            )}
-          </Accordion>
-          <h3>Accordion with title and collapsed content</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionTitle>Accordion title</AccordionTitle>
-            <AccordionContent>
-              {accordionExpanded ? (
-                <>
-                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                  <p>
-                    Voluptatem repellat consequatur deleniti qui quibusdam harum
-                    cumque.
-                  </p>
-                </>
-              ) : (
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-              )}
-            </AccordionContent>
-          </Accordion>
-          <h3>Accordion without title</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionContent>
-              {accordionExpanded ? (
-                <>
-                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                  <p>
-                    Voluptatem repellat consequatur deleniti qui quibusdam harum
-                    cumque.
-                  </p>
-                </>
-              ) : (
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-              )}
-            </AccordionContent>
-            <AccordionExpandButton />
-          </Accordion>
-        </section>
       </main>
     </div>
   );

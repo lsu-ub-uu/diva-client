@@ -100,7 +100,7 @@ export const Group = ({
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card
         boxed={boxGroups && groupLevel !== 0 && cardTitle !== undefined}
-        label={!cardTitle ? component.label : undefined}
+        label={cardTitle ?? t(component.label)}
         expanded={expanded !== false}
       >
         <CardHeader
