@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "build": "react-router build && npm run postbuild",
-    "postbuild": "find dist/server -type f -exec sed -i 's/\"@BASENAME@\"/process.env.BASE_PATH/g' {} +",
+    "postbuild": "node scripts/postbuild.js",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
-    "start": "tsx server.ts",
+    "prestart": "node scripts/prestart.js",
+    "start": "npm run prestart && tsx server.ts",
     "typegen": "tsx typegen/main.ts",
     "typecheck": "react-router typegen && tsc",
     "typecheck:w": "react-router typegen && tsc -w",

@@ -5,10 +5,8 @@ import svgr from 'vite-plugin-svgr';
 import babelPlugin from 'vite-plugin-babel';
 
 export default defineConfig(({ isSsrBuild }) => {
-  const { BASE_PATH } = process.env;
-
   return {
-    base: BASE_PATH ? `${BASE_PATH}/` : undefined,
+    base: '/TEMP_BASE/',
     plugins: [
       !process.env.VITEST && reactRouter(),
       !process.env.VITEST &&
