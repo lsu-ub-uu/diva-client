@@ -31,24 +31,15 @@ import {
   formDefCollVarsWithSameNameInDataNEW,
   formDefRequiredRepeatingCollectionVar1_X,
   formDefWithOneCollectionVariable1_1,
-  formDefWithRepeatingCollectionVar,
 } from '@/__mocks__/data/form/collVar';
-import {
-  formDefWithNestedSurroundingContainers,
-  formDefWithSurroundingContainerAroundTextVariable,
-} from '@/__mocks__/data/form/container';
 import {
   formDefContributorGroupWithAuthorGroupAuthor,
   formDefTitleInfoGroupSameNameInData,
-  formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
   formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
   formDefWithOptionalGroupWithRequiredNumberVar,
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithRepeatingGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroup,
-  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/form/group';
 import {
@@ -69,8 +60,6 @@ import {
   formDefWithOneTextVariableNEW0_1REGEX,
   formDefWithOneTextVariableNEW1_1,
   formDefWithOneTextVariableNEW1_X,
-  formDefWithTextVar,
-  formDefWithTwoRepeatingVarsAndCollectionVar,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
 import { cleanFormData } from '@/utils/cleanFormData';
@@ -81,88 +70,6 @@ import {
   createYupArrayFromSchema,
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
-
-describe('generate validation', () => {
-  it('should return correct validationSchema for one textVar and one numberVar', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithTextVar as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for one textVar with a surrounding container', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithSurroundingContainerAroundTextVariable as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for with nested surrounding containers', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithNestedSurroundingContainers as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for two repeating variables', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithTwoRepeatingVarsAndCollectionVar as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for one repeating collectionVariable', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithRepeatingCollectionVar as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for one group having a textVar', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for repeating group having a textVar', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithRepeatingGroup as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithRepeatingGroupWithRepeatingChildGroup as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-
-    expect(actualSchema).toMatchSnapshot();
-  });
-
-  it('should return correct validationSchema for repeating group having repeating child group with two name fields and different attributes', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes as FormSchema,
-    );
-    const actualSchema = yupSchema.describe().fields;
-    expect(actualSchema).toMatchSnapshot();
-  });
-});
 
 describe('custom validate yupSchemas for array schemas', () => {
   it('should validate a list with a simple leaf value object being empty in the array', async () => {

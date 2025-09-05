@@ -82,7 +82,6 @@ export const RecordForm = ({
     >
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-
         <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 

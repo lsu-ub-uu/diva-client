@@ -77,7 +77,7 @@ export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode?: FormComponentMode;
   tooltip?: FormComponentTooltip;
-  headlineLevel?: string;
+  headlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
   finalValue?: string;

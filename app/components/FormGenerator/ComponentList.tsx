@@ -21,7 +21,13 @@ import {
   getCurrentComponentNamePath,
 } from '@/components/FormGenerator/Component';
 import type { FormComponent } from '@/components/FormGenerator/types';
+import { RepeatingComponent } from './components/RepeatingComponent';
 import { addAttributesToName } from './defaultValues/defaultValues';
+import {
+  isComponentRepeating,
+  isComponentSingularAndOptional,
+  isComponentWithData,
+} from './formGeneratorUtils/formGeneratorUtils';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -38,11 +44,34 @@ export const ComponentList = ({
 }: FormComponentListGeneratorProps) => {
   return components.map((component) => {
     const componentPath = getCurrentComponentNamePath(component, path);
+    const key = `${componentPath}.${component.presentationId}`;
+
+    if (
+      isComponentWithData(component) &&
+      (isComponentRepeating(component) ||
+        isComponentSingularAndOptional(component))
+    ) {
+      return (
+        <RepeatingComponent
+          key={key}
+          parentPath={path}
+          component={component}
+          parentPresentationStyle={parentPresentationStyle}
+          anchorId={
+            isRoot
+              ? `anchor_${addAttributesToName(component, component.name)}`
+              : undefined
+          }
+        />
+      );
+    }
+
     return (
       <Component
-        key={`${componentPath}.${component.presentationId}`}
+        key={key}
         component={component}
-        path={path}
+        parentPath={path}
+        currentComponentNamePath={componentPath}
         parentPresentationStyle={parentPresentationStyle}
         anchorId={
           isRoot

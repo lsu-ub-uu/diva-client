@@ -18,6 +18,7 @@
 
 import { Card } from '@/components/Card/Card';
 import { CardContent } from '@/components/Card/CardContent';
+import { CardExpandButton } from '@/components/Card/CardExpandButton';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
@@ -40,9 +41,12 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface GroupProps {
   currentComponentNamePath: string;
   component: FormComponentGroup;
-  parentPresentationStyle: string | undefined;
+  parentPresentationStyle?: string;
   actionButtonGroup?: ReactNode;
   anchorId?: string;
+  expanded?: boolean | 'bothEqual';
+  onExpandButtonClick?: () => void;
+  childrenHidden?: boolean;
 }
 
 export const Group = ({
@@ -51,13 +55,17 @@ export const Group = ({
   parentPresentationStyle,
   actionButtonGroup,
   anchorId,
+  expanded,
+  onExpandButtonClick,
+  childrenHidden,
 }: GroupProps) => {
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement =
     enhancedFields && enhancedFields[currentComponentNamePath];
-
+  const expandable =
+    onExpandButtonClick !== undefined && expanded !== undefined;
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
@@ -72,19 +80,29 @@ export const Group = ({
     return null;
   }
 
-  const groupAria = component.showLabel
-    ? { 'aria-labelledby': `${currentComponentNamePath}-label` }
-    : { 'aria-label': t(component.label) };
+  const getCardTitle = () => {
+    if (component.title !== undefined) {
+      return t(component.title);
+    }
+    if (component.showLabel) {
+      return t(component.label);
+    }
+    return undefined;
+  };
+  const cardTitle = getCardTitle();
 
   return (
-    <section
+    <div
       id={anchorId}
       className='form-component-item anchorLink'
       data-colspan={component.gridColSpan ?? 12}
-      {...groupAria}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
-      <Card boxed={boxGroups && groupLevel !== 0 && component.showLabel}>
+      <Card
+        boxed={boxGroups && groupLevel !== 0 && cardTitle !== undefined}
+        label={cardTitle ?? t(component.label)}
+        expanded={expanded !== false}
+      >
         <CardHeader
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
@@ -94,22 +112,32 @@ export const Group = ({
           }
           actionButtonGroup={actionButtonGroup}
         >
-          {component.showLabel && (
-            <CardTitle>
-              <Typography
-                id={`${currentComponentNamePath}-label`}
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-              {component.tooltip && showTooltips && (
-                <FieldInfo {...component.tooltip} />
-              )}
-            </CardTitle>
-          )}
+          <CardTitle
+            level={
+              component.title
+                ? component.titleHeadlineLevel
+                : component.headlineLevel
+            }
+            info={
+              component.tooltip &&
+              cardTitle !== undefined &&
+              showTooltips && <FieldInfo {...component.tooltip} />
+            }
+          >
+            {expandable ? (
+              <CardExpandButton
+                expanded={expanded}
+                onClick={onExpandButtonClick}
+              >
+                {cardTitle}
+              </CardExpandButton>
+            ) : (
+              cardTitle
+            )}
+          </CardTitle>
         </CardHeader>
         <CardContent
+          hidden={childrenHidden}
           enhancedFields={
             enhancement?.type === 'group' && enhancement?.alert === true
           }
@@ -118,6 +146,16 @@ export const Group = ({
             className='form-component-container'
             data-layout={inline ? 'inline' : 'grid'}
           >
+            {component.title && component.showLabel && (
+              <Typography
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+                text={component.label}
+                className='form-component-item anchorLink'
+                data-colspan={12}
+              />
+            )}
             {component.components && (
               <ComponentList
                 components={component.components}
@@ -131,6 +169,6 @@ export const Group = ({
           </div>
         </CardContent>
       </Card>
-    </section>
+    </div>
   );
 };

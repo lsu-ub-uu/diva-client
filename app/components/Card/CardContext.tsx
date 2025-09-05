@@ -20,6 +20,13 @@ import { createContext } from 'react';
 
 interface CardContextType {
   boxed: boolean;
+  ids: {
+    heading: string;
+    section: string;
+  };
 }
 
-export const CardContext = createContext<CardContextType>({ boxed: true });
+export const CardContext = createContext<CardContextType>({
+  boxed: true,
+  ids: { heading: '', section: '' },
+});

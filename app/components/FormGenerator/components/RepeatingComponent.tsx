@@ -17,55 +17,69 @@
  */
 
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
-import { Group } from '@/components/FormGenerator/components/Group';
-import type { FormComponentGroup } from '@/components/FormGenerator/types';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { useRemixFormContext } from 'remix-hook-form';
+import { Component, getCurrentComponentNamePath } from '../Component';
+import { isComponentSingularAndOptional } from '../formGeneratorUtils/formGeneratorUtils';
+import { OptionalComponent } from './OptionalComponent';
 
-interface RepeatingGroupProps {
+interface RepeatingComponentProps {
   anchorId?: string;
-  currentComponentNamePath: string;
-  component: FormComponentGroup;
+  parentPath: string;
+  component: FormComponentWithData;
   parentPresentationStyle: string | undefined;
 }
 
-export const RepeatingGroup = ({
-  currentComponentNamePath,
+export const RepeatingComponent = ({
+  parentPath,
   component,
   parentPresentationStyle,
   anchorId,
-}: RepeatingGroupProps) => {
+}: RepeatingComponentProps) => {
+  const currentComponentNamePath = getCurrentComponentNamePath(
+    component,
+    parentPath,
+  );
+
   const { control } = useRemixFormContext();
 
-  const fieldArrray = (
-    <FieldArrayComponent
+  return isComponentSingularAndOptional(component) ? (
+    <OptionalComponent
+      anchorId={anchorId}
       control={control}
       component={component}
       name={currentComponentNamePath}
-      renderCallback={(arrayPath, actionButtonGroup) => {
+      renderCallback={(actionButtonGroup) => {
         return (
-          <Group
-            currentComponentNamePath={arrayPath}
+          <Component
+            parentPath={parentPath}
+            currentComponentNamePath={currentComponentNamePath}
             component={component}
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
+            anchorId={anchorId}
           />
         );
       }}
     />
-  );
-
-  if (component.mode === 'output') {
-    return fieldArrray;
-  }
-
-  return (
-    <section
-      id={anchorId}
-      className='form-component-item form-component-container'
-      data-colspan={component.gridColSpan ?? 12}
-      data-layout='grid'
-    >
-      {fieldArrray}
-    </section>
+  ) : (
+    <FieldArrayComponent
+      control={control}
+      component={component}
+      name={currentComponentNamePath}
+      anchorId={anchorId}
+      renderCallback={(arrayPath, actionButtonGroup, index) => {
+        return (
+          <Component
+            parentPath={parentPath}
+            currentComponentNamePath={arrayPath}
+            component={component}
+            parentPresentationStyle={parentPresentationStyle}
+            actionButtonGroup={actionButtonGroup}
+            anchorId={index === 0 ? anchorId : undefined}
+          />
+        );
+      }}
+    />
   );
 };

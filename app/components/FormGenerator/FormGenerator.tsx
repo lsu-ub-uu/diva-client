@@ -39,7 +39,7 @@ interface FormGeneratorProps {
 
 export const FormGenerator = ({
   linkedData,
-  boxGroups = false,
+  boxGroups = true,
   showTooltips = true,
   enhancedFields,
   ...props
@@ -58,7 +58,11 @@ export const FormGenerator = ({
           enhancedFields,
         }}
       >
-        <Component component={props.formSchema.form} path={''} />
+        <Component
+          component={props.formSchema.form}
+          parentPath={''}
+          currentComponentNamePath={props.formSchema.form.name}
+        />
       </FormGeneratorContext>
     </div>
   );

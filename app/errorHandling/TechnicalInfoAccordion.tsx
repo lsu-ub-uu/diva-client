@@ -17,11 +17,13 @@
  */
 
 import styles from '@/errorHandling/ErrorPage.module.css';
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
 import { useTranslation } from 'react-i18next';
 import { type ReactNode, useState } from 'react';
+import { Card } from '@/components/Card/Card';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardTitle } from '@/components/Card/CardTitle';
+import { CardExpandButton } from '@/components/Card/CardExpandButton';
+import { CardContent } from '@/components/Card/CardContent';
 
 interface TechnicalInfoAccordionProps {
   infoText?: ReactNode;
@@ -39,15 +41,21 @@ export const TechnicalInfoAccordion = ({
 
   return (
     <div className={styles['accordion']}>
-      <Accordion expanded={detailsExpanded} onChange={setDetailsExpanded}>
-        <AccordionTitle>{t('divaClient_showErrorDetailsText')}</AccordionTitle>
-
-        {detailsExpanded && (
-          <AccordionContent>
-            <p className={styles['cora-message']}>{infoText}</p>
-          </AccordionContent>
-        )}
-      </Accordion>
+      <Card expanded={detailsExpanded} boxed>
+        <CardHeader>
+          <CardTitle>
+            <CardExpandButton
+              expanded={detailsExpanded}
+              onClick={() => setDetailsExpanded(!detailsExpanded)}
+            >
+              {t('divaClient_showErrorDetailsText')}
+            </CardExpandButton>
+          </CardTitle>
+        </CardHeader>
+        <CardContent hidden={!detailsExpanded}>
+          <p className={styles['cora-message']}>{infoText}</p>
+        </CardContent>
+      </Card>
     </div>
   );
 };

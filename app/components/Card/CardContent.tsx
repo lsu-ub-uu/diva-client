@@ -20,15 +20,20 @@ import { type ReactNode, use } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
-interface CardContentProps {
+interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   enhancedFields?: boolean;
 }
 
-export const CardContent = ({ children, enhancedFields }: CardContentProps) => {
+export const CardContent = ({
+  children,
+  enhancedFields,
+  ...rest
+}: CardContentProps) => {
   const { boxed } = use(CardContext);
   return (
     <div
+      {...rest}
       data-alert={enhancedFields === true}
       className={styles['card-content']}
       {...(boxed && { 'data-boxed': '' })}

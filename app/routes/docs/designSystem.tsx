@@ -16,14 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Accordion } from '@/components/Accordion/Accordion';
-import { AccordionContent } from '@/components/Accordion/AccordionContent';
-import { AccordionExpandButton } from '@/components/Accordion/AccordionExpandButton';
-import { AccordionTitle } from '@/components/Accordion/AccordionTitle';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Card } from '@/components/Card/Card';
 import { CardContent } from '@/components/Card/CardContent';
+import { CardExpandButton } from '@/components/Card/CardExpandButton';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
@@ -47,7 +44,6 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function DesignSystem() {
   const [snacbkarOpen, setSnacbkarOpen] = useState(false);
   const [progress, setProgress] = useState(50);
-  const [accordionExpanded, setAccordionExpanded] = useState(false);
 
   return (
     <div>
@@ -609,47 +605,108 @@ export default function DesignSystem() {
         </section>
         <section>
           <h2>Cards</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-            <Card boxed={false}>
-              <CardHeader>
-                <CardTitle>
-                  <h3>I&#39;m a card that&#39;s not boxed</h3>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <span>Card content</span>
-                <Card boxed={false}>
-                  <CardHeader>
-                    <CardTitle>
-                      <h4>I&#39;m nested card</h4>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <span>Card content</span>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
-            <Card boxed={true}>
-              <CardHeader>
-                <CardTitle>
-                  <h3>I&#39;m a card that&#39;s boxed</h3>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <span>Card content</span>
-                <Card boxed={true}>
-                  <CardHeader>
-                    <CardTitle>
-                      <h4>I&#39;m nested card</h4>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <span>Card content</span>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
+          <div
+            style={{
+              display: 'grid',
+              gap: '1rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            }}
+          >
+            <div>
+              <h3>Unboxed card</h3>
+              <Card boxed={false}>
+                <CardHeader>
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card that&#39;s not boxed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                  <Card boxed={false}>
+                    <CardHeader>
+                      <CardTitle level='h4'>I&#39;m nested card</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <span>Card content</span>
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Boxed card</h3>
+
+              <Card boxed={true}>
+                <CardHeader>
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card that&#39;s boxed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                  <Card boxed={true}>
+                    <CardHeader>
+                      <CardTitle level='h4'>I&#39;m nested card</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <span>Card content</span>
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Card with action button and attributes</h3>
+              <Card boxed>
+                <CardHeader
+                  attributes={
+                    <Fieldset size='small'>
+                      <Select value='option1'>
+                        <option value='option1'>Option 1</option>
+                      </Select>
+                    </Fieldset>
+                  }
+                  actionButtonGroup={
+                    <Button variant='icon'>
+                      <icons.CloseIcon />
+                    </Button>
+                  }
+                >
+                  <CardTitle
+                    level='h3'
+                    info={
+                      <Button variant='icon' size='small'>
+                        <icons.InfoIcon />
+                      </Button>
+                    }
+                  >
+                    I&#39;m a card with an action button
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <span>Card content</span>
+                </CardContent>
+              </Card>
+            </div>
+            <div>
+              <h3>Card with clickable title</h3>
+
+              <ClickableCardDemo />
+            </div>
           </div>
         </section>
         <section>
@@ -734,66 +791,49 @@ export default function DesignSystem() {
             ))}
           </div>
         </section>
-        <section>
-          <h2>Accordion</h2>
-          <h3>Accordion with title</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionTitle>Accordion title</AccordionTitle>
-            {accordionExpanded && (
-              <AccordionContent>
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                <p>
-                  Voluptatem repellat consequatur deleniti qui quibusdam harum
-                  cumque.
-                </p>
-              </AccordionContent>
-            )}
-          </Accordion>
-          <h3>Accordion with title and collapsed content</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionTitle>Accordion title</AccordionTitle>
-            <AccordionContent>
-              {accordionExpanded ? (
-                <>
-                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                  <p>
-                    Voluptatem repellat consequatur deleniti qui quibusdam harum
-                    cumque.
-                  </p>
-                </>
-              ) : (
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-              )}
-            </AccordionContent>
-          </Accordion>
-          <h3>Accordion without title</h3>
-          <Accordion
-            expanded={accordionExpanded}
-            onChange={setAccordionExpanded}
-          >
-            <AccordionContent>
-              {accordionExpanded ? (
-                <>
-                  <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-                  <p>
-                    Voluptatem repellat consequatur deleniti qui quibusdam harum
-                    cumque.
-                  </p>
-                </>
-              ) : (
-                <p>Rerum quia aliquam pariatur explicabo sint minima eos.</p>
-              )}
-            </AccordionContent>
-            <AccordionExpandButton />
-          </Accordion>
-        </section>
       </main>
     </div>
   );
 }
+
+const ClickableCardDemo = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <Card boxed>
+      <CardHeader
+        attributes={
+          expanded && (
+            <Fieldset size='small'>
+              <Select value='option1'>
+                <option value='option1'>Option 1</option>
+              </Select>
+            </Fieldset>
+          )
+        }
+        actionButtonGroup={
+          <Button variant='icon'>
+            <icons.CloseIcon />
+          </Button>
+        }
+      >
+        <CardTitle
+          level='h3'
+          info={
+            <Button variant='icon' size='small'>
+              <icons.InfoIcon />
+            </Button>
+          }
+        >
+          <CardExpandButton
+            expanded={expanded}
+            onClick={() => setExpanded(!expanded)}
+          >
+            Click me
+          </CardExpandButton>
+        </CardTitle>
+      </CardHeader>
+      {expanded && <CardContent>This is the expanded content!</CardContent>}
+    </Card>
+  );
+};

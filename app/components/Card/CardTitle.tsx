@@ -16,13 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { use, type ReactNode } from 'react';
 import styles from './Card.module.css';
-import type { ReactNode } from 'react';
+import { CardContext } from './CardContext';
 
 interface CardTitleProps {
   children: ReactNode;
+  level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  info?: ReactNode;
 }
 
-export const CardTitle = ({ children }: CardTitleProps) => {
-  return <div className={styles['card-title']}>{children}</div>;
+export const CardTitle = ({ children, level = 'h2', info }: CardTitleProps) => {
+  const HeadingElement = level;
+  const { ids } = use(CardContext);
+  return (
+    <div className={styles['card-title']}>
+      <HeadingElement id={ids.heading} className={styles['card-heading']}>
+        {children}
+      </HeadingElement>
+      {info}
+    </div>
+  );
 };
