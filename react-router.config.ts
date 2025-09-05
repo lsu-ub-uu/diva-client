@@ -1,9 +1,7 @@
 import type { Config } from '@react-router/dev/config';
 
-const { BASE_PATH } = process.env;
-
 export default {
   ssr: true,
   buildDirectory: 'dist',
-  basename: BASE_PATH,
+  basename: process.env.BASE_PATH ?? '@BASENAME@',
 } satisfies Config;

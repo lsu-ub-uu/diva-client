@@ -3235,7 +3235,7 @@ export interface AdminInfoDivaGroup {
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
   };
-  reviewed: {
+  reviewed?: {
     value: ReviewedCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
@@ -3625,7 +3625,7 @@ export interface OutputUpdateGroup {
     };
     __text: { sv: string; en: string };
   }[];
-  adminInfo: AdminInfoDivaGroup;
+  adminInfo?: AdminInfoDivaGroup;
   attachment?: AttachmentGroup[];
   __text: { sv: string; en: string };
 }

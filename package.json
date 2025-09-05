@@ -5,7 +5,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "react-router build && npm run postbuild",
+    "postbuild": "find dist/server -type f -exec sed -i '' 's/\"@BASENAME@\"/process.env.BASE_PATH/g' {} +",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
     "start": "tsx server.ts",
     "typegen": "tsx typegen/main.ts",
