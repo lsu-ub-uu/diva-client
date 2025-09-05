@@ -60,6 +60,13 @@
         </includes>
       </resource>
       <resource>
+        <directory>scripts</directory>
+        <targetPath>scripts</targetPath>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
         <directory>${basedir}</directory>
         <includes>
           <include>server.ts</include>
