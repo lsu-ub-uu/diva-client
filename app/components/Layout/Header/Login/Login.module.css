@@ -18,10 +18,25 @@
 
 .login {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   gap: var(--gap-s);
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--gap) * 2);
+  gap: var(--gap-s);
+  svg {
+    font-size: var(--font-size-icon);
+  }
+  &:hover {
+    background: var(--color-button-secondary-hover);
+    text-decoration: none;
+    height: var(--input-height);
+    border-radius: calc(var(--border-radius) / 2);
+  }
 }
 
 .logout-button {

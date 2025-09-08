@@ -17,6 +17,8 @@
  */
 
 import {
+  href,
+  Link,
   useFetcher,
   useLocation,
   useNavigation,
@@ -56,36 +58,6 @@ export default function User() {
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
 
-  const handleDevSelection = (account: Account) => {
-    submit(
-      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
-      { action: '/login', method: 'post' },
-    );
-  };
-
-  const handleWebRedirectSelection = (url: string) => {
-    try {
-      window.open(MODE === 'development' ? '/devLogin' : url);
-      window.addEventListener('message', receiveMessage);
-    } catch (e: any) {
-      console.error(e.message());
-    }
-  };
-
-  const receiveMessage = (event: MessageEvent<any>) => {
-    if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
-      window.removeEventListener('message', receiveMessage);
-      submit(
-        {
-          loginType: 'webRedirect',
-          auth: JSON.stringify(event.data),
-          returnTo,
-        },
-        { action: '/login', method: 'post' },
-      );
-    }
-  };
-
   const logout = () => {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
@@ -93,24 +65,15 @@ export default function User() {
   if (!user) {
     return (
       <div className={styles['login']}>
-        <Menu>
-          <MenuButton
-            as={Button}
-            disabled={submitting || !hydrated}
-            aria-busy={submitting}
-            variant='tertiary'
-          >
-            {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LoginIcon />}
-          </MenuButton>
-          <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions onSelect={handleDevSelection} />
-            <hr />
-            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-            <hr />
-            <PasswordLoginOptions returnTo={returnTo} />
-          </DropdownMenu>
-        </Menu>
+        <Button
+          variant='tertiary'
+          as={Link}
+          to={href('/login')}
+          className={styles['login-button']}
+        >
+          {t('divaClient_LoginText')}
+          {submitting ? <CircularLoader /> : <LoginIcon />}
+        </Button>
       </div>
     );
   }

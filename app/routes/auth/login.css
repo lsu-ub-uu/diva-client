@@ -1,5 +1,32 @@
 main {
-  max-width: 50rem;
+  max-width: 1200px;
+}
+
+.login-options {
+  form {
+    max-width: 800px;
+  }
+  display: grid;
+
+  gap: var(--gap-xxl);
+
+  ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--gap-l);
+    li button {
+      width: 100%;
+    }
+  }
+}
+
+.login-option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
+  padding-bottom: var(--gap-xl);
+  border-bottom: 1px solid var(--color-thin-border);
 }
 
 form {

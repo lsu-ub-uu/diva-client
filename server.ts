@@ -22,6 +22,7 @@ import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -48,6 +49,10 @@ if (BASE_PATH && BASE_PATH !== '/') {
 
 if (DEVELOPMENT) {
   console.info('Starting development server');
+  app.get('/devLogin', (req, res) => {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    res.sendFile(path.join(__dirname, 'devLogin.html'));
+  });
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
@@ -64,9 +69,6 @@ if (DEVELOPMENT) {
       }
       next(error);
     }
-  });
-  app.get('/devLogin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'devLogin.html'));
   });
 } else {
   console.info('Starting production server');

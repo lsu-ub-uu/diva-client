@@ -1,54 +1,57 @@
-import {
-  data,
-  Form,
-  isRouteErrorResponse,
-  redirect,
-  useSubmit,
-} from 'react-router';
+import type { Auth } from '@/auth/Auth';
 import {
   commitSession,
   getNotification,
   getSession,
 } from '@/auth/sessions.server';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { useTranslation } from 'react-i18next';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import type { Auth } from '@/auth/Auth';
-import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { useTranslation } from 'react-i18next';
+import {
+  data,
+  Form,
+  href,
+  isRouteErrorResponse,
+  redirect,
+  useSubmit,
+} from 'react-router';
 
-import type { Route } from '../auth/+types/login';
-import { Alert } from '@/components/Alert/Alert';
-import { Button } from '@/components/Button/Button';
-import { Snackbar } from '@/components/Snackbar/Snackbar';
-import { useState } from 'react';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import type { Route } from '../auth/+types/login';
 
+import { Button } from '@/components/Button/Button';
+import {
+  devAccounts,
+  type Account,
+} from '@/components/Layout/Header/Login/devAccounts';
+import { getLoginUnits } from '@/data/getLoginUnits.server';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import css from './login.css?url';
+import { PasswordLogin } from './PasswordLogin';
+import { WebRedirectLogin } from './webRedirectLogin';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.i18n;
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
-  const presentation = parsePresentation(url.searchParams.get('presentation'));
+  const loginUnit = url.searchParams.get('loginUnit');
+  const loginUnits = getLoginUnits(await context.dependencies);
 
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('auth')) {
-    return redirect(returnTo ?? '/');
+    return redirect(returnTo || '/');
   }
 
   return data(
     {
       breadcrumb: t('divaClient_LoginText'),
-      presentation,
+      loginUnits,
       notification: getNotification(session),
       returnTo,
+      loginUnit,
     },
     {
       headers: {
@@ -58,10 +61,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   );
 }
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta = ({ loaderData }: Route.MetaArgs) => {
   return [
     {
-      title: ['DiVA', `${data?.breadcrumb}`].filter(Boolean).join(' | '),
+      title: ['DiVA', `${loaderData?.breadcrumb}`].filter(Boolean).join(' | '),
     },
   ];
 };
@@ -72,18 +75,6 @@ export const links: Route.LinksFunction = () => [
     href: css,
   },
 ];
-
-const parsePresentation = (searchParam: string | null) => {
-  if (searchParam === null) {
-    return null;
-  }
-  try {
-    return JSON.parse(decodeURIComponent(searchParam));
-  } catch {
-    console.error('Failed to parse presentation search param', searchParam);
-    return null;
-  }
-};
 
 const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
@@ -115,10 +106,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
-  const returnTo =
-    returnToEncoded && decodeURIComponent(returnToEncoded.toString());
 
-  const presentationString = form.get('presentation');
+  const returnTo = returnToEncoded
+    ? decodeURIComponent(returnToEncoded.toString())
+    : '/';
 
   const auth = await authenticate(form);
 
@@ -129,20 +120,16 @@ export const action = async ({ request }: Route.ActionArgs) => {
     });
 
     // Redirect back to the login page with errors.
-    return redirect(
-      presentationString
-        ? `/login?presentation=${encodeURIComponent(presentationString.toString())}`
-        : (returnTo ?? '/'),
-      {
-        headers: {
-          'Set-Cookie': await commitSession(session),
-        },
+    return redirect(href('/login'), {
+      headers: {
+        'Set-Cookie': await commitSession(session),
       },
-    );
+    });
   }
+
   session.set('auth', auth);
 
-  return redirect(returnTo ?? '/', {
+  return redirect(returnTo || '/', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
@@ -168,64 +155,110 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 };
 
 export default function Login({ loaderData }: Route.ComponentProps) {
-  const { notification, presentation, returnTo } = loaderData;
-  const submit = useSubmit();
+  const { notification, loginUnits, returnTo, loginUnit } = loaderData;
   const { t } = useTranslation();
-  const [validationErrorShown, setValidationErrorShown] = useState(false);
-  const methods = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(presentation),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(presentation)),
-  });
-  const { handleSubmit } = methods;
+
+  const submit = useSubmit();
+
+  const passwordLoginUnits = loginUnits.filter(
+    (unit: LoginDefinition) => unit.type === 'password',
+  );
+  const webRedirectLoginUnits = loginUnits.filter(
+    (unit: LoginDefinition) => unit.type === 'webRedirect',
+  );
+
+  const selectedLoginUnit = loginUnit
+    ? loginUnits.find(
+        (unit: LoginDefinition) => unit.loginDescription === loginUnit,
+      )
+    : undefined;
+
+  if (selectedLoginUnit?.type === 'password') {
+    return (
+      <main>
+        <h1>Logga in</h1>
+        <PasswordLogin
+          presentation={selectedLoginUnit.presentation}
+          notification={notification}
+          returnTo={returnTo}
+        />
+      </main>
+    );
+  }
 
   return (
     <main>
-      <Snackbar
-        open={validationErrorShown}
-        onClose={() => setValidationErrorShown(false)}
-        severity='error'
-        text={t('divaClient_validationErrorsText')}
-      />
-      {notification && notification.severity === 'error' ? (
-        <Alert severity='error'>{notification.summary}</Alert>
-      ) : null}
-      <Form
-        method='POST'
-        onSubmit={handleSubmit(
-          (_values, event) => {
-            submit(event!.target);
-          },
-          () => setValidationErrorShown(true),
-        )}
-      >
-        <input type='hidden' name='loginType' value='password' />
-        {returnTo && <input type='hidden' name='returnTo' value={returnTo} />}
-        <input
-          type='hidden'
-          name='presentation'
-          value={JSON.stringify(presentation)}
-        />
-        <div>
-          {presentation !== null ? (
-            <FormProvider {...methods}>
-              <FormGenerator formSchema={presentation} showTooltips={false} />
-            </FormProvider>
+      <h1>Logga in</h1>
+      <div className='login-options'>
+        <div className='login-option'>
+          <div
+            className='login-option'
+            style={{ marginBottom: 'var(--gap-xl)' }}
+          >
+            <h2>Testkonto</h2>
+            <Form method='POST' action='/login'>
+              <input type='hidden' name='loginType' value='appToken' />
+              {returnTo && (
+                <input type='hidden' name='returnTo' value={returnTo} />
+              )}
+              <ul
+                style={{
+                  display: 'flex',
+                  gap: '1rem',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {devAccounts.map((account: Account) => (
+                  <li key={account.userId}>
+                    <Button
+                      type='submit'
+                      name='account'
+                      value={JSON.stringify(account)}
+                    >
+                      {account.lastName} {account.firstName}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </Form>
+          </div>
+          <h2>DiVA-konto</h2>
+          {passwordLoginUnits.length === 1 ? (
+            <PasswordLogin
+              presentation={passwordLoginUnits[0].presentation}
+              notification={notification}
+              returnTo={returnTo}
+            />
           ) : (
-            <span />
+            <Form
+              method='GET'
+              style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}
+              onChange={(e) => submit(e.currentTarget)}
+            >
+              <ul>
+                {loginUnits
+                  .filter((unit) => unit.type === 'password')
+                  .map((unit: LoginDefinition) => (
+                    <li key={unit.id}>
+                      <Button
+                        type='submit'
+                        name='loginUnit'
+                        value={unit.loginDescription}
+                      >
+                        {t(unit.loginDescription)}
+                      </Button>
+                    </li>
+                  ))}
+              </ul>
+            </Form>
           )}
         </div>
-        <Button
-          type='submit'
-          variant='primary'
-          size='large'
-          className='login-button'
-        >
-          {t('divaClient_LoginText')}
-        </Button>
-      </Form>
+        <WebRedirectLogin
+          webRedirectLoginUnits={webRedirectLoginUnits}
+          returnTo={returnTo}
+        />
+      </div>
     </main>
   );
 }

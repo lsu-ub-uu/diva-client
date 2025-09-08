@@ -36,10 +36,10 @@ export const PasswordLoginOptions = ({
       <h6>{t('divaClient_LoginPasswordText')}</h6>
       {loginUnits
         .filter(({ type }) => type === 'password')
-        .map(({ loginDescription, presentation }) => (
+        .map(({ loginDescription, id, presentation }) => (
           <MenuItem key='tempLoginUnitPassword'>
             <Link
-              to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
+              to={`/login?loginUnit=${loginDescription}&returnTo=${returnTo}`}
             >
               {t(loginDescription)}
             </Link>
