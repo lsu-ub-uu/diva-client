@@ -1987,6 +1987,81 @@ describe('<Form />', () => {
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
       ).toBeInvalid();
     });
+
+    it('expands accordion when appended to field array, even when set to single initially hidden', async () => {
+      const formDefinition = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'textVariable',
+              name: 'someNameInData',
+              showLabel: true,
+              label: 'someLabelTextId',
+              placeholder: 'someEmptyTextId',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 10,
+              },
+              validation: {
+                type: 'regex',
+                pattern: '^[a-zA-Z]$',
+              },
+              inputType: 'input',
+              mode: 'input',
+              title: 'someClickableTitleTextId',
+              titleHeadlineLevel: 'h4',
+              presentationSize: 'singleInitiallyHidden',
+            },
+          ],
+          mode: 'input',
+        },
+      } as RecordFormSchema;
+
+      const user = userEvent.setup();
+
+      render(<RecordFormWithRoutesStub formSchema={formDefinition} />);
+
+      const clickableTitle1 = screen.getAllByRole('button', {
+        name: 'someClickableTitleTextId',
+      })[0];
+      expect(clickableTitle1).toHaveAttribute('aria-expanded', 'false');
+
+      expect(
+        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
+      ).not.toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole('button', { name: 'divaClient_addFieldText' }),
+      );
+
+      expect(
+        screen.getAllByRole('button', { name: 'someClickableTitleTextId' }),
+      ).toHaveLength(2);
+
+      expect(clickableTitle1).toHaveAttribute('aria-expanded', 'false');
+
+      const clickableTitle2 = screen.getAllByRole('button', {
+        name: 'someClickableTitleTextId',
+      })[1];
+      expect(clickableTitle2).toHaveAttribute('aria-expanded', 'true');
+
+      expect(
+        screen.getByRole('textbox', { name: 'someLabelTextId' }),
+      ).toBeVisible();
+    });
   });
 
   describe('optionalComponent', () => {

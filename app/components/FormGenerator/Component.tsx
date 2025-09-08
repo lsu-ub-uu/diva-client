@@ -44,6 +44,7 @@ interface ComponentProps {
   parentPresentationStyle?: string;
   anchorId?: string;
   actionButtonGroup?: React.ReactNode;
+  isAppended?: boolean;
 }
 
 export const Component = ({
@@ -53,6 +54,7 @@ export const Component = ({
   parentPresentationStyle,
   anchorId,
   actionButtonGroup,
+  isAppended,
 }: ComponentProps) => {
   const { enhancedFields } = use(FormGeneratorContext);
 
@@ -65,6 +67,7 @@ export const Component = ({
         currentComponentNamePath={currentComponentNamePath}
         parentPresentationStyle={parentPresentationStyle}
         actionButtonGroup={actionButtonGroup}
+        isAppended={isAppended}
       />
     );
   }
