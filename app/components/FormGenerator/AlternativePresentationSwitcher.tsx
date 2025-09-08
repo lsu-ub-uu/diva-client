@@ -41,6 +41,7 @@ interface ComponentPresentationSwitcherProps {
   currentComponentNamePath: string;
   actionButtonGroup?: React.ReactNode;
   parentPresentationStyle?: string;
+  isAppended?: boolean;
 }
 
 type PresentationState = 'default' | 'alternative';
@@ -53,7 +54,10 @@ export const AlternativePresentationSwitcher = (
   const { t } = useTranslation();
 
   const [currentPresentation, setCurrentPresentation] =
-    useState<PresentationState>('default');
+    useState<PresentationState>(
+      getInitialPresentation(component, props.isAppended ?? false),
+    );
+
   const {
     presentationSize,
     title,
@@ -233,4 +237,23 @@ export const isDualPresentationAccordionExpanded = (
   }
 
   return currentPresentation === 'alternative';
+};
+
+const getInitialPresentation = (
+  component: FormComponent,
+  isAppended: boolean,
+) => {
+  const presentationSize =
+    'presentationSize' in component ? component.presentationSize : undefined;
+  const alternativePresentation = component.alternativePresentation;
+
+  if (
+    presentationSize !== 'singleInitiallyVisible' &&
+    !alternativePresentation &&
+    isAppended
+  ) {
+    return 'alternative';
+  }
+
+  return 'default';
 };
