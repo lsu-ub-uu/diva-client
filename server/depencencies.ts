@@ -48,9 +48,9 @@ import { transformThemes } from '@/cora/transform/transformThemes.server';
 import { Lookup } from '@/utils/structs/lookup';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
-  const promises = poolTypes.map((type) =>
-    getRecordDataListByType<DataListWrapper>(type, ''),
-  );
+  const promises = poolTypes.map((type) => {
+    return getRecordDataListByType<DataListWrapper>(type, '');
+  });
   return Promise.all(promises);
 };
 
@@ -83,7 +83,7 @@ const loadDependencies = async () => {
     'search',
     'loginUnit',
     'login',
-    'diva-theme',
+    // 'diva-theme',
   ];
   const [
     coraMetadata,
@@ -94,7 +94,7 @@ const loadDependencies = async () => {
     coraSearches,
     coraLoginUnits,
     coraLogins,
-    coraThemes,
+    //coraThemes,
   ] = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(coraMetadata.data);
@@ -123,8 +123,8 @@ const loadDependencies = async () => {
   const login = transformLogin(coraLogins.data);
   const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(login);
 
-  const themes = await transformThemes(coraThemes.data);
-  const themePool = groupThemesByHostname(themes);
+  // const themes = await transformThemes(coraThemes.data);
+  //const themePool = groupThemesByHostname(themes);
 
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
@@ -134,7 +134,7 @@ const loadDependencies = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
-  dependencies.themePool = themePool;
+  //dependencies.themePool = themePool;
 
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;

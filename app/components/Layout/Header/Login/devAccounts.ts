@@ -68,6 +68,13 @@ const kthDomainAdmin = {
 };
 
 export const devAccounts: Account[] = [
+  {
+    appToken: '5d3f3ed4-4931-4924-9faa-8eaf5ac6457e',
+    userId: 'coraUser:491055276494310',
+    idFromLogin: 'systemoneAdmin@system.cora.uu.se',
+    lastName: 'Admin',
+    firstName: 'SystemOne',
+  },
   divaAdmin,
   divaEverything,
   systemAdmin,
