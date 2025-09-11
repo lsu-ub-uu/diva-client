@@ -100,8 +100,8 @@ export const AlternativePresentationSwitcher = (
           alternativePresentation === undefined
             ? component
             : currentPresentation === 'alternative'
-              ? (alternativePresentation as FormComponentGroup)
-              : (defaultPresentation as FormComponentGroup)
+              ? (component.alternativePresentation as FormComponentGroup)
+              : component
         }
         actionButtonGroup={props.actionButtonGroup}
         currentComponentNamePath={currentComponentNamePath}
