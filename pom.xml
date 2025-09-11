@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.67.0</version>
+  <version>1.67.1-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>
@@ -40,7 +40,7 @@
     <connection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</connection>
     <developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</developerConnection>
     <url>https://github.com/lsu-ub-uu/diva-client.git</url>
-    <tag>diva-client-1.67.0</tag>
+    <tag>release/1.67</tag>
   </scm>
 
   <build>
