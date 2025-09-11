@@ -59,13 +59,6 @@
   }
 }
 
-.card:not([data-boxed]) {
-  &:has(> .expand-button:hover),
-  &:has(> .expand-button:focus-visible) {
-    background-color: var(--color-card);
-  }
-}
-
 .expand-button {
   cursor: pointer;
   background: none;
