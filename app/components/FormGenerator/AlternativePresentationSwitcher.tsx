@@ -31,8 +31,8 @@ import { CardContent } from '../Card/CardContent';
 import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
-import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
 import { Group } from './components/Group';
+import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -87,7 +87,7 @@ export const AlternativePresentationSwitcher = (
     );
   }
 
-  if (isComponentGroup(component)) {
+  if (isComponentGroup(component) && title) {
     return (
       <Group
         expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
@@ -117,24 +117,26 @@ export const AlternativePresentationSwitcher = (
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
     >
-      <Card boxed expanded={expanded}>
+      <Card boxed={title !== undefined} expanded={expanded}>
         <CardHeader>
-          <CardTitle level={titleHeadlineLevel}>
-            <CardExpandButton
-              expanded={
-                presentationSize === 'bothEqual' ? 'bothEqual' : expanded
-              }
-              onClick={() =>
-                setCurrentPresentation(
-                  currentPresentation === 'alternative'
-                    ? 'default'
-                    : 'alternative',
-                )
-              }
-            >
-              {title && t(title)}
-            </CardExpandButton>
-          </CardTitle>
+          {title && (
+            <CardTitle level={titleHeadlineLevel}>
+              <CardExpandButton
+                expanded={
+                  presentationSize === 'bothEqual' ? 'bothEqual' : expanded
+                }
+                onClick={() =>
+                  setCurrentPresentation(
+                    currentPresentation === 'alternative'
+                      ? 'default'
+                      : 'alternative',
+                  )
+                }
+              >
+                {t(title)}
+              </CardExpandButton>
+            </CardTitle>
+          )}
         </CardHeader>
         {alternativePresentation !== undefined ? ( // Switch between two presentations
           <CardContent className='form-component-container'>
@@ -155,6 +157,24 @@ export const AlternativePresentationSwitcher = (
               component={{ ...component, title: undefined } as FormComponent}
             />
           </CardContent>
+        )}
+        {!title && (
+          <CardExpandButton
+            expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
+            onClick={() => {
+              setCurrentPresentation(
+                currentPresentation === 'alternative'
+                  ? 'default'
+                  : 'alternative',
+              );
+            }}
+          >
+            {presentationSize === 'bothEqual'
+              ? t('divaClient_swapPresentationText')
+              : expanded
+                ? t('divaClient_showLessText')
+                : t('divaClient_showMoreText')}
+          </CardExpandButton>
         )}
       </Card>
     </div>
