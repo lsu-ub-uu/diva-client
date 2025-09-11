@@ -118,6 +118,24 @@ export const AlternativePresentationSwitcher = (
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
     >
       <Card boxed={title !== undefined} expanded={expanded}>
+        {!title && (
+          <CardExpandButton
+            expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
+            onClick={() => {
+              setCurrentPresentation(
+                currentPresentation === 'alternative'
+                  ? 'default'
+                  : 'alternative',
+              );
+            }}
+          >
+            {presentationSize === 'bothEqual'
+              ? t('divaClient_swapPresentationText')
+              : expanded
+                ? t('divaClient_showLessText')
+                : t('divaClient_showMoreText')}
+          </CardExpandButton>
+        )}
         <CardHeader>
           {title && (
             <CardTitle level={titleHeadlineLevel}>
@@ -157,24 +175,6 @@ export const AlternativePresentationSwitcher = (
               component={{ ...component, title: undefined } as FormComponent}
             />
           </CardContent>
-        )}
-        {!title && (
-          <CardExpandButton
-            expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
-            onClick={() => {
-              setCurrentPresentation(
-                currentPresentation === 'alternative'
-                  ? 'default'
-                  : 'alternative',
-              );
-            }}
-          >
-            {presentationSize === 'bothEqual'
-              ? t('divaClient_swapPresentationText')
-              : expanded
-                ? t('divaClient_showLessText')
-                : t('divaClient_showMoreText')}
-          </CardExpandButton>
         )}
       </Card>
     </div>
