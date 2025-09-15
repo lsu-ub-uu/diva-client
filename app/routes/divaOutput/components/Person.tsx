@@ -22,18 +22,33 @@ import type {
   NamePersonalOpponentGroup,
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
 
+type Person =
+  | NamePersonalGroup
+  | NamePersonalDegreeSupervisorGroup
+  | NamePersonalThesisAdvisorGroup
+  | NamePersonalOpponentGroup;
+
 interface PersonProps {
-  person:
-    | NamePersonalGroup
-    | NamePersonalDegreeSupervisorGroup
-    | NamePersonalThesisAdvisorGroup
-    | NamePersonalOpponentGroup;
+  person: Person;
+  expanded?: boolean;
 }
 
-export const Person = ({ person }: PersonProps) => {
-  // TODO show affiliation and role
+export const Person = ({ person, expanded = false }: PersonProps) => {
+  const language = useLanguage();
+
+  return (
+    <span>
+      {formatPersonName(person)}
+      {formatPersonRoles(person, language)}
+    </span>
+  );
+};
+
+const formatPersonName = (person: Person) => {
+  const name = `${person.namePart_type_given?.value} ${person.namePart_type_family?.value}`;
   if (person.person) {
     return (
       <Link
@@ -42,17 +57,26 @@ export const Person = ({ person }: PersonProps) => {
           recordId: person.person.value,
         })}
       >
-        <span>
-          {person.namePart_type_given?.value}
-          {person.namePart_type_family?.value}
-        </span>
+        {name}
       </Link>
     );
   }
+  return name;
+};
 
-  return (
-    <span>
-      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
-    </span>
-  );
+const formatPersonRoles = (
+  person:
+    | NamePersonalGroup
+    | NamePersonalDegreeSupervisorGroup
+    | NamePersonalThesisAdvisorGroup
+    | NamePersonalOpponentGroup,
+  language: 'en' | 'sv',
+) => {
+  const roleTerm = person.role?.roleTerm;
+
+  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
+    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+  }
+
+  return '';
 };
