@@ -55,6 +55,9 @@ export const loader = async ({
       breadcrumb: t(record.data.output.titleInfo.title.value),
       apiUrl,
       origin,
+      organisations: Object.fromEntries(
+        dependencies.organisationPool.entries(),
+      ),
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -97,7 +100,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <CodeIcon />
         {t('divaClient_viewInApiText')}
       </Button>
-      <OutputView data={record.data} />
+      <OutputView data={record.data} organisations={loaderData.organisations} />
       <FloatingActionButtonContainer>
         {record.userRights?.includes('update') && (
           <FloatingActionButton

@@ -1,8 +1,9 @@
 import { ChevronDownIcon } from '@/icons';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './CollapsableText.module.css';
+import { ShowMoreOrLessButton } from './ShowMoreOrLessButton';
 
 interface CollapsableTextProps {
   text: string;
@@ -11,7 +12,7 @@ interface CollapsableTextProps {
 const MAX_LENGTH = 300;
 
 export const CollapsableText = ({ text }: CollapsableTextProps) => {
-  const { t } = useTranslation();
+  const id = useId();
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => {
@@ -19,15 +20,14 @@ export const CollapsableText = ({ text }: CollapsableTextProps) => {
   };
 
   return (
-    <p aria-expanded={expanded} className={styles['collapsable-text']}>
+    <p className={styles['collapsable-text']} id={id} data-expanded={expanded}>
       {!expanded ? `${text.slice(0, MAX_LENGTH)}...` : text}
       {text.length > MAX_LENGTH && (
-        <button onClick={toggleExpanded} className={styles['expand-button']}>
-          {expanded
-            ? t('divaClient_showLessText')
-            : t('divaClient_showMoreText')}
-          <ChevronDownIcon className={styles['expand-icon']} />
-        </button>
+        <ShowMoreOrLessButton
+          onClick={toggleExpanded}
+          expanded={expanded}
+          aria-controls={id}
+        />
       )}
     </p>
   );

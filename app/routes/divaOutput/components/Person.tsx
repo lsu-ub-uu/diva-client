@@ -16,7 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type { BFFOrganisation } from '@/cora/transform/bffTypes.server';
 import type {
+  AffiliationPersonalGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,
@@ -24,36 +26,52 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
+import { formatPersonName } from '../utils/formatPersonName';
 
-type Person =
+export type PersonType =
   | NamePersonalGroup
   | NamePersonalDegreeSupervisorGroup
   | NamePersonalThesisAdvisorGroup
   | NamePersonalOpponentGroup;
 
 interface PersonProps {
-  person: Person;
+  person: PersonType;
+  organisations: Record<string, BFFOrganisation>;
   expanded?: boolean;
 }
 
-export const Person = ({ person, expanded = false }: PersonProps) => {
+export const Person = ({
+  person,
+  expanded = false,
+  organisations,
+}: PersonProps) => {
   const language = useLanguage();
 
   return (
-    <span>
-      {formatPersonName(person)}
+    <span className='person'>
+      {renderPersonName(person)}
       {formatPersonRoles(person, language)}
+      {expanded && person.affiliation && person.affiliation.length > 0 && (
+        <ul>
+          {person.affiliation.map((affiliation, index) => (
+            <li key={index}>{renderAffiliation(affiliation, organisations)}</li>
+          ))}
+        </ul>
+      )}
     </span>
   );
 };
 
-const formatPersonName = (person: Person) => {
-  const name = `${person.namePart_type_given?.value} ${person.namePart_type_family?.value}`;
+const renderPersonName = (person: PersonType) => {
+  const name = formatPersonName(person);
+  const linkedRecordType =
+    person.person?.linkedRecord?.person?.recordInfo?.type?.value ??
+    'diva-person';
   if (person.person) {
     return (
       <Link
         to={href('/:recordType/:recordId', {
-          recordType: 'diva-person',
+          recordType: linkedRecordType,
           recordId: person.person.value,
         })}
       >
@@ -79,4 +97,61 @@ const formatPersonRoles = (
   }
 
   return '';
+};
+
+const renderAffiliation = (
+  affiliation: AffiliationPersonalGroup,
+  organisations: Record<string, BFFOrganisation>,
+) => {
+  const affiliationName = formatAffiliationName(affiliation, organisations);
+  const linkedOrganisationId = affiliation.organisation?.value;
+  //const orgnation = organisationPool.get(linkedOrganisation || '');
+  const linkedRecordType =
+    affiliation.organisation?.linkedRecord?.organisation?.recordInfo?.type
+      ?.value ?? 'diva-organisation';
+
+  if (linkedOrganisationId) {
+    return (
+      <Link
+        to={href('/:recordType/:recordId', {
+          recordType: linkedRecordType,
+          recordId: linkedOrganisationId,
+        })}
+      >
+        {affiliationName}
+      </Link>
+    );
+  }
+  return affiliationName;
+};
+
+const formatAffiliationName = (
+  affiliation: AffiliationPersonalGroup,
+  organisations: Record<string, BFFOrganisation>,
+) => {
+  const affiliationName = affiliation.name_type_corporate?.namePart?.value;
+  const linkedOrganisationId = affiliation.organisation?.value;
+  if (affiliationName) {
+    return affiliationName;
+  }
+  if (linkedOrganisationId) {
+    return formatLinkedOrganisationName(linkedOrganisationId, organisations);
+  }
+  return '';
+};
+
+const formatLinkedOrganisationName = (
+  linkedOrganisationId: string,
+  organisations: Record<string, BFFOrganisation>,
+): string => {
+  const linkedOrganisation = organisations[linkedOrganisationId];
+
+  if (linkedOrganisation.parentOrganisationId) {
+    return `${linkedOrganisation.name.sv}, ${formatLinkedOrganisationName(
+      linkedOrganisation.parentOrganisationId,
+      organisations,
+    )}`;
+  }
+
+  return linkedOrganisation.name.sv;
 };

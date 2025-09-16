@@ -94,11 +94,54 @@ describe('Person', () => {
     expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 
+  it('renders a linked record without name in publication', () => {
+    const person = {
+      person: {
+        value: '12345',
+        linkedRecord: {
+          person: {
+            authority: {
+              name_type_personal: {
+                namePart_type_family: { value: 'Linksson' },
+                namePart_type_given: { value: 'Link' },
+              },
+            },
+          },
+        },
+      },
+    } as NamePersonalGroup;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => <Person person={person} />,
+      },
+      {
+        path: '/diva-person/:id',
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(screen.getByRole('link', { name: 'Link Linksson' })).toHaveAttribute(
+      'href',
+      '/diva-person/12345',
+    );
+  });
+
   it('renders a linked record', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      person: { value: '12345' },
+      person: {
+        value: '12345',
+        linkedRecord: {
+          person: {
+            recordInfo: { type: { value: 'diva-person' } },
+          },
+        },
+      },
     } as NamePersonalGroup;
 
     const RoutesStub = createRoutesStub([
@@ -120,7 +163,7 @@ describe('Person', () => {
     );
   });
 
-  it('renders a non-linked affilation when expanded', () => {
+  it('renders a non-linked affilation with name only when expanded', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
@@ -132,5 +175,58 @@ describe('Person', () => {
     render(<Person person={person} expanded={true} />);
 
     expect(screen.getByText('University of Test')).toBeInTheDocument();
+  });
+
+  it('renders a non-linked affilation with name only when expanded', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        { name_type_corporate: { namePart: { value: 'University of Test' } } },
+        { name_type_corporate: { namePart: { value: 'University of Pest' } } },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded={true} />);
+
+    expect(screen.getByText('University of Test')).toBeInTheDocument();
+    expect(screen.getByText('University of Pest')).toBeInTheDocument();
+  });
+
+  it('renders a linked affiliation with name in publication', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          organisation: {
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+              },
+            },
+          },
+          name_type_corporate: { namePart: { value: 'University of Test' } },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => <Person person={person} expanded />,
+      },
+      {
+        path: '/diva-organisation/:id',
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(
+      screen.getByRole('link', { name: 'University of Test' }),
+    ).toHaveAttribute('href', '/diva-organisation/1234');
   });
 });

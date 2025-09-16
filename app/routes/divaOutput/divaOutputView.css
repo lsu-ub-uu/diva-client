@@ -145,3 +145,12 @@ address {
   align-items: center;
   gap: var(--gap-s);
 }
+
+dd.block {
+  margin-bottom: var(--gap);
+
+  .person ul {
+    list-style: none;
+    padding-left: var(--gap-l);
+  }
+}

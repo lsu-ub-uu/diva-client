@@ -16,17 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import 'dotenv/config';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
-import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
-import { transformMetadata } from '@/cora/transform/transformMetadata.server';
-import { listToPool } from '@/utils/structs/listToPool';
+import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
   BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
+  BFFOrganisation,
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationGroup,
@@ -36,16 +34,20 @@ import type {
   BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
-import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
-import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
-import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
-import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
+import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
+import { transformMetadata } from '@/cora/transform/transformMetadata.server';
+import { transformOrganisations } from '@/cora/transform/transformOrganisations.server';
+import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
+import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
+import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
+import 'dotenv/config';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -66,6 +68,7 @@ const dependencies: Dependencies = {
   loginUnitPool: listToPool<BFFLoginUnit>([]),
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   themePool: listToPool<BFFTheme>([]),
+  organisationPool: listToPool<BFFOrganisation>([]),
 };
 
 const loadDependencies = async () => {
@@ -73,6 +76,7 @@ const loadDependencies = async () => {
 
   const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
+  dependencies.textPool = listToPool<BFFText>(texts);
 
   const types = [
     'metadata',
@@ -84,6 +88,7 @@ const loadDependencies = async () => {
     'loginUnit',
     'login',
     'diva-theme',
+    'diva-organisation',
   ];
   const [
     coraMetadata,
@@ -95,14 +100,16 @@ const loadDependencies = async () => {
     coraLoginUnits,
     coraLogins,
     coraThemes,
+    coraOrganisations,
   ] = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(coraMetadata.data);
-  const metadataPool = listToPool<BFFMetadata>(metadata);
+  dependencies.metadataPool = listToPool<BFFMetadata>(metadata);
+
   const presentation = transformCoraPresentations(coraPresentations.data);
   const guiElements = transformCoraPresentations(coraGuiElements.data);
 
-  const presentationPool = listToPool<
+  dependencies.presentationPool = listToPool<
     BFFPresentationBase | BFFPresentationGroup | BFFGuiElement
   >([...presentation, ...guiElements]);
 
@@ -110,31 +117,37 @@ const loadDependencies = async () => {
     coraValidationTypes.data,
   );
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+  dependencies.validationTypePool = validationTypePool;
 
   const recordTypes = transformCoraRecordTypes(coraRecordTypes.data);
-  const recordTypePool = listToPool<BFFRecordType>(recordTypes);
+  dependencies.recordTypePool = listToPool<BFFRecordType>(recordTypes);
 
   const search = transformCoraSearch(coraSearches.data);
-  const searchPool = listToPool<BFFSearch>(search);
+  dependencies.searchPool = listToPool<BFFSearch>(search);
 
   const loginUnit = transformLoginUnit(coraLoginUnits.data);
-  const loginUnitPool = listToPool<BFFLoginUnit>(loginUnit);
+  dependencies.loginUnitPool = listToPool<BFFLoginUnit>(loginUnit);
 
   const login = transformLogin(coraLogins.data);
-  const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(login);
+  dependencies.loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(
+    login,
+  );
 
-  const themes = await transformThemes(coraThemes.data);
-  const themePool = groupThemesByHostname(themes);
+  try {
+    const themes = await transformThemes(coraThemes.data);
+    dependencies.themePool = groupThemesByHostname(themes);
+  } catch (error) {
+    console.error('Error transforming themes:', error);
+    dependencies.themePool = new Lookup<string, BFFTheme>();
+  }
 
-  dependencies.validationTypePool = validationTypePool;
-  dependencies.recordTypePool = recordTypePool;
-  dependencies.metadataPool = metadataPool;
-  dependencies.presentationPool = presentationPool;
-  dependencies.textPool = listToPool<BFFText>(texts);
-  dependencies.searchPool = searchPool;
-  dependencies.loginUnitPool = loginUnitPool;
-  dependencies.loginPool = loginPool;
-  dependencies.themePool = themePool;
+  try {
+    const organisations = await transformOrganisations(coraOrganisations.data);
+    dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
+  } catch (error) {
+    console.error('Error transforming organisations:', error);
+    dependencies.organisationPool = listToPool<BFFOrganisation>([]);
+  }
 
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;

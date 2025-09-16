@@ -20,15 +20,16 @@ import { OriginInfo } from './OriginInfo';
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Identifiers } from './Identifiers';
 import { Persons } from './Persons';
+import type { BFFOrganisation } from '@/cora/transform/bffTypes.server';
 
 interface OutputViewProps {
   data: DivaOutput;
+  organisations: Record<string, BFFOrganisation>;
 }
 
-export const OutputView = ({ data }: OutputViewProps) => {
+export const OutputView = ({ data, organisations }: OutputViewProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
-
   const output = data.output;
   return (
     <div className='diva-output-view'>
@@ -38,10 +39,9 @@ export const OutputView = ({ data }: OutputViewProps) => {
             {createTitle(output.titleInfo)}
           </h1>
           <dl>
-            <Persons persons={output.name_type_personal} />
-            <Term
-              label={output.note_type_creatorCount?.__text[language]}
-              value={output.note_type_creatorCount?.value}
+            <Persons
+              persons={output.name_type_personal}
+              organisations={organisations}
             />
             {output.name_type_corporate && (
               <>
@@ -53,6 +53,10 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 ))}
               </>
             )}
+            <Term
+              label={output.note_type_creatorCount?.__text[language]}
+              value={output.note_type_creatorCount?.value}
+            />
             {output.titleInfo_type_alternative?.map((title, index) => (
               <Term
                 key={index}
@@ -218,7 +222,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 </dt>
                 {output.supervisor_type_personal?.map((supervisor, index) => (
                   <dd key={index}>
-                    <Person person={supervisor} />
+                    <Person person={supervisor} organisations={organisations} />
                   </dd>
                 ))}
               </>
@@ -228,7 +232,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 <dt>{output.examiner_type_personal?.[0]?.__text[language]}</dt>
                 {output.examiner_type_personal?.map((examiner, index) => (
                   <dd key={index}>
-                    <Person person={examiner} />
+                    <Person person={examiner} organisations={organisations} />
                   </dd>
                 ))}
               </>
@@ -238,7 +242,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 <dt>{output.opponent_type_personal?.[0]?.__text[language]}</dt>
                 {output.opponent_type_personal?.map((opponent, index) => (
                   <dd key={index}>
-                    <Person person={opponent} />
+                    <Person person={opponent} organisations={organisations} />
                   </dd>
                 ))}
               </>
