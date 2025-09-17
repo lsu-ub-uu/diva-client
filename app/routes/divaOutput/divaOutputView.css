@@ -67,7 +67,7 @@ dd:not(.block) + dd {
 dd:not(.block) + dd {
   padding-left: 0;
 
-  &::before {
+  &:not(:has(> button))::before {
     content: ', ';
   }
 }
@@ -147,7 +147,7 @@ address {
 }
 
 dd.block {
-  margin-bottom: var(--gap);
+  margin-bottom: var(--gap-s);
 
   .person ul {
     list-style: none;

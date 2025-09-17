@@ -3,6 +3,7 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { ShoppingCartIcon } from '@/icons';
 import { Attachement } from '@/routes/divaOutput/components/Attachment';
 
+import { Date } from '@/routes/divaOutput/components/Date';
 import { Event } from '@/routes/divaOutput/components/Event';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Organisation } from '@/routes/divaOutput/components/Organisation';
@@ -15,19 +16,16 @@ import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
-import { StudentDegrees } from './StudentDegrees';
-import { OriginInfo } from './OriginInfo';
-import { Date } from '@/routes/divaOutput/components/Date';
 import { Identifiers } from './Identifiers';
+import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
-import type { BFFOrganisation } from '@/cora/transform/bffTypes.server';
+import { StudentDegrees } from './StudentDegrees';
 
 interface OutputViewProps {
   data: DivaOutput;
-  organisations: Record<string, BFFOrganisation>;
 }
 
-export const OutputView = ({ data, organisations }: OutputViewProps) => {
+export const OutputView = ({ data }: OutputViewProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
   const output = data.output;
@@ -35,19 +33,19 @@ export const OutputView = ({ data, organisations }: OutputViewProps) => {
     <div className='diva-output-view'>
       <main>
         <article>
-          <h1 lang={output.titleInfo._lang} dir='auto'>
+          <h1
+            lang={mapISO639_2b_to_ISO639_1(output.titleInfo._lang)}
+            dir='auto'
+          >
             {createTitle(output.titleInfo)}
           </h1>
           <dl>
-            <Persons
-              persons={output.name_type_personal}
-              organisations={organisations}
-            />
+            <Persons persons={output.name_type_personal} />
             {output.name_type_corporate && (
               <>
                 <dt>{output.name_type_corporate?.[0]?.__text[language]}</dt>
                 {output.name_type_corporate?.map((organisation, index) => (
-                  <dd key={index}>
+                  <dd key={index} className='block'>
                     <Organisation organisation={organisation} />
                   </dd>
                 ))}
@@ -215,38 +213,10 @@ export const OutputView = ({ data, organisations }: OutputViewProps) => {
                 )
               }
             />
-            {output.supervisor_type_personal && (
-              <>
-                <dt>
-                  {output.supervisor_type_personal?.[0]?.__text[language]}
-                </dt>
-                {output.supervisor_type_personal?.map((supervisor, index) => (
-                  <dd key={index}>
-                    <Person person={supervisor} organisations={organisations} />
-                  </dd>
-                ))}
-              </>
-            )}
-            {output.examiner_type_personal && (
-              <>
-                <dt>{output.examiner_type_personal?.[0]?.__text[language]}</dt>
-                {output.examiner_type_personal?.map((examiner, index) => (
-                  <dd key={index}>
-                    <Person person={examiner} organisations={organisations} />
-                  </dd>
-                ))}
-              </>
-            )}
-            {output.opponent_type_personal && (
-              <>
-                <dt>{output.opponent_type_personal?.[0]?.__text[language]}</dt>
-                {output.opponent_type_personal?.map((opponent, index) => (
-                  <dd key={index}>
-                    <Person person={opponent} organisations={organisations} />
-                  </dd>
-                ))}
-              </>
-            )}
+            <Persons persons={output.supervisor_type_personal} />
+            <Persons persons={output.examiner_type_personal} />
+            <Persons persons={output.opponent_type_personal} />
+
             <Event event={output.defence} />
             <Event event={output.presentation} />
           </dl>
@@ -257,41 +227,43 @@ export const OutputView = ({ data, organisations }: OutputViewProps) => {
         {output.attachment?.map((attachment, index) => {
           return <Attachement attachement={attachment} key={index} />;
         })}
-
-        <Term
-          label={output['accessCondition_authority_kb-se']?.__text[language]}
-          value={
-            output['accessCondition_authority_kb-se']?.__valueText[language]
-          }
-        />
+        <dl>
+          <Term
+            label={output['accessCondition_authority_kb-se']?.__text[language]}
+            value={
+              output['accessCondition_authority_kb-se']?.__valueText[language]
+            }
+          />
+        </dl>
         <OriginInfo originInfo={output.originInfo} />
-        <Term
-          label={output.dateOther_type_patent?.__text[language]} //Patent
-          value={<Date date={output.dateOther_type_patent} />}
-        />
+        <dl>
+          <Term
+            label={output.dateOther_type_patent?.__text[language]} //Patent
+            value={<Date date={output.dateOther_type_patent} />}
+          />
 
-        {output.location && (
-          <>
-            <dt>{output.location?.[0].__text[language]}</dt>
-            {output.location?.map((location, index) => (
-              <dd key={index}>
-                <Location location={location} />
-              </dd>
-            ))}
-          </>
-        )}
-        <Term
-          label={output.location_displayLabel_orderLink?.__text[language]}
-          value={
-            output.location_displayLabel_orderLink && (
-              <Location
-                location={output.location_displayLabel_orderLink}
-                icon={<ShoppingCartIcon />}
-              />
-            )
-          }
-        />
-
+          {output.location && (
+            <>
+              <dt>{output.location?.[0].__text[language]}</dt>
+              {output.location?.map((location, index) => (
+                <dd key={index}>
+                  <Location location={location} />
+                </dd>
+              ))}
+            </>
+          )}
+          <Term
+            label={output.location_displayLabel_orderLink?.__text[language]}
+            value={
+              output.location_displayLabel_orderLink && (
+                <Location
+                  location={output.location_displayLabel_orderLink}
+                  icon={<ShoppingCartIcon />}
+                />
+              )
+            }
+          />
+        </dl>
         <Identifiers output={output} />
 
         <div>
@@ -301,7 +273,10 @@ export const OutputView = ({ data, organisations }: OutputViewProps) => {
                 {subject.__text[language]} (
                 {t(getLanguageTextId(subject._lang))})
               </h2>
-              <ul className='pill-container' lang={subject._lang}>
+              <ul
+                className='pill-container'
+                lang={mapISO639_2b_to_ISO639_1(subject._lang)}
+              >
                 {subject.topic.value.split(',').map((topicPart) => (
                   <li key={topicPart} className='pill'>
                     <Link

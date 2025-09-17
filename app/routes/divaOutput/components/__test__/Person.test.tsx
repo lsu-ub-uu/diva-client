@@ -193,13 +193,14 @@ describe('Person', () => {
     expect(screen.getByText('University of Pest')).toBeInTheDocument();
   });
 
-  it('renders a linked affiliation with name in publication', () => {
+  it('renders a linked affiliation with display name in publication', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
       affiliation: [
         {
           organisation: {
+            displayName: 'University of Test',
             value: '1234',
             linkedRecord: {
               organisation: {
@@ -207,26 +208,38 @@ describe('Person', () => {
               },
             },
           },
-          name_type_corporate: { namePart: { value: 'University of Test' } },
         },
       ],
     } as NamePersonalGroup;
 
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        id: 'root',
-        Component: () => <Person person={person} expanded />,
-      },
-      {
-        path: '/diva-organisation/:id',
-      },
-    ]);
+    render(<Person person={person} expanded />);
 
-    render(<RoutesStub />);
+    expect(screen.getByText('University of Test')).toBeInTheDocument();
+  });
 
-    expect(
-      screen.getByRole('link', { name: 'University of Test' }),
-    ).toHaveAttribute('href', '/diva-organisation/1234');
+  it('renders affiliation name_type_corporate over linked affiliation display name', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          name_type_corporate: { namePart: { value: 'University of Test' } },
+          organisation: {
+            displayName: 'Linked University',
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+              },
+            },
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded />);
+
+    expect(screen.getByText('University of Test')).toBeInTheDocument();
+    expect(screen.queryByText('Linked University')).not.toBeInTheDocument();
   });
 });

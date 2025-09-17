@@ -164,6 +164,7 @@ describe('generateValidationTypeInterface', () => {
            linkedRecord: {
              anotherRoot: AnotherMetadataGroupId;
            };
+           
            __text: { sv: string; en: string };
          };
          __text: { sv: string; en: string };

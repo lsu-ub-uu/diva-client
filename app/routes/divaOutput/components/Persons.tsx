@@ -1,85 +1,55 @@
 import { ShowMoreOrLessButton } from '@/components/CollapsableText/ShowMoreOrLessButton';
-import type { BFFOrganisation } from '@/cora/transform/bffTypes.server';
-import type { NamePersonalGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useId, useState } from 'react';
-import { Person } from './Person';
+import { Person, type PersonType } from './Person';
 
 interface PersonsProps {
-  persons?: NamePersonalGroup[];
-  organisations: Record<string, BFFOrganisation>;
+  persons?: PersonType[];
 }
 
-export const Persons = ({ persons, organisations }: PersonsProps) => {
-  const id = useId();
-  const language = useLanguage();
+const PERSONS_TO_SHOW_LIMIT = 3;
 
+export const Persons = ({ persons }: PersonsProps) => {
+  const language = useLanguage();
+  const id = useId();
   const [expanded, setExpanded] = useState(false);
+
   if (!persons || persons.length === 0) {
     return null;
   }
 
-  return (
-    <div id={id}>
-      <dt>{persons?.[0]?.__text[language]}</dt>
-      {expanded ? (
-        <ExpandedPersons persons={persons} organisations={organisations} />
-      ) : (
-        <CollapsedPersons persons={persons} organisations={organisations} />
-      )}
-      <ShowMoreOrLessButton
-        onClick={() => setExpanded(!expanded)}
-        expanded={expanded}
-        aria-controls={id}
-      />
-    </div>
-  );
-};
+  const personsToShow = expanded
+    ? persons
+    : persons.slice(0, PERSONS_TO_SHOW_LIMIT);
 
-const CollapsedPersons = ({
-  persons,
-  organisations,
-}: {
-  persons: NamePersonalGroup[];
-  organisations: Record<string, BFFOrganisation>;
-}) => {
-  const slicedPersons = persons.length > 3 ? persons.slice(0, 3) : persons;
+  const expandable =
+    persons.length > PERSONS_TO_SHOW_LIMIT ||
+    persons.some((p) => p.affiliation && p.affiliation.length > 0);
 
   return (
     <>
-      {slicedPersons && (
-        <>
-          {slicedPersons?.map((person, index) => (
-            <dd key={index}>
-              <Person
-                person={person}
-                key={index}
-                organisations={organisations}
-              />
-            </dd>
-          ))}
-          {slicedPersons.length < persons.length && <dd>et al.</dd>}
-        </>
+      <dt>{persons?.[0]?.__text[language]}</dt>
+      {personsToShow?.map((person, index) => (
+        <dd
+          key={index}
+          id={`person-${id}-${index}`}
+          className={!expandable || expanded ? 'block' : ''}
+        >
+          <Person person={person} key={index} expanded={expanded} />
+        </dd>
+      ))}
+      {personsToShow.length < persons.length && <dd>et al.</dd>}
+      {expandable && (
+        <dd>
+          <ShowMoreOrLessButton
+            onClick={() => setExpanded(!expanded)}
+            expanded={expanded}
+            aria-controls={personsToShow
+              .map((_, index) => `person-${id}-${index}`)
+              .join(' ')}
+          />
+        </dd>
       )}
     </>
   );
-};
-
-const ExpandedPersons = ({
-  persons,
-  organisations,
-}: {
-  persons: NamePersonalGroup[];
-  organisations: Record<string, BFFOrganisation>;
-}) => {
-  return persons?.map((person, index) => (
-    <dd key={index} className='block'>
-      <Person
-        person={person}
-        key={index}
-        expanded
-        organisations={organisations}
-      />
-    </dd>
-  ));
 };

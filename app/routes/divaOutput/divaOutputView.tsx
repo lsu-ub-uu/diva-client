@@ -50,14 +50,11 @@ export const loader = async ({
       decorated: true,
     })) as BFFDataRecord<DivaOutput>;
     return {
-      record,
+      record: record,
       pageTitle: createTitle(record.data.output.titleInfo),
       breadcrumb: t(record.data.output.titleInfo.title.value),
       apiUrl,
       origin,
-      organisations: Object.fromEntries(
-        dependencies.organisationPool.entries(),
-      ),
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -87,6 +84,7 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const record = loaderData.record;
+  console.log({ record });
   return (
     <div className='diva-output-view-page'>
       <Button
@@ -100,7 +98,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <CodeIcon />
         {t('divaClient_viewInApiText')}
       </Button>
-      <OutputView data={record.data} organisations={loaderData.organisations} />
+      <OutputView data={record.data} />
       <FloatingActionButtonContainer>
         {record.userRights?.includes('update') && (
           <FloatingActionButton

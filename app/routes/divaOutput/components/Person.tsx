@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { BFFOrganisation } from '@/cora/transform/bffTypes.server';
 import type {
   AffiliationPersonalGroup,
   NamePersonalDegreeSupervisorGroup,
@@ -36,15 +35,10 @@ export type PersonType =
 
 interface PersonProps {
   person: PersonType;
-  organisations: Record<string, BFFOrganisation>;
   expanded?: boolean;
 }
 
-export const Person = ({
-  person,
-  expanded = false,
-  organisations,
-}: PersonProps) => {
+export const Person = ({ person, expanded = false }: PersonProps) => {
   const language = useLanguage();
 
   return (
@@ -54,7 +48,7 @@ export const Person = ({
       {expanded && person.affiliation && person.affiliation.length > 0 && (
         <ul>
           {person.affiliation.map((affiliation, index) => (
-            <li key={index}>{renderAffiliation(affiliation, organisations)}</li>
+            <li key={index}>{formatAffiliationName(affiliation)}</li>
           ))}
         </ul>
       )}
@@ -99,59 +93,9 @@ const formatPersonRoles = (
   return '';
 };
 
-const renderAffiliation = (
-  affiliation: AffiliationPersonalGroup,
-  organisations: Record<string, BFFOrganisation>,
-) => {
-  const affiliationName = formatAffiliationName(affiliation, organisations);
-  const linkedOrganisationId = affiliation.organisation?.value;
-  //const orgnation = organisationPool.get(linkedOrganisation || '');
-  const linkedRecordType =
-    affiliation.organisation?.linkedRecord?.organisation?.recordInfo?.type
-      ?.value ?? 'diva-organisation';
-
-  if (linkedOrganisationId) {
-    return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: linkedRecordType,
-          recordId: linkedOrganisationId,
-        })}
-      >
-        {affiliationName}
-      </Link>
-    );
-  }
-  return affiliationName;
-};
-
-const formatAffiliationName = (
-  affiliation: AffiliationPersonalGroup,
-  organisations: Record<string, BFFOrganisation>,
-) => {
+const formatAffiliationName = (affiliation: AffiliationPersonalGroup) => {
   const affiliationName = affiliation.name_type_corporate?.namePart?.value;
-  const linkedOrganisationId = affiliation.organisation?.value;
-  if (affiliationName) {
-    return affiliationName;
-  }
-  if (linkedOrganisationId) {
-    return formatLinkedOrganisationName(linkedOrganisationId, organisations);
-  }
-  return '';
-};
+  const linkedOrganisationName = affiliation.organisation?.displayName;
 
-const formatLinkedOrganisationName = (
-  linkedOrganisationId: string,
-  organisations: Record<string, BFFOrganisation>,
-): string => {
-  const linkedOrganisation = organisations[linkedOrganisationId];
-
-  if (linkedOrganisation.parentOrganisationId) {
-    return `${linkedOrganisation.name.sv}, ${formatLinkedOrganisationName(
-      linkedOrganisation.parentOrganisationId,
-      organisations,
-    )}`;
-  }
-
-  return linkedOrganisation.name.sv;
+  return affiliationName || linkedOrganisationName || '';
 };
