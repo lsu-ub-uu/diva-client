@@ -344,3 +344,13 @@ export interface BFFTheme {
   };
   hostnames: string[];
 }
+
+export interface BFFOrganisation {
+  id: string;
+  parentOrganisationId?: string;
+  name: {
+    sv: string;
+    en?: string;
+  };
+  rorId?: string;
+}

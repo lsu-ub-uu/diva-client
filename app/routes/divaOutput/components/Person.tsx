@@ -17,42 +17,85 @@
  */
 
 import type {
+  AffiliationPersonalGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
+import { formatPersonName } from '../utils/formatPersonName';
+
+export type PersonType =
+  | NamePersonalGroup
+  | NamePersonalDegreeSupervisorGroup
+  | NamePersonalThesisAdvisorGroup
+  | NamePersonalOpponentGroup;
 
 interface PersonProps {
-  person:
-    | NamePersonalGroup
-    | NamePersonalDegreeSupervisorGroup
-    | NamePersonalThesisAdvisorGroup
-    | NamePersonalOpponentGroup;
+  person: PersonType;
+  expanded?: boolean;
 }
 
-export const Person = ({ person }: PersonProps) => {
-  // TODO show affiliation and role
+export const Person = ({ person, expanded = false }: PersonProps) => {
+  const language = useLanguage();
+
+  return (
+    <span className='person'>
+      {renderPersonName(person)}
+      {formatPersonRoles(person, language)}
+      {expanded && person.affiliation && person.affiliation.length > 0 && (
+        <ul>
+          {person.affiliation.map((affiliation, index) => (
+            <li key={index}>{formatAffiliationName(affiliation)}</li>
+          ))}
+        </ul>
+      )}
+    </span>
+  );
+};
+
+const renderPersonName = (person: PersonType) => {
+  const name = formatPersonName(person);
+  const linkedRecordType =
+    person.person?.linkedRecord?.person?.recordInfo?.type?.value ??
+    'diva-person';
   if (person.person) {
     return (
       <Link
         to={href('/:recordType/:recordId', {
-          recordType: 'diva-person',
+          recordType: linkedRecordType,
           recordId: person.person.value,
         })}
       >
-        <span>
-          {person.namePart_type_given?.value}
-          {person.namePart_type_family?.value}
-        </span>
+        {name}
       </Link>
     );
   }
+  return name;
+};
 
-  return (
-    <span>
-      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
-    </span>
-  );
+const formatPersonRoles = (
+  person:
+    | NamePersonalGroup
+    | NamePersonalDegreeSupervisorGroup
+    | NamePersonalThesisAdvisorGroup
+    | NamePersonalOpponentGroup,
+  language: 'en' | 'sv',
+) => {
+  const roleTerm = person.role?.roleTerm;
+
+  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
+    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+  }
+
+  return '';
+};
+
+const formatAffiliationName = (affiliation: AffiliationPersonalGroup) => {
+  const affiliationName = affiliation.name_type_corporate?.namePart?.value;
+  const linkedOrganisationName = affiliation.organisation?.displayName;
+
+  return affiliationName || linkedOrganisationName || '';
 };

@@ -230,15 +230,42 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     data,
     'linkedRecordId',
   );
+  const linkedRecordType = getFirstDataAtomicValueWithNameInData(
+    data,
+    'linkedRecordType',
+  );
 
   const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
     ? transformLinkedRecord(data, dependencies)
     : undefined;
 
+  let displayName;
+  if (linkedRecordType === 'diva-organisation' && linkedRecord) {
+    displayName = formatLinkedOrganisationName(recordLinkId, dependencies);
+  }
+
   return removeEmpty({
     value: recordLinkId,
     linkedRecord,
+    displayName,
   });
+};
+
+const formatLinkedOrganisationName = (
+  linkedOrganisationId: string,
+  dependencies: Dependencies,
+): string => {
+  const linkedOrganisation =
+    dependencies.organisationPool.get(linkedOrganisationId);
+
+  if (linkedOrganisation.parentOrganisationId) {
+    return `${linkedOrganisation.name.sv}, ${formatLinkedOrganisationName(
+      linkedOrganisation.parentOrganisationId,
+      dependencies,
+    )}`;
+  }
+
+  return linkedOrganisation.name.sv;
 };
 
 const transformLinkedRecord = (

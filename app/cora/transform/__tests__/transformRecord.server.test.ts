@@ -84,6 +84,7 @@ import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
+  BFFOrganisation,
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationGroup,
@@ -181,6 +182,7 @@ describe('transformRecord', () => {
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
       themePool: listToPool<BFFTheme>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
   });
   describe('transformRecord', () => {

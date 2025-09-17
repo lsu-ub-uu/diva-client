@@ -1,8 +1,8 @@
-import { href, Link } from 'react-router';
 import type {
   NameOrganisationDegreeGrantingInstitutionGroup,
   NameOrganisationGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 
 interface OrganisationProps {
   organisation:
@@ -11,18 +11,37 @@ interface OrganisationProps {
 }
 
 export const Organisation = ({ organisation }: OrganisationProps) => {
-  if (organisation.organisation) {
-    return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: 'diva-organisation',
-          recordId: organisation.organisation?.value,
-        })}
-      >
-        <span>{organisation.namePart?.value}</span>
-      </Link>
-    );
+  const language = useLanguage();
+
+  return (
+    <span>
+      {formatOrganisationName(organisation)}
+      {formatOrganisationRoles(organisation, language)}
+    </span>
+  );
+};
+
+const formatOrganisationName = (
+  organisation: OrganisationProps['organisation'],
+) => {
+  if (organisation.namePart?.value) {
+    return organisation.namePart.value;
+  }
+  if (organisation.organisation?.displayName) {
+    return organisation.organisation.displayName;
+  }
+  return '';
+};
+
+const formatOrganisationRoles = (
+  organisation: OrganisationProps['organisation'],
+  language: 'en' | 'sv',
+) => {
+  const roleTerm = organisation.role?.roleTerm;
+
+  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
+    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
   }
 
-  return <span>{organisation.namePart?.value}</span>;
+  return '';
 };

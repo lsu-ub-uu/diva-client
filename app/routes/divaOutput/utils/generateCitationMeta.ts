@@ -5,6 +5,7 @@ import type {
 import { createTitle } from './createTitle';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import type { MetaDescriptor } from 'react-router';
+import { formatPersonName } from './formatPersonName';
 
 export const generateCitationMeta = (
   divaOutput: DivaOutput,
@@ -22,11 +23,9 @@ export const generateCitationMeta = (
       person.role &&
       person.role.roleTerm.some((role) => role.value === 'aut')
     ) {
-      const family = person.namePart_type_family?.value || '';
-      const given = person.namePart_type_given?.value || '';
       meta.push({
         name: 'citation_author',
-        content: [family, given].filter(Boolean).join(', '),
+        content: formatPersonName(person),
       });
     }
   });
