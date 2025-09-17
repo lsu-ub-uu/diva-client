@@ -151,6 +151,6 @@ dd.block {
 
   .person ul {
     list-style: none;
-    padding-left: var(--gap-l);
+    padding-left: var(--gap-xl);
   }
 }
