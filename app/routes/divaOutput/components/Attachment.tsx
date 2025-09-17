@@ -12,7 +12,7 @@ export const Attachement = ({ attachement }: AttachementProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
 
-  if (!attachement.attachmentFile?.linkedRecord.binary.master) {
+  if (!attachement.attachmentFile?.linkedRecord?.binary.master) {
     return null;
   }
 
