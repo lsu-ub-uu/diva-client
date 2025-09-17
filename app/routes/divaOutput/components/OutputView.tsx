@@ -7,7 +7,6 @@ import { Date } from '@/routes/divaOutput/components/Date';
 import { Event } from '@/routes/divaOutput/components/Event';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Organisation } from '@/routes/divaOutput/components/Organisation';
-import { Person } from '@/routes/divaOutput/components/Person';
 import { SdgImage } from '@/routes/divaOutput/components/SdgImage';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
@@ -352,3 +351,23 @@ function createDurationString(duration: DurationGroup) {
     .filter(Boolean)
     .join(' ');
 }
+// TODO:
+// genre type subcategory
+// name type person affilierings ror
+// name type corp, description, ror
+// note type context
+// patentHolder
+// patentCountry
+// origin agent link, (editions saknas i ultimate)
+// imprint
+// subject authority diva
+// ismn (saknas i ultimate)
+// pmid  (saknas i ultimate)
+// pubmed  (saknas i ultimate)
+// scupus  (saknas i ultimate)
+// arkivnummer
+// student degree course, programme
+// relatedItems
+// related
+// localGenericMarkup
+// attachment, rättigheter, större thumbnail

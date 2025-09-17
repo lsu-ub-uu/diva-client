@@ -1,6 +1,4 @@
-import { ChevronDownIcon } from '@/icons';
 import { useId, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import styles from './CollapsableText.module.css';
 import { ShowMoreOrLessButton } from './ShowMoreOrLessButton';

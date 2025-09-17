@@ -1,15 +1,12 @@
 import {
-  getFirstChildWithNameInData,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes,
-  hasChildWithNameInData,
   hasChildWithNameInDataAndAttributes,
 } from '../cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '../cora-data/CoraDataUtilsWrappers.server';
 import type {
   DataGroup,
-  DataList,
   DataListWrapper,
   RecordWrapper,
 } from '../cora-data/types.server';

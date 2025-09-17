@@ -23,6 +23,7 @@ import type {
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFOrganisation,
   BFFPresentationGroup,
   BFFPresentationTextVar,
   BFFRecordType,
@@ -165,6 +166,7 @@ describe('loginDefinition', () => {
       loginUnitPool,
       loginPool,
       themePool: listToPool<BFFTheme>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
   });
 

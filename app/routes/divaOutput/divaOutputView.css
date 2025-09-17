@@ -64,14 +64,6 @@ dd:not(.block) + dd {
   display: inline;
 }
 
-dd:not(.block) + dd {
-  padding-left: 0;
-
-  &:not(:has(> button))::before {
-    content: ', ';
-  }
-}
-
 .inline-definitions {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -94,6 +86,14 @@ dd:not(.block) + dd {
     }
 
     grid-column: 2;
+  }
+}
+
+dd:not(.block) + dd {
+  padding-left: 0;
+
+  &:not(:has(> button))::before {
+    content: ', ';
   }
 }
 

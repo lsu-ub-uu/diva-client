@@ -17,16 +17,17 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMetadata,
-  BFFPresentation,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFTheme,
-  BFFValidationType,
+import {
+  type BFFOrganisation,
+  type BFFLoginUnit,
+  type BFFLoginWebRedirect,
+  type BFFMetadata,
+  type BFFPresentation,
+  type BFFRecordType,
+  type BFFSearch,
+  type BFFText,
+  type BFFTheme,
+  type BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
@@ -52,6 +53,7 @@ describe('textDefinition', () => {
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
       themePool: listToPool<BFFTheme>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
   });
 

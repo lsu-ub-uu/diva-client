@@ -84,7 +84,6 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const record = loaderData.record;
-  console.log({ record });
   return (
     <div className='diva-output-view-page'>
       <Button

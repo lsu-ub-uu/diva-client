@@ -100,6 +100,7 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
+  BFFOrganisation,
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFRecordType,
@@ -553,6 +554,7 @@ describe('transformToCora', () => {
         loginUnitPool: listToPool<BFFLoginUnit>([]),
         loginPool: listToPool<BFFLoginWebRedirect>([]),
         themePool: listToPool<BFFTheme>([]),
+        organisationPool: listToPool<BFFOrganisation>([]),
       };
     });
 
