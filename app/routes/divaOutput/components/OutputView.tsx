@@ -1,20 +1,20 @@
-import type { DivaOutput, DurationGroup } from '@/generatedTypes/divaTypes';
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ShoppingCartIcon } from '@/icons';
 import { Attachement } from '@/routes/divaOutput/components/Attachment';
 
 import { Date } from '@/routes/divaOutput/components/Date';
-import { Event } from '@/routes/divaOutput/components/Event';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Organisation } from '@/routes/divaOutput/components/Organisation';
-import { SdgImage } from '@/routes/divaOutput/components/SdgImage';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
+import { ArtisticWorkFields } from './ArtisticWork';
+import { Classifications } from './Classifications';
+import { DegreeProjectFields } from './DegreeProjectFields';
 import { Identifiers } from './Identifiers';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
@@ -70,7 +70,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
               label={output.genre_type_subcategory?.__text[language]}
               value={output.genre_type_subcategory?.__valueText[language]}
             />
-
             <dt>
               {
                 output.language[0]['languageTerm_authority_iso639-2b_type_code']
@@ -113,111 +112,8 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </dl>
 
           <dl>
-            <Term
-              label={output.typeOfResource?.__text[language]}
-              value={output.typeOfResource?.__valueText[language]}
-            />
-            {output.type && (
-              <>
-                <dt>{output.type[0].__text[language]}</dt>
-                {output.type.map((type) => (
-                  <dd
-                    key={type.value}
-                    lang={mapISO639_2b_to_ISO639_1(type._lang)}
-                    dir='auto'
-                  >
-                    {type.value}
-                  </dd>
-                ))}
-              </>
-            )}
-            {output.material && (
-              <>
-                <dt>{output.material[0].__text[language]}</dt>
-                {output.material.map((material) => (
-                  <dd
-                    key={material.value}
-                    lang={mapISO639_2b_to_ISO639_1(material._lang)}
-                    dir='auto'
-                  >
-                    {material.value}
-                  </dd>
-                ))}
-              </>
-            )}
-            {output.technique && (
-              <>
-                <dt>{output.technique[0].__text[language]}</dt>
-                {output.technique.map((technique) => (
-                  <dd
-                    key={technique.value}
-                    lang={mapISO639_2b_to_ISO639_1(technique._lang)}
-                    dir='auto'
-                  >
-                    {technique.value}
-                  </dd>
-                ))}
-              </>
-            )}
-            <Term
-              label={output.size?.__text[language]}
-              value={output.size?.value}
-            />
-            <Term
-              label={output.duration?.__text[language]}
-              value={
-                output.duration && (
-                  <time dateTime={createDurationString(output.duration)}>
-                    {createDurationString(output.duration)}
-                  </time>
-                )
-              }
-            />
-            <Term
-              label={output.physicalDescription?.__text[language]}
-              value={output.physicalDescription?.extent.value}
-            />
-            <Term
-              label={output.academicSemester?.__text[language]}
-              value={[
-                output.academicSemester?.academicSemester?.value?.toUpperCase(),
-                output.academicSemester?.year?.value,
-              ]
-                .filter(Boolean)
-                .join(' ')}
-            />
-            {output.externalCollaboration && (
-              <>
-                <dt>{output.externalCollaboration.__text[language]}</dt>
-                {output.externalCollaboration.namePart?.map(
-                  (namePart, index) => (
-                    <dd key={index}>{namePart.value}</dd>
-                  ),
-                )}
-              </>
-            )}
-            <Term
-              label={
-                output.degreeGrantingInstitution_type_corporate?.__text[
-                  language
-                ]
-              }
-              value={
-                output.degreeGrantingInstitution_type_corporate && (
-                  <Organisation
-                    organisation={
-                      output.degreeGrantingInstitution_type_corporate
-                    }
-                  />
-                )
-              }
-            />
-            <Persons persons={output.supervisor_type_personal} />
-            <Persons persons={output.examiner_type_personal} />
-            <Persons persons={output.opponent_type_personal} />
-
-            <Event event={output.defence} />
-            <Event event={output.presentation} />
+            <ArtisticWorkFields output={output} />
+            <DegreeProjectFields output={output} />
           </dl>
           <StudentDegrees studentDegrees={output.studentDegree} />
         </article>
@@ -265,68 +161,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </dl>
         <Identifiers output={output} />
 
-        <div>
-          {output.subject?.map((subject, index) => (
-            <div key={index}>
-              <h2>
-                {subject.__text[language]} (
-                {t(getLanguageTextId(subject._lang))})
-              </h2>
-              <ul
-                className='pill-container'
-                lang={mapISO639_2b_to_ISO639_1(subject._lang)}
-              >
-                {subject.topic.value.split(',').map((topicPart) => (
-                  <li key={topicPart} className='pill'>
-                    <Link
-                      to={`/diva-output?search.include.includePart.keywordsSearchTerm.value=${topicPart}&search.rows.value=10`}
-                    >
-                      {topicPart}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        {output.classification_authority_ssif &&
-          output.classification_authority_ssif.length > 0 && (
-            <div>
-              <h2>
-                {output.classification_authority_ssif?.[0].__text[language]}
-              </h2>
-              <ul className='pill-container'>
-                {output.classification_authority_ssif.map((classification) => (
-                  <li key={classification.value} className='pill'>
-                    <Link
-                      to={`/diva-output?search.include.includePart.ssifSearchTerm.value=${classification.value}&search.rows.value=10`}
-                    >
-                      {classification.__valueText[language].replace(
-                        /^\(\d+\) /,
-                        '',
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        {output.subject_authority_sdg && (
-          <div>
-            <h2>{output.subject_authority_sdg.__text[language]}</h2>
-            <ul className='sdg-container'>
-              {output.subject_authority_sdg.topic.map((topic) => (
-                <li key={topic.value} className=''>
-                  <Link
-                    to={`/diva-output?search.include.includePart.sdgSearchTerm.value=${topic.value}&search.rows.value=10`}
-                  >
-                    <SdgImage topic={topic} />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <Classifications output={output} />
         <dl>
           <Term
             label={output.note_type_external?.__text[language]}
@@ -338,33 +173,18 @@ export const OutputView = ({ data }: OutputViewProps) => {
   );
 };
 
-function createDurationString(duration: DurationGroup) {
-  const hours = duration.hh?.value;
-  const minutes = duration.mm?.value;
-  const seconds = duration.ss?.value;
-
-  return [
-    hours && `${hours}h`,
-    minutes && `${minutes}m`,
-    seconds && `${seconds}s`,
-  ]
-    .filter(Boolean)
-    .join(' ');
-}
 // TODO:
-// genre type subcategory
-// name type person affilierings ror
+
 // name type corp, description, ror
 // note type context
 // patentHolder
 // patentCountry
-// origin agent link, (editions saknas i ultimate)
+// origin agent link
 // imprint
 // subject authority diva
-// ismn (saknas i ultimate)
-// pmid  (saknas i ultimate)
-// pubmed  (saknas i ultimate)
-// scupus  (saknas i ultimate)
+// ismn
+// pmid
+// scopus
 // arkivnummer
 // student degree course, programme
 // relatedItems

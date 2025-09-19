@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Persons } from '../Persons';
 import userEvent from '@testing-library/user-event';
+import { createRoutesStub } from 'react-router';
 
 describe('Persons', () => {
   it('shows 3 persons without affiliations', () => {
@@ -34,11 +35,130 @@ describe('Persons', () => {
       screen.queryByRole('button', { name: 'divaClient_showMoreText' }),
     ).not.toBeInTheDocument();
   });
+
   it('shows nothingh whith no persons', () => {
     const persons = [] as NamePersonalGroup[];
 
     render(<Persons persons={persons} />);
     expect(screen.queryByText('Authors')).not.toBeInTheDocument();
+  });
+
+  it('does not show expandable view for 3 persons with name only', () => {
+    const persons = [
+      {
+        __text: { en: 'Authors', sv: 'Författare' },
+        namePart_type_family: { value: 'Personson' },
+        namePart_type_given: { value: 'Anna' },
+      },
+      {
+        __text: { en: 'Authors', sv: 'Författare' },
+        namePart_type_family: { value: 'Testsson' },
+        namePart_type_given: { value: 'Johan' },
+      },
+      {
+        __text: { en: 'Authors', sv: 'Författare' },
+        namePart_type_family: { value: 'Mocksson' },
+        namePart_type_given: { value: 'Stina' },
+      },
+    ] as NamePersonalGroup[];
+
+    render(<Persons persons={persons} />);
+
+    expect(screen.getByText('Anna Personson')).toBeInTheDocument();
+    expect(screen.getByText('Johan Testsson')).toBeInTheDocument();
+    expect(screen.getByText('Stina Mocksson')).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_showMoreText' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows expandable view for 1 person with role', async () => {
+    const persons = [
+      {
+        __text: { en: 'Authors', sv: 'Författare' },
+        namePart_type_family: { value: 'Personson' },
+        namePart_type_given: { value: 'Anna' },
+        role: {
+          roleTerm: [
+            { __valueText: { en: 'Author', sv: 'Författare' } },
+            { __valueText: { en: 'Editor', sv: 'Redaktör' } },
+          ],
+        },
+      },
+    ] as NamePersonalGroup[];
+
+    render(<Persons persons={persons} />);
+
+    expect(screen.getByText('Anna Personson')).toBeInTheDocument();
+    expect(screen.queryByText('(Author, Editor)')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'divaClient_showMoreText' }),
+    ).toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_showMoreText' }),
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'divaClient_showLessText' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('(Author, Editor)')).toBeInTheDocument();
+  });
+
+  it('shows expandable view for 1 person with orcid', async () => {
+    const persons = [
+      {
+        __text: { en: 'Authors', sv: 'Författare' },
+        namePart_type_family: { value: 'Personson' },
+        namePart_type_given: { value: 'Anna' },
+        person: {
+          value: '123',
+          linkedRecord: {
+            person: {
+              recordInfo: {
+                type: { value: 'diva-person' },
+              },
+              nameIdentifier_type_orcid: [
+                {
+                  value: '0000-0002-1825-0097',
+                  __text: { en: 'ORCID', sv: 'ORCID' },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ] as NamePersonalGroup[];
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => <Persons persons={persons} />,
+      },
+      {
+        path: '/diva-person/:id',
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(screen.getByText('Anna Personson')).toBeInTheDocument();
+    expect(screen.queryByText('0000-0002-1825-0097')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'divaClient_showMoreText' }),
+    ).toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_showMoreText' }),
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'divaClient_showLessText' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('0000-0002-1825-0097')).toBeInTheDocument();
   });
 
   it('shows expandable view for 3 persons when at least one has affiliation', async () => {
@@ -86,7 +206,7 @@ describe('Persons', () => {
     expect(screen.getByText('Uppsala University')).toBeInTheDocument();
   });
 
-  it('shows expandable view with et al. for more than 3 persons wihtout affiliations', async () => {
+  it('shows expandable view with et al. for more than 3 persons with name only', async () => {
     const persons = [
       {
         __text: { en: 'Authors', sv: 'Författare' },
@@ -149,7 +269,14 @@ describe('Persons', () => {
         namePart_type_given: { value: 'Johan' },
         affiliation: [
           {
-            organisation: { displayName: 'Buppsala University' },
+            organisation: {
+              displayName: 'Buppsala University',
+              linkedRecord: {
+                organisation: {
+                  recordInfo: { type: { value: 'diva-organisation' } },
+                },
+              },
+            },
           },
         ],
       },

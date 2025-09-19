@@ -49,10 +49,7 @@ article {
 
 dt {
   color: var(--color-label);
-
-  &:not(:first-child) {
-    margin-top: var(--gap-l);
-  }
+  margin-top: var(--gap-l);
 }
 
 dd {
@@ -113,22 +110,9 @@ dd:not(.block) + dd {
   border-radius: var(--border-radius);
 }
 
-.sdg-container {
-  list-style: none;
-  display: flex;
-  gap: var(--gap);
-  flex-wrap: wrap;
-}
-
 .sdg-image {
   height: 6rem;
   width: auto;
-}
-
-.location-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-s);
 }
 
 address {
@@ -148,9 +132,42 @@ address {
 
 dd.block {
   margin-bottom: var(--gap-s);
+}
 
-  .person ul {
-    list-style: none;
-    padding-left: var(--gap-xl);
+.expanded-person {
+  border-left: 2px solid var(--color-card-dark);
+  background: var(--color-card);
+  border-radius: var(--color-border-radius-s);
+  padding: var(--gap-s);
+  margin-bottom: var(--gap-s);
+
+  .person-name {
+    font-weight: bold;
   }
+
+  dt:not(:first-child) {
+    margin-top: var(--gap-s);
+  }
+
+  .inline-definitions {
+    row-gap: 0;
+
+    dt {
+      margin-top: 0;
+    }
+  }
+}
+
+.affiliation {
+  margin-top: var(--gap);
+
+  dl {
+    padding-left: var(--gap-l);
+  }
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-s);
 }

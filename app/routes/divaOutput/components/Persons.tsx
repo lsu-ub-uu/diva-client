@@ -23,9 +23,7 @@ export const Persons = ({ persons }: PersonsProps) => {
     : persons.slice(0, PERSONS_TO_SHOW_LIMIT);
 
   const expandable =
-    persons.length > PERSONS_TO_SHOW_LIMIT ||
-    persons.some((p) => p.affiliation && p.affiliation.length > 0);
-
+    persons.length > PERSONS_TO_SHOW_LIMIT || persons.some(hasInfoToExpand);
   return (
     <>
       <dt>{persons?.[0]?.__text[language]}</dt>
@@ -52,4 +50,14 @@ export const Persons = ({ persons }: PersonsProps) => {
       )}
     </>
   );
+};
+
+const hasInfoToExpand = (person: PersonType) => {
+  const hasAffiliations = person.affiliation !== undefined;
+  const hasRoles = person.role !== undefined;
+  const hasOrcid =
+    person.person?.linkedRecord?.person?.nameIdentifier_type_orcid !==
+    undefined;
+
+  return hasAffiliations || hasRoles || hasOrcid;
 };

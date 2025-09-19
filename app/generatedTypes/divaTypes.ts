@@ -502,6 +502,10 @@ export interface RecordInfoOrganisationUpdateGroup {
   __text: { sv: string; en: string };
 }
 
+export type OrganisationTypeCollection =
+  | 'topOrganisation'
+  | 'partOfOrganisation';
+
 export interface NameCorporateGroup {
   namePart: { value: string; __text: { sv: string; en: string } };
   _type: 'corporate';
@@ -823,6 +827,12 @@ export interface RelatedOrganisationEarlierGroup {
 
 export interface OrganisationUpdateGroup {
   recordInfo: RecordInfoOrganisationUpdateGroup;
+  genre_type_organisationType: {
+    value: OrganisationTypeCollection;
+    _type: 'organisationType';
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
   authority_lang_swe: AuthorityCorporateLangGroup;
   variant_lang_eng?: VariantCorporateLangGroup;
   startDate?: StartDateGroup;
@@ -2417,8 +2427,8 @@ export interface PhysicalDescriptionGroup {
 
 export interface DateOtherPatentGroup {
   year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
+  month: { value: string; __text: { sv: string; en: string } };
+  day: { value: string; __text: { sv: string; en: string } };
   _type: 'patent';
   __text: { sv: string; en: string };
 }

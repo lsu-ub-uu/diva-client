@@ -53,6 +53,8 @@
   --color-fab-secondary-text: rgb(0 0 0);
   --color-fab-secondary-bg: rgb(255 255 255);
   --color-nav-rail: var(--color-gray-light);
+  --color-output-card-background: var(--color-gray-main);
+  --color-output-card-border: var(--color-gray-dark);
 
   @mixin dark-color-scheme {
     --color-background: rgb(33 33 33);
@@ -90,6 +92,8 @@
     --color-link-selected: rgb(198 237 250);
     --color-link-visited: rgb(211 138 247);
     --color-nav-rail: rgb(26 26 22);
+    --color-output-card-background: var(--color-card);
+    --color-output-card-border: var(--color-card-dark);
   }
 
   [data-color-scheme='dark'] {
