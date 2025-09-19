@@ -3,21 +3,42 @@ import type {
   NameOrganisationGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { Term } from './Term';
 
 interface OrganisationProps {
   organisation:
     | NameOrganisationGroup
     | NameOrganisationDegreeGrantingInstitutionGroup;
+  expanded?: boolean;
 }
 
-export const Organisation = ({ organisation }: OrganisationProps) => {
+export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
   const language = useLanguage();
 
+  if (!expanded) {
+    return formatOrganisationName(organisation);
+  }
+
   return (
-    <span>
-      {formatOrganisationName(organisation)}
+    <div className='expanded-card'>
+      <span className='name'>{formatOrganisationName(organisation)}</span>
       {formatOrganisationRoles(organisation, language)}
-    </span>
+      <dl>
+        {organisation.identifier_type_ror && (
+          <Term
+            label={organisation.identifier_type_ror.__text[language]}
+            value={organisation.identifier_type_ror.value}
+          />
+        )}
+
+        {'description' in organisation && organisation.description && (
+          <Term
+            label={organisation.description.__text[language]}
+            value={organisation.description.value}
+          />
+        )}
+      </dl>
+    </div>
   );
 };
 

@@ -50,8 +50,8 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
   }
 
   return (
-    <div className='expanded-person' aria-labelledby={id}>
-      <span className='person-name' id={id}>
+    <div className='expanded-card' aria-labelledby={id}>
+      <span className='name' id={id}>
         {renderPersonName(person)}
       </span>
       {formatPersonRoles(person, language)}

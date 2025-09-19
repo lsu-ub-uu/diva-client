@@ -3092,7 +3092,7 @@ export interface DivaProject extends BFFDataRecordData {
   project: ProjectUpdateGroup;
 }
 
-export interface RelatedItemOutputGroup {
+export interface RelatedOutputGroup {
   output?: {
     value: string;
     linkedRecord: {
@@ -3101,7 +3101,6 @@ export interface RelatedItemOutputGroup {
 
     __text: { sv: string; en: string };
   };
-  _type: 'output';
   __text: { sv: string; en: string };
 }
 
@@ -3164,7 +3163,7 @@ export interface ProjectUpdateGroup {
     _currency: CurrencyCollection;
     __text: { sv: string; en: string };
   };
-  relatedItem_type_output?: RelatedItemOutputGroup[];
+  related?: RelatedOutputGroup[];
   note_type_internal?: {
     value: string;
     _type: 'internal';
@@ -3234,18 +3233,6 @@ export interface RelatedItemInitiativeGroup {
     __valueText: { sv: string; en: string };
   }[];
   _type: 'initiative';
-  __text: { sv: string; en: string };
-}
-
-export interface RelatedOutputGroup {
-  output?: {
-    value: string;
-    linkedRecord: {
-      output: OutputUpdateGroup;
-    };
-
-    __text: { sv: string; en: string };
-  };
   __text: { sv: string; en: string };
 }
 

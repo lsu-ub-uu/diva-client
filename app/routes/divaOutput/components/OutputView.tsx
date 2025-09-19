@@ -19,6 +19,7 @@ import { Identifiers } from './Identifiers';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
+import { Organisations } from './Organisations';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -40,16 +41,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </h1>
           <dl>
             <Persons persons={output.name_type_personal} />
-            {output.name_type_corporate && (
-              <>
-                <dt>{output.name_type_corporate?.[0]?.__text[language]}</dt>
-                {output.name_type_corporate?.map((organisation, index) => (
-                  <dd key={index} className='block'>
-                    <Organisation organisation={organisation} />
-                  </dd>
-                ))}
-              </>
-            )}
+            <Organisations organisations={output.name_type_corporate} />
             <Term
               label={output.note_type_creatorCount?.__text[language]}
               value={output.note_type_creatorCount?.value}
@@ -186,7 +178,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
 // pmid
 // scopus
 // arkivnummer
-// student degree course, programme
+// student degree degreeGrantingInstitution course, programme
 // relatedItems
 // related
 // localGenericMarkup
