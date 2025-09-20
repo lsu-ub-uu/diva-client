@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { authContext } from '@/auth/authMiddleware.server';
 import { Alert } from '@/components/Alert/Alert';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
@@ -44,8 +44,7 @@ import css from './recordSearch.css?url';
 export const middleware = [notificationMiddleware];
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+  const auth = context.get(authContext);
   const { t } = context.i18n;
   const { notification } = context.get(notificationContext);
 
@@ -83,21 +82,18 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     auth?.data.token,
   );
 
-  return data(
-    {
-      searchId: recordType.searchId,
-      recordTypeTextId: recordType.textId,
-      validationTypes,
-      query,
-      searchForm,
-      searchResults,
-      title: `DiVA | ${t(recordType.textId)}`,
-      notification,
-      errors,
-      apiUrl,
-    },
-    await getResponseInitWithSession(session),
-  );
+  return {
+    searchId: recordType.searchId,
+    recordTypeTextId: recordType.textId,
+    validationTypes,
+    query,
+    searchForm,
+    searchResults,
+    title: `DiVA | ${t(recordType.textId)}`,
+    notification,
+    errors,
+    apiUrl,
+  };
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {

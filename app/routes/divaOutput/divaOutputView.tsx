@@ -1,4 +1,3 @@
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
@@ -20,6 +19,7 @@ import {
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
+import { authContext } from '@/auth/authMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
@@ -49,8 +49,7 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   const { t } = context.i18n;
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+  const auth = context.get(authContext);
   const dependencies = await context.dependencies;
   const { recordId } = params;
   const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);

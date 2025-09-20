@@ -4,7 +4,7 @@ import { getSessionFromCookie } from './sessions.server';
 
 export const authContext = createContext<Auth | undefined>();
 
-export const authMiddleware: MiddlewareFunction = async ({
+export const authMiddleware: MiddlewareFunction<Response> = async ({
   request,
   context,
 }) => {

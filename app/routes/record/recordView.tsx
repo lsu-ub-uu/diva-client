@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
@@ -29,14 +28,10 @@ import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link } from 'react-router';
 import type { Route } from '../record/+types/recordView';
+import { authContext } from '@/auth/authMiddleware.server';
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const auth = context.get(authContext);
   const { recordType, recordId } = params;
 
   const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);

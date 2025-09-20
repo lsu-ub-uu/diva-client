@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import { deleteRecord } from '@/data/deleteRecord.server';
 
+import { authContext } from '@/auth/authMiddleware.server';
 import {
   notificationContext,
   notificationMiddleware,
@@ -27,15 +27,10 @@ import type { Route } from '../record/+types/recordDelete';
 
 export const middleware = [notificationMiddleware];
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: Route.ActionArgs) => {
+export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
 
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = context.get(authContext);
   const { flashNotification } = context.get(notificationContext);
 
   await deleteRecord(await context.dependencies, recordType, recordId, auth);

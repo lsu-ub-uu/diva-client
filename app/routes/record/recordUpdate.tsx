@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
@@ -107,15 +106,14 @@ export const action = async ({
   const { t } = context.i18n;
   const { flashNotification } = context.get(notificationContext);
 
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const auth = context.get(authContext);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies: await context.dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
 
   assertDefined(validationType, 'Failed to get validation type from record');

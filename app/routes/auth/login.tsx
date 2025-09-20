@@ -9,13 +9,7 @@ import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPasswor
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  data,
-  Form,
-  isRouteErrorResponse,
-  redirect,
-  useSubmit,
-} from 'react-router';
+import { Form, isRouteErrorResponse, redirect, useSubmit } from 'react-router';
 
 import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
@@ -25,6 +19,7 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { useState } from 'react';
 import type { Route } from '../auth/+types/login';
 
+import { authContext } from '@/auth/authMiddleware.server';
 import {
   notificationContext,
   notificationMiddleware,
@@ -39,32 +34,24 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
   const { notification } = context.get(notificationContext);
+  const auth = context.get(authContext);
 
-  const session = await getSession(request.headers.get('Cookie'));
-
-  if (session.has('auth')) {
+  if (auth) {
     return redirect(returnTo ?? '/');
   }
 
-  return data(
-    {
-      breadcrumb: t('divaClient_LoginText'),
-      presentation,
-      notification,
-      returnTo,
-    },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return {
+    breadcrumb: t('divaClient_LoginText'),
+    presentation,
+    notification,
+    returnTo,
+  };
 }
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta = ({ loaderData }: Route.MetaArgs) => {
   return [
     {
-      title: ['DiVA', `${data?.breadcrumb}`].filter(Boolean).join(' | '),
+      title: ['DiVA', `${loaderData?.breadcrumb}`].filter(Boolean).join(' | '),
     },
   ];
 };
@@ -143,6 +130,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
       },
     );
   }
+
   session.set('auth', auth);
 
   return redirect(returnTo ?? '/', {

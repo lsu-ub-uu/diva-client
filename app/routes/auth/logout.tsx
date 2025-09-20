@@ -16,15 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
-import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
+import { destroySession, getSession } from '@/auth/sessions.server';
 import { deleteSession } from '@/data/deleteSession.server';
+import { redirect } from 'react-router';
 
+import { authContext } from '@/auth/authMiddleware.server';
 import type { Route } from '../auth/+types/logout';
 
 export async function action({ request, context }: Route.ActionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
-  const auth = getAuth(session);
+  const auth = context.get(authContext);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
   if (auth) {
