@@ -17,7 +17,6 @@
  */
 
 import { renewAuth } from '@/auth/renewAuth.server';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -48,19 +47,24 @@ import { getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import type { Route } from './+types/root';
+import { authContext, authMiddleware } from './auth/authMiddleware.server';
+import { createUser } from './auth/createUser';
 import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
+import {
+  notificationContext,
+  notificationMiddleware,
+} from './notification/notificationMiddleware';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { createUser } from './auth/createUser';
-import { authContext, authMiddleware } from './auth/authMiddleware.server';
 
 const { MODE } = import.meta.env;
 
-export const middleware = [authMiddleware];
+export const middleware = [authMiddleware, notificationMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
@@ -72,8 +76,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
+  const { notification } = context.get(notificationContext);
 
-  return { user, locale, loginUnits, theme, recordTypes, userPreferences };
+  return {
+    user,
+    locale,
+    loginUnits,
+    theme,
+    recordTypes,
+    userPreferences,
+    notification,
+  };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -224,6 +237,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className='root-layout'>
+      <NotificationSnackbar notification={loaderData.notification} />
+
       <header className='member-bar'>
         <NavigationLoader />
         <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>

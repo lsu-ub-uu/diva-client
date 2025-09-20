@@ -29,7 +29,6 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
@@ -37,20 +36,14 @@ import { assertDefined } from '@/utils/invariant';
 import { authContext } from '@/auth/authMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import {
-  notificationContext,
-  notificationMiddleware,
-} from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Route } from '../record/+types/recordUpdate';
 
-export const middleware = [notificationMiddleware];
-
 export async function loader({ params, context }: Route.LoaderArgs) {
   const auth = context.get(authContext);
   const { t } = context.i18n;
-
   const { notification } = context.get(notificationContext);
 
   const { recordType, recordId } = params;
@@ -190,8 +183,6 @@ export default function UpdateRecordRoute({
         />
       }
     >
-      <NotificationSnackbar notification={notification} />
-
       {notification && notification.severity === 'error' && (
         <Alert severity={notification.severity} className='error-alert'>
           <AlertTitle>{notification.summary}</AlertTitle>

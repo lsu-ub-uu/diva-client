@@ -19,13 +19,8 @@
 import { deleteRecord } from '@/data/deleteRecord.server';
 
 import { authContext } from '@/auth/authMiddleware.server';
-import {
-  notificationContext,
-  notificationMiddleware,
-} from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware';
 import type { Route } from '../record/+types/recordDelete';
-
-export const middleware = [notificationMiddleware];
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;

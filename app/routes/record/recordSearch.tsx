@@ -28,25 +28,16 @@ import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
-import {
-  notificationContext,
-  notificationMiddleware,
-} from '@/notification/notificationMiddleware';
 import { performSearch } from '@/routes/record/utils/performSearch';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Await, data } from 'react-router';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
 
-export const middleware = [notificationMiddleware];
-
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const auth = context.get(authContext);
   const { t } = context.i18n;
-  const { notification } = context.get(notificationContext);
 
   const dependencies = await context.dependencies;
 
@@ -90,7 +81,6 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     searchForm,
     searchResults,
     title: `DiVA | ${t(recordType.textId)}`,
-    notification,
     errors,
     apiUrl,
   };
@@ -111,14 +101,12 @@ export default function OutputSearchRoute({
     validationTypes,
     searchResults,
     query,
-    notification,
   } = loaderData;
   const { t } = useTranslation();
 
   return (
     <div className='search-layout'>
       <main>
-        <NotificationSnackbar notification={notification} />
         <div className='search-wrapper'>
           <div className='search-extras'>
             <h1>

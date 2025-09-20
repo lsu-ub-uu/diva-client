@@ -20,13 +20,8 @@ import { useState } from 'react';
 import type { Route } from '../auth/+types/login';
 
 import { authContext } from '@/auth/authMiddleware.server';
-import {
-  notificationContext,
-  notificationMiddleware,
-} from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware';
 import css from './login.css?url';
-
-export const middleware = [notificationMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.i18n;

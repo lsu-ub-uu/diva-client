@@ -31,12 +31,8 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import {
-  notificationContext,
-  notificationMiddleware,
-} from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware';
 import type { BFFDataRecordData } from '@/types/record';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -46,8 +42,6 @@ import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-
-export const middleware = [notificationMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
@@ -195,8 +189,6 @@ export default function CreateRecordRoute({
           />
         }
       >
-        <NotificationSnackbar notification={notification} />
-
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity} className='error-alert'>
             <AlertTitle>{notification.summary}</AlertTitle>
