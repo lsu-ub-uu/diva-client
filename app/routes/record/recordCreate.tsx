@@ -16,12 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuth,
-  getNotification,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { authContext } from '@/auth/authMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -34,27 +31,27 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import {
+  notificationContext,
+  notificationMiddleware,
+} from '@/notification/notificationMiddleware';
 import type { BFFDataRecordData } from '@/types/record';
 import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { assertDefined } from '@/utils/invariant';
-import {
-  getResponseInitWithSession,
-  redirectAndCommitSession,
-} from '@/utils/redirectAndCommitSession';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse } from 'react-router';
+import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import type { Route } from '../record/+types/recordCreate';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { useDeferredValue, useState } from 'react';
 import css from './record.css?url';
+
+export const middleware = [notificationMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
-  const session = await getSessionFromCookie(request);
-  const notification = getNotification(session);
+  const { notification } = context.get(notificationContext);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -92,23 +89,20 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   });
   const breadcrumb = title;
 
-  return data(
-    {
-      formDefinition,
-      previewFormDefinition,
-      defaultValues,
-      notification,
-      title,
-      breadcrumb,
-    },
-    await getResponseInitWithSession(session),
-  );
+  return {
+    formDefinition,
+    previewFormDefinition,
+    defaultValues,
+    notification,
+    title,
+    breadcrumb,
+  };
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+  const auth = context.get(authContext);
   const { t } = context.i18n;
+  const { flashNotification } = context.get(notificationContext);
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -139,17 +133,15 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
       validatedFormData as BFFDataRecordData,
       auth,
     );
-    session.flash('notification', {
+    flashNotification({
       severity: 'success',
       summary: `Record was successfully created ${id}`,
     });
-    return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
+    return redirect(`/${recordType}/${id}/update`);
   } catch (error) {
-    session.flash('notification', createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromAxiosError(t, error));
     console.error(error);
   }
-
-  return data({}, await getResponseInitWithSession(session));
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {

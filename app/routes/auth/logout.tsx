@@ -22,7 +22,7 @@ import { deleteSession } from '@/data/deleteSession.server';
 
 import type { Route } from '../auth/+types/logout';
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   const auth = getAuth(session);
   const form = await request.formData();

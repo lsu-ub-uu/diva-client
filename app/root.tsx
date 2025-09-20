@@ -56,13 +56,21 @@ import {
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { createUser } from './auth/createUser';
+import { authContext } from './auth/authMiddleware.server';
 
 const { MODE } = import.meta.env;
 
+export const middleware: Route.MiddlewareFunction[] = [
+  async ({ request, context }) => {
+    const session = await getSessionFromCookie(request);
+    const auth = session.get('auth');
+    context.set(authContext, auth);
+  },
+];
+
 export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await context.dependencies;
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+  const auth = context.get(authContext);
   const theme = getThemeFromHostname(request, dependencies);
 
   const loginUnits = getLoginUnits(dependencies);

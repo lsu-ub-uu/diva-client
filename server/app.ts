@@ -23,9 +23,10 @@ import { getDependencies, loadDependencies } from './depencencies';
 import { type i18n } from 'i18next';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createi18nInstance } from './i18n';
+import { RouterContextProvider } from 'react-router';
 
 declare module 'react-router' {
-  export interface AppLoadContext {
+  export interface RouterContextProvider {
     dependencies: Promise<Dependencies>;
     refreshDependencies: () => Promise<void>;
     i18n: i18n;
@@ -37,10 +38,12 @@ export const app = express();
 app.use(
   createRequestHandler({
     build: () => import('virtual:react-router/server-build'),
-    getLoadContext: async (request) => ({
-      dependencies: getDependencies(),
-      refreshDependencies: loadDependencies,
-      i18n: await createi18nInstance(request),
-    }),
+    getLoadContext: async (request) => {
+      const context = new RouterContextProvider();
+      context.dependencies = getDependencies();
+      context.refreshDependencies = loadDependencies;
+      context.i18n = await createi18nInstance(request);
+      return context;
+    },
   }),
 );

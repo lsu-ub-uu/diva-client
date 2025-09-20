@@ -65,6 +65,11 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             key={`${record.id}_rab_${userRight}`}
             method='POST'
             action={`/${record.recordType}/${record.id}/delete`}
+            onSubmit={(e) => {
+              if (!window.confirm(t('divaClient_confirmDeleteText'))) {
+                e.preventDefault();
+              }
+            }}
           >
             <Button variant='secondary' type='submit' size='small'>
               <DeleteForeverIcon />

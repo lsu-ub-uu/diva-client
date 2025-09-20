@@ -16,22 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  commitSession,
-  getAuth,
-  getNotification,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
+import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { data } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 
 import { RecordForm } from '@/components/Form/RecordForm';
@@ -43,18 +35,24 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
+import { authContext } from '@/auth/authMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import {
+  notificationContext,
+  notificationMiddleware,
+} from '@/notification/notificationMiddleware';
 import { useDeferredValue, useState } from 'react';
-import type { Route } from '../record/+types/recordUpdate';
 import { useTranslation } from 'react-i18next';
+import type { Route } from '../record/+types/recordUpdate';
 
-export async function loader({ request, params, context }: Route.LoaderArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const middleware = [notificationMiddleware];
+
+export async function loader({ params, context }: Route.LoaderArgs) {
+  const auth = context.get(authContext);
   const { t } = context.i18n;
 
-  const notification = getNotification(session);
+  const { notification } = context.get(notificationContext);
 
   const { recordType, recordId } = params;
 
@@ -89,22 +87,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
 
-  return data(
-    {
-      record,
-      formDefinition,
-      previewFormDefinition,
-      defaultValues,
-      notification,
-      title,
-      breadcrumb,
-    },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return {
+    record,
+    formDefinition,
+    previewFormDefinition,
+    defaultValues,
+    notification,
+    title,
+    breadcrumb,
+  };
 }
 
 export const action = async ({
@@ -114,6 +105,7 @@ export const action = async ({
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
   const { t } = context.i18n;
+  const { flashNotification } = context.get(notificationContext);
 
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
@@ -153,16 +145,14 @@ export const action = async ({
       validatedFormData as unknown as BFFDataRecord,
       auth,
     );
-    session.flash('notification', {
+    flashNotification({
       severity: 'success',
       summary: `Record was successfully updated`,
     });
   } catch (error) {
     console.error(error);
-    session.flash('notification', createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromAxiosError(t, error));
   }
-
-  return data({}, await getResponseInitWithSession(session));
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {

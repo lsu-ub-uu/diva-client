@@ -16,15 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
+import { getSessionFromCookie, requireAuth } from '@/auth/sessions.server';
 import { deleteRecord } from '@/data/deleteRecord.server';
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
 
+import {
+  notificationContext,
+  notificationMiddleware,
+} from '@/notification/notificationMiddleware';
 import type { Route } from '../record/+types/recordDelete';
+
+export const middleware = [notificationMiddleware];
 
 export const action = async ({
   request,
@@ -35,17 +36,12 @@ export const action = async ({
 
   const session = await getSessionFromCookie(request);
   const auth = await requireAuth(session);
+  const { flashNotification } = context.get(notificationContext);
 
   await deleteRecord(await context.dependencies, recordType, recordId, auth);
 
-  session.flash('notification', {
+  flashNotification({
     severity: 'success',
     summary: 'Successfully deleted record',
-  });
-
-  return redirect(`/${recordType}`, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
   });
 };
