@@ -74,14 +74,14 @@ export const generateCitationMeta = (
     });
   }
 
-  const pdfFulltextAttachements = (divaOutput.output.attachment || []).filter(
+  const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
     (attachment) =>
       attachment.type.value === 'fullText' &&
       attachment.attachmentFile.linkedRecord?.binary.master?.master
         ?.mimeType === 'application/pdf',
   );
 
-  pdfFulltextAttachements.forEach((attachment) => {
+  pdfFulltextAttachments.forEach((attachment) => {
     meta.push({
       name: 'citation_pdf_url',
       content:

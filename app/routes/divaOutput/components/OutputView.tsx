@@ -1,7 +1,7 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ShoppingCartIcon } from '@/icons';
-import { Attachement } from '@/routes/divaOutput/components/Attachment';
+import { Attachment } from '@/routes/divaOutput/components/Attachment';
 
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
@@ -19,6 +19,7 @@ import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
+import { Attachments } from './Attachments';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -110,9 +111,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside>
-        {output.attachment?.map((attachment, index) => {
-          return <Attachement attachement={attachment} key={index} />;
-        })}
+        <Attachments attachments={output.attachment} />
         <dl>
           <Term
             label={output['accessCondition_authority_kb-se']?.__text[language]}
@@ -182,5 +181,3 @@ export const OutputView = ({ data }: OutputViewProps) => {
 // TODO:
 // relatedItems
 // related
-// localGenericMarkup
-// attachment, rättigheter, större thumbnail

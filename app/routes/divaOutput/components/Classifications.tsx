@@ -69,6 +69,18 @@ export const Classifications = ({ output }: ClassificationsProps) => {
           }))}
         />
       )}
+      {output.localGenericMarkup && (
+        <SearchLinkList
+          pill
+          heading={output.localGenericMarkup[0].__text[language]}
+          searchTerm='localGenericMarkupSearchTerm'
+          items={output.localGenericMarkup.map((markup, index) => ({
+            key: index,
+            label:
+              markup.linkedRecord?.localGenericMarkup?.localGenericMarkup.value,
+          }))}
+        />
+      )}
     </>
   );
 };
