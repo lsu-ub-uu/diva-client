@@ -166,7 +166,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
 
 // TODO:
 
-// name type corp, description, ror
 // note type context
 // patentHolder
 // patentCountry
