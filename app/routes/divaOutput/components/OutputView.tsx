@@ -127,6 +127,15 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.dateOther_type_patent?.__text[language]} //Patent
             value={<Date date={output.dateOther_type_patent} />}
           />
+          {output.patentHolder_type_corporate && (
+            <Organisations
+              organisations={[output.patentHolder_type_corporate]}
+            />
+          )}
+          <Term
+            label={output.patentCountry?.__text[language]}
+            value={output.patentCountry?.__valueText[language]}
+          />
 
           {output.location && (
             <>
@@ -166,9 +175,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
 
 // TODO:
 
-// note type context
-// patentHolder
-// patentCountry
 // origin agent link
 // imprint
 // subject authority diva (la till fält, behöver data)
