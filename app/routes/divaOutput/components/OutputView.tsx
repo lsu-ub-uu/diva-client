@@ -5,7 +5,6 @@ import { Attachement } from '@/routes/divaOutput/components/Attachment';
 
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
-import { Organisation } from '@/routes/divaOutput/components/Organisation';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
@@ -16,10 +15,10 @@ import { ArtisticWorkFields } from './ArtisticWork';
 import { Classifications } from './Classifications';
 import { DegreeProjectFields } from './DegreeProjectFields';
 import { Identifiers } from './Identifiers';
+import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
-import { Organisations } from './Organisations';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -173,11 +172,11 @@ export const OutputView = ({ data }: OutputViewProps) => {
 // patentCountry
 // origin agent link
 // imprint
-// subject authority diva
-// ismn
-// pmid
-// scopus
-// arkivnummer
+// subject authority diva (la till fält, behöver data)
+// ismn (behöver data)
+// pmid (behöver data)
+// scopus (behöver data)
+// arkivnummer (la till fält, behöver data)
 // student degree degreeGrantingInstitution course, programme
 // relatedItems
 // related

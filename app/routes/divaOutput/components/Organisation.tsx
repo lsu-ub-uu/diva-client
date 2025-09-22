@@ -4,6 +4,7 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
+import { OpenInNewIcon } from '@/icons';
 
 interface OrganisationProps {
   organisation:
@@ -27,7 +28,15 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
         {organisation.identifier_type_ror && (
           <Term
             label={organisation.identifier_type_ror.__text[language]}
-            value={organisation.identifier_type_ror.value}
+            value={
+              <a
+                href={`https://ror.org/${organisation.identifier_type_ror.value}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {organisation.identifier_type_ror.value} <OpenInNewIcon />
+              </a>
+            }
           />
         )}
 

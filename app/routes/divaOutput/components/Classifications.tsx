@@ -46,6 +46,16 @@ export const Classifications = ({ output }: ClassificationsProps) => {
             )}
           />
         )}
+      {output.subject_authority_diva && (
+        <SearchLinkList
+          heading={output.subject_authority_diva.__text[language]}
+          searchTerm='sdgSearchTerm'
+          links={output.subject_authority_diva.topic.map((topic) => ({
+            value: topic.value,
+            label: <SdgImage topic={topic} />,
+          }))}
+        />
+      )}
       {output.subject_authority_sdg && (
         <SearchLinkList
           heading={output.subject_authority_sdg.__text[language]}

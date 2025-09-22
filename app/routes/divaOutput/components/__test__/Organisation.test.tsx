@@ -69,7 +69,11 @@ describe('Organisation', () => {
     render(<Organisation organisation={organisation} expanded />);
 
     expect(screen.getByText('Independent Org')).toBeInTheDocument();
-    expect(screen.getByText('123456789')).toBeInTheDocument();
+    const ror = screen.getByRole('link', { name: '123456789' });
+    expect(ror).toHaveAttribute('href', 'https://ror.org/123456789');
+    expect(ror).toHaveAttribute('target', '_blank');
+    expect(ror).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(screen.getByText('Description')).toBeInTheDocument();
     expect(screen.getByText('A standalone organisation')).toBeInTheDocument();
   });
 });
