@@ -56,9 +56,27 @@ dd {
   padding-left: var(--gap);
 }
 
-dd:not(.block):has(+ dd),
-dd:not(.block) + dd {
+dd + dd {
+  padding-left: 0;
+
+  &:not(:has(> button))::before {
+    content: ', ';
+  }
+}
+
+dd:has(+ dd),
+dd + dd {
   display: inline;
+}
+
+dd.block {
+  display: block;
+  padding-left: var(--gap);
+  margin-bottom: var(--gap-s);
+
+  &::before {
+    display: none;
+  }
 }
 
 .inline-definitions {
@@ -83,14 +101,6 @@ dd:not(.block) + dd {
     }
 
     grid-column: 2;
-  }
-}
-
-dd:not(.block) + dd {
-  padding-left: 0;
-
-  &:not(:has(> button))::before {
-    content: ', ';
   }
 }
 
@@ -128,10 +138,6 @@ address {
   display: flex;
   align-items: center;
   gap: var(--gap-s);
-}
-
-dd.block {
-  margin-bottom: var(--gap-s);
 }
 
 .expanded-card {

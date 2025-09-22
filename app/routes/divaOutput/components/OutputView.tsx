@@ -124,6 +124,12 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <OriginInfo originInfo={output.originInfo} />
         <dl>
           <Term
+            label={output.imprint?.__text[language]}
+            value={output.imprint?.value}
+          />
+        </dl>
+        <dl>
+          <Term
             label={output.dateOther_type_patent?.__text[language]} //Patent
             value={<Date date={output.dateOther_type_patent} />}
           />
@@ -174,15 +180,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
 };
 
 // TODO:
-
-// origin agent link
-// imprint
-// subject authority diva (la till fält, behöver data)
-// ismn (behöver data)
-// pmid (behöver data)
-// scopus (behöver data)
-// arkivnummer (la till fält, behöver data)
-// student degree degreeGrantingInstitution course, programme
 // relatedItems
 // related
 // localGenericMarkup

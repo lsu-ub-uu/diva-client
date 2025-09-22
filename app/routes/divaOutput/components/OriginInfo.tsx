@@ -22,7 +22,7 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
         />
 
         <Term
-          label={originInfo.dateIssued.__text[language]}
+          label={originInfo?.dateIssued?.__text[language]}
           value={<Date date={originInfo.dateIssued} />}
         />
 
@@ -38,9 +38,7 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
 
         <Term
           label={originInfo.agent?.__text[language]}
-          value={originInfo.agent?.namePart
-            ?.map((namePart) => namePart.value)
-            .join(', ')} //Todo add linked publishers
+          value={getPublisherNames(originInfo)}
         />
 
         <Term
@@ -50,4 +48,16 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
       </dl>
     </>
   );
+};
+
+const getPublisherNames = (originInfo: OriginInfoGroup) => {
+  const uncontrolledAgents =
+    originInfo.agent?.namePart?.map((namePart) => namePart.value) ?? [];
+
+  const linkedPublishers =
+    originInfo.agent?.publisher?.map(
+      (publisher) =>
+        publisher.linkedRecord?.publisher.name_type_corporate.namePart.value,
+    ) ?? [];
+  return [...linkedPublishers, ...uncontrolledAgents].filter(Boolean);
 };

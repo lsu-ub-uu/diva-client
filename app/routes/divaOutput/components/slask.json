@@ -1,0 +1,144 @@
+{
+  "record": {
+    "data": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                { "name": "linkedRecordType", "value": "validationType" },
+                { "name": "linkedRecordId", "value": "diva-publisher" }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://minikube:30982/rest/record/validationType/diva-publisher",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "validationType"
+            },
+            {
+              "children": [
+                { "name": "linkedRecordType", "value": "system" },
+                { "name": "linkedRecordId", "value": "divaData" }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://minikube:30982/rest/record/system/divaData",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "dataDivider"
+            },
+            { "name": "id", "value": "diva-publisher:14920676735691" },
+            {
+              "children": [
+                { "name": "linkedRecordType", "value": "recordType" },
+                { "name": "linkedRecordId", "value": "diva-publisher" }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://minikube:30982/rest/record/recordType/diva-publisher",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "type"
+            },
+            {
+              "children": [
+                { "name": "linkedRecordType", "value": "user" },
+                { "name": "linkedRecordId", "value": "161616" }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://minikube:30982/rest/record/user/161616",
+                  "accept": "application/vnd.cora.record+json"
+                }
+              },
+              "name": "createdBy"
+            },
+            { "name": "tsCreated", "value": "2025-09-22T12:31:13.556878Z" },
+            {
+              "repeatId": "0",
+              "children": [
+                { "name": "tsUpdated", "value": "2025-09-22T12:31:13.556878Z" },
+                {
+                  "children": [
+                    { "name": "linkedRecordType", "value": "user" },
+                    { "name": "linkedRecordId", "value": "161616" }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://minikube:30982/rest/record/user/161616",
+                      "accept": "application/vnd.cora.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                }
+              ],
+              "name": "updated"
+            }
+          ],
+          "name": "recordInfo"
+        },
+        {
+          "children": [{ "name": "namePart", "value": "My Linked Publisher" }],
+          "name": "name",
+          "attributes": { "type": "corporate" }
+        }
+      ],
+      "name": "publisher"
+    },
+    "actionLinks": {
+      "read": {
+        "requestMethod": "GET",
+        "rel": "read",
+        "url": "http://minikube:30982/rest/record/diva-publisher/diva-publisher:14920676735691",
+        "accept": "application/vnd.cora.record+json"
+      },
+      "update": {
+        "requestMethod": "POST",
+        "rel": "update",
+        "contentType": "application/vnd.cora.recordgroup+json",
+        "url": "http://minikube:30982/rest/record/diva-publisher/diva-publisher:14920676735691",
+        "accept": "application/vnd.cora.record+json"
+      },
+      "index": {
+        "requestMethod": "POST",
+        "rel": "index",
+        "body": {
+          "children": [
+            {
+              "children": [
+                { "name": "linkedRecordType", "value": "recordType" },
+                { "name": "linkedRecordId", "value": "diva-publisher" }
+              ],
+              "name": "recordType"
+            },
+            { "name": "recordId", "value": "diva-publisher:14920676735691" },
+            { "name": "type", "value": "index" }
+          ],
+          "name": "workOrder"
+        },
+        "contentType": "application/vnd.cora.recordgroup+json",
+        "url": "http://minikube:30982/rest/record/workOrder/",
+        "accept": "application/vnd.cora.record+json"
+      },
+      "delete": {
+        "requestMethod": "DELETE",
+        "rel": "delete",
+        "url": "http://minikube:30982/rest/record/diva-publisher/diva-publisher:14920676735691"
+      }
+    }
+  }
+}

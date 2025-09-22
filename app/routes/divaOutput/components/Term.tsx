@@ -4,7 +4,7 @@ import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 
 interface TermProps {
   label?: string;
-  value?: ReactNode;
+  value?: ReactNode | ReactNode[];
   lang?: LanguageCollection;
 }
 
@@ -16,9 +16,21 @@ export const Term = ({ label, value, lang }: TermProps) => {
   return (
     <>
       <dt>{label}</dt>
-      <dd {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })} dir='auto'>
-        {value}
-      </dd>
+      {Array.isArray(value) ? (
+        value.map((val, index) => (
+          <dd
+            key={index}
+            {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })}
+            dir='auto'
+          >
+            {val}
+          </dd>
+        ))
+      ) : (
+        <dd {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })} dir='auto'>
+          {value}
+        </dd>
+      )}
     </>
   );
 };
