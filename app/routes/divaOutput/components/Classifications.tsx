@@ -1,13 +1,10 @@
-import type {
-  OutputUpdateGroup,
-  SubjectSubjectGroup,
-} from '@/generatedTypes/divaTypes';
-import { SearchLinkList } from './SearchLinkList';
+import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
 import { getLanguageTextId } from '../utils/translateLanguage';
-import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { SdgImage } from './SdgImage';
+import { SearchLinkList } from './SearchLinkList';
 
 interface ClassificationsProps {
   output: OutputUpdateGroup;
