@@ -65,6 +65,10 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
           label={output['identifier_type_se-libr']?.__text[language]}
           value={output['identifier_type_se-libr']?.value}
         />
+        <Term
+          label={output.identifier_type_archiveNumber?.__text[language]}
+          value={output.identifier_type_archiveNumber?.value}
+        />
         {output['identifier_type_localId']?.map((identifier, index) => (
           <Term
             key={index}

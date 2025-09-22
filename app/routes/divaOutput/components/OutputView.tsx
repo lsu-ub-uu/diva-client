@@ -5,7 +5,6 @@ import { Attachement } from '@/routes/divaOutput/components/Attachment';
 
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
-import { Organisation } from '@/routes/divaOutput/components/Organisation';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
@@ -16,6 +15,7 @@ import { ArtisticWorkFields } from './ArtisticWork';
 import { Classifications } from './Classifications';
 import { DegreeProjectFields } from './DegreeProjectFields';
 import { Identifiers } from './Identifiers';
+import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
@@ -40,16 +40,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </h1>
           <dl>
             <Persons persons={output.name_type_personal} />
-            {output.name_type_corporate && (
-              <>
-                <dt>{output.name_type_corporate?.[0]?.__text[language]}</dt>
-                {output.name_type_corporate?.map((organisation, index) => (
-                  <dd key={index} className='block'>
-                    <Organisation organisation={organisation} />
-                  </dd>
-                ))}
-              </>
-            )}
+            <Organisations organisations={output.name_type_corporate} />
             <Term
               label={output.note_type_creatorCount?.__text[language]}
               value={output.note_type_creatorCount?.value}
@@ -175,18 +166,17 @@ export const OutputView = ({ data }: OutputViewProps) => {
 
 // TODO:
 
-// name type corp, description, ror
 // note type context
 // patentHolder
 // patentCountry
 // origin agent link
 // imprint
-// subject authority diva
-// ismn
-// pmid
-// scopus
-// arkivnummer
-// student degree course, programme
+// subject authority diva (la till fält, behöver data)
+// ismn (behöver data)
+// pmid (behöver data)
+// scopus (behöver data)
+// arkivnummer (la till fält, behöver data)
+// student degree degreeGrantingInstitution course, programme
 // relatedItems
 // related
 // localGenericMarkup

@@ -1,10 +1,10 @@
 import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
-import { SearchLinkList } from './SearchLinkList';
 import { useLanguage } from '@/i18n/useLanguage';
+import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
 import { getLanguageTextId } from '../utils/translateLanguage';
-import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { SdgImage } from './SdgImage';
+import { SearchLinkList } from './SearchLinkList';
 
 interface ClassificationsProps {
   output: OutputUpdateGroup;
@@ -46,6 +46,17 @@ export const Classifications = ({ output }: ClassificationsProps) => {
             )}
           />
         )}
+      {/* {output.subject_authority_diva && (
+        <SearchLinkList
+          pill
+          heading={output.subject_authority_diva.__text[language]}
+          searchTerm='topicSearchTerm'
+          links={output.subject_authority_diva.topic.map((topic) => ({
+            value: `topic_${topic.value}`,
+            label: getSubjectTopicName(topic, language) || topic.value,
+          }))}
+        />
+      )} */}
       {output.subject_authority_sdg && (
         <SearchLinkList
           heading={output.subject_authority_sdg.__text[language]}
@@ -59,3 +70,17 @@ export const Classifications = ({ output }: ClassificationsProps) => {
     </>
   );
 };
+
+// function getSubjectTopicName(
+//   topic: SubjectSubjectGroup['topic'][0],
+//   language: 'en' | 'sv',
+// ): string | undefined {
+//   if (!topic) {
+//     return undefined;
+//   }
+
+//   if (language === 'en') {
+//     return topic.linkedRecord?.subject?.variant_lang_eng?.topic.value;
+//   }
+//   return topic.linkedRecord?.subject?.authority_lang_swe.topic.value;
+// }

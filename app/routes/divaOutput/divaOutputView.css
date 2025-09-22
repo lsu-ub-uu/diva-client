@@ -134,14 +134,14 @@ dd.block {
   margin-bottom: var(--gap-s);
 }
 
-.expanded-person {
+.expanded-card {
   border-left: 2px solid var(--color-card-dark);
   background: var(--color-card);
   border-radius: var(--color-border-radius-s);
   padding: var(--gap-s);
   margin-bottom: var(--gap-s);
 
-  .person-name {
+  .name {
     font-weight: bold;
   }
 
