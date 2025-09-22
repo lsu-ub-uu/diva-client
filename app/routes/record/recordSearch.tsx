@@ -34,12 +34,13 @@ import { useTranslation } from 'react-i18next';
 import { Await, data } from 'react-router';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
+import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const auth = context.get(authContext);
   const { t } = context.i18n;
 
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
 
   const recordType = dependencies.recordTypePool.get(params.recordType);
 
@@ -47,10 +48,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     throw data('Record type has no search', { status: 404 });
   }
 
-  const searchForm = getSearchForm(
-    await context.dependencies,
-    recordType.searchId,
-  );
+  const searchForm = getSearchForm(dependencies, recordType.searchId);
 
   const yupSchema = generateYupSchemaFromFormSchema(searchForm);
   const { query, searchResults, errors } = await performSearch(

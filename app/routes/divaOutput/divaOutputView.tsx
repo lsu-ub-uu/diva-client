@@ -42,6 +42,7 @@ import { Term } from './components/Term';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
 import { getLanguageTextId } from './utils/translateLanguage';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({
   request,
@@ -50,7 +51,7 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const { t } = context.i18n;
   const auth = context.get(authContext);
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
   const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);
 

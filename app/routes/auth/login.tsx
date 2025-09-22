@@ -20,7 +20,7 @@ import { useState } from 'react';
 import type { Route } from '../auth/+types/login';
 
 import { authContext } from '@/auth/authMiddleware.server';
-import { notificationContext } from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware.server';
 import css from './login.css?url';
 
 export async function loader({ request, context }: Route.LoaderArgs) {

@@ -36,20 +36,22 @@ import { assertDefined } from '@/utils/invariant';
 import { authContext } from '@/auth/authMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { notificationContext } from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware.server';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Route } from '../record/+types/recordUpdate';
+import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const auth = context.get(authContext);
   const { t } = context.i18n;
   const { notification } = context.get(notificationContext);
+  const { dependencies } = context.get(dependenciesContext);
 
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -61,13 +63,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'update',
   );
 
   const previewFormDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'view',
   );
@@ -98,12 +100,13 @@ export const action = async ({
   const { recordType, recordId } = params;
   const { t } = context.i18n;
   const { flashNotification } = context.get(notificationContext);
+  const { dependencies } = context.get(dependenciesContext);
 
   const auth = context.get(authContext);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -112,7 +115,7 @@ export const action = async ({
   assertDefined(validationType, 'Failed to get validation type from record');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     validationType,
     'update',
   );
@@ -130,7 +133,7 @@ export const action = async ({
 
   try {
     await updateRecord(
-      await context.dependencies,
+      dependencies,
       validationType,
       recordId,
       validatedFormData as unknown as BFFDataRecord,

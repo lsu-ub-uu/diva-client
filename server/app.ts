@@ -16,19 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import 'react-router';
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
-import { getDependencies, loadDependencies } from './depencencies';
 import { type i18n } from 'i18next';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { createi18nInstance } from './i18n';
+import 'react-router';
 import { RouterContextProvider } from 'react-router';
+import {
+  dependenciesContext,
+  getDependencies,
+  loadDependencies,
+} from './depencencies';
+import { createi18nInstance } from './i18n';
 
 declare module 'react-router' {
   export interface RouterContextProvider {
-    dependencies: Promise<Dependencies>;
-    refreshDependencies: () => Promise<void>;
     i18n: i18n;
   }
 }
@@ -40,8 +41,10 @@ app.use(
     build: () => import('virtual:react-router/server-build'),
     getLoadContext: async (request) => {
       const context = new RouterContextProvider();
-      context.dependencies = getDependencies();
-      context.refreshDependencies = loadDependencies;
+      context.set(dependenciesContext, {
+        dependencies: await getDependencies(),
+        refreshDependencies: loadDependencies,
+      });
       context.i18n = await createi18nInstance(request);
       return context;
     },

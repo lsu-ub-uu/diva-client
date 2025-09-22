@@ -19,16 +19,18 @@
 import { deleteRecord } from '@/data/deleteRecord.server';
 
 import { authContext } from '@/auth/authMiddleware.server';
-import { notificationContext } from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware.server';
 import type { Route } from '../record/+types/recordDelete';
+import { dependenciesContext } from 'server/depencencies';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
 
   const auth = context.get(authContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { flashNotification } = context.get(notificationContext);
 
-  await deleteRecord(await context.dependencies, recordType, recordId, auth);
+  await deleteRecord(dependencies, recordType, recordId, auth);
 
   flashNotification({
     severity: 'success',

@@ -21,6 +21,7 @@ import { assertDefined } from '@/utils/invariant';
 
 import { authContext } from '@/auth/authMiddleware.server';
 import type { Route } from '../resourceRoutes/+types/getRecord';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({
   request,
@@ -29,6 +30,7 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   try {
     const auth = context.get(authContext);
+    const { dependencies } = context.get(dependenciesContext);
     const { recordType, recordId } = params;
 
     const url = new URL(request.url);
@@ -43,7 +45,7 @@ export const loader = async ({
     );
 
     const record = await getRecordByRecordTypeAndRecordId({
-      dependencies: await context.dependencies,
+      dependencies,
       recordType,
       recordId,
       authToken: auth?.data.token,

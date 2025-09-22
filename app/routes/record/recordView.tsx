@@ -29,14 +29,16 @@ import { useTranslation } from 'react-i18next';
 import { Form, href, Link } from 'react-router';
 import type { Route } from '../record/+types/recordView';
 import { authContext } from '@/auth/authMiddleware.server';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const auth = context.get(authContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 
   const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -44,7 +46,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 
   assertDefined(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'view',
   );

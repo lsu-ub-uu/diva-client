@@ -19,9 +19,11 @@ import { authContext } from '@/auth/authMiddleware.server';
 import { createBinaryRecord } from '@/cora/createBinaryRecord';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import type { Route } from './+types/binaryRecord';
+import { dependenciesContext } from 'server/depencencies';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const auth = context.get(authContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { fileName, fileSize } = await request.json();
 
   const createBinaryRecordResponse = await createBinaryRecord(
@@ -31,7 +33,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   );
 
   const binaryRecord = transformRecord(
-    await context.dependencies,
+    dependencies,
     createBinaryRecordResponse.data,
   );
 

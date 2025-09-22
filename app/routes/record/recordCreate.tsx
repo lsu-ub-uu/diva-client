@@ -31,7 +31,7 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { notificationContext } from '@/notification/notificationMiddleware';
+import { notificationContext } from '@/notification/notificationMiddleware.server';
 import type { BFFDataRecordData } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { assertDefined } from '@/utils/invariant';
@@ -42,11 +42,12 @@ import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const t = context.i18n.t;
   const { notification } = context.get(notificationContext);
-
+  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
@@ -57,12 +58,12 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   let previewFormDefinition;
   try {
     formDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
+      dependencies,
       validationTypeId,
       'create',
     );
     previewFormDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
+      dependencies,
       validationTypeId,
       'view',
     );
@@ -97,14 +98,14 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   const auth = context.get(authContext);
   const { t } = context.i18n;
   const { flashNotification } = context.get(notificationContext);
-
+  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
   assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     validationTypeId,
     'create',
   );
@@ -122,7 +123,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
   try {
     const { recordType, id } = await createRecord(
-      await context.dependencies,
+      dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,

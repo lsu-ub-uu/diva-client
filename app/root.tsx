@@ -53,7 +53,7 @@ import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitc
 import {
   notificationContext,
   notificationMiddleware,
-} from './notification/notificationMiddleware';
+} from './notification/notificationMiddleware.server';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -61,13 +61,14 @@ import {
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { dependenciesContext } from 'server/depencencies';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [authMiddleware, notificationMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
   const auth = context.get(authContext);
   const theme = getThemeFromHostname(request, dependencies);
 

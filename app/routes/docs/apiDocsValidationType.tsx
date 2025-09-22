@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router';
 import type { Route } from './+types/apiDocsValidationType';
+import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
   const validationType = dependencies.validationTypePool.get(
     params.validationType,
   );

@@ -19,12 +19,14 @@
 import { redirect } from 'react-router';
 
 import type { Route } from '../resourceRoutes/+types/refreshDefinitions';
+import { dependenciesContext } from 'server/depencencies';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
+  const { refreshDependencies } = context.get(dependenciesContext);
 
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
 
-  await context.refreshDependencies();
+  await refreshDependencies();
   return redirect(returnTo);
 };

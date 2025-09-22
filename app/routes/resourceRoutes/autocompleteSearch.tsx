@@ -21,6 +21,7 @@ import { searchRecords } from '@/data/searchRecords.server';
 import { authContext } from '@/auth/authMiddleware.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({
   params,
@@ -30,10 +31,10 @@ export const loader = async ({
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
   const auth = context.get(authContext);
-
+  const { dependencies } = context.get(dependenciesContext);
   try {
     const result = await searchRecords(
-      await context.dependencies,
+      dependencies,
       params.searchType,
       query,
       auth,

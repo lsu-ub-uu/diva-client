@@ -46,6 +46,7 @@ import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import { transformThemes } from '@/cora/transform/transformThemes.server';
 import { Lookup } from '@/utils/structs/lookup';
+import { createContext } from 'react-router';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -162,3 +163,8 @@ const groupThemesByHostname = (
 
   return groupedThemes;
 };
+
+export const dependenciesContext = createContext<{
+  dependencies: Dependencies;
+  refreshDependencies: () => Promise<void>;
+}>();

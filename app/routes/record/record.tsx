@@ -27,15 +27,16 @@ import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
 import type { Route } from '../record/+types/record';
 import css from './record.css?url';
+import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const auth = context.get(authContext);
-
+  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 
   try {
     const record = await getRecordByRecordTypeAndRecordId({
-      dependencies: await context.dependencies,
+      dependencies,
       recordType,
       recordId,
       authToken: auth?.data.token,
