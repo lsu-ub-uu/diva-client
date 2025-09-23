@@ -38,6 +38,7 @@ export const renewAuth = async (i18n: i18nType, session: SessionContext) => {
         details: t('divaClient_sessionExpiredDetailsText'),
       });
       removeAuth();
+      return;
     }
 
     const renewedAuth = await renewAuthToken(auth);
