@@ -95,9 +95,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
-  const { auth } = context.get(sessionContext);
+  const { auth, flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-  const { flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
