@@ -153,15 +153,15 @@ describe('generateCitationMeta', () => {
     const result = generateCitationMeta(divaOutput, origin);
     expect(result).toContainEqual({
       name: 'citation_author',
-      content: 'Quantum, Emily',
+      content: 'Emily Quantum',
     });
     expect(result).not.toContainEqual({
       name: 'citation_author',
-      content: 'The editor, Emil',
+      content: 'Emil The editor',
     });
     expect(result).toContainEqual({
       name: 'citation_author',
-      content: 'Planck, Max Jr.',
+      content: 'Max Jr. Planck',
     });
   });
 

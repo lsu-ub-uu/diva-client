@@ -107,6 +107,7 @@ export const containsChildWithNameInData = (
 export function getFirstDataAtomicWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
+  attributesToMatch?: Attributes,
 ): DataAtomic {
   if (dataGroup.children.length === 0) {
     throw new Error(
@@ -119,6 +120,12 @@ export function getFirstDataAtomicWithNameInData(
   });
 
   const firstMatchingDataAtomic = dataAtomics.find((dataAtomic) => {
+    if (attributesToMatch !== undefined) {
+      return (
+        dataAtomic.name === nameInData &&
+        _isEqual(dataAtomic.attributes, attributesToMatch)
+      );
+    }
     return dataAtomic.name === nameInData;
   });
 
@@ -257,6 +264,18 @@ export const hasChildWithNameInData = (
   nameInData: string,
 ) => {
   return dataGroup.children.some((child) => child.name === nameInData);
+};
+
+export const hasChildWithNameInDataAndAttributes = (
+  dataGroup: DataGroup,
+  nameInData: string,
+  attributesToMatch: Attributes,
+) => {
+  return dataGroup.children.some(
+    (child) =>
+      child.name === nameInData &&
+      _isEqual(child.attributes, attributesToMatch),
+  );
 };
 
 export default {

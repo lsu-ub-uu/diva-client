@@ -89,6 +89,7 @@ import type {
   BFFMetadataBase,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
+  BFFOrganisation,
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
@@ -217,6 +218,7 @@ describe('formMetadata', () => {
       loginUnitPool,
       loginPool,
       themePool: listToPool<BFFTheme>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
   });
   it('should return form meta data for a given validation type', () => {
