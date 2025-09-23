@@ -123,6 +123,115 @@ describe('Journal', () => {
     expect(screen.getByText('3791-2443')).toBeInTheDocument();
   });
 
+  it('shows issns from linked record and title from uncontrolled journal', () => {
+    const journal = {
+      __text: { en: 'Journal', sv: 'Tidskrift' },
+      titleInfo: {
+        __text: { en: 'Title', sv: 'Titel' },
+        title: {
+          __text: { en: 'Main Title', sv: 'Huvudtitel' },
+          value: 'Uncontrolled title',
+        },
+        subtitle: {
+          __text: { en: 'Subtitle', sv: 'Undertitel' },
+          value: 'Uncontrolled subtitle',
+        },
+      },
+      journal: {
+        value: 'journal:12345',
+        linkedRecord: {
+          journal: {
+            titleInfo: {
+              __text: { en: 'Title', sv: 'Titel' },
+              title: {
+                __text: { en: 'Main Title', sv: 'Huvudtitel' },
+                value: 'Nature',
+              },
+              subtitle: {
+                __text: { en: 'Subtitle', sv: 'Undertitel' },
+                value: "It's about nature and stuff",
+              },
+            },
+            identifier_displayLabel_pissn_type_issn: {
+              __text: { en: 'Print ISSN', sv: 'Tryckt ISSN' },
+              value: '1845-9323',
+            },
+            identifier_displayLabel_eissn_type_issn: {
+              __text: { en: 'Electronic ISSN', sv: 'Elektroniskt ISSN' },
+              value: '3791-2443',
+            },
+          },
+        },
+      },
+    } as RelatedItemJournalGroup;
+
+    render(<Journal journal={journal} />);
+
+    expect(screen.getByText('Title')).toBeInTheDocument();
+    expect(
+      screen.getByText('Uncontrolled title: Uncontrolled subtitle'),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('Print ISSN')).toBeInTheDocument();
+    expect(screen.getByText('1845-9323')).toBeInTheDocument();
+
+    expect(screen.getByText('Electronic ISSN')).toBeInTheDocument();
+    expect(screen.getByText('3791-2443')).toBeInTheDocument();
+  });
+
+  it('shows titleInfo from linked record and issns from uncontrolled journal', () => {
+    const journal = {
+      __text: { en: 'Journal', sv: 'Tidskrift' },
+      identifier_displayLabel_pissn_type_issn: {
+        __text: { en: 'Print ISSN', sv: 'Tryckt ISSN' },
+        value: '1845-9325',
+      },
+      identifier_displayLabel_eissn_type_issn: {
+        __text: { en: 'Electronic ISSN', sv: 'Elektroniskt ISSN' },
+        value: '3791-2445',
+      },
+      journal: {
+        value: 'journal:12345',
+        linkedRecord: {
+          journal: {
+            titleInfo: {
+              __text: { en: 'Title', sv: 'Titel' },
+              title: {
+                __text: { en: 'Main Title', sv: 'Huvudtitel' },
+                value: 'Nature',
+              },
+              subtitle: {
+                __text: { en: 'Subtitle', sv: 'Undertitel' },
+                value: "It's about nature and stuff",
+              },
+            },
+            identifier_displayLabel_pissn_type_issn: {
+              __text: { en: 'Print ISSN', sv: 'Tryckt ISSN' },
+              value: '1845-9323',
+            },
+            identifier_displayLabel_eissn_type_issn: {
+              __text: { en: 'Electronic ISSN', sv: 'Elektroniskt ISSN' },
+              value: '3791-2443',
+            },
+          },
+        },
+      },
+    } as RelatedItemJournalGroup;
+
+    render(<Journal journal={journal} />);
+
+    expect(screen.getByText('Title')).toBeInTheDocument();
+    expect(
+      screen.getByText("Nature: It's about nature and stuff"),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('Print ISSN')).toBeInTheDocument();
+    expect(screen.getByText('1845-9325')).toBeInTheDocument();
+
+    expect(screen.getByText('Electronic ISSN')).toBeInTheDocument();
+    expect(screen.getByText('3791-2445')).toBeInTheDocument();
+  });
+
   it('shows part of journal information', () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
