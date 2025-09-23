@@ -19,7 +19,7 @@ import {
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
@@ -31,6 +31,7 @@ import {
   EditDocumentIcon,
   ShoppingCartIcon,
 } from '@/icons';
+import { dependenciesContext } from 'server/depencencies';
 import { Attachement } from './components/Attachment';
 import { Date } from './components/Date';
 import { Event } from './components/Event';
@@ -42,15 +43,15 @@ import { Term } from './components/Term';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
 import { getLanguageTextId } from './utils/translateLanguage';
-import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 
 export const loader = async ({
   request,
   params,
   context,
 }: Route.LoaderArgs) => {
-  const { t } = context.i18n;
-  const auth = context.get(authContext);
+  const { t } = context.get(i18nContext);
+  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
   const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);
@@ -417,10 +418,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             value={output.originInfo.edition?.value}
           />
 
-          <Term
-            label={output.extent?.__text[language]}
-            value={output.extent?.value}
-          />
           {output.location && (
             <>
               <dt>{output.location?.[0].__text[language]}</dt>

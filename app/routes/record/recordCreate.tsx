@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
@@ -31,7 +31,6 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { notificationContext } from '@/notification/notificationMiddleware.server';
 import type { BFFDataRecordData } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { assertDefined } from '@/utils/invariant';
@@ -40,13 +39,14 @@ import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const t = context.i18n.t;
-  const { notification } = context.get(notificationContext);
+  const { t } = context.get(i18nContext);
+  const { notification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -95,9 +95,9 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
-  const auth = context.get(authContext);
-  const { t } = context.i18n;
-  const { flashNotification } = context.get(notificationContext);
+  const { auth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
+  const { flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
@@ -25,12 +25,12 @@ import { getRecordTitle } from '@/utils/getRecordTitle';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
 import css from './record.css?url';
-import { dependenciesContext } from 'server/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 

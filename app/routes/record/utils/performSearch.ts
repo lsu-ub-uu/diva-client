@@ -16,23 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { AppLoadContext, RouterContextProvider } from 'react-router';
 import type { Auth } from '@/auth/Auth';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { type ObjectSchema, ValidationError } from 'yup';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { dependenciesContext } from 'server/depencencies';
+import { type ObjectSchema, ValidationError } from 'yup';
 
 export const performSearch = async (
   request: Request,
-  context: RouterContextProvider,
+  dependencies: Dependencies,
   searchId: string,
   auth: Auth | undefined,
   yupSchema: ObjectSchema<Record<string, any>>,
 ) => {
-  const { dependencies } = context.get(dependenciesContext);
-
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
 

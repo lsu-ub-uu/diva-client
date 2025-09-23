@@ -19,9 +19,9 @@
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
 
-import { authContext } from '@/auth/authMiddleware.server';
-import type { Route } from '../resourceRoutes/+types/getRecord';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { dependenciesContext } from 'server/depencencies';
+import type { Route } from '../resourceRoutes/+types/getRecord';
 
 export const loader = async ({
   request,
@@ -29,7 +29,7 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   try {
-    const auth = context.get(authContext);
+    const { auth } = context.get(sessionContext);
     const { dependencies } = context.get(dependenciesContext);
     const { recordType, recordId } = params;
 

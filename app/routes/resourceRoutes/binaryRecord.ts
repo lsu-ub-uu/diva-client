@@ -15,14 +15,14 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { createBinaryRecord } from '@/cora/createBinaryRecord';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
-import type { Route } from './+types/binaryRecord';
 import { dependenciesContext } from 'server/depencencies';
+import type { Route } from './+types/binaryRecord';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { fileName, fileSize } = await request.json();
 

@@ -16,19 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  commitSession,
-  getAuth,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
-import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { Auth } from '@/auth/Auth';
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n as i18nType } from 'i18next';
 import { data } from 'react-router';
+import { type SessionContext } from './sessionMiddleware.server';
 
-export const renewAuth = async (request: Request, i18n: i18nType) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const renewAuth = async (i18n: i18nType, session: SessionContext) => {
+  const { auth, setAuth, flashNotification, removeAuth } = session;
 
   if (!auth) {
     return { status: 'No auth to renew' };
@@ -36,21 +31,20 @@ export const renewAuth = async (request: Request, i18n: i18nType) => {
 
   try {
     if (isAuthExpired(auth)) {
-      return removeAuthFromSession(request, i18n);
+      const { t } = i18n;
+      flashNotification({
+        severity: 'info',
+        summary: t('divaClient_sessionExpiredSummaryText'),
+        details: t('divaClient_sessionExpiredDetailsText'),
+      });
+      removeAuth();
     }
 
     const renewedAuth = await renewAuthToken(auth);
 
-    session.set('auth', renewedAuth);
+    setAuth(renewedAuth);
 
-    return data(
-      { status: 'Session renewed' },
-      {
-        headers: {
-          'Set-Cookie': await commitSession(session),
-        },
-      },
-    );
+    return data({ status: 'Session renewed' });
   } catch (error) {
     return { status: 'Failed to renew session', error };
   }
@@ -61,20 +55,4 @@ const isAuthExpired = (auth: Auth) => {
   const renewUntil = Number(auth.data.renewUntil);
   const now = Date.now();
   return validUntil < now || renewUntil < now;
-};
-
-const removeAuthFromSession = async (request: Request, i18n: i18nType) => {
-  const session = await getSessionFromCookie(request);
-  const { t } = i18n;
-  session.flash('notification', {
-    severity: 'info',
-    summary: t('divaClient_sessionExpiredSummaryText'),
-    details: t('divaClient_sessionExpiredDetailsText'),
-  });
-  session.unset('auth');
-  return data(null, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
 };

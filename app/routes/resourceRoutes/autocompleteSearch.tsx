@@ -18,10 +18,10 @@
 
 import { searchRecords } from '@/data/searchRecords.server';
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 import { dependenciesContext } from 'server/depencencies';
+import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
 export const loader = async ({
   params,
@@ -30,7 +30,7 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   try {
     const result = await searchRecords(

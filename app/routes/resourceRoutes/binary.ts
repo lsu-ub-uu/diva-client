@@ -1,9 +1,9 @@
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraApiUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
 
   return await fetch(
     coraApiUrl(
@@ -17,7 +17,7 @@ export const action = async ({
   params,
   context,
 }: Route.LoaderArgs) => {
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
 
   return await fetch(
     coraApiUrl(

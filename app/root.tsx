@@ -46,14 +46,15 @@ import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader
 import { getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
-import { authContext, authMiddleware } from './auth/authMiddleware.server';
 import { createUser } from './auth/createUser';
-import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
-  notificationContext,
-  notificationMiddleware,
-} from './notification/notificationMiddleware.server';
+  sessionContext,
+  sessionMiddleware,
+} from './auth/sessionMiddleware.server';
+import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -61,23 +62,21 @@ import {
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { dependenciesContext } from 'server/depencencies';
 
 const { MODE } = import.meta.env;
 
-export const middleware = [authMiddleware, notificationMiddleware];
+export const middleware = [sessionMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
-  const auth = context.get(authContext);
+  const { auth, notification } = context.get(sessionContext);
   const theme = getThemeFromHostname(request, dependencies);
 
   const loginUnits = getLoginUnits(dependencies);
-  const locale = context.i18n.language;
+  const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
-  const { notification } = context.get(notificationContext);
 
   return {
     user,
@@ -92,7 +91,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
-
+  const session = context.get(sessionContext);
   const intent = formData.get('intent');
 
   if (intent === 'changeLanguage') {
@@ -100,7 +99,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   }
 
   if (intent === 'renewAuthToken') {
-    return await renewAuth(request, context.i18n);
+    return await renewAuth(context.get(i18nContext), session);
   }
 
   if (intent === 'changeColorScheme') {

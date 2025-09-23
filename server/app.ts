@@ -18,7 +18,6 @@
 
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
-import { type i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
 import {
@@ -26,13 +25,7 @@ import {
   getDependencies,
   loadDependencies,
 } from './depencencies';
-import { createi18nInstance } from './i18n';
-
-declare module 'react-router' {
-  export interface RouterContextProvider {
-    i18n: i18n;
-  }
-}
+import { createi18nInstance, i18nContext } from './i18n';
 
 export const app = express();
 
@@ -45,7 +38,7 @@ app.use(
         dependencies: await getDependencies(),
         refreshDependencies: loadDependencies,
       });
-      context.i18n = await createi18nInstance(request);
+      context.set(i18nContext, await createi18nInstance(request));
       return context;
     },
   }),

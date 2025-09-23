@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert } from '@/components/Alert/Alert';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
@@ -32,13 +32,14 @@ import { performSearch } from '@/routes/record/utils/performSearch';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Await, data } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
-import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
-  const auth = context.get(authContext);
-  const { t } = context.i18n;
+  const { auth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
   const { dependencies } = context.get(dependenciesContext);
 
@@ -53,7 +54,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   const yupSchema = generateYupSchemaFromFormSchema(searchForm);
   const { query, searchResults, errors } = await performSearch(
     request,
-    context,
+    dependencies,
     recordType.searchId,
     auth,
     yupSchema,

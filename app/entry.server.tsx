@@ -1,12 +1,13 @@
 import { PassThrough } from 'node:stream';
 
-import type { AppLoadContext, EntryContext } from 'react-router';
 import { createReadableStreamFromReadable } from '@react-router/node';
-import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import type { RenderToPipeableStreamOptions } from 'react-dom/server';
 import { renderToPipeableStream } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
+import type { EntryContext, RouterContextProvider } from 'react-router';
+import { ServerRouter } from 'react-router';
+import { i18nContext } from 'server/i18n';
 
 export const streamTimeout = 5_000;
 
@@ -15,10 +16,9 @@ export default function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   routerContext: EntryContext,
-  loadContext: AppLoadContext,
+  context: RouterContextProvider,
 ) {
-  const i18nInstance = loadContext.i18n;
-
+  const i18nInstance = context.get(i18nContext);
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const userAgent = request.headers.get('user-agent');

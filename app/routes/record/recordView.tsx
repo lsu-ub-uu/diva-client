@@ -16,23 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { assertDefined } from '@/utils/invariant';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { coraApiUrl } from '@/cora/helper.server';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
+import { assertDefined } from '@/utils/invariant';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link } from 'react-router';
-import type { Route } from '../record/+types/recordView';
-import { authContext } from '@/auth/authMiddleware.server';
 import { dependenciesContext } from 'server/depencencies';
+import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 

@@ -33,19 +33,19 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
-import { authContext } from '@/auth/authMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { notificationContext } from '@/notification/notificationMiddleware.server';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Route } from '../record/+types/recordUpdate';
 import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
+import type { Route } from '../record/+types/recordUpdate';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const auth = context.get(authContext);
-  const { t } = context.i18n;
-  const { notification } = context.get(notificationContext);
+  const { auth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
+  const { notification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
   const { recordType, recordId } = params;
@@ -98,11 +98,11 @@ export const action = async ({
   context,
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
-  const { t } = context.i18n;
-  const { flashNotification } = context.get(notificationContext);
+  const { t } = context.get(i18nContext);
+  const { flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
-  const auth = context.get(authContext);
+  const { auth } = context.get(sessionContext);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({

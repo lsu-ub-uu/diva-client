@@ -19,17 +19,16 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { useState } from 'react';
 import type { Route } from '../auth/+types/login';
 
-import { authContext } from '@/auth/authMiddleware.server';
-import { notificationContext } from '@/notification/notificationMiddleware.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import css from './login.css?url';
+import { i18nContext } from 'server/i18n';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { t } = context.i18n;
+  const { t } = context.get(i18nContext);
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
-  const { notification } = context.get(notificationContext);
-  const auth = context.get(authContext);
+  const { auth, notification } = context.get(sessionContext);
 
   if (auth) {
     return redirect(returnTo ?? '/');
@@ -102,7 +101,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const returnToEncoded = form.get('returnTo');
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
-  const { flashNotification } = context.get(notificationContext);
+  const { flashNotification } = context.get(sessionContext);
   const presentationString = form.get('presentation');
 
   const auth = await authenticate(form);
