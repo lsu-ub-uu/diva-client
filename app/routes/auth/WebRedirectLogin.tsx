@@ -38,7 +38,7 @@ export const WebRedirectLogin = ({
 
   return (
     <div className='login-option'>
-      <h2>Gemensam inloggning</h2>
+      <h2>{t('divaClient_LoginWebRedirectText')}</h2>
       <ul>
         {webRedirectLoginUnits
           .sort((a, b) => a.loginDescription.localeCompare(b.loginDescription))

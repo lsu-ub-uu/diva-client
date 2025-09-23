@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Link, useLoaderData } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import type { loader } from '@/root';
 import { MenuItem } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
+import { Link, useLoaderData } from 'react-router';
 
 interface PasswordLoginOptionsProps {
   returnTo: string;
@@ -36,7 +36,7 @@ export const PasswordLoginOptions = ({
       <h6>{t('divaClient_LoginPasswordText')}</h6>
       {loginUnits
         .filter(({ type }) => type === 'password')
-        .map(({ loginDescription, id, presentation }) => (
+        .map(({ loginDescription }) => (
           <MenuItem key='tempLoginUnitPassword'>
             <Link
               to={`/login?loginUnit=${loginDescription}&returnTo=${returnTo}`}

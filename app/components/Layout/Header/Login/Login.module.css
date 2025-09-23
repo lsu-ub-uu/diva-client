@@ -26,16 +26,18 @@
 .login-button {
   display: flex;
   align-items: center;
+  height: var(--input-height);
   padding: 0 calc(var(--gap) * 2);
-  gap: var(--gap-s);
+  gap: var(--gap);
   svg {
     font-size: var(--font-size-icon);
   }
   &:hover {
-    background: var(--color-button-secondary-hover);
-    text-decoration: none;
-    height: var(--input-height);
-    border-radius: calc(var(--border-radius) / 2);
+    background-color: var(--color-button-secondary-hover);
+  }
+
+  &:active {
+    background-color: var(--color-button-secondary-active);
   }
 }
 

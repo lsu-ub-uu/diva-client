@@ -16,11 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
+import { Form, redirect } from 'react-router';
 import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
 import { deleteSession } from '@/data/deleteSession.server';
 
 import type { Route } from '../auth/+types/logout';
+import { Button } from '@/components/Button/Button';
 
 export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
@@ -42,4 +43,25 @@ export async function action({ request }: Route.ActionArgs) {
   });
 }
 
-export const loader = async () => redirect('/');
+export async function loader({ request }: Route.LoaderArgs) {
+  const returnTo = decodeURIComponent(
+    new URL(request.url).searchParams.get('returnTo') || '',
+  );
+  return { returnTo };
+}
+
+export default function Logout({
+  loaderData: { returnTo },
+}: Route.ComponentProps) {
+  return (
+    <main>
+      <h1>Logga ut</h1>
+      <Form method='post'>
+        <input type='hidden' name='returnTo' value={returnTo || '/'} />
+        <Button size='large' variant='primary' type='submit'>
+          Logga ut
+        </Button>
+      </Form>
+    </main>
+  );
+}

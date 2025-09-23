@@ -17,35 +17,30 @@
  */
 
 import {
-  href,
-  Link,
+  messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
+} from '@/components/Layout/Header/Login/utils/utils';
+import {
   useFetcher,
   useLocation,
   useNavigation,
   useSubmit,
 } from 'react-router';
-import {
-  messageIsFromWindowOpenedFromHere,
-  printUserNameOnPage,
-} from '@/components/Layout/Header/Login/utils/utils';
 
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
-import { useTranslation } from 'react-i18next';
-import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
-import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
-import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
-import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
+import type { Account } from '@/components/Layout/Header/Login/devAccounts';
+import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
+import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
-import styles from './Login.module.css';
-import { useHydrated } from '@/utils/useHydrated';
 import { useUser } from '@/utils/rootLoaderDataUtils';
+import styles from './Login.module.css';
 
 export default function User() {
-  const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const user = useUser();
   const fetcher = useFetcher();
@@ -58,6 +53,36 @@ export default function User() {
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
 
+  const handleDevSelection = (account: Account) => {
+    submit(
+      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
+      { action: '/login', method: 'post' },
+    );
+  };
+
+  const handleWebRedirectSelection = (url: string) => {
+    try {
+      window.open(MODE === 'development' ? '/devLogin' : url);
+      window.addEventListener('message', receiveMessage);
+    } catch (e: any) {
+      console.error(e.message());
+    }
+  };
+
+  const receiveMessage = (event: MessageEvent<any>) => {
+    if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
+      window.removeEventListener('message', receiveMessage);
+      submit(
+        {
+          loginType: 'webRedirect',
+          auth: JSON.stringify(event.data),
+          returnTo,
+        },
+        { action: '/login', method: 'post' },
+      );
+    }
+  };
+
   const logout = () => {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
@@ -65,15 +90,25 @@ export default function User() {
   if (!user) {
     return (
       <div className={styles['login']}>
-        <Button
-          variant='tertiary'
-          as={Link}
-          to={href('/login')}
-          className={styles['login-button']}
-        >
-          {t('divaClient_LoginText')}
-          {submitting ? <CircularLoader /> : <LoginIcon />}
-        </Button>
+        <Menu>
+          <MenuButton
+            className={styles['login-button']}
+            as='a'
+            aria-busy={submitting}
+            onClick={(e) => e.preventDefault()}
+            href={`/login?returnTo=${returnTo}`}
+          >
+            {t('divaClient_LoginText')}
+            {submitting ? <CircularLoader /> : <LoginIcon />}
+          </MenuButton>
+          <DropdownMenu anchor='bottom end'>
+            <DevAccountLoginOptions onSelect={handleDevSelection} />
+            <hr />
+            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
+            <hr />
+            <PasswordLoginOptions returnTo={returnTo} />
+          </DropdownMenu>
+        </Menu>
       </div>
     );
   }
@@ -82,10 +117,11 @@ export default function User() {
     <div className={styles['login']}>
       <Menu>
         <MenuButton
-          as={Button}
-          disabled={submitting || !hydrated}
+          className={styles['login-button']}
+          as='a'
+          href={`/logout?returnTo=${returnTo}`}
           aria-busy={submitting}
-          variant='tertiary'
+          onClick={(e) => e.preventDefault()}
         >
           <PersonIcon />
           <span className={styles['user-name']}>

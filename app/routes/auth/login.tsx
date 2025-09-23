@@ -30,7 +30,7 @@ import { getLoginUnits } from '@/data/getLoginUnits.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import css from './login.css?url';
 import { PasswordLogin } from './PasswordLogin';
-import { WebRedirectLogin } from './webRedirectLogin';
+import { WebRedirectLogin } from './WebRedirectLogin';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.i18n;
@@ -188,14 +188,14 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <h1>Logga in</h1>
+      <h1>{t('divaClient_LoginText')}</h1>
       <div className='login-options'>
         <div className='login-option'>
           <div
             className='login-option'
             style={{ marginBottom: 'var(--gap-xl)' }}
           >
-            <h2>Testkonto</h2>
+            <h2>{t('divaClient_LoginDevAccountText')}</h2>
             <Form method='POST' action='/login'>
               <input type='hidden' name='loginType' value='appToken' />
               {returnTo && (
@@ -223,36 +223,26 @@ export default function Login({ loaderData }: Route.ComponentProps) {
               </ul>
             </Form>
           </div>
-          <h2>DiVA-konto</h2>
-          {passwordLoginUnits.length === 1 ? (
-            <PasswordLogin
-              presentation={passwordLoginUnits[0].presentation}
-              notification={notification}
-              returnTo={returnTo}
-            />
-          ) : (
-            <Form
-              method='GET'
-              style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}
-              onChange={(e) => submit(e.currentTarget)}
-            >
-              <ul>
-                {loginUnits
-                  .filter((unit) => unit.type === 'password')
-                  .map((unit: LoginDefinition) => (
-                    <li key={unit.id}>
-                      <Button
-                        type='submit'
-                        name='loginUnit'
-                        value={unit.loginDescription}
-                      >
-                        {t(unit.loginDescription)}
-                      </Button>
-                    </li>
-                  ))}
-              </ul>
-            </Form>
-          )}
+          <h2>{t('divaClient_LoginPasswordText')}</h2>
+          <Form
+            method='GET'
+            style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}
+            onChange={(e) => submit(e.currentTarget)}
+          >
+            <ul>
+              {passwordLoginUnits.map((unit: LoginDefinition) => (
+                <li key={unit.id}>
+                  <Button
+                    type='submit'
+                    name='loginUnit'
+                    value={unit.loginDescription}
+                  >
+                    {t(unit.loginDescription)}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </Form>
         </div>
         <WebRedirectLogin
           webRedirectLoginUnits={webRedirectLoginUnits}
