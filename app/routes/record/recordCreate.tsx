@@ -44,24 +44,55 @@ import {
 } from '@/utils/redirectAndCommitSession';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse } from 'react-router';
+import { data, Form, isRouteErrorResponse } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import type { Route } from '../record/+types/recordCreate';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { useDeferredValue, useState } from 'react';
 import css from './record.css?url';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
+import { Button } from '@/components/Button/Button';
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({
+  request,
+  context,
+  params,
+}: Route.LoaderArgs) => {
   const t = context.i18n.t;
   const session = await getSessionFromCookie(request);
   const notification = getNotification(session);
-
+  const auth = getAuth(session);
   const url = new URL(request.url);
-  const validationTypeId = url.searchParams.get('validationType');
-
-  if (validationTypeId === null) {
-    throw data('divaClient_missingValidationTypeParamText', { status: 400 });
+  let validationTypeId = url.searchParams.get('validationType');
+  if (!auth) {
+    throw data(null, { status: 401 });
   }
+  if (!validationTypeId) {
+    const validationTypes = await getValidationTypes(
+      params.recordType,
+      auth?.data.token,
+    );
+    if (validationTypes && validationTypes.length === 1) {
+      validationTypeId = validationTypes[0].value;
+    } else {
+      return data(
+        {
+          formDefinition: undefined,
+          previewFormDefinition: undefined,
+          defaultValues: undefined,
+          notification,
+          title: 'Skapa',
+          breadcrumb: 'Skapa',
+          validationTypes: await getValidationTypes(
+            params.recordType,
+            auth?.data.token,
+          ),
+        },
+        await getResponseInitWithSession(session),
+      );
+    }
+  }
+
   let formDefinition;
   let previewFormDefinition;
   try {
@@ -100,6 +131,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
       notification,
       title,
       breadcrumb,
+      validationTypes: null,
     },
     await getResponseInitWithSession(session),
   );
@@ -181,13 +213,50 @@ export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation();
-  const { formDefinition, previewFormDefinition, notification, defaultValues } =
-    loaderData;
+  const {
+    formDefinition,
+    previewFormDefinition,
+    notification,
+    defaultValues,
+    validationTypes,
+  } = loaderData;
 
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     null,
   );
   const deferredPreviewData = useDeferredValue(previewData);
+
+  if (!formDefinition) {
+    return (
+      <main>
+        <h1>Skapa publikation</h1>
+        <h2>Välj valideringstyp</h2>
+        <Form method='GET'>
+          <ul
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+              gap: '1rem',
+              listStyle: 'none',
+            }}
+          >
+            {validationTypes!.map((type) => (
+              <li key={type.value}>
+                <Button
+                  type='submit'
+                  fullWidth
+                  name='validationType'
+                  value={type.value}
+                >
+                  {t(type.label)}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </Form>
+      </main>
+    );
+  }
 
   const handleFormChange = (data: BFFDataRecordData) => {
     setPreviewData(data);

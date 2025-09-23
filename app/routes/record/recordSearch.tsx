@@ -23,7 +23,7 @@ import {
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { Await, data } from 'react-router';
+import { Await, data, href, Link } from 'react-router';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { useTranslation } from 'react-i18next';
 import { Suspense } from 'react';
@@ -40,6 +40,8 @@ import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecor
 import css from './recordSearch.css?url';
 import { coraApiUrl } from '@/cora/helper.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
+import { Button } from '@/components/Button/Button';
+import { AddCircleIcon } from '@/icons';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -83,6 +85,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   return data(
     {
       searchId: recordType.searchId,
+      recordTypeId: recordType.id,
       recordTypeTextId: recordType.textId,
       validationTypes,
       query,
@@ -130,7 +133,19 @@ export default function OutputSearchRoute({
 
             <Suspense
               fallback={
-                <SkeletonLoader height='var(--input-height)' width='10rem' />
+                <Button
+                  as={Link}
+                  variant='secondary'
+                  to={href('/:recordType/create', {
+                    recordType: loaderData.recordTypeId,
+                  })}
+                  size='large'
+                >
+                  <AddCircleIcon />
+                  {t('divaClient_createText', {
+                    type: t(recordTypeTextId).toLowerCase(),
+                  })}
+                </Button>
               }
             >
               <Await
