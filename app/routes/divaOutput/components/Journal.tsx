@@ -16,13 +16,14 @@ export const Journal = ({ journal }: JournalProps) => {
   }
 
   return (
-    <div>
-      <h2>{journal.__text[language]}</h2>
+    <section aria-labelledby='journal-heading'>
+      <h2 id='journal-heading'>{journal.__text[language]}</h2>
       <dl className='inline-definitions'>
-        <JournalInfo
-          journal={journal}
-          linkedJournal={journal.journal?.linkedRecord.journal}
-        />
+        {journal.journal?.linkedRecord.journal ? (
+          <JournalInfo journal={journal.journal?.linkedRecord.journal} />
+        ) : (
+          <JournalInfo journal={journal} />
+        )}
         <Term
           label={journal.part?.detail_type_volume?.__text[language]}
           value={journal.part?.detail_type_volume?.number?.value}
@@ -44,31 +45,35 @@ export const Journal = ({ journal }: JournalProps) => {
           value={journal.part?.extent?.end?.value}
         />
       </dl>
-    </div>
+    </section>
   );
 };
 
 const JournalInfo = ({
   journal,
-  linkedJournal,
 }: {
-  journal: RelatedItemJournalGroup;
-  linkedJournal: JournalUpdateGroup | undefined;
+  journal: RelatedItemJournalGroup | JournalUpdateGroup;
 }) => {
   const language = useLanguage();
-  const titleInfo = journal.titleInfo ?? linkedJournal?.titleInfo;
-  const pissn =
-    journal.identifier_displayLabel_pissn_type_issn ??
-    linkedJournal?.identifier_displayLabel_pissn_type_issn;
-  const eissn =
-    journal.identifier_displayLabel_eissn_type_issn ??
-    linkedJournal?.identifier_displayLabel_eissn_type_issn;
-
   return (
     <>
-      <Term label={titleInfo?.__text[language]} value={getTitle(titleInfo)} />
-      <Term label={pissn?.__text[language]} value={pissn?.value} />
-      <Term label={eissn?.__text[language]} value={eissn?.value} />
+      <Term
+        label={journal.titleInfo?.__text[language]}
+        value={getTitle(journal.titleInfo)}
+      />
+      <Term
+        label={
+          journal.identifier_displayLabel_pissn_type_issn?.__text[language]
+        }
+        value={journal.identifier_displayLabel_pissn_type_issn?.value}
+      />
+
+      <Term
+        label={
+          journal.identifier_displayLabel_eissn_type_issn?.__text[language]
+        }
+        value={journal.identifier_displayLabel_eissn_type_issn?.value}
+      />
     </>
   );
 };

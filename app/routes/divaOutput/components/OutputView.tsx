@@ -19,6 +19,7 @@ import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
 import { Journal } from './Journal';
+import { Book } from './Book';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -108,6 +109,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </dl>
           <StudentDegrees studentDegrees={output.studentDegree} />
           <Journal journal={output.relatedItem_type_journal} />
+          <Book book={output.relatedItem_type_book} />
         </article>
       </main>
       <aside>
