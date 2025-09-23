@@ -1,8 +1,6 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ShoppingCartIcon } from '@/icons';
-import { Attachment } from '@/routes/divaOutput/components/Attachment';
-
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
@@ -12,6 +10,7 @@ import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
 import { ArtisticWorkFields } from './ArtisticWork';
+import { Attachments } from './Attachments';
 import { Classifications } from './Classifications';
 import { DegreeProjectFields } from './DegreeProjectFields';
 import { Identifiers } from './Identifiers';
@@ -19,7 +18,7 @@ import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
-import { Attachments } from './Attachments';
+import { Journal } from './Journal';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -108,6 +107,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             <DegreeProjectFields output={output} />
           </dl>
           <StudentDegrees studentDegrees={output.studentDegree} />
+          <Journal journal={output.relatedItem_type_journal} />
         </article>
       </main>
       <aside>
@@ -177,7 +177,3 @@ export const OutputView = ({ data }: OutputViewProps) => {
     </div>
   );
 };
-
-// TODO:
-// relatedItems
-// related
