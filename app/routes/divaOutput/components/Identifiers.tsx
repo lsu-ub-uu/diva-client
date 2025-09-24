@@ -11,8 +11,8 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
   return (
-    <>
-      <h2>{t('divaClient_identifierText')}</h2>
+    <section aria-labelledby='identifiers-heading'>
+      <h2 id='identifiers-heading'> {t('divaClient_identifierText')}</h2>
       <dl className='inline-definitions'>
         <Term
           label={t('divaClient_divaIdText')}
@@ -81,6 +81,6 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
           value={output.identifier_type_patentNumber?.value}
         />
       </dl>
-    </>
+    </section>
   );
 };
