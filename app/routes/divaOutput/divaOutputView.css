@@ -4,6 +4,7 @@
 
 .diva-output-view {
   display: grid;
+  justify-items: start;
   gap: var(--gap-xxl);
   grid-template-columns: 3fr 2fr;
   font-variant-numeric: tabular-nums;
@@ -25,6 +26,10 @@ dd {
 h1 {
   max-width: 60ch;
   font-size: 2rem;
+
+  @media (width < 800px) {
+    font-size: 1.5rem;
+  }
 }
 
 h2 {

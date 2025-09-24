@@ -1,13 +1,12 @@
-import type {
-  RelatedItemBookGroup,
-  TitleInfoLangGroup,
-} from '@/generatedTypes/divaTypes';
+import type { RelatedItemBookGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { href, Link } from 'react-router';
 import { Series } from './Series';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { useId } from 'react';
+import { TitleInfo } from './TitleInfo';
+import { createTitle } from '../utils/createTitle';
 
 interface BookProps {
   book: RelatedItemBookGroup | undefined;
@@ -33,15 +32,12 @@ export const Book = ({ book }: BookProps) => {
                   recordId: book.book.value,
                 })}
               >
-                {getTitle(book.book.linkedRecord.output.titleInfo)}
+                {createTitle(book.book.linkedRecord.output.titleInfo)}
               </Link>
             }
           />
         )}
-        <Term
-          label={book.titleInfo?.__text[language]}
-          value={getTitle(book.titleInfo)}
-        />
+        <TitleInfo titleInfo={book.titleInfo} />
         <Term
           label={book.note_type_statementOfResponsibility?.__text[language]}
           value={book.note_type_statementOfResponsibility?.value}
@@ -71,10 +67,4 @@ export const Book = ({ book }: BookProps) => {
       ))}
     </section>
   );
-};
-
-const getTitle = (titleInfo: TitleInfoLangGroup | undefined) => {
-  return [titleInfo?.title.value, titleInfo?.subtitle?.value]
-    .filter(Boolean)
-    .join(': ');
 };

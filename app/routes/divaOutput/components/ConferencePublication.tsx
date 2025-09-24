@@ -6,6 +6,7 @@ import { createTitle } from '../utils/createTitle';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { Series } from './Series';
 import { useId } from 'react';
+import { TitleInfo } from './TitleInfo';
 
 export interface ConferencePublicationProps {
   conferencePublication: RelatedItemConferencePublicationGroup | undefined;
@@ -41,10 +42,7 @@ export const ConferencePublication = ({
             }
           />
         )}
-        <Term
-          label={conferencePublication.titleInfo?.__text[language]}
-          value={createTitle(conferencePublication.titleInfo)}
-        />
+        <TitleInfo titleInfo={conferencePublication.titleInfo} />
         <Term
           label={
             conferencePublication.note_type_statementOfResponsibility?.__text[

@@ -22,6 +22,11 @@ import { Journal } from './Journal';
 import { Book } from './Book';
 import { Series } from './Series';
 import { ConferencePublication } from './ConferencePublication';
+import { ResearchData } from './ResearchData';
+import { Project } from './Project';
+import { Funder } from './Funder';
+import { href, Link } from 'react-router';
+import { RelatedOutput } from './RelatedOutput';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -108,6 +113,25 @@ export const OutputView = ({ data }: OutputViewProps) => {
           <dl>
             <ArtisticWorkFields output={output} />
             <DegreeProjectFields output={output} />
+            <Term
+              label={output.relatedItem_type_conference?.__text[language]}
+              value={output.relatedItem_type_conference?.conference?.value}
+            />
+            <Term
+              label={
+                output.relatedItem_type_publicationChannel?.__text[language]
+              }
+              value={
+                output.relatedItem_type_publicationChannel?.publicationChannel
+                  ?.value
+              }
+            />
+            <Term
+              label={output.relatedItem_type_initiative?.__text[language]}
+              value={output.relatedItem_type_initiative?.initiative?.map(
+                (initiative) => initiative.__valueText[language],
+              )}
+            />
           </dl>
 
           <StudentDegrees studentDegrees={output.studentDegree} />
@@ -120,19 +144,35 @@ export const OutputView = ({ data }: OutputViewProps) => {
               output.relatedItem_type_conferencePublication
             }
           />
-          {/* ConferencePublication (output link plus journal liknande fält) */}
-          {/* Conference (textvärde) */}
-          {/* PublicationChannel (textvärde) */}
-          {/* ResearchData (titel, doi, location)) */}
-          {/* Project (project link, titel)) */}
-          {/* Funder (funder link, identifier) */}
-          {/* Initiative (bara text) */}
-          {/* Related outputs (länkar) */}
-          {/* Constituent (output länk) */}
-          {/* Retracted (output länk) */}
+          {output.relatedItem_type_researchData?.map((researchData, index) => (
+            <ResearchData key={index} researchData={researchData} />
+          ))}
+          {output.relatedItem_type_project?.map((project, index) => (
+            <Project key={index} project={project} />
+          ))}
+
+          {output.relatedItem_type_funder?.map((funder, index) => (
+            <Funder key={index} funder={funder} />
+          ))}
+
           {output.relatedItem_type_series?.map((series, index) => (
             <Series key={index} series={series} />
           ))}
+
+          <section>
+            <h2>{t('divaClient_relatedPublicationsText')}</h2>
+            <dl>
+              {output.related?.map((relatedOutput, index) => (
+                <RelatedOutput key={index} relatedOutput={relatedOutput} />
+              ))}
+              {output.related_type_constituent?.map((constituent, index) => (
+                <RelatedOutput key={index} relatedOutput={constituent} />
+              ))}
+              {output.related_type_retracted?.map((retracted, index) => (
+                <RelatedOutput key={index} relatedOutput={retracted} />
+              ))}
+            </dl>
+          </section>
         </article>
       </main>
       <aside>

@@ -1,10 +1,11 @@
+import type { HeadlineLevel } from '@/cora/transform/bffTypes.server';
 import type { RelatedItemSeriesGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { useId } from 'react';
+import { href, Link } from 'react-router';
 import { createTitle } from '../utils/createTitle';
 import { Term } from './Term';
-import { href, Link } from 'react-router';
-import type { HeadlineLevel } from '@/cora/transform/bffTypes.server';
-import { useId } from 'react';
+import { TitleInfo } from './TitleInfo';
 
 interface SeriesProps {
   series: RelatedItemSeriesGroup | undefined;
@@ -41,10 +42,7 @@ export const Series = ({ series, headlineLevel = 'h2' }: SeriesProps) => {
             }
           />
         )}
-        <Term
-          label={series.titleInfo?.__text?.[language]}
-          value={createTitle(series.titleInfo)}
-        />
+        <TitleInfo titleInfo={series.titleInfo} />
         <Term
           label={
             series.identifier_displayLabel_eissn_type_issn?.__text?.[language]

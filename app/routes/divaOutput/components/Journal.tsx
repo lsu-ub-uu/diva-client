@@ -5,6 +5,7 @@ import type {
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { useId } from 'react';
+import { TitleInfo } from './TitleInfo';
 
 interface JournalProps {
   journal: RelatedItemJournalGroup | undefined;
@@ -59,10 +60,7 @@ const JournalInfo = ({
   const language = useLanguage();
   return (
     <>
-      <Term
-        label={journal.titleInfo?.__text[language]}
-        value={getTitle(journal.titleInfo)}
-      />
+      <TitleInfo titleInfo={journal.titleInfo} />
       <Term
         label={
           journal.identifier_displayLabel_pissn_type_issn?.__text[language]
@@ -78,10 +76,4 @@ const JournalInfo = ({
       />
     </>
   );
-};
-
-const getTitle = (titleInfo: RelatedItemJournalGroup['titleInfo']) => {
-  return [titleInfo?.title.value, titleInfo?.subtitle?.value]
-    .filter(Boolean)
-    .join(': ');
 };

@@ -11,8 +11,8 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
   const language = useLanguage();
 
   return (
-    <>
-      <h2>{originInfo.__text[language]}</h2>
+    <section aria-labelledby='origin-info'>
+      <h2 id='origin-info'>{originInfo.__text[language]}</h2>
       <dl className='inline-definitions'>
         <Term
           label={originInfo.place?.[0]?.__text[language]}
@@ -46,7 +46,7 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
           value={originInfo.edition?.value}
         />
       </dl>
-    </>
+    </section>
   );
 };
 
