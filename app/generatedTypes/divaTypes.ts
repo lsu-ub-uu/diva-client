@@ -2331,6 +2331,7 @@ export type RoleCollection =
   | 'rce'
   | 'res'
   | 'rsg'
+  | 'rsp'
   | 'sce'
   | 'scl'
   | 'sds'
@@ -2434,7 +2435,7 @@ export interface DateOtherPatentGroup {
 }
 
 export interface RolePatentHolderGroup {
-  role: {
+  roleTerm: {
     value: 'pth';
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };

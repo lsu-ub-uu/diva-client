@@ -1,8 +1,6 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ShoppingCartIcon } from '@/icons';
-import { Attachement } from '@/routes/divaOutput/components/Attachment';
-
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
@@ -12,12 +10,21 @@ import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { useTranslation } from 'react-i18next';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
 import { ArtisticWorkFields } from './ArtisticWork';
+import { Attachments } from './Attachments';
+import { Book } from './Book';
 import { Classifications } from './Classifications';
+import { ConferencePublication } from './ConferencePublication';
 import { DegreeProjectFields } from './DegreeProjectFields';
+import { Funder } from './Funder';
 import { Identifiers } from './Identifiers';
+import { Journal } from './Journal';
 import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
+import { Project } from './Project';
+import { RelatedOutput } from './RelatedOutput';
+import { ResearchData } from './ResearchData';
+import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
 
 interface OutputViewProps {
@@ -105,14 +112,70 @@ export const OutputView = ({ data }: OutputViewProps) => {
           <dl>
             <ArtisticWorkFields output={output} />
             <DegreeProjectFields output={output} />
+            <Term
+              label={output.relatedItem_type_conference?.__text[language]}
+              value={output.relatedItem_type_conference?.conference?.value}
+            />
+            <Term
+              label={
+                output.relatedItem_type_publicationChannel?.__text[language]
+              }
+              value={
+                output.relatedItem_type_publicationChannel?.publicationChannel
+                  ?.value
+              }
+            />
+            <Term
+              label={output.relatedItem_type_initiative?.__text[language]}
+              value={output.relatedItem_type_initiative?.initiative?.map(
+                (initiative) => initiative.__valueText[language],
+              )}
+            />
           </dl>
+
           <StudentDegrees studentDegrees={output.studentDegree} />
+
+          {/* Related items*/}
+          <Journal journal={output.relatedItem_type_journal} />
+          <Book book={output.relatedItem_type_book} />
+          <ConferencePublication
+            conferencePublication={
+              output.relatedItem_type_conferencePublication
+            }
+          />
+          {output.relatedItem_type_researchData?.map((researchData, index) => (
+            <ResearchData key={index} researchData={researchData} />
+          ))}
+          {output.relatedItem_type_project?.map((project, index) => (
+            <Project key={index} project={project} />
+          ))}
+
+          {output.relatedItem_type_funder?.map((funder, index) => (
+            <Funder key={index} funder={funder} />
+          ))}
+
+          {output.relatedItem_type_series?.map((series, index) => (
+            <Series key={index} series={series} />
+          ))}
+
+          <section>
+            <h2>{t('divaClient_relatedPublicationsText')}</h2>
+            <dl>
+              {output.related?.map((relatedOutput, index) => (
+                <RelatedOutput key={index} relatedOutput={relatedOutput} />
+              ))}
+              {output.related_type_constituent?.map((constituent, index) => (
+                <RelatedOutput key={index} relatedOutput={constituent} />
+              ))}
+              {output.related_type_retracted?.map((retracted, index) => (
+                <RelatedOutput key={index} relatedOutput={retracted} />
+              ))}
+            </dl>
+          </section>
         </article>
       </main>
       <aside>
-        {output.attachment?.map((attachment, index) => {
-          return <Attachement attachement={attachment} key={index} />;
-        })}
+        <Attachments attachments={output.attachment} />
         <dl>
           <Term
             label={output['accessCondition_authority_kb-se']?.__text[language]}
@@ -124,8 +187,23 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <OriginInfo originInfo={output.originInfo} />
         <dl>
           <Term
+            label={output.imprint?.__text[language]}
+            value={output.imprint?.value}
+          />
+        </dl>
+        <dl>
+          <Term
             label={output.dateOther_type_patent?.__text[language]} //Patent
             value={<Date date={output.dateOther_type_patent} />}
+          />
+          {output.patentHolder_type_corporate && (
+            <Organisations
+              organisations={[output.patentHolder_type_corporate]}
+            />
+          )}
+          <Term
+            label={output.patentCountry?.__text[language]}
+            value={output.patentCountry?.__valueText[language]}
           />
 
           {output.location && (
@@ -163,21 +241,3 @@ export const OutputView = ({ data }: OutputViewProps) => {
     </div>
   );
 };
-
-// TODO:
-
-// note type context
-// patentHolder
-// patentCountry
-// origin agent link
-// imprint
-// subject authority diva (la till fält, behöver data)
-// ismn (behöver data)
-// pmid (behöver data)
-// scopus (behöver data)
-// arkivnummer (la till fält, behöver data)
-// student degree degreeGrantingInstitution course, programme
-// relatedItems
-// related
-// localGenericMarkup
-// attachment, rättigheter, större thumbnail

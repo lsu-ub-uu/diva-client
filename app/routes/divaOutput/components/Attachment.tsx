@@ -4,45 +4,46 @@ import { DownloadIcon } from '@/icons';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { useTranslation } from 'react-i18next';
 
-interface AttachementProps {
-  attachement: AttachmentGroup;
+interface AttachmentProps {
+  attachment: AttachmentGroup;
 }
 
-export const Attachement = ({ attachement }: AttachementProps) => {
+export const Attachment = ({ attachment }: AttachmentProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
 
-  if (!attachement.attachmentFile?.linkedRecord?.binary.master) {
+  if (!attachment.attachmentFile?.linkedRecord?.binary.master) {
     return null;
   }
 
   return (
-    <div>
+    <div className='attachment'>
       <h3>
-        {attachement.displayLabel
-          ? `${attachement.displayLabel.value} (${attachement.type.__valueText[language]})`
-          : attachement.type.__valueText[language]}
+        {attachment.displayLabel
+          ? `${attachment.displayLabel.value} (${attachment.type.__valueText[language]})`
+          : attachment.type.__valueText[language]}
       </h3>
-      {attachement.attachmentFile.linkedRecord.binary.thumbnail && (
+      {attachment.attachmentFile.linkedRecord.binary.large && (
         <img
+          className='attachment-thumbnail'
           src={createDownloadLinkFromResourceLink(
-            attachement.attachmentFile.linkedRecord.binary.thumbnail.thumbnail,
+            attachment.attachmentFile.linkedRecord.binary.large.large,
           )}
-          alt={attachement.__text[language]}
+          alt={attachment.__text[language]}
         />
       )}
       <a
         className='download-link'
         href={createDownloadLinkFromResourceLink(
-          attachement.attachmentFile.linkedRecord.binary.master.master,
+          attachment.attachmentFile.linkedRecord.binary.master.master,
         )}
         type={
-          attachement.attachmentFile.linkedRecord.binary.master?.mimeType.value
+          attachment.attachmentFile.linkedRecord.binary.master?.mimeType.value
         }
       >
         <DownloadIcon />
         {`${t('resourceLinkDownloadText')} (${formatBytes(
-          attachement.attachmentFile.linkedRecord.binary.master.fileSize.value,
+          attachment.attachmentFile.linkedRecord.binary.master.fileSize.value,
         )})`}
       </a>
     </div>

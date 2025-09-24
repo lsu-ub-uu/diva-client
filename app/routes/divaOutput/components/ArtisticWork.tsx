@@ -5,6 +5,8 @@ import type {
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { getLanguageTextId } from '../utils/translateLanguage';
+import { useTranslation } from 'react-i18next';
 
 interface ArtisticWorkFieldsProps {
   output: OutputUpdateGroup;
@@ -12,6 +14,7 @@ interface ArtisticWorkFieldsProps {
 
 export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
   const language = useLanguage();
+  const { t } = useTranslation();
   return (
     <>
       <Term
@@ -75,6 +78,14 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
         label={output.physicalDescription?.__text[language]}
         value={output.physicalDescription?.extent.value}
       />
+      {output.note_type_context?.map((note, index) => (
+        <Term
+          key={index}
+          label={`${note.__text[language]} (${t(getLanguageTextId(note._lang))})`}
+          value={note.value}
+          lang={note._lang}
+        />
+      ))}
     </>
   );
 };

@@ -4,13 +4,14 @@
 
 .diva-output-view {
   display: grid;
+  justify-items: start;
   gap: var(--gap-xxl);
   grid-template-columns: 3fr 2fr;
   font-variant-numeric: tabular-nums;
   max-width: 2000px;
   margin-right: auto;
 
-  @media (width < 800px) {
+  @media (width < 1200px) {
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -25,15 +26,18 @@ dd {
 h1 {
   max-width: 60ch;
   font-size: 2rem;
+
+  @media (width < 800px) {
+    font-size: 1.5rem;
+  }
 }
 
 h2 {
-  font-size: 1.3rem;
   margin-top: var(--gap-l);
 }
 
 h3 {
-  font-size: 1.1rem;
+  margin-top: var(--gap);
 }
 
 article {
@@ -41,7 +45,7 @@ article {
   gap: var(--gap);
   padding-bottom: var(--gap-l);
 
-  @media (width >= 800px) {
+  @media (width >= 1200px) {
     border-right: 1px solid var(--color-thin-border);
     padding-right: var(--gap-xxl);
   }
@@ -56,9 +60,27 @@ dd {
   padding-left: var(--gap);
 }
 
-dd:not(.block):has(+ dd),
-dd:not(.block) + dd {
+dd + dd {
+  padding-left: 0;
+
+  &:not(:has(> button))::before {
+    content: ', ';
+  }
+}
+
+dd:has(+ dd),
+dd + dd {
   display: inline;
+}
+
+dd.block {
+  display: block;
+  padding-left: var(--gap);
+  margin-bottom: var(--gap-s);
+
+  &::before {
+    display: none;
+  }
 }
 
 .inline-definitions {
@@ -83,14 +105,6 @@ dd:not(.block) + dd {
     }
 
     grid-column: 2;
-  }
-}
-
-dd:not(.block) + dd {
-  padding-left: 0;
-
-  &:not(:has(> button))::before {
-    content: ', ';
   }
 }
 
@@ -130,10 +144,6 @@ address {
   gap: var(--gap-s);
 }
 
-dd.block {
-  margin-bottom: var(--gap-s);
-}
-
 .expanded-card {
   border-left: 2px solid var(--color-card-dark);
   background: var(--color-card);
@@ -170,4 +180,43 @@ a {
   display: inline-flex;
   align-items: center;
   gap: var(--gap-s);
+}
+
+.attachments {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.attachment {
+  margin-bottom: var(--gap-l);
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
+  padding: var(--gap-l);
+}
+
+.attachment-thumbnail {
+  width: 250px;
+  margin-bottom: var(--gap-s);
+}
+
+section {
+  border-bottom: 1px solid var(--color-thin-border);
+  padding-bottom: var(--gap-l);
+}
+
+section section {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }

@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 interface SearchLinkListProps {
   heading: string;
   searchTerm: string;
-  links: { value: string; label: ReactNode }[];
+  items: { href?: string; label: ReactNode }[];
   language?: string;
   pill?: boolean;
 }
@@ -12,7 +12,7 @@ interface SearchLinkListProps {
 export const SearchLinkList = ({
   heading,
   searchTerm,
-  links,
+  items,
   language,
   pill,
 }: SearchLinkListProps) => {
@@ -21,13 +21,17 @@ export const SearchLinkList = ({
     <div>
       <h2 id={id}>{heading}</h2>
       <ul className='pill-container' aria-labelledby={id} lang={language}>
-        {links.map((link) => (
-          <li key={link.value} className={pill ? 'pill' : ''}>
-            <Link
-              to={`/diva-output?search.include.includePart.${searchTerm}.value=${link.value}&search.rows.value=10`}
-            >
-              {link.label}
-            </Link>
+        {items.map((item) => (
+          <li key={item.href} className={pill ? 'pill' : ''}>
+            {item.href ? (
+              <Link
+                to={`/diva-output?search.include.includePart.${searchTerm}.value=${item.href}&search.rows.value=10`}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              item.label
+            )}
           </li>
         ))}
       </ul>

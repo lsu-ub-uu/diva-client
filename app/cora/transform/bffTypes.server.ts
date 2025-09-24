@@ -194,6 +194,8 @@ export interface BFFPresentationGroup extends BFFPresentationBase {
     | 'onlyTranslatedText';
 }
 
+export type HeadlineLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
 export interface BFFPresentationChildReference {
   refGroups: BFFPresentationChildRefGroup[];
   minNumberOfRepeatingToShow?: string;
@@ -201,7 +203,7 @@ export interface BFFPresentationChildReference {
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
 }
 
@@ -246,7 +248,7 @@ export interface BFFPresentationChildReference {
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
 }
 
