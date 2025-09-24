@@ -3,7 +3,6 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { DownloadIcon } from '@/icons';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { useTranslation } from 'react-i18next';
-import { Term } from './Term';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
