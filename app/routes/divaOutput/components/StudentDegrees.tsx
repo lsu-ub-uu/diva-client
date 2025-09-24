@@ -3,9 +3,8 @@ import type {
   ProgrammeUpdateGroup,
   StudentDegreeGroup,
 } from '@/generatedTypes/divaTypes';
-import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Fragment } from 'react';
+import { Term } from './Term';
 
 interface StudentDegreeGroupProps {
   studentDegrees?: StudentDegreeGroup[];
@@ -15,8 +14,8 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
   const language = useLanguage();
 
   return studentDegrees?.map((studentDegree, index) => (
-    <Fragment key={index}>
-      <h2>{studentDegree.__text[language]}</h2>
+    <section key={index} aria-labelledby={`student-degree-${index}`}>
+      <h2 id={`student-degree-${index}`}>{studentDegree.__text[language]}</h2>
       <dl>
         <Term
           label={studentDegree.course?.__text[language]}
@@ -41,7 +40,7 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
           value={studentDegree.universityPoints?.__valueText[language]}
         />
       </dl>
-    </Fragment>
+    </section>
   ));
 };
 

@@ -4,6 +4,7 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
+import { useId } from 'react';
 
 interface JournalProps {
   journal: RelatedItemJournalGroup | undefined;
@@ -11,13 +12,14 @@ interface JournalProps {
 
 export const Journal = ({ journal }: JournalProps) => {
   const language = useLanguage();
+  const id = useId();
   if (!journal) {
     return null;
   }
 
   return (
-    <section aria-labelledby='journal-heading'>
-      <h2 id='journal-heading'>{journal.__text[language]}</h2>
+    <section aria-labelledby={id}>
+      <h2 id={id}>{journal.__text[language]}</h2>
       <dl className='inline-definitions'>
         {journal.journal?.linkedRecord.journal ? (
           <JournalInfo journal={journal.journal?.linkedRecord.journal} />

@@ -2,6 +2,7 @@ import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
 import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useTranslation } from 'react-i18next';
+import { formatIsbnIsmnLabel } from '../utils/format';
 
 interface IdentifiersProps {
   output: OutputUpdateGroup;
@@ -25,7 +26,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         {output.identifier_type_isbn?.map((identifier, index) => (
           <Term
             key={index}
-            label={`${output.identifier_type_isbn?.[0]?.__text[language]} (${identifier._displayLabel})`}
+            label={formatIsbnIsmnLabel(identifier, language)}
             value={identifier.value}
           />
         ))}
@@ -37,7 +38,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         {output.identifier_type_ismn?.map((identifier, index) => (
           <Term
             key={index}
-            label={`${identifier.__text[language]} (${identifier._displayLabel})`}
+            label={formatIsbnIsmnLabel(identifier, language)}
             value={identifier.value}
           />
         ))}

@@ -20,6 +20,8 @@ import { Persons } from './Persons';
 import { StudentDegrees } from './StudentDegrees';
 import { Journal } from './Journal';
 import { Book } from './Book';
+import { Series } from './Series';
+import { ConferencePublication } from './ConferencePublication';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -107,9 +109,30 @@ export const OutputView = ({ data }: OutputViewProps) => {
             <ArtisticWorkFields output={output} />
             <DegreeProjectFields output={output} />
           </dl>
+
           <StudentDegrees studentDegrees={output.studentDegree} />
+
+          {/* Related items*/}
           <Journal journal={output.relatedItem_type_journal} />
           <Book book={output.relatedItem_type_book} />
+          <ConferencePublication
+            conferencePublication={
+              output.relatedItem_type_conferencePublication
+            }
+          />
+          {/* ConferencePublication (output link plus journal liknande fält) */}
+          {/* Conference (textvärde) */}
+          {/* PublicationChannel (textvärde) */}
+          {/* ResearchData (titel, doi, location)) */}
+          {/* Project (project link, titel)) */}
+          {/* Funder (funder link, identifier) */}
+          {/* Initiative (bara text) */}
+          {/* Related outputs (länkar) */}
+          {/* Constituent (output länk) */}
+          {/* Retracted (output länk) */}
+          {output.relatedItem_type_series?.map((series, index) => (
+            <Series key={index} series={series} />
+          ))}
         </article>
       </main>
       <aside>

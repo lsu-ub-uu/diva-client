@@ -5,20 +5,24 @@ import type {
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { href, Link } from 'react-router';
+import { Series } from './Series';
+import { formatIsbnIsmnLabel } from '../utils/format';
+import { useId } from 'react';
 
 interface BookProps {
   book: RelatedItemBookGroup | undefined;
 }
 
 export const Book = ({ book }: BookProps) => {
+  const id = useId();
   const language = useLanguage();
   if (!book) {
     return null;
   }
 
   return (
-    <section aria-labelledby='book-heading'>
-      <h2 id='book-heading'>{book?.__text?.[language]}</h2>
+    <section aria-labelledby={id}>
+      <h2 id={id}>{book?.__text?.[language]}</h2>
       <dl className='inline-definitions'>
         {book.book && (
           <Term
@@ -45,7 +49,7 @@ export const Book = ({ book }: BookProps) => {
         {book.identifier_type_isbn?.map((identifier, index) => (
           <Term
             key={index}
-            label={`${identifier?.__text[language]} (${identifier._displayLabel})`}
+            label={formatIsbnIsmnLabel(identifier, language)}
             value={identifier.value}
           />
         ))}
@@ -62,6 +66,9 @@ export const Book = ({ book }: BookProps) => {
           value={book.part?.extent?.end?.value}
         />
       </dl>
+      {book.relatedItem_type_series?.map((series, index) => (
+        <Series key={index} series={series} headlineLevel='h3' />
+      ))}
     </section>
   );
 };
