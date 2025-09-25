@@ -26,7 +26,7 @@
   gap: var(--gap-l);
   padding: var(--gap);
   flex-direction: column;
-
+  width: 100px;
   @media (width >= 600px) {
     .header-menu-toggle-button {
       display: none;
@@ -38,7 +38,7 @@
   height: 2rem;
   width: auto;
   margin: 0 auto;
-  max-width: 100px;
+  max-width: 80px;
 }
 
 .header-content {

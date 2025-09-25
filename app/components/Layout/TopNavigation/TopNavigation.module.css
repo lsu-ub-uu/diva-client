@@ -5,6 +5,6 @@
     list-style: none;
     font-size: var(--font-size-h4);
     transform: translateY(var(--gap));
-    gap: var(--gap-s);
+    gap: var(--gap-l);
   }
 }
