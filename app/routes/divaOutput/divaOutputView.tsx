@@ -1,4 +1,3 @@
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
@@ -17,6 +16,7 @@ import {
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
@@ -24,6 +24,8 @@ import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
 import { assertDefined } from '@/utils/invariant';
@@ -33,10 +35,9 @@ export const loader = async ({
   params,
   context,
 }: Route.LoaderArgs) => {
-  const { t } = context.i18n;
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-  const dependencies = await context.dependencies;
+  const { t } = context.get(i18nContext);
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;

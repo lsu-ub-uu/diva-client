@@ -16,36 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord.server';
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordDelete';
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: Route.ActionArgs) => {
+export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
 
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
+  const { flashNotification } = context.get(sessionContext);
 
-  await deleteRecord(await context.dependencies, recordType, recordId, auth);
+  await deleteRecord(dependencies, recordType, recordId, auth);
 
-  session.flash('notification', {
+  flashNotification({
     severity: 'success',
     summary: 'Successfully deleted record',
-  });
-
-  return redirect(`/${recordType}`, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
   });
 };

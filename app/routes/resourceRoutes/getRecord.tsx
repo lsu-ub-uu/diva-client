@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../resourceRoutes/+types/getRecord';
 
 export const loader = async ({
@@ -28,9 +29,8 @@ export const loader = async ({
   context,
 }: Route.LoaderArgs) => {
   try {
-    const session = await getSessionFromCookie(request);
-    const auth = getAuth(session);
-
+    const { auth } = context.get(sessionContext);
+    const { dependencies } = context.get(dependenciesContext);
     const { recordType, recordId } = params;
 
     const url = new URL(request.url);
@@ -45,7 +45,7 @@ export const loader = async ({
     );
 
     const record = await getRecordByRecordTypeAndRecordId({
-      dependencies: await context.dependencies,
+      dependencies,
       recordType,
       recordId,
       authToken: auth?.data.token,

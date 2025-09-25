@@ -47,6 +47,7 @@ import { transformCoraValidationTypes } from '@/cora/transform/transformValidati
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
+import { createContext } from 'react-router';
 import 'dotenv/config';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
@@ -175,3 +176,8 @@ const groupThemesByHostname = (
 
   return groupedThemes;
 };
+
+export const dependenciesContext = createContext<{
+  dependencies: Dependencies;
+  refreshDependencies: () => Promise<void>;
+}>();

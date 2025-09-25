@@ -5,9 +5,10 @@ import {
 } from '@/cora/helper.server';
 import type { Route } from './+types/apiDocsMethod';
 import { ValidationType } from './components/MetadataDoc';
+import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
   const validationType = dependencies.validationTypePool.get(
     params.validationType,
   );

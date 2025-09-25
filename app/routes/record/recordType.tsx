@@ -21,15 +21,19 @@ import type { Route } from '../record/+types/recordType';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
+
+  const { t } = context.get(i18nContext);
 
   if (!dependencies.recordTypePool.has(params.recordType)) {
     throw data('divaClient_errorRecordTypeNotFoundText', { status: 404 });
   }
   const recordType = dependencies.recordTypePool.get(params.recordType);
-  return { breadcrumb: context.i18n.t(recordType.textId) };
+  return { breadcrumb: t(recordType.textId) };
 };
 
 export default function RecordTypeRoute() {

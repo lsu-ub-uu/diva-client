@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
-import { destroySession, getAuth, getSession } from '@/auth/sessions.server';
 import { deleteSession } from '@/data/deleteSession.server';
+import { redirect } from 'react-router';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { Route } from '../auth/+types/logout';
 
-export async function action({ request }: Route.ActionArgs) {
-  const session = await getSession(request.headers.get('Cookie'));
-  const auth = getAuth(session);
+export async function action({ request, context }: Route.ActionArgs) {
+  const { auth, destroySession } = context.get(sessionContext);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
+
   if (auth) {
     try {
       await deleteSession(auth);
@@ -35,11 +35,9 @@ export async function action({ request }: Route.ActionArgs) {
     }
   }
 
-  return redirect(returnTo ?? '/', {
-    headers: {
-      'Set-Cookie': await destroySession(session),
-    },
-  });
+  destroySession();
+
+  return redirect(returnTo ?? '/');
 }
 
 export const loader = async () => redirect('/');

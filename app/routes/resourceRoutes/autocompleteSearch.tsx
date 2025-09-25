@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { searchRecords } from '@/data/searchRecords.server';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
 export const loader = async ({
@@ -29,12 +30,11 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   try {
     const result = await searchRecords(
-      await context.dependencies,
+      dependencies,
       params.searchType,
       query,
       auth,

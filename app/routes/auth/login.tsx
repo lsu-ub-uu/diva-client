@@ -1,67 +1,50 @@
-import {
-  data,
-  Form,
-  isRouteErrorResponse,
-  redirect,
-  useSubmit,
-} from 'react-router';
-import {
-  commitSession,
-  getNotification,
-  getSession,
-} from '@/auth/sessions.server';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import type { Auth } from '@/auth/Auth';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { useTranslation } from 'react-i18next';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
-import type { Auth } from '@/auth/Auth';
-import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Form, isRouteErrorResponse, redirect, useSubmit } from 'react-router';
 
-import type { Route } from '../auth/+types/login';
 import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-import { useState } from 'react';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
+import { useState } from 'react';
+import type { Route } from '../auth/+types/login';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { i18nContext } from 'server/i18n';
 import css from './login.css?url';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { t } = context.i18n;
+  const { t } = context.get(i18nContext);
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
+  const { auth, notification } = context.get(sessionContext);
 
-  const session = await getSession(request.headers.get('Cookie'));
-
-  if (session.has('auth')) {
+  if (auth) {
     return redirect(returnTo ?? '/');
   }
 
-  return data(
-    {
-      breadcrumb: t('divaClient_LoginText'),
-      presentation,
-      notification: getNotification(session),
-      returnTo,
-    },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return {
+    breadcrumb: t('divaClient_LoginText'),
+    presentation,
+    notification,
+    returnTo,
+  };
 }
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta = ({ loaderData }: Route.MetaArgs) => {
   return [
     {
-      title: ['DiVA', `${data?.breadcrumb}`].filter(Boolean).join(' | '),
+      title: ['DiVA', `${loaderData?.breadcrumb}`].filter(Boolean).join(' | '),
     },
   ];
 };
@@ -111,19 +94,18 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
   }
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  const session = await getSession(request.headers.get('Cookie'));
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
-
+  const { flashNotification, setAuth } = context.get(sessionContext);
   const presentationString = form.get('presentation');
 
   const auth = await authenticate(form);
 
   if (auth === null) {
-    session.flash('notification', {
+    flashNotification({
       severity: 'error',
       summary: 'Invalid credentials',
     });
@@ -133,20 +115,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
       presentationString
         ? `/login?presentation=${encodeURIComponent(presentationString.toString())}`
         : (returnTo ?? '/'),
-      {
-        headers: {
-          'Set-Cookie': await commitSession(session),
-        },
-      },
     );
   }
-  session.set('auth', auth);
 
-  return redirect(returnTo ?? '/', {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  setAuth(auth);
+
+  return redirect(returnTo ?? '/');
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {

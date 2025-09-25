@@ -1,10 +1,9 @@
-import type { Route } from './+types/binary';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraApiUrl } from '@/cora/helper.server';
+import type { Route } from './+types/binary';
 
-export const loader = async ({ request, params }: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const loader = async ({ context, params }: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
 
   return await fetch(
     coraApiUrl(
@@ -13,9 +12,12 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
   );
 };
 
-export const action = async ({ request, params }: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
 
   return await fetch(
     coraApiUrl(
