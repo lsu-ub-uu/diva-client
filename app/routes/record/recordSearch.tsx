@@ -16,30 +16,30 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm.server';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
 import {
   getAuth,
   getNotification,
   getSessionFromCookie,
 } from '@/auth/sessions.server';
-import { Await, data } from 'react-router';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { useTranslation } from 'react-i18next';
-import { Suspense } from 'react';
-import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
-import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import type { Route } from '../record/+types/recordSearch';
 import { Alert } from '@/components/Alert/Alert';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { performSearch } from '@/routes/record/utils/performSearch';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
-import css from './recordSearch.css?url';
-import { coraApiUrl } from '@/cora/helper.server';
+import { externalCoraApiUrl } from '@/cora/helper.server';
+import { getSearchForm } from '@/data/getSearchForm.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
+import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
+import { performSearch } from '@/routes/record/utils/performSearch';
+import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
+import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Await, data } from 'react-router';
+import type { Route } from '../record/+types/recordSearch';
+import css from './recordSearch.css?url';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
@@ -70,7 +70,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   const apiUrl =
     query &&
     encodeURI(
-      coraApiUrl(
+      externalCoraApiUrl(
         `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
       ),
     );

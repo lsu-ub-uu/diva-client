@@ -21,7 +21,8 @@ import { type AxiosRequestConfig } from 'axios';
 
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.cora.recordList+json';
 export const RECORD_CONTENT_TYPE = 'application/vnd.cora.record+json';
-export const RECORD_CONTENT_TYPE_DECORATED = 'application/vnd.cora.record-decorated+json';
+export const RECORD_CONTENT_TYPE_DECORATED =
+  'application/vnd.cora.record-decorated+json';
 
 export const RECORD_GROUP_CONTENT_TYPE =
   'application/vnd.cora.recordGroup+json';
@@ -39,6 +40,10 @@ export const createHeaders = (
   }
 
   return headers;
+};
+
+export const externalCoraApiUrl = (path: string) => {
+  return `${process.env.CORA_EXTERNAL_SYSTEM_URL}/rest${path}`;
 };
 
 export const coraApiUrl = (path: string) => {
