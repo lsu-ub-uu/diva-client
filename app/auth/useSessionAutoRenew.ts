@@ -24,7 +24,7 @@ import { useRevalidator } from 'react-router';
 /**
  * How long before token expiry to start the renewal process
  */
-const RENEW_TIME_BUFFER = 60_000;
+const RENEW_TIME_BUFFER = 30_000;
 
 /**
  * The amount of time to wait for other browser window messages,
