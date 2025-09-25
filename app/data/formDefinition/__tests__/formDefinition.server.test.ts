@@ -113,6 +113,7 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
+  BFFOrganisation,
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationChildReference,
@@ -265,6 +266,7 @@ describe('formDefinition', () => {
       loginPool,
       loginUnitPool,
       themePool: listToPool<BFFTheme>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
 
     createRecordType('testRecordType');

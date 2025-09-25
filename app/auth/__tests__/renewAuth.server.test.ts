@@ -19,18 +19,12 @@
 
 import { createMockAuth } from '@/auth/__mocks__/auth';
 import { renewAuth } from '@/auth/renewAuth.server';
-import {
-  commitSession,
-  getAuth,
-  getSessionFromCookie,
-  type SessionData,
-  type SessionFlashData,
-} from '@/auth/sessions.server';
+import { commitSession } from '@/auth/sessions.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { i18n } from 'i18next';
-import type { Session } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
+import type { SessionContext } from '../sessionMiddleware.server';
 
 vi.mock('@/auth/sessions.server');
 vi.mock('@/cora/renewAuthToken.server');
@@ -49,11 +43,6 @@ describe('renewAuth', () => {
         renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
       },
     });
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(mockAuth);
 
     const mockRenewedAuth = createMockAuth({
       data: {
@@ -66,27 +55,25 @@ describe('renewAuth', () => {
 
     vi.mocked(commitSession).mockReturnValue(Promise.resolve('updatedCookie'));
 
-    const mockRequest = mock<Request>();
-    await renewAuth(mockRequest, i18nMock);
+    const sessionContextMock = mock<SessionContext>({
+      auth: mockAuth,
+    });
+
+    await renewAuth(i18nMock, sessionContextMock);
 
     expect(renewAuthToken).toHaveBeenCalled();
-    expect(mockSession.set).toHaveBeenCalledWith('auth', mockRenewedAuth);
-    expect(commitSession).toHaveBeenCalledWith(mockSession);
+    expect(sessionContextMock.setAuth).toHaveBeenCalledWith(mockRenewedAuth);
   });
 
   it('does nothing when not authenticated', async () => {
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(undefined);
-    const mockRequest = mock<Request>();
-
-    const actual = await renewAuth(mockRequest, i18nMock);
+    const sessionContextMock = mock<SessionContext>({
+      auth: undefined,
+    });
+    const actual = await renewAuth(i18nMock, sessionContextMock);
 
     expect(renewAuthToken).not.toHaveBeenCalled();
     expect(actual).toEqual({ status: 'No auth to renew' });
-    expect(mockSession.set).not.toHaveBeenCalled();
+    expect(sessionContextMock.setAuth).not.toHaveBeenCalled();
   });
 
   it('does not set cookie when failing to renew', async () => {
@@ -100,18 +87,15 @@ describe('renewAuth', () => {
         renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
       },
     });
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(mockAuth);
 
     const mockError = new Error();
     vi.mocked(renewAuthToken).mockRejectedValue(mockError);
 
-    const mockRequest = mock<Request>();
+    const sessionContextMock = mock<SessionContext>({
+      auth: mockAuth,
+    });
 
-    const actual = await renewAuth(mockRequest, i18nMock);
+    const actual = await renewAuth(i18nMock, sessionContextMock);
 
     expect(renewAuthToken).toHaveBeenCalled();
 
@@ -119,7 +103,7 @@ describe('renewAuth', () => {
       status: 'Failed to renew session',
       error: mockError,
     });
-    expect(mockSession.set).not.toHaveBeenCalled();
+    expect(sessionContextMock.setAuth).not.toHaveBeenCalled();
   });
 
   it('removes auth from session when validUntil is in the past', async () => {
@@ -134,12 +118,6 @@ describe('renewAuth', () => {
       },
     });
 
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(mockAuth);
-
     const mockRenewedAuth = createMockAuth({
       data: {
         token: 'bbbbbb-bbbbbbbb-bbbbbb-bbbbbb',
@@ -149,15 +127,14 @@ describe('renewAuth', () => {
     });
     vi.mocked(renewAuthToken).mockReturnValue(Promise.resolve(mockRenewedAuth));
 
-    vi.mocked(commitSession).mockReturnValue(Promise.resolve('updatedCookie'));
-
-    const mockRequest = mock<Request>();
-    await renewAuth(mockRequest, i18nMock);
+    const sessionContextMock = mock<SessionContext>({
+      auth: mockAuth,
+    });
+    await renewAuth(i18nMock, sessionContextMock);
 
     expect(renewAuthToken).not.toHaveBeenCalled();
-    expect(mockSession.unset).toHaveBeenCalledWith('auth');
-    expect(commitSession).toHaveBeenCalledWith(mockSession);
-    expect(mockSession.flash).toHaveBeenCalledWith('notification', {
+    expect(sessionContextMock.removeAuth).toHaveBeenCalled();
+    expect(sessionContextMock.flashNotification).toHaveBeenCalledWith({
       details: 'divaClient_sessionExpiredDetailsText',
       severity: 'info',
       summary: 'divaClient_sessionExpiredSummaryText',
@@ -175,12 +152,6 @@ describe('renewAuth', () => {
         renewUntil: new Date('2025-01-10T00:00:05Z').getTime().toString(),
       },
     });
-    const mockSession = mock<Session<SessionData, SessionFlashData>>();
-    vi.mocked(getSessionFromCookie).mockReturnValue(
-      Promise.resolve(mockSession),
-    );
-    vi.mocked(getAuth).mockReturnValue(mockAuth);
-
     const mockRenewedAuth = createMockAuth({
       data: {
         token: 'bbbbbb-bbbbbbbb-bbbbbb-bbbbbb',
@@ -190,15 +161,14 @@ describe('renewAuth', () => {
     });
     vi.mocked(renewAuthToken).mockReturnValue(Promise.resolve(mockRenewedAuth));
 
-    vi.mocked(commitSession).mockReturnValue(Promise.resolve('updatedCookie'));
-
-    const mockRequest = mock<Request>();
-    await renewAuth(mockRequest, i18nMock);
+    const sessionContextMock = mock<SessionContext>({
+      auth: mockAuth,
+    });
+    await renewAuth(i18nMock, sessionContextMock);
 
     expect(renewAuthToken).not.toHaveBeenCalled();
-    expect(mockSession.unset).toHaveBeenCalledWith('auth');
-    expect(commitSession).toHaveBeenCalledWith(mockSession);
-    expect(mockSession.flash).toHaveBeenCalledWith('notification', {
+    expect(sessionContextMock.removeAuth).toHaveBeenCalled();
+    expect(sessionContextMock.flashNotification).toHaveBeenCalledWith({
       details: 'divaClient_sessionExpiredDetailsText',
       severity: 'info',
       summary: 'divaClient_sessionExpiredSummaryText',

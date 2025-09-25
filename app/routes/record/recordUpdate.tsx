@@ -43,9 +43,8 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const { auth } = context.get(sessionContext);
+  const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-  const { notification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
   const { recordType, recordId } = params;
@@ -99,10 +98,9 @@ export const action = async ({
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
   const { t } = context.get(i18nContext);
-  const { flashNotification } = context.get(sessionContext);
+  const { auth, flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
-  const { auth } = context.get(sessionContext);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({

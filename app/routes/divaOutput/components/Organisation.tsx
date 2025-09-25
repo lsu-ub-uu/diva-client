@@ -1,28 +1,77 @@
-import { href, Link } from 'react-router';
 import type {
   NameOrganisationDegreeGrantingInstitutionGroup,
   NameOrganisationGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
+import { Term } from './Term';
+import { OpenInNewIcon } from '@/icons';
 
 interface OrganisationProps {
   organisation:
     | NameOrganisationGroup
     | NameOrganisationDegreeGrantingInstitutionGroup;
+  expanded?: boolean;
 }
 
-export const Organisation = ({ organisation }: OrganisationProps) => {
-  if (organisation.organisation) {
-    return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: 'diva-organisation',
-          recordId: organisation.organisation?.value,
-        })}
-      >
-        <span>{organisation.namePart?.value}</span>
-      </Link>
-    );
+export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
+  const language = useLanguage();
+
+  if (!expanded) {
+    return formatOrganisationName(organisation);
   }
 
-  return <span>{organisation.namePart?.value}</span>;
+  return (
+    <div className='expanded-card'>
+      <span className='name'>{formatOrganisationName(organisation)}</span>
+      {formatOrganisationRoles(organisation, language)}
+      <dl>
+        {organisation.identifier_type_ror && (
+          <Term
+            label={organisation.identifier_type_ror.__text[language]}
+            value={
+              <a
+                href={`https://ror.org/${organisation.identifier_type_ror.value}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {organisation.identifier_type_ror.value} <OpenInNewIcon />
+              </a>
+            }
+          />
+        )}
+
+        {'description' in organisation && organisation.description && (
+          <Term
+            label={organisation.description.__text[language]}
+            value={organisation.description.value}
+          />
+        )}
+      </dl>
+    </div>
+  );
+};
+
+const formatOrganisationName = (
+  organisation: OrganisationProps['organisation'],
+) => {
+  if (organisation.namePart?.value) {
+    return organisation.namePart.value;
+  }
+  if (organisation.organisation?.displayName) {
+    return organisation.organisation.displayName;
+  }
+  return '';
+};
+
+const formatOrganisationRoles = (
+  organisation: OrganisationProps['organisation'],
+  language: 'en' | 'sv',
+) => {
+  const roleTerm = organisation.role?.roleTerm;
+
+  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
+    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+  }
+
+  return '';
 };

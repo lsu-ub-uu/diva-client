@@ -1,0 +1,278 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "diva-organisation"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva-organisation:1530219071900116"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-organisation/diva-organisation:1530219071900116",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "organisation"
+                  }
+                ],
+                "name": "related",
+                "attributes": {
+                  "type": "parent"
+                }
+              },
+              {
+                "name": "identifier",
+                "attributes": {
+                  "type": "ror"
+                },
+                "value": "048a87296"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "namePart",
+                        "value": "Level 1 swe org"
+                      }
+                    ],
+                    "name": "name",
+                    "attributes": {
+                      "type": "corporate"
+                    }
+                  }
+                ],
+                "name": "authority",
+                "attributes": {
+                  "lang": "swe"
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "permissionUnit"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "uu"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/permissionUnit/uu",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "permissionUnit"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva-partOfOrganisation"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-partOfOrganisation",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "validationType"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "divaData"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/divaData",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "dataDivider"
+                  },
+                  {
+                    "name": "id",
+                    "value": "diva-organisation:19263605242540875"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva-organisation"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-organisation",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "type"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "161616"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/user/161616",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "createdBy"
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2025-09-16T11:37:52.359534Z"
+                  },
+                  {
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "tsUpdated",
+                        "value": "2025-09-16T11:37:52.359534Z"
+                      },
+                      {
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "161616"
+                          }
+                        ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/diva/rest/record/user/161616",
+                            "accept": "application/vnd.cora.record+json"
+                          }
+                        },
+                        "name": "updatedBy"
+                      }
+                    ],
+                    "name": "updated"
+                  }
+                ],
+                "name": "recordInfo"
+              }
+            ],
+            "name": "organisation"
+          },
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-organisation/diva-organisation:19263605242540875",
+              "accept": "application/vnd.cora.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-organisation/diva-organisation:19263605242540875/incomingLinks",
+              "accept": "application/vnd.cora.recordList+json"
+            },
+            "update": {
+              "requestMethod": "POST",
+              "rel": "update",
+              "contentType": "application/vnd.cora.recordgroup+json",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-organisation/diva-organisation:19263605242540875",
+              "accept": "application/vnd.cora.record+json"
+            },
+            "index": {
+              "requestMethod": "POST",
+              "rel": "index",
+              "body": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva-organisation"
+                      }
+                    ],
+                    "name": "recordType"
+                  },
+                  {
+                    "name": "recordId",
+                    "value": "diva-organisation:19263605242540875"
+                  },
+                  {
+                    "name": "type",
+                    "value": "index"
+                  }
+                ],
+                "name": "workOrder"
+              },
+              "contentType": "application/vnd.cora.recordgroup+json",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
+              "accept": "application/vnd.cora.record+json"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "diva-organisation",
+    "toNo": "1"
+  }
+}

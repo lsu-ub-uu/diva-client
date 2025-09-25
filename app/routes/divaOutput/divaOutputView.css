@@ -1,3 +1,7 @@
+.diva-output-view-page {
+  display: grid;
+}
+
 .diva-output-view {
   display: grid;
   gap: var(--gap-xxl);
@@ -11,12 +15,6 @@
     flex-direction: column;
     gap: 0;
   }
-}
-
-aside {
-  display: grid;
-  gap: var(--gap);
-  align-content: start;
 }
 
 p,
@@ -41,7 +39,7 @@ h3 {
 article {
   display: grid;
   gap: var(--gap);
-  padding-bottom: var(--gap-xxl);
+  padding-bottom: var(--gap-l);
 
   @media (width >= 800px) {
     border-right: 1px solid var(--color-thin-border);
@@ -51,27 +49,16 @@ article {
 
 dt {
   color: var(--color-label);
-
-  &:not(:first-child) {
-    margin-top: var(--gap-l);
-  }
+  margin-top: var(--gap-l);
 }
 
 dd {
   padding-left: var(--gap);
 }
 
-dd:has(+ dd),
-dd + dd {
+dd:not(.block):has(+ dd),
+dd:not(.block) + dd {
   display: inline;
-}
-
-dd + dd {
-  padding-left: 0;
-
-  &::before {
-    content: ', ';
-  }
 }
 
 .inline-definitions {
@@ -99,6 +86,14 @@ dd + dd {
   }
 }
 
+dd:not(.block) + dd {
+  padding-left: 0;
+
+  &:not(:has(> button))::before {
+    content: ', ';
+  }
+}
+
 .pill-container {
   display: flex;
   flex-wrap: wrap;
@@ -115,22 +110,9 @@ dd + dd {
   border-radius: var(--border-radius);
 }
 
-.sdg-container {
-  list-style: none;
-  display: flex;
-  gap: var(--gap);
-  flex-wrap: wrap;
-}
-
 .sdg-image {
   height: 6rem;
   width: auto;
-}
-
-.location-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-s);
 }
 
 address {
@@ -144,6 +126,48 @@ address {
 
 .download-link {
   display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+dd.block {
+  margin-bottom: var(--gap-s);
+}
+
+.expanded-card {
+  border-left: 2px solid var(--color-card-dark);
+  background: var(--color-card);
+  border-radius: var(--color-border-radius-s);
+  padding: var(--gap-s);
+  margin-bottom: var(--gap-s);
+
+  .name {
+    font-weight: bold;
+  }
+
+  dt:not(:first-child) {
+    margin-top: var(--gap-s);
+  }
+
+  .inline-definitions {
+    row-gap: 0;
+
+    dt {
+      margin-top: 0;
+    }
+  }
+}
+
+.affiliation {
+  margin-top: var(--gap);
+
+  dl {
+    padding-left: var(--gap-l);
+  }
+}
+
+a {
+  display: inline-flex;
   align-items: center;
   gap: var(--gap-s);
 }
