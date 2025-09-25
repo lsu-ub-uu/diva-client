@@ -21,7 +21,7 @@ import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { coraApiUrl } from '@/cora/helper.server';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
@@ -36,7 +36,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 
-  const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);
+  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies,
     recordType,
