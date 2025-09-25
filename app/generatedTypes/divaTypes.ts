@@ -466,8 +466,6 @@ export type OutputTypeCollection =
   | 'conference_proceeding'
   | 'conference_other'
   | 'intellectual-property_patent'
-  | 'intellectual-property_other'
-  | 'other_software'
   | 'diva_degree-project'
   | 'diva_dissertation';
 
@@ -2307,6 +2305,7 @@ export type RoleCollection =
   | 'rce'
   | 'res'
   | 'rsg'
+  | 'rsp'
   | 'sce'
   | 'scl'
   | 'sds'
@@ -2408,7 +2407,7 @@ export interface DateOtherPatentGroup {
 }
 
 export interface RolePatentHolderGroup {
-  role: {
+  roleTerm: {
     value: 'pth';
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };

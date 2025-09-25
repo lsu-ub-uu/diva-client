@@ -1,5 +1,4 @@
 import type { Auth } from '@/auth/Auth';
-import { commitSession, getSession } from '@/auth/sessions.server';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -20,8 +19,8 @@ import { useState } from 'react';
 import type { Route } from '../auth/+types/login';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import css from './login.css?url';
 import { i18nContext } from 'server/i18n';
+import css from './login.css?url';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
@@ -96,12 +95,11 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
 };
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
-  const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
-  const { flashNotification } = context.get(sessionContext);
+  const { flashNotification, setAuth } = context.get(sessionContext);
   const presentationString = form.get('presentation');
 
   const auth = await authenticate(form);
@@ -117,21 +115,12 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
       presentationString
         ? `/login?presentation=${encodeURIComponent(presentationString.toString())}`
         : (returnTo ?? '/'),
-      {
-        headers: {
-          'Set-Cookie': await commitSession(session),
-        },
-      },
     );
   }
 
-  session.set('auth', auth);
+  setAuth(auth);
 
-  return redirect(returnTo ?? '/', {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  return redirect(returnTo ?? '/');
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
