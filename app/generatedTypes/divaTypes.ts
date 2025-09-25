@@ -480,8 +480,6 @@ export type OutputTypeCollection =
   | 'conference_proceeding'
   | 'conference_other'
   | 'intellectual-property_patent'
-  | 'intellectual-property_other'
-  | 'other_software'
   | 'diva_degree-project'
   | 'diva_dissertation';
 
