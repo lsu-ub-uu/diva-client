@@ -1,15 +1,17 @@
 import type {
   NameOrganisationDegreeGrantingInstitutionGroup,
   NameOrganisationGroup,
+  NameOrganisationPatentHolderGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { OpenInNewIcon } from '@/icons';
 
-interface OrganisationProps {
+export interface OrganisationProps {
   organisation:
     | NameOrganisationGroup
-    | NameOrganisationDegreeGrantingInstitutionGroup;
+    | NameOrganisationDegreeGrantingInstitutionGroup
+    | NameOrganisationPatentHolderGroup;
   expanded?: boolean;
 }
 
@@ -57,7 +59,10 @@ const formatOrganisationName = (
   if (organisation.namePart?.value) {
     return organisation.namePart.value;
   }
-  if (organisation.organisation?.displayName) {
+  if (
+    'organisation' in organisation &&
+    organisation.organisation?.displayName
+  ) {
     return organisation.organisation.displayName;
   }
   return '';
@@ -67,7 +72,10 @@ const formatOrganisationRoles = (
   organisation: OrganisationProps['organisation'],
   language: 'en' | 'sv',
 ) => {
-  const roleTerm = organisation.role?.roleTerm;
+  const roleTerm =
+    organisation.role &&
+    'roleTerm' in organisation.role &&
+    organisation.role?.roleTerm;
 
   if (Array.isArray(roleTerm) && roleTerm.length > 0) {
     return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;

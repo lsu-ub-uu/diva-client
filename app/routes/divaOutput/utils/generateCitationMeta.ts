@@ -2,14 +2,13 @@ import type {
   DivaOutput,
   RelatedItemJournalGroup,
 } from '@/generatedTypes/divaTypes';
-import { createTitle } from './createTitle';
-import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import type { MetaDescriptor } from 'react-router';
+import { createTitle } from './createTitle';
 import { formatPersonName } from './formatPersonName';
 
 export const generateCitationMeta = (
   divaOutput: DivaOutput,
-  origin: string,
+  externalSystemUrl: string,
 ): MetaDescriptor[] => {
   const meta = [];
 
@@ -74,23 +73,22 @@ export const generateCitationMeta = (
     });
   }
 
-  const pdfFulltextAttachements = (divaOutput.output.attachment || []).filter(
+  const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
     (attachment) =>
       attachment.type.value === 'fullText' &&
       attachment.attachmentFile.linkedRecord?.binary.master?.master
         ?.mimeType === 'application/pdf',
   );
 
-  pdfFulltextAttachements.forEach((attachment) => {
-    meta.push({
-      name: 'citation_pdf_url',
-      content:
-        origin +
-        createDownloadLinkFromResourceLink(
-          attachment.attachmentFile.linkedRecord?.binary.master!.master,
-        ),
+  pdfFulltextAttachments
+    .map((attachment) => attachment.attachmentFile.linkedRecord.binary)
+    .filter((binary) => binary.recordInfo.visibility.value === 'published')
+    .forEach((binary) => {
+      meta.push({
+        name: 'citation_pdf_url',
+        content: `${externalSystemUrl}/rest/record/binary/${binary.master?.master.id}/${binary.master?.master.name}`,
+      });
     });
-  });
 
   return meta;
 };

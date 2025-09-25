@@ -20,7 +20,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { coraApiUrl } from '@/cora/helper.server';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
@@ -28,6 +28,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { assertDefined } from '@/utils/invariant';
 
 export const loader = async ({
   request,
@@ -38,7 +39,9 @@ export const loader = async ({
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
-  const apiUrl = coraApiUrl(`/record/diva-output/${recordId}`);
+  const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
+  const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
+  assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
 
   const origin = new URL(request.url).origin;
 
@@ -55,6 +58,7 @@ export const loader = async ({
       pageTitle: createTitle(record.data.output.titleInfo),
       breadcrumb: t(record.data.output.titleInfo.title.value),
       apiUrl,
+      externalSystemUrl,
       origin,
     };
   } catch (error) {
@@ -65,17 +69,20 @@ export const loader = async ({
   }
 };
 
-export const meta = ({ data, error }: Route.MetaArgs) => {
+export const meta = ({ loaderData, error }: Route.MetaArgs) => {
   let citationMeta: MetaDescriptor[] = [];
   try {
-    if (data) {
-      citationMeta = generateCitationMeta(data?.record.data, data?.origin);
+    if (loaderData) {
+      citationMeta = generateCitationMeta(
+        loaderData?.record.data,
+        loaderData.externalSystemUrl,
+      );
     }
   } catch (error) {
     console.error('Failed to generate citation meta:', error);
   }
   return [
-    { title: error ? getMetaTitleFromError(error) : data?.pageTitle },
+    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
     ...citationMeta,
   ];
 };

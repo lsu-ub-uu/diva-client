@@ -23,7 +23,7 @@ import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecor
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { coraApiUrl } from '@/cora/helper.server';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
@@ -32,10 +32,10 @@ import { performSearch } from '@/routes/record/utils/performSearch';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Await, data } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
 import { i18nContext } from 'server/i18n';
+import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -62,7 +62,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   const apiUrl =
     query &&
     encodeURI(
-      coraApiUrl(
+      externalCoraApiUrl(
         `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
       ),
     );

@@ -2,6 +2,7 @@ import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
 import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useTranslation } from 'react-i18next';
+import { formatIsbnIsmnLabel } from '../utils/format';
 
 interface IdentifiersProps {
   output: OutputUpdateGroup;
@@ -11,8 +12,8 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
   return (
-    <>
-      <h2>{t('divaClient_identifierText')}</h2>
+    <section aria-labelledby='identifiers-heading'>
+      <h2 id='identifiers-heading'> {t('divaClient_identifierText')}</h2>
       <dl className='inline-definitions'>
         <Term
           label={t('divaClient_divaIdText')}
@@ -25,7 +26,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         {output.identifier_type_isbn?.map((identifier, index) => (
           <Term
             key={index}
-            label={`${output.identifier_type_isbn?.[0]?.__text[language]} (${identifier._displayLabel})`}
+            label={formatIsbnIsmnLabel(identifier, language)}
             value={identifier.value}
           />
         ))}
@@ -37,7 +38,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         {output.identifier_type_ismn?.map((identifier, index) => (
           <Term
             key={index}
-            label={`${identifier.__text[language]} (${identifier._displayLabel})`}
+            label={formatIsbnIsmnLabel(identifier, language)}
             value={identifier.value}
           />
         ))}
@@ -81,6 +82,6 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
           value={output.identifier_type_patentNumber?.value}
         />
       </dl>
-    </>
+    </section>
   );
 };

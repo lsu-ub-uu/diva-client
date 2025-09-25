@@ -1,11 +1,10 @@
 import { ShowMoreOrLessButton } from '@/components/CollapsableText/ShowMoreOrLessButton';
-import type { NameOrganisationGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useId, useState } from 'react';
-import { Organisation } from './Organisation';
+import { Organisation, type OrganisationProps } from './Organisation';
 
 interface OrganisationsProps {
-  organisations?: NameOrganisationGroup[];
+  organisations?: OrganisationProps['organisation'][];
 }
 
 export const Organisations = ({ organisations }: OrganisationsProps) => {
@@ -25,7 +24,11 @@ export const Organisations = ({ organisations }: OrganisationsProps) => {
     <>
       <dt>{organisations?.[0]?.__text[language]}</dt>
       {organisationsToShow?.map((organisation, index) => (
-        <dd key={index} className='block' id={`organisation-${id}-${index}`}>
+        <dd
+          key={index}
+          className={expanded ? 'block' : ''}
+          id={`organisation-${id}-${index}`}
+        >
           <Organisation organisation={organisation} expanded={expanded} />
         </dd>
       ))}
@@ -44,10 +47,10 @@ export const Organisations = ({ organisations }: OrganisationsProps) => {
   );
 };
 
-const hasDetails = (organisation: NameOrganisationGroup) => {
+const hasDetails = (organisation: OrganisationProps['organisation']) => {
   return (
     !!organisation.role ||
     !!organisation.identifier_type_ror ||
-    !!organisation.description
+    ('description' in organisation && !!organisation.description)
   );
 };
