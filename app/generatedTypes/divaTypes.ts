@@ -2206,7 +2206,7 @@ export type TypeOfAwardCollection =
 export type CurrencyCollection = 'eur' | 'sek';
 
 export interface DivaOutput extends BFFDataRecordData {
-  output: OutputUpdateGroup;
+  output: DivaOutputGroup;
 }
 
 export type VisibilityCollection = 'published' | 'unpublished' | 'hidden';
@@ -3003,7 +3003,7 @@ export interface RelatedItemBookGroup {
   book?: {
     value: string;
     linkedRecord: {
-      output: OutputUpdateGroup;
+      output: DivaOutputGroup;
     };
 
     __text: { sv: string; en: string };
@@ -3035,7 +3035,7 @@ export interface RelatedItemConferencePublicationGroup {
   proceeding?: {
     value: string;
     linkedRecord: {
-      output: OutputUpdateGroup;
+      output: DivaOutputGroup;
     };
 
     __text: { sv: string; en: string };
@@ -3087,6 +3087,8 @@ export interface RelatedItemResearchDataGroup {
   __text: { sv: string; en: string };
 }
 
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
+
 export interface DivaProject extends BFFDataRecordData {
   project: ProjectUpdateGroup;
 }
@@ -3095,7 +3097,7 @@ export interface RelatedOutputGroup {
   output?: {
     value: string;
     linkedRecord: {
-      output: OutputUpdateGroup;
+      output: DivaOutputGroup;
     };
 
     __text: { sv: string; en: string };
@@ -3182,6 +3184,7 @@ export interface RelatedItemProjectGroup {
   };
   titleInfo?: TitleInfoLangSweEngGroup;
   _type: 'project';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3239,7 +3242,7 @@ export interface RelatedOutputRetractedGroup {
   output?: {
     value: string;
     linkedRecord: {
-      output: OutputUpdateGroup;
+      output: DivaOutputGroup;
     };
 
     __text: { sv: string; en: string };
@@ -3252,7 +3255,7 @@ export interface RelatedOutputConstituentGroup {
   output?: {
     value: string;
     linkedRecord: {
-      output: OutputUpdateGroup;
+      output: DivaOutputGroup;
     };
 
     __text: { sv: string; en: string };
@@ -3501,7 +3504,7 @@ export interface AttachmentGroup {
   __text: { sv: string; en: string };
 }
 
-export interface OutputUpdateGroup {
+export interface DivaOutputGroup {
   recordInfo: RecordInfoOutputUpdateGroup;
   genre_type_outputType: {
     value: OutputTypeCollection;

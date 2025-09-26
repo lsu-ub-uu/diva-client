@@ -1,5 +1,5 @@
 import type {
-  OutputUpdateGroup,
+  DivaOutputGroup,
   SubjectSubjectGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
@@ -10,7 +10,7 @@ import { SdgImage } from './SdgImage';
 import { SearchLinkList } from './SearchLinkList';
 
 interface ClassificationsProps {
-  output: OutputUpdateGroup;
+  output: DivaOutputGroup;
 }
 
 export const Classifications = ({ output }: ClassificationsProps) => {
