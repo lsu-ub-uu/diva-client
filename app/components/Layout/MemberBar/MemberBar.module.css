@@ -20,7 +20,7 @@
 .member-bar {
   padding: 0 var(--gap-xl);
   display: flex;
-  height: var(--gap-xxl);
+  height: var(--header-height);
   gap: var(--gap-xxl);
   align-items: center;
 

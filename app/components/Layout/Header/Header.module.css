@@ -27,6 +27,10 @@
   padding: var(--gap);
   flex-direction: column;
   width: 100px;
+  max-height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  scrollbar-width: thin;
+
   @media (width >= 600px) {
     .header-menu-toggle-button {
       display: none;
