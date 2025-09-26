@@ -158,20 +158,24 @@ export const OutputView = ({ data }: OutputViewProps) => {
             <Series key={index} series={series} />
           ))}
 
-          <section>
-            <h2>{t('divaClient_relatedPublicationsText')}</h2>
-            <dl>
-              {output.related?.map((relatedOutput, index) => (
-                <RelatedOutput key={index} relatedOutput={relatedOutput} />
-              ))}
-              {output.related_type_constituent?.map((constituent, index) => (
-                <RelatedOutput key={index} relatedOutput={constituent} />
-              ))}
-              {output.related_type_retracted?.map((retracted, index) => (
-                <RelatedOutput key={index} relatedOutput={retracted} />
-              ))}
-            </dl>
-          </section>
+          {(output.related ||
+            output.related_type_constituent ||
+            output.related_type_retracted) && (
+            <section>
+              <h2>{t('divaClient_relatedPublicationsText')}</h2>
+              <dl>
+                {output.related?.map((relatedOutput, index) => (
+                  <RelatedOutput key={index} relatedOutput={relatedOutput} />
+                ))}
+                {output.related_type_constituent?.map((constituent, index) => (
+                  <RelatedOutput key={index} relatedOutput={constituent} />
+                ))}
+                {output.related_type_retracted?.map((retracted, index) => (
+                  <RelatedOutput key={index} relatedOutput={retracted} />
+                ))}
+              </dl>
+            </section>
+          )}
         </article>
       </main>
       <aside>
