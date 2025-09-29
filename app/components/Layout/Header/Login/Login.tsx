@@ -42,7 +42,7 @@ import styles from './Login.module.css';
 import { useHydrated } from '@/utils/useHydrated';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 
-export default function User() {
+export default function Login() {
   const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const user = useUser();

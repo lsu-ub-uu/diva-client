@@ -16,11 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { type action } from '@/root';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 import { useCallback, useEffect, useRef } from 'react';
-import { useFetcher, useRevalidator } from 'react-router';
+import { useRevalidator } from 'react-router';
 
 /**
  * How long before token expiry to start the renewal process
@@ -41,7 +40,6 @@ const REVALIDATE_TIME_BUFFER = 5000;
 
 export const useSessionAutoRenew = () => {
   const user = useUser();
-  const { submit } = useFetcher<typeof action>();
   const renewTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
@@ -55,13 +53,13 @@ export const useSessionAutoRenew = () => {
    */
   const renewAuthToken = useCallback(async () => {
     if (await isNewestWindow()) {
-      submit({ intent: 'renewAuthToken' }, { method: 'POST' });
+      revalidate();
     } else {
       setTimeout(() => {
         revalidate();
       }, REVALIDATE_TIME_BUFFER);
     }
-  }, [isNewestWindow, submit, revalidate]);
+  }, [isNewestWindow, revalidate]);
 
   useEffect(() => {
     if (!validUntil) {
@@ -69,7 +67,6 @@ export const useSessionAutoRenew = () => {
     }
     const timeUntilNextRenew = getTimeUntilNextRenew(validUntil);
     renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRenew);
-
     return () => {
       if (renewTimeout.current) {
         clearTimeout(renewTimeout.current);

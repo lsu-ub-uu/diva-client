@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { renewAuth } from '@/auth/renewAuth.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -62,10 +61,11 @@ import {
 import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
 
 const { MODE } = import.meta.env;
 
-export const middleware = [sessionMiddleware];
+export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
@@ -89,17 +89,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   };
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const session = context.get(sessionContext);
   const intent = formData.get('intent');
 
   if (intent === 'changeLanguage') {
     return await changeLanguage(formData);
-  }
-
-  if (intent === 'renewAuthToken') {
-    return await renewAuth(context.get(i18nContext), session);
   }
 
   if (intent === 'changeColorScheme') {
