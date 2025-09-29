@@ -9,7 +9,7 @@
   grid-template-columns: 3fr 2fr;
   font-variant-numeric: tabular-nums;
   max-width: 2000px;
-  margin-right: auto;
+  padding-bottom: var(--gap-xl);
 
   @media (width < 1200px) {
     display: flex;
@@ -44,10 +44,12 @@ article {
   display: grid;
   gap: var(--gap);
   padding-bottom: var(--gap-l);
+}
 
+aside {
   @media (width >= 1200px) {
-    border-right: 1px solid var(--color-thin-border);
-    padding-right: var(--gap-xxl);
+    border-left: 1px solid var(--color-thin-border);
+    padding-left: var(--gap-xxl);
   }
 }
 

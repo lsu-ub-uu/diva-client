@@ -16,7 +16,7 @@ import {
   getNameFromMetadata,
 } from '../generateTypesForRecordTypes';
 
-describe('generateValidationTypeInterface', () => {
+describe('generateTypesForRecordTypes', () => {
   it('should generate an interface', async () => {
     const recordTypePool = listToPool<BFFRecordType>([
       {
@@ -215,6 +215,40 @@ describe('getNameFromMetadata', () => {
 
     expect(getNameFromMetadata(metadataPool, metadata)).toEqual(
       "'foo-bar_type_baz'",
+    );
+  });
+
+  it('returns nameInData with two finalValue attributes', () => {
+    const metadataPool = listToPool<BFFMetadata>([
+      {
+        id: 'nonFinalValue',
+        nameInData: 'lang',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'finalValue',
+        nameInData: 'type',
+        finalValue: 'baz',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'otherFinalValue',
+        nameInData: 'otherType',
+        finalValue: 'foo',
+      } as BFFMetadataCollectionVariable,
+    ]);
+
+    const metadata = {
+      id: 'foo',
+      nameInData: 'foo-bar',
+      type: 'textVariable',
+      attributeReferences: [
+        { refCollectionVarId: 'nonFinalValue' },
+        { refCollectionVarId: 'finalValue' },
+        { refCollectionVarId: 'otherFinalValue' },
+      ],
+    } as BFFMetadataTextVariable;
+
+    expect(getNameFromMetadata(metadataPool, metadata)).toEqual(
+      "'foo-bar_otherType_foo_type_baz'",
     );
   });
 });
