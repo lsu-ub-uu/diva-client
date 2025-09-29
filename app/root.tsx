@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isAuthExpired, renewAuth } from '@/auth/renewAuth.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -69,10 +68,8 @@ const { MODE } = import.meta.env;
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { t } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
-  const { auth, notification, flashNotification, removeAuth } =
-    context.get(sessionContext);
+  const { auth, notification } = context.get(sessionContext);
   const theme = getThemeFromHostname(request, dependencies);
 
   const loginUnits = getLoginUnits(dependencies);
@@ -80,16 +77,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
-
-  const authExpired = auth && isAuthExpired(auth);
-  if (authExpired) {
-    removeAuth();
-    flashNotification({
-      severity: 'info',
-      summary: t('divaClient_sessionExpiredSummaryText'),
-      details: t('divaClient_sessionExpiredDetailsText'),
-    });
-  }
 
   return {
     user,
@@ -99,21 +86,15 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     recordTypes,
     userPreferences,
     notification,
-    authExpired: authExpired,
   };
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const session = context.get(sessionContext);
   const intent = formData.get('intent');
 
   if (intent === 'changeLanguage') {
     return await changeLanguage(formData);
-  }
-
-  if (intent === 'renewAuthToken') {
-    return await renewAuth(context.get(i18nContext), session);
   }
 
   if (intent === 'changeColorScheme') {

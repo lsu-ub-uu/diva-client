@@ -42,7 +42,7 @@ import styles from './Login.module.css';
 import { useHydrated } from '@/utils/useHydrated';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 
-export default function Login({ expired }: { expired?: boolean }) {
+export default function Login() {
   const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const user = useUser();
@@ -90,7 +90,7 @@ export default function Login({ expired }: { expired?: boolean }) {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
 
-  if (!user || expired) {
+  if (!user) {
     return (
       <div className={styles['login']}>
         <Menu>
