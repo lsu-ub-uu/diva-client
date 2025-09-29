@@ -36,7 +36,7 @@
     /* Border radius */
     --border-radius: 8px;
     --border-radius-s: 4px;
-    --header-height: var(--gap-xxl);
+    --header-height: 80px;
 
     /* Shadows */
     --elevation:
