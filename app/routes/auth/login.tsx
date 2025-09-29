@@ -118,6 +118,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
     );
   }
 
+  console.log('Authenticated successfully', JSON.stringify(auth, null, 2));
   setAuth(auth);
 
   return redirect(returnTo ?? '/');
