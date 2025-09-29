@@ -30,11 +30,16 @@ export const handleRenew = async (
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
   const { t } = i18n;
   if (!auth) {
+    console.log('No auth present, skipping renew check');
     return;
   }
 
   /** If an expired token is detected, remove it and notify the user */
   if (isAuthExpired(auth)) {
+    console.log(
+      'Auth token expired, removing auth',
+      JSON.stringify(auth, null, 2),
+    );
     flashNotification({
       severity: 'info',
       summary: t('divaClient_sessionExpiredSummaryText'),
@@ -44,12 +49,25 @@ export const handleRenew = async (
   }
 
   if (isAuthAboutToExpire(auth)) {
+    console.log(
+      'Auth token about to expire, renewing',
+      JSON.stringify(auth, null, 2),
+    );
     try {
       const renewedAuth = await renewAuthToken(auth);
+      console.log(
+        'Auth token renewed successfully',
+        JSON.stringify(renewedAuth, null, 2),
+      );
       setAuth(renewedAuth);
     } catch (error) {
       console.error('Failed to renew auth token', error);
     }
+  } else {
+    console.log(
+      'Auth token valid, no renew needed',
+      JSON.stringify(auth, null, 2),
+    );
   }
 };
 
