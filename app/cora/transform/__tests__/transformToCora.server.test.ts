@@ -114,6 +114,7 @@ import {
   createRecordLink,
   findChildrenAttributes,
   generateAtomicValue,
+  getFieldMetadata,
   isRepeating,
   isVariable,
   removeAttributeFromName,
@@ -1644,6 +1645,63 @@ describe('transformToCora', () => {
         ],
       });
       expect(actual).toBe(false);
+    });
+  });
+
+  describe('getFieldMetadata', () => {
+    const lookup: Record<string, FormMetaData> = {
+      'someGroup.someChildGroup': {
+        name: 'someChildGroup',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      },
+      'someGroup.variable': {
+        name: 'variable',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      },
+      'someGroup.someChildGroup.variable': {
+        name: 'variable',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      },
+      someGroup: {
+        name: 'someGroup',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      },
+    };
+
+    it('returns fieldMetadata for one nested variable', () => {
+      const actual = getFieldMetadata(lookup, 'someGroup.variable');
+      expect(actual).toStrictEqual({
+        name: 'variable',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      });
+    });
+
+    it('returns fieldMetadata for one group', () => {
+      const actual = getFieldMetadata(lookup, 'someGroup');
+      expect(actual).toStrictEqual({
+        name: 'someGroup',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      });
+    });
+
+    it('returns fieldMetadata for one nested group', () => {
+      const actual = getFieldMetadata(lookup, 'someGroup.someChildGroup');
+      expect(actual).toStrictEqual({
+        name: 'someChildGroup',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+      });
+    });
+
+    it('returns fieldMetadata for one nested variable', () => {
+      const actual = getFieldMetadata(lookup, 'glorp');
+      expect(actual).toStrictEqual(undefined);
     });
   });
 });
