@@ -114,7 +114,6 @@ import {
   createRecordLink,
   findChildrenAttributes,
   generateAtomicValue,
-  getFieldMetadata,
   isRepeating,
   isVariable,
   removeAttributeFromName,
