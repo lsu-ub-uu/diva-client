@@ -91,8 +91,12 @@ export const transformEntry = ({
     return { data: undefined, hasValuableData: false };
   }
 
-  const fieldMetadata = removeEmpty(getFieldMetadata(lookup, path));
+  const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
+
+  if (!fieldMetadata) {
+    return { data: undefined, hasValuableData: false };
+  }
 
   if (isRepeating(value) && value !== undefined) {
     return transformRepeating(fieldMetadata, value, lookup, key, path);
@@ -122,16 +126,11 @@ export const transformEntry = ({
   );
 };
 
-export const getFieldMetadata = (
+const getFieldMetadata = (
   lookup: Record<string, FormMetaData>,
   currentPath: string,
 ): FormMetaData | undefined => {
-  const fieldMetadata = lookup[currentPath];
-  if (fieldMetadata === undefined) {
-    return undefined;
-  }
-  /*   console.log(lookup); */
-  return fieldMetadata;
+  return lookup[currentPath];
 };
 
 export const findChildrenAttributes = (obj: any) => {

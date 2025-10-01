@@ -1524,6 +1524,41 @@ describe('transformToCora', () => {
 
       expect(transformData[0]).toStrictEqual(expected);
     });
+
+    it('should ignore fields not present in metadata', () => {
+      const lookup: Record<string, FormMetaData> = {
+        'root.child': {
+          name: 'child',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+        },
+        root: {
+          name: 'root',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+        },
+      };
+
+      const payload = {
+        root: {
+          child: {
+            value: 'some value',
+          },
+          someUnknownField: {
+            value: 'some other value',
+          },
+        },
+      };
+
+      const result = transformToCoraData(lookup, payload);
+
+      expect(result).toStrictEqual([
+        {
+          name: 'root',
+          children: [{ name: 'child', value: 'some value' }],
+        },
+      ]);
+    });
   });
 
   it('transforms a binary record', () => {
@@ -1645,63 +1680,6 @@ describe('transformToCora', () => {
         ],
       });
       expect(actual).toBe(false);
-    });
-  });
-
-  describe('getFieldMetadata', () => {
-    const lookup: Record<string, FormMetaData> = {
-      'someGroup.someChildGroup': {
-        name: 'someChildGroup',
-        type: 'group',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      },
-      'someGroup.variable': {
-        name: 'variable',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      },
-      'someGroup.someChildGroup.variable': {
-        name: 'variable',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      },
-      someGroup: {
-        name: 'someGroup',
-        type: 'group',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      },
-    };
-
-    it('returns fieldMetadata for one nested variable', () => {
-      const actual = getFieldMetadata(lookup, 'someGroup.variable');
-      expect(actual).toStrictEqual({
-        name: 'variable',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      });
-    });
-
-    it('returns fieldMetadata for one group', () => {
-      const actual = getFieldMetadata(lookup, 'someGroup');
-      expect(actual).toStrictEqual({
-        name: 'someGroup',
-        type: 'group',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      });
-    });
-
-    it('returns fieldMetadata for one nested group', () => {
-      const actual = getFieldMetadata(lookup, 'someGroup.someChildGroup');
-      expect(actual).toStrictEqual({
-        name: 'someChildGroup',
-        type: 'group',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      });
-    });
-
-    it('returns fieldMetadata for one nested variable', () => {
-      const actual = getFieldMetadata(lookup, 'glorp');
-      expect(actual).toStrictEqual(undefined);
     });
   });
 });

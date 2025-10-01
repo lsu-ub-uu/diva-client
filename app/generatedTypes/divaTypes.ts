@@ -2872,6 +2872,8 @@ export interface DefenceGroup {
   __text: { sv: string; en: string };
 }
 
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
+
 export interface DivaJournal extends BFFDataRecordData {
   journal: JournalUpdateGroup;
 }
@@ -2964,6 +2966,7 @@ export interface RelatedItemJournalGroup {
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2996,6 +2999,7 @@ export interface RelatedItemSeriesGroup {
   };
   partNumber?: { value: string; __text: { sv: string; en: string } };
   _type: 'series';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3086,8 +3090,6 @@ export interface RelatedItemResearchDataGroup {
   _type: 'researchData';
   __text: { sv: string; en: string };
 }
-
-export type RelatedItemOtherTypeCollection = 'link' | 'text';
 
 export interface DivaProject extends BFFDataRecordData {
   project: ProjectUpdateGroup;
