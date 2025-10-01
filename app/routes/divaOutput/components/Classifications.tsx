@@ -53,9 +53,10 @@ export const Classifications = ({ output }: ClassificationsProps) => {
         <SearchLinkList
           pill
           heading={output.subject_authority_diva.__text[language]}
-          searchTerm='topicSearchTerm'
+          searchTerm='subjectTopicSearchTerm'
           items={output.subject_authority_diva.topic.map((topic) => ({
             label: getSubjectTopicName(topic, language) || topic.value,
+            href: `diva-subject_${topic.value}`,
           }))}
         />
       )}
@@ -73,11 +74,12 @@ export const Classifications = ({ output }: ClassificationsProps) => {
         <SearchLinkList
           pill
           heading={output.localGenericMarkup[0].__text[language]}
-          searchTerm='localGenericMarkupSearchTerm'
+          searchTerm='localGenericMarkupLinkSearchTerm'
           items={output.localGenericMarkup.map((markup, index) => ({
             key: index,
             label:
               markup.linkedRecord?.localGenericMarkup?.localGenericMarkup.value,
+            href: `diva-localGenericMarkup_${markup.value}`,
           }))}
         />
       )}
