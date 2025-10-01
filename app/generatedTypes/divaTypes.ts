@@ -2534,8 +2534,8 @@ export interface LocationOrderLinkGroup {
 export type AcademicSemesterCollection = 'ht' | 'vt';
 
 export interface AcademicSemesterGroup {
-  year?: { value: string; __text: { sv: string; en: string } };
-  academicSemester?: {
+  year: { value: string; __text: { sv: string; en: string } };
+  academicSemester: {
     value: AcademicSemesterCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
@@ -2709,7 +2709,7 @@ export interface StudentDegreeGroup {
 }
 
 export interface NameOrganisationExternalCollaborationGroup {
-  namePart?: { value: string; __text: { sv: string; en: string } }[];
+  namePart: { value: string; __text: { sv: string; en: string } }[];
   __text: { sv: string; en: string };
 }
 
@@ -2846,8 +2846,8 @@ export interface NamePersonalOpponentGroup {
 
 export interface DateOtherPresentationGroup {
   year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
+  month: { value: string; __text: { sv: string; en: string } };
+  day: { value: string; __text: { sv: string; en: string } };
   hh?: { value: string; __text: { sv: string; en: string } };
   mm?: { value: string; __text: { sv: string; en: string } };
   _type: 'presentation';
@@ -2855,22 +2855,24 @@ export interface DateOtherPresentationGroup {
 }
 
 export interface PresentationDivaGroup {
-  language?: LanguageGroup;
-  dateOther_type_presentation?: DateOtherPresentationGroup;
-  location?: { value: string; __text: { sv: string; en: string } };
+  language: LanguageGroup;
+  dateOther_type_presentation: DateOtherPresentationGroup;
+  location: { value: string; __text: { sv: string; en: string } };
   address?: { value: string; __text: { sv: string; en: string } };
   place?: PlaceGroup;
   __text: { sv: string; en: string };
 }
 
 export interface DefenceGroup {
-  language?: LanguageGroup;
-  dateOther_type_presentation?: DateOtherPresentationGroup;
-  location?: { value: string; __text: { sv: string; en: string } };
+  language: LanguageGroup;
+  dateOther_type_presentation: DateOtherPresentationGroup;
+  location: { value: string; __text: { sv: string; en: string } };
   address?: { value: string; __text: { sv: string; en: string } };
   place?: PlaceGroup;
   __text: { sv: string; en: string };
 }
+
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
 
 export interface DivaJournal extends BFFDataRecordData {
   journal: JournalUpdateGroup;
@@ -2964,6 +2966,7 @@ export interface RelatedItemJournalGroup {
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2996,6 +2999,7 @@ export interface RelatedItemSeriesGroup {
   };
   partNumber?: { value: string; __text: { sv: string; en: string } };
   _type: 'series';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3086,8 +3090,6 @@ export interface RelatedItemResearchDataGroup {
   _type: 'researchData';
   __text: { sv: string; en: string };
 }
-
-export type RelatedItemOtherTypeCollection = 'link' | 'text';
 
 export interface DivaProject extends BFFDataRecordData {
   project: ProjectUpdateGroup;
@@ -3708,6 +3710,18 @@ export interface DivaOutputGroup {
   __text: { sv: string; en: string };
 }
 
+export interface RecordInfoThemeUpdateGroup {
+  id: { value: string; __text: { sv: string; en: string } };
+  type: { value: 'diva-theme'; __text: { sv: string; en: string } };
+  validationType: { value: 'diva-theme'; __text: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
+  createdBy: { value: string; __text: { sv: string; en: string } };
+  tsCreated: { value: string; __text: { sv: string; en: string } };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string; __text: { sv: string; en: string } };
+  __text: { sv: string; en: string };
+}
+
 export interface ThemeLinkSweGroup {
   url: { value: string; __text: { sv: string; en: string } };
   displayLabel: { value: string; __text: { sv: string; en: string } };
@@ -3741,7 +3755,7 @@ export interface ThemeUpdateGroup {
 
     __text: { sv: string; en: string };
   };
-  recordInfo: RecordInfoGroup;
+  recordInfo: RecordInfoThemeUpdateGroup;
   backgroundColor: { value: string; __text: { sv: string; en: string } };
   textColor: { value: string; __text: { sv: string; en: string } };
   logo?: {

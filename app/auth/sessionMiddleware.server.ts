@@ -6,7 +6,6 @@ import {
   getSessionFromCookie,
   type Notification,
 } from './sessions.server';
-
 export interface SessionContext {
   auth: Auth | undefined;
   setAuth: (auth: Auth) => void;
@@ -23,27 +22,39 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
   next,
 ) => {
   const session = await getSessionFromCookie(request);
-  const auth = session.get('auth');
-  const notification = session.get('notification');
+  let auth = session.get('auth') as Auth | undefined;
+  let notification = session.get('notification');
 
-  // If notification flash message was read, we need to commit the session
-  let shouldCommitSession = notification !== undefined;
+  let shouldCommitSession = false;
   let shouldDestroySession = false;
 
   context.set(sessionContext, {
-    auth,
-    setAuth: (auth: Auth) => {
-      session.set('auth', auth);
+    get auth() {
+      return auth;
+    },
+    setAuth: (newAuth: Auth) => {
+      session.set('auth', newAuth);
+      auth = newAuth;
       shouldCommitSession = true;
     },
     removeAuth: () => {
       session.unset('auth');
+      auth = undefined;
       shouldCommitSession = true;
     },
-    notification,
-    flashNotification: (notification) => {
-      session.flash('notification', notification);
-      shouldCommitSession = true;
+    get notification() {
+      shouldCommitSession = notification !== undefined;
+      return notification;
+    },
+    flashNotification: (flashedNotification) => {
+      if (request.method === 'GET') {
+        // For GET request, just add the notification to the context
+        notification = flashedNotification;
+      } else {
+        // For POST request, flash the notification to the session to be shown in subsequent GET
+        session.flash('notification', flashedNotification);
+        shouldCommitSession = true;
+      }
     },
     destroySession: () => {
       shouldDestroySession = true;
