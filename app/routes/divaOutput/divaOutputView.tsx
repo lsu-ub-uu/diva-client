@@ -42,7 +42,6 @@ export const loader = async ({
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
-  console.log('ORGS', dependencies.organisationPool.entries());
 
   const origin = new URL(request.url).origin;
 
