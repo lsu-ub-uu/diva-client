@@ -157,6 +157,7 @@ export const transformRecordData = (
     },
   };
 };
+
 export const transformDataGroup = (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
@@ -254,7 +255,10 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 const formatLinkedOrganisationName = (
   linkedOrganisationId: string,
   dependencies: Dependencies,
-): string => {
+): string | undefined => {
+  if (!dependencies.organisationPool.has(linkedOrganisationId)) {
+    return undefined;
+  }
   const linkedOrganisation =
     dependencies.organisationPool.get(linkedOrganisationId);
 

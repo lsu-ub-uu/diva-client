@@ -2713,6 +2713,8 @@ export interface NameOrganisationExternalCollaborationGroup {
   __text: { sv: string; en: string };
 }
 
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
+
 export interface RoleDegreeGrantingInstitutionGroup {
   roleTerm: {
     value: 'dgg';
@@ -2739,6 +2741,7 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
     __text: { sv: string; en: string };
   };
   _type: 'corporate';
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2872,8 +2875,6 @@ export interface DefenceGroup {
   __text: { sv: string; en: string };
 }
 
-export type RelatedItemOtherTypeCollection = 'link' | 'text';
-
 export interface DivaJournal extends BFFDataRecordData {
   journal: JournalUpdateGroup;
 }
@@ -2911,19 +2912,19 @@ export interface JournalUpdateGroup {
 }
 
 export interface DetailVolumeGroup {
-  number?: { value: string; __text: { sv: string; en: string } };
+  number: { value: string; __text: { sv: string; en: string } };
   _type: 'volume';
   __text: { sv: string; en: string };
 }
 
 export interface DetailIssueGroup {
-  number?: { value: string; __text: { sv: string; en: string } };
+  number: { value: string; __text: { sv: string; en: string } };
   _type: 'issue';
   __text: { sv: string; en: string };
 }
 
 export interface DetailArtNoGroup {
-  number?: { value: string; __text: { sv: string; en: string } };
+  number: { value: string; __text: { sv: string; en: string } };
   _type: 'artNo';
   __text: { sv: string; en: string };
 }
@@ -3096,7 +3097,7 @@ export interface DivaProject extends BFFDataRecordData {
 }
 
 export interface RelatedOutputGroup {
-  output?: {
+  output: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
@@ -3231,7 +3232,7 @@ export type SfoCollection =
   | 'politicalImportantGeographicalRegions';
 
 export interface RelatedItemInitiativeGroup {
-  initiative?: {
+  initiative: {
     value: SfoCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
@@ -3241,7 +3242,7 @@ export interface RelatedItemInitiativeGroup {
 }
 
 export interface RelatedOutputRetractedGroup {
-  output?: {
+  output: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
@@ -3254,7 +3255,7 @@ export interface RelatedOutputRetractedGroup {
 }
 
 export interface RelatedOutputConstituentGroup {
-  output?: {
+  output: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
@@ -3591,7 +3592,6 @@ export interface DivaOutputGroup {
     __valueText: { sv: string; en: string };
   };
   originInfo: OriginInfoGroup;
-  imprint?: { value: string; __text: { sv: string; en: string } };
   classification_authority_ssif: {
     value: SsifCollection;
     _authority: 'ssif';
