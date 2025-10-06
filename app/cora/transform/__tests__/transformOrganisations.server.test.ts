@@ -44,8 +44,17 @@ describe('transformOrganisations', () => {
       'diva-organisation:1530219071900116',
     );
     expect(firstOrganisation.name.sv).toEqual('Level 1 swe org');
-    expect(firstOrganisation.name.en).toBeUndefined();
+
     expect(firstOrganisation.rorId).toEqual('048a87296');
+  });
+
+  it('Uses falls back to Swedish name if no English name is available', () => {
+    const organisations = transformOrganisations(
+      coraOrganisationListWithOneOrganisation as DataListWrapper,
+    );
+    const firstOrganisation = organisations[0];
+    expect(firstOrganisation.name.sv).toEqual('Level 1 swe org');
+    expect(firstOrganisation.name.en).toEqual('Level 1 swe org');
   });
 
   it('Returns one organisation entry with english name', () => {
@@ -53,6 +62,7 @@ describe('transformOrganisations', () => {
       coraOrganisationListWithOneOrganisationAndEnglishName as DataListWrapper,
     );
     const firstOrganisation = organisations[0];
+    expect(firstOrganisation.name.sv).toEqual('Level 1 swe org');
     expect(firstOrganisation.name.en).toEqual('Level 1 eng org');
   });
 

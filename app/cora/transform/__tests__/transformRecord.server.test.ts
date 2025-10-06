@@ -2785,7 +2785,7 @@ describe('transformRecord', () => {
           someOrganisationRecordLink: {
             value: 'organisation:4',
             displayName: {
-              en: 'Uppsala universitet',
+              en: 'Uppsala University',
               sv: 'Uppsala universitet',
             },
             linkedRecord: { organisation: {} },
@@ -2858,7 +2858,7 @@ describe('transformRecord', () => {
           someOrganisationRecordLink: {
             value: 'organisation:1',
             displayName: {
-              en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala universitet',
+              en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
               sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
             },
             linkedRecord: { organisation: {} },

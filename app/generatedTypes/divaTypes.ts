@@ -803,7 +803,7 @@ export interface RelatedOrganisationParentGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   _type: 'parent';
@@ -816,7 +816,7 @@ export interface RelatedOrganisationEarlierGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   _type: 'earlier';
@@ -897,7 +897,7 @@ export interface SeriesUpdateGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   __text: { sv: string; en: string };
@@ -1525,7 +1525,7 @@ export interface AffiliationGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   name_type_corporate?: NameCorporateGroup;
@@ -1615,7 +1615,7 @@ export interface AffiliationPersonalGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   name_type_corporate?: NameCorporateGroup;
@@ -1673,7 +1673,7 @@ export interface NameOrganisationProjectGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   namePart: { value: string; __text: { sv: string; en: string } };
@@ -2384,7 +2384,7 @@ export interface NameOrganisationGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   role?: RoleGroup;
@@ -2730,7 +2730,7 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
-    displayName: string;
+    displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
   namePart?: { value: string; __text: { sv: string; en: string } };

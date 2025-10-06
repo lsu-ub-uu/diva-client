@@ -6,6 +6,7 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { Person } from '@/routes/divaOutput/components/Person';
 import { render, screen } from '@testing-library/react';
+import i18next from 'i18next';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
@@ -223,7 +224,7 @@ describe('Person', () => {
       affiliation: [
         {
           organisation: {
-            displayName: 'University of Test',
+            displayName: { en: 'University of Test', sv: 'Testuniversitetet' },
             value: '1234',
             linkedRecord: {
               organisation: {
@@ -245,15 +246,16 @@ describe('Person', () => {
     expect(screen.getByText('048a87296')).toBeInTheDocument();
   });
 
-  it('renders linked affiliation display name over name_type_corporate', () => {
+  it('renders a linked affiliation display name in swedish', () => {
+    i18next.changeLanguage('sv');
+
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
       affiliation: [
         {
-          name_type_corporate: { namePart: { value: 'University of Test' } },
           organisation: {
-            displayName: 'Linked University',
+            displayName: { en: 'University of Test', sv: 'Testuniversitetet' },
             value: '1234',
             linkedRecord: {
               organisation: {
@@ -267,7 +269,131 @@ describe('Person', () => {
 
     render(<Person person={person} expanded />);
 
-    expect(screen.queryByText('University of Test')).not.toBeInTheDocument();
+    expect(screen.getByText('Testuniversitetet')).toBeInTheDocument();
+    i18next.changeLanguage('en');
+  });
+
+  it('renders name_type_corporate over linked affiliation display name', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          name_type_corporate: { namePart: { value: 'University of Test' } },
+          organisation: {
+            displayName: { en: 'Linked University', sv: 'Länkad Universitet' },
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+              },
+            },
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded />);
+
+    expect(screen.getByText('University of Test')).toBeInTheDocument();
+    expect(screen.queryByText('Linked University')).not.toBeInTheDocument();
+  });
+
+  it('falls back to linked record name if displayName is undefined', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          organisation: {
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+                authority_lang_swe: {
+                  name_type_corporate: {
+                    namePart: { value: 'Länkad organisation' },
+                  },
+                },
+                variant_lang_eng: {
+                  name_type_corporate: {
+                    namePart: { value: 'Linked University' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded />);
+
     expect(screen.getByText('Linked University')).toBeInTheDocument();
+  });
+
+  it('falls back to linked record name if displayName is undefined when language is Swedish', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          organisation: {
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+                authority_lang_swe: {
+                  name_type_corporate: {
+                    namePart: { value: 'Länkad organisation' },
+                  },
+                },
+                variant_lang_eng: {
+                  name_type_corporate: {
+                    namePart: { value: 'Linked University' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    i18next.changeLanguage('sv');
+
+    render(<Person person={person} expanded />);
+
+    expect(screen.getByText('Länkad organisation')).toBeInTheDocument();
+
+    i18next.changeLanguage('en');
+  });
+
+  it('falls back to swedish linked record name if displayName is undefined and no english name is available', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          organisation: {
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+                authority_lang_swe: {
+                  name_type_corporate: {
+                    namePart: { value: 'Länkad organisation' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded />);
+
+    expect(screen.getByText('Länkad organisation')).toBeInTheDocument();
   });
 });

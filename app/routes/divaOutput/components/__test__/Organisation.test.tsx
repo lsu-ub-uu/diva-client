@@ -3,6 +3,7 @@ import type {
   NameOrganisationGroup,
 } from '@/generatedTypes/divaTypes';
 import { render, screen } from '@testing-library/react';
+import i18n from 'i18next';
 import { describe, expect, it } from 'vitest';
 import { Organisation } from '../Organisation';
 
@@ -75,5 +76,76 @@ describe('Organisation', () => {
     expect(ror).toHaveAttribute('rel', 'noopener noreferrer');
     expect(screen.getByText('Description')).toBeInTheDocument();
     expect(screen.getByText('A standalone organisation')).toBeInTheDocument();
+  });
+
+  it('renders organisation displayName for linked organisation when not expanded', () => {
+    const organisation = {
+      organisation: {
+        displayName: {
+          sv: 'Uppsala universitet',
+          en: 'Uppsala university',
+        },
+      },
+    } as NameOrganisationGroup;
+
+    render(<Organisation organisation={organisation} />);
+
+    expect(screen.getByText('Uppsala university')).toBeInTheDocument();
+  });
+
+  it('renders organisation displayName for linked organisation when expanded', () => {
+    const organisation = {
+      organisation: {
+        displayName: {
+          sv: 'Uppsala universitet',
+          en: 'Uppsala university',
+        },
+      },
+    } as NameOrganisationGroup;
+
+    render(<Organisation organisation={organisation} expanded />);
+
+    expect(screen.getByText('Uppsala university')).toBeInTheDocument();
+  });
+
+  it('renders swedish name when swedish', () => {
+    i18n.changeLanguage('sv');
+    const organisation = {
+      organisation: {
+        displayName: {
+          sv: 'Uppsala universitet',
+          en: 'Uppsala university',
+        },
+      },
+    } as NameOrganisationGroup;
+
+    render(<Organisation organisation={organisation} expanded />);
+
+    expect(screen.getByText('Uppsala universitet')).toBeInTheDocument();
+    i18n.changeLanguage('en');
+  });
+
+  it('renders linked organisation name when display name is undefined', () => {
+    i18n.changeLanguage('sv');
+    const organisation = {
+      organisation: {
+        displayName: undefined,
+        linkedRecord: {
+          organisation: {
+            authority_lang_swe: {
+              name_type_corporate: {
+                namePart: {
+                  value: 'Länkad organisation',
+                },
+              },
+            },
+          },
+        },
+      },
+    } as NameOrganisationGroup;
+
+    render(<Organisation organisation={organisation} expanded />);
+
+    expect(screen.getByText('Länkad organisation')).toBeInTheDocument();
   });
 });

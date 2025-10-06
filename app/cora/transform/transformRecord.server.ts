@@ -279,15 +279,17 @@ const formatLinkedOrganisationName = (
   const linkedOrganisation =
     dependencies.organisationPool.get(linkedOrganisationId);
 
+  const organisationName = linkedOrganisation.name[lang];
+
   if (linkedOrganisation.parentOrganisationId) {
-    return `${linkedOrganisation.name[lang]}, ${formatLinkedOrganisationName(
+    return `${organisationName}, ${formatLinkedOrganisationName(
       linkedOrganisation.parentOrganisationId,
       lang,
       dependencies,
     )}`;
   }
 
-  return linkedOrganisation.name.sv;
+  return organisationName;
 };
 
 const transformLinkedRecord = (

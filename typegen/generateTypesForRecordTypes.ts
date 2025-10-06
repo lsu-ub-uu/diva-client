@@ -135,7 +135,7 @@ function createRecordLinkType(
       linkedRecord: { 
         ${getNameFromMetadata(metadataPool, linkedRecordMetadataGroup)}: ${linkedRecordTypeName};
       };
-      ${linkedRecordType.id === 'diva-organisation' ? 'displayName: string;' : ''}
+      ${linkedRecordType.id === 'diva-organisation' ? 'displayName?: { sv: string; en: string; };' : ''}
       ${attributes}
     }`;
 }

@@ -183,8 +183,8 @@ describe('generateTypesForRecordTypes', () => {
         metadataId: 'metadataGroupId',
       } as BFFRecordType,
       {
-        id: 'anotherRecordTypeId',
-        metadataId: 'anotherMetadataGroupId',
+        id: 'diva-organisation',
+        metadataId: 'organisationGroup',
       } as BFFRecordType,
     ]);
 
@@ -195,54 +195,35 @@ describe('generateTypesForRecordTypes', () => {
         nameInData: 'root',
         children: [
           {
-            childId: 'fooVar',
-            repeatMin: '0',
-            repeatMax: '1',
-          },
-          {
-            childId: 'barGroup',
+            childId: 'organisationRecordLink',
             repeatMin: '1',
             repeatMax: '1',
           },
-          { childId: 'aRecordLink', repeatMin: '1', repeatMax: '1' },
         ],
       } as BFFMetadataGroup,
       {
-        id: 'aRecordLink',
-        nameInData: 'anotherRecord',
-        linkedRecordType: 'anotherRecordTypeId',
+        id: 'organisationRecordLink',
+        nameInData: 'organisation',
+        linkedRecordType: 'diva-organisation',
         type: 'recordLink',
       } as BFFMetadataRecordLink,
       {
-        id: 'fooVar',
-        nameInData: 'foo',
-        type: 'textVariable',
-        attributeReferences: [{ refCollectionVarId: 'langVar' }],
-      } as BFFMetadataTextVariable,
-      {
-        id: 'barGroup',
-        nameInData: 'bar',
+        id: 'organisationGroup',
         type: 'group',
-        attributeReferences: [{ refCollectionVarId: 'typeVar' }],
+        nameInData: 'organisation',
         children: [
           {
-            childId: 'bazVar',
-            repeatMin: '0',
-            repeatMax: 'X',
+            childId: 'nameVar',
+            repeatMin: '1',
+            repeatMax: '1',
           },
         ],
       } as BFFMetadataGroup,
       {
-        id: 'bazVar',
-        nameInData: 'baz',
+        id: 'nameVar',
+        nameInData: 'name',
         type: 'textVariable',
       } as BFFMetadataTextVariable,
-      {
-        id: 'typeVar',
-        nameInData: 'type',
-        type: 'collectionVariable',
-        finalValue: 'code',
-      } as BFFMetadataCollectionVariable,
     ]);
 
     const actual = generateTypesForRecordTypes(recordTypePool, metadataPool, [
@@ -253,37 +234,27 @@ describe('generateTypesForRecordTypes', () => {
       export interface RecordTypeId extends BFFDataRecordData {
         root: MetadataGroupId;
       }
-      
-      export interface BarGroup {
-        baz?: { value: string; __text: { sv: string; en: string } }[];
-        _type: "code";
+
+      export interface DivaOrganisation extends BFFDataRecordData {
+        organisation: OrganisationGroup;
+      }
+
+      export interface OrganisationGroup {
+        name: { value: string; __text: { sv: string; en: string } };
         __text: { sv: string; en: string };
       }
 
-       export interface AnotherRecordTypeId extends BFFDataRecordData {
-         anotherRoot: AnotherMetadataGroupId;
-       }
-      
-       export interface MetadataGroupId {
-         foo?: {
-           value: string;
-           _lang: LangCollection;
-           __text: { sv: string; en: string };
-         };
-         bar_type_code: BarGroup;
-         anotherRecord: {
-           value: string;
-           linkedRecord: {
-             anotherRoot: AnotherMetadataGroupId;
-           };
-           displayName: {
-              en: 'someEnglishOrganisationName',
-              sv: 'someSwedishOrganisationName',
-            }, 
-           __text: { sv: string; en: string };
-         };
-         __text: { sv: string; en: string };
-        }
+      export interface MetadataGroupId {
+        organisation: {
+          value: string;
+          linkedRecord: {
+            organisation: OrganisationGroup;
+          };
+          displayName?: { sv: string; en: string };
+          __text: { sv: string; en: string };
+        };
+        __text: { sv: string; en: string };
+      }
     `;
 
     expect(await format(actual, { parser: 'typescript' })).toEqual(
