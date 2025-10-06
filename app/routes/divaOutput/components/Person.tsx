@@ -126,13 +126,42 @@ const formatAffiliationName = (
   affiliation: AffiliationPersonalGroup,
   language: 'sv' | 'en',
 ) => {
-  const affiliationName = affiliation.name_type_corporate?.namePart?.value;
-  const linkedOrganisationName = affiliation.organisation?.displayName;
-
-  const name = affiliationName || linkedOrganisationName || '';
-  return [name, affiliation.country?.__valueText?.[language]]
+  return [
+    getAffiliationName(affiliation, language),
+    affiliation.country?.__valueText?.[language],
+  ]
     .filter(Boolean)
     .join(', ');
+};
+
+const getAffiliationName = (
+  affiliation: AffiliationPersonalGroup,
+  language: 'sv' | 'en',
+) => {
+  const affiliationName = affiliation.name_type_corporate?.namePart?.value;
+  const linkedOrganisationDisplayName =
+    affiliation.organisation?.displayName?.[language];
+  const linkedRecordSwedishName =
+    affiliation.organisation?.linkedRecord?.organisation?.authority_lang_swe
+      ?.name_type_corporate?.namePart?.value;
+  const linkedRecordEnglishName =
+    affiliation.organisation?.linkedRecord?.organisation?.variant_lang_eng
+      ?.name_type_corporate?.namePart?.value;
+
+  if (affiliationName) {
+    return affiliationName;
+  }
+
+  if (linkedOrganisationDisplayName) {
+    return linkedOrganisationDisplayName;
+  }
+  if (language === 'en' && linkedRecordEnglishName) {
+    return linkedRecordEnglishName;
+  }
+  if (linkedRecordSwedishName) {
+    return linkedRecordSwedishName;
+  }
+  return '';
 };
 
 const Affiliation = ({
@@ -146,7 +175,7 @@ const Affiliation = ({
     return (
       <>
         <div className='affiliation'>
-          <span>{affiliation.organisation.displayName}</span>
+          <span>{formatAffiliationName(affiliation, language)}</span>
           <dl className='affiliation inline-definitions'>
             {affiliation.organisation.linkedRecord.organisation
               .identifier_type_ror && (

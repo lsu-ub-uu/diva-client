@@ -63,9 +63,11 @@ const getParentOrganisationId = (
 };
 
 const getName = (organisationDataGroup: DataGroup) => {
+  const swedishName = getSwedishName(organisationDataGroup);
+  const englishName = getEnglishName(organisationDataGroup);
   return {
-    sv: getSwedishName(organisationDataGroup),
-    en: getEnglishName(organisationDataGroup),
+    sv: swedishName,
+    en: englishName ?? swedishName,
   };
 };
 

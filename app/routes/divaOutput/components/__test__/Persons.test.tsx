@@ -270,7 +270,7 @@ describe('Persons', () => {
         affiliation: [
           {
             organisation: {
-              displayName: 'Buppsala University',
+              displayName: { en: 'Buppsala University' },
               linkedRecord: {
                 organisation: {
                   recordInfo: { type: { value: 'diva-organisation' } },
