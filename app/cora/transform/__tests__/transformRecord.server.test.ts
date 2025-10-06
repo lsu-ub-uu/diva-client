@@ -2697,7 +2697,10 @@ describe('transformRecord', () => {
         },
         {
           id: 'organisation:4',
-          name: { sv: 'Uppsala universitet', en: 'Uppsala University' },
+          name: {
+            sv: 'Uppsala universitet',
+            en: 'Uppsala University',
+          },
         },
       ]),
       recordTypePool: listToPool<BFFRecordType>([
@@ -2781,7 +2784,10 @@ describe('transformRecord', () => {
         parent: {
           someOrganisationRecordLink: {
             value: 'organisation:4',
-            displayName: 'Uppsala universitet',
+            displayName: {
+              en: 'Uppsala universitet',
+              sv: 'Uppsala universitet',
+            },
             linkedRecord: { organisation: {} },
           },
         },
@@ -2851,8 +2857,10 @@ describe('transformRecord', () => {
         parent: {
           someOrganisationRecordLink: {
             value: 'organisation:1',
-            displayName:
-              'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
+            displayName: {
+              en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala universitet',
+              sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
+            },
             linkedRecord: { organisation: {} },
           },
         },
