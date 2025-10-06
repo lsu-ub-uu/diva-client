@@ -41,6 +41,7 @@ import type {
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -75,10 +76,10 @@ export const transformRecords = (
  * @param dependencies
  * @param recordWrapper
  */
-export const transformRecord = (
+export const transformRecord = async (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper,
-): BFFDataRecord => {
+): Promise<BFFDataRecord> => {
   let createdAt;
   let createdBy;
   const id = extractIdFromRecordInfo(recordWrapper.record.data);
@@ -105,7 +106,7 @@ export const transformRecord = (
   }
   const updated = extractRecordUpdates(recordInfo);
 
-  const data = transformRecordDataGroup(
+  const data = await transformRecordDataGroup(
     recordWrapper.record.data,
     dependencies,
   );
@@ -129,7 +130,7 @@ export const transformRecord = (
   });
 };
 
-const transformRecordDataGroup = (
+const transformRecordDataGroup = async (
   dataRecordGroup: DataGroup,
   dependencies: Dependencies,
 ) => {
@@ -145,37 +146,42 @@ const transformRecordDataGroup = (
   return transformRecordData(dataRecordGroup, formMetadata, dependencies);
 };
 
-export const transformRecordData = (
+export const transformRecordData = async (
   dataRecordGroup: DataGroup,
   formMetadata: FormMetaData,
   dependencies: Dependencies,
 ) => {
   return {
     [dataRecordGroup.name]: {
-      ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
+      ...(await transformDataGroup(
+        dataRecordGroup,
+        formMetadata,
+        dependencies,
+      )),
       ...transformAttributes(dataRecordGroup.attributes),
     },
   };
 };
 
-export const transformDataGroup = (
+export const transformDataGroup = async (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
   dependencies: Dependencies,
-): Metadata => {
-  const init = {} as Metadata;
-  return dataGroup.children.reduce<Metadata>((group, dataChild) => {
+): Promise<Metadata> => {
+  const group = {} as Metadata;
+
+  for (const dataChild of dataGroup.children) {
     const matchingMetadata = findMatchingMetadata(dataChild, metadataGroup);
 
     if (!matchingMetadata) {
       console.warn(`Failed to find matching metadata for ${dataChild.name}`);
-      return group;
+      continue;
     }
 
     const name = createDataName(dataChild, matchingMetadata);
 
     const transformedChild = {
-      ...transformData(dataChild, matchingMetadata, dependencies),
+      ...(await transformData(dataChild, matchingMetadata, dependencies)),
       ...transformAttributes(dataChild.attributes),
     };
     const repeating = isRepeating(matchingMetadata);
@@ -186,8 +192,9 @@ export const transformDataGroup = (
     } else {
       group[name] = transformedChild;
     }
-    return group;
-  }, init);
+  }
+
+  return group;
 };
 
 const createDataName = (data: CoraData, metadata: FormMetaData) => {
@@ -197,7 +204,7 @@ const createDataName = (data: CoraData, metadata: FormMetaData) => {
   return createFieldNameWithAttributes(data.name, metadataAttributes);
 };
 
-const transformData = (
+const transformData = async (
   data: CoraData,
   metadata: FormMetaData,
   dependencies: Dependencies,
@@ -226,7 +233,10 @@ const transformData = (
   return transformDataAtomic(data as DataAtomic);
 };
 
-const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
+const transformRecordLink = async (
+  data: RecordLink,
+  dependencies: Dependencies,
+) => {
   const recordLinkId = getFirstDataAtomicValueWithNameInData(
     data,
     'linkedRecordId',
@@ -236,13 +246,12 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     'linkedRecordType',
   );
 
-  const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
-    ? transformLinkedRecord(data, dependencies)
-    : undefined;
+  const linkedRecord = transformLinkedRecord(data, dependencies);
 
   let displayName;
   if (linkedRecordType === 'diva-organisation' && linkedRecord) {
-    const svName = formatLinkedOrganisationName(
+    // fetch organiasation (decorated) and transform result
+    /* const svName = formatLinkedOrganisationName(
       recordLinkId,
       'sv',
       dependencies,
@@ -258,7 +267,7 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
         sv: svName,
         en: enName,
       };
-    }
+    } */
   }
 
   return removeEmpty({
@@ -302,6 +311,31 @@ const transformLinkedRecord = (
   ).children[0] as DataGroup;
   return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
+
+const getLinkedRecord = async (
+  data: RecordLink,
+  dependencies: Dependencies,
+) => {
+  const linkedRecordType = getFirstDataAtomicValueWithNameInData(
+    data,
+    'linkedRecordType',
+  );
+
+  if (hasChildWithNameInData(data, 'linkedRecord')) {
+    return getFirstDataGroupWithNameInData(data, 'linkedRecord');
+  }
+
+  if (linkedRecordType === 'diva-organisation') {
+    const organisation = await getRecordByRecordTypeAndRecordId({
+      dependencies,
+      recordType: 'diva-organisation',
+      recordId: getFirstDataAtomicValueWithNameInData(data, 'linkedRecordId'),
+      decorated: true,
+    });
+    
+    return organisation.data.organisation;
+
+  }
 
 const transformDataAtomic = (data: DataAtomic) => {
   return { value: data.value };

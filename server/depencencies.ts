@@ -49,6 +49,7 @@ import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
 import { createContext } from 'react-router';
 import 'dotenv/config';
+import type { BFFDataRecord } from '@/types/record';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -69,7 +70,7 @@ const dependencies: Dependencies = {
   loginUnitPool: listToPool<BFFLoginUnit>([]),
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   themePool: listToPool<BFFTheme>([]),
-  organisationPool: listToPool<BFFOrganisation>([]),
+  organisationPool: listToPool<BFFDataRecord>([]),
 };
 
 const loadDependencies = async () => {
@@ -143,7 +144,10 @@ const loadDependencies = async () => {
   }
 
   try {
-    const organisations = await transformOrganisations(coraOrganisations.data);
+    const organisations = await transformOrganisations(
+      dependencies,
+      coraOrganisations.data,
+    );
     dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
   } catch (error) {
     console.error('Error transforming organisations:', error);
