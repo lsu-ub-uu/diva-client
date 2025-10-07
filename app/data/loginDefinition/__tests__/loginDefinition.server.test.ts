@@ -43,19 +43,29 @@ describe('loginDefinition', () => {
   beforeEach(() => {
     const loginUnitPool = listToPool<BFFLoginUnit>([
       {
-        id: 'someLoginUnitId',
+        id: 'someLoginUnit',
         login: 'someLoginDiVAwr',
         loginDescription: 'someDiVALoginUnitText',
       },
       {
-        id: 'someOtherLoginUnitId',
+        id: 'someOtherLoginUnit',
         login: 'someOtherLoginDiVAwr',
         loginDescription: 'someDiVALoginUnitText2',
       },
       {
-        id: 'someThirdLoginUnitId',
+        id: 'someThirdLoginUnit',
         login: 'uppsalaLDAP',
         loginDescription: 'someDiVALoginUnitText2',
+      },
+      {
+        id: 'somePermissionLoginUnit',
+        login: 'somePermissionUnitwr',
+        loginDescription: 'somePermissionUnitwrText',
+      },
+      {
+        id: 'somePermissionPasswordLoginUnit',
+        login: 'uppsalaLDAP',
+        loginDescription: 'somePermissionUnitpasswordText',
       },
     ]);
     const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>([
@@ -78,6 +88,12 @@ describe('loginDefinition', () => {
         description: 'someDescription',
         // validationType: 'someValidationType',
         type: 'password',
+      },
+      {
+        id: 'somePermissionUnitwr',
+        loginName: 'DiVA Other Test university',
+        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+        type: 'webRedirect',
       },
     ]);
     const metadataPool = listToPool<BFFMetadataGroup | BFFMetadataTextVariable>(
@@ -253,7 +269,84 @@ describe('loginDefinition', () => {
         },
       },
     },
+    {
+      loginDescription: 'somePermissionUnitwrText',
+      url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+      type: 'webRedirect',
+    },
+    {
+      loginDescription: 'somePermissionUnitpasswordText',
+      presentation: {
+        form: {
+          components: [
+            {
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'loginIdTextVarText',
+              mode: 'input',
+              name: 'loginId',
+              presentationId: 'loginIdPVar',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'loginIdTextVarDefText',
+                title: 'loginIdTextVarText',
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
+                type: 'regex',
+              },
+            },
+            {
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'loginPasswordTextVarText',
+              mode: 'input',
+              name: 'password',
+              presentationId: 'loginPasswordPVar',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'loginPasswordTextVarDefText',
+                title: 'loginPasswordTextVarText',
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
+                type: 'regex',
+              },
+            },
+          ],
+          gridColSpan: 12,
+          label: 'viewDefinitionPasswordGroupText',
+          mode: 'input',
+          name: 'password',
+          presentationId: 'viewDefinitionPasswordPGroup',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'viewDefinitionPasswordGroupDefText',
+            title: 'viewDefinitionPasswordGroupText',
+          },
+          type: 'group',
+        },
+      },
+      type: 'password',
+    },
   ];
+
   it('should generate a object from loginUnits and logins', () => {
     const actual = createLoginDefinition(dependencies);
     expect(actual).toStrictEqual(result);
@@ -271,5 +364,11 @@ describe('loginDefinition', () => {
     expect(actual[2].type).toBe('password');
     expect(Object.hasOwn(actual[2], 'url')).toBe(false);
     expect(Object.hasOwn(actual[2], 'presentation')).toBe(true);
+  });
+
+  it('filters out loginUnits with no matching permissionUnit', () => {
+    const permissionUnit = 'somePermissionUnit';
+    const actual = createLoginDefinition(dependencies, permissionUnit);
+    expect(actual).toStrictEqual([result[3], result[4]]);
   });
 });

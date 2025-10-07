@@ -19,6 +19,11 @@
 import { createLoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 
-export const getLoginUnits = (dependencies: Dependencies) => {
-  return createLoginDefinition(dependencies);
+export const getLoginUnits = (request: Request, dependencies: Dependencies) => {
+  const { hostname } = new URL(request.url);
+  const getPermissionUnit = hostname.split('.')[0];
+  const permissionUnit =
+    getPermissionUnit === 'localhost' ? undefined : getPermissionUnit;
+  console.log(`getLoginUnits for host: ${hostname}`, 'pU', permissionUnit);
+  return createLoginDefinition(dependencies, permissionUnit);
 };

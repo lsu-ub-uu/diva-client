@@ -35,7 +35,9 @@ interface LoginDefinition {
 
 export const createLoginDefinition = (
   dependencies: Dependencies,
+  permissionUnit?: string,
 ): LoginDefinition[] => {
+  console.log(`createLoginDefinition for pU: ${permissionUnit}`);
   const { loginUnitPool, loginPool } = dependencies;
   const loginItemDefinitions: LoginDefinition[] = [];
 
@@ -70,5 +72,11 @@ export const createLoginDefinition = (
 
     loginItemDefinitions.push(item);
   });
+  if (permissionUnit) {
+    const regex = new RegExp(`^${permissionUnit}`);
+    return loginItemDefinitions.filter((login) =>
+      regex.test(login.loginDescription),
+    );
+  }
   return loginItemDefinitions;
 };

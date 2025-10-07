@@ -101,11 +101,11 @@ app.listen(PORT, () => {
 
   if (DEVELOPMENT) {
     console.info(
-      `***Development server is running on http://localhost:${PORT}${BASE_PATH}***`,
+      `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
   } else {
     console.info(
-      `***Server is started and listening on port ${PORT} ${BASE_PATH}***`,
+      `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
 });
