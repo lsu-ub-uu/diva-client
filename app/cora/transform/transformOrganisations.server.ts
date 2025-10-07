@@ -1,3 +1,4 @@
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import {
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
@@ -11,11 +12,15 @@ import type {
   RecordWrapper,
 } from '../cora-data/types.server';
 import type { BFFOrganisation } from './bffTypes.server';
+import { transformRecord } from './transformRecord.server';
 
 export const transformOrganisations = (
+  dependencies: Dependencies,
   data: DataListWrapper,
-): BFFOrganisation[] => {
-  return data.dataList.data.map(transformOrganisation);
+) => {
+  return data.dataList.data.map((organisation) =>
+    transformRecord(dependencies, organisation),
+  );
 };
 
 const transformOrganisation = (data: RecordWrapper): BFFOrganisation => {

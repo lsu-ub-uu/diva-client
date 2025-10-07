@@ -3,7 +3,6 @@ import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
-  BFFOrganisation,
   BFFPresentation,
   BFFRecordType,
   BFFSearch,
@@ -11,6 +10,7 @@ import type {
   BFFTheme,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
+import type { BFFDataRecord } from '@/types/record';
 import type { Lookup } from '@/utils/structs/lookup';
 
 export interface Dependencies {
@@ -23,5 +23,5 @@ export interface Dependencies {
   loginUnitPool: Lookup<string, BFFLoginUnit>;
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   themePool: Lookup<string, BFFTheme>;
-  organisationPool: Lookup<string, BFFOrganisation>;
+  organisationPool: Lookup<string, BFFDataRecord>;
 }
