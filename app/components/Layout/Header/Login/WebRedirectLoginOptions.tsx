@@ -30,6 +30,12 @@ export const WebRedirectLoginOptions = ({
 }: WebRedirectLoginOptionsProps) => {
   const { t } = useTranslation();
   const { loginUnits } = useLoaderData<typeof loader>();
+  if (
+    loginUnits.filter((loginUnit) => Object.keys(loginUnit).length > 0)
+      .length === 0
+  ) {
+    return null;
+  }
   return (
     <>
       <h6>{t('divaClient_LoginWebRedirectText')}</h6>

@@ -28,43 +28,44 @@ export interface Account {
 }
 
 const divaAdmin = {
-  appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
-  userId: '161616',
-  idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
-  lastName: 'DiVA',
-  firstName: 'Admin',
+  appToken: import.meta.env.VITE_DIVA_ADMIN_APP_TOKEN,
+  userId: import.meta.env.VITE_DIVA_ADMIN_USER_ID,
+  idFromLogin: import.meta.env.VITE_DIVA_ADMIN_ID_FROM_LOGIN,
+  lastName: import.meta.env.VITE_DIVA_ADMIN_LAST_NAME,
+  firstName: import.meta.env.VITE_DIVA_ADMIN_FIRST_NAME,
 };
 
 const divaEverything = {
-  appToken: '77edfec1-e1f1-45d4-a452-411668eba0f0',
-  userId: 'coraUser:490742519075086',
-  idFromLogin: 'divaEverything@diva.cora.uu.se',
-  lastName: 'DiVA',
-  firstName: 'Everything',
+  /*   appToken: import.meta.env.VITE_DIVA_EVERYTHING_APP_TOKEN,
+  userId: import.meta.env.VITE_DIVA_EVERYTHING_USER_ID,
+  idFromLogin: import.meta.env.VITE_DIVA_EVERYTHING_ID_FROM_LOGIN,
+  lastName: import.meta.env.VITE_DIVA_EVERYTHING_LAST_NAME,
+  firstName: import.meta.env.VITE_DIVA_EVERYTHING_FIRST_NAME, */
 };
 
 const systemAdmin = {
-  appToken: 'b5ec82bb-9492-4d9f-9069-c2fac3b49493',
-  userId: 'coraUser:491055276494310',
-  idFromLogin: 'systemAdmin@diva.cora.uu.se',
-  lastName: 'Admin',
-  firstName: 'System',
+  /*   appToken: import.meta.env.VITE_SYSTEM_ADMIN_APP_TOKEN,
+  userId: import.meta.env.VITE_SYSTEM_ADMIN_USER_ID,
+  idFromLogin: import.meta.env.VITE_SYSTEM_ADMIN_ID_FROM_LOGIN,
+  lastName: import.meta.env.VITE_SYSTEM_ADMIN_LAST_NAME,
+  firstName: import.meta.env.VITE_SYSTEM_ADMIN_FIRST_NAME, */
 };
 
 const uuDomainAdmin = {
-  appToken: '4808c689-48f1-4fe9-81e1-1888795933cf',
-  userId: 'coraUser:491144693381458',
-  idFromLogin: 'dominAdminUU@diva.cora.uu.se',
-  lastName: 'UU',
-  firstName: 'domainAdmin',
+  /* 
+  appToken: import.meta.env.VITE_UU_DOMAIN_ADMIN_APP_TOKEN,
+  userId: import.meta.env.VITE_UU_DOMAIN_ADMIN_USER_ID,
+  idFromLogin: import.meta.env.VITE_UU_DOMAIN_ADMIN_ID_FROM_LOGIN,
+  lastName: import.meta.env.VITE_UU_DOMAIN_ADMIN_LAST_NAME,
+  firstName: import.meta.env.VITE_UU_DOMAIN_ADMIN_FIRST_NAME, */
 };
 
 const kthDomainAdmin = {
-  appToken: 'cee52dba-56f8-4064-a379-05bd5ceab540',
-  userId: 'coraUser:491201365536105',
-  idFromLogin: 'domainAdminKTH@diva.cora.uu.se',
-  lastName: 'KTH',
-  firstName: 'domainAdmin',
+  /*  appToken: import.meta.env.VITE_KTH_DOMAIN_ADMIN_APP_TOKEN,
+  userId: import.meta.env.VITE_KTH_DOMAIN_ADMIN_USER_ID,
+  idFromLogin: import.meta.env.VITE_KTH_DOMAIN_ADMIN_ID_FROM_LOGIN,
+  lastName: import.meta.env.VITE_KTH_DOMAIN_ADMIN_LAST_NAME,
+  firstName: import.meta.env.VITE_KTH_DOMAIN_ADMIN_FIRST_NAME, */
 };
 
 export const devAccounts: Account[] = [

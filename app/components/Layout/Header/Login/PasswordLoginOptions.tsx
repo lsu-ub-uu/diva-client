@@ -29,8 +29,14 @@ export const PasswordLoginOptions = ({
   returnTo,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
-  const { loginUnits } = useLoaderData<typeof loader>();
-
+  // const { loginUnits } = useLoaderData<typeof loader>();
+  const loginUnits = [];
+  if (
+    loginUnits.filter((loginUnit) => Object.keys(loginUnit).length > 0)
+      .length === 0
+  ) {
+    return null;
+  }
   return (
     <>
       <h6>{t('divaClient_LoginPasswordText')}</h6>

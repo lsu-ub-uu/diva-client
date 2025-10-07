@@ -24,19 +24,30 @@ import { MenuItem } from '@headlessui/react';
 interface DevAccountsProps {
   onSelect: (account: Account) => void;
 }
-
 export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
   const { t } = useTranslation();
+  if (
+    devAccounts.filter((devAccount) => Object.keys(devAccount).length > 0)
+      .length === 0
+  ) {
+    return null;
+  }
+
   return (
     <>
       <h6>{t('divaClient_LoginDevAccountText')}</h6>
-      {devAccounts.map((devAccount) => (
-        <MenuItem key={devAccount.id}>
-          <button key={devAccount.userId} onClick={() => onSelect(devAccount)}>
-            {devAccount.lastName} {devAccount.firstName}
-          </button>
-        </MenuItem>
-      ))}
+      {devAccounts
+        .filter((devAccount) => Object.keys(devAccount).length > 0)
+        .map((devAccount) => (
+          <MenuItem key={devAccount.id}>
+            <button
+              key={devAccount.userId}
+              onClick={() => onSelect(devAccount)}
+            >
+              {devAccount.lastName} {devAccount.firstName}
+            </button>
+          </MenuItem>
+        ))}
     </>
   );
 };
