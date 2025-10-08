@@ -21,7 +21,6 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
-import path from 'node:path';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -66,6 +65,9 @@ if (DEVELOPMENT) {
       server: { middlewareMode: true },
     }),
   );
+  app.get('/devLogin', (req, res) => {
+    res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
+  });
   app.use(viteDevServer.middlewares);
   app.use(async (req, res, next) => {
     try {
@@ -77,9 +79,6 @@ if (DEVELOPMENT) {
       }
       next(error);
     }
-  });
-  app.get('/devLogin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'devLogin.html'));
   });
 } else {
   console.info('Starting production server');
