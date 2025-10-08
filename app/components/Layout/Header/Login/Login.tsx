@@ -27,7 +27,6 @@ import {
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
 
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
@@ -41,6 +40,7 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 import styles from './Login.module.css';
 import { useHydrated } from '@/utils/useHydrated';
 import { useUser } from '@/utils/rootLoaderDataUtils';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 
 export default function Login() {
   const hydrated = useHydrated();
@@ -56,9 +56,14 @@ export default function Login() {
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
 
-  const handleDevSelection = (account: Account) => {
+  const handleDevSelection = (account: AppTokenLogin) => {
     submit(
-      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
+      {
+        loginType: 'appToken',
+        loginId: account.loginId,
+        appToken: account.appToken,
+        returnTo,
+      },
       { action: '/login', method: 'post' },
     );
   };

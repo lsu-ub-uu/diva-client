@@ -1,35 +1,39 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { DevAccountLoginOptions } from '../DevAccountLoginOptions';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Menu } from '@headlessui/react';
+import { render, screen } from '@testing-library/react';
+import { createRoutesStub } from 'react-router';
+import { describe, expect, it, vi } from 'vitest';
+import { DevAccountLoginOptions } from '../DevAccountLoginOptions';
+import { act } from 'react';
 
 describe('DevAccountLoginOptions', () => {
-  beforeEach(() => {
-    vi.resetModules();
-  });
-  it('should render correctly when there are dev accounts', () => {
-    // Mock devAccounts import
-    vi.mock('../devAccounts', () => ({
-      devAccounts: [
-        {
-          id: '1',
-          userId: 'user1',
-          firstName: 'Test',
-          lastName: 'User',
-        },
-        {
-          id: '2',
-          userId: 'user2',
-          firstName: 'Another',
-          lastName: 'Account',
-        },
-      ],
-    }));
-    render(
-      <Menu>
-        <DevAccountLoginOptions onSelect={() => {}} />
-      </Menu>,
-    );
+  it('should render correctly when there are dev accounts', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        loader: () => ({
+          appTokenLogins: [
+            {
+              loginId: 'user1',
+              appToken: 'token1',
+              displayName: 'User Test',
+            },
+            {
+              loginId: 'user2',
+              appToken: 'token2',
+              displayName: 'User Test2',
+            },
+          ] as AppTokenLogin[],
+        }),
+        Component: () => (
+          <Menu>
+            <DevAccountLoginOptions onSelect={vi.fn()} />
+          </Menu>
+        ),
+      },
+    ]);
+
+    await act(() => render(<RoutesStub />));
     expect(
       screen.getByRole('heading', { name: 'divaClient_LoginDevAccountText' }),
     ).toBeInTheDocument();
@@ -37,19 +41,27 @@ describe('DevAccountLoginOptions', () => {
       screen.getByRole('menuitem', { name: 'User Test' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'Account Another' }),
+      screen.getByRole('menuitem', { name: 'User Test2' }),
     ).toBeInTheDocument();
   });
 
-  it('should not render when there are no dev accounts', () => {
-    vi.mock('../devAccounts', () => ({
-      devAccounts: [],
-    }));
-    render(
-      <Menu>
-        <DevAccountLoginOptions onSelect={vi.fn()} />
-      </Menu>,
-    );
+  it('should not render when there are no dev accounts', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        loader: () => ({
+          appTokenLogins: [] as AppTokenLogin[],
+        }),
+        Component: () => (
+          <Menu>
+            <DevAccountLoginOptions onSelect={vi.fn()} />
+          </Menu>
+        ),
+      },
+    ]);
+
+    await act(() => render(<RoutesStub />));
+
     expect(
       screen.queryByRole('heading', { name: 'divaClient_LoginDevAccountText' }),
     ).not.toBeInTheDocument();

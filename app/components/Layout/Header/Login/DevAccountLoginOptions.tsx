@@ -17,37 +17,31 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import type { Account } from './devAccounts';
-import { devAccounts } from './devAccounts';
+
 import { MenuItem } from '@headlessui/react';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
+import { useLoaderData } from 'react-router';
+import { loader } from '@/root';
 
 interface DevAccountsProps {
-  onSelect: (account: Account) => void;
+  onSelect: (account: AppTokenLogin) => void;
 }
 export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
   const { t } = useTranslation();
-  if (
-    devAccounts.filter((devAccount) => Object.keys(devAccount).length > 0)
-      .length === 0
-  ) {
+  const { appTokenLogins } = useLoaderData<typeof loader>();
+  if (appTokenLogins.length === 0) {
     return null;
   }
-
   return (
     <>
       <h6>{t('divaClient_LoginDevAccountText')}</h6>
-      {devAccounts
-        .filter((devAccount) => Object.keys(devAccount).length > 0)
-        .map((devAccount) => (
-          <MenuItem key={devAccount.id}>
-            <button
-              key={devAccount.userId}
-              onClick={() => onSelect(devAccount)}
-            >
-              {devAccount.lastName} {devAccount.firstName}
-            </button>
-          </MenuItem>
-        ))}
+      {appTokenLogins.map((devAccount) => (
+        <MenuItem key={devAccount.loginId}>
+          <button onClick={() => onSelect(devAccount)}>
+            {devAccount.displayName}
+          </button>
+        </MenuItem>
+      ))}
     </>
   );
 };

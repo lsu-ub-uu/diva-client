@@ -24,6 +24,5 @@ export const getLoginUnits = (request: Request, dependencies: Dependencies) => {
   const getPermissionUnit = hostname.split('.')[0];
   const permissionUnit =
     getPermissionUnit === 'localhost' ? undefined : getPermissionUnit;
-  console.log(`getLoginUnits for host: ${hostname}`, 'pU', permissionUnit);
   return createLoginDefinition(dependencies, permissionUnit);
 };

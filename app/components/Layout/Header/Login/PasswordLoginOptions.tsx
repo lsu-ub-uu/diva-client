@@ -29,8 +29,7 @@ export const PasswordLoginOptions = ({
   returnTo,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
-  // const { loginUnits } = useLoaderData<typeof loader>();
-  const loginUnits = [];
+  const { loginUnits } = useLoaderData<typeof loader>();
   if (
     loginUnits.filter((loginUnit) => Object.keys(loginUnit).length > 0)
       .length === 0

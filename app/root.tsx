@@ -62,6 +62,7 @@ import { getThemeFromHostname } from './utils/getThemeFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
+import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
 
 const { MODE } = import.meta.env;
 
@@ -73,6 +74,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const theme = getThemeFromHostname(request, dependencies);
 
   const loginUnits = getLoginUnits(request, dependencies);
+  const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
@@ -82,6 +84,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     user,
     locale,
     loginUnits,
+    appTokenLogins,
     theme,
     recordTypes,
     userPreferences,
