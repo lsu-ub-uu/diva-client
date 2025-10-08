@@ -18,18 +18,19 @@
 
 import { useTranslation } from 'react-i18next';
 
-import { MenuItem } from '@headlessui/react';
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
-import { useLoaderData } from 'react-router';
-import { loader } from '@/root';
+import { MenuItem } from '@headlessui/react';
 
 interface DevAccountsProps {
+  appTokenLogins: AppTokenLogin[];
   onSelect: (account: AppTokenLogin) => void;
 }
-export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
+export const DevAccountLoginOptions = ({
+  appTokenLogins,
+  onSelect,
+}: DevAccountsProps) => {
   const { t } = useTranslation();
-  const { appTokenLogins } = useLoaderData<typeof loader>();
-  if (appTokenLogins.length === 0) {
+  if (!appTokenLogins || appTokenLogins.length === 0) {
     return null;
   }
   return (

@@ -26,9 +26,9 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 
-interface LoginDefinition {
+export interface LoginDefinition {
   loginDescription: string;
-  type: string;
+  type: 'password' | 'webRedirect';
   url?: string;
   presentation?: any;
 }
@@ -37,7 +37,6 @@ export const createLoginDefinition = (
   dependencies: Dependencies,
   permissionUnit?: string,
 ): LoginDefinition[] => {
-  console.log(`createLoginDefinition for pU: ${permissionUnit}`);
   const { loginUnitPool, loginPool } = dependencies;
   const loginItemDefinitions: LoginDefinition[] = [];
 

@@ -1,18 +1,14 @@
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Menu } from '@headlessui/react';
 import { render, screen } from '@testing-library/react';
-import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { DevAccountLoginOptions } from '../DevAccountLoginOptions';
-import { act } from 'react';
 
 describe('DevAccountLoginOptions', () => {
   it('should render correctly when there are dev accounts', async () => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        loader: () => ({
-          appTokenLogins: [
+    render(
+      <Menu>
+        <DevAccountLoginOptions
+          appTokenLogins={[
             {
               loginId: 'user1',
               appToken: 'token1',
@@ -23,17 +19,11 @@ describe('DevAccountLoginOptions', () => {
               appToken: 'token2',
               displayName: 'User Test2',
             },
-          ] as AppTokenLogin[],
-        }),
-        Component: () => (
-          <Menu>
-            <DevAccountLoginOptions onSelect={vi.fn()} />
-          </Menu>
-        ),
-      },
-    ]);
-
-    await act(() => render(<RoutesStub />));
+          ]}
+          onSelect={vi.fn()}
+        />
+      </Menu>,
+    );
     expect(
       screen.getByRole('heading', { name: 'divaClient_LoginDevAccountText' }),
     ).toBeInTheDocument();
@@ -46,21 +36,11 @@ describe('DevAccountLoginOptions', () => {
   });
 
   it('should not render when there are no dev accounts', async () => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        loader: () => ({
-          appTokenLogins: [] as AppTokenLogin[],
-        }),
-        Component: () => (
-          <Menu>
-            <DevAccountLoginOptions onSelect={vi.fn()} />
-          </Menu>
-        ),
-      },
-    ]);
-
-    await act(() => render(<RoutesStub />));
+    render(
+      <Menu>
+        <DevAccountLoginOptions onSelect={vi.fn()} appTokenLogins={[]} />
+      </Menu>,
+    );
 
     expect(
       screen.queryByRole('heading', { name: 'divaClient_LoginDevAccountText' }),

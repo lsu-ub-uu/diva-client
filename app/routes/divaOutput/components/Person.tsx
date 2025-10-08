@@ -55,9 +55,10 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
         {renderPersonName(person)}
       </span>
       {formatPersonRoles(person, language)}
-      {person.affiliation?.map((affiliation, index) => (
-        <Affiliation key={index} affiliation={affiliation} />
-      ))}
+      {'affiliation' in person &&
+        person.affiliation?.map((affiliation, index) => (
+          <Affiliation key={index} affiliation={affiliation} />
+        ))}
       {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid && (
         <dl>
           {/*  TODO: Add publication ORCID when its in the model*/}

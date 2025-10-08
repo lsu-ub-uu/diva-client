@@ -16,8 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import Login from '@/components/Layout/Header/Login/Login';
-import { render, screen, waitFor } from '@testing-library/react';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -38,82 +40,183 @@ const loginUnits = [
     url: 'https://www.diva-portal.org/Shibboleth.sso/Login/ltu?target=https://www.diva-portal.org/diva/idplogin/login',
     type: 'webRedirect',
   },
+] as LoginDefinition[];
+
+const appTokenLogins: AppTokenLogin[] = [
+  {
+    displayName: 'DiVA Admin',
+    loginId: 'diva-admin',
+    appToken: 'diva-admin-token',
+  },
+  {
+    displayName: 'DiVA Everything',
+    loginId: 'diva-everything',
+    appToken: 'diva-everything-token',
+  },
 ];
 
 describe('<Login/>', () => {
-  describe('Login menu', () => {
-    it('shows the accounts in a list', async () => {
+  it('shows the accounts in a list', async () => {
+    const user = userEvent.setup();
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      }),
+    );
+
+    const userNameList = screen.queryAllByRole('menuitem');
+    const listItems = userNameList.map((item) => item.textContent);
+    expect(listItems).toEqual([
+      'DiVA Admin',
+      'DiVA Everything',
+      'rkhTestDiVALoginUnitText',
+      'skhTestDiVALoginUnitText',
+      'ltuDiVALoginUnitText',
+    ]);
+  });
+
+  describe('webRedirect accounts opens a link to Shibboleth', async () => {
+    it.each(
+      loginUnits.map((loginUnit) => [
+        loginUnit.loginDescription,
+        loginUnit.url,
+      ]),
+    )('%s url is correct', async (loginUnitName, loginUnitUrl) => {
+      const windowOpenSpy = vi.spyOn(window, 'open');
+
       const user = userEvent.setup();
 
       const RoutesStub = createRoutesStub([
         {
           path: '/',
-          Component: Login,
-          loader() {
-            return { loginUnits };
-          },
+          Component: () => (
+            <Login loginUnits={loginUnits} appTokenLogins={[]} />
+          ),
         },
       ]);
 
       render(<RoutesStub />);
 
-      const loginButton = await waitFor(() =>
+      await user.click(
         screen.getByRole('button', {
           name: 'divaClient_LoginText',
         }),
       );
-      await user.click(loginButton);
 
-      await waitFor(() => {
-        const userNameList = screen.queryAllByRole('menuitem');
-        const listItems = userNameList.map((item) => item.textContent);
-        expect(listItems).toEqual([
-          'DiVA Admin',
-          'DiVA Everything',
-          'Admin System',
-          'UU domainAdmin',
-          'KTH domainAdmin',
-          'rkhTestDiVALoginUnitText',
-          'skhTestDiVALoginUnitText',
-          'ltuDiVALoginUnitText',
-        ]);
-      });
+      const link = screen.getByRole('menuitem', { name: loginUnitName });
+      await userEvent.click(link);
+      expect(windowOpenSpy).toHaveBeenCalledWith(loginUnitUrl);
     });
+  });
 
-    describe('webRedirect accounts opens a link to Shibboleth', async () => {
-      it.each(
-        loginUnits.map((loginUnit) => [
-          loginUnit.loginDescription,
-          loginUnit.url,
-        ]),
-      )('%s url is correct', async (loginUnitName, loginUnitUrl) => {
-        const windowOpenSpy = vi.spyOn(window, 'open');
+  it('logs in with web redirect upon login button click when only one login unit', async () => {
+    const user = userEvent.setup();
+    const windowOpenSpy = vi.spyOn(window, 'open');
+    const singleLoginUnits = [
+      {
+        loginDescription: 'rkhTestDiVALoginUnitText',
+        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/rkh?target=https://www.diva-portal.org/diva-test/idplogin/login',
+        type: 'webRedirect',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
 
-        const user = userEvent.setup();
+    render(<RoutesStub />);
 
-        const RoutesStub = createRoutesStub([
-          {
-            path: '/',
-            Component: Login,
-            loader() {
-              return { loginUnits };
-            },
-          },
-        ]);
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      }),
+    );
+    expect(windowOpenSpy).toHaveBeenCalledWith(singleLoginUnits[0].url);
+  });
 
-        render(<RoutesStub />);
+  it('links to password login when only one login unit', async () => {
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
 
-        const loginButton = await waitFor(() =>
-          screen.getByRole('button', {
-            name: 'divaClient_LoginText',
-          }),
-        );
-        await user.click(loginButton);
+    render(<RoutesStub />);
 
-        const link = screen.getByRole('menuitem', { name: loginUnitName });
-        await userEvent.click(link);
-        expect(windowOpenSpy).toHaveBeenCalledWith(loginUnitUrl);
-      });
-    });
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/login?presentation=%7B%22foo%22%3A%22bar%22%7D&returnTo=%2F',
+    );
+  });
+
+  it('shows menu when one login unit and one app token login', async () => {
+    const user = userEvent.setup();
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+      } as LoginDefinition,
+    ];
+    const singleAppTokenLogin: AppTokenLogin[] = [
+      {
+        displayName: 'DiVA Admin',
+        loginId: 'diva-admin',
+        appToken: 'aaaaa',
+      },
+    ];
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Login
+            loginUnits={singleLoginUnits}
+            appTokenLogins={singleAppTokenLogin}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      }),
+    );
+
+    expect(
+      screen.getByRole('menuitem', { name: 'DiVA Admin' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'passwordLogin' }),
+    ).toBeInTheDocument();
   });
 });

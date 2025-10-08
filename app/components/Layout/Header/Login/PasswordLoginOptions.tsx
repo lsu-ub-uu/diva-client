@@ -16,40 +16,36 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Link, useLoaderData } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import type { loader } from '@/root';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { MenuItem } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 
 interface PasswordLoginOptionsProps {
+  passwordLoginUnits: LoginDefinition[];
   returnTo: string;
 }
 
 export const PasswordLoginOptions = ({
+  passwordLoginUnits,
   returnTo,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
-  const { loginUnits } = useLoaderData<typeof loader>();
-  if (
-    loginUnits.filter((loginUnit) => Object.keys(loginUnit).length > 0)
-      .length === 0
-  ) {
+  if (passwordLoginUnits.length === 0) {
     return null;
   }
   return (
     <>
       <h2>{t('divaClient_LoginPasswordText')}</h2>
-      {loginUnits
-        .filter(({ type }) => type === 'password')
-        .map(({ loginDescription, presentation }) => (
-          <MenuItem key='tempLoginUnitPassword'>
-            <Link
-              to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
-            >
-              {t(loginDescription)}
-            </Link>
-          </MenuItem>
-        ))}
+      {passwordLoginUnits.map(({ loginDescription, presentation }) => (
+        <MenuItem key='tempLoginUnitPassword'>
+          <Link
+            to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
+          >
+            {t(loginDescription)}
+          </Link>
+        </MenuItem>
+      ))}
     </>
   );
 };

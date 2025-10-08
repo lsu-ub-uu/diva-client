@@ -16,38 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useTranslation } from 'react-i18next';
-import { useLoaderData } from 'react-router';
-import type { loader } from '@/root';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { MenuItem } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
 interface WebRedirectLoginOptionsProps {
+  webRedirectLoginUnits: LoginDefinition[];
   onSelect: (url: string) => void;
 }
 
 export const WebRedirectLoginOptions = ({
+  webRedirectLoginUnits,
   onSelect,
 }: WebRedirectLoginOptionsProps) => {
   const { t } = useTranslation();
-  const { loginUnits } = useLoaderData<typeof loader>();
-  if (
-    loginUnits.filter((loginUnit) => Object.keys(loginUnit).length > 0)
-      .length === 0
-  ) {
+  if (webRedirectLoginUnits.length === 0) {
     return null;
   }
   return (
     <>
       <h2>{t('divaClient_LoginWebRedirectText')}</h2>
-      {loginUnits
-        .filter(({ type }) => type === 'webRedirect')
-        .map(({ loginDescription, url }) => (
-          <MenuItem key={loginDescription}>
-            <button onClick={() => onSelect(url!)}>
-              {t(loginDescription)}
-            </button>
-          </MenuItem>
-        ))}
+      {webRedirectLoginUnits.map(({ loginDescription, url }) => (
+        <MenuItem key={loginDescription}>
+          <button onClick={() => onSelect(url!)}>{t(loginDescription)}</button>
+        </MenuItem>
+      ))}
     </>
   );
 };

@@ -230,9 +230,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const userPreferences = loaderData.userPreferences;
-  const theme = loaderData.theme;
-
+  const { userPreferences, theme, loginUnits, appTokenLogins } = loaderData;
   return (
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
@@ -242,12 +240,16 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </MemberBar>
       </header>
 
       <header className='nav-rail'>
-        <Header recordTypes={loaderData.recordTypes} />
+        <Header
+          recordTypes={loaderData.recordTypes}
+          loginUnits={loginUnits}
+          appTokenLogins={appTokenLogins}
+        />
       </header>
 
       <div className='content'>

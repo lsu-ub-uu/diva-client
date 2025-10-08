@@ -306,10 +306,12 @@ export interface BFFLogin extends BFFBase {
 }
 
 export interface BFFLoginWebRedirect extends BFFLogin {
+  type: 'webRedirect';
   loginName: string;
   url: string;
 }
 export interface BFFLoginPassword extends BFFLogin {
+  type: 'password';
   viewDefinition: string;
   viewPresentation: string;
   description: string;

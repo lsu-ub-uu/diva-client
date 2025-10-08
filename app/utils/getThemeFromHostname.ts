@@ -6,10 +6,6 @@ export const getThemeFromHostname = (
   dependencies: Dependencies,
 ): BFFTheme | undefined => {
   const { hostname } = new URL(request.url);
-  console.log(
-    `getThemeFromHostname for host: ${hostname}`,
-    dependencies.themePool.has(hostname),
-  );
   return dependencies.themePool.has(hostname)
     ? dependencies.themePool.get(hostname)
     : undefined;
