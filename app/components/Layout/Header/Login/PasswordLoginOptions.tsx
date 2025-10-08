@@ -38,7 +38,7 @@ export const PasswordLoginOptions = ({
   }
   return (
     <>
-      <h6>{t('divaClient_LoginPasswordText')}</h6>
+      <h2>{t('divaClient_LoginPasswordText')}</h2>
       {loginUnits
         .filter(({ type }) => type === 'password')
         .map(({ loginDescription, presentation }) => (

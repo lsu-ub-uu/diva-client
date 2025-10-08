@@ -38,7 +38,7 @@ export const WebRedirectLoginOptions = ({
   }
   return (
     <>
-      <h6>{t('divaClient_LoginWebRedirectText')}</h6>
+      <h2>{t('divaClient_LoginWebRedirectText')}</h2>
       {loginUnits
         .filter(({ type }) => type === 'webRedirect')
         .map(({ loginDescription, url }) => (

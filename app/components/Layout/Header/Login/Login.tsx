@@ -110,9 +110,7 @@ export default function Login() {
           </MenuButton>
           <DropdownMenu anchor='bottom end'>
             <DevAccountLoginOptions onSelect={handleDevSelection} />
-            <hr />
             <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-            <hr />
             <PasswordLoginOptions returnTo={returnTo} />
           </DropdownMenu>
         </Menu>
