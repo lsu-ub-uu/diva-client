@@ -35,18 +35,21 @@ export interface LoginDefinition {
 
 export const createLoginDefinition = (
   dependencies: Dependencies,
-  permissionUnit?: string,
+  memberLoginUnitIds: string[] | undefined,
 ): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
   const loginItemDefinitions: LoginDefinition[] = [];
 
-  const loginUnitEntries = Array.from(loginUnitPool.entries());
+  const loginUnitEntries = Array.from(loginUnitPool.values());
 
-  loginUnitEntries.forEach((login: any) => {
+  loginUnitEntries.forEach((login) => {
+    if (memberLoginUnitIds && !memberLoginUnitIds.includes(login.id)) {
+      return;
+    }
     let item: LoginDefinition;
-    const temp = loginPool.get(login[1].login);
+    const temp = loginPool.get(login.login);
     const { type } = temp;
-    item = { loginDescription: login[1].loginDescription, type };
+    item = { loginDescription: login.loginDescription, type };
 
     if (item.type === 'webRedirect') {
       const { url } = temp as BFFLoginWebRedirect;
@@ -71,11 +74,6 @@ export const createLoginDefinition = (
 
     loginItemDefinitions.push(item);
   });
-  if (permissionUnit) {
-    const regex = new RegExp(`^${permissionUnit}`);
-    return loginItemDefinitions.filter((login) =>
-      regex.test(login.loginDescription),
-    );
-  }
+
   return loginItemDefinitions;
 };

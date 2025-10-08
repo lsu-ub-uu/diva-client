@@ -347,6 +347,7 @@ export interface BFFTheme {
     svg?: string;
   };
   hostnames: string[];
+  loginUnitIds: string[];
 }
 
 export interface BFFOrganisation {

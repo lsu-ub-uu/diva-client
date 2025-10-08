@@ -73,7 +73,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const theme = getThemeFromHostname(request, dependencies);
 
-  const loginUnits = getLoginUnits(request, dependencies);
+  const loginUnits = getLoginUnits(dependencies, undefined);
   const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);

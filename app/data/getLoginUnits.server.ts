@@ -16,13 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createLoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { createLoginDefinition } from './loginDefinition/loginDefinition.server';
 
-export const getLoginUnits = (request: Request, dependencies: Dependencies) => {
-  const { hostname } = new URL(request.url);
-  const getPermissionUnit = hostname.split('.')[0];
-  const permissionUnit =
-    getPermissionUnit === 'localhost' ? undefined : getPermissionUnit;
-  return createLoginDefinition(dependencies, permissionUnit);
+export const getLoginUnits = (
+  dependencies: Dependencies,
+  memberLoginUnitIds: string[] | undefined,
+) => {
+  return createLoginDefinition(dependencies, memberLoginUnitIds);
 };
