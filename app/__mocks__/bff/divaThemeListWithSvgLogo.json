@@ -1,4 +1,4 @@
-{
+c{
   "dataList": {
     "fromNo": "0",
     "data": [
@@ -248,7 +248,21 @@
                 "repeatId": "1",
                 "name": "hostname",
                 "value": "uu.pre.diva-portal.org"
-              }
+              },
+              {
+                "name": "loginUnit",
+                "repeatId": "0",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "loginUnit"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "uu"
+                  }
+                ]
+              },
             ],
             "name": "diva-theme"
           },

@@ -173,6 +173,20 @@
                 "repeatId": "1",
                 "name": "hostname",
                 "value": "pre.diva-portal.org"
+              },
+              {
+                "name": "loginUnit",
+                "repeatId": "0",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "loginUnit"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "uu"
+                  }
+                ]
               }
             ],
             "name": "diva-theme"

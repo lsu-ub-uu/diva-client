@@ -87,6 +87,7 @@ describe('transformTheme', () => {
         'uu.cora.epc.ub.uu.se',
         'uu.pre.diva-portal.org',
       ],
+      loginUnitIds: ['uu'],
     });
   });
 
@@ -110,6 +111,7 @@ describe('transformTheme', () => {
       },
       textColor: '#ffffff',
       hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+      loginUnitIds: ['uu'],
     });
   });
 
@@ -136,6 +138,7 @@ describe('transformTheme', () => {
       },
       textColor: '#ffffff',
       hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+      loginUnitIds: ['uu'],
     });
   });
 });
