@@ -62,7 +62,10 @@ export const Book = ({ book }: BookProps) => {
           value={book.part?.extent?.end?.value}
         />
       </dl>
-      {book.relatedItem_type_series?.map((series, index) => (
+      {book.relatedItem_otherType_link_type_series?.map((series, index) => (
+        <Series key={index} series={series} headlineLevel='h3' />
+      ))}
+      {book.relatedItem_otherType_text_type_series?.map((series, index) => (
         <Series key={index} series={series} headlineLevel='h3' />
       ))}
     </section>
