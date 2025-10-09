@@ -4653,8 +4653,7 @@ export interface LoginUnitGroup {
   __text: { sv: string; en: string };
 }
 
-export interface DivaMemberGroup {
-  recordInfo: RecordInfoMemberGroup;
+export interface ThemeUpdateGroup {
   memberPermissionUnit?: {
     value: string;
     linkedRecord: {

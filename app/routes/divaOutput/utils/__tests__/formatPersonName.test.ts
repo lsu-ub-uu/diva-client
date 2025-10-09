@@ -1,7 +1,4 @@
-import type {
-  NamePersonalGroup,
-  NamePersonGroup,
-} from '@/generatedTypes/divaTypes';
+import type { NamePersonalGroup } from '@/generatedTypes/divaTypes';
 import { describe, expect, it } from 'vitest';
 import { formatPersonName } from '../formatPersonName';
 

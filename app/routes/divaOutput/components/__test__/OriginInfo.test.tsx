@@ -41,7 +41,7 @@ describe('OriginInfo', () => {
 
     render(<OriginInfo originInfo={originInfo} />);
 
-    expect(screen.getByText('Agent')).toBeInTheDocument();
+    expect(screen.getByText('agentGroupText')).toBeInTheDocument();
     expect(screen.getByText('Uncontrolled agent1')).toBeInTheDocument();
     expect(screen.getByText('Uncontrolled agent2')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher1')).toBeInTheDocument();

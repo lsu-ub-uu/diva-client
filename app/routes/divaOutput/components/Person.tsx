@@ -17,6 +17,8 @@
  */
 
 import type {
+  AffiliationPersonalLinkGroup,
+  AffiliationPersonalTextGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,
@@ -54,13 +56,16 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
         {renderPersonName(person)}
       </span>
       {formatPersonRoles(person, language)}
-      {'affiliation' in person &&
-        person.affiliation?.map((affiliation, index) => (
-          <Affiliation key={index} affiliation={affiliation} />
-        ))}
+      {person.affiliation_otherType_link?.map((affiliation, index) => (
+        <LinkedAffiliation key={index} affiliation={affiliation} />
+      ))}
+      {person.affiliation_otherType_text?.map((affiliation, index) => (
+        <TextAffiliation key={index} affiliation={affiliation} />
+      ))}
       {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid && (
         <dl>
           {/*  TODO: Add publication ORCID when its in the model*/}
+
           {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid?.map(
             (orcid) => (
               <Term
@@ -122,23 +127,22 @@ const formatPersonRoles = (
   return '';
 };
 
-const formatAffiliationName = (
-  affiliation: AffiliationPersonalGroup,
+const formatTextAffiliationName = (
+  affiliation: AffiliationPersonalTextGroup,
   language: 'sv' | 'en',
 ) => {
   return [
-    getAffiliationName(affiliation, language),
+    affiliation.name_type_corporate?.namePart?.value,
     affiliation.country?.__valueText?.[language],
   ]
     .filter(Boolean)
     .join(', ');
 };
 
-const getAffiliationName = (
-  affiliation: AffiliationPersonalGroup,
+const formatLinkedAffiliationName = (
+  affiliation: AffiliationPersonalLinkGroup,
   language: 'sv' | 'en',
 ) => {
-  const affiliationName = affiliation.name_type_corporate?.namePart?.value;
   const linkedOrganisationDisplayName =
     affiliation.organisation?.displayName?.[language];
   const linkedRecordSwedishName =
@@ -147,10 +151,6 @@ const getAffiliationName = (
   const linkedRecordEnglishName =
     affiliation.organisation?.linkedRecord?.organisation?.variant_lang_eng
       ?.name_type_corporate?.namePart?.value;
-
-  if (affiliationName) {
-    return affiliationName;
-  }
 
   if (linkedOrganisationDisplayName) {
     return linkedOrganisationDisplayName;
@@ -164,42 +164,46 @@ const getAffiliationName = (
   return '';
 };
 
-const Affiliation = ({
+const LinkedAffiliation = ({
   affiliation,
 }: {
-  affiliation: AffiliationPersonalGroup;
+  affiliation: AffiliationPersonalLinkGroup;
 }) => {
   const language = useLanguage();
-
-  if (affiliation.organisation) {
-    return (
-      <>
-        <div className='affiliation'>
-          <span>{formatAffiliationName(affiliation, language)}</span>
-          <dl className='affiliation inline-definitions'>
-            {affiliation.organisation.linkedRecord.organisation
-              .identifier_type_ror && (
-              <Term
-                label={
-                  affiliation.organisation.linkedRecord.organisation
-                    .identifier_type_ror.__text?.[language]
-                }
-                value={
-                  affiliation.organisation.linkedRecord.organisation
-                    .identifier_type_ror.value
-                }
-              />
-            )}
-          </dl>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <div className='affiliation'>
-        <span>{formatAffiliationName(affiliation, language)}</span>
+        <span>{formatLinkedAffiliationName(affiliation, language)}</span>
+        <dl className='affiliation inline-definitions'>
+          {affiliation.organisation.linkedRecord.organisation
+            .identifier_type_ror && (
+            <Term
+              label={
+                affiliation.organisation.linkedRecord.organisation
+                  .identifier_type_ror.__text?.[language]
+              }
+              value={
+                affiliation.organisation.linkedRecord.organisation
+                  .identifier_type_ror.value
+              }
+            />
+          )}
+        </dl>
+      </div>
+    </>
+  );
+};
+
+const TextAffiliation = ({
+  affiliation,
+}: {
+  affiliation: AffiliationPersonalTextGroup;
+}) => {
+  const language = useLanguage();
+  return (
+    <>
+      <div className='affiliation'>
+        <span>{formatTextAffiliationName(affiliation, language)}</span>
 
         <dl className='inline-definitions'>
           {affiliation.identifier_type_ror && (
