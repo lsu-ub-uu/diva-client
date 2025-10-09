@@ -1,4 +1,4 @@
-c{
+{
   "dataList": {
     "fromNo": "0",
     "data": [
@@ -41,14 +41,14 @@ c{
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "diva-theme"
+                        "value": "diva-member"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-theme",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-member",
                         "accept": "application/vnd.cora.record+json"
                       }
                     },
@@ -62,14 +62,14 @@ c{
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "diva-theme"
+                        "value": "diva-member"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-theme",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-member",
                         "accept": "application/vnd.cora.record+json"
                       }
                     },
@@ -262,15 +262,15 @@ c{
                     "value": "uu"
                   }
                 ]
-              },
+              }
             ],
-            "name": "diva-theme"
+            "name": "diva-member"
           },
           "actionLinks": {
             "read": {
               "requestMethod": "GET",
               "rel": "read",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-theme/uu-theme",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-member/uu-theme",
               "accept": "application/vnd.cora.record+json"
             }
           }
@@ -278,7 +278,7 @@ c{
       }
     ],
     "totalNo": "2",
-    "containDataOfType": "diva-theme",
+    "containDataOfType": "diva-member",
     "toNo": "2"
   }
 }

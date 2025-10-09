@@ -1,9 +1,9 @@
 import type { loader } from '@/root';
 import { useRouteLoaderData } from 'react-router';
 
-export const useTheme = () => {
+export const useMember = () => {
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
-  return rootLoaderData?.theme;
+  return rootLoaderData?.member;
 };
 
 export const useUser = () => {

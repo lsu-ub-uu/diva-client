@@ -77,7 +77,7 @@ describe('formatPersonName', () => {
   });
 
   it('returns empty string when there is no name information', () => {
-    const person = {} as NamePersonGroup;
+    const person = {} as NamePersonalGroup;
 
     const formattedName = formatPersonName(person);
     expect(formattedName).toBe('');

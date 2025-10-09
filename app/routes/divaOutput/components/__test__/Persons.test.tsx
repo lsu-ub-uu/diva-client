@@ -257,7 +257,7 @@ describe('Persons', () => {
         __text: { en: 'Authors', sv: 'Författare' },
         namePart_type_family: { value: 'Personson' },
         namePart_type_given: { value: 'Anna' },
-        affiliation: [
+        affiliation_otherType_text: [
           {
             name_type_corporate: { namePart: { value: 'Uppsala University' } },
           },
@@ -267,7 +267,7 @@ describe('Persons', () => {
         __text: { en: 'Authors', sv: 'Författare' },
         namePart_type_family: { value: 'Testsson' },
         namePart_type_given: { value: 'Johan' },
-        affiliation: [
+        affiliation_otherType_link: [
           {
             organisation: {
               displayName: { en: 'Buppsala University' },

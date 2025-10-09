@@ -15,5 +15,10 @@ export async function getRecordDataListByType<T>(
     { Accept: RECORD_LIST_CONTENT_TYPE },
     authToken,
   );
-  return axios.get(apiUrl, { headers });
+  try {
+    return axios.get(apiUrl, { headers });
+  } catch (error) {
+    console.error(`Failed to fetch list of type ${type}`, error);
+    throw error;
+  }
 }

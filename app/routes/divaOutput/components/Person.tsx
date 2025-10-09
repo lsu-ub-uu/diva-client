@@ -17,7 +17,6 @@
  */
 
 import type {
-  AffiliationPersonalGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,

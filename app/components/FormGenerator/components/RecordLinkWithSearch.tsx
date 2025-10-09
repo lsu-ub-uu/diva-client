@@ -33,7 +33,7 @@ import {
 import { Fieldset } from '@/components/Input/Fieldset';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
-import { useTheme } from '@/utils/rootLoaderDataUtils';
+import { useMember } from '@/utils/rootLoaderDataUtils';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
@@ -55,7 +55,7 @@ export const RecordLinkWithSearch = ({
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, path);
-  const theme = useTheme();
+  const member = useMember();
   const fetcher = useFetcher();
   const recordLinkSearchPresentation = component.searchPresentation;
   const label = t(component.label);
@@ -77,10 +77,10 @@ export const RecordLinkWithSearch = ({
 
     if (
       recordLinkSearchPresentation.permissionUnitSearchTerm &&
-      theme?.memberPermissionUnit
+      member?.memberPermissionUnit
     ) {
       data[recordLinkSearchPresentation.permissionUnitSearchTerm.name] =
-        `permissionUnit_${theme?.memberPermissionUnit}`;
+        `permissionUnit_${member?.memberPermissionUnit}`;
     }
 
     fetcher.submit(data, {

@@ -31,7 +31,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
@@ -42,7 +42,7 @@ import { transformOrganisations } from '@/cora/transform/transformOrganisations.
 import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
-import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { transformMembers as transformMembers } from '@/cora/transform/transformMembers.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
@@ -68,7 +68,7 @@ const dependencies: Dependencies = {
   searchPool: listToPool<BFFSearch>([]),
   loginUnitPool: listToPool<BFFLoginUnit>([]),
   loginPool: listToPool<BFFLoginWebRedirect>([]),
-  themePool: listToPool<BFFTheme>([]),
+  memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
 };
 
@@ -88,7 +88,7 @@ const loadDependencies = async () => {
     'search',
     'loginUnit',
     'login',
-    'diva-theme',
+    'diva-member',
     'diva-organisation',
   ];
   const [
@@ -100,7 +100,7 @@ const loadDependencies = async () => {
     coraSearches,
     coraLoginUnits,
     coraLogins,
-    coraThemes,
+    coraMembers,
     coraOrganisations,
   ] = await getPoolsFromCora(types);
 
@@ -135,11 +135,11 @@ const loadDependencies = async () => {
   );
 
   try {
-    const themes = await transformThemes(coraThemes.data);
-    dependencies.themePool = groupThemesByHostname(themes);
+    const members = await transformMembers(coraMembers.data);
+    dependencies.memberPool = groupMembersByHostname(members);
   } catch (error) {
-    console.error('Error transforming themes:', error);
-    dependencies.themePool = new Lookup<string, BFFTheme>();
+    console.error('Error transforming members:', error);
+    dependencies.memberPool = new Lookup<string, BFFMember>();
   }
 
   try {
@@ -163,18 +163,18 @@ export const getDependencies = async () => {
 
 export { dependencies, loadDependencies };
 
-const groupThemesByHostname = (
-  themes: BFFTheme[],
-): Lookup<string, BFFTheme> => {
-  const groupedThemes = new Lookup<string, BFFTheme>();
+const groupMembersByHostname = (
+  members: BFFMember[],
+): Lookup<string, BFFMember> => {
+  const groupedMembers = new Lookup<string, BFFMember>();
 
-  themes.forEach((theme) => {
-    theme.hostnames.forEach((hostname) => {
-      groupedThemes.set(hostname, theme);
+  members.forEach((member) => {
+    member.hostnames.forEach((hostname) => {
+      groupedMembers.set(hostname, member);
     });
   });
 
-  return groupedThemes;
+  return groupedMembers;
 };
 
 export const dependenciesContext = createContext<{

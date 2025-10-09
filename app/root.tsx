@@ -58,7 +58,7 @@ import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
-import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
@@ -71,9 +71,8 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
-  const theme = getThemeFromHostname(request, dependencies);
-
-  const loginUnits = getLoginUnits(dependencies, undefined);
+  const member = getMemberFromHostname(request, dependencies);
+  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
@@ -85,7 +84,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     locale,
     loginUnits,
     appTokenLogins,
-    theme,
+    member,
     recordTypes,
     userPreferences,
     notification,
@@ -230,14 +229,14 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const { userPreferences, theme, loginUnits, appTokenLogins } = loaderData;
+  const { userPreferences, member, loginUnits, appTokenLogins } = loaderData;
   return (
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
 
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
           <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />

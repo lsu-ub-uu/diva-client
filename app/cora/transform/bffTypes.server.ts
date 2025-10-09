@@ -331,7 +331,7 @@ export interface BFFThemeLinkWrapper {
   en: BFFThemeLink;
 }
 
-export interface BFFTheme {
+export interface BFFMember {
   id: string;
   memberPermissionUnit?: string;
   pageTitle: {

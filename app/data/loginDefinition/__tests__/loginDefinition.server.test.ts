@@ -29,7 +29,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
@@ -181,7 +181,7 @@ describe('loginDefinition', () => {
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool,
       loginPool,
-      themePool: listToPool<BFFTheme>([]),
+      memberPool: listToPool<BFFMember>([]),
       organisationPool: listToPool<BFFOrganisation>([]),
     };
   });

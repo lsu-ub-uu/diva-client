@@ -30,7 +30,7 @@ const RECORD_TYPES = [
   'diva-localGenericMarkup',
   'diva-funder',
   'diva-person',
-  'diva-theme',
+  'diva-member',
 ];
 
 let code = `

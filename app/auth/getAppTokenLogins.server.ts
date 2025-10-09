@@ -8,8 +8,8 @@ export const getAppTokenLogins = (): AppTokenLogin[] => {
   try {
     const users = process.env.APP_TOKEN_USERS;
     return users !== undefined ? JSON.parse(users) : [];
-  } catch {
-    console.error('Failed to parse APP_TOKEN_USERS');
+  } catch (error) {
+    console.error('Failed to parse APP_TOKEN_USERS', error);
     return [];
   }
 };

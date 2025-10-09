@@ -21,11 +21,12 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFTheme } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import {
   getAllDataAtomicsWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
+  getAllRecordLinksWithNameInData,
   getFirstDataGroupWithNameInData,
   getFirstResourceLinkWithNameInData,
   hasChildWithNameInData,
@@ -36,15 +37,15 @@ import {
   fetchLinkedRecordForRecordLinkWithNameInData,
 } from '@/cora/cora-data/CoraDataTransforms.server';
 
-export const transformThemes = (
+export const transformMembers = (
   dataListWrapper: DataListWrapper,
-): Promise<BFFTheme[]> => {
-  return Promise.all(dataListWrapper.dataList.data.map(transformTheme));
+): Promise<BFFMember[]> => {
+  return Promise.all(dataListWrapper.dataList.data.map(transformMember));
 };
 
-const transformTheme = async (
+const transformMember = async (
   recordWrapper: RecordWrapper,
-): Promise<BFFTheme> => {
+): Promise<BFFMember> => {
   const data = recordWrapper.record.data;
   return removeEmpty({
     id: getFirstDataAtomicValueWithNameInData(
@@ -81,6 +82,9 @@ const transformTheme = async (
       : undefined,
     hostnames: getAllDataAtomicsWithNameInData(data, 'hostname').map(
       (atomic) => atomic.value,
+    ),
+    loginUnitIds: getAllRecordLinksWithNameInData(data, 'loginUnit').map(
+      (recordLink) => recordLink.id,
     ),
   });
 };
