@@ -17,32 +17,39 @@
  */
 
 import {
+  messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
+} from '@/components/Layout/Header/Login/utils/utils';
+import {
+  Link,
   useFetcher,
   useLocation,
   useNavigation,
   useSubmit,
 } from 'react-router';
-import {
-  messageIsFromWindowOpenedFromHere,
-  printUserNameOnPage,
-} from '@/components/Layout/Header/Login/utils/utils';
 
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
-import { useTranslation } from 'react-i18next';
-import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
-import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
-import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
-import { Button } from '@/components/Button/Button';
+import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
+import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
+import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
-import styles from './Login.module.css';
-import { useHydrated } from '@/utils/useHydrated';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
+import { useHydrated } from '@/utils/useHydrated';
+import styles from './Login.module.css';
 
-export default function Login() {
+interface LoginProps {
+  loginUnits: LoginDefinition[];
+  appTokenLogins: AppTokenLogin[];
+}
+
+export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
   const hydrated = useHydrated();
   const { MODE } = import.meta.env;
   const user = useUser();
@@ -56,9 +63,14 @@ export default function Login() {
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
 
-  const handleDevSelection = (account: Account) => {
+  const handleDevSelection = (account: AppTokenLogin) => {
     submit(
-      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
+      {
+        loginType: 'appToken',
+        loginId: account.loginId,
+        appToken: account.appToken,
+        returnTo,
+      },
       { action: '/login', method: 'post' },
     );
   };
@@ -90,25 +102,69 @@ export default function Login() {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
 
+  const loginButtonProps: ButtonProps = {
+    disabled: submitting || !hydrated,
+    'aria-busy': submitting,
+    variant: 'tertiary',
+  };
+
+  const loginButtonChildren = (
+    <>
+      {t('divaClient_LoginText')}
+      {submitting ? <CircularLoader /> : <LoginIcon />}
+    </>
+  );
+
   if (!user) {
+    if (loginUnits.length === 1 && appTokenLogins.length === 0) {
+      const loginUnit = loginUnits[0];
+      return (
+        <div className={styles['login']}>
+          {loginUnit.type === 'webRedirect' && (
+            <Button
+              {...loginButtonProps}
+              onClick={() => handleWebRedirectSelection(loginUnit.url!)}
+            >
+              {loginButtonChildren}
+            </Button>
+          )}
+          {loginUnit.type === 'password' && (
+            <Button
+              {...loginButtonProps}
+              as={Link}
+              to={`/login?presentation=${encodeURIComponent(JSON.stringify(loginUnit.presentation))}&returnTo=${returnTo}`}
+            >
+              {loginButtonChildren}
+            </Button>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className={styles['login']}>
         <Menu>
-          <MenuButton
-            as={Button}
-            disabled={submitting || !hydrated}
-            aria-busy={submitting}
-            variant='tertiary'
-          >
+          <MenuButton as={Button} {...loginButtonProps}>
             {t('divaClient_LoginText')}
             {submitting ? <CircularLoader /> : <LoginIcon />}
           </MenuButton>
           <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions onSelect={handleDevSelection} />
-            <hr />
-            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-            <hr />
-            <PasswordLoginOptions returnTo={returnTo} />
+            <DevAccountLoginOptions
+              appTokenLogins={appTokenLogins}
+              onSelect={handleDevSelection}
+            />
+            <WebRedirectLoginOptions
+              webRedirectLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'webRedirect',
+              )}
+              onSelect={handleWebRedirectSelection}
+            />
+            <PasswordLoginOptions
+              passwordLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'password',
+              )}
+              returnTo={returnTo}
+            />
           </DropdownMenu>
         </Menu>
       </div>
@@ -118,12 +174,7 @@ export default function Login() {
   return (
     <div className={styles['login']}>
       <Menu>
-        <MenuButton
-          as={Button}
-          disabled={submitting || !hydrated}
-          aria-busy={submitting}
-          variant='tertiary'
-        >
+        <MenuButton {...loginButtonProps} as={Button}>
           <PersonIcon />
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}

@@ -23,7 +23,7 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { CodeIcon, SearchIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { useTheme } from '@/utils/rootLoaderDataUtils';
+import { useMember } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
@@ -43,7 +43,7 @@ export const SearchForm = ({
   searchResults,
   apiUrl,
 }: SearchFormProps) => {
-  const theme = useTheme();
+  const member = useMember();
   const { t } = useTranslation();
   const submit = useSubmit();
   const methods = useRemixForm({
@@ -62,7 +62,7 @@ export const SearchForm = ({
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
-              ...(theme?.memberPermissionUnit && {
+              ...(member?.memberPermissionUnit && {
                 'search.include.includePart.permissionUnitSearchTerm': {
                   type: 'hidden',
                 },
@@ -82,11 +82,11 @@ export const SearchForm = ({
             />
           )}
           {formHasPermissionUnitSearchTerm(formSchema) &&
-            theme?.memberPermissionUnit && (
+            member?.memberPermissionUnit && (
               <input
                 type='hidden'
                 name='search.include.includePart.permissionUnitSearchTerm.value'
-                value={`permissionUnit_${theme.memberPermissionUnit}`}
+                value={`permissionUnit_${member.memberPermissionUnit}`}
                 data-testid='permissionUnitHiddenSearchTerm'
               />
             )}

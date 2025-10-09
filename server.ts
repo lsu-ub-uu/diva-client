@@ -21,7 +21,6 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
-import path from 'node:path';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -66,6 +65,9 @@ if (DEVELOPMENT) {
       server: { middlewareMode: true },
     }),
   );
+  app.get('/devLogin', (req, res) => {
+    res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
+  });
   app.use(viteDevServer.middlewares);
   app.use(async (req, res, next) => {
     try {
@@ -77,9 +79,6 @@ if (DEVELOPMENT) {
       }
       next(error);
     }
-  });
-  app.get('/devLogin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'devLogin.html'));
   });
 } else {
   console.info('Starting production server');
@@ -101,11 +100,11 @@ app.listen(PORT, () => {
 
   if (DEVELOPMENT) {
     console.info(
-      `***Development server is running on http://localhost:${PORT}${BASE_PATH}***`,
+      `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
   } else {
     console.info(
-      `***Server is started and listening on port ${PORT} ${BASE_PATH}***`,
+      `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
 });

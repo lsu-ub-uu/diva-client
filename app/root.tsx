@@ -58,10 +58,11 @@ import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
-import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
+import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
 
 const { MODE } = import.meta.env;
 
@@ -70,9 +71,9 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
-  const theme = getThemeFromHostname(request, dependencies);
-
-  const loginUnits = getLoginUnits(dependencies);
+  const member = getMemberFromHostname(request, dependencies);
+  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+  const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
@@ -82,7 +83,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     user,
     locale,
     loginUnits,
-    theme,
+    appTokenLogins,
+    member,
     recordTypes,
     userPreferences,
     notification,
@@ -227,24 +229,26 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const userPreferences = loaderData.userPreferences;
-  const theme = loaderData.theme;
-
+  const { userPreferences, member, loginUnits, appTokenLogins } = loaderData;
   return (
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
 
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </MemberBar>
       </header>
 
       <header className='nav-rail'>
-        <Header recordTypes={loaderData.recordTypes} />
+        <Header
+          recordTypes={loaderData.recordTypes}
+          loginUnits={loginUnits}
+          appTokenLogins={appTokenLogins}
+        />
       </header>
 
       <div className='content'>

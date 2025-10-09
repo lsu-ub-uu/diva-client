@@ -94,7 +94,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '../bffTypes.server';
 import {
@@ -182,7 +182,7 @@ describe('transformRecord', () => {
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
-      themePool: listToPool<BFFTheme>([]),
+      memberPool: listToPool<BFFMember>([]),
       organisationPool: listToPool<BFFOrganisation>([]),
     };
   });

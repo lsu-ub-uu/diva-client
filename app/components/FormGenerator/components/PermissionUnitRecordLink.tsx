@@ -18,8 +18,8 @@
 
 import type { User } from '@/auth/createUser';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import type { BFFTheme } from '@/cora/transform/bffTypes.server';
-import { useTheme, useUser } from '@/utils/rootLoaderDataUtils';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import { useMember, useUser } from '@/utils/rootLoaderDataUtils';
 import { useEffect } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import { DevInfo } from './DevInfo';
@@ -34,10 +34,10 @@ export const PermissionUnitRecordLink = ({
   path,
 }: PermissionUnitRecordLinkProps) => {
   const { setValue } = useRemixFormContext();
-  const theme = useTheme();
+  const member = useMember();
   const user = useUser();
 
-  const autoPermissionUnit = getAutoPermissionUnit(theme, user);
+  const autoPermissionUnit = getAutoPermissionUnit(member, user);
 
   useEffect(() => {
     if (autoPermissionUnit) {
@@ -63,10 +63,10 @@ export const PermissionUnitRecordLink = ({
 };
 
 const getAutoPermissionUnit = (
-  theme: BFFTheme | undefined,
+  member: BFFMember | undefined,
   user: User | undefined,
 ) => {
-  const memberPermissionUnit = theme?.memberPermissionUnit;
+  const memberPermissionUnit = member?.memberPermissionUnit;
   if (memberPermissionUnit) {
     return memberPermissionUnit;
   }

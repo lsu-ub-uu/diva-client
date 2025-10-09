@@ -9,15 +9,18 @@
     outline: none;
   }
 
-  hr {
-    height: 1px;
-    background-color: var(--color-gray-main);
-    margin: var(--gap-s) 0;
-  }
-
-  h6 {
+  h2 {
     padding: var(--gap);
     color: var(--color-label);
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-h6);
+    font-family: var(--font-family-main);
+    text-transform: uppercase;
+
+    &:not(:first-child) {
+      border-top: 1px solid var(--color-gray-main);
+      padding-top: var(--gap-s);
+    }
   }
 
   a,
@@ -35,6 +38,10 @@
 
     &[data-focus] {
       background-color: var(--color-button-secondary-hover);
+    }
+
+    &[data-active] {
+      background-color: var(--color-button-secondary-active);
     }
   }
 }

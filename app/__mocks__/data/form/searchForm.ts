@@ -1,41 +1,41 @@
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 
 export const searchFormWithoutPermissionUnit: SearchFormSchema = {
-  recordTypeToSearchIn: ['diva-theme'],
+  recordTypeToSearchIn: ['diva-member'],
   form: {
-    presentationId: 'themeSearchPGroup',
+    presentationId: 'memberSearchPGroup',
     type: 'group',
     name: 'search',
     mode: 'input',
     tooltip: {
-      title: 'themeSearchGroupText',
-      body: 'themeSearchGroupDefText',
+      title: 'memberSearchGroupText',
+      body: 'memberSearchGroupDefText',
     },
-    label: 'themeSearchGroupText',
+    label: 'memberSearchGroupText',
     showLabel: false,
     components: [
       {
-        presentationId: 'themeSearchIncludePGroup',
+        presentationId: 'memberSearchIncludePGroup',
         type: 'group',
         name: 'include',
         mode: 'input',
         tooltip: {
-          title: 'themeSearchIncludeGroupText',
-          body: 'themeSearchIncludeGroupDefText',
+          title: 'memberSearchIncludeGroupText',
+          body: 'memberSearchIncludeGroupDefText',
         },
-        label: 'themeSearchIncludeGroupText',
+        label: 'memberSearchIncludeGroupText',
         showLabel: false,
         components: [
           {
-            presentationId: 'themeSearchIncludePartPGroup',
+            presentationId: 'memberSearchIncludePartPGroup',
             type: 'group',
             name: 'includePart',
             mode: 'input',
             tooltip: {
-              title: 'themeSearchIncludePartGroupText',
-              body: 'themeSearchIncludePartGroupDefText',
+              title: 'memberSearchIncludePartGroupText',
+              body: 'memberSearchIncludePartGroupDefText',
             },
-            label: 'themeSearchIncludePartGroupText',
+            label: 'memberSearchIncludePartGroupText',
             showLabel: false,
             components: [
               {
@@ -145,41 +145,41 @@ export const searchFormWithoutPermissionUnit: SearchFormSchema = {
   },
 };
 export const searchFormWithPermissionUnit: SearchFormSchema = {
-  recordTypeToSearchIn: ['diva-theme'],
+  recordTypeToSearchIn: ['diva-member'],
   form: {
-    presentationId: 'themeSearchPGroup',
+    presentationId: 'memberSearchPGroup',
     type: 'group',
     name: 'search',
     mode: 'input',
     tooltip: {
-      title: 'themeSearchGroupText',
-      body: 'themeSearchGroupDefText',
+      title: 'memberSearchGroupText',
+      body: 'memberSearchGroupDefText',
     },
-    label: 'themeSearchGroupText',
+    label: 'memberSearchGroupText',
     showLabel: false,
     components: [
       {
-        presentationId: 'themeSearchIncludePGroup',
+        presentationId: 'memberSearchIncludePGroup',
         type: 'group',
         name: 'include',
         mode: 'input',
         tooltip: {
-          title: 'themeSearchIncludeGroupText',
-          body: 'themeSearchIncludeGroupDefText',
+          title: 'memberSearchIncludeGroupText',
+          body: 'memberSearchIncludeGroupDefText',
         },
-        label: 'themeSearchIncludeGroupText',
+        label: 'memberSearchIncludeGroupText',
         showLabel: false,
         components: [
           {
-            presentationId: 'themeSearchIncludePartPGroup',
+            presentationId: 'memberSearchIncludePartPGroup',
             type: 'group',
             name: 'includePart',
             mode: 'input',
             tooltip: {
-              title: 'themeSearchIncludePartGroupText',
-              body: 'themeSearchIncludePartGroupDefText',
+              title: 'memberSearchIncludePartGroupText',
+              body: 'memberSearchIncludePartGroupDefText',
             },
-            label: 'themeSearchIncludePartGroupText',
+            label: 'memberSearchIncludePartGroupText',
             showLabel: false,
             components: [
               {

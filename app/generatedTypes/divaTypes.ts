@@ -16,8 +16,8 @@ export interface DivaProject extends BFFDataRecordData {
   project: ProjectUpdateGroup;
 }
 
-export interface DivaTheme extends BFFDataRecordData {
-  'diva-theme': ThemeUpdateGroup;
+export interface DivaMember extends BFFDataRecordData {
+  'diva-member': DivaMemberGroup;
 }
 
 export interface User extends BFFDataRecordData {
@@ -3362,6 +3362,16 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
+export type ImportSourceCollection =
+  | 'wos'
+  | 'mods'
+  | 'bibtex'
+  | 'ris'
+  | 'csv'
+  | 'pubmed'
+  | 'endnote'
+  | 'biblatex';
+
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3377,6 +3387,11 @@ export interface AdminInfoDivaGroup {
     value: string;
     _type: 'internal';
     __text: { sv: string; en: string };
+  };
+  importSource?: {
+    value: ImportSourceCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   __text: { sv: string; en: string };
 }
@@ -3770,15 +3785,15 @@ export interface DivaOutputGroup {
   __text: { sv: string; en: string };
 }
 
-export interface RecordInfoThemeUpdateGroup {
+export interface RecordInfoMemberGroup {
   id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-theme'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-theme'; __text: { sv: string; en: string } };
+  type: { value: 'diva-member'; __text: { sv: string; en: string } };
+  validationType: { value: 'diva-member'; __text: { sv: string; en: string } };
   dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
   createdBy: { value: string; __text: { sv: string; en: string } };
+  permissionUnit: { value: string; __text: { sv: string; en: string } };
   tsCreated: { value: string; __text: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
   __text: { sv: string; en: string };
 }
 
@@ -4653,7 +4668,8 @@ export interface LoginUnitGroup {
   __text: { sv: string; en: string };
 }
 
-export interface ThemeUpdateGroup {
+export interface DivaMemberGroup {
+  recordInfo: RecordInfoMemberGroup;
   memberPermissionUnit?: {
     value: string;
     linkedRecord: {
@@ -4662,7 +4678,6 @@ export interface ThemeUpdateGroup {
 
     __text: { sv: string; en: string };
   };
-  recordInfo: RecordInfoThemeUpdateGroup;
   backgroundColor: { value: string; __text: { sv: string; en: string } };
   textColor: { value: string; __text: { sv: string; en: string } };
   logo?: {

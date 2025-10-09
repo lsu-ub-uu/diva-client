@@ -8,11 +8,11 @@ import {
 import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import { mock } from 'vitest-mock-extended';
-import { useTheme } from '@/utils/rootLoaderDataUtils';
-import type { BFFTheme } from '@/cora/transform/bffTypes.server';
+import { useMember } from '@/utils/rootLoaderDataUtils';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 
 vi.mock('@/utils/rootLoaderDataUtils', () => ({
-  useTheme: vi.fn(),
+  useMember: vi.fn(),
 }));
 
 describe('SearchForm', () => {
@@ -49,7 +49,7 @@ describe('SearchForm', () => {
           <SearchForm
             formSchema={searchFormWithoutPermissionUnit}
             searchResults={{
-              containDataOfType: 'diva-theme',
+              containDataOfType: 'diva-member',
               fromNo: 1,
               toNo: 10,
               totalNo: 100,
@@ -67,9 +67,9 @@ describe('SearchForm', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('renders a hidden permissionUnit input when theme has memberPermissionUnit and formDef has permissionUnit', () => {
-    vi.mocked(useTheme).mockReturnValue(
-      mock<BFFTheme>({
+  it('renders a hidden permissionUnit input when member has memberPermissionUnit and formDef has permissionUnit', () => {
+    vi.mocked(useMember).mockReturnValue(
+      mock<BFFMember>({
         memberPermissionUnit: 'testPermissionUnit',
       }),
     );
@@ -81,7 +81,7 @@ describe('SearchForm', () => {
           <SearchForm
             formSchema={searchFormWithPermissionUnit}
             searchResults={{
-              containDataOfType: 'diva-theme',
+              containDataOfType: 'diva-member',
               fromNo: 1,
               toNo: 10,
               totalNo: 100,
@@ -103,9 +103,9 @@ describe('SearchForm', () => {
     expect(hiddenInput).toHaveValue('permissionUnit_testPermissionUnit');
   });
 
-  it('renders a visible permissionUnit input when theme does not have memberPermissionUnit but formDef does have permissionUnit', () => {
-    vi.mocked(useTheme).mockReturnValue(
-      mock<BFFTheme>({
+  it('renders a visible permissionUnit input when member does not have memberPermissionUnit but formDef does have permissionUnit', () => {
+    vi.mocked(useMember).mockReturnValue(
+      mock<BFFMember>({
         memberPermissionUnit: undefined,
       }),
     );
@@ -117,7 +117,7 @@ describe('SearchForm', () => {
           <SearchForm
             formSchema={searchFormWithPermissionUnit}
             searchResults={{
-              containDataOfType: 'diva-theme',
+              containDataOfType: 'diva-member',
               fromNo: 1,
               toNo: 10,
               totalNo: 100,
@@ -146,7 +146,7 @@ describe('SearchForm', () => {
           <SearchForm
             formSchema={searchFormWithoutPermissionUnit}
             searchResults={{
-              containDataOfType: 'diva-theme',
+              containDataOfType: 'diva-member',
               fromNo: 1,
               toNo: 10,
               totalNo: 100,
@@ -167,9 +167,9 @@ describe('SearchForm', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('does not render hidden or visible permissionUnit input when formDef does not have permissionUnit but theme does', () => {
-    vi.mocked(useTheme).mockReturnValue(
-      mock<BFFTheme>({
+  it('does not render hidden or visible permissionUnit input when formDef does not have permissionUnit but member does', () => {
+    vi.mocked(useMember).mockReturnValue(
+      mock<BFFMember>({
         memberPermissionUnit: 'testPermissionUnit',
       }),
     );
@@ -181,7 +181,7 @@ describe('SearchForm', () => {
           <SearchForm
             formSchema={searchFormWithoutPermissionUnit}
             searchResults={{
-              containDataOfType: 'diva-theme',
+              containDataOfType: 'diva-member',
               fromNo: 1,
               toNo: 10,
               totalNo: 100,
