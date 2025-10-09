@@ -23,6 +23,7 @@
   height: var(--gap-xxl);
   gap: var(--gap-xxl);
   align-items: center;
+  border-bottom: 1px solid var(--color-thin-border);
 
   @media (width < 900px) {
     justify-content: flex-end;

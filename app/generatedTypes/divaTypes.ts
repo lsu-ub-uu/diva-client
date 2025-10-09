@@ -3789,7 +3789,7 @@ export interface RecordInfoMemberGroup {
   id: { value: string; __text: { sv: string; en: string } };
   type: { value: 'diva-member'; __text: { sv: string; en: string } };
   validationType: { value: 'diva-member'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
+  dataDivider: { value: 'diva'; __text: { sv: string; en: string } };
   createdBy: { value: string; __text: { sv: string; en: string } };
   permissionUnit: { value: string; __text: { sv: string; en: string } };
   tsCreated: { value: string; __text: { sv: string; en: string } };

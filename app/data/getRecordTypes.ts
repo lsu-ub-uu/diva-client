@@ -21,6 +21,7 @@ import type { Auth } from '@/auth/Auth';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecordType } from '@/cora/transform/transformRecordTypes.server';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 
 export const getRecordTypes = async (
   dependencies: Dependencies,
@@ -46,4 +47,27 @@ export const getRecordTypes = async (
     .map((response) => response.data)
     .filter((recordType) => recordType.record.actionLinks.search !== undefined)
     .map(transformRecordType);
+};
+
+export const canEditMemberSettings = async (
+  member?: BFFMember,
+  auth?: Auth,
+) => {
+  if (!auth || !member) {
+    return false;
+  }
+  try {
+    const memberData = await getRecordDataById<RecordWrapper>(
+      'diva-member',
+      member.id,
+      auth?.data?.token,
+    );
+    if (memberData.data.record.actionLinks.update === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch {
+    return false;
+  }
 };

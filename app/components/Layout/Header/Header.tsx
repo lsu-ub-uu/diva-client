@@ -28,6 +28,7 @@ import {
   CloseIcon,
   CodeIcon,
   DesignServicesIcon,
+  MemberSettingsIcon,
   MenuIcon,
 } from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -49,12 +50,14 @@ interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
+  editableMember: string | undefined;
 }
 
 export const Header = ({
   recordTypes,
   loginUnits,
   appTokenLogins,
+  editableMember,
 }: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -107,6 +110,16 @@ export const Header = ({
               </Button>
             </Form>
           </>
+        )}
+        {editableMember && (
+          <NavigationLink
+            to={href('/:recordType/:recordId/update', {
+              recordType: 'diva-member',
+              recordId: editableMember,
+            })}
+            label='Medlems­inställningar'
+            icon={<MemberSettingsIcon />}
+          />
         )}
       </div>
       <Button
