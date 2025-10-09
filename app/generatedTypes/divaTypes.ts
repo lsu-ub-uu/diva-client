@@ -3362,6 +3362,16 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
+export type ImportSourceCollection =
+  | 'wos'
+  | 'mods'
+  | 'bibtex'
+  | 'ris'
+  | 'csv'
+  | 'pubmed'
+  | 'endnote'
+  | 'biblatex';
+
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3377,6 +3387,11 @@ export interface AdminInfoDivaGroup {
     value: string;
     _type: 'internal';
     __text: { sv: string; en: string };
+  };
+  importSource?: {
+    value: ImportSourceCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
   };
   __text: { sv: string; en: string };
 }
@@ -4653,7 +4668,8 @@ export interface LoginUnitGroup {
   __text: { sv: string; en: string };
 }
 
-export interface ThemeUpdateGroup {
+export interface DivaMemberGroup {
+  recordInfo: RecordInfoMemberGroup;
   memberPermissionUnit?: {
     value: string;
     linkedRecord: {

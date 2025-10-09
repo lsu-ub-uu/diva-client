@@ -348,27 +348,27 @@ describe('loginDefinition', () => {
   ];
 
   it('should generate a object from loginUnits and logins', () => {
-    const actual = createLoginDefinition(dependencies);
+    const actual = createLoginDefinition(dependencies, undefined);
     expect(actual).toStrictEqual(result);
   });
 
   it('webRedirect should contain correct keys', () => {
-    const actual = createLoginDefinition(dependencies);
+    const actual = createLoginDefinition(dependencies, undefined);
     expect(actual[1].type).toBe('webRedirect');
     expect(Object.hasOwn(actual[1], 'url')).toBe(true);
     expect(Object.hasOwn(actual[1], 'presentation')).toBe(false);
   });
 
   it('password should contain correct keys', () => {
-    const actual = createLoginDefinition(dependencies);
+    const actual = createLoginDefinition(dependencies, undefined);
     expect(actual[2].type).toBe('password');
     expect(Object.hasOwn(actual[2], 'url')).toBe(false);
     expect(Object.hasOwn(actual[2], 'presentation')).toBe(true);
   });
 
   it('filters out loginUnits with no matching permissionUnit', () => {
-    const permissionUnit = 'somePermissionUnit';
-    const actual = createLoginDefinition(dependencies, permissionUnit);
-    expect(actual).toStrictEqual([result[3], result[4]]);
+    const loginUnitIds = ['someLoginUnit', 'someOtherLoginUnit'];
+    const actual = createLoginDefinition(dependencies, loginUnitIds);
+    expect(actual).toStrictEqual([result[0], result[1]]);
   });
 });
