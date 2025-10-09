@@ -2,6 +2,7 @@ import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
 import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Date } from '@/routes/divaOutput/components/Date';
+import { useTranslation } from 'react-i18next';
 
 interface OriginInfoProps {
   originInfo: OriginInfoGroup;
@@ -9,6 +10,7 @@ interface OriginInfoProps {
 
 export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
   const language = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <section aria-labelledby='origin-info'>
@@ -37,7 +39,7 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
         />
 
         <Term
-          label={originInfo.agent?.__text[language]}
+          label={t('agentGroupText')}
           value={getPublisherNames(originInfo)}
         />
 
@@ -52,12 +54,15 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
 
 const getPublisherNames = (originInfo: OriginInfoGroup) => {
   const uncontrolledAgents =
-    originInfo.agent?.namePart?.map((namePart) => namePart.value) ?? [];
+    originInfo.agent_otherType_text?.map(
+      (publisher) => publisher.namePart?.value,
+    ) ?? [];
 
   const linkedPublishers =
-    originInfo.agent?.publisher?.map(
+    originInfo.agent_otherType_link?.map(
       (publisher) =>
-        publisher.linkedRecord?.publisher.name_type_corporate.namePart.value,
+        publisher?.publisher?.linkedRecord?.publisher.name_type_corporate
+          .namePart.value,
     ) ?? [];
   return [...linkedPublishers, ...uncontrolledAgents].filter(Boolean);
 };

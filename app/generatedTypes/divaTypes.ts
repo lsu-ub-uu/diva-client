@@ -970,7 +970,7 @@ export interface RecordInfoPersonUpdateGroup {
 }
 
 export interface NamePersonGroup {
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -1609,8 +1609,8 @@ export interface RoleProjectPersonalGroup {
   __text: { sv: string; en: string };
 }
 
-export interface AffiliationPersonalGroup {
-  organisation?: {
+export interface AffiliationPersonalLinkGroup {
+  organisation: {
     value: string;
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
@@ -1618,7 +1618,12 @@ export interface AffiliationPersonalGroup {
     displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
-  name_type_corporate?: NameCorporateGroup;
+  _otherType: 'link';
+  __text: { sv: string; en: string };
+}
+
+export interface AffiliationPersonalTextGroup {
+  name_type_corporate: NameCorporateGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
@@ -1630,6 +1635,7 @@ export interface AffiliationPersonalGroup {
     __valueText: { sv: string; en: string };
   };
   description?: { value: string; __text: { sv: string; en: string } };
+  _otherType: 'text';
   __text: { sv: string; en: string };
 }
 
@@ -1642,7 +1648,7 @@ export interface NamePersonalProjectGroup {
 
     __text: { sv: string; en: string };
   };
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -1652,11 +1658,14 @@ export interface NamePersonalProjectGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
-  role?: RoleProjectPersonalGroup;
-  affiliation?: AffiliationPersonalGroup[];
+  role: RoleProjectPersonalGroup;
+  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
+  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
+
+export type OtherTypeCollection = 'link' | 'text';
 
 export interface RoleProjectOrganisationGroup {
   roleTerm: {
@@ -1684,6 +1693,7 @@ export interface NameOrganisationProjectGroup {
     __text: { sv: string; en: string };
   };
   _type: 'corporate';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2362,7 +2372,7 @@ export interface NamePersonalGroup {
 
     __text: { sv: string; en: string };
   };
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -2372,8 +2382,9 @@ export interface NamePersonalGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
-  role?: RoleGroup;
-  affiliation?: AffiliationPersonalGroup[];
+  role: RoleGroup;
+  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
+  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2387,7 +2398,7 @@ export interface NameOrganisationGroup {
     displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
-  role?: RoleGroup;
+  role: RoleGroup;
   namePart?: { value: string; __text: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
@@ -2396,6 +2407,7 @@ export interface NameOrganisationGroup {
   };
   description?: { value: string; __text: { sv: string; en: string } };
   _type: 'corporate';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2489,17 +2501,24 @@ export interface RolePublisherGroup {
   __text: { sv: string; en: string };
 }
 
-export interface AgentGroup {
-  publisher?: {
+export interface AgentLinkGroup {
+  publisher: {
     value: string;
     linkedRecord: {
       publisher: PublisherUpdateGroup;
     };
 
     __text: { sv: string; en: string };
-  }[];
-  namePart?: { value: string; __text: { sv: string; en: string } }[];
+  };
   role: RolePublisherGroup;
+  _otherType: 'link';
+  __text: { sv: string; en: string };
+}
+
+export interface AgentTextGroup {
+  namePart: { value: string; __text: { sv: string; en: string } };
+  role: RolePublisherGroup;
+  _otherType: 'text';
   __text: { sv: string; en: string };
 }
 
@@ -2512,7 +2531,8 @@ export interface OriginInfoGroup {
   dateIssued: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther_type_online?: DateOtherOnlineGroup;
-  agent?: AgentGroup;
+  agent_otherType_link?: AgentLinkGroup[];
+  agent_otherType_text?: AgentTextGroup[];
   place?: PlaceGroup[];
   edition?: { value: string; __text: { sv: string; en: string } };
   __text: { sv: string; en: string };
@@ -2713,8 +2733,6 @@ export interface NameOrganisationExternalCollaborationGroup {
   __text: { sv: string; en: string };
 }
 
-export type RelatedItemOtherTypeCollection = 'link' | 'text';
-
 export interface RoleDegreeGrantingInstitutionGroup {
   roleTerm: {
     value: 'dgg';
@@ -2741,7 +2759,7 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
     __text: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: RelatedItemOtherTypeCollection;
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2763,7 +2781,7 @@ export interface NamePersonalThesisAdvisorGroup {
 
     __text: { sv: string; en: string };
   };
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -2773,8 +2791,9 @@ export interface NamePersonalThesisAdvisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
-  role?: RoleThesisAdvisorGroup;
-  affiliation?: AffiliationPersonalGroup[];
+  role: RoleThesisAdvisorGroup;
+  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
+  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2797,7 +2816,7 @@ export interface NamePersonalDegreeSupervisorGroup {
 
     __text: { sv: string; en: string };
   };
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -2807,8 +2826,9 @@ export interface NamePersonalDegreeSupervisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
-  role?: RoleDegreeSupervisorGroup;
-  affiliation?: AffiliationPersonalGroup[];
+  role: RoleDegreeSupervisorGroup;
+  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
+  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2831,7 +2851,7 @@ export interface NamePersonalOpponentGroup {
 
     __text: { sv: string; en: string };
   };
-  namePart_type_family?: {
+  namePart_type_family: {
     value: string;
     _type: 'family';
     __text: { sv: string; en: string };
@@ -2841,8 +2861,9 @@ export interface NamePersonalOpponentGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
-  role?: RoleOpponentGroup;
-  affiliation?: AffiliationPersonalGroup[];
+  role: RoleOpponentGroup;
+  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
+  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2967,17 +2988,17 @@ export interface RelatedItemJournalGroup {
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
-  _otherType: RelatedItemOtherTypeCollection;
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
 export interface RelatedItemPartBookGroup {
-  extent?: ExtentGroup;
+  extent: ExtentGroup;
   __text: { sv: string; en: string };
 }
 
-export interface RelatedItemSeriesGroup {
-  series?: {
+export interface RelatedItemSeriesLinkGroup {
+  series: {
     value: string;
     linkedRecord: {
       series: SeriesUpdateGroup;
@@ -2985,7 +3006,14 @@ export interface RelatedItemSeriesGroup {
 
     __text: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoGroup;
+  partNumber?: { value: string; __text: { sv: string; en: string } };
+  _type: 'series';
+  _otherType: 'link';
+  __text: { sv: string; en: string };
+}
+
+export interface RelatedItemSeriesTextGroup {
+  titleInfo: TitleInfoGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
@@ -3000,7 +3028,7 @@ export interface RelatedItemSeriesGroup {
   };
   partNumber?: { value: string; __text: { sv: string; en: string } };
   _type: 'series';
-  _otherType: RelatedItemOtherTypeCollection;
+  _otherType: 'text';
   __text: { sv: string; en: string };
 }
 
@@ -3031,8 +3059,10 @@ export interface RelatedItemBookGroup {
     __text: { sv: string; en: string };
   };
   part?: RelatedItemPartBookGroup;
-  relatedItem_type_series?: RelatedItemSeriesGroup[];
+  relatedItem_otherType_link_type_series?: RelatedItemSeriesLinkGroup[];
+  relatedItem_otherType_text_type_series?: RelatedItemSeriesTextGroup[];
   _type: 'book';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3063,8 +3093,10 @@ export interface RelatedItemConferencePublicationGroup {
     __text: { sv: string; en: string };
   };
   part?: RelatedItemPartJournalGroup;
-  relatedItem_type_series?: RelatedItemSeriesGroup[];
+  relatedItem_otherType_link_type_series?: RelatedItemSeriesLinkGroup[];
+  relatedItem_otherType_text_type_series?: RelatedItemSeriesTextGroup[];
   _type: 'conferencePublication';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3077,6 +3109,34 @@ export interface RelatedItemConferenceGroup {
 export interface RelatedItemPublicationChannelGroup {
   publicationChannel: { value: string; __text: { sv: string; en: string } };
   _type: 'publicationChannel';
+  __text: { sv: string; en: string };
+}
+
+export interface RelatedItemSeriesGroup {
+  series?: {
+    value: string;
+    linkedRecord: {
+      series: SeriesUpdateGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  titleInfo?: TitleInfoGroup;
+  identifier_displayLabel_pissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'pissn';
+    __text: { sv: string; en: string };
+  };
+  identifier_displayLabel_eissn_type_issn?: {
+    value: string;
+    _type: 'issn';
+    _displayLabel: 'eissn';
+    __text: { sv: string; en: string };
+  };
+  partNumber?: { value: string; __text: { sv: string; en: string } };
+  _type: 'series';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3187,7 +3247,7 @@ export interface RelatedItemProjectGroup {
   };
   titleInfo?: TitleInfoLangSweEngGroup;
   _type: 'project';
-  _otherType: RelatedItemOtherTypeCollection;
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3746,6 +3806,853 @@ export interface ThemeLinkPublicGroup {
   __text: { sv: string; en: string };
 }
 
+export interface LoginUnit extends BFFDataRecordData {
+  loginUnit: LoginUnitGroup;
+}
+
+export interface Login extends BFFDataRecordData {
+  login: LoginGroup;
+}
+
+export type LoginTypeCollection = 'webRedirect' | 'token' | 'password';
+
+export interface Metadata extends BFFDataRecordData {
+  metadata: MetadataGroup;
+}
+
+export type MetadataTypeCollection =
+  | 'group'
+  | 'textVariable'
+  | 'numberVariable'
+  | 'recordLink'
+  | 'itemCollection'
+  | 'collectionItem'
+  | 'collectionVariable'
+  | 'resourceLink';
+
+export interface AttributeReferencesGroup {
+  ref: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
+  __text: { sv: string; en: string };
+}
+
+export interface RecordType extends BFFDataRecordData {
+  recordType: RecordTypeGroup;
+}
+
+export interface UniqueGroup {
+  uniqueTerm: {
+    value: string;
+    linkedRecord: {
+      collectTerm: CollectTermGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  combineTerm?: {
+    value: string;
+    linkedRecord: {
+      collectTerm: CollectTermGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
+  __text: { sv: string; en: string };
+}
+
+export interface Presentation extends BFFDataRecordData {
+  presentation: PresentationGroup;
+}
+
+export type PresentationTypeCollection =
+  | 'pGroup'
+  | 'pVar'
+  | 'pNumVar'
+  | 'container'
+  | 'pRecordLink'
+  | 'pCollVar'
+  | 'pResourceLink';
+
+export interface PresentationsOfGroup {
+  presentationOf: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
+  __text: { sv: string; en: string };
+}
+
+export type AttributesToShowCollection = 'all' | 'selectable' | 'none';
+
+export type ModeCollection = 'input' | 'output';
+
+export type RepeatCollection = 'this' | 'children';
+
+export type TextStyleItemCollection =
+  | 'h1TextStyle'
+  | 'h2TextStyle'
+  | 'h3TextStyle'
+  | 'h4TextStyle'
+  | 'h5TextStyle'
+  | 'h6TextStyle'
+  | 'bodyTextStyle'
+  | 'italicTextStyle'
+  | 'boldTextStyle'
+  | 'labelTextStyle'
+  | 'specificationTextStyle'
+  | 'specificationNormalTextStyle'
+  | 'labelSquareBracketTextStyle';
+
+export type ChildStyleItemCollection =
+  | 'zeroChildStyle'
+  | 'oneChildStyle'
+  | 'twoChildStyle'
+  | 'threeChildStyle'
+  | 'fourChildStyle'
+  | 'fiveChildStyle'
+  | 'sixChildStyle'
+  | 'sevenChildStyle'
+  | 'eightChildStyle'
+  | 'nineChildStyle'
+  | 'tenChildStyle'
+  | 'elevenChildStyle'
+  | 'twelveChildStyle'
+  | 'compactChildStyle'
+  | 'frameChildStyle'
+  | 'blockChildStyle'
+  | 'specificationChildStyle'
+  | 'rowBasedChildStyle';
+
+export interface GuiElement extends BFFDataRecordData {
+  guiElement: GuiElementGroup;
+}
+
+export type PresentationTypeGuiElementCollection =
+  | 'guiElementLink'
+  | 'guiElement';
+
+export type GuiElementPresentAsCollection = 'link' | 'image';
+
+export interface GuiElementGroup {
+  recordInfo: RecordInfoGroup;
+  url: { value: string; __text: { sv: string; en: string } };
+  elementText: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  presentAs: {
+    value: GuiElementPresentAsCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  _type: PresentationTypeGuiElementCollection;
+  __text: { sv: string; en: string };
+}
+
+export interface PresentationRefGroup {
+  ref_type_text?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    _type: 'text';
+    __text: { sv: string; en: string };
+  };
+  ref_type_presentation?: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    _type: 'presentation';
+    __text: { sv: string; en: string };
+  };
+  ref_type_guiElement?: {
+    value: string;
+    linkedRecord: {
+      guiElement: GuiElementGroup;
+    };
+
+    _type: 'guiElement';
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export type PresentationSizeCollection =
+  | 'firstSmaller'
+  | 'firstLarger'
+  | 'bothEqual'
+  | 'singleInitiallyHidden'
+  | 'singleInitiallyVisible';
+
+export type SpecifiedHeadlineLevelCollection =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6';
+
+export interface PresentationChildReferenceGroup {
+  textStyle?: {
+    value: TextStyleItemCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  childStyle?: {
+    value: ChildStyleItemCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  }[];
+  refGroup: PresentationRefGroup[];
+  minNumberOfRepeatingToShow?: {
+    value: string;
+    __text: { sv: string; en: string };
+  };
+  presentationSize?: {
+    value: PresentationSizeCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  title?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  titleHeadlineLevel?: {
+    value: SpecifiedHeadlineLevelCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  addText?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export interface PresentationChildReferencesGroup {
+  childReference: PresentationChildReferenceGroup[];
+  __text: { sv: string; en: string };
+}
+
+export type PresentationStyleCollection =
+  | 'frame'
+  | 'inline'
+  | 'specification'
+  | 'highlight'
+  | 'rowBased';
+
+export type OutputFormatCollection =
+  | 'text'
+  | 'image'
+  | 'link'
+  | 'video'
+  | 'sound'
+  | 'download';
+
+export type InputTypeItemCollection = 'input' | 'textarea';
+
+export type InputFormatCollection = 'password';
+
+export interface LinkedRecordPresentationGroup {
+  presentedRecordType: {
+    value: string;
+    linkedRecord: {
+      recordType: RecordTypeGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  presentation: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export interface LinkedRecordPresentationsGroup {
+  linkedRecordPresentation: LinkedRecordPresentationGroup[];
+  __text: { sv: string; en: string };
+}
+
+export interface Search extends BFFDataRecordData {
+  search: SearchGroup;
+}
+
+export type SearchGroupCollection = 'autocomplete' | 'publicSearch';
+
+export interface SearchGroup {
+  recordInfo: RecordInfoGroup;
+  metadataId: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  presentationId: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  recordTypeToSearchIn: {
+    value: string;
+    linkedRecord: {
+      recordType: RecordTypeGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
+  searchGroup: {
+    value: SearchGroupCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  textId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  defTextId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  searchResultPresentation?: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export type PresentAsCollection =
+  | 'map'
+  | 'recordRelation'
+  | 'externalLinkWithValue'
+  | 'onlyTranslatedText'
+  | 'permissionUnit';
+
+export interface PresentationGroup {
+  recordInfo: RecordInfoGroup;
+  presentationsOf?: PresentationsOfGroup;
+  attributesToShow?: {
+    value: AttributesToShowCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  presentationOf?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  mode?: {
+    value: ModeCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  repeat?: {
+    value: RepeatCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  childReferences?: PresentationChildReferencesGroup;
+  presentationStyle?: {
+    value: PresentationStyleCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  emptyTextId?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  outputFormat?: {
+    value: OutputFormatCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  inputType?: {
+    value: InputTypeItemCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  inputFormat?: {
+    value: InputFormatCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  linkedRecordPresentations?: LinkedRecordPresentationsGroup;
+  search?: {
+    value: string;
+    linkedRecord: {
+      search: SearchGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  presentAs?: {
+    value: PresentAsCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  showLabel?: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  specifiedLabelText?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  showHeadline?: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  specifiedHeadlineText?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  specifiedHeadlineLevel?: {
+    value: SpecifiedHeadlineLevelCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  _type: PresentationTypeCollection;
+  __text: { sv: string; en: string };
+}
+
+export type IdSourceCollection = 'userSupplied' | 'timestamp' | 'sequence';
+
+export interface Sequence extends BFFDataRecordData {
+  sequence: SequenceGroup;
+}
+
+export interface RecordInfoSequenceGroup {
+  id: { value: string; __text: { sv: string; en: string } };
+  type: { value: string; __text: { sv: string; en: string } };
+  validationType: { value: 'sequence'; __text: { sv: string; en: string } };
+  dataDivider: { value: string; __text: { sv: string; en: string } };
+  createdBy: { value: string; __text: { sv: string; en: string } };
+  tsCreated: { value: string; __text: { sv: string; en: string } };
+  updated: UpdatedGroup[];
+  __text: { sv: string; en: string };
+}
+
+export interface SequenceGroup {
+  recordInfo: RecordInfoSequenceGroup;
+  currentNumber: { value: string; __text: { sv: string; en: string } };
+  __text: { sv: string; en: string };
+}
+
+export type GroupOfRecordTypeCollection =
+  | 'publicationType'
+  | 'controlledLists'
+  | 'typeOfResource'
+  | 'authority'
+  | 'metadata'
+  | 'presentation'
+  | 'search'
+  | 'permission'
+  | 'systemConfiguration'
+  | 'other';
+
+export type RecordTypeCategoryCollection =
+  | 'clientNavigation'
+  | 'categoryOne'
+  | 'categoryTwo'
+  | 'categoryThree';
+
+export interface RecordTypeGroup {
+  recordInfo: RecordInfoGroup;
+  metadataId: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  unique?: UniqueGroup[];
+  presentationViewId: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  menuPresentationViewId: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  listPresentationViewId: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  textId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  defTextId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  search?: {
+    value: string;
+    linkedRecord: {
+      search: SearchGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  userSuppliedId: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  idSource?: {
+    value: IdSourceCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  sequence?: {
+    value: string;
+    linkedRecord: {
+      sequence: SequenceGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  autocompletePresentationView?: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  groupOfRecordType: {
+    value: GroupOfRecordTypeCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  }[];
+  filter?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  filterPresentation?: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  public: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  recordTypeCategory?: {
+    value: RecordTypeCategoryCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  }[];
+  indexSettings?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  storeInArchive: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  usePermissionUnit: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  useVisibility: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export type RecordPartConstraintCollection = 'write' | 'readWrite';
+
+export interface ChildReferenceGroup {
+  repeatMin: { value: string; __text: { sv: string; en: string } };
+  repeatMinKey?: { value: string; __text: { sv: string; en: string } };
+  repeatMax: { value: string; __text: { sv: string; en: string } };
+  ref: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  childRefCollectTerm_type_index?: {
+    value: string;
+    linkedRecord: {
+      collectTerm: CollectTermGroup;
+    };
+
+    _type: 'index';
+    __text: { sv: string; en: string };
+  }[];
+  childRefCollectTerm_type_permission?: {
+    value: string;
+    linkedRecord: {
+      collectTerm: CollectTermGroup;
+    };
+
+    _type: 'permission';
+    __text: { sv: string; en: string };
+  };
+  childRefCollectTerm_type_storage?: {
+    value: string;
+    linkedRecord: {
+      collectTerm: CollectTermGroup;
+    };
+
+    _type: 'storage';
+    __text: { sv: string; en: string };
+  };
+  recordPartConstraint?: {
+    value: RecordPartConstraintCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export interface ChildReferencesGroup {
+  childReference: ChildReferenceGroup[];
+  __text: { sv: string; en: string };
+}
+
+export interface CollectionItemReferencesGroup {
+  ref: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
+  __text: { sv: string; en: string };
+}
+
+export type ExtraDataTypeCollection = 'undefined';
+
+export interface CollectionItemExtraDataPartGroup {
+  value: { value: string; __text: { sv: string; en: string } };
+  _type: ExtraDataTypeCollection;
+  __text: { sv: string; en: string };
+}
+
+export interface CollectionItemExtraDataGroup {
+  extraDataPart?: CollectionItemExtraDataPartGroup[];
+  __text: { sv: string; en: string };
+}
+
+export interface MetadataGroup {
+  recordInfo: RecordInfoGroup;
+  nameInData: { value: string; __text: { sv: string; en: string } };
+  textId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  defTextId: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  attributeReferences?: AttributeReferencesGroup;
+  linkedRecordType?: {
+    value: string;
+    linkedRecord: {
+      recordType: RecordTypeGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  refParentId?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  finalValue?: { value: string; __text: { sv: string; en: string } };
+  regEx?: { value: string; __text: { sv: string; en: string } };
+  childReferences?: ChildReferencesGroup;
+  excludePGroupCreation?: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  min?: { value: string; __text: { sv: string; en: string } };
+  max?: { value: string; __text: { sv: string; en: string } };
+  warningMin?: { value: string; __text: { sv: string; en: string } };
+  warningMax?: { value: string; __text: { sv: string; en: string } };
+  numberOfDecimals?: { value: string; __text: { sv: string; en: string } };
+  refCollection?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  collectionItemReferences?: CollectionItemReferencesGroup;
+  extraData?: CollectionItemExtraDataGroup;
+  _type: MetadataTypeCollection;
+  __text: { sv: string; en: string };
+}
+
+export interface LoginGroup {
+  recordInfo: RecordInfoGroup;
+  url?: { value: string; __text: { sv: string; en: string } };
+  loginName?: { value: string; __text: { sv: string; en: string } };
+  viewDefinition?: {
+    value: string;
+    linkedRecord: {
+      metadata: MetadataGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  viewPresentation?: {
+    value: string;
+    linkedRecord: {
+      presentation: PresentationGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  description?: { value: string; __text: { sv: string; en: string } };
+  _type: LoginTypeCollection;
+  __text: { sv: string; en: string };
+}
+
+export interface LoginUnitLoginInfoGroup {
+  login: {
+    value: string;
+    linkedRecord: {
+      login: LoginGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  loginDescription: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text: { sv: string; en: string };
+  };
+  __text: { sv: string; en: string };
+}
+
+export interface LoginUnitGroup {
+  recordInfo: RecordInfoGroup;
+  loginInfo: LoginUnitLoginInfoGroup;
+  __text: { sv: string; en: string };
+}
+
 export interface ThemeUpdateGroup {
   memberPermissionUnit?: {
     value: string;
@@ -3772,5 +4679,13 @@ export interface ThemeUpdateGroup {
   pageTitleSv: { value: string; __text: { sv: string; en: string } };
   pageTitleEn: { value: string; __text: { sv: string; en: string } };
   hostname: { value: string; __text: { sv: string; en: string } }[];
+  loginUnit: {
+    value: string;
+    linkedRecord: {
+      loginUnit: LoginUnitGroup;
+    };
+
+    __text: { sv: string; en: string };
+  }[];
   __text: { sv: string; en: string };
 }
