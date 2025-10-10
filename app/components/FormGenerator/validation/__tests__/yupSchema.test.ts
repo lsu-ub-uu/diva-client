@@ -65,7 +65,11 @@ import {
 import { cleanFormData } from '@/utils/cleanFormData';
 import { describe, expect, it } from 'vitest';
 import * as yup from 'yup';
-import type { FormComponentGroup, FormSchema } from '../../types';
+import type {
+  FormComponentGroup,
+  FormSchema,
+  RecordFormSchema,
+} from '../../types';
 import {
   createYupArrayFromSchema,
   generateYupSchemaFromFormSchema,
@@ -1311,6 +1315,71 @@ describe('grandparent value validation', () => {
           },
         }),
       ).resolves.toBe(true);
+    });
+
+    it('is valid when optional group has required field and hidden field', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'diva-output',
+        form: {
+          type: 'group',
+          name: 'root',
+          mode: 'input',
+          label: 'outputNewGroupText',
+          showLabel: true,
+          components: [
+            {
+              type: 'group',
+              name: 'optionalGroup',
+              mode: 'input',
+              label: 'nameOrganisationPatentHolderGroupText',
+              components: [
+                {
+                  name: 'requiredField',
+                  mode: 'input',
+                  label: 'namePartTextVarText',
+                  type: 'textVariable',
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  inputType: 'input',
+                },
+                {
+                  type: 'hidden',
+                  name: 'hiddenField',
+                  finalValue: 'someHiddenValue',
+                  attributesToShow: 'none',
+                },
+              ],
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+            },
+          ],
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+      };
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const valid = await yupSchema.isValid({
+        root: {
+          optionalGroup: {
+            hiddenField: { finalValue: 'someHiddenValue' },
+          },
+        },
+      });
+
+      expect(valid).toBe(true);
     });
   });
 });

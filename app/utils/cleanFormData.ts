@@ -32,7 +32,11 @@ export const cleanFormData = (obj: Record<string, any>): any => {
 
 export const hasOnlyAttributes = (obj: any) => {
   return isEmpty(
-    omitBy(obj, (_, key) => isAttribute(key) || key === 'repeatId'),
+    omitBy(
+      obj,
+      (_, key) =>
+        isAttribute(key) || key === 'repeatId' || key === 'finalValue',
+    ),
   );
 };
 

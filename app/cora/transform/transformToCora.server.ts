@@ -111,6 +111,10 @@ export const transformEntry = ({
     );
   }
 
+  if (isFinalValue(value)) {
+    return transformFinalValue(fieldMetadata, key, attributes, value, repeatId);
+  }
+
   if (isVariable(value)) {
     return transformLeaf(fieldMetadata, key, attributes, value, repeatId);
   }
@@ -222,6 +226,25 @@ const transformLeaf = (
       attributes,
     ),
     hasValuableData: isValuable(value.value, fieldMetadata),
+  };
+};
+
+const transformFinalValue = (
+  fieldMetadata: FormMetaData,
+  key: string,
+  attributes: undefined | Record<string, string>,
+  value: any,
+  repeatId: string | undefined,
+) => {
+  return {
+    data: createLeaf(
+      fieldMetadata,
+      removeAttributeFromName(key, attributes),
+      value.finalValue,
+      repeatId,
+      attributes,
+    ),
+    hasValuableData: false,
   };
 };
 

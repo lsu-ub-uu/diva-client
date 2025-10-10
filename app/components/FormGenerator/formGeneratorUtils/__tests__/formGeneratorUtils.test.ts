@@ -1543,7 +1543,7 @@ describe('helper methods', () => {
     });
   });
 
-  describe('checkForSiblingValue', () => {
+  describe('hasValue', () => {
     it('checkForSiblingValue', () => {
       const actual = hasValue({
         latitude: { value: '' },
@@ -1602,6 +1602,35 @@ describe('helper methods', () => {
         },
       });
       expect(actual).toBe(true);
+    });
+    it('ignores repeatId', () => {
+      const actual = hasValue({
+        longitude: {
+          repeatId: '1234',
+          value: '',
+        },
+      });
+
+      expect(actual).toBe(false);
+    });
+    it('ignores finalValue', () => {
+      const actual = hasValue({
+        longitude: {
+          finalValue: '1234',
+        },
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('ignores attributes', () => {
+      const actual = hasValue({
+        _longitude: {
+          value: '1234',
+        },
+      });
+
+      expect(actual).toBe(false);
     });
   });
 

@@ -193,7 +193,8 @@ export type FormComponentWithData =
   | FormComponentNumVar
   | FormComponentCollVar
   | FormComponentRecordLink
-  | FormComponentGroup;
+  | FormComponentGroup
+  | FormComponentHidden;
 
 export type FormComponentLeaf = Exclude<
   FormComponentWithData,

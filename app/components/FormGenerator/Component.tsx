@@ -25,6 +25,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import {
   isComponentContainer,
   isComponentGroup,
+  isComponentHidden,
   isComponentResourceLink,
   isComponentSurroundingContainer,
   isComponentWithData,
@@ -36,6 +37,7 @@ import type {
 import { use } from 'react';
 import { AlternativePresentationSwitcher } from './AlternativePresentationSwitcher';
 import { DevInfo } from './components/DevInfo';
+import { HiddenComponent } from './components/HiddenComponent';
 
 interface ComponentProps {
   component: FormComponent;
@@ -107,6 +109,18 @@ export const Component = ({
   if (isComponentResourceLink(component)) {
     return (
       <ResourceLink component={component} path={currentComponentNamePath} />
+    );
+  }
+
+  if (isComponentHidden(component)) {
+    return (
+      <HiddenComponent
+        component={component}
+        name={`${currentComponentNamePath}.finalValue`}
+        attributes={
+          <Attributes component={component} path={currentComponentNamePath} />
+        }
+      />
     );
   }
 

@@ -237,14 +237,15 @@ const isGVValueEmptyString = (
 
 export const hasValue = (formValues: any) => {
   if (formValues !== undefined) {
-    const valuesWithoutAttribs = Object.keys(formValues)
+    const valuableValues = Object.keys(formValues)
       .filter((objKey) => !objKey.startsWith('_'))
       .filter((objKey) => objKey !== 'repeatId')
+      .filter((objKey) => objKey !== 'finalValue')
       .reduce<Record<string, any>>((newObj, key) => {
         newObj[key] = formValues[key];
         return newObj;
       }, {});
-    const cleanedValues = cleanFormData(valuesWithoutAttribs);
+    const cleanedValues = cleanFormData(valuableValues);
     const valueLength = Object.keys(cleanedValues).length;
     return valueLength > 0;
   }
