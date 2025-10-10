@@ -17,7 +17,7 @@
  */
 
 import { createMockAuth } from '@/auth/__mocks__/auth';
-import { getAuth } from '@/auth/sessions.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type {
   BFFMetadata,
   BFFMetadataGroup,
@@ -29,11 +29,11 @@ import { searchRecords } from '@/data/searchRecords.server';
 import { loader } from '@/routes/resourceRoutes/autocompleteSearch';
 import type { BFFDataRecord } from '@/types/record';
 import { listToPool } from '@/utils/structs/listToPool';
-import type { i18n } from 'i18next';
+import { RouterContextProvider } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 
-vi.mock('@/auth/sessions.server');
 vi.mock('@/data/searchRecords.server');
 vi.mock('@/utils/invariant');
 
@@ -54,14 +54,22 @@ describe('autocompleteSearch', () => {
         ]),
       } as Dependencies;
 
-      const mockContext = {
-        dependencies: Promise.resolve(mockDependencies),
-        i18n: mock<i18n>(),
-        refreshDependencies: vi.fn(),
-      };
-
       const mockAuth = createMockAuth();
-      vi.mocked(getAuth).mockReturnValue(mockAuth);
+
+      const context = new RouterContextProvider();
+      context.set(sessionContext, {
+        auth: mockAuth,
+        setAuth: vi.fn(),
+        removeAuth: vi.fn(),
+        notification: undefined,
+        flashNotification: vi.fn(),
+        destroySession: vi.fn(),
+      });
+      context.set(dependenciesContext, {
+        dependencies: mockDependencies,
+        refreshDependencies: vi.fn(),
+      });
+
       vi.mocked(searchRecords).mockResolvedValue({
         data: [],
         fromNo: 0,
@@ -72,7 +80,7 @@ describe('autocompleteSearch', () => {
 
       const response = await loader({
         request,
-        context: mockContext,
+        context,
         params: {
           searchType: 'nationalSubjectCategorySearch',
         },
@@ -105,21 +113,33 @@ describe('autocompleteSearch', () => {
         url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
       });
 
-      const mockContext = {
-        dependencies: Promise.resolve({
-          searchPool: listToPool<BFFSearch>([nationalSubjectCategorySearch]),
-          metadataPool: listToPool<BFFMetadata>([
-            nationalSubjectCategoryAutocompleteSearchGroup,
-            nationalSubjectCategoryAutocompleteIncludeGroup,
-            nationalSubjectCategoryAutocompleteIncludePartGroup,
-            nationalSubjectCategoryAutocompleteTextVar,
-          ]),
-        } as Dependencies),
-        i18n: mock<i18n>(),
-        refreshDependencies: vi.fn(),
-      };
+      const mockDependencies = {
+        searchPool: listToPool<BFFSearch>([nationalSubjectCategorySearch]),
+        metadataPool: listToPool<BFFMetadata>([
+          nationalSubjectCategoryAutocompleteSearchGroup,
+          nationalSubjectCategoryAutocompleteIncludeGroup,
+          nationalSubjectCategoryAutocompleteIncludePartGroup,
+          nationalSubjectCategoryAutocompleteTextVar,
+        ]),
+      } as Dependencies;
 
-      vi.mocked(getAuth).mockReturnValue(createMockAuth());
+      const mockAuth = createMockAuth();
+
+      // Create a real RouterContextProvider and set the contexts
+      const context = new RouterContextProvider();
+      context.set(sessionContext, {
+        auth: mockAuth,
+        setAuth: vi.fn(),
+        removeAuth: vi.fn(),
+        notification: undefined,
+        flashNotification: vi.fn(),
+        destroySession: vi.fn(),
+      });
+      context.set(dependenciesContext, {
+        dependencies: mockDependencies,
+        refreshDependencies: vi.fn(),
+      });
+
       vi.mocked(searchRecords).mockResolvedValue({
         data: [{ id: 'result1' }, { id: 'result2' }] as BFFDataRecord[],
         fromNo: 1,
@@ -130,7 +150,7 @@ describe('autocompleteSearch', () => {
 
       const response = await loader({
         request,
-        context: mockContext,
+        context,
         params: { searchType: 'nationalSubjectCategorySearch' },
       });
 

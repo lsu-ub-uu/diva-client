@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router';
 import type { Route } from './+types/apiDocs';
 import css from './apiDocs.css?url';
+import { dependenciesContext } from 'server/depencencies';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
   const recordTypes = Array.from(dependencies.recordTypePool.values())
     .filter((recordType) => recordType.id.indexOf('diva-') >= 0)
     .map((recordType) => ({

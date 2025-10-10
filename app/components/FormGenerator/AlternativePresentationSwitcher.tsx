@@ -31,8 +31,8 @@ import { CardContent } from '../Card/CardContent';
 import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
-import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
 import { Group } from './components/Group';
+import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -41,6 +41,7 @@ interface ComponentPresentationSwitcherProps {
   currentComponentNamePath: string;
   actionButtonGroup?: React.ReactNode;
   parentPresentationStyle?: string;
+  isAppended?: boolean;
 }
 
 type PresentationState = 'default' | 'alternative';
@@ -53,7 +54,10 @@ export const AlternativePresentationSwitcher = (
   const { t } = useTranslation();
 
   const [currentPresentation, setCurrentPresentation] =
-    useState<PresentationState>('default');
+    useState<PresentationState>(
+      getInitialPresentation(component, props.isAppended ?? false),
+    );
+
   const {
     presentationSize,
     title,
@@ -96,8 +100,8 @@ export const AlternativePresentationSwitcher = (
           alternativePresentation === undefined
             ? component
             : currentPresentation === 'alternative'
-              ? (alternativePresentation as FormComponentGroup)
-              : (defaultPresentation as FormComponentGroup)
+              ? (component.alternativePresentation as FormComponentGroup)
+              : component
         }
         actionButtonGroup={props.actionButtonGroup}
         currentComponentNamePath={currentComponentNamePath}
@@ -233,4 +237,23 @@ export const isDualPresentationAccordionExpanded = (
   }
 
   return currentPresentation === 'alternative';
+};
+
+const getInitialPresentation = (
+  component: FormComponent,
+  isAppended: boolean,
+) => {
+  const presentationSize =
+    'presentationSize' in component ? component.presentationSize : undefined;
+  const alternativePresentation = component.alternativePresentation;
+
+  if (
+    presentationSize !== 'singleInitiallyVisible' &&
+    !alternativePresentation &&
+    isAppended
+  ) {
+    return 'alternative';
+  }
+
+  return 'default';
 };

@@ -30,13 +30,14 @@ import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinked
 export interface LoginDefinition {
   id: string;
   loginDescription: string;
-  type: string;
+  type: 'password' | 'webRedirect';
   url?: string;
   presentation?: any;
 }
 
 export const createLoginDefinition = (
   dependencies: Dependencies,
+  memberLoginUnitIds: string[] | undefined,
 ): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
   const loginItemDefinitions: LoginDefinition[] = [];
@@ -44,6 +45,9 @@ export const createLoginDefinition = (
   const loginUnitEntries = Array.from(loginUnitPool.values());
 
   loginUnitEntries.forEach((login: BFFLoginUnit) => {
+    if (memberLoginUnitIds && !memberLoginUnitIds.includes(login.id)) {
+      return;
+    }
     let item: LoginDefinition;
     const temp = loginPool.get(login.login);
     const { type } = temp;
@@ -72,5 +76,6 @@ export const createLoginDefinition = (
 
     loginItemDefinitions.push(item);
   });
+
   return loginItemDefinitions;
 };

@@ -17,42 +17,209 @@
  */
 
 import type {
+  AffiliationPersonalLinkGroup,
+  AffiliationPersonalTextGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
+import { formatPersonName } from '../utils/formatPersonName';
+import { Term } from './Term';
+import { OpenInNewIcon } from '@/icons';
+import { useId } from 'react';
+
+export type PersonType =
+  | NamePersonalGroup
+  | NamePersonalDegreeSupervisorGroup
+  | NamePersonalThesisAdvisorGroup
+  | NamePersonalOpponentGroup;
 
 interface PersonProps {
-  person:
-    | NamePersonalGroup
-    | NamePersonalDegreeSupervisorGroup
-    | NamePersonalThesisAdvisorGroup
-    | NamePersonalOpponentGroup;
+  person: PersonType;
+  expanded?: boolean;
 }
 
-export const Person = ({ person }: PersonProps) => {
-  // TODO show affiliation and role
+export const Person = ({ person, expanded = false }: PersonProps) => {
+  const language = useLanguage();
+  const id = useId();
+
+  if (!expanded) {
+    return renderPersonName(person);
+  }
+
+  return (
+    <div className='expanded-card' aria-labelledby={id}>
+      <span className='name' id={id}>
+        {renderPersonName(person)}
+      </span>
+      {formatPersonRoles(person, language)}
+      {person.affiliation_otherType_link?.map((affiliation, index) => (
+        <LinkedAffiliation key={index} affiliation={affiliation} />
+      ))}
+      {person.affiliation_otherType_text?.map((affiliation, index) => (
+        <TextAffiliation key={index} affiliation={affiliation} />
+      ))}
+      {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid && (
+        <dl>
+          {/*  TODO: Add publication ORCID when its in the model*/}
+
+          {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid?.map(
+            (orcid) => (
+              <Term
+                key={orcid.value}
+                label={orcid.__text?.[language]}
+                value={
+                  <a
+                    href={`https://orcid.org/${orcid.value}`}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    {orcid.value}
+                    <OpenInNewIcon />
+                  </a>
+                }
+              />
+            ),
+          )}
+        </dl>
+      )}
+    </div>
+  );
+};
+
+const renderPersonName = (person: PersonType) => {
+  const name = formatPersonName(person);
+  const linkedRecordType =
+    person.person?.linkedRecord?.person?.recordInfo?.type?.value ??
+    'diva-person';
   if (person.person) {
     return (
       <Link
         to={href('/:recordType/:recordId', {
-          recordType: 'diva-person',
+          recordType: linkedRecordType,
           recordId: person.person.value,
         })}
       >
-        <span>
-          {person.namePart_type_given?.value}
-          {person.namePart_type_family?.value}
-        </span>
+        {name}
       </Link>
     );
   }
+  return name;
+};
 
+const formatPersonRoles = (
+  person:
+    | NamePersonalGroup
+    | NamePersonalDegreeSupervisorGroup
+    | NamePersonalThesisAdvisorGroup
+    | NamePersonalOpponentGroup,
+  language: 'en' | 'sv',
+) => {
+  const roleTerm = person.role?.roleTerm;
+
+  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
+    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+  }
+
+  return '';
+};
+
+const formatTextAffiliationName = (
+  affiliation: AffiliationPersonalTextGroup,
+  language: 'sv' | 'en',
+) => {
+  return [
+    affiliation.name_type_corporate?.namePart?.value,
+    affiliation.country?.__valueText?.[language],
+  ]
+    .filter(Boolean)
+    .join(', ');
+};
+
+const formatLinkedAffiliationName = (
+  affiliation: AffiliationPersonalLinkGroup,
+  language: 'sv' | 'en',
+) => {
+  const linkedOrganisationDisplayName =
+    affiliation.organisation?.displayName?.[language];
+  const linkedRecordSwedishName =
+    affiliation.organisation?.linkedRecord?.organisation?.authority_lang_swe
+      ?.name_type_corporate?.namePart?.value;
+  const linkedRecordEnglishName =
+    affiliation.organisation?.linkedRecord?.organisation?.variant_lang_eng
+      ?.name_type_corporate?.namePart?.value;
+
+  if (linkedOrganisationDisplayName) {
+    return linkedOrganisationDisplayName;
+  }
+  if (language === 'en' && linkedRecordEnglishName) {
+    return linkedRecordEnglishName;
+  }
+  if (linkedRecordSwedishName) {
+    return linkedRecordSwedishName;
+  }
+  return '';
+};
+
+const LinkedAffiliation = ({
+  affiliation,
+}: {
+  affiliation: AffiliationPersonalLinkGroup;
+}) => {
+  const language = useLanguage();
   return (
-    <span>
-      {person.namePart_type_given?.value} {person.namePart_type_family?.value}
-    </span>
+    <>
+      <div className='affiliation'>
+        <span>{formatLinkedAffiliationName(affiliation, language)}</span>
+        <dl className='affiliation inline-definitions'>
+          {affiliation.organisation.linkedRecord.organisation
+            .identifier_type_ror && (
+            <Term
+              label={
+                affiliation.organisation.linkedRecord.organisation
+                  .identifier_type_ror.__text?.[language]
+              }
+              value={
+                affiliation.organisation.linkedRecord.organisation
+                  .identifier_type_ror.value
+              }
+            />
+          )}
+        </dl>
+      </div>
+    </>
+  );
+};
+
+const TextAffiliation = ({
+  affiliation,
+}: {
+  affiliation: AffiliationPersonalTextGroup;
+}) => {
+  const language = useLanguage();
+  return (
+    <>
+      <div className='affiliation'>
+        <span>{formatTextAffiliationName(affiliation, language)}</span>
+
+        <dl className='inline-definitions'>
+          {affiliation.identifier_type_ror && (
+            <Term
+              label={affiliation.identifier_type_ror.__text?.[language]}
+              value={affiliation.identifier_type_ror.value}
+            />
+          )}
+          {affiliation.description && (
+            <Term
+              label={affiliation.description.__text?.[language]}
+              value={affiliation.description.value}
+            />
+          )}
+        </dl>
+      </div>
+    </>
   );
 };

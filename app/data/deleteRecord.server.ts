@@ -24,7 +24,7 @@ export const deleteRecord = async (
   dependencies: Dependencies,
   recordType: string,
   recordId: string,
-  auth: Auth,
+  auth?: Auth,
 ) => {
   const { recordTypePool } = dependencies;
 
@@ -35,5 +35,5 @@ export const deleteRecord = async (
     });
   }
 
-  await deleteRecordDataById(recordId, recordType, auth.data.token);
+  await deleteRecordDataById(recordId, recordType, auth?.data.token);
 };

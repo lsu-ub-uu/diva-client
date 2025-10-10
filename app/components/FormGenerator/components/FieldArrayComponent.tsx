@@ -21,7 +21,7 @@ import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { AddCircleIcon } from '@/icons';
-import { Fragment, use, type ReactNode } from 'react';
+import { Fragment, use, useState, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +37,7 @@ interface FieldArrayComponentProps {
     path: string,
     actionButtonGroup: ReactNode,
     index: number,
+    isAppended: boolean,
   ) => ReactNode;
   anchorId?: string;
 }
@@ -57,6 +58,7 @@ export const FieldArrayComponent = ({
   const { enhancedFields } = use(FormGeneratorContext);
   const notRemovableEnhancement =
     enhancedFields?.[name]?.type === 'notRemovable';
+  const [appended, setAppended] = useState<string | null>(null);
 
   const { fields, append, move, remove } = useFieldArray({
     control: control,
@@ -64,7 +66,9 @@ export const FieldArrayComponent = ({
   });
 
   const handleAppend = async () => {
-    append(createDefaultValuesFromComponent(component, true));
+    const newComponent = createDefaultValuesFromComponent(component, true);
+    setAppended((newComponent as RepeatingField).repeatId ?? null);
+    append(newComponent);
   };
 
   const handleMove = async (prev: number, next: number) => {
@@ -99,12 +103,15 @@ export const FieldArrayComponent = ({
             />
           );
 
+        const repeatId = (field as RepeatingField).repeatId;
+
         return (
-          <Fragment key={(field as RepeatingField).repeatId ?? field.id}>
+          <Fragment key={repeatId ?? field.id}>
             {renderCallback(
               `${name}[${index}]` as const,
               actionButtonGroup,
               index,
+              appended === repeatId,
             )}
           </Fragment>
         );

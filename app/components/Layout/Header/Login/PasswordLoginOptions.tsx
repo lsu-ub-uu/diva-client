@@ -16,35 +16,36 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { loader } from '@/root';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLoaderData } from 'react-router';
+import { Link } from 'react-router';
 
 interface PasswordLoginOptionsProps {
+  passwordLoginUnits: LoginDefinition[];
   returnTo: string;
 }
 
 export const PasswordLoginOptions = ({
+  passwordLoginUnits,
   returnTo,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
-  const { loginUnits } = useLoaderData<typeof loader>();
-
+  if (passwordLoginUnits.length === 0) {
+    return null;
+  }
   return (
     <>
-      <h6>{t('divaClient_LoginPasswordText')}</h6>
-      {loginUnits
-        .filter(({ type }) => type === 'password')
-        .map(({ loginDescription }) => (
-          <MenuItem key='tempLoginUnitPassword'>
-            <Link
-              to={`/login?loginUnit=${loginDescription}&returnTo=${returnTo}`}
-            >
-              {t(loginDescription)}
-            </Link>
-          </MenuItem>
-        ))}
+      <h2>{t('divaClient_LoginPasswordText')}</h2>
+      {passwordLoginUnits.map(({ loginDescription }) => (
+        <MenuItem key='tempLoginUnitPassword'>
+          <Link
+            to={`/login?loginUnit=${loginDescription}&returnTo=${returnTo}`}
+          >
+            {t(loginDescription)}
+          </Link>
+        </MenuItem>
+      ))}
     </>
   );
 };

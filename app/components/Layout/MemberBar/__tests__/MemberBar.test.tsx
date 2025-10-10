@@ -6,20 +6,21 @@ import { describe, expect, it, vi } from 'vitest';
 vi.mock('@/i18n/useLanguage');
 
 describe('<MemberBar />', () => {
-  it('sets background and text color from theme', () => {
+  it('sets background and text color from member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
       publicLinks: [],
       logo: {},
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(screen.getByLabelText('Uppsala universitet')).toHaveStyle({
       backgroundColor: '#111111',
@@ -27,11 +28,11 @@ describe('<MemberBar />', () => {
     });
   });
 
-  it('shows svg logo if present in theme', () => {
+  it('shows svg logo if present in member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -40,20 +41,21 @@ describe('<MemberBar />', () => {
         svg: '<svg><title>Uppsala universitet svg</title></svg>',
       },
       publicLinks: [],
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(
       screen.getByRole('img', { name: 'Uppsala universitet logo' }).innerHTML,
-    ).toEqual(theme.logo.svg);
+    ).toEqual(member.logo.svg);
   });
 
-  it('shows image logo if present and svg not present in theme', () => {
+  it('shows image logo if present and svg not present in member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -61,20 +63,21 @@ describe('<MemberBar />', () => {
       logo: {
         url: 'https://www.uu.se/logo.png',
       },
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(
       screen.getByRole('img', { name: 'Uppsala universitet logo' }),
-    ).toHaveAttribute('src', theme.logo.url);
+    ).toHaveAttribute('src', member.logo.url);
   });
 
   it('shows english links when language is english', () => {
     vi.mocked(useLanguage).mockReturnValue('en');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -102,9 +105,10 @@ describe('<MemberBar />', () => {
         },
       ],
       logo: {},
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(
       screen.getByRole('link', { name: 'Uppsala University Library' }),
@@ -122,8 +126,8 @@ describe('<MemberBar />', () => {
   it('shows swedish links when language is swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -151,9 +155,10 @@ describe('<MemberBar />', () => {
         },
       ],
       logo: {},
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(
       screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }),
@@ -171,8 +176,8 @@ describe('<MemberBar />', () => {
   it('shows admin link when logged in', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -212,9 +217,10 @@ describe('<MemberBar />', () => {
         },
       ],
       logo: {},
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={true} />);
+    render(<MemberBar member={member} loggedIn={true} />);
 
     expect(
       screen.getByRole('link', { name: 'Kontakta DiVA support' }),
@@ -232,8 +238,8 @@ describe('<MemberBar />', () => {
   it('shows public link when not logged in', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -273,9 +279,10 @@ describe('<MemberBar />', () => {
         },
       ],
       logo: {},
+      loginUnitIds: [],
     };
 
-    render(<MemberBar theme={theme} loggedIn={false} />);
+    render(<MemberBar member={member} loggedIn={false} />);
 
     expect(
       screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }),
@@ -289,8 +296,8 @@ describe('<MemberBar />', () => {
   it('renders children', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const theme = {
-      id: 'uu-theme',
+    const member = {
+      id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
@@ -330,10 +337,11 @@ describe('<MemberBar />', () => {
         },
       ],
       logo: {},
+      loginUnitIds: [],
     };
 
     render(
-      <MemberBar theme={theme} loggedIn={false}>
+      <MemberBar member={member} loggedIn={false}>
         <p>Some children</p>
       </MemberBar>,
     );

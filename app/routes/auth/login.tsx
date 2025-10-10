@@ -14,6 +14,7 @@ import {
   href,
   isRouteErrorResponse,
   redirect,
+  useRouteLoaderData,
   useSubmit,
 } from 'react-router';
 
@@ -22,22 +23,20 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { Route } from '../auth/+types/login';
 
 import { Button } from '@/components/Button/Button';
-import {
-  devAccounts,
-  type Account,
-} from '@/components/Layout/Header/Login/devAccounts';
-import { getLoginUnits } from '@/data/getLoginUnits.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
+
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { i18nContext } from 'server/i18n';
 import css from './login.css?url';
 import { PasswordLogin } from './PasswordLogin';
 import { WebRedirectLogin } from './WebRedirectLogin';
+import { useLoginUnits } from '@/utils/rootLoaderDataUtils';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { t } = context.i18n;
+  const { t } = context.get(i18nContext);
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const loginUnit = url.searchParams.get('loginUnit');
-  const loginUnits = getLoginUnits(await context.dependencies);
 
   const session = await getSession(request.headers.get('Cookie'));
 
@@ -48,7 +47,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   return data(
     {
       breadcrumb: t('divaClient_LoginText'),
-      loginUnits,
       notification: getNotification(session),
       returnTo,
       loginUnit,
@@ -80,8 +78,12 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
   switch (loginType) {
     case 'appToken': {
-      const account = form.get('account');
-      return loginWithAppToken(JSON.parse(account!.toString()));
+      const loginId = form.get('loginId');
+      const appToken = form.get('appToken');
+      if (typeof loginId !== 'string' || typeof appToken !== 'string') {
+        return null;
+      }
+      return loginWithAppToken(loginId, appToken);
     }
     case 'webRedirect': {
       try {
@@ -102,38 +104,28 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
   }
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  const session = await getSession(request.headers.get('Cookie'));
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
-
-  const returnTo = returnToEncoded
-    ? decodeURIComponent(returnToEncoded.toString())
-    : '/';
+  const returnTo =
+    returnToEncoded && decodeURIComponent(returnToEncoded.toString());
+  const { flashNotification, setAuth } = context.get(sessionContext);
 
   const auth = await authenticate(form);
 
   if (auth === null) {
-    session.flash('notification', {
+    flashNotification({
       severity: 'error',
       summary: 'Invalid credentials',
     });
 
     // Redirect back to the login page with errors.
-    return redirect(href('/login'), {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    });
+    return redirect(href('/login'));
   }
 
-  session.set('auth', auth);
+  setAuth(auth);
 
-  return redirect(returnTo || '/', {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  return redirect(returnTo ?? '/');
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
@@ -155,7 +147,8 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 };
 
 export default function Login({ loaderData }: Route.ComponentProps) {
-  const { notification, loginUnits, returnTo, loginUnit } = loaderData;
+  const loginUnits = useLoginUnits() || [];
+  const { notification, returnTo, loginUnit } = loaderData;
   const { t } = useTranslation();
 
   const submit = useSubmit();
@@ -191,38 +184,6 @@ export default function Login({ loaderData }: Route.ComponentProps) {
       <h1>{t('divaClient_LoginText')}</h1>
       <div className='login-options'>
         <div className='login-option'>
-          <div
-            className='login-option'
-            style={{ marginBottom: 'var(--gap-xl)' }}
-          >
-            <h2>{t('divaClient_LoginDevAccountText')}</h2>
-            <Form method='POST' action='/login'>
-              <input type='hidden' name='loginType' value='appToken' />
-              {returnTo && (
-                <input type='hidden' name='returnTo' value={returnTo} />
-              )}
-              <ul
-                style={{
-                  display: 'flex',
-                  gap: '1rem',
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {devAccounts.map((account: Account) => (
-                  <li key={account.userId}>
-                    <Button
-                      type='submit'
-                      name='account'
-                      value={JSON.stringify(account)}
-                    >
-                      {account.lastName} {account.firstName}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </Form>
-          </div>
           <h2>{t('divaClient_LoginPasswordText')}</h2>
           <Form
             method='GET'

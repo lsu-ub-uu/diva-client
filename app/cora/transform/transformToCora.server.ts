@@ -94,11 +94,15 @@ export const transformEntry = ({
   const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
 
-  if (isRepeating(value)) {
+  if (!fieldMetadata) {
+    return { data: undefined, hasValuableData: false };
+  }
+
+  if (isRepeating(value) && value !== undefined) {
     return transformRepeating(fieldMetadata, value, lookup, key, path);
   }
 
-  if (isResourceLink(fieldMetadata)) {
+  if (isResourceLink(fieldMetadata) && value !== undefined) {
     return transformResourceLink(
       key,
       attributes,
@@ -125,12 +129,8 @@ export const transformEntry = ({
 const getFieldMetadata = (
   lookup: Record<string, FormMetaData>,
   currentPath: string,
-): FormMetaData => {
-  const fieldMetadata = lookup[currentPath];
-  if (fieldMetadata === undefined) {
-    throw new Error(`Failed to find path ${currentPath} in lookup`);
-  }
-  return fieldMetadata;
+): FormMetaData | undefined => {
+  return lookup[currentPath];
 };
 
 export const findChildrenAttributes = (obj: any) => {

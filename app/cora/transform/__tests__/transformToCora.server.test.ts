@@ -100,12 +100,13 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
+  BFFOrganisation,
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '../bffTypes.server';
 import {
@@ -552,7 +553,8 @@ describe('transformToCora', () => {
         searchPool: listToPool<BFFSearch>([]),
         loginUnitPool: listToPool<BFFLoginUnit>([]),
         loginPool: listToPool<BFFLoginWebRedirect>([]),
-        themePool: listToPool<BFFTheme>([]),
+        memberPool: listToPool<BFFMember>([]),
+        organisationPool: listToPool<BFFOrganisation>([]),
       };
     });
 
@@ -1520,6 +1522,41 @@ describe('transformToCora', () => {
       });
 
       expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should ignore fields not present in metadata', () => {
+      const lookup: Record<string, FormMetaData> = {
+        'root.child': {
+          name: 'child',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+        },
+        root: {
+          name: 'root',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+        },
+      };
+
+      const payload = {
+        root: {
+          child: {
+            value: 'some value',
+          },
+          someUnknownField: {
+            value: 'some other value',
+          },
+        },
+      };
+
+      const result = transformToCoraData(lookup, payload);
+
+      expect(result).toStrictEqual([
+        {
+          name: 'root',
+          children: [{ name: 'child', value: 'some value' }],
+        },
+      ]);
     });
   });
 

@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { renewAuth } from '@/auth/renewAuth.server';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -47,44 +45,58 @@ import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader
 import { getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
+import { createUser } from './auth/createUser';
+import {
+  sessionContext,
+  sessionMiddleware,
+} from './auth/sessionMiddleware.server';
 import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
-import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { getMemberFromHostname } from './utils/getMemberFromHostname';
+import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { createUser } from './auth/createUser';
+import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
+import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
 
 const { MODE } = import.meta.env;
 
-export async function loader({ request, context }: Route.LoaderArgs) {
-  const dependencies = await context.dependencies;
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-  const theme = getThemeFromHostname(request, dependencies);
+export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
-  const loginUnits = getLoginUnits(dependencies);
-  const locale = context.i18n.language;
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const { dependencies } = context.get(dependenciesContext);
+  const { auth, notification } = context.get(sessionContext);
+  const member = getMemberFromHostname(request, dependencies);
+  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+  const appTokenLogins = getAppTokenLogins();
+  const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
 
-  return { user, locale, loginUnits, theme, recordTypes, userPreferences };
+  return {
+    user,
+    locale,
+    loginUnits,
+    appTokenLogins,
+    member,
+    recordTypes,
+    userPreferences,
+    notification,
+  };
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-
   const intent = formData.get('intent');
 
   if (intent === 'changeLanguage') {
     return await changeLanguage(formData);
-  }
-
-  if (intent === 'renewAuthToken') {
-    return await renewAuth(request, context.i18n);
   }
 
   if (intent === 'changeColorScheme') {
@@ -217,22 +229,26 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const userPreferences = loaderData.userPreferences;
-  const theme = loaderData.theme;
-
+  const { userPreferences, member, loginUnits, appTokenLogins } = loaderData;
   return (
     <div className='root-layout'>
+      <NotificationSnackbar notification={loaderData.notification} />
+
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </MemberBar>
       </header>
 
       <header className='nav-rail'>
-        <Header recordTypes={loaderData.recordTypes} />
+        <Header
+          recordTypes={loaderData.recordTypes}
+          loginUnits={loginUnits}
+          appTokenLogins={appTokenLogins}
+        />
       </header>
 
       <div className='content'>

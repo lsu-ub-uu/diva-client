@@ -27,6 +27,7 @@ import * as cdu from '../CoraDataUtils.server';
 import {
   getAllDataAtomicValueFromDataGroup,
   hasChildWithNameInData,
+  hasChildWithNameInDataAndAttributes,
 } from '../CoraDataUtils.server';
 
 const dataGroupWithOneRecordLink: DataGroup = {
@@ -638,6 +639,35 @@ describe('getFirstDataAtomicWithNameInData', () => {
       value: 'firstMatch',
     });
   });
+
+  it('matches by attributes', () => {
+    const data = {
+      name: 'someName',
+      children: [
+        { name: 'someChildName', value: 'someValue' },
+        {
+          name: 'someChildName',
+          attributes: { someKey: 'someValue' },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'someChildName',
+          attributes: { someKey: 'someOtherValue' },
+          value: 'someThirdValue',
+        },
+      ],
+    };
+
+    expect(
+      cdu.getFirstDataAtomicWithNameInData(data, 'someChildName', {
+        someKey: 'someValue',
+      }),
+    ).toStrictEqual({
+      name: 'someChildName',
+      attributes: { someKey: 'someValue' },
+      value: 'someOtherValue',
+    });
+  });
 });
 
 describe('getAllDataAtomicsWithNameInData', () => {
@@ -1173,6 +1203,138 @@ describe('hasChildWithNameInData', () => {
       dataGroupWithNonMatchingDataElements,
       'someFalseUninterestingChildName',
     );
+    expect(actual).toBe(false);
+  });
+});
+
+describe('hasChildWithNameInDataAndAttributes', () => {
+  it('return true if has child with matching attributes', () => {
+    const group = {
+      name: 'someName',
+      children: [
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someAttrValue',
+          },
+          value: 'someValue',
+        },
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someOtherAttrValue',
+          },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'someOtherUninterestingChildName',
+          value: 'someValue',
+        },
+      ],
+    };
+
+    const actual = hasChildWithNameInDataAndAttributes(group, 'someName', {
+      someAttr: 'someOtherAttrValue',
+    });
+
+    expect(actual).toBe(true);
+  });
+
+  it('return false if does not have child with name', () => {
+    const group = {
+      name: 'someName',
+      children: [
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someAttrValue',
+          },
+          value: 'someValue',
+        },
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someOtherAttrValue',
+          },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'someOtherUninterestingChildName',
+          value: 'someValue',
+        },
+      ],
+    };
+
+    const actual = hasChildWithNameInDataAndAttributes(
+      group,
+      'someNonExistingName',
+      { someAttr: 'someOtherAttrValue' },
+    );
+
+    expect(actual).toBe(false);
+  });
+
+  it('return false if does not have child with matching attribute value', () => {
+    const group = {
+      name: 'someName',
+      children: [
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someAttrValue',
+          },
+          value: 'someValue',
+        },
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someOtherAttrValue',
+          },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'someOtherUninterestingChildName',
+          value: 'someValue',
+        },
+      ],
+    };
+
+    const actual = hasChildWithNameInDataAndAttributes(group, 'someName', {
+      someAttr: 'someNonExistingAttrValue',
+    });
+
+    expect(actual).toBe(false);
+  });
+
+  it('return false if does not have child with matching attribute name', () => {
+    const group = {
+      name: 'someName',
+      children: [
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someAttrValue',
+          },
+          value: 'someValue',
+        },
+        {
+          name: 'someName',
+          attributes: {
+            someAttr: 'someOtherAttrValue',
+          },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'someOtherUninterestingChildName',
+          value: 'someValue',
+        },
+      ],
+    };
+
+    const actual = hasChildWithNameInDataAndAttributes(group, 'someName', {
+      someNonMatchingAttr: 'someAttrValue',
+    });
+
     expect(actual).toBe(false);
   });
 });

@@ -16,12 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  getAuth,
-  getNotification,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -30,38 +28,32 @@ import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import type { BFFDataRecordData } from '@/types/record';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { assertDefined } from '@/utils/invariant';
-import {
-  getResponseInitWithSession,
-  redirectAndCommitSession,
-} from '@/utils/redirectAndCommitSession';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTranslation } from 'react-i18next';
-import { data, Form, isRouteErrorResponse } from 'react-router';
-import { getValidatedFormData } from 'remix-hook-form';
-import type { Route } from '../record/+types/recordCreate';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { useDeferredValue, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { data, Form, isRouteErrorResponse, redirect } from 'react-router';
+import { getValidatedFormData } from 'remix-hook-form';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
+import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { Button } from '@/components/Button/Button';
 
 export const loader = async ({
   request,
   context,
   params,
 }: Route.LoaderArgs) => {
-  const t = context.i18n.t;
-  const session = await getSessionFromCookie(request);
-  const notification = getNotification(session);
-  const auth = getAuth(session);
+  const { t } = context.get(i18nContext);
+  const { auth, notification } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   let validationTypeId = url.searchParams.get('validationType');
   if (!auth) {
@@ -75,21 +67,18 @@ export const loader = async ({
     if (validationTypes && validationTypes.length === 1) {
       validationTypeId = validationTypes[0].value;
     } else {
-      return data(
-        {
-          formDefinition: undefined,
-          previewFormDefinition: undefined,
-          defaultValues: undefined,
-          notification,
-          title: 'Skapa',
-          breadcrumb: 'Skapa',
-          validationTypes: await getValidationTypes(
-            params.recordType,
-            auth?.data.token,
-          ),
-        },
-        await getResponseInitWithSession(session),
-      );
+      return {
+        formDefinition: undefined,
+        previewFormDefinition: undefined,
+        defaultValues: undefined,
+        notification,
+        title: 'Skapa',
+        breadcrumb: 'Skapa',
+        validationTypes: await getValidationTypes(
+          params.recordType,
+          auth?.data.token,
+        ),
+      };
     }
   }
 
@@ -97,12 +86,12 @@ export const loader = async ({
   let previewFormDefinition;
   try {
     formDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
+      dependencies,
       validationTypeId,
       'create',
     );
     previewFormDefinition = await getFormDefinitionByValidationTypeId(
-      await context.dependencies,
+      dependencies,
       validationTypeId,
       'view',
     );
@@ -123,32 +112,28 @@ export const loader = async ({
   });
   const breadcrumb = title;
 
-  return data(
-    {
-      formDefinition,
-      previewFormDefinition,
-      defaultValues,
-      notification,
-      title,
-      breadcrumb,
-      validationTypes: null,
-    },
-    await getResponseInitWithSession(session),
-  );
+  return {
+    formDefinition,
+    previewFormDefinition,
+    defaultValues,
+    notification,
+    title,
+    breadcrumb,
+    validationTypes: null,
+  };
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-  const { t } = context.i18n;
-
+  const { auth, flashNotification } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
+  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 
   assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     validationTypeId,
     'create',
   );
@@ -166,22 +151,20 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
 
   try {
     const { recordType, id } = await createRecord(
-      await context.dependencies,
+      dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,
     );
-    session.flash('notification', {
+    flashNotification({
       severity: 'success',
       summary: `Record was successfully created ${id}`,
     });
-    return redirectAndCommitSession(`/${recordType}/${id}/update`, session);
+    return redirect(`/${recordType}/${id}/update`);
   } catch (error) {
-    session.flash('notification', createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromAxiosError(t, error));
     console.error(error);
   }
-
-  return data({}, await getResponseInitWithSession(session));
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
@@ -272,8 +255,6 @@ export default function CreateRecordRoute({
           />
         }
       >
-        <NotificationSnackbar notification={notification} />
-
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity} className='error-alert'>
             <AlertTitle>{notification.summary}</AlertTitle>

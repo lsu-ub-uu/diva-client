@@ -15,15 +15,15 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type { Route } from './+types/binaryRecord';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { createBinaryRecord } from '@/cora/createBinaryRecord';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
+import { dependenciesContext } from 'server/depencencies';
+import type { Route } from './+types/binaryRecord';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { fileName, fileSize } = await request.json();
 
   const createBinaryRecordResponse = await createBinaryRecord(
@@ -33,7 +33,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   );
 
   const binaryRecord = transformRecord(
-    await context.dependencies,
+    dependencies,
     createBinaryRecordResponse.data,
   );
 

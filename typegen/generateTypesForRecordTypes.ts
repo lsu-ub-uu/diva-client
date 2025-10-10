@@ -13,13 +13,14 @@ import type { Lookup } from '@/utils/structs/lookup';
 import { generateInterfaceName as generateTypeName } from './utils/generateInterfaceName';
 import { getValueForRepeat } from './utils/getValueForRepeat';
 
-const metadataTypes = new Map<string, string>();
+let metadataTypes: Map<string, string>;
 
 export function generateTypesForRecordTypes(
   recordTypePool: Lookup<string, BFFRecordType>,
   metadataPool: Lookup<string, BFFMetadata>,
   recordTypeIds: string[],
 ): string {
+  metadataTypes = new Map<string, string>();
   let outputString = '';
   try {
     recordTypeIds.forEach((recordTypeId) => {
@@ -135,6 +136,7 @@ function createRecordLinkType(
       linkedRecord: { 
         ${getNameFromMetadata(metadataPool, linkedRecordMetadataGroup)}: ${linkedRecordTypeName};
       };
+      ${linkedRecordType.id === 'diva-organisation' ? 'displayName?: { sv: string; en: string; };' : ''}
       ${attributes}
     }`;
 }

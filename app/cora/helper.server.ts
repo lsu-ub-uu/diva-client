@@ -16,12 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type { Auth } from '@/auth/Auth';
 import type { ActionLink } from '@/cora/cora-data/types.server';
 import { type AxiosRequestConfig } from 'axios';
 
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.cora.recordList+json';
 export const RECORD_CONTENT_TYPE = 'application/vnd.cora.record+json';
-export const RECORD_CONTENT_TYPE_DECORATED = 'application/vnd.cora.record-decorated+json';
+export const RECORD_CONTENT_TYPE_DECORATED =
+  'application/vnd.cora.record-decorated+json';
 
 export const RECORD_GROUP_CONTENT_TYPE =
   'application/vnd.cora.recordGroup+json';
@@ -41,8 +43,28 @@ export const createHeaders = (
   return headers;
 };
 
+export const externalCoraApiUrl = (path: string) => {
+  return `${process.env.CORA_EXTERNAL_SYSTEM_URL}/rest${path}`;
+};
+
 export const coraApiUrl = (path: string) => {
   return `${process.env.CORA_API_URL}${path}`;
+};
+
+export const coraBinaryUrl = ({
+  id,
+  name,
+  auth,
+}: {
+  id: string;
+  name: string;
+  auth: Auth | undefined;
+}) => {
+  let url = `${process.env.CORA_API_URL}/record/binary/${id}/${name}`;
+  if (auth?.data.token) {
+    url = `${url}?authToken=${auth.data.token}`;
+  }
+  return url;
 };
 
 export const coraLoginUrl = (path: string) => {

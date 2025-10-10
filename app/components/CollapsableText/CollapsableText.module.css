@@ -1,15 +1,11 @@
-.collapsable-text[aria-expanded='true'] {
+.collapsable-text {
   white-space: pre-wrap;
-
-  .expand-icon {
-    transform: rotate(180deg);
-  }
 }
 
 .expand-button {
   display: inline-flex;
   align-items: center;
-  gap: var(--gap);
+  gap: var(--gap-s);
   margin: 0 var(--gap);
   cursor: pointer;
   color: var(--color-link);
@@ -18,5 +14,9 @@
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &[aria-expanded='true'] svg {
+    transform: rotate(180deg);
   }
 }

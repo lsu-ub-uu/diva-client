@@ -89,13 +89,14 @@ import type {
   BFFMetadataBase,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
+  BFFOrganisation,
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
@@ -216,7 +217,8 @@ describe('formMetadata', () => {
       searchPool,
       loginUnitPool,
       loginPool,
-      themePool: listToPool<BFFTheme>([]),
+      memberPool: listToPool<BFFMember>([]),
+      organisationPool: listToPool<BFFOrganisation>([]),
     };
   });
   it('should return form meta data for a given validation type', () => {

@@ -42,12 +42,20 @@ import {
   useNavigation,
 } from 'react-router';
 import styles from './Header.module.css';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 
 interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
+  loginUnits: LoginDefinition[];
+  appTokenLogins: AppTokenLogin[];
 }
 
-export const Header = ({ recordTypes }: HeaderProps) => {
+export const Header = ({
+  recordTypes,
+  loginUnits,
+  appTokenLogins,
+}: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
@@ -125,7 +133,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
           >
             <CloseIcon />
           </Button>
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
           <LanguageSwitcher />
 
           <Suspense>

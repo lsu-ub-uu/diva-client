@@ -12,12 +12,7 @@ export const Location = ({ location, icon }: LocationProps) => {
     : location.url.value;
 
   return (
-    <a
-      href={href}
-      target='_blank'
-      rel='noopener noreferrer'
-      className='location-link'
-    >
+    <a href={href} target='_blank' rel='noopener noreferrer'>
       {location.displayLabel?.value ?? location.url.value}
       {icon}
     </a>

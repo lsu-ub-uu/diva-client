@@ -21,15 +21,26 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
+
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 const BASE_PATH = process.env.BASE_PATH ?? '';
-
 const PORT = Number.parseInt(process.env.PORT || '5173');
+const { CORA_API_URL, CORA_LOGIN_URL, CORA_EXTERNAL_SYSTEM_URL } = process.env;
+
+if (!CORA_API_URL) {
+  throw new Error('Missing required environment variable CORA_API_URL');
+}
+if (!CORA_LOGIN_URL) {
+  throw new Error('Missing required environment variable CORA_LOGIN_URL');
+}
+if (!CORA_EXTERNAL_SYSTEM_URL) {
+  throw new Error(
+    'Missing required environment variable CORA_EXTERNAL_SYSTEM_URL',
+  );
+}
 
 const app = express();
 
@@ -50,8 +61,7 @@ if (BASE_PATH && BASE_PATH !== '/') {
 if (DEVELOPMENT) {
   console.info('Starting development server');
   app.get('/devLogin', (req, res) => {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    res.sendFile(path.join(__dirname, 'devLogin.html'));
+    res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
   });
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
@@ -83,17 +93,18 @@ if (DEVELOPMENT) {
 app.use(morgan('tiny'));
 
 app.listen(PORT, () => {
-  console.info(`CORA_API_URL ${process.env.CORA_API_URL}`);
-  console.info(`CORA_LOGIN_URL ${process.env.CORA_LOGIN_URL}`);
+  console.info(`CORA_API_URL ${CORA_API_URL}`);
+  console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
+  console.info(`CORA_EXTERNAL_SYSTEM_URL ${CORA_EXTERNAL_SYSTEM_URL}`);
 
   if (DEVELOPMENT) {
     console.info(
-      `Development server is running on http://localhost:${PORT}${BASE_PATH}`,
+      `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
   } else {
     console.info(
-      `Server is started and listening on port ${PORT} ${BASE_PATH}`,
+      `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
 });

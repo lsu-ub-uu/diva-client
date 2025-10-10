@@ -194,6 +194,8 @@ export interface BFFPresentationGroup extends BFFPresentationBase {
     | 'onlyTranslatedText';
 }
 
+export type HeadlineLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
 export interface BFFPresentationChildReference {
   refGroups: BFFPresentationChildRefGroup[];
   minNumberOfRepeatingToShow?: string;
@@ -201,7 +203,7 @@ export interface BFFPresentationChildReference {
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
 }
 
@@ -246,7 +248,7 @@ export interface BFFPresentationChildReference {
   childStyle?: ChildStyle[];
   presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
   title?: string;
-  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
 }
 
@@ -304,10 +306,12 @@ export interface BFFLogin extends BFFBase {
 }
 
 export interface BFFLoginWebRedirect extends BFFLogin {
+  type: 'webRedirect';
   loginName: string;
   url: string;
 }
 export interface BFFLoginPassword extends BFFLogin {
+  type: 'password';
   viewDefinition: string;
   viewPresentation: string;
   description: string;
@@ -327,7 +331,7 @@ export interface BFFThemeLinkWrapper {
   en: BFFThemeLink;
 }
 
-export interface BFFTheme {
+export interface BFFMember {
   id: string;
   memberPermissionUnit?: string;
   pageTitle: {
@@ -343,4 +347,15 @@ export interface BFFTheme {
     svg?: string;
   };
   hostnames: string[];
+  loginUnitIds: string[];
+}
+
+export interface BFFOrganisation {
+  id: string;
+  parentOrganisationId?: string;
+  name: {
+    sv: string;
+    en?: string;
+  };
+  rorId?: string;
 }

@@ -21,15 +21,16 @@ import {
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
 import {
+  Link,
   useFetcher,
   useLocation,
   useNavigation,
   useSubmit,
 } from 'react-router';
 
+import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
@@ -37,10 +38,17 @@ import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import styles from './Login.module.css';
 
-export default function User() {
+interface LoginProps {
+  loginUnits: LoginDefinition[];
+  appTokenLogins: AppTokenLogin[];
+}
+
+export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
   const { MODE } = import.meta.env;
   const user = useUser();
   const fetcher = useFetcher();
@@ -53,9 +61,14 @@ export default function User() {
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
 
-  const handleDevSelection = (account: Account) => {
+  const handleDevSelection = (account: AppTokenLogin) => {
     submit(
-      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
+      {
+        loginType: 'appToken',
+        loginId: account.loginId,
+        appToken: account.appToken,
+        returnTo,
+      },
       { action: '/login', method: 'post' },
     );
   };
@@ -87,14 +100,51 @@ export default function User() {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
 
+  const loginButtonProps: ButtonProps = {
+    'aria-busy': submitting,
+    variant: 'tertiary',
+  };
+
+  const loginButtonChildren = (
+    <>
+      {t('divaClient_LoginText')}
+      {submitting ? <CircularLoader /> : <LoginIcon />}
+    </>
+  );
+
   if (!user) {
+    if (loginUnits.length === 1 && appTokenLogins.length === 0) {
+      const loginUnit = loginUnits[0];
+      return (
+        <div className={styles['login']}>
+          {loginUnit.type === 'webRedirect' && (
+            <Button
+              {...loginButtonProps}
+              onClick={() => handleWebRedirectSelection(loginUnit.url!)}
+            >
+              {loginButtonChildren}
+            </Button>
+          )}
+          {loginUnit.type === 'password' && (
+            <Button
+              {...loginButtonProps}
+              as={Link}
+              to={`/login?presentation=${encodeURIComponent(JSON.stringify(loginUnit.presentation))}&returnTo=${returnTo}`}
+            >
+              {loginButtonChildren}
+            </Button>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className={styles['login']}>
         <Menu>
           <MenuButton
+            aria-busy={submitting}
             className={styles['login-button']}
             as='a'
-            aria-busy={submitting}
             onClick={(e) => e.preventDefault()}
             href={`/login?returnTo=${returnTo}`}
           >
@@ -102,11 +152,22 @@ export default function User() {
             {submitting ? <CircularLoader /> : <LoginIcon />}
           </MenuButton>
           <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions onSelect={handleDevSelection} />
-            <hr />
-            <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
-            <hr />
-            <PasswordLoginOptions returnTo={returnTo} />
+            <DevAccountLoginOptions
+              appTokenLogins={appTokenLogins}
+              onSelect={handleDevSelection}
+            />
+            <WebRedirectLoginOptions
+              webRedirectLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'webRedirect',
+              )}
+              onSelect={handleWebRedirectSelection}
+            />
+            <PasswordLoginOptions
+              passwordLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'password',
+              )}
+              returnTo={returnTo}
+            />
           </DropdownMenu>
         </Menu>
       </div>

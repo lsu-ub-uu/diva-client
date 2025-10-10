@@ -1,32 +1,27 @@
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { coraBinaryUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { coraApiUrl } from '@/cora/helper.server';
 
-export const loader = async ({ request, params }: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const loader = async ({ context, params }: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
+  const { id, name } = params;
 
-  return await fetch(
-    coraApiUrl(
-      `/record/binary/${params.id}/${params.name}?authToken=${auth?.data.token}`,
-    ),
-  );
+  return await fetch(coraBinaryUrl({ id, name, auth }));
 };
 
-export const action = async ({ request, params }: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
+  const { id, name } = params;
 
-  return await fetch(
-    coraApiUrl(
-      `/record/binary/${params.id}/${params.name}?authToken=${auth?.data.token}`,
-    ),
-    {
-      body: request.body,
-      headers: request.headers,
-      method: request.method,
-      // @ts-expect-error duplex is not yet in RequestInit
-      duplex: 'half',
-    },
-  );
+  return await fetch(coraBinaryUrl({ id, name, auth }), {
+    body: request.body,
+    headers: request.headers,
+    method: request.method,
+    // @ts-expect-error duplex is not yet in RequestInit
+    duplex: 'half',
+  });
 };

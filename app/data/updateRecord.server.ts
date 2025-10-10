@@ -31,7 +31,7 @@ export const updateRecord = async (
   validationTypeId: string,
   recordId: string,
   data: BFFDataRecord,
-  auth: Auth,
+  auth?: Auth,
 ) => {
   const { validationTypePool } = dependencies;
   const recordType =
@@ -55,7 +55,7 @@ export const updateRecord = async (
     recordId,
     transformData[0] as DataGroup,
     recordType,
-    auth.data.token,
+    auth?.data.token,
   );
 
   return transformRecord(dependencies, response.data);

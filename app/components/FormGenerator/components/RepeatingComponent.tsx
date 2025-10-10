@@ -68,7 +68,7 @@ export const RepeatingComponent = ({
       component={component}
       name={currentComponentNamePath}
       anchorId={anchorId}
-      renderCallback={(arrayPath, actionButtonGroup, index) => {
+      renderCallback={(arrayPath, actionButtonGroup, index, isAppended) => {
         return (
           <Component
             parentPath={parentPath}
@@ -77,6 +77,7 @@ export const RepeatingComponent = ({
             parentPresentationStyle={parentPresentationStyle}
             actionButtonGroup={actionButtonGroup}
             anchorId={index === 0 ? anchorId : undefined}
+            isAppended={isAppended}
           />
         );
       }}

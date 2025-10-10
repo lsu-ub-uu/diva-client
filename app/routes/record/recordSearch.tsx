@@ -16,39 +16,34 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm.server';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
-import {
-  getAuth,
-  getNotification,
-  getSessionFromCookie,
-} from '@/auth/sessions.server';
-import { Await, data, href, Link } from 'react-router';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
-import { useTranslation } from 'react-i18next';
-import { Suspense } from 'react';
-import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
-import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
-import type { Route } from '../record/+types/recordSearch';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { performSearch } from '@/routes/record/utils/performSearch';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
-import css from './recordSearch.css?url';
-import { coraApiUrl } from '@/cora/helper.server';
+import { externalCoraApiUrl } from '@/cora/helper.server';
+import { getSearchForm } from '@/data/getSearchForm.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
-import { Button } from '@/components/Button/Button';
+import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
 import { AddCircleIcon } from '@/icons';
+import { performSearch } from '@/routes/record/utils/performSearch';
+import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Await, data, href, Link } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
+import type { Route } from '../record/+types/recordSearch';
+import css from './recordSearch.css?url';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-  const { t } = context.i18n;
+  const { auth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
-  const dependencies = await context.dependencies;
+  const { dependencies } = context.get(dependenciesContext);
 
   const recordType = dependencies.recordTypePool.get(params.recordType);
 
@@ -56,15 +51,12 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     throw data('Record type has no search', { status: 404 });
   }
 
-  const searchForm = getSearchForm(
-    await context.dependencies,
-    recordType.searchId,
-  );
+  const searchForm = getSearchForm(dependencies, recordType.searchId);
 
   const yupSchema = generateYupSchemaFromFormSchema(searchForm);
   const { query, searchResults, errors } = await performSearch(
     request,
-    context,
+    dependencies,
     recordType.searchId,
     auth,
     yupSchema,
@@ -72,7 +64,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   const apiUrl =
     query &&
     encodeURI(
-      coraApiUrl(
+      externalCoraApiUrl(
         `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
       ),
     );
@@ -82,22 +74,18 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
     auth?.data.token,
   );
 
-  return data(
-    {
-      searchId: recordType.searchId,
-      recordTypeId: recordType.id,
-      recordTypeTextId: recordType.textId,
-      validationTypes,
-      query,
-      searchForm,
-      searchResults,
-      title: `DiVA | ${t(recordType.textId)}`,
-      notification: getNotification(session),
-      errors,
-      apiUrl,
-    },
-    await getResponseInitWithSession(session),
-  );
+  return {
+    searchId: recordType.searchId,
+    recordTypeTextId: recordType.textId,
+    recordTypeId: recordType.id,
+    validationTypes,
+    query,
+    searchForm,
+    searchResults,
+    title: `DiVA | ${t(recordType.textId)}`,
+    errors,
+    apiUrl,
+  };
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
@@ -115,14 +103,12 @@ export default function OutputSearchRoute({
     validationTypes,
     searchResults,
     query,
-    notification,
   } = loaderData;
   const { t } = useTranslation();
 
   return (
     <div className='search-layout'>
       <main>
-        <NotificationSnackbar notification={notification} />
         <div className='search-wrapper'>
           <div className='search-extras'>
             <h1>

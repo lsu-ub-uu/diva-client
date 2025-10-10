@@ -157,6 +157,7 @@ export const transformRecordData = (
     },
   };
 };
+
 export const transformDataGroup = (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
@@ -230,15 +231,65 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     data,
     'linkedRecordId',
   );
+  const linkedRecordType = getFirstDataAtomicValueWithNameInData(
+    data,
+    'linkedRecordType',
+  );
 
   const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
     ? transformLinkedRecord(data, dependencies)
     : undefined;
 
+  let displayName;
+  if (linkedRecordType === 'diva-organisation' && linkedRecord) {
+    const svName = formatLinkedOrganisationName(
+      recordLinkId,
+      'sv',
+      dependencies,
+    );
+    const enName = formatLinkedOrganisationName(
+      recordLinkId,
+      'en',
+      dependencies,
+    );
+
+    if (svName && enName) {
+      displayName = {
+        sv: svName,
+        en: enName,
+      };
+    }
+  }
+
   return removeEmpty({
     value: recordLinkId,
     linkedRecord,
+    displayName,
   });
+};
+
+const formatLinkedOrganisationName = (
+  linkedOrganisationId: string,
+  lang: 'sv' | 'en',
+  dependencies: Dependencies,
+): string | undefined => {
+  if (!dependencies.organisationPool.has(linkedOrganisationId)) {
+    return undefined;
+  }
+  const linkedOrganisation =
+    dependencies.organisationPool.get(linkedOrganisationId);
+
+  const organisationName = linkedOrganisation.name[lang];
+
+  if (linkedOrganisation.parentOrganisationId) {
+    return `${organisationName}, ${formatLinkedOrganisationName(
+      linkedOrganisation.parentOrganisationId,
+      lang,
+      dependencies,
+    )}`;
+  }
+
+  return organisationName;
 };
 
 const transformLinkedRecord = (

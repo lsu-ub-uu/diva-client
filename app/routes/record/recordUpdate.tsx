@@ -16,50 +16,41 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  commitSession,
-  getAuth,
-  getNotification,
-  getSessionFromCookie,
-  requireAuth,
-} from '@/auth/sessions.server';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { updateRecord } from '@/data/updateRecord.server';
 import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
-import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { data } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 
 import { RecordForm } from '@/components/Form/RecordForm';
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
-import { NotificationSnackbar } from '@/utils/NotificationSnackbar';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { useDeferredValue, useState } from 'react';
-import type { Route } from '../record/+types/recordUpdate';
 import { useTranslation } from 'react-i18next';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
+import type { Route } from '../record/+types/recordUpdate';
 
-export async function loader({ request, params, context }: Route.LoaderArgs) {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-  const { t } = context.i18n;
-
-  const notification = getNotification(session);
+export async function loader({ params, context }: Route.LoaderArgs) {
+  const { auth, notification } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
+  const { dependencies } = context.get(dependenciesContext);
 
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -71,13 +62,13 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'update',
   );
 
   const previewFormDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'view',
   );
@@ -89,22 +80,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
 
-  return data(
-    {
-      record,
-      formDefinition,
-      previewFormDefinition,
-      defaultValues,
-      notification,
-      title,
-      breadcrumb,
-    },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return {
+    record,
+    formDefinition,
+    previewFormDefinition,
+    defaultValues,
+    notification,
+    title,
+    breadcrumb,
+  };
 }
 
 export const action = async ({
@@ -113,23 +97,23 @@ export const action = async ({
   context,
 }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
-  const { t } = context.i18n;
+  const { t } = context.get(i18nContext);
+  const { auth, flashNotification } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
 
-  const session = await getSessionFromCookie(request);
-  const auth = await requireAuth(session);
   const formData = await request.formData();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
-    authToken: auth.data.token,
+    authToken: auth?.data.token,
   });
 
   assertDefined(validationType, 'Failed to get validation type from record');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     validationType,
     'update',
   );
@@ -147,22 +131,20 @@ export const action = async ({
 
   try {
     await updateRecord(
-      await context.dependencies,
+      dependencies,
       validationType,
       recordId,
       validatedFormData as unknown as BFFDataRecord,
       auth,
     );
-    session.flash('notification', {
+    flashNotification({
       severity: 'success',
       summary: `Record was successfully updated`,
     });
   } catch (error) {
     console.error(error);
-    session.flash('notification', createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromAxiosError(t, error));
   }
-
-  return data({}, await getResponseInitWithSession(session));
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
@@ -202,8 +184,6 @@ export default function UpdateRecordRoute({
         />
       }
     >
-      <NotificationSnackbar notification={notification} />
-
       {notification && notification.severity === 'error' && (
         <Alert severity={notification.severity} className='error-alert'>
           <AlertTitle>{notification.summary}</AlertTitle>

@@ -16,31 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type { Route } from '../record/+types/record';
-import { getRecordTitle } from '@/utils/getRecordTitle';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { AxiosError } from 'axios';
-import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
-import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { getRecordTitle } from '@/utils/getRecordTitle';
+import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
+import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
+import type { Route } from '../record/+types/record';
 import css from './record.css?url';
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
-
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
 
   try {
     const record = await getRecordByRecordTypeAndRecordId({
-      dependencies: await context.dependencies,
+      dependencies,
       recordType,
       recordId,
       authToken: auth?.data.token,
@@ -62,8 +58,10 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: css },
 ];
 
-export const meta = ({ data, error }: Route.MetaArgs) => {
-  return [{ title: error ? getMetaTitleFromError(error) : data?.pageTitle }];
+export const meta = ({ loaderData, error }: Route.MetaArgs) => {
+  return [
+    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
+  ];
 };
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {

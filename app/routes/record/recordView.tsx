@@ -16,32 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuth, getSessionFromCookie } from '@/auth/sessions.server';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { assertDefined } from '@/utils/invariant';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { coraApiUrl } from '@/cora/helper.server';
+import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { externalCoraApiUrl } from '@/cora/helper.server';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
+import { assertDefined } from '@/utils/invariant';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordView';
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: Route.LoaderArgs) => {
-  const session = await getSessionFromCookie(request);
-  const auth = getAuth(session);
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const { auth } = context.get(sessionContext);
+  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
-
-  const apiUrl = coraApiUrl(`/record/${recordType}/${recordId}`);
+  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
-    dependencies: await context.dependencies,
+    dependencies,
     recordType,
     recordId,
     authToken: auth?.data.token,
@@ -49,7 +45,7 @@ export const loader = async ({
 
   assertDefined(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
-    await context.dependencies,
+    dependencies,
     record.validationType,
     'view',
   );
