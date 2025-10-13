@@ -300,6 +300,36 @@ describe('sessionMiddleware', () => {
       summary: 'Test notification',
     });
   });
+
+  it('commits session if auth is set and notification is not set', async () => {
+    const mockRequest = createMockRequest();
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession({
+      auth: { userId: '123' },
+      notification: undefined,
+    });
+    const { mockCommitSession } = setupSessionMocks(
+      mockSession,
+      'commit-cookie-value',
+    );
+
+    const mockNextFunction = vi.fn().mockImplementation(async () => {
+      const sessionContext = setContextSpy.mock.calls[0][1];
+      sessionContext.setAuth({ userId: '123' });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const notification = sessionContext.notification;
+      return mockResponse;
+    });
+
+    await sessionMiddleware(
+      { request: mockRequest, context: mockContext, params: {} },
+      mockNextFunction,
+    );
+
+    expect(mockResponse.headers.append).toHaveBeenCalled();
+    expect(mockCommitSession).toHaveBeenCalled();
+  });
 });
 
 interface MockRequestOptions {
