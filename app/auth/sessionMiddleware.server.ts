@@ -43,7 +43,9 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
       shouldCommitSession = true;
     },
     get notification() {
-      shouldCommitSession = notification !== undefined;
+      if (notification !== undefined) {
+        shouldCommitSession = true;
+      }
       return notification;
     },
     flashNotification: (flashedNotification) => {
