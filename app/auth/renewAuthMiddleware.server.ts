@@ -29,7 +29,9 @@ export const handleRenew = async (
 ) => {
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
   const { t } = i18n;
+
   if (!auth) {
+    console.debug('** No auth found, skipping renew check');
     return;
   }
 
@@ -58,11 +60,30 @@ export const isAuthExpired = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const renewUntil = Number(auth.data.renewUntil);
   const now = Date.now();
-  return validUntil < now || renewUntil < now;
+
+  const expired = validUntil < now || renewUntil < now;
+  if (expired) {
+    console.debug('** Auth expired. Removing auth', {
+      validUntil,
+      renewUntil,
+      now,
+    });
+  }
+  return expired;
 };
 
 export const isAuthAboutToExpire = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const timeUntilInvalid = validUntil - new Date().getTime();
-  return timeUntilInvalid < RENEW_TIME_BUFFER;
+
+  const aboutToExpire = timeUntilInvalid < RENEW_TIME_BUFFER;
+
+  if (aboutToExpire) {
+    console.debug('** Auth about to expire. Renewing', {
+      validUntil,
+      timeUntilInvalid,
+      RENEW_TIME_BUFFER,
+    });
+  }
+  return aboutToExpire;
 };
