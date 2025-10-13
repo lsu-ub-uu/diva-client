@@ -76,8 +76,8 @@ export const isAuthExpired = (auth: Auth) => {
       new Date(now).toISOString(),
       '** Auth expired. Removing auth',
       {
-        validUntil: new Date(validUntil).toISOString(),
-        renewUntil: new Date(renewUntil).toISOString(),
+        validUntil: validUntil && new Date(validUntil).toISOString(),
+        renewUntil: renewUntil && new Date(renewUntil).toISOString(),
       },
     );
   }
@@ -95,7 +95,7 @@ export const isAuthAboutToExpire = (auth: Auth) => {
       new Date().toISOString(),
       '** Auth about to expire. Renewing',
       {
-        validUntil: new Date(validUntil).toISOString(),
+        validUntil: validUntil && new Date(validUntil).toISOString(),
         timeUntilInvalid: `${timeUntilInvalid / 1000}s`,
         RENEW_TIME_BUFFER: `${RENEW_TIME_BUFFER / 1000}s`,
       },
