@@ -11,7 +11,7 @@ import {
 /**
  * How long before token expiry to refresh the token
  */
-const RENEW_TIME_BUFFER = 60_000 * 9;
+const RENEW_TIME_BUFFER = 60_000 * 5; // 5 minutes
 
 /**
  * Runs on every request, checks if the auth token is about to expire,
