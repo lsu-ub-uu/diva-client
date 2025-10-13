@@ -808,6 +808,7 @@ describe('defaultValues', () => {
           someRootNameInData: {
             bookTitle: {
               value: 'someFinalValue',
+              _finalValue: true,
             },
             keeptHis: {
               value: '12',

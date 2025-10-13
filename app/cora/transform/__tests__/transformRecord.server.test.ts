@@ -2569,6 +2569,43 @@ describe('transformRecord', () => {
 
       expect(transformData).toStrictEqual(expected);
     });
+
+    it('should transform finalValue', () => {
+      const data = {
+        name: 'root',
+        children: [
+          {
+            name: 'someFinalValueName',
+            value: 'someFinalValue',
+          },
+        ],
+      };
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'root',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            name: 'someFinalValueName',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            finalValue: 'someFinalValue',
+          },
+        ],
+      };
+
+      const transformedData = transformRecordData(data, metadata, dependencies);
+
+      expect(transformedData).toStrictEqual({
+        root: {
+          someFinalValueName: {
+            value: 'someFinalValue',
+            _finalValue: true,
+          },
+        },
+      });
+    });
   });
 
   it('should handle attributes on outer groups', () => {

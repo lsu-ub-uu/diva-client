@@ -55,7 +55,8 @@ export const RecordForm = ({
     defaultValues,
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
-
+  console.log({ defaultValues });
+  console.log(formSchema);
   const { handleSubmit, reset, subscribe } = methods;
 
   useEffect(() => {
