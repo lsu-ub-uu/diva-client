@@ -1,12 +1,12 @@
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
+import type { i18n } from 'i18next';
 import type { MiddlewareFunction } from 'react-router';
+import { i18nContext } from 'server/i18n';
+import type { Auth } from './Auth';
 import {
   sessionContext,
   type SessionContext,
 } from './sessionMiddleware.server';
-import type { Auth } from './Auth';
-import { i18nContext } from 'server/i18n';
-import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import type { i18n } from 'i18next';
 
 /**
  * How long before token expiry to refresh the token
@@ -28,10 +28,19 @@ export const handleRenew = async (
   i18n: i18n,
 ) => {
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
+  console.debug(new Date().toISOString(), '** Running renewAuthMiddleware', {
+    token: auth?.data.token,
+    validUntil:
+      auth?.data.validUntil &&
+      new Date(Number(auth?.data.validUntil)).toISOString(),
+  });
   const { t } = i18n;
 
   if (!auth) {
-    console.debug('** No auth found, skipping renew check');
+    console.debug(
+      new Date().toISOString(),
+      '** No auth found, skipping renew check',
+    );
     return;
   }
 
@@ -63,11 +72,14 @@ export const isAuthExpired = (auth: Auth) => {
 
   const expired = validUntil < now || renewUntil < now;
   if (expired) {
-    console.debug('** Auth expired. Removing auth', {
-      validUntil,
-      renewUntil,
-      now,
-    });
+    console.debug(
+      new Date(now).toISOString(),
+      '** Auth expired. Removing auth',
+      {
+        validUntil: new Date(validUntil).toISOString(),
+        renewUntil: new Date(renewUntil).toISOString(),
+      },
+    );
   }
   return expired;
 };
@@ -79,11 +91,15 @@ export const isAuthAboutToExpire = (auth: Auth) => {
   const aboutToExpire = timeUntilInvalid < RENEW_TIME_BUFFER;
 
   if (aboutToExpire) {
-    console.debug('** Auth about to expire. Renewing', {
-      validUntil,
-      timeUntilInvalid,
-      RENEW_TIME_BUFFER,
-    });
+    console.debug(
+      new Date().toISOString(),
+      '** Auth about to expire. Renewing',
+      {
+        validUntil: new Date(validUntil).toISOString(),
+        timeUntilInvalid: `${timeUntilInvalid / 1000}s`,
+        RENEW_TIME_BUFFER: `${RENEW_TIME_BUFFER / 1000}s`,
+      },
+    );
   }
   return aboutToExpire;
 };
