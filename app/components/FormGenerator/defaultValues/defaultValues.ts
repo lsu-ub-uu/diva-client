@@ -19,6 +19,7 @@
 
 import {
   isComponentContainer,
+  isComponentHidden,
   isComponentRepeating,
   isComponentValidForDataCarrying,
   isComponentVariable,
@@ -72,14 +73,15 @@ export const createDefaultValuesFromComponent = (
       | unknown[];
   } = {};
 
-  const formDefaultObject = isComponentVariable(component)
-    ? createDefaultValuesForVariable(component)
-    : createDefaultValuesForGroup(component);
+  const formDefaultObject = createFormDefaultObject(component);
 
   if (forceDefaultValuesForAppend) {
     defaultValues = { ...formDefaultObject, repeatId: generateRepeatId() };
   } else {
-    if (
+    if (isComponentHidden(component)) {
+      defaultValues[addAttributesToName(component, component.name)] =
+        formDefaultObject;
+    } else if (
       component.repeat?.repeatMin === 0 &&
       component.repeat?.repeatMax === 1
     ) {
@@ -219,9 +221,21 @@ function createDefaultValueForNonRepeating(
     formDefaultObject;
 }
 
+function createFormDefaultObject(component: FormComponent) {
+  if (isComponentHidden(component)) {
+    return { value: component.finalValue, final: true };
+  }
+  if (isComponentVariable(component)) {
+    return createDefaultValuesForVariable(component);
+  }
+
+  return createDefaultValuesForGroup(component);
+}
+
 function createDefaultValuesForVariable(component: FormComponentWithData) {
   return {
     value: createDefaultValueFromFinalValue(component),
+    ...(component.finalValue ? { final: true } : {}),
     ...generateComponentAttributes(component),
   };
 }

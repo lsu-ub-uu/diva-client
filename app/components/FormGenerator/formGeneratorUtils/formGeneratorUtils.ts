@@ -131,6 +131,7 @@ export const isComponentRepeatingContainer = (component: FormComponent) => {
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) ||
   isComponentGroup(component) ||
+  isComponentHidden(component) ||
   isComponentContainer(component); // a container can have children that are data carriers
 
 export const isComponentOptional = (component: FormComponent) => {

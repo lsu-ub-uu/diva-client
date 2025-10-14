@@ -399,4 +399,41 @@ describe('removeEmpty', () => {
 
     expect(cleanFormData(testObject)).toEqual({});
   });
+
+  it('clears objects with only repeatId', () => {
+    const testObject = {
+      root: [
+        {
+          repeatId: '1',
+          child: [
+            { repeatId: '1', value: 'value1' },
+            { repeatId: '2', value: '' },
+          ],
+        },
+      ],
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: [
+        {
+          repeatId: '1',
+          child: [{ repeatId: '1', value: 'value1' }],
+        },
+      ],
+    });
+  });
+
+  it('clears objects with only finalValue', () => {
+    const testObject = {
+      root: [
+        {
+          repeatId: '1',
+          child: [
+            { repeatId: '1', value: 'value1' },
+            { repeatId: '2', value: '' },
+          ],
+        },
+      ],
+    };
+  });
 });

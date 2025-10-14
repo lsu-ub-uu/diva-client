@@ -2601,7 +2601,7 @@ describe('transformRecord', () => {
         root: {
           someFinalValueName: {
             value: 'someFinalValue',
-            _finalValue: true,
+            final: true,
           },
         },
       });

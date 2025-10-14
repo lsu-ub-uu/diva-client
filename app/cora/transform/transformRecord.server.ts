@@ -306,7 +306,7 @@ const transformLinkedRecord = (
 const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
   return {
     value: data.value,
-    ...(metadata.finalValue ? { _finalValue: true } : {}),
+    ...(metadata.finalValue ? { final: true } : {}),
   };
 };
 
