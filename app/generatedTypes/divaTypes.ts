@@ -2225,7 +2225,7 @@ export interface RecordInfoOutputUpdateGroup {
   id: { value: string; __text: { sv: string; en: string } };
   type: { value: 'diva-output'; __text: { sv: string; en: string } };
   validationType: { value: 'diva-output'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
+  dataDivider: { value: 'divaPreview'; __text: { sv: string; en: string } };
   createdBy: { value: string; __text: { sv: string; en: string } };
   tsCreated: { value: string; __text: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
@@ -2407,7 +2407,6 @@ export interface NameOrganisationGroup {
   };
   description?: { value: string; __text: { sv: string; en: string } };
   _type: 'corporate';
-  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2997,8 +2996,8 @@ export interface RelatedItemPartBookGroup {
   __text: { sv: string; en: string };
 }
 
-export interface RelatedItemSeriesLinkGroup {
-  series: {
+export interface RelatedItemSeriesGroup {
+  series?: {
     value: string;
     linkedRecord: {
       series: SeriesUpdateGroup;
@@ -3006,14 +3005,7 @@ export interface RelatedItemSeriesLinkGroup {
 
     __text: { sv: string; en: string };
   };
-  partNumber?: { value: string; __text: { sv: string; en: string } };
-  _type: 'series';
-  _otherType: 'link';
-  __text: { sv: string; en: string };
-}
-
-export interface RelatedItemSeriesTextGroup {
-  titleInfo: TitleInfoGroup;
+  titleInfo?: TitleInfoGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
@@ -3028,7 +3020,7 @@ export interface RelatedItemSeriesTextGroup {
   };
   partNumber?: { value: string; __text: { sv: string; en: string } };
   _type: 'series';
-  _otherType: 'text';
+  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3059,8 +3051,7 @@ export interface RelatedItemBookGroup {
     __text: { sv: string; en: string };
   };
   part?: RelatedItemPartBookGroup;
-  relatedItem_otherType_link_type_series?: RelatedItemSeriesLinkGroup[];
-  relatedItem_otherType_text_type_series?: RelatedItemSeriesTextGroup[];
+  relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'book';
   _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
@@ -3093,8 +3084,7 @@ export interface RelatedItemConferencePublicationGroup {
     __text: { sv: string; en: string };
   };
   part?: RelatedItemPartJournalGroup;
-  relatedItem_otherType_link_type_series?: RelatedItemSeriesLinkGroup[];
-  relatedItem_otherType_text_type_series?: RelatedItemSeriesTextGroup[];
+  relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'conferencePublication';
   _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
@@ -3109,34 +3099,6 @@ export interface RelatedItemConferenceGroup {
 export interface RelatedItemPublicationChannelGroup {
   publicationChannel: { value: string; __text: { sv: string; en: string } };
   _type: 'publicationChannel';
-  __text: { sv: string; en: string };
-}
-
-export interface RelatedItemSeriesGroup {
-  series?: {
-    value: string;
-    linkedRecord: {
-      series: SeriesUpdateGroup;
-    };
-
-    __text: { sv: string; en: string };
-  };
-  titleInfo?: TitleInfoGroup;
-  identifier_displayLabel_pissn_type_issn?: {
-    value: string;
-    _type: 'issn';
-    _displayLabel: 'pissn';
-    __text: { sv: string; en: string };
-  };
-  identifier_displayLabel_eissn_type_issn?: {
-    value: string;
-    _type: 'issn';
-    _displayLabel: 'eissn';
-    __text: { sv: string; en: string };
-  };
-  partNumber?: { value: string; __text: { sv: string; en: string } };
-  _type: 'series';
-  _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3362,16 +3324,6 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
-export type ImportSourceCollection =
-  | 'wos'
-  | 'mods'
-  | 'bibtex'
-  | 'ris'
-  | 'csv'
-  | 'pubmed'
-  | 'endnote'
-  | 'biblatex';
-
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3387,11 +3339,6 @@ export interface AdminInfoDivaGroup {
     value: string;
     _type: 'internal';
     __text: { sv: string; en: string };
-  };
-  importSource?: {
-    value: ImportSourceCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
   };
   __text: { sv: string; en: string };
 }
@@ -4392,12 +4339,7 @@ export interface RecordTypeGroup {
 
     __text: { sv: string; en: string };
   };
-  userSuppliedId: {
-    value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
-  };
-  idSource?: {
+  idSource: {
     value: IdSourceCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
