@@ -11,7 +11,7 @@ import {
 /**
  * How long before token expiry to refresh the token
  */
-const RENEW_TIME_BUFFER = 60_000 * 5;
+const RENEW_TIME_BUFFER = 60_000 * 5; // 5 minutes
 
 /**
  * Runs on every request, checks if the auth token is about to expire,
@@ -28,19 +28,9 @@ export const handleRenew = async (
   i18n: i18n,
 ) => {
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
-  console.debug(new Date().toISOString(), '** Running renewAuthMiddleware', {
-    token: auth?.data.token,
-    validUntil:
-      auth?.data.validUntil &&
-      new Date(Number(auth?.data.validUntil)).toISOString(),
-  });
   const { t } = i18n;
 
   if (!auth) {
-    console.debug(
-      new Date().toISOString(),
-      '** No auth found, skipping renew check',
-    );
     return;
   }
 
@@ -70,36 +60,12 @@ export const isAuthExpired = (auth: Auth) => {
   const renewUntil = Number(auth.data.renewUntil);
   const now = Date.now();
 
-  const expired = validUntil < now || renewUntil < now;
-  if (expired) {
-    console.debug(
-      new Date(now).toISOString(),
-      '** Auth expired. Removing auth',
-      {
-        validUntil: validUntil && new Date(validUntil).toISOString(),
-        renewUntil: renewUntil && new Date(renewUntil).toISOString(),
-      },
-    );
-  }
-  return expired;
+  return validUntil < now || renewUntil < now;
 };
 
 export const isAuthAboutToExpire = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const timeUntilInvalid = validUntil - new Date().getTime();
 
-  const aboutToExpire = timeUntilInvalid < RENEW_TIME_BUFFER;
-
-  if (aboutToExpire) {
-    console.debug(
-      new Date().toISOString(),
-      '** Auth about to expire. Renewing',
-      {
-        validUntil: validUntil && new Date(validUntil).toISOString(),
-        timeUntilInvalid: `${timeUntilInvalid / 1000}s`,
-        RENEW_TIME_BUFFER: `${RENEW_TIME_BUFFER / 1000}s`,
-      },
-    );
-  }
-  return aboutToExpire;
+  return timeUntilInvalid < RENEW_TIME_BUFFER;
 };
