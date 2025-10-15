@@ -41,12 +41,15 @@ import { useTranslation } from 'react-i18next';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { createUser } from '@/auth/createUser';
 
-export async function loader({ params, context }: Route.LoaderArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
-
+  const member = getMemberFromHostname(request, dependencies);
+  const user = auth && createUser(auth);
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
@@ -76,6 +79,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
     record.data,
+    member,
+    user,
   );
 
   const breadcrumb = t('divaClient_UpdatingPageTitleText');

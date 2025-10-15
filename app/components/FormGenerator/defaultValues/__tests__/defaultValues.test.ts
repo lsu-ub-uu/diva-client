@@ -66,6 +66,8 @@ import {
 } from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
 import * as generateRepeatIdModule from '../generateRepeatId';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { User } from '@/auth/createUser';
 
 describe('defaultValues', () => {
   beforeEach(() => {
@@ -315,6 +317,46 @@ describe('defaultValues', () => {
                 final: true,
               },
             },
+          },
+        });
+      });
+
+      it('should automatically set permission unit', () => {
+        const formSchema = {
+          form: {
+            name: 'root',
+            type: 'group',
+            components: [
+              {
+                name: 'somePermissionUnitLinkName',
+                type: 'recordLink',
+                mode: 'input',
+                presentAs: 'permissionUnit',
+              },
+            ],
+          },
+        } as FormSchema;
+
+        const existingRecordData = {};
+
+        const member = {
+          memberPermissionUnit: 'somePermissionUnit',
+        } as BFFMember;
+
+        const user = {
+          permissionUnit: ['someOtherPermissomePermissionUnitsionUnit'],
+        } as User;
+
+        const defaultValues = createDefaultValuesFromFormSchema(
+          formSchema,
+          existingRecordData,
+          member,
+          user,
+        );
+
+        expect(defaultValues).toStrictEqual({
+          root: {
+            somePermissionUnitLinkName: { value: 'somePermissionUnit' },
           },
         });
       });

@@ -34,7 +34,6 @@ import {
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
-import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
