@@ -425,15 +425,49 @@ describe('removeEmpty', () => {
 
   it('clears objects with only finalValue', () => {
     const testObject = {
-      root: [
-        {
-          repeatId: '1',
-          child: [
-            { repeatId: '1', value: 'value1' },
-            { repeatId: '2', value: '' },
-          ],
+      root: {
+        repeatId: '1',
+        child: {
+          value: 'someFinalValue',
+          final: true,
         },
-      ],
+        groupWithOnlyFinal: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedEmpty: {
+            value: '',
+          },
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
     };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: {
+        child: {
+          value: 'someFinalValue',
+          final: true,
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    });
   });
 });
