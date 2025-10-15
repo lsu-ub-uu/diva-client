@@ -41,7 +41,6 @@ import type {
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
-import { meta } from '@/routes/auth/login';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,

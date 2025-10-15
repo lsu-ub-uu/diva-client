@@ -1,5 +1,9 @@
-import type { ValuableDataWrapper } from '@/cora/transform/transformToCora.server';
 import { isEmpty, omitBy, pickBy } from 'lodash-es';
+
+interface ValuableDataWrapper<T> {
+  data: T;
+  hasValuableData: boolean;
+}
 
 export const hasOnlyAttributes = (obj: any) => {
   return isEmpty(
@@ -39,12 +43,6 @@ const isObject = (obj: any) => {
 const isLeaf = (obj: any) => {
   return (
     typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
-  );
-};
-
-const isGroup = (obj: any) => {
-  return (
-    typeof obj === 'object' && !isEmpty(obj) && !Object.hasOwn(obj, 'value')
   );
 };
 

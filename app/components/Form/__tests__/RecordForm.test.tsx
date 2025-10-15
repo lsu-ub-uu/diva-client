@@ -33,7 +33,6 @@ import {
   formDefWithOneGroupHavingTextVariableAsChild,
 } from '@/__mocks__/data/form/group';
 import { formDefWithGuiElementLink } from '@/__mocks__/data/form/guiElement';
-import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
 import {
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefWithOneNumberVariableModeOutput,
@@ -55,7 +54,6 @@ import type { BFFDataRecord } from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import { parseFormData } from 'remix-hook-form';
 import { describe, expect, it, vi } from 'vitest';
 
 const actionSpy = vi.fn();
