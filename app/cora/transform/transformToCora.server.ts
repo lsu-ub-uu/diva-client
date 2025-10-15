@@ -39,7 +39,7 @@ interface TransformEntryArgs {
   repeatId?: string;
 }
 
-interface ValuableDataWrapper<T> {
+export interface ValuableDataWrapper<T> {
   data: T;
   hasValuableData: boolean;
 }

@@ -41,6 +41,7 @@ import type {
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
+import { meta } from '@/routes/auth/login';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -304,9 +305,15 @@ const transformLinkedRecord = (
 };
 
 const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
+  if (metadata.finalValue) {
+    return {
+      value: metadata.finalValue,
+      final: true,
+    };
+  }
+
   return {
     value: data.value,
-    ...(metadata.finalValue ? { final: true } : {}),
   };
 };
 

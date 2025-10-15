@@ -67,7 +67,6 @@ export const FieldArrayComponent = ({
 
   const handleAppend = async () => {
     const newComponent = createDefaultValuesFromComponent(component, true);
-    console.log({ newComponent });
     setAppended((newComponent as RepeatingField).repeatId ?? null);
     append(newComponent);
   };

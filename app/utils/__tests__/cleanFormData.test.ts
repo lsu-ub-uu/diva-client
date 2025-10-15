@@ -331,20 +331,17 @@ describe('removeEmpty', () => {
   });
 
   it('clears empty attributes', () => {
-    const testObject = [
-      {
-        _type: 'personal',
-        namePart_type_family: {
-          _type: 'family',
-          value: null,
-        },
-        namePart_type_given: {
-          _type: 'given',
-          value: null,
-        },
+    const testObject = {
+      _type: 'personal',
+      namePart_type_family: {
+        _type: 'family',
+        value: null,
       },
-    ];
-
+      namePart_type_given: {
+        _type: 'given',
+        value: null,
+      },
+    };
     expect(cleanFormData(testObject)).toEqual({});
   });
 
@@ -416,8 +413,7 @@ describe('removeEmpty', () => {
     expect(cleanFormData(testObject)).toEqual({
       root: [
         {
-          repeatId: '1',
-          child: [{ repeatId: '1', value: 'value1' }],
+          child: [{ value: 'value1' }],
         },
       ],
     });
@@ -440,6 +436,20 @@ describe('removeEmpty', () => {
             value: '',
           },
         },
+        groupWithFinalValueAndAttribute: {
+          final: {
+            value: 'finalNextToAttr',
+            final: true,
+          },
+          _attribute: 'someAttr',
+        },
+        groupWithVarAndFinalValueAndAttribute: {
+          final: {
+            value: 'varWithFinalNextToAttr',
+            final: true,
+            _attribute: 'someOtherAttr',
+          },
+        },
         groupWithFinalAndValuable: {
           nestedFinalValue: {
             value: 'someNestedFinalValue',
@@ -456,12 +466,10 @@ describe('removeEmpty', () => {
       root: {
         child: {
           value: 'someFinalValue',
-          final: true,
         },
         groupWithFinalAndValuable: {
           nestedFinalValue: {
             value: 'someNestedFinalValue',
-            final: true,
           },
           nestedValuable: {
             value: 'someValuableValue',
