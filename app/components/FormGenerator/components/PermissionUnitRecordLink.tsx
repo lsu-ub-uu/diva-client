@@ -53,8 +53,6 @@ export const PermissionUnitRecordLink = ({
           component={component}
           path={path}
         />
-
-        <input type='hidden' name={path} value={autoPermissionUnit} />
       </>
     );
   }
