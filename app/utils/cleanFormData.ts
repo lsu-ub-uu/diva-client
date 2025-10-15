@@ -1,55 +1,13 @@
 import type { ValuableDataWrapper } from '@/cora/transform/transformToCora.server';
 import { isEmpty, omitBy, pickBy } from 'lodash-es';
 
-export const cleanFormDataOld = (obj: Record<string, any>): any => {
-  if (typeof obj !== 'object') {
-    return obj;
-  }
-  return Object.keys(obj).reduce((acc: any, key: string) => {
-    const value = obj[key];
-
-    if (Array.isArray(value)) {
-      const newArray = value
-        .map(cleanFormDataOld)
-        .filter((o) => hasOnlyAttributes(o))
-        .filter((o: any) => Object.keys(o).length > 0);
-      if (!isEmpty(newArray)) {
-        acc[key] = newArray;
-      }
-    } else if (isObjectAndHasLength(value)) {
-      const newObj = cleanFormDataOld(value);
-      if (hasOnlyAttributes(newObj)) {
-        acc[key] = newObj;
-      }
-    } else {
-      if (hasOnlyAttributes(value)) {
-        acc[key] = value;
-      }
-    }
-
-    return acc;
-  }, {});
-};
-
 export const hasOnlyAttributes = (obj: any) => {
   return isEmpty(
     omitBy(
       obj,
-      (_, key) => isAttribute(key) || key === 'repeatId' || key === 'final',
+      (_, key) => isAttributeKey(key) || key === 'repeatId' || key === 'final',
     ),
   );
-};
-
-const isAttribute = (key: string) => {
-  return key.startsWith('_');
-};
-
-const isObjectAndHasLength = (value: any): boolean => {
-  return typeof value === 'object' && !isEmpty(value);
-};
-
-const isFinalValue = (obj: any): boolean => {
-  return obj?.final === true;
 };
 
 export const cleanFormData = (
@@ -62,50 +20,79 @@ const cleanFormDataRecursively = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<Record<string, any>> => {
   if (Array.isArray(obj)) {
-    const cleanedArray = obj
-      .map(cleanFormDataRecursively)
-      .filter(({ hasValuableData }) => hasValuableData)
-      .map(({ data }) => data);
-    return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
+    return cleanArray(obj);
   }
-
-  if (typeof obj === 'object' && !isEmpty(obj)) {
-    if (Object.hasOwn(obj, 'value')) {
-      if (isEmpty(obj.value)) {
-        return { data: {}, hasValuableData: false };
-      }
-
-      return {
-        data: pickBy(obj, (_, key) => key === 'value' || isAttribute(key)),
-        hasValuableData: !isEmpty(obj.value) && !obj.final,
-      };
+  if (isObject(obj)) {
+    if (isLeaf(obj)) {
+      return cleanLeaf(obj);
     } else {
-      let valuableDataFoundInGroup = false;
-      const cleanedObj: Record<string, any> = {};
-
-      Object.entries(obj).forEach(([key, value]) => {
-        if (isAttribute(key) && !isEmpty(value)) {
-          cleanedObj[key] = value;
-          return;
-        }
-
-        const cleaned = cleanFormDataRecursively(value);
-        if (cleaned.hasValuableData) {
-          valuableDataFoundInGroup = true;
-        }
-
-        if (!isEmpty(cleaned.data)) {
-          cleanedObj[key] = cleaned.data;
-        }
-      });
-
-      return {
-        data: valuableDataFoundInGroup ? cleanedObj : {},
-        hasValuableData: valuableDataFoundInGroup,
-      };
+      return cleanGroup(obj);
     }
   }
 
-  // Is primitive
   return { data: {}, hasValuableData: false };
+};
+const isObject = (obj: any) => {
+  return typeof obj === 'object' && !isEmpty(obj);
+};
+
+const isLeaf = (obj: any) => {
+  return (
+    typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
+  );
+};
+
+const isGroup = (obj: any) => {
+  return (
+    typeof obj === 'object' && !isEmpty(obj) && !Object.hasOwn(obj, 'value')
+  );
+};
+
+const cleanArray = (arr: any[]): ValuableDataWrapper<any[]> => {
+  const cleanedArray = arr
+    .map(cleanFormDataRecursively)
+    .filter(({ hasValuableData }) => hasValuableData)
+    .map(({ data }) => data);
+  return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
+};
+
+const cleanLeaf = (obj: Record<string, any>): ValuableDataWrapper<any> => {
+  if (isEmpty(obj.value)) {
+    return { data: {}, hasValuableData: false };
+  }
+
+  return {
+    data: pickBy(obj, (_, key) => key === 'value' || isAttributeKey(key)),
+    hasValuableData: !isEmpty(obj.value) && !obj.final,
+  };
+};
+
+const cleanGroup = (obj: Record<string, any>): ValuableDataWrapper<any> => {
+  let valuableDataFoundInGroup = false;
+  const cleanedObj: Record<string, any> = {};
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (isAttributeKey(key) && !isEmpty(value)) {
+      cleanedObj[key] = value;
+      return;
+    }
+
+    const cleaned = cleanFormDataRecursively(value);
+    if (cleaned.hasValuableData) {
+      valuableDataFoundInGroup = true;
+    }
+
+    if (!isEmpty(cleaned.data)) {
+      cleanedObj[key] = cleaned.data;
+    }
+  });
+
+  return {
+    data: valuableDataFoundInGroup ? cleanedObj : {},
+    hasValuableData: valuableDataFoundInGroup,
+  };
+};
+
+const isAttributeKey = (key: string) => {
+  return key.startsWith('_');
 };

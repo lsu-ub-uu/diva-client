@@ -20,7 +20,7 @@
 import { cleanFormData } from '@/utils/cleanFormData';
 import { describe, expect, it } from 'vitest';
 
-describe('removeEmpty', () => {
+describe('cleanFormData', () => {
   it('clear objects', () => {
     const testObject = {
       property1: null,
