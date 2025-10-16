@@ -175,11 +175,10 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
     <div className={styles['login']}>
       <Menu>
         <MenuButton {...loginButtonProps} as={Button}>
-          <PersonIcon />
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
           </span>
-          <ChevronDownIcon />
+          <PersonIcon />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>
           <MenuItem>

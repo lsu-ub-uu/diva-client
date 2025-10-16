@@ -15,6 +15,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import DivaLogo from '@/assets/divaLogo.svg?react';
 
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
@@ -26,6 +27,7 @@ import { type ReactNode, useRef } from 'react';
 import {
   data,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -246,13 +248,23 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
 
-      <header className='member-bar'>
+      <header className='header'>
         <NavigationLoader />
-        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
-          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-          <LanguageSwitcher />
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
-        </MemberBar>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined} />
+        <div className='diva-header-bar'>
+          <div className='header-bar-left'>
+            <Link to='/'>
+              <DivaLogo className='logo' />
+            </Link>
+          </div>
+          <div className='header-bar-right'>
+            <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
+            <div className='header-bar-login-language'>
+              <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+              <LanguageSwitcher />
+            </div>
+          </div>
+        </div>
       </header>
 
       <header className='nav-rail'>

@@ -75,10 +75,6 @@ export const Header = ({
   return (
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
       <div className={styles['header-logo-wrapper']}>
-        <Link to='/'>
-          <DivaLogo className={styles['logo']} />
-        </Link>
-
         <div className={styles['top-navigation']}>
           <Suspense>
             <Await resolve={recordTypes} errorElement={<div />}>
