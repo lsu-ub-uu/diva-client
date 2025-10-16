@@ -2569,6 +2569,80 @@ describe('transformRecord', () => {
 
       expect(transformData).toStrictEqual(expected);
     });
+
+    it('should transform finalValue', () => {
+      const data = {
+        name: 'root',
+        children: [
+          {
+            name: 'someFinalValueName',
+            value: 'someFinalValue',
+          },
+        ],
+      };
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'root',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            name: 'someFinalValueName',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            finalValue: 'someFinalValue',
+          },
+        ],
+      };
+
+      const transformedData = transformRecordData(data, metadata, dependencies);
+
+      expect(transformedData).toStrictEqual({
+        root: {
+          someFinalValueName: {
+            value: 'someFinalValue',
+            final: true,
+          },
+        },
+      });
+    });
+  });
+
+  it('should use finalValue from metadata over data', () => {
+    const data = {
+      name: 'root',
+      children: [
+        {
+          name: 'someFinalValueName',
+          value: 'valueInData',
+        },
+      ],
+    };
+
+    const metadata: FormMetaData = {
+      type: 'group',
+      name: 'root',
+      repeat: { repeatMin: 1, repeatMax: 1 },
+      children: [
+        {
+          name: 'someFinalValueName',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          finalValue: 'valueInMetadata',
+        },
+      ],
+    };
+
+    const transformedData = transformRecordData(data, metadata, dependencies);
+
+    expect(transformedData).toStrictEqual({
+      root: {
+        someFinalValueName: {
+          value: 'valueInMetadata',
+          final: true,
+        },
+      },
+    });
   });
 
   it('should handle attributes on outer groups', () => {

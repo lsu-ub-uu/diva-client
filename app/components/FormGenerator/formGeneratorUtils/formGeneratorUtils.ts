@@ -38,7 +38,7 @@ import type {
 import type { Option } from '@/components';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -131,6 +131,7 @@ export const isComponentRepeatingContainer = (component: FormComponent) => {
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) ||
   isComponentGroup(component) ||
+  isComponentHidden(component) ||
   isComponentContainer(component); // a container can have children that are data carriers
 
 export const isComponentOptional = (component: FormComponent) => {
@@ -235,18 +236,10 @@ const isGVValueEmptyString = (
   return getValues(componentValue)[0].value !== '';
 };
 
-export const hasValue = (formValues: any) => {
+export const hasValuableData = (formValues: any) => {
   if (formValues !== undefined) {
-    const valuesWithoutAttribs = Object.keys(formValues)
-      .filter((objKey) => !objKey.startsWith('_'))
-      .filter((objKey) => objKey !== 'repeatId')
-      .reduce<Record<string, any>>((newObj, key) => {
-        newObj[key] = formValues[key];
-        return newObj;
-      }, {});
-    const cleanedValues = cleanFormData(valuesWithoutAttribs);
-    const valueLength = Object.keys(cleanedValues).length;
-    return valueLength > 0;
+    const cleaned = cleanFormData(formValues);
+    return !isEmpty(cleaned);
   }
   return false;
 };

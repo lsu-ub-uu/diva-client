@@ -33,7 +33,6 @@ import {
   formDefWithOneGroupHavingTextVariableAsChild,
 } from '@/__mocks__/data/form/group';
 import { formDefWithGuiElementLink } from '@/__mocks__/data/form/guiElement';
-import { formDefWithHiddenInputs } from '@/__mocks__/data/form/hiddenInput';
 import {
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefWithOneNumberVariableModeOutput,
@@ -55,7 +54,6 @@ import type { BFFDataRecord } from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import { parseFormData } from 'remix-hook-form';
 import { describe, expect, it, vi } from 'vitest';
 
 const actionSpy = vi.fn();
@@ -724,81 +722,6 @@ describe('<Form />', () => {
       expect(danielElement).toBeInTheDocument();
       const floresElement = screen.getByDisplayValue('Flores');
       expect(floresElement).toBeInTheDocument();
-    });
-
-    it('uses final values from formSchema if different from record', async () => {
-      const user = userEvent.setup();
-
-      const recordWithOldFinalValue: BFFDataRecord = {
-        id: 'id',
-        validationType: 'validationType',
-        recordType: 'recordType',
-        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
-        data: {
-          someRootNameInData: {
-            recordInfo: {
-              dataDivider: { value: 'dataDivider' },
-              id: { value: '123' },
-            },
-            someNameInData: {
-              value: 'abc',
-            },
-            role: {
-              roleTerm: { value: 'old' },
-            },
-          },
-        },
-      };
-
-      let capturedFormData: BFFDataRecord | null = null;
-
-      const RoutesStub = createRoutesStub([
-        {
-          path: '/',
-          action: async ({ request }) => {
-            const formData = await request.formData();
-            capturedFormData = await parseFormData<BFFDataRecord>(formData);
-            return { success: true };
-          },
-          Component: () => (
-            <RecordForm
-              formSchema={formDefWithHiddenInputs}
-              defaultValues={createDefaultValuesFromFormSchema(
-                formDefWithHiddenInputs,
-                recordWithOldFinalValue.data,
-              )}
-            />
-          ),
-        },
-      ]);
-      render(<RoutesStub />);
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      const group = screen.getByRole('group', { name: 'someNameInData' });
-      const inputElement = within(group).getByLabelText('someNameInData');
-
-      expect(inputElement).toBeInTheDocument();
-
-      await user.click(submitButton);
-
-      expect(capturedFormData).toStrictEqual({
-        someRootNameInData: {
-          recordInfo: {
-            dataDivider: { value: 'dataDivider' },
-            id: { value: '123' },
-          },
-          someNameInData: {
-            value: 'abc',
-          },
-          role: {
-            roleTerm: {
-              value: 'pbl',
-            },
-          },
-        },
-      });
     });
   });
 
@@ -1654,49 +1577,6 @@ describe('<Form />', () => {
       expect(inputLabel).toBeInTheDocument();
       expect(hiddenInputLabel).not.toBeInTheDocument();
     });
-  });
-
-  it('renders a form with a hidden input', () => {
-    const formSchema: RecordFormSchema = {
-      validationTypeId: 'someValidationTypeId',
-      form: {
-        type: 'group',
-        showLabel: true,
-        label: 'someRootFormGroupText',
-        name: 'someRootNameInData',
-        presentationId: 'someRootNameInDataPGroup',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'textId345',
-          body: 'defTextId678',
-        },
-        components: [
-          {
-            type: 'hidden',
-            name: 'role.roleTerm',
-            finalValue: 'pbl',
-            presentationId: '',
-          },
-        ],
-        mode: 'input',
-      },
-    };
-
-    render(<RecordFormWithRoutesStub formSchema={formSchema} />);
-    const hiddenInput = screen.queryByTestId(
-      'someRootNameInData.role.roleTerm.value-hidden-input',
-    );
-
-    expect(hiddenInput).toHaveValue('pbl');
-    expect(hiddenInput).toHaveAttribute(
-      'name',
-      'someRootNameInData.role.roleTerm.value',
-    );
-    expect(hiddenInput).toHaveAttribute('type', 'hidden');
-    expect(hiddenInput).not.toBeVisible();
   });
 
   describe('resourceLink', () => {

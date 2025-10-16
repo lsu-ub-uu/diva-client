@@ -215,7 +215,7 @@ const transformData = (
       metadata.type,
     )
   ) {
-    return transformDataAtomic(data as DataAtomic);
+    return transformDataAtomic(data as DataAtomic, metadata);
   }
 
   if (metadata.type === 'resourceLink') {
@@ -223,7 +223,7 @@ const transformData = (
   }
 
   console.warn('Unhandled metadata type', metadata.type);
-  return transformDataAtomic(data as DataAtomic);
+  return transformDataAtomic(data as DataAtomic, metadata);
 };
 
 const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
@@ -303,8 +303,17 @@ const transformLinkedRecord = (
   return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
 
-const transformDataAtomic = (data: DataAtomic) => {
-  return { value: data.value };
+const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
+  if (metadata.finalValue) {
+    return {
+      value: metadata.finalValue,
+      final: true,
+    };
+  }
+
+  return {
+    value: data.value,
+  };
 };
 
 const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {
