@@ -64,6 +64,15 @@ const transformMember = async (
       'backgroundColor',
     ),
     textColor: getFirstDataAtomicValueWithNameInData(data, 'textColor'),
+    backgroundColorDarkMode: hasChildWithNameInData(
+      data,
+      'backgroundColorDarkMode',
+    )
+      ? getFirstDataAtomicValueWithNameInData(data, 'backgroundColorDarkMode')
+      : undefined,
+    textColorDarkMode: hasChildWithNameInData(data, 'textColorDarkMode')
+      ? getFirstDataAtomicValueWithNameInData(data, 'textColorDarkMode')
+      : undefined,
     logo: {
       svg: hasChildWithNameInData(data, 'logoSvg')
         ? getFirstDataAtomicValueWithNameInData(data, 'logoSvg')

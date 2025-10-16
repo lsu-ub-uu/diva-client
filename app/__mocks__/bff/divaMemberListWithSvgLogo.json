@@ -127,6 +127,14 @@
                 "value": "#990000"
               },
               {
+                "name": "backgroundColorDarkMode",
+                "value": "#990000"
+              },
+              {
+                "name": "textColorDarkMode",
+                "value": "#CCCCCC"
+              },
+              {
                 "name": "pageTitleSv",
                 "value": "Uppsala Universitet"
               },

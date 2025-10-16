@@ -33,16 +33,15 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
+import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { createUser } from '@/auth/createUser';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -159,7 +158,6 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation();
   const {
     record,
     formDefinition,

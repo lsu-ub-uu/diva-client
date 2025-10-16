@@ -18,6 +18,8 @@
  */
 
 .member-bar {
+  background-color: var(--member-background-color);
+  color: var(--member-text-color);
   padding: 0 var(--gap-xl);
   display: flex;
   height: 5rem;
@@ -29,6 +31,18 @@
     justify-content: flex-end;
     padding: 0 var(--gap);
     gap: var(--gap);
+  }
+}
+
+:global([data-color-scheme='dark']) .member-bar {
+  background-color: var(--member-background-color-dark-mode);
+  color: var(--member-text-color-dark-mode);
+}
+
+@media (prefers-color-scheme: dark) {
+  :global([data-color-scheme='auto']) .member-bar {
+    background-color: var(--member-background-color-dark-mode);
+    color: var(--member-text-color-dark-mode);
   }
 }
 
