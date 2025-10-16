@@ -91,16 +91,9 @@ export const ConferencePublication = ({
           value={conferencePublication.part?.extent?.end?.value}
         />
       </dl>
-      {conferencePublication.relatedItem_otherType_link_type_series?.map(
-        (series, index) => (
-          <Series key={index} series={series} headlineLevel='h3' />
-        ),
-      )}
-      {conferencePublication.relatedItem_otherType_text_type_series?.map(
-        (series, index) => (
-          <Series key={index} series={series} headlineLevel='h3' />
-        ),
-      )}
+      {conferencePublication.relatedItem_type_series?.map((series, index) => (
+        <Series key={index} series={series} headlineLevel='h3' />
+      ))}
     </section>
   );
 };
