@@ -1091,6 +1091,7 @@ describe('transformToCora', () => {
               {
                 someNameInData: {
                   value: 'someFinalValue',
+                  final: true,
                 },
               },
             ],

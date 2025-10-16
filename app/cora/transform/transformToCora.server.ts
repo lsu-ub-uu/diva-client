@@ -26,8 +26,9 @@ import type {
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { BFFDataResourceLink } from '@/types/record';
+import { cleanFormData } from '@/utils/cleanFormData';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, mapValues } from 'lodash-es';
 
 type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
 
@@ -39,16 +40,12 @@ interface TransformEntryArgs {
   repeatId?: string;
 }
 
-interface ValuableDataWrapper<T> {
-  data: T;
-  hasValuableData: boolean;
-}
-
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
   payload: any,
 ): Data[] => {
-  return transformToCoraDataRecursively(lookup, payload).data;
+  const cleanedPayload = mapValues(payload, cleanFormData);
+  return transformToCoraDataRecursively(lookup, cleanedPayload);
 };
 
 const transformToCoraDataRecursively = (
@@ -56,10 +53,9 @@ const transformToCoraDataRecursively = (
   payload: any,
   path?: string,
   repeatId?: string,
-): ValuableDataWrapper<Data[]> => {
+): Data[] => {
   const transformedEntries = Object.entries(payload)
     .filter(([key]) => !isAttribute(key))
-    .filter(([key]) => key !== 'repeatId')
     .map(([key, value]) =>
       transformEntry({
         lookup,
@@ -70,12 +66,9 @@ const transformToCoraDataRecursively = (
       }),
     );
 
-  return {
-    data: transformedEntries
-      .flatMap((entry) => entry.data)
-      .filter((entry) => entry !== undefined),
-    hasValuableData: transformedEntries.some((entry) => entry.hasValuableData),
-  };
+  return transformedEntries
+    .flatMap((entry) => entry)
+    .filter((entry) => entry !== undefined);
 };
 
 export const transformEntry = ({
@@ -84,18 +77,16 @@ export const transformEntry = ({
   value,
   path,
   repeatId,
-}: TransformEntryArgs): ValuableDataWrapper<
-  Data | undefined | (Data | undefined)[]
-> => {
+}: TransformEntryArgs): Data | undefined | (Data | undefined)[] => {
   if (!value) {
-    return { data: undefined, hasValuableData: false };
+    return undefined;
   }
 
   const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
 
   if (!fieldMetadata) {
-    return { data: undefined, hasValuableData: false };
+    return undefined;
   }
 
   if (isRepeating(value) && value !== undefined) {
@@ -170,10 +161,7 @@ const transformRepeating = (
     }),
   );
 
-  return {
-    data: entries.flatMap((entry) => entry.data),
-    hasValuableData: entries.some((entry) => entry.hasValuableData),
-  };
+  return entries.flatMap((entry) => entry);
 };
 
 const isResourceLink = (fieldMetadata: FormMetaData) => {
@@ -185,8 +173,8 @@ const transformResourceLink = (
   attributes: undefined | Record<string, string>,
   value: BFFDataResourceLink,
   repeatId: string | undefined,
-): ValuableDataWrapper<ResourceLink> => {
-  const resourceLink: ResourceLink = {
+): ResourceLink => {
+  return removeEmpty({
     name: removeAttributeFromName(name, attributes),
     children: [
       { name: 'linkedRecordType', value: 'binary' },
@@ -198,12 +186,7 @@ const transformResourceLink = (
     ],
     attributes,
     repeatId,
-  };
-
-  return {
-    data: removeEmpty(resourceLink),
-    hasValuableData: value.mimeType !== undefined,
-  };
+  });
 };
 
 const transformLeaf = (
@@ -213,16 +196,13 @@ const transformLeaf = (
   value: any,
   repeatId: string | undefined,
 ) => {
-  return {
-    data: createLeaf(
-      fieldMetadata,
-      removeAttributeFromName(key, attributes),
-      value.value,
-      repeatId,
-      attributes,
-    ),
-    hasValuableData: isValuable(value.value, fieldMetadata),
-  };
+  return createLeaf(
+    fieldMetadata,
+    removeAttributeFromName(key, attributes),
+    value.value,
+    repeatId,
+    attributes,
+  );
 };
 
 const transformGroup = (
@@ -235,25 +215,11 @@ const transformGroup = (
   repeatId: string | undefined,
 ) => {
   const childData = transformToCoraDataRecursively(lookup, value, path);
-  return {
-    data: createGroup(fieldMetadata, key, attributes, repeatId, childData),
-    hasValuableData: childData.hasValuableData,
-  };
+  return createGroup(fieldMetadata, key, attributes, repeatId, childData);
 };
 
 export const isAttribute = (fieldKey: string) => {
   return fieldKey.startsWith('_');
-};
-
-const isValuable = (value: string, fieldMetadata: FormMetaData) => {
-  return !isEmpty(value) && !isFinalValue(fieldMetadata);
-};
-
-const isFinalValue = (currentMetadataLookup: FormMetaData) => {
-  return currentMetadataLookup.finalValue !== undefined;
-};
-const isOptional = (fieldMetadata: FormMetaData) => {
-  return fieldMetadata.repeat.repeatMin === 0;
 };
 
 export const isRepeating = (value: any) => {
@@ -310,15 +276,11 @@ const createGroup = (
   key: string,
   attributes: undefined | Record<string, string>,
   repeatId: string | undefined,
-  childData: ValuableDataWrapper<Data[]>,
+  childData: Data[],
 ) => {
-  if (isOptional(metaData) && !childData.hasValuableData) {
-    return undefined;
-  }
-
   const group: DataGroup = {
     name: removeAttributeFromName(key, attributes),
-    children: childData.data,
+    children: childData,
   };
 
   if (attributes) {

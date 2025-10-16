@@ -20,7 +20,7 @@
 import { cleanFormData } from '@/utils/cleanFormData';
 import { describe, expect, it } from 'vitest';
 
-describe('removeEmpty', () => {
+describe('cleanFormData', () => {
   it('clear objects', () => {
     const testObject = {
       property1: null,
@@ -331,20 +331,17 @@ describe('removeEmpty', () => {
   });
 
   it('clears empty attributes', () => {
-    const testObject = [
-      {
-        _type: 'personal',
-        namePart_type_family: {
-          _type: 'family',
-          value: null,
-        },
-        namePart_type_given: {
-          _type: 'given',
-          value: null,
-        },
+    const testObject = {
+      _type: 'personal',
+      namePart_type_family: {
+        _type: 'family',
+        value: null,
       },
-    ];
-
+      namePart_type_given: {
+        _type: 'given',
+        value: null,
+      },
+    };
     expect(cleanFormData(testObject)).toEqual({});
   });
 
@@ -398,5 +395,117 @@ describe('removeEmpty', () => {
     };
 
     expect(cleanFormData(testObject)).toEqual({});
+  });
+
+  it('clears objects with only repeatId', () => {
+    const testObject = {
+      root: [
+        {
+          repeatId: '1',
+          child: [
+            { repeatId: '1', value: 'value1' },
+            { repeatId: '2', value: '' },
+          ],
+        },
+      ],
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: [
+        {
+          child: [{ value: 'value1' }],
+        },
+      ],
+    });
+  });
+
+  it('clears objects with only finalValue', () => {
+    const testObject = {
+      root: {
+        repeatId: '1',
+        child: {
+          value: 'someFinalValue',
+          final: true,
+        },
+        groupWithOnlyFinal: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedEmpty: {
+            value: '',
+          },
+        },
+        groupWithFinalValueAndAttribute: {
+          final: {
+            value: 'finalNextToAttr',
+            final: true,
+          },
+          _attribute: 'someAttr',
+        },
+        groupWithVarAndFinalValueAndAttribute: {
+          final: {
+            value: 'varWithFinalNextToAttr',
+            final: true,
+            _attribute: 'someOtherAttr',
+          },
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: {
+        child: {
+          value: 'someFinalValue',
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    });
+  });
+
+  it('handles resource link', () => {
+    const testObject = {
+      thumbnail: {
+        resourceId: {
+          value:
+            '/tmp/sharedFileStorage/diva/streams/divaData/04e/ebf/b12/04eebfb120d94b5494fbba240e38f8c8e1364b59d01564ccf1b930825a4a00b2/binary:binary:21859605549853681-thumbnail',
+        },
+        fileSize: {
+          value: '6564',
+        },
+        mimeType: {
+          value: 'image/jpeg',
+        },
+        height: {
+          value: '145',
+        },
+        width: {
+          value: '100',
+        },
+        thumbnail: {
+          name: 'thumbnail',
+          mimeType: 'image/jpeg',
+          id: 'binary:21859605549853681',
+        },
+      },
+    };
+
+    expect(cleanFormData(testObject)).toStrictEqual(testObject);
   });
 });

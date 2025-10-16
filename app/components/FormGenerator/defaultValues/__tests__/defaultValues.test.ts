@@ -66,6 +66,8 @@ import {
 } from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
 import * as generateRepeatIdModule from '../generateRepeatId';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { User } from '@/auth/createUser';
 
 describe('defaultValues', () => {
   beforeEach(() => {
@@ -267,6 +269,97 @@ describe('defaultValues', () => {
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+
+      it('should create final values from hidden components', () => {
+        const formSchema = {
+          form: {
+            name: 'root',
+            type: 'group',
+            components: [
+              {
+                name: 'someGroup',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                  minNumberOfRepeatingToShow: 1,
+                },
+                components: [
+                  {
+                    name: 'someTextVar',
+                    type: 'textVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'some.hidden',
+                    type: 'hidden',
+                    finalValue: 'someFinalValue',
+                  },
+                ],
+              },
+            ],
+          },
+        } as FormSchema;
+
+        const defaultValues = createDefaultValuesFromFormSchema(formSchema);
+
+        expect(defaultValues).toStrictEqual({
+          root: {
+            someGroup: {
+              someTextVar: {
+                value: '',
+              },
+              'some.hidden': {
+                value: 'someFinalValue',
+                final: true,
+              },
+            },
+          },
+        });
+      });
+
+      it('should automatically set permission unit', () => {
+        const formSchema = {
+          form: {
+            name: 'root',
+            type: 'group',
+            components: [
+              {
+                name: 'somePermissionUnitLinkName',
+                type: 'recordLink',
+                mode: 'input',
+                presentAs: 'permissionUnit',
+              },
+            ],
+          },
+        } as FormSchema;
+
+        const existingRecordData = {};
+
+        const member = {
+          memberPermissionUnit: 'somePermissionUnit',
+        } as BFFMember;
+
+        const user = {
+          permissionUnit: ['someOtherPermissomePermissionUnitsionUnit'],
+        } as User;
+
+        const defaultValues = createDefaultValuesFromFormSchema(
+          formSchema,
+          existingRecordData,
+          member,
+          user,
+        );
+
+        expect(defaultValues).toStrictEqual({
+          root: {
+            somePermissionUnitLinkName: { value: 'somePermissionUnit' },
+          },
+        });
+      });
     });
 
     describe('createDefaultValuesFromComponent', () => {
@@ -349,16 +442,16 @@ describe('defaultValues', () => {
           innerChildGroup: [
             {
               exampleNumberVar: [
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
               ],
               exampleTextVar: {
                 value: '',
@@ -367,16 +460,16 @@ describe('defaultValues', () => {
             },
             {
               exampleNumberVar: [
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
-                { repeatId: 'uuid-mock', value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
+                { repeatId: 'uuid-mock', final: true, value: '12' },
               ],
               exampleTextVar: {
                 value: '',
@@ -435,10 +528,12 @@ describe('defaultValues', () => {
           secondChildGroup: {
             exampleNumberVar_language_eng: {
               _language: 'eng',
+              final: true,
               value: '12',
             },
             exampleNumberVar_language_swe: {
               _language: 'swe',
+              final: true,
               value: '12',
             },
           },
@@ -808,16 +903,20 @@ describe('defaultValues', () => {
           someRootNameInData: {
             bookTitle: {
               value: 'someFinalValue',
+              final: true,
             },
             keeptHis: {
               value: '12',
+              final: true,
             },
             firstChildGroup: {
               exampleNumberVar: {
                 value: '55',
+                final: true,
               },
               exampleTextVar: {
                 value: 'someText',
+                final: true,
               },
             },
             recordInfo: {},
@@ -849,6 +948,7 @@ describe('defaultValues', () => {
               exampleTextVar_colourAgain_pink: {
                 _colour: '',
                 _colourAgain: 'pink',
+                final: true,
                 value: 'exampleFinalValue',
               },
               _groupColour: '',
@@ -1181,16 +1281,20 @@ describe('defaultValues', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             bookTitle: {
+              final: true,
               value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
             },
             keeptHis: {
+              final: true,
               value: '12',
             },
             firstChildGroup: {
               exampleNumberVar: {
+                final: true,
                 value: '55',
               },
               exampleTextVar: {
+                final: true,
                 value: 'someText',
               },
             },
@@ -1541,6 +1645,7 @@ describe('defaultValues', () => {
       it('create default value from one component', () => {
         const expectedData = {
           exampleNumberVar: {
+            final: true,
             value: '12',
           },
         };
@@ -1576,9 +1681,11 @@ describe('defaultValues', () => {
       it('create default value from two component', () => {
         const expectedData = {
           exampleNumberVar: {
+            final: true,
             value: '12',
           },
           exampleNumberVar2: {
+            final: true,
             value: '12',
           },
         };
@@ -1645,10 +1752,12 @@ describe('defaultValues', () => {
         const expectedData = {
           exampleNumberVar_language_eng: {
             _language: 'eng',
+            final: true,
             value: '12',
           },
           exampleNumberVar_language_swe: {
             _language: 'swe',
+            final: true,
             value: '12',
           },
         };

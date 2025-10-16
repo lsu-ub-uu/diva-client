@@ -43,17 +43,22 @@ import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
 import { i18nContext } from 'server/i18n';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { createUser } from '@/auth/createUser';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
-  const { notification } = context.get(sessionContext);
+  const { notification, auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
+  const member = getMemberFromHostname(request, dependencies);
+  const user = auth && createUser(auth);
 
   if (validationTypeId === null) {
     throw data('divaClient_missingValidationTypeParamText', { status: 400 });
   }
+
   let formDefinition;
   let previewFormDefinition;
   try {
@@ -62,6 +67,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
       validationTypeId,
       'create',
     );
+
     previewFormDefinition = await getFormDefinitionByValidationTypeId(
       dependencies,
       validationTypeId,
@@ -74,7 +80,12 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     throw error;
   }
 
-  const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formDefinition,
+    undefined,
+    member,
+    user,
+  );
 
   const rootGroupTitleTextId =
     formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
