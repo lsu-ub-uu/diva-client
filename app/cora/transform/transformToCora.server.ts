@@ -27,6 +27,7 @@ import type {
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { BFFDataResourceLink } from '@/types/record';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { isEmpty, mapValues } from 'lodash-es';
 
 type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
@@ -173,7 +174,7 @@ const transformResourceLink = (
   value: BFFDataResourceLink,
   repeatId: string | undefined,
 ): ResourceLink => {
-  return {
+  return removeEmpty({
     name: removeAttributeFromName(name, attributes),
     children: [
       { name: 'linkedRecordType', value: 'binary' },
@@ -185,7 +186,7 @@ const transformResourceLink = (
     ],
     attributes,
     repeatId,
-  };
+  });
 };
 
 const transformLeaf = (

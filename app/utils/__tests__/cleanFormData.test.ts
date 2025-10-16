@@ -478,4 +478,34 @@ describe('cleanFormData', () => {
       },
     });
   });
+
+  it('handles resource link', () => {
+    const testObject = {
+      thumbnail: {
+        resourceId: {
+          value:
+            '/tmp/sharedFileStorage/diva/streams/divaData/04e/ebf/b12/04eebfb120d94b5494fbba240e38f8c8e1364b59d01564ccf1b930825a4a00b2/binary:binary:21859605549853681-thumbnail',
+        },
+        fileSize: {
+          value: '6564',
+        },
+        mimeType: {
+          value: 'image/jpeg',
+        },
+        height: {
+          value: '145',
+        },
+        width: {
+          value: '100',
+        },
+        thumbnail: {
+          name: 'thumbnail',
+          mimeType: 'image/jpeg',
+          id: 'binary:21859605549853681',
+        },
+      },
+    };
+
+    expect(cleanFormData(testObject)).toStrictEqual(testObject);
+  });
 });
