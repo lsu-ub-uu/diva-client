@@ -22,7 +22,7 @@ export const CardExpandButton = ({
   ...rest
 }: CardExpandButtonProps) => {
   const { t } = useTranslation();
-  const { ids } = use(CardContext);
+  const { ids, hasValues } = use(CardContext);
 
   const getIcon = () => {
     if (expanded === 'bothEqual') {
@@ -43,6 +43,7 @@ export const CardExpandButton = ({
       {...rest}
       className={clsx(styles['expand-button'], className)}
       aria-expanded={expanded === 'bothEqual' ? undefined : expanded}
+      data-has-values={hasValues}
       id={ids.heading}
       aria-controls={ids.section}
       aria-label={children ? undefined : t(getAriaLabel())}

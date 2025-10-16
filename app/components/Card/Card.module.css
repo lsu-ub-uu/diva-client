@@ -20,8 +20,7 @@
   position: relative;
   transition: background-color 0.2s;
   transition: border-color 0.2s;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-  overflow: clip;
+  border-radius: var(--border-radius);
 }
 
 .card-title {
@@ -32,6 +31,7 @@
 }
 
 .card[data-boxed] {
+  border: 1px solid var(--color-card-dark);
   border-left: 3px solid var(--color-card-dark);
 
   &:has([aria-invalid='true']) {
@@ -48,7 +48,7 @@
   &:has(> .card-header input:hover),
   &:has(> .card-header [data-action-button]:hover),
   &:has(> .card-header [data-action-button]:focus-visible) {
-    border-color: var(--color-link-selected);
+    border-color: var(--color-accent);
     background-color: var(--color-card);
   }
 
@@ -76,7 +76,7 @@
 
 .card[data-expanded='false']:has([data-has-value]) {
   .expand-button {
-    color: var(--color-link);
+    color: var(--color-accent);
   }
 
   .value-icon {
@@ -113,7 +113,6 @@
   &[data-boxed] {
     padding: var(--gap-s) var(--gap);
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    background-color: var(--color-card-dark);
   }
 
   &[data-alert='true'] {

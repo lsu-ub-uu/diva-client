@@ -26,6 +26,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   boxed?: boolean;
   label?: string;
   expanded?: boolean;
+  hasValues?: boolean;
 }
 
 export const Card = ({

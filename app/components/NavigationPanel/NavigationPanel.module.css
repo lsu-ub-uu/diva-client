@@ -44,7 +44,7 @@
       color: var(--color-text);
 
       &::before {
-        background-color: var(--color-link);
+        background-color: var(--color-accent);
       }
     }
   }
