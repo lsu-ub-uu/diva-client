@@ -39,7 +39,8 @@ export async function requestAuthTokenOnLogin(
   const body = `${user}\n${appTokenOrPassword}`;
   try {
     const response = await axios.post(url, body, { headers });
-    return transformCoraAuth(response.data);
+    const auth = transformCoraAuth(response.data);
+    return auth;
   } catch (error) {
     console.error(error);
     throw error;

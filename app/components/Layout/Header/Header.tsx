@@ -28,6 +28,7 @@ import {
   CloseIcon,
   CodeIcon,
   DesignServicesIcon,
+  MemberSettingsIcon,
   MenuIcon,
 } from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -42,12 +43,22 @@ import {
   useNavigation,
 } from 'react-router';
 import styles from './Header.module.css';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 
 interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
+  loginUnits: LoginDefinition[];
+  appTokenLogins: AppTokenLogin[];
+  editableMember: string | undefined;
 }
 
-export const Header = ({ recordTypes }: HeaderProps) => {
+export const Header = ({
+  recordTypes,
+  loginUnits,
+  appTokenLogins,
+  editableMember,
+}: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
@@ -100,6 +111,16 @@ export const Header = ({ recordTypes }: HeaderProps) => {
             </Form>
           </>
         )}
+        {editableMember && (
+          <NavigationLink
+            to={href('/:recordType/:recordId/update', {
+              recordType: 'diva-member',
+              recordId: editableMember,
+            })}
+            label='Medlems­inställningar'
+            icon={<MemberSettingsIcon />}
+          />
+        )}
       </div>
       <Button
         variant='icon'
@@ -125,7 +146,7 @@ export const Header = ({ recordTypes }: HeaderProps) => {
           >
             <CloseIcon />
           </Button>
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
           <LanguageSwitcher />
 
           <Suspense>

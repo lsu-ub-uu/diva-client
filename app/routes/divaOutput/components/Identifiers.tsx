@@ -1,11 +1,11 @@
-import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
-import { Term } from './Term';
+import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useTranslation } from 'react-i18next';
 import { formatIsbnIsmnLabel } from '../utils/format';
+import { Term } from './Term';
 
 interface IdentifiersProps {
-  output: OutputUpdateGroup;
+  output: DivaOutputGroup;
 }
 
 export const Identifiers = ({ output }: IdentifiersProps) => {

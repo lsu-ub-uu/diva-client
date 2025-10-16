@@ -19,12 +19,14 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
   const language = useLanguage();
 
   if (!expanded) {
-    return formatOrganisationName(organisation);
+    return formatOrganisationName(organisation, language);
   }
 
   return (
     <div className='expanded-card'>
-      <span className='name'>{formatOrganisationName(organisation)}</span>
+      <span className='name'>
+        {formatOrganisationName(organisation, language)}
+      </span>
       {formatOrganisationRoles(organisation, language)}
       <dl>
         {organisation.identifier_type_ror && (
@@ -53,18 +55,32 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
   );
 };
 
-const formatOrganisationName = (
+export const formatOrganisationName = (
   organisation: OrganisationProps['organisation'],
+  language: 'en' | 'sv',
 ) => {
   if (organisation.namePart?.value) {
     return organisation.namePart.value;
   }
-  if (
-    'organisation' in organisation &&
-    organisation.organisation?.displayName
-  ) {
-    return organisation.organisation.displayName;
+
+  if ('organisation' in organisation) {
+    const displayName = organisation.organisation?.displayName?.[language];
+    const linkedRecordSwedishName =
+      organisation.organisation?.linkedRecord?.organisation?.authority_lang_swe
+        ?.name_type_corporate?.namePart?.value;
+    const linkedRecordEnglishName =
+      organisation.organisation?.linkedRecord?.organisation?.variant_lang_eng
+        ?.name_type_corporate?.namePart?.value;
+
+    if (displayName) {
+      return displayName;
+    }
+    if (language === 'en' && linkedRecordEnglishName) {
+      return linkedRecordEnglishName;
+    }
+    return linkedRecordSwedishName;
   }
+
   return '';
 };
 

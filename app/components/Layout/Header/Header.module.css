@@ -31,7 +31,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
 
-  @media (width >= 600px) {
+  @media (width >= 900px) {
     .header-menu-toggle-button {
       display: none;
     }
@@ -52,7 +52,7 @@
   gap: var(--gap-l);
 }
 
-@media (width < 600px) {
+@media (width < 900px) {
   .header-wrapper {
     flex-direction: row;
   }

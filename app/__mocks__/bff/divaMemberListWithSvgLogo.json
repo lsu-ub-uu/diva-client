@@ -41,14 +41,14 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "diva-theme"
+                        "value": "diva-member"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-theme",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/diva-member",
                         "accept": "application/vnd.cora.record+json"
                       }
                     },
@@ -62,14 +62,14 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "diva-theme"
+                        "value": "diva-member"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-theme",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/diva-member",
                         "accept": "application/vnd.cora.record+json"
                       }
                     },
@@ -125,6 +125,14 @@
               {
                 "name": "textColor",
                 "value": "#990000"
+              },
+              {
+                "name": "backgroundColorDarkMode",
+                "value": "#990000"
+              },
+              {
+                "name": "textColorDarkMode",
+                "value": "#CCCCCC"
               },
               {
                 "name": "pageTitleSv",
@@ -248,15 +256,29 @@
                 "repeatId": "1",
                 "name": "hostname",
                 "value": "uu.pre.diva-portal.org"
+              },
+              {
+                "name": "loginUnit",
+                "repeatId": "0",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "loginUnit"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "uu"
+                  }
+                ]
               }
             ],
-            "name": "diva-theme"
+            "name": "diva-member"
           },
           "actionLinks": {
             "read": {
               "requestMethod": "GET",
               "rel": "read",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-theme/uu-theme",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/diva-member/uu-theme",
               "accept": "application/vnd.cora.record+json"
             }
           }
@@ -264,7 +286,7 @@
       }
     ],
     "totalNo": "2",
-    "containDataOfType": "diva-theme",
+    "containDataOfType": "diva-member",
     "toNo": "2"
   }
 }

@@ -8,7 +8,6 @@ import {
   HistoryEduIcon,
   NewspaperIcon,
   NewsstandIcon,
-  PaletteIcon,
   PersonsIcon,
   SchemaIcon,
   SchoolIcon,
@@ -40,7 +39,6 @@ const icons: Record<string, ReactNode> = {
   'diva-series': <NewsstandIcon />,
   'diva-localGenericMarkup': <EditNoteIcon />,
   'diva-publisher': <FullCoverageIcon />,
-  'diva-theme': <PaletteIcon />,
   'diva-funder': <AttachMoneyIcon />,
 };
 
@@ -56,7 +54,6 @@ const sortOrder = [
   'diva-series',
   'diva-localGenericMarkup',
   'diva-publisher',
-  'diva-theme',
   'diva-funder',
 ];
 

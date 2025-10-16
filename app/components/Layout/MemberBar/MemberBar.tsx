@@ -17,21 +17,22 @@
  */
 
 import styles from './MemberBar.module.css';
-import type { BFFTheme } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { ChevronDownIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
+import React from 'react';
 
 interface MemberBarProps {
-  theme: BFFTheme | undefined;
+  member: BFFMember | undefined;
   loggedIn: boolean;
   children?: ReactNode;
 }
 
-const defaultTheme: BFFTheme = {
+const defaultMember: BFFMember = {
   id: 'default',
   pageTitle: { sv: 'DiVA', en: 'DiVA' },
   logo: {
@@ -40,39 +41,46 @@ const defaultTheme: BFFTheme = {
   backgroundColor: '#75598e',
   textColor: '#ffffff',
   hostnames: [],
+  loginUnitIds: [],
 };
 
 export const MemberBar = ({
-  theme = defaultTheme,
+  member = defaultMember,
   loggedIn,
   children,
 }: MemberBarProps) => {
   const { t } = useTranslation();
   const lang = useLanguage();
 
-  const links = loggedIn ? theme.adminLinks : theme.publicLinks;
+  const links = loggedIn ? member.adminLinks : member.publicLinks;
 
   return (
     <section
       className={styles['member-bar']}
-      style={{
-        backgroundColor: theme.backgroundColor,
-        color: theme.textColor,
-      }}
-      aria-label={theme.pageTitle[lang]}
+      style={
+        {
+          '--member-background-color': member.backgroundColor,
+          '--member-text-color': member.textColor,
+          '--member-background-color-dark-mode':
+            member.backgroundColorDarkMode || member.backgroundColor,
+          '--member-text-color-dark-mode':
+            member.textColorDarkMode || member.textColor,
+        } as React.CSSProperties
+      }
+      aria-label={member.pageTitle[lang]}
     >
-      {theme.logo.svg && (
+      {member.logo.svg && (
         <div
           role='img'
-          aria-label={`${theme.pageTitle[lang]} logo`}
+          aria-label={`${member.pageTitle[lang]} logo`}
           className={styles['logo-wrapper']}
           dangerouslySetInnerHTML={{
-            __html: theme.logo.svg,
+            __html: member.logo.svg,
           }}
         />
       )}
-      {!theme.logo.svg && theme.logo.url && (
-        <img src={theme.logo.url} alt={`${theme.pageTitle[lang]} logo`} />
+      {!member.logo.svg && member.logo.url && (
+        <img src={member.logo.url} alt={`${member.pageTitle[lang]} logo`} />
       )}
 
       {links && (

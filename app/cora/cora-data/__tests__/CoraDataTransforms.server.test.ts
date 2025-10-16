@@ -1,4 +1,4 @@
-import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
+import divaMemberLogoBinary from '@/__mocks__/bff/divaMemberLogoBinary.json';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type { AxiosResponse } from 'axios';
@@ -330,7 +330,7 @@ describe('CoraDataTransform', () => {
   describe('fetchLinkedRecordForRecordLinkWithNameInData', () => {
     it('fetches linked record and returns it', async () => {
       vi.mocked(getRecordDataById).mockResolvedValue({
-        data: divaThemeLogoBinary,
+        data: divaMemberLogoBinary,
       } as AxiosResponse);
 
       const actual = await fetchLinkedRecordForRecordLinkWithNameInData(
@@ -350,12 +350,12 @@ describe('CoraDataTransform', () => {
               name: 'logo',
             },
           ],
-          name: 'diva-theme',
+          name: 'diva-member',
         },
         'logo',
       );
 
-      expect(actual).toStrictEqual(divaThemeLogoBinary);
+      expect(actual).toStrictEqual(divaMemberLogoBinary);
     });
   });
 });

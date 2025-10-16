@@ -33,20 +33,22 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
+import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 
-export async function loader({ params, context }: Route.LoaderArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
-
+  const member = getMemberFromHostname(request, dependencies);
+  const user = auth && createUser(auth);
   const { recordType, recordId } = params;
 
   const record = await getRecordByRecordTypeAndRecordId({
@@ -76,6 +78,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
     record.data,
+    member,
+    user,
   );
 
   const breadcrumb = t('divaClient_UpdatingPageTitleText');
@@ -154,7 +158,6 @@ export const meta = ({ data }: Route.MetaArgs) => {
 export default function UpdateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation();
   const {
     record,
     formDefinition,
@@ -199,9 +202,6 @@ export default function UpdateRecordRoute({
         />
         {deferredPreviewData && (
           <div className='preview'>
-            <h2 className='preview-heading'>
-              {t('divaClient_formPreviewHeadingText')}
-            </h2>
             <ReadOnlyForm
               recordData={deferredPreviewData}
               formSchema={previewFormDefinition}

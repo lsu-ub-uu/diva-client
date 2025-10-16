@@ -1,15 +1,12 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { coraApiUrl } from '@/cora/helper.server';
+import { coraBinaryUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
+  const { id, name } = params;
 
-  return await fetch(
-    coraApiUrl(
-      `/record/binary/${params.id}/${params.name}?authToken=${auth?.data.token}`,
-    ),
-  );
+  return await fetch(coraBinaryUrl({ id, name, auth }));
 };
 
 export const action = async ({
@@ -18,17 +15,13 @@ export const action = async ({
   context,
 }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
+  const { id, name } = params;
 
-  return await fetch(
-    coraApiUrl(
-      `/record/binary/${params.id}/${params.name}?authToken=${auth?.data.token}`,
-    ),
-    {
-      body: request.body,
-      headers: request.headers,
-      method: request.method,
-      // @ts-expect-error duplex is not yet in RequestInit
-      duplex: 'half',
-    },
-  );
+  return await fetch(coraBinaryUrl({ id, name, auth }), {
+    body: request.body,
+    headers: request.headers,
+    method: request.method,
+    // @ts-expect-error duplex is not yet in RequestInit
+    duplex: 'half',
+  });
 };

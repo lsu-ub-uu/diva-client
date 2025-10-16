@@ -87,8 +87,6 @@ export const Variable = ({
         />
       )}
 
-      {component.finalValue && <input type='hidden' {...register(path)} />}
-
       {!component.finalValue && component.mode === 'input' && (
         <Fieldset
           className='form-component-item'

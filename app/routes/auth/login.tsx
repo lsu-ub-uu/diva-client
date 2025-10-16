@@ -72,8 +72,12 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
   const loginType = form.get('loginType');
   switch (loginType) {
     case 'appToken': {
-      const account = form.get('account');
-      return loginWithAppToken(JSON.parse(account!.toString()));
+      const loginId = form.get('loginId');
+      const appToken = form.get('appToken');
+      if (typeof loginId !== 'string' || typeof appToken !== 'string') {
+        return null;
+      }
+      return loginWithAppToken(loginId, appToken);
     }
     case 'webRedirect': {
       try {

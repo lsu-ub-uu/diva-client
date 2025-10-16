@@ -15,27 +15,27 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import divaThemeListWithBinaryLogo from '@/__mocks__/bff/divaThemeListWithBinaryLogo.json';
-import divaThemeListWithMemberPermissionUnit from '@/__mocks__/bff/divaThemeListWithMemberPermissionUnit.json';
-import divaThemeListWithSvgLogo from '@/__mocks__/bff/divaThemeListWithSvgLogo.json';
-import divaThemeLogoBinary from '@/__mocks__/bff/divaThemeLogoBinary.json';
+import divaMemberListWithBinaryLogo from '@/__mocks__/bff/divaMemberListWithBinaryLogo.json';
+import divaMemberListWithMemberPermissionUnit from '@/__mocks__/bff/divaMemberListWithMemberPermissionUnit.json';
+import divaMemberListWithSvgLogo from '@/__mocks__/bff/divaMemberListWithSvgLogo.json';
+import divaMemberLogoBinary from '@/__mocks__/bff/divaMemberLogoBinary.json';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { transformThemes } from '@/cora/transform/transformThemes.server';
+import { transformMembers } from '@/cora/transform/transformMembers.server';
 import type { AxiosResponse } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/cora/getRecordDataById.server');
 
-describe('transformTheme', () => {
+describe('transformMember', () => {
   it('transforms empty list', async () => {
-    const transformData = await transformThemes(emptyDataList);
+    const transformData = await transformMembers(emptyDataList);
     expect(transformData).toStrictEqual([]);
   });
 
-  it('transforms a theme with links and svg logo', async () => {
-    const transformData = await transformThemes(divaThemeListWithSvgLogo);
+  it('transforms a member with links and svg logo', async () => {
+    const transformData = await transformMembers(divaMemberListWithSvgLogo);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       id: 'uu-theme',
@@ -45,6 +45,8 @@ describe('transformTheme', () => {
       },
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
+      backgroundColorDarkMode: '#990000',
+      textColorDarkMode: '#CCCCCC',
       publicLinks: [
         {
           sv: {
@@ -87,20 +89,21 @@ describe('transformTheme', () => {
         'uu.cora.epc.ub.uu.se',
         'uu.pre.diva-portal.org',
       ],
+      loginUnitIds: ['uu'],
     });
   });
 
-  it('transforms a theme without links and binary logo', async () => {
+  it('transforms a member without links and binary logo', async () => {
     vi.mocked(getRecordDataById).mockResolvedValue(
       mock<AxiosResponse>({
-        data: divaThemeLogoBinary,
+        data: divaMemberLogoBinary,
       }),
     );
-    const transformData = await transformThemes(divaThemeListWithBinaryLogo);
+    const transformData = await transformMembers(divaMemberListWithBinaryLogo);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       backgroundColor: '#75598e',
-      id: 'diva-theme',
+      id: 'diva-member',
       logo: {
         url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/master',
       },
@@ -110,22 +113,23 @@ describe('transformTheme', () => {
       },
       textColor: '#ffffff',
       hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+      loginUnitIds: ['uu'],
     });
   });
 
-  it('transforms a theme memberPermissionUnit', async () => {
+  it('transforms a member memberPermissionUnit', async () => {
     vi.mocked(getRecordDataById).mockResolvedValue(
       mock<AxiosResponse>({
-        data: divaThemeLogoBinary,
+        data: divaMemberLogoBinary,
       }),
     );
-    const transformData = await transformThemes(
-      divaThemeListWithMemberPermissionUnit,
+    const transformData = await transformMembers(
+      divaMemberListWithMemberPermissionUnit,
     );
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       backgroundColor: '#75598e',
-      id: 'diva-theme',
+      id: 'diva-member',
       memberPermissionUnit: 'uu',
       logo: {
         svg: '<svg></svg>',
@@ -136,6 +140,7 @@ describe('transformTheme', () => {
       },
       textColor: '#ffffff',
       hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+      loginUnitIds: ['uu'],
     });
   });
 });

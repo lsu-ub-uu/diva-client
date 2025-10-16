@@ -145,7 +145,7 @@
   grid-template-columns: auto 1fr;
   min-height: 100vh;
 
-  @media (width < 600px) {
+  @media (width < 900px) {
     grid-template:
       'member member' auto
       'nav nav' auto

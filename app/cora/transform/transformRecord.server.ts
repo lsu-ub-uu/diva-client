@@ -157,6 +157,7 @@ export const transformRecordData = (
     },
   };
 };
+
 export const transformDataGroup = (
   dataGroup: DataGroup,
   metadataGroup: FormMetaData,
@@ -214,7 +215,7 @@ const transformData = (
       metadata.type,
     )
   ) {
-    return transformDataAtomic(data as DataAtomic);
+    return transformDataAtomic(data as DataAtomic, metadata);
   }
 
   if (metadata.type === 'resourceLink') {
@@ -222,7 +223,7 @@ const transformData = (
   }
 
   console.warn('Unhandled metadata type', metadata.type);
-  return transformDataAtomic(data as DataAtomic);
+  return transformDataAtomic(data as DataAtomic, metadata);
 };
 
 const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
@@ -241,7 +242,23 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 
   let displayName;
   if (linkedRecordType === 'diva-organisation' && linkedRecord) {
-    displayName = formatLinkedOrganisationName(recordLinkId, dependencies);
+    const svName = formatLinkedOrganisationName(
+      recordLinkId,
+      'sv',
+      dependencies,
+    );
+    const enName = formatLinkedOrganisationName(
+      recordLinkId,
+      'en',
+      dependencies,
+    );
+
+    if (svName && enName) {
+      displayName = {
+        sv: svName,
+        en: enName,
+      };
+    }
   }
 
   return removeEmpty({
@@ -253,19 +270,26 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 
 const formatLinkedOrganisationName = (
   linkedOrganisationId: string,
+  lang: 'sv' | 'en',
   dependencies: Dependencies,
-): string => {
+): string | undefined => {
+  if (!dependencies.organisationPool.has(linkedOrganisationId)) {
+    return undefined;
+  }
   const linkedOrganisation =
     dependencies.organisationPool.get(linkedOrganisationId);
 
+  const organisationName = linkedOrganisation.name[lang];
+
   if (linkedOrganisation.parentOrganisationId) {
-    return `${linkedOrganisation.name.sv}, ${formatLinkedOrganisationName(
+    return `${organisationName}, ${formatLinkedOrganisationName(
       linkedOrganisation.parentOrganisationId,
+      lang,
       dependencies,
     )}`;
   }
 
-  return linkedOrganisation.name.sv;
+  return organisationName;
 };
 
 const transformLinkedRecord = (
@@ -279,8 +303,17 @@ const transformLinkedRecord = (
   return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
 
-const transformDataAtomic = (data: DataAtomic) => {
-  return { value: data.value };
+const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
+  if (metadata.finalValue) {
+    return {
+      value: metadata.finalValue,
+      final: true,
+    };
+  }
+
+  return {
+    value: data.value,
+  };
 };
 
 const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {

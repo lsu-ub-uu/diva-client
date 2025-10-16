@@ -1,13 +1,7 @@
-import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { requestAuthTokenOnLogin } from '@/cora/requestAuthTokenOnLogin.server';
-
-export async function loginWithAppToken(account: Account) {
+export async function loginWithAppToken(loginId: string, appToken: string) {
   try {
-    return requestAuthTokenOnLogin(
-      account.idFromLogin,
-      account.appToken,
-      'apptoken',
-    );
+    return requestAuthTokenOnLogin(loginId, appToken, 'apptoken');
   } catch {
     return null;
   }

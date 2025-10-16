@@ -1,7 +1,4 @@
-import type {
-  NamePersonalGroup,
-  NamePersonGroup,
-} from '@/generatedTypes/divaTypes';
+import type { NamePersonalGroup } from '@/generatedTypes/divaTypes';
 import { describe, expect, it } from 'vitest';
 import { formatPersonName } from '../formatPersonName';
 
@@ -77,7 +74,7 @@ describe('formatPersonName', () => {
   });
 
   it('returns empty string when there is no name information', () => {
-    const person = {} as NamePersonGroup;
+    const person = {} as NamePersonalGroup;
 
     const formattedName = formatPersonName(person);
     expect(formattedName).toBe('');

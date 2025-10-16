@@ -16,7 +16,7 @@ import {
   getNameFromMetadata,
 } from '../generateTypesForRecordTypes';
 
-describe('generateValidationTypeInterface', () => {
+describe('generateTypesForRecordTypes', () => {
   it('should generate an interface', async () => {
     const recordTypePool = listToPool<BFFRecordType>([
       {
@@ -175,6 +175,92 @@ describe('generateValidationTypeInterface', () => {
       await format(expected, { parser: 'typescript' }),
     );
   });
+
+  it('should handle displayName for linked organisations', async () => {
+    const recordTypePool = listToPool<BFFRecordType>([
+      {
+        id: 'recordTypeId',
+        metadataId: 'metadataGroupId',
+      } as BFFRecordType,
+      {
+        id: 'diva-organisation',
+        metadataId: 'organisationGroup',
+      } as BFFRecordType,
+    ]);
+
+    const metadataPool = listToPool<BFFMetadata>([
+      {
+        id: 'metadataGroupId',
+        type: 'group',
+        nameInData: 'root',
+        children: [
+          {
+            childId: 'organisationRecordLink',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      } as BFFMetadataGroup,
+      {
+        id: 'organisationRecordLink',
+        nameInData: 'organisation',
+        linkedRecordType: 'diva-organisation',
+        type: 'recordLink',
+      } as BFFMetadataRecordLink,
+      {
+        id: 'organisationGroup',
+        type: 'group',
+        nameInData: 'organisation',
+        children: [
+          {
+            childId: 'nameVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ],
+      } as BFFMetadataGroup,
+      {
+        id: 'nameVar',
+        nameInData: 'name',
+        type: 'textVariable',
+      } as BFFMetadataTextVariable,
+    ]);
+
+    const actual = generateTypesForRecordTypes(recordTypePool, metadataPool, [
+      'recordTypeId',
+    ]);
+
+    const expected = `
+      export interface RecordTypeId extends BFFDataRecordData {
+        root: MetadataGroupId;
+      }
+
+      export interface DivaOrganisation extends BFFDataRecordData {
+        organisation: OrganisationGroup;
+      }
+
+      export interface OrganisationGroup {
+        name: { value: string; __text: { sv: string; en: string } };
+        __text: { sv: string; en: string };
+      }
+
+      export interface MetadataGroupId {
+        organisation: {
+          value: string;
+          linkedRecord: {
+            organisation: OrganisationGroup;
+          };
+          displayName?: { sv: string; en: string };
+          __text: { sv: string; en: string };
+        };
+        __text: { sv: string; en: string };
+      }
+    `;
+
+    expect(await format(actual, { parser: 'typescript' })).toEqual(
+      await format(expected, { parser: 'typescript' }),
+    );
+  });
 });
 
 describe('getNameFromMetadata', () => {
@@ -215,6 +301,40 @@ describe('getNameFromMetadata', () => {
 
     expect(getNameFromMetadata(metadataPool, metadata)).toEqual(
       "'foo-bar_type_baz'",
+    );
+  });
+
+  it('returns nameInData with two finalValue attributes', () => {
+    const metadataPool = listToPool<BFFMetadata>([
+      {
+        id: 'nonFinalValue',
+        nameInData: 'lang',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'finalValue',
+        nameInData: 'type',
+        finalValue: 'baz',
+      } as BFFMetadataCollectionVariable,
+      {
+        id: 'otherFinalValue',
+        nameInData: 'otherType',
+        finalValue: 'foo',
+      } as BFFMetadataCollectionVariable,
+    ]);
+
+    const metadata = {
+      id: 'foo',
+      nameInData: 'foo-bar',
+      type: 'textVariable',
+      attributeReferences: [
+        { refCollectionVarId: 'nonFinalValue' },
+        { refCollectionVarId: 'finalValue' },
+        { refCollectionVarId: 'otherFinalValue' },
+      ],
+    } as BFFMetadataTextVariable;
+
+    expect(getNameFromMetadata(metadataPool, metadata)).toEqual(
+      "'foo-bar_otherType_foo_type_baz'",
     );
   });
 });

@@ -124,7 +124,7 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFTheme,
+  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
@@ -265,7 +265,7 @@ describe('formDefinition', () => {
       searchPool,
       loginPool,
       loginUnitPool,
-      themePool: listToPool<BFFTheme>([]),
+      memberPool: listToPool<BFFMember>([]),
       organisationPool: listToPool<BFFOrganisation>([]),
     };
 

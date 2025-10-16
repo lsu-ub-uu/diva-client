@@ -16,9 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createLoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { createLoginDefinition } from './loginDefinition/loginDefinition.server';
 
-export const getLoginUnits = (dependencies: Dependencies) => {
-  return createLoginDefinition(dependencies);
+export const getLoginUnits = (
+  dependencies: Dependencies,
+  memberLoginUnitIds: string[] | undefined,
+) => {
+  return createLoginDefinition(dependencies, memberLoginUnitIds);
 };

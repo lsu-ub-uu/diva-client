@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Book } from '../Book';
 import type { RelatedItemBookGroup } from '@/generatedTypes/divaTypes';
@@ -71,6 +71,7 @@ describe('Book', () => {
       },
       relatedItem_type_series: [
         {
+          _otherType: 'link',
           __text: {
             en: 'Series',
           },
@@ -84,6 +85,14 @@ describe('Book', () => {
               },
             },
           },
+          partNumber: { __text: { en: 'Part number' }, value: '1' },
+        },
+        {
+          _otherType: 'other',
+          __text: {
+            en: 'Series',
+          },
+
           titleInfo: {
             __text: { en: 'Series' },
             title: { value: 'Series title' },
@@ -128,10 +137,29 @@ describe('Book', () => {
     expect(screen.getByText('12')).toBeInTheDocument();
     expect(screen.getByText('End page')).toBeInTheDocument();
     expect(screen.getByText('34')).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Series' }),
-    ).toBeInTheDocument();
-  });
 
-  it.todo('shows related series');
+    const series = screen.getAllByRole('region', { name: 'Series' });
+
+    expect(
+      within(series[0]).getByRole('heading', { level: 3 }),
+    ).toHaveTextContent('Series');
+    expect(
+      within(series[0]).getByRole('link', { name: 'Linked series title' }),
+    ).toBeInTheDocument();
+    expect(within(series[0]).getByText('Part number')).toBeInTheDocument();
+    expect(within(series[0]).getByText('1')).toBeInTheDocument();
+
+    expect(
+      within(series[1]).getByRole('heading', { level: 3 }),
+    ).toHaveTextContent('Series');
+    expect(
+      within(series[1]).getByText('Series title: Series subtitle'),
+    ).toBeInTheDocument();
+    expect(within(series[1]).getByText('EISSN')).toBeInTheDocument();
+    expect(within(series[1]).getByText('1234-5678')).toBeInTheDocument();
+    expect(within(series[1]).getByText('PISSN')).toBeInTheDocument();
+    expect(within(series[1]).getByText('1234-5679')).toBeInTheDocument();
+    expect(within(series[1]).getByText('Part number')).toBeInTheDocument();
+    expect(within(series[1]).getByText('1')).toBeInTheDocument();
+  });
 });

@@ -3,10 +3,10 @@ import { Persons } from './Persons';
 import { Organisation } from './Organisation';
 import { Term } from './Term';
 import { Event } from './Event';
-import type { OutputUpdateGroup } from '@/generatedTypes/divaTypes';
+import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 
 interface DegreeProjectFieldsProps {
-  output: OutputUpdateGroup;
+  output: DivaOutputGroup;
 }
 
 export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {

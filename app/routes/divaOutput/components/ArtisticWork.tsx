@@ -1,6 +1,6 @@
 import type {
   DurationGroup,
-  OutputUpdateGroup,
+  DivaOutputGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
@@ -9,7 +9,7 @@ import { getLanguageTextId } from '../utils/translateLanguage';
 import { useTranslation } from 'react-i18next';
 
 interface ArtisticWorkFieldsProps {
-  output: OutputUpdateGroup;
+  output: DivaOutputGroup;
 }
 
 export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {

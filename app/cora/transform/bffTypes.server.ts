@@ -306,10 +306,12 @@ export interface BFFLogin extends BFFBase {
 }
 
 export interface BFFLoginWebRedirect extends BFFLogin {
+  type: 'webRedirect';
   loginName: string;
   url: string;
 }
 export interface BFFLoginPassword extends BFFLogin {
+  type: 'password';
   viewDefinition: string;
   viewPresentation: string;
   description: string;
@@ -329,7 +331,7 @@ export interface BFFThemeLinkWrapper {
   en: BFFThemeLink;
 }
 
-export interface BFFTheme {
+export interface BFFMember {
   id: string;
   memberPermissionUnit?: string;
   pageTitle: {
@@ -338,6 +340,8 @@ export interface BFFTheme {
   };
   backgroundColor: string;
   textColor: string;
+  backgroundColorDarkMode?: string;
+  textColorDarkMode?: string;
   publicLinks?: BFFThemeLinkWrapper[];
   adminLinks?: BFFThemeLinkWrapper[];
   logo: {
@@ -345,6 +349,7 @@ export interface BFFTheme {
     svg?: string;
   };
   hostnames: string[];
+  loginUnitIds: string[];
 }
 
 export interface BFFOrganisation {

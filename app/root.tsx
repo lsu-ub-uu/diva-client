@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { renewAuth } from '@/auth/renewAuth.server';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
@@ -43,63 +42,65 @@ import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import Login from '@/components/Layout/Header/Login/Login';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import { getRecordTypes } from '@/data/getRecordTypes';
+import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
+import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
+import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
 import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
+import { AuthLogger } from './components/dev/AuthLogger';
 import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
 } from './userPreferences/userPreferencesCookie.server';
-import { getThemeFromHostname } from './utils/getThemeFromHostname';
+import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 
 const { MODE } = import.meta.env;
 
-export const middleware = [sessionMiddleware];
+export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
-  const theme = getThemeFromHostname(request, dependencies);
-
-  const loginUnits = getLoginUnits(dependencies);
+  const member = getMemberFromHostname(request, dependencies);
+  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+  const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
+  const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
 
   return {
     user,
     locale,
     loginUnits,
-    theme,
+    appTokenLogins,
+    member,
     recordTypes,
     userPreferences,
     notification,
+    userCanEditMemberSettings,
+    auth,
   };
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const session = context.get(sessionContext);
   const intent = formData.get('intent');
 
   if (intent === 'changeLanguage') {
     return await changeLanguage(formData);
-  }
-
-  if (intent === 'renewAuthToken') {
-    return await renewAuth(context.get(i18nContext), session);
   }
 
   if (intent === 'changeColorScheme') {
@@ -232,8 +233,14 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const userPreferences = loaderData.userPreferences;
-  const theme = loaderData.theme;
+  const {
+    userPreferences,
+    member,
+    loginUnits,
+    appTokenLogins,
+    userCanEditMemberSettings,
+    auth,
+  } = loaderData;
 
   return (
     <div className='root-layout'>
@@ -241,21 +248,29 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
       <header className='member-bar'>
         <NavigationLoader />
-        <MemberBar theme={theme} loggedIn={loaderData.user !== undefined}>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
-          <Login />
+          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </MemberBar>
       </header>
 
       <header className='nav-rail'>
-        <Header recordTypes={loaderData.recordTypes} />
+        <Header
+          recordTypes={loaderData.recordTypes}
+          loginUnits={loginUnits}
+          appTokenLogins={appTokenLogins}
+          editableMember={
+            userCanEditMemberSettings && member ? member.id : undefined
+          }
+        />
       </header>
 
       <div className='content'>
         <Breadcrumbs />
         <Outlet />
       </div>
+      <AuthLogger auth={auth} />
     </div>
   );
 }

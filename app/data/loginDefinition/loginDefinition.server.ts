@@ -26,26 +26,30 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 
-interface LoginDefinition {
+export interface LoginDefinition {
   loginDescription: string;
-  type: string;
+  type: 'password' | 'webRedirect';
   url?: string;
   presentation?: any;
 }
 
 export const createLoginDefinition = (
   dependencies: Dependencies,
+  memberLoginUnitIds: string[] | undefined,
 ): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
   const loginItemDefinitions: LoginDefinition[] = [];
 
-  const loginUnitEntries = Array.from(loginUnitPool.entries());
+  const loginUnitEntries = Array.from(loginUnitPool.values());
 
-  loginUnitEntries.forEach((login: any) => {
+  loginUnitEntries.forEach((login) => {
+    if (memberLoginUnitIds && !memberLoginUnitIds.includes(login.id)) {
+      return;
+    }
     let item: LoginDefinition;
-    const temp = loginPool.get(login[1].login);
+    const temp = loginPool.get(login.login);
     const { type } = temp;
-    item = { loginDescription: login[1].loginDescription, type };
+    item = { loginDescription: login.loginDescription, type };
 
     if (item.type === 'webRedirect') {
       const { url } = temp as BFFLoginWebRedirect;
@@ -70,5 +74,6 @@ export const createLoginDefinition = (
 
     loginItemDefinitions.push(item);
   });
+
   return loginItemDefinitions;
 };
