@@ -1,3 +1,3 @@
 export const generateRepeatId = () => {
-  return Date.now();
+  return String(Date.now());
 };
