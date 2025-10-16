@@ -23,11 +23,38 @@ describe('<MemberBar />', () => {
     render(<MemberBar member={member} loggedIn={false} />);
 
     expect(screen.getByLabelText('Uppsala universitet')).toHaveStyle({
-      backgroundColor: '#111111',
-      color: '#FFFFFF',
+      '--member-background-color': '#111111',
+      '--member-text-color': '#FFFFFF',
+      '--member-background-color-dark-mode': '#111111',
+      '--member-text-color-dark-mode': '#FFFFFF',
     });
   });
 
+  it('sets dark mode background and text color from member', () => {
+    vi.mocked(useLanguage).mockReturnValue('sv');
+
+    const member = {
+      id: 'uu-member',
+      hostnames: ['uu.diva-portal.org'],
+      pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
+      backgroundColor: '#111111',
+      textColor: '#FFFFFF',
+      backgroundColorDarkMode: '#222222',
+      textColorDarkMode: '#EEEEEE',
+      publicLinks: [],
+      logo: {},
+      loginUnitIds: [],
+    };
+
+    render(<MemberBar member={member} loggedIn={false} />);
+
+    expect(screen.getByLabelText('Uppsala universitet')).toHaveStyle({
+      '--member-background-color': '#111111',
+      '--member-text-color': '#FFFFFF',
+      '--member-background-color-dark-mode': '#222222',
+      '--member-text-color-dark-mode': '#EEEEEE',
+    });
+  });
   it('shows svg logo if present in member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 

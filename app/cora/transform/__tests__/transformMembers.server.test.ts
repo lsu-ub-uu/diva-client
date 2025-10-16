@@ -45,6 +45,8 @@ describe('transformMember', () => {
       },
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
+      backgroundColorDarkMode: '#990000',
+      textColorDarkMode: '#CCCCCC',
       publicLinks: [
         {
           sv: {

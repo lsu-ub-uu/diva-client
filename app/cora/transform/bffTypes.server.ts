@@ -340,6 +340,8 @@ export interface BFFMember {
   };
   backgroundColor: string;
   textColor: string;
+  backgroundColorDarkMode?: string;
+  textColorDarkMode?: string;
   publicLinks?: BFFThemeLinkWrapper[];
   adminLinks?: BFFThemeLinkWrapper[];
   logo: {

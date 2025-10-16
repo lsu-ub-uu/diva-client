@@ -2241,6 +2241,8 @@ export interface RecordInfoOutputUpdateGroup {
   __text: { sv: string; en: string };
 }
 
+export type DataQualityCollection = 'classic' | '2026';
+
 export type SubcategoryOtherCollection = 'policyDocument' | 'exhibitionCatalog';
 
 export interface LanguageGroup {
@@ -3531,6 +3533,11 @@ export interface AttachmentGroup {
 
 export interface DivaOutputGroup {
   recordInfo: RecordInfoOutputUpdateGroup;
+  dataQuality: {
+    value: DataQualityCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
   genre_type_outputType: {
     value: OutputTypeCollection;
     _type: 'outputType';
