@@ -204,9 +204,6 @@ export default function CreateRecordRoute({
 
           {deferredPreviewData && (
             <div className='preview'>
-              <h2 className='preview-heading'>
-                {t('divaClient_formPreviewHeadingText')}
-              </h2>
               <ReadOnlyForm
                 recordData={deferredPreviewData}
                 formSchema={previewFormDefinition}
