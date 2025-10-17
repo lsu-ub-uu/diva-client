@@ -136,7 +136,7 @@ describe('Book', () => {
     expect(screen.getByText('Start page')).toBeInTheDocument();
     expect(screen.getByText('12')).toBeInTheDocument();
     expect(screen.getByText('End page')).toBeInTheDocument();
-    expect(screen.getByText('34')).toBeInTheDocument();
+    expect(screen.getByText('34')).not.toBeInTheDocument();
 
     const series = screen.getAllByRole('region', { name: 'Series' });
 
