@@ -157,10 +157,6 @@ export default function OutputSearchRoute({
           </Suspense>
         </div>
       </main>
-      <aside>
-        <h2>{t('divaClient_messagesHeadingText')}</h2>
-        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
-      </aside>
     </div>
   );
 }

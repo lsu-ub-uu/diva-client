@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, type UIMatch, useMatches } from 'react-router';
 import styles from './Breadcrumbs.module.css';
 import type { ReactNode } from 'react';
-import { HomeIcon } from '@/icons';
+import DivaStar from '@/images/diva-star.svg?react';
 
 export type Breadcrumb = (match: MatchWithBreadcrumb) => ReactNode;
 
@@ -51,7 +51,8 @@ export const Breadcrumbs = () => {
       <ol>
         <li>
           <NavLink to='/' aria-label={t('divaClient_breadcrumbStartText')}>
-            <HomeIcon />
+            <DivaStar style={{ width: '1em', height: '1em' }} />{' '}
+            <span>Start</span>
           </NavLink>
         </li>
         {matches.filter(hasBreadcrumb).map((match) => {
