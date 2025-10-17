@@ -1,1 +1,1 @@
-npx vitest run
+npx vitest run --silent --reporter=dot
