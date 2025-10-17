@@ -176,7 +176,7 @@
     .header-bar-left {
       display: flex;
       align-items: center;
-      gap: var(--gap-l);
+      gap: var(--gap-xl);
     }
 
     .header-bar-right {
@@ -212,7 +212,7 @@
 
 .content {
   grid-area: main;
-  padding: 0 var(--gap-l);
+  padding: 0 var(--gap-xxl);
 }
 
 .flash {

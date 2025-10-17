@@ -23,8 +23,9 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, Suspense, useRef } from 'react';
 import {
+  Await,
   data,
   isRouteErrorResponse,
   Link,
@@ -66,6 +67,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 
 const { MODE } = import.meta.env;
 
@@ -242,6 +244,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     appTokenLogins,
     userCanEditMemberSettings,
     auth,
+    recordTypes,
   } = loaderData;
 
   return (
@@ -256,6 +259,13 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <Link to='/'>
               <DivaLogo className='logo' />
             </Link>
+            <Suspense>
+              <Await resolve={recordTypes} errorElement={<div />}>
+                {(resolvedRecordType) => (
+                  <TopNavigation recordTypes={resolvedRecordType} />
+                )}
+              </Await>
+            </Suspense>
           </div>
           <div className='header-bar-right'>
             <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
@@ -267,7 +277,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      <header className='nav-rail'>
+      {/* <header className='nav-rail'>
         <Header
           recordTypes={loaderData.recordTypes}
           loginUnits={loginUnits}
@@ -276,7 +286,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
             userCanEditMemberSettings && member ? member.id : undefined
           }
         />
-      </header>
+      </header> */}
 
       <div className='content'>
         <Breadcrumbs />
