@@ -385,6 +385,10 @@ const transformChildReference = (childReference: DataGroup) => {
     (childStyleAtomic) => childStyleAtomic.value,
   );
 
+  const addText = hasChildWithNameInData(childReference, 'addText')
+    ? extractLinkedRecordIdFromNamedRecordLink(childReference, 'addText')
+    : undefined;
+
   return removeEmpty({
     refGroups,
     minNumberOfRepeatingToShow,
@@ -393,6 +397,7 @@ const transformChildReference = (childReference: DataGroup) => {
     childStyle,
     title,
     titleHeadlineLevel,
+    addText,
   });
 };
 

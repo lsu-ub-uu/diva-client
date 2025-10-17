@@ -65,6 +65,7 @@ export const createCollVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -100,5 +101,6 @@ export const createCollVar = (
     titleHeadlineLevel,
     alternativePresentation,
     repeat,
+    addText,
   });
 };
