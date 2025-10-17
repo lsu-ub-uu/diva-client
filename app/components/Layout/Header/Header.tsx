@@ -94,11 +94,6 @@ export const Header = ({
         {devMode && (
           <>
             <NavigationLink
-              to={href('/api-docs')}
-              label='API'
-              icon={<CodeIcon />}
-            />
-            <NavigationLink
               to={href('/design-system')}
               label='Design system'
               icon={<DesignServicesIcon />}

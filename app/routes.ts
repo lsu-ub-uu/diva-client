@@ -5,11 +5,9 @@ export default [
 
   /* Generic record pages */
   route(':recordType', 'routes/record/recordType.tsx', [
-    // Sidan kunde inte hittas
     index('routes/record/recordSearch.tsx'),
     route('create', 'routes/record/recordCreate.tsx'),
     route(':recordId', 'routes/record/record.tsx', [
-      // Posten kunde inte hittas
       index('routes/record/recordView.tsx'),
       route('update', 'routes/record/recordUpdate.tsx'),
       route('delete', 'routes/record/recordDelete.tsx'),
@@ -34,11 +32,4 @@ export default [
   route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
-  route('api-docs', 'routes/docs/apiDocs.tsx', [
-    route(':recordType', 'routes/docs/apiDocsRecordType.tsx', [
-      route(':validationType', 'routes/docs/apiDocsValidationType.tsx', [
-        route(':method', 'routes/docs/apiDocsMethod.tsx'),
-      ]),
-    ]),
-  ]),
 ] satisfies RouteConfig;
