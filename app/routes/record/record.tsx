@@ -18,13 +18,13 @@
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
-import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
 import css from './record.css?url';
@@ -47,10 +47,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 
     return { record, breadcrumb, pageTitle };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw data(error?.response?.data, { status: error.status });
-    }
-    throw error;
+    throw createRouteErrorResponse(error);
   }
 };
 

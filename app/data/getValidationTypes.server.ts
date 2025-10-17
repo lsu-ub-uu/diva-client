@@ -20,6 +20,7 @@ import type { Option } from '@/components';
 import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
+import { isAxiosError } from 'axios';
 
 export const getValidationTypes = async (
   recordType: string,
@@ -49,18 +50,25 @@ export const getValidationTypes = async (
     ],
   };
 
-  const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-    'validationTypeSearch',
-    searchQuery,
-    authToken,
-  );
+  try {
+    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+      'validationTypeSearch',
+      searchQuery,
+      authToken,
+    );
 
-  const validationTypes = transformCoraValidationTypes(response.data);
+    const validationTypes = transformCoraValidationTypes(response.data);
 
-  return validationTypes.map(
-    (validationType): Option => ({
-      value: validationType.id,
-      label: validationType.nameTextId,
-    }),
-  );
+    return validationTypes.map(
+      (validationType): Option => ({
+        value: validationType.id,
+        label: validationType.nameTextId,
+      }),
+    );
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 403) {
+      return [];
+    }
+    throw error;
+  }
 };
