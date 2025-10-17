@@ -1,0 +1,4 @@
+{
+  "*.{ts,tsx}": ["eslint --fix", "tsc-files"],
+  "*.{css,scss}": ["stylelint --fix"]
+}
