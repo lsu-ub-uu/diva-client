@@ -12,6 +12,7 @@ export const createPresentationChildReferenceParameters = (
   const presentationSize = presentationChildReference.presentationSize;
   const title = presentationChildReference.title;
   const titleHeadlineLevel = presentationChildReference.titleHeadlineLevel;
+  const addText = presentationChildReference.addText;
 
   return {
     childStyle,
@@ -20,5 +21,6 @@ export const createPresentationChildReferenceParameters = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   };
 };

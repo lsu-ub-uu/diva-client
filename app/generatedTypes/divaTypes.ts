@@ -2384,6 +2384,16 @@ export interface NamePersonalGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   role: RoleGroup;
   affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
   affiliation_otherType_text?: AffiliationPersonalTextGroup[];
@@ -4629,15 +4639,12 @@ export interface DivaMemberGroup {
   };
   backgroundColor: { value: string; __text: { sv: string; en: string } };
   textColor: { value: string; __text: { sv: string; en: string } };
-  logo?: {
+  backgroundColorDarkMode?: {
     value: string;
-    linkedRecord: {
-      binary: BinaryGroup;
-    };
-
     __text: { sv: string; en: string };
   };
-  logoSvg?: { value: string; __text: { sv: string; en: string } };
+  textColorDarkMode?: { value: string; __text: { sv: string; en: string } };
+  logoSvg: { value: string; __text: { sv: string; en: string } };
   linkAdmin?: ThemeLinkAdminGroup[];
   linkPublic?: ThemeLinkPublicGroup[];
   pageTitleSv: { value: string; __text: { sv: string; en: string } };

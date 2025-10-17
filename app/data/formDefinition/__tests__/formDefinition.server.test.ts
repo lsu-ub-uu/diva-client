@@ -142,6 +142,7 @@ import {
   hasLinkedPresentation,
 } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
+import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -2394,6 +2395,89 @@ describe('formDefinition', () => {
         },
         validationTypeId: 'person',
       });
+    });
+
+    it('should include presentationChildReference addText', () => {
+      validationTypePool.set('person', {
+        id: 'person',
+        validatesRecordTypeId: 'person',
+        newMetadataGroupId: 'personNewGroup',
+        newPresentationGroupId: 'personUpdatePGroup',
+        metadataGroupId: 'personUpdateGroup',
+        presentationGroupId: 'personUpdatePGroup',
+        nameTextId: 'someTextId',
+        defTextId: 'someDefTextId',
+      });
+
+      recordTypePool.set('person', {
+        id: 'person',
+        metadataId: 'personUpdateGroup',
+        presentationViewId: 'personUpdatePGroup',
+        listPresentationViewId: '',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        groupOfRecordType: [],
+        recordTypeCategory: [],
+      });
+
+      metadataPool.set('personNewGroup', {
+        id: 'personNewGroup',
+        nameInData: 'person',
+        type: 'group',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        children: [
+          {
+            childId: 'firstNameVar',
+            repeatMin: '0',
+            repeatMax: '1',
+          },
+        ],
+      });
+
+      metadataPool.set('firstNameVar', {
+        id: 'firstNameVar',
+        nameInData: 'firstName',
+        type: 'textVariable',
+        textId: 'someTextId',
+        defTextId: 'someDefTextId',
+        regEx: '.*',
+      });
+
+      presentationPool.set('personUpdatePGroup', {
+        id: 'personUpdatePGroup',
+        type: 'pGroup',
+        presentationOf: 'personUpdateGroup',
+        mode: 'input',
+        children: [
+          {
+            addText: 'addAnotherPersonTextId',
+            refGroups: [
+              {
+                childId: 'firstNamePVar',
+                type: 'presentation',
+              },
+            ],
+          },
+        ],
+      });
+
+      presentationPool.set('firstNamePVar', {
+        id: 'firstNamePVar',
+        type: 'pVar',
+        mode: 'input',
+        presentationOf: 'firstNameVar',
+      });
+
+      const formDefinition = createFormDefinition(
+        dependencies,
+        'person',
+        'create',
+      );
+
+      expect(
+        (formDefinition.form.components![0] as FormComponentTextVar).addText,
+      ).toEqual('addAnotherPersonTextId');
     });
   });
 

@@ -73,6 +73,7 @@ export const createGroup = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -109,5 +110,6 @@ export const createGroup = (
     title,
     titleHeadlineLevel,
     presentAs,
+    addText,
   });
 };
