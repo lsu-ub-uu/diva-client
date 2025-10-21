@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# Skip hooks in CI environment
-if [ "$CI" = "true" ] || [ -n "$JENKINS_URL" ] || [ -n "$JENKINS_HOME" ]; then
-  echo "Skipping pre-commit hooks in CI environment"
-  exit 0
-fi
-
-npx lint-staged
