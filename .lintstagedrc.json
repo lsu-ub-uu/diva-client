@@ -1,4 +1,5 @@
 {
-  "*.{ts,tsx}": ["eslint --fix", "tsc-files"],
+  "*": ["prettier --write"],
+  "*.{ts,tsx}": ["eslint --fix"],
   "*.{css,scss}": ["stylelint --fix"]
 }

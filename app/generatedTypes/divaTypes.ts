@@ -2219,7 +2219,7 @@ export interface DivaOutput extends BFFDataRecordData {
   output: DivaOutputGroup;
 }
 
-export type VisibilityCollection = 'published' | 'unpublished' | 'hidden';
+export type VisibilityCollection = 'published' | 'unpublished';
 
 export interface RecordInfoOutputUpdateGroup {
   id: { value: string; __text: { sv: string; en: string } };
@@ -4427,6 +4427,11 @@ export interface RecordTypeGroup {
     __valueText: { sv: string; en: string };
   };
   useVisibility: {
+    value: TrueFalseCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
+  useTrashBin: {
     value: TrueFalseCollection;
     __text: { sv: string; en: string };
     __valueText: { sv: string; en: string };
