@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# Debug: Check which CI environment variables are set
-echo "CI: '$CI'"
-echo "JENKINS_URL: '$JENKINS_URL'"
-echo "JENKINS_HOME: '$JENKINS_HOME'"
-
 # Skip hooks in CI environment
 if [ "$CI" = "true" ] || [ -n "$JENKINS_URL" ] || [ -n "$JENKINS_HOME" ]; then
   echo "Skipping pre-commit hooks in CI environment"
