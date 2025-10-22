@@ -36,6 +36,7 @@ import {
   hasValuableData,
   isComponentContainer,
   isComponentGroup,
+  isComponentHidden,
   isComponentOptional,
   isComponentRepeating,
   isComponentRequired,
@@ -68,6 +69,10 @@ export const createYupValidationsFromComponent = (
   }
 
   const currentNameInData = getNameInData(component);
+
+  if (isComponentHidden(component)) {
+    return validationRule;
+  }
 
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {

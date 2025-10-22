@@ -242,7 +242,11 @@ function createFormDefaultObject(
   }
 
   if (isComponentHidden(component)) {
-    return { value: component.finalValue, final: true };
+    return {
+      value: component.finalValue,
+      final: true,
+      ...generateComponentAttributes(component),
+    };
   }
   if (isComponentVariable(component)) {
     return createDefaultValuesForVariable(component);
