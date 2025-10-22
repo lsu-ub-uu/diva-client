@@ -321,6 +321,79 @@ describe('defaultValues', () => {
         });
       });
 
+      it('should create final values from hidden component with attribute', () => {
+        const formSchema = {
+          form: {
+            name: 'root',
+            type: 'group',
+            components: [
+              {
+                name: 'someGroup',
+                type: 'group',
+                repeat: {
+                  repeatMin: 0,
+                  repeatMax: 1,
+                  minNumberOfRepeatingToShow: 1,
+                },
+                components: [
+                  {
+                    name: 'someTextVar',
+                    type: 'textVariable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                  },
+                  {
+                    name: 'some.hidden',
+                    type: 'hidden',
+                    finalValue: 'someFinalValue',
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'someAttr',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'organisationTypeTypeCollectionVarText',
+                          body: 'organisationTypeTypeCollectionVarDefText',
+                        },
+                        label: 'organisationTypeTypeCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'someAttrFinalValue',
+                            label: 'organisationTypeItemText',
+                          },
+                        ],
+                        finalValue: 'someAttrFinalValue',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        } as FormSchema;
+
+        const defaultValues = createDefaultValuesFromFormSchema(formSchema);
+
+        expect(defaultValues).toStrictEqual({
+          root: {
+            someGroup: {
+              someTextVar: {
+                value: '',
+              },
+              'some.hidden_someAttr_someAttrFinalValue': {
+                value: 'someFinalValue',
+                final: true,
+                _someAttr: 'someAttrFinalValue',
+              },
+            },
+          },
+        });
+      });
+
       it('should automatically set permission unit', () => {
         const formSchema = {
           form: {

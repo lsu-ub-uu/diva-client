@@ -1609,8 +1609,8 @@ export interface RoleProjectPersonalGroup {
   __text: { sv: string; en: string };
 }
 
-export interface AffiliationPersonalLinkGroup {
-  organisation: {
+export interface AffiliationPersonalGroup {
+  organisation?: {
     value: string;
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
@@ -1618,12 +1618,7 @@ export interface AffiliationPersonalLinkGroup {
     displayName?: { sv: string; en: string };
     __text: { sv: string; en: string };
   };
-  _otherType: 'link';
-  __text: { sv: string; en: string };
-}
-
-export interface AffiliationPersonalTextGroup {
-  name_type_corporate: NameCorporateGroup;
+  name_type_corporate?: NameCorporateGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
@@ -1635,7 +1630,6 @@ export interface AffiliationPersonalTextGroup {
     __valueText: { sv: string; en: string };
   };
   description?: { value: string; __text: { sv: string; en: string } };
-  _otherType: 'text';
   __text: { sv: string; en: string };
 }
 
@@ -1659,8 +1653,7 @@ export interface NamePersonalProjectGroup {
     __text: { sv: string; en: string };
   };
   role: RoleProjectPersonalGroup;
-  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
-  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
+  affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2395,8 +2388,7 @@ export interface NamePersonalGroup {
     __text: { sv: string; en: string };
   };
   role: RoleGroup;
-  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
-  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
+  affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2512,8 +2504,8 @@ export interface RolePublisherGroup {
   __text: { sv: string; en: string };
 }
 
-export interface AgentLinkGroup {
-  publisher: {
+export interface AgentGroup {
+  publisher?: {
     value: string;
     linkedRecord: {
       publisher: PublisherUpdateGroup;
@@ -2521,15 +2513,8 @@ export interface AgentLinkGroup {
 
     __text: { sv: string; en: string };
   };
+  namePart?: { value: string; __text: { sv: string; en: string } };
   role: RolePublisherGroup;
-  _otherType: 'link';
-  __text: { sv: string; en: string };
-}
-
-export interface AgentTextGroup {
-  namePart: { value: string; __text: { sv: string; en: string } };
-  role: RolePublisherGroup;
-  _otherType: 'text';
   __text: { sv: string; en: string };
 }
 
@@ -2542,8 +2527,7 @@ export interface OriginInfoGroup {
   dateIssued: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther_type_online?: DateOtherOnlineGroup;
-  agent_otherType_link?: AgentLinkGroup[];
-  agent_otherType_text?: AgentTextGroup[];
+  agent?: AgentGroup[];
   place?: PlaceGroup[];
   edition?: { value: string; __text: { sv: string; en: string } };
   __text: { sv: string; en: string };
@@ -2803,8 +2787,7 @@ export interface NamePersonalThesisAdvisorGroup {
     __text: { sv: string; en: string };
   };
   role: RoleThesisAdvisorGroup;
-  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
-  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
+  affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2838,8 +2821,7 @@ export interface NamePersonalDegreeSupervisorGroup {
     __text: { sv: string; en: string };
   };
   role: RoleDegreeSupervisorGroup;
-  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
-  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
+  affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
@@ -2873,8 +2855,7 @@ export interface NamePersonalOpponentGroup {
     __text: { sv: string; en: string };
   };
   role: RoleOpponentGroup;
-  affiliation_otherType_link?: AffiliationPersonalLinkGroup[];
-  affiliation_otherType_text?: AffiliationPersonalTextGroup[];
+  affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text: { sv: string; en: string };
 }
