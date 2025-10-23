@@ -19,8 +19,8 @@
 import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { cleanFormData } from '@/utils/cleanFormData';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { cloneDeep, set } from 'lodash-es';
 import { type ObjectSchema, ValidationError } from 'yup';
 
 export const performSearch = async (
@@ -34,14 +34,11 @@ export const performSearch = async (
   const query = parseFormDataFromSearchParams(url.searchParams);
 
   try {
-    if (isEmptySearch(query)) {
-      return { query };
-    }
     await yupSchema.validate(query);
     const searchResults = await searchRecords(
       dependencies,
       searchId,
-      query,
+      addDefaults(query),
       auth,
     );
 
@@ -54,8 +51,15 @@ export const performSearch = async (
   }
 };
 
-const isEmptySearch = (query: Record<string, any>) => {
-  const cleaned = cleanFormData(query);
-  const rootKey = Object.keys(query)[0];
-  return cleaned[rootKey]?.include === undefined;
-};
+function addDefaults(query: Record<string, any>) {
+  const clone = cloneDeep(query);
+  if (!clone?.search?.include?.includePart?.genericSearchTerm?.value) {
+    set(clone, 'search.include.includePart.genericSearchTerm.value', '**');
+  } else {
+    clone.search.include.includePart.genericSearchTerm.value += '*';
+  }
+  if (!clone?.search?.rows?.value) {
+    set(clone, 'search.rows.value', '10');
+  }
+  return clone;
+}

@@ -19,7 +19,6 @@
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 
 import { useTranslation } from 'react-i18next';
-import type { ChangeEvent } from 'react';
 import {
   FirstPageIcon,
   LastPageIcon,
@@ -35,18 +34,13 @@ import { Fieldset } from '@/components/Input/Fieldset';
 interface PaginationProps {
   query: BFFDataRecordData;
   searchResults: BFFSearchResult;
-  onRowsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const ROWS_START_INPUT_NAME = 'search.start.value';
 const ROWS_PER_PAGE_INPUT_NAME = 'search.rows.value';
 const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
-export const Pagination = ({
-  query,
-  searchResults,
-  onRowsPerPageChange,
-}: PaginationProps) => {
+export const Pagination = ({ query, searchResults }: PaginationProps) => {
   const { t } = useTranslation();
 
   const { fromNo, toNo, totalNo } = searchResults;
@@ -75,11 +69,7 @@ export const Pagination = ({
         variant='inline'
         size='small'
       >
-        <Select
-          name={ROWS_PER_PAGE_INPUT_NAME}
-          onChange={onRowsPerPageChange}
-          defaultValue={rowsPerPage}
-        >
+        <Select name={ROWS_PER_PAGE_INPUT_NAME} defaultValue={rowsPerPage}>
           {rowsPerPageOptions.map((rows) => (
             <option key={rows} value={rows}>
               {rows}

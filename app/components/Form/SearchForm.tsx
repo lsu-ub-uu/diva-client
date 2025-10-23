@@ -27,6 +27,7 @@ import { useMember } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import { useCallback, useRef } from 'react';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 
@@ -46,6 +47,8 @@ export const SearchForm = ({
   const member = useMember();
   const { t } = useTranslation();
   const submit = useSubmit();
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -53,8 +56,21 @@ export const SearchForm = ({
     defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
+  const debouncedSubmit = useCallback(
+    (form: HTMLFormElement) => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(() => {
+        submit(form);
+      }, 300);
+    },
+    [submit],
+  );
+
   return (
-    <Form method='GET'>
+    <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
       <div className={styles['search-form']}>
         <RemixFormProvider {...methods}>
           <FormGenerator
@@ -104,11 +120,7 @@ export const SearchForm = ({
                   {t('divaClient_viewInApiText')}
                 </Button>
               )}
-              <Pagination
-                query={data}
-                searchResults={searchResults}
-                onRowsPerPageChange={(e) => submit(e.currentTarget.form)}
-              />
+              <Pagination query={data} searchResults={searchResults} />
             </div>
           )}
         </RemixFormProvider>
