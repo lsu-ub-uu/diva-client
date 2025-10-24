@@ -53,9 +53,7 @@ export const Persons = ({ persons }: PersonsProps) => {
 };
 
 const hasInfoToExpand = (person: PersonType) => {
-  const hasAffiliations =
-    person.affiliation_otherType_link !== undefined ||
-    person.affiliation_otherType_text !== undefined;
+  const hasAffiliations = person.affiliation !== undefined;
   const hasRoles = person.role !== undefined;
   const hasOrcid =
     person.person?.linkedRecord?.person?.nameIdentifier_type_orcid !==
