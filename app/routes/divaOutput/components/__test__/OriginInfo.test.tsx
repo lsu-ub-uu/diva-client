@@ -1,7 +1,4 @@
-import type {
-  DateIssuedGroup,
-  OriginInfoGroup,
-} from '@/generatedTypes/divaTypes';
+import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OriginInfo } from '../OriginInfo';
