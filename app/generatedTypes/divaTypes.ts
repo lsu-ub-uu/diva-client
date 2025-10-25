@@ -1652,6 +1652,16 @@ export interface NamePersonalProjectGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   role: RoleProjectPersonalGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
@@ -2786,6 +2796,16 @@ export interface NamePersonalThesisAdvisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   role: RoleThesisAdvisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
@@ -2820,6 +2840,16 @@ export interface NamePersonalDegreeSupervisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text: { sv: string; en: string };
+  };
   role: RoleDegreeSupervisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
@@ -2852,6 +2882,16 @@ export interface NamePersonalOpponentGroup {
   namePart_type_given?: {
     value: string;
     _type: 'given';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
+    __text: { sv: string; en: string };
+  };
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
     __text: { sv: string; en: string };
   };
   role: RoleOpponentGroup;
