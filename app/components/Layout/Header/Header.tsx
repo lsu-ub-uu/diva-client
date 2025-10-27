@@ -17,17 +17,19 @@
  */
 
 import DivaLogo from '@/assets/divaLogo.svg?react';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Button } from '@/components/Button/Button';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import Login from '@/components/Layout/Header/Login/Login';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import {
   CachedIcon,
   CloseIcon,
-  CodeIcon,
   DesignServicesIcon,
+  MemberSettingsIcon,
   MenuIcon,
 } from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
@@ -42,19 +44,19 @@ import {
   useNavigation,
 } from 'react-router';
 import styles from './Header.module.css';
-import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 
 interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
+  editableMember: string | undefined;
 }
 
 export const Header = ({
   recordTypes,
   loginUnits,
   appTokenLogins,
+  editableMember,
 }: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
@@ -91,11 +93,6 @@ export const Header = ({
         {devMode && (
           <>
             <NavigationLink
-              to={href('/api-docs')}
-              label='API'
-              icon={<CodeIcon />}
-            />
-            <NavigationLink
               to={href('/design-system')}
               label='Design system'
               icon={<DesignServicesIcon />}
@@ -107,6 +104,16 @@ export const Header = ({
               </Button>
             </Form>
           </>
+        )}
+        {editableMember && (
+          <NavigationLink
+            to={href('/:recordType/:recordId/update', {
+              recordType: 'diva-member',
+              recordId: editableMember,
+            })}
+            label='Medlems­inställningar'
+            icon={<MemberSettingsIcon />}
+          />
         )}
       </div>
       <Button

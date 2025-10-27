@@ -53,16 +53,11 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
 };
 
 const getPublisherNames = (originInfo: OriginInfoGroup) => {
-  const uncontrolledAgents =
-    originInfo.agent_otherType_text?.map(
-      (publisher) => publisher.namePart?.value,
-    ) ?? [];
-
-  const linkedPublishers =
-    originInfo.agent_otherType_link?.map(
-      (publisher) =>
-        publisher?.publisher?.linkedRecord?.publisher.name_type_corporate
-          .namePart.value,
-    ) ?? [];
-  return [...linkedPublishers, ...uncontrolledAgents].filter(Boolean);
+  return originInfo.agent?.map((agent) => {
+    const textName = agent.namePart?.value;
+    const linkedName =
+      agent.publisher?.linkedRecord.publisher.name_type_corporate.namePart
+        .value;
+    return linkedName || textName;
+  });
 };

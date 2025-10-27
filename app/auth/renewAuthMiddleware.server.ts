@@ -1,17 +1,17 @@
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
+import type { i18n } from 'i18next';
 import type { MiddlewareFunction } from 'react-router';
+import { i18nContext } from 'server/i18n';
+import type { Auth } from './Auth';
 import {
   sessionContext,
   type SessionContext,
 } from './sessionMiddleware.server';
-import type { Auth } from './Auth';
-import { i18nContext } from 'server/i18n';
-import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import type { i18n } from 'i18next';
 
 /**
  * How long before token expiry to refresh the token
  */
-const RENEW_TIME_BUFFER = 60_000 * 5;
+const RENEW_TIME_BUFFER = 60_000 * 5; // 5 minutes
 
 /**
  * Runs on every request, checks if the auth token is about to expire,
@@ -29,6 +29,7 @@ export const handleRenew = async (
 ) => {
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
   const { t } = i18n;
+
   if (!auth) {
     return;
   }
@@ -58,11 +59,13 @@ export const isAuthExpired = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const renewUntil = Number(auth.data.renewUntil);
   const now = Date.now();
+
   return validUntil < now || renewUntil < now;
 };
 
 export const isAuthAboutToExpire = (auth: Auth) => {
   const validUntil = Number(auth.data.validUntil);
   const timeUntilInvalid = validUntil - new Date().getTime();
+
   return timeUntilInvalid < RENEW_TIME_BUFFER;
 };

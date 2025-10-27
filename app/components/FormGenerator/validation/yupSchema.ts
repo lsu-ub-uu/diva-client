@@ -33,9 +33,10 @@ import type {
 } from '../types';
 import {
   getNameInData,
-  hasValue,
+  hasValuableData,
   isComponentContainer,
   isComponentGroup,
+  isComponentHidden,
   isComponentOptional,
   isComponentRepeating,
   isComponentRequired,
@@ -68,6 +69,10 @@ export const createYupValidationsFromComponent = (
   }
 
   const currentNameInData = getNameInData(component);
+
+  if (isComponentHidden(component)) {
+    return validationRule;
+  }
 
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
@@ -479,7 +484,7 @@ const createAttributeSchema = (hostRequired: boolean) => {
       name: 'attributeRequiredIfHostHasValue',
       message: REQUIRED_TEXT_ID,
       test: (value, context) => {
-        const hostHasValue = hasValue(context.parent);
+        const hostHasValue = hasValuableData(context.parent);
         if (hostHasValue) {
           return !!value;
         }
@@ -497,13 +502,17 @@ const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
   test: (value, context) => {
     if (
       !value &&
-      !hasValue(context.from && context.from[context.from.length - 2].value)
+      !hasValuableData(
+        context.from && context.from[context.from.length - 2].value,
+      )
     ) {
       return true;
     }
     if (
       !value &&
-      hasValue(context.from && context.from[context.from.length - 2].value)
+      hasValuableData(
+        context.from && context.from[context.from.length - 2].value,
+      )
     ) {
       return false;
     }
@@ -531,7 +540,7 @@ const testRequiredIfOptionalAncestorHasValue: TestConfig<
       return false;
     }
 
-    return !hasValue(closestOptionalAncestor.value);
+    return !hasValuableData(closestOptionalAncestor.value);
   },
 };
 

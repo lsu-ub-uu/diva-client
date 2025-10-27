@@ -1,45 +1,112 @@
-import { isEmpty, omitBy } from 'lodash-es';
+import { isEmpty, pickBy } from 'lodash-es';
 
-export const cleanFormData = (obj: Record<string, any>): any => {
-  if (typeof obj !== 'object') {
-    return obj;
-  }
-  return Object.keys(obj).reduce((acc: any, key: string) => {
-    const value = obj[key];
+interface ValuableDataWrapper<T> {
+  data: T;
+  hasValuableData: boolean;
+}
 
-    if (Array.isArray(value)) {
-      const newArray = value
-        .map(cleanFormData)
-        .filter((o) => !hasOnlyAttributes(o))
-        .filter((o: any) => Object.keys(o).length > 0);
-      if (!isEmpty(newArray)) {
-        acc[key] = newArray;
-      }
-    } else if (isObjectAndHasLength(value)) {
-      const newObj = cleanFormData(value);
-      if (!hasOnlyAttributes(newObj)) {
-        acc[key] = newObj;
-      }
-    } else {
-      if (!hasOnlyAttributes(value)) {
-        acc[key] = value;
-      }
-    }
-
-    return acc;
-  }, {});
+export const cleanFormData = (
+  obj: Record<string, any>,
+): Record<string, any> => {
+  return cleanFormDataRecursively(obj).data;
 };
 
-export const hasOnlyAttributes = (obj: any) => {
-  return isEmpty(
-    omitBy(obj, (_, key) => isAttribute(key) || key === 'repeatId'),
+const cleanFormDataRecursively = (
+  obj: Record<string, any>,
+): ValuableDataWrapper<Record<string, any>> => {
+  if (Array.isArray(obj)) {
+    return cleanArray(obj);
+  }
+  if (isObject(obj)) {
+    if (isResourceLink(obj)) {
+      return cleanResourceLink(obj);
+    }
+    if (isLeaf(obj)) {
+      return cleanLeaf(obj);
+    } else {
+      return cleanGroup(obj);
+    }
+  }
+
+  return { data: {}, hasValuableData: false };
+};
+
+const isObject = (obj: any) => {
+  return typeof obj === 'object' && !isEmpty(obj);
+};
+
+const isResourceLink = (obj: Record<string, any>) => {
+  return (
+    Object.hasOwn(obj, 'mimeType') &&
+    Object.hasOwn(obj, 'id') &&
+    Object.hasOwn(obj, 'name')
   );
 };
 
-const isAttribute = (key: string) => {
-  return key.startsWith('_');
+const isLeaf = (obj: any) => {
+  return (
+    typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
+  );
 };
 
-const isObjectAndHasLength = (value: any): boolean => {
-  return typeof value === 'object' && !isEmpty(value);
+const cleanArray = (arr: any[]): ValuableDataWrapper<any[]> => {
+  const cleanedArray = arr
+    .map(cleanFormDataRecursively)
+    .filter(({ hasValuableData }) => hasValuableData)
+    .map(({ data }) => data);
+  return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
+};
+
+const cleanResourceLink = (
+  obj: Record<string, any>,
+): ValuableDataWrapper<any> => {
+  if (isEmpty(obj.id)) {
+    return { data: {}, hasValuableData: false };
+  }
+
+  return {
+    data: obj,
+    hasValuableData: true,
+  };
+};
+
+const cleanLeaf = (obj: Record<string, any>): ValuableDataWrapper<any> => {
+  if (isEmpty(obj.value)) {
+    return { data: {}, hasValuableData: false };
+  }
+
+  return {
+    data: pickBy(obj, (_, key) => key === 'value' || isAttributeKey(key)),
+    hasValuableData: !isEmpty(obj.value) && !obj.final,
+  };
+};
+
+const cleanGroup = (group: Record<string, any>): ValuableDataWrapper<any> => {
+  let groupIsValuable = false;
+  const cleanedObj: Record<string, any> = {};
+
+  Object.entries(group).forEach(([key, value]) => {
+    if (isAttributeKey(key) && !isEmpty(value)) {
+      cleanedObj[key] = value;
+      return;
+    }
+
+    const cleaned = cleanFormDataRecursively(value);
+    if (cleaned.hasValuableData) {
+      groupIsValuable = true;
+    }
+
+    if (!isEmpty(cleaned.data)) {
+      cleanedObj[key] = cleaned.data;
+    }
+  });
+
+  return {
+    data: groupIsValuable || group.required ? cleanedObj : {},
+    hasValuableData: groupIsValuable,
+  };
+};
+
+const isAttributeKey = (key: string) => {
+  return key.startsWith('_');
 };

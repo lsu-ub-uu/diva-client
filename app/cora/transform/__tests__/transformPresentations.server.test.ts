@@ -46,6 +46,7 @@ import coraPresentationWithOneTextVariableHavingShowLabelFalse from '@/__mocks__
 import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '@/__mocks__/bff/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
 import coraPresentationWithTextVariableInputFormat from '@/__mocks__/bff/coraPresentationWithTextVariableInputFormat.json';
 import coraPresentationWithAttributesToShow from '@/__mocks__/bff/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
+import coraPresentationGroupWithAddText from '@/__mocks__/bff/coraPresentationGroupWithAddText.json';
 import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 import { describe, expect, it } from 'vitest';
@@ -541,6 +542,14 @@ describe('transformCoraPresentations', () => {
       const pGroup = transformData[0] as BFFPresentationGroup;
 
       expect(pGroup.presentAs).toEqual('onlyTranslatedText');
+    });
+
+    it('Transforms a child reference with addText', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationGroupWithAddText,
+      );
+      const pGroup = transformData[0] as BFFPresentationGroup;
+      expect(pGroup.children[0].addText).toEqual('specialAddText');
     });
   });
 

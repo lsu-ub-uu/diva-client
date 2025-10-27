@@ -77,6 +77,7 @@ export const createRecordLink = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -115,5 +116,6 @@ export const createRecordLink = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   });
 };

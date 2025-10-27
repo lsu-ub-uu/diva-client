@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { PermissionUnitRecordLink } from '@/components/FormGenerator/components/PermissionUnitRecordLink';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { Variable } from '@/components/FormGenerator/components/Variable';
@@ -56,15 +55,6 @@ export const RecordLink = ({
         actionButtonGroup={actionButtonGroup}
       />
     );
-  }
-
-  if (
-    component.presentAs === 'permissionUnit' &&
-    component.mode === 'input' &&
-    !value &&
-    !linkedData
-  ) {
-    return <PermissionUnitRecordLink component={component} path={name} />;
   }
 
   if (

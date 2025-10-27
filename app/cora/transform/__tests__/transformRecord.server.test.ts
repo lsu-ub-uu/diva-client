@@ -283,89 +283,117 @@ describe('transformRecord', () => {
             recordInfo: {
               createdBy: {
                 value: 'coraUser:490742519075086',
+                required: true,
               },
               dataDivider: {
                 value: 'diva',
+                required: true,
               },
               id: {
                 value: 'divaOutput:519333261463755',
+                required: true,
               },
               tsCreated: {
                 value: '2023-10-11T09:24:30.511487Z',
+                required: true,
               },
               type: {
                 value: 'manuscriptRecordTypeId',
+                required: true,
               },
               updated: [
                 {
                   repeatId: '0',
                   tsUpdated: {
                     value: '2023-10-11T09:24:30.511487Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: 'coraUser:490742519075086',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '1',
 
                   tsUpdated: {
                     value: '2023-10-18T09:09:13.554736Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '2',
                   tsUpdated: {
                     value: '2023-10-26T12:33:22.260532Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '3',
                   tsUpdated: {
                     value: '2023-10-26T12:35:28.748398Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '4',
                   tsUpdated: {
                     value: '2023-10-26T12:35:40.545698Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '5',
                   tsUpdated: {
                     value: '2023-10-26T12:35:52.293623Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
               ],
               validationType: {
                 value: 'manuscript',
+                required: true,
               },
+              required: true,
             },
             title: {
               mainTitle: {
                 value: 'aaaaaa',
+                required: true,
               },
               _language: 'kal',
+              required: true,
             },
             alternativeTitle: {
               mainTitle: {
                 value: 'bbbbb',
+                required: true,
               },
               subTitle: {
                 value: 'subTitle1',
@@ -473,63 +501,82 @@ describe('transformRecord', () => {
             recordInfo: {
               createdBy: {
                 value: '161616',
+                required: true,
               },
               dataDivider: {
                 value: 'divaData',
+                required: true,
               },
               id: {
                 value: 'divaOutputSwepub:2087392797647370',
+                required: true,
               },
               tsCreated: {
                 value: '2024-09-13T11:49:37.288927Z',
+                required: true,
               },
               type: {
                 value: 'divaOutputSwepub',
+                required: true,
               },
               updated: [
                 {
                   repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
               ],
               validationType: {
                 value: 'divaOutputSwepub',
+                required: true,
               },
+              required: true,
             },
             titleInfo: {
               _lang: 'ady',
               title: {
                 value: 'EN utmärkt titel',
+                required: true,
               },
+              required: true,
             },
             titleInfo_type_alternative: {
               _lang: 'amh',
               _type: 'alternative',
               title: {
                 value: 'EN utmärkt alternativ titel',
+                required: true,
               },
             },
           },
@@ -622,57 +669,75 @@ describe('transformRecord', () => {
             recordInfo: {
               createdBy: {
                 value: '161616',
+                required: true,
               },
               dataDivider: {
                 value: 'divaData',
+                required: true,
               },
               id: {
                 value: 'divaOutputSwepub:2087392797647370',
+                required: true,
               },
               tsCreated: {
                 value: '2024-09-13T11:49:37.288927Z',
+                required: true,
               },
               type: {
                 value: 'divaOutputSwepub',
+                required: true,
               },
               updated: [
                 {
                   repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
               ],
               validationType: {
                 value: 'divaOutputSwepub',
+                required: true,
               },
+              required: true,
             },
             titleInfo: {
               _lang: 'ady',
               title: {
                 value: 'EN utmärkt titel',
+                required: true,
               },
+              required: true,
             },
           },
         },
@@ -764,58 +829,76 @@ describe('transformRecord', () => {
             recordInfo: {
               createdBy: {
                 value: '161616',
+                required: true,
               },
               dataDivider: {
                 value: 'divaData',
+                required: true,
               },
               id: {
                 value: 'divaOutputSwepub:2087392797647370',
+                required: true,
               },
               tsCreated: {
                 value: '2024-09-13T11:49:37.288927Z',
+                required: true,
               },
               type: {
                 value: 'namePartValidationTypeId',
+                required: true,
               },
               updated: [
                 {
                   repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
               ],
               validationType: {
                 value: 'namePartValidationTypeId',
+                required: true,
               },
+              required: true,
             },
             namePart: {
               value: 'value1',
+              required: true,
             },
             namePart_language_eng: {
               value: 'value2',
               _language: 'eng',
+              required: true,
             },
           },
         },
@@ -907,51 +990,67 @@ describe('transformRecord', () => {
             recordInfo: {
               createdBy: {
                 value: '161616',
+                required: true,
               },
               dataDivider: {
                 value: 'divaData',
+                required: true,
               },
               id: {
                 value: 'divaOutputSwepub:2087392797647370',
+                required: true,
               },
               tsCreated: {
                 value: '2024-09-13T11:49:37.288927Z',
+                required: true,
               },
               type: {
                 value: 'namePartPartWithAttributesRecordTypeId',
+                required: true,
               },
               updated: [
                 {
                   repeatId: '0',
                   tsUpdated: {
                     value: '2024-09-13T11:49:37.288927Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '1',
                   tsUpdated: {
                     value: '2024-09-13T11:49:54.085586Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
                 {
                   repeatId: '2',
                   tsUpdated: {
                     value: '2024-09-16T08:00:42.892622Z',
+                    required: true,
                   },
                   updatedBy: {
                     value: '161616',
+                    required: true,
                   },
+                  required: true,
                 },
               ],
               validationType: {
                 value: 'namePartPartWithAttributesValidationTypeId',
+                required: true,
               },
+              required: true,
             },
             namePart_language_eng: {
               value: 'value2',
@@ -1032,27 +1131,35 @@ describe('transformRecord', () => {
             recordInfo: {
               dataDivider: {
                 value: 'diva',
+                required: true,
               },
               id: {
                 value: 'divaOutput:519333261463755',
+                required: true,
               },
 
               type: {
                 value: 'manuscriptRecordTypeId',
+                required: true,
               },
               validationType: {
                 value: 'manuscript',
+                required: true,
               },
+              required: true,
             },
             title: {
               mainTitle: {
                 value: 'aaaaaa',
+                required: true,
               },
               _language: 'kal',
+              required: true,
             },
             alternativeTitle: {
               mainTitle: {
                 value: 'bbbbb',
+                required: true,
               },
               subTitle: {
                 value: 'subTitle1',
@@ -1107,6 +1214,7 @@ describe('transformRecord', () => {
         divaOutput: {
           title: {
             value: 'testTitleVal',
+            required: true,
           },
         },
       };
@@ -1155,7 +1263,9 @@ describe('transformRecord', () => {
           childGroup: {
             title: {
               value: 'testTitleVal',
+              required: true,
             },
+            required: true,
           },
         },
       };
@@ -1201,9 +1311,11 @@ describe('transformRecord', () => {
         divaOutput: {
           title: {
             value: 'testTitleVal',
+            required: true,
           },
           age: {
             value: '12',
+            required: true,
           },
         },
       };
@@ -1264,6 +1376,7 @@ describe('transformRecord', () => {
           ],
           exampleNumberVarTwo: {
             value: '99.00',
+            required: true,
           },
         },
       };
@@ -1453,13 +1566,17 @@ describe('transformRecord', () => {
               repeatId: '0',
               title: {
                 value: 'testTitleVal1',
+                required: true,
               },
+              required: true,
             },
             {
               repeatId: '1',
               title: {
                 value: 'testTitleVal2',
+                required: true,
               },
+              required: true,
             },
           ],
         },
@@ -1504,6 +1621,7 @@ describe('transformRecord', () => {
         divaOutput: {
           nationalSubjectCategory: {
             value: 'nationalSubjectCategory:6325370460697648',
+            required: true,
           },
         },
       };
@@ -1571,11 +1689,13 @@ describe('transformRecord', () => {
               value: 'nationalSubjectCategory:6325370460697648',
               _language: 'eng',
               repeatId: '0',
+              required: true,
             },
             {
               value: 'nationalSubjectCategory:6325370460697641',
               _language: 'swe',
               repeatId: '1',
+              required: true,
             },
           ],
         },
@@ -1633,10 +1753,12 @@ describe('transformRecord', () => {
           subject_language_eng: {
             value: 'value1',
             _language: 'eng',
+            required: true,
           },
           subject_language_swe: {
             value: 'value2',
             _language: 'swe',
+            required: true,
           },
         },
       };
@@ -1686,10 +1808,12 @@ describe('transformRecord', () => {
         divaOutput: {
           subject: {
             value: 'value1',
+            required: true,
           },
           subject_language_swe: {
             value: 'value2',
             _language: 'swe',
+            required: true,
           },
         },
       };
@@ -1769,7 +1893,9 @@ describe('transformRecord', () => {
             _lang: 'ady',
             title: {
               value: 'EN utmärkt titel',
+              required: true,
             },
+            required: true,
           },
           titleInfo_type_alternative: [
             {
@@ -1778,6 +1904,7 @@ describe('transformRecord', () => {
               repeatId: '7',
               title: {
                 value: 'EN utmärkt alternativ titel',
+                required: true,
               },
             },
           ],
@@ -1837,10 +1964,12 @@ describe('transformRecord', () => {
           domain_language_eng: {
             value: 'hb',
             _language: 'eng',
+            required: true,
           },
           domain_language_swe: {
             value: 'uu',
             _language: 'swe',
+            required: true,
           },
         },
       };
@@ -1917,10 +2046,12 @@ describe('transformRecord', () => {
           nationalSubjectCategory_language_swe: {
             value: 'nationalSubjectCategory:1111111111111111',
             _language: 'swe',
+            required: true,
           },
           nationalSubjectCategory_language_eng: {
             value: 'nationalSubjectCategory:2222222222222222',
             _language: 'eng',
+            required: true,
           },
         },
       };
@@ -2003,13 +2134,17 @@ describe('transformRecord', () => {
             _language: 'eng',
             name: {
               value: 'value1',
+              required: true,
             },
+            required: true,
           },
           author_language_swe: {
             _language: 'swe',
             name: {
               value: 'value2',
+              required: true,
             },
+            required: true,
           },
         },
       };
@@ -2060,10 +2195,12 @@ describe('transformRecord', () => {
         output: {
           namePart: {
             value: 'value1',
+            required: true,
           },
           namePart_language_swe: {
             value: 'value1',
             _language: 'swe',
+            required: true,
           },
         },
       };
@@ -2179,9 +2316,11 @@ describe('transformRecord', () => {
               someLinkedRecordRootGroup: {
                 someTextVariable: {
                   value: 'value1',
+                  required: true,
                 },
               },
             },
+            required: true,
           },
         },
       };
@@ -2512,6 +2651,7 @@ describe('transformRecord', () => {
         divaOutput: {
           title: {
             value: 'testTitleVal',
+            required: true,
           },
         },
       };
@@ -2563,11 +2703,88 @@ describe('transformRecord', () => {
             id: 'binary:8037579210342018',
             mimeType: 'audio/mpeg',
             name: 'master',
+            required: true,
           },
         },
       };
 
       expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should transform finalValue', () => {
+      const data = {
+        name: 'root',
+        children: [
+          {
+            name: 'someFinalValueName',
+            value: 'someFinalValue',
+          },
+        ],
+      };
+
+      const metadata: FormMetaData = {
+        type: 'group',
+        name: 'root',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            name: 'someFinalValueName',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            finalValue: 'someFinalValue',
+          },
+        ],
+      };
+
+      const transformedData = transformRecordData(data, metadata, dependencies);
+
+      expect(transformedData).toStrictEqual({
+        root: {
+          someFinalValueName: {
+            value: 'someFinalValue',
+            final: true,
+            required: true,
+          },
+        },
+      });
+    });
+  });
+
+  it('should use finalValue from metadata over data', () => {
+    const data = {
+      name: 'root',
+      children: [
+        {
+          name: 'someFinalValueName',
+          value: 'valueInData',
+        },
+      ],
+    };
+
+    const metadata: FormMetaData = {
+      type: 'group',
+      name: 'root',
+      repeat: { repeatMin: 1, repeatMax: 1 },
+      children: [
+        {
+          name: 'someFinalValueName',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          finalValue: 'valueInMetadata',
+        },
+      ],
+    };
+
+    const transformedData = transformRecordData(data, metadata, dependencies);
+
+    expect(transformedData).toStrictEqual({
+      root: {
+        someFinalValueName: {
+          value: 'valueInMetadata',
+          final: true,
+          required: true,
+        },
+      },
     });
   });
 
@@ -2626,6 +2843,7 @@ describe('transformRecord', () => {
         master: {
           resourceId: {
             value: 'binary:8037579210342018-master',
+            required: true,
           },
         },
       },
@@ -2789,6 +3007,7 @@ describe('transformRecord', () => {
               sv: 'Uppsala universitet',
             },
             linkedRecord: { organisation: {} },
+            required: true,
           },
         },
       });
@@ -2862,6 +3081,7 @@ describe('transformRecord', () => {
               sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
             },
             linkedRecord: { organisation: {} },
+            required: true,
           },
         },
       });
@@ -2934,6 +3154,7 @@ describe('transformRecord', () => {
           someOrganisationRecordLink: {
             value: 'someNonExistingOrganisationId',
             linkedRecord: { organisation: {} },
+            required: true,
           },
         },
       });

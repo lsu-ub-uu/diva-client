@@ -69,8 +69,9 @@ describe('Book', () => {
           end: { __text: { en: 'End page' }, value: '34' },
         },
       },
-      relatedItem_otherType_link_type_series: [
+      relatedItem_type_series: [
         {
+          _otherType: 'link',
           __text: {
             en: 'Series',
           },
@@ -86,9 +87,8 @@ describe('Book', () => {
           },
           partNumber: { __text: { en: 'Part number' }, value: '1' },
         },
-      ],
-      relatedItem_otherType_text_type_series: [
         {
+          _otherType: 'other',
           __text: {
             en: 'Series',
           },

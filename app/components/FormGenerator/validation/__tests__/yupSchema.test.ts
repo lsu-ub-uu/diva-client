@@ -1199,6 +1199,92 @@ describe('yupSchema', async () => {
 
     await expect(yupSchema.isValid(data)).resolves.toBe(true);
   });
+
+  it('should not validate hidden fields', async () => {
+    const formSchema = {
+      presentationId: 'organisationUpdatePGroup',
+      type: 'group',
+      name: 'organisation',
+      mode: 'input',
+      tooltip: {
+        title: 'topOrganisationNewGroupText',
+        body: 'topOrganisationNewGroupDefText',
+      },
+      label: 'topOrganisationNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      components: [
+        {
+          presentationId: 'namePartPVar',
+          name: 'namePart',
+          mode: 'input',
+          tooltip: {
+            title: 'namePartTextVarText',
+            body: 'namePartTextVarDefText',
+          },
+          label: 'namePartTextVarText',
+          showLabel: true,
+          type: 'textVariable',
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [],
+          gridColSpan: 12,
+          inputType: 'input',
+        },
+        {
+          type: 'hidden',
+          name: 'genre',
+          finalValue: 'topOrganisation',
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'type',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'organisationTypeTypeCollectionVarText',
+                body: 'organisationTypeTypeCollectionVarDefText',
+              },
+              label: 'organisationTypeTypeCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'organisationType',
+                  label: 'organisationTypeItemText',
+                },
+              ],
+              finalValue: 'organisationType',
+            },
+          ],
+          attributesToShow: 'none',
+        },
+      ],
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      gridColSpan: 12,
+    };
+
+    const data = {
+      organisation: {
+        namePart: { value: 'Some organisation' },
+      },
+    };
+
+    const yupSchema = generateYupSchemaFromFormSchema({
+      form: formSchema,
+    } as FormSchema);
+
+    await expect(yupSchema.isValid(data)).resolves.toBe(true);
+  });
 });
 
 describe('grandparent value validation', () => {

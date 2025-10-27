@@ -17,25 +17,24 @@
  */
 
 import type { Option } from '@/components';
-import { useTranslation } from 'react-i18next';
-import styles from './AttributeSelect.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { OutputField } from '@/components/FormGenerator/components/OutputField';
+import {
+  findOptionLabelByValue,
+  getErrorMessageForField,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponentMode,
   FormComponentTooltip,
   FormComponentWithData,
 } from '@/components/FormGenerator/types';
-import { Select } from '@/components/Input/Select';
-import {
-  findOptionLabelByValue,
-  getErrorMessageForField,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { OutputField } from '@/components/FormGenerator/components/OutputField';
-import { Controller, useWatch } from 'react-hook-form';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
-import { useHydrated } from '@/utils/useHydrated';
 import { Fieldset } from '@/components/Input/Fieldset';
-import { HiddenInput } from './HiddenInput';
+import { Select } from '@/components/Input/Select';
+import { useHydrated } from '@/utils/useHydrated';
+import { Controller, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import styles from './AttributeSelect.module.css';
 
 interface AttributeSelectProps {
   name: string;
@@ -74,26 +73,20 @@ export const AttributeSelect = ({
   }
 
   if (attributesToShow === 'none') {
-    if (value) {
-      return <HiddenInput name={name} value={value} />;
-    }
     return null;
   }
 
   if (finalValue || displayMode === 'output') {
     return (
-      <>
-        {attributesToShow === 'all' && (
-          <OutputField
-            className={styles['attribute-select']}
-            variant='inline'
-            label={t(label)}
-            value={findOptionLabelByValue(options, value)}
-            path={name}
-          />
-        )}
-        <HiddenInput name={name} value={value} />
-      </>
+      attributesToShow === 'all' && (
+        <OutputField
+          className={styles['attribute-select']}
+          variant='inline'
+          label={t(label)}
+          value={findOptionLabelByValue(options, value)}
+          path={name}
+        />
+      )
     );
   }
 

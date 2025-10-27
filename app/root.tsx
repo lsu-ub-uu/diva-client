@@ -42,17 +42,20 @@ import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 import Login from '@/components/Layout/Header/Login/Login';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import { getRecordTypes } from '@/data/getRecordTypes';
+import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
+import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
+import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
 import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
+import { AuthLogger } from './components/dev/AuthLogger';
 import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
 import {
   parseUserPreferencesCookie,
@@ -61,8 +64,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
-import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
 
 const { MODE } = import.meta.env;
 
@@ -78,6 +79,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const recordTypes = getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
+  const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
 
   return {
     user,
@@ -88,6 +90,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     recordTypes,
     userPreferences,
     notification,
+    userCanEditMemberSettings,
+    auth,
   };
 }
 
@@ -229,7 +233,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 export default function App({ loaderData }: Route.ComponentProps) {
   useSessionAutoRenew();
   useDevModeSearchParam();
-  const { userPreferences, member, loginUnits, appTokenLogins } = loaderData;
+  const {
+    userPreferences,
+    member,
+    loginUnits,
+    appTokenLogins,
+    userCanEditMemberSettings,
+    auth,
+  } = loaderData;
+
   return (
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
@@ -248,6 +260,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
           recordTypes={loaderData.recordTypes}
           loginUnits={loginUnits}
           appTokenLogins={appTokenLogins}
+          editableMember={
+            userCanEditMemberSettings && member ? member.id : undefined
+          }
         />
       </header>
 
@@ -255,6 +270,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <Breadcrumbs />
         <Outlet />
       </div>
+      <AuthLogger auth={auth} />
     </div>
   );
 }

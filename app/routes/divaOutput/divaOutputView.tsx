@@ -3,10 +3,8 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
-import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import {
-  data,
   Form,
   href,
   isRouteErrorResponse,
@@ -21,14 +19,15 @@ import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { externalCoraApiUrl } from '@/cora/helper.server';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
+import { assertDefined } from '@/utils/invariant';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { assertDefined } from '@/utils/invariant';
 
 export const loader = async ({
   request,
@@ -62,10 +61,7 @@ export const loader = async ({
       origin,
     };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw data(error?.response?.data, { status: error.status });
-    }
-    throw error;
+    throw createRouteErrorResponse(error);
   }
 };
 

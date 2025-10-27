@@ -178,7 +178,11 @@ export const transformDataGroup = (
       ...transformData(dataChild, matchingMetadata, dependencies),
       ...transformAttributes(dataChild.attributes),
     };
+    if (isRequired(matchingMetadata)) {
+      transformedChild.required = true;
+    }
     const repeating = isRepeating(matchingMetadata);
+
     if (repeating) {
       group[name] ??= [];
       transformedChild.repeatId = dataChild.repeatId;
@@ -215,7 +219,7 @@ const transformData = (
       metadata.type,
     )
   ) {
-    return transformDataAtomic(data as DataAtomic);
+    return transformDataAtomic(data as DataAtomic, metadata);
   }
 
   if (metadata.type === 'resourceLink') {
@@ -223,7 +227,7 @@ const transformData = (
   }
 
   console.warn('Unhandled metadata type', metadata.type);
-  return transformDataAtomic(data as DataAtomic);
+  return transformDataAtomic(data as DataAtomic, metadata);
 };
 
 const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
@@ -303,8 +307,17 @@ const transformLinkedRecord = (
   return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
 
-const transformDataAtomic = (data: DataAtomic) => {
-  return { value: data.value };
+const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
+  if (metadata.finalValue) {
+    return {
+      value: metadata.finalValue,
+      final: true,
+    };
+  }
+
+  return {
+    value: data.value,
+  };
 };
 
 const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {
@@ -411,4 +424,8 @@ export const transformAttributes = (attributes: Attributes | undefined) => {
 
 export const isRepeating = (metadata: FormMetaData) => {
   return metadata.repeat.repeatMax > 1;
+};
+
+export const isRequired = (metadata: FormMetaData) => {
+  return metadata.repeat.repeatMin > 0;
 };

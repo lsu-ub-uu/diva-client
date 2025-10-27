@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
@@ -35,6 +36,7 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import type { BFFDataRecordData } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
@@ -55,6 +57,9 @@ export const loader = async ({
   const { auth, notification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
+  const member = getMemberFromHostname(request, dependencies);
+  const user = auth && createUser(auth);
+
   let validationTypeId = url.searchParams.get('validationType');
   if (!auth) {
     throw data(null, { status: 401 });
@@ -90,6 +95,7 @@ export const loader = async ({
       validationTypeId,
       'create',
     );
+
     previewFormDefinition = await getFormDefinitionByValidationTypeId(
       dependencies,
       validationTypeId,
@@ -102,7 +108,12 @@ export const loader = async ({
     throw error;
   }
 
-  const defaultValues = createDefaultValuesFromFormSchema(formDefinition);
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formDefinition,
+    undefined,
+    member,
+    user,
+  );
 
   const rootGroupTitleTextId =
     formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
@@ -270,9 +281,6 @@ export default function CreateRecordRoute({
 
           {deferredPreviewData && (
             <div className='preview'>
-              <h2 className='preview-heading'>
-                {t('divaClient_formPreviewHeadingText')}
-              </h2>
               <ReadOnlyForm
                 recordData={deferredPreviewData}
                 formSchema={previewFormDefinition}

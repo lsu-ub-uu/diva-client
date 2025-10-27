@@ -24,6 +24,7 @@ import { Button } from '@/components/Button/Button';
 import { ChevronDownIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
+import React from 'react';
 
 interface MemberBarProps {
   member: BFFMember | undefined;
@@ -56,10 +57,16 @@ export const MemberBar = ({
   return (
     <section
       className={styles['member-bar']}
-      style={{
-        backgroundColor: member.backgroundColor,
-        color: member.textColor,
-      }}
+      style={
+        {
+          '--member-background-color': member.backgroundColor,
+          '--member-text-color': member.textColor,
+          '--member-background-color-dark-mode':
+            member.backgroundColorDarkMode || member.backgroundColor,
+          '--member-text-color-dark-mode':
+            member.textColorDarkMode || member.textColor,
+        } as React.CSSProperties
+      }
       aria-label={member.pageTitle[lang]}
     >
       {member.logo.svg && (

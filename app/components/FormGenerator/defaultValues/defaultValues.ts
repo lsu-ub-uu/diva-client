@@ -17,14 +17,20 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { User } from '@/auth/createUser';
 import {
   isComponentContainer,
+  isComponentHidden,
+  isComponentRecordLink,
   isComponentRepeating,
+  isComponentRequired,
   isComponentValidForDataCarrying,
   isComponentVariable,
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
+import { getAutoPermissionUnit } from '@/utils/getAutoPermissionUnit';
 import type {
   FormAttributeCollection,
   FormComponent,
@@ -42,9 +48,14 @@ export interface RecordData {
 export const createDefaultValuesFromFormSchema = (
   formSchema: FormSchema,
   existingRecordData: RecordData | undefined = undefined,
+  member?: BFFMember,
+  user?: User,
 ) => {
   const formSchemaDefaultValues = createDefaultValuesFromComponent(
     formSchema.form,
+    false,
+    member,
+    user,
   );
 
   if (existingRecordData !== undefined) {
@@ -62,6 +73,8 @@ export const createDefaultValuesFromFormSchema = (
 export const createDefaultValuesFromComponent = (
   component: FormComponentWithData | FormComponentContainer,
   forceDefaultValuesForAppend = false,
+  member?: BFFMember,
+  user?: User,
 ) => {
   let defaultValues: {
     [x: string]:
@@ -72,14 +85,15 @@ export const createDefaultValuesFromComponent = (
       | unknown[];
   } = {};
 
-  const formDefaultObject = isComponentVariable(component)
-    ? createDefaultValuesForVariable(component)
-    : createDefaultValuesForGroup(component);
+  const formDefaultObject = createFormDefaultObject(component, member, user);
 
   if (forceDefaultValuesForAppend) {
     defaultValues = { ...formDefaultObject, repeatId: generateRepeatId() };
   } else {
-    if (
+    if (isComponentHidden(component)) {
+      defaultValues[addAttributesToName(component, component.name)] =
+        formDefaultObject;
+    } else if (
       component.repeat?.repeatMin === 0 &&
       component.repeat?.repeatMax === 1
     ) {
@@ -219,30 +233,58 @@ function createDefaultValueForNonRepeating(
     formDefaultObject;
 }
 
+function createFormDefaultObject(
+  component: FormComponent,
+  member?: BFFMember,
+  user?: User,
+) {
+  if (isAutoPermissionUnitRecordLink(component)) {
+    return { value: getAutoPermissionUnit(member, user) ?? '' };
+  }
+
+  if (isComponentHidden(component)) {
+    return {
+      value: component.finalValue,
+      final: true,
+      ...generateComponentAttributes(component),
+    };
+  }
+  if (isComponentVariable(component)) {
+    return createDefaultValuesForVariable(component);
+  }
+
+  return createDefaultValuesForGroup(component, member, user);
+}
+
 function createDefaultValuesForVariable(component: FormComponentWithData) {
   return {
     value: createDefaultValueFromFinalValue(component),
+    ...(component.finalValue ? { final: true } : {}),
     ...generateComponentAttributes(component),
   };
 }
 
 function createDefaultValuesForGroup(
   component: FormComponentGroup | FormComponentContainer,
+  member?: BFFMember,
+  user?: User,
 ) {
   return {
-    // groups
-    ...createDefaultValuesFromComponents(component.components),
+    ...createDefaultValuesFromComponents(component.components, member, user),
     ...generateComponentAttributes(component),
+    ...(isComponentRequired(component) ? { required: true } : {}),
   };
 }
 
 export const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
+  member?: BFFMember,
+  user?: User,
 ): { [p: string]: any } => {
   const formDefaultValuesArray = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) =>
-      createDefaultValuesFromComponent(formComponent, false),
+      createDefaultValuesFromComponent(formComponent, false, member, user),
     );
 
   return formDefaultValuesArray.reduce(
@@ -321,4 +363,13 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
   }));
 
   return createFieldNameWithAttributes(name, attributes);
+};
+
+const isAutoPermissionUnitRecordLink = (
+  component: FormComponentWithData | FormComponentContainer,
+) => {
+  if (!isComponentRecordLink(component)) {
+    return false;
+  }
+  return component.presentAs === 'permissionUnit' && component.mode === 'input';
 };
