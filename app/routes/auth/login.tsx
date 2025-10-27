@@ -14,7 +14,6 @@ import {
   href,
   isRouteErrorResponse,
   redirect,
-  useRouteLoaderData,
   useSubmit,
 } from 'react-router';
 
@@ -26,11 +25,11 @@ import { Button } from '@/components/Button/Button';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { useLoginUnits } from '@/utils/rootLoaderDataUtils';
 import { i18nContext } from 'server/i18n';
 import css from './login.css?url';
 import { PasswordLogin } from './PasswordLogin';
 import { WebRedirectLogin } from './WebRedirectLogin';
-import { useLoginUnits } from '@/utils/rootLoaderDataUtils';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
@@ -161,9 +160,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   );
 
   const selectedLoginUnit = loginUnit
-    ? loginUnits.find(
-        (unit: LoginDefinition) => unit.loginDescription === loginUnit,
-      )
+    ? loginUnits.find((unit: LoginDefinition) => unit.id === loginUnit)
     : undefined;
 
   if (selectedLoginUnit?.type === 'password') {
@@ -193,11 +190,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
             <ul>
               {passwordLoginUnits.map((unit: LoginDefinition) => (
                 <li key={unit.id}>
-                  <Button
-                    type='submit'
-                    name='loginUnit'
-                    value={unit.loginDescription}
-                  >
+                  <Button type='submit' name='loginUnit' value={unit.id}>
                     {t(unit.loginDescription)}
                   </Button>
                 </li>

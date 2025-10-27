@@ -19,7 +19,7 @@
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { href, Link } from 'react-router';
 
 interface PasswordLoginOptionsProps {
   passwordLoginUnits: LoginDefinition[];
@@ -37,10 +37,13 @@ export const PasswordLoginOptions = ({
   return (
     <>
       <h2>{t('divaClient_LoginPasswordText')}</h2>
-      {passwordLoginUnits.map(({ loginDescription }) => (
+      {passwordLoginUnits.map(({ loginDescription, id }) => (
         <MenuItem key='tempLoginUnitPassword'>
           <Link
-            to={`/login?loginUnit=${loginDescription}&returnTo=${returnTo}`}
+            to={{
+              pathname: href('/login'),
+              search: `?loginUnit=${id}&returnTo=${returnTo}`,
+            }}
           >
             {t(loginDescription)}
           </Link>

@@ -56,7 +56,10 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
   const { t } = useTranslation();
   const location = useLocation();
   const navigation = useNavigation();
-  const returnTo = encodeURIComponent(location.pathname + location.search);
+
+  const searchParams = new URLSearchParams(location.search);
+  const returnTo =
+    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`;
 
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
