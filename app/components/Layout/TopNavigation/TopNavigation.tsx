@@ -25,6 +25,7 @@ export interface TopNavigationLink {
 
 export interface TopNavigationProps {
   recordTypes: BFFRecordType[];
+  onNavigationClick: () => void;
 }
 
 const icons: Record<string, ReactNode> = {
@@ -57,7 +58,10 @@ const sortOrder = [
   'diva-funder',
 ];
 
-export const TopNavigation = ({ recordTypes }: TopNavigationProps) => {
+export const TopNavigation = ({
+  recordTypes,
+  onNavigationClick,
+}: TopNavigationProps) => {
   const { t } = useTranslation();
   if (recordTypes.length < 2) {
     return null;
@@ -81,6 +85,7 @@ export const TopNavigation = ({ recordTypes }: TopNavigationProps) => {
                 to={`/${recordType.id}`}
                 label={t(recordType.textId)}
                 icon={icons[recordType.id]}
+                onClick={onNavigationClick}
               />
             </li>
           ))}

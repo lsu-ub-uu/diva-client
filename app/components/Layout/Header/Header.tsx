@@ -32,17 +32,10 @@ import {
   MemberSettingsIcon,
   MenuIcon,
 } from '@/icons';
-import { useIsDevMode } from '@/utils/useIsDevMode';
+import { isDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { Suspense, useEffect, useState } from 'react';
-import {
-  Await,
-  Form,
-  href,
-  Link,
-  useLocation,
-  useNavigation,
-} from 'react-router';
+import { Suspense, useState } from 'react';
+import { Await, Form, href, Link, useLocation } from 'react-router';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -60,16 +53,9 @@ export const Header = ({
 }: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
-  const devMode = useIsDevMode();
-  const navigation = useNavigation();
+  const devMode = isDevMode();
 
   const [headerShown, setHeaderShown] = useState(false);
-
-  useEffect(() => {
-    if (navigation.state !== 'idle') {
-      setHeaderShown(false);
-    }
-  }, [navigation.state]);
 
   return (
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
@@ -82,7 +68,10 @@ export const Header = ({
           <Suspense>
             <Await resolve={recordTypes} errorElement={<div />}>
               {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
+                <TopNavigation
+                  recordTypes={resolvedRecordType}
+                  onNavigationClick={() => setHeaderShown(false)}
+                />
               )}
             </Await>
           </Suspense>
@@ -146,7 +135,10 @@ export const Header = ({
           <Suspense>
             <Await resolve={recordTypes} errorElement={<div />}>
               {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
+                <TopNavigation
+                  recordTypes={resolvedRecordType}
+                  onNavigationClick={() => setHeaderShown(false)}
+                />
               )}
             </Await>
           </Suspense>

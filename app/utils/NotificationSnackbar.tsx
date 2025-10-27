@@ -16,10 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect, useState } from 'react';
-import { useNavigation } from 'react-router';
 import type { Notification } from '@/auth/sessions.server';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
+import { useState } from 'react';
 
 interface NotificationSnackbarProps {
   notification: Notification | undefined;
@@ -28,14 +27,13 @@ interface NotificationSnackbarProps {
 export const NotificationSnackbar = ({
   notification,
 }: NotificationSnackbarProps) => {
-  const navigation = useNavigation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(notification !== undefined);
+  const [prevNotification, setPrevNotification] = useState(notification);
 
-  useEffect(() => {
-    if (notification && navigation.state === 'idle') {
-      setSnackbarOpen(true);
-    }
-  }, [notification, navigation.state]);
+  if (notification !== prevNotification) {
+    setPrevNotification(notification);
+    setSnackbarOpen(notification !== undefined);
+  }
 
   return (
     <Snackbar

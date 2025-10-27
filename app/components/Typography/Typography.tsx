@@ -63,6 +63,8 @@ export const Typography = ({
   const Root = as ?? mapTextStyleToComponent(variant);
 
   return (
+    // FIXME fix this lint error
+    // eslint-disable-next-line react-hooks/static-components
     <Root
       className={clsx(styles.typography, className)}
       data-variant={variant}

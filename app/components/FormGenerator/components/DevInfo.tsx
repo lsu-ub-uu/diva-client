@@ -20,7 +20,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import type { FormComponent } from '@/components/FormGenerator/types';
 import { DataObjectIcon } from '@/icons';
-import { useIsDevMode } from '@/utils/useIsDevMode';
+import { isDevMode } from '@/utils/useIsDevMode';
 import { use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import styles from './DevInfo.module.css';
@@ -70,7 +70,7 @@ export const DevInfo = ({ label, component, path }: DevInfoProps) => {
 };
 
 export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
-  const devMode = useIsDevMode();
+  const devMode = isDevMode();
 
   if (!devMode) {
     return null;

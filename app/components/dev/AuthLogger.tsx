@@ -1,10 +1,10 @@
 import type { Auth } from '@/auth/Auth';
-import { useIsDevMode } from '@/utils/useIsDevMode';
+import { isDevMode } from '@/utils/useIsDevMode';
 import { isEqual } from 'lodash-es';
 import { useEffect, useState } from 'react';
 
 export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
-  const isDev = useIsDevMode();
+  const isDev = isDevMode();
   const [expanded, setExpanded] = useState(false);
   const [log, setLog] = useState<
     { timestamp: number; auth: Auth | undefined }[]
@@ -13,6 +13,7 @@ export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
   useEffect(() => {
     const prevAuth = log.at(-1)?.auth;
     if (!isEqual(auth, prevAuth)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLog((l) => [...l, { timestamp: Date.now(), auth }]);
     }
   }, [auth, log]);

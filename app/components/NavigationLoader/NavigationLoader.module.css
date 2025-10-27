@@ -21,4 +21,12 @@ div.navigation-loader {
   top: 0;
   left: 0;
   right: 0;
+  opacity: 0;
+  animation: delayedFadeIn 0.1s ease-in-out 0.5s forwards;
+}
+
+@keyframes delayedFadeIn {
+  to {
+    opacity: 1;
+  }
 }
