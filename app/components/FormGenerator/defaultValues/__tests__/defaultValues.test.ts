@@ -80,6 +80,7 @@ describe('defaultValues', () => {
       it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someNameInData: {
               value: '',
             },
@@ -97,6 +98,7 @@ describe('defaultValues', () => {
       it('should take a formDef with a surrounding container and make default values object with that object level left out', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someNameInData: {
               value: '',
             },
@@ -111,6 +113,7 @@ describe('defaultValues', () => {
       it('should take a formDef with a repeating container and make default values object with that object level left out', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someNameInData: [
               {
                 value: '',
@@ -141,6 +144,7 @@ describe('defaultValues', () => {
             },
 
             firstChildGroup: {
+              required: true,
               exampleNumberVar: {
                 value: '',
               },
@@ -148,7 +152,10 @@ describe('defaultValues', () => {
                 value: '',
               },
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
+            required: true,
           },
         };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -187,7 +194,10 @@ describe('defaultValues', () => {
                 repeatId: 'uuid-mock',
               },
             ],
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
+            required: true,
           },
         };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -199,7 +209,9 @@ describe('defaultValues', () => {
       it('should construct a default value object for one single group having textVar as child component', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someChildGroupNameInData: {
+              required: true,
               someNameInData: {
                 value: '',
               },
@@ -216,7 +228,9 @@ describe('defaultValues', () => {
       it('merges two component trees with with same names', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someGroupNameInData: {
+              required: true,
               someNameInData: {
                 value: '',
               },
@@ -235,9 +249,11 @@ describe('defaultValues', () => {
       it('should merge a group with alternative presentations with SContainers fist smaller', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             affiliation: [
               {
                 repeatId: 'uuid-mock',
+                required: true,
                 someTextVar: { value: '' },
                 someOtherTextVar: { value: '' },
               },
@@ -254,9 +270,11 @@ describe('defaultValues', () => {
       it('should merge a group with alternative presentations with SContainers second smaller', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             affiliation: [
               {
                 repeatId: 'uuid-mock',
+                required: true,
                 someTextVar: { value: '' },
                 someOtherTextVar: { value: '' },
               },
@@ -308,6 +326,7 @@ describe('defaultValues', () => {
 
         expect(defaultValues).toStrictEqual({
           root: {
+            required: true,
             someGroup: {
               someTextVar: {
                 value: '',
@@ -380,6 +399,7 @@ describe('defaultValues', () => {
 
         expect(defaultValues).toStrictEqual({
           root: {
+            required: true,
             someGroup: {
               someTextVar: {
                 value: '',
@@ -429,6 +449,7 @@ describe('defaultValues', () => {
 
         expect(defaultValues).toStrictEqual({
           root: {
+            required: true,
             somePermissionUnitLinkName: { value: 'somePermissionUnit' },
           },
         });
@@ -457,6 +478,7 @@ describe('defaultValues', () => {
         const expectedDefaultValues = {
           repeatId: 'uuid-mock',
           titleInfo: {
+            required: true,
             title: {
               value: '',
             },
@@ -599,6 +621,7 @@ describe('defaultValues', () => {
       it('should construct a default value object for textVariables with same NameInData', () => {
         const expectedDefaultValues = {
           secondChildGroup: {
+            required: true,
             exampleNumberVar_language_eng: {
               _language: 'eng',
               final: true,
@@ -738,7 +761,9 @@ describe('defaultValues', () => {
       it('should construct a default value object for groups with same NameInData', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             author_language_uwu: {
+              required: true,
               _language: 'uwu',
               givenName: {
                 value: '',
@@ -748,6 +773,7 @@ describe('defaultValues', () => {
               },
             },
             author_language_nau: {
+              required: true,
               _language: 'nau',
               givenName: {
                 value: '',
@@ -974,6 +1000,7 @@ describe('defaultValues', () => {
       it('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: 'someFinalValue',
               final: true,
@@ -983,6 +1010,7 @@ describe('defaultValues', () => {
               final: true,
             },
             firstChildGroup: {
+              required: true,
               exampleNumberVar: {
                 value: '55',
                 final: true,
@@ -992,7 +1020,9 @@ describe('defaultValues', () => {
                 final: true,
               },
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -1006,6 +1036,7 @@ describe('defaultValues', () => {
       it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: '',
               _colour: '',
@@ -1015,6 +1046,7 @@ describe('defaultValues', () => {
               _colour: '',
             },
             firstChildGroup_groupColourAgain_pink: {
+              required: true,
               exampleNumberVar: {
                 value: '',
               },
@@ -1027,7 +1059,9 @@ describe('defaultValues', () => {
               _groupColour: '',
               _groupColourAgain: 'pink',
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -1042,6 +1076,7 @@ describe('defaultValues', () => {
       it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: '',
             },
@@ -1073,6 +1108,7 @@ describe('defaultValues', () => {
               },
             ],
             firstChildGroup: {
+              required: true,
               exampleNumberVar_colour_pink: [
                 {
                   value: '',
@@ -1102,7 +1138,9 @@ describe('defaultValues', () => {
               ],
               exampleTextVar: [],
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -1116,6 +1154,7 @@ describe('defaultValues', () => {
       it('should take a formDef and make default values object but also take defaultValue override', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someNameInData: {
               value: 'testValue',
             },
@@ -1144,6 +1183,7 @@ describe('defaultValues', () => {
       it('should take a formDef with repeating textVar and make default values object but also take defaultValue override', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             someNameInData: [
               {
                 value: 'testValue',
@@ -1182,6 +1222,7 @@ describe('defaultValues', () => {
       it('should take a more complex formDef with groups and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: 'testBookTitle',
             },
@@ -1189,6 +1230,7 @@ describe('defaultValues', () => {
               value: 'override',
             },
             firstChildGroup: {
+              required: true,
               exampleNumberVar: {
                 value: '12',
               },
@@ -1196,7 +1238,9 @@ describe('defaultValues', () => {
                 value: '',
               },
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
 
@@ -1227,6 +1271,7 @@ describe('defaultValues', () => {
       it('should take a more complex formDef with groups and attributes and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: '',
               _colour: 'yellow',
@@ -1244,6 +1289,7 @@ describe('defaultValues', () => {
               },
             ],
             firstChildGroup: {
+              required: true,
               exampleNumberVar: {
                 value: '',
               },
@@ -1255,7 +1301,9 @@ describe('defaultValues', () => {
               _groupColour: 'pink',
               _groupColourAgain: 'blue',
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
 
@@ -1295,6 +1343,7 @@ describe('defaultValues', () => {
       it('should take a more complex formDef with repeating groups and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               value: 'Moby Dick',
             },
@@ -1321,7 +1370,9 @@ describe('defaultValues', () => {
                 repeatId: 'uuid-mock',
               },
             ],
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
 
@@ -1353,6 +1404,7 @@ describe('defaultValues', () => {
       it('should take a more complex formDef with finalValue default values object without overrides taking effect', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
+            required: true,
             bookTitle: {
               final: true,
               value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
@@ -1362,6 +1414,7 @@ describe('defaultValues', () => {
               value: '12',
             },
             firstChildGroup: {
+              required: true,
               exampleNumberVar: {
                 final: true,
                 value: '55',
@@ -1371,7 +1424,9 @@ describe('defaultValues', () => {
                 value: 'someText',
               },
             },
-            recordInfo: {},
+            recordInfo: {
+              required: true,
+            },
           },
         };
 
@@ -1394,6 +1449,7 @@ describe('defaultValues', () => {
     it('creates default values for alternative presentation', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
+          required: true,
           someAlternativeNameInData: {
             value: '',
           },
@@ -1940,6 +1996,7 @@ describe('defaultValues', () => {
       it('create default value from two groups with same nameInData, with attributes', () => {
         const expectedData = {
           author_language_nau: {
+            required: true,
             _language: 'nau',
             familyName: {
               value: '',
@@ -1949,6 +2006,7 @@ describe('defaultValues', () => {
             },
           },
           author_language_uwu: {
+            required: true,
             _language: 'uwu',
             familyName: {
               value: '',

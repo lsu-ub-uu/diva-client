@@ -479,6 +479,289 @@ describe('cleanFormData', () => {
     });
   });
 
+  it('does not clear group with only final values that is required', () => {
+    const testObject = {
+      root: {
+        repeatId: '1',
+        child: {
+          value: 'someFinalValue',
+          final: true,
+        },
+        groupWithOnlyFinal: {
+          required: true,
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedEmpty: {
+            value: '',
+          },
+        },
+        otherGroup: {
+          otherSubGroup: {
+            required: true,
+            emptyVar: { value: '' },
+          },
+        },
+        groupWithFinalValueAndAttribute: {
+          final: {
+            value: 'finalNextToAttr',
+            final: true,
+          },
+          _attribute: 'someAttr',
+        },
+        groupWithVarAndFinalValueAndAttribute: {
+          final: {
+            value: 'varWithFinalNextToAttr',
+            final: true,
+            _attribute: 'someOtherAttr',
+          },
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: {
+        child: {
+          value: 'someFinalValue',
+        },
+        groupWithOnlyFinal: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+          },
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    });
+  });
+
+  it('transforms a minimal person record', () => {
+    const testObject = {
+      person: {
+        recordInfo: {
+          oldId: {
+            value: null,
+          },
+          validationType: {
+            value: 'diva-person',
+            final: true,
+          },
+          dataDivider: {
+            value: 'divaData',
+            final: true,
+          },
+          required: true,
+        },
+        affiliation: [
+          {
+            endDate: {
+              day: {
+                value: null,
+              },
+              month: {
+                value: null,
+              },
+              year: {
+                value: null,
+              },
+            },
+            startDate: {
+              day: {
+                value: null,
+              },
+              month: {
+                value: null,
+              },
+              year: {
+                value: null,
+              },
+            },
+            organisation: {
+              value: null,
+            },
+            repeatId: '1761568426168',
+            name_type_corporate: {
+              namePart: {
+                value: '',
+              },
+              _type: 'corporate',
+            },
+            identifier_type_ror: {
+              value: '',
+              _type: 'ror',
+            },
+            country: {
+              value: '',
+            },
+            description: {
+              value: '',
+            },
+          },
+        ],
+        nameIdentifier_type_viaf: [
+          {
+            _type: 'viaf',
+            value: null,
+            repeatId: '1761568426168',
+          },
+        ],
+        nameIdentifier_type_scopus: [
+          {
+            _type: 'scopus',
+            value: null,
+            repeatId: '1761568426168',
+          },
+        ],
+        nameIdentifier_type_openAlex: [
+          {
+            _type: 'openAlex',
+            value: null,
+            repeatId: '1761568426168',
+          },
+        ],
+        'nameIentifier_type_se-libr': [
+          {
+            _type: 'se-libr',
+            value: null,
+            repeatId: '1761568426167',
+          },
+        ],
+        nameIdentifier_type_localId: [
+          {
+            _type: 'localId',
+            value: null,
+            repeatId: '1761568426167',
+          },
+        ],
+        nameIdentifier_type_orcid: [
+          {
+            _type: 'orcid',
+            value: null,
+            repeatId: '1761568426167',
+          },
+        ],
+        location: [
+          {
+            displayLabel: {
+              value: null,
+            },
+            url: {
+              value: null,
+            },
+            repeatId: '1761568426167',
+          },
+        ],
+        note_type_biographical: [
+          {
+            _lang: '',
+            _type: 'biographical',
+            value: null,
+            repeatId: '1761568426167',
+          },
+        ],
+        email: [
+          {
+            value: null,
+            repeatId: '1761568426167',
+          },
+        ],
+        personInfo: {
+          deathDate: {
+            day: {},
+            month: {},
+            year: {},
+          },
+          birthDate: {
+            day: {
+              value: null,
+            },
+            month: {
+              value: null,
+            },
+            year: {
+              value: null,
+            },
+          },
+        },
+        variant: {
+          name_type_personal: [
+            {
+              _type: 'personal',
+              namePart_type_given: {
+                _type: 'given',
+                value: null,
+              },
+              namePart_type_family: {
+                _type: 'family',
+                value: null,
+              },
+              required: true,
+              repeatId: '1761568426167',
+            },
+          ],
+        },
+        authority: {
+          name_type_personal: {
+            _type: 'personal',
+            namePart_type_termsOfAddress: {
+              _type: 'termsOfAddress',
+              value: null,
+            },
+            namePart_type_given: {
+              _type: 'given',
+              value: null,
+            },
+            namePart_type_family: {
+              value: 'asdsad',
+              _type: 'family',
+            },
+            required: true,
+          },
+          required: true,
+        },
+        required: true,
+      },
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      person: {
+        recordInfo: {
+          validationType: {
+            value: 'diva-person',
+          },
+          dataDivider: {
+            value: 'divaData',
+          },
+        },
+        authority: {
+          name_type_personal: {
+            _type: 'personal',
+            namePart_type_family: {
+              value: 'asdsad',
+              _type: 'family',
+            },
+          },
+        },
+      },
+    });
+  });
+
   it('handles resource link', () => {
     const testObject = {
       thumbnail: {

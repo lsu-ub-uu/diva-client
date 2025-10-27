@@ -1,18 +1,9 @@
-import { isEmpty, omitBy, pickBy } from 'lodash-es';
+import { isEmpty, pickBy } from 'lodash-es';
 
 interface ValuableDataWrapper<T> {
   data: T;
   hasValuableData: boolean;
 }
-
-export const hasOnlyAttributes = (obj: any) => {
-  return isEmpty(
-    omitBy(
-      obj,
-      (_, key) => isAttributeKey(key) || key === 'repeatId' || key === 'final',
-    ),
-  );
-};
 
 export const cleanFormData = (
   obj: Record<string, any>,
@@ -39,6 +30,7 @@ const cleanFormDataRecursively = (
 
   return { data: {}, hasValuableData: false };
 };
+
 const isObject = (obj: any) => {
   return typeof obj === 'object' && !isEmpty(obj);
 };
@@ -89,11 +81,11 @@ const cleanLeaf = (obj: Record<string, any>): ValuableDataWrapper<any> => {
   };
 };
 
-const cleanGroup = (obj: Record<string, any>): ValuableDataWrapper<any> => {
-  let valuableDataFoundInGroup = false;
+const cleanGroup = (group: Record<string, any>): ValuableDataWrapper<any> => {
+  let groupIsValuable = false;
   const cleanedObj: Record<string, any> = {};
 
-  Object.entries(obj).forEach(([key, value]) => {
+  Object.entries(group).forEach(([key, value]) => {
     if (isAttributeKey(key) && !isEmpty(value)) {
       cleanedObj[key] = value;
       return;
@@ -101,7 +93,7 @@ const cleanGroup = (obj: Record<string, any>): ValuableDataWrapper<any> => {
 
     const cleaned = cleanFormDataRecursively(value);
     if (cleaned.hasValuableData) {
-      valuableDataFoundInGroup = true;
+      groupIsValuable = true;
     }
 
     if (!isEmpty(cleaned.data)) {
@@ -110,8 +102,8 @@ const cleanGroup = (obj: Record<string, any>): ValuableDataWrapper<any> => {
   });
 
   return {
-    data: valuableDataFoundInGroup ? cleanedObj : {},
-    hasValuableData: valuableDataFoundInGroup,
+    data: groupIsValuable || group.required ? cleanedObj : {},
+    hasValuableData: groupIsValuable,
   };
 };
 
