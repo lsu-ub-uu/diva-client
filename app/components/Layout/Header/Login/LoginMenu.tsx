@@ -88,6 +88,7 @@ export default function LoginMenu({
   };
 
   const loginButtonProps: ButtonProps = {
+    disabled: submitting,
     'aria-busy': submitting,
     variant: 'tertiary',
   };
@@ -132,6 +133,7 @@ export default function LoginMenu({
       <div className={styles['login']}>
         <Menu>
           <MenuButton
+            disabled={submitting}
             aria-busy={submitting}
             className={styles['login-button']}
             as='a'
@@ -170,6 +172,7 @@ export default function LoginMenu({
           className={styles['login-button']}
           as='a'
           href={withBaseName(`/logout?returnTo=${returnTo}`)}
+          disabled={submitting}
           aria-busy={submitting}
           onClick={(e) => e.preventDefault()}
         >
