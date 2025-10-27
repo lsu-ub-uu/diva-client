@@ -19,7 +19,6 @@
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { Button } from '@/components/Button/Button';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -27,6 +26,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
+import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
@@ -41,7 +41,7 @@ import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, Form, isRouteErrorResponse, redirect } from 'react-router';
+import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
@@ -61,10 +61,11 @@ export const loader = async ({
   const user = auth && createUser(auth);
 
   let validationTypeId = url.searchParams.get('validationType');
-  if (!auth) {
-    throw data(null, { status: 401 });
-  }
+
   if (!validationTypeId) {
+    if (!auth) {
+      throw data(null, { status: 401 });
+    }
     const validationTypes = await getValidationTypes(
       params.recordType,
       auth?.data.token,
@@ -72,13 +73,18 @@ export const loader = async ({
     if (validationTypes && validationTypes.length === 1) {
       validationTypeId = validationTypes[0].value;
     } else {
+      const title = t('divaClient_createRecordText', {
+        rootGroupTitle: t(
+          dependencies.recordTypePool.get(params.recordType).textId,
+        ).toLowerCase(),
+      });
       return {
         formDefinition: undefined,
         previewFormDefinition: undefined,
         defaultValues: undefined,
         notification,
-        title: 'Skapa',
-        breadcrumb: 'Skapa',
+        title: title,
+        breadcrumb: title,
         validationTypes: await getValidationTypes(
           params.recordType,
           auth?.data.token,
@@ -223,31 +229,8 @@ export default function CreateRecordRoute({
   if (!formDefinition) {
     return (
       <main>
-        <h1>Skapa publikation</h1>
-        <h2>Välj valideringstyp</h2>
-        <Form method='GET'>
-          <ul
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-              gap: '1rem',
-              listStyle: 'none',
-            }}
-          >
-            {validationTypes!.map((type) => (
-              <li key={type.value}>
-                <Button
-                  type='submit'
-                  fullWidth
-                  name='validationType'
-                  value={type.value}
-                >
-                  {t(type.label)}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </Form>
+        <h1>{t('divaClient_selectValidationTypeText')}</h1>
+        <ValidationTypePicker validationTypes={validationTypes ?? []} />
       </main>
     );
   }

@@ -1,41 +1,16 @@
+import { logInWithWebRedirect } from '@/auth/useWebRedirectLogin';
 import { Button } from '@/components/Button/Button';
-import { messageIsFromWindowOpenedFromHere } from '@/components/Layout/Header/Login/utils/utils';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useTranslation } from 'react-i18next';
-import { useSubmit } from 'react-router';
 
 interface WebRedirectLoginProps {
   webRedirectLoginUnits: LoginDefinition[];
-  returnTo: string | null;
 }
 
-export const WebRedirectLogin = ({
+export const WebRedirectLoginOptions = ({
   webRedirectLoginUnits,
-  returnTo,
 }: WebRedirectLoginProps) => {
-  const submit = useSubmit();
   const { t } = useTranslation();
-
-  const receiveMessage = (event: MessageEvent<any>) => {
-    if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
-      window.removeEventListener('message', receiveMessage);
-      submit({
-        loginType: 'webRedirect',
-        auth: JSON.stringify(event.data),
-        returnTo: returnTo || '/',
-      });
-    }
-  };
-
-  const handleWebRedirectSelection = (url: string) => {
-    try {
-      window.open(import.meta.env.MODE === 'development' ? '/devLogin' : url);
-      window.addEventListener('message', receiveMessage);
-    } catch (e: any) {
-      console.error(e.message());
-    }
-  };
-
   return (
     <div className='login-option'>
       <h2>{t('divaClient_LoginWebRedirectText')}</h2>
@@ -50,7 +25,7 @@ export const WebRedirectLogin = ({
                 variant='secondary'
                 key={unit.id}
                 value={unit.loginDescription}
-                onClick={() => handleWebRedirectSelection(unit.url!)}
+                onClick={() => logInWithWebRedirect(unit.url!)}
               >
                 {t(unit.loginDescription)}
               </Button>

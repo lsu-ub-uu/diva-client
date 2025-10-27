@@ -71,7 +71,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('button', {
+      screen.getByRole('link', {
         name: 'divaClient_LoginText',
       }),
     );
@@ -110,7 +110,7 @@ describe('<Login/>', () => {
       render(<RoutesStub />);
 
       await user.click(
-        screen.getByRole('button', {
+        screen.getByRole('link', {
           name: 'divaClient_LoginText',
         }),
       );
@@ -156,6 +156,7 @@ describe('<Login/>', () => {
         loginDescription: 'passwordLogin',
         presentation: { foo: 'bar' },
         type: 'password',
+        id: 'passwordLoginUnit',
       } as LoginDefinition,
     ];
     const RoutesStub = createRoutesStub([
@@ -171,7 +172,7 @@ describe('<Login/>', () => {
 
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
-      '/login?presentation=%7B%22foo%22%3A%22bar%22%7D&returnTo=%2F',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2F',
     );
   });
 
@@ -207,7 +208,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('button', {
+      screen.getByRole('link', {
         name: 'divaClient_LoginText',
       }),
     );
@@ -218,5 +219,67 @@ describe('<Login/>', () => {
     expect(
       screen.getByRole('menuitem', { name: 'passwordLogin' }),
     ).toBeInTheDocument();
+  });
+
+  it('handles returnTo with search params', async () => {
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+        id: 'passwordLoginUnit',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/somepath/som_e-subpath',
+        Component: () => (
+          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
+
+    render(
+      <RoutesStub
+        initialEntries={['/somepath/som_e-subpath?someQueryParam=foo']}
+      />,
+    );
+
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+    );
+  });
+
+  it('uses existing returnTo if present', async () => {
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+        id: 'passwordLoginUnit',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
+
+    render(
+      <RoutesStub
+        initialEntries={[
+          '/login?returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+    );
   });
 });

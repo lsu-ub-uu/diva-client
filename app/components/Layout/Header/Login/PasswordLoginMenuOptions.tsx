@@ -26,7 +26,7 @@ interface PasswordLoginOptionsProps {
   returnTo: string;
 }
 
-export const PasswordLoginOptions = ({
+export const PasswordLoginMenuOptions = ({
   passwordLoginUnits,
   returnTo,
 }: PasswordLoginOptionsProps) => {

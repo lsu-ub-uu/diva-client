@@ -8,20 +8,12 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
 import { useTranslation } from 'react-i18next';
-import {
-  data,
-  Form,
-  href,
-  isRouteErrorResponse,
-  redirect,
-  useSubmit,
-} from 'react-router';
+import { data, href, isRouteErrorResponse, redirect } from 'react-router';
 
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { Route } from '../auth/+types/login';
 
-import { Button } from '@/components/Button/Button';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
@@ -29,7 +21,8 @@ import { useLoginUnits } from '@/utils/rootLoaderDataUtils';
 import { i18nContext } from 'server/i18n';
 import css from './login.css?url';
 import { PasswordLogin } from './PasswordLogin';
-import { WebRedirectLogin } from './WebRedirectLogin';
+import { PasswordLoginOptions } from './PasswordLoginOptions';
+import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
@@ -150,8 +143,6 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   const { notification, returnTo, loginUnit } = loaderData;
   const { t } = useTranslation();
 
-  const submit = useSubmit();
-
   const passwordLoginUnits = loginUnits.filter(
     (unit: LoginDefinition) => unit.type === 'password',
   );
@@ -161,12 +152,13 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 
   const selectedLoginUnit = loginUnit
     ? loginUnits.find((unit: LoginDefinition) => unit.id === loginUnit)
-    : undefined;
+    : loginUnits.length === 1
+      ? loginUnits[0]
+      : undefined;
 
   if (selectedLoginUnit?.type === 'password') {
     return (
       <main>
-        <h1>Logga in</h1>
         <PasswordLogin
           presentation={selectedLoginUnit.presentation}
           notification={notification}
@@ -180,28 +172,17 @@ export default function Login({ loaderData }: Route.ComponentProps) {
     <main>
       <h1>{t('divaClient_LoginText')}</h1>
       <div className='login-options'>
-        <div className='login-option'>
-          <h2>{t('divaClient_LoginPasswordText')}</h2>
-          <Form
-            method='GET'
-            style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}
-            onChange={(e) => submit(e.currentTarget)}
-          >
-            <ul>
-              {passwordLoginUnits.map((unit: LoginDefinition) => (
-                <li key={unit.id}>
-                  <Button type='submit' name='loginUnit' value={unit.id}>
-                    {t(unit.loginDescription)}
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </Form>
-        </div>
-        <WebRedirectLogin
-          webRedirectLoginUnits={webRedirectLoginUnits}
-          returnTo={returnTo}
-        />
+        {passwordLoginUnits.length > 0 && (
+          <PasswordLoginOptions
+            passwordLoginUnits={passwordLoginUnits}
+            returnTo={returnTo}
+          />
+        )}
+        {webRedirectLoginUnits.length > 0 && (
+          <WebRedirectLoginOptions
+            webRedirectLoginUnits={webRedirectLoginUnits}
+          />
+        )}
       </div>
     </main>
   );
