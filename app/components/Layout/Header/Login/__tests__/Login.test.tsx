@@ -17,7 +17,7 @@
  */
 
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -63,7 +63,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         ),
       },
     ]);
@@ -102,7 +102,7 @@ describe('<Login/>', () => {
         {
           path: '/',
           Component: () => (
-            <Login loginUnits={loginUnits} appTokenLogins={[]} />
+            <LoginMenu loginUnits={loginUnits} appTokenLogins={[]} />
           ),
         },
       ]);
@@ -135,7 +135,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);
@@ -163,7 +163,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);
@@ -197,7 +197,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login
+          <LoginMenu
             loginUnits={singleLoginUnits}
             appTokenLogins={singleAppTokenLogin}
           />
@@ -234,7 +234,7 @@ describe('<Login/>', () => {
       {
         path: '/somepath/som_e-subpath',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);
@@ -264,7 +264,7 @@ describe('<Login/>', () => {
       {
         path: '/login',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);

@@ -45,12 +45,15 @@ import { useUser } from '@/utils/rootLoaderDataUtils';
 import { withBaseName } from '@/utils/withBasename';
 import styles from './Login.module.css';
 
-interface LoginProps {
+interface LoginMenuProps {
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
 }
 
-export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
+export default function LoginMenu({
+  loginUnits,
+  appTokenLogins,
+}: LoginMenuProps) {
   const user = useUser();
   const fetcher = useFetcher();
   const submit = useSubmit();
