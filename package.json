@@ -16,7 +16,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
-    "test": "vitest",
+    "test": "vitest --silent",
     "test:ci": "vitest run --reporter=junit --reporter=default --outputFile=./junit-report.xml",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
