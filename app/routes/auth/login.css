@@ -5,13 +5,10 @@ main {
 form {
   display: grid;
   gap: var(--gap-l);
+  max-width: 800px;
 }
 
 .login-options {
-  form {
-    max-width: 800px;
-  }
-
   display: grid;
   gap: var(--gap-xxl);
 
