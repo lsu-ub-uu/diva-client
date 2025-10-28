@@ -33,7 +33,6 @@ import type {
 } from '../types';
 import {
   getNameInData,
-  hasValuableData,
   isComponentContainer,
   isComponentGroup,
   isComponentHidden,
@@ -43,6 +42,7 @@ import {
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
 } from '../formGeneratorUtils/formGeneratorUtils';
+import { hasValuableData } from '@/utils/cleanFormData';
 
 const REQUIRED_TEXT_ID = 'divaClient_fieldRequiredText';
 const INVALID_FORMAT_TEXT_ID = 'divaClient_fieldInvalidFormatText';

@@ -177,15 +177,6 @@ export const isComponentGroupAndOptional = (component: FormComponent) => {
   return rMin === 0;
 };
 
-export const checkIfComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentName: string,
-) => {
-  return (
-    getValues(componentName) !== '' && getValues(componentName) !== undefined
-  );
-};
-
 export const checkIfSingularComponentHasValue = (
   getValues: UseFormGetValues<FieldValues>,
   componentValue: string,
@@ -234,14 +225,6 @@ const isGVValueEmptyString = (
   componentValue: string,
 ) => {
   return getValues(componentValue)[0].value !== '';
-};
-
-export const hasValuableData = (formValues: any) => {
-  if (formValues !== undefined) {
-    const cleaned = cleanFormData(formValues);
-    return !isEmpty(cleaned);
-  }
-  return false;
 };
 
 export const checkIfValueExists = (value: unknown) => {

@@ -32,7 +32,13 @@ import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
 import { Group } from './components/Group';
-import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
+import {
+  isComponentContainer,
+  isComponentGroup,
+  isComponentWithData,
+} from './formGeneratorUtils/formGeneratorUtils';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import { formComponentHasData } from './formGeneratorUtils/formComponentHasData';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -49,7 +55,12 @@ type PresentationState = 'default' | 'alternative';
 export const AlternativePresentationSwitcher = (
   props: ComponentPresentationSwitcherProps,
 ) => {
-  const { component, currentComponentNamePath } = props;
+  const { component, currentComponentNamePath, parentPath } = props;
+
+  const {
+    getValues,
+    formState: { errors },
+  } = useRemixFormContext();
 
   const { t } = useTranslation();
 
@@ -66,11 +77,12 @@ export const AlternativePresentationSwitcher = (
     alternativePresentation,
     expanded,
   } = getAccordionConfiguration(component, currentPresentation);
-
   const [prevValidationErrors, setPrevValidationErrors] = useState(false);
-  const {
-    formState: { errors },
-  } = useRemixFormContext();
+
+  if (hasNoValuablePresentation(parentPath, component, getValues)) {
+    return null;
+  }
+
   const containsValidationError = !isEmpty(
     get(errors, currentComponentNamePath),
   );
@@ -256,4 +268,37 @@ const getInitialPresentation = (
   }
 
   return 'default';
+};
+
+const hasNoValuablePresentation = (
+  parentPath: string,
+  component: FormComponent,
+  getValues: UseFormGetValues<FieldValues>,
+) => {
+  const componentCanBeHidden = (c: FormComponent) => {
+    /*     if (c.presentationId === 'namePersonOutputPGroup') {
+      console.log('Checking namePersonOutputPGroup', c, parentPath, {
+        hasData: formComponentHasData(parentPath, c, getValues),
+      });
+    }
+ */
+    if (!isComponentWithData(c)) {
+      return false;
+    }
+
+    if (c.mode !== 'output') {
+      return false;
+    }
+
+    return !formComponentHasData(parentPath, c, getValues);
+  };
+
+  if (component.alternativePresentation === undefined) {
+    return componentCanBeHidden(component);
+  }
+
+  return (
+    componentCanBeHidden(component) &&
+    componentCanBeHidden(component.alternativePresentation)
+  );
 };

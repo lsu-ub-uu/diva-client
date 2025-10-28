@@ -21,11 +21,9 @@ import type { FormComponent } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, it, vi } from 'vitest';
 import {
-  checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
   checkIfValueExists,
   exportForTesting,
-  hasValuableData,
   isComponentContainer,
   isComponentGroup,
   isComponentGroupAndOptional,
@@ -38,6 +36,7 @@ import {
   isComponentVariable,
   isFirstLevelGroup,
 } from '../formGeneratorUtils';
+import { hasValuableData } from '@/utils/cleanFormData';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {
@@ -1624,41 +1623,6 @@ describe('helper methods', () => {
     });
   });
 
-  describe('checkIfComponentHasValue', () => {
-    it('Should return false if the value is empty', () => {
-      const mockGetValues = vi.fn(() => {
-        return '';
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(false);
-    });
-    it('Should return true if the value is not empty', () => {
-      const values = {
-        divaOutput: {
-          recordInfo: {},
-          domain: {
-            value: 'hig',
-          },
-        },
-      };
-
-      const mockGetValues = vi.fn(() => {
-        return values.divaOutput.domain.value;
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(true);
-    });
-    it('Should return false if the value is undefined', () => {
-      const mockGetValues = vi.fn(() => {
-        return undefined;
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(false);
-    });
-  });
   describe('checkIfSingularComponentHasValue', () => {
     it('Should return false if the value is array with empty object', () => {
       const mockGetValues = vi.fn(() => {
