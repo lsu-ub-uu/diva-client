@@ -10,3 +10,8 @@ export const useUser = () => {
   const rootLoaderData = useRouteLoaderData<typeof loader>('root');
   return rootLoaderData?.user;
 };
+
+export const useLoginUnits = () => {
+  const rootLoaderData = useRouteLoaderData<typeof loader>('root');
+  return rootLoaderData?.loginUnits;
+};

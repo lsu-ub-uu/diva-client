@@ -17,6 +17,7 @@ import type { ReactNode } from 'react';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 import { useTranslation } from 'react-i18next';
+import { href } from 'react-router';
 
 export interface TopNavigationLink {
   label: string;
@@ -78,7 +79,7 @@ export const TopNavigation = ({ recordTypes }: TopNavigationProps) => {
           .map((recordType) => (
             <li key={recordType.id}>
               <NavigationLink
-                to={`/${recordType.id}`}
+                to={href('/:recordType', { recordType: recordType.id })}
                 label={t(recordType.textId)}
                 icon={icons[recordType.id]}
               />
