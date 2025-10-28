@@ -2479,6 +2479,81 @@ describe('formDefinition', () => {
         (formDefinition.form.components![0] as FormComponentTextVar).addText,
       ).toEqual('addAnotherPersonTextId');
     });
+
+    it('should not include sContainer that does not match metadata', () => {
+      const mockDependencies = {
+        recordTypePool: listToPool([
+          {
+            id: 'someRecordTypeId',
+          },
+        ]),
+        textPool: listToPool([
+          {
+            id: 'someTextId',
+            sv: 'Någon text',
+            en: 'Some text',
+          },
+        ]),
+        presentationPool: listToPool([
+          {
+            id: 'someSContainer',
+            type: 'container',
+            repeat: 'children',
+            presentationsOf: ['someNonMatchingMetadata'],
+            children: [
+              { refGroups: [{ type: 'text', childId: 'someTextId' }] },
+            ],
+          } as BFFPresentationSurroundingContainer,
+          {
+            id: 'someNewPresentationGroupId',
+            presentationOf: 'someNewMetadataGroupId',
+            type: 'pGroup',
+            mode: 'input',
+            children: [
+              {
+                refGroups: [
+                  { type: 'presentation', childId: 'someSContainer' },
+                ],
+              },
+            ],
+          } as BFFPresentationGroup,
+        ]),
+        metadataPool: listToPool([
+          {
+            id: 'someNewMetadataGroupId',
+            nameInData: 'someName',
+            children: [
+              {
+                childId: 'someTextVar',
+              },
+            ],
+          } as BFFMetadataGroup,
+          { id: 'someNonMatchingMetadata', nameInData: 'myNonMatching' },
+          { id: 'someTextVar', nameInData: 'myText' },
+        ]),
+        validationTypePool: listToPool([
+          {
+            id: 'someValidationTypeId',
+            validatesRecordTypeId: 'someRecordTypeId',
+            newMetadataGroupId: 'someNewMetadataGroupId',
+            newPresentationGroupId: 'someNewPresentationGroupId',
+          },
+        ]),
+      } as Dependencies;
+
+      const formDef = createFormDefinition(
+        mockDependencies,
+        'someValidationTypeId',
+        'create',
+      );
+
+      expect(formDef.form.components?.length === 0);
+      expect(
+        formDef.form.components?.find(
+          (c) => c.presentationId === 'someSContainer',
+        ),
+      ).toBeUndefined();
+    });
   });
 
   describe('linked record definition', () => {

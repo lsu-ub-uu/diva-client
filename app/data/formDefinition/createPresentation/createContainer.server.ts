@@ -27,8 +27,8 @@ import type {
   BFFPresentationContainer,
 } from '@/cora/transform/bffTypes.server';
 import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import { createRContainer } from '@/data/formDefinition/createPresentation/createRContainer.server';
-import { createSContainer } from '@/data/formDefinition/createPresentation/createSContainer.server';
+import { findMatchingMetadataChildReferencesForRContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForRContainer';
+import { findMatchingMetadataChildReferencesForSContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForSContainer.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -39,30 +39,36 @@ export const createContainer = (
   presentation: BFFPresentationContainer,
   presentationChildReference: BFFPresentationChildReference,
   alternativePresentation: FormComponent | undefined,
-): FormComponentContainer => {
+): FormComponentContainer | undefined => {
   const name = presentation.id; // container does not have a nameInData so use id instead.
   const { type, mode } = presentation;
   const containerType = getContainerType(presentation);
   const presentationStyle = presentation.presentationStyle;
 
-  let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
+  let matchingMetadataChildReferences: BFFMetadataChildReference[] = [];
 
   if (containerType === 'surrounding') {
-    definitionFilteredChildRefs = createSContainer(
-      presentation,
-      metadataChildReferences,
-      dependencies,
-    );
+    matchingMetadataChildReferences =
+      findMatchingMetadataChildReferencesForSContainer(
+        presentation,
+        metadataChildReferences,
+        dependencies,
+      );
   } else if (containerType === 'repeating') {
-    definitionFilteredChildRefs = createRContainer(
-      presentation,
-      metadataChildReferences,
-    );
+    matchingMetadataChildReferences =
+      findMatchingMetadataChildReferencesForRContainer(
+        presentation,
+        metadataChildReferences,
+      );
+  }
+
+  if (matchingMetadataChildReferences.length === 0) {
+    return undefined;
   }
 
   const components = createComponentsFromChildReferences(
     dependencies,
-    definitionFilteredChildRefs,
+    matchingMetadataChildReferences,
     presentation.children,
     false,
   );
