@@ -24,6 +24,7 @@ import type {
 } from '@/components/FormGenerator/types';
 import { get, isEmpty } from 'lodash-es';
 import { useState } from 'react';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import { Card } from '../Card/Card';
@@ -32,13 +33,11 @@ import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
 import { Group } from './components/Group';
+import { formComponentHasData } from './formGeneratorUtils/formComponentHasData';
 import {
-  isComponentContainer,
   isComponentGroup,
   isComponentWithData,
 } from './formGeneratorUtils/formGeneratorUtils';
-import type { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { formComponentHasData } from './formGeneratorUtils/formComponentHasData';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -276,12 +275,6 @@ const hasNoValuablePresentation = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const componentCanBeHidden = (c: FormComponent) => {
-    /*     if (c.presentationId === 'namePersonOutputPGroup') {
-      console.log('Checking namePersonOutputPGroup', c, parentPath, {
-        hasData: formComponentHasData(parentPath, c, getValues),
-      });
-    }
- */
     if (!isComponentWithData(c)) {
       return false;
     }
