@@ -24,6 +24,7 @@ import type {
 } from '@/components/FormGenerator/types';
 import { get, isEmpty } from 'lodash-es';
 import { useState } from 'react';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import { Card } from '../Card/Card';
@@ -32,7 +33,11 @@ import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
 import { Group } from './components/Group';
-import { isComponentGroup } from './formGeneratorUtils/formGeneratorUtils';
+import { formComponentHasData } from './formGeneratorUtils/formComponentHasData';
+import {
+  isComponentGroup,
+  isComponentWithData,
+} from './formGeneratorUtils/formGeneratorUtils';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -49,7 +54,12 @@ type PresentationState = 'default' | 'alternative';
 export const AlternativePresentationSwitcher = (
   props: ComponentPresentationSwitcherProps,
 ) => {
-  const { component, currentComponentNamePath } = props;
+  const { component, currentComponentNamePath, parentPath } = props;
+
+  const {
+    getValues,
+    formState: { errors },
+  } = useRemixFormContext();
 
   const { t } = useTranslation();
 
@@ -66,11 +76,12 @@ export const AlternativePresentationSwitcher = (
     alternativePresentation,
     expanded,
   } = getAccordionConfiguration(component, currentPresentation);
-
   const [prevValidationErrors, setPrevValidationErrors] = useState(false);
-  const {
-    formState: { errors },
-  } = useRemixFormContext();
+
+  if (hasNoValuablePresentation(parentPath, component, getValues)) {
+    return null;
+  }
+
   const containsValidationError = !isEmpty(
     get(errors, currentComponentNamePath),
   );
@@ -256,4 +267,27 @@ const getInitialPresentation = (
   }
 
   return 'default';
+};
+
+const hasNoValuablePresentation = (
+  parentPath: string,
+  component: FormComponent,
+  getValues: UseFormGetValues<FieldValues>,
+) => {
+  const componentCanBeHidden = (c: FormComponent) => {
+    return (
+      isComponentWithData(c) &&
+      c.mode === 'output' &&
+      !formComponentHasData(parentPath, c, getValues)
+    );
+  };
+
+  if (component.alternativePresentation === undefined) {
+    return componentCanBeHidden(component);
+  }
+
+  return (
+    componentCanBeHidden(component) &&
+    componentCanBeHidden(component.alternativePresentation)
+  );
 };

@@ -27,7 +27,7 @@ import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.serv
 import type { Lookup } from '@/utils/structs/lookup';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 
-export const createSContainer = (
+export const findMatchingMetadataChildReferencesForSContainer = (
   presentation: BFFPresentationContainer,
   metadataChildReferences: BFFMetadataChildReference[],
   dependencies: Dependencies,

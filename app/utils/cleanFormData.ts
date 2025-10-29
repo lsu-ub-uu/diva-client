@@ -11,6 +11,10 @@ export const cleanFormData = (
   return cleanFormDataRecursively(obj).data;
 };
 
+export const hasValuableData = (obj: Record<string, any>): boolean => {
+  return cleanFormDataRecursively(obj).hasValuableData;
+};
+
 const cleanFormDataRecursively = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<Record<string, any>> => {
@@ -51,9 +55,11 @@ const isLeaf = (obj: any) => {
 
 const cleanArray = (arr: any[]): ValuableDataWrapper<any[]> => {
   const cleanedArray = arr
+    .values()
     .map(cleanFormDataRecursively)
     .filter(({ hasValuableData }) => hasValuableData)
-    .map(({ data }) => data);
+    .map(({ data }) => data)
+    .toArray();
   return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
 };
 
