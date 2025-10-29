@@ -275,15 +275,11 @@ const hasNoValuablePresentation = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const componentCanBeHidden = (c: FormComponent) => {
-    if (!isComponentWithData(c)) {
-      return false;
-    }
-
-    if (c.mode !== 'output') {
-      return false;
-    }
-
-    return !formComponentHasData(parentPath, c, getValues);
+    return (
+      isComponentWithData(c) &&
+      c.mode === 'output' &&
+      !formComponentHasData(parentPath, c, getValues)
+    );
   };
 
   if (component.alternativePresentation === undefined) {
