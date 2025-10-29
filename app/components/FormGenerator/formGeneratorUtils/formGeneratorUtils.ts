@@ -18,7 +18,7 @@
  */
 
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { FieldValues, FormState, UseFormGetValues } from 'react-hook-form';
+import type { FieldValues, FormState } from 'react-hook-form';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -37,8 +37,7 @@ import type {
 
 import type { Option } from '@/components';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { get, isEmpty } from 'lodash-es';
+import { get } from 'lodash-es';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -168,69 +167,6 @@ export const isComponentSingularAndOptional = (component: FormComponent) => {
   return rMax === 1 && rMin === 0;
 };
 
-export const isComponentGroupAndOptional = (component: FormComponent) => {
-  if (!isComponentGroup(component)) {
-    return false;
-  }
-
-  const rMin = component.repeat?.repeatMin ?? 0;
-  return rMin === 0;
-};
-
-export const checkIfSingularComponentHasValue = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-): boolean => {
-  if (isGVUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  if (hasGVArrayLength(getValues, componentValue)) {
-    return false;
-  }
-
-  if (isGVValueUndefined(getValues, componentValue)) {
-    return false;
-  }
-
-  return isGVValueEmptyString(getValues, componentValue);
-};
-
-const isGVUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue) === undefined;
-};
-
-const hasGVArrayLength = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return (
-    getValues(componentValue).length === undefined ||
-    getValues(componentValue).length === 0
-  );
-};
-
-const isGVValueUndefined = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value === undefined;
-};
-
-const isGVValueEmptyString = (
-  getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
-) => {
-  return getValues(componentValue)[0].value !== '';
-};
-
-export const checkIfValueExists = (value: unknown) => {
-  return !(value === null || value === '' || value === undefined);
-};
-
 export function getNameInData(component: FormComponent) {
   return addAttributesToName(component, component.name);
 }
@@ -241,15 +177,6 @@ export const checkIfPresentationStyleIsInline = (
   return component.presentationStyle === 'inline';
 };
 
-export const checkIfPresentationStyleOrParentIsInline = (
-  component: FormComponentWithData,
-  parentPresentationStyle: string | undefined,
-) => {
-  return (
-    component.presentationStyle === 'inline' ||
-    parentPresentationStyle === 'inline'
-  );
-};
 export const headlineLevelToTypographyVariant = (
   headlineLevel: string | undefined,
 ): TextStyle => {
