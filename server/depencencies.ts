@@ -49,10 +49,12 @@ import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
 import { createContext } from 'react-router';
 import 'dotenv/config';
+import { loginWithAppToken } from '@/data/loginWithAppToken.server';
+import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken.server';
 
-const getPoolsFromCora = (poolTypes: string[]) => {
+const getPoolsFromCora = (poolTypes: string[], authToken?: string) => {
   const promises = poolTypes.map((type) =>
-    getRecordDataListByType<DataListWrapper>(type, ''),
+    getRecordDataListByType<DataListWrapper>(type, authToken),
   );
   return Promise.all(promises);
 };
@@ -72,10 +74,23 @@ const dependencies: Dependencies = {
   organisationPool: listToPool<BFFOrganisation>([]),
 };
 
+const { POOL_LOGIN_ID, POOL_APP_TOKEN } = process.env;
+
 const loadDependencies = async () => {
   console.info('Loading Cora metadata...');
 
-  const response = await getRecordDataListByType<DataListWrapper>('text');
+  if (!POOL_LOGIN_ID || !POOL_APP_TOKEN) {
+    throw new Error(
+      'Cannot load pools. Missing app token environment variables.',
+    );
+  }
+
+  const auth = await loginWithAppToken(POOL_LOGIN_ID, POOL_APP_TOKEN);
+
+  const response = await getRecordDataListByType<DataListWrapper>(
+    'text',
+    auth?.data.token,
+  );
   const texts = transformCoraTexts(response.data);
   dependencies.textPool = listToPool<BFFText>(texts);
 
@@ -102,7 +117,7 @@ const loadDependencies = async () => {
     coraLogins,
     coraMembers,
     coraOrganisations,
-  ] = await getPoolsFromCora(types);
+  ] = await getPoolsFromCora(types, auth?.data.token);
 
   const metadata = transformMetadata(coraMetadata.data);
   dependencies.metadataPool = listToPool<BFFMetadata>(metadata);
@@ -152,6 +167,10 @@ const loadDependencies = async () => {
 
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;
+
+  if (auth) {
+    deleteAuthTokenFromCora(auth);
+  }
 };
 
 export const getDependencies = async () => {

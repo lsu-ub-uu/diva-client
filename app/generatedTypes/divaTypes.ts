@@ -836,9 +836,9 @@ export interface OrganisationUpdateGroup {
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   address?: AddressGroup;
-  identifier_type_organisationCode?: {
+  identifier_type_localId?: {
     value: string;
-    _type: 'organisationCode';
+    _type: 'localId';
     __text: { sv: string; en: string };
   };
   identifier_type_organisationNumber?: {
@@ -881,9 +881,9 @@ export interface SeriesUpdateGroup {
   };
   related?: RelatedSeriesGroup[];
   location?: LocationGroup;
-  note_type_external?: {
+  note_type_internal?: {
     value: string;
-    _type: 'external';
+    _type: 'internal';
     __text: { sv: string; en: string };
   };
   genre_type_outputType?: {
@@ -1558,14 +1558,14 @@ export interface PersonUpdateGroup {
     __text: { sv: string; en: string };
   }[];
   location?: LocationGroup[];
-  nameIdentifier_type_orcid?: {
-    value: string;
-    _type: 'orcid';
-    __text: { sv: string; en: string };
-  }[];
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
+    __text: { sv: string; en: string };
+  }[];
+  nameIdentifier_type_orcid?: {
+    value: string;
+    _type: 'orcid';
     __text: { sv: string; en: string };
   }[];
   'nameIentifier_type_se-libr'?: {
