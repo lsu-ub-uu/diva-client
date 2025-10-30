@@ -22,7 +22,7 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import {
   data,
   isRouteErrorResponse,
@@ -231,6 +231,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  useEffect(() => {
+    document.body.setAttribute('data-hydrated', 'true');
+  }, []);
+
   useSessionAutoRenew();
   useDevModeSearchParam();
   const {
