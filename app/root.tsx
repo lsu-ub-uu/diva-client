@@ -231,12 +231,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  useEffect(() => {
-    document.body.setAttribute('data-hydrated', 'true');
-  }, []);
-
+  useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+
   const {
     userPreferences,
     member,
@@ -278,3 +276,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+const useHydratedFlag = () => {
+  useEffect(() => {
+    document.body.setAttribute('data-hydrated', 'true');
+  }, []);
+};
