@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
-    "@headlessui/react": "^2.2.2",
+    "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.1.1",
     "@react-router/express": "^7.9.4",
     "@react-router/node": "^7.9.4",
