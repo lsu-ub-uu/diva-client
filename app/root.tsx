@@ -244,7 +244,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className='root-layout'>
-      <NotificationSnackbar notification={loaderData.notification} />
+      <NotificationSnackbar
+        key={loaderData.notification?.summary}
+        notification={loaderData.notification}
+      />
 
       <header className='member-bar'>
         <NavigationLoader />

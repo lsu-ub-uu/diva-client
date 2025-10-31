@@ -27,18 +27,12 @@ interface NotificationSnackbarProps {
 export const NotificationSnackbar = ({
   notification,
 }: NotificationSnackbarProps) => {
-  const [snackbarOpen, setSnackbarOpen] = useState(notification !== undefined);
-  const [prevNotification, setPrevNotification] = useState(notification);
-
-  if (notification !== prevNotification) {
-    setPrevNotification(notification);
-    setSnackbarOpen(notification !== undefined);
-  }
+  const [dismissed, setDismissed] = useState(false);
 
   return (
     <Snackbar
-      open={snackbarOpen}
-      onClose={() => setSnackbarOpen(false)}
+      open={!dismissed && notification?.summary !== undefined}
+      onClose={() => setDismissed(true)}
       severity={notification?.severity ?? 'info'}
       text={notification?.summary ?? ''}
     />
