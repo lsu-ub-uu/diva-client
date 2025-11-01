@@ -22,7 +22,7 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import {
   data,
   isRouteErrorResponse,
@@ -39,7 +39,7 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { Header } from '@/components/Layout/Header/Header';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
@@ -231,8 +231,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+
   const {
     userPreferences,
     member,
@@ -254,7 +256,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <LanguageSwitcher />
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </MemberBar>
       </header>
 
@@ -277,3 +279,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+const useHydratedFlag = () => {
+  useEffect(() => {
+    document.body.setAttribute('data-hydrated', 'true');
+  }, []);
+};

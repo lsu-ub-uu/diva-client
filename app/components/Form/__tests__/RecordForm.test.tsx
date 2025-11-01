@@ -25,8 +25,6 @@ import {
 } from '@/__mocks__/data/form/binary';
 import { formDefWithOneCollectionVariableWithModeOutput } from '@/__mocks__/data/form/collVar';
 import {
-  formDefForCheckNumberValue,
-  formDefForCheckTextValue,
   formDefPreprintWithOnlyAuthorName,
   formDefWithGroupWithDefaultHeadlineLevel,
   formDefWithGroupWithSpecifiedHeadlineLevel,
@@ -50,7 +48,11 @@ import {
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import type { BFFDataRecord } from '@/types/record';
+import type {
+  BFFDataRecord,
+  BFFDataRecordData,
+  RecordInfo,
+} from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
@@ -1384,202 +1386,6 @@ describe('<Form />', () => {
     });
   });
 
-  describe('checkIfComponentHasValue', () => {
-    it('checkIfComponentHasValue does not hides variable in output with value', () => {
-      const record: BFFDataRecord = {
-        id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
-        validationType: 'someValidationTypeId',
-        createdAt: '2023-10-11T09:24:30.511487Z',
-        createdBy: 'coraUser:490742519075086',
-        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
-        userRights: ['read', 'update', 'index', 'delete'],
-        updated: [],
-        data: {
-          someRootNameInData: {
-            recordInfo: {
-              id: {
-                value: '12345',
-              },
-
-              validationType: {
-                value: 'record',
-              },
-              dataDivider: {
-                value: 'divaData',
-              },
-              type: {
-                value: 'record',
-              },
-              createdBy: {
-                value: '161616',
-              },
-              tsCreated: {
-                value: '2024-10-16T12:36:04.249992Z',
-              },
-
-              updated: [
-                {
-                  tsUpdated: {
-                    value: '2024-10-16T12:36:04.249992Z',
-                  },
-                  updatedBy: {
-                    value: '161616',
-                  },
-                },
-              ],
-            },
-            someTextVar: {
-              value: 'aaaaa',
-            },
-          },
-        },
-      };
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefForCheckTextValue}
-          record={record}
-        />,
-      );
-
-      const inputLabel = screen.getByText('someMetadataTextVarText');
-      expect(inputLabel).toBeInTheDocument();
-      const inputElement = screen.getByText('aaaaa');
-      expect(inputElement).toBeInTheDocument();
-    });
-
-    it('checkIfComponentHasValue hides variable in output with no value', () => {
-      const record: BFFDataRecord = {
-        id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
-        validationType: 'someValidationTypeId',
-        createdAt: '2023-10-11T09:24:30.511487Z',
-        createdBy: 'coraUser:490742519075086',
-        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
-        userRights: ['read', 'update', 'index', 'delete'],
-        updated: [],
-        data: {
-          someRootNameInData: {
-            recordInfo: {
-              id: {
-                value: '12345',
-              },
-
-              validationType: {
-                value: 'record',
-              },
-              dataDivider: {
-                value: 'divaData',
-              },
-              type: {
-                value: 'record',
-              },
-              createdBy: {
-                value: '161616',
-              },
-              tsCreated: {
-                value: '2024-10-16T12:36:04.249992Z',
-              },
-
-              updated: [
-                {
-                  tsUpdated: {
-                    value: '2024-10-16T12:36:04.249992Z',
-                  },
-                  updatedBy: {
-                    value: '161616',
-                  },
-                },
-              ],
-            },
-            someTextVar: { value: 'bbb' },
-          },
-        },
-      };
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefForCheckTextValue}
-          record={record}
-        />,
-      );
-
-      const inputLabel = screen.getByText('someMetadataTextVarText');
-      expect(inputLabel).toBeInTheDocument();
-      const hiddenInputLabel = screen.queryByLabelText(
-        'someOtherMetadataTextVarText',
-      );
-      expect(hiddenInputLabel).not.toBeInTheDocument();
-
-      expect(inputLabel).toBeInTheDocument();
-      expect(hiddenInputLabel).not.toBeInTheDocument();
-    });
-
-    it('checkIfComponentHasValue hides variable in output with no value 2', () => {
-      const record: BFFDataRecord = {
-        id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
-        validationType: 'someValidationTypeId',
-        createdAt: '2023-10-11T09:24:30.511487Z',
-        createdBy: 'coraUser:490742519075086',
-        actionLinks: { read: { url: '', requestMethod: 'get', rel: 'read' } },
-        userRights: ['read', 'update', 'index', 'delete'],
-        updated: [],
-        data: {
-          someRootNameInData: {
-            recordInfo: {
-              id: {
-                value: '12345',
-              },
-              validationType: {
-                value: 'record',
-              },
-              dataDivider: {
-                value: 'divaData',
-              },
-              type: {
-                value: 'record',
-              },
-
-              createdBy: {
-                value: '161616',
-              },
-
-              tsCreated: {
-                value: '2024-10-16T12:36:04.249992Z',
-              },
-              updated: [
-                {
-                  tsUpdated: {
-                    value: '2024-10-16T12:36:04.249992Z',
-                  },
-                  updatedBy: {
-                    value: '161616',
-                  },
-                },
-              ],
-            },
-            someTextVar: { value: 'bbb' },
-          },
-        },
-      };
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={formDefForCheckNumberValue}
-          record={record}
-        />,
-      );
-
-      const inputLabel = screen.getByText('someMetadataTextVarText');
-      expect(inputLabel).toBeInTheDocument();
-      const hiddenInputLabel = screen.queryByLabelText(
-        'someOtherMetadataTextVarText',
-      );
-
-      expect(inputLabel).toBeInTheDocument();
-      expect(hiddenInputLabel).not.toBeInTheDocument();
-    });
-  });
-
   describe('resourceLink', () => {
     it('renders a linked binary', async () => {
       const RoutesStub = createRoutesStub([
@@ -2136,6 +1942,374 @@ describe('<Form />', () => {
         screen.getByRole('button', { name: 'divaClient_addFieldText' }),
       ).toBeInTheDocument();
       expect(screen.queryByLabelText('Text Variable')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('empty output groups', () => {
+    it('hides a group in without data in output mode', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'output',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'group',
+              mode: 'output',
+              name: 'someGroup',
+              label: 'Group',
+              showLabel: true,
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  mode: 'output',
+                  showLabel: true,
+                  type: 'textVariable',
+                  name: 'someTextVar',
+                  label: 'Text Variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          someRootNameInData: {
+            recordInfo: {} as RecordInfo,
+            someGroup: {
+              someTextVar: { value: '' },
+            },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+      expect(screen.queryByText('Group')).not.toBeInTheDocument();
+    });
+
+    it('hides an sContainer in without data in output mode', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'output',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'container',
+              title: 'someTitle',
+              presentationId: 'updatesMinimizedSContainer',
+              name: 'updatesMinimizedSContainer',
+              mode: 'output',
+              containerType: 'surrounding',
+              showLabel: true,
+              components: [
+                {
+                  mode: 'output',
+                  showLabel: true,
+                  type: 'textVariable',
+                  name: 'someTextVar',
+                  label: 'Text Variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          someRootNameInData: {
+            recordInfo: {} as RecordInfo,
+            someTextVar: { value: '' },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+      expect(screen.queryByText('someTitle')).not.toBeInTheDocument();
+    });
+
+    it('hides a variable with clickable title without data in output mode', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'output',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              mode: 'output',
+              showLabel: true,
+              type: 'textVariable',
+              name: 'someTextVar',
+              label: 'Text Variable',
+              title: 'someTitle',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          someRootNameInData: {
+            recordInfo: {} as RecordInfo,
+            someTextVar: { value: '' },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+      expect(screen.queryByText('someTitle')).not.toBeInTheDocument();
+      expect(screen.queryByText('Text Variable')).not.toBeInTheDocument();
+    });
+
+    it('hides an alternative presentation switcher in without data in output mode', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'output',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'container',
+              title: 'someTitle',
+              presentationId: 'updatesMinimizedSContainer',
+              name: 'updatesMinimizedSContainer',
+              mode: 'output',
+              containerType: 'surrounding',
+              showLabel: true,
+              components: [
+                {
+                  mode: 'output',
+                  showLabel: true,
+                  type: 'textVariable',
+                  name: 'someTextVar',
+                  label: 'Text Variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+              alternativePresentation: {
+                type: 'container',
+                title: 'someTitle',
+                presentationId: 'updatesAltSContainer',
+                name: 'updatesAltSContainer',
+                mode: 'output',
+                containerType: 'surrounding',
+                showLabel: true,
+                components: [
+                  {
+                    mode: 'output',
+                    showLabel: true,
+                    type: 'textVariable',
+                    name: 'someTextVar',
+                    label: 'Text Variable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          someRootNameInData: {
+            recordInfo: {} as RecordInfo,
+            someTextVar: { value: '' },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+      expect(screen.queryByText('someTitle')).not.toBeInTheDocument();
+    });
+
+    it('does not hide an alternative presentation switcher when alternative presentation has data', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'output',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'container',
+              title: 'someTitle',
+              presentationId: 'updatesMinimizedSContainer',
+              name: 'updatesMinimizedSContainer',
+              mode: 'output',
+              containerType: 'surrounding',
+              showLabel: true,
+              components: [
+                {
+                  name: 'someText',
+                  type: 'text',
+                  childStyle: [],
+                  gridColSpan: 12,
+                },
+              ],
+              alternativePresentation: {
+                type: 'container',
+                title: 'someTitle',
+                presentationId: 'updatesAltSContainer',
+                name: 'updatesAltSContainer',
+                mode: 'output',
+                containerType: 'surrounding',
+                showLabel: true,
+                components: [
+                  {
+                    mode: 'output',
+                    showLabel: true,
+                    type: 'textVariable',
+                    name: 'someTextVar',
+                    label: 'Text Variable',
+                    repeat: {
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          someRootNameInData: {
+            recordInfo: {} as RecordInfo,
+            someTextVar: { value: 'Some data' },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+      expect(screen.getByText('someText')).toBeInTheDocument();
+      const user = userEvent.setup();
+      await user.click(screen.getByRole('button', { name: 'someTitle' }));
+      expect(screen.getByText('Some data')).toBeInTheDocument();
     });
   });
 });

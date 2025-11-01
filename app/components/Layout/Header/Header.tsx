@@ -20,7 +20,7 @@ import DivaLogo from '@/assets/divaLogo.svg?react';
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Button } from '@/components/Button/Button';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
@@ -129,7 +129,7 @@ export const Header = ({
           >
             <CloseIcon />
           </Button>
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
           <LanguageSwitcher />
 
           <Suspense>

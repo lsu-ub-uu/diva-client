@@ -87,8 +87,8 @@ export const MemberBar = ({
         <>
           <div className={styles['links']}>
             <ul>
-              {links.map((link) => (
-                <li key={link[lang].url}>
+              {links.map((link, index) => (
+                <li key={index}>
                   <a href={link[lang].url} target='_blank' rel='noreferrer'>
                     {link[lang].displayLabel}
                   </a>

@@ -60,14 +60,14 @@ if (BASE_PATH && BASE_PATH !== '/') {
 
 if (DEVELOPMENT) {
   console.info('Starting development server');
+  app.get('/devLogin', (req, res) => {
+    res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
+  });
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
     }),
   );
-  app.get('/devLogin', (req, res) => {
-    res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
-  });
   app.use(viteDevServer.middlewares);
   app.use(async (req, res, next) => {
     try {

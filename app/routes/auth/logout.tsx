@@ -17,9 +17,10 @@
  */
 
 import { deleteSession } from '@/data/deleteSession.server';
-import { redirect } from 'react-router';
+import { Form, redirect } from 'react-router';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Button } from '@/components/Button/Button';
 import type { Route } from '../auth/+types/logout';
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -40,4 +41,25 @@ export async function action({ request, context }: Route.ActionArgs) {
   return redirect(returnTo ?? '/');
 }
 
-export const loader = async () => redirect('/');
+export async function loader({ request }: Route.LoaderArgs) {
+  const returnTo = decodeURIComponent(
+    new URL(request.url).searchParams.get('returnTo') || '',
+  );
+  return { returnTo };
+}
+
+export default function Logout({
+  loaderData: { returnTo },
+}: Route.ComponentProps) {
+  return (
+    <main>
+      <h1>Logga ut</h1>
+      <Form method='post'>
+        <input type='hidden' name='returnTo' value={returnTo || '/'} />
+        <Button size='large' variant='primary' type='submit'>
+          Logga ut
+        </Button>
+      </Form>
+    </main>
+  );
+}

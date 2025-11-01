@@ -21,6 +21,7 @@ export default defineConfig(({ isSsrBuild }) => {
             plugins: ['babel-plugin-react-compiler'],
             sourceMaps: true,
             retainLines: true,
+            sourceMaps: true,
           },
         }),
       tsconfigPaths(),

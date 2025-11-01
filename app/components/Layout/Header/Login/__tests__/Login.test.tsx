@@ -17,7 +17,7 @@
  */
 
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -63,7 +63,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         ),
       },
     ]);
@@ -71,7 +71,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('button', {
+      screen.getByRole('link', {
         name: 'divaClient_LoginText',
       }),
     );
@@ -102,7 +102,7 @@ describe('<Login/>', () => {
         {
           path: '/',
           Component: () => (
-            <Login loginUnits={loginUnits} appTokenLogins={[]} />
+            <LoginMenu loginUnits={loginUnits} appTokenLogins={[]} />
           ),
         },
       ]);
@@ -110,7 +110,7 @@ describe('<Login/>', () => {
       render(<RoutesStub />);
 
       await user.click(
-        screen.getByRole('button', {
+        screen.getByRole('link', {
           name: 'divaClient_LoginText',
         }),
       );
@@ -135,7 +135,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);
@@ -156,13 +156,14 @@ describe('<Login/>', () => {
         loginDescription: 'passwordLogin',
         presentation: { foo: 'bar' },
         type: 'password',
+        id: 'passwordLoginUnit',
       } as LoginDefinition,
     ];
     const RoutesStub = createRoutesStub([
       {
         path: '/',
         Component: () => (
-          <Login loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
         ),
       },
     ]);
@@ -171,7 +172,7 @@ describe('<Login/>', () => {
 
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
-      '/login?presentation=%7B%22foo%22%3A%22bar%22%7D&returnTo=%2F',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2F',
     );
   });
 
@@ -196,7 +197,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <Login
+          <LoginMenu
             loginUnits={singleLoginUnits}
             appTokenLogins={singleAppTokenLogin}
           />
@@ -207,7 +208,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('button', {
+      screen.getByRole('link', {
         name: 'divaClient_LoginText',
       }),
     );
@@ -218,5 +219,67 @@ describe('<Login/>', () => {
     expect(
       screen.getByRole('menuitem', { name: 'passwordLogin' }),
     ).toBeInTheDocument();
+  });
+
+  it('handles returnTo with search params', async () => {
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+        id: 'passwordLoginUnit',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/somepath/som_e-subpath',
+        Component: () => (
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
+
+    render(
+      <RoutesStub
+        initialEntries={['/somepath/som_e-subpath?someQueryParam=foo']}
+      />,
+    );
+
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+    );
+  });
+
+  it('uses existing returnTo if present', async () => {
+    const singleLoginUnits = [
+      {
+        loginDescription: 'passwordLogin',
+        presentation: { foo: 'bar' },
+        type: 'password',
+        id: 'passwordLoginUnit',
+      } as LoginDefinition,
+    ];
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+        ),
+      },
+    ]);
+
+    render(
+      <RoutesStub
+        initialEntries={[
+          '/login?returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2Fsomepath%2Fsom_e-subpath%3FsomeQueryParam%3Dfoo',
+    );
   });
 });

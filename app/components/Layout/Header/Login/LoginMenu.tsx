@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  messageIsFromWindowOpenedFromHere,
-  printUserNameOnPage,
-} from '@/components/Layout/Header/Login/utils/utils';
+import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
 import {
   Link,
   useFetcher,
@@ -31,37 +28,48 @@ import {
 import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
-import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
-import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
+import { PasswordLoginMenuOptions } from '@/components/Layout/Header/Login/PasswordLoginMenuOptions';
+import { WebRedirectLoginMenuOptions } from '@/components/Layout/Header/Login/WebRedirectLoginMenuOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
+import {
+  logInWithWebRedirect,
+  useWebRedirectLogin,
+} from '@/auth/useWebRedirectLogin';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import { useHydrated } from '@/utils/useHydrated';
+import { withBaseName } from '@/utils/withBasename';
 import styles from './Login.module.css';
 
-interface LoginProps {
+interface LoginMenuProps {
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
 }
 
-export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
-  const hydrated = useHydrated();
-  const { MODE } = import.meta.env;
+export default function LoginMenu({
+  loginUnits,
+  appTokenLogins,
+}: LoginMenuProps) {
   const user = useUser();
   const fetcher = useFetcher();
   const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
   const navigation = useNavigation();
-  const returnTo = encodeURIComponent(location.pathname + location.search);
+
+  const searchParams = new URLSearchParams(location.search);
+  const returnTo = encodeURIComponent(
+    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`,
+  );
 
   const submitting =
     navigation.state === 'submitting' && navigation.formAction === '/login';
+
+  useWebRedirectLogin({ returnTo });
 
   const handleDevSelection = (account: AppTokenLogin) => {
     submit(
@@ -75,35 +83,12 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
     );
   };
 
-  const handleWebRedirectSelection = (url: string) => {
-    try {
-      window.open(MODE === 'development' ? '/devLogin' : url);
-      window.addEventListener('message', receiveMessage);
-    } catch (e: any) {
-      console.error(e.message());
-    }
-  };
-
-  const receiveMessage = (event: MessageEvent<any>) => {
-    if (messageIsFromWindowOpenedFromHere(event) && event.data.authentication) {
-      window.removeEventListener('message', receiveMessage);
-      submit(
-        {
-          loginType: 'webRedirect',
-          auth: JSON.stringify(event.data),
-          returnTo,
-        },
-        { action: '/login', method: 'post' },
-      );
-    }
-  };
-
   const logout = () => {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
   };
 
   const loginButtonProps: ButtonProps = {
-    disabled: submitting || !hydrated,
+    disabled: submitting,
     'aria-busy': submitting,
     variant: 'tertiary',
   };
@@ -123,7 +108,7 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
           {loginUnit.type === 'webRedirect' && (
             <Button
               {...loginButtonProps}
-              onClick={() => handleWebRedirectSelection(loginUnit.url!)}
+              onClick={() => logInWithWebRedirect(loginUnit.url!)}
             >
               {loginButtonChildren}
             </Button>
@@ -132,7 +117,10 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
             <Button
               {...loginButtonProps}
               as={Link}
-              to={`/login?presentation=${encodeURIComponent(JSON.stringify(loginUnit.presentation))}&returnTo=${returnTo}`}
+              to={{
+                pathname: '/login',
+                search: `?loginUnit=${loginUnit.id}&returnTo=${returnTo}`,
+              }}
             >
               {loginButtonChildren}
             </Button>
@@ -144,7 +132,14 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
     return (
       <div className={styles['login']}>
         <Menu>
-          <MenuButton as={Button} {...loginButtonProps}>
+          <MenuButton
+            disabled={submitting}
+            aria-busy={submitting}
+            className={styles['login-button']}
+            as='a'
+            onClick={(e) => e.preventDefault()}
+            href={withBaseName(`/login?returnTo=${returnTo}`)}
+          >
             {t('divaClient_LoginText')}
             {submitting ? <CircularLoader /> : <LoginIcon />}
           </MenuButton>
@@ -153,13 +148,12 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
               appTokenLogins={appTokenLogins}
               onSelect={handleDevSelection}
             />
-            <WebRedirectLoginOptions
+            <WebRedirectLoginMenuOptions
               webRedirectLoginUnits={loginUnits.filter(
                 ({ type }) => type === 'webRedirect',
               )}
-              onSelect={handleWebRedirectSelection}
             />
-            <PasswordLoginOptions
+            <PasswordLoginMenuOptions
               passwordLoginUnits={loginUnits.filter(
                 ({ type }) => type === 'password',
               )}
@@ -174,7 +168,14 @@ export default function Login({ loginUnits, appTokenLogins }: LoginProps) {
   return (
     <div className={styles['login']}>
       <Menu>
-        <MenuButton {...loginButtonProps} as={Button}>
+        <MenuButton
+          className={styles['login-button']}
+          as='a'
+          href={withBaseName(`/logout?returnTo=${returnTo}`)}
+          disabled={submitting}
+          aria-busy={submitting}
+          onClick={(e) => e.preventDefault()}
+        >
           <PersonIcon />
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
