@@ -1,10 +1,10 @@
 import type { Auth } from '@/auth/Auth';
-import { isDevMode } from '@/utils/useIsDevMode';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 import { isEqual } from 'lodash-es';
 import { useEffect, useState } from 'react';
 
 export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
-  const isDev = isDevMode();
+  const isDev = useIsDevMode();
   const [expanded, setExpanded] = useState(false);
   const [log, setLog] = useState<
     { timestamp: number; auth: Auth | undefined }[]

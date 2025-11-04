@@ -1568,7 +1568,7 @@ export interface PersonUpdateGroup {
     _type: 'orcid';
     __text: { sv: string; en: string };
   }[];
-  'nameIentifier_type_se-libr'?: {
+  'nameIdentifier_type_se-libr'?: {
     value: string;
     _type: 'se-libr';
     __text: { sv: string; en: string };

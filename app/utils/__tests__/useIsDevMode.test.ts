@@ -17,12 +17,12 @@
  */
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { isDevMode } from '@/utils/useIsDevMode';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 
 describe('useIsDevMode', () => {
   it('should return false when localStorage does not have diva-dev item', () => {
     vi.stubGlobal('localStorage', { getItem: vi.fn().mockReturnValue(null) });
-    const { result } = renderHook(() => isDevMode());
+    const { result } = renderHook(() => useIsDevMode());
     expect(result.current).toBe(false);
   });
 
@@ -35,7 +35,7 @@ describe('useIsDevMode', () => {
       }),
     });
 
-    const { result } = renderHook(() => isDevMode());
+    const { result } = renderHook(() => useIsDevMode());
     expect(result.current).toBe(true);
   });
 });

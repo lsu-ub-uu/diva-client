@@ -32,14 +32,14 @@ import {
   MemberSettingsIcon,
   MenuIcon,
 } from '@/icons';
-import { isDevMode } from '@/utils/useIsDevMode';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { Suspense, useState } from 'react';
 import { Await, Form, href, Link, useLocation } from 'react-router';
 import styles from './Header.module.css';
 
 interface HeaderProps {
-  recordTypes: Promise<BFFRecordType[]>;
+  recordTypes: BFFRecordType[];
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
   editableMember: string | undefined;
@@ -53,7 +53,7 @@ export const Header = ({
 }: HeaderProps) => {
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
-  const devMode = isDevMode();
+  const devMode = useIsDevMode();
 
   const [headerShown, setHeaderShown] = useState(false);
 
@@ -65,16 +65,10 @@ export const Header = ({
         </Link>
 
         <div className={styles['top-navigation']}>
-          <Suspense>
-            <Await resolve={recordTypes} errorElement={<div />}>
-              {(resolvedRecordType) => (
-                <TopNavigation
-                  recordTypes={resolvedRecordType}
-                  onNavigationClick={() => setHeaderShown(false)}
-                />
-              )}
-            </Await>
-          </Suspense>
+          <TopNavigation
+            recordTypes={recordTypes}
+            onNavigationClick={() => setHeaderShown(false)}
+          />
         </div>
       </div>
 

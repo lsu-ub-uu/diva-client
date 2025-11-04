@@ -20,8 +20,6 @@ export default defineConfig(({ isSsrBuild }) => {
             presets: ['@babel/preset-typescript'],
             plugins: ['babel-plugin-react-compiler'],
             sourceMaps: true,
-            retainLines: true,
-            sourceMaps: true,
           },
         }),
       tsconfigPaths(),
