@@ -19,13 +19,18 @@
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentText } from '@/components/FormGenerator/types';
-import { Typography } from '@/components/Typography/Typography';
+import {
+  mapTextStyleToComponent,
+  Typography,
+} from '@/components/Typography/Typography';
+import { useTranslation } from 'react-i18next';
 
 interface TextProps {
   component: FormComponentText;
 }
 
 export const Text = ({ component }: TextProps) => {
+  const { t } = useTranslation();
   return (
     <div
       className='form-component-item'
@@ -40,9 +45,11 @@ export const Text = ({ component }: TextProps) => {
       <DevInfo component={component} />
 
       <Typography
+        as={mapTextStyleToComponent(component.textStyle)}
         variant={component.textStyle ?? 'bodyTextStyle'}
-        text={component.name}
-      />
+      >
+        {t(component.name)}
+      </Typography>
     </div>
   );
 };

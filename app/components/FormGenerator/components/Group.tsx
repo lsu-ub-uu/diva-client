@@ -29,7 +29,6 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import {
   checkIfPresentationStyleIsInline,
   getGroupLevel,
-  headlineLevelToTypographyVariant,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
@@ -145,13 +144,12 @@ export const Group = ({
           >
             {component.title && component.showLabel && (
               <Typography
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-                text={component.label}
+                as={component.headlineLevel}
                 className='form-component-item anchorLink'
                 data-colspan={12}
-              />
+              >
+                {t(component.title)}
+              </Typography>
             )}
             {component.components && (
               <ComponentList

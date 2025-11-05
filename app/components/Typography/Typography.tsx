@@ -17,20 +17,18 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import type { ElementType, HTMLProps } from 'react';
-import clsx from 'clsx';
-import styles from './Typography.module.css';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import clsx from 'clsx';
+import type { ElementType, HTMLProps } from 'react';
+import styles from './Typography.module.css';
 
 interface TypographyProps extends Omit<HTMLProps<HTMLParagraphElement>, 'as'> {
   as?: ElementType;
   className?: string;
   variant?: TextStyle;
-  text: string;
 }
 
-const mapTextStyleToComponent = (
+export const mapTextStyleToComponent = (
   textStyle: TextStyle | undefined,
 ): ElementType => {
   switch (textStyle) {
@@ -55,22 +53,18 @@ export const Typography = ({
   as,
   className,
   variant,
-  text,
+  children,
   ...rest
 }: TypographyProps) => {
-  const { t } = useTranslation();
-
-  const Root = as ?? mapTextStyleToComponent(variant);
+  const Root = as ?? 'p';
 
   return (
-    // FIXME fix this lint error
-    // eslint-disable-next-line react-hooks/static-components
     <Root
       className={clsx(styles.typography, className)}
       data-variant={variant}
       {...rest}
     >
-      {t(text)}
+      {children}
     </Root>
   );
 };
