@@ -22,8 +22,12 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 describe('<Typography>', () => {
-  it('should render a text with default values', () => {
-    render(<Typography>Some text</Typography>);
+  it('should render a h2 that looks like a h1', () => {
+    render(
+      <Typography variant='h1TextStyle' as='h2'>
+        Some text
+      </Typography>,
+    );
 
     const headingElement = screen.getByRole('heading', {
       level: 2,
@@ -32,7 +36,7 @@ describe('<Typography>', () => {
     const headingTranslatedElement = screen.getByText('Some text');
     expect(headingTranslatedElement).toBeInTheDocument();
     expect(headingElement).toBeInTheDocument();
-    expect(headingElement).toHaveAttribute('data-variant', '');
+    expect(headingElement).toHaveAttribute('data-variant', 'h1TextStyle');
     expect(headingElement.tagName).toBe('H2');
   });
 
