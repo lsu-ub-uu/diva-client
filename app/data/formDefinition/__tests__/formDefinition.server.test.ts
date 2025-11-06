@@ -4247,10 +4247,17 @@ describe('formDefinition', () => {
             },
           },
           {
-            type: 'hidden',
-            name: 'role.roleTerm',
-            finalValue: 'pbl',
-            attributesToShow: 'none',
+            type: 'group',
+            name: 'role',
+            mode: 'input',
+            components: [
+              {
+                type: 'hidden',
+                name: 'roleTerm',
+                finalValue: 'pbl',
+                attributesToShow: 'none',
+              },
+            ],
           },
         ],
       });

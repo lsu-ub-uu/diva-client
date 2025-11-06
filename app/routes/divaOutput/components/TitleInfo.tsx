@@ -19,7 +19,7 @@ export const TitleInfo = ({ titleInfo }: TitleInfoProps) => {
   if (!titleInfo) return null;
   return (
     <Term
-      label={titleInfo?.__text[language]}
+      label={titleInfo?.__text?.[language]}
       value={createTitle(titleInfo)}
       lang={titleInfo._lang}
     />
