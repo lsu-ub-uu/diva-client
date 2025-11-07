@@ -56,7 +56,7 @@ h1 {
 
 .filter-button {
   border: 1px solid var(--color-gray-dark);
-  background: var(--color-gray-main);
+  background: white;
   &:hover {
     background: rgb(221 217 212);
   }
@@ -89,9 +89,9 @@ aside {
 }
 
 .search-result-item {
-  border: 1px solid var(--color-thin-border);
+  border: 1px solid var(--color-output-card-border);
   padding: var(--gap-l);
-  background-color: var(--color-gray-light);
+  background-color: var(--color-output-card-background);
   display: flex;
   align-items: flex-start;
   gap: var(--gap-l);
@@ -110,4 +110,8 @@ aside {
   gap: var(--gap);
   font-size: var(--font-size-s);
   --input-height: var(--input-height-small);
+
+  legend {
+    margin-bottom: var(--gap-s);
+  }
 }
