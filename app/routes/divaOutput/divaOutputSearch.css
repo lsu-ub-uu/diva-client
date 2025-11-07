@@ -46,8 +46,9 @@ h1 {
   background-color: var(--color-card);
   border: 1px solid var(--color-thin-border);
   color: var(--color-chip-text);
-  padding: var(--gap-s) var(--gap);
+  padding: 0 var(--gap);
   border-radius: var(--border-radius);
+  height: var(--input-height);
   cursor: pointer;
   &:hover {
     background-color: var(--color-card-dark);
@@ -56,13 +57,6 @@ h1 {
 
 .filter-button {
   border: 1px solid var(--color-gray-dark);
-  background: white;
-  &:hover {
-    background: rgb(221 217 212);
-  }
-  &:active {
-    background: rgb(211 207 202);
-  }
 }
 
 aside {
