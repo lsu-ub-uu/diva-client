@@ -64,6 +64,7 @@ export const Pagination = ({
   return (
     <div className={styles['pagination']}>
       <span className={styles['result-text']}>
+        Visar{' '}
         {t('divaClient_paginationResultText', {
           fromNo,
           toNo,

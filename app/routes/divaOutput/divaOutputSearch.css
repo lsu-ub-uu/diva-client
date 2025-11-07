@@ -1,0 +1,113 @@
+.search-page {
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  gap: var(--gap-xl);
+}
+
+h1 {
+  grid-column: span 2;
+}
+
+.main-search {
+  display: flex;
+  gap: var(--gap);
+  margin-top: var(--gap-l);
+
+  button[type='submit'] {
+    flex-basis: 10rem;
+  }
+}
+
+.search-fieldset {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--gap) * 1.5);
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  pointer-events: none;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-s);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-thin-border);
+  color: var(--color-chip-text);
+  padding: var(--gap-s) var(--gap);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-card-dark);
+  }
+}
+
+.filter-button {
+  border: 1px solid var(--color-gray-dark);
+  background: var(--color-gray-main);
+  &:hover {
+    background: rgb(221 217 212);
+  }
+  &:active {
+    background: rgb(211 207 202);
+  }
+}
+
+aside {
+  transform: translateX(100%);
+  border-left: 1px solid var(--color-thin-border);
+  padding: var(--gap-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
+  background-color: var(--color-nav-rail);
+  transition: transform 0.2s ease-in-out;
+
+  &[data-expanded='true'] {
+    transform: translateX(0);
+  }
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
+  margin-top: var(--gap-l);
+  margin-bottom: var(--gap-l);
+}
+
+.search-result-item {
+  border: 1px solid var(--color-thin-border);
+  padding: var(--gap-l);
+  background-color: var(--color-gray-light);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-l);
+
+  img {
+    margin-left: auto;
+    max-height: 100px;
+    height: auto;
+    border: 1px solid var(--color-thin-border);
+  }
+}
+
+.year-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  font-size: var(--font-size-s);
+  --input-height: var(--input-height-small);
+}

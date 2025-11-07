@@ -88,3 +88,4 @@ export { default as ShoppingCartIcon } from './ShoppingCart.svg?react';
 export { default as LockOpenIcon } from './LockOpen.svg?react';
 export { default as DataObjectIcon } from './DataObject.svg?react';
 export { default as MemberSettingsIcon } from './MemberSettings.svg?react';
+export { default as FilterIcon } from './FilterIcon.svg?react';
