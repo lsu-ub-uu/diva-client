@@ -269,8 +269,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
       </header>
 
       <div className='content'>
-        <Breadcrumbs />
-        <Outlet />
+        <div className='breadcrumbs'>
+          <Breadcrumbs />
+        </div>
+        <div className='main-content'>
+          <Outlet />
+        </div>
       </div>
       <AuthLogger auth={auth} />
     </div>

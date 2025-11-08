@@ -172,7 +172,13 @@
 
 .content {
   grid-area: main;
-  padding: 0 var(--gap-l);
+
+  & > * {
+    &:first-child {
+      border-bottom: 1px solid var(--color-thin-border);
+    }
+    padding: 0 var(--gap-xl);
+  }
 }
 
 .flash {

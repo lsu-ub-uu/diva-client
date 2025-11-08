@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 20rem;
   gap: var(--gap-xl);
+  padding: var(--gap-l) 0;
 }
 
 h1 {
