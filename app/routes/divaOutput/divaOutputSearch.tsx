@@ -1,12 +1,13 @@
 import { Button } from '@/components/Button/Button';
+import { Pagination } from '@/components/Form/Pagination';
 import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { CloseIcon, FilterIcon, SearchIcon } from '@/icons';
-import css from './divaOutputSearch.css?url';
-import { Pagination } from '@/components/Form/Pagination';
-import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import type { BFFSearchResult } from '@/types/record';
 import { useState } from 'react';
+import css from './divaOutputSearch.css?url';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -24,6 +25,8 @@ export default function DivaOutputSearch() {
   return (
     <div className='search-page'>
       <main>
+        <Breadcrumbs />
+
         <h1>Publikationer</h1>
         <div className='main-search'>
           <Fieldset
@@ -37,7 +40,9 @@ export default function DivaOutputSearch() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <SearchIcon className='search-icon' />
+            <button className='search-button' type='submit'>
+              <SearchIcon />
+            </button>
           </Fieldset>
         </div>
         <div
@@ -247,6 +252,9 @@ export default function DivaOutputSearch() {
             ]}
             value='all'
           />
+        </Fieldset>
+        <Fieldset size='small' label='Upphovsperson'>
+          <Input placeholder='Sök på namn, affiliering, ORCID' />
         </Fieldset>
       </aside>
     </div>

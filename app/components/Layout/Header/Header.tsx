@@ -46,7 +46,7 @@ import {
 import styles from './Header.module.css';
 
 interface HeaderProps {
-  recordTypes: Promise<BFFRecordType[]>;
+  recordTypes: BFFRecordType[];
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
   editableMember: string | undefined;
@@ -76,11 +76,7 @@ export const Header = ({
       <div className={styles['header-logo-wrapper']}>
         <div className={styles['top-navigation']}>
           <Suspense>
-            <Await resolve={recordTypes} errorElement={<div />}>
-              {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
-              )}
-            </Await>
+            <TopNavigation recordTypes={recordTypes} />
           </Suspense>
         </div>
       </div>

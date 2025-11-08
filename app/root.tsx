@@ -261,7 +261,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <Link to='/'>
               <DivaLogo className='logo' />
             </Link>
-            <TopNavigation recordTypes={recordTypes} />
           </div>
           <div className='header-bar-right'>
             <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
@@ -276,7 +275,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      {/* <header className='nav-rail'>
+      <header className='nav-rail'>
         <Header
           recordTypes={loaderData.recordTypes}
           loginUnits={loginUnits}
@@ -285,12 +284,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
             userCanEditMemberSettings && member ? member.id : undefined
           }
         />
-      </header> */}
+      </header>
 
       <div className='content'>
-        <div className='breadcrumbs'>
-          <Breadcrumbs />
-        </div>
         <div className='main-content'>
           <Outlet />
         </div>

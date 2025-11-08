@@ -160,17 +160,16 @@
   position: relative;
 
   .diva-header-bar {
-    height: 6rem;
+    height: 5.5rem;
     padding: var(--gap) var(--gap-xl);
     border-bottom: 1px solid var(--color-thin-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: var(--color-label);
 
     .logo {
       height: 100%;
-      max-width: 10rem;
+      max-width: 8rem;
     }
 
     .header-bar-left {
@@ -214,11 +213,7 @@
   grid-area: main;
 
   & > * {
-    &:first-child {
-      border-bottom: 1px solid var(--color-thin-border);
-    }
     padding-left: var(--gap-xl);
-    overflow-x: hidden;
   }
 }
 

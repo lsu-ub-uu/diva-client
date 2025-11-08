@@ -2,11 +2,16 @@
   display: grid;
   grid-template-columns: 1fr 20rem;
   gap: var(--gap-xl);
-  padding: var(--gap-l) 0;
+  overflow-x: hidden;
+}
+
+main {
+  padding-bottom: var(--gap-xxl);
 }
 
 h1 {
   grid-column: span 2;
+  margin-top: var(--gap-l);
 }
 
 .main-search {
@@ -24,14 +29,16 @@ h1 {
   width: 100%;
 }
 
-.search-icon {
+.search-button {
   position: absolute;
-  top: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
   right: calc(var(--gap) * 1.5);
-  transform: translateY(-50%);
   font-size: 1.5rem;
   color: var(--color-primary);
-  pointer-events: none;
+  background: none;
+  cursor: pointer;
 }
 
 .chips {
