@@ -180,7 +180,7 @@ export default function LoginMenu({
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
           </span>
-          <ChevronDownIcon />
+          <PersonIcon />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>
           <MenuItem>

@@ -11,7 +11,7 @@ interface NavigationLinkProps {
 export const NavigationLink = ({ icon, to, label }: NavigationLinkProps) => {
   return (
     <NavLink className={styles['navigation-link']} to={to}>
-      {icon}
+      <span className={styles['icon-wrapper']}>{icon}</span>
       <span className={styles['label']}> {label}</span>
     </NavLink>
   );

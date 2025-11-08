@@ -15,6 +15,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import DivaLogo from '@/assets/divaLogo.svg?react';
 
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
@@ -24,8 +25,10 @@ import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
 import { type ReactNode, useEffect, useRef } from 'react';
 import {
+  Await,
   data,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -64,6 +67,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 
 const { MODE } = import.meta.env;
 
@@ -76,7 +80,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
-  const recordTypes = getRecordTypes(dependencies, auth);
+  const recordTypes = await getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
@@ -242,22 +246,37 @@ export default function App({ loaderData }: Route.ComponentProps) {
     appTokenLogins,
     userCanEditMemberSettings,
     auth,
+    recordTypes,
   } = loaderData;
 
   return (
     <div className='root-layout'>
       <NotificationSnackbar notification={loaderData.notification} />
 
-      <header className='member-bar'>
+      <header className='header'>
         <NavigationLoader />
-        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
-          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-          <LanguageSwitcher />
-          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
-        </MemberBar>
+        <MemberBar member={member} loggedIn={loaderData.user !== undefined} />
+        <div className='diva-header-bar'>
+          <div className='header-bar-left'>
+            <Link to='/'>
+              <DivaLogo className='logo' />
+            </Link>
+            <TopNavigation recordTypes={recordTypes} />
+          </div>
+          <div className='header-bar-right'>
+            <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
+            <div className='header-bar-login-language'>
+              <LoginMenu
+                loginUnits={loginUnits}
+                appTokenLogins={appTokenLogins}
+              />
+              <LanguageSwitcher />
+            </div>
+          </div>
+        </div>
       </header>
 
-      <header className='nav-rail'>
+      {/* <header className='nav-rail'>
         <Header
           recordTypes={loaderData.recordTypes}
           loginUnits={loginUnits}
@@ -266,7 +285,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
             userCanEditMemberSettings && member ? member.id : undefined
           }
         />
-      </header>
+      </header> */}
 
       <div className='content'>
         <div className='breadcrumbs'>

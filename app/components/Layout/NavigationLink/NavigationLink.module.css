@@ -26,20 +26,24 @@
   transition: background-color 0.1s;
   gap: var(--gap-s);
 
-  &:hover {
+  .icon-wrapper {
+    width: 4rem;
+    display: grid;
+    place-items: center;
+    padding: var(--gap-s) 0;
+    border-radius: 9999999px;
+  }
+
+  &:hover .icon-wrapper {
     background-color: var(--color-card);
   }
 
-  padding: var(--gap-s) 0;
-  border-radius: 9999999px;
-
-  &[aria-current='page'] {
+  &[aria-current='page'] .icon-wrapper {
     background-color: var(--color-card-dark);
   }
 
   svg {
-    font-size: var(--font-size-l);
-    color: var(--color-label);
+    font-size: 1.2rem;
   }
 
   .label {

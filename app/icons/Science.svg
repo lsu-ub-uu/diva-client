@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M200-120q-51 0-72.5-45.5T138-250l222-270v-240h-40q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760h-40v240l222 270q32 39 10.5 84.5T760-120H200Zm0-80h560L520-492v-268h-80v268L200-200Zm280-280Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    class="lucide lucide-notebook-tabs-icon lucide-notebook-tabs">
+    <path d="M2 6h4" />
+    <path d="M2 10h4" />
+    <path d="M2 14h4" />
+    <path d="M2 18h4" />
+    <rect width="16" height="20" x="4" y="2" rx="2" />
+    <path d="M15 2v20" />
+    <path d="M15 7h5" />
+    <path d="M15 12h5" />
+    <path d="M15 17h5" />
+</svg>
