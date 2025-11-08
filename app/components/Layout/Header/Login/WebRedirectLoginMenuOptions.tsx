@@ -16,18 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { logInWithWebRedirect } from '@/auth/useWebRedirectLogin';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
 interface WebRedirectLoginOptionsProps {
   webRedirectLoginUnits: LoginDefinition[];
-  onSelect: (url: string) => void;
 }
 
-export const WebRedirectLoginOptions = ({
+export const WebRedirectLoginMenuOptions = ({
   webRedirectLoginUnits,
-  onSelect,
 }: WebRedirectLoginOptionsProps) => {
   const { t } = useTranslation();
   if (webRedirectLoginUnits.length === 0) {
@@ -38,7 +37,9 @@ export const WebRedirectLoginOptions = ({
       <h2>{t('divaClient_LoginWebRedirectText')}</h2>
       {webRedirectLoginUnits.map(({ loginDescription, url }) => (
         <MenuItem key={loginDescription}>
-          <button onClick={() => onSelect(url!)}>{t(loginDescription)}</button>
+          <button onClick={() => logInWithWebRedirect(url!)}>
+            {t(loginDescription)}
+          </button>
         </MenuItem>
       ))}
     </>

@@ -20,6 +20,7 @@
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type {
   BFFLoginPassword,
+  BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFPresentationGroup,
@@ -27,6 +28,7 @@ import type {
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 
 export interface LoginDefinition {
+  id: string;
   loginDescription: string;
   type: 'password' | 'webRedirect';
   url?: string;
@@ -42,14 +44,14 @@ export const createLoginDefinition = (
 
   const loginUnitEntries = Array.from(loginUnitPool.values());
 
-  loginUnitEntries.forEach((login) => {
+  loginUnitEntries.forEach((login: BFFLoginUnit) => {
     if (memberLoginUnitIds && !memberLoginUnitIds.includes(login.id)) {
       return;
     }
     let item: LoginDefinition;
     const temp = loginPool.get(login.login);
     const { type } = temp;
-    item = { loginDescription: login.loginDescription, type };
+    item = { id: login.id, loginDescription: login.loginDescription, type };
 
     if (item.type === 'webRedirect') {
       const { url } = temp as BFFLoginWebRedirect;

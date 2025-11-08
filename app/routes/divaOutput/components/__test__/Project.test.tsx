@@ -27,7 +27,6 @@ describe('Project', () => {
       },
       titleInfo: {
         __text: { en: 'Title' },
-        _lang: 'eng',
         title: { value: 'Project title' },
         subtitle: { value: 'Project subtitle' },
       },
@@ -47,9 +46,5 @@ describe('Project', () => {
     ).toHaveAttribute('href', '/diva-project/diva-project:123');
 
     expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(screen.getByText('Project title: Project subtitle')).toHaveAttribute(
-      'lang',
-      'en',
-    );
   });
 });

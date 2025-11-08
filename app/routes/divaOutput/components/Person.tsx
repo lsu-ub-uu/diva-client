@@ -17,19 +17,18 @@
  */
 
 import type {
-  AffiliationPersonalLinkGroup,
-  AffiliationPersonalTextGroup,
+  AffiliationPersonalGroup,
   NamePersonalDegreeSupervisorGroup,
   NamePersonalGroup,
   NamePersonalOpponentGroup,
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { OpenInNewIcon } from '@/icons';
+import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { formatPersonName } from '../utils/formatPersonName';
 import { Term } from './Term';
-import { OpenInNewIcon } from '@/icons';
-import { useId } from 'react';
 
 export type PersonType =
   | NamePersonalGroup
@@ -56,12 +55,12 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
         {renderPersonName(person)}
       </span>
       {formatPersonRoles(person, language)}
-      {person.affiliation_otherType_link?.map((affiliation, index) => (
-        <LinkedAffiliation key={index} affiliation={affiliation} />
-      ))}
-      {person.affiliation_otherType_text?.map((affiliation, index) => (
-        <TextAffiliation key={index} affiliation={affiliation} />
-      ))}
+      {person.affiliation?.map((affiliation, index) => {
+        if (affiliation.organisation !== undefined) {
+          return <LinkedAffiliation key={index} affiliation={affiliation} />;
+        }
+        return <TextAffiliation key={index} affiliation={affiliation} />;
+      })}
       {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid && (
         <dl>
           {/*  TODO: Add publication ORCID when its in the model*/}
@@ -128,7 +127,7 @@ const formatPersonRoles = (
 };
 
 const formatTextAffiliationName = (
-  affiliation: AffiliationPersonalTextGroup,
+  affiliation: AffiliationPersonalGroup,
   language: 'sv' | 'en',
 ) => {
   return [
@@ -140,7 +139,7 @@ const formatTextAffiliationName = (
 };
 
 const formatLinkedAffiliationName = (
-  affiliation: AffiliationPersonalLinkGroup,
+  affiliation: AffiliationPersonalGroup,
   language: 'sv' | 'en',
 ) => {
   const linkedOrganisationDisplayName =
@@ -167,7 +166,7 @@ const formatLinkedAffiliationName = (
 const LinkedAffiliation = ({
   affiliation,
 }: {
-  affiliation: AffiliationPersonalLinkGroup;
+  affiliation: AffiliationPersonalGroup;
 }) => {
   const language = useLanguage();
   return (
@@ -175,7 +174,7 @@ const LinkedAffiliation = ({
       <div className='affiliation'>
         <span>{formatLinkedAffiliationName(affiliation, language)}</span>
         <dl className='affiliation inline-definitions'>
-          {affiliation.organisation.linkedRecord.organisation
+          {affiliation.organisation?.linkedRecord.organisation
             .identifier_type_ror && (
             <Term
               label={
@@ -197,7 +196,7 @@ const LinkedAffiliation = ({
 const TextAffiliation = ({
   affiliation,
 }: {
-  affiliation: AffiliationPersonalTextGroup;
+  affiliation: AffiliationPersonalGroup;
 }) => {
   const language = useLanguage();
   return (

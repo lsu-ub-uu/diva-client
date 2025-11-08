@@ -26,8 +26,10 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
+import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
@@ -46,17 +48,49 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({
+  request,
+  context,
+  params,
+}: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
-  const { notification, auth } = context.get(sessionContext);
+  const { auth, notification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
-  const validationTypeId = url.searchParams.get('validationType');
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
 
-  if (validationTypeId === null) {
-    throw data('divaClient_missingValidationTypeParamText', { status: 400 });
+  let validationTypeId = url.searchParams.get('validationType');
+
+  if (!validationTypeId) {
+    if (!auth) {
+      throw data(null, { status: 401 });
+    }
+    const validationTypes = await getValidationTypes(
+      params.recordType,
+      auth?.data.token,
+    );
+    if (validationTypes && validationTypes.length === 1) {
+      validationTypeId = validationTypes[0].value;
+    } else {
+      const title = t('divaClient_createRecordText', {
+        rootGroupTitle: t(
+          dependencies.recordTypePool.get(params.recordType).textId,
+        ).toLowerCase(),
+      });
+      return {
+        formDefinition: undefined,
+        previewFormDefinition: undefined,
+        defaultValues: undefined,
+        notification,
+        title: title,
+        breadcrumb: title,
+        validationTypes: await getValidationTypes(
+          params.recordType,
+          auth?.data.token,
+        ),
+      };
+    }
   }
 
   let formDefinition;
@@ -102,6 +136,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     notification,
     title,
     breadcrumb,
+    validationTypes: null,
   };
 };
 
@@ -177,13 +212,28 @@ export const links: Route.LinksFunction = () => [
 export default function CreateRecordRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { formDefinition, previewFormDefinition, notification, defaultValues } =
-    loaderData;
+  const { t } = useTranslation();
+  const {
+    formDefinition,
+    previewFormDefinition,
+    notification,
+    defaultValues,
+    validationTypes,
+  } = loaderData;
 
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     null,
   );
   const deferredPreviewData = useDeferredValue(previewData);
+
+  if (!formDefinition) {
+    return (
+      <main>
+        <h1>{t('divaClient_selectValidationTypeText')}</h1>
+        <ValidationTypePicker validationTypes={validationTypes ?? []} />
+      </main>
+    );
+  }
 
   const handleFormChange = (data: BFFDataRecordData) => {
     setPreviewData(data);

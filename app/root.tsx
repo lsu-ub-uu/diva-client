@@ -23,7 +23,7 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, Suspense, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import {
   Await,
   data,
@@ -42,7 +42,7 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { Header } from '@/components/Layout/Header/Header';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
@@ -80,7 +80,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
-  const recordTypes = getRecordTypes(dependencies, auth);
+  const recordTypes = await getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
@@ -235,8 +235,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+
   const {
     userPreferences,
     member,
@@ -259,18 +261,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <Link to='/'>
               <DivaLogo className='logo' />
             </Link>
-            <Suspense>
-              <Await resolve={recordTypes} errorElement={<div />}>
-                {(resolvedRecordType) => (
-                  <TopNavigation recordTypes={resolvedRecordType} />
-                )}
-              </Await>
-            </Suspense>
+            <TopNavigation recordTypes={recordTypes} />
           </div>
           <div className='header-bar-right'>
             <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
             <div className='header-bar-login-language'>
-              <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+              <LoginMenu
+                loginUnits={loginUnits}
+                appTokenLogins={appTokenLogins}
+              />
               <LanguageSwitcher />
             </div>
           </div>
@@ -296,3 +295,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+const useHydratedFlag = () => {
+  useEffect(() => {
+    document.body.setAttribute('data-hydrated', 'true');
+  }, []);
+};

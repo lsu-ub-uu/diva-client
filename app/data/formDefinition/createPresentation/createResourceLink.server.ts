@@ -54,6 +54,7 @@ export const createResourceLink = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -85,5 +86,6 @@ export const createResourceLink = (
     title,
     titleHeadlineLevel,
     outputFormat,
+    addText,
   });
 };

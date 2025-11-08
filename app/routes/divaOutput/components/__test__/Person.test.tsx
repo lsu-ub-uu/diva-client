@@ -171,7 +171,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_text: [
+      affiliation: [
         {
           name_type_corporate: { namePart: { value: 'University of Test' } },
           identifier_type_ror: {
@@ -203,7 +203,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_text: [
+      affiliation: [
         {
           name_type_corporate: { namePart: { value: 'University of Test' } },
         },
@@ -221,7 +221,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_link: [
+      affiliation: [
         {
           organisation: {
             displayName: { en: 'University of Test', sv: 'Testuniversitetet' },
@@ -252,7 +252,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_link: [
+      affiliation: [
         {
           organisation: {
             displayName: { en: 'University of Test', sv: 'Testuniversitetet' },
@@ -273,11 +273,56 @@ describe('Person', () => {
     i18next.changeLanguage('en');
   });
 
+  it('renders a linked affiliation over uncontrolled info', () => {
+    const person = {
+      namePart_type_given: { value: 'John' },
+      namePart_type_family: { value: 'Doe' },
+      affiliation: [
+        {
+          organisation: {
+            displayName: { en: 'Controlled name', sv: 'Kontrollerat namn' },
+            value: '1234',
+            linkedRecord: {
+              organisation: {
+                recordInfo: { type: { value: 'diva-organisation' } },
+                identifier_type_ror: {
+                  __text: { en: 'ROR', sv: 'ROR' },
+                  value: 'RorInTheLink',
+                },
+              },
+            },
+          },
+          name_type_corporate: { namePart: { value: 'Uncontrolled name' } },
+          identifier_type_ror: {
+            __text: { en: 'ROR', sv: 'ROR' },
+            value: 'RorInTheUncontrolled',
+          },
+          country: {
+            value: 'se',
+            __valueText: { en: 'Sweden', sv: 'Sverige' },
+          },
+          description: {
+            __text: { en: 'Description', sv: 'Beskrivning' },
+            value: 'Not to be confused with the University of Pest',
+          },
+        },
+      ],
+    } as NamePersonalGroup;
+
+    render(<Person person={person} expanded />);
+
+    expect(screen.getByText('Controlled name')).toBeInTheDocument();
+    expect(screen.getByText('RorInTheLink')).toBeInTheDocument();
+
+    expect(screen.queryByText('Uncontrolled name')).not.toBeInTheDocument();
+    expect(screen.queryByText('RorInTheUncontrolled')).not.toBeInTheDocument();
+  });
+
   it('falls back to linked record name if displayName is undefined', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_link: [
+      affiliation: [
         {
           organisation: {
             value: '1234',
@@ -310,7 +355,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_link: [
+      affiliation: [
         {
           organisation: {
             value: '1234',
@@ -347,7 +392,7 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      affiliation_otherType_link: [
+      affiliation: [
         {
           organisation: {
             value: '1234',

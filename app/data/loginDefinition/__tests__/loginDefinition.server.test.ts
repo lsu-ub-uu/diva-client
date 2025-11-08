@@ -188,16 +188,19 @@ describe('loginDefinition', () => {
 
   const result = [
     {
+      id: 'someLoginUnit',
       loginDescription: 'someDiVALoginUnitText',
       url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
       type: 'webRedirect',
     },
     {
+      id: 'someOtherLoginUnit',
       loginDescription: 'someDiVALoginUnitText2',
       url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
       type: 'webRedirect',
     },
     {
+      id: 'someThirdLoginUnit',
       loginDescription: 'someDiVALoginUnitText2',
       type: 'password',
       presentation: {
@@ -270,11 +273,13 @@ describe('loginDefinition', () => {
       },
     },
     {
+      id: 'somePermissionLoginUnit',
       loginDescription: 'somePermissionUnitwrText',
       url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
       type: 'webRedirect',
     },
     {
+      id: 'somePermissionPasswordLoginUnit',
       loginDescription: 'somePermissionUnitpasswordText',
       presentation: {
         form: {

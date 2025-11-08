@@ -17,16 +17,20 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { User } from '@/auth/createUser';
 import {
   isComponentContainer,
   isComponentHidden,
   isComponentRecordLink,
   isComponentRepeating,
+  isComponentRequired,
   isComponentValidForDataCarrying,
   isComponentVariable,
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
+import { getAutoPermissionUnit } from '@/utils/getAutoPermissionUnit';
 import type {
   FormAttributeCollection,
   FormComponent,
@@ -36,9 +40,6 @@ import type {
   FormSchema,
 } from '../types';
 import { generateRepeatId } from './generateRepeatId';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
-import type { User } from '@/auth/createUser';
-import { getAutoPermissionUnit } from '@/utils/getAutoPermissionUnit';
 
 export interface RecordData {
   [key: string]: any;
@@ -242,7 +243,11 @@ function createFormDefaultObject(
   }
 
   if (isComponentHidden(component)) {
-    return { value: component.finalValue, final: true };
+    return {
+      value: component.finalValue,
+      final: true,
+      ...generateComponentAttributes(component),
+    };
   }
   if (isComponentVariable(component)) {
     return createDefaultValuesForVariable(component);
@@ -265,9 +270,9 @@ function createDefaultValuesForGroup(
   user?: User,
 ) {
   return {
-    // groups
     ...createDefaultValuesFromComponents(component.components, member, user),
     ...generateComponentAttributes(component),
+    ...(isComponentRequired(component) ? { required: true } : {}),
   };
 }
 

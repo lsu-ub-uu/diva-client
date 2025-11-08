@@ -1,0 +1,264 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "name": "presentation",
+            "children": [
+              {
+                "name": "recordInfo",
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "recordInfoProgrammeUpdatePGroup"
+                  },
+                  {
+                    "name": "type",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentation"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "createdBy",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "161616"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "dataDivider",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2024-09-27T08:50:41.209843Z"
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "161616"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2025-10-17T11:36:44.524636Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "validationType",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentationGroup"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "presentationOf",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "metadata"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "recordInfoProgrammeUpdateGroup"
+                  }
+                ]
+              },
+              {
+                "name": "childReferences",
+                "children": [
+                  {
+                    "name": "childReference",
+                    "repeatId": "2",
+                    "children": [
+                      {
+                        "name": "refGroup",
+                        "repeatId": "0",
+                        "children": [
+                          {
+                            "name": "ref",
+                            "children": [
+                              {
+                                "name": "linkedRecordType",
+                                "value": "presentation"
+                              },
+                              {
+                                "name": "linkedRecordId",
+                                "value": "oldIdPVar"
+                              }
+                            ],
+                            "attributes": {
+                              "type": "presentation"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "minNumberOfRepeatingToShow",
+                        "value": "0"
+                      },
+                      {
+                        "name": "addText",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "text"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "specialAddText"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "presentationSize",
+                        "value": ""
+                      },
+                      {
+                        "name": "textStyle",
+                        "value": ""
+                      },
+                      {
+                        "name": "childStyle",
+                        "repeatId": "1",
+                        "value": ""
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "mode",
+                "value": "input"
+              },
+              {
+                "name": "showHeadline",
+                "value": "false"
+              },
+              {
+                "name": "attributesToShow",
+                "value": ""
+              },
+              {
+                "name": "presentationStyle",
+                "value": ""
+              },
+              {
+                "name": "presentAs",
+                "value": ""
+              },
+              {
+                "name": "specifiedHeadlineLevel",
+                "value": ""
+              }
+            ],
+            "attributes": {
+              "type": "pGroup"
+            }
+          },
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup",
+              "accept": "application/vnd.cora.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup/incomingLinks",
+              "accept": "application/vnd.cora.recordList+json"
+            },
+            "update": {
+              "requestMethod": "POST",
+              "rel": "update",
+              "contentType": "application/vnd.cora.record+json",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup",
+              "accept": "application/vnd.cora.record+json"
+            },
+            "index": {
+              "requestMethod": "POST",
+              "rel": "index",
+              "body": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentation"
+                      }
+                    ],
+                    "name": "recordType"
+                  },
+                  {
+                    "name": "recordId",
+                    "value": "someNewPGroup"
+                  },
+                  {
+                    "name": "type",
+                    "value": "index"
+                  }
+                ],
+                "name": "workOrder"
+              },
+              "contentType": "application/vnd.cora.record+json",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/workOrder/",
+              "accept": "application/vnd.cora.record+json"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "recordType",
+    "toNo": "1"
+  }
+}

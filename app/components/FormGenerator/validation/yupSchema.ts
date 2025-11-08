@@ -33,15 +33,16 @@ import type {
 } from '../types';
 import {
   getNameInData,
-  hasValuableData,
   isComponentContainer,
   isComponentGroup,
+  isComponentHidden,
   isComponentOptional,
   isComponentRepeating,
   isComponentRequired,
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
 } from '../formGeneratorUtils/formGeneratorUtils';
+import { hasValuableData } from '@/utils/cleanFormData';
 
 const REQUIRED_TEXT_ID = 'divaClient_fieldRequiredText';
 const INVALID_FORMAT_TEXT_ID = 'divaClient_fieldInvalidFormatText';
@@ -68,6 +69,10 @@ export const createYupValidationsFromComponent = (
   }
 
   const currentNameInData = getNameInData(component);
+
+  if (isComponentHidden(component)) {
+    return validationRule;
+  }
 
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {

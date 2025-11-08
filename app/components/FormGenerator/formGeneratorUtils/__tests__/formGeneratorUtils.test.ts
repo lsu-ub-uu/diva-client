@@ -18,17 +18,12 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
-import type { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { describe, expect, it, vi } from 'vitest';
+import { hasValuableData } from '@/utils/cleanFormData';
+import { describe, expect, it } from 'vitest';
 import {
-  checkIfComponentHasValue,
-  checkIfSingularComponentHasValue,
-  checkIfValueExists,
   exportForTesting,
-  hasValuableData,
   isComponentContainer,
   isComponentGroup,
-  isComponentGroupAndOptional,
   isComponentRepeating,
   isComponentRepeatingContainer,
   isComponentRequired,
@@ -1441,107 +1436,6 @@ describe('helper methods', () => {
       expect(expected).toStrictEqual(arg3);
     });
   });
-  describe('isParentGroupOptional', () => {
-    it('isParentGroupOptional return false for group & repeatMin === 1', () => {
-      const actual = isComponentGroupAndOptional({
-        type: 'group',
-        label: 'someRootFormGroupText',
-        name: 'someRootNameInData',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'textId345',
-          body: 'defTextId678',
-        },
-        mode: 'input',
-        components: [
-          {
-            type: 'text',
-            name: 'someHeaderText',
-          },
-        ],
-      });
-      expect(actual).toBe(false);
-    });
-
-    it('isParentGroupOptional return true for group & repeatMin === 0', () => {
-      const actual = isComponentGroupAndOptional({
-        type: 'group',
-        label: 'someRootFormGroupText',
-        name: 'someRootNameInData',
-        repeat: {
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'textId345',
-          body: 'defTextId678',
-        },
-        mode: 'input',
-        components: [
-          {
-            type: 'text',
-            name: 'someHeaderText',
-          },
-        ],
-      });
-      expect(actual).toBe(true);
-    });
-
-    it('isParentGroupOptional return false for non group variable & repeatMin === 0', () => {
-      const actual = isComponentGroupAndOptional({
-        type: 'textVariable',
-        name: 'someInnerNameInData',
-        label: 'someTextId',
-        childStyle: [],
-        placeholder: 'someEmptyTextId',
-        showLabel: true,
-        repeat: {
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someTextId',
-          body: 'someDefTextId',
-        },
-        validation: {
-          type: 'regex',
-          pattern: 'someRegex',
-        },
-        mode: 'input',
-        inputType: 'input',
-      });
-      expect(actual).toBe(false);
-    });
-
-    it('isParentGroupOptional return false for non group variable & repeatMin === 1', () => {
-      const actual = isComponentGroupAndOptional({
-        type: 'textVariable',
-        name: 'someInnerNameInData',
-        label: 'someTextId',
-        childStyle: [],
-        placeholder: 'someEmptyTextId',
-        showLabel: true,
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someTextId',
-          body: 'someDefTextId',
-        },
-        validation: {
-          type: 'regex',
-          pattern: 'someRegex',
-        },
-        mode: 'input',
-        inputType: 'input',
-      });
-      expect(actual).toBe(false);
-    });
-  });
 
   describe('checkForSiblingValue', () => {
     it('checkForSiblingValue', () => {
@@ -1602,86 +1496,6 @@ describe('helper methods', () => {
         },
       });
       expect(actual).toBe(true);
-    });
-  });
-
-  describe('checkIfValueExists', () => {
-    it('checkIfValueExists returns false for empty string', () => {
-      const actual = checkIfValueExists('');
-      expect(actual).toBe(false);
-    });
-    it('checkIfValueExists returns false for null', () => {
-      const actual = checkIfValueExists(null);
-      expect(actual).toBe(false);
-    });
-    it('checkIfValueExists returns false for undefined', () => {
-      const actual = checkIfValueExists(undefined);
-      expect(actual).toBe(false);
-    });
-    it('checkIfValueExists returns true for non-empty string', () => {
-      const actual = checkIfValueExists('someString');
-      expect(actual).toBe(true);
-    });
-  });
-
-  describe('checkIfComponentHasValue', () => {
-    it('Should return false if the value is empty', () => {
-      const mockGetValues = vi.fn(() => {
-        return '';
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(false);
-    });
-    it('Should return true if the value is not empty', () => {
-      const values = {
-        divaOutput: {
-          recordInfo: {},
-          domain: {
-            value: 'hig',
-          },
-        },
-      };
-
-      const mockGetValues = vi.fn(() => {
-        return values.divaOutput.domain.value;
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(true);
-    });
-    it('Should return false if the value is undefined', () => {
-      const mockGetValues = vi.fn(() => {
-        return undefined;
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
-      expect(actual).toStrictEqual(false);
-    });
-  });
-  describe('checkIfSingularComponentHasValue', () => {
-    it('Should return false if the value is array with empty object', () => {
-      const mockGetValues = vi.fn(() => {
-        return [{ value: '' }];
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfSingularComponentHasValue(
-        mockGetValues,
-        'domain.value',
-      );
-      expect(actual).toStrictEqual(false);
-    });
-
-    it('Should return false if the value is undefined', () => {
-      const mockGetValues = vi.fn(() => {
-        return undefined;
-      }) as unknown as UseFormGetValues<FieldValues>;
-
-      const actual = checkIfSingularComponentHasValue(
-        mockGetValues as any,
-        'domain.value',
-      );
-      expect(actual).toStrictEqual(false);
     });
   });
 });

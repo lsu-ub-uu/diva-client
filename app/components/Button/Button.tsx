@@ -24,6 +24,7 @@ import {
   type ReactNode,
   type Ref,
 } from 'react';
+import type { LinkProps } from 'react-router';
 
 export interface ButtonProps
   extends Omit<HTMLProps<HTMLButtonElement>, 'as' | 'size'> {
@@ -31,7 +32,7 @@ export interface ButtonProps
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   as?: ElementType;
-  to?: string;
+  to?: LinkProps['to'];
   href?: string;
   ref?: Ref<HTMLButtonElement>;
   target?: string;

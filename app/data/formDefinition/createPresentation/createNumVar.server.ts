@@ -66,6 +66,7 @@ export const createNumVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -101,5 +102,6 @@ export const createNumVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   });
 };

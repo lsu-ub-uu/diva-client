@@ -3,9 +3,6 @@ import type {
   SubjectSubjectGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
-import { useTranslation } from 'react-i18next';
-import { getLanguageTextId } from '../utils/translateLanguage';
 import { SdgImage } from './SdgImage';
 import { SearchLinkList } from './SearchLinkList';
 
@@ -14,23 +11,20 @@ interface ClassificationsProps {
 }
 
 export const Classifications = ({ output }: ClassificationsProps) => {
-  const { t } = useTranslation();
   const language = useLanguage();
   return (
     <>
-      {output.subject?.map((subject, index) => (
+      {output.subject && output.subject.length > 0 && (
         <SearchLinkList
           pill
-          key={index}
-          heading={`${subject.__text[language]} (${t(getLanguageTextId(subject._lang))})`}
+          heading={output.subject[0].__text[language]}
           searchTerm='keywordsSearchTerm'
-          items={subject.topic.value.split(',').map((topicPart) => ({
-            href: topicPart,
-            label: topicPart,
+          items={output.subject.map((subject) => ({
+            href: subject.topic.value,
+            label: subject.topic.value,
           }))}
-          language={mapISO639_2b_to_ISO639_1(subject._lang)}
         />
-      ))}
+      )}
 
       {output.classification_authority_ssif &&
         output.classification_authority_ssif.length > 0 && (

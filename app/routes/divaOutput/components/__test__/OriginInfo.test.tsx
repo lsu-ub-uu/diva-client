@@ -7,7 +7,7 @@ describe('OriginInfo', () => {
   it('renders linked and unlinked agents correctly', () => {
     const originInfo = {
       __text: { en: 'Origin info', sv: 'Ursprung' },
-      agent_otherType_link: [
+      agent: [
         {
           publisher: {
             value: 'publisher1',
@@ -32,8 +32,6 @@ describe('OriginInfo', () => {
             },
           },
         },
-      ],
-      agent_otherType_text: [
         { namePart: { value: 'Uncontrolled agent1' } },
         { namePart: { value: 'Uncontrolled agent2' } },
       ],
@@ -46,5 +44,31 @@ describe('OriginInfo', () => {
     expect(screen.getByText('Uncontrolled agent2')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher1')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher2')).toBeInTheDocument();
+  });
+
+  it('renders linked publisher name over uncontrolled', () => {
+    const originInfo = {
+      __text: { en: 'Origin info', sv: 'Ursprung' },
+      agent: [
+        {
+          namePart: { value: 'Uncontrolled name' },
+          publisher: {
+            value: 'publisher2',
+            linkedRecord: {
+              publisher: {
+                name_type_corporate: {
+                  namePart: { value: 'Linked name' },
+                },
+              },
+            },
+          },
+        },
+      ],
+    } as OriginInfoGroup;
+
+    render(<OriginInfo originInfo={originInfo} />);
+
+    expect(screen.getByText('Linked name')).toBeInTheDocument();
+    expect(screen.queryByText('Uncontrolled name')).not.toBeInTheDocument();
   });
 });

@@ -17,16 +17,17 @@
  */
 
 import DivaLogo from '@/assets/divaLogo.svg?react';
+import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Button } from '@/components/Button/Button';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import Login from '@/components/Layout/Header/Login/Login';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import {
   CachedIcon,
   CloseIcon,
-  CodeIcon,
   DesignServicesIcon,
   MemberSettingsIcon,
   MenuIcon,
@@ -43,8 +44,6 @@ import {
   useNavigation,
 } from 'react-router';
 import styles from './Header.module.css';
-import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 
 interface HeaderProps {
   recordTypes: Promise<BFFRecordType[]>;
@@ -89,11 +88,6 @@ export const Header = ({
       <div className={styles['header-content']}>
         {devMode && (
           <>
-            <NavigationLink
-              to={href('/api-docs')}
-              label='API'
-              icon={<CodeIcon />}
-            />
             <NavigationLink
               to={href('/design-system')}
               label='Design system'
@@ -142,7 +136,7 @@ export const Header = ({
           >
             <CloseIcon />
           </Button>
-          <Login loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
           <LanguageSwitcher />
 
           <Suspense>

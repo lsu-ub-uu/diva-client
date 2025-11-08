@@ -18,24 +18,24 @@
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { CreateRecordMenuError } from '@/components/CreateRecordMenu/CreateRecordMenuError';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
-import { AsyncErrorBoundary } from '@/errorHandling/AsyncErrorBoundary';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
+import { AddCircleIcon } from '@/icons';
 import { performSearch } from '@/routes/record/utils/performSearch';
-import { Suspense } from 'react';
+import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Await, data } from 'react-router';
+import { Await, data, href, Link } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
-import { i18nContext } from 'server/i18n';
-import { dependenciesContext } from 'server/depencencies';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -48,41 +48,45 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   if (!recordType.searchId) {
     throw data('Record type has no search', { status: 404 });
   }
+  try {
+    const searchForm = await getSearchForm(dependencies, recordType.searchId);
 
-  const searchForm = getSearchForm(dependencies, recordType.searchId);
+    const yupSchema = generateYupSchemaFromFormSchema(searchForm);
+    const { query, searchResults, errors } = await performSearch(
+      request,
+      dependencies,
+      recordType.searchId,
+      auth,
+      yupSchema,
+    );
+    const apiUrl =
+      query &&
+      encodeURI(
+        externalCoraApiUrl(
+          `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
+        ),
+      );
 
-  const yupSchema = generateYupSchemaFromFormSchema(searchForm);
-  const { query, searchResults, errors } = await performSearch(
-    request,
-    dependencies,
-    recordType.searchId,
-    auth,
-    yupSchema,
-  );
-  const apiUrl =
-    query &&
-    encodeURI(
-      externalCoraApiUrl(
-        `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
-      ),
+    const validationTypes = getValidationTypes(
+      params.recordType,
+      auth?.data.token,
     );
 
-  const validationTypes = getValidationTypes(
-    params.recordType,
-    auth?.data.token,
-  );
-
-  return {
-    searchId: recordType.searchId,
-    recordTypeTextId: recordType.textId,
-    validationTypes,
-    query,
-    searchForm,
-    searchResults,
-    title: `DiVA | ${t(recordType.textId)}`,
-    errors,
-    apiUrl,
-  };
+    return {
+      searchId: recordType.searchId,
+      recordTypeTextId: recordType.textId,
+      recordTypeId: recordType.id,
+      validationTypes,
+      query,
+      searchForm,
+      searchResults,
+      title: `DiVA | ${t(recordType.textId)}`,
+      errors,
+      apiUrl,
+    };
+  } catch (error) {
+    throw createRouteErrorResponse(error);
+  }
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
@@ -116,15 +120,22 @@ export default function OutputSearchRoute({
 
             <Suspense
               fallback={
-                <SkeletonLoader height='var(--input-height)' width='10rem' />
+                <Button
+                  as={Link}
+                  variant='secondary'
+                  to={href('/:recordType/create', {
+                    recordType: loaderData.recordTypeId,
+                  })}
+                  size='large'
+                >
+                  <AddCircleIcon />
+                  {t('divaClient_createText', {
+                    type: t(recordTypeTextId).toLowerCase(),
+                  })}
+                </Button>
               }
             >
-              <Await
-                resolve={validationTypes}
-                errorElement={
-                  <CreateRecordMenuError recordTypeTextId={recordTypeTextId} />
-                }
-              >
+              <Await resolve={validationTypes} errorElement={<Fragment />}>
                 {(validationTypes) => (
                   <CreateRecordMenu
                     validationTypes={validationTypes}
@@ -135,26 +146,13 @@ export default function OutputSearchRoute({
             </Suspense>
           </div>
 
-          <Suspense
-            fallback={
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <SkeletonLoader height='var(--input-height)' width='88%' />
-                <SkeletonLoader height='var(--input-height)' width='12%' />
-              </div>
-            }
-          >
-            <Await resolve={searchForm} errorElement={<AsyncErrorBoundary />}>
-              {(searchForm) => (
-                <RecordSearch
-                  key={searchId}
-                  searchForm={searchForm}
-                  query={query}
-                  searchResults={searchResults}
-                  apiUrl={loaderData.apiUrl}
-                />
-              )}
-            </Await>
-          </Suspense>
+          <RecordSearch
+            key={searchId}
+            searchForm={searchForm}
+            query={query}
+            searchResults={searchResults}
+            apiUrl={loaderData.apiUrl}
+          />
         </div>
       </main>
       <aside>

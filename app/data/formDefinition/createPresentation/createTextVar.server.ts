@@ -68,6 +68,7 @@ export const createTextVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
+    addText,
   } = createPresentationChildReferenceParameters(presentationChildReference);
 
   const {
@@ -105,5 +106,6 @@ export const createTextVar = (
     titleHeadlineLevel,
     inputType,
     alternativePresentation,
+    addText,
   });
 };

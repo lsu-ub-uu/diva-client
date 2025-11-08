@@ -178,7 +178,11 @@ export const transformDataGroup = (
       ...transformData(dataChild, matchingMetadata, dependencies),
       ...transformAttributes(dataChild.attributes),
     };
+    if (isRequired(matchingMetadata)) {
+      transformedChild.required = true;
+    }
     const repeating = isRepeating(matchingMetadata);
+
     if (repeating) {
       group[name] ??= [];
       transformedChild.repeatId = dataChild.repeatId;
@@ -420,4 +424,8 @@ export const transformAttributes = (attributes: Attributes | undefined) => {
 
 export const isRepeating = (metadata: FormMetaData) => {
   return metadata.repeat.repeatMax > 1;
+};
+
+export const isRequired = (metadata: FormMetaData) => {
+  return metadata.repeat.repeatMin > 0;
 };

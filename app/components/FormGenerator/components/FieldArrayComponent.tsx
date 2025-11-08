@@ -129,12 +129,16 @@ export const FieldArrayComponent = ({
               variant='tertiary'
               disabled={fields.length >= (component.repeat?.repeatMax ?? 1)}
               onClick={handleAppend}
-              aria-label={t('divaClient_addFieldText', {
-                fieldName: t(component.label),
-              })}
+              aria-label={
+                component.addText
+                  ? t(component.addText)
+                  : t('divaClient_addFieldText', {
+                      fieldName: t(component.label),
+                    })
+              }
               tooltipPosition='top'
             >
-              <AddCircleIcon /> {t(component.label)}
+              <AddCircleIcon /> {t(component.addText ?? component.label)}
             </Button>
           </div>
         )}
