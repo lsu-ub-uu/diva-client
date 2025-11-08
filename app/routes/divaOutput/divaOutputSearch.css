@@ -77,7 +77,7 @@ aside {
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-l);
+  gap: var(--gap);
   margin-top: var(--gap-l);
   margin-bottom: var(--gap-l);
 }
@@ -89,7 +89,7 @@ aside {
   display: flex;
   align-items: flex-start;
   gap: var(--gap-l);
-
+  border-radius: var(--border-radius-s);
   img {
     margin-left: auto;
     max-height: 100px;

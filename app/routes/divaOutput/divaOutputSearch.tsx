@@ -106,7 +106,7 @@ export default function DivaOutputSearch() {
                     <a href='#'>Bröllopsföljet från Telemarken</a>
                   </h3>
                   <p>Anna Andersson, Bo Berg</p>
-                  <p>År: 2022 | Typ: Artikel</p>
+                  <p>2021 | Artikel i tidskrift</p>
                 </div>
                 <img src='https://placeholdit.com/300x400/ffffff/168ba5?text=PDF' />
               </div>
@@ -120,8 +120,11 @@ export default function DivaOutputSearch() {
                       under 300 år
                     </a>
                   </h3>
-                  <p>Anna Andersson, Bo Berg</p>
-                  <p>År: 2022 | Typ: Artikel</p>
+                  <p>
+                    Anna Andersson, Bo Berg, Cecilia Citron, Daniel Dalström,
+                    et. al.
+                  </p>
+                  <p>2022 | Bok</p>
                 </div>
                 <img src='https://placeholdit.com/300x400/ffffff/168ba5?text=PDF' />
               </div>
@@ -134,7 +137,7 @@ export default function DivaOutputSearch() {
                     </a>
                   </h3>
                   <p>Anna Andersson, Bo Berg</p>
-                  <p>År: 2022 | Typ: Artikel</p>
+                  <p>2016 | Kapitel i bok</p>
                 </div>
                 <img src='https://placeholdit.com/300x400/ffffff/168ba5?text=PDF' />
               </div>
