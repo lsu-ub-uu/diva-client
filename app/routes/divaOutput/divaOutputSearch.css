@@ -45,6 +45,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap);
+  align-items: center;
 }
 
 .chip {
@@ -65,6 +66,7 @@ h1 {
 
 .filter-button {
   border: 1px solid var(--color-gray-dark);
+  margin-left: auto;
 }
 
 aside {
@@ -85,19 +87,18 @@ aside {
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
   margin-top: var(--gap-l);
   margin-bottom: var(--gap-l);
 }
 
 .search-result-item {
-  border: 1px solid var(--color-output-card-border);
-  padding: var(--gap-l);
-  background-color: var(--color-output-card-background);
+  &:not(:first-child) {
+    border-top: 1px solid var(--color-thin-border);
+  }
+  padding: var(--gap-l) 0;
   display: flex;
   align-items: flex-start;
   gap: var(--gap-l);
-  border-radius: var(--border-radius-s);
   img {
     margin-left: auto;
     max-height: 100px;

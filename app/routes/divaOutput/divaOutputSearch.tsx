@@ -4,7 +4,7 @@ import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSe
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { CloseIcon, FilterIcon, SearchIcon } from '@/icons';
+import { CircleFilledIcon, CloseIcon, FilterIcon, SearchIcon } from '@/icons';
 import type { BFFSearchResult } from '@/types/record';
 import { useState } from 'react';
 import css from './divaOutputSearch.css?url';
@@ -53,15 +53,8 @@ export default function DivaOutputSearch() {
             alignItems: 'center',
           }}
         >
-          <Button
-            className='filter-button'
-            variant='secondary'
-            onClick={() => setFiltersOpen(!filtersOpen)}
-          >
-            <FilterIcon /> Filter
-          </Button>
-
           <div className='chips'>
+            {(fakultetenFilter || skansenFilter) && <span>Aktiva filter:</span>}
             {fakultetenFilter && (
               <button
                 className='chip'
@@ -80,6 +73,21 @@ export default function DivaOutputSearch() {
               </button>
             )}
           </div>
+          <Button
+            className='filter-button'
+            variant='secondary'
+            onClick={() => setFiltersOpen(!filtersOpen)}
+            style={
+              fakultetenFilter || skansenFilter
+                ? { color: 'var(--color-link)' }
+                : {}
+            }
+          >
+            <FilterIcon /> {filtersOpen ? 'Dölj filter' : 'Visa filter'}{' '}
+            {(fakultetenFilter || skansenFilter) && (
+              <CircleFilledIcon style={{ fontSize: '0.8rem' }} />
+            )}
+          </Button>
         </div>
 
         {(searchQuery || skansenFilter || fakultetenFilter) && (
