@@ -31,14 +31,27 @@ h1 {
 
 .search-button {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2rem;
-  right: calc(var(--gap) * 1.5);
+  top: 2px;
+  bottom: 2px;
+  width: 4rem;
+  right: 2px;
+  border-radius: var(--border-radius-s);
   font-size: 1.5rem;
   color: var(--color-primary);
-  background: none;
+  background: var(--color-background);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+
+  &:hover {
+    background: var(--color-button-secondary-hover);
+  }
+
+  &:active {
+    background: var(--color-button-secondary-active);
+  }
 }
 
 .chips {

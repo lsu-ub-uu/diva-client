@@ -46,7 +46,7 @@ export default function DivaOutputSearch() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className='search-button' type='submit'>
+            <button className='search-button' type='submit' aria-label='Sök'>
               <SearchIcon />
             </button>
           </Fieldset>
