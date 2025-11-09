@@ -8,6 +8,7 @@ import { CircleFilledIcon, CloseIcon, FilterIcon, SearchIcon } from '@/icons';
 import type { BFFSearchResult } from '@/types/record';
 import { useState } from 'react';
 import css from './divaOutputSearch.css?url';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -28,15 +29,20 @@ export default function DivaOutputSearch() {
         <Breadcrumbs />
 
         <h1>Publikationer</h1>
+
         <div className='main-search'>
           <Fieldset
             className='search-fieldset'
             label='Sök efter publikationer'
+            info={{
+              title: 'genericSearchTextVarText',
+              body: 'genericSearchTextVarDefText',
+            }}
             size='large'
           >
             <Input
               type='search'
-              placeholder='Sök på titel, abstract, författare, utgivningsår, etc.'
+              placeholder='Sök på titel, abstract, författare, nyckelord, organisation, utgivningsår, förlag, ISBN, DOI med mera.'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
