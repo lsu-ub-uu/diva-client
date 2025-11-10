@@ -3723,7 +3723,7 @@ export interface DivaOutputGroup {
     value: string;
     _type: 'se-libr';
     __text: { sv: string; en: string };
-  };
+  }[];
   identifier_type_archiveNumber?: {
     value: string;
     _type: 'archiveNumber';

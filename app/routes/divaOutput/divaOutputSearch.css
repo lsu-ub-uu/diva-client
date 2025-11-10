@@ -22,6 +22,11 @@ h1 {
   button[type='submit'] {
     flex-basis: 10rem;
   }
+
+  input {
+    border-radius: var(--border-radius);
+    height: 3.5rem;
+  }
 }
 
 .search-fieldset {
@@ -35,7 +40,7 @@ h1 {
   bottom: 2px;
   width: 4rem;
   right: 2px;
-  border-radius: var(--border-radius-s);
+  border-radius: var(--border-radius);
   font-size: 1.5rem;
   color: var(--color-primary);
   background: var(--color-background);
