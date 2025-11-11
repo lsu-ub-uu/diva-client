@@ -157,6 +157,13 @@
   grid-area: member;
 }
 
+.drag-handle::hover {
+  background: var(--color-button-secondary-hover);
+}
+.drag-handle::active {
+  background: var(--color-button-secondary-active);
+}
+
 .nav-rail {
   grid-area: nav;
   background-color: var(--color-nav-rail);
