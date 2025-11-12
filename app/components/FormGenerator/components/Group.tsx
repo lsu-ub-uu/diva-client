@@ -148,7 +148,7 @@ export const Group = ({
                 className='form-component-item anchorLink'
                 data-colspan={12}
               >
-                {t(component.title)}
+                {t(component.label)}
               </Typography>
             )}
             {component.components && (
