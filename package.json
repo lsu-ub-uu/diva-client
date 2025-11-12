@@ -16,11 +16,10 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
-    "test": "vitest --silent",
+    "test": "vitest --silent=true",
     "test:ci": "vitest run --reporter=junit --reporter=default --outputFile=./junit-report.xml",
     "test:ui": "vitest --ui",
-    "coverage": "vitest --coverage",
-    "api-script": "tsx api-scripts/main.ts"
+    "coverage": "vitest --coverage"
   },
   "engines": {
     "node": "22.14.0"
