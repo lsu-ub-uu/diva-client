@@ -172,6 +172,8 @@ export type IndexTypeCollection =
   | 'indexTypeNumber'
   | 'indexTypeText';
 
+export type PermissionTermModeCollection = 'standard' | 'state';
+
 export interface CollectTermExtraDataGroup {
   indexFieldName?: { value: string; __text: { sv: string; en: string } };
   indexType?: {
@@ -180,6 +182,11 @@ export interface CollectTermExtraDataGroup {
     __valueText: { sv: string; en: string };
   };
   permissionKey?: { value: string; __text: { sv: string; en: string } };
+  mode?: {
+    value: PermissionTermModeCollection;
+    __text: { sv: string; en: string };
+    __valueText: { sv: string; en: string };
+  };
   storageKey?: { value: string; __text: { sv: string; en: string } };
   __text: { sv: string; en: string };
 }
@@ -3066,7 +3073,7 @@ export interface RelatedItemBookGroup {
 
     __text: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangGroup;
+  titleInfo?: TitleInfoGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
@@ -3099,7 +3106,7 @@ export interface RelatedItemConferencePublicationGroup {
 
     __text: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangGroup;
+  titleInfo?: TitleInfoGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
@@ -3136,7 +3143,7 @@ export interface RelatedItemPublicationChannelGroup {
 }
 
 export interface RelatedItemResearchDataGroup {
-  titleInfo: TitleInfoLangGroup;
+  titleInfo: TitleInfoGroup;
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
@@ -3240,7 +3247,7 @@ export interface RelatedItemProjectGroup {
 
     __text: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangSweEngGroup;
+  titleInfo?: TitleInfoGroup;
   _type: 'project';
   _otherType: OtherTypeCollection;
   __text: { sv: string; en: string };

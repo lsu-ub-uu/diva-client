@@ -28,10 +28,12 @@ import type {
 import type {
   FormAttributeCollection,
   FormComponent,
+  FormComponentGroup,
   FormComponentHidden,
 } from '@/components/FormGenerator/types';
 import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createAttributes } from './createAttributes';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type { BFFMetadataTypes } from '../formDefinition.server';
 
 export const createHiddenComponents = (
@@ -60,7 +62,7 @@ const createHiddenComponentsForMetadata = (
   metadata: BFFMetadata,
   presentationChildReferences: BFFPresentationChildReference[],
   path: string,
-) => {
+): FormComponent[] => {
   const currentPath = `${path ? `${path}.` : ''}${metadata.nameInData}`;
   const presentation = getPresentation(
     presentationChildReferences,
@@ -69,11 +71,13 @@ const createHiddenComponentsForMetadata = (
   );
 
   if (isMetadataGroup(metadata)) {
-    return createHiddenComponentsForGroup(
-      dependencies,
-      metadata,
-      presentation as BFFPresentationGroup,
-      currentPath,
+    return (
+      createHiddenComponentsForGroup(
+        dependencies,
+        metadata,
+        presentation as BFFPresentationGroup,
+        currentPath,
+      ) ?? []
     );
   }
 
@@ -84,9 +88,13 @@ const createHiddenComponentsForMetadata = (
     'input',
   );
 
-  return [
-    createHiddenVariable(presentation, metadata, currentPath, attributes),
-  ];
+  const hiddenComponent = createHiddenVariable(
+    presentation,
+    metadata,
+    currentPath,
+    attributes,
+  );
+  return hiddenComponent ? [hiddenComponent] : [];
 };
 
 const createHiddenComponentsForGroup = (
@@ -94,18 +102,41 @@ const createHiddenComponentsForGroup = (
   group: BFFMetadataGroup,
   presentation: BFFPresentationGroup | undefined,
   currentPath: string = '',
-) => {
-  const components = createHiddenComponents(
-    dependencies,
-    group.children,
-    presentation?.children ?? [],
-    currentPath,
-  );
+): FormComponent[] | undefined => {
+  const hasPresentation = presentation !== undefined;
 
-  const containsOnlyHidden = components.length === group.children.length;
+  if (!hasPresentation) {
+    const components = createHiddenComponents(
+      dependencies,
+      group.children,
+      [],
+      '',
+    );
 
-  if (components.length > 0 && containsOnlyHidden) {
-    return components;
+    const containsOnlyHidden = components.length === group.children.length;
+
+    if (components.length > 0 && containsOnlyHidden) {
+      const groupComponent = removeEmpty({
+        type: 'group',
+        name: currentPath,
+        mode: 'input',
+        components,
+      });
+      return [groupComponent as FormComponentGroup];
+    }
+  } else {
+    const components = createHiddenComponents(
+      dependencies,
+      group.children,
+      presentation.children,
+      currentPath,
+    );
+
+    const containsOnlyHidden = components.length === group.children.length;
+
+    if (components.length > 0 && containsOnlyHidden) {
+      return components;
+    }
   }
 };
 
