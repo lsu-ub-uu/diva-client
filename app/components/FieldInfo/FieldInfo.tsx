@@ -60,6 +60,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
           <FloatingFocusManager context={context}>
             <div
               className={styles['field-info-panel']}
+              // eslint-disable-next-line react-hooks/refs
               ref={refs.setFloating}
               style={floatingStyles}
               {...getFloatingProps()}

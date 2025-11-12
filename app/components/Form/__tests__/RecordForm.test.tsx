@@ -84,6 +84,7 @@ const RecordFormWithRoutesStub = ({
     },
   ]);
 
+  // eslint-disable-next-line react-hooks/static-components
   return <RoutesStub />;
 };
 

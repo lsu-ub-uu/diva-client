@@ -19,26 +19,33 @@
 
 import { Typography } from '@/components/Typography/Typography';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('<Typography>', () => {
-  vi.mock('react-i18next', () => ({
-    useTranslation: () => {
-      return {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        t: (_: string) => 'translated to english',
-      };
-    },
-  }));
-  it('should render a text translated into english', () => {
-    render(<Typography variant='h1TextStyle' text='not translated' />);
+  it('should render a h2 that looks like a h1', () => {
+    render(
+      <Typography variant='h1TextStyle' as='h2'>
+        Some text
+      </Typography>,
+    );
 
     const headingElement = screen.getByRole('heading', {
-      level: 1,
+      level: 2,
     });
 
-    const headingTranslatedElement = screen.getByText('translated to english');
+    const headingTranslatedElement = screen.getByText('Some text');
     expect(headingTranslatedElement).toBeInTheDocument();
     expect(headingElement).toBeInTheDocument();
+    expect(headingElement).toHaveAttribute('data-variant', 'h1TextStyle');
+    expect(headingElement.tagName).toBe('H2');
+  });
+
+  it('should render a paragraph by default', () => {
+    render(<Typography>Some text</Typography>);
+
+    const element = screen.getByText('Some text');
+
+    expect(element).not.toHaveAttribute('data-variant');
+    expect(element.tagName).toBe('P');
   });
 });

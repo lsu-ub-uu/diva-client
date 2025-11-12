@@ -8,6 +8,9 @@ export default defineConfig(({ isSsrBuild }) => {
   const { BASE_PATH } = process.env;
   return {
     base: BASE_PATH ? `${BASE_PATH}/` : undefined,
+    css: {
+      devSourcemap: true,
+    },
     plugins: [
       !process.env.VITEST && reactRouter(),
       !process.env.VITEST &&
@@ -16,7 +19,6 @@ export default defineConfig(({ isSsrBuild }) => {
           babelConfig: {
             presets: ['@babel/preset-typescript'],
             plugins: ['babel-plugin-react-compiler'],
-            retainLines: true,
             sourceMaps: true,
           },
         }),

@@ -76,7 +76,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const appTokenLogins = getAppTokenLogins();
   const locale = context.get(i18nContext).language;
-  const recordTypes = getRecordTypes(dependencies, auth);
+  const recordTypes = await getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
@@ -246,7 +246,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className='root-layout'>
-      <NotificationSnackbar notification={loaderData.notification} />
+      <NotificationSnackbar
+        key={loaderData.notification?.summary}
+        notification={loaderData.notification}
+      />
 
       <header className='member-bar'>
         <NavigationLoader />
