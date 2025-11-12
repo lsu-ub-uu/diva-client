@@ -22,10 +22,10 @@ div.navigation-loader {
   left: 0;
   right: 0;
   opacity: 0;
-  animation: delayedFadeIn 0.1s ease-in-out 0.5s forwards;
+  animation: delayed-fade-in 0.1s ease-in-out 0.5s forwards;
 }
 
-@keyframes delayedFadeIn {
+@keyframes delayed-fade-in {
   to {
     opacity: 1;
   }
