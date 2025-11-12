@@ -1,6 +1,5 @@
-import { describe } from 'node:test';
 import { createUser } from '../createUser';
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createMockAuth } from '../__mocks__/auth';
 
 describe('createUser', () => {

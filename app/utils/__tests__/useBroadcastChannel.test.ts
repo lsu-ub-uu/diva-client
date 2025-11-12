@@ -27,7 +27,9 @@ describe('useBroadcastChannel', () => {
 
     vi.stubGlobal(
       'BroadcastChannel',
-      vi.fn().mockReturnValue(mockBroadcastChannel),
+      vi.fn(function (this: any) {
+        return mockBroadcastChannel;
+      }),
     );
 
     const { result } = renderHook(() => useBroadcastChannel('test', vi.fn()));
@@ -53,7 +55,9 @@ describe('useBroadcastChannel', () => {
 
     vi.stubGlobal(
       'BroadcastChannel',
-      vi.fn().mockReturnValue(mockBroadcastChannel),
+      vi.fn(function (this: any) {
+        return mockBroadcastChannel;
+      }),
     );
 
     const messageReceivedMock = vi.fn();
@@ -85,7 +89,9 @@ describe('useBroadcastChannel', () => {
 
     vi.stubGlobal(
       'BroadcastChannel',
-      vi.fn().mockReturnValue(mockBroadcastChannel),
+      vi.fn(function (this: any) {
+        return mockBroadcastChannel;
+      }),
     );
 
     const messageReceivedMock = vi.fn();
