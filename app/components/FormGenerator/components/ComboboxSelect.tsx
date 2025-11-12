@@ -43,7 +43,7 @@ import {
 } from '@/components/Input/Combobox';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type ComboboxInputProps } from '@headlessui/react';
+import { type ComboboxInputProps, type ComboboxProps } from '@headlessui/react';
 
 import styles from './ComboboxSelect.module.css';
 
@@ -52,7 +52,7 @@ export interface ComboboxSelectProps
   options: FormComponentCollItem[];
   invalid?: boolean;
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string | number | readonly string[] | null) => void;
 }
 
 export const ComboboxSelect = ({
