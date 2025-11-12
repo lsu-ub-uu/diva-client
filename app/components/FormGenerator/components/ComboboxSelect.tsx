@@ -41,9 +41,9 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
+import { type ComboboxInputProps } from '@headlessui/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type ComboboxInputProps, type ComboboxProps } from '@headlessui/react';
 
 import styles from './ComboboxSelect.module.css';
 
