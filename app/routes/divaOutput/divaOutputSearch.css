@@ -3,6 +3,7 @@
   grid-template-columns: 1fr 20rem;
   gap: var(--gap-xl);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 main {
@@ -32,6 +33,48 @@ h1 {
 .search-fieldset {
   position: relative;
   width: 100%;
+}
+
+.quick-filters {
+  display: flex;
+  gap: var(--gap);
+  margin-bottom: var(--gap-l);
+}
+
+.filter-checkbox {
+  height: var(--input-height);
+  padding: 0 var(--gap-l);
+  border: 1px solid var(--color-gray-dark);
+  border-radius: var(--border-radius-s);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap);
+
+  &:hover {
+    background-color: var(--color-button-secondary-hover);
+  }
+
+  &:active {
+    background-color: var(--color-button-secondary-active);
+  }
+
+  input {
+    display: none;
+  }
+
+  .filter-checkbox-checkmark {
+    display: none;
+  }
+
+  &:has(input:checked) {
+    background-color: var(--color-card-dark);
+    border-color: var(--color-primary);
+
+    .filter-checkbox-checkmark {
+      display: inline-block;
+    }
+  }
 }
 
 .search-button {
@@ -70,15 +113,19 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: var(--gap-s);
-  background-color: var(--color-card);
+  background: var(--color-gray-light);
   border: 1px solid var(--color-thin-border);
-  color: var(--color-chip-text);
   padding: 0 var(--gap);
   border-radius: var(--border-radius);
   height: var(--input-height);
   cursor: pointer;
+
   &:hover {
-    background-color: var(--color-card-dark);
+    background-color: var(--color-button-secondary-hover);
+  }
+
+  &:active {
+    background-color: var(--color-button-secondary-active);
   }
 }
 

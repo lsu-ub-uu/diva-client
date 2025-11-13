@@ -1664,7 +1664,7 @@ export interface NamePersonalProjectGroup {
   __text: { sv: string; en: string };
 }
 
-export type OtherTypeCollection = 'link' | 'text';
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
 
 export interface RoleProjectOrganisationGroup {
   roleTerm: {
@@ -1692,7 +1692,7 @@ export interface NameOrganisationProjectGroup {
     __text: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2766,7 +2766,7 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
     __text: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -2798,6 +2798,11 @@ export interface NamePersonalThesisAdvisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text: { sv: string; en: string };
+  };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
@@ -2811,6 +2816,7 @@ export interface NamePersonalThesisAdvisorGroup {
   role: RoleThesisAdvisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  _otherType: 'thesisAdvisor';
   __text: { sv: string; en: string };
 }
 
@@ -2842,6 +2848,11 @@ export interface NamePersonalDegreeSupervisorGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text: { sv: string; en: string };
+  };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
@@ -2855,6 +2866,7 @@ export interface NamePersonalDegreeSupervisorGroup {
   role: RoleDegreeSupervisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  _otherType: 'degreeSupervisor';
   __text: { sv: string; en: string };
 }
 
@@ -2886,6 +2898,11 @@ export interface NamePersonalOpponentGroup {
     _type: 'given';
     __text: { sv: string; en: string };
   };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text: { sv: string; en: string };
+  };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
@@ -2899,6 +2916,7 @@ export interface NamePersonalOpponentGroup {
   role: RoleOpponentGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
+  _otherType: 'opponent';
   __text: { sv: string; en: string };
 }
 
@@ -3022,7 +3040,7 @@ export interface RelatedItemJournalGroup {
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3055,7 +3073,7 @@ export interface RelatedItemSeriesGroup {
   };
   partNumber?: { value: string; __text: { sv: string; en: string } };
   _type: 'series';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3093,7 +3111,7 @@ export interface RelatedItemBookGroup {
   part?: RelatedItemPartBookGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'book';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3131,7 +3149,7 @@ export interface RelatedItemConferencePublicationGroup {
   part?: RelatedItemPartJournalGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'conferencePublication';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3254,7 +3272,7 @@ export interface RelatedItemProjectGroup {
   };
   titleInfo?: TitleInfoGroup;
   _type: 'project';
-  _otherType: OtherTypeCollection;
+  _otherType: RelatedItemOtherTypeCollection;
   __text: { sv: string; en: string };
 }
 
@@ -3745,9 +3763,9 @@ export interface DivaOutputGroup {
   studentDegree?: StudentDegreeGroup[];
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
   degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
-  supervisor_type_personal?: NamePersonalThesisAdvisorGroup[];
-  examiner_type_personal?: NamePersonalDegreeSupervisorGroup[];
-  opponent_type_personal?: NamePersonalOpponentGroup[];
+  name_otherType_thesisAdvisor_type_personal?: NamePersonalThesisAdvisorGroup[];
+  name_otherType_degreeSupervisor_type_personal?: NamePersonalDegreeSupervisorGroup[];
+  name_otherType_opponent_type_personal?: NamePersonalOpponentGroup[];
   presentation?: PresentationDivaGroup;
   defence?: DefenceGroup;
   relatedItem_type_journal?: RelatedItemJournalGroup;

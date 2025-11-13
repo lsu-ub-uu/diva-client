@@ -4,11 +4,18 @@ import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSe
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { CircleFilledIcon, CloseIcon, FilterIcon, SearchIcon } from '@/icons';
+import {
+  CheckCircleIcon,
+  CircleFilledIcon,
+  CloseIcon,
+  FilterIcon,
+  SearchIcon,
+} from '@/icons';
 import type { BFFSearchResult } from '@/types/record';
 import { useState } from 'react';
 import css from './divaOutputSearch.css?url';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -18,18 +25,64 @@ export const loader = async () => {
   };
 };
 
+const FilterCheckbox = ({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+}) => {
+  return (
+    <label className='filter-checkbox'>
+      <CheckCircleIcon className='filter-checkbox-checkmark' />
+      <input type='checkbox' checked={checked} onChange={() => onChange()} />
+      {label}
+    </label>
+  );
+};
+
 export default function DivaOutputSearch() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
   const [skansenFilter, setSkansenFilter] = useState(false);
   const [fakultetenFilter, setFakultetenFilter] = useState(false);
+  const [myPublicationsFilter, setMyPublicationsFilter] = useState(false);
+  const [readyForReviewFilter, setReadyForReviewFilter] = useState(false);
+  const [readyForPublicationFilter, setReadyForPublicationFilter] =
+    useState(false);
+  const user = useUser();
   return (
     <div className='search-page'>
       <main>
         <Breadcrumbs />
 
         <h1>Publikationer</h1>
-
+        {user && (
+          <div>
+            <h2>Snabbfilter</h2>
+            <div className='quick-filters'>
+              <FilterCheckbox
+                label='Mina publikationer'
+                checked={myPublicationsFilter}
+                onChange={() => setMyPublicationsFilter(!myPublicationsFilter)}
+              />
+              <FilterCheckbox
+                label='Redo för granskning'
+                checked={readyForReviewFilter}
+                onChange={() => setReadyForReviewFilter(!readyForReviewFilter)}
+              />
+              <FilterCheckbox
+                label='Redo för publicering'
+                checked={readyForPublicationFilter}
+                onChange={() =>
+                  setReadyForPublicationFilter(!readyForPublicationFilter)
+                }
+              />
+            </div>
+          </div>
+        )}
         <div className='main-search'>
           <Fieldset
             className='search-fieldset'
@@ -60,7 +113,11 @@ export default function DivaOutputSearch() {
           }}
         >
           <div className='chips'>
-            {(fakultetenFilter || skansenFilter) && <span>Aktiva filter:</span>}
+            {(fakultetenFilter ||
+              skansenFilter ||
+              myPublicationsFilter ||
+              readyForReviewFilter ||
+              readyForPublicationFilter) && <span>Aktiva filter:</span>}
             {fakultetenFilter && (
               <button
                 className='chip'
@@ -76,6 +133,32 @@ export default function DivaOutputSearch() {
                 onClick={() => setSkansenFilter(!skansenFilter)}
               >
                 Ämne: <em>"Skansen"</em> <CloseIcon />
+              </button>
+            )}
+            {myPublicationsFilter && (
+              <button
+                className='chip'
+                onClick={() => setMyPublicationsFilter(!myPublicationsFilter)}
+              >
+                Snabbfilter: <em>"Mina publikationer"</em> <CloseIcon />
+              </button>
+            )}
+            {readyForReviewFilter && (
+              <button
+                className='chip'
+                onClick={() => setReadyForReviewFilter(!readyForReviewFilter)}
+              >
+                Snabbfilter: <em>"Redo för granskning"</em> <CloseIcon />
+              </button>
+            )}
+            {readyForPublicationFilter && (
+              <button
+                className='chip'
+                onClick={() =>
+                  setReadyForPublicationFilter(!readyForPublicationFilter)
+                }
+              >
+                Snabbfilter: <em>"Redo för publicering"</em> <CloseIcon />
               </button>
             )}
           </div>
@@ -96,7 +179,12 @@ export default function DivaOutputSearch() {
           </Button>
         </div>
 
-        {(searchQuery || skansenFilter || fakultetenFilter) && (
+        {(searchQuery ||
+          skansenFilter ||
+          fakultetenFilter ||
+          myPublicationsFilter ||
+          readyForReviewFilter ||
+          readyForPublicationFilter) && (
           <>
             <div
               style={{
