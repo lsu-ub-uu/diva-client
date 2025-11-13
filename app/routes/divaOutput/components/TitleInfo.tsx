@@ -1,6 +1,4 @@
 import type {
-  DivaOutputGroup,
-  LanguageCollection,
   TitleInfoGroup,
   TitleInfoLangGroup,
 } from '@/generatedTypes/divaTypes';

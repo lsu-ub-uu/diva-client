@@ -1,6 +1,5 @@
 import type {
   DivaOutputGroup,
-  SubjectSubjectGroup,
   SubjectUpdateGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
