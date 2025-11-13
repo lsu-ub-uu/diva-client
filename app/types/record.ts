@@ -20,9 +20,7 @@
 import type { FormSchema } from '@/components/FormGenerator/types';
 import type { ActionLink } from '@/cora/cora-data/types.server';
 
-export interface BFFDataRecord<
-  T extends BFFDataRecordData = BFFDataRecordData,
-> {
+export interface BFFDataRecord<T = BFFDataRecordData> {
   id: string;
   recordType: string;
   validationType: string;
@@ -37,7 +35,7 @@ export interface BFFDataRecord<
   actionLinks: Record<string, ActionLink>;
 }
 
-export type BFFDataRecordData = Record<string, Metadata>;
+export type BFFDataRecordData = Record<string, any>;
 
 export type BFFUserRight =
   | 'read'
@@ -52,7 +50,7 @@ export interface BFFUpdate {
 }
 
 export interface BFFSearchResult {
-  data: BFFDataRecord[];
+  data: BFFDataRecord<Metadata>[];
   fromNo: number;
   toNo: number;
   totalNo: number;
@@ -60,7 +58,6 @@ export interface BFFSearchResult {
 }
 
 export interface Metadata {
-  recordInfo: RecordInfo;
   [key: string]: any;
 }
 

@@ -22,7 +22,7 @@ export const RelatedOutput = ({ relatedOutput }: RelatedOutputProps) => {
 
   return (
     <Term
-      label={relatedOutput.__text[language]}
+      label={relatedOutput.__text?.[language]}
       value={
         <Link
           to={href('/diva-output/:recordId', {

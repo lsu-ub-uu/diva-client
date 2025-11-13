@@ -120,7 +120,7 @@ const formatPersonRoles = (
   const roleTerm = person.role?.roleTerm;
 
   if (Array.isArray(roleTerm) && roleTerm.length > 0) {
-    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+    return ` (${roleTerm.map((role) => role.__valueText?.[language]).join(', ')})`;
   }
 
   return '';
