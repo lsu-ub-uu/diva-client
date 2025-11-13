@@ -159,7 +159,7 @@ describe('generateTypesForRecordTypes', () => {
     ]);
 
     const expected = `
-      export interface RecordTypeId extends BFFDataRecordData {
+      export interface RecordTypeId {
         root: MetadataGroupId;
       }
 
@@ -177,7 +177,7 @@ describe('generateTypesForRecordTypes', () => {
         __text?: { sv: string; en: string };
       }
 
-       export interface AnotherRecordTypeId extends BFFDataRecordData {
+       export interface AnotherRecordTypeId {
          anotherRoot: AnotherMetadataGroupId;
        }
       
@@ -270,11 +270,11 @@ describe('generateTypesForRecordTypes', () => {
     ]);
 
     const expected = `
-      export interface RecordTypeId extends BFFDataRecordData {
+      export interface RecordTypeId  {
         root: MetadataGroupId;
       }
 
-      export interface DivaOrganisation extends BFFDataRecordData {
+      export interface DivaOrganisation {
         organisation: OrganisationGroup;
       }
 
