@@ -18,12 +18,12 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
   return (
     <>
       <Term
-        label={output.typeOfResource?.__text[language]}
-        value={output.typeOfResource?.__valueText[language]}
+        label={output.typeOfResource?.__text?.[language]}
+        value={output.typeOfResource?.__valueText?.[language]}
       />
       {output.type && (
         <>
-          <dt>{output.type[0].__text[language]}</dt>
+          <dt>{output.type[0].__text?.[language]}</dt>
           {output.type.map((type) => (
             <dd
               key={type.value}
@@ -37,7 +37,7 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
       )}
       {output.material && (
         <>
-          <dt>{output.material[0].__text[language]}</dt>
+          <dt>{output.material[0].__text?.[language]}</dt>
           {output.material.map((material) => (
             <dd
               key={material.value}
@@ -51,7 +51,7 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
       )}
       {output.technique && (
         <>
-          <dt>{output.technique[0].__text[language]}</dt>
+          <dt>{output.technique[0].__text?.[language]}</dt>
           {output.technique.map((technique) => (
             <dd
               key={technique.value}
@@ -63,9 +63,12 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
           ))}
         </>
       )}
-      <Term label={output.size?.__text[language]} value={output.size?.value} />
       <Term
-        label={output.duration?.__text[language]}
+        label={output.size?.__text?.[language]}
+        value={output.size?.value}
+      />
+      <Term
+        label={output.duration?.__text?.[language]}
         value={
           output.duration && (
             <time dateTime={createDurationString(output.duration)}>
@@ -75,13 +78,13 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
         }
       />
       <Term
-        label={output.physicalDescription?.__text[language]}
-        value={output.physicalDescription?.extent.value}
+        label={output.physicalDescription?.__text?.[language]}
+        value={output.physicalDescription?.extent?.value}
       />
       {output.note_type_context?.map((note, index) => (
         <Term
           key={index}
-          label={`${note.__text[language]} (${t(getLanguageTextId(note._lang))})`}
+          label={`${note.__text?.[language]} (${t(getLanguageTextId(note._lang))})`}
           value={note.value}
           lang={note._lang}
         />

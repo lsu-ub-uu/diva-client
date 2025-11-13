@@ -27,7 +27,7 @@ export const ConferencePublication = ({
       <dl className='inline-definitions'>
         {conferencePublication.proceeding && (
           <Term
-            label={conferencePublication.proceeding?.__text[language]}
+            label={conferencePublication.proceeding?.__text?.[language]}
             value={
               <Link
                 to={href('/diva-output/:recordId', {
@@ -45,7 +45,7 @@ export const ConferencePublication = ({
         <TitleInfo titleInfo={conferencePublication.titleInfo} />
         <Term
           label={
-            conferencePublication.note_type_statementOfResponsibility?.__text[
+            conferencePublication.note_type_statementOfResponsibility?.__text?.[
               language
             ]
           }
@@ -61,33 +61,33 @@ export const ConferencePublication = ({
           />
         ))}
         <Term
-          label={conferencePublication.identifier_type_doi?.__text[language]}
+          label={conferencePublication.identifier_type_doi?.__text?.[language]}
           value={conferencePublication.identifier_type_doi?.value}
         />
         <Term
           label={
-            conferencePublication.part?.detail_type_volume?.__text[language]
+            conferencePublication.part?.detail_type_volume?.__text?.[language]
           }
           value={conferencePublication.part?.detail_type_volume?.number?.value}
         />
         <Term
           label={
-            conferencePublication.part?.detail_type_issue?.__text[language]
+            conferencePublication.part?.detail_type_issue?.__text?.[language]
           }
           value={conferencePublication.part?.detail_type_issue?.number?.value}
         />
         <Term
           label={
-            conferencePublication.part?.detail_type_artNo?.__text[language]
+            conferencePublication.part?.detail_type_artNo?.__text?.[language]
           }
           value={conferencePublication.part?.detail_type_artNo?.number?.value}
         />
         <Term
-          label={conferencePublication.part?.extent?.start?.__text[language]}
+          label={conferencePublication.part?.extent?.start?.__text?.[language]}
           value={conferencePublication.part?.extent?.start?.value}
         />
         <Term
-          label={conferencePublication.part?.extent?.end?.__text[language]}
+          label={conferencePublication.part?.extent?.end?.__text?.[language]}
           value={conferencePublication.part?.extent?.end?.value}
         />
       </dl>

@@ -1,6 +1,7 @@
 import type {
   DivaOutputGroup,
   SubjectSubjectGroup,
+  SubjectUpdateGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { SdgImage } from './SdgImage';
@@ -17,11 +18,11 @@ export const Classifications = ({ output }: ClassificationsProps) => {
       {output.subject && output.subject.length > 0 && (
         <SearchLinkList
           pill
-          heading={output.subject[0].__text[language]}
+          heading={output.subject[0].__text?.[language]}
           searchTerm='keywordsSearchTerm'
           items={output.subject.map((subject) => ({
-            href: subject.topic.value,
-            label: subject.topic.value,
+            href: subject.topic?.value,
+            label: subject.topic?.value,
           }))}
         />
       )}
@@ -30,12 +31,14 @@ export const Classifications = ({ output }: ClassificationsProps) => {
         output.classification_authority_ssif.length > 0 && (
           <SearchLinkList
             pill
-            heading={output.classification_authority_ssif?.[0].__text[language]}
+            heading={
+              output.classification_authority_ssif?.[0].__text?.[language]
+            }
             searchTerm='ssifSearchTerm'
             items={output.classification_authority_ssif.map(
               (classification) => ({
                 href: classification.value,
-                label: classification.__valueText[language].replace(
+                label: classification.__valueText?.[language].replace(
                   /^\(\d+\) /,
                   '',
                 ),
@@ -46,9 +49,9 @@ export const Classifications = ({ output }: ClassificationsProps) => {
       {output.subject_authority_diva && (
         <SearchLinkList
           pill
-          heading={output.subject_authority_diva.__text[language]}
+          heading={output.subject_authority_diva.__text?.[language]}
           searchTerm='subjectTopicSearchTerm'
-          items={output.subject_authority_diva.topic.map((topic) => ({
+          items={output.subject_authority_diva?.topic?.map((topic) => ({
             label: getSubjectTopicName(topic, language) || topic.value,
             href: `diva-subject_${topic.value}`,
           }))}
@@ -56,9 +59,9 @@ export const Classifications = ({ output }: ClassificationsProps) => {
       )}
       {output.subject_authority_sdg && (
         <SearchLinkList
-          heading={output.subject_authority_sdg.__text[language]}
+          heading={output.subject_authority_sdg.__text?.[language]}
           searchTerm='sdgSearchTerm'
-          items={output.subject_authority_sdg.topic.map((topic) => ({
+          items={output.subject_authority_sdg?.topic?.map((topic) => ({
             href: topic.value,
             label: <SdgImage topic={topic} />,
           }))}
@@ -67,12 +70,13 @@ export const Classifications = ({ output }: ClassificationsProps) => {
       {output.localGenericMarkup && (
         <SearchLinkList
           pill
-          heading={output.localGenericMarkup[0].__text[language]}
+          heading={output.localGenericMarkup[0].__text?.[language]}
           searchTerm='localGenericMarkupLinkSearchTerm'
           items={output.localGenericMarkup.map((markup, index) => ({
             key: index,
             label:
-              markup.linkedRecord?.localGenericMarkup?.localGenericMarkup.value,
+              markup.linkedRecord?.localGenericMarkup?.localGenericMarkup
+                ?.value,
             href: `diva-localGenericMarkup_${markup.value}`,
           }))}
         />
@@ -82,7 +86,14 @@ export const Classifications = ({ output }: ClassificationsProps) => {
 };
 
 function getSubjectTopicName(
-  topic: SubjectSubjectGroup['topic'][0],
+  topic: {
+    value: string;
+    linkedRecord: {
+      subject: SubjectUpdateGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  },
   language: 'en' | 'sv',
 ): string | undefined {
   if (!topic) {
@@ -90,7 +101,7 @@ function getSubjectTopicName(
   }
 
   if (language === 'en') {
-    return topic.linkedRecord?.subject?.variant_lang_eng?.topic.value;
+    return topic?.linkedRecord?.subject?.variant_lang_eng?.topic?.value || '';
   }
-  return topic.linkedRecord?.subject?.authority_lang_swe.topic.value;
+  return topic?.linkedRecord?.subject?.authority_lang_swe?.topic?.value || '';
 }
