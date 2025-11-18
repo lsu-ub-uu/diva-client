@@ -1,24 +1,17 @@
-.popover {
+.field-info {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.field-info-button {
+  position: relative;
 }
 
 .field-info-panel {
-  --anchor-gap: var(--gap);
-
   display: flex;
   flex-direction: column;
-  gap: var(--gap-l);
-  background-color: var(--color-background);
-  border-radius: var(--border-radius);
-  padding: var(--gap-l);
-  width: 600px;
-  box-shadow: var(--elevation);
-}
-
-.label-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: var(--gap);
+  text-align: left;
 }

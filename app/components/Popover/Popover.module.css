@@ -1,0 +1,25 @@
+.popover {
+  position: absolute;
+  margin: 0;
+  inset: unset;
+  bottom: calc(anchor(top) + var(--gap));
+
+  @supports not (anchor-name: --my-anchor) {
+    transform: translateX(25%);
+  }
+
+  justify-self: anchor-center;
+  position-try: normal flip-block;
+
+  background-color: var(--color-background);
+  padding: var(--gap-l);
+  box-shadow: var(--elevation);
+  border-radius: var(--border-radius);
+  max-width: 600px;
+}
+
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

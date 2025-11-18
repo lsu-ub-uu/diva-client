@@ -1,0 +1,17 @@
+.tooltip {
+  position: absolute;
+  margin: 0;
+  inset: unset;
+  bottom: anchor(top);
+  @supports not (anchor-name: --my-anchor) {
+    transform: translateY(-90%);
+  }
+  justify-self: anchor-center;
+  position-try: normal flip-block;
+
+  background-color: var(--color-background-inverted);
+  color: var(--color-text-inverted);
+  padding: var(--gap-s);
+  box-shadow: var(--elevation);
+  border-radius: var(--border-radius-s);
+}
