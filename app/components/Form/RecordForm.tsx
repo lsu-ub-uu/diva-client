@@ -21,17 +21,18 @@ import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
-import { Form, useNavigation } from 'react-router';
+import { Form, useLocation, useNavigation } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { RestartAltIcon, UpgradeIcon } from '@/icons';
+import { UpgradeIcon } from '@/icons';
 import type { BFFDataRecordData } from '@/types/record';
 import { useEffect } from 'react';
 import styles from './Form.module.css';
+import { CircularLoader } from '../Loader/CircularLoader';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -46,7 +47,10 @@ export const RecordForm = ({
 }: RecordFormProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const submitting = navigation.state === 'submitting';
+  const location = useLocation();
+  const submitting =
+    navigation.state !== 'idle' &&
+    navigation.formAction?.includes(location.pathname);
 
   const methods = useRemixForm({
     mode: 'onChange',
@@ -55,7 +59,7 @@ export const RecordForm = ({
     defaultValues,
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
-  const { handleSubmit, reset, subscribe } = methods;
+  const { handleSubmit, subscribe } = methods;
 
   useEffect(() => {
     const unsubscribe = subscribe({
@@ -73,12 +77,7 @@ export const RecordForm = ({
   }, [subscribe, onChange]);
 
   return (
-    <Form
-      method='POST'
-      className={styles['form']}
-      {...(submitting && { 'data-submitting': '' })}
-      onSubmit={handleSubmit}
-    >
+    <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
         <FormGenerator formSchema={formSchema} boxGroups />
@@ -86,17 +85,16 @@ export const RecordForm = ({
 
       <FloatingActionButtonContainer>
         <FloatingActionButton
-          type='button'
-          onClick={() => reset(undefined, { keepDefaultValues: true })}
-          icon={<RestartAltIcon />}
-          text={t('divaClient_ResetButtonText')}
-        />
-
-        <FloatingActionButton
           variant='primary'
           type='submit'
-          icon={<UpgradeIcon />}
-          text={t('divaClient_SubmitButtonText')}
+          aria-busy={submitting}
+          icon={submitting ? <CircularLoader /> : <UpgradeIcon />}
+          text={
+            submitting
+              ? t('divaClient_SubmittingButtonText')
+              : t('divaClient_SubmitButtonText')
+          }
+          disabled={submitting}
         />
       </FloatingActionButtonContainer>
     </Form>
