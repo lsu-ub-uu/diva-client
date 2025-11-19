@@ -72,7 +72,7 @@ export const Group = ({
 
   const hasNoValues = !hasValuableData(getValues(currentComponentNamePath));
 
-  if (component.mode === 'output' && hasNoValues) {
+  if (!expandable && component.mode === 'output' && hasNoValues) {
     return null;
   }
 
