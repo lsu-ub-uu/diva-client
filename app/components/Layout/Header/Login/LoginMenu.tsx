@@ -67,7 +67,7 @@ export default function LoginMenu({
   );
 
   const submitting =
-    navigation.state === 'submitting' && navigation.formAction === '/login';
+    navigation.state !== 'idle' && navigation.formAction?.includes('/login');
 
   useWebRedirectLogin({ returnTo });
 
