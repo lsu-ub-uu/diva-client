@@ -21,7 +21,7 @@ import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
 import {
-  FirstPageIcon,
+  ChevronFirstIcon,
   LastPageIcon,
   NextPageIcon,
   PreviousPageIcon,
@@ -97,7 +97,7 @@ export const Pagination = ({
           value={firstPageStart}
           disabled={isOnFirstPage}
         >
-          <FirstPageIcon />
+          <ChevronFirstIcon />
         </Button>
         <Button
           variant='icon'

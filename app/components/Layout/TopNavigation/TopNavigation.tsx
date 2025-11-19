@@ -1,17 +1,17 @@
 import styles from './TopNavigation.module.css';
 import {
-  AttachMoneyIcon,
-  ContractIcon,
-  CorporateFareIcon,
-  EditNoteIcon,
-  FullCoverageIcon,
-  HistoryEduIcon,
+  HandCoinsIcon,
+  BookOpenIcon,
+  BuildingIcon,
+  PenLineIcon,
+  BookCheckIcon,
+  FlaskRoundIcon,
   NewspaperIcon,
-  NewsstandIcon,
-  PersonsIcon,
-  SchemaIcon,
-  SchoolIcon,
-  ScienceIcon,
+  LibraryIcon,
+  UsersIcon,
+  ChartGnattIcon,
+  GraduationCapIcon,
+  NotebookTabsIcon,
 } from '@/icons';
 import type { ReactNode } from 'react';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
@@ -29,18 +29,18 @@ export interface TopNavigationProps {
 }
 
 const icons: Record<string, ReactNode> = {
-  'diva-output': <ContractIcon />,
-  'diva-person': <PersonsIcon />,
-  'diva-project': <SchemaIcon />,
-  'diva-course': <ScienceIcon />,
-  'diva-organisation': <CorporateFareIcon />,
+  'diva-output': <BookOpenIcon />,
+  'diva-person': <UsersIcon />,
+  'diva-project': <ChartGnattIcon />,
+  'diva-course': <NotebookTabsIcon />,
+  'diva-organisation': <BuildingIcon />,
   'diva-journal': <NewspaperIcon />,
-  'diva-subject': <HistoryEduIcon />,
-  'diva-programme': <SchoolIcon />,
-  'diva-series': <NewsstandIcon />,
-  'diva-localGenericMarkup': <EditNoteIcon />,
-  'diva-publisher': <FullCoverageIcon />,
-  'diva-funder': <AttachMoneyIcon />,
+  'diva-subject': <FlaskRoundIcon />,
+  'diva-programme': <GraduationCapIcon />,
+  'diva-series': <LibraryIcon />,
+  'diva-localGenericMarkup': <PenLineIcon />,
+  'diva-publisher': <BookCheckIcon />,
+  'diva-funder': <HandCoinsIcon />,
 };
 
 const sortOrder = [

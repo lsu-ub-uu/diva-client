@@ -21,7 +21,7 @@ import type { loader } from '@/root';
 import { useTranslation } from 'react-i18next';
 
 import styles from './LanguageSwitcher.module.css';
-import { ChevronDownIcon, LanguageIcon } from '@/icons';
+import { GlobeIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
@@ -48,7 +48,7 @@ export const LanguageSwitcher = () => {
           <span className={styles['dropdown-label']}>
             {language === 'sv' ? 'Svenska' : 'English'}
           </span>
-          <LanguageIcon className={styles['language-icon']} />
+          <GlobeIcon className={styles['language-icon']} />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>
           <input type='hidden' name='intent' value='changeLanguage' />

@@ -31,7 +31,7 @@ import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAcco
 import { PasswordLoginMenuOptions } from '@/components/Layout/Header/Login/PasswordLoginMenuOptions';
 import { WebRedirectLoginMenuOptions } from '@/components/Layout/Header/Login/WebRedirectLoginMenuOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
+import { LogInIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -96,7 +96,7 @@ export default function LoginMenu({
   const loginButtonChildren = (
     <>
       {t('divaClient_LoginText')}
-      {submitting ? <CircularLoader /> : <LoginIcon />}
+      {submitting ? <CircularLoader /> : <LogInIcon />}
     </>
   );
 
@@ -141,7 +141,7 @@ export default function LoginMenu({
             href={withBaseName(`/login?returnTo=${returnTo}`)}
           >
             {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LoginIcon />}
+            {submitting ? <CircularLoader /> : <LogInIcon />}
           </MenuButton>
           <DropdownMenu anchor='bottom end'>
             <DevAccountLoginOptions
