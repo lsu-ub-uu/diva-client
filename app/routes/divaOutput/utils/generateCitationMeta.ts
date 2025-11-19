@@ -12,16 +12,15 @@ export const generateCitationMeta = (
 ): MetaDescriptor[] => {
   const meta = [];
 
-  meta.push({
-    name: 'citation_title',
-    content: createTitle(divaOutput.output.titleInfo),
-  });
+  if (divaOutput.output.titleInfo) {
+    meta.push({
+      name: 'citation_title',
+      content: createTitle(divaOutput.output.titleInfo),
+    });
+  }
 
   divaOutput.output.name_type_personal?.forEach((person) => {
-    if (
-      person.role &&
-      person.role.roleTerm.some((role) => role.value === 'aut')
-    ) {
+    if (person?.role?.roleTerm?.some((role) => role.value === 'aut')) {
       meta.push({
         name: 'citation_author',
         content: formatPersonName(person),
@@ -29,18 +28,20 @@ export const generateCitationMeta = (
     }
   });
 
-  meta.push({
-    name: 'citation_publication_date',
-    content: [
-      divaOutput.output.originInfo.dateIssued.year?.value,
-      divaOutput.output.originInfo.dateIssued.month?.value,
-      divaOutput.output.originInfo.dateIssued.day?.value,
-    ]
-      .filter(Boolean)
-      .join('/'),
-  });
+  if (divaOutput.output.originInfo?.dateIssued) {
+    meta.push({
+      name: 'citation_publication_date',
+      content: [
+        divaOutput.output.originInfo?.dateIssued?.year?.value,
+        divaOutput.output.originInfo?.dateIssued?.month?.value,
+        divaOutput.output.originInfo?.dateIssued?.day?.value,
+      ]
+        .filter(Boolean)
+        .join('/'),
+    });
+  }
 
-  if (divaOutput.output.originInfo.dateOther_type_online) {
+  if (divaOutput.output?.originInfo?.dateOther_type_online) {
     meta.push({
       name: 'citation_online_date',
       content: [
@@ -75,19 +76,21 @@ export const generateCitationMeta = (
 
   const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
     (attachment) =>
-      attachment.type.value === 'fullText' &&
-      attachment.attachmentFile.linkedRecord?.binary.master?.master
+      attachment?.type?.value === 'fullText' &&
+      attachment?.attachmentFile?.linkedRecord?.binary?.master?.master
         ?.mimeType === 'application/pdf',
   );
 
   pdfFulltextAttachments
-    .map((attachment) => attachment.attachmentFile.linkedRecord.binary)
-    .filter((binary) => binary.recordInfo.visibility.value === 'published')
+    .map((attachment) => attachment?.attachmentFile?.linkedRecord?.binary)
+    .filter((binary) => binary?.recordInfo.visibility.value === 'published')
     .forEach((binary) => {
-      meta.push({
-        name: 'citation_pdf_url',
-        content: `${externalSystemUrl}/rest/record/binary/${binary.master?.master.id}/${binary.master?.master.name}`,
-      });
+      if (binary?.master?.master) {
+        meta.push({
+          name: 'citation_pdf_url',
+          content: `${externalSystemUrl}/rest/record/binary/${binary.master?.master.id}/${binary.master?.master.name}`,
+        });
+      }
     });
 
   return meta;

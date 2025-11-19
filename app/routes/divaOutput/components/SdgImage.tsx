@@ -1,12 +1,4 @@
 import sdg1 from '@/images/sdg/sdg1.png';
-import sdg2 from '@/images/sdg/sdg2.png';
-import sdg3 from '@/images/sdg/sdg3.png';
-import sdg4 from '@/images/sdg/sdg4.png';
-import sdg5 from '@/images/sdg/sdg5.png';
-import sdg6 from '@/images/sdg/sdg6.png';
-import sdg7 from '@/images/sdg/sdg7.png';
-import sdg8 from '@/images/sdg/sdg8.png';
-import sdg9 from '@/images/sdg/sdg9.png';
 import sdg10 from '@/images/sdg/sdg10.png';
 import sdg11 from '@/images/sdg/sdg11.png';
 import sdg12 from '@/images/sdg/sdg12.png';
@@ -15,21 +7,38 @@ import sdg14 from '@/images/sdg/sdg14.png';
 import sdg15 from '@/images/sdg/sdg15.png';
 import sdg16 from '@/images/sdg/sdg16.png';
 import sdg17 from '@/images/sdg/sdg17.png';
+import sdg2 from '@/images/sdg/sdg2.png';
+import sdg3 from '@/images/sdg/sdg3.png';
+import sdg4 from '@/images/sdg/sdg4.png';
+import sdg5 from '@/images/sdg/sdg5.png';
+import sdg6 from '@/images/sdg/sdg6.png';
+import sdg7 from '@/images/sdg/sdg7.png';
+import sdg8 from '@/images/sdg/sdg8.png';
+import sdg9 from '@/images/sdg/sdg9.png';
 
-import type { SubjectSdgGroup } from '@/generatedTypes/divaTypes';
+import type { SdgCollection } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 
 interface SdgImageProps {
-  topic: SubjectSdgGroup['topic'][number];
+  topic:
+    | {
+        value: SdgCollection;
+        __text?: { sv: string; en: string };
+        __valueText?: { sv: string; en: string };
+      }
+    | undefined;
 }
 
 export const SdgImage = ({ topic }: SdgImageProps) => {
   const language = useLanguage();
+
+  if (!topic) return null;
+
   return (
     <img
       src={sdgImage(topic.value)}
-      alt={topic.__valueText[language]}
-      title={topic.__valueText[language]}
+      alt={topic.__valueText?.[language]}
+      title={topic.__valueText?.[language]}
       className='sdg-image'
     />
   );

@@ -25,7 +25,7 @@ export const Book = ({ book }: BookProps) => {
       <dl className='inline-definitions'>
         {book.book && (
           <Term
-            label={book.book?.__text[language]}
+            label={book.book?.__text?.[language]}
             value={
               <Link
                 to={href('/diva-output/:recordId', {
@@ -39,7 +39,7 @@ export const Book = ({ book }: BookProps) => {
         )}
         <TitleInfo titleInfo={book.titleInfo} />
         <Term
-          label={book.note_type_statementOfResponsibility?.__text[language]}
+          label={book.note_type_statementOfResponsibility?.__text?.[language]}
           value={book.note_type_statementOfResponsibility?.value}
         />
         {book.identifier_type_isbn?.map((identifier, index) => (
@@ -50,15 +50,15 @@ export const Book = ({ book }: BookProps) => {
           />
         ))}
         <Term
-          label={book.identifier_type_doi?.__text[language]}
+          label={book.identifier_type_doi?.__text?.[language]}
           value={book.identifier_type_doi?.value}
         />
         <Term
-          label={book.part?.extent?.start?.__text[language]}
+          label={book.part?.extent?.start?.__text?.[language]}
           value={book.part?.extent?.start?.value}
         />
         <Term
-          label={book.part?.extent?.end?.__text[language]}
+          label={book.part?.extent?.end?.__text?.[language]}
           value={book.part?.extent?.end?.value}
         />
       </dl>

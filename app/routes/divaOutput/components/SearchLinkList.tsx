@@ -2,9 +2,9 @@ import { useId, type ReactNode } from 'react';
 import { Link } from 'react-router';
 
 interface SearchLinkListProps {
-  heading: string;
+  heading?: string;
   searchTerm: string;
-  items: { href?: string; label: ReactNode }[];
+  items?: { href?: string; label?: ReactNode }[];
   language?: string;
   pill?: boolean;
 }
@@ -17,23 +17,28 @@ export const SearchLinkList = ({
   pill,
 }: SearchLinkListProps) => {
   const id = useId();
+  if (!items || items.length === 0) {
+    return null;
+  }
   return (
     <div>
-      <h2 id={id}>{heading}</h2>
+      {heading && <h2 id={id}>{heading}</h2>}
       <ul className='pill-container' aria-labelledby={id} lang={language}>
-        {items.map((item) => (
-          <li key={item.href} className={pill ? 'pill' : ''}>
-            {item.href ? (
-              <Link
-                to={`/diva-output?search.include.includePart.${searchTerm}.value=${item.href}&search.rows.value=10`}
-              >
-                {item.label}
-              </Link>
-            ) : (
-              item.label
-            )}
-          </li>
-        ))}
+        {items
+          .filter((item) => item.label !== undefined && item.href !== undefined)
+          .map((item) => (
+            <li key={item.href} className={pill ? 'pill' : ''}>
+              {item.href ? (
+                <Link
+                  to={`/diva-output?search.include.includePart.${searchTerm}.value=${item.href}&search.rows.value=10`}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                item.label
+              )}
+            </li>
+          ))}
       </ul>
     </div>
   );

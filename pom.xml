@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.103-SNAPSHOT</version>
+  <version>1.104-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>

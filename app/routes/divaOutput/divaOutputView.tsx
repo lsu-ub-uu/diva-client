@@ -54,8 +54,12 @@ export const loader = async ({
     })) as BFFDataRecord<DivaOutput>;
     return {
       record: record,
-      pageTitle: createTitle(record.data.output.titleInfo),
-      breadcrumb: t(record.data.output.titleInfo.title.value),
+      pageTitle: record.data.output.titleInfo
+        ? createTitle(record.data.output.titleInfo)
+        : t('divaClient_missingTitleText'),
+      breadcrumb: record.data.output.titleInfo?.title?.value
+        ? t(record.data.output.titleInfo.title.value)
+        : t('divaClient_missingTitleText'),
       apiUrl,
       externalSystemUrl,
       origin,

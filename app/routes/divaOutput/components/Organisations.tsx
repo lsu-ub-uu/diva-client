@@ -22,7 +22,7 @@ export const Organisations = ({ organisations }: OrganisationsProps) => {
     : organisations.slice(0, 3);
   return (
     <>
-      <dt>{organisations?.[0]?.__text[language]}</dt>
+      <dt>{organisations?.[0]?.__text?.[language]}</dt>
       {organisationsToShow?.map((organisation, index) => (
         <dd
           key={index}

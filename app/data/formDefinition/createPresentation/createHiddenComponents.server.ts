@@ -40,18 +40,16 @@ export const createHiddenComponents = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
-  path: string = '',
 ): FormComponent[] => {
   return metadataChildReferences
     .map((metadataChildReference) =>
       dependencies.metadataPool.get(metadataChildReference.childId),
     )
-    .flatMap((metadata) =>
+    .map((metadata) =>
       createHiddenComponentsForMetadata(
         dependencies,
         metadata,
         presentationChildReferences,
-        path,
       ),
     )
     .filter((c) => c !== undefined);
@@ -61,9 +59,7 @@ const createHiddenComponentsForMetadata = (
   dependencies: Dependencies,
   metadata: BFFMetadata,
   presentationChildReferences: BFFPresentationChildReference[],
-  path: string,
-): FormComponent[] => {
-  const currentPath = `${path ? `${path}.` : ''}${metadata.nameInData}`;
+): FormComponent | undefined => {
   const presentation = getPresentation(
     presentationChildReferences,
     dependencies,
@@ -71,13 +67,10 @@ const createHiddenComponentsForMetadata = (
   );
 
   if (isMetadataGroup(metadata)) {
-    return (
-      createHiddenComponentsForGroup(
-        dependencies,
-        metadata,
-        presentation as BFFPresentationGroup,
-        currentPath,
-      ) ?? []
+    return createHiddenComponentsForGroup(
+      dependencies,
+      metadata,
+      presentation as BFFPresentationGroup,
     );
   }
 
@@ -91,51 +84,29 @@ const createHiddenComponentsForMetadata = (
   const hiddenComponent = createHiddenVariable(
     presentation,
     metadata,
-    currentPath,
     attributes,
   );
-  return hiddenComponent ? [hiddenComponent] : [];
+  return hiddenComponent;
 };
 
 const createHiddenComponentsForGroup = (
   dependencies: Dependencies,
   group: BFFMetadataGroup,
   presentation: BFFPresentationGroup | undefined,
-  currentPath: string = '',
-): FormComponent[] | undefined => {
+): FormComponent | undefined => {
   const hasPresentation = presentation !== undefined;
 
   if (!hasPresentation) {
-    const components = createHiddenComponents(
-      dependencies,
-      group.children,
-      [],
-      '',
-    );
+    const components = createHiddenComponents(dependencies, group.children, []);
 
-    const containsOnlyHidden = components.length === group.children.length;
-
-    if (components.length > 0 && containsOnlyHidden) {
+    if (components.length > 0) {
       const groupComponent = removeEmpty({
         type: 'group',
-        name: currentPath,
+        name: group.nameInData,
         mode: 'input',
         components,
       });
-      return [groupComponent as FormComponentGroup];
-    }
-  } else {
-    const components = createHiddenComponents(
-      dependencies,
-      group.children,
-      presentation.children,
-      currentPath,
-    );
-
-    const containsOnlyHidden = components.length === group.children.length;
-
-    if (components.length > 0 && containsOnlyHidden) {
-      return components;
+      return groupComponent as FormComponentGroup;
     }
   }
 };
@@ -143,7 +114,6 @@ const createHiddenComponentsForGroup = (
 function createHiddenVariable(
   presentation: BFFPresentation | undefined,
   metadata: BFFMetadata,
-  currentPath: string,
   attributes: FormAttributeCollection[] | undefined,
 ): FormComponentHidden | undefined {
   const hasPresentation = presentation !== undefined;
@@ -153,7 +123,7 @@ function createHiddenVariable(
   if (isFinalValue && !hasPresentation) {
     return {
       type: 'hidden',
-      name: currentPath,
+      name: metadata.nameInData,
       finalValue: metadata.finalValue!,
       attributes,
       attributesToShow: 'none',

@@ -53,8 +53,8 @@ function createRecordType(
   const interfaceName = generateTypeName(recordTypeId);
 
   return `
-        export interface ${interfaceName} extends BFFDataRecordData {
-            ${createChildRef(metadataPool, recordTypePool, { childId: recordType.metadataId, repeatMin: '1', repeatMax: '1' })}
+        export interface ${interfaceName} {
+            ${createChildRef(metadataPool, recordTypePool, { childId: recordType.metadataId, repeatMin: '1', repeatMax: '1' }, false, true)}
         }\n\n`;
 }
 
@@ -62,7 +62,8 @@ function createChildRef(
   metadataPool: Lookup<string, BFFMetadata>,
   recordTypePool: Lookup<string, BFFRecordType>,
   childRef: BFFMetadataChildReference,
-  shouldIncludeLinkedRecords: boolean = true,
+  parentIsRecordInfo: boolean = false,
+  isRoot: boolean = false,
 ): string {
   const childMetadata = metadataPool.get(childRef.childId);
 
@@ -72,10 +73,15 @@ function createChildRef(
     metadataPool,
     recordTypePool,
     childMetadata,
-    shouldIncludeLinkedRecords,
+    !parentIsRecordInfo,
   );
 
-  return ` ${getNameFromMetadata(metadataPool, childMetadata)}${repeatMin === '0' ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
+  const optional =
+    !isRoot &&
+    childMetadata.nameInData !== 'recordInfo' &&
+    (parentIsRecordInfo ? repeatMin === '0' : true);
+
+  return ` ${getNameFromMetadata(metadataPool, childMetadata)}${optional ? '?' : ''}:${getValueForRepeat(value, repeatMin, repeatMax)}`;
 }
 
 function createValueForMetadata(
@@ -160,9 +166,9 @@ function createValue(
 
 function createTextTypes(value: boolean = false) {
   if (value) {
-    return '__text: { sv: string; en: string; }; __valueText: { sv: string; en: string; }';
+    return '__text?: { sv: string; en: string; }; __valueText?: { sv: string; en: string; }';
   }
-  return '__text: { sv: string; en: string; }';
+  return '__text?: { sv: string; en: string; }';
 }
 
 function createAttributes(
@@ -245,10 +251,10 @@ function createGroupType(
   const typeName = generateTypeName(group.id);
 
   if (!metadataTypes.has(group.id)) {
-    const shouldIncludeLinkedRecords = group.nameInData !== 'recordInfo';
+    const parentIsRecordInfo = group.nameInData === 'recordInfo';
 
     const children = group.children.map((childRef) => {
-      return `${createChildRef(metadataPool, recordTypePool, childRef, shouldIncludeLinkedRecords)}`;
+      return `${createChildRef(metadataPool, recordTypePool, childRef, parentIsRecordInfo)}`;
     });
 
     metadataTypes.set(

@@ -13,6 +13,7 @@ export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
   useEffect(() => {
     const prevAuth = log.at(-1)?.auth;
     if (!isEqual(auth, prevAuth)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLog((l) => [...l, { timestamp: Date.now(), auth }]);
     }
   }, [auth, log]);

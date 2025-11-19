@@ -14,7 +14,7 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
   return (
     <>
       <Term
-        label={output.academicSemester?.__text[language]}
+        label={output.academicSemester?.__text?.[language]}
         value={[
           output.academicSemester?.academicSemester?.value?.toUpperCase(),
           output.academicSemester?.year?.value,
@@ -24,7 +24,7 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
       />
       {output.externalCollaboration && (
         <>
-          <dt>{output.externalCollaboration.__text[language]}</dt>
+          <dt>{output.externalCollaboration.__text?.[language]}</dt>
           {output.externalCollaboration.namePart?.map((namePart, index) => (
             <dd key={index}>{namePart.value}</dd>
           ))}
@@ -32,7 +32,7 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
       )}
       <Term
         label={
-          output.degreeGrantingInstitution_type_corporate?.__text[language]
+          output.degreeGrantingInstitution_type_corporate?.__text?.[language]
         }
         value={
           output.degreeGrantingInstitution_type_corporate && (
@@ -42,9 +42,9 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
           )
         }
       />
-      <Persons persons={output.supervisor_type_personal} />
-      <Persons persons={output.examiner_type_personal} />
-      <Persons persons={output.opponent_type_personal} />
+      <Persons persons={output.name_otherType_thesisAdvisor_type_personal} />
+      <Persons persons={output.name_otherType_opponent_type_personal} />
+      <Persons persons={output.name_otherType_degreeSupervisor_type_personal} />
 
       <Event event={output.defence} />
       <Event event={output.presentation} />

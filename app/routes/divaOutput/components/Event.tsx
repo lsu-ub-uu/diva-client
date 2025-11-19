@@ -41,7 +41,7 @@ export const Event = ({ event }: EventProps) => {
 
   return (
     <>
-      <dt>{event.__text[language]}</dt>
+      <dt>{event.__text?.[language]}</dt>
       <dd>
         {eventParts.map((part, index) => (
           <Fragment key={index}>

@@ -34,19 +34,12 @@ import {
 } from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { Suspense, useEffect, useState } from 'react';
-import {
-  Await,
-  Form,
-  href,
-  Link,
-  useLocation,
-  useNavigation,
-} from 'react-router';
+import { Suspense, useState } from 'react';
+import { Await, Form, href, Link, useLocation } from 'react-router';
 import styles from './Header.module.css';
 
 interface HeaderProps {
-  recordTypes: Promise<BFFRecordType[]>;
+  recordTypes: BFFRecordType[];
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
   editableMember: string | undefined;
@@ -61,27 +54,17 @@ export const Header = ({
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
-  const navigation = useNavigation();
 
   const [headerShown, setHeaderShown] = useState(false);
-
-  useEffect(() => {
-    if (navigation.state !== 'idle') {
-      setHeaderShown(false);
-    }
-  }, [navigation.state]);
 
   return (
     <header className={styles['header-wrapper']} data-expanded={headerShown}>
       <div className={styles['header-logo-wrapper']}>
         <div className={styles['top-navigation']}>
-          <Suspense>
-            <Await resolve={recordTypes} errorElement={<div />}>
-              {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
-              )}
-            </Await>
-          </Suspense>
+          <TopNavigation
+            recordTypes={recordTypes}
+            onNavigationClick={() => setHeaderShown(false)}
+          />
         </div>
       </div>
 
@@ -142,7 +125,10 @@ export const Header = ({
           <Suspense>
             <Await resolve={recordTypes} errorElement={<div />}>
               {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
+                <TopNavigation
+                  recordTypes={resolvedRecordType}
+                  onNavigationClick={() => setHeaderShown(false)}
+                />
               )}
             </Await>
           </Suspense>

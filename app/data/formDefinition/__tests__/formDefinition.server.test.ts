@@ -1912,7 +1912,7 @@ describe('formDefinition', () => {
       });
     });
 
-    it('should return a form definition for a new metadata group matching nameInData when childId does not match', () => {
+    it('should return a form definition with group that has only hidden components', () => {
       const validationTypeId = 'someValidationTypeForMissingChildIdTypeId';
       const formDefinition = createFormDefinition(
         dependencies,
@@ -1964,6 +1964,31 @@ describe('formDefinition', () => {
                 { value: 'yellow', label: 'exampleYellowItemText' },
               ],
               mode: 'input',
+            },
+            {
+              components: [
+                {
+                  attributesToShow: 'none',
+                  finalValue: 'divaData',
+                  name: 'dataDivider',
+                  type: 'hidden',
+                },
+                {
+                  attributesToShow: 'none',
+                  finalValue: 'diva-output',
+                  name: 'type',
+                  type: 'hidden',
+                },
+                {
+                  attributesToShow: 'none',
+                  finalValue: 'diva-output',
+                  name: 'validationType',
+                  type: 'hidden',
+                },
+              ],
+              mode: 'input',
+              name: 'recordInfo',
+              type: 'group',
             },
           ],
           mode: 'input',
