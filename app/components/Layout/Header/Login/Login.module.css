@@ -24,6 +24,7 @@
 }
 
 .login-button {
+  color: var(--color-text);
   display: flex;
   align-items: center;
   height: var(--input-height);
@@ -48,4 +49,18 @@
   align-items: center;
   gap: var(--gap);
   width: max-content;
+}
+
+.user-initials {
+  display: none;
+}
+
+@media (width < 900px) {
+  .user-name {
+    display: none;
+  }
+
+  .user-initials {
+    display: block;
+  }
 }

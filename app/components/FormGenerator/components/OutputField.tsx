@@ -17,7 +17,6 @@
  */
 
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
@@ -29,6 +28,7 @@ import { type ReactNode, use } from 'react';
 import { Link } from 'react-router';
 import styles from './OutputField.module.css';
 import { useTranslation } from 'react-i18next';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface OutputFieldProps {
   path: string;

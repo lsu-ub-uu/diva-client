@@ -23,7 +23,6 @@ import { Button } from '@/components/Button/Button';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
-import { CloseIcon, LinkIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -33,6 +32,7 @@ import {
   isComponentRepeating,
 } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
+import { LinkIcon, XIcon } from 'lucide-react';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -99,7 +99,7 @@ export const RecordLinkWithLinkedPresentation = ({
               onClick={clearValue}
               aria-label={t('divaClient_clearRecordLinkText')}
             >
-              <CloseIcon />
+              <XIcon />
             </Button>
           )}
           <Button

@@ -32,8 +32,14 @@
     max-width: 300px;
     position: sticky;
     top: 0;
-    max-height: 100vh;
+    max-height: calc(100vh - var(--header-height) - 21px - 2rem);
     overflow: hidden auto;
     padding: var(--gap) 0;
+  }
+}
+
+:global(.scrolled-past-header) {
+  .sidebar-layout aside {
+    max-height: 100vh;
   }
 }

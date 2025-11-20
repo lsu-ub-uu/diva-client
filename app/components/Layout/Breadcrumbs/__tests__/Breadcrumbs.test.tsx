@@ -46,29 +46,6 @@ describe('<Breadcrumbs />', () => {
     within(breadcrumbs).getByRole('link', { name: 'page1_1Crumb' });
   });
 
-  it('Can take the user back to home page', async () => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/page1',
-        loader: () => ({ breadcrumb: 'page1Crumb' }),
-        children: [
-          {
-            path: 'page1_1',
-            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
-            Component: Breadcrumbs,
-          },
-        ],
-        Component: Breadcrumbs,
-      },
-    ]);
-
-    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
-
-    expect(
-      screen.getByRole('link', { name: 'divaClient_breadcrumbStartText' }),
-    ).toHaveAttribute('href', '/');
-  });
-
   it('Renders steps as breadcrumbs', async () => {
     const RoutesStub = createRoutesStub([
       {
@@ -94,9 +71,6 @@ describe('<Breadcrumbs />', () => {
 
     const breadcrumbs = screen.getByRole('navigation', {
       name: 'divaClient_breadcrumbText',
-    });
-    within(breadcrumbs).getByRole('link', {
-      name: 'divaClient_breadcrumbStartText',
     });
 
     within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
@@ -139,7 +113,7 @@ describe('<Breadcrumbs />', () => {
       name: 'divaClient_breadcrumbText',
     });
 
-    expect(within(breadcrumbs).getAllByRole('link')).toHaveLength(3);
+    expect(within(breadcrumbs).getAllByRole('link')).toHaveLength(2);
     within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
 
     expect(

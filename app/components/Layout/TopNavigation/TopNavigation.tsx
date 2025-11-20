@@ -1,23 +1,28 @@
-import styles from './TopNavigation.module.css';
-import {
-  AttachMoneyIcon,
-  ContractIcon,
-  CorporateFareIcon,
-  EditNoteIcon,
-  FullCoverageIcon,
-  HistoryEduIcon,
-  NewspaperIcon,
-  NewsstandIcon,
-  PersonsIcon,
-  SchemaIcon,
-  SchoolIcon,
-  ScienceIcon,
-} from '@/icons';
-import type { ReactNode } from 'react';
+import { Button } from '@/components/Button/Button';
 import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import { useIsDevMode } from '@/utils/useIsDevMode';
+import {
+  BookCheckIcon,
+  BookOpenIcon,
+  BuildingIcon,
+  ChartGanttIcon,
+  FlaskRoundIcon,
+  GraduationCapIcon,
+  HandCoinsIcon,
+  LibraryIcon,
+  NewspaperIcon,
+  NotebookTabsIcon,
+  PaletteIcon,
+  RefreshCwIcon,
+  Settings2Icon,
+  TagIcon,
+  UsersIcon,
+} from 'lucide-react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { href } from 'react-router';
+import { Form, href, useLocation } from 'react-router';
+import styles from './TopNavigation.module.css';
 
 export interface TopNavigationLink {
   label: string;
@@ -26,22 +31,23 @@ export interface TopNavigationLink {
 
 export interface TopNavigationProps {
   recordTypes: BFFRecordType[];
-  onNavigationClick: () => void;
+  editableMember?: string;
+  onNavigationClick?: () => void;
 }
 
 const icons: Record<string, ReactNode> = {
-  'diva-output': <ContractIcon />,
-  'diva-person': <PersonsIcon />,
-  'diva-project': <SchemaIcon />,
-  'diva-course': <ScienceIcon />,
-  'diva-organisation': <CorporateFareIcon />,
+  'diva-output': <BookOpenIcon />,
+  'diva-person': <UsersIcon />,
+  'diva-project': <ChartGanttIcon />,
+  'diva-course': <NotebookTabsIcon />,
+  'diva-organisation': <BuildingIcon />,
   'diva-journal': <NewspaperIcon />,
-  'diva-subject': <HistoryEduIcon />,
-  'diva-programme': <SchoolIcon />,
-  'diva-series': <NewsstandIcon />,
-  'diva-localGenericMarkup': <EditNoteIcon />,
-  'diva-publisher': <FullCoverageIcon />,
-  'diva-funder': <AttachMoneyIcon />,
+  'diva-subject': <FlaskRoundIcon />,
+  'diva-programme': <GraduationCapIcon />,
+  'diva-series': <LibraryIcon />,
+  'diva-localGenericMarkup': <TagIcon />,
+  'diva-publisher': <BookCheckIcon />,
+  'diva-funder': <HandCoinsIcon />,
 };
 
 const sortOrder = [
@@ -61,12 +67,14 @@ const sortOrder = [
 
 export const TopNavigation = ({
   recordTypes,
+  editableMember,
   onNavigationClick,
 }: TopNavigationProps) => {
+  const devMode = useIsDevMode();
+  const location = useLocation();
+  const returnTo = encodeURIComponent(location.pathname + location.search);
+
   const { t } = useTranslation();
-  if (recordTypes.length < 2) {
-    return null;
-  }
 
   return (
     <nav className={styles['top-navigation']}>
@@ -90,6 +98,38 @@ export const TopNavigation = ({
               />
             </li>
           ))}
+        {editableMember && (
+          <li>
+            <NavigationLink
+              to={href('/:recordType/:recordId/update', {
+                recordType: 'diva-member',
+                recordId: editableMember,
+              })}
+              label='Medlems­inställningar'
+              icon={<Settings2Icon />}
+              onClick={onNavigationClick}
+            />
+          </li>
+        )}
+        {devMode && (
+          <>
+            <li>
+              <NavigationLink
+                to={href('/design-system')}
+                label='Design system'
+                icon={<PaletteIcon />}
+              />
+            </li>
+            <li>
+              <Form action={href('/refreshDefinitions')} method='POST'>
+                <input type='hidden' name='returnTo' value={returnTo} />
+                <Button variant='tertiary' type='submit' fullWidth>
+                  <RefreshCwIcon />
+                </Button>
+              </Form>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );

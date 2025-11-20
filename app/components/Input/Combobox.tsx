@@ -27,9 +27,9 @@ import {
 import clsx from 'clsx';
 import styles from './Combobox.module.css';
 import inputStyles from './Input.module.css';
-import { ManageSearchIcon } from '@/icons';
 import { use } from 'react';
 import { FieldContext } from './Fieldset';
+import { TextSearchIcon } from 'lucide-react';
 
 export const Combobox = HUICombobox;
 
@@ -46,7 +46,7 @@ export const ComboboxInput = ({
         className={clsx(inputStyles['combobox-input'], className)}
         {...rest}
       />
-      <ManageSearchIcon className={styles['combobox-input-icon']} />
+      <TextSearchIcon className={styles['combobox-input-icon']} />
     </div>
   );
 };

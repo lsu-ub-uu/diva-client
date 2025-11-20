@@ -18,9 +18,9 @@
 
 import { Link, useFetcher } from 'react-router';
 
-import type { BFFDataRecord } from '@/types/record';
-import { ArticleIcon, DeleteForeverIcon, EditDocumentIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
+import type { BFFDataRecord } from '@/types/record';
+import { FilePenIcon, FileTextIcon, ShredderIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface RecordActionButtonProps {
@@ -42,7 +42,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             as={Link}
             to={`/${record.recordType}/${record.id}`}
           >
-            <ArticleIcon />
+            <FileTextIcon />
             {t('divaClient_viewRecordText')}
           </Button>
         );
@@ -55,7 +55,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             as={Link}
             to={`/${record.recordType}/${record.id}/update`}
           >
-            <EditDocumentIcon />
+            <FilePenIcon />
             {t('divaClient_editRecordText')}
           </Button>
         );
@@ -72,7 +72,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             }}
           >
             <Button variant='secondary' type='submit' size='small'>
-              <DeleteForeverIcon />
+              <ShredderIcon />
               {t('divaClient_deleteRecordText')}
             </Button>
           </fetcher.Form>

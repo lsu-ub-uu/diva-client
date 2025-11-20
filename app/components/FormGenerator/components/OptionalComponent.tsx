@@ -1,11 +1,11 @@
 import { Button } from '@/components/Button/Button';
-import { AddCircleIcon, CloseIcon } from '@/icons';
 import { use, type ReactNode } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import type { FormComponentWithData } from '../types';
+import { PlusCircleIcon, XIcon } from 'lucide-react';
 
 interface OptionalComponentProps {
   anchorId?: string;
@@ -51,7 +51,7 @@ export const OptionalComponent = ({
                     onClick={() => field.onChange(null)}
                     data-action-button='delete'
                   >
-                    <CloseIcon />
+                    <XIcon />
                   </Button>
                 ),
               )}
@@ -85,7 +85,7 @@ export const OptionalComponent = ({
               }
               tooltipPosition='top'
             >
-              <AddCircleIcon /> {t(component.addText ?? component.label)}
+              <PlusCircleIcon /> {t(component.addText ?? component.label)}
             </Button>
           </div>
         );

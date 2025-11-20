@@ -28,11 +28,11 @@ import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { UpgradeIcon } from '@/icons';
 import type { BFFDataRecordData } from '@/types/record';
+import { SaveIcon } from 'lucide-react';
 import { useEffect } from 'react';
-import styles from './Form.module.css';
 import { CircularLoader } from '../Loader/CircularLoader';
+import styles from './Form.module.css';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -88,7 +88,7 @@ export const RecordForm = ({
           variant='primary'
           type='submit'
           aria-busy={submitting}
-          icon={submitting ? <CircularLoader /> : <UpgradeIcon />}
+          icon={submitting ? <CircularLoader /> : <SaveIcon />}
           text={
             submitting
               ? t('divaClient_SubmittingButtonText')

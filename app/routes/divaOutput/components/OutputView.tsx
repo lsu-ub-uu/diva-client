@@ -1,6 +1,5 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { ShoppingCartIcon } from '@/icons';
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
@@ -26,6 +25,7 @@ import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
+import { ShoppingCartIcon } from 'lucide-react';
 
 interface OutputViewProps {
   data: DivaOutput;

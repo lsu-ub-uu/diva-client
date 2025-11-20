@@ -24,28 +24,6 @@ import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('<TopNavigation />', () => {
-  it('renders nothing when only one link in props', () => {
-    const recordTypes = [
-      { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
-    ];
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <TopNavigation
-            recordTypes={recordTypes}
-            onNavigationClick={vi.fn()}
-          />
-        ),
-      },
-    ]);
-
-    render(<RoutesStub />);
-    const output = screen.queryByRole('link', { name: 'Output' });
-
-    expect(output).not.toBeInTheDocument();
-  });
-
   it('renders the topNavigation when more than one record type in props', () => {
     const recordTypes = [
       { textId: 'Output', id: 'someRecordType' } as BFFRecordType,

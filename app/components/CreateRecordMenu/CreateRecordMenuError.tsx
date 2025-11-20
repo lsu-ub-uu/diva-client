@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ErrorAlert } from '@/errorHandling/ErrorAlert';
-import { isRouteErrorResponse, useAsyncError } from 'react-router';
-import { Menu, MenuButton } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
-import { AddCircleIcon } from '@/icons';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { ErrorAlert } from '@/errorHandling/ErrorAlert';
+import { Menu, MenuButton } from '@headlessui/react';
+import { PlusCircleIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { isRouteErrorResponse, useAsyncError } from 'react-router';
 
 interface CreateRecordMenuErrorProps {
   recordTypeTextId: string;
@@ -45,7 +45,7 @@ export const CreateRecordMenuError = ({
   return (
     <Menu>
       <MenuButton as={Button} error size='large'>
-        <AddCircleIcon />
+        <PlusCircleIcon />
         {t('divaClient_createText', {
           type: t(recordTypeTextId).toLowerCase(),
         })}

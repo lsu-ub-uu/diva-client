@@ -21,7 +21,6 @@ import { Button } from '@/components/Button/Button';
 import { Pagination } from '@/components/Form/Pagination';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { CodeIcon, SearchIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useMember } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +28,7 @@ import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
+import { CodeIcon, SearchIcon } from 'lucide-react';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;

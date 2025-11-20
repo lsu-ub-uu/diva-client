@@ -36,6 +36,11 @@
     /* Border radius */
     --border-radius: 8px;
     --border-radius-s: 4px;
+    --member-bar-height: var(--gap-xxl);
+    --diva-header-bar-height: 5rem;
+    --header-height: calc(
+      var(--member-bar-height) + var(--diva-header-bar-height)
+    );
 
     /* Shadows */
     --elevation:
@@ -139,40 +144,54 @@
 .root-layout {
   display: grid;
   grid-template:
-    'member member' auto
+    'header header' auto
     'nav main' 1fr;
   grid-template-columns: auto 1fr;
   min-height: 100vh;
 
   @media (width < 900px) {
     grid-template:
-      'member member' auto
-      'nav nav' auto
-      'main main' 1fr;
+      'header' auto
+      'main' 1fr;
     grid-template-columns: auto;
   }
 }
 
-.member-bar {
-  grid-area: member;
+.header {
+  grid-area: header;
 }
 
 .nav-rail {
   grid-area: nav;
   background-color: var(--color-nav-rail);
+  border-right: 1px solid var(--color-lighter-border);
 
-  @media (width < 600px) {
-    border-bottom: 1px solid var(--color-thin-border);
+  nav {
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    max-height: calc(100vh - var(--header-height));
+    padding-top: var(--gap);
+    padding-bottom: var(--gap-xl);
   }
 
-  @media (width >= 600px) {
-    border-right: 1px solid var(--color-thin-border);
+  @media (width < 900px) {
+    display: none;
   }
+}
+
+.scrolled-past-header .nav-rail nav {
+  max-height: 100vh;
 }
 
 .content {
   grid-area: main;
   padding: 0 var(--gap-l);
+
+  @media (width < 900px) {
+    padding: 0 var(--gap);
+  }
 }
 
 .flash {
@@ -180,4 +199,9 @@
   scroll-margin: var(--gap-l);
   transition: outline 0.2s ease-in-out;
   border-radius: var(--border-radius);
+}
+
+.lucide {
+  width: 1em;
+  height: 1em;
 }

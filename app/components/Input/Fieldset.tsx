@@ -19,9 +19,9 @@
 import { createContext, type HTMLProps, type ReactNode, useId } from 'react';
 import styles from './Fieldset.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
-import { WarningIcon } from '@/icons';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { TriangleAlertIcon } from 'lucide-react';
 
 interface FieldsetProps {
   className?: string;
@@ -85,7 +85,10 @@ export const Fieldset = ({
         )}
         <div className={styles['input']}>
           {children}
-          <WarningIcon className={styles['error-icon']} aria-hidden='true' />
+          <TriangleAlertIcon
+            className={styles['error-icon']}
+            aria-hidden='true'
+          />
         </div>
         {errorMessage && (
           <p id={ids.error} className={styles['error-message']}>

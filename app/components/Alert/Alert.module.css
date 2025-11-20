@@ -60,7 +60,7 @@
   font-size: var(--font-size-l);
 
   svg {
-    fill: var(--color-alert-icon);
+    stroke: var(--color-alert-icon);
   }
 }
 

@@ -17,7 +17,7 @@
  */
 
 import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { SentimentVeryDissatisfiedIcon } from '@/icons';
+import { ServerCrashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface UnhandledErrorPageProps {
@@ -31,7 +31,7 @@ export const UnhandledErrorPage = ({ error }: UnhandledErrorPageProps) => {
     const { message, stack } = error;
     return (
       <ErrorPage
-        icon={<SentimentVeryDissatisfiedIcon />}
+        icon={<ServerCrashIcon />}
         titleText={t(`divaClient_error500TitleText`)}
         bodyText={message}
         technicalInfo={stack && <pre>{stack}</pre>}
@@ -40,7 +40,7 @@ export const UnhandledErrorPage = ({ error }: UnhandledErrorPageProps) => {
   }
   return (
     <ErrorPage
-      icon={<SentimentVeryDissatisfiedIcon />}
+      icon={<ServerCrashIcon />}
       titleText={t(`divaClient_unknownErrorTitleText`)}
       bodyText={t(`divaClient_unknownErrorBodyText`)}
     />
