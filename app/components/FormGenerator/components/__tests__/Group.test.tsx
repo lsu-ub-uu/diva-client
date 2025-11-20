@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { describe } from 'vitest';
 import { Group } from '../Group';
 import type { FormComponentGroup } from '../../types';
@@ -190,5 +190,118 @@ describe('Group', () => {
     expect(
       screen.getByRole('textbox', { name: 'someVarLabelTextId' }),
     ).toBeInTheDocument();
+  });
+
+  it('Does not render when mode is output and no values are present', () => {
+    const component: FormComponentGroup = {
+      type: 'group',
+      name: 'someGroup',
+      showLabel: true,
+      label: 'someGroupLabelTextId',
+      headlineLevel: 'h2',
+      title: 'someGroupTitleTextId',
+      mode: 'output',
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someVar',
+          showLabel: true,
+          label: 'someVarLabelTextId',
+          placeholder: 'someEmptyTextId',
+          inputType: 'input',
+          mode: 'input',
+        },
+      ],
+    };
+    const { container } = render(
+      <MockFormProvider
+        mockValues={{
+          someGroup: {
+            someVar: '',
+          },
+        }}
+      >
+        <Group component={component} currentComponentNamePath='root' />
+      </MockFormProvider>,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('Does not render when mode is output and values are present', () => {
+    const component: FormComponentGroup = {
+      type: 'group',
+      name: 'someGroup',
+      showLabel: true,
+      label: 'someGroupLabelTextId',
+      headlineLevel: 'h2',
+      title: 'someGroupTitleTextId',
+      mode: 'output',
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someVar',
+          showLabel: true,
+          label: 'someVarLabelTextId',
+          placeholder: 'someEmptyTextId',
+          inputType: 'input',
+          mode: 'input',
+        },
+      ],
+    };
+    const { container } = render(
+      <MockFormProvider
+        overrides={{
+          getValues: vi
+            .fn()
+            .mockImplementation(() => ({ someVar: { value: 'someValue' } })),
+        }}
+      >
+        <Group component={component} currentComponentNamePath='someGroup' />
+      </MockFormProvider>,
+    );
+
+    expect(container).not.toBeEmptyDOMElement();
+  });
+
+  it('Does render when mode is output and no values are present but is expandable', () => {
+    const component: FormComponentGroup = {
+      type: 'group',
+      name: 'someGroup',
+      showLabel: true,
+      label: 'someGroupLabelTextId',
+      headlineLevel: 'h2',
+      title: 'someGroupTitleTextId',
+      mode: 'output',
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someVar',
+          showLabel: true,
+          label: 'someVarLabelTextId',
+          placeholder: 'someEmptyTextId',
+          inputType: 'input',
+          mode: 'input',
+        },
+      ],
+    };
+    const { container } = render(
+      <MockFormProvider
+        mockValues={{
+          someGroup: {
+            someVar: '',
+          },
+        }}
+      >
+        <Group
+          component={component}
+          currentComponentNamePath='root'
+          expanded={true}
+          onExpandButtonClick={vi.fn()}
+        />
+      </MockFormProvider>,
+    );
+
+    expect(container).not.toBeEmptyDOMElement();
   });
 });
