@@ -8,10 +8,11 @@ import type {
   BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import { MenuIcon } from '@/icons';
+import { CloseIcon, MenuIcon } from '@/icons';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { clsx } from 'clsx';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { ColorSchemeSwitcher } from '../HeaderOld/ColorSchemeSwitcher';
 import { LanguageSwitcher } from '../HeaderOld/LanguageSwitcher';
@@ -27,6 +28,8 @@ interface HeaderProps {
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
   recordTypes: BFFRecordType[];
+  editableMember: string | undefined;
+  ref?: React.Ref<HTMLElement>;
 }
 
 export const Header = ({
@@ -37,45 +40,69 @@ export const Header = ({
   loginUnits,
   appTokenLogins,
   recordTypes,
+  editableMember,
+  ref,
 }: HeaderProps) => {
+  const { t } = useTranslation();
   const mobileDialogRef = useRef<HTMLDialogElement>(null);
   return (
-    <header className={clsx(styles.header, className)}>
+    <header className={clsx(styles.header, className)} ref={ref}>
       <NavigationLoader />
       <MemberBar member={member} loggedIn={user !== undefined} />
       <div className={styles['diva-header-bar']}>
-        <div className={styles['header-mobile-menu-button']}>
-          <Button
-            variant='icon'
-            aria-label='Open menu'
-            onClick={() => mobileDialogRef.current?.showModal()}
-          >
-            <MenuIcon />
-          </Button>
-          <dialog
-            ref={mobileDialogRef}
-            className={styles['mobile-menu-dialog']}
-            closedBy='any'
-          >
-            <TopNavigation
-              recordTypes={recordTypes}
-              onNavigationClick={() => mobileDialogRef.current?.close()}
-            />
-          </dialog>
-        </div>
         <div className={styles['header-bar-left']}>
+          <div className={styles['header-mobile-menu-button']}>
+            <Button
+              variant='icon'
+              aria-label={t('divaClient_showMenuText')}
+              onClick={() => mobileDialogRef.current?.showModal()}
+            >
+              <MenuIcon />
+            </Button>
+            <dialog
+              ref={mobileDialogRef}
+              className={styles['mobile-menu-dialog']}
+              // eslint-disable-next-line react/no-unknown-property
+              closedby='any'
+            >
+              <div className={styles['mobile-menu-header']}>
+                <LanguageSwitcher />
+                <ColorSchemeSwitcher
+                  colorScheme={userPreferences.colorScheme}
+                />
+                <Button
+                  className={styles['menu-close-button']}
+                  variant='icon'
+                  aria-label={t('divaClient_closeText')}
+                  onClick={() => mobileDialogRef.current?.close()}
+                >
+                  <CloseIcon />
+                </Button>
+              </div>
+              <hr />
+              <TopNavigation
+                recordTypes={recordTypes}
+                editableMember={editableMember}
+                onNavigationClick={() => mobileDialogRef.current?.close()}
+              />
+            </dialog>
+          </div>
           <Link to='/'>
             <DivaLogo className={styles.logo} />
           </Link>
         </div>
         <div className={styles['header-bar-right']}>
-          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+          <div className={styles['color-theme-switcher']}>
+            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+          </div>
           <div className={styles['header-bar-login-language']}>
             <LoginMenu
               loginUnits={loginUnits}
               appTokenLogins={appTokenLogins}
             />
-            <LanguageSwitcher />
+            <div className={styles['language-switcher']}>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>

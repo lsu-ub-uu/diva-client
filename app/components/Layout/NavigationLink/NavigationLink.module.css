@@ -62,6 +62,7 @@
 
     .label {
       font-size: var(--font-size);
+      max-width: none;
     }
   }
 }

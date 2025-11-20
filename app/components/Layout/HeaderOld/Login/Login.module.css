@@ -50,3 +50,17 @@
   gap: var(--gap);
   width: max-content;
 }
+
+.user-initials {
+  display: none;
+}
+
+@media (width < 900px) {
+  .user-name {
+    display: none;
+  }
+
+  .user-initials {
+    display: block;
+  }
+}

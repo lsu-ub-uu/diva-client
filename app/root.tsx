@@ -15,7 +15,6 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import DivaLogo from '@/assets/divaLogo.svg?react';
 
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
@@ -27,7 +26,6 @@ import { type ReactNode, useEffect, useRef } from 'react';
 import {
   data,
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
@@ -39,10 +37,6 @@ import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { LanguageSwitcher } from '@/components/Layout/HeaderOld/LanguageSwitcher';
-import LoginMenu from '@/components/Layout/HeaderOld/Login/LoginMenu';
-import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { SentimentVeryDissatisfiedIcon } from '@/icons';
@@ -57,7 +51,7 @@ import {
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
 import { AuthLogger } from './components/dev/AuthLogger';
-import { ColorSchemeSwitcher } from './components/Layout/HeaderOld/ColorSchemeSwitcher';
+import { Header } from './components/Layout/Header/Header';
 import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 import {
   parseUserPreferencesCookie,
@@ -66,7 +60,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { Header } from './components/Layout/Header/Header';
 
 const { MODE } = import.meta.env;
 
@@ -249,6 +242,35 @@ export default function App({ loaderData }: Route.ComponentProps) {
     recordTypes,
   } = loaderData;
 
+  const editableMember = userCanEditMemberSettings ? member?.id : undefined;
+
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === headerRef.current) {
+            if (entry.isIntersecting) {
+              document.body.classList.remove('scrolled-past-header');
+            } else {
+              document.body.classList.add('scrolled-past-header');
+            }
+          }
+        });
+      },
+      { threshold: [0] },
+    );
+
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className='root-layout'>
       <NotificationSnackbar
@@ -264,10 +286,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
         loginUnits={loginUnits}
         appTokenLogins={appTokenLogins}
         recordTypes={recordTypes}
+        editableMember={editableMember}
+        ref={headerRef}
       />
 
       <aside className='nav-rail'>
-        <TopNavigation recordTypes={recordTypes} />
+        <TopNavigation
+          recordTypes={recordTypes}
+          editableMember={editableMember}
+        />
       </aside>
 
       <div className='content'>

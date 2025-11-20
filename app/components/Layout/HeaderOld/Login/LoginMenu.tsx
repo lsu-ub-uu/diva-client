@@ -179,6 +179,10 @@ export default function LoginMenu({
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
           </span>
+          <span className={styles['user-initials']}>
+            {user.firstName?.charAt(0)}
+            {user.lastName?.charAt(0)}
+          </span>
           <PersonIcon />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>

@@ -77,7 +77,7 @@ export const ColorSchemeSwitcher = ({
             : t('divaClient_switchToDarkModeText')
         }
       >
-        {currentColorScheme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        {currentColorScheme === 'light' ? <LightModeIcon /> : <DarkModeIcon />}
       </Button>
     </fetcher.Form>
   );
