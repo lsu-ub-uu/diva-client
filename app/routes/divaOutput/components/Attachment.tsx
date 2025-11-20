@@ -1,7 +1,7 @@
 import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { DownloadIcon } from '@/icons';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import { DownloadIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface AttachmentProps {

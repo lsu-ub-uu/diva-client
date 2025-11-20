@@ -18,12 +18,12 @@
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import type { FormComponentResourceLink } from '@/components/FormGenerator/types';
-import { DownloadIcon } from '@/icons';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import resourceLinkStyles from './ResourceLink.module.css';
 import type { BFFDataResourceLink } from '@/types/record';
+import { DownloadIcon } from 'lucide-react';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;

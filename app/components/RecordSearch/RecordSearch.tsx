@@ -21,10 +21,10 @@ import { SearchForm } from '@/components/Form/SearchForm';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import { SentimentNeutralIcon } from '@/icons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import styles from './RecordSearch.module.css';
+import { MehIcon } from 'lucide-react';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -51,7 +51,7 @@ export const RecordSearch = ({
       {searchResults && (
         <>
           {searchResults.totalNo === 0 && (
-            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+            <Alert severity='info' icon={<MehIcon />}>
               <AlertTitle>
                 {t('divaClient_noSearchResultsTitleText')}
               </AlertTitle>

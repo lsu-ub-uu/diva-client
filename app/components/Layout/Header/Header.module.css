@@ -25,13 +25,7 @@
   .header-bar-right {
     display: flex;
     align-items: center;
-    gap: var(--gap-xl);
-
-    .header-bar-login-language {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
+    gap: var(--gap-l);
   }
 
   @media (width < 900px) {

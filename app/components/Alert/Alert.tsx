@@ -17,10 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { ReactNode } from 'react';
-import { CheckCircleIcon, ErrorIcon, InfoIcon, WarningIcon } from '@/icons';
-import styles from './Alert.module.css';
 import clsx from 'clsx';
+import {
+  CircleCheckBigIcon,
+  CircleXIcon,
+  InfoIcon,
+  TriangleAlertIcon,
+} from 'lucide-react';
+import type { ReactNode } from 'react';
+import styles from './Alert.module.css';
 
 export interface AlertProps {
   icon?: ReactNode;
@@ -43,14 +48,14 @@ interface GetIconProps {
 const GetIcons = ({ severity }: GetIconProps) => {
   switch (severity) {
     case 'success':
-      return <CheckCircleIcon />;
+      return <CircleCheckBigIcon />;
     case 'info':
       return <InfoIcon />;
     case 'error':
-      return <ErrorIcon />;
+      return <CircleXIcon />;
     case 'warning':
     default:
-      return <WarningIcon />;
+      return <TriangleAlertIcon />;
   }
 };
 

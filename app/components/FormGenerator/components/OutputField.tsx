@@ -17,7 +17,6 @@
  */
 
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
@@ -51,7 +50,6 @@ export const OutputField = ({
   value,
   variant = 'block',
   textStyle,
-  info,
   adornment,
 }: OutputFieldProps) => {
   const { t } = useTranslation();
@@ -76,7 +74,6 @@ export const OutputField = ({
             {t(label)}
           </Typography>
         )}
-        {label && info && <FieldInfo {...info} />}
         {adornment && (
           <div className={styles['adornment-wrapper']}>{adornment}</div>
         )}

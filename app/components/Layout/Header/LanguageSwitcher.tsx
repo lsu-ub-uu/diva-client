@@ -21,8 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { useFetcher, useLoaderData } from 'react-router';
 
 import { Button } from '@/components/Button/Button';
-import { LanguageIcon } from '@/icons';
 import styles from './LanguageSwitcher.module.css';
+import { GlobeIcon } from 'lucide-react';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
@@ -47,7 +47,7 @@ export const LanguageSwitcher = () => {
           }
         >
           {language === 'sv' ? 'Svenska' : 'English'}
-          <LanguageIcon />
+          <GlobeIcon />
         </Button>
         <input type='hidden' name='intent' value='changeLanguage' />
       </fetcher.Form>

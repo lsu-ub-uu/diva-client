@@ -18,9 +18,9 @@
 
 import { type ChangeEvent, use, useState } from 'react';
 import styles from './FileInput.module.css';
-import { UploadFileIcon } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import { FieldContext } from './Fieldset';
+import { UploadIcon } from 'lucide-react';
 
 interface FileInputProps {
   name: string;
@@ -36,7 +36,7 @@ export const FileInput = ({ name, onChange, errorMessage }: FileInputProps) => {
 
   return (
     <div className={styles['wrapper']} data-dragging={dragging}>
-      <UploadFileIcon /> {t('divaClient_fileInputText')}
+      <UploadIcon /> {t('divaClient_fileInputText')}
       <input
         id={ids.input}
         className={styles['file-input']}

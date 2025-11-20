@@ -39,7 +39,6 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
@@ -60,6 +59,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { AngryIcon } from 'lucide-react';
 
 const { MODE } = import.meta.env;
 
@@ -163,7 +163,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<SentimentVeryDissatisfiedIcon />}
+          icon={<AngryIcon />}
           titleText={`${error.status}`}
           bodyText={JSON.stringify(error.data)}
         />
@@ -176,7 +176,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<SentimentVeryDissatisfiedIcon />}
+          icon={<AngryIcon />}
           titleText='Okänt fel'
           bodyText='Ett okänt fel inträffade. Försök igen senare'
           links={<a href='/'>Gå till startsidan</a>}
@@ -188,7 +188,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <RootErrorPage>
       <ErrorPage
-        icon={<SentimentVeryDissatisfiedIcon />}
+        icon={<AngryIcon />}
         titleText='Okänt fel'
         bodyText='Ett okänt fel inträffade. Försök igen senare'
         links={<a href='/'>Gå till startsidan</a>}

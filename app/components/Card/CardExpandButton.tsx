@@ -1,15 +1,15 @@
-import {
-  CircleFilledIcon,
-  CollapseContentIcon,
-  ExpandContentIcon,
-  SwapIcon,
-  WarningIcon,
-} from '@/icons';
+import { ValueIcon } from '@/icons/ValueIcon';
 import { clsx } from 'clsx';
+import {
+  ArrowLeftRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  TriangleAlertIcon,
+} from 'lucide-react';
 import { use, type HTMLProps } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Card.module.css';
 import { CardContext } from './CardContext';
-import { useTranslation } from 'react-i18next';
 
 interface CardExpandButtonProps extends HTMLProps<HTMLButtonElement> {
   expanded: boolean | 'bothEqual';
@@ -26,9 +26,9 @@ export const CardExpandButton = ({
 
   const getIcon = () => {
     if (expanded === 'bothEqual') {
-      return <SwapIcon />;
+      return <ArrowLeftRightIcon />;
     }
-    return expanded ? <CollapseContentIcon /> : <ExpandContentIcon />;
+    return expanded ? <ChevronUpIcon /> : <ChevronDownIcon />;
   };
 
   const getAriaLabel = () => {
@@ -51,8 +51,8 @@ export const CardExpandButton = ({
     >
       {getIcon()}
       {children}
-      <CircleFilledIcon className={styles['value-icon']} aria-hidden='true' />
-      <WarningIcon className={styles['error-icon']} aria-hidden='true' />
+      <ValueIcon aria-hidden='true' className={styles['value-icon']} />
+      <TriangleAlertIcon className={styles['error-icon']} aria-hidden='true' />
     </button>
   );
 };

@@ -16,10 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ProgressIcon } from '@/icons';
-
 import styles from './Loader.module.css';
+import { LoaderCircleIcon } from 'lucide-react';
 
 export const CircularLoader = () => {
-  return <ProgressIcon role='progressbar' className={styles['spinner']} />;
+  return <LoaderCircleIcon role='progressbar' className={styles['spinner']} />;
 };

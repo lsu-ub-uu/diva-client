@@ -200,3 +200,8 @@
   transition: outline 0.2s ease-in-out;
   border-radius: var(--border-radius);
 }
+
+.lucide {
+  width: 1em;
+  height: 1em;
+}

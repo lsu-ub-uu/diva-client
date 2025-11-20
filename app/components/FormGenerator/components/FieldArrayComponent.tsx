@@ -20,7 +20,6 @@
 import { Button } from '@/components/Button/Button';
 import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
-import { AddCircleIcon } from '@/icons';
 import { Fragment, use, useState, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
@@ -28,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
+import { CirclePlusIcon } from 'lucide-react';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -138,7 +138,7 @@ export const FieldArrayComponent = ({
               }
               tooltipPosition='top'
             >
-              <AddCircleIcon /> {t(component.addText ?? component.label)}
+              <CirclePlusIcon /> {t(component.addText ?? component.label)}
             </Button>
           </div>
         )}

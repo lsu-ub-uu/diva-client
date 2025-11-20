@@ -8,7 +8,6 @@ import type {
   BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import { CloseIcon, MenuIcon } from '@/icons';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { clsx } from 'clsx';
 import { useEffect, useRef } from 'react';
@@ -20,6 +19,7 @@ import LoginMenu from './Login/LoginMenu';
 import { MemberBar } from '../MemberBar/MemberBar';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
 import styles from './Header.module.css';
+import { MenuIcon, XIcon } from 'lucide-react';
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -101,7 +101,7 @@ export const Header = ({
                   aria-label={t('divaClient_closeText')}
                   onClick={() => mobileDialogRef.current?.close()}
                 >
-                  <CloseIcon />
+                  <XIcon />
                 </Button>
               </div>
               <hr />
@@ -120,15 +120,10 @@ export const Header = ({
           <div className={styles['color-theme-switcher']}>
             <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           </div>
-          <div className={styles['header-bar-login-language']}>
-            <LoginMenu
-              loginUnits={loginUnits}
-              appTokenLogins={appTokenLogins}
-            />
-            <div className={styles['language-switcher']}>
-              <LanguageSwitcher />
-            </div>
+          <div className={styles['language-switcher']}>
+            <LanguageSwitcher />
           </div>
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </div>
       </div>
     </header>
