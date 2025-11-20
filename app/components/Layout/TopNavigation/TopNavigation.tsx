@@ -70,35 +70,14 @@ export const TopNavigation = ({
   editableMember,
   onNavigationClick,
 }: TopNavigationProps) => {
-  const navRef = useRef<HTMLElement>(null);
   const devMode = useIsDevMode();
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
 
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!navRef.current) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        console.log('observer!');
-      },
-      { threshold: [1] },
-    );
-
-    observer.observe(navRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  if (recordTypes.length < 2) {
-    return null;
-  }
-
   return (
-    <nav className={styles['top-navigation']} ref={navRef}>
+    <nav className={styles['top-navigation']}>
       <ul>
         {recordTypes
           .sort((a, b) => {

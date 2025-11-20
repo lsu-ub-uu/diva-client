@@ -17,7 +17,7 @@
  */
 
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
-import LoginMenu from '@/components/Layout/HeaderOld/Login/LoginMenu';
+import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

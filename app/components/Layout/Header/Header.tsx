@@ -11,12 +11,12 @@ import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.ser
 import { CloseIcon, MenuIcon } from '@/icons';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { clsx } from 'clsx';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { ColorSchemeSwitcher } from '../HeaderOld/ColorSchemeSwitcher';
-import { LanguageSwitcher } from '../HeaderOld/LanguageSwitcher';
-import LoginMenu from '../HeaderOld/Login/LoginMenu';
+import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import LoginMenu from './Login/LoginMenu';
 import { MemberBar } from '../MemberBar/MemberBar';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
 import styles from './Header.module.css';
@@ -29,7 +29,6 @@ interface HeaderProps {
   appTokenLogins: AppTokenLogin[];
   recordTypes: BFFRecordType[];
   editableMember: string | undefined;
-  ref?: React.Ref<HTMLElement>;
 }
 
 export const Header = ({
@@ -41,12 +40,38 @@ export const Header = ({
   appTokenLogins,
   recordTypes,
   editableMember,
-  ref,
 }: HeaderProps) => {
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === headerRef.current) {
+            if (entry.isIntersecting) {
+              document.body.classList.remove('scrolled-past-header');
+            } else {
+              document.body.classList.add('scrolled-past-header');
+            }
+          }
+        });
+      },
+      { threshold: [0] },
+    );
+
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const { t } = useTranslation();
   const mobileDialogRef = useRef<HTMLDialogElement>(null);
   return (
-    <header className={clsx(styles.header, className)} ref={ref}>
+    <header className={clsx(styles.header, className)} ref={headerRef}>
       <NavigationLoader />
       <MemberBar member={member} loggedIn={user !== undefined} />
       <div className={styles['diva-header-bar']}>

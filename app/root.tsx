@@ -244,33 +244,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   const editableMember = userCanEditMemberSettings ? member?.id : undefined;
 
-  const headerRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === headerRef.current) {
-            if (entry.isIntersecting) {
-              document.body.classList.remove('scrolled-past-header');
-            } else {
-              document.body.classList.add('scrolled-past-header');
-            }
-          }
-        });
-      },
-      { threshold: [0] },
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <div className='root-layout'>
       <NotificationSnackbar
@@ -287,7 +260,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
         appTokenLogins={appTokenLogins}
         recordTypes={recordTypes}
         editableMember={editableMember}
-        ref={headerRef}
       />
 
       <aside className='nav-rail'>
