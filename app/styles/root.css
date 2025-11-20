@@ -165,6 +165,7 @@
   grid-area: nav;
   background-color: var(--color-nav-rail);
   border-right: 1px solid var(--color-lighter-border);
+  padding: 0;
 
   nav {
     position: sticky;
