@@ -28,6 +28,7 @@ import { type ReactNode, use } from 'react';
 import { Link } from 'react-router';
 import styles from './OutputField.module.css';
 import { useTranslation } from 'react-i18next';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface OutputFieldProps {
   path: string;
@@ -50,6 +51,7 @@ export const OutputField = ({
   value,
   variant = 'block',
   textStyle,
+  info,
   adornment,
 }: OutputFieldProps) => {
   const { t } = useTranslation();
@@ -74,6 +76,7 @@ export const OutputField = ({
             {t(label)}
           </Typography>
         )}
+        {label && info && <FieldInfo {...info} />}
         {adornment && (
           <div className={styles['adornment-wrapper']}>{adornment}</div>
         )}
