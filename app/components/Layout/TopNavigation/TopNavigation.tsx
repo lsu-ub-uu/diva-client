@@ -26,7 +26,7 @@ export interface TopNavigationLink {
 
 export interface TopNavigationProps {
   recordTypes: BFFRecordType[];
-  onNavigationClick: () => void;
+  onNavigationClick?: () => void;
 }
 
 const icons: Record<string, ReactNode> = {

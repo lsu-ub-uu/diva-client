@@ -16,15 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { useTranslation } from 'react-i18next';
+import { useFetcher, useLoaderData } from 'react-router';
 
-import styles from './LanguageSwitcher.module.css';
-import { ChevronDownIcon, LanguageIcon } from '@/icons';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { LanguageIcon } from '@/icons';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import styles from './LanguageSwitcher.module.css';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();

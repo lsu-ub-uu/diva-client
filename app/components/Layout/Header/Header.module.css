@@ -1,113 +1,68 @@
-/*
- * Copyright 2025 Uppsala University Library
- *
- * This file is part of DiVA Client.
- *
- *     DiVA Client is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     DiVA Client is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
- */
+.header {
+  position: relative;
+}
 
-.header-wrapper {
-  position: sticky;
-  top: var(--gap);
+.diva-header-bar {
+  height: 5rem;
+  padding: var(--gap) var(--gap-xl);
+  border-bottom: 1px solid var(--color-thin-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--gap-l);
-  padding: var(--gap);
-  flex-direction: column;
-  width: 100px;
-  max-height: calc(100vh - var(--header-height));
-  overflow-y: auto;
-  scrollbar-width: thin;
+  transition-behavior: allow-discrete;
 
-  @media (width >= 900px) {
-    .header-menu-toggle-button {
-      display: none;
-    }
-  }
-}
-
-.logo {
-  height: 2rem;
-  width: auto;
-  margin: 0 auto;
-  max-width: 80px;
-}
-
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gap-l);
-}
-
-@media (width < 900px) {
-  .header-wrapper {
-    flex-direction: row;
+  .logo {
+    height: 100%;
+    max-width: 8rem;
   }
 
-  .header-content,
-  .top-navigation {
-    display: none;
-  }
-
-  .header-logo-wrapper {
-    margin-right: auto;
+  .header-bar-left {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--gap);
+    align-items: center;
+    gap: var(--gap-xl);
   }
 
-  .header-menu-dialog {
-    position: relative;
-  }
-
-  .header-menu-dialog-backdrop {
-    position: fixed;
-    inset: 0;
-    background-color: rgb(0 0 0 / 30%);
-    transition: opacity 0.1s ease-in-out;
-    opacity: 1;
-
-    &[data-closed] {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-  }
-
-  .header-menu-dialog-panel {
-    transform: translateX(0%);
-    opacity: 1;
-    transition:
-      transform 0.1s ease-in-out,
-      opacity 0.1s ease-in-out;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--color-background);
-    box-shadow: var(--elevation);
-    padding: var(--gap-l);
+  .header-bar-right {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--gap-l);
+    align-items: center;
+    gap: var(--gap-xl);
 
-    &[data-closed] {
-      opacity: 0;
-      transform: translateX(100%);
+    .header-bar-login-language {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
     }
+  }
+}
+
+.header-mobile-menu-button {
+  display: none;
+
+  @media (width < 900px) {
+    display: block;
+  }
+}
+
+.mobile-menu-dialog {
+  height: 100vh;
+  width: 80vw;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease-in-out;
+
+  &:open {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  &::backdrop {
+    background-color: rgb(0 0 0 / 50%);
+  }
+}
+
+@starting-style {
+  mobile-menu-dialog:open {
+    opacity: 0;
+    transform: scaleY(0);
   }
 }

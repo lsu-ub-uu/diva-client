@@ -25,7 +25,6 @@ import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
 import { type ReactNode, useEffect, useRef } from 'react';
 import {
-  Await,
   data,
   isRouteErrorResponse,
   Link,
@@ -40,9 +39,8 @@ import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { Header } from '@/components/Layout/Header/Header';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
+import { LanguageSwitcher } from '@/components/Layout/HeaderOld/LanguageSwitcher';
+import LoginMenu from '@/components/Layout/HeaderOld/Login/LoginMenu';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
@@ -59,7 +57,8 @@ import {
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
 import { AuthLogger } from './components/dev/AuthLogger';
-import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
+import { ColorSchemeSwitcher } from './components/Layout/HeaderOld/ColorSchemeSwitcher';
+import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -67,7 +66,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
+import { Header } from './components/Layout/Header/Header';
 
 const { MODE } = import.meta.env;
 
@@ -244,6 +243,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     member,
     loginUnits,
     appTokenLogins,
+    user,
     userCanEditMemberSettings,
     auth,
     recordTypes,
@@ -256,39 +256,19 @@ export default function App({ loaderData }: Route.ComponentProps) {
         notification={loaderData.notification}
       />
 
-      <header className='header'>
-        <NavigationLoader />
-        <MemberBar member={member} loggedIn={loaderData.user !== undefined} />
-        <div className='diva-header-bar'>
-          <div className='header-bar-left'>
-            <Link to='/'>
-              <DivaLogo className='logo' />
-            </Link>
-            <TopNavigation recordTypes={recordTypes} />
-          </div>
-          <div className='header-bar-right'>
-            <ColorSchemeSwitcher colorScheme={userPreferences?.colorScheme} />
-            <div className='header-bar-login-language'>
-              <LoginMenu
-                loginUnits={loginUnits}
-                appTokenLogins={appTokenLogins}
-              />
-              <LanguageSwitcher />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header
+        className='header'
+        member={member}
+        user={user}
+        userPreferences={userPreferences}
+        loginUnits={loginUnits}
+        appTokenLogins={appTokenLogins}
+        recordTypes={recordTypes}
+      />
 
-      {/* <header className='nav-rail'>
-        <Header
-          recordTypes={loaderData.recordTypes}
-          loginUnits={loginUnits}
-          appTokenLogins={appTokenLogins}
-          editableMember={
-            userCanEditMemberSettings && member ? member.id : undefined
-          }
-        />
-      </header> */}
+      <aside className='nav-rail'>
+        <TopNavigation recordTypes={recordTypes} />
+      </aside>
 
       <div className='content'>
         <Breadcrumbs />

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
+import { printUserNameOnPage } from '@/components/Layout/HeaderOld/Login/utils/utils';
 import {
   Link,
   useFetcher,
@@ -27,11 +27,11 @@ import {
 
 import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
-import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
-import { PasswordLoginMenuOptions } from '@/components/Layout/Header/Login/PasswordLoginMenuOptions';
-import { WebRedirectLoginMenuOptions } from '@/components/Layout/Header/Login/WebRedirectLoginMenuOptions';
+import { DevAccountLoginOptions } from '@/components/Layout/HeaderOld/Login/DevAccountLoginOptions';
+import { PasswordLoginMenuOptions } from '@/components/Layout/HeaderOld/Login/PasswordLoginMenuOptions';
+import { WebRedirectLoginMenuOptions } from '@/components/Layout/HeaderOld/Login/WebRedirectLoginMenuOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
+import { LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -176,7 +176,6 @@ export default function LoginMenu({
           aria-busy={submitting}
           onClick={(e) => e.preventDefault()}
         >
-          <PersonIcon />
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
           </span>
