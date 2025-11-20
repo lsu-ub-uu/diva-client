@@ -20,17 +20,18 @@ import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 
 import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
-import {
-  FirstPageIcon,
-  LastPageIcon,
-  NextPageIcon,
-  PreviousPageIcon,
-} from '@/icons';
+
 import { Button } from '@/components/Button/Button';
 import styles from './Pagination.module.css';
 import { Select } from '@/components/Input/Select';
 import { get } from 'lodash-es';
 import { Fieldset } from '@/components/Input/Fieldset';
+import {
+  ChevronFirstIcon,
+  ChevronLastIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from 'lucide-react';
 
 interface PaginationProps {
   query: BFFDataRecordData;
@@ -96,7 +97,7 @@ export const Pagination = ({
           value={firstPageStart}
           disabled={isOnFirstPage}
         >
-          <FirstPageIcon />
+          <ChevronFirstIcon />
         </Button>
         <Button
           variant='icon'
@@ -106,7 +107,7 @@ export const Pagination = ({
           value={previousPageStart}
           disabled={isOnFirstPage}
         >
-          <PreviousPageIcon />
+          <ChevronLeftIcon />
         </Button>
         <Button
           variant='icon'
@@ -116,7 +117,7 @@ export const Pagination = ({
           value={nextPageStart}
           disabled={isOnLastPage}
         >
-          <NextPageIcon />
+          <ChevronRightIcon />
         </Button>
         <Button
           variant='icon'
@@ -126,7 +127,7 @@ export const Pagination = ({
           value={lastPageStart}
           disabled={isOnLastPage}
         >
-          <LastPageIcon />
+          <ChevronLastIcon />
         </Button>
       </span>
     </div>

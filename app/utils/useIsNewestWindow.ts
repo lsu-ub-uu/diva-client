@@ -31,6 +31,7 @@ interface WindowSyncMessage {
  * @param syncWindowTime The time to wait for other tabs to report.
  */
 export const useIsNewestWindow = (syncWindowTime: number = 500) => {
+  // eslint-disable-next-line react-hooks/purity
   const myWindowId = useMemo(() => Date.now(), []);
   const latestRequestId = useRef<number>(myWindowId);
   const { sendMessage } = useBroadcastChannel<WindowSyncMessage>(

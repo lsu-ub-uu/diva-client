@@ -20,9 +20,9 @@ import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Button } from '@/components/Button/Button';
-import { AddCircleIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { PlusCircleIcon } from 'lucide-react';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
@@ -50,7 +50,7 @@ export const CreateRecordMenu = ({
         to={`create?validationType=${validationTypes[0].value}`}
         size='large'
       >
-        <AddCircleIcon />
+        <PlusCircleIcon />
         {buttonText}
       </Button>
     );
@@ -59,7 +59,7 @@ export const CreateRecordMenu = ({
   return (
     <Menu>
       <MenuButton as={Button} variant='secondary' size='large'>
-        <AddCircleIcon />
+        <PlusCircleIcon />
         {buttonText}
       </MenuButton>
 

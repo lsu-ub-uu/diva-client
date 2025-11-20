@@ -21,13 +21,13 @@ import { FloatingActionButtonContainer } from '@/components/FloatingActionButton
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import { assertDefined } from '@/utils/invariant';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
 
 export const loader = async ({
   request,
@@ -54,8 +54,12 @@ export const loader = async ({
     })) as BFFDataRecord<DivaOutput>;
     return {
       record: record,
-      pageTitle: createTitle(record.data.output.titleInfo),
-      breadcrumb: t(record.data.output.titleInfo.title.value),
+      pageTitle: record.data.output.titleInfo
+        ? createTitle(record.data.output.titleInfo)
+        : t('divaClient_missingTitleText'),
+      breadcrumb: record.data.output.titleInfo?.title?.value
+        ? t(record.data.output.titleInfo.title.value)
+        : t('divaClient_missingTitleText'),
       apiUrl,
       externalSystemUrl,
       origin,
@@ -111,7 +115,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               recordId: record.id,
             })}
             text={t('divaClient_editRecordText')}
-            icon={<EditDocumentIcon />}
+            icon={<FilePenIcon />}
           />
         )}
         {record.userRights?.includes('delete') && (
@@ -119,7 +123,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <FloatingActionButton
               type='submit'
               text={t('divaClient_deleteRecordText')}
-              icon={<DeleteIcon />}
+              icon={<ShredderIcon />}
             />
           </Form>
         )}

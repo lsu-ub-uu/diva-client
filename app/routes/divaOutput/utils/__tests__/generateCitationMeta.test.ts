@@ -148,6 +148,12 @@ const divaOutput = {
 const externalSystemUrl = 'https://example.com';
 
 describe('generateCitationMeta', () => {
+  it('handles minimal divaOutput', () => {
+    const divaOutputMinimal = { output: {} } as DivaOutput;
+
+    expect(generateCitationMeta(divaOutputMinimal, '/')).toEqual([]);
+  });
+
   it('generates citation_title', () => {
     const result = generateCitationMeta(divaOutput, externalSystemUrl);
     expect(result).toContainEqual({
@@ -159,7 +165,7 @@ describe('generateCitationMeta', () => {
 
   it('generates citation_title without subtitle', () => {
     const divaOutputWithoutSubtitle = cloneDeep(divaOutput);
-    divaOutputWithoutSubtitle.output.titleInfo.subtitle = {
+    divaOutputWithoutSubtitle.output.titleInfo!.subtitle = {
       value: '',
     } as TitleInfoLangGroup['subtitle'];
     const result = generateCitationMeta(
@@ -198,7 +204,7 @@ describe('generateCitationMeta', () => {
 
   it('generates citation_publication_date with only year', () => {
     const divaOutputWithYearOnly = cloneDeep(divaOutput);
-    divaOutputWithYearOnly.output.originInfo.dateIssued = {
+    divaOutputWithYearOnly.output.originInfo!.dateIssued = {
       year: { value: '2024' },
     } as DateIssuedGroup;
 
@@ -222,7 +228,7 @@ describe('generateCitationMeta', () => {
 
   it('generates citation_online_date with only year', () => {
     const divaOutputWithYearOnly = cloneDeep(divaOutput);
-    divaOutputWithYearOnly.output.originInfo.dateOther_type_online = {
+    divaOutputWithYearOnly.output.originInfo!.dateOther_type_online = {
       year: { value: '2024' },
     } as DateOtherOnlineGroup;
 

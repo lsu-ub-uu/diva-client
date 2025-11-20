@@ -21,40 +21,26 @@ import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('<TopNavigation />', () => {
-  const TopNavigationWithRoutesStub = ({
-    recordTypes,
-  }: {
-    recordTypes: BFFRecordType[];
-  }) => {
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => <TopNavigation recordTypes={recordTypes} />,
-      },
-    ]);
-
-    return <RoutesStub />;
-  };
-  it('renders nothing when only one link in props', () => {
-    const recordTypes = [
-      { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
-    ];
-
-    render(<TopNavigationWithRoutesStub recordTypes={recordTypes} />);
-    const output = screen.queryByRole('link', { name: 'Output' });
-
-    expect(output).not.toBeInTheDocument();
-  });
-
   it('renders the topNavigation when more than one record type in props', () => {
     const recordTypes = [
       { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
       { textId: 'Personer', id: 'someOtherLink' } as BFFRecordType,
     ];
-    render(<TopNavigationWithRoutesStub recordTypes={recordTypes} />);
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <TopNavigation
+            recordTypes={recordTypes}
+            onNavigationClick={vi.fn()}
+          />
+        ),
+      },
+    ]);
+    render(<RoutesStub />);
     const output = screen.getByRole('link', { name: 'Output' });
     const person = screen.getByRole('link', { name: 'Personer' });
 

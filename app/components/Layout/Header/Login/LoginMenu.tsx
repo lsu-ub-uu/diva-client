@@ -31,7 +31,6 @@ import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAcco
 import { PasswordLoginMenuOptions } from '@/components/Layout/Header/Login/PasswordLoginMenuOptions';
 import { WebRedirectLoginMenuOptions } from '@/components/Layout/Header/Login/WebRedirectLoginMenuOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { ChevronDownIcon, LoginIcon, LogoutIcon, PersonIcon } from '@/icons';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -43,6 +42,7 @@ import {
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { withBaseName } from '@/utils/withBasename';
+import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
 
 interface LoginMenuProps {
@@ -67,7 +67,7 @@ export default function LoginMenu({
   );
 
   const submitting =
-    navigation.state === 'submitting' && navigation.formAction === '/login';
+    navigation.state !== 'idle' && navigation.formAction?.includes('/login');
 
   useWebRedirectLogin({ returnTo });
 
@@ -96,7 +96,7 @@ export default function LoginMenu({
   const loginButtonChildren = (
     <>
       {t('divaClient_LoginText')}
-      {submitting ? <CircularLoader /> : <LoginIcon />}
+      {submitting ? <CircularLoader /> : <LogInIcon />}
     </>
   );
 
@@ -141,7 +141,7 @@ export default function LoginMenu({
             href={withBaseName(`/login?returnTo=${returnTo}`)}
           >
             {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LoginIcon />}
+            {submitting ? <CircularLoader /> : <LogInIcon />}
           </MenuButton>
           <DropdownMenu anchor='bottom end'>
             <DevAccountLoginOptions
@@ -176,17 +176,20 @@ export default function LoginMenu({
           aria-busy={submitting}
           onClick={(e) => e.preventDefault()}
         >
-          <PersonIcon />
           <span className={styles['user-name']}>
             {printUserNameOnPage(user)}
           </span>
-          <ChevronDownIcon />
+          <span className={styles['user-initials']}>
+            {user.firstName?.charAt(0)}
+            {user.lastName?.charAt(0)}
+          </span>
+          <CircleUserRoundIcon />
         </MenuButton>
         <DropdownMenu anchor='bottom end'>
           <MenuItem>
             <button onClick={logout} className={styles['logout-button']}>
               {t('divaClient_LogoutText')}
-              <LogoutIcon />
+              <LogOutIcon />
             </button>
           </MenuItem>
         </DropdownMenu>

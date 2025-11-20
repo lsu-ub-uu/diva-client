@@ -23,7 +23,7 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
 
   return (
     <div className='attachments'>
-      <h2 id={`${id}-heading`}>{attachments[0].__text[language]}</h2>
+      <h2 id={`${id}-heading`}>{attachments[0].__text?.[language]}</h2>
       <ul id={id} aria-labelledby={`${id}-heading`}>
         {attachmentsToShow.map((attachment, index) => (
           <li key={index}>

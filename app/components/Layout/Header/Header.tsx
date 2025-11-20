@@ -1,157 +1,131 @@
-/*
- * Copyright 2023 Uppsala University Library
- *
- * This file is part of DiVA Client.
- *
- *     DiVA Client is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     DiVA Client is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- */
-
 import DivaLogo from '@/assets/divaLogo.svg?react';
+import type { User } from '@/auth/createUser';
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { Button } from '@/components/Button/Button';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
-import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import type {
+  BFFMember,
+  BFFRecordType,
+} from '@/cora/transform/bffTypes.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import {
-  CachedIcon,
-  CloseIcon,
-  DesignServicesIcon,
-  MemberSettingsIcon,
-  MenuIcon,
-} from '@/icons';
-import { useIsDevMode } from '@/utils/useIsDevMode';
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { Suspense, useEffect, useState } from 'react';
-import {
-  Await,
-  Form,
-  href,
-  Link,
-  useLocation,
-  useNavigation,
-} from 'react-router';
+import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { clsx } from 'clsx';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
+import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import LoginMenu from './Login/LoginMenu';
+import { MemberBar } from '../MemberBar/MemberBar';
+import { TopNavigation } from '../TopNavigation/TopNavigation';
 import styles from './Header.module.css';
-
+import { MenuIcon, XIcon } from 'lucide-react';
 interface HeaderProps {
-  recordTypes: Promise<BFFRecordType[]>;
+  className?: string;
+  member: BFFMember | undefined;
+  user: User | undefined;
+  userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
   appTokenLogins: AppTokenLogin[];
+  recordTypes: BFFRecordType[];
   editableMember: string | undefined;
 }
 
 export const Header = ({
-  recordTypes,
+  className,
+  member,
+  user,
+  userPreferences,
   loginUnits,
   appTokenLogins,
+  recordTypes,
   editableMember,
 }: HeaderProps) => {
-  const location = useLocation();
-  const returnTo = encodeURIComponent(location.pathname + location.search);
-  const devMode = useIsDevMode();
-  const navigation = useNavigation();
-
-  const [headerShown, setHeaderShown] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (navigation.state !== 'idle') {
-      setHeaderShown(false);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === headerRef.current) {
+            if (entry.isIntersecting) {
+              document.body.classList.remove('scrolled-past-header');
+            } else {
+              document.body.classList.add('scrolled-past-header');
+            }
+          }
+        });
+      },
+      { threshold: [0] },
+    );
+
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
     }
-  }, [navigation.state]);
 
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const { t } = useTranslation();
+  const mobileDialogRef = useRef<HTMLDialogElement>(null);
   return (
-    <header className={styles['header-wrapper']} data-expanded={headerShown}>
-      <div className={styles['header-logo-wrapper']}>
-        <Link to='/'>
-          <DivaLogo className={styles['logo']} />
-        </Link>
-
-        <div className={styles['top-navigation']}>
-          <Suspense>
-            <Await resolve={recordTypes} errorElement={<div />}>
-              {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
-              )}
-            </Await>
-          </Suspense>
+    <header className={clsx(styles.header, className)} ref={headerRef}>
+      <NavigationLoader />
+      <MemberBar member={member} loggedIn={user !== undefined} />
+      <div className={styles['diva-header-bar']}>
+        <div className={styles['header-bar-left']}>
+          <div className={styles['header-mobile-menu-button']}>
+            <Button
+              variant='icon'
+              aria-label={t('divaClient_showMenuText')}
+              onClick={() => mobileDialogRef.current?.showModal()}
+            >
+              <MenuIcon />
+            </Button>
+            <dialog
+              ref={mobileDialogRef}
+              className={styles['mobile-menu-dialog']}
+              // eslint-disable-next-line react/no-unknown-property
+              closedby='any'
+            >
+              <div className={styles['mobile-menu-header']}>
+                <LanguageSwitcher />
+                <ColorSchemeSwitcher
+                  colorScheme={userPreferences.colorScheme}
+                />
+                <Button
+                  className={styles['menu-close-button']}
+                  variant='icon'
+                  aria-label={t('divaClient_closeText')}
+                  onClick={() => mobileDialogRef.current?.close()}
+                >
+                  <XIcon />
+                </Button>
+              </div>
+              <hr />
+              <TopNavigation
+                recordTypes={recordTypes}
+                editableMember={editableMember}
+                onNavigationClick={() => mobileDialogRef.current?.close()}
+              />
+            </dialog>
+          </div>
+          <Link to='/'>
+            <DivaLogo className={styles.logo} />
+          </Link>
+        </div>
+        <div className={styles['header-bar-right']}>
+          <div className={styles['color-theme-switcher']}>
+            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+          </div>
+          <div className={styles['language-switcher']}>
+            <LanguageSwitcher />
+          </div>
+          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
         </div>
       </div>
-
-      <div className={styles['header-content']}>
-        {devMode && (
-          <>
-            <NavigationLink
-              to={href('/design-system')}
-              label='Design system'
-              icon={<DesignServicesIcon />}
-            />
-            <Form action={href('/refreshDefinitions')} method='POST'>
-              <input type='hidden' name='returnTo' value={returnTo} />
-              <Button variant='tertiary' type='submit'>
-                <CachedIcon />
-              </Button>
-            </Form>
-          </>
-        )}
-        {editableMember && (
-          <NavigationLink
-            to={href('/:recordType/:recordId/update', {
-              recordType: 'diva-member',
-              recordId: editableMember,
-            })}
-            label='Medlems­inställningar'
-            icon={<MemberSettingsIcon />}
-          />
-        )}
-      </div>
-      <Button
-        variant='icon'
-        className={styles['header-menu-toggle-button']}
-        onClick={() => setHeaderShown(!headerShown)}
-      >
-        {headerShown ? <CloseIcon /> : <MenuIcon />}
-      </Button>
-      <Dialog
-        open={headerShown}
-        onClose={() => setHeaderShown(false)}
-        className={styles['header-menu-dialog']}
-      >
-        <DialogBackdrop
-          className={styles['header-menu-dialog-backdrop']}
-          transition
-        />
-        <DialogPanel className={styles['header-menu-dialog-panel']} transition>
-          <Button
-            variant='icon'
-            onClick={() => setHeaderShown(false)}
-            className={styles['header-menu-dialog-close-button']}
-          >
-            <CloseIcon />
-          </Button>
-          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
-          <LanguageSwitcher />
-
-          <Suspense>
-            <Await resolve={recordTypes} errorElement={<div />}>
-              {(resolvedRecordType) => (
-                <TopNavigation recordTypes={resolvedRecordType} />
-              )}
-            </Await>
-          </Suspense>
-        </DialogPanel>
-      </Dialog>
     </header>
   );
 };

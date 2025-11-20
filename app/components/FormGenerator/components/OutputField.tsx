@@ -17,7 +17,6 @@
  */
 
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import {
   type EnhancedFieldsConfig,
   FormGeneratorContext,
@@ -28,6 +27,8 @@ import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
 import { Link } from 'react-router';
 import styles from './OutputField.module.css';
+import { useTranslation } from 'react-i18next';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 
 interface OutputFieldProps {
   path: string;
@@ -53,6 +54,7 @@ export const OutputField = ({
   info,
   adornment,
 }: OutputFieldProps) => {
+  const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
   const enhancement = enhancedFields?.[path];
 
@@ -67,11 +69,12 @@ export const OutputField = ({
         {label && (
           <Typography
             as='div'
-            text={label}
             className={styles['label']}
             variant={textStyle ?? 'bodyTextStyle'}
             id={`${path}-label`}
-          />
+          >
+            {t(label)}
+          </Typography>
         )}
         {label && info && <FieldInfo {...info} />}
         {adornment && (
@@ -88,10 +91,11 @@ export const OutputField = ({
           <Typography
             className={styles['value']}
             as='p'
-            text={value}
             variant={textStyle ?? 'bodyTextStyle'}
             aria-labelledby={`${path}-label`}
-          />
+          >
+            {t(value)}
+          </Typography>
         )}
       </Enhancement>
     </div>

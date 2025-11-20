@@ -24,11 +24,11 @@ import type {
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { OpenInNewIcon } from '@/icons';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { formatPersonName } from '../utils/formatPersonName';
 import { Term } from './Term';
+import { ExternalLinkIcon } from 'lucide-react';
 
 export type PersonType =
   | NamePersonalGroup
@@ -77,7 +77,7 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
                     rel='noreferrer'
                   >
                     {orcid.value}
-                    <OpenInNewIcon />
+                    <ExternalLinkIcon />
                   </a>
                 }
               />
@@ -120,7 +120,7 @@ const formatPersonRoles = (
   const roleTerm = person.role?.roleTerm;
 
   if (Array.isArray(roleTerm) && roleTerm.length > 0) {
-    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+    return ` (${roleTerm.map((role) => role.__valueText?.[language]).join(', ')})`;
   }
 
   return '';

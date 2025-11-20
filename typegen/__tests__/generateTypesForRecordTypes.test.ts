@@ -31,10 +31,42 @@ describe('generateTypesForRecordTypes', () => {
 
     const metadataPool = listToPool<BFFMetadata>([
       {
+        id: 'recordInfoGroupId',
+        type: 'group',
+        nameInData: 'recordInfo',
+        children: [
+          {
+            childId: 'idVar',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+          {
+            childId: 'oldIdVar',
+            repeatMin: '0',
+            repeatMax: '1',
+          },
+        ],
+      } as BFFMetadataGroup,
+      {
+        id: 'idVar',
+        nameInData: 'id',
+        type: 'textVariable',
+      } as BFFMetadataTextVariable,
+      {
+        id: 'oldIdVar',
+        nameInData: 'oldId',
+        type: 'textVariable',
+      } as BFFMetadataTextVariable,
+      {
         id: 'metadataGroupId',
         type: 'group',
         nameInData: 'root',
         children: [
+          {
+            childId: 'recordInfoGroupId',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
           {
             childId: 'fooVar',
             repeatMin: '0',
@@ -127,19 +159,25 @@ describe('generateTypesForRecordTypes', () => {
     ]);
 
     const expected = `
-      export interface RecordTypeId extends BFFDataRecordData {
+      export interface RecordTypeId {
         root: MetadataGroupId;
+      }
+
+      export interface RecordInfoGroupId {
+        id: { value: string; __text?: { sv: string; en: string } };
+        oldId?: { value: string; __text?: { sv: string; en: string } };
+        __text?: { sv: string; en: string };
       }
       
       export type LangCollection = "en" | "sv";
       
       export interface BarGroup {
-        baz?: { value: string; __text: { sv: string; en: string } }[];
+        baz?: { value: string; __text?: { sv: string; en: string } }[];
         _type: "code";
-        __text: { sv: string; en: string };
+        __text?: { sv: string; en: string };
       }
 
-       export interface AnotherRecordTypeId extends BFFDataRecordData {
+       export interface AnotherRecordTypeId {
          anotherRoot: AnotherMetadataGroupId;
        }
       
@@ -147,27 +185,28 @@ describe('generateTypesForRecordTypes', () => {
          foo?: {
            value: string;
            _lang: LangCollection;
-           __text: { sv: string; en: string };
+           __text?: { sv: string; en: string };
          };
-         __text: { sv: string; en: string };
+         __text?: { sv: string; en: string };
        }
       
        export interface MetadataGroupId {
+       recordInfo: RecordInfoGroupId;
          foo?: {
            value: string;
            _lang: LangCollection;
-           __text: { sv: string; en: string };
+           __text?: { sv: string; en: string };
          };
-         bar_type_code: BarGroup;
-         anotherRecord: {
+         bar_type_code?: BarGroup;
+         anotherRecord?: {
            value: string;
            linkedRecord: {
              anotherRoot: AnotherMetadataGroupId;
            };
            
-           __text: { sv: string; en: string };
+           __text?: { sv: string; en: string };
          };
-         __text: { sv: string; en: string };
+         __text?: { sv: string; en: string };
         }
     `;
 
@@ -231,29 +270,29 @@ describe('generateTypesForRecordTypes', () => {
     ]);
 
     const expected = `
-      export interface RecordTypeId extends BFFDataRecordData {
+      export interface RecordTypeId  {
         root: MetadataGroupId;
       }
 
-      export interface DivaOrganisation extends BFFDataRecordData {
+      export interface DivaOrganisation {
         organisation: OrganisationGroup;
       }
 
       export interface OrganisationGroup {
-        name: { value: string; __text: { sv: string; en: string } };
-        __text: { sv: string; en: string };
+        name?: { value: string; __text?: { sv: string; en: string } };
+        __text?: { sv: string; en: string };
       }
 
       export interface MetadataGroupId {
-        organisation: {
+        organisation?: {
           value: string;
           linkedRecord: {
             organisation: OrganisationGroup;
           };
           displayName?: { sv: string; en: string };
-          __text: { sv: string; en: string };
+          __text?: { sv: string; en: string };
         };
-        __text: { sv: string; en: string };
+        __text?: { sv: string; en: string };
       }
     `;
 

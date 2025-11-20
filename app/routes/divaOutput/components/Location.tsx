@@ -7,6 +7,10 @@ interface LocationProps {
 }
 
 export const Location = ({ location, icon }: LocationProps) => {
+  if (!location.url?.value) {
+    return null;
+  }
+
   const href = !/^https?:\/\//i.test(location.url.value)
     ? `https://${location.url.value}`
     : location.url.value;

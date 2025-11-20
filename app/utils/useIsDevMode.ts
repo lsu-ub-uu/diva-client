@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 
 export const useIsDevMode = () => {
-  const [dev, setDev] = useState(false);
+  const [isDev, setIsDev] = useState(false);
 
   useEffect(() => {
-    const isDev = localStorage.getItem('diva-dev');
-    setDev(isDev !== null);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsDev(
+      typeof localStorage !== 'undefined' &&
+        localStorage.getItem('diva-dev') !== null,
+    );
   }, []);
 
-  return dev;
+  return isDev;
 };

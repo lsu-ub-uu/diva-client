@@ -26,7 +26,7 @@ export const Persons = ({ persons }: PersonsProps) => {
     persons.length > PERSONS_TO_SHOW_LIMIT || persons.some(hasInfoToExpand);
   return (
     <>
-      <dt>{persons?.[0]?.__text[language]}</dt>
+      <dt>{persons?.[0]?.__text?.[language]}</dt>
       {personsToShow?.map((person, index) => (
         <dd
           key={index}

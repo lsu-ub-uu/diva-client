@@ -20,7 +20,7 @@ export const Journal = ({ journal }: JournalProps) => {
 
   return (
     <section aria-labelledby={id}>
-      <h2 id={id}>{journal.__text[language]}</h2>
+      <h2 id={id}>{journal.__text?.[language]}</h2>
       <dl className='inline-definitions'>
         {journal.journal?.linkedRecord.journal ? (
           <JournalInfo journal={journal.journal?.linkedRecord.journal} />
@@ -28,23 +28,23 @@ export const Journal = ({ journal }: JournalProps) => {
           <JournalInfo journal={journal} />
         )}
         <Term
-          label={journal.part?.detail_type_volume?.__text[language]}
+          label={journal.part?.detail_type_volume?.__text?.[language]}
           value={journal.part?.detail_type_volume?.number?.value}
         />
         <Term
-          label={journal.part?.detail_type_issue?.__text[language]}
+          label={journal.part?.detail_type_issue?.__text?.[language]}
           value={journal.part?.detail_type_issue?.number?.value}
         />
         <Term
-          label={journal.part?.detail_type_artNo?.__text[language]}
+          label={journal.part?.detail_type_artNo?.__text?.[language]}
           value={journal.part?.detail_type_artNo?.number?.value}
         />
         <Term
-          label={journal.part?.extent?.start?.__text[language]}
+          label={journal.part?.extent?.start?.__text?.[language]}
           value={journal.part?.extent?.start?.value}
         />
         <Term
-          label={journal.part?.extent?.end?.__text[language]}
+          label={journal.part?.extent?.end?.__text?.[language]}
           value={journal.part?.extent?.end?.value}
         />
       </dl>
@@ -63,14 +63,14 @@ const JournalInfo = ({
       <TitleInfo titleInfo={journal.titleInfo} />
       <Term
         label={
-          journal.identifier_displayLabel_pissn_type_issn?.__text[language]
+          journal.identifier_displayLabel_pissn_type_issn?.__text?.[language]
         }
         value={journal.identifier_displayLabel_pissn_type_issn?.value}
       />
 
       <Term
         label={
-          journal.identifier_displayLabel_eissn_type_issn?.__text[language]
+          journal.identifier_displayLabel_eissn_type_issn?.__text?.[language]
         }
         value={journal.identifier_displayLabel_eissn_type_issn?.value}
       />

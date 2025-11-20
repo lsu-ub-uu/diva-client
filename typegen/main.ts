@@ -38,8 +38,6 @@ let code = `
    * Auto-generated types
    */ 
    
-  import type { BFFDataRecordData } from '@/types/record';
-
   `;
 
 code += generateTypesForRecordTypes(recordTypePool, metadataPool, RECORD_TYPES);

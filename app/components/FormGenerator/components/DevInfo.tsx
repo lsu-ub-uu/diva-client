@@ -19,11 +19,11 @@
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { DataObjectIcon } from '@/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import styles from './DevInfo.module.css';
+import { BracesIcon } from 'lucide-react';
 
 interface DevInfoProps {
   label?: string;
@@ -82,7 +82,7 @@ export const DevInfoButton = ({ onClick }: ToggleDevInfoButtonProps) => {
       className={styles['dev-info-button']}
       onClick={onClick}
     >
-      <DataObjectIcon />
+      <BracesIcon />
     </button>
   );
 };

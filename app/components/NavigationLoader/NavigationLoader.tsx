@@ -17,34 +17,13 @@
  */
 
 import { useNavigation } from 'react-router';
-import { useEffect, useRef, useState } from 'react';
 import styles from './NavigationLoader.module.css';
 import { LinearLoader } from '@/components/Loader/LinearLoader';
 
-const LOADER_DELAY = 500;
-
 export const NavigationLoader = () => {
   const navigation = useNavigation();
-  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const [showLoader, setShowLoader] = useState(false);
 
-  /**
-   * Show loader if navigation takes longer than LOADER_DELAY milliseconds
-   */
-  useEffect(() => {
-    if (navigation.state === 'idle') {
-      clearTimeout(timerRef.current);
-      setShowLoader(false);
-    } else {
-      timerRef.current = setTimeout(() => setShowLoader(true), LOADER_DELAY);
-    }
-
-    return () => {
-      clearTimeout(timerRef.current);
-    };
-  }, [navigation.state]);
-
-  if (showLoader) {
+  if (navigation.state !== 'idle') {
     return <LinearLoader className={styles['navigation-loader']} />;
   }
 };

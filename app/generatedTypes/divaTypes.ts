@@ -2,82 +2,80 @@
  * Auto-generated types
  */
 
-import type { BFFDataRecordData } from '@/types/record';
-
-export interface DivaSeries extends BFFDataRecordData {
+export interface DivaSeries {
   series: SeriesUpdateGroup;
 }
 
-export interface DivaPublisher extends BFFDataRecordData {
+export interface DivaPublisher {
   publisher: PublisherUpdateGroup;
 }
 
-export interface DivaProject extends BFFDataRecordData {
+export interface DivaProject {
   project: ProjectUpdateGroup;
 }
 
-export interface DivaMember extends BFFDataRecordData {
+export interface DivaMember {
   'diva-member': DivaMemberGroup;
 }
 
-export interface User extends BFFDataRecordData {
+export interface User {
   user: UserGroup;
 }
 
 export interface UpdatedGroup {
-  updatedBy: {
+  updatedBy?: {
     value: string;
     linkedRecord: {
       user: UserGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  tsUpdated: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  tsUpdated?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface RecordInfoWithPermissionUnitGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: string; __text: { sv: string; en: string } };
-  validationType: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  permissionUnit?: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: string; __text?: { sv: string; en: string } };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  permissionUnit?: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface PermissionUnit extends BFFDataRecordData {
+export interface PermissionUnit {
   permissionUnit: PermissionUnitGroup;
 }
 
 export interface RecordInfoPermissionUnitGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type?: { value: string; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type?: { value: string; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
-  validationType: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
-export interface Text extends BFFDataRecordData {
+export interface Text {
   text: TextGroup;
 }
 
 export interface RecordInfoTextGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type?: { value: string; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  permissionUnit?: { value: string; __text: { sv: string; en: string } }[];
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type?: { value: string; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  permissionUnit?: { value: string; __text?: { sv: string; en: string } }[];
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
-  validationType: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type TextPartTypeCollection = 'default' | 'alternative';
@@ -85,80 +83,80 @@ export type TextPartTypeCollection = 'default' | 'alternative';
 export type SystemLanguagesCollection = 'sv' | 'en' | 'no';
 
 export interface TextPartGroup {
-  text: { value: string; __text: { sv: string; en: string } };
+  text?: { value: string; __text?: { sv: string; en: string } };
   _type: TextPartTypeCollection;
   _lang: SystemLanguagesCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface TextGroup {
   recordInfo: RecordInfoTextGroup;
-  textPart: TextPartGroup[];
-  __text: { sv: string; en: string };
+  textPart?: TextPartGroup[];
+  __text?: { sv: string; en: string };
 }
 
 export interface ExtraDataPermissionUnitGroup {
-  notInUse: { value: 'notInUse'; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  notInUse?: { value: 'notInUse'; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface PermissionUnitGroup {
   recordInfo: RecordInfoPermissionUnitGroup;
-  name: {
+  name?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  url?: { value: string; __text: { sv: string; en: string } };
-  note?: { value: string; __text: { sv: string; en: string } };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  note?: { value: string; __text?: { sv: string; en: string } };
   extraData?: ExtraDataPermissionUnitGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface PermissionRole extends BFFDataRecordData {
+export interface PermissionRole {
   permissionRole: PermissionRoleGroup;
 }
 
 export interface RecordInfoGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: string; __text: { sv: string; en: string } };
-  validationType: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  permissionUnit?: { value: string; __text: { sv: string; en: string } }[];
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: string; __text?: { sv: string; en: string } };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  permissionUnit?: { value: string; __text?: { sv: string; en: string } }[];
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface PermissionRule extends BFFDataRecordData {
+export interface PermissionRule {
   permissionRule: DefaultPermissionRuleGroup;
 }
 
 export interface PermissionRulePartActionGroup {
-  permissionRulePartValue: {
+  permissionRulePartValue?: {
     value: string;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   _type: 'action';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PermissionRulePartRecordTypeGroup {
-  permissionRulePartValue: {
+  permissionRulePartValue?: {
     value: string;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   _type: 'recordType';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type ActiveStatusItemCollection = 'active' | 'inactive';
 
-export interface CollectTerm extends BFFDataRecordData {
+export interface CollectTerm {
   collectTerm: CollectTermGroup;
 }
 
@@ -172,136 +170,143 @@ export type IndexTypeCollection =
   | 'indexTypeNumber'
   | 'indexTypeText';
 
+export type PermissionTermModeCollection = 'standard' | 'state';
+
 export interface CollectTermExtraDataGroup {
-  indexFieldName?: { value: string; __text: { sv: string; en: string } };
+  indexFieldName?: { value: string; __text?: { sv: string; en: string } };
   indexType?: {
     value: IndexTypeCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  permissionKey?: { value: string; __text: { sv: string; en: string } };
-  storageKey?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionKey?: { value: string; __text?: { sv: string; en: string } };
+  mode?: {
+    value: PermissionTermModeCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  storageKey?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface CollectTermGroup {
   recordInfo: RecordInfoGroup;
-  nameInData?: { value: string; __text: { sv: string; en: string } };
-  extraData: CollectTermExtraDataGroup;
+  nameInData?: { value: string; __text?: { sv: string; en: string } };
+  extraData?: CollectTermExtraDataGroup;
   _type: CollectTermTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PermissionTermRulePartGroup {
-  rule: {
+  rule?: {
     value: string;
     linkedRecord: {
       collectTerm: CollectTermGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  value: { value: string; __text: { sv: string; en: string } }[];
-  __text: { sv: string; en: string };
+  value?: { value: string; __text?: { sv: string; en: string } }[];
+  __text?: { sv: string; en: string };
 }
 
 export interface RuleRecordPartReadPermissionGroup {
-  readPermission: { value: string; __text: { sv: string; en: string } }[];
-  __text: { sv: string; en: string };
+  readPermission?: { value: string; __text?: { sv: string; en: string } }[];
+  __text?: { sv: string; en: string };
 }
 
 export interface RuleRecordPartWritePermissionGroup {
-  writePermission: { value: string; __text: { sv: string; en: string } }[];
-  __text: { sv: string; en: string };
+  writePermission?: { value: string; __text?: { sv: string; en: string } }[];
+  __text?: { sv: string; en: string };
 }
 
 export interface DefaultPermissionRuleGroup {
   recordInfo: RecordInfoGroup;
   permissionRulePart_type_action?: PermissionRulePartActionGroup;
   permissionRulePart_type_recordType?: PermissionRulePartRecordTypeGroup;
-  activeStatus: {
+  activeStatus?: {
     value: ActiveStatusItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   permissionTermRulePart?: PermissionTermRulePartGroup[];
   readPermissions?: RuleRecordPartReadPermissionGroup;
   writePermissions?: RuleRecordPartWritePermissionGroup;
-  metadataDescription?: { value: string; __text: { sv: string; en: string } };
-  textId: {
+  metadataDescription?: { value: string; __text?: { sv: string; en: string } };
+  textId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  defTextId: {
+  defTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PermissionRoleGroup {
   recordInfo: RecordInfoGroup;
-  permissionRuleLink: {
+  permissionRuleLink?: {
     value: string;
     linkedRecord: {
       permissionRule: DefaultPermissionRuleGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  activeStatus: {
+  activeStatus?: {
     value: ActiveStatusItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  textId: {
+  textId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  defTextId: {
+  defTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface UserRoleRelationGroup {
-  userRole: {
+  userRole?: {
     value: string;
     linkedRecord: {
       permissionRole: PermissionRoleGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   permissionTermRulePart?: PermissionTermRulePartGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface SystemSecret extends BFFDataRecordData {
+export interface SystemSecret {
   systemSecret: SystemSecretGroup;
 }
 
 export interface SystemSecretGroup {
   recordInfo: RecordInfoGroup;
-  secret: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  secret?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface AppTokenSystemSecretGroup {
@@ -311,143 +316,143 @@ export interface AppTokenSystemSecretGroup {
       systemSecret: SystemSecretGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  appTokenNote: { value: string; __text: { sv: string; en: string } };
-  appTokenClearText?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  appTokenNote?: { value: string; __text?: { sv: string; en: string } };
+  appTokenClearText?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface AppTokensGroup {
-  appToken: AppTokenSystemSecretGroup[];
-  __text: { sv: string; en: string };
+  appToken?: AppTokenSystemSecretGroup[];
+  __text?: { sv: string; en: string };
 }
 
 export type TrueFalseCollection = 'false' | 'true';
 
 export interface UserGroup {
   recordInfo: RecordInfoWithPermissionUnitGroup;
-  loginId: { value: string; __text: { sv: string; en: string } };
-  userFirstname: { value: string; __text: { sv: string; en: string } };
-  userLastname: { value: string; __text: { sv: string; en: string } };
-  email?: { value: string; __text: { sv: string; en: string } };
+  loginId?: { value: string; __text?: { sv: string; en: string } };
+  userFirstname?: { value: string; __text?: { sv: string; en: string } };
+  userLastname?: { value: string; __text?: { sv: string; en: string } };
+  email?: { value: string; __text?: { sv: string; en: string } };
   permissionUnit?: {
     value: string;
     linkedRecord: {
       permissionUnit: PermissionUnitGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  userRole: UserRoleRelationGroup[];
-  activeStatus: {
+  userRole?: UserRoleRelationGroup[];
+  activeStatus?: {
     value: ActiveStatusItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   appTokens?: AppTokensGroup;
-  usePassword: {
+  usePassword?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  plainTextPassword?: { value: string; __text: { sv: string; en: string } };
-  tsPasswordUpdated?: { value: string; __text: { sv: string; en: string } };
+  plainTextPassword?: { value: string; __text?: { sv: string; en: string } };
+  tsPasswordUpdated?: { value: string; __text?: { sv: string; en: string } };
   passwordLink?: {
     value: string;
     linkedRecord: {
       systemSecret: SystemSecretGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface UpdatedDivaGroup {
-  updatedBy: {
+  updatedBy?: {
     value: string;
     linkedRecord: {
       user: UserGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  tsUpdated: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  tsUpdated?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface RecordInfoSeriesUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-series'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-series'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-series'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-series'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface TitleInfoGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
   _type: 'alternative';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DateIssuedStartGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
   _point: 'start';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DateIssuedEndGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
   _point: 'end';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface OriginInfoDateIssuedStartEndGroup {
   dateIssued_point_start?: DateIssuedStartGroup;
   dateIssued_point_end?: DateIssuedEndGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type RelatedSeriesTypeCollection = 'host' | 'preceding';
 
-export interface DivaSeries extends BFFDataRecordData {
+export interface DivaSeries {
   series: SeriesUpdateGroup;
 }
 
 export interface RelatedSeriesGroup {
-  series: {
+  series?: {
     value: string;
     linkedRecord: {
       series: SeriesUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: RelatedSeriesTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface LocationGroup {
-  url: { value: string; __text: { sv: string; en: string } };
-  displayLabel?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type OutputTypeCollection =
@@ -483,21 +488,21 @@ export type OutputTypeCollection =
   | 'diva_degree-project'
   | 'diva_dissertation';
 
-export interface DivaOrganisation extends BFFDataRecordData {
+export interface DivaOrganisation {
   organisation: OrganisationUpdateGroup;
 }
 
 export interface RecordInfoOrganisationUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-organisation'; __text: { sv: string; en: string } };
-  validationType: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-organisation'; __text?: { sv: string; en: string } };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type OrganisationTypeCollection =
@@ -505,35 +510,35 @@ export type OrganisationTypeCollection =
   | 'partOfOrganisation';
 
 export interface NameCorporateGroup {
-  namePart: { value: string; __text: { sv: string; en: string } };
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface AuthorityCorporateLangGroup {
-  name_type_corporate: NameCorporateGroup;
+  name_type_corporate?: NameCorporateGroup;
   _lang: 'swe';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface VariantCorporateLangGroup {
-  name_type_corporate: NameCorporateGroup;
+  name_type_corporate?: NameCorporateGroup;
   _lang: 'eng';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface StartDateGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface EndDateGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type CountryCollection =
@@ -785,29 +790,29 @@ export type CountryCollection =
   | 'za';
 
 export interface AddressGroup {
-  postOfficeBox?: { value: string; __text: { sv: string; en: string } };
-  street?: { value: string; __text: { sv: string; en: string } };
-  postcode?: { value: string; __text: { sv: string; en: string } };
-  place?: { value: string; __text: { sv: string; en: string } };
+  postOfficeBox?: { value: string; __text?: { sv: string; en: string } };
+  street?: { value: string; __text?: { sv: string; en: string } };
+  postcode?: { value: string; __text?: { sv: string; en: string } };
+  place?: { value: string; __text?: { sv: string; en: string } };
   country?: {
     value: CountryCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedOrganisationParentGroup {
-  organisation: {
+  organisation?: {
     value: string;
     linkedRecord: {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'parent';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedOrganisationEarlierGroup {
@@ -817,21 +822,21 @@ export interface RelatedOrganisationEarlierGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'earlier';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface OrganisationUpdateGroup {
   recordInfo: RecordInfoOrganisationUpdateGroup;
-  genre_type_organisationType: {
+  genre_type_organisationType?: {
     value: OrganisationTypeCollection;
     _type: 'organisationType';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  authority_lang_swe: AuthorityCorporateLangGroup;
+  authority_lang_swe?: AuthorityCorporateLangGroup;
   variant_lang_eng?: VariantCorporateLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
@@ -839,58 +844,58 @@ export interface OrganisationUpdateGroup {
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_organisationNumber?: {
     value: string;
     _type: 'organisationNumber';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   location?: LocationGroup;
   note_type_internal?: {
     value: string;
     _type: 'internal';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related_type_parent?: RelatedOrganisationParentGroup[];
   related_type_earlier?: RelatedOrganisationEarlierGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface SeriesUpdateGroup {
   recordInfo: RecordInfoSeriesUpdateGroup;
-  titleInfo: TitleInfoGroup;
+  titleInfo?: TitleInfoGroup;
   titleInfo_type_alternative?: TitleInfoAlternativeGroup;
   originInfo?: OriginInfoDateIssuedStartEndGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related?: RelatedSeriesGroup[];
   location?: LocationGroup;
   note_type_internal?: {
     value: string;
     _type: 'internal';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   genre_type_outputType?: {
     value: OutputTypeCollection;
     _type: 'outputType';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   organisation?: {
     value: string;
@@ -898,140 +903,128 @@ export interface SeriesUpdateGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RecordInfoPublisherUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-publisher'; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-publisher'; __text?: { sv: string; en: string } };
   validationType: {
     value: 'diva-publisher';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface PublisherUpdateGroup {
   recordInfo: RecordInfoPublisherUpdateGroup;
-  name_type_corporate: NameCorporateGroup;
-  __text: { sv: string; en: string };
+  name_type_corporate?: NameCorporateGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface RecordInfoProjectUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-project'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-project'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-project'; __text?: { sv: string; en: string } };
+  validationType: {
+    value: 'diva-project';
+    __text?: { sv: string; en: string };
+  };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type LanguageSweEngCollection = 'swe' | 'eng';
 
 export interface TitleInfoLangSweEngGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
   _lang: LanguageSweEngCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangSweEngGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
   _type: 'alternative';
   _lang: LanguageSweEngCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaPerson extends BFFDataRecordData {
+export interface DivaPerson {
   person: PersonUpdateGroup;
 }
 
 export interface RecordInfoPersonUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-person'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-person'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-person'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-person'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonGroup {
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_termsOfAddress?: {
     value: string;
     _type: 'termsOfAddress';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_date?: {
+    value: string;
+    _type: 'date';
+    __text?: { sv: string; en: string };
   };
   _type: 'personal';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface AuthorityPersonalGroup {
-  name_type_personal: NamePersonGroup;
-  __text: { sv: string; en: string };
+  name_type_personal?: NamePersonGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonVariantGroup {
   namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'personal';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface VariantPersonalGroup {
-  name_type_personal: NamePersonVariantGroup[];
-  __text: { sv: string; en: string };
-}
-
-export interface BirthDateGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
-}
-
-export interface DeathDateGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
-}
-
-export interface PersonInfoGroup {
-  birthDate?: BirthDateGroup;
-  deathDate?: DeathDateGroup;
-  __text: { sv: string; en: string };
+  name_type_personal?: NamePersonVariantGroup[];
+  __text?: { sv: string; en: string };
 }
 
 export type LanguageCollection =
@@ -1526,70 +1519,69 @@ export interface AffiliationGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   name_type_corporate?: NameCorporateGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   country?: {
     value: CountryCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  description?: { value: string; __text: { sv: string; en: string } };
+  description?: { value: string; __text?: { sv: string; en: string } };
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PersonUpdateGroup {
   recordInfo: RecordInfoPersonUpdateGroup;
-  authority: AuthorityPersonalGroup;
+  authority?: AuthorityPersonalGroup;
   variant?: VariantPersonalGroup;
-  personInfo?: PersonInfoGroup;
-  email?: { value: string; __text: { sv: string; en: string } }[];
+  email?: { value: string; __text?: { sv: string; en: string } }[];
+  location?: LocationGroup[];
   note_type_biographical?: {
     value: string;
     _type: 'biographical';
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  location?: LocationGroup[];
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  'nameIentifier_type_se-libr'?: {
+  'nameIdentifier_type_se-libr'?: {
     value: string;
     _type: 'se-libr';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   nameIdentifier_type_openAlex?: {
     value: string;
     _type: 'openAlex';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   nameIdentifier_type_scopus?: {
     value: string;
     _type: 'scopus';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   nameIdentifier_type_viaf?: {
     value: string;
     _type: 'viaf';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   affiliation?: AffiliationGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type RoleProjectPersonalCollection =
@@ -1601,12 +1593,12 @@ export type RoleProjectPersonalCollection =
   | 'researchStudent';
 
 export interface RoleProjectPersonalGroup {
-  roleTerm: {
+  roleTerm?: {
     value: RoleProjectPersonalCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface AffiliationPersonalGroup {
@@ -1616,21 +1608,21 @@ export interface AffiliationPersonalGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   name_type_corporate?: NameCorporateGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   country?: {
     value: CountryCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  description?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  description?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonalProjectGroup {
@@ -1640,43 +1632,48 @@ export interface NamePersonalProjectGroup {
       person: PersonUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_date?: {
+    value: string;
+    _type: 'date';
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleProjectPersonalGroup;
+  role?: RoleProjectPersonalGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export type OtherTypeCollection = 'link' | 'text';
+export type RelatedItemOtherTypeCollection = 'link' | 'text';
 
 export interface RoleProjectOrganisationGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'pdr';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NameOrganisationProjectGroup {
@@ -1686,96 +1683,99 @@ export interface NameOrganisationProjectGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart: { value: string; __text: { sv: string; en: string } };
-  role: RoleProjectOrganisationGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
+  role?: RoleProjectOrganisationGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface SubjectKeywordsGroup {
-  topic: { value: string; __text: { sv: string; en: string } };
+  topic?: { value: string; __text?: { sv: string; en: string } };
   _lang: LanguageCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaSubject extends BFFDataRecordData {
+export interface DivaSubject {
   subject: SubjectUpdateGroup;
 }
 
 export interface RecordInfoSubjectUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-subject'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-subject'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-subject'; __text?: { sv: string; en: string } };
+  validationType: {
+    value: 'diva-subject';
+    __text?: { sv: string; en: string };
+  };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface AuthorityTopicLangGroup {
-  topic: { value: string; __text: { sv: string; en: string } };
+  topic?: { value: string; __text?: { sv: string; en: string } };
   _lang: 'swe';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface VariantTopicLangGroup {
-  topic: { value: string; __text: { sv: string; en: string } };
+  topic?: { value: string; __text?: { sv: string; en: string } };
   _lang: 'eng';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type RelatedTypeEarlierBroaderCollection = 'earlier' | 'broader';
 
 export interface RelatedSubjectGroup {
-  topic: {
+  topic?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: RelatedTypeEarlierBroaderCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface SubjectUpdateGroup {
   recordInfo: RecordInfoSubjectUpdateGroup;
-  authority_lang_swe: AuthorityTopicLangGroup;
+  authority_lang_swe?: AuthorityTopicLangGroup;
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related?: RelatedSubjectGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface SubjectSubjectGroup {
-  topic: {
+  topic?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   _authority: 'diva';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type SsifCollection =
@@ -2145,66 +2145,66 @@ export type SdgCollection =
   | 'sdg17';
 
 export interface SubjectSdgGroup {
-  topic: {
+  topic?: {
     value: SdgCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   _authority: 'sdg';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaFunder extends BFFDataRecordData {
+export interface DivaFunder {
   funder: FunderUpdateGroup;
 }
 
 export interface RecordInfoFunderUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-funder'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-funder'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-funder'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-funder'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface FunderUpdateGroup {
   recordInfo: RecordInfoFunderUpdateGroup;
-  authority_lang_swe: AuthorityCorporateLangGroup;
+  authority_lang_swe?: AuthorityCorporateLangGroup;
   variant_lang_eng?: VariantCorporateLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_organisationNumber?: {
     value: string;
     _type: 'organisationNumber';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemFunderProjectGroup {
-  funder: {
+  funder?: {
     value: string;
     linkedRecord: {
       funder: FunderUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'funder';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type TypeOfAwardCollection =
@@ -2218,30 +2218,30 @@ export type TypeOfAwardCollection =
 
 export type CurrencyCollection = 'eur' | 'sek';
 
-export interface DivaOutput extends BFFDataRecordData {
+export interface DivaOutput {
   output: DivaOutputGroup;
 }
 
 export type VisibilityCollection = 'published' | 'unpublished';
 
 export interface RecordInfoOutputUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-output'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-output'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaPreview'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-output'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-output'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaPreview'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
   visibility: {
     value: VisibilityCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  tsVisibility?: { value: string; __text: { sv: string; en: string } };
-  urn?: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  tsVisibility?: { value: string; __text?: { sv: string; en: string } };
+  urn?: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type DataQualityCollection = 'classic' | '2026';
@@ -2249,17 +2249,18 @@ export type DataQualityCollection = 'classic' | '2026';
 export type SubcategoryOtherCollection = 'policyDocument' | 'exhibitionCatalog';
 
 export interface LanguageGroup {
-  'languageTerm_authority_iso639-2b_type_code': {
+  'languageTerm_authority_iso639-2b_type_code'?: {
     value: LanguageCollection;
     _type: 'code';
     _authority: 'iso639-2b';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type PublicationStatusCollection =
+  | 'published'
   | 'submitted'
   | 'accepted'
   | 'inPress'
@@ -2271,18 +2272,18 @@ export type OutputTypeArtisticWorkCollection = 'true' | 'false';
 export type GenreContentTypeCollection = 'ref' | 'vet' | 'pop';
 
 export interface TitleInfoLangGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
   _lang: LanguageCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface TitleInfoAlternativeLangGroup {
-  title: { value: string; __text: { sv: string; en: string } };
-  subtitle?: { value: string; __text: { sv: string; en: string } };
+  title?: { value: string; __text?: { sv: string; en: string } };
+  subtitle?: { value: string; __text?: { sv: string; en: string } };
   _type: 'alternative';
   _lang: LanguageCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type RoleCollection =
@@ -2360,12 +2361,12 @@ export type RoleCollection =
   | 'wdc';
 
 export interface RoleGroup {
-  roleTerm: {
+  roleTerm?: {
     value: RoleCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonalGroup {
@@ -2375,32 +2376,37 @@ export interface NamePersonalGroup {
       person: PersonUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_date?: {
+    value: string;
+    _type: 'date';
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleGroup;
+  role?: RoleGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NameOrganisationGroup {
@@ -2410,18 +2416,18 @@ export interface NameOrganisationGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleGroup;
-  namePart?: { value: string; __text: { sv: string; en: string } };
+  role?: RoleGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  description?: { value: string; __text: { sv: string; en: string } };
+  description?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type TypeOfResourceCollection =
@@ -2438,80 +2444,80 @@ export type TypeOfResourceCollection =
   | 'text';
 
 export interface DurationGroup {
-  hh?: { value: string; __text: { sv: string; en: string } };
-  mm?: { value: string; __text: { sv: string; en: string } };
-  ss?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  hh?: { value: string; __text?: { sv: string; en: string } };
+  mm?: { value: string; __text?: { sv: string; en: string } };
+  ss?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface PhysicalDescriptionGroup {
-  extent: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  extent?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface DateOtherPatentGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month: { value: string; __text: { sv: string; en: string } };
-  day: { value: string; __text: { sv: string; en: string } };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
   _type: 'patent';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RolePatentHolderGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'pth';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NameOrganisationPatentHolderGroup {
-  namePart: { value: string; __text: { sv: string; en: string } };
-  role: RolePatentHolderGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
+  role?: RolePatentHolderGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  description?: { value: string; __text: { sv: string; en: string } };
+  description?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DateIssuedGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface CopyrightDateGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface DateOtherOnlineGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
   _type: 'online';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaPublisher extends BFFDataRecordData {
+export interface DivaPublisher {
   publisher: PublisherUpdateGroup;
 }
 
 export interface RolePublisherGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'pbl';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface AgentGroup {
@@ -2521,26 +2527,26 @@ export interface AgentGroup {
       publisher: PublisherUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart?: { value: string; __text: { sv: string; en: string } };
-  role: RolePublisherGroup;
-  __text: { sv: string; en: string };
+  namePart?: { value: string; __text?: { sv: string; en: string } };
+  role?: RolePublisherGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface PlaceGroup {
-  placeTerm: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  placeTerm?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface OriginInfoGroup {
-  dateIssued: DateIssuedGroup;
+  dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther_type_online?: DateOtherOnlineGroup;
   agent?: AgentGroup[];
   place?: PlaceGroup[];
-  edition?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  edition?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type IdentifierDisplayLabelIsbnIsmnCollection =
@@ -2550,22 +2556,22 @@ export type IdentifierDisplayLabelIsbnIsmnCollection =
   | 'invalid';
 
 export interface LocationOrderLinkGroup {
-  url: { value: string; __text: { sv: string; en: string } };
-  displayLabel?: { value: string; __text: { sv: string; en: string } };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
   _displayLabel: 'orderLink';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type AcademicSemesterCollection = 'ht' | 'vt';
 
 export interface AcademicSemesterGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  academicSemester: {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  academicSemester?: {
     value: AcademicSemesterCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type DegreeLevelCollection =
@@ -2610,21 +2616,21 @@ export type UniversityPointsCollection =
   | '300'
   | '330';
 
-export interface DivaCourse extends BFFDataRecordData {
+export interface DivaCourse {
   course: CourseUpdateGroup;
 }
 
 export interface RecordInfoCourseUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-course'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-course'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-course'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-course'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedCourseGroup {
@@ -2634,45 +2640,45 @@ export interface RelatedCourseGroup {
       course: CourseUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: RelatedTypeEarlierBroaderCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface CourseUpdateGroup {
   recordInfo: RecordInfoCourseUpdateGroup;
-  authority_lang_swe: AuthorityTopicLangGroup;
+  authority_lang_swe?: AuthorityTopicLangGroup;
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related?: RelatedCourseGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaProgramme extends BFFDataRecordData {
+export interface DivaProgramme {
   programme: ProgrammeUpdateGroup;
 }
 
 export interface RecordInfoProgrammeUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-programme'; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-programme'; __text?: { sv: string; en: string } };
   validationType: {
     value: 'diva-programme';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedProgrammeGroup {
@@ -2682,37 +2688,37 @@ export interface RelatedProgrammeGroup {
       programme: ProgrammeUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: RelatedTypeEarlierBroaderCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface ProgrammeUpdateGroup {
   recordInfo: RecordInfoProgrammeUpdateGroup;
-  authority_lang_swe: AuthorityTopicLangGroup;
+  authority_lang_swe?: AuthorityTopicLangGroup;
   variant_lang_eng?: VariantTopicLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related?: RelatedProgrammeGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface StudentDegreeGroup {
-  degreeLevel: {
+  degreeLevel?: {
     value: DegreeLevelCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  universityPoints: {
+  universityPoints?: {
     value: UniversityPointsCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   course?: {
     value: string;
@@ -2720,7 +2726,7 @@ export interface StudentDegreeGroup {
       course: CourseUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   programme?: {
     value: string;
@@ -2728,23 +2734,23 @@ export interface StudentDegreeGroup {
       programme: ProgrammeUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NameOrganisationExternalCollaborationGroup {
-  namePart: { value: string; __text: { sv: string; en: string } }[];
-  __text: { sv: string; en: string };
+  namePart?: { value: string; __text?: { sv: string; en: string } }[];
+  __text?: { sv: string; en: string };
 }
 
 export interface RoleDegreeGrantingInstitutionGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'dgg';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NameOrganisationDegreeGrantingInstitutionGroup {
@@ -2754,27 +2760,27 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
       organisation: OrganisationUpdateGroup;
     };
     displayName?: { sv: string; en: string };
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart?: { value: string; __text: { sv: string; en: string } };
-  role: RoleDegreeGrantingInstitutionGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
+  role?: RoleDegreeGrantingInstitutionGroup;
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RoleThesisAdvisorGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'ths';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonalThesisAdvisorGroup {
@@ -2784,41 +2790,47 @@ export interface NamePersonalThesisAdvisorGroup {
       person: PersonUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleThesisAdvisorGroup;
+  role?: RoleThesisAdvisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
-  __text: { sv: string; en: string };
+  _otherType: 'thesisAdvisor';
+  __text?: { sv: string; en: string };
 }
 
 export interface RoleDegreeSupervisorGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'dgs';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonalDegreeSupervisorGroup {
@@ -2828,41 +2840,47 @@ export interface NamePersonalDegreeSupervisorGroup {
       person: PersonUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleDegreeSupervisorGroup;
+  role?: RoleDegreeSupervisorGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
-  __text: { sv: string; en: string };
+  _otherType: 'degreeSupervisor';
+  __text?: { sv: string; en: string };
 }
 
 export interface RoleOpponentGroup {
-  roleTerm: {
+  roleTerm?: {
     value: 'opn';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface NamePersonalOpponentGroup {
@@ -2872,120 +2890,129 @@ export interface NamePersonalOpponentGroup {
       person: PersonUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  namePart_type_family: {
+  namePart_type_family?: {
     value: string;
     _type: 'family';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   namePart_type_given?: {
     value: string;
     _type: 'given';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_termsOfAddress?: {
+    value: string;
+    _type: 'termsOfAddress';
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   nameIdentifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  role: RoleOpponentGroup;
+  role?: RoleOpponentGroup;
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
-  __text: { sv: string; en: string };
+  _otherType: 'opponent';
+  __text?: { sv: string; en: string };
 }
 
 export interface DateOtherPresentationGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month: { value: string; __text: { sv: string; en: string } };
-  day: { value: string; __text: { sv: string; en: string } };
-  hh?: { value: string; __text: { sv: string; en: string } };
-  mm?: { value: string; __text: { sv: string; en: string } };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  hh?: { value: string; __text?: { sv: string; en: string } };
+  mm?: { value: string; __text?: { sv: string; en: string } };
   _type: 'presentation';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PresentationDivaGroup {
-  language: LanguageGroup;
-  dateOther_type_presentation: DateOtherPresentationGroup;
-  location: { value: string; __text: { sv: string; en: string } };
-  address?: { value: string; __text: { sv: string; en: string } };
+  language?: LanguageGroup;
+  dateOther_type_presentation?: DateOtherPresentationGroup;
+  location?: { value: string; __text?: { sv: string; en: string } };
+  address?: { value: string; __text?: { sv: string; en: string } };
   place?: PlaceGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DefenceGroup {
-  language: LanguageGroup;
-  dateOther_type_presentation: DateOtherPresentationGroup;
-  location: { value: string; __text: { sv: string; en: string } };
-  address?: { value: string; __text: { sv: string; en: string } };
+  language?: LanguageGroup;
+  dateOther_type_presentation?: DateOtherPresentationGroup;
+  location?: { value: string; __text?: { sv: string; en: string } };
+  address?: { value: string; __text?: { sv: string; en: string } };
   place?: PlaceGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaJournal extends BFFDataRecordData {
+export interface DivaJournal {
   journal: JournalUpdateGroup;
 }
 
 export interface RecordInfoJournalUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-journal'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-journal'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-journal'; __text?: { sv: string; en: string } };
+  validationType: {
+    value: 'diva-journal';
+    __text?: { sv: string; en: string };
+  };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  oldId?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface JournalUpdateGroup {
   recordInfo: RecordInfoJournalUpdateGroup;
-  titleInfo: TitleInfoGroup;
+  titleInfo?: TitleInfoGroup;
   originInfo?: OriginInfoDateIssuedStartEndGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   location?: LocationGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DetailVolumeGroup {
-  number: { value: string; __text: { sv: string; en: string } };
+  number?: { value: string; __text?: { sv: string; en: string } };
   _type: 'volume';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DetailIssueGroup {
-  number: { value: string; __text: { sv: string; en: string } };
+  number?: { value: string; __text?: { sv: string; en: string } };
   _type: 'issue';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface DetailArtNoGroup {
-  number: { value: string; __text: { sv: string; en: string } };
+  number?: { value: string; __text?: { sv: string; en: string } };
   _type: 'artNo';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface ExtentGroup {
-  start?: { value: string; __text: { sv: string; en: string } };
-  end?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  start?: { value: string; __text?: { sv: string; en: string } };
+  end?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemPartJournalGroup {
@@ -2993,7 +3020,7 @@ export interface RelatedItemPartJournalGroup {
   detail_type_issue?: DetailIssueGroup;
   detail_type_artNo?: DetailArtNoGroup;
   extent?: ExtentGroup;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemJournalGroup {
@@ -3003,30 +3030,30 @@ export interface RelatedItemJournalGroup {
       journal: JournalUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   titleInfo?: TitleInfoGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   part?: RelatedItemPartJournalGroup;
   _type: 'journal';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemPartBookGroup {
-  extent: ExtentGroup;
-  __text: { sv: string; en: string };
+  extent?: ExtentGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemSeriesGroup {
@@ -3036,25 +3063,25 @@ export interface RelatedItemSeriesGroup {
       series: SeriesUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   titleInfo?: TitleInfoGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'pissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_displayLabel_eissn_type_issn?: {
     value: string;
     _type: 'issn';
     _displayLabel: 'eissn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  partNumber?: { value: string; __text: { sv: string; en: string } };
+  partNumber?: { value: string; __text?: { sv: string; en: string } };
   _type: 'series';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemBookGroup {
@@ -3064,30 +3091,35 @@ export interface RelatedItemBookGroup {
       output: DivaOutputGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangGroup;
+  titleInfo?: TitleInfoGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
+  'identifier_type_se-libr'?: {
+    value: string;
+    _type: 'se-libr';
+    __text?: { sv: string; en: string };
+  }[];
   part?: RelatedItemPartBookGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'book';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemConferencePublicationGroup {
@@ -3097,138 +3129,143 @@ export interface RelatedItemConferencePublicationGroup {
       output: DivaOutputGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangGroup;
+  titleInfo?: TitleInfoGroup;
   note_type_statementOfResponsibility?: {
     value: string;
     _type: 'statementOfResponsibility';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
+  'identifier_type_se-libr'?: {
+    value: string;
+    _type: 'se-libr';
+    __text?: { sv: string; en: string };
+  }[];
   part?: RelatedItemPartJournalGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
   _type: 'conferencePublication';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemConferenceGroup {
-  conference?: { value: string; __text: { sv: string; en: string } };
+  conference?: { value: string; __text?: { sv: string; en: string } };
   _type: 'conference';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemPublicationChannelGroup {
-  publicationChannel: { value: string; __text: { sv: string; en: string } };
+  publicationChannel?: { value: string; __text?: { sv: string; en: string } };
   _type: 'publicationChannel';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemResearchDataGroup {
-  titleInfo: TitleInfoLangGroup;
+  titleInfo?: TitleInfoGroup;
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   location?: LocationGroup[];
   _type: 'researchData';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface DivaProject extends BFFDataRecordData {
+export interface DivaProject {
   project: ProjectUpdateGroup;
 }
 
 export interface RelatedOutputGroup {
-  output: {
+  output?: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface ProjectUpdateGroup {
   recordInfo: RecordInfoProjectUpdateGroup;
-  titleInfo: TitleInfoLangSweEngGroup;
+  titleInfo?: TitleInfoLangSweEngGroup;
   titleInfo_type_alternative?: TitleInfoAlternativeLangSweEngGroup;
-  name_type_personal: NamePersonalProjectGroup[];
+  name_type_personal?: NamePersonalProjectGroup[];
   name_type_corporate?: NameOrganisationProjectGroup;
   abstract?: {
     value: string;
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   subject?: SubjectKeywordsGroup[];
   subject_authority_diva?: SubjectSubjectGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   subject_authority_sdg?: SubjectSdgGroup;
   location?: LocationGroup[];
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  identifier_type_project: {
+  identifier_type_project?: {
     value: string;
     _type: 'project';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_raid?: {
     value: string;
     _type: 'raid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_reference?: {
     value: string;
     _type: 'reference';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   note_type_external?: {
     value: string;
     _type: 'external';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   relatedItem_type_funder?: RelatedItemFunderProjectGroup[];
-  typeOfAward: {
+  typeOfAward?: {
     value: TypeOfAwardCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   fundingAmount?: {
     value: string;
     _currency: CurrencyCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   related?: RelatedOutputGroup[];
   note_type_internal?: {
     value: string;
     _type: 'internal';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemProjectGroup {
@@ -3238,30 +3275,30 @@ export interface RelatedItemProjectGroup {
       project: ProjectUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  titleInfo?: TitleInfoLangSweEngGroup;
+  titleInfo?: TitleInfoGroup;
   _type: 'project';
-  _otherType: OtherTypeCollection;
-  __text: { sv: string; en: string };
+  _otherType: RelatedItemOtherTypeCollection;
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedItemFunderGroup {
-  funder: {
+  funder?: {
     value: string;
     linkedRecord: {
       funder: FunderUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_project?: {
     value: string;
     _type: 'project';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'funder';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type SfoCollection =
@@ -3287,70 +3324,70 @@ export type SfoCollection =
   | 'politicalImportantGeographicalRegions';
 
 export interface RelatedItemInitiativeGroup {
-  initiative: {
+  initiative?: {
     value: SfoCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   _type: 'initiative';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedOutputRetractedGroup {
-  output: {
+  output?: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'retracted';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RelatedOutputConstituentGroup {
-  output: {
+  output?: {
     value: string;
     linkedRecord: {
       output: DivaOutputGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   _type: 'constituent';
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type AccessConditionCollection = 'gratis' | 'restricted';
 
-export interface DivaLocalGenericMarkup extends BFFDataRecordData {
+export interface DivaLocalGenericMarkup {
   localGenericMarkup: LocalGenericMarkupUpdateGroup;
 }
 
 export interface RecordInfoLocalGenericMarkupUpdateGroup {
-  id: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
   type: {
     value: 'diva-localGenericMarkup';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   validationType: {
     value: 'diva-localGenericMarkup';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  dataDivider: { value: 'divaData'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface LocalGenericMarkupUpdateGroup {
   recordInfo: RecordInfoLocalGenericMarkupUpdateGroup;
-  localGenericMarkup: { value: string; __text: { sv: string; en: string } };
-  description?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  localGenericMarkup?: { value: string; __text?: { sv: string; en: string } };
+  description?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type FailedCollection = 'true' | 'false';
@@ -3360,23 +3397,23 @@ export type ReviewedCollection = 'true' | 'false';
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   reviewed?: {
     value: ReviewedCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   note_type_internal?: {
     value: string;
     _type: 'internal';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface Binary extends BFFDataRecordData {
+export interface Binary {
   binary: BinaryGroup;
 }
 
@@ -3390,75 +3427,75 @@ export type BinaryTypeCollection =
   | 'compressed';
 
 export interface RecordInfoBinaryGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type?: { value: string; __text: { sv: string; en: string } };
-  validationType: { value: string; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  createdBy?: { value: string; __text: { sv: string; en: string } };
-  permissionUnit?: { value: string; __text: { sv: string; en: string } }[];
-  tsCreated?: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type?: { value: string; __text?: { sv: string; en: string } };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  createdBy?: { value: string; __text?: { sv: string; en: string } };
+  permissionUnit?: { value: string; __text?: { sv: string; en: string } }[];
+  tsCreated?: { value: string; __text?: { sv: string; en: string } };
   updated?: UpdatedGroup[];
   visibility: {
     value: VisibilityCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  tsVisibility?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  tsVisibility?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface MasterGroup {
-  originalFileName: { value: string; __text: { sv: string; en: string } };
-  resourceId: { value: string; __text: { sv: string; en: string } };
-  master: { id: string; mimeType: string; name: string };
-  fileSize: { value: string; __text: { sv: string; en: string } };
-  mimeType: { value: string; __text: { sv: string; en: string } };
-  width?: { value: string; __text: { sv: string; en: string } };
-  height?: { value: string; __text: { sv: string; en: string } };
-  resolution?: { value: string; __text: { sv: string; en: string } };
-  checksum?: { value: string; __text: { sv: string; en: string } };
-  checksumType?: { value: 'SHA-512'; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  originalFileName?: { value: string; __text?: { sv: string; en: string } };
+  resourceId?: { value: string; __text?: { sv: string; en: string } };
+  master?: { id: string; mimeType: string; name: string };
+  fileSize?: { value: string; __text?: { sv: string; en: string } };
+  mimeType?: { value: string; __text?: { sv: string; en: string } };
+  width?: { value: string; __text?: { sv: string; en: string } };
+  height?: { value: string; __text?: { sv: string; en: string } };
+  resolution?: { value: string; __text?: { sv: string; en: string } };
+  checksum?: { value: string; __text?: { sv: string; en: string } };
+  checksumType?: { value: 'SHA-512'; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface ThumbnailGroup {
-  resourceId: { value: string; __text: { sv: string; en: string } };
-  thumbnail: { id: string; mimeType: string; name: string };
-  fileSize: { value: string; __text: { sv: string; en: string } };
-  mimeType: { value: string; __text: { sv: string; en: string } };
-  height: { value: string; __text: { sv: string; en: string } };
-  width: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  resourceId?: { value: string; __text?: { sv: string; en: string } };
+  thumbnail?: { id: string; mimeType: string; name: string };
+  fileSize?: { value: string; __text?: { sv: string; en: string } };
+  mimeType?: { value: string; __text?: { sv: string; en: string } };
+  height?: { value: string; __text?: { sv: string; en: string } };
+  width?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface MediumGroup {
-  resourceId: { value: string; __text: { sv: string; en: string } };
-  medium: { id: string; mimeType: string; name: string };
-  fileSize: { value: string; __text: { sv: string; en: string } };
-  mimeType: { value: string; __text: { sv: string; en: string } };
-  height: { value: string; __text: { sv: string; en: string } };
-  width: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  resourceId?: { value: string; __text?: { sv: string; en: string } };
+  medium?: { id: string; mimeType: string; name: string };
+  fileSize?: { value: string; __text?: { sv: string; en: string } };
+  mimeType?: { value: string; __text?: { sv: string; en: string } };
+  height?: { value: string; __text?: { sv: string; en: string } };
+  width?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface LargeGroup {
-  resourceId: { value: string; __text: { sv: string; en: string } };
-  large: { id: string; mimeType: string; name: string };
-  fileSize: { value: string; __text: { sv: string; en: string } };
-  mimeType: { value: string; __text: { sv: string; en: string } };
-  height: { value: string; __text: { sv: string; en: string } };
-  width: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  resourceId?: { value: string; __text?: { sv: string; en: string } };
+  large?: { id: string; mimeType: string; name: string };
+  fileSize?: { value: string; __text?: { sv: string; en: string } };
+  mimeType?: { value: string; __text?: { sv: string; en: string } };
+  height?: { value: string; __text?: { sv: string; en: string } };
+  width?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface Jp2Group {
-  resourceId: { value: string; __text: { sv: string; en: string } };
-  jp2: { id: string; mimeType: string; name: string };
-  fileSize: { value: string; __text: { sv: string; en: string } };
-  mimeType: { value: string; __text: { sv: string; en: string } };
-  height: { value: string; __text: { sv: string; en: string } };
-  width: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  resourceId?: { value: string; __text?: { sv: string; en: string } };
+  jp2?: { id: string; mimeType: string; name: string };
+  fileSize?: { value: string; __text?: { sv: string; en: string } };
+  mimeType?: { value: string; __text?: { sv: string; en: string } };
+  height?: { value: string; __text?: { sv: string; en: string } };
+  width?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface BinaryGroup {
@@ -3468,11 +3505,11 @@ export interface BinaryGroup {
   medium?: MediumGroup;
   large?: LargeGroup;
   jp2?: Jp2Group;
-  expectedFileSize?: { value: string; __text: { sv: string; en: string } };
-  expectedChecksum?: { value: string; __text: { sv: string; en: string } };
-  originalFileName?: { value: string; __text: { sv: string; en: string } };
+  expectedFileSize?: { value: string; __text?: { sv: string; en: string } };
+  expectedChecksum?: { value: string; __text?: { sv: string; en: string } };
+  originalFileName?: { value: string; __text?: { sv: string; en: string } };
   _type: BinaryTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type AttachmentTypeCollection =
@@ -3504,159 +3541,159 @@ export type AttachmentAvailabilityCollection =
   | 'availableLater';
 
 export interface DateAttachmentAvailabilityGroup {
-  year: { value: string; __text: { sv: string; en: string } };
-  month?: { value: string; __text: { sv: string; en: string } };
-  day?: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type SecrecyCollection = 'true' | 'false';
 
 export interface AdminInfoAttachmentGroup {
-  availability: {
+  availability?: {
     value: AttachmentAvailabilityCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   dateAvailability?: DateAttachmentAvailabilityGroup;
   secrecy?: {
     value: SecrecyCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   identifier_type_registrationNumber?: {
     value: string;
     _type: 'registrationNumber';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   note_type_attachment?: {
     value: string;
     _type: 'attachment';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface AttachmentGroup {
-  attachmentFile: {
+  attachmentFile?: {
     value: string;
     linkedRecord: {
       binary: BinaryGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  type: {
+  type?: {
     value: AttachmentTypeCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  displayLabel?: { value: string; __text: { sv: string; en: string } };
-  note_type_attachmentVersion: {
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  note_type_attachmentVersion?: {
     value: AttachmentVersionCollection;
     _type: 'attachmentVersion';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  adminInfo: AdminInfoAttachmentGroup;
-  __text: { sv: string; en: string };
+  adminInfo?: AdminInfoAttachmentGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface DivaOutputGroup {
   recordInfo: RecordInfoOutputUpdateGroup;
-  dataQuality: {
+  dataQuality?: {
     value: DataQualityCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  genre_type_outputType: {
+  genre_type_outputType?: {
     value: OutputTypeCollection;
     _type: 'outputType';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   genre_type_subcategory?: {
     value: SubcategoryOtherCollection;
     _type: 'subcategory';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  language: LanguageGroup[];
+  language?: LanguageGroup[];
   note_type_publicationStatus?: {
     value: PublicationStatusCollection;
     _type: 'publicationStatus';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   artisticWork_type_outputType?: {
     value: OutputTypeArtisticWorkCollection;
     _type: 'outputType';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  genre_type_contentType: {
+  genre_type_contentType?: {
     value: GenreContentTypeCollection;
     _type: 'contentType';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  titleInfo: TitleInfoLangGroup;
+  titleInfo?: TitleInfoLangGroup;
   titleInfo_type_alternative?: TitleInfoAlternativeLangGroup[];
   name_type_personal?: NamePersonalGroup[];
   name_type_corporate?: NameOrganisationGroup[];
   note_type_creatorCount?: {
     value: string;
     _type: 'creatorCount';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   typeOfResource?: {
     value: TypeOfResourceCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   type?: {
     value: string;
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   material?: {
     value: string;
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   technique?: {
     value: string;
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  size?: { value: string; __text: { sv: string; en: string } };
+  size?: { value: string; __text?: { sv: string; en: string } };
   duration?: DurationGroup;
   physicalDescription?: PhysicalDescriptionGroup;
   note_type_context?: {
     value: string;
     _type: 'context';
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   abstract?: {
     value: string;
     _lang: LanguageCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   subject?: SubjectKeywordsGroup[];
   dateOther_type_patent?: DateOtherPatentGroup;
   patentHolder_type_corporate?: NameOrganisationPatentHolderGroup;
   patentCountry?: {
     value: CountryCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  originInfo: OriginInfoGroup;
-  classification_authority_ssif: {
+  originInfo?: OriginInfoGroup;
+  classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   subject_authority_diva?: SubjectSubjectGroup;
   subject_authority_sdg?: SubjectSdgGroup;
@@ -3664,78 +3701,78 @@ export interface DivaOutputGroup {
     value: string;
     _type: 'isbn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   identifier_type_isrn?: {
     value: string;
     _type: 'isrn';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_ismn?: {
     value: string;
     _type: 'ismn';
     _displayLabel: IdentifierDisplayLabelIsbnIsmnCollection;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   identifier_type_patentNumber?: {
     value: string;
     _type: 'patentNumber';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_doi?: {
     value: string;
     _type: 'doi';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_pmid?: {
     value: string;
     _type: 'pmid';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_wos?: {
     value: string;
     _type: 'wos';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_scopus?: {
     value: string;
     _type: 'scopus';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_openAlex?: {
     value: string;
     _type: 'openAlex';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   'identifier_type_se-libr'?: {
     value: string;
     _type: 'se-libr';
-    __text: { sv: string; en: string };
-  };
+    __text?: { sv: string; en: string };
+  }[];
   identifier_type_archiveNumber?: {
     value: string;
     _type: 'archiveNumber';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   location?: LocationGroup[];
   location_displayLabel_orderLink?: LocationOrderLinkGroup;
   note_type_external?: {
     value: string;
     _type: 'external';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   academicSemester?: AcademicSemesterGroup;
   studentDegree?: StudentDegreeGroup[];
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
   degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
-  supervisor_type_personal?: NamePersonalThesisAdvisorGroup[];
-  examiner_type_personal?: NamePersonalDegreeSupervisorGroup[];
-  opponent_type_personal?: NamePersonalOpponentGroup[];
+  name_otherType_thesisAdvisor_type_personal?: NamePersonalThesisAdvisorGroup[];
+  name_otherType_degreeSupervisor_type_personal?: NamePersonalDegreeSupervisorGroup[];
+  name_otherType_opponent_type_personal?: NamePersonalOpponentGroup[];
   presentation?: PresentationDivaGroup;
   defence?: DefenceGroup;
   relatedItem_type_journal?: RelatedItemJournalGroup;
@@ -3754,8 +3791,8 @@ export interface DivaOutputGroup {
   'accessCondition_authority_kb-se'?: {
     value: AccessConditionCollection;
     _authority: 'kb.se';
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   localGenericMarkup?: {
     value: string;
@@ -3763,60 +3800,60 @@ export interface DivaOutputGroup {
       localGenericMarkup: LocalGenericMarkupUpdateGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   adminInfo?: AdminInfoDivaGroup;
   attachment?: AttachmentGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface RecordInfoMemberGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: 'diva-member'; __text: { sv: string; en: string } };
-  validationType: { value: 'diva-member'; __text: { sv: string; en: string } };
-  dataDivider: { value: 'diva'; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  permissionUnit: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-member'; __text?: { sv: string; en: string } };
+  validationType: { value: 'diva-member'; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'diva'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface ThemeLinkSweGroup {
-  url: { value: string; __text: { sv: string; en: string } };
-  displayLabel: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface ThemeLinkEngGroup {
-  url: { value: string; __text: { sv: string; en: string } };
-  displayLabel: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export interface ThemeLinkAdminGroup {
-  linkSv: ThemeLinkSweGroup;
-  linkEn: ThemeLinkEngGroup;
-  __text: { sv: string; en: string };
+  linkSv?: ThemeLinkSweGroup;
+  linkEn?: ThemeLinkEngGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface ThemeLinkPublicGroup {
-  linkSv: ThemeLinkSweGroup;
-  linkEn: ThemeLinkEngGroup;
-  __text: { sv: string; en: string };
+  linkSv?: ThemeLinkSweGroup;
+  linkEn?: ThemeLinkEngGroup;
+  __text?: { sv: string; en: string };
 }
 
-export interface LoginUnit extends BFFDataRecordData {
+export interface LoginUnit {
   loginUnit: LoginUnitGroup;
 }
 
-export interface Login extends BFFDataRecordData {
+export interface Login {
   login: LoginGroup;
 }
 
 export type LoginTypeCollection = 'webRedirect' | 'token' | 'password';
 
-export interface Metadata extends BFFDataRecordData {
+export interface Metadata {
   metadata: MetadataGroup;
 }
 
@@ -3831,29 +3868,29 @@ export type MetadataTypeCollection =
   | 'resourceLink';
 
 export interface AttributeReferencesGroup {
-  ref: {
+  ref?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface RecordType extends BFFDataRecordData {
+export interface RecordType {
   recordType: RecordTypeGroup;
 }
 
 export interface UniqueGroup {
-  uniqueTerm: {
+  uniqueTerm?: {
     value: string;
     linkedRecord: {
       collectTerm: CollectTermGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   combineTerm?: {
     value: string;
@@ -3861,12 +3898,12 @@ export interface UniqueGroup {
       collectTerm: CollectTermGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
-export interface Presentation extends BFFDataRecordData {
+export interface Presentation {
   presentation: PresentationGroup;
 }
 
@@ -3880,15 +3917,15 @@ export type PresentationTypeCollection =
   | 'pResourceLink';
 
 export interface PresentationsOfGroup {
-  presentationOf: {
+  presentationOf?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type AttributesToShowCollection = 'all' | 'selectable' | 'none';
@@ -3932,7 +3969,7 @@ export type ChildStyleItemCollection =
   | 'specificationChildStyle'
   | 'rowBasedChildStyle';
 
-export interface GuiElement extends BFFDataRecordData {
+export interface GuiElement {
   guiElement: GuiElementGroup;
 }
 
@@ -3944,22 +3981,22 @@ export type GuiElementPresentAsCollection = 'link' | 'image';
 
 export interface GuiElementGroup {
   recordInfo: RecordInfoGroup;
-  url: { value: string; __text: { sv: string; en: string } };
-  elementText: {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  elementText?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  presentAs: {
+  presentAs?: {
     value: GuiElementPresentAsCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   _type: PresentationTypeGuiElementCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PresentationRefGroup {
@@ -3970,7 +4007,7 @@ export interface PresentationRefGroup {
     };
 
     _type: 'text';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   ref_type_presentation?: {
     value: string;
@@ -3979,7 +4016,7 @@ export interface PresentationRefGroup {
     };
 
     _type: 'presentation';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   ref_type_guiElement?: {
     value: string;
@@ -3988,9 +4025,9 @@ export interface PresentationRefGroup {
     };
 
     _type: 'guiElement';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type PresentationSizeCollection =
@@ -4011,23 +4048,23 @@ export type SpecifiedHeadlineLevelCollection =
 export interface PresentationChildReferenceGroup {
   textStyle?: {
     value: TextStyleItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   childStyle?: {
     value: ChildStyleItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
-  refGroup: PresentationRefGroup[];
+  refGroup?: PresentationRefGroup[];
   minNumberOfRepeatingToShow?: {
     value: string;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   presentationSize?: {
     value: PresentationSizeCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   title?: {
     value: string;
@@ -4035,12 +4072,12 @@ export interface PresentationChildReferenceGroup {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   titleHeadlineLevel?: {
     value: SpecifiedHeadlineLevelCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   addText?: {
     value: string;
@@ -4048,14 +4085,14 @@ export interface PresentationChildReferenceGroup {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface PresentationChildReferencesGroup {
-  childReference: PresentationChildReferenceGroup[];
-  __text: { sv: string; en: string };
+  childReference?: PresentationChildReferenceGroup[];
+  __text?: { sv: string; en: string };
 }
 
 export type PresentationStyleCollection =
@@ -4078,31 +4115,31 @@ export type InputTypeItemCollection = 'input' | 'textarea';
 export type InputFormatCollection = 'password';
 
 export interface LinkedRecordPresentationGroup {
-  presentedRecordType: {
+  presentedRecordType?: {
     value: string;
     linkedRecord: {
       recordType: RecordTypeGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  presentation: {
+  presentation?: {
     value: string;
     linkedRecord: {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface LinkedRecordPresentationsGroup {
-  linkedRecordPresentation: LinkedRecordPresentationGroup[];
-  __text: { sv: string; en: string };
+  linkedRecordPresentation?: LinkedRecordPresentationGroup[];
+  __text?: { sv: string; en: string };
 }
 
-export interface Search extends BFFDataRecordData {
+export interface Search {
   search: SearchGroup;
 }
 
@@ -4110,50 +4147,50 @@ export type SearchGroupCollection = 'autocomplete' | 'publicSearch';
 
 export interface SearchGroup {
   recordInfo: RecordInfoGroup;
-  metadataId: {
+  metadataId?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  presentationId: {
+  presentationId?: {
     value: string;
     linkedRecord: {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  recordTypeToSearchIn: {
+  recordTypeToSearchIn?: {
     value: string;
     linkedRecord: {
       recordType: RecordTypeGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  searchGroup: {
+  searchGroup?: {
     value: SearchGroupCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  textId: {
+  textId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  defTextId: {
+  defTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   searchResultPresentation?: {
     value: string;
@@ -4161,9 +4198,9 @@ export interface SearchGroup {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type PresentAsCollection =
@@ -4178,8 +4215,8 @@ export interface PresentationGroup {
   presentationsOf?: PresentationsOfGroup;
   attributesToShow?: {
     value: AttributesToShowCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   presentationOf?: {
     value: string;
@@ -4187,23 +4224,23 @@ export interface PresentationGroup {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   mode?: {
     value: ModeCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   repeat?: {
     value: RepeatCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   childReferences?: PresentationChildReferencesGroup;
   presentationStyle?: {
     value: PresentationStyleCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   emptyTextId?: {
     value: string;
@@ -4211,22 +4248,22 @@ export interface PresentationGroup {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   outputFormat?: {
     value: OutputFormatCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   inputType?: {
     value: InputTypeItemCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   inputFormat?: {
     value: InputFormatCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   linkedRecordPresentations?: LinkedRecordPresentationsGroup;
   search?: {
@@ -4235,17 +4272,17 @@ export interface PresentationGroup {
       search: SearchGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   presentAs?: {
     value: PresentAsCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   showLabel?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   specifiedLabelText?: {
     value: string;
@@ -4253,12 +4290,12 @@ export interface PresentationGroup {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   showHeadline?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   specifiedHeadlineText?: {
     value: string;
@@ -4266,38 +4303,38 @@ export interface PresentationGroup {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   specifiedHeadlineLevel?: {
     value: SpecifiedHeadlineLevelCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   _type: PresentationTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type IdSourceCollection = 'userSupplied' | 'timestamp' | 'sequence';
 
-export interface Sequence extends BFFDataRecordData {
+export interface Sequence {
   sequence: SequenceGroup;
 }
 
 export interface RecordInfoSequenceGroup {
-  id: { value: string; __text: { sv: string; en: string } };
-  type: { value: string; __text: { sv: string; en: string } };
-  validationType: { value: 'sequence'; __text: { sv: string; en: string } };
-  dataDivider: { value: string; __text: { sv: string; en: string } };
-  createdBy: { value: string; __text: { sv: string; en: string } };
-  tsCreated: { value: string; __text: { sv: string; en: string } };
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: string; __text?: { sv: string; en: string } };
+  validationType: { value: 'sequence'; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface SequenceGroup {
   recordInfo: RecordInfoSequenceGroup;
-  currentNumber: { value: string; __text: { sv: string; en: string } };
-  __text: { sv: string; en: string };
+  currentNumber?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
 }
 
 export type GroupOfRecordTypeCollection =
@@ -4320,54 +4357,54 @@ export type RecordTypeCategoryCollection =
 
 export interface RecordTypeGroup {
   recordInfo: RecordInfoGroup;
-  metadataId: {
+  metadataId?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   unique?: UniqueGroup[];
-  presentationViewId: {
+  presentationViewId?: {
     value: string;
     linkedRecord: {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  menuPresentationViewId: {
+  menuPresentationViewId?: {
     value: string;
     linkedRecord: {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  listPresentationViewId: {
+  listPresentationViewId?: {
     value: string;
     linkedRecord: {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  textId: {
+  textId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  defTextId: {
+  defTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   search?: {
     value: string;
@@ -4375,12 +4412,12 @@ export interface RecordTypeGroup {
       search: SearchGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  idSource: {
+  idSource?: {
     value: IdSourceCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   sequence?: {
     value: string;
@@ -4388,7 +4425,7 @@ export interface RecordTypeGroup {
       sequence: SequenceGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   autocompletePresentationView?: {
     value: string;
@@ -4396,12 +4433,12 @@ export interface RecordTypeGroup {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  groupOfRecordType: {
+  groupOfRecordType?: {
     value: GroupOfRecordTypeCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   filter?: {
     value: string;
@@ -4409,7 +4446,7 @@ export interface RecordTypeGroup {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   filterPresentation?: {
     value: string;
@@ -4417,17 +4454,17 @@ export interface RecordTypeGroup {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  public: {
+  public?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   recordTypeCategory?: {
     value: RecordTypeCategoryCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   }[];
   indexSettings?: {
     value: string;
@@ -4435,44 +4472,44 @@ export interface RecordTypeGroup {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  storeInArchive: {
+  storeInArchive?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  usePermissionUnit: {
+  usePermissionUnit?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  useVisibility: {
+  useVisibility?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  useTrashBin: {
+  useTrashBin?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type RecordPartConstraintCollection = 'write' | 'readWrite';
 
 export interface ChildReferenceGroup {
-  repeatMin: { value: string; __text: { sv: string; en: string } };
-  repeatMinKey?: { value: string; __text: { sv: string; en: string } };
-  repeatMax: { value: string; __text: { sv: string; en: string } };
-  ref: {
+  repeatMin?: { value: string; __text?: { sv: string; en: string } };
+  repeatMinKey?: { value: string; __text?: { sv: string; en: string } };
+  repeatMax?: { value: string; __text?: { sv: string; en: string } };
+  ref?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   childRefCollectTerm_type_index?: {
     value: string;
@@ -4481,7 +4518,7 @@ export interface ChildReferenceGroup {
     };
 
     _type: 'index';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
   childRefCollectTerm_type_permission?: {
     value: string;
@@ -4490,7 +4527,7 @@ export interface ChildReferenceGroup {
     };
 
     _type: 'permission';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   childRefCollectTerm_type_storage?: {
     value: string;
@@ -4499,64 +4536,64 @@ export interface ChildReferenceGroup {
     };
 
     _type: 'storage';
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   recordPartConstraint?: {
     value: RecordPartConstraintCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface ChildReferencesGroup {
-  childReference: ChildReferenceGroup[];
-  __text: { sv: string; en: string };
+  childReference?: ChildReferenceGroup[];
+  __text?: { sv: string; en: string };
 }
 
 export interface CollectionItemReferencesGroup {
-  ref: {
+  ref?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export type ExtraDataTypeCollection = 'undefined';
 
 export interface CollectionItemExtraDataPartGroup {
-  value: { value: string; __text: { sv: string; en: string } };
+  value?: { value: string; __text?: { sv: string; en: string } };
   _type: ExtraDataTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface CollectionItemExtraDataGroup {
   extraDataPart?: CollectionItemExtraDataPartGroup[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface MetadataGroup {
   recordInfo: RecordInfoGroup;
-  nameInData: { value: string; __text: { sv: string; en: string } };
-  textId: {
+  nameInData?: { value: string; __text?: { sv: string; en: string } };
+  textId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  defTextId: {
+  defTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   attributeReferences?: AttributeReferencesGroup;
   linkedRecordType?: {
@@ -4565,7 +4602,7 @@ export interface MetadataGroup {
       recordType: RecordTypeGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   refParentId?: {
     value: string;
@@ -4573,46 +4610,46 @@ export interface MetadataGroup {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  finalValue?: { value: string; __text: { sv: string; en: string } };
-  regEx?: { value: string; __text: { sv: string; en: string } };
+  finalValue?: { value: string; __text?: { sv: string; en: string } };
+  regEx?: { value: string; __text?: { sv: string; en: string } };
   childReferences?: ChildReferencesGroup;
   excludePGroupCreation?: {
     value: TrueFalseCollection;
-    __text: { sv: string; en: string };
-    __valueText: { sv: string; en: string };
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
-  min?: { value: string; __text: { sv: string; en: string } };
-  max?: { value: string; __text: { sv: string; en: string } };
-  warningMin?: { value: string; __text: { sv: string; en: string } };
-  warningMax?: { value: string; __text: { sv: string; en: string } };
-  numberOfDecimals?: { value: string; __text: { sv: string; en: string } };
+  min?: { value: string; __text?: { sv: string; en: string } };
+  max?: { value: string; __text?: { sv: string; en: string } };
+  warningMin?: { value: string; __text?: { sv: string; en: string } };
+  warningMax?: { value: string; __text?: { sv: string; en: string } };
+  numberOfDecimals?: { value: string; __text?: { sv: string; en: string } };
   refCollection?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   collectionItemReferences?: CollectionItemReferencesGroup;
   extraData?: CollectionItemExtraDataGroup;
   _type: MetadataTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface LoginGroup {
   recordInfo: RecordInfoGroup;
-  url?: { value: string; __text: { sv: string; en: string } };
-  loginName?: { value: string; __text: { sv: string; en: string } };
+  url?: { value: string; __text?: { sv: string; en: string } };
+  loginName?: { value: string; __text?: { sv: string; en: string } };
   viewDefinition?: {
     value: string;
     linkedRecord: {
       metadata: MetadataGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
   viewPresentation?: {
     value: string;
@@ -4620,37 +4657,37 @@ export interface LoginGroup {
       presentation: PresentationGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  description?: { value: string; __text: { sv: string; en: string } };
+  description?: { value: string; __text?: { sv: string; en: string } };
   _type: LoginTypeCollection;
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface LoginUnitLoginInfoGroup {
-  login: {
+  login?: {
     value: string;
     linkedRecord: {
       login: LoginGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  loginDescription: {
+  loginDescription?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }
 
 export interface LoginUnitGroup {
   recordInfo: RecordInfoGroup;
-  loginInfo: LoginUnitLoginInfoGroup;
-  __text: { sv: string; en: string };
+  loginInfo?: LoginUnitLoginInfoGroup;
+  __text?: { sv: string; en: string };
 }
 
 export interface DivaMemberGroup {
@@ -4661,28 +4698,28 @@ export interface DivaMemberGroup {
       permissionUnit: PermissionUnitGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  backgroundColor: { value: string; __text: { sv: string; en: string } };
-  textColor: { value: string; __text: { sv: string; en: string } };
+  backgroundColor?: { value: string; __text?: { sv: string; en: string } };
+  textColor?: { value: string; __text?: { sv: string; en: string } };
   backgroundColorDarkMode?: {
     value: string;
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   };
-  textColorDarkMode?: { value: string; __text: { sv: string; en: string } };
-  logoSvg: { value: string; __text: { sv: string; en: string } };
+  textColorDarkMode?: { value: string; __text?: { sv: string; en: string } };
+  logoSvg?: { value: string; __text?: { sv: string; en: string } };
   linkAdmin?: ThemeLinkAdminGroup[];
   linkPublic?: ThemeLinkPublicGroup[];
-  pageTitleSv: { value: string; __text: { sv: string; en: string } };
-  pageTitleEn: { value: string; __text: { sv: string; en: string } };
-  hostname: { value: string; __text: { sv: string; en: string } }[];
-  loginUnit: {
+  pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
+  pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
+  hostname?: { value: string; __text?: { sv: string; en: string } }[];
+  loginUnit?: {
     value: string;
     linkedRecord: {
       loginUnit: LoginUnitGroup;
     };
 
-    __text: { sv: string; en: string };
+    __text?: { sv: string; en: string };
   }[];
-  __text: { sv: string; en: string };
+  __text?: { sv: string; en: string };
 }

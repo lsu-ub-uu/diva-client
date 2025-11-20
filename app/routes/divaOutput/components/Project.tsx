@@ -17,11 +17,11 @@ export const Project = ({ project }: ProjectProps) => {
 
   return (
     <section aria-labelledby={id}>
-      <h2 id={id}>{project.__text[language]}</h2>
+      <h2 id={id}>{project.__text?.[language]}</h2>
       <dl>
         {project.project && (
           <Term
-            label={project.project?.__text[language]}
+            label={project.project?.__text?.[language]}
             value={
               <Link
                 to={href('/:recordType/:recordId', {

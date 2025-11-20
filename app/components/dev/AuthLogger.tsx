@@ -1,6 +1,7 @@
 import type { Auth } from '@/auth/Auth';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { isEqual } from 'lodash-es';
+import { KeyIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
@@ -13,6 +14,7 @@ export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
   useEffect(() => {
     const prevAuth = log.at(-1)?.auth;
     if (!isEqual(auth, prevAuth)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLog((l) => [...l, { timestamp: Date.now(), auth }]);
     }
   }, [auth, log]);
@@ -27,18 +29,18 @@ export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
         style={{
           position: 'fixed',
           bottom: 0,
-          right: 0,
+          left: 0,
           zIndex: 1000,
-          background: 'lightgray',
-          color: 'white',
+          background: 'var(--color-background)',
+          color: 'var(--color-text)',
           border: 'none',
-          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px',
           padding: '0.5rem 1rem',
           cursor: 'pointer',
         }}
         onClick={() => setExpanded(true)}
       >
-        🗝️
+        <KeyIcon />
       </button>
     );
   }
@@ -47,8 +49,9 @@ export const AuthLogger = ({ auth }: { auth: Auth | undefined }) => {
     <div
       style={{
         position: 'fixed',
+        left: 0,
         bottom: 0,
-        right: 0,
+        right: 'auto',
         zIndex: 1000,
         background: 'white',
         color: 'black',

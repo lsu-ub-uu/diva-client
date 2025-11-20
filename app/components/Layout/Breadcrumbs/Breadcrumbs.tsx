@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { HouseIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, type UIMatch, useMatches } from 'react-router';
 import styles from './Breadcrumbs.module.css';
-import type { ReactNode } from 'react';
 
 export type Breadcrumb = (match: MatchWithBreadcrumb) => ReactNode;
 

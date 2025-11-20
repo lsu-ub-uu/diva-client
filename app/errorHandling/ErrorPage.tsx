@@ -16,17 +16,18 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import styles from './ErrorPage.module.css';
 import { type ReactNode } from 'react';
-import {
-  KeyOffIcon,
-  LockIcon,
-  SentimentNeutralIcon,
-  SentimentStressedIcon,
-  SentimentVeryDissatisfiedIcon,
-  SentimentWorriedIcon,
-} from '@/icons';
+import styles from './ErrorPage.module.css';
+
 import { TechnicalInfoAccordion } from '@/errorHandling/TechnicalInfoAccordion';
+import {
+  BanIcon,
+  FrownIcon,
+  LockIcon,
+  MehIcon,
+  ServerCrashIcon,
+  SwordsIcon,
+} from 'lucide-react';
 
 interface RouteErrorPageProps {
   icon: ReactNode;
@@ -57,17 +58,17 @@ export const ErrorPage = ({
 export const getIconByHTTPStatus = (status: number) => {
   switch (status) {
     case 400:
-      return <SentimentWorriedIcon />;
+      return <FrownIcon />;
     case 401:
       return <LockIcon />;
     case 403:
-      return <KeyOffIcon />;
+      return <BanIcon />;
     case 404:
-      return <SentimentNeutralIcon />;
+      return <MehIcon />;
     case 409:
-      return <SentimentStressedIcon />;
+      return <SwordsIcon />;
     case 500:
     default:
-      return <SentimentVeryDissatisfiedIcon />;
+      return <ServerCrashIcon />;
   }
 };

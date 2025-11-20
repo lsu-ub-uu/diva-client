@@ -1,6 +1,6 @@
 interface DateProps {
   date?: {
-    year: {
+    year?: {
       value: string;
     };
     month?: {
@@ -25,7 +25,17 @@ export const Date = ({ date }: DateProps) => {
 
   const { year, month, day, hh, mm } = date;
 
-  const dateString = [year.value, month?.value, day?.value]
+  if (
+    !year?.value &&
+    !month?.value &&
+    !day?.value &&
+    !hh?.value &&
+    !mm?.value
+  ) {
+    return null;
+  }
+
+  const dateString = [year?.value, month?.value, day?.value]
     .filter(Boolean)
     .join('-');
 

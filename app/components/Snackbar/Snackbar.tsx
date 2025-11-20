@@ -4,9 +4,9 @@ import { type ReactNode, useEffect } from 'react';
 
 import styles from './Snackbar.module.css';
 import { Transition } from '@headlessui/react';
-import { CloseIcon } from '@/icons';
 import { Button } from '@/components/Button/Button';
 import { useTranslation } from 'react-i18next';
+import { XIcon } from 'lucide-react';
 
 interface SnackbarProps {
   open: boolean;
@@ -38,7 +38,7 @@ export const Snackbar = ({
   }
 
   return createPortal(
-    <Transition show={open} unmount={true}>
+    <Transition show={open} unmount={true} appear={true}>
       <div role='alert' aria-live={ariaLive} className={styles['snackbar']}>
         <Alert severity={severity}>
           <div className={styles['alert-content']}>
@@ -49,7 +49,7 @@ export const Snackbar = ({
               aria-label={t('divaClient_closeText')}
               onClick={onClose}
             >
-              <CloseIcon />
+              <XIcon />
             </Button>
           </div>
         </Alert>

@@ -18,12 +18,12 @@
 
 import { Button } from '@/components/Button/Button';
 import { FieldContext } from '@/components/Input/Fieldset';
-import { CloseIcon, InfoIcon } from '@/icons';
 import { usePopover } from '@/utils/usePopover';
 import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { use } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './FieldInfo.module.css';
+import { InfoIcon, XIcon } from 'lucide-react';
 
 interface FieldInfoProps {
   title: string;
@@ -60,6 +60,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
           <FloatingFocusManager context={context}>
             <div
               className={styles['field-info-panel']}
+              // eslint-disable-next-line react-hooks/refs
               ref={refs.setFloating}
               style={floatingStyles}
               {...getFloatingProps()}
@@ -74,7 +75,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
                   aria-label={t('divaClient_closeText')}
                   tooltipPosition='left'
                 >
-                  <CloseIcon />
+                  <XIcon />
                 </Button>
               </div>
               {body && <p id={ids.details}>{t(body)}</p>}

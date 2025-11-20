@@ -34,10 +34,21 @@ import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Progress } from '@/components/Progress/Progress';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Typography } from '@/components/Typography/Typography';
-import * as icons from '@/icons';
-import { EditDocumentIcon, SentimentNeutralIcon } from '@/icons';
 import { useState } from 'react';
 import css from './design-system.css?url';
+import {
+  BananaIcon,
+  BirdIcon,
+  BombIcon,
+  ChessKnightIcon,
+  InfoIcon,
+  MehIcon,
+  RoseIcon,
+  SatelliteIcon,
+  ShoppingCartIcon,
+  SquirrelIcon,
+  XIcon,
+} from 'lucide-react';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -404,9 +415,9 @@ export default function DesignSystem() {
             <h5>Heading 5 - H5</h5>
             <h6>Heading 6 - H6</h6>
             <hr />
-            <Typography variant='bodyTextStyle' text='bodyTextStyle' />
-            <Typography variant='boldTextStyle' text='boldTextStyle' />
-            <Typography variant='italicTextStyle' text='italicTextStyle' />
+            <Typography variant='bodyTextStyle'>bodyTextStyle</Typography>
+            <Typography variant='boldTextStyle'>boldTextStyle</Typography>
+            <Typography variant='italicTextStyle'>italicTextStyle</Typography>
           </div>
         </section>
 
@@ -460,47 +471,47 @@ export default function DesignSystem() {
               Tertiary disabled
             </Button>
             <Button variant='icon'>
-              <EditDocumentIcon />
+              <SquirrelIcon />
             </Button>
             <Button variant='icon' disabled>
-              <EditDocumentIcon />
+              <BombIcon />
             </Button>
             <Button
               variant='icon'
               aria-label='Tooltip left'
               tooltipPosition='left'
             >
-              <EditDocumentIcon />
+              <BananaIcon />
             </Button>
             <Button
               variant='icon'
               aria-label='Tooltip top'
               tooltipPosition='top'
             >
-              <EditDocumentIcon />
+              <BirdIcon />
             </Button>
             <Button
               variant='icon'
               aria-label='Tooltip bottom'
               tooltipPosition='bottom'
             >
-              <EditDocumentIcon />
+              <RoseIcon />
             </Button>
             <Button
               variant='icon'
               aria-label='Tooltip right'
               tooltipPosition='right'
             >
-              <EditDocumentIcon />
+              <SatelliteIcon />
             </Button>
             <FloatingActionButton
               text='FAB button'
-              icon={<EditDocumentIcon />}
+              icon={<ShoppingCartIcon />}
             />
             <FloatingActionButton
               text='FAB primary'
               variant='primary'
-              icon={<EditDocumentIcon />}
+              icon={<ChessKnightIcon />}
             />
             <Button variant='primary' fullWidth>
               Full Width
@@ -620,7 +631,7 @@ export default function DesignSystem() {
                     level='h3'
                     info={
                       <Button variant='icon' size='small'>
-                        <icons.InfoIcon />
+                        <InfoIcon />
                       </Button>
                     }
                   >
@@ -649,7 +660,7 @@ export default function DesignSystem() {
                     level='h3'
                     info={
                       <Button variant='icon' size='small'>
-                        <icons.InfoIcon />
+                        <InfoIcon />
                       </Button>
                     }
                   >
@@ -682,7 +693,7 @@ export default function DesignSystem() {
                   }
                   actionButtonGroup={
                     <Button variant='icon'>
-                      <icons.CloseIcon />
+                      <XIcon />
                     </Button>
                   }
                 >
@@ -690,7 +701,7 @@ export default function DesignSystem() {
                     level='h3'
                     info={
                       <Button variant='icon' size='small'>
-                        <icons.InfoIcon />
+                        <XIcon />
                       </Button>
                     }
                   >
@@ -724,7 +735,7 @@ export default function DesignSystem() {
             <Alert severity='error'>
               <AlertTitle>Error title</AlertTitle>Text
             </Alert>
-            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+            <Alert severity='info' icon={<MehIcon />}>
               <AlertTitle>Custom Icon title</AlertTitle>
               Text
             </Alert>
@@ -733,7 +744,7 @@ export default function DesignSystem() {
             <Alert severity='info'>Text</Alert>
             <Alert severity='warning'>Text</Alert>
             <Alert severity='error'>Text</Alert>
-            <Alert severity='info' icon={<SentimentNeutralIcon />}>
+            <Alert severity='info' icon={<MehIcon />}>
               Custom Icon Text
             </Alert>
           </div>
@@ -780,17 +791,6 @@ export default function DesignSystem() {
             text='I am a snack!'
           />
         </section>
-        <section>
-          <h2>Icons</h2>
-          <div className='icons'>
-            {Object.entries(icons).map(([iconName, IconComponent]) => (
-              <div key={iconName} className={'icon'}>
-                <IconComponent />
-                <span>&lt;{iconName} /&gt;</span>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
     </div>
   );
@@ -813,7 +813,7 @@ const ClickableCardDemo = () => {
         }
         actionButtonGroup={
           <Button variant='icon'>
-            <icons.CloseIcon />
+            <XIcon />
           </Button>
         }
       >
@@ -821,7 +821,7 @@ const ClickableCardDemo = () => {
           level='h3'
           info={
             <Button variant='icon' size='small'>
-              <icons.InfoIcon />
+              <InfoIcon />
             </Button>
           }
         >

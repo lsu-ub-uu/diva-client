@@ -17,12 +17,12 @@
  */
 
 import { Button } from '@/components/Button/Button';
-import { DarkModeIcon, LightModeIcon } from '@/icons';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';
 import { useEffect, useState } from 'react';
+import { MoonIcon, SunIcon } from 'lucide-react';
 
 interface ColorThemeSwitcherProps {
   colorScheme: UserPreferences['colorScheme'];
@@ -77,7 +77,7 @@ export const ColorSchemeSwitcher = ({
             : t('divaClient_switchToDarkModeText')
         }
       >
-        {currentColorScheme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        {currentColorScheme === 'light' ? <SunIcon /> : <MoonIcon />}
       </Button>
     </fetcher.Form>
   );

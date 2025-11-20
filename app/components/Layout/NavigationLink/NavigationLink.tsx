@@ -6,12 +6,18 @@ interface NavigationLinkProps {
   icon: ReactNode;
   to: string;
   label: string;
+  onClick?: () => void;
 }
 
-export const NavigationLink = ({ icon, to, label }: NavigationLinkProps) => {
+export const NavigationLink = ({
+  icon,
+  to,
+  label,
+  onClick,
+}: NavigationLinkProps) => {
   return (
-    <NavLink className={styles['navigation-link']} to={to}>
-      {icon}
+    <NavLink className={styles['navigation-link']} to={to} onClick={onClick}>
+      <span className={styles['icon-wrapper']}>{icon}</span>
       <span className={styles['label']}> {label}</span>
     </NavLink>
   );

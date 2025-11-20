@@ -5,7 +5,7 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
-import { OpenInNewIcon } from '@/icons';
+import { ExternalLinkIcon } from 'lucide-react';
 
 export interface OrganisationProps {
   organisation:
@@ -31,14 +31,14 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
       <dl>
         {organisation.identifier_type_ror && (
           <Term
-            label={organisation.identifier_type_ror.__text[language]}
+            label={organisation.identifier_type_ror.__text?.[language]}
             value={
               <a
                 href={`https://ror.org/${organisation.identifier_type_ror.value}`}
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                {organisation.identifier_type_ror.value} <OpenInNewIcon />
+                {organisation.identifier_type_ror.value} <ExternalLinkIcon />
               </a>
             }
           />
@@ -46,7 +46,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
 
         {'description' in organisation && organisation.description && (
           <Term
-            label={organisation.description.__text[language]}
+            label={organisation.description.__text?.[language]}
             value={organisation.description.value}
           />
         )}
@@ -94,7 +94,7 @@ const formatOrganisationRoles = (
     organisation.role?.roleTerm;
 
   if (Array.isArray(roleTerm) && roleTerm.length > 0) {
-    return ` (${roleTerm.map((role) => role.__valueText[language]).join(', ')})`;
+    return ` (${roleTerm.map((role) => role.__valueText?.[language]).join(', ')})`;
   }
 
   return '';
