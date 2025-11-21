@@ -262,12 +262,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
         editableMember={editableMember}
       />
 
-      <aside className='nav-rail'>
+      <div className='nav-rail'>
         <TopNavigation
           recordTypes={recordTypes}
           editableMember={editableMember}
         />
-      </aside>
+      </div>
 
       <div className='content'>
         <Breadcrumbs />
