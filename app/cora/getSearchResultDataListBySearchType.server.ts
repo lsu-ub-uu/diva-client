@@ -17,13 +17,13 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
 import {
   coraApiUrl,
   createHeaders,
-  RECORD_LIST_CONTENT_TYPE,
+  RECORD_LIST_CONTENT_TYPE_DECORATED,
 } from '@/cora/helper.server';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 export async function getSearchResultDataListBySearchType<T>(
   searchType: string,
@@ -36,7 +36,7 @@ export async function getSearchResultDataListBySearchType<T>(
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
   const headers = createHeaders(
-    { Accept: RECORD_LIST_CONTENT_TYPE },
+    { Accept: RECORD_LIST_CONTENT_TYPE_DECORATED },
     authToken,
   );
 
