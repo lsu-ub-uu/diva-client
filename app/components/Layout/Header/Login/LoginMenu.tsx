@@ -18,6 +18,7 @@
 
 import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
 import {
+  href,
   Link,
   useFetcher,
   useLocation,
@@ -41,7 +42,7 @@ import {
 } from '@/auth/useWebRedirectLogin';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import { withBaseName } from '@/utils/withBasename';
+import { useHydrated } from '@/utils/useHydrated';
 import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
 
@@ -60,6 +61,7 @@ export default function LoginMenu({
   const { t } = useTranslation();
   const location = useLocation();
   const navigation = useNavigation();
+  const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
   const returnTo = encodeURIComponent(
@@ -129,20 +131,32 @@ export default function LoginMenu({
       );
     }
 
+    if (!hydrated) {
+      return (
+        <div className={styles['login']}>
+          <Button
+            {...loginButtonProps}
+            as={Link}
+            to={{ pathname: href('/login'), search: `?returnTo=${returnTo}` }}
+          >
+            {loginButtonChildren}
+          </Button>
+        </div>
+      );
+    }
+
     return (
       <div className={styles['login']}>
         <Menu>
-          <MenuButton
+          <Button
+            variant='tertiary'
+            as={MenuButton}
             disabled={submitting}
             aria-busy={submitting}
             className={styles['login-button']}
-            as='a'
-            onClick={(e) => e.preventDefault()}
-            href={withBaseName(`/login?returnTo=${returnTo}`)}
           >
-            {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LogInIcon />}
-          </MenuButton>
+            {loginButtonChildren}
+          </Button>
           <DropdownMenu anchor='bottom end'>
             <DevAccountLoginOptions
               appTokenLogins={appTokenLogins}
@@ -165,26 +179,44 @@ export default function LoginMenu({
     );
   }
 
+  const logoutButtonChildren = (
+    <>
+      <span className={styles['user-name']}>{printUserNameOnPage(user)}</span>
+      <span className={styles['user-initials']}>
+        {user.firstName?.charAt(0)}
+        {user.lastName?.charAt(0)}
+      </span>
+      <CircleUserRoundIcon />
+    </>
+  );
+
+  if (!hydrated) {
+    return (
+      <div className={styles['login']}>
+        <Button
+          variant='tertiary'
+          as={Link}
+          to={{ pathname: href('/logout'), search: `?returnTo=${returnTo}` }}
+          className={styles['login-button']}
+        >
+          {logoutButtonChildren}
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className={styles['login']}>
       <Menu>
-        <MenuButton
+        <Button
+          variant='tertiary'
           className={styles['login-button']}
-          as='a'
-          href={withBaseName(`/logout?returnTo=${returnTo}`)}
+          as={MenuButton}
           disabled={submitting}
           aria-busy={submitting}
-          onClick={(e) => e.preventDefault()}
         >
-          <span className={styles['user-name']}>
-            {printUserNameOnPage(user)}
-          </span>
-          <span className={styles['user-initials']}>
-            {user.firstName?.charAt(0)}
-            {user.lastName?.charAt(0)}
-          </span>
-          <CircleUserRoundIcon />
-        </MenuButton>
+          {logoutButtonChildren}
+        </Button>
         <DropdownMenu anchor='bottom end'>
           <MenuItem>
             <button onClick={logout} className={styles['logout-button']}>
