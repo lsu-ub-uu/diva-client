@@ -9,6 +9,7 @@ import {
 import { Form, Link, href } from 'react-router';
 import css from './landingPage.css?url';
 import type { Route } from '../+types/root';
+import { Button } from '@/components/Button/Button';
 
 interface NavigationCardProps {
   to: string;
@@ -63,9 +64,12 @@ export default function LandingPage() {
         >
           <input type='hidden' name='search.rows.value' value='10' />
           <div className='search-container'>
+            <label className='search-label' htmlFor='landing-search'>
+              Sök efter publikationer
+            </label>
             <input
+              id='landing-search'
               type='search'
-              placeholder='Sök bland publikationer'
               className='search-input'
               name='search.include.includePart.genericSearchTerm.value'
             />
@@ -74,6 +78,15 @@ export default function LandingPage() {
             </button>
           </div>
         </Form>
+        <div className='image-credit'>
+          <a
+            target='_blank'
+            rel='noopener noreferrer'
+            href='https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#'
+          >
+            Bild: Wikimedia Commons
+          </a>
+        </div>
       </div>
       <div className='navigation-grid'>
         <NavigationCard
@@ -101,21 +114,30 @@ export default function LandingPage() {
 
       <footer className='landing-footer'>
         <div className='footer-links'>
-          <a
+          <Button
+            variant='tertiary'
+            as='a'
             href='https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse'
             className='footer-link'
           >
             Tillgänglighet
-          </a>
-          <a
+          </Button>
+          <Button
+            variant='tertiary'
+            as='a'
             href='https://www.info.diva-portal.org/w/diva/om-diva'
             className='footer-link'
           >
             Om DiVA
-          </a>
-          <a href='/rest' className='footer-link'>
+          </Button>
+          <Button
+            variant='tertiary'
+            as='a'
+            href='/rest'
+            className='footer-link'
+          >
             REST API
-          </a>
+          </Button>
         </div>
       </footer>
     </main>
