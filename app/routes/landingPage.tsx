@@ -1,15 +1,14 @@
 import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif.jpg';
-import { Form, Link, href, useNavigate } from 'react-router';
-import { useState } from 'react';
-import {
-  SearchIcon,
-  BookOpenIcon,
-  UsersIcon,
-  ChartGanttIcon,
-} from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import {
+  BookOpenIcon,
+  ChartGanttIcon,
+  SearchIcon,
+  UsersIcon,
+} from 'lucide-react';
+import { Form, Link, href } from 'react-router';
 import css from './landingPage.css?url';
-import type { Route } from './+types';
+import type { Route } from '../+types/root';
 
 interface NavigationCardProps {
   to: string;
@@ -60,7 +59,9 @@ export default function LandingPage() {
         <Form
           action={href('/:recordType', { recordType: 'diva-output' })}
           className='search-form'
+          method='GET'
         >
+          <input type='hidden' name='search.rows.value' value='10' />
           <div className='search-container'>
             <input
               type='search'
@@ -68,7 +69,6 @@ export default function LandingPage() {
               className='search-input'
               name='search.include.includePart.genericSearchTerm.value'
             />
-            <input type='hidden' name='search.rows.value' value='10' />
             <button type='submit' className='search-button'>
               <SearchIcon fontSize='1.5rem' />
             </button>
@@ -81,7 +81,7 @@ export default function LandingPage() {
           icon={BookOpenIcon}
           iconColor='card-icon--publications'
           title='Publikationer'
-          description='Sök bland publikationer och output'
+          description='Sök bland publikationer och annan output'
         />
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-person' })}

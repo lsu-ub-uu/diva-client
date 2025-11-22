@@ -1,11 +1,15 @@
 main {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 800px;
+  grid-column: span 2;
+  padding: var(--gap-xxl) var(--gap);
+  justify-self: center;
+  grid-area: main;
 }
 
 form {
   display: grid;
   gap: var(--gap-l);
-  max-width: 800px;
 }
 
 .login-options {

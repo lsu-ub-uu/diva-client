@@ -24,7 +24,6 @@
 }
 
 .login-button {
-  color: var(--color-text);
   display: flex;
   align-items: center;
   height: var(--input-height);

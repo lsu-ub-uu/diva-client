@@ -1,5 +1,6 @@
 .header {
   position: relative;
+  color: var(--color-label);
 }
 
 .diva-header-bar {
