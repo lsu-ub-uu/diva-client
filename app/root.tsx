@@ -261,7 +261,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         recordTypes={recordTypes}
         editableMember={editableMember}
       />
-
+      {/* 
       <aside className='nav-rail'>
         <TopNavigation
           recordTypes={recordTypes}
@@ -270,10 +270,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
       </aside>
 
       <div className='content'>
-        <Breadcrumbs />
-        <Outlet />
-      </div>
-      <AuthLogger auth={auth} />
+        <Breadcrumbs /> */}
+      <Outlet />
+      {/*  </div>
+      <AuthLogger auth={auth} /> */}
     </div>
   );
 }

@@ -60,11 +60,7 @@ export const ColorSchemeSwitcher = ({
   }
 
   return (
-    <fetcher.Form
-      method='post'
-      action='/'
-      className={styles['color-scheme-switcher']}
-    >
+    <fetcher.Form method='post' className={styles['color-scheme-switcher']}>
       <input type='hidden' name='intent' value='changeColorScheme' />
       <Button
         variant='icon'

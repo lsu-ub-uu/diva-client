@@ -18,6 +18,7 @@
 
 import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
 import {
+  href,
   Link,
   useFetcher,
   useLocation,
@@ -41,7 +42,7 @@ import {
 } from '@/auth/useWebRedirectLogin';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import { withBaseName } from '@/utils/withBasename';
+import { useHydrated } from '@/utils/useHydrated';
 import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
 
@@ -59,6 +60,7 @@ export default function LoginMenu({
   const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
+  const hydrated = useHydrated();
   const navigation = useNavigation();
 
   const searchParams = new URLSearchParams(location.search);
@@ -131,69 +133,93 @@ export default function LoginMenu({
 
     return (
       <div className={styles['login']}>
-        <Menu>
-          <MenuButton
-            disabled={submitting}
-            aria-busy={submitting}
-            className={styles['login-button']}
-            as='a'
-            onClick={(e) => e.preventDefault()}
-            href={withBaseName(`/login?returnTo=${returnTo}`)}
+        {!hydrated && (
+          <Button
+            variant='tertiary'
+            as={Link}
+            to={{ pathname: href('/login'), search: `?returnTo=${returnTo}` }}
           >
-            {t('divaClient_LoginText')}
-            {submitting ? <CircularLoader /> : <LogInIcon />}
-          </MenuButton>
-          <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions
-              appTokenLogins={appTokenLogins}
-              onSelect={handleDevSelection}
-            />
-            <WebRedirectLoginMenuOptions
-              webRedirectLoginUnits={loginUnits.filter(
-                ({ type }) => type === 'webRedirect',
-              )}
-            />
-            <PasswordLoginMenuOptions
-              passwordLoginUnits={loginUnits.filter(
-                ({ type }) => type === 'password',
-              )}
-              returnTo={returnTo}
-            />
-          </DropdownMenu>
-        </Menu>
+            {loginButtonChildren}
+          </Button>
+        )}
+        {hydrated && (
+          <Menu>
+            <Button
+              disabled={submitting}
+              aria-busy={submitting}
+              className={styles['login-button']}
+              as={MenuButton}
+              variant='tertiary'
+            >
+              {loginButtonChildren}
+            </Button>
+            <DropdownMenu anchor='bottom end'>
+              <DevAccountLoginOptions
+                appTokenLogins={appTokenLogins}
+                onSelect={handleDevSelection}
+              />
+              <WebRedirectLoginMenuOptions
+                webRedirectLoginUnits={loginUnits.filter(
+                  ({ type }) => type === 'webRedirect',
+                )}
+              />
+              <PasswordLoginMenuOptions
+                passwordLoginUnits={loginUnits.filter(
+                  ({ type }) => type === 'password',
+                )}
+                returnTo={returnTo}
+              />
+            </DropdownMenu>
+          </Menu>
+        )}
       </div>
     );
   }
 
+  const logoutButtonChildren = (
+    <>
+      <span className={styles['user-name']}>{printUserNameOnPage(user)}</span>
+      <span className={styles['user-initials']}>
+        {user.firstName?.charAt(0)}
+        {user.lastName?.charAt(0)}
+      </span>
+      <CircleUserRoundIcon />
+    </>
+  );
+
   return (
     <div className={styles['login']}>
-      <Menu>
-        <MenuButton
-          className={styles['login-button']}
-          as='a'
-          href={withBaseName(`/logout?returnTo=${returnTo}`)}
-          disabled={submitting}
-          aria-busy={submitting}
-          onClick={(e) => e.preventDefault()}
+      {!hydrated && (
+        <Button
+          variant='tertiary'
+          as={Link}
+          to={{ pathname: href('/logout'), search: `?returnTo=${returnTo}` }}
         >
-          <span className={styles['user-name']}>
-            {printUserNameOnPage(user)}
-          </span>
-          <span className={styles['user-initials']}>
-            {user.firstName?.charAt(0)}
-            {user.lastName?.charAt(0)}
-          </span>
-          <CircleUserRoundIcon />
-        </MenuButton>
-        <DropdownMenu anchor='bottom end'>
-          <MenuItem>
-            <button onClick={logout} className={styles['logout-button']}>
-              {t('divaClient_LogoutText')}
-              <LogOutIcon />
-            </button>
-          </MenuItem>
-        </DropdownMenu>
-      </Menu>
+          {logoutButtonChildren}
+        </Button>
+      )}
+      {hydrated && (
+        <Menu>
+          <Button
+            variant='tertiary'
+            as={MenuButton}
+            className={styles['login-button']}
+            disabled={submitting}
+            aria-busy={submitting}
+            onClick={(e) => e.preventDefault()}
+          >
+            {logoutButtonChildren}
+          </Button>
+          <DropdownMenu anchor='bottom end'>
+            <MenuItem>
+              <button onClick={logout} className={styles['logout-button']}>
+                {t('divaClient_LogoutText')}
+                <LogOutIcon />
+              </button>
+            </MenuItem>
+          </DropdownMenu>
+        </Menu>
+      )}
     </div>
   );
 }

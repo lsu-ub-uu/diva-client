@@ -16,13 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, isRouteErrorResponse, Outlet } from 'react-router';
+import {
+  data,
+  isRouteErrorResponse,
+  Outlet,
+  useRouteLoaderData,
+} from 'react-router';
 import type { Route } from '../record/+types/recordType';
 import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -37,7 +44,21 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 };
 
 export default function RecordTypeRoute() {
-  return <Outlet />;
+  const { recordTypes, editableMember } = useRouteLoaderData('root');
+  return (
+    <>
+      <aside className='nav-rail'>
+        <TopNavigation
+          recordTypes={recordTypes}
+          editableMember={editableMember}
+        />
+      </aside>
+      <div className='content'>
+        <Breadcrumbs />
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
