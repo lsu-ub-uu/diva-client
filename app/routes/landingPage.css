@@ -41,13 +41,10 @@
 
 .hero-title {
   color: #fff;
-  font-size: 6rem;
+  font-size: var(--font-size-xxl);
   line-height: 1;
   display: flex;
   align-items: center;
-  @media (width < 900px) {
-    font-size: 5rem;
-  }
 }
 
 .hero-title-logo {
@@ -59,11 +56,8 @@
 .hero-subtitle {
   color: #fff;
   margin-bottom: var(--gap-xl);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-l);
   line-height: 1;
-  @media (width < 900px) {
-    font-size: var(--font-size-l);
-  }
 }
 
 .search-form {
