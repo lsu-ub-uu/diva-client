@@ -6,10 +6,12 @@ import {
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
-import { Form, Link, href } from 'react-router';
+import { Form, Link, href, useRouteLoaderData } from 'react-router';
 import css from './landingPage.css?url';
-import type { Route } from '../+types/root';
+import type { Route, LoaderData } from '../+types/root';
 import { Button } from '@/components/Button/Button';
+import { useLanguage } from '@/i18n/useLanguage';
+import { useState } from 'react';
 
 interface NavigationCardProps {
   to: string;
@@ -44,6 +46,9 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export default function LandingPage() {
+  const language = useLanguage();
+  const { member } = useRouteLoaderData('root');
+  const [searchHasValue, setSearchHasValue] = useState(false);
   return (
     <main className='landing-main'>
       <div className='hero-container'>
@@ -54,7 +59,7 @@ export default function LandingPage() {
           }}
         />
 
-        <h1 className='hero-title'>DiVA</h1>
+        <h1 className='hero-title'>{member.pageTitle[language]}</h1>
         <div className='hero-subtitle'>Digitala vetenskapliga arkivet</div>
 
         <Form
@@ -63,7 +68,10 @@ export default function LandingPage() {
           method='GET'
         >
           <input type='hidden' name='search.rows.value' value='10' />
-          <div className='search-container'>
+          <div
+            className='search-container'
+            data-has-value={searchHasValue ? 'true' : 'false'}
+          >
             <label className='search-label' htmlFor='landing-search'>
               Sök efter publikationer
             </label>
@@ -72,6 +80,7 @@ export default function LandingPage() {
               type='search'
               className='search-input'
               name='search.include.includePart.genericSearchTerm.value'
+              onChange={(e) => setSearchHasValue(e.target.value.length > 0)}
             />
             <button type='submit' className='search-button'>
               <SearchIcon fontSize='1.5rem' />

@@ -41,8 +41,7 @@
 
 .hero-title {
   color: #fff;
-  font-family: 'Times new Roman', serif;
-  font-size: 8rem;
+  font-size: 6rem;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -96,7 +95,8 @@
   transition: opacity 0.05s;
 }
 
-.search-container:focus-within .search-label {
+.search-container:focus-within .search-label,
+.search-container[data-has-value='true'] .search-label {
   opacity: 0;
 }
 
