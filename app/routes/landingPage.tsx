@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button/Button';
 import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
+import bgImageBoksalen from '@/images/Carolina_Rediviva__Uppsala_universitetsbibliotek___Boksalen_2_hero.webp';
 import bgIMageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import type { LucideIcon } from 'lucide-react';
@@ -27,7 +28,7 @@ export const loader = ({ request, context }: LoaderFunctionArgs) => {
     : 'DiVA';
   return {
     title,
-    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgIMage,
+    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgImageBoksalen,
   };
 };
 

@@ -112,7 +112,7 @@ export const Header = ({
               />
             </dialog>
           </div>
-          <Link to='/'>
+          <Link to='/' viewTransition>
             <DivaLogo className={styles.logo} />
           </Link>
         </div>
