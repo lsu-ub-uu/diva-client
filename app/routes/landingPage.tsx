@@ -1,3 +1,5 @@
+import { Button } from '@/components/Button/Button';
+import { useLanguage } from '@/i18n/useLanguage';
 import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif.jpg';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -6,38 +8,10 @@ import {
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
-import { Form, Link, href, useRouteLoaderData } from 'react-router';
-import css from './landingPage.css?url';
-import type { Route, LoaderData } from '../+types/root';
-import { Button } from '@/components/Button/Button';
-import { useLanguage } from '@/i18n/useLanguage';
 import { useState } from 'react';
-
-interface NavigationCardProps {
-  to: string;
-  icon: LucideIcon;
-  iconColor: string;
-  title: string;
-  description: string;
-}
-
-function NavigationCard({
-  to,
-  icon: Icon,
-  iconColor,
-  title,
-  description,
-}: NavigationCardProps) {
-  return (
-    <Link to={to} className='navigation-link'>
-      <div className='navigation-card'>
-        <Icon className={`card-icon ${iconColor}`} />
-        <h3 className='card-title'>{title}</h3>
-        <p className='card-description'>{description}</p>
-      </div>
-    </Link>
-  );
-}
+import { Form, Link, href, useRouteLoaderData } from 'react-router';
+import type { Route } from '../+types/root';
+import css from './landingPage.css?url';
 
 export const loader = () => {};
 
@@ -147,5 +121,31 @@ export default function LandingPage() {
         </div>
       </footer>
     </main>
+  );
+}
+
+interface NavigationCardProps {
+  to: string;
+  icon: LucideIcon;
+  iconColor: string;
+  title: string;
+  description: string;
+}
+
+function NavigationCard({
+  to,
+  icon: Icon,
+  iconColor,
+  title,
+  description,
+}: NavigationCardProps) {
+  return (
+    <Link to={to} className='navigation-link' viewTransition>
+      <div className='navigation-card'>
+        <Icon className={`card-icon ${iconColor}`} />
+        <h3 className='card-title'>{title}</h3>
+        <p className='card-description'>{description}</p>
+      </div>
+    </Link>
   );
 }
