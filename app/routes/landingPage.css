@@ -42,20 +42,6 @@
   filter: saturate(0.6) brightness(0.7) contrast(0.9);
 }
 
-@keyframes background-pan {
-  0% {
-    background-position: center;
-  }
-
-  50% {
-    background-position: top left;
-  }
-
-  100% {
-    background-position: center;
-  }
-}
-
 .hero-title {
   color: var(--hero-text-color);
   font-size: var(--font-size-xxl);
