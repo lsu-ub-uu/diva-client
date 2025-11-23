@@ -39,7 +39,7 @@
   height: 100%;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.8) brightness(0.7) contrast(0.9);
+  filter: saturate(0.6) brightness(0.7) contrast(0.9);
 }
 
 @keyframes background-pan {
@@ -99,18 +99,10 @@
 }
 
 .search-label {
-  position: absolute;
-  color: var(--color-label);
-  left: var(--gap-l);
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: text;
-  transition: opacity 0.05s;
-}
-
-.search-container:focus-within .search-label,
-.search-container[data-has-value='true'] .search-label {
   opacity: 0;
+  height: 0;
+  position: absolute;
+  inset: 0;
 }
 
 .search-input {

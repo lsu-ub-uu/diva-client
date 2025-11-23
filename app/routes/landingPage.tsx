@@ -1,6 +1,7 @@
 import { Button } from '@/components/Button/Button';
-import { useLanguage } from '@/i18n/useLanguage';
-import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif.jpg';
+import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
+import bgIMageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import type { LucideIcon } from 'lucide-react';
 import {
   BookOpenIcon,
@@ -8,26 +9,48 @@ import {
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
-import { useState } from 'react';
-import { Form, Link, href, useRouteLoaderData } from 'react-router';
-import type { Route } from '../+types/root';
+import { Form, Link, href, type LoaderFunctionArgs } from 'react-router';
+import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
+import type { Route } from './+types/landingPage';
 import css from './landingPage.css?url';
 
-export const loader = () => {};
+export const loader = ({ request, context }: LoaderFunctionArgs) => {
+  const { dependencies } = context.get(dependenciesContext);
+  const i18n = context.get(i18nContext);
+  const language = i18n.language as 'sv' | 'en';
+  const member = getMemberFromHostname(request, dependencies);
+  const title = member
+    ? member.id !== 'diva'
+      ? `DiVA – ${member.pageTitle[language]}`
+      : 'DiVA'
+    : 'DiVA';
+  return {
+    title,
+    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgIMage,
+  };
+};
 
 export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: css },
 ];
 
-export default function LandingPage() {
-  const language = useLanguage();
-  const { member } = useRouteLoaderData('root');
-  const [searchHasValue, setSearchHasValue] = useState(false);
+export const meta: Route.MetaFunction = ({ loaderData }) => [
+  { title: loaderData.title },
+  {
+    description:
+      'DiVA är en gemensam plattform för att publicera, lagra och söka forskningsinformation och studentuppsatser från ett stort antal svenska lärosäten och forskningsinstitut.',
+  },
+];
+
+export default function LandingPage({ loaderData }: Route.ComponentProps) {
+  const { title, image } = loaderData;
+
   return (
     <main className='landing-main'>
       <div className='hero-container'>
         <figure className='hero-background'>
-          <img src={bgIMage} alt='' className='hero-image' />
+          <img src={image} alt='' className='hero-image' />
           <figcaption className='image-credit'>
             <a
               target='_blank'
@@ -39,7 +62,7 @@ export default function LandingPage() {
           </figcaption>
         </figure>
 
-        <h1 className='hero-title'>{member.pageTitle[language]}</h1>
+        <h1 className='hero-title'>{title}</h1>
         <div className='hero-subtitle'>Digitala vetenskapliga arkivet</div>
 
         <Form
@@ -48,19 +71,16 @@ export default function LandingPage() {
           method='GET'
         >
           <input type='hidden' name='search.rows.value' value='10' />
-          <div
-            className='search-container'
-            data-has-value={searchHasValue ? 'true' : 'false'}
-          >
+          <div className='search-container'>
             <label className='search-label' htmlFor='landing-search'>
               Sök efter publikationer
             </label>
             <input
+              placeholder='Sök efter publikationer'
               id='landing-search'
               type='search'
               className='search-input'
               name='search.include.includePart.genericSearchTerm.value'
-              onChange={(e) => setSearchHasValue(e.target.value.length > 0)}
             />
             <button type='submit' className='search-button'>
               <SearchIcon fontSize='1.5rem' />
