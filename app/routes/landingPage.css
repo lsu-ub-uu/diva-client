@@ -1,6 +1,8 @@
 /* Landing Page Styles */
 
 .landing-main {
+  --hero-text-color: #fff;
+
   text-align: center;
 }
 
@@ -20,27 +22,42 @@
   position: absolute;
   bottom: var(--gap-s);
   left: var(--gap-s);
-  color: #fff;
+  color: var(--hero-text-color);
   font-size: var(--font-size-xs);
+
   a {
-    color: #fff;
+    color: var(--hero-text-color);
   }
 }
 
-.hero-background {
+.hero-image {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-size: cover;
-  background-position: center;
-  filter: saturate(0.7) brightness(0.6) contrast(0.9);
+  inset: 0;
+  margin: 0;
   z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: saturate(0.8) brightness(0.7) contrast(0.9);
+}
+
+@keyframes background-pan {
+  0% {
+    background-position: center;
+  }
+
+  50% {
+    background-position: top left;
+  }
+
+  100% {
+    background-position: center;
+  }
 }
 
 .hero-title {
-  color: #fff;
+  color: var(--hero-text-color);
   font-size: var(--font-size-xxl);
   line-height: 1;
   display: flex;
@@ -53,8 +70,9 @@
   fill: white;
   height: 0.8em;
 }
+
 .hero-subtitle {
-  color: #fff;
+  color: var(--hero-text-color);
   margin-bottom: var(--gap-xl);
   font-size: var(--font-size-l);
   line-height: 1;
@@ -74,6 +92,7 @@
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-thin-border);
+
   &:focus-within {
     outline: 2px solid var(--color-link-selected);
   }
@@ -105,7 +124,7 @@
 }
 
 .search-button {
-  border-radius: calc(var(--gap-l) + var(--gap));
+  border-radius: var(--border-radius);
   padding: calc(var(--gap-l) * 0.75) calc(var(--gap-l) + var(--gap));
   display: flex;
   align-items: center;
@@ -115,9 +134,8 @@
 
 .navigation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-template-rows: 1fr;
-  gap: calc(var(--gap-l) + var(--gap));
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-xl);
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
@@ -132,6 +150,12 @@
   text-decoration: none;
   display: flex;
   height: 100%;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-link-selected);
+    outline-offset: 2px;
+    border-radius: var(--border-radius);
+  }
 }
 
 .navigation-card {
@@ -143,29 +167,21 @@
     box-shadow 0.1s;
   cursor: pointer;
   border: 1px solid var(--color-thin-border);
-  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
   width: 100%;
-}
 
-.navigation-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
-}
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
+  }
 
-.navigation-card:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 3px rgb(0 0 0 / 15%);
-}
-
-.navigation-link:focus-visible {
-  outline: 2px solid var(--color-link-selected);
-  outline-offset: 2px;
-  border-radius: var(--border-radius);
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgb(0 0 0 / 15%);
+  }
 }
 
 .card-icon {
@@ -173,15 +189,15 @@
   font-size: var(--font-size-xl);
 }
 
-.card-icon--publications {
+.card-icon-publications {
   color: var(--color-link);
 }
 
-.card-icon--people {
+.card-icon-people {
   color: var(--color-success-main);
 }
 
-.card-icon--projects {
+.card-icon-projects {
   color: var(--color-error-main);
 }
 
@@ -197,12 +213,11 @@
   font-size: var(--font-size-s);
 }
 
-/* Footer Styles */
 .landing-footer {
   margin-top: var(--gap-xxl);
   padding: var(--gap-xl) var(--gap-l);
   border-top: 1px solid var(--color-lighter-border);
-  background-color: var(--color-background);
+  background-color: var(--color-nav-rail);
 }
 
 .footer-links {
@@ -212,16 +227,14 @@
   gap: var(--gap-l);
   max-width: 800px;
   margin: 0 auto;
+
+  @media (width < 600px) {
+    flex-direction: column;
+    gap: var(--gap-l);
+  }
 }
 
 .footer-link {
   color: var(--color-label);
   font-size: var(--font-size-s);
-}
-
-@media (width < 600px) {
-  .footer-links {
-    flex-direction: column;
-    gap: var(--gap-l);
-  }
 }

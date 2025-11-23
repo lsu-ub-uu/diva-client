@@ -52,12 +52,18 @@ export default function LandingPage() {
   return (
     <main className='landing-main'>
       <div className='hero-container'>
-        <div
-          className='hero-background'
-          style={{
-            background: `url('${bgIMage}')`,
-          }}
-        />
+        <figure className='hero-background'>
+          <img src={bgIMage} alt='' className='hero-image' />
+          <figcaption className='image-credit'>
+            <a
+              target='_blank'
+              rel='noopener noreferrer'
+              href='https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#'
+            >
+              Bild: Wikimedia Commons
+            </a>
+          </figcaption>
+        </figure>
 
         <h1 className='hero-title'>{member.pageTitle[language]}</h1>
         <div className='hero-subtitle'>Digitala vetenskapliga arkivet</div>
@@ -87,35 +93,26 @@ export default function LandingPage() {
             </button>
           </div>
         </Form>
-        <div className='image-credit'>
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            href='https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#'
-          >
-            Bild: Wikimedia Commons
-          </a>
-        </div>
       </div>
       <div className='navigation-grid'>
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-output' })}
           icon={BookOpenIcon}
-          iconColor='card-icon--publications'
+          iconColor='card-icon-publications'
           title='Publikationer'
           description='Sök bland publikationer och annan output'
         />
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-person' })}
           icon={UsersIcon}
-          iconColor='card-icon--people'
+          iconColor='card-icon-people'
           title='Personer'
           description='Hitta forskare och författare'
         />
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-project' })}
           icon={ChartGanttIcon}
-          iconColor='card-icon--projects'
+          iconColor='card-icon-projects'
           title='Projekt'
           description='Utforska forskningsprojekt'
         />
