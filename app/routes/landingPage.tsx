@@ -70,6 +70,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           action={href('/:recordType', { recordType: 'diva-output' })}
           className='search-form'
           method='GET'
+          viewTransition
         >
           <input type='hidden' name='search.rows.value' value='10' />
           <div className='search-container'>
