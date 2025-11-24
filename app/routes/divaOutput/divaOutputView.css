@@ -196,7 +196,7 @@ address {
 .attachment-thumbnail {
   width: 250px;
   margin-bottom: var(--gap-s);
-  border: 1px solid var(--color-thin-border);
+  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
   border-radius: var(--border-radius-s);
 }
 
