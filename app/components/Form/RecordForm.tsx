@@ -62,9 +62,10 @@ export const RecordForm = ({
       formState: {
         values: true,
       },
-      callback: ({ values }) => {
+
+      callback: (data: any) => {
         if (onChange) {
-          onChange(values as BFFDataRecordData);
+          onChange(data.values as BFFDataRecordData);
         }
       },
     });
