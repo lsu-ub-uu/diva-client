@@ -18,6 +18,12 @@
   }
 }
 
+.top-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 p,
 dd {
   max-width: 100ch;

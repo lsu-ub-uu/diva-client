@@ -9,6 +9,7 @@ import {
   href,
   isRouteErrorResponse,
   Link,
+  useRouteLoaderData,
   type MetaDescriptor,
 } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
@@ -28,6 +29,8 @@ import { i18nContext } from 'server/i18n';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
 import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({
   request,
@@ -90,45 +93,60 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
+  const { recordTypes, editableMember } = useRouteLoaderData('root');
+
   const { t } = useTranslation();
   const record = loaderData.record;
   return (
-    <div className='diva-output-view-page'>
-      <Button
-        className='api-button'
-        variant='tertiary'
-        as='a'
-        href={loaderData.apiUrl}
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        <CodeIcon />
-        {t('divaClient_viewInApiText')}
-      </Button>
-      <OutputView data={record.data} />
-      <FloatingActionButtonContainer>
-        {record.userRights?.includes('update') && (
-          <FloatingActionButton
-            as={Link}
-            to={href('/:recordType/:recordId/update', {
-              recordType: record.recordType,
-              recordId: record.id,
-            })}
-            text={t('divaClient_editRecordText')}
-            icon={<FilePenIcon />}
-          />
-        )}
-        {record.userRights?.includes('delete') && (
-          <Form method='POST' action='delete'>
-            <FloatingActionButton
-              type='submit'
-              text={t('divaClient_deleteRecordText')}
-              icon={<ShredderIcon />}
-            />
-          </Form>
-        )}
-      </FloatingActionButtonContainer>
-    </div>
+    <>
+      <aside className='nav-rail'>
+        <TopNavigation
+          recordTypes={recordTypes}
+          editableMember={editableMember}
+        />
+      </aside>
+      <div className='content'>
+        <div className='diva-output-view-page'>
+          <div className='top-content'>
+            <Breadcrumbs />
+            <Button
+              className='api-button'
+              variant='tertiary'
+              as='a'
+              href={loaderData.apiUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <CodeIcon />
+              {t('divaClient_viewInApiText')}
+            </Button>
+          </div>
+          <OutputView data={record.data} />
+          <FloatingActionButtonContainer>
+            {record.userRights?.includes('update') && (
+              <FloatingActionButton
+                as={Link}
+                to={href('/:recordType/:recordId/update', {
+                  recordType: record.recordType,
+                  recordId: record.id,
+                })}
+                text={t('divaClient_editRecordText')}
+                icon={<FilePenIcon />}
+              />
+            )}
+            {record.userRights?.includes('delete') && (
+              <Form method='POST' action='delete'>
+                <FloatingActionButton
+                  type='submit'
+                  text={t('divaClient_deleteRecordText')}
+                  icon={<ShredderIcon />}
+                />
+              </Form>
+            )}
+          </FloatingActionButtonContainer>
+        </div>
+      </div>
+    </>
   );
 }
 
