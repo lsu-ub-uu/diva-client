@@ -191,14 +191,13 @@ address {
 
 .attachment {
   margin-bottom: var(--gap-l);
-  border: 1px solid var(--color-thin-border);
-  border-radius: var(--border-radius);
-  padding: var(--gap-l);
 }
 
 .attachment-thumbnail {
   width: 250px;
   margin-bottom: var(--gap-s);
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius-s);
 }
 
 section {
