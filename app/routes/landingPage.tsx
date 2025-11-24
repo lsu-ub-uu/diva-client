@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
-import bgIMage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
+import bgImage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
 import bgImageBoksalen from '@/images/Carolina_Rediviva__Uppsala_universitetsbibliotek___Boksalen_2_hero.webp';
-import bgIMageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
+import bgImageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -28,7 +28,7 @@ export const loader = ({ request, context }: LoaderFunctionArgs) => {
     : 'DiVA';
   return {
     title,
-    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgIMage,
+    heroImage: heroImages[member?.id ?? 'default'] ?? heroImages['default'],
   };
 };
 
@@ -45,18 +45,18 @@ export const meta: Route.MetaFunction = ({ loaderData }) => [
 ];
 
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
-  const { title, image } = loaderData;
+  const { title, heroImage } = loaderData;
 
   return (
     <main className='landing-main'>
       <div className='hero-container'>
         <figure className='hero-background'>
-          <img src={image} alt='' className='hero-image' />
+          <img src={heroImage.url} alt='' className='hero-image' />
           <figcaption className='image-credit'>
             <a
               target='_blank'
               rel='noopener noreferrer'
-              href='https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#'
+              href={heroImage.sourceLink}
             >
               Bild: Wikimedia Commons
             </a>
@@ -171,3 +171,21 @@ function NavigationCard({
     </Link>
   );
 }
+
+const heroImages: Record<string, { url: string; sourceLink: string }> = {
+  nordiskamuseet: {
+    url: bgImageNordiska,
+    sourceLink:
+      'https://commons.wikimedia.org/wiki/File:Stockholm_August_2020_-_Kastellet,_Vasa_Museum,_and_Nordic_Museum.jpg',
+  },
+  uu: {
+    url: bgImageBoksalen,
+    sourceLink:
+      'https://commons.wikimedia.org/wiki/File:Carolina_Rediviva_(Uppsala_universitetsbibliotek),_Boksalen_2.png',
+  },
+  default: {
+    url: bgImage,
+    sourceLink:
+      'https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#',
+  },
+};
