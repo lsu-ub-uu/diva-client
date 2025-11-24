@@ -63,19 +63,25 @@
   padding: var(--gap-l);
   gap: var(--gap);
   box-shadow: var(--elevation);
-  transition:
-    transform 0.3s ease-in-out,
-    display 0.3s ease-in-out allow-discrete;
+  opacity: 0;
+  transition-duration: 0.2s;
   background-color: var(--color-background);
 
   &:open {
     transform: translateX(0);
+    opacity: 1;
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-out,
+      display 0.3s ease-out allow-discrete,
+      overlay 0.3s ease-out allow-discrete;
   }
 
   &::backdrop {
     background-color: rgb(0 0 0 / 50%);
     transition:
       background-color 0.3s ease-in-out,
+      overlay 0.3s allow-discrete,
       display 0.3s ease-in-out allow-discrete;
   }
 }
