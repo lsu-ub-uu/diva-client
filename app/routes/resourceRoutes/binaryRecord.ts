@@ -35,7 +35,6 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const binaryRecord = transformRecord(
     dependencies,
     createBinaryRecordResponse.data,
-    'view',
   );
 
   return Response.json({

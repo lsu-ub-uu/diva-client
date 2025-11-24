@@ -31,7 +31,6 @@ interface GetRecordByRecordTypeAndRecordIdArgs {
   authToken?: string;
   presentationRecordLinkId?: string;
   decorated?: boolean;
-  mode: TYPES.FormDefinitionMode;
 }
 
 export const getRecordByRecordTypeAndRecordId = async ({
@@ -41,7 +40,6 @@ export const getRecordByRecordTypeAndRecordId = async ({
   authToken,
   presentationRecordLinkId,
   decorated = false,
-  mode,
 }: GetRecordByRecordTypeAndRecordIdArgs) => {
   const response = await getRecordDataById<RecordWrapper>(
     recordType,
@@ -50,7 +48,7 @@ export const getRecordByRecordTypeAndRecordId = async ({
     decorated,
   );
   const recordWrapper = response.data;
-  const record = transformRecord(dependencies, recordWrapper, mode);
+  const record = transformRecord(dependencies, recordWrapper);
 
   if (presentationRecordLinkId !== undefined) {
     const { presentationGroup, metadataGroup } =

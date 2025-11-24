@@ -361,5 +361,3 @@ export interface BFFOrganisation {
   };
   rorId?: string;
 }
-
-export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';

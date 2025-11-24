@@ -27,7 +27,7 @@ const RECORD_TYPES = [
   'diva-course',
   'diva-programme',
   'diva-subject',
-  'diva-localLabels',
+  'diva-localGenericMarkup',
   'diva-funder',
   'diva-person',
   'diva-member',

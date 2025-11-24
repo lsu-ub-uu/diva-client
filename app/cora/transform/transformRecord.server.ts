@@ -40,10 +40,7 @@ import type {
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import {
-  createFormMetaData,
-  createViewMetadata,
-} from '@/data/formDefinition/formMetadata.server';
+import { createViewMetadata } from '@/data/formDefinition/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -53,7 +50,6 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { FormDefinitionMode } from './bffTypes.server';
 
 /**
  * Transforms records
@@ -63,7 +59,6 @@ import type { FormDefinitionMode } from './bffTypes.server';
 export const transformRecords = (
   dependencies: Dependencies,
   dataListWrapper: DataListWrapper,
-  mode: FormDefinitionMode,
 ): any[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
@@ -71,7 +66,7 @@ export const transformRecords = (
 
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords.map((recordWrapper) =>
-    transformRecord(dependencies, recordWrapper, mode),
+    transformRecord(dependencies, recordWrapper),
   );
 };
 
@@ -83,7 +78,6 @@ export const transformRecords = (
 export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper,
-  mode: FormDefinitionMode,
 ): BFFDataRecord => {
   let createdAt;
   let createdBy;
@@ -113,7 +107,6 @@ export const transformRecord = (
 
   const data = transformRecordDataGroup(
     recordWrapper.record.data,
-    mode,
     dependencies,
   );
 
@@ -138,33 +131,18 @@ export const transformRecord = (
 
 const transformRecordDataGroup = (
   dataRecordGroup: DataGroup,
-  mode: FormDefinitionMode,
-  dependencies: Dependencies,
-) => {
-  const formMetadata = createFormMetadata(mode, dataRecordGroup, dependencies);
-  return transformRecordData(dataRecordGroup, formMetadata, dependencies);
-};
-
-const createFormMetadata = (
-  mode: FormDefinitionMode,
-  dataRecordGroup: DataGroup,
   dependencies: Dependencies,
 ) => {
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
-  if (mode === 'view' || mode === 'list') {
-    const recordTypeId = extractLinkedRecordIdFromNamedRecordLink(
-      recordInfo,
-      'type',
-    );
-    return createViewMetadata(dependencies, recordTypeId);
-  }
-
-  const validationTypeId = extractLinkedRecordIdFromNamedRecordLink(
+  const recordTypeId = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
-    'validationType',
+    'type',
   );
-  return createFormMetaData(dependencies, validationTypeId, mode);
+
+  const formMetadata = createViewMetadata(dependencies, recordTypeId);
+
+  return transformRecordData(dataRecordGroup, formMetadata, dependencies);
 };
 
 export const transformRecordData = (
@@ -326,7 +304,7 @@ const transformLinkedRecord = (
     data,
     'linkedRecord',
   ).children[0] as DataGroup;
-  return transformRecordDataGroup(linkedRecordGroup, 'view', dependencies);
+  return transformRecordDataGroup(linkedRecordGroup, dependencies);
 };
 
 const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {

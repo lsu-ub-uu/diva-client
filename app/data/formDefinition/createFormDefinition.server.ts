@@ -5,7 +5,6 @@ import type {
   BFFPresentationGroup,
   BFFRecordType,
   BFFValidationType,
-  FormDefinitionMode,
 } from '@/cora/transform/bffTypes.server';
 
 import { createDefinitionFromMetadataGroupAndPresentationGroup } from '@/data/formDefinition/createDefinitionFromMetadataGroupAndPresentationGroup.server';
@@ -25,7 +24,7 @@ import { createDefinitionFromMetadataGroupAndPresentationGroup } from '@/data/fo
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
-  mode: FormDefinitionMode,
+  mode: 'create' | 'update' | 'view' | 'list',
 ): RecordFormSchema => {
   switch (mode) {
     case 'create':
