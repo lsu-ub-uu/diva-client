@@ -28,7 +28,7 @@ export const loader = ({ request, context }: LoaderFunctionArgs) => {
     : 'DiVA';
   return {
     title,
-    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgImageBoksalen,
+    image: member?.id === 'nordiskamuseet' ? bgIMageNordiska : bgIMage,
   };
 };
 

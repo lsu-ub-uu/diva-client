@@ -39,7 +39,7 @@
   height: 100%;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.5) brightness(0.5) contrast(0.8);
+  filter: saturate(0.7) brightness(0.7) contrast(0.8);
 }
 
 .hero-title {
