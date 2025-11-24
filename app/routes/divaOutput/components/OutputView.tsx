@@ -25,7 +25,14 @@ import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
-import { ShoppingCartIcon } from 'lucide-react';
+import {
+  CheckCircle2Icon,
+  CheckCircleIcon,
+  CheckLineIcon,
+  ShoppingCartIcon,
+  TriangleAlert,
+  TriangleAlertIcon,
+} from 'lucide-react';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -249,8 +256,41 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.note_type_external?.__text?.[language]}
             value={output.note_type_external?.value}
           />
+          <Term
+            label={output.dataQuality?.__text?.[language]}
+            value={
+              <span className='icon-text'>
+                {getDataQualityIcon(output.dataQuality?.value)}{' '}
+                {output.dataQuality?.__valueText?.[language]}
+              </span>
+            }
+          />
+          <Term
+            label={output.adminInfo?.note_type_internal?.__text?.[language]}
+            value={output.adminInfo?.note_type_internal?.value}
+          />
+
+          <Term
+            label={output.adminInfo?.failed?.__text?.[language]}
+            value={output.adminInfo?.failed?.__valueText?.[language]}
+          />
+          <Term
+            label={output.adminInfo?.reviewed?.__text?.[language]}
+            value={output.adminInfo?.reviewed?.__valueText?.[language]}
+          />
         </dl>
       </aside>
     </div>
   );
+};
+
+const getDataQualityIcon = (dataQuality?: string) => {
+  switch (dataQuality) {
+    case '2026':
+      return <CheckCircleIcon color='var(--color-success-main)' />;
+    case 'classic':
+      return <TriangleAlertIcon color='var(--color-warning-main)' />;
+    default:
+      return null;
+  }
 };

@@ -30,7 +30,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
       )}
       {attachment.attachmentFile.linkedRecord.binary.master?.master && (
         <a
-          className='download-link'
+          className='icon-text'
           href={createDownloadLinkFromResourceLink(
             attachment.attachmentFile.linkedRecord.binary.master.master,
           )}

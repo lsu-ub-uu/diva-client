@@ -140,7 +140,7 @@ address {
   justify-self: end;
 }
 
-.download-link {
+.icon-text {
   display: flex;
   align-items: center;
   gap: var(--gap-s);
@@ -176,12 +176,6 @@ address {
   dl {
     padding-left: var(--gap-l);
   }
-}
-
-a {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-s);
 }
 
 .attachments {
