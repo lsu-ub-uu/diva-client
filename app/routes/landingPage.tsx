@@ -1,6 +1,5 @@
 import { Button } from '@/components/Button/Button';
 import bgImage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
-import bgImageBoksalen from '@/images/Carolina_Rediviva__Uppsala_universitetsbibliotek___Boksalen_2_hero.webp';
 import bgImageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import type { LucideIcon } from 'lucide-react';
@@ -15,6 +14,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/landingPage';
 import css from './landingPage.css?url';
+import type { ReactNode } from 'react';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -53,18 +53,17 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
         <figure className='hero-background'>
           <img src={heroImage.url} alt='' className='hero-image' />
           <figcaption className='image-credit'>
-            <a
-              target='_blank'
-              rel='noopener noreferrer'
-              href={heroImage.sourceLink}
-            >
-              Bild: Wikimedia Commons
-            </a>
+            <details>
+              <summary>Bildkälla</summary>
+              <ImageAttribution attribution={heroImage.attribution} />
+            </details>
           </figcaption>
         </figure>
 
         <h1 className='hero-title'>{title}</h1>
-        <div className='hero-subtitle'>Digitala vetenskapliga arkivet</div>
+        <div className='hero-subtitle'>
+          Sök bland alla DiVA-medlemmars publikationer
+        </div>
 
         <Form
           action={href('/:recordType', { recordType: 'diva-output' })}
@@ -172,20 +171,91 @@ function NavigationCard({
   );
 }
 
-const heroImages: Record<string, { url: string; sourceLink: string }> = {
+const heroImages: Record<
+  string,
+  { url: string; attribution: ImageAttribution }
+> = {
   nordiskamuseet: {
     url: bgImageNordiska,
-    sourceLink:
-      'https://commons.wikimedia.org/wiki/File:Stockholm_August_2020_-_Kastellet,_Vasa_Museum,_and_Nordic_Museum.jpg',
-  },
-  uu: {
-    url: bgImageBoksalen,
-    sourceLink:
-      'https://commons.wikimedia.org/wiki/File:Carolina_Rediviva_(Uppsala_universitetsbibliotek),_Boksalen_2.png',
+    attribution: {
+      author: 'Martin Falbisoner',
+      source: {
+        text: 'Wikimedia Commons',
+        link: 'https://commons.wikimedia.org/wiki/File:Stockholm_August_2020_-_Kastellet,_Vasa_Museum,_and_Nordic_Museum.jpg',
+      },
+      license: {
+        text: 'CC BY-SA 4.0',
+        link: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      },
+    },
   },
   default: {
     url: bgImage,
-    sourceLink:
-      'https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif#',
+    attribution: {
+      title: 'Carl Johansson: A Cold September Day in Medelpad',
+      author: 'Nationalmuseum (Foto: Rickard Karlsson)',
+      source: {
+        text: 'Wikimedia Commons',
+        link: 'https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif',
+      },
+      license: {
+        text: 'Public Domain',
+      },
+    },
   },
+};
+
+interface ImageAttribution {
+  title?: string;
+  author?: string;
+  source: {
+    text: string;
+    link: string;
+  };
+  license: {
+    text: string;
+    link?: string;
+  };
+}
+
+const ImageAttribution = ({
+  attribution,
+}: {
+  attribution: ImageAttribution;
+}) => {
+  const fragments = [
+    attribution.title,
+    attribution.author,
+    <>
+      <a
+        href={attribution.source.link}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {attribution.source.text}
+      </a>
+    </>,
+    attribution.license.link ? (
+      <a
+        href={attribution.license.link}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {attribution.license.text}
+      </a>
+    ) : (
+      attribution.license.text
+    ),
+  ];
+  return (
+    <div className='image-attribution'>
+      {fragments.filter(Boolean).reduce<ReactNode[]>((prev, curr, index) => {
+        if (index === 0) {
+          return [curr];
+        } else {
+          return [...prev, ', ', curr];
+        }
+      }, [])}
+    </div>
+  );
 };

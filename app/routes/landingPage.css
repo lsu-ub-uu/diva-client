@@ -22,8 +22,13 @@
   position: absolute;
   bottom: var(--gap-s);
   left: var(--gap-s);
-  color: var(--hero-text-color);
+  color: #eee;
   font-size: var(--font-size-xs);
+  text-align: left;
+
+  details summary {
+    cursor: pointer;
+  }
 
   a {
     color: var(--hero-text-color);
