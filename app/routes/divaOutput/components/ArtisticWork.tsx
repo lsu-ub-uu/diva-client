@@ -79,7 +79,7 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
       />
       <Term
         label={output.physicalDescription?.__text?.[language]}
-        value={output.physicalDescription?.extent?.value}
+        value={output.physicalDescription?.extent_unit_other?.value}
       />
       {output.note_type_context?.map((note, index) => (
         <Term

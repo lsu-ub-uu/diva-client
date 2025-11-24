@@ -41,6 +41,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     recordType,
     recordId,
     authToken: auth?.data.token,
+    mode: 'view',
   });
 
   assertDefined(record.validationType, 'Record has no validation type');
