@@ -60,8 +60,8 @@ export default function LoginMenu({
   const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
-  const hydrated = useHydrated();
   const navigation = useNavigation();
+  const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
   const returnTo = encodeURIComponent(
@@ -131,47 +131,50 @@ export default function LoginMenu({
       );
     }
 
-    return (
-      <div className={styles['login']}>
-        {!hydrated && (
+    if (!hydrated) {
+      return (
+        <div className={styles['login']}>
           <Button
-            variant='tertiary'
+            {...loginButtonProps}
             as={Link}
             to={{ pathname: href('/login'), search: `?returnTo=${returnTo}` }}
           >
             {loginButtonChildren}
           </Button>
-        )}
-        {hydrated && (
-          <Menu>
-            <Button
-              disabled={submitting}
-              aria-busy={submitting}
-              className={styles['login-button']}
-              as={MenuButton}
-              variant='tertiary'
-            >
-              {loginButtonChildren}
-            </Button>
-            <DropdownMenu anchor='bottom end'>
-              <DevAccountLoginOptions
-                appTokenLogins={appTokenLogins}
-                onSelect={handleDevSelection}
-              />
-              <WebRedirectLoginMenuOptions
-                webRedirectLoginUnits={loginUnits.filter(
-                  ({ type }) => type === 'webRedirect',
-                )}
-              />
-              <PasswordLoginMenuOptions
-                passwordLoginUnits={loginUnits.filter(
-                  ({ type }) => type === 'password',
-                )}
-                returnTo={returnTo}
-              />
-            </DropdownMenu>
-          </Menu>
-        )}
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles['login']}>
+        <Menu>
+          <Button
+            variant='tertiary'
+            as={MenuButton}
+            disabled={submitting}
+            aria-busy={submitting}
+            className={styles['login-button']}
+          >
+            {loginButtonChildren}
+          </Button>
+          <DropdownMenu anchor='bottom end'>
+            <DevAccountLoginOptions
+              appTokenLogins={appTokenLogins}
+              onSelect={handleDevSelection}
+            />
+            <WebRedirectLoginMenuOptions
+              webRedirectLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'webRedirect',
+              )}
+            />
+            <PasswordLoginMenuOptions
+              passwordLoginUnits={loginUnits.filter(
+                ({ type }) => type === 'password',
+              )}
+              returnTo={returnTo}
+            />
+          </DropdownMenu>
+        </Menu>
       </div>
     );
   }
@@ -187,39 +190,42 @@ export default function LoginMenu({
     </>
   );
 
-  return (
-    <div className={styles['login']}>
-      {!hydrated && (
+  if (!hydrated) {
+    return (
+      <div className={styles['login']}>
         <Button
           variant='tertiary'
           as={Link}
           to={{ pathname: href('/logout'), search: `?returnTo=${returnTo}` }}
+          className={styles['login-button']}
         >
           {logoutButtonChildren}
         </Button>
-      )}
-      {hydrated && (
-        <Menu>
-          <Button
-            variant='tertiary'
-            as={MenuButton}
-            className={styles['login-button']}
-            disabled={submitting}
-            aria-busy={submitting}
-            onClick={(e) => e.preventDefault()}
-          >
-            {logoutButtonChildren}
-          </Button>
-          <DropdownMenu anchor='bottom end'>
-            <MenuItem>
-              <button onClick={logout} className={styles['logout-button']}>
-                {t('divaClient_LogoutText')}
-                <LogOutIcon />
-              </button>
-            </MenuItem>
-          </DropdownMenu>
-        </Menu>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles['login']}>
+      <Menu>
+        <Button
+          variant='tertiary'
+          className={styles['login-button']}
+          as={MenuButton}
+          disabled={submitting}
+          aria-busy={submitting}
+        >
+          {logoutButtonChildren}
+        </Button>
+        <DropdownMenu anchor='bottom end'>
+          <MenuItem>
+            <button onClick={logout} className={styles['logout-button']}>
+              {t('divaClient_LogoutText')}
+              <LogOutIcon />
+            </button>
+          </MenuItem>
+        </DropdownMenu>
+      </Menu>
     </div>
   );
 }
