@@ -115,6 +115,14 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </dl>
 
           <dl>
+            <Term
+              label={
+                output.physicalDescription?.extent_unit_pages?.__text?.[
+                  language
+                ]
+              }
+              value={output.physicalDescription?.extent_unit_pages?.value}
+            />
             <ArtisticWorkFields output={output} />
             <DegreeProjectFields output={output} />
             <Term
@@ -132,7 +140,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             />
             <Term
               label={output.relatedItem_type_initiative?.__text?.[language]}
-              value={output.relatedItem_type_initiative?.initiative?.map(
+              value={output.relatedItem_type_initiative?.sfo?.map(
                 (initiative) => initiative.__valueText?.[language],
               )}
             />
