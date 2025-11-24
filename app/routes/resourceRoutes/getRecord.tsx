@@ -50,6 +50,7 @@ export const loader = async ({
       recordId,
       authToken: auth?.data.token,
       presentationRecordLinkId,
+      mode: 'view',
     });
 
     return { record };

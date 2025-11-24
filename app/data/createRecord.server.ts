@@ -61,5 +61,5 @@ export const createRecord = async (
     auth?.data?.token,
   );
 
-  return transformRecord(dependencies, response.data);
+  return transformRecord(dependencies, response.data, FORM_MODE_NEW);
 };
