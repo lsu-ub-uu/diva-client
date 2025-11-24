@@ -2451,7 +2451,16 @@ export interface DurationGroup {
 }
 
 export interface PhysicalDescriptionGroup {
-  extent?: { value: string; __text?: { sv: string; en: string } };
+  extent_unit_pages?: {
+    value: string;
+    _unit: 'pages';
+    __text?: { sv: string; en: string };
+  };
+  extent_unit_other?: {
+    value: string;
+    _unit: 'other';
+    __text?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 
@@ -3301,7 +3310,7 @@ export interface RelatedItemFunderGroup {
   __text?: { sv: string; en: string };
 }
 
-export type SfoCollection =
+export type StrategicResearchAreasCollection =
   | 'cancer'
   | 'diabetes'
   | 'epidemiology'
@@ -3324,8 +3333,8 @@ export type SfoCollection =
   | 'politicalImportantGeographicalRegions';
 
 export interface RelatedItemInitiativeGroup {
-  initiative?: {
-    value: SfoCollection;
+  sfo?: {
+    value: StrategicResearchAreasCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   }[];
@@ -3361,18 +3370,15 @@ export interface RelatedOutputConstituentGroup {
 
 export type AccessConditionCollection = 'gratis' | 'restricted';
 
-export interface DivaLocalGenericMarkup {
-  localGenericMarkup: LocalGenericMarkupUpdateGroup;
+export interface DivaLocalLabels {
+  localLabels: LocalLabelsUpdateGroup;
 }
 
-export interface RecordInfoLocalGenericMarkupUpdateGroup {
+export interface RecordInfoLocalLabelsUpdateGroup {
   id: { value: string; __text?: { sv: string; en: string } };
-  type: {
-    value: 'diva-localGenericMarkup';
-    __text?: { sv: string; en: string };
-  };
+  type: { value: 'diva-localLabels'; __text?: { sv: string; en: string } };
   validationType: {
-    value: 'diva-localGenericMarkup';
+    value: 'diva-localLabels';
     __text?: { sv: string; en: string };
   };
   dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
@@ -3383,9 +3389,9 @@ export interface RecordInfoLocalGenericMarkupUpdateGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface LocalGenericMarkupUpdateGroup {
-  recordInfo: RecordInfoLocalGenericMarkupUpdateGroup;
-  localGenericMarkup?: { value: string; __text?: { sv: string; en: string } };
+export interface LocalLabelsUpdateGroup {
+  recordInfo: RecordInfoLocalLabelsUpdateGroup;
+  localLabel?: { value: string; __text?: { sv: string; en: string } };
   description?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -3794,10 +3800,10 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  localGenericMarkup?: {
+  localLabels?: {
     value: string;
     linkedRecord: {
-      localGenericMarkup: LocalGenericMarkupUpdateGroup;
+      localLabels: LocalLabelsUpdateGroup;
     };
 
     __text?: { sv: string; en: string };
