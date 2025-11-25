@@ -18,14 +18,13 @@
 
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import { MehIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SearchResultDecorated } from '../Form/SearchResult/SearchResultDecorated';
 import styles from './RecordSearch.module.css';
-import { MehIcon, Search } from 'lucide-react';
-import { SearchResultDecorated } from '../Form/SearchResultDecorated';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -63,13 +62,11 @@ export const RecordSearch = ({
           <ol className={styles['result-list']}>
             {searchResults.data.map((record) => (
               <li key={record.id} className={styles['result-list-item']}>
-                <SearchResultForm
-                  record={record}
-                  formSchema={record.presentation!}
-                />
-                <SearchResultDecorated searchResult={record} />
-                <div className={styles['record-action-buttons']}>
-                  <RecordActionButtons record={record} />
+                <div className={styles['result-list-item-content']}>
+                  <SearchResultDecorated searchResult={record} />
+                  <div className={styles['record-action-buttons']}>
+                    <RecordActionButtons record={record} />
+                  </div>
                 </div>
               </li>
             ))}

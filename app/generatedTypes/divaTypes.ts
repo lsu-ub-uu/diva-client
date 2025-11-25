@@ -3310,7 +3310,7 @@ export type SfoCollection =
   | 'stemcellsAndRegenerativeMedicine'
   | 'healthCareResearch'
   | 'eScience'
-  | 'itAndMobileCommunications'
+  | 'itAndMobileCommunicatiooutputns'
   | 'materialsscience'
   | 'nanoscienceAndNanotechnology'
   | 'productionTechnology'
