@@ -21,7 +21,7 @@ export const SearchLinkList = ({
     return null;
   }
   return (
-    <div>
+    <section>
       {heading && <h2 id={id}>{heading}</h2>}
       <ul className='pill-container' aria-labelledby={id} lang={language}>
         {items
@@ -40,6 +40,6 @@ export const SearchLinkList = ({
             </li>
           ))}
       </ul>
-    </div>
+    </section>
   );
 };

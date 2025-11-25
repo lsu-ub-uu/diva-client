@@ -1,5 +1,6 @@
 .diva-output-view-page {
   display: grid;
+  padding-bottom: var(--gap-xxl);
 }
 
 .diva-output-view {
@@ -34,6 +35,7 @@ h1 {
 
 h2 {
   margin-top: var(--gap-l);
+  font-size: 1.3rem;
 }
 
 h3 {
@@ -110,6 +112,26 @@ dd.block {
   }
 }
 
+section {
+  border-bottom: 1px solid var(--color-thin-border);
+  padding-bottom: var(--gap-l);
+
+  dt:first-child {
+    margin-top: 0;
+  }
+}
+
+section section {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
 .pill-container {
   display: flex;
   flex-wrap: wrap;
@@ -147,10 +169,10 @@ address {
 }
 
 .expanded-card {
-  border-left: 2px solid var(--color-card-dark);
-  background: var(--color-card);
-  border-radius: var(--color-border-radius-s);
-  padding: var(--gap-s);
+  border: 1px solid var(--color-output-card-border);
+  background: var(--color-output-card-background);
+  border-radius: var(--border-radius-s);
+  padding: var(--gap);
   margin-bottom: var(--gap-s);
 
   .name {
@@ -200,18 +222,38 @@ address {
   border-radius: var(--border-radius-s);
 }
 
-section {
-  border-bottom: 1px solid var(--color-thin-border);
-  padding-bottom: var(--gap-l);
-}
+.record-details {
+  background: var(--color-output-card-background);
+  padding: var(--gap);
+  border-radius: var(--border-radius-s);
+  border: 1px solid var(--color-output-card-border);
+  margin-bottom: var(--gap-xl);
 
-section section {
-  border: none;
-  padding: 0;
-  margin: 0;
-}
+  summary {
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: var(--gap-s);
 
-section:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+    &:hover {
+      background-color: var(--color-secondary-hover);
+    }
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  &[open] {
+    summary {
+      padding-bottom: var(--gap);
+
+      .expand-chevron {
+        transform: rotate(180deg);
+      }
+    }
+  }
 }

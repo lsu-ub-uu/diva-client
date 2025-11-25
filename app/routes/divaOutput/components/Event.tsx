@@ -3,7 +3,7 @@ import type {
   PresentationDivaGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Date } from './Date';
+import { DateDisplay } from './DateDisplay';
 import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 import { getLanguageTextId } from '../utils/translateLanguage';
@@ -33,7 +33,7 @@ export const Event = ({ event }: EventProps) => {
 
   const eventParts = [
     event.dateOther_type_presentation && (
-      <Date date={event.dateOther_type_presentation} />
+      <DateDisplay date={event.dateOther_type_presentation} />
     ),
     address,
     eventLanguage ? `(${t(getLanguageTextId(eventLanguage))})` : '',

@@ -1,6 +1,6 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Date } from '@/routes/divaOutput/components/Date';
+import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
@@ -29,10 +29,13 @@ import {
   CheckCircle2Icon,
   CheckCircleIcon,
   CheckLineIcon,
+  InfoIcon,
   ShoppingCartIcon,
   TriangleAlert,
   TriangleAlertIcon,
 } from 'lucide-react';
+import { href, Link } from 'react-router';
+import { RecordDetails } from './RecordDetails';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -199,6 +202,8 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside>
+        <RecordDetails output={output} />
+
         <Attachments attachments={output.attachment} />
         <dl>
           <Term
@@ -214,7 +219,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <dl>
           <Term
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
-            value={<Date date={output.dateOther_type_patent} />}
+            value={<DateDisplay date={output.dateOther_type_patent} />}
           />
           {output.patentHolder_type_corporate && (
             <Organisations
@@ -251,46 +256,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <Identifiers output={output} />
 
         <Classifications output={output} />
-        <dl>
-          <Term
-            label={output.note_type_external?.__text?.[language]}
-            value={output.note_type_external?.value}
-          />
-          <Term
-            label={output.dataQuality?.__text?.[language]}
-            value={
-              <span className='icon-text'>
-                {getDataQualityIcon(output.dataQuality?.value)}{' '}
-                {output.dataQuality?.__valueText?.[language]}
-              </span>
-            }
-          />
-          <Term
-            label={output.adminInfo?.note_type_internal?.__text?.[language]}
-            value={output.adminInfo?.note_type_internal?.value}
-          />
-
-          <Term
-            label={output.adminInfo?.failed?.__text?.[language]}
-            value={output.adminInfo?.failed?.__valueText?.[language]}
-          />
-          <Term
-            label={output.adminInfo?.reviewed?.__text?.[language]}
-            value={output.adminInfo?.reviewed?.__valueText?.[language]}
-          />
-        </dl>
       </aside>
     </div>
   );
-};
-
-const getDataQualityIcon = (dataQuality?: string) => {
-  switch (dataQuality) {
-    case '2026':
-      return <CheckCircleIcon color='var(--color-success-main)' />;
-    case 'classic':
-      return <TriangleAlertIcon color='var(--color-warning-main)' />;
-    default:
-      return null;
-  }
 };
