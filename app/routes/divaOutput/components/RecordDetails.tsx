@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { href, Link } from 'react-router';
 import { Term } from './Term';
+import { useTranslation } from 'react-i18next';
 
 interface RecordDetailsProps {
   output: DivaOutputGroup;
@@ -16,16 +17,17 @@ interface RecordDetailsProps {
 
 export const RecordDetails = ({ output }: RecordDetailsProps) => {
   const language = useLanguage();
+  const { t } = useTranslation();
   return (
     <details className='record-details'>
       <summary>
         <ChevronDownIcon className='expand-chevron' />
-        <h2>Detaljer</h2>
+        <h2>{t('divaClient_detailsText')}</h2>
         <InfoIcon />
       </summary>
       <dl>
         <Term
-          label='Skapad'
+          label={t('divaClient_createdText')}
           value={
             <TimestampAndUser
               timestamp={output.recordInfo.tsCreated.value}
@@ -34,7 +36,7 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           }
         />
         <Term
-          label='Senast uppdaterad'
+          label={t('divaClient_updatedText')}
           value={
             <TimestampAndUser
               timestamp={output.recordInfo.updated.at(-1)?.tsUpdated?.value}
@@ -51,7 +53,10 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
             </span>
           }
         />
-        <Term label='Medlem' value={output.recordInfo?.permissionUnit?.value} />
+        <Term
+          label={t('divaClient_memberText')}
+          value={output.recordInfo?.permissionUnit?.value}
+        />
 
         <Term
           label={output.note_type_external?.__text?.[language]}
