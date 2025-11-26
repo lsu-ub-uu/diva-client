@@ -1,9 +1,9 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import type { IdentifierDisplayLabelIsbnIsmnCollection } from '@/generatedTypes/divaTypes';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  formatBytes,
   formatIsbnIsmnLabel,
   formatTimestamp,
-  formatBytes,
   type IsbnIsmn,
 } from '../format';
 
