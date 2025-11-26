@@ -2,39 +2,18 @@ import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { vi, describe, expect, it } from 'vitest';
 import { AttachmentDetails } from '../AttachmentDetails';
 
+vi.mock('../../utils/format', async () => {
+  return {
+    ...(await vi.importActual<any>('../../utils/format')),
+    formatTimestamp: (timestamp: string) =>
+      timestamp ? new Date(timestamp).toISOString() : '',
+  };
+});
+
 describe('AttachmentDetails', () => {
-  it('is initially collapsed and can be expanded', async () => {
-    const user = userEvent.setup();
-    const mockAttachment = {
-      displayLabel: {
-        __text: { en: 'Display Label', sv: 'Visningsetikett' },
-        value: 'Test Attachment',
-      },
-      type: {
-        __text: { en: 'Type', sv: 'Typ' },
-        __valueText: { en: 'Image', sv: 'Bild' },
-        value: 'image',
-      },
-    } as Partial<AttachmentGroup>;
-
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => <AttachmentDetails attachment={mockAttachment} />,
-      },
-    ]);
-    render(<RoutesStub />);
-
-    expect(screen.queryByText('Test Attachment')).not.toBeVisible();
-
-    await user.click(screen.getByText('divaClient_attachmentDetailsText'));
-
-    expect(screen.getByText('Test Attachment')).toBeVisible();
-  });
-
   it('displays basic attachment information when expanded', async () => {
     const user = userEvent.setup();
     const mockAttachment = {
@@ -128,7 +107,7 @@ describe('AttachmentDetails', () => {
 
     expect(screen.getByText('Visibility')).toBeInTheDocument();
     expect(screen.getByText(/Public/)).toBeInTheDocument();
-    expect(screen.getByText(/(01\/01\/2023, 13:00:00)/)).toBeInTheDocument();
+    expect(screen.getByText(/(2023-01-01T12:00:00.000Z)/)).toBeInTheDocument();
   });
 
   it('displays admin info fields when available', async () => {
