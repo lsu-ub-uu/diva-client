@@ -4,14 +4,14 @@ import type { BFFDataRecord } from '@/types/record';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { Link } from 'react-router';
 import { Persons } from './Persons';
-import styles from './SearchResultDecorated.module.css';
+import styles from './DivaOutputSearchResult.module.css';
 
-interface SearchResultDecoratedProps {
+interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
 }
-export const SearchResultDecorated = ({
+export const DivaOutputSearchResult = ({
   searchResult,
-}: SearchResultDecoratedProps) => {
+}: DivaOutputSearchResultProps) => {
   const language = useLanguage();
   const output = searchResult.data.output as DivaOutputGroup;
   return (
@@ -33,6 +33,9 @@ export const SearchResultDecorated = ({
       <ul className={styles['attachments']}>
         {output.attachment &&
           output.attachment.map((attachment, i) => {
+            if (!attachment.attachmentFile?.linkedRecord?.binary.master) {
+              return null;
+            }
             return (
               <li key={i}>
                 {attachment?.attachmentFile?.linkedRecord.binary.thumbnail
@@ -40,7 +43,7 @@ export const SearchResultDecorated = ({
                   <img
                     className='attachment-thumbnail'
                     src={createDownloadLinkFromResourceLink(
-                      attachment.attachmentFile.linkedRecord.binary.thumbnail
+                      attachment?.attachmentFile?.linkedRecord.binary.thumbnail
                         .thumbnail,
                     )}
                     alt={attachment.__text?.[language]}

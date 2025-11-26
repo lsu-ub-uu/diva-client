@@ -23,7 +23,8 @@ import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActi
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 import { MehIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { SearchResultDecorated } from '../Form/SearchResult/SearchResultDecorated';
+import { DivaOutputSearchResult } from '../Form/SearchResult/DivaOutputSearchResult';
+import { SearchResultForm } from '../Form/SearchResultForm';
 import styles from './RecordSearch.module.css';
 
 interface RecordSearchProps {
@@ -40,6 +41,8 @@ export const RecordSearch = ({
   apiUrl,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
+  const { BASE_URL } = import.meta.env;
+  const recordType = window.location.pathname.split(BASE_URL)[1];
   return (
     <div className={styles['record-search']}>
       <SearchForm
@@ -63,7 +66,15 @@ export const RecordSearch = ({
             {searchResults.data.map((record) => (
               <li key={record.id} className={styles['result-list-item']}>
                 <div className={styles['result-list-item-content']}>
-                  <SearchResultDecorated searchResult={record} />
+                  {recordType && recordType === 'diva-output' ? (
+                    <DivaOutputSearchResult searchResult={record} />
+                  ) : (
+                    <SearchResultForm
+                      record={record}
+                      formSchema={record.presentation!}
+                    />
+                  )}
+
                   <div className={styles['record-action-buttons']}>
                     <RecordActionButtons record={record} />
                   </div>
