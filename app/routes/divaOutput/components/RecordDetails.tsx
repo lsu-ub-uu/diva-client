@@ -7,10 +7,9 @@ import {
   InfoIcon,
   TriangleAlertIcon,
 } from 'lucide-react';
-import { href, Link } from 'react-router';
-import { Term } from './Term';
 import { useTranslation } from 'react-i18next';
 import { formatTimestamp } from '../utils/format';
+import { Term } from './Term';
 
 interface RecordDetailsProps {
   output: DivaOutputGroup;
