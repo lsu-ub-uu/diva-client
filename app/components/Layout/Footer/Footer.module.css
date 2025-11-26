@@ -1,0 +1,25 @@
+.footer {
+  margin-top: var(--gap-xxl);
+  padding: var(--gap-xl) var(--gap-l);
+  border-top: 1px solid var(--color-lighter-border);
+  background-color: var(--color-nav-rail);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-l);
+  max-width: 800px;
+  margin: 0 auto;
+
+  @media (width < 600px) {
+    flex-direction: column;
+    gap: var(--gap-l);
+  }
+}
+
+.footer-link {
+  color: var(--color-label);
+  font-size: var(--font-size-s);
+}

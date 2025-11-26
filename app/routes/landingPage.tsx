@@ -1,4 +1,5 @@
-import { Button } from '@/components/Button/Button';
+import { icons } from '@/components/Layout/TopNavigation/TopNavigation';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 import bgImage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
 import bgImageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
@@ -9,24 +10,21 @@ import {
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Form,
   Link,
   NavLink,
   href,
+  useRouteLoaderData,
   type LoaderFunctionArgs,
 } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
+import { loader as rootLoader } from '../root';
 import type { Route } from './+types/landingPage';
 import css from './landingPage.css?url';
-import type { ReactNode } from 'react';
-import { loader as rootLoader } from '../root';
-import { useRouteLoaderData } from 'react-router';
-import { icons } from '@/components/Layout/TopNavigation/TopNavigation';
-import { useTranslation } from 'react-i18next';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
-import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -153,34 +151,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           </ul>
         </nav>
       </section>
-      <footer className='landing-footer'>
-        <div className='footer-links'>
-          <Button
-            variant='tertiary'
-            as='a'
-            href='https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse'
-            className='footer-link'
-          >
-            Tillgänglighet
-          </Button>
-          <Button
-            variant='tertiary'
-            as='a'
-            href='https://www.info.diva-portal.org/w/diva/om-diva'
-            className='footer-link'
-          >
-            Om DiVA
-          </Button>
-          <Button
-            variant='tertiary'
-            as='a'
-            href='/rest'
-            className='footer-link'
-          >
-            REST API
-          </Button>
-        </div>
-      </footer>
     </main>
   );
 }
