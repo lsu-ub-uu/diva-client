@@ -84,10 +84,6 @@ describe('formatTimestamp', () => {
     });
   });
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
   it('formats timestamp for Swedish locale', () => {
     const timestamp = '2023-12-25T14:30:00.000Z';
     const result = formatTimestamp(timestamp, 'sv');
