@@ -1,10 +1,10 @@
 import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ChevronDownIcon, InfoIcon } from 'lucide-react';
-import { formatBytes, formatTimestamp } from '../utils/format';
+import { useTranslation } from 'react-i18next';
+import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';
 import { DateDisplay } from './DateDisplay';
 import { Term } from './Term';
-import { useTranslation } from 'react-i18next';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
@@ -41,7 +41,12 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
         />
         <Term
           label={binaryRecord?.master?.fileSize?.__text?.[language]}
-          value={formatBytes(binaryRecord?.master?.fileSize?.value)}
+          value={
+            <span>
+              {formatRawBytes(binaryRecord?.master?.fileSize?.value, language)}{' '}
+              ({formatBytes(binaryRecord?.master?.fileSize?.value)})
+            </span>
+          }
         />
         <Term
           label={binaryRecord?.recordInfo?.visibility?.__text?.[language]}

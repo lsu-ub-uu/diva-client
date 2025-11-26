@@ -26,9 +26,19 @@ export const formatTimestamp = (
 export const formatBytes = (bytesString?: string): string => {
   if (!bytesString) return '';
   const bytes = parseInt(bytesString, 10);
-  if (bytes === 0) return '0 B';
+  if (bytes === 0 || isNaN(bytes) || bytes < 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
+  if (i > 4) return '>1024 TB';
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+export const formatRawBytes = (
+  bytesString: string | undefined,
+  language: 'sv' | 'en',
+): string => {
+  if (!bytesString) return '';
+  const bytes = parseInt(bytesString, 10);
+  return bytes.toLocaleString(language === 'sv' ? 'sv-SE' : 'en-GB') + ' Bytes';
 };

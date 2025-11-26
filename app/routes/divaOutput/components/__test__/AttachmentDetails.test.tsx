@@ -93,7 +93,7 @@ describe('AttachmentDetails', () => {
     expect(screen.getByText('application/pdf')).toBeInTheDocument();
 
     expect(screen.getByText('File Size')).toBeInTheDocument();
-    expect(screen.getByText('1 MB')).toBeInTheDocument();
+    expect(screen.getByText('1,048,576 Bytes (1 MB)')).toBeInTheDocument();
   });
 
   it('displays visibility information with formatted timestamp when available', async () => {
