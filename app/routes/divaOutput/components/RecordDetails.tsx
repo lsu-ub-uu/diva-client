@@ -10,6 +10,7 @@ import {
 import { href, Link } from 'react-router';
 import { Term } from './Term';
 import { useTranslation } from 'react-i18next';
+import { formatTimestamp } from '../utils/format';
 
 interface RecordDetailsProps {
   output: DivaOutputGroup;
@@ -49,7 +50,8 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           value={
             <span>
               {output.recordInfo?.visibility?.__valueText?.[language]} (
-              {formatTimestamp(output.recordInfo.tsVisibility?.value)})
+              {formatTimestamp(output.recordInfo.tsVisibility?.value, language)}
+              )
             </span>
           }
         />
@@ -100,6 +102,7 @@ const TimestampAndUser = ({
   timestamp?: string;
   userId?: string;
 }) => {
+  const language = useLanguage();
   if (!timestamp && !userId) {
     return null;
   }
@@ -115,17 +118,9 @@ const TimestampAndUser = ({
           {userId}
         </Link>
       )}
-      {timestamp && <> ({formatTimestamp(timestamp)})</>}
+      {timestamp && <> ({formatTimestamp(timestamp, language)})</>}
     </span>
   );
-};
-
-const formatTimestamp = (timestamp?: string) => {
-  if (!timestamp) {
-    return undefined;
-  }
-  const date = new Date(timestamp);
-  return date.toLocaleString();
 };
 
 const getDataQualityIcon = (dataQuality?: string) => {

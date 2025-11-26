@@ -257,3 +257,32 @@ address {
     }
   }
 }
+
+.attachment .record-details {
+  padding: var(--gap-s);
+  font-size: var(--font-size-s);
+  transition:
+    background-color 0.1s,
+    border-color 0.1s;
+  margin-bottom: var(--gap);
+
+  &:not([open]) {
+    background-color: transparent;
+  }
+
+  &:hover {
+    border-color: var(--color-thin-border);
+  }
+
+  h2 {
+    font-size: var(--font-size-s);
+  }
+
+  dl {
+    padding-right: var(--gap);
+  }
+
+  dt {
+    margin-top: var(--gap);
+  }
+}
