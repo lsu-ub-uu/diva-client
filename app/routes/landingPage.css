@@ -167,6 +167,53 @@
   }
 }
 
+.other-record-types {
+  margin-top: var(--gap-xxl);
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
+  h3 {
+    font-size: var(--font-size);
+  }
+
+  ul {
+    margin-top: var(--gap-l);
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--gap-xl);
+  }
+}
+
+.other-record-type-link {
+  text-decoration: none;
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
+  padding: var(--gap-l);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  color: inherit;
+
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgb(0 0 0 / 15%);
+  }
+}
+
 .card-icon {
   margin-bottom: var(--gap-l);
   font-size: var(--font-size-xl);

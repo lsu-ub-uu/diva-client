@@ -35,7 +35,7 @@ export interface TopNavigationProps {
   onNavigationClick?: () => void;
 }
 
-const icons: Record<string, ReactNode> = {
+export const icons: Record<string, ReactNode> = {
   'diva-output': <BookOpenIcon />,
   'diva-person': <UsersIcon />,
   'diva-project': <ChartGanttIcon />,

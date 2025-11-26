@@ -9,12 +9,24 @@ import {
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
-import { Form, Link, href, type LoaderFunctionArgs } from 'react-router';
+import {
+  Form,
+  Link,
+  NavLink,
+  href,
+  type LoaderFunctionArgs,
+} from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/landingPage';
 import css from './landingPage.css?url';
 import type { ReactNode } from 'react';
+import { loader as rootLoader } from '../root';
+import { useRouteLoaderData } from 'react-router';
+import { icons } from '@/components/Layout/TopNavigation/TopNavigation';
+import { useTranslation } from 'react-i18next';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -46,7 +58,9 @@ export const meta: Route.MetaFunction = ({ loaderData }) => [
 
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const { title, heroImage } = loaderData;
-
+  const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
+  const recordTypes = rootLoaderData?.recordTypes ?? [];
+  const { t } = useTranslation();
   return (
     <main className='landing-main'>
       <div className='hero-container'>
@@ -62,7 +76,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
 
         <h1 className='hero-title'>{title}</h1>
         <div className='hero-subtitle'>
-          Sök bland alla DiVA-medlemmars publikationer
+          Sök bland Nordiska museets publikationer
         </div>
 
         <Form
@@ -72,6 +86,11 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           viewTransition
         >
           <input type='hidden' name='search.rows.value' value='10' />
+          <input
+            type='hidden'
+            name='search.include.includePart.permissionUnitSearchTerm.value'
+            value='permissionUnit_nordiskamuseet'
+          />
           <div className='search-container'>
             <label className='search-label' htmlFor='landing-search'>
               Sök efter publikationer
@@ -112,7 +131,28 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           description='Utforska forskningsprojekt'
         />
       </div>
-
+      <section className='other-record-types'>
+        <h2>Alla posttyper</h2>
+        <nav>
+          <ul>
+            {recordTypes.map((recordType) => (
+              <li key={recordType.id}>
+                <NavLink
+                  className='other-record-type-link'
+                  to={href('/:recordType', { recordType: recordType.id })}
+                >
+                  {({ isPending }) => (
+                    <>
+                      {isPending ? <CircularLoader /> : icons[recordType.id]}
+                      <h3>{t(recordType.textId)}</h3>
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </section>
       <footer className='landing-footer'>
         <div className='footer-links'>
           <Button
@@ -147,15 +187,17 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
 
 interface NavigationCardProps {
   to: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
+  iconNode?: ReactNode;
   iconColor: string;
   title: string;
-  description: string;
+  description?: string;
 }
 
 function NavigationCard({
   to,
   icon: Icon,
+  iconNode,
   iconColor,
   title,
   description,
@@ -163,8 +205,8 @@ function NavigationCard({
   return (
     <Link to={to} className='navigation-link' viewTransition>
       <div className='navigation-card'>
-        <Icon className={`card-icon ${iconColor}`} />
-        <h3 className='card-title'>{title}</h3>
+        {Icon ? <Icon className={`card-icon ${iconColor}`} /> : iconNode}
+        <h2 className='card-title'>{title}</h2>
         <p className='card-description'>{description}</p>
       </div>
     </Link>
