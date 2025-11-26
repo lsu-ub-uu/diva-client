@@ -130,7 +130,7 @@ const getDataQualityIcon = (dataQuality?: string) => {
     case '2026':
       return <CheckCircleIcon color='var(--color-success-main)' />;
     case 'classic':
-      return <TriangleAlertIcon color='var(--color-warning-main)' />;
+      return <TriangleAlertIcon color='var(--color-error-main)' />;
     default:
       return null;
   }

@@ -55,7 +55,7 @@
   --color-fab-secondary-bg: rgb(255 255 255);
   --color-nav-rail: var(--color-gray-light);
   --color-output-card-background: var(--color-gray-light);
-  --color-output-card-border: var(--color-gray-dark);
+  --color-output-card-border: var(--color-thin-border);
 
   @mixin dark-color-scheme {
     --color-background: rgb(33 33 33);
