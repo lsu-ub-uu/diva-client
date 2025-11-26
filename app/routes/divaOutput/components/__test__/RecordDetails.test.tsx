@@ -76,16 +76,10 @@ describe('RecordDetails', () => {
     await user.click(screen.getByText('divaClient_recordDetailsText'));
 
     expect(screen.getByText('divaClient_createdText')).toBeVisible();
-    expect(screen.getByText('user1')).toBeVisible();
-    expect(
-      screen.getByText((content) => content.endsWith('(01/01/2023, 13:00:00)')),
-    ).toBeVisible();
+    expect(screen.getByText('01/01/2023, 13:00:00 (user1)')).toBeVisible();
 
     expect(screen.getByText('divaClient_updatedText')).toBeVisible();
-    expect(screen.getByText('user2')).toBeVisible();
-    expect(
-      screen.getByText((content) => content.endsWith('(01/02/2023, 13:00:00)')),
-    ).toBeVisible();
+    expect(screen.getByText('01/02/2023, 13:00:00 (user2)')).toBeVisible();
 
     expect(screen.getByText('Visibility')).toBeVisible();
     expect(screen.getByText('Public (01/03/2023, 13:00:00)')).toBeVisible();

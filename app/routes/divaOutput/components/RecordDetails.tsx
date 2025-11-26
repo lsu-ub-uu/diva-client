@@ -108,17 +108,8 @@ const TimestampAndUser = ({
   }
   return (
     <span>
-      {userId && (
-        <Link
-          to={href('/:recordType/:recordId', {
-            recordType: 'user',
-            recordId: userId,
-          })}
-        >
-          {userId}
-        </Link>
-      )}
-      {timestamp && <> ({formatTimestamp(timestamp, language)})</>}
+      {formatTimestamp(timestamp, language)}
+      {userId && <> ({userId})</>}
     </span>
   );
 };
