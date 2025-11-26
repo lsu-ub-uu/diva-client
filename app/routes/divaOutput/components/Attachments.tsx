@@ -33,7 +33,9 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
           onClick={() => setExpanded(!expanded)}
           expanded={expanded}
           aria-controls={id}
-          showMoreText={t('divaClient_showAllAttachmentsText')}
+          showMoreText={t('divaClient_showAllAttachmentsText', {
+            count: attachments.length,
+          })}
         />
       )}
     </div>
