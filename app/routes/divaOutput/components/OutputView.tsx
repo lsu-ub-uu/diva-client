@@ -6,6 +6,7 @@ import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { ShoppingCartIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
 import { ArtisticWorkFields } from './ArtisticWork';
@@ -21,21 +22,11 @@ import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { Project } from './Project';
+import { RecordDetails } from './RecordDetails';
 import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
-import {
-  CheckCircle2Icon,
-  CheckCircleIcon,
-  CheckLineIcon,
-  InfoIcon,
-  ShoppingCartIcon,
-  TriangleAlert,
-  TriangleAlertIcon,
-} from 'lucide-react';
-import { href, Link } from 'react-router';
-import { RecordDetails } from './RecordDetails';
 
 interface OutputViewProps {
   data: DivaOutput;

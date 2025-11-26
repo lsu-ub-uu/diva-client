@@ -32,7 +32,7 @@ describe('RecordDetails', () => {
     render(<RoutesStub />);
 
     expect(screen.queryByText('divaClient_createdText')).not.toBeVisible();
-    await user.click(screen.getByText('divaClient_detailsText'));
+    await user.click(screen.getByText('divaClient_recordDetailsText'));
     expect(screen.getByText('divaClient_createdText')).toBeVisible();
   });
 
@@ -73,7 +73,7 @@ describe('RecordDetails', () => {
     ]);
     render(<RoutesStub />);
 
-    await user.click(screen.getByText('divaClient_detailsText'));
+    await user.click(screen.getByText('divaClient_recordDetailsText'));
 
     expect(screen.getByText('divaClient_createdText')).toBeVisible();
     expect(screen.getByText('user1')).toBeVisible();

@@ -22,7 +22,7 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
     <details className='record-details'>
       <summary>
         <ChevronDownIcon className='expand-chevron' />
-        <h2>{t('divaClient_detailsText')}</h2>
+        <h2>{t('divaClient_recordDetailsText')}</h2>
         <InfoIcon />
       </summary>
       <dl>
@@ -30,7 +30,7 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           label={t('divaClient_createdText')}
           value={
             <TimestampAndUser
-              timestamp={output.recordInfo.tsCreated.value}
+              timestamp={output.recordInfo.tsCreated?.value}
               userId={output.recordInfo.createdBy?.value}
             />
           }
@@ -39,8 +39,8 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           label={t('divaClient_updatedText')}
           value={
             <TimestampAndUser
-              timestamp={output.recordInfo.updated.at(-1)?.tsUpdated?.value}
-              userId={output.recordInfo.updated.at(-1)?.updatedBy?.value}
+              timestamp={output.recordInfo.updated?.at(-1)?.tsUpdated?.value}
+              userId={output.recordInfo.updated?.at(-1)?.updatedBy?.value}
             />
           }
         />
@@ -100,6 +100,9 @@ const TimestampAndUser = ({
   timestamp?: string;
   userId?: string;
 }) => {
+  if (!timestamp && !userId) {
+    return null;
+  }
   return (
     <span>
       {userId && (
