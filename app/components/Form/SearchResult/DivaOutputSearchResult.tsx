@@ -12,6 +12,7 @@ interface DivaOutputSearchResultProps {
 export const DivaOutputSearchResult = ({
   searchResult,
 }: DivaOutputSearchResultProps) => {
+  console.log(searchResult);
   const language = useLanguage();
   const output = searchResult.data.output as DivaOutputGroup;
   return (
@@ -26,8 +27,14 @@ export const DivaOutputSearchResult = ({
           <Persons persons={output.name_type_personal} />
         </span>
         <span style={{ display: 'flex', gap: '8px' }}>
-          <p>{output?.originInfo?.dateIssued?.year?.value}</p> &#124;
-          <p>{output?.genre_type_outputType?.__valueText?.en}</p>
+          <p>
+            <time dateTime={output?.originInfo?.dateIssued?.year?.value}>
+              {output?.originInfo?.dateIssued?.year?.value}
+            </time>
+          </p>{' '}
+          &#124;<p>{output?.genre_type_outputType?.__valueText?.en}</p>
+          &#124;
+          <p>{output.dataQuality?.value}</p>
         </span>
       </div>
       <ul className={styles['attachments']}>
