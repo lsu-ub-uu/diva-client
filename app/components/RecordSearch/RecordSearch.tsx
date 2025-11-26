@@ -41,8 +41,6 @@ export const RecordSearch = ({
   apiUrl,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
-  const { BASE_URL } = import.meta.env;
-  const recordType = window.location.pathname.split(BASE_URL)[1];
   return (
     <div className={styles['record-search']}>
       <SearchForm
@@ -66,7 +64,7 @@ export const RecordSearch = ({
             {searchResults.data.map((record) => (
               <li key={record.id} className={styles['result-list-item']}>
                 <div className={styles['result-list-item-content']}>
-                  {recordType && recordType === 'diva-output' ? (
+                  {record.recordType && record.recordType === 'diva-output' ? (
                     <DivaOutputSearchResult searchResult={record} />
                   ) : (
                     <SearchResultForm
