@@ -16,51 +16,41 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useFetcher, useLoaderData } from 'react-router';
 import type { loader } from '@/root';
 import { useTranslation } from 'react-i18next';
+import { useFetcher, useLoaderData } from 'react-router';
 
-import styles from './LanguageSwitcher.module.css';
-import { ChevronDownIcon, LanguageIcon } from '@/icons';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
-import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import styles from './LanguageSwitcher.module.css';
+import { GlobeIcon } from 'lucide-react';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const fetcher = useFetcher();
   const language = fetcher.formData ? fetcher.formData.get('language') : locale;
 
-  const changeLanguage = (language: string) => {
-    i18n.changeLanguage(language);
-    fetcher.submit({ language, intent: 'changeLanguage' }, { method: 'post' });
-  };
-
   return (
     <div className={styles['language-switcher']}>
-      <Menu>
-        <MenuButton
-          as={Button}
+      <fetcher.Form
+        method='post'
+        action='/'
+        className={styles['color-scheme-switcher']}
+      >
+        <Button
+          type='submit'
           variant='tertiary'
-          aria-label={t('divaClient_selectLanguageText')}
+          name='language'
+          value={language === 'sv' ? 'en' : 'sv'}
+          onClick={(e) =>
+            i18n.changeLanguage((e.target as HTMLButtonElement).value)
+          }
         >
-          <LanguageIcon className={styles['language-icon']} />
-          <span className={styles['dropdown-label']}>
-            {language === 'sv' ? 'Svenska' : 'English'}
-          </span>
-          <ChevronDownIcon />
-        </MenuButton>
-        <DropdownMenu anchor='bottom end'>
-          <input type='hidden' name='intent' value='changeLanguage' />
-          <MenuItem>
-            <button onClick={() => changeLanguage('en')}>English</button>
-          </MenuItem>
-          <MenuItem>
-            <button onClick={() => changeLanguage('sv')}>Svenska</button>
-          </MenuItem>
-        </DropdownMenu>
-      </Menu>
+          {language === 'sv' ? 'Svenska' : 'English'}
+          <GlobeIcon />
+        </Button>
+        <input type='hidden' name='intent' value='changeLanguage' />
+      </fetcher.Form>
     </div>
   );
 };

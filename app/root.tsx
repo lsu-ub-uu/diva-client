@@ -37,14 +37,8 @@ import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { Header } from '@/components/Layout/Header/Header';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
-import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
-import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { SentimentVeryDissatisfiedIcon } from '@/icons';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
@@ -56,7 +50,8 @@ import {
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
 import { AuthLogger } from './components/dev/AuthLogger';
-import { ColorSchemeSwitcher } from './components/Layout/Header/ColorSchemeSwitcher';
+import { Header } from './components/Layout/Header/Header';
+import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -64,6 +59,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { AngryIcon } from 'lucide-react';
 
 const { MODE } = import.meta.env;
 
@@ -167,7 +163,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<SentimentVeryDissatisfiedIcon />}
+          icon={<AngryIcon />}
           titleText={`${error.status}`}
           bodyText={JSON.stringify(error.data)}
         />
@@ -180,7 +176,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<SentimentVeryDissatisfiedIcon />}
+          icon={<AngryIcon />}
           titleText='Okänt fel'
           bodyText='Ett okänt fel inträffade. Försök igen senare'
           links={<a href='/'>Gå till startsidan</a>}
@@ -192,7 +188,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <RootErrorPage>
       <ErrorPage
-        icon={<SentimentVeryDissatisfiedIcon />}
+        icon={<AngryIcon />}
         titleText='Okänt fel'
         bodyText='Ett okänt fel inträffade. Försök igen senare'
         links={<a href='/'>Gå till startsidan</a>}
@@ -240,9 +236,13 @@ export default function App({ loaderData }: Route.ComponentProps) {
     member,
     loginUnits,
     appTokenLogins,
+    user,
     userCanEditMemberSettings,
     auth,
+    recordTypes,
   } = loaderData;
+
+  const editableMember = userCanEditMemberSettings ? member?.id : undefined;
 
   return (
     <div className='root-layout'>
@@ -251,25 +251,23 @@ export default function App({ loaderData }: Route.ComponentProps) {
         notification={loaderData.notification}
       />
 
-      <header className='member-bar'>
-        <NavigationLoader />
-        <MemberBar member={member} loggedIn={loaderData.user !== undefined}>
-          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-          <LanguageSwitcher />
-          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
-        </MemberBar>
-      </header>
+      <Header
+        className='header'
+        member={member}
+        user={user}
+        userPreferences={userPreferences}
+        loginUnits={loginUnits}
+        appTokenLogins={appTokenLogins}
+        recordTypes={recordTypes}
+        editableMember={editableMember}
+      />
 
-      <header className='nav-rail'>
-        <Header
-          recordTypes={loaderData.recordTypes}
-          loginUnits={loginUnits}
-          appTokenLogins={appTokenLogins}
-          editableMember={
-            userCanEditMemberSettings && member ? member.id : undefined
-          }
+      <div className='nav-rail'>
+        <TopNavigation
+          recordTypes={recordTypes}
+          editableMember={editableMember}
         />
-      </header>
+      </div>
 
       <div className='content'>
         <Breadcrumbs />

@@ -8,8 +8,9 @@ import { createTextDefinition } from '@/data/textDefinition/textDefinition.serve
 import { getDependencies } from './depencencies';
 import { createContext } from 'react-router';
 
-export const i18nContext = createContext<i18n>();
+const CI_MODE = process.env.CI_MODE === 'true';
 
+export const i18nContext = createContext<i18n>();
 export const createi18nInstance = async (request: Request) => {
   const i18nInstance = createInstance();
   const dependencies = await getDependencies();
@@ -29,7 +30,7 @@ export const createi18nInstance = async (request: Request) => {
           translation: createTextDefinition(dependencies, 'sv'),
         },
       },
-      lng: locale,
+      lng: CI_MODE ? 'cimode' : locale,
     });
   return i18nInstance;
 };

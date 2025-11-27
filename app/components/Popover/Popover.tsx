@@ -1,10 +1,10 @@
-import { CloseIcon } from '@/icons';
 import { type HTMLProps } from 'react';
 import { Button } from '../Button/Button';
 
 import clsx from 'clsx';
 import styles from './Popover.module.css';
 import { useTranslation } from 'react-i18next';
+import { XIcon } from 'lucide-react';
 
 interface PopoverProps extends HTMLProps<HTMLDivElement> {
   title?: string;
@@ -38,7 +38,7 @@ export const Popover = ({
             aria-label={t('divaClient_closeText')}
             tooltipPosition='left'
           >
-            <CloseIcon />
+            <XIcon />
           </Button>
         </div>
         {children}

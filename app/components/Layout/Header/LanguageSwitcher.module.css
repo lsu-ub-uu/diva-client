@@ -24,4 +24,10 @@
   button {
     width: 100%;
   }
+
+  @media (width < 900px) {
+    button {
+      flex-direction: row-reverse;
+    }
+  }
 }

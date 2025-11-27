@@ -17,7 +17,6 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Alert } from '@/components/Alert/Alert';
 import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -27,8 +26,8 @@ import { getSearchForm } from '@/data/getSearchForm.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { AddCircleIcon } from '@/icons';
 import { performSearch } from '@/routes/record/utils/performSearch';
+import { CirclePlusIcon } from 'lucide-react';
 import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Await, data, href, Link } from 'react-router';
@@ -128,7 +127,7 @@ export default function OutputSearchRoute({
                   })}
                   size='large'
                 >
-                  <AddCircleIcon />
+                  <CirclePlusIcon />
                   {t('divaClient_createText', {
                     type: t(recordTypeTextId).toLowerCase(),
                   })}
@@ -155,10 +154,6 @@ export default function OutputSearchRoute({
           />
         </div>
       </main>
-      <aside>
-        <h2>{t('divaClient_messagesHeadingText')}</h2>
-        <Alert severity='warning'>{t('divaClient_metadataWarningText')}</Alert>
-      </aside>
     </div>
   );
 }

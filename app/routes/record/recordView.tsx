@@ -24,12 +24,12 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { CodeIcon, DeleteIcon, EditDocumentIcon } from '@/icons';
 import { assertDefined } from '@/utils/invariant';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordView';
+import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -41,6 +41,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     recordType,
     recordId,
     authToken: auth?.data.token,
+    mode: 'view',
   });
 
   assertDefined(record.validationType, 'Record has no validation type');
@@ -86,7 +87,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
               recordId: record.id,
             })}
             text={t('divaClient_editRecordText')}
-            icon={<EditDocumentIcon />}
+            icon={<FilePenIcon />}
           />
         )}
         {record.userRights?.includes('delete') && (
@@ -94,7 +95,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
             <FloatingActionButton
               type='submit'
               text={t('divaClient_deleteRecordText')}
-              icon={<DeleteIcon />}
+              icon={<ShredderIcon />}
             />
           </Form>
         )}

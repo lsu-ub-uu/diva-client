@@ -18,8 +18,8 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { OpenInNewIcon } from '@/icons';
 import styles from './LinkButton.module.css';
+import { ExternalLinkIcon } from 'lucide-react';
 
 interface LinkButtonProps {
   text: string;
@@ -32,7 +32,7 @@ export const LinkButton = (props: LinkButtonProps) => {
     <a href={props.href} target='_blank' rel='noreferrer'>
       <span className={styles['link']}>
         {t(props.text)}
-        <OpenInNewIcon />
+        <ExternalLinkIcon />
       </span>
     </a>
   );

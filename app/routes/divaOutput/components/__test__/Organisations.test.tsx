@@ -164,7 +164,8 @@ describe('Organisations', () => {
         namePart: { value: 'Organisation 2' },
         description: {
           __text: { en: 'Description', sv: 'Beskrivning' },
-          value: 'Lorem ipsum',
+          value: 'researchGroup',
+          __valueText: { en: 'Research Group', sv: 'Forskningsgrupp' },
         },
       },
       {
@@ -186,7 +187,7 @@ describe('Organisations', () => {
       screen.getByRole('button', { name: 'divaClient_showMoreText' }),
     );
     expect(screen.getByText('Description')).toBeInTheDocument();
-    expect(screen.getByText('Lorem ipsum')).toBeInTheDocument();
+    expect(screen.getByText('Research Group')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'divaClient_showLessText' }),
     ).toBeInTheDocument();

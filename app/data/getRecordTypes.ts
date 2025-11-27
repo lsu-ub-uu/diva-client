@@ -33,7 +33,7 @@ export const getRecordTypes = async (
     recordType.recordTypeCategory.includes('clientNavigation'),
   );
 
-  const userRecordTypes = await Promise.all(
+  const userRecordTypes = await Promise.allSettled(
     divaClientRecordTypes.map((recordType) =>
       getRecordDataById<RecordWrapper>(
         'recordType',
@@ -44,6 +44,8 @@ export const getRecordTypes = async (
   );
 
   return userRecordTypes
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value)
     .map((response) => response.data)
     .filter((recordType) => recordType.record.actionLinks.search !== undefined)
     .map(transformRecordType);

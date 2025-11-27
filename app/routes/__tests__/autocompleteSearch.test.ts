@@ -84,6 +84,7 @@ describe('autocompleteSearch', () => {
         params: {
           searchType: 'nationalSubjectCategorySearch',
         },
+        unstable_pattern: '/autocompleteSearch/:searchType',
       });
 
       expect(searchRecords).toHaveBeenCalledWith(
@@ -152,6 +153,7 @@ describe('autocompleteSearch', () => {
         request,
         context,
         params: { searchType: 'nationalSubjectCategorySearch' },
+        unstable_pattern: '/autocompleteSearch/:searchType',
       });
 
       expect(response.result).toEqual([{ id: 'result1' }, { id: 'result2' }]);

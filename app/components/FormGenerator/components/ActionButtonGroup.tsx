@@ -20,7 +20,7 @@
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
 import { Button } from '@/components/Button/Button';
-import { ArrowDownwardIcon, ArrowUpwardIcon, CloseIcon } from '@/icons';
+import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
 
 interface ActionButtonGroupProps {
   entityName?: string;
@@ -60,7 +60,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           onClick={props.moveUpButtonAction}
           data-action-button='move-up'
         >
-          <ArrowUpwardIcon />
+          <ArrowUpIcon />
         </Button>
       )}
       {!props.hideDeleteButton && (
@@ -75,7 +75,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           onClick={props.deleteButtonAction}
           data-action-button='delete'
         >
-          <CloseIcon />
+          <XIcon />
         </Button>
       )}
       {!props.hideMoveButtons && (
@@ -90,7 +90,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           onClick={props.moveDownButtonAction}
           data-action-button='move-down'
         >
-          <ArrowDownwardIcon />
+          <ArrowDownIcon />
         </Button>
       )}
     </div>

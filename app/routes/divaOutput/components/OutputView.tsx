@@ -1,6 +1,5 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { ShoppingCartIcon } from '@/icons';
 import { Date } from '@/routes/divaOutput/components/Date';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
@@ -26,6 +25,7 @@ import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
+import { ShoppingCartIcon } from 'lucide-react';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -115,6 +115,14 @@ export const OutputView = ({ data }: OutputViewProps) => {
           </dl>
 
           <dl>
+            <Term
+              label={
+                output.physicalDescription?.extent_unit_pages?.__text?.[
+                  language
+                ]
+              }
+              value={output.physicalDescription?.extent_unit_pages?.value}
+            />
             <ArtisticWorkFields output={output} />
             <DegreeProjectFields output={output} />
             <Term
@@ -132,7 +140,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             />
             <Term
               label={output.relatedItem_type_initiative?.__text?.[language]}
-              value={output.relatedItem_type_initiative?.initiative?.map(
+              value={output.relatedItem_type_initiative?.sfo?.map(
                 (initiative) => initiative.__valueText?.[language],
               )}
             />
@@ -201,9 +209,11 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
             value={<Date date={output.dateOther_type_patent} />}
           />
-          {output.patentHolder_type_corporate && (
+          {output.name_otherType_patentHolder_type_corporate && (
             <Organisations
-              organisations={[output.patentHolder_type_corporate]}
+              organisations={[
+                output.name_otherType_patentHolder_type_corporate,
+              ]}
             />
           )}
           <Term

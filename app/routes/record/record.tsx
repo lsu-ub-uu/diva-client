@@ -40,6 +40,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
       recordType,
       recordId,
       authToken: auth?.data.token,
+      mode: 'view',
     });
 
     const breadcrumb = getRecordTitle(record) ?? record.id;

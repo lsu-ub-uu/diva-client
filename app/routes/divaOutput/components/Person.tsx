@@ -24,11 +24,11 @@ import type {
   NamePersonalThesisAdvisorGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { OpenInNewIcon } from '@/icons';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { formatPersonName } from '../utils/formatPersonName';
 import { Term } from './Term';
+import { ExternalLinkIcon } from 'lucide-react';
 
 export type PersonType =
   | NamePersonalGroup
@@ -77,7 +77,7 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
                     rel='noreferrer'
                   >
                     {orcid.value}
-                    <OpenInNewIcon />
+                    <ExternalLinkIcon />
                   </a>
                 }
               />
@@ -131,7 +131,7 @@ const formatTextAffiliationName = (
   language: 'sv' | 'en',
 ) => {
   return [
-    affiliation.name_type_corporate?.namePart?.value,
+    affiliation?.namePart?.value,
     affiliation.country?.__valueText?.[language],
   ]
     .filter(Boolean)
@@ -214,7 +214,7 @@ const TextAffiliation = ({
           {affiliation.description && (
             <Term
               label={affiliation.description.__text?.[language]}
-              value={affiliation.description.value}
+              value={affiliation.description.__valueText?.[language]}
             />
           )}
         </dl>
