@@ -30,6 +30,9 @@ export const doesMetadataAndPresentationMatch = (
   metadata: BFFMetadata,
   metadataFromPresentation: BFFMetadata,
 ) => {
+  if (differentType(metadata, metadataFromPresentation)) {
+    return false;
+  }
   if (differentNameInData(metadata, metadataFromPresentation)) {
     return false;
   }
@@ -43,6 +46,13 @@ export const doesMetadataAndPresentationMatch = (
   }
 
   return attributesMatch(metadataPool, metadata, metadataFromPresentation);
+};
+
+const differentType = (
+  metadataCandidate: BFFMetadata,
+  metadataFromCurrentPresentation: BFFMetadata,
+) => {
+  return metadataCandidate.type !== metadataFromCurrentPresentation.type;
 };
 
 const differentNameInData = (
