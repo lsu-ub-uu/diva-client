@@ -11,3 +11,22 @@
   list-style: none;
   gap: var(--gap);
 }
+
+.data-quality {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  .data-quality-2026 {
+    color: var(--color-success-main);
+  }
+
+  .data-quality-classic {
+    color: var(--color-warning-main);
+  }
+}
+
+.attachment-thumbnail {
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
+}

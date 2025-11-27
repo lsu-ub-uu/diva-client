@@ -24,7 +24,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { createRoutesStub } from 'react-router';
 
 describe('DivaOutputSearchResult', () => {
-  it.only('renders', () => {
+  it('renders', () => {
     const record = {
       id: 'diva-output:25405502822621065',
       recordType: 'diva-output',
@@ -458,7 +458,7 @@ describe('DivaOutputSearchResult', () => {
           originInfo: {
             dateIssued: {
               year: {
-                value: '2026',
+                value: '2015',
                 __text: {
                   sv: 'År',
                   en: 'Year',
@@ -712,14 +712,84 @@ describe('DivaOutputSearchResult', () => {
     render(<RoutesStub />);
 
     const heading = screen.getByRole('heading', {
-      name: 'Some title for the artasdfasedficle',
-    });
-    const year = screen.getByText('2026');
-    expect(year).toBeInTheDocument();
-    expect(year.getAttribute('dateTime')).toBe('2026');
-    const authors = screen.getByRole('heading', {
       name: 'Some title for the article',
     });
     expect(heading).toBeInTheDocument();
+
+    const year = screen.getByText('2015');
+    expect(year).toBeInTheDocument();
+    expect(year.getAttribute('dateTime')).toBe('2015');
+
+    const dataQuality = screen.getByText('2026');
+    expect(dataQuality).toBeInTheDocument();
+
+    const author1 = screen.getByText('Sidhant Chaudhary');
+    expect(author1).toBeInTheDocument();
+    const author2 = screen.getByText('Edoardo Piombo');
+    expect(author2).toBeInTheDocument();
+    const author3 = screen.getByText('Mukesh Dubey');
+    expect(author3).toBeInTheDocument();
+    const author4 = screen.queryByText('Dan Funck Jensen');
+    expect(author4).not.toBeInTheDocument();
   });
+
+  it.each([['classic'], ['2026']])(
+    'should show dataQuality correctly for %i',
+    (quality) => {
+      const record = {
+        id: 'diva-output:25405502822621065',
+        recordType: 'diva-output',
+        validationType: 'publication_journal-article',
+        createdAt: '2025-11-26T13:42:49.939579Z',
+        createdBy: '161616',
+        updated: [
+          {
+            updateAt: '2025-11-26T13:46:28.214376Z',
+            updatedBy: '161616',
+          },
+        ],
+        userRights: ['read', 'update', 'index', 'delete'],
+        actionLinks: {
+          read: {
+            requestMethod: 'GET',
+            rel: 'read',
+            url: 'https://preview.diva.cora.epc.ub.uu.se/rest/record/diva-output/diva-output:25405502822621065',
+            accept: 'application/vnd.cora.record+json',
+          },
+        },
+        data: {
+          output: {
+            dataQuality: {
+              value: quality,
+              __valueText: {
+                en: 'DiVA-2026',
+                sv: 'DiVA-2026',
+              },
+              __text: {
+                sv: 'Datakvalitet',
+                en: 'Data quality',
+              },
+              required: true,
+            },
+            __text: {
+              sv: 'DiVA-output',
+              en: 'DiVA-output',
+            },
+          },
+        },
+      } as BFFDataRecord;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => <DivaOutputSearchResult searchResult={record} />,
+        },
+      ]);
+
+      render(<RoutesStub />);
+      const dataQuality = screen.getByText(quality);
+      expect(dataQuality).toBeInTheDocument();
+      const other = quality === 'classic' ? '2026' : 'classic';
+      expect(screen.queryByText(other)).not.toBeInTheDocument();
+    },
+  );
 });

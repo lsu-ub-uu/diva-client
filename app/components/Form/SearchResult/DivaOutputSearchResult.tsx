@@ -5,6 +5,7 @@ import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFr
 import { Link } from 'react-router';
 import { Persons } from './Persons';
 import styles from './DivaOutputSearchResult.module.css';
+import { CircleCheckBig, TriangleAlert } from 'lucide-react';
 
 interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
@@ -12,7 +13,6 @@ interface DivaOutputSearchResultProps {
 export const DivaOutputSearchResult = ({
   searchResult,
 }: DivaOutputSearchResultProps) => {
-  console.log(searchResult);
   const language = useLanguage();
   const output = searchResult.data.output as DivaOutputGroup;
   return (
@@ -31,10 +31,18 @@ export const DivaOutputSearchResult = ({
             <time dateTime={output?.originInfo?.dateIssued?.year?.value}>
               {output?.originInfo?.dateIssued?.year?.value}
             </time>
-          </p>{' '}
-          &#124;<p>{output?.genre_type_outputType?.__valueText?.en}</p>
-          &#124;
-          <p>{output.dataQuality?.value}</p>
+          </p>
+          <span>&#124;</span>
+          <p>{output?.genre_type_outputType?.__valueText?.en}</p>
+          <span>&#124;</span>
+          <span className={styles['data-quality']}>
+            {output.dataQuality?.value === '2026' ? (
+              <CircleCheckBig className={styles['data-quality-2026']} />
+            ) : (
+              <TriangleAlert className={styles['data-quality-classic']} />
+            )}
+            {output.dataQuality?.value}
+          </span>
         </span>
       </div>
       <ul className={styles['attachments']}>
@@ -48,7 +56,7 @@ export const DivaOutputSearchResult = ({
                 {attachment?.attachmentFile?.linkedRecord.binary.thumbnail
                   ?.thumbnail && (
                   <img
-                    className='attachment-thumbnail'
+                    className={styles['attachment-thumbnail']}
                     src={createDownloadLinkFromResourceLink(
                       attachment?.attachmentFile?.linkedRecord.binary.thumbnail
                         .thumbnail,
