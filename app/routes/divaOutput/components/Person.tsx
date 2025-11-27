@@ -131,7 +131,7 @@ const formatTextAffiliationName = (
   language: 'sv' | 'en',
 ) => {
   return [
-    affiliation.name_type_corporate?.namePart?.value,
+    affiliation?.namePart?.value,
     affiliation.country?.__valueText?.[language],
   ]
     .filter(Boolean)
@@ -214,7 +214,7 @@ const TextAffiliation = ({
           {affiliation.description && (
             <Term
               label={affiliation.description.__text?.[language]}
-              value={affiliation.description.value}
+              value={affiliation.description.__valueText?.[language]}
             />
           )}
         </dl>

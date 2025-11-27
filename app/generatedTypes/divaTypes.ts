@@ -793,7 +793,7 @@ export interface AddressGroup {
   postOfficeBox?: { value: string; __text?: { sv: string; en: string } };
   street?: { value: string; __text?: { sv: string; en: string } };
   postcode?: { value: string; __text?: { sv: string; en: string } };
-  place?: { value: string; __text?: { sv: string; en: string } };
+  city?: { value: string; __text?: { sv: string; en: string } };
   country?: {
     value: CountryCollection;
     __text?: { sv: string; en: string };
@@ -1512,6 +1512,8 @@ export type LanguageCollection =
   | 'zxx'
   | 'zza';
 
+export type DescriptionCollection = 'researchGroup';
+
 export interface AffiliationGroup {
   organisation?: {
     value: string;
@@ -1521,7 +1523,7 @@ export interface AffiliationGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
-  name_type_corporate?: NameCorporateGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
@@ -1532,7 +1534,11 @@ export interface AffiliationGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  description?: { value: string; __text?: { sv: string; en: string } };
+  description?: {
+    value: DescriptionCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   __text?: { sv: string; en: string };
@@ -1610,7 +1616,7 @@ export interface AffiliationPersonalGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
-  name_type_corporate?: NameCorporateGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
@@ -1621,7 +1627,11 @@ export interface AffiliationPersonalGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  description?: { value: string; __text?: { sv: string; en: string } };
+  description?: {
+    value: DescriptionCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 
@@ -2239,6 +2249,11 @@ export interface RecordInfoOutputUpdateGroup {
     __valueText?: { sv: string; en: string };
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin?: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   urn?: { value: string; __text?: { sv: string; en: string } };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
@@ -2425,7 +2440,11 @@ export interface NameOrganisationGroup {
     _type: 'ror';
     __text?: { sv: string; en: string };
   };
-  description?: { value: string; __text?: { sv: string; en: string } };
+  description?: {
+    value: DescriptionCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   _type: 'corporate';
   __text?: { sv: string; en: string };
 }
@@ -2482,15 +2501,15 @@ export interface RolePatentHolderGroup {
 }
 
 export interface NameOrganisationPatentHolderGroup {
-  namePart?: { value: string; __text?: { sv: string; en: string } };
   role?: RolePatentHolderGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
     __text?: { sv: string; en: string };
   };
-  description?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
+  _otherType: 'patentHolder';
   __text?: { sv: string; en: string };
 }
 
@@ -2771,15 +2790,15 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
-  namePart?: { value: string; __text?: { sv: string; en: string } };
   role?: RoleDegreeGrantingInstitutionGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
     _type: 'ror';
     __text?: { sv: string; en: string };
   };
   _type: 'corporate';
-  _otherType: RelatedItemOtherTypeCollection;
+  _otherType: 'degreeGrantingInstitution';
   __text?: { sv: string; en: string };
 }
 
@@ -2943,21 +2962,24 @@ export interface DateOtherPresentationGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface AddressDefenceGroup {
+  location?: { value: string; __text?: { sv: string; en: string } };
+  street?: { value: string; __text?: { sv: string; en: string } };
+  city?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
 export interface PresentationDivaGroup {
   language?: LanguageGroup;
   dateOther_type_presentation?: DateOtherPresentationGroup;
-  location?: { value: string; __text?: { sv: string; en: string } };
-  address?: { value: string; __text?: { sv: string; en: string } };
-  place?: PlaceGroup;
+  address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
 
 export interface DefenceGroup {
   language?: LanguageGroup;
   dateOther_type_presentation?: DateOtherPresentationGroup;
-  location?: { value: string; __text?: { sv: string; en: string } };
-  address?: { value: string; __text?: { sv: string; en: string } };
-  place?: PlaceGroup;
+  address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
 
@@ -3688,7 +3710,7 @@ export interface DivaOutputGroup {
   }[];
   subject?: SubjectKeywordsGroup[];
   dateOther_type_patent?: DateOtherPatentGroup;
-  patentHolder_type_corporate?: NameOrganisationPatentHolderGroup;
+  name_otherType_patentHolder_type_corporate?: NameOrganisationPatentHolderGroup;
   patentCountry?: {
     value: CountryCollection;
     __text?: { sv: string; en: string };
@@ -3775,7 +3797,7 @@ export interface DivaOutputGroup {
   academicSemester?: AcademicSemesterGroup;
   studentDegree?: StudentDegreeGroup[];
   externalCollaboration?: NameOrganisationExternalCollaborationGroup;
-  degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
+  name_otherType_degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
   name_otherType_thesisAdvisor_type_personal?: NamePersonalThesisAdvisorGroup[];
   name_otherType_degreeSupervisor_type_personal?: NamePersonalDegreeSupervisorGroup[];
   name_otherType_opponent_type_personal?: NamePersonalOpponentGroup[];

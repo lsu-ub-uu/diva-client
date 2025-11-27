@@ -20,14 +20,16 @@ export const Event = ({ event }: EventProps) => {
     return null;
   }
 
-  const eventLocation = event.location?.value;
-  const eventAddress = event.address?.value;
+  const eventLocation = event.address?.location?.value;
+  const eventStreet = event.address?.street?.value;
+  const eventCity = event.address?.city?.value;
+
   const eventLanguage =
     event.language?.['languageTerm_authority_iso639-2b_type_code']?.value;
 
-  const address = (eventLocation || eventAddress) && (
+  const address = (eventLocation || eventStreet) && (
     <address>
-      {[eventLocation, eventAddress].filter(Boolean).join(', ')}
+      {[eventLocation, eventStreet, eventCity].filter(Boolean).join(', ')}
     </address>
   );
 
