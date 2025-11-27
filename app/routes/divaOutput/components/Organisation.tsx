@@ -47,7 +47,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
         {'description' in organisation && organisation.description && (
           <Term
             label={organisation.description.__text?.[language]}
-            value={organisation.description.value}
+            value={organisation.description.__valueText?.[language]}
           />
         )}
       </dl>

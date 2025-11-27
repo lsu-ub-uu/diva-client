@@ -209,9 +209,11 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
             value={<Date date={output.dateOther_type_patent} />}
           />
-          {output.patentHolder_type_corporate && (
+          {output.name_otherType_patentHolder_type_corporate && (
             <Organisations
-              organisations={[output.patentHolder_type_corporate]}
+              organisations={[
+                output.name_otherType_patentHolder_type_corporate,
+              ]}
             />
           )}
           <Term

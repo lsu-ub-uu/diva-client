@@ -58,12 +58,12 @@ describe('Organisation', () => {
         __text: { en: 'ROR' },
         value: '123456789',
       },
-
       description: {
         __text: {
           en: 'Description',
         },
-        value: 'A standalone organisation',
+        value: 'researchGroup',
+        __valueText: { en: 'Research Group' },
       },
     } as NameOrganisationGroup;
 
@@ -75,7 +75,7 @@ describe('Organisation', () => {
     expect(ror).toHaveAttribute('target', '_blank');
     expect(ror).toHaveAttribute('rel', 'noopener noreferrer');
     expect(screen.getByText('Description')).toBeInTheDocument();
-    expect(screen.getByText('A standalone organisation')).toBeInTheDocument();
+    expect(screen.getByText('Research Group')).toBeInTheDocument();
   });
 
   it('renders organisation displayName for linked organisation when not expanded', () => {
