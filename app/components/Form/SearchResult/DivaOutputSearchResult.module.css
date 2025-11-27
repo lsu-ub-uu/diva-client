@@ -5,25 +5,40 @@
   gap: var(--gap);
 }
 
+.info-box {
+  display: flex;
+  gap: var(--gap);
+
+  .item:not(:last-child)::after {
+    content: '\007C';
+    margin-left: 0.5rem;
+  }
+
+  .data-quality {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .data-quality-2026 {
+      color: var(--color-success-main);
+    }
+
+    .data-quality-classic {
+      color: var(--color-warning-main);
+    }
+  }
+}
+
+.related-book {
+  display: flex;
+  gap: var(--gap);
+}
+
 .attachments {
   display: flex;
   flex-direction: row;
   list-style: none;
   gap: var(--gap);
-}
-
-.data-quality {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-
-  .data-quality-2026 {
-    color: var(--color-success-main);
-  }
-
-  .data-quality-classic {
-    color: var(--color-warning-main);
-  }
 }
 
 .attachment-thumbnail {

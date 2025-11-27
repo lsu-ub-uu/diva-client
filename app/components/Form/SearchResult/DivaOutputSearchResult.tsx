@@ -2,10 +2,13 @@ import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import type { BFFDataRecord } from '@/types/record';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
-import { Link } from 'react-router';
+import { href, Link } from 'react-router';
 import { Persons } from './Persons';
 import styles from './DivaOutputSearchResult.module.css';
 import { CircleCheckBig, TriangleAlert } from 'lucide-react';
+import { Term } from '@/routes/divaOutput/components/Term';
+import { createTitle } from '@/routes/divaOutput/utils/createTitle';
+import clsx from 'clsx';
 
 interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
@@ -26,16 +29,16 @@ export const DivaOutputSearchResult = ({
         <span>
           <Persons persons={output.name_type_personal} />
         </span>
-        <span style={{ display: 'flex', gap: '8px' }}>
-          <p>
+        <span className={styles['info-box']}>
+          <p className={styles['item']}>
             <time dateTime={output?.originInfo?.dateIssued?.year?.value}>
               {output?.originInfo?.dateIssued?.year?.value}
             </time>
           </p>
-          <span>&#124;</span>
-          <p>{output?.genre_type_outputType?.__valueText?.en}</p>
-          <span>&#124;</span>
-          <span className={styles['data-quality']}>
+          <p className={styles['item']}>
+            {output?.genre_type_outputType?.__valueText?.[language]}
+          </p>
+          <span className={clsx(styles['data-quality'], styles['item'])}>
             {output.dataQuality?.value === '2026' ? (
               <CircleCheckBig className={styles['data-quality-2026']} />
             ) : (
@@ -44,6 +47,30 @@ export const DivaOutputSearchResult = ({
             {output.dataQuality?.value}
           </span>
         </span>
+        {output.relatedItem_type_book?.book && (
+          <div className={styles['related-book']}>
+            <Term
+              label={`${output.relatedItem_type_book?.__text?.[language]}:`}
+              value={createTitle(
+                output.relatedItem_type_book?.book?.linkedRecord.output
+                  .titleInfo,
+              )}
+            />
+          </div>
+        )}
+        {output.related &&
+          output.related.map((related, i) => {
+            return (
+              <div key={i} className={styles['related-book']}>
+                <Term
+                  label={`${related.__text?.[language]}:`}
+                  value={createTitle(
+                    related.output?.linkedRecord?.output?.titleInfo,
+                  )}
+                />
+              </div>
+            );
+          })}
       </div>
       <ul className={styles['attachments']}>
         {output.attachment &&
