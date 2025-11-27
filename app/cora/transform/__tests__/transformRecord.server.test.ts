@@ -2862,34 +2862,52 @@ describe('transformRecord', () => {
 
   describe('it should transform attributes', () => {
     it('it shoud return undefind when undefined', () => {
-      expect(transformAttributes(undefined)).toStrictEqual({});
+      expect(transformAttributes({ name: 'foo', value: 'bar' })).toStrictEqual(
+        {},
+      );
     });
     it('transform regular attributes', () => {
-      expect(transformAttributes({ key: 'value' })).toStrictEqual({
+      expect(
+        transformAttributes({
+          name: 'foo',
+          value: 'bar',
+          attributes: { key: 'value' },
+        }),
+      ).toStrictEqual({
         _key: 'value',
       });
     });
 
     it('transforms decortated texts', () => {
       expect(
-        transformAttributes({ _sv: 'Rättighetsenhet', _en: 'Permission unit' }),
+        transformAttributes({
+          name: 'foo',
+          value: 'bar',
+          attributes: { _sv: 'Rättighetsenhet', _en: 'Permission unit' },
+        }),
       ).toStrictEqual({
         __text: {
           sv: 'Rättighetsenhet',
           en: 'Permission unit',
+          cimode: 'fooText',
         },
       });
     });
     it('transforms decortated values', () => {
       expect(
         transformAttributes({
-          _value_en: 'Published',
-          _value_sv: 'Publicerad',
+          name: 'foo',
+          value: 'bar',
+          attributes: {
+            _value_en: 'Published',
+            _value_sv: 'Publicerad',
+          },
         }),
       ).toStrictEqual({
         __valueText: {
           sv: 'Publicerad',
           en: 'Published',
+          cimode: 'barValueText',
         },
       });
     });

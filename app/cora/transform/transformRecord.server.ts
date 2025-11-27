@@ -175,7 +175,7 @@ export const transformRecordData = (
   return {
     [dataRecordGroup.name]: {
       ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
-      ...transformAttributes(dataRecordGroup.attributes),
+      ...transformAttributes(dataRecordGroup),
     },
   };
 };
@@ -198,7 +198,7 @@ export const transformDataGroup = (
 
     const transformedChild = {
       ...transformData(dataChild, matchingMetadata, dependencies),
-      ...transformAttributes(dataChild.attributes),
+      ...transformAttributes(dataChild),
     };
     if (isRequired(matchingMetadata)) {
       transformedChild.required = true;
@@ -425,23 +425,35 @@ const extractRecordUpdates = (recordInfo: DataGroup): BFFUpdate[] => {
   });
 };
 
-export const transformAttributes = (attributes: Attributes | undefined) => {
-  if (attributes === undefined) {
+export const transformAttributes = (data: CoraData) => {
+  if (data.attributes === undefined) {
     return {};
   }
 
-  return Object.entries(attributes).reduce((accumulator: any, [key, value]) => {
-    if (key.startsWith('_value_')) {
-      accumulator['__valueText'] ??= {};
-      accumulator['__valueText'][key.replace('_value_', '')] = value;
-    } else if (key.startsWith('_')) {
-      accumulator['__text'] ??= {};
-      accumulator['__text'][key.replace('_', '')] = value;
-    } else {
-      accumulator[`_${key}`] = value;
-    }
-    return accumulator;
-  }, {});
+  const result = Object.entries(data.attributes).reduce(
+    (accumulator: any, [key, value]) => {
+      if (key.startsWith('_value_')) {
+        accumulator['__valueText'] ??= {};
+        accumulator['__valueText'][key.replace('_value_', '')] = value;
+      } else if (key.startsWith('_')) {
+        accumulator['__text'] ??= {};
+        accumulator['__text'][key.replace('_', '')] = value;
+      } else {
+        accumulator[`_${key}`] = value;
+      }
+      return accumulator;
+    },
+    {},
+  );
+
+  if (result['__text']) {
+    result['__text']['cimode'] = `${data.name}Text`;
+  }
+  if (result['__valueText']) {
+    result['__valueText']['cimode'] = `${(data as any).value}ValueText`;
+  }
+
+  return result;
 };
 
 export const isRepeating = (metadata: FormMetaData) => {
