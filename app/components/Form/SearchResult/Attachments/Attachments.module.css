@@ -1,0 +1,11 @@
+.attachments {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: var(--gap);
+}
+
+.attachment-thumbnail {
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
+}
