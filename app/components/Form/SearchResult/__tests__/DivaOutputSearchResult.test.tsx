@@ -22,6 +22,7 @@ import { describe, expect, it } from 'vitest';
 import { DivaOutputSearchResult } from '../DivaOutputSearchResult';
 import type { BFFDataRecord } from '@/types/record';
 import { createRoutesStub } from 'react-router';
+import type { DivaOutput, DivaOutputGroup } from '@/generatedTypes/divaTypes';
 
 describe('DivaOutputSearchResult', () => {
   it('renders', () => {
@@ -720,7 +721,7 @@ describe('DivaOutputSearchResult', () => {
     expect(year).toBeInTheDocument();
     expect(year.getAttribute('dateTime')).toBe('2015');
 
-    const dataQuality = screen.getByText('2026');
+    const dataQuality = screen.getByText('DiVA-2026');
     expect(dataQuality).toBeInTheDocument();
 
     const author1 = screen.getByText('Sidhant Chaudhary');
@@ -733,8 +734,8 @@ describe('DivaOutputSearchResult', () => {
     expect(author4).not.toBeInTheDocument();
   });
 
-  it.each([['classic'], ['2026']])(
-    'should show dataQuality correctly for %i',
+  it.each([['Diva-Classic'], ['DiVA-2026']])(
+    'should show dataQuality correctly for %s',
     (quality) => {
       const record = {
         id: 'diva-output:25405502822621065',
@@ -762,8 +763,8 @@ describe('DivaOutputSearchResult', () => {
             dataQuality: {
               value: quality,
               __valueText: {
-                en: 'DiVA-2026',
-                sv: 'DiVA-2026',
+                en: quality,
+                sv: quality,
               },
               __text: {
                 sv: 'Datakvalitet',
@@ -788,8 +789,74 @@ describe('DivaOutputSearchResult', () => {
       render(<RoutesStub />);
       const dataQuality = screen.getByText(quality);
       expect(dataQuality).toBeInTheDocument();
-      const other = quality === 'classic' ? '2026' : 'classic';
+      const other = quality === 'Classic' ? 'DiVA-2026' : 'Classic';
       expect(screen.queryByText(other)).not.toBeInTheDocument();
     },
   );
+
+  it('shows related book when linked', () => {
+    const record = {
+      data: {
+        output: {
+          relatedItem_type_book: {
+            __text: { en: 'Part of book' },
+            book: {
+              linkedRecord: {
+                output: {
+                  titleInfo: {
+                    title: { value: 'Related Book Title' },
+                    subtitle: { value: 'Related Book Subtitle' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    } as BFFDataRecord<DivaOutput>;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => <DivaOutputSearchResult searchResult={record} />,
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(screen.getByText('Part of book:')).toBeVisible();
+    expect(
+      screen.getByText('Related Book Title: Related Book Subtitle'),
+    ).toBeVisible();
+  });
+
+  it('shows related book when freetext', () => {
+    const record = {
+      data: {
+        output: {
+          relatedItem_type_book: {
+            __text: { en: 'Part of book' },
+            titleInfo: {
+              title: { value: 'Related Book Title' },
+              subtitle: { value: 'Related Book Subtitle' },
+            },
+          },
+        },
+      },
+    } as BFFDataRecord<DivaOutput>;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => <DivaOutputSearchResult searchResult={record} />,
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(screen.getByText('Part of book:')).toBeVisible();
+    expect(
+      screen.getByText('Related Book Title: Related Book Subtitle'),
+    ).toBeVisible();
+  });
 });
