@@ -174,7 +174,7 @@ describe('Persons', () => {
         namePart_type_given: { value: 'Johan' },
         affiliation: [
           {
-            name_type_corporate: { namePart: { value: 'Uppsala University' } },
+            namePart: { value: 'Uppsala University' },
           },
         ],
       },
@@ -259,7 +259,7 @@ describe('Persons', () => {
         namePart_type_given: { value: 'Anna' },
         affiliation: [
           {
-            name_type_corporate: { namePart: { value: 'Uppsala University' } },
+            namePart: { value: 'Uppsala University' },
           },
         ],
       },
@@ -286,7 +286,7 @@ describe('Persons', () => {
         namePart_type_given: { value: 'Stina' },
         affiliation: [
           {
-            name_type_corporate: { namePart: { value: 'Kuppsala University' } },
+            namePart: { value: 'Kuppsala University' },
           },
         ],
       },
@@ -296,9 +296,7 @@ describe('Persons', () => {
         namePart_type_given: { value: 'Bertil' },
         affiliation: [
           {
-            name_type_corporate: {
-              namePart: { value: 'Gruppsala University' },
-            },
+            namePart: { value: 'Gruppsala University' },
           },
         ],
       },

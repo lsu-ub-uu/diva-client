@@ -45,7 +45,7 @@ const icons: Record<string, ReactNode> = {
   'diva-subject': <FlaskRoundIcon />,
   'diva-programme': <GraduationCapIcon />,
   'diva-series': <LibraryIcon />,
-  'diva-localGenericMarkup': <TagIcon />,
+  'diva-localLabels': <TagIcon />,
   'diva-publisher': <BookCheckIcon />,
   'diva-funder': <HandCoinsIcon />,
 };
@@ -60,7 +60,7 @@ const sortOrder = [
   'diva-subject',
   'diva-programme',
   'diva-series',
-  'diva-localGenericMarkup',
+  'diva-localLabels',
   'diva-publisher',
   'diva-funder',
 ];

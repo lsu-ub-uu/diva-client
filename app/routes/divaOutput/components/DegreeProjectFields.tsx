@@ -32,12 +32,15 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
       )}
       <Term
         label={
-          output.degreeGrantingInstitution_type_corporate?.__text?.[language]
+          output.name_otherType_degreeGrantingInstitution_type_corporate
+            ?.__text?.[language]
         }
         value={
-          output.degreeGrantingInstitution_type_corporate && (
+          output.name_otherType_degreeGrantingInstitution_type_corporate && (
             <Organisation
-              organisation={output.degreeGrantingInstitution_type_corporate}
+              organisation={
+                output.name_otherType_degreeGrantingInstitution_type_corporate
+              }
             />
           )
         }

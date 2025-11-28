@@ -38,6 +38,10 @@
     background-color: var(--color-card);
   }
 
+  &:global(.pending) .icon-wrapper {
+    background-color: var(--color-gray-main);
+  }
+
   &[aria-current='page'] .icon-wrapper {
     background-color: var(--color-card-dark);
   }

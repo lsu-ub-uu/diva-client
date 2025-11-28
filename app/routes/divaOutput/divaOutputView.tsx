@@ -51,6 +51,7 @@ export const loader = async ({
       recordId,
       authToken: auth?.data.token,
       decorated: true,
+      mode: 'view',
     })) as BFFDataRecord<DivaOutput>;
     return {
       record: record,

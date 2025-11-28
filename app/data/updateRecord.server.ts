@@ -58,5 +58,5 @@ export const updateRecord = async (
     auth?.data.token,
   );
 
-  return transformRecord(dependencies, response.data);
+  return transformRecord(dependencies, response.data, FORM_MODE_UPDATE);
 };

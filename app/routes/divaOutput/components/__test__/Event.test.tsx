@@ -19,19 +19,23 @@ describe('Event', () => {
         hh: { value: '14' },
         mm: { value: '30' },
       },
-      location: { value: 'Conference Room A' },
-      address: { value: '123 Main St, City, Country' },
+
+      address: {
+        location: { value: 'Conference Room A' },
+        street: { value: '123 Main St' },
+        city: { value: 'Stockholm' },
+      },
       language: {
         'languageTerm_authority_iso639-2b_type_code': { value: 'eng' },
       },
-    } as unknown as PresentationDivaGroup;
+    } as PresentationDivaGroup;
 
     render(<Event event={event} />);
 
     expect(screen.getByRole('definition')).toBeInTheDocument();
 
     expect(
-      screen.getByText('Conference Room A, 123 Main St, City, Country'),
+      screen.getByText('Conference Room A, 123 Main St, Stockholm'),
     ).toBeInTheDocument();
 
     expect(screen.getByRole('time')).toHaveAttribute(

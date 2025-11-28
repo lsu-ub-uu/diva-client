@@ -187,10 +187,11 @@ describe('transformRecord', () => {
     };
   });
   describe('transformRecord', () => {
-    it('should return a record', () => {
+    it('should transform a record for view mode', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscript as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutput:519333261463755',
@@ -421,6 +422,7 @@ describe('transformRecord', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscriptWithSameNameInDataGroup as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -589,6 +591,7 @@ describe('transformRecord', () => {
       const transformData = transformRecord(
         dependencies,
         coraRecordManuscriptWithSameNameInDataWithOneGroup as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -749,6 +752,7 @@ describe('transformRecord', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscriptWithSameNameInDataVar as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -910,6 +914,7 @@ describe('transformRecord', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscriptWithSameNameInDataVarWithoutAllVars as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -1066,6 +1071,7 @@ describe('transformRecord', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscriptWithoutCreatedAndUpdates as RecordWrapper,
+        'view',
       );
       const expected = {
         id: 'divaOutput:519333261463755',
@@ -2856,34 +2862,52 @@ describe('transformRecord', () => {
 
   describe('it should transform attributes', () => {
     it('it shoud return undefind when undefined', () => {
-      expect(transformAttributes(undefined)).toStrictEqual({});
+      expect(transformAttributes({ name: 'foo', value: 'bar' })).toStrictEqual(
+        {},
+      );
     });
     it('transform regular attributes', () => {
-      expect(transformAttributes({ key: 'value' })).toStrictEqual({
+      expect(
+        transformAttributes({
+          name: 'foo',
+          value: 'bar',
+          attributes: { key: 'value' },
+        }),
+      ).toStrictEqual({
         _key: 'value',
       });
     });
 
     it('transforms decortated texts', () => {
       expect(
-        transformAttributes({ _sv: 'Rättighetsenhet', _en: 'Permission unit' }),
+        transformAttributes({
+          name: 'foo',
+          value: 'bar',
+          attributes: { _sv: 'Rättighetsenhet', _en: 'Permission unit' },
+        }),
       ).toStrictEqual({
         __text: {
           sv: 'Rättighetsenhet',
           en: 'Permission unit',
+          cimode: 'fooText',
         },
       });
     });
     it('transforms decortated values', () => {
       expect(
         transformAttributes({
-          _value_en: 'Published',
-          _value_sv: 'Publicerad',
+          name: 'foo',
+          value: 'bar',
+          attributes: {
+            _value_en: 'Published',
+            _value_sv: 'Publicerad',
+          },
         }),
       ).toStrictEqual({
         __valueText: {
           sv: 'Publicerad',
           en: 'Published',
+          cimode: 'barValueText',
         },
       });
     });
