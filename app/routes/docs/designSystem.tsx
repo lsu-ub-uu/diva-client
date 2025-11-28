@@ -24,6 +24,7 @@ import { CardExpandButton } from '@/components/Card/CardExpandButton';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardTitle } from '@/components/Card/CardTitle';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
@@ -34,21 +35,17 @@ import { SkeletonLoader } from '@/components/Loader/SkeletonLoader';
 import { Progress } from '@/components/Progress/Progress';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { Typography } from '@/components/Typography/Typography';
-import { useState } from 'react';
-import css from './design-system.css?url';
 import {
-  BananaIcon,
-  BirdIcon,
   BombIcon,
   ChessKnightIcon,
   InfoIcon,
   MehIcon,
-  RoseIcon,
-  SatelliteIcon,
   ShoppingCartIcon,
   SquirrelIcon,
   XIcon,
 } from 'lucide-react';
+import { useState } from 'react';
+import css from './design-system.css?url';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -470,40 +467,12 @@ export default function DesignSystem() {
             <Button variant='tertiary' disabled>
               Tertiary disabled
             </Button>
-            <Button variant='icon'>
+            <IconButton tooltip='Icon button'>
               <SquirrelIcon />
-            </Button>
-            <Button variant='icon' disabled>
+            </IconButton>
+            <IconButton disabled tooltip='Icon button disabled'>
               <BombIcon />
-            </Button>
-            <Button
-              variant='icon'
-              aria-label='Tooltip left'
-              tooltipPosition='left'
-            >
-              <BananaIcon />
-            </Button>
-            <Button
-              variant='icon'
-              aria-label='Tooltip top'
-              tooltipPosition='top'
-            >
-              <BirdIcon />
-            </Button>
-            <Button
-              variant='icon'
-              aria-label='Tooltip bottom'
-              tooltipPosition='bottom'
-            >
-              <RoseIcon />
-            </Button>
-            <Button
-              variant='icon'
-              aria-label='Tooltip right'
-              tooltipPosition='right'
-            >
-              <SatelliteIcon />
-            </Button>
+            </IconButton>
             <FloatingActionButton
               text='FAB button'
               icon={<ShoppingCartIcon />}
@@ -630,9 +599,9 @@ export default function DesignSystem() {
                   <CardTitle
                     level='h3'
                     info={
-                      <Button variant='icon' size='small'>
+                      <IconButton tooltip='Close' size='small'>
                         <InfoIcon />
-                      </Button>
+                      </IconButton>
                     }
                   >
                     I&#39;m a card that&#39;s not boxed
@@ -659,9 +628,9 @@ export default function DesignSystem() {
                   <CardTitle
                     level='h3'
                     info={
-                      <Button variant='icon' size='small'>
+                      <IconButton tooltip='Close' size='small'>
                         <InfoIcon />
-                      </Button>
+                      </IconButton>
                     }
                   >
                     I&#39;m a card that&#39;s boxed
@@ -692,17 +661,17 @@ export default function DesignSystem() {
                     </Fieldset>
                   }
                   actionButtonGroup={
-                    <Button variant='icon'>
+                    <IconButton tooltip='Close'>
                       <XIcon />
-                    </Button>
+                    </IconButton>
                   }
                 >
                   <CardTitle
                     level='h3'
                     info={
-                      <Button variant='icon' size='small'>
+                      <IconButton tooltip='Close' size='small'>
                         <XIcon />
-                      </Button>
+                      </IconButton>
                     }
                   >
                     I&#39;m a card with an action button
@@ -812,17 +781,17 @@ const ClickableCardDemo = () => {
           )
         }
         actionButtonGroup={
-          <Button variant='icon'>
+          <IconButton tooltip='Close'>
             <XIcon />
-          </Button>
+          </IconButton>
         }
       >
         <CardTitle
           level='h3'
           info={
-            <Button variant='icon' size='small'>
+            <IconButton tooltip='Info' size='small'>
               <InfoIcon />
-            </Button>
+            </IconButton>
           }
         >
           <CardExpandButton

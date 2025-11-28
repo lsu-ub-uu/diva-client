@@ -19,10 +19,11 @@
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { use, type ReactNode } from 'react';
 
-import { Button } from '@/components/Button/Button';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
+import { LinkIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -32,7 +33,6 @@ import {
   isComponentRepeating,
 } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
-import { LinkIcon, XIcon } from 'lucide-react';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -93,24 +93,22 @@ export const RecordLinkWithLinkedPresentation = ({
         <div className={styles['adornment']}>
           {attributes} {actionButtonGroup}
           {showClearButton && (
-            <Button
-              variant='icon'
+            <IconButton
               size='small'
               onClick={clearValue}
-              aria-label={t('divaClient_clearRecordLinkText')}
+              tooltip={t('divaClient_clearRecordLinkText')}
             >
               <XIcon />
-            </Button>
+            </IconButton>
           )}
-          <Button
+          <IconButton
             as={Link}
             size='small'
-            variant='icon'
             to={recordHref}
-            aria-label={t('divaClient_linkToRecordText')}
+            tooltip={t('divaClient_linkToRecordText')}
           >
             <LinkIcon />
-          </Button>
+          </IconButton>
         </div>
       </div>
 

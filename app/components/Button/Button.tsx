@@ -28,7 +28,7 @@ import type { LinkProps } from 'react-router';
 
 export interface ButtonProps
   extends Omit<HTMLProps<HTMLButtonElement>, 'as' | 'size'> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
+  variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   as?: ElementType;

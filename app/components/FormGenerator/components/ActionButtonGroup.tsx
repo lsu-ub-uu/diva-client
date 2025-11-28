@@ -17,10 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IconButton } from '@/components/IconButton/IconButton';
+import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
-import { Button } from '@/components/Button/Button';
-import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
 
 interface ActionButtonGroupProps {
   entityName?: string;
@@ -49,49 +49,43 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
       className={styles['action-button-group']}
     >
       {!props.hideMoveButtons && (
-        <Button
+        <IconButton
           size='small'
-          variant='icon'
-          aria-label={t('divaClient_moveFieldUpText', {
+          tooltip={t('divaClient_moveFieldUpText', {
             fieldName: props.entityName,
           })}
-          tooltipPosition='left'
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
           data-action-button='move-up'
         >
           <ArrowUpIcon />
-        </Button>
+        </IconButton>
       )}
       {!props.hideDeleteButton && (
-        <Button
+        <IconButton
           size='small'
-          variant='icon'
-          aria-label={t('divaClient_deleteFieldText', {
+          tooltip={t('divaClient_deleteFieldText', {
             fieldName: props.entityName,
           })}
-          tooltipPosition='left'
           disabled={props.deleteButtonDisabled}
           onClick={props.deleteButtonAction}
           data-action-button='delete'
         >
           <XIcon />
-        </Button>
+        </IconButton>
       )}
       {!props.hideMoveButtons && (
-        <Button
+        <IconButton
           size='small'
-          variant='icon'
-          aria-label={t('divaClient_moveFieldDownText', {
+          tooltip={t('divaClient_moveFieldDownText', {
             fieldName: props.entityName,
           })}
-          tooltipPosition='left'
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
           data-action-button='move-down'
         >
           <ArrowDownIcon />
-        </Button>
+        </IconButton>
       )}
     </div>
   );
