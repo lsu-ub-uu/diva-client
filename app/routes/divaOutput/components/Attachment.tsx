@@ -20,7 +20,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
 
   return (
     <div className='attachment'>
-      <h3 className='icon-text'>{formatHeading(attachment, language)} </h3>
+      <h3>{formatHeading(attachment, language)} </h3>
       {attachment.attachmentFile.linkedRecord.binary.large?.large && (
         <img
           className='attachment-thumbnail'
