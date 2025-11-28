@@ -20,6 +20,7 @@ import { MemberBar } from '../MemberBar/MemberBar';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
 import styles from './Header.module.css';
 import { MenuIcon, XIcon } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -77,13 +78,12 @@ export const Header = ({
       <div className={styles['diva-header-bar']}>
         <div className={styles['header-bar-left']}>
           <div className={styles['header-mobile-menu-button']}>
-            <Button
-              variant='icon'
-              aria-label={t('divaClient_showMenuText')}
+            <IconButton
+              tooltip={t('divaClient_showMenuText')}
               onClick={() => mobileDialogRef.current?.showModal()}
             >
               <MenuIcon />
-            </Button>
+            </IconButton>
             <dialog
               ref={mobileDialogRef}
               className={styles['mobile-menu-dialog']}
@@ -95,14 +95,13 @@ export const Header = ({
                 <ColorSchemeSwitcher
                   colorScheme={userPreferences.colorScheme}
                 />
-                <Button
+                <IconButton
                   className={styles['menu-close-button']}
-                  variant='icon'
-                  aria-label={t('divaClient_closeText')}
+                  tooltip={t('divaClient_closeText')}
                   onClick={() => mobileDialogRef.current?.close()}
                 >
                   <XIcon />
-                </Button>
+                </IconButton>
               </div>
               <hr />
               <TopNavigation

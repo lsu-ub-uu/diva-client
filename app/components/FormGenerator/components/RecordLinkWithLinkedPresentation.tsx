@@ -33,6 +33,7 @@ import {
 } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
 import { LinkIcon, XIcon } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -93,24 +94,22 @@ export const RecordLinkWithLinkedPresentation = ({
         <div className={styles['adornment']}>
           {attributes} {actionButtonGroup}
           {showClearButton && (
-            <Button
-              variant='icon'
+            <IconButton
               size='small'
               onClick={clearValue}
-              aria-label={t('divaClient_clearRecordLinkText')}
+              tooltip={t('divaClient_clearRecordLinkText')}
             >
               <XIcon />
-            </Button>
+            </IconButton>
           )}
-          <Button
+          <IconButton
             as={Link}
             size='small'
-            variant='icon'
             to={recordHref}
-            aria-label={t('divaClient_linkToRecordText')}
+            tooltip={t('divaClient_linkToRecordText')}
           >
             <LinkIcon />
-          </Button>
+          </IconButton>
         </div>
       </div>
 

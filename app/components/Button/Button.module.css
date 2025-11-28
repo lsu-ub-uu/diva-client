@@ -90,30 +90,6 @@
       }
     }
 
-    &[data-variant='icon'] {
-      --icon-button-size: var(--input-height);
-
-      position: relative;
-      width: var(--icon-button-size);
-      height: var(--icon-button-size);
-      font-size: 1em;
-      align-items: center;
-      justify-content: center;
-      border-color: transparent;
-      background: transparent;
-      border-radius: 50%;
-      padding: 0;
-      line-height: 1;
-
-      &:hover {
-        background-color: var(--color-button-secondary-hover);
-      }
-
-      &:active {
-        background-color: var(--color-button-secondary-active);
-      }
-    }
-
     &[data-error] {
       border-color: var(--color-error-main);
       color: var(--color-error-main);

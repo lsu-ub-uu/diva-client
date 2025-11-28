@@ -49,6 +49,7 @@ import {
   SquirrelIcon,
   XIcon,
 } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
@@ -470,12 +471,12 @@ export default function DesignSystem() {
             <Button variant='tertiary' disabled>
               Tertiary disabled
             </Button>
-            <Button variant='icon'>
+            <IconButton tooltip='Icon button'>
               <SquirrelIcon />
-            </Button>
-            <Button variant='icon' disabled>
+            </IconButton>
+            <IconButton disabled tooltip='Icon button disabled'>
               <BombIcon />
-            </Button>
+            </IconButton>
             <Button
               variant='icon'
               aria-label='Tooltip left'

@@ -7,6 +7,7 @@ import { Transition } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { XIcon } from 'lucide-react';
+import { IconButton } from '../IconButton/IconButton';
 
 interface SnackbarProps {
   open: boolean;
@@ -43,14 +44,13 @@ export const Snackbar = ({
         <Alert severity={severity}>
           <div className={styles['alert-content']}>
             {text}
-            <Button
-              variant='icon'
+            <IconButton
               size='small'
-              aria-label={t('divaClient_closeText')}
+              tooltip={t('divaClient_closeText')}
               onClick={onClose}
             >
               <XIcon />
-            </Button>
+            </IconButton>
           </div>
         </Alert>
       </div>

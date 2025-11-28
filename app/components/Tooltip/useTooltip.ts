@@ -1,3 +1,4 @@
+import { supportsAnchorPositioning } from '@/utils/supportsAnchorPositioning';
 import { useRef } from 'react';
 
 export const useTooltip = () => {
@@ -5,17 +6,26 @@ export const useTooltip = () => {
   const tooltipDelayTimeout = useRef<number>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
+  function showPopover() {
+    tooltipRef.current?.showPopover({ source: triggerRef.current });
+
+    if (!supportsAnchorPositioning()) {
+      // Remove this workaround when support for CSS anchor positioning is widespread. (https://caniuse.com/css-anchor-positioning)
+      positionTooltipManually(triggerRef.current, tooltipRef.current);
+    }
+  }
+
   function handleMouseEnter() {
     if (tooltipDelayTimeout.current != null) {
       window.clearTimeout(tooltipDelayTimeout.current);
     }
     tooltipDelayTimeout.current = window.setTimeout(() => {
-      tooltipRef.current?.showPopover({ source: triggerRef.current });
+      showPopover();
     }, 500);
   }
 
   function handleFocus() {
-    tooltipRef.current?.showPopover({ source: triggerRef.current });
+    showPopover();
   }
 
   function handleMouseLeave() {
@@ -32,7 +42,7 @@ export const useTooltip = () => {
     }
   }
 
-  const triggerProps = {
+  const tooltipTriggerProps = {
     ref: triggerRef,
     onMouseEnter: handleMouseEnter,
     onFocus: handleFocus,
@@ -40,7 +50,7 @@ export const useTooltip = () => {
     onKeyDown: handleKeyDown,
   };
 
-  const wrapperProps = {
+  const tooltipWrapperProps = {
     onMouseLeave: handleMouseLeave,
   };
 
@@ -50,7 +60,20 @@ export const useTooltip = () => {
 
   return {
     tooltipProps,
-    triggerProps,
-    wrapperProps,
+    tooltipTriggerProps,
+    tooltipWrapperProps,
   };
+};
+
+const positionTooltipManually = (
+  trigger: HTMLButtonElement | null,
+  tooltip: HTMLDivElement | null,
+) => {
+  if (!trigger || !tooltip) {
+    return;
+  }
+  const triggerRect = trigger.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  tooltip.style.top = `${triggerRect.bottom + window.scrollY}px`;
+  tooltip.style.left = `${triggerRect.left + window.scrollX + triggerRect.width / 2 - tooltipRect.width / 2}px`;
 };

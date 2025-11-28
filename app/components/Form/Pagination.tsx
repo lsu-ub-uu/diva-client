@@ -32,6 +32,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
+import { IconButton } from '../IconButton/IconButton';
 
 interface PaginationProps {
   query: BFFDataRecordData;
@@ -89,46 +90,42 @@ export const Pagination = ({
         </Select>
       </Fieldset>
       <span className={styles['pagination-buttons']}>
-        <Button
-          variant='icon'
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationFirstPageText')}
+          tooltip={t('divaClient_paginationFirstPageText')}
           name={ROWS_START_INPUT_NAME}
           value={firstPageStart}
           disabled={isOnFirstPage}
         >
           <ChevronFirstIcon />
-        </Button>
-        <Button
-          variant='icon'
+        </IconButton>
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationPreviousPageText')}
+          tooltip={t('divaClient_paginationPreviousPageText')}
           name={ROWS_START_INPUT_NAME}
           value={previousPageStart}
           disabled={isOnFirstPage}
         >
           <ChevronLeftIcon />
-        </Button>
-        <Button
-          variant='icon'
+        </IconButton>
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationNextPageText')}
+          tooltip={t('divaClient_paginationNextPageText')}
           name={ROWS_START_INPUT_NAME}
           value={nextPageStart}
           disabled={isOnLastPage}
         >
           <ChevronRightIcon />
-        </Button>
-        <Button
-          variant='icon'
-          aria-label={t('divaClient_paginationLastPageText')}
+        </IconButton>
+        <IconButton
           type='submit'
+          tooltip={t('divaClient_paginationLastPageText')}
           name={ROWS_START_INPUT_NAME}
           value={lastPageStart}
           disabled={isOnLastPage}
         >
           <ChevronLastIcon />
-        </Button>
+        </IconButton>
       </span>
     </div>
   );

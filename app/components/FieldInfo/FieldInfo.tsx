@@ -18,13 +18,14 @@
 
 import { Button } from '@/components/Button/Button';
 import { FieldContext } from '@/components/Input/Fieldset';
-import { InfoIcon } from '@/icons';
 import { use, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './FieldInfo.module.css';
 import { useTooltip } from '@/components/Tooltip/useTooltip';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { Popover } from '../Popover/Popover';
+import { InfoIcon } from 'lucide-react';
+import { IconButton } from '../IconButton/IconButton';
 
 interface FieldInfoProps {
   title: string;
@@ -36,21 +37,16 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
   const { ids } = use(FieldContext);
   const id = useId();
 
-  const { wrapperProps, triggerProps, tooltipProps } = useTooltip();
-
   return (
-    <div className={styles['field-info']} {...wrapperProps}>
-      <Button
-        variant='icon'
+    <div className={styles['field-info']}>
+      <IconButton
         size='small'
-        aria-label={t('divaClient_fieldInfoText')}
+        tooltip={t('divaClient_fieldInfoText')}
         popoverTarget={id}
         className={styles['field-info-button']}
-        {...triggerProps}
       >
         <InfoIcon />
-      </Button>
-      <Tooltip {...tooltipProps}>{t('divaClient_fieldInfoText')}</Tooltip>
+      </IconButton>
       <Popover id={id} title={t(title)}>
         {body && <p id={ids.details}>{t(body)}</p>}
       </Popover>
