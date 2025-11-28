@@ -378,7 +378,7 @@ describe('OutputView', () => {
     const mockData = {
       output: {
         recordInfo: { id: { value: '12345' } },
-        patentHolder_type_corporate: {
+        name_otherType_patentHolder_type_corporate: {
           __text: { en: 'Patent holder' },
           namePart: { value: 'Patent Corp' },
         },

@@ -3341,7 +3341,7 @@ export type StrategicResearchAreasCollection =
   | 'stemcellsAndRegenerativeMedicine'
   | 'healthCareResearch'
   | 'eScience'
-  | 'itAndMobileCommunicatiooutputns'
+  | 'itAndMobileCommunications'
   | 'materialsscience'
   | 'nanoscienceAndNanotechnology'
   | 'productionTechnology'

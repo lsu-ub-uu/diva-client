@@ -17,21 +17,25 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
   return (
     <ul className={styles['attachments']}>
       {attachments.map((attachment, i) => {
-        if (!attachment.attachmentFile?.linkedRecord?.binary.master) {
+        const binary = attachment?.attachmentFile?.linkedRecord?.binary;
+
+        if (!binary?.master?.master) {
           return null;
         }
         return (
           <li key={i}>
-            {attachment?.attachmentFile?.linkedRecord.binary.thumbnail
-              ?.thumbnail && (
-              <img
-                className={styles['attachment-thumbnail']}
-                src={createDownloadLinkFromResourceLink(
-                  attachment?.attachmentFile?.linkedRecord.binary.thumbnail
-                    .thumbnail,
-                )}
-                alt={attachment.__text?.[language]}
-              />
+            {binary?.thumbnail?.thumbnail && (
+              <a
+                href={createDownloadLinkFromResourceLink(binary.master.master)}
+              >
+                <img
+                  className={styles['attachment-thumbnail']}
+                  src={createDownloadLinkFromResourceLink(
+                    binary.thumbnail.thumbnail,
+                  )}
+                  alt={attachment.__text?.[language]}
+                />
+              </a>
             )}
           </li>
         );

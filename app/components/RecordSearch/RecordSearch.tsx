@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { DivaOutputSearchResult } from '../Form/SearchResult/DivaOutputSearchResult';
 import { SearchResultForm } from '../Form/SearchResultForm';
 import styles from './RecordSearch.module.css';
+import { useLocation, useNavigation } from 'react-router';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -41,6 +42,12 @@ export const RecordSearch = ({
   apiUrl,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+  const location = useLocation();
+  const searching =
+    navigation.state !== 'idle' &&
+    navigation.formAction?.includes(location.pathname);
+
   return (
     <div className={styles['record-search']}>
       <SearchForm
@@ -48,6 +55,7 @@ export const RecordSearch = ({
         data={query}
         searchResults={searchResults}
         apiUrl={apiUrl}
+        searching={searching}
       />
       {searchResults && (
         <>
@@ -60,7 +68,7 @@ export const RecordSearch = ({
             </Alert>
           )}
 
-          <ol className={styles['result-list']}>
+          <ol className={styles['result-list']} aria-busy={searching}>
             {searchResults.data.map((record) => (
               <li key={record.id} className={styles['result-list-item']}>
                 <div className={styles['result-list-item-content']}>
@@ -72,7 +80,6 @@ export const RecordSearch = ({
                       formSchema={record.presentation!}
                     />
                   )}
-
                   <div className={styles['record-action-buttons']}>
                     <RecordActionButtons record={record} />
                   </div>
