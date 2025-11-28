@@ -1,6 +1,6 @@
 import { type PersonType } from '@/routes/divaOutput/components/Person';
 import { formatPersonName } from '@/routes/divaOutput/utils/formatPersonName';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import { href, Link } from 'react-router';
 import styles from './Persons.module.css';
 
@@ -12,15 +12,12 @@ const PERSONS_TO_SHOW_LIMIT = 3;
 
 export const Persons = ({ persons }: PersonsProps) => {
   const id = useId();
-  const [expanded, setExpanded] = useState(false);
 
   if (!persons || persons.length === 0) {
     return null;
   }
 
-  const personsToShow = expanded
-    ? persons
-    : persons.slice(0, PERSONS_TO_SHOW_LIMIT);
+  const personsToShow = persons.slice(0, PERSONS_TO_SHOW_LIMIT);
 
   return (
     <>

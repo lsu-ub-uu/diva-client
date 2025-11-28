@@ -22,7 +22,7 @@ import { describe, expect, it } from 'vitest';
 import { DivaOutputSearchResult } from '../DivaOutputSearchResult';
 import type { BFFDataRecord } from '@/types/record';
 import { createRoutesStub } from 'react-router';
-import type { DivaOutput, DivaOutputGroup } from '@/generatedTypes/divaTypes';
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
 
 describe('DivaOutputSearchResult', () => {
   it('renders', () => {
