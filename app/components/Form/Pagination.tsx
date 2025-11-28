@@ -18,14 +18,12 @@
 
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 
-import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { Button } from '@/components/Button/Button';
-import styles from './Pagination.module.css';
+import { Fieldset } from '@/components/Input/Fieldset';
 import { Select } from '@/components/Input/Select';
 import { get } from 'lodash-es';
-import { Fieldset } from '@/components/Input/Fieldset';
 import {
   ChevronFirstIcon,
   ChevronLastIcon,
@@ -33,6 +31,7 @@ import {
   ChevronRightIcon,
 } from 'lucide-react';
 import { IconButton } from '../IconButton/IconButton';
+import styles from './Pagination.module.css';
 
 interface PaginationProps {
   query: BFFDataRecordData;

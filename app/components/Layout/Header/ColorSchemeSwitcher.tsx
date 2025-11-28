@@ -16,14 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { MoonIcon, SunIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';
-import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon } from 'lucide-react';
-import { IconButton } from '@/components/IconButton/IconButton';
 
 interface ColorThemeSwitcherProps {
   colorScheme: UserPreferences['colorScheme'];

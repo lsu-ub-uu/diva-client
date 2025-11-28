@@ -1,13 +1,12 @@
 import { Alert, type AlertProps } from '@/components/Alert/Alert';
-import { createPortal } from 'react-dom';
 import { type ReactNode, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
-import styles from './Snackbar.module.css';
 import { Transition } from '@headlessui/react';
-import { Button } from '@/components/Button/Button';
-import { useTranslation } from 'react-i18next';
 import { XIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
+import styles from './Snackbar.module.css';
 
 interface SnackbarProps {
   open: boolean;

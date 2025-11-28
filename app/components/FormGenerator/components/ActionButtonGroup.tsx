@@ -17,11 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IconButton } from '@/components/IconButton/IconButton';
+import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
-import { Button } from '@/components/Button/Button';
-import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
-import { IconButton } from '@/components/IconButton/IconButton';
 
 interface ActionButtonGroupProps {
   entityName?: string;

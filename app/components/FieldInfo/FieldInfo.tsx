@@ -16,16 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button } from '@/components/Button/Button';
 import { FieldContext } from '@/components/Input/Fieldset';
+import { InfoIcon } from 'lucide-react';
 import { use, useId } from 'react';
 import { useTranslation } from 'react-i18next';
-import styles from './FieldInfo.module.css';
-import { useTooltip } from '@/components/Tooltip/useTooltip';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { Popover } from '../Popover/Popover';
-import { InfoIcon } from 'lucide-react';
 import { IconButton } from '../IconButton/IconButton';
+import { Popover } from '../Popover/Popover';
+import styles from './FieldInfo.module.css';
 
 interface FieldInfoProps {
   title: string;
