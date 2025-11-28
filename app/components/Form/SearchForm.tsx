@@ -29,12 +29,14 @@ import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { CodeIcon, SearchIcon } from 'lucide-react';
+import { CircularLoader } from '../Loader/CircularLoader';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
   formSchema: SearchFormSchema;
   searchResults?: BFFSearchResult;
   apiUrl?: string;
+  searching: boolean;
 }
 
 export const SearchForm = ({
@@ -42,6 +44,7 @@ export const SearchForm = ({
   formSchema,
   searchResults,
   apiUrl,
+  searching,
 }: SearchFormProps) => {
   const member = useMember();
   const { t } = useTranslation();
@@ -72,7 +75,7 @@ export const SearchForm = ({
               },
             }}
           />
-          <SearchButton />
+          <SearchButton searching={searching} />
           {!searchResults && (
             <input
               type='hidden'
@@ -117,12 +120,21 @@ export const SearchForm = ({
   );
 };
 
-const SearchButton = () => {
+const SearchButton = ({ searching }: { searching: boolean }) => {
   const { t } = useTranslation();
 
   return (
     <Button type='submit' variant='primary' className={styles['search-button']}>
-      <SearchIcon /> {t('divaClient_SearchButtonText')}
+      {searching ? (
+        <>
+          <CircularLoader />{' '}
+          {t('divaClient_recordLinkAutocompleteSearchingText')}
+        </>
+      ) : (
+        <>
+          <SearchIcon /> {t('divaClient_SearchButtonText')}
+        </>
+      )}
     </Button>
   );
 };

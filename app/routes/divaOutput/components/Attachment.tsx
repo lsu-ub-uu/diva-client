@@ -3,6 +3,8 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { DownloadIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatBytes } from '../utils/format';
+import { AttachmentDetails } from './AttachmentDetails';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
@@ -18,7 +20,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
 
   return (
     <div className='attachment'>
-      <h3>{formatHeading(attachment, language)}</h3>
+      <h3>{formatHeading(attachment, language)} </h3>
       {attachment.attachmentFile.linkedRecord.binary.large?.large && (
         <img
           className='attachment-thumbnail'
@@ -28,9 +30,10 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
           alt={attachment.__text?.[language]}
         />
       )}
+      <AttachmentDetails attachment={attachment} />
       {attachment.attachmentFile.linkedRecord.binary.master?.master && (
         <a
-          className='download-link'
+          className='icon-text'
           href={createDownloadLinkFromResourceLink(
             attachment.attachmentFile.linkedRecord.binary.master.master,
           )}
@@ -65,14 +68,4 @@ const formatHeading = (
   }
 
   return attachmentTypeText || '';
-};
-
-const formatBytes = (bytesString?: string): string => {
-  if (!bytesString) return '';
-  const bytes = parseInt(bytesString, 10);
-  if (bytes === 0) return '0 B';
-  const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };

@@ -1,8 +1,8 @@
 import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
-import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Date } from '@/routes/divaOutput/components/Date';
+import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
 import { useTranslation } from 'react-i18next';
+import { Term } from './Term';
 
 interface OriginInfoProps {
   originInfo?: OriginInfoGroup;
@@ -25,17 +25,17 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
 
         <Term
           label={originInfo?.dateIssued?.__text?.[language]}
-          value={<Date date={originInfo?.dateIssued} />}
+          value={<DateDisplay date={originInfo?.dateIssued} />}
         />
 
         <Term
           label={originInfo?.copyrightDate?.__text?.[language]}
-          value={<Date date={originInfo?.copyrightDate} />}
+          value={<DateDisplay date={originInfo?.copyrightDate} />}
         />
 
         <Term
           label={originInfo?.dateOther_type_online?.__text?.[language]} //'Online'
-          value={<Date date={originInfo?.dateOther_type_online} />}
+          value={<DateDisplay date={originInfo?.dateOther_type_online} />}
         />
 
         <Term

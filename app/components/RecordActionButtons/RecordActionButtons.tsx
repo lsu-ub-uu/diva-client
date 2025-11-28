@@ -36,27 +36,27 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
       case 'read':
         return (
           <Button
-            variant='secondary'
+            variant='icon'
             size='small'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/${record.recordType}/${record.id}`}
+            aria-label={t('divaClient_viewRecordText')}
           >
             <FileTextIcon />
-            {t('divaClient_viewRecordText')}
           </Button>
         );
       case 'update':
         return (
           <Button
-            variant='secondary'
+            variant='icon'
             size='small'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/${record.recordType}/${record.id}/update`}
+            aria-label={t('divaClient_editRecordText')}
           >
             <FilePenIcon />
-            {t('divaClient_editRecordText')}
           </Button>
         );
       case 'delete':
@@ -71,9 +71,13 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               }
             }}
           >
-            <Button variant='secondary' type='submit' size='small'>
+            <Button
+              variant='icon'
+              type='submit'
+              size='small'
+              aria-label={t('divaClient_deleteRecordText')}
+            >
               <ShredderIcon />
-              {t('divaClient_deleteRecordText')}
             </Button>
           </fetcher.Form>
         );
