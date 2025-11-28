@@ -44,9 +44,10 @@ export const RecordSearch = ({
   const { t } = useTranslation();
   const navigation = useNavigation();
   const location = useLocation();
-  const searching =
+  const searching = Boolean(
     navigation.state !== 'idle' &&
-    navigation.formAction?.includes(location.pathname);
+    navigation.formAction?.includes(location.pathname)
+  );
 
   return (
     <div className={styles['record-search']}>
