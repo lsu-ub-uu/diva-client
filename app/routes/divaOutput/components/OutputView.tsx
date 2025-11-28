@@ -1,11 +1,12 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Date } from '@/routes/divaOutput/components/Date';
+import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
+import { ShoppingCartIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
 import { ArtisticWorkFields } from './ArtisticWork';
@@ -21,11 +22,11 @@ import { Organisations } from './Organisations';
 import { OriginInfo } from './OriginInfo';
 import { Persons } from './Persons';
 import { Project } from './Project';
+import { RecordDetails } from './RecordDetails';
 import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
-import { ShoppingCartIcon } from 'lucide-react';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -192,6 +193,8 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside>
+        <RecordDetails output={output} />
+
         <Attachments attachments={output.attachment} />
         <dl>
           <Term
@@ -207,7 +210,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <dl>
           <Term
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
-            value={<Date date={output.dateOther_type_patent} />}
+            value={<DateDisplay date={output.dateOther_type_patent} />}
           />
           {output.name_otherType_patentHolder_type_corporate && (
             <Organisations
@@ -246,12 +249,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <Identifiers output={output} />
 
         <Classifications output={output} />
-        <dl>
-          <Term
-            label={output.note_type_external?.__text?.[language]}
-            value={output.note_type_external?.value}
-          />
-        </dl>
       </aside>
     </div>
   );

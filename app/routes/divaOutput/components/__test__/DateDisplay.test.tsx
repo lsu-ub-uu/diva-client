@@ -1,16 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { Date } from '../Date';
+import { DateDisplay } from '../DateDisplay';
 
-describe('Date', () => {
+describe('DateDisplay', () => {
   it('should render null when date is undefined', () => {
-    render(<Date date={undefined} />);
+    render(<DateDisplay date={undefined} />);
 
     expect(screen.queryByRole('time')).not.toBeInTheDocument();
   });
   it('should format date correctly with year, month, and day', () => {
     render(
-      <Date
+      <DateDisplay
         date={{
           year: { value: '2023' },
           month: { value: '10' },
@@ -23,7 +23,7 @@ describe('Date', () => {
   });
   it('should format date correctly with year, month, day, hour, and minute', () => {
     render(
-      <Date
+      <DateDisplay
         date={{
           year: { value: '2023' },
           month: { value: '10' },
@@ -41,7 +41,7 @@ describe('Date', () => {
   });
   it('should handle missing month and day gracefully', () => {
     render(
-      <Date
+      <DateDisplay
         date={{
           year: { value: '2023' },
         }}
@@ -53,7 +53,7 @@ describe('Date', () => {
 
   it('should handle missing hour and minute gracefully', () => {
     render(
-      <Date
+      <DateDisplay
         date={{
           year: { value: '2023' },
           month: { value: '10' },
