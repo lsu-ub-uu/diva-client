@@ -21,7 +21,10 @@ describe('SearchForm', () => {
       {
         path: '/',
         Component: () => (
-          <SearchForm formSchema={searchFormWithoutPermissionUnit} />
+          <SearchForm
+            formSchema={searchFormWithoutPermissionUnit}
+            searching={false}
+          />
         ),
       },
     ]);
@@ -55,6 +58,7 @@ describe('SearchForm', () => {
               totalNo: 100,
               data: [mock<BFFDataRecord>()],
             }}
+            searching={false}
           />
         ),
       },
@@ -87,6 +91,7 @@ describe('SearchForm', () => {
               totalNo: 100,
               data: [mock<BFFDataRecord>()],
             }}
+            searching={false}
           />
         ),
       },
@@ -123,6 +128,7 @@ describe('SearchForm', () => {
               totalNo: 100,
               data: [mock<BFFDataRecord>()],
             }}
+            searching={false}
           />
         ),
       },
@@ -152,6 +158,7 @@ describe('SearchForm', () => {
               totalNo: 100,
               data: [mock<BFFDataRecord>()],
             }}
+            searching={false}
           />
         ),
       },
@@ -187,6 +194,7 @@ describe('SearchForm', () => {
               totalNo: 100,
               data: [mock<BFFDataRecord>()],
             }}
+            searching={false}
           />
         ),
       },

@@ -29,7 +29,6 @@ import {
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
-  Attributes,
   CoraData,
   DataAtomic,
   DataGroup,

@@ -1,0 +1,12 @@
+dd:has(+ dd),
+dd + dd {
+  display: inline;
+}
+
+dd + dd {
+  padding-left: 0;
+
+  &:not(:has(> button))::before {
+    content: ', ';
+  }
+}
