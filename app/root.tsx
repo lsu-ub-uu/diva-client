@@ -58,8 +58,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
-import { Breadcrumbs } from './components/Layout/Breadcrumbs/Breadcrumbs';
 
 const { MODE } = import.meta.env;
 
@@ -261,18 +259,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         recordTypes={recordTypes}
         editableMember={editableMember}
       />
-
-      <div className='nav-rail'>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-        />
-      </div>
-
-      <div className='content'>
-        <Breadcrumbs />
-        <Outlet />
-      </div>
+      <Outlet />
       <AuthLogger auth={auth} />
     </div>
   );
