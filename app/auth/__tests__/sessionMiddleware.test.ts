@@ -25,7 +25,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -59,7 +64,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -93,7 +103,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -127,7 +142,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -166,7 +186,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -209,7 +234,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -245,7 +275,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -285,7 +320,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 
@@ -323,7 +363,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      { request: mockRequest, context: mockContext, params: {} },
+      {
+        request: mockRequest,
+        context: mockContext,
+        params: {},
+        unstable_pattern: '',
+      },
       mockNextFunction,
     );
 

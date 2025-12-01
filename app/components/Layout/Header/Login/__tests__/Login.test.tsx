@@ -24,6 +24,12 @@ import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
+vi.mock('@/utils/useHydrated', () => {
+  return {
+    useHydrated: vi.fn(() => true),
+  };
+});
+
 const loginUnits = [
   {
     loginDescription: 'rkhTestDiVALoginUnitText',
@@ -71,7 +77,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('link', {
+      screen.getByRole('button', {
         name: 'divaClient_LoginText',
       }),
     );
@@ -110,7 +116,7 @@ describe('<Login/>', () => {
       render(<RoutesStub />);
 
       await user.click(
-        screen.getByRole('link', {
+        screen.getByRole('button', {
           name: 'divaClient_LoginText',
         }),
       );
@@ -208,7 +214,7 @@ describe('<Login/>', () => {
     render(<RoutesStub />);
 
     await user.click(
-      screen.getByRole('link', {
+      screen.getByRole('button', {
         name: 'divaClient_LoginText',
       }),
     );

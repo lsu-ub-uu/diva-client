@@ -18,13 +18,15 @@
 
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { useTranslation } from 'react-i18next';
-import styles from './RecordSearch.module.css';
 import { MehIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { DivaOutputSearchResult } from '../Form/SearchResult/DivaOutputSearchResult';
+import { SearchResultForm } from '../Form/SearchResultForm';
+import styles from './RecordSearch.module.css';
+import { useLocation, useNavigation } from 'react-router';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -40,6 +42,13 @@ export const RecordSearch = ({
   apiUrl,
 }: RecordSearchProps) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+  const location = useLocation();
+  const searching = Boolean(
+    navigation.state !== 'idle' &&
+    navigation.formAction?.includes(location.pathname)
+  );
+
   return (
     <div className={styles['record-search']}>
       <SearchForm
@@ -47,6 +56,7 @@ export const RecordSearch = ({
         data={query}
         searchResults={searchResults}
         apiUrl={apiUrl}
+        searching={searching}
       />
       {searchResults && (
         <>
@@ -59,16 +69,21 @@ export const RecordSearch = ({
             </Alert>
           )}
 
-          <ol className={styles['result-list']}>
+          <ol className={styles['result-list']} aria-busy={searching}>
             {searchResults.data.map((record) => (
               <li key={record.id} className={styles['result-list-item']}>
-                <SearchResultForm
-                  record={record}
-                  formSchema={record.presentation!}
-                />
-
-                <div className={styles['record-action-buttons']}>
-                  <RecordActionButtons record={record} />
+                <div className={styles['result-list-item-content']}>
+                  {record.recordType && record.recordType === 'diva-output' ? (
+                    <DivaOutputSearchResult searchResult={record} />
+                  ) : (
+                    <SearchResultForm
+                      record={record}
+                      formSchema={record.presentation!}
+                    />
+                  )}
+                  <div className={styles['record-action-buttons']}>
+                    <RecordActionButtons record={record} />
+                  </div>
                 </div>
               </li>
             ))}

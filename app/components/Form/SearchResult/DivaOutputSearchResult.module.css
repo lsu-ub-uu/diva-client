@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--gap);
+
+  @media (width < 900px) {
+    flex-direction: column;
+  }
+}

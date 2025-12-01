@@ -173,7 +173,7 @@ describe('Person', () => {
       namePart_type_family: { value: 'Doe' },
       affiliation: [
         {
-          name_type_corporate: { namePart: { value: 'University of Test' } },
+          namePart: { value: 'University of Test' },
           identifier_type_ror: {
             __text: { en: 'ROR', sv: 'ROR' },
             value: '048a87296',
@@ -184,7 +184,8 @@ describe('Person', () => {
           },
           description: {
             __text: { en: 'Description', sv: 'Beskrivning' },
-            value: 'Not to be confused with the University of Pest',
+            value: 'researchGroup',
+            __valueText: { en: 'Research Group', sv: 'Forskningsgrupp' },
           },
         },
       ],
@@ -194,9 +195,7 @@ describe('Person', () => {
 
     expect(screen.getByText('University of Test, Sweden')).toBeInTheDocument();
     expect(screen.getByText('048a87296')).toBeInTheDocument();
-    expect(
-      screen.getByText('Not to be confused with the University of Pest'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Research Group')).toBeInTheDocument();
   });
 
   it('renders two non-linked affilation with name only when expanded', () => {
@@ -205,9 +204,9 @@ describe('Person', () => {
       namePart_type_family: { value: 'Doe' },
       affiliation: [
         {
-          name_type_corporate: { namePart: { value: 'University of Test' } },
+          namePart: { value: 'University of Test' },
         },
-        { name_type_corporate: { namePart: { value: 'University of Pest' } } },
+        { namePart: { value: 'University of Pest' } },
       ],
     } as NamePersonalGroup;
 
@@ -292,7 +291,7 @@ describe('Person', () => {
               },
             },
           },
-          name_type_corporate: { namePart: { value: 'Uncontrolled name' } },
+          namePart: { value: 'Uncontrolled name' },
           identifier_type_ror: {
             __text: { en: 'ROR', sv: 'ROR' },
             value: 'RorInTheUncontrolled',
@@ -303,7 +302,8 @@ describe('Person', () => {
           },
           description: {
             __text: { en: 'Description', sv: 'Beskrivning' },
-            value: 'Not to be confused with the University of Pest',
+            value: 'researchGroup',
+            __valueText: { en: 'Research Group', sv: 'Forskningsgrupp' },
           },
         },
       ],

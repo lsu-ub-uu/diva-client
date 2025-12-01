@@ -55,7 +55,11 @@ export const searchRecords = async (
     auth?.data.token,
   );
 
-  const transformedRecords = transformRecords(dependencies, response.data);
+  const transformedRecords = transformRecords(
+    dependencies,
+    response.data,
+    'list',
+  );
 
   const { fromNo, toNo, totalNo, containDataOfType } = response.data.dataList;
 

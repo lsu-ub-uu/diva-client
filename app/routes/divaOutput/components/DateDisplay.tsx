@@ -18,7 +18,7 @@ interface DateProps {
   };
 }
 
-export const Date = ({ date }: DateProps) => {
+export const DateDisplay = ({ date }: DateProps) => {
   if (!date) {
     return null;
   }

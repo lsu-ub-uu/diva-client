@@ -43,7 +43,7 @@ describe('DegreeProjectFields', () => {
 
   it('should render degree granting institution', () => {
     const output = {
-      degreeGrantingInstitution_type_corporate: {
+      name_otherType_degreeGrantingInstitution_type_corporate: {
         __text: { en: 'Degree Granting Institution' },
         namePart: { value: 'University X' },
       },
@@ -120,26 +120,6 @@ describe('DegreeProjectFields', () => {
     expect(screen.getByText('Jane Smith')).toBeInTheDocument();
   });
 
-  it('should render defence event', () => {
-    const output = {
-      defence: {
-        __text: { en: 'Defence' },
-        dateOther_type_presentation: {
-          year: { value: '2023' },
-          month: { value: '05' },
-          day: { value: '15' },
-          hh: { value: '10' },
-          mm: { value: '00' },
-        },
-        location: { value: 'Room 101' },
-      },
-    } as DivaOutputGroup;
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Defence')).toBeInTheDocument();
-    expect(screen.getByText('2023-05-15 10:00')).toBeInTheDocument();
-    expect(screen.getByText('Room 101')).toBeInTheDocument();
-  });
-
   it('should render presentation event', () => {
     const output = {
       presentation: {
@@ -151,7 +131,7 @@ describe('DegreeProjectFields', () => {
           hh: { value: '14' },
           mm: { value: '30' },
         },
-        location: { value: 'Auditorium' },
+        address: { location: { value: 'Auditorium' } },
       },
     } as DivaOutputGroup;
     render(<DegreeProjectFields output={output} />);

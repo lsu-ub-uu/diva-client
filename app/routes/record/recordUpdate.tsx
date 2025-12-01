@@ -56,6 +56,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     recordType,
     recordId,
     authToken: auth?.data.token,
+    mode: 'update',
   });
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
@@ -112,6 +113,7 @@ export const action = async ({
     recordType,
     recordId,
     authToken: auth?.data.token,
+    mode: 'update',
   });
 
   assertDefined(validationType, 'Failed to get validation type from record');

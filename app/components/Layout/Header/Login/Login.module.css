@@ -23,26 +23,6 @@
   gap: var(--gap-s);
 }
 
-.login-button {
-  display: flex;
-  align-items: center;
-  height: var(--input-height);
-  padding: 0 calc(var(--gap) * 2);
-  gap: var(--gap);
-
-  svg {
-    font-size: var(--font-size-icon);
-  }
-
-  &:hover {
-    background-color: var(--color-button-secondary-hover);
-  }
-
-  &:active {
-    background-color: var(--color-button-secondary-active);
-  }
-}
-
 .logout-button {
   display: flex;
   align-items: center;
