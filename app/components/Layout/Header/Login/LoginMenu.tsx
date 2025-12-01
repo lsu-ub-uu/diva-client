@@ -64,13 +64,15 @@ export default function LoginMenu({
   const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
-  const returnTo = encodeURIComponent(
-    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`,
-  );
+  let rawReturnTo =
+    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`;
+  if (rawReturnTo === '/' || rawReturnTo === '%2F') {
+    rawReturnTo = '/diva-output';
+  }
+  const returnTo = encodeURIComponent(rawReturnTo);
 
   const submitting =
     navigation.state !== 'idle' && navigation.formAction?.includes('/login');
-
   useWebRedirectLogin({ returnTo });
 
   const handleDevSelection = (account: AppTokenLogin) => {
