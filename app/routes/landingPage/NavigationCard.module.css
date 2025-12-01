@@ -1,0 +1,70 @@
+.navigation-link {
+  text-decoration: none;
+  display: flex;
+  height: 100%;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-link-selected);
+    outline-offset: 2px;
+    border-radius: var(--border-radius);
+  }
+
+  @media (width > 900px) {
+    max-width: 60ch;
+  }
+}
+
+.navigation-card {
+  border-radius: var(--border-radius);
+  padding: var(--gap-xl);
+  text-align: center;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  cursor: pointer;
+  border: 1px solid var(--color-thin-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgb(0 0 0 / 15%);
+  }
+}
+
+.card-icon {
+  margin-bottom: var(--gap-l);
+  font-size: var(--font-size-xl);
+}
+
+.card-icon-publications {
+  color: var(--color-link);
+}
+
+.card-icon-people {
+  color: var(--color-success-main);
+}
+
+.card-icon-projects {
+  color: var(--color-error-main);
+}
+
+.card-title {
+  margin: 0 0 var(--gap) 0;
+  color: var(--color-text);
+  font-size: var(--font-size-h3);
+}
+
+.card-description {
+  margin: 0;
+  color: var(--color-label);
+  font-size: var(--font-size-s);
+}

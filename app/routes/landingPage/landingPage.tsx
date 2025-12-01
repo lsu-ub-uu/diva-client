@@ -1,30 +1,28 @@
 import { icons } from '@/components/Layout/TopNavigation/TopNavigation';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import bgImage from '@/images/A_Cold_September_Day_in_Medelpad__Carl_Johansson__-_Nationalmuseum_-_18620.tif_hero.webp';
-import bgImageNordiska from '@/images/Stockholm_August_2020_-_Kastellet__Vasa_Museum__and_Nordic_Museum_hero.webp';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import type { LucideIcon } from 'lucide-react';
 import {
   BookOpenIcon,
   ChartGanttIcon,
   SearchIcon,
   UsersIcon,
 } from 'lucide-react';
-import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Form,
-  Link,
-  NavLink,
   href,
+  NavLink,
   useRouteLoaderData,
   type LoaderFunctionArgs,
 } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
-import { loader as rootLoader } from '../root';
+import { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';
+import { heroImages } from './heroImages';
 import css from './landingPage.css?url';
+import { NavigationCard } from './NavigationCard';
+import { ImageAttribution } from './ImageAttribution';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -33,11 +31,15 @@ export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const member = getMemberFromHostname(request, dependencies);
   const title = member
     ? member.id !== 'diva'
-      ? `DiVA – ${member.pageTitle[language]}`
-      : 'DiVA'
-    : 'DiVA';
+      ? `${i18n.t('divaClient_heroTitleText', { member: member.pageTitle[language] })}`
+      : i18n.t('divaText')
+    : i18n.t('divaText');
+
+  const decription = i18n.t('divaClient_landingPageDescriptionText');
   return {
     title,
+    decription,
+    member,
     heroImage: heroImages[member?.id ?? 'default'] ?? heroImages['default'],
   };
 };
@@ -49,13 +51,12 @@ export const links: Route.LinksFunction = () => [
 export const meta: Route.MetaFunction = ({ loaderData }) => [
   { title: loaderData.title },
   {
-    description:
-      'DiVA är en gemensam plattform för att publicera, lagra och söka forskningsinformation och studentuppsatser från ett stort antal svenska lärosäten och forskningsinstitut.',
+    description: loaderData.decription,
   },
 ];
 
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
-  const { title, heroImage } = loaderData;
+  const { title, member, heroImage } = loaderData;
   const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
   const recordTypes = rootLoaderData?.recordTypes ?? [];
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           <img src={heroImage.url} alt='' className='hero-image' />
           <figcaption className='image-credit'>
             <details>
-              <summary>Bildkälla</summary>
+              <summary>{t('divcaClient_heroImageSourceText')}</summary>
               <ImageAttribution attribution={heroImage.attribution} />
             </details>
           </figcaption>
@@ -74,7 +75,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
 
         <h1 className='hero-title'>{title}</h1>
         <div className='hero-subtitle'>
-          Sök bland Nordiska museets publikationer
+          {t('divaClient_heroSubtitleText', { member })}
         </div>
 
         <Form
@@ -91,10 +92,10 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           />
           <div className='search-container'>
             <label className='search-label' htmlFor='landing-search'>
-              Sök efter publikationer
+              {t('divaClient_heroLabelText')}
             </label>
             <input
-              placeholder='Sök efter publikationer'
+              placeholder={t('divaClient_heroLabelText')}
               id='landing-search'
               type='search'
               className='search-input'
@@ -111,26 +112,26 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           to={href('/:recordType', { recordType: 'diva-output' })}
           icon={BookOpenIcon}
           iconColor='card-icon-publications'
-          title='Publikationer'
-          description='Sök bland publikationer och annan output'
+          title={t('divaClient_navigationCardPublicationTitleText')}
+          description={t('divaClient_navigationCardPublicationDescriptionText')}
         />
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-person' })}
           icon={UsersIcon}
           iconColor='card-icon-people'
-          title='Personer'
-          description='Hitta forskare och författare'
+          title={t('divaClient_navigationCardPersocnTitleText')}
+          description={t('divaClient_navigationCardPersonDescriptionText')}
         />
         <NavigationCard
           to={href('/:recordType', { recordType: 'diva-project' })}
           icon={ChartGanttIcon}
           iconColor='card-icon-projects'
-          title='Projekt'
-          description='Utforska forskningsprojekt'
+          title={t('divaClient_navigationCardProjectTitleText')}
+          description={t('divaClient_navigationCardProjectDescriptionText')}
         />
       </div>
       <section className='other-record-types'>
-        <h2>Alla posttyper</h2>
+        <h2>{t('divaClient_allRecordTypesText')}</h2>
         <nav>
           <ul>
             {recordTypes.map((recordType) => (
@@ -154,120 +155,3 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
     </main>
   );
 }
-
-interface NavigationCardProps {
-  to: string;
-  icon?: LucideIcon;
-  iconNode?: ReactNode;
-  iconColor: string;
-  title: string;
-  description?: string;
-}
-
-function NavigationCard({
-  to,
-  icon: Icon,
-  iconNode,
-  iconColor,
-  title,
-  description,
-}: NavigationCardProps) {
-  return (
-    <Link to={to} className='navigation-link' viewTransition>
-      <div className='navigation-card'>
-        {Icon ? <Icon className={`card-icon ${iconColor}`} /> : iconNode}
-        <h2 className='card-title'>{title}</h2>
-        <p className='card-description'>{description}</p>
-      </div>
-    </Link>
-  );
-}
-
-const heroImages: Record<
-  string,
-  { url: string; attribution: ImageAttribution }
-> = {
-  nordiskamuseet: {
-    url: bgImageNordiska,
-    attribution: {
-      author: 'Martin Falbisoner',
-      source: {
-        text: 'Wikimedia Commons',
-        link: 'https://commons.wikimedia.org/wiki/File:Stockholm_August_2020_-_Kastellet,_Vasa_Museum,_and_Nordic_Museum.jpg',
-      },
-      license: {
-        text: 'CC BY-SA 4.0',
-        link: 'https://creativecommons.org/licenses/by-sa/4.0/',
-      },
-    },
-  },
-  default: {
-    url: bgImage,
-    attribution: {
-      title: 'Carl Johansson: A Cold September Day in Medelpad',
-      author: 'Nationalmuseum (Foto: Rickard Karlsson)',
-      source: {
-        text: 'Wikimedia Commons',
-        link: 'https://commons.wikimedia.org/wiki/File:A_Cold_September_Day_in_Medelpad_(Carl_Johansson)_-_Nationalmuseum_-_18620.tif',
-      },
-      license: {
-        text: 'Public Domain',
-      },
-    },
-  },
-};
-
-interface ImageAttribution {
-  title?: string;
-  author?: string;
-  source: {
-    text: string;
-    link: string;
-  };
-  license: {
-    text: string;
-    link?: string;
-  };
-}
-
-const ImageAttribution = ({
-  attribution,
-}: {
-  attribution: ImageAttribution;
-}) => {
-  const fragments = [
-    attribution.title,
-    attribution.author,
-    <>
-      <a
-        href={attribution.source.link}
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {attribution.source.text}
-      </a>
-    </>,
-    attribution.license.link ? (
-      <a
-        href={attribution.license.link}
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {attribution.license.text}
-      </a>
-    ) : (
-      attribution.license.text
-    ),
-  ];
-  return (
-    <div className='image-attribution'>
-      {fragments.filter(Boolean).reduce<ReactNode[]>((prev, curr, index) => {
-        if (index === 0) {
-          return [curr];
-        } else {
-          return [...prev, ', ', curr];
-        }
-      }, [])}
-    </div>
-  );
-};
