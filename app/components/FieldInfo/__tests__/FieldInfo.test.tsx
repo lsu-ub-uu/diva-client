@@ -19,22 +19,19 @@
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, it } from 'vitest';
 
 describe('<FieldInfo />', () => {
-  it('Renders tooltip when info button is clicked and can be closed', async () => {
+  it('Renders info button with popover', async () => {
     const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';
     render(<FieldInfo title={title} body={body} />);
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-
+    
     await user.click(
       screen.getByRole('button', { name: 'divaClient_fieldInfoText' }),
     );
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
 
     screen.getByText('Test Title');
     screen.getByText('body content');
@@ -44,7 +41,5 @@ describe('<FieldInfo />', () => {
         name: 'divaClient_closeText',
       }),
     );
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

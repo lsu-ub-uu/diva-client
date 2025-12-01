@@ -18,7 +18,6 @@
 
 import { Link, useFetcher } from 'react-router';
 
-import { Button } from '@/components/Button/Button';
 import type { BFFDataRecord } from '@/types/record';
 import { FilePenIcon, FileTextIcon, ShredderIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

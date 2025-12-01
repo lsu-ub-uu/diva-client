@@ -6,7 +6,7 @@ export const useTooltip = () => {
   const tooltipDelayTimeout = useRef<number>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  function showPopover() {
+  function showTooltip() {
     tooltipRef.current?.showPopover({ source: triggerRef.current });
 
     if (!supportsAnchorPositioning()) {
@@ -20,12 +20,12 @@ export const useTooltip = () => {
       window.clearTimeout(tooltipDelayTimeout.current);
     }
     tooltipDelayTimeout.current = window.setTimeout(() => {
-      showPopover();
+      showTooltip();
     }, 500);
   }
 
   function handleFocus() {
-    showPopover();
+    showTooltip();
   }
 
   function handleMouseLeave() {

@@ -1418,6 +1418,7 @@ describe('<Form />', () => {
       await act(() => render(<RoutesStub />));
       expect(
         screen.getByRole('heading', {
+          level: 2,
           name: /attachmentgrouptext/i,
         }),
       ).toBeInTheDocument();
