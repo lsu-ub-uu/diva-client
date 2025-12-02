@@ -46,9 +46,13 @@ export const ImageAttribution = ({
     <div className='image-attribution'>
       {fragments.filter(Boolean).reduce<ReactNode[]>((prev, curr, index) => {
         if (index === 0) {
-          return [curr];
+          return [<span key={index}>{curr}</span>];
         } else {
-          return [...prev, ', ', curr];
+          return [
+            ...prev,
+            <span key={`comma-${index}`}>{', '}</span>,
+            <span key={index}>{curr}</span>,
+          ];
         }
       }, [])}
     </div>

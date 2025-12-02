@@ -23,6 +23,7 @@ import { heroImages } from './heroImages';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
 import { ImageAttribution } from './ImageAttribution';
+import { useLanguage } from '@/i18n/useLanguage';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -60,6 +61,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
   const recordTypes = rootLoaderData?.recordTypes ?? [];
   const { t } = useTranslation();
+  const language = useLanguage();
   return (
     <main className='landing-main'>
       <div className='hero-container'>
@@ -75,7 +77,9 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
 
         <h1 className='hero-title'>{title}</h1>
         <div className='hero-subtitle'>
-          {t('divaClient_heroSubtitleText', { member })}
+          {t('divaClient_heroSubtitleText', {
+            member: member?.pageTitle[language],
+          })}
         </div>
 
         <Form
@@ -119,7 +123,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           to={href('/:recordType', { recordType: 'diva-person' })}
           icon={UsersIcon}
           iconColor='card-icon-people'
-          title={t('divaClient_navigationCardPersocnTitleText')}
+          title={t('divaClient_navigationCardPersonTitleText')}
           description={t('divaClient_navigationCardPersonDescriptionText')}
         />
         <NavigationCard
