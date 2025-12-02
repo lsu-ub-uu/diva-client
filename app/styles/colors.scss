@@ -101,10 +101,4 @@
   [data-color-scheme='dark'] {
     @include dark-color-scheme;
   }
-
-  @media (prefers-color-scheme: dark) {
-    [data-color-scheme='auto'] {
-      @include dark-color-scheme;
-    }
-  }
 }
