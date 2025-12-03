@@ -6,6 +6,7 @@ import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import type { FormComponentWithData } from '../types';
 import { PlusCircleIcon, XIcon } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface OptionalComponentProps {
   anchorId?: string;
@@ -41,18 +42,16 @@ export const OptionalComponent = ({
             <>
               {renderCallback(
                 showDeleteButton && (
-                  <Button
+                  <IconButton
                     size='small'
-                    variant='icon'
-                    aria-label={t('divaClient_deleteFieldText', {
+                    tooltip={t('divaClient_deleteFieldText', {
                       fieldName: t(component.label),
                     })}
-                    tooltipPosition='left'
                     onClick={() => field.onChange(null)}
                     data-action-button='delete'
                   >
                     <XIcon />
-                  </Button>
+                  </IconButton>
                 ),
               )}
             </>

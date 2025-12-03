@@ -1,7 +1,7 @@
 import DivaLogo from '@/assets/divaLogo.svg?react';
 import type { User } from '@/auth/createUser';
 import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
-import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type {
   BFFMember,
@@ -10,16 +10,16 @@ import type {
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { clsx } from 'clsx';
+import { MenuIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
-import { LanguageSwitcher } from './LanguageSwitcher';
-import LoginMenu from './Login/LoginMenu';
 import { MemberBar } from '../MemberBar/MemberBar';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
+import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
 import styles from './Header.module.css';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import LoginMenu from './Login/LoginMenu';
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -77,13 +77,12 @@ export const Header = ({
       <div className={styles['diva-header-bar']}>
         <div className={styles['header-bar-left']}>
           <div className={styles['header-mobile-menu-button']}>
-            <Button
-              variant='icon'
-              aria-label={t('divaClient_showMenuText')}
+            <IconButton
+              tooltip={t('divaClient_showMenuText')}
               onClick={() => mobileDialogRef.current?.showModal()}
             >
               <MenuIcon />
-            </Button>
+            </IconButton>
             <dialog
               ref={mobileDialogRef}
               className={styles['mobile-menu-dialog']}
@@ -95,14 +94,13 @@ export const Header = ({
                 <ColorSchemeSwitcher
                   colorScheme={userPreferences.colorScheme}
                 />
-                <Button
+                <IconButton
                   className={styles['menu-close-button']}
-                  variant='icon'
-                  aria-label={t('divaClient_closeText')}
+                  tooltip={t('divaClient_closeText')}
                   onClick={() => mobileDialogRef.current?.close()}
                 >
                   <XIcon />
-                </Button>
+                </IconButton>
               </div>
               <hr />
               <TopNavigation

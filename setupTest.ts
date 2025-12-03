@@ -15,6 +15,9 @@ beforeAll(() => {
   };
 
   window.open = vi.fn();
+  HTMLElement.prototype.showPopover = vi.fn();
+  HTMLElement.prototype.hidePopover = vi.fn();
+  CSS.supports = vi.fn().mockReturnValue(true);
 
   // @ts-expect-error: this is fine
   global.IS_REACT_ACT_ENVIRONMENT = true;

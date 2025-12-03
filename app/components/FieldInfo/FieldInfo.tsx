@@ -16,14 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button } from '@/components/Button/Button';
 import { FieldContext } from '@/components/Input/Fieldset';
-import { usePopover } from '@/utils/usePopover';
-import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
-import { use } from 'react';
+import { InfoIcon } from 'lucide-react';
+import { use, useId } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from '../IconButton/IconButton';
+import { Popover } from '../Popover/Popover';
 import styles from './FieldInfo.module.css';
-import { InfoIcon, XIcon } from 'lucide-react';
 
 interface FieldInfoProps {
   title: string;
@@ -33,56 +32,21 @@ interface FieldInfoProps {
 export const FieldInfo = ({ title, body }: FieldInfoProps) => {
   const { t } = useTranslation();
   const { ids } = use(FieldContext);
-
-  const {
-    isOpen,
-    setIsOpen,
-    refs,
-    floatingStyles,
-    context,
-    getReferenceProps,
-    getFloatingProps,
-  } = usePopover();
+  const id = useId();
 
   return (
-    <div className={styles['popover']}>
-      <Button
-        variant='icon'
+    <div className={styles['field-info']}>
+      <IconButton
         size='small'
-        aria-label={t('divaClient_fieldInfoText')}
-        ref={refs.setReference}
-        {...getReferenceProps()}
+        tooltip={t('divaClient_fieldInfoText')}
+        popoverTarget={id}
+        className={styles['field-info-button']}
       >
         <InfoIcon />
-      </Button>
-      {isOpen && (
-        <FloatingPortal>
-          <FloatingFocusManager context={context}>
-            <div
-              className={styles['field-info-panel']}
-              // eslint-disable-next-line react-hooks/refs
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
-            >
-              <div className={styles['label-wrapper']}>
-                {title && <h4>{t(title)}</h4>}
-                <Button
-                  onClick={() => setIsOpen(false)}
-                  as={Button}
-                  variant='icon'
-                  size='small'
-                  aria-label={t('divaClient_closeText')}
-                  tooltipPosition='left'
-                >
-                  <XIcon />
-                </Button>
-              </div>
-              {body && <p id={ids.details}>{t(body)}</p>}
-            </div>
-          </FloatingFocusManager>
-        </FloatingPortal>
-      )}
+      </IconButton>
+      <Popover id={id} title={t(title)}>
+        {body && <p id={ids.details}>{t(body)}</p>}
+      </Popover>
     </div>
   );
 };

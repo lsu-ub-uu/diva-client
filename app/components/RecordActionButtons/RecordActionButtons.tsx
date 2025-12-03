@@ -18,10 +18,10 @@
 
 import { Link, useFetcher } from 'react-router';
 
-import { Button } from '@/components/Button/Button';
 import type { BFFDataRecord } from '@/types/record';
 import { FilePenIcon, FileTextIcon, ShredderIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from '../IconButton/IconButton';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -35,29 +35,27 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
     switch (userRight) {
       case 'read':
         return (
-          <Button
-            variant='icon'
+          <IconButton
             size='small'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/${record.recordType}/${record.id}`}
-            aria-label={t('divaClient_viewRecordText')}
+            tooltip={t('divaClient_viewRecordText')}
           >
             <FileTextIcon />
-          </Button>
+          </IconButton>
         );
       case 'update':
         return (
-          <Button
-            variant='icon'
+          <IconButton
             size='small'
             key={`${record.id}_rab_${userRight}`}
             as={Link}
             to={`/${record.recordType}/${record.id}/update`}
-            aria-label={t('divaClient_editRecordText')}
+            tooltip={t('divaClient_editRecordText')}
           >
             <FilePenIcon />
-          </Button>
+          </IconButton>
         );
       case 'delete':
         return (
@@ -71,14 +69,13 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               }
             }}
           >
-            <Button
-              variant='icon'
+            <IconButton
               type='submit'
               size='small'
-              aria-label={t('divaClient_deleteRecordText')}
+              tooltip={t('divaClient_deleteRecordText')}
             >
               <ShredderIcon />
-            </Button>
+            </IconButton>
           </fetcher.Form>
         );
       default:

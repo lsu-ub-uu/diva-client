@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { MoonIcon, SunIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';
-import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon } from 'lucide-react';
 
 interface ColorThemeSwitcherProps {
   colorScheme: UserPreferences['colorScheme'];
@@ -66,19 +66,18 @@ export const ColorSchemeSwitcher = ({
       className={styles['color-scheme-switcher']}
     >
       <input type='hidden' name='intent' value='changeColorScheme' />
-      <Button
-        variant='icon'
+      <IconButton
         type='submit'
         name='colorScheme'
         value={currentColorScheme === 'dark' ? 'light' : 'dark'}
-        aria-label={
+        tooltip={
           currentColorScheme === 'dark'
             ? t('divaClient_switchToLightModeText')
             : t('divaClient_switchToDarkModeText')
         }
       >
         {currentColorScheme === 'light' ? <SunIcon /> : <MoonIcon />}
-      </Button>
+      </IconButton>
     </fetcher.Form>
   );
 };
