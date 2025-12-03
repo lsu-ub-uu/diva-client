@@ -12,6 +12,7 @@ import {
   Form,
   href,
   NavLink,
+  redirect,
   useRouteLoaderData,
   type LoaderFunctionArgs,
 } from 'react-router';
@@ -24,8 +25,15 @@ import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
 import { ImageAttribution } from './ImageAttribution';
 import { useLanguage } from '@/i18n/useLanguage';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
+  const auth = context.get(sessionContext);
+
+  if (auth?.auth?.data.token) {
+    return redirect(href('/:recordType', { recordType: 'diva-output' }));
+  }
+
   const { dependencies } = context.get(dependenciesContext);
   const i18n = context.get(i18nContext);
   const language = i18n.language as 'sv' | 'en';
@@ -86,7 +94,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           action={href('/:recordType', { recordType: 'diva-output' })}
           className='search-form'
           method='GET'
-          viewTransition
         >
           <input type='hidden' name='search.rows.value' value='10' />
           <input

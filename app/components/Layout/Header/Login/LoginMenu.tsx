@@ -64,11 +64,8 @@ export default function LoginMenu({
   const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
-  let rawReturnTo =
+  const rawReturnTo =
     searchParams.get('returnTo') ?? `${location.pathname}${location.search}`;
-  if (rawReturnTo === '/' || rawReturnTo === '%2F') {
-    rawReturnTo = '/diva-output';
-  }
   const returnTo = encodeURIComponent(rawReturnTo);
 
   const submitting =
