@@ -24,11 +24,7 @@ export const useTooltip = () => {
     }, 500);
   }
 
-  function handleFocus() {
-    showTooltip();
-  }
-
-  function handleMouseLeave() {
+  function hideTooltip() {
     if (tooltipDelayTimeout.current != null) {
       window.clearTimeout(tooltipDelayTimeout.current);
       tooltipDelayTimeout.current = null;
@@ -45,13 +41,13 @@ export const useTooltip = () => {
   const tooltipTriggerProps = {
     ref: triggerRef,
     onMouseEnter: handleMouseEnter,
-    onFocus: handleFocus,
-    onBlur: handleMouseLeave,
+    onFocus: showTooltip,
+    onBlur: hideTooltip,
     onKeyDown: handleKeyDown,
   };
 
   const tooltipWrapperProps = {
-    onMouseLeave: handleMouseLeave,
+    onMouseLeave: hideTooltip,
   };
 
   const tooltipProps = {

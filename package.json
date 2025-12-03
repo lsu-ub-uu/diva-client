@@ -27,7 +27,6 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.1.1",
-    "@oddbird/css-anchor-positioning": "^0.8.0",
     "@react-router/express": "^7.9.6",
     "@react-router/node": "^7.9.6",
     "axios": "^1.12.2",
