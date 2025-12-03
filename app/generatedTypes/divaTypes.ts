@@ -2976,9 +2976,19 @@ export interface PresentationDivaGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface DateOtherDefenceGroup {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  hh?: { value: string; __text?: { sv: string; en: string } };
+  mm?: { value: string; __text?: { sv: string; en: string } };
+  _type: 'defence';
+  __text?: { sv: string; en: string };
+}
+
 export interface DefenceGroup {
   language?: LanguageGroup;
-  dateOther_type_presentation?: DateOtherPresentationGroup;
+  dateOther_type_defence?: DateOtherDefenceGroup;
   address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
@@ -3005,7 +3015,6 @@ export interface RecordInfoJournalUpdateGroup {
 export interface JournalUpdateGroup {
   recordInfo: RecordInfoJournalUpdateGroup;
   titleInfo?: TitleInfoGroup;
-  originInfo?: OriginInfoDateIssuedStartEndGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
@@ -3018,6 +3027,7 @@ export interface JournalUpdateGroup {
     _displayLabel: 'eissn';
     __text?: { sv: string; en: string };
   };
+  originInfo?: OriginInfoDateIssuedStartEndGroup;
   location?: LocationGroup;
   __text?: { sv: string; en: string };
 }

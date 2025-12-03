@@ -45,7 +45,7 @@
   height: 100%;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.7) brightness(0.7) contrast(0.8);
+  filter: var(--background-image-filter);
 }
 
 .hero-title {
@@ -145,6 +145,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--gap-xl);
+
+    @media (width < 900px) {
+      gap: var(--gap-l);
+    }
   }
 }
 
