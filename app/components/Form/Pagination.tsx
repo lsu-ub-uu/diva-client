@@ -18,20 +18,20 @@
 
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
 
-import { useTranslation } from 'react-i18next';
 import type { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { Button } from '@/components/Button/Button';
-import styles from './Pagination.module.css';
+import { Fieldset } from '@/components/Input/Fieldset';
 import { Select } from '@/components/Input/Select';
 import { get } from 'lodash-es';
-import { Fieldset } from '@/components/Input/Fieldset';
 import {
   ChevronFirstIcon,
   ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
+import { IconButton } from '../IconButton/IconButton';
+import styles from './Pagination.module.css';
 
 interface PaginationProps {
   query: BFFDataRecordData;
@@ -89,46 +89,42 @@ export const Pagination = ({
         </Select>
       </Fieldset>
       <span className={styles['pagination-buttons']}>
-        <Button
-          variant='icon'
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationFirstPageText')}
+          tooltip={t('divaClient_paginationFirstPageText')}
           name={ROWS_START_INPUT_NAME}
           value={firstPageStart}
           disabled={isOnFirstPage}
         >
           <ChevronFirstIcon />
-        </Button>
-        <Button
-          variant='icon'
+        </IconButton>
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationPreviousPageText')}
+          tooltip={t('divaClient_paginationPreviousPageText')}
           name={ROWS_START_INPUT_NAME}
           value={previousPageStart}
           disabled={isOnFirstPage}
         >
           <ChevronLeftIcon />
-        </Button>
-        <Button
-          variant='icon'
+        </IconButton>
+        <IconButton
           type='submit'
-          aria-label={t('divaClient_paginationNextPageText')}
+          tooltip={t('divaClient_paginationNextPageText')}
           name={ROWS_START_INPUT_NAME}
           value={nextPageStart}
           disabled={isOnLastPage}
         >
           <ChevronRightIcon />
-        </Button>
-        <Button
-          variant='icon'
-          aria-label={t('divaClient_paginationLastPageText')}
+        </IconButton>
+        <IconButton
           type='submit'
+          tooltip={t('divaClient_paginationLastPageText')}
           name={ROWS_START_INPUT_NAME}
           value={lastPageStart}
           disabled={isOnLastPage}
         >
           <ChevronLastIcon />
-        </Button>
+        </IconButton>
       </span>
     </div>
   );
