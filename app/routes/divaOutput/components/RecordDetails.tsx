@@ -116,9 +116,11 @@ const TimestampAndUser = ({
 const getDataQualityIcon = (dataQuality?: string) => {
   switch (dataQuality) {
     case '2026':
-      return <CheckCircleIcon color='var(--color-success-main)' />;
+      return <CheckCircleIcon color='var(--color-alert-success-icon)' />;
     case 'classic':
-      return <FileExclamationPointIcon color='var(--color-error-main)' />;
+      return (
+        <FileExclamationPointIcon color='var(--color-alert-warning-icon)' />
+      );
     default:
       return null;
   }
