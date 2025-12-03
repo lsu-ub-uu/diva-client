@@ -69,7 +69,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           <img src={heroImage.url} alt='' className='hero-image' />
           <figcaption className='image-credit'>
             <details>
-              <summary>{t('divcaClient_heroImageSourceText')}</summary>
+              <summary>{t('divaClient_heroImageSourceText')}</summary>
               <ImageAttribution attribution={heroImage.attribution} />
             </details>
           </figcaption>
