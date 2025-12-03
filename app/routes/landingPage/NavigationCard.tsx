@@ -21,7 +21,7 @@ export const NavigationCard = ({
   description,
 }: NavigationCardProps) => {
   return (
-    <Link to={to} className={styles['navigation-link']} viewTransition>
+    <Link to={to} className={styles['navigation-link']}>
       <div className={styles['navigation-card']}>
         {Icon ? (
           <Icon className={styles[`card-icon ${iconColor}`]} />
