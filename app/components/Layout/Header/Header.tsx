@@ -112,7 +112,7 @@ export const Header = ({
               />
             </dialog>
           </div>
-          <Link to='/'>
+          <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
             <DivaLogo className={styles.logo} />
           </Link>
         </div>

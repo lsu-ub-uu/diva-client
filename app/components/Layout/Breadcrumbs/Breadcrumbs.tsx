@@ -19,7 +19,7 @@
 import { HouseIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, type UIMatch, useMatches } from 'react-router';
+import { href, NavLink, type UIMatch, useMatches } from 'react-router';
 import styles from './Breadcrumbs.module.css';
 
 export type Breadcrumb = (match: MatchWithBreadcrumb) => ReactNode;
@@ -50,9 +50,12 @@ export const Breadcrumbs = () => {
     >
       <ol>
         <li>
-          <span aria-label={t('divaClient_breadcrumbStartText')}>
+          <NavLink
+            to={href('/')}
+            aria-label={t('divaClient_breadcrumbStartText')}
+          >
             <HouseIcon />
-          </span>
+          </NavLink>
         </li>
         {matches.filter(hasBreadcrumb).map((match) => {
           return (

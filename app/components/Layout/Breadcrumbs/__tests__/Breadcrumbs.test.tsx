@@ -113,7 +113,7 @@ describe('<Breadcrumbs />', () => {
       name: 'divaClient_breadcrumbText',
     });
 
-    expect(within(breadcrumbs).getAllByRole('link')).toHaveLength(2);
+    expect(within(breadcrumbs).getAllByRole('link')).toHaveLength(3);
     within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
 
     expect(

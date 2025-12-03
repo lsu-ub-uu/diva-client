@@ -114,7 +114,11 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
                 className='search-input'
                 name='search.include.includePart.genericSearchTerm.value'
               />
-              <button type='submit' className='search-button'>
+              <button
+                type='submit'
+                className='search-button'
+                aria-label={t('divaClient_SearchButtonText')}
+              >
                 <SearchIcon fontSize='1.5rem' />
               </button>
             </div>
