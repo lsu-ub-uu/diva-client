@@ -51,7 +51,7 @@
 }
 
 .links {
-  font-size: var(--font-size-s);
+  font-size: var(--font-size);
   max-width: 40%;
 
   ul {
@@ -93,7 +93,7 @@
 }
 
 .logo-wrapper {
-  height: var(--gap-xxl);
+  height: 5rem;
   padding: var(--gap-s) 0;
   position: absolute;
   left: 50%;
@@ -128,7 +128,7 @@
 
     button {
       padding: var(--gap-s);
-      font-size: var(--font-size-s);
+      font-size: var(--font-size);
       gap: var(--gap-s);
     }
   }

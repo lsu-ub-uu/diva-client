@@ -3163,7 +3163,7 @@ export interface RelatedItemBookGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface RelatedItemConferencePublicationGroup {
+export interface RelatedItemProceedingGroup {
   proceeding?: {
     value: string;
     linkedRecord: {
@@ -3196,7 +3196,7 @@ export interface RelatedItemConferencePublicationGroup {
   }[];
   part?: RelatedItemPartJournalGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
-  _type: 'conferencePublication';
+  _type: 'proceeding';
   _otherType: RelatedItemOtherTypeCollection;
   __text?: { sv: string; en: string };
 }
@@ -3815,7 +3815,7 @@ export interface DivaOutputGroup {
   defence?: DefenceGroup;
   relatedItem_type_journal?: RelatedItemJournalGroup;
   relatedItem_type_book?: RelatedItemBookGroup;
-  relatedItem_type_conferencePublication?: RelatedItemConferencePublicationGroup;
+  relatedItem_type_proceeding?: RelatedItemProceedingGroup;
   relatedItem_type_conference?: RelatedItemConferenceGroup;
   relatedItem_type_publicationChannel?: RelatedItemPublicationChannelGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
