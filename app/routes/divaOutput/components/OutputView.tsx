@@ -153,9 +153,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           <Journal journal={output.relatedItem_type_journal} />
           <Book book={output.relatedItem_type_book} />
           <ConferencePublication
-            conferencePublication={
-              output.relatedItem_type_conferencePublication
-            }
+            conferencePublication={output.relatedItem_type_proceeding}
           />
           {output.relatedItem_type_researchData?.map((researchData, index) => (
             <ResearchData key={index} researchData={researchData} />

@@ -2976,9 +2976,19 @@ export interface PresentationDivaGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface DateOtherDefenceGroup {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  hh?: { value: string; __text?: { sv: string; en: string } };
+  mm?: { value: string; __text?: { sv: string; en: string } };
+  _type: 'defence';
+  __text?: { sv: string; en: string };
+}
+
 export interface DefenceGroup {
   language?: LanguageGroup;
-  dateOther_type_presentation?: DateOtherPresentationGroup;
+  dateOther_type_defence?: DateOtherDefenceGroup;
   address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
@@ -3005,7 +3015,6 @@ export interface RecordInfoJournalUpdateGroup {
 export interface JournalUpdateGroup {
   recordInfo: RecordInfoJournalUpdateGroup;
   titleInfo?: TitleInfoGroup;
-  originInfo?: OriginInfoDateIssuedStartEndGroup;
   identifier_displayLabel_pissn_type_issn?: {
     value: string;
     _type: 'issn';
@@ -3018,6 +3027,7 @@ export interface JournalUpdateGroup {
     _displayLabel: 'eissn';
     __text?: { sv: string; en: string };
   };
+  originInfo?: OriginInfoDateIssuedStartEndGroup;
   location?: LocationGroup;
   __text?: { sv: string; en: string };
 }
@@ -3153,7 +3163,7 @@ export interface RelatedItemBookGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface RelatedItemConferencePublicationGroup {
+export interface RelatedItemProceedingGroup {
   proceeding?: {
     value: string;
     linkedRecord: {
@@ -3186,7 +3196,7 @@ export interface RelatedItemConferencePublicationGroup {
   }[];
   part?: RelatedItemPartJournalGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];
-  _type: 'conferencePublication';
+  _type: 'proceeding';
   _otherType: RelatedItemOtherTypeCollection;
   __text?: { sv: string; en: string };
 }
@@ -3805,7 +3815,7 @@ export interface DivaOutputGroup {
   defence?: DefenceGroup;
   relatedItem_type_journal?: RelatedItemJournalGroup;
   relatedItem_type_book?: RelatedItemBookGroup;
-  relatedItem_type_conferencePublication?: RelatedItemConferencePublicationGroup;
+  relatedItem_type_proceeding?: RelatedItemProceedingGroup;
   relatedItem_type_conference?: RelatedItemConferenceGroup;
   relatedItem_type_publicationChannel?: RelatedItemPublicationChannelGroup;
   relatedItem_type_series?: RelatedItemSeriesGroup[];

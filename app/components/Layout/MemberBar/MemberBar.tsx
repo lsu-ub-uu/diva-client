@@ -52,6 +52,10 @@ export const MemberBar = ({
   const { t } = useTranslation();
   const lang = useLanguage();
 
+  if (member.id === 'diva') {
+    return null;
+  }
+
   const links = loggedIn ? member.adminLinks : member.publicLinks;
 
   return (
@@ -100,7 +104,6 @@ export const MemberBar = ({
             <PopoverButton
               as={Button}
               variant='tertiary'
-              size='small'
               className={styles['links-popover-button']}
               aria-hidden={true}
             >

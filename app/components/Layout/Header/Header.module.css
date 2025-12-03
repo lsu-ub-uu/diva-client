@@ -1,5 +1,6 @@
 .header {
   position: relative;
+  color: var(--color-label);
 }
 
 .diva-header-bar {
@@ -13,7 +14,7 @@
 
   .logo {
     height: 100%;
-    max-width: 7rem;
+    max-width: 6rem;
   }
 
   .header-bar-left {

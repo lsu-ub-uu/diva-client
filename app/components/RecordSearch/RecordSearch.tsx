@@ -21,7 +21,7 @@ import { SearchForm } from '@/components/Form/SearchForm';
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { MehIcon } from 'lucide-react';
+import { SearchSlashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { DivaOutputSearchResult } from '../Form/SearchResult/DivaOutputSearchResult';
 import { SearchResultForm } from '../Form/SearchResultForm';
@@ -61,7 +61,7 @@ export const RecordSearch = ({
       {searchResults && (
         <>
           {searchResults.totalNo === 0 && (
-            <Alert severity='info' icon={<MehIcon />}>
+            <Alert severity='info' icon={<SearchSlashIcon />}>
               <AlertTitle>
                 {t('divaClient_noSearchResultsTitleText')}
               </AlertTitle>
