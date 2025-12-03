@@ -36,9 +36,9 @@ import {
 import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
+import { AngryIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
@@ -51,7 +51,6 @@ import {
 } from './auth/sessionMiddleware.server';
 import { AuthLogger } from './components/dev/AuthLogger';
 import { Header } from './components/Layout/Header/Header';
-import { TopNavigation } from './components/Layout/TopNavigation/TopNavigation';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -59,7 +58,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { AngryIcon } from 'lucide-react';
 
 const { MODE } = import.meta.env;
 
@@ -261,18 +259,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         recordTypes={recordTypes}
         editableMember={editableMember}
       />
-
-      <div className='nav-rail'>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-        />
-      </div>
-
-      <div className='content'>
-        <Breadcrumbs />
-        <Outlet />
-      </div>
+      <Outlet />
       <AuthLogger auth={auth} />
     </div>
   );

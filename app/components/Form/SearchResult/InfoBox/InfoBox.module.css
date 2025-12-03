@@ -13,11 +13,11 @@
     gap: 0.25rem;
 
     .data-quality-2026 {
-      color: var(--color-success-main);
+      color: var(--color-alert-success-icon);
     }
 
     .data-quality-classic {
-      color: var(--color-error-main);
+      color: var(--color-alert-warning-icon);
     }
   }
 

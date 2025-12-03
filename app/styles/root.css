@@ -36,8 +36,8 @@
     /* Border radius */
     --border-radius: 8px;
     --border-radius-s: 4px;
-    --member-bar-height: var(--gap-xxl);
-    --diva-header-bar-height: 5rem;
+    --member-bar-height: 5rem;
+    --diva-header-bar-height: 4rem;
     --header-height: calc(
       var(--member-bar-height) + var(--diva-header-bar-height)
     );

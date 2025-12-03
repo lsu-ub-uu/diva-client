@@ -34,8 +34,12 @@ export const Event = ({ event }: EventProps) => {
   );
 
   const eventParts = [
-    event.dateOther_type_presentation && (
-      <DateDisplay date={event.dateOther_type_presentation} />
+    'dateOther_type_presentation' in event &&
+      event.dateOther_type_presentation && (
+        <DateDisplay date={event.dateOther_type_presentation} />
+      ),
+    'dateOther_type_defence' in event && event.dateOther_type_defence && (
+      <DateDisplay date={event.dateOther_type_defence} />
     ),
     address,
     eventLanguage ? `(${t(getLanguageTextId(eventLanguage))})` : '',
@@ -45,7 +49,7 @@ export const Event = ({ event }: EventProps) => {
     <>
       <dt>{event.__text?.[language]}</dt>
       <dd>
-        {eventParts.map((part, index) => (
+        {eventParts.filter(Boolean).map((part, index) => (
           <Fragment key={index}>
             {part}
             {index < eventParts.length - 1 && ', '}

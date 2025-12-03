@@ -111,11 +111,7 @@ export default function OutputSearchRoute({
       <main>
         <div className='search-wrapper'>
           <div className='search-extras'>
-            <h1>
-              {t('divaClient_searchText', {
-                type: t(recordTypeTextId).toLowerCase(),
-              })}
-            </h1>
+            <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 
             <Suspense
               fallback={

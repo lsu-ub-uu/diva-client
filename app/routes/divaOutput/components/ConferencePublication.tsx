@@ -1,4 +1,3 @@
-import type { RelatedItemConferencePublicationGroup } from '@/generatedTypes/divaTypes';
 import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
@@ -7,9 +6,10 @@ import { formatIsbnIsmnLabel } from '../utils/format';
 import { Series } from './Series';
 import { useId } from 'react';
 import { TitleInfo } from './TitleInfo';
+import type { RelatedItemProceedingGroup } from '@/generatedTypes/divaTypes';
 
 export interface ConferencePublicationProps {
-  conferencePublication: RelatedItemConferencePublicationGroup | undefined;
+  conferencePublication: RelatedItemProceedingGroup | undefined;
 }
 
 export const ConferencePublication = ({

@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { ConferencePublication } from '../ConferencePublication';
 import { createRoutesStub } from 'react-router';
-import type { RelatedItemConferencePublicationGroup } from '@/generatedTypes/divaTypes';
+import type { RelatedItemProceedingGroup } from '@/generatedTypes/divaTypes';
 
 describe('ConferencePublication', () => {
   it('render nothing when no publication', () => {
@@ -98,7 +98,7 @@ describe('ConferencePublication', () => {
           partNumber: { __text: { en: 'Part number' }, value: '1' },
         },
       ],
-    } as RelatedItemConferencePublicationGroup;
+    } as RelatedItemProceedingGroup;
 
     const RoutesStub = createRoutesStub([
       {

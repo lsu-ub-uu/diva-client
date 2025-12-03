@@ -64,13 +64,12 @@ export default function LoginMenu({
   const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
-  const returnTo = encodeURIComponent(
-    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`,
-  );
+  const rawReturnTo =
+    searchParams.get('returnTo') ?? `${location.pathname}${location.search}`;
+  const returnTo = encodeURIComponent(rawReturnTo);
 
   const submitting =
     navigation.state !== 'idle' && navigation.formAction?.includes('/login');
-
   useWebRedirectLogin({ returnTo });
 
   const handleDevSelection = (account: AppTokenLogin) => {
