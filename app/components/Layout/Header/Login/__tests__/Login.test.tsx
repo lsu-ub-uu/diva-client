@@ -178,7 +178,7 @@ describe('<Login/>', () => {
 
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
-      '/login?loginUnit=passwordLoginUnit&returnTo=%2Fdiva-output',
+      '/login?loginUnit=passwordLoginUnit&returnTo=%2F',
     );
   });
 
