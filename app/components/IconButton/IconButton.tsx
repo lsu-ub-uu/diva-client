@@ -22,18 +22,16 @@ export const IconButton = ({
   tooltip,
   children,
   className,
-  as,
   ...rest
 }: IconButtonProps) => {
   const { tooltipWrapperProps, tooltipTriggerProps, tooltipProps } =
     useTooltip();
-  const Root = as || Button;
   return (
     <div
       className={clsx(styles['wrapper'], className)}
       {...tooltipWrapperProps}
     >
-      <Root
+      <Button
         className={styles['icon-button']}
         size={size}
         aria-label={tooltip}
@@ -41,7 +39,7 @@ export const IconButton = ({
         {...rest}
       >
         {children}
-      </Root>
+      </Button>
       <Tooltip {...tooltipProps}>{tooltip}</Tooltip>
     </div>
   );
