@@ -137,3 +137,8 @@
     display: none;
   }
 }
+
+.diva-bar {
+  height: var(--gap-l);
+  background-color: var(--color-accent);
+}
