@@ -76,7 +76,7 @@ export const ColorSchemeSwitcher = ({
             : t('divaClient_switchToDarkModeText')
         }
       >
-        {currentColorScheme === 'light' ? <SunIcon /> : <MoonIcon />}
+        {currentColorScheme === 'dark' ? <SunIcon /> : <MoonIcon />}
       </IconButton>
     </fetcher.Form>
   );

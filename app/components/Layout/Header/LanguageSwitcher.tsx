@@ -46,7 +46,7 @@ export const LanguageSwitcher = () => {
             i18n.changeLanguage((e.target as HTMLButtonElement).value)
           }
         >
-          {language === 'sv' ? 'Svenska' : 'English'}
+          {language === 'sv' ? 'English' : 'Svenska'}
           <GlobeIcon />
         </Button>
         <input type='hidden' name='intent' value='changeLanguage' />
