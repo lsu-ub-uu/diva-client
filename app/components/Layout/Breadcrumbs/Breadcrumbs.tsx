@@ -57,12 +57,27 @@ export const Breadcrumbs = () => {
             <HouseIcon />
           </NavLink>
         </li>
-        {matches.filter(hasBreadcrumb).map((match) => {
-          return (
+
+        {matches.filter(hasBreadcrumb).flatMap((match) => {
+          console.log('match.handle', match.id);
+          const crumbs = [];
+          if (match.id === 'routes/divaOutput/divaOutputView') {
+            crumbs.push(
+              <li key='publikationer-crumb'>
+                <NavLink
+                  to={href('/:recordType', { recordType: 'diva-output' })}
+                >
+                  {t('diva-outputText')}
+                </NavLink>
+              </li>,
+            );
+          }
+          crumbs.push(
             <li key={match.id}>
               <NavLink to={match.pathname}>{match.data.breadcrumb}</NavLink>
-            </li>
+            </li>,
           );
+          return crumbs;
         })}
       </ol>
     </nav>

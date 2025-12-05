@@ -46,6 +46,50 @@ describe('<Breadcrumbs />', () => {
     within(breadcrumbs).getByRole('link', { name: 'page1_1Crumb' });
   });
 
+  it('renders publication breadcrumbs', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/diva-output/:recordId',
+        id: 'routes/divaOutput/divaOutputView',
+        loader: () => ({ breadcrumb: 'Lorem ipsum' }),
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    await act(() =>
+      render(<RoutesStub initialEntries={['/diva-output/12345']} />),
+    );
+
+    const breadcrumbs = screen.getByRole('navigation', {
+      name: 'divaClient_breadcrumbText',
+    });
+    within(breadcrumbs).getByRole('link', { name: 'Publikationer' });
+    within(breadcrumbs).getByRole('link', { name: 'Lorem ipsum' });
+  });
+
+  it('Can take the user back to home page', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
+            Component: Breadcrumbs,
+          },
+        ],
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
+
+    expect(
+      screen.getByRole('link', { name: 'divaClient_breadcrumbStartText' }),
+    ).toHaveAttribute('href', '/');
+  });
+
   it('Renders steps as breadcrumbs', async () => {
     const RoutesStub = createRoutesStub([
       {
