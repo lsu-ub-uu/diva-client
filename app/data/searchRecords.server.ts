@@ -16,31 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { BFFSearchResult } from '@/types/record';
 import type { Auth } from '@/auth/Auth';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
+import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
   BFFSearch,
 } from '@/cora/transform/bffTypes.server';
+import { transformRecords } from '@/cora/transform/transformRecord.server';
+import { transformToCoraData } from '@/cora/transform/transformToCora.server';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import {
   createBFFMetadataReference,
   createMetaDataFromChildReference,
 } from '@/data/formDefinition/formMetadata.server';
+import type { BFFSearchResult } from '@/types/record';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
-import { transformToCoraData } from '@/cora/transform/transformToCora.server';
-import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
-import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
-import { transformRecords } from '@/cora/transform/transformRecord.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 
 export const searchRecords = async (
   dependencies: Dependencies,
   searchType: string,
   query: any,
   auth?: Auth,
+  decorated = false,
 ) => {
   if (!dependencies.searchPool.has(searchType)) {
     throw new Error(`Search [${searchType}] does not exist`);
@@ -53,6 +54,7 @@ export const searchRecords = async (
     searchType,
     coraQuery,
     auth?.data.token,
+    decorated,
   );
 
   const transformedRecords = transformRecords(

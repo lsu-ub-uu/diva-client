@@ -49,6 +49,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
   }
   try {
     const searchForm = await getSearchForm(dependencies, recordType.searchId);
+    const decorated = recordType.id === 'diva-output';
 
     const yupSchema = generateYupSchemaFromFormSchema(searchForm);
     const { query, searchResults, errors } = await performSearch(
@@ -57,6 +58,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
       recordType.searchId,
       auth,
       yupSchema,
+      decorated,
     );
     const apiUrl =
       query &&

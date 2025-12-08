@@ -2249,7 +2249,7 @@ export interface RecordInfoOutputUpdateGroup {
     __valueText?: { sv: string; en: string };
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
-  inTrashBin?: {
+  inTrashBin: {
     value: TrueFalseCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };

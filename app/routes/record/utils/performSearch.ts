@@ -29,6 +29,7 @@ export const performSearch = async (
   searchId: string,
   auth: Auth | undefined,
   yupSchema: ObjectSchema<Record<string, any>>,
+  decorated = false,
 ) => {
   const url = new URL(request.url);
   const query = parseFormDataFromSearchParams(url.searchParams);
@@ -43,6 +44,7 @@ export const performSearch = async (
       searchId,
       query,
       auth,
+      decorated,
     );
 
     return { query, searchResults };
