@@ -71,6 +71,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const recordTypes = rootLoaderData?.recordTypes ?? [];
   const { t } = useTranslation();
   const language = useLanguage();
+
   return (
     <div className='landing-main'>
       <main>
@@ -86,11 +87,13 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           </figure>
 
           <h1 className='hero-title'>{title}</h1>
-          <div className='hero-subtitle'>
-            {t('divaClient_heroSubtitleText', {
-              member: member?.pageTitle[language],
-            })}
-          </div>
+          {member?.pageTitle[language] && (
+            <div className='hero-subtitle'>
+              {t('divaClient_heroSubtitleText', {
+                member: member?.pageTitle[language],
+              })}
+            </div>
+          )}
 
           <Form
             action={href('/:recordType', { recordType: 'diva-output' })}
@@ -98,11 +101,13 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
             method='GET'
           >
             <input type='hidden' name='search.rows.value' value='10' />
-            <input
-              type='hidden'
-              name='search.include.includePart.permissionUnitSearchTerm.value'
-              value='permissionUnit_nordiskamuseet'
-            />
+            {member?.memberPermissionUnit && (
+              <input
+                type='hidden'
+                name='search.include.includePart.permissionUnitSearchTerm.value'
+                value={`permissionUnit_${member.memberPermissionUnit}`}
+              />
+            )}
             <div className='search-container'>
               <label className='search-label' htmlFor='landing-search'>
                 {t('divaClient_heroLabelText')}
