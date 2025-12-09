@@ -23,6 +23,7 @@ import type {
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
+  BFFMember,
   BFFMetadata,
   BFFOrganisation,
   BFFPresentation,
@@ -31,26 +32,23 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
+import { transformMembers } from '@/cora/transform/transformMembers.server';
 import { transformMetadata } from '@/cora/transform/transformMetadata.server';
 import { transformOrganisations } from '@/cora/transform/transformOrganisations.server';
 import { transformCoraPresentations } from '@/cora/transform/transformPresentations.server';
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
-import { transformMembers as transformMembers } from '@/cora/transform/transformMembers.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
-import { createContext } from 'react-router';
 import 'dotenv/config';
-import { loginWithAppToken } from '@/data/loginWithAppToken.server';
-import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken.server';
+import { createContext } from 'react-router';
 
 const getPoolsFromCora = (poolTypes: string[], authToken?: string) => {
   const promises = poolTypes.map((type) =>
@@ -74,23 +72,10 @@ const dependencies: Dependencies = {
   organisationPool: listToPool<BFFOrganisation>([]),
 };
 
-const { POOL_LOGIN_ID, POOL_APP_TOKEN } = process.env;
-
 const loadDependencies = async () => {
   console.info('Loading Cora metadata...');
 
-  if (!POOL_LOGIN_ID || !POOL_APP_TOKEN) {
-    throw new Error(
-      'Cannot load pools. Missing app token environment variables.',
-    );
-  }
-
-  const auth = await loginWithAppToken(POOL_LOGIN_ID, POOL_APP_TOKEN);
-
-  const response = await getRecordDataListByType<DataListWrapper>(
-    'text',
-    auth?.data.token,
-  );
+  const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
   dependencies.textPool = listToPool<BFFText>(texts);
 
@@ -117,7 +102,7 @@ const loadDependencies = async () => {
     coraLogins,
     coraMembers,
     coraOrganisations,
-  ] = await getPoolsFromCora(types, auth?.data.token);
+  ] = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(coraMetadata.data);
   dependencies.metadataPool = listToPool<BFFMetadata>(metadata);
@@ -157,20 +142,11 @@ const loadDependencies = async () => {
     dependencies.memberPool = new Lookup<string, BFFMember>();
   }
 
-  try {
-    const organisations = await transformOrganisations(coraOrganisations.data);
-    dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
-  } catch (error) {
-    console.error('Error transforming organisations:', error);
-    dependencies.organisationPool = listToPool<BFFOrganisation>([]);
-  }
+  const organisations = await transformOrganisations(coraOrganisations.data);
+  dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
   console.info('Loaded stuff from Cora');
   poolsInitialized = true;
-
-  if (auth) {
-    deleteAuthTokenFromCora(auth);
-  }
 };
 
 export const getDependencies = async () => {
