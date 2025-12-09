@@ -974,6 +974,11 @@ export interface RecordInfoPersonUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   oldId?: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 

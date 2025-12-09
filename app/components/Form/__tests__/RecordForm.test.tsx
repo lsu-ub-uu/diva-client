@@ -2313,4 +2313,76 @@ describe('<Form />', () => {
       expect(screen.getByText('Some data')).toBeInTheDocument();
     });
   });
+
+  describe('trash bin', () => {
+    it('hides trash bin collection var from input form', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'group',
+              mode: 'input',
+              name: 'recordInfo',
+              label: 'Group',
+              showLabel: true,
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  mode: 'input',
+                  showLabel: true,
+                  type: 'collectionVariable',
+                  name: 'inTrashBin',
+                  label: 'trashBinCollectionVarText',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  options: [
+                    { value: 'false', label: 'falseItemText' },
+                    { value: 'true', label: 'trueItemText' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'someId',
+        recordType: 'someRecordType',
+        validationType: 'someValidationType',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          recordInfo: {
+            inTrashBin: { value: 'false', required: true },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+
+      expect(
+        screen.queryByLabelText('trashBinCollectionVarText'),
+      ).not.toBeInTheDocument();
+    });
+  });
 });
