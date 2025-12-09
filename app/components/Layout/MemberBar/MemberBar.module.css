@@ -39,13 +39,6 @@
   color: var(--member-text-color-dark-mode);
 }
 
-@media (prefers-color-scheme: dark) {
-  :global([data-color-scheme='auto']) .member-bar {
-    background-color: var(--member-background-color-dark-mode);
-    color: var(--member-text-color-dark-mode);
-  }
-}
-
 .content {
   max-height: var(--gap-xl);
 }
