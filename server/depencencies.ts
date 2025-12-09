@@ -50,9 +50,9 @@ import { Lookup } from '@/utils/structs/lookup';
 import 'dotenv/config';
 import { createContext } from 'react-router';
 
-const getPoolsFromCora = (poolTypes: string[], authToken?: string) => {
+const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
-    getRecordDataListByType<DataListWrapper>(type, authToken),
+    getRecordDataListByType<DataListWrapper>(type),
   );
   return Promise.all(promises);
 };
