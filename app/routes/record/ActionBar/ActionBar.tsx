@@ -3,6 +3,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { CodeIcon, ShredderIcon, Trash2Icon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
+import style from './ActionBar.module.css';
 
 interface ActionBarProps {
   record: BFFDataRecord;
@@ -13,7 +14,7 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
   const fetcher = useFetcher();
 
   return (
-    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+    <div className={style['action-bar']}>
       {record.userRights?.includes('delete') && (
         <fetcher.Form
           key={`${record.id}_ab_delete`}
@@ -25,7 +26,11 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
             }
           }}
         >
-          <Button type='submit' className='api-button' variant='tertiary'>
+          <Button
+            type='submit'
+            variant='tertiary'
+            className={style['action-bar-button']}
+          >
             <ShredderIcon />
             {t('divaClient_deleteRecordText')}
           </Button>
@@ -44,9 +49,9 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
         >
           <Button
             type='submit'
-            className='api-button'
             variant='tertiary'
             target='_blank'
+            className={style['action-bar-button']}
           >
             <Trash2Icon />
             {t('divaClient_trashRecordText')}
@@ -55,7 +60,6 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
       )}
       {apiUrl && (
         <Button
-          className='api-button'
           variant='tertiary'
           as='a'
           href={apiUrl}

@@ -24,11 +24,6 @@
   position: relative;
 }
 
-.api-button {
-  grid-column: span 2;
-  justify-self: end;
-}
-
 .preview {
   --color-card-dark: var(--color-card-inactive-dark);
 
