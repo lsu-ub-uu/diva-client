@@ -6,8 +6,9 @@ import { useFetcher } from 'react-router';
 
 interface ActionBarProps {
   record: BFFDataRecord;
+  apiUrl?: string;
 }
-export const ActionBar = ({ record }: ActionBarProps) => {
+export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
   const { t } = useTranslation();
   const fetcher = useFetcher();
 
@@ -52,10 +53,19 @@ export const ActionBar = ({ record }: ActionBarProps) => {
           </Button>
         </fetcher.Form>
       )}
-      <Button className='api-button' variant='tertiary'>
-        <CodeIcon />
-        {t('divaClient_viewInApiText')}
-      </Button>
+      {apiUrl && (
+        <Button
+          className='api-button'
+          variant='tertiary'
+          as='a'
+          href={apiUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <CodeIcon />
+          {t('divaClient_viewInApiText')}
+        </Button>
+      )}
     </div>
   );
 };

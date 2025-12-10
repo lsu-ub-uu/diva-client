@@ -31,6 +31,7 @@ import { generateCitationMeta } from './utils/generateCitationMeta';
 import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { ActionBar } from '../record/ActionBar/ActionBar';
 
 export const loader = async ({
   request,
@@ -98,6 +99,8 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
   const { t } = useTranslation();
   const record = loaderData.record;
+  const apiUrl = loaderData.apiUrl;
+
   return (
     <>
       <aside className='nav-rail'>
@@ -110,17 +113,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='diva-output-view-page'>
           <div className='top-content'>
             <Breadcrumbs />
-            <Button
-              className='api-button'
-              variant='tertiary'
-              as='a'
-              href={loaderData.apiUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <CodeIcon />
-              {t('divaClient_viewInApiText')}
-            </Button>
+            <ActionBar record={record} apiUrl={apiUrl} />
           </div>
           <OutputView data={record.data} />
           <FloatingActionButtonContainer>
@@ -134,15 +127,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 text={t('divaClient_editRecordText')}
                 icon={<FilePenIcon />}
               />
-            )}
-            {record.userRights?.includes('delete') && (
-              <Form method='POST' action='delete'>
-                <FloatingActionButton
-                  type='submit'
-                  text={t('divaClient_deleteRecordText')}
-                  icon={<ShredderIcon />}
-                />
-              </Form>
             )}
           </FloatingActionButtonContainer>
         </div>
