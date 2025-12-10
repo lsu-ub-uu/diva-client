@@ -29,10 +29,17 @@ import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import type { BFFDataRecordData } from '@/types/record';
-import { SaveIcon } from 'lucide-react';
+import {
+  BookCheckIcon,
+  CodeIcon,
+  MehIcon,
+  SaveIcon,
+  Trash2Icon,
+} from 'lucide-react';
 import { useEffect } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
+import { Button } from '../Button/Button';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -78,26 +85,50 @@ export const RecordForm = ({
   }, [subscribe, onChange]);
 
   return (
-    <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
-      <RemixFormProvider {...methods}>
-        <ValidationErrorSnackbar />
-        <FormGenerator formSchema={formSchema} boxGroups />
-      </RemixFormProvider>
+    <>
+      <div style={{ gridColumn: '1 / 3' }}>
+        <div
+          style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}
+        >
+          <Button className='api-button' variant='tertiary'>
+            <MehIcon />
+            Fourth button
+          </Button>
+          <Button className='api-button' variant='tertiary'>
+            <BookCheckIcon />
+            Validate
+          </Button>
+          <Button className='api-button' variant='tertiary' target='_blank'>
+            <Trash2Icon />
+            {t('divaClient_trashRecordText')}
+          </Button>
+          <Button className='api-button' variant='tertiary'>
+            <CodeIcon />
+            {t('divaClient_viewInApiText')}
+          </Button>
+        </div>
+      </div>
+      <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
+        <RemixFormProvider {...methods}>
+          <ValidationErrorSnackbar />
+          <FormGenerator formSchema={formSchema} boxGroups />
+        </RemixFormProvider>
 
-      <FloatingActionButtonContainer>
-        <FloatingActionButton
-          variant='primary'
-          type='submit'
-          aria-busy={submitting}
-          icon={submitting ? <CircularLoader /> : <SaveIcon />}
-          text={
-            submitting
-              ? t('divaClient_SubmittingButtonText')
-              : t('divaClient_SubmitButtonText')
-          }
-          disabled={submitting}
-        />
-      </FloatingActionButtonContainer>
-    </Form>
+        <FloatingActionButtonContainer>
+          <FloatingActionButton
+            variant='primary'
+            type='submit'
+            aria-busy={submitting}
+            icon={submitting ? <CircularLoader /> : <SaveIcon />}
+            text={
+              submitting
+                ? t('divaClient_SubmittingButtonText')
+                : t('divaClient_SubmitButtonText')
+            }
+            disabled={submitting}
+          />
+        </FloatingActionButtonContainer>
+      </Form>
+    </>
   );
 };
