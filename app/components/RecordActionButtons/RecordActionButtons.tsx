@@ -19,7 +19,12 @@
 import { Link, useFetcher } from 'react-router';
 
 import type { BFFDataRecord } from '@/types/record';
-import { FilePenIcon, FileTextIcon, ShredderIcon } from 'lucide-react';
+import {
+  FilePenIcon,
+  FileTextIcon,
+  ShredderIcon,
+  Trash2Icon,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
 
@@ -75,6 +80,27 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               tooltip={t('divaClient_deleteRecordText')}
             >
               <ShredderIcon />
+            </IconButton>
+          </fetcher.Form>
+        );
+      case 'trash':
+        return (
+          <fetcher.Form
+            key={`${record.id}_rab_${userRight}`}
+            method='POST'
+            action={`/${record.recordType}/${record.id}/trash`}
+            onSubmit={(e) => {
+              if (!window.confirm(t('divaClient_confirmTrashText'))) {
+                e.preventDefault();
+              }
+            }}
+          >
+            <IconButton
+              type='submit'
+              size='small'
+              tooltip={t('divaClient_trashRecordText')}
+            >
+              <Trash2Icon />
             </IconButton>
           </fetcher.Form>
         );
