@@ -22,10 +22,11 @@ import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import type { Route } from './+types/recordDelete';
+import { i18nContext } from 'server/i18n';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
-
+  const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
 
