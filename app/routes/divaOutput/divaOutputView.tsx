@@ -5,7 +5,6 @@ import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import {
-  Form,
   href,
   isRouteErrorResponse,
   Link,
@@ -16,21 +15,21 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import { assertDefined } from '@/utils/invariant';
+import { FilePenIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
+import { ActionBar } from '../record/ActionBar/ActionBar';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({
   request,
@@ -98,6 +97,8 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
 
   const { t } = useTranslation();
   const record = loaderData.record;
+  const apiUrl = loaderData.apiUrl;
+
   return (
     <>
       <aside className='nav-rail'>
@@ -110,17 +111,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='diva-output-view-page'>
           <div className='top-content'>
             <Breadcrumbs />
-            <Button
-              className='api-button'
-              variant='tertiary'
-              as='a'
-              href={loaderData.apiUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <CodeIcon />
-              {t('divaClient_viewInApiText')}
-            </Button>
+            <ActionBar record={record} apiUrl={apiUrl} />
           </div>
           <OutputView data={record.data} />
           <FloatingActionButtonContainer>
@@ -134,15 +125,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
                 text={t('divaClient_editRecordText')}
                 icon={<FilePenIcon />}
               />
-            )}
-            {record.userRights?.includes('delete') && (
-              <Form method='POST' action='delete'>
-                <FloatingActionButton
-                  type='submit'
-                  text={t('divaClient_deleteRecordText')}
-                  icon={<ShredderIcon />}
-                />
-              </Form>
             )}
           </FloatingActionButtonContainer>
         </div>

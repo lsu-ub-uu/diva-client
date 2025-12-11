@@ -17,7 +17,6 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
@@ -25,11 +24,12 @@ import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
+import { FilePenIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Form, href, Link } from 'react-router';
+import { href, Link } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordView';
-import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
+import { ActionBar } from './ActionBar/ActionBar';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -60,18 +60,8 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
+      <ActionBar record={record} apiUrl={apiUrl} />
       <div className='record-wrapper'>
-        <Button
-          className='api-button'
-          variant='tertiary'
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <CodeIcon />
-          {t('divaClient_viewInApiText')}
-        </Button>
         <ReadOnlyForm
           recordData={record.data}
           formSchema={formDefinition}
@@ -89,15 +79,6 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
             text={t('divaClient_editRecordText')}
             icon={<FilePenIcon />}
           />
-        )}
-        {record.userRights?.includes('delete') && (
-          <Form method='POST' action='delete'>
-            <FloatingActionButton
-              type='submit'
-              text={t('divaClient_deleteRecordText')}
-              icon={<ShredderIcon />}
-            />
-          </Form>
         )}
       </FloatingActionButtonContainer>
     </main>

@@ -42,6 +42,7 @@ import { useDeferredValue, useState } from 'react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { ActionBar } from './ActionBar/ActionBar';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -195,6 +196,7 @@ export default function UpdateRecordRoute({
           {notification.details}
         </Alert>
       )}
+      <ActionBar record={record} />
       <div className='record-wrapper'>
         <RecordForm
           key={lastUpdate}
