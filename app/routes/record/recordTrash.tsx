@@ -66,11 +66,8 @@ const updateVariableBeforeUpdating = (obj: RecordWrapper): RecordWrapper => {
     if (Array.isArray(o)) {
       return o.map(recursiveUpdate);
     } else if (o && typeof o === 'object') {
-      if (
-        (o as any).name === 'visibility' &&
-        (o as any).value === 'published'
-      ) {
-        return { ...(o as any), value: 'unpublished' };
+      if ((o as any).name === 'inTrashBin' && (o as any).value === 'false') {
+        return { ...(o as any), value: 'true' };
       }
       const newObj: any = {};
       for (const key in o) {
