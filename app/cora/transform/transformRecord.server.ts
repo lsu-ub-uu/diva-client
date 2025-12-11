@@ -120,9 +120,9 @@ export const transformRecord = (
   let userRights: BFFUserRight[] = [];
   if (coraRecord.actionLinks !== undefined) {
     userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
-    if (coraRecord.actionLinks.update !== undefined) {
-      userRights.push('trash');
-    }
+  }
+  if (coraRecord.actionLinks.update !== undefined) {
+    userRights.push('trash');
   }
 
   return removeEmpty({
