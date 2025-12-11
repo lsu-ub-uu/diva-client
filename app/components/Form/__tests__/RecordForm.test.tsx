@@ -2368,7 +2368,7 @@ describe('<Form />', () => {
         actionLinks: {
           read: { url: '', requestMethod: 'get', rel: 'read' },
         },
-        userRights: ['read', 'update', 'index', 'delete'],
+        userRights: ['read', 'update', 'index', 'delete', 'trash'],
         data: {
           recordInfo: {
             inTrashBin: { value: 'false', required: true },
@@ -2383,6 +2383,76 @@ describe('<Form />', () => {
       expect(
         screen.queryByLabelText('trashBinCollectionVarText'),
       ).not.toBeInTheDocument();
+    });
+
+    it('shows a trash bin action button when record type is trashable', () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          label: 'someRootFormGroupText',
+          showLabel: true,
+          name: 'someRootNameInData',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              type: 'group',
+              mode: 'input',
+              name: 'recordInfo',
+              label: 'Group',
+              showLabel: true,
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  mode: 'input',
+                  showLabel: true,
+                  type: 'collectionVariable',
+                  name: 'inTrashBin',
+                  label: 'trashBinCollectionVarText',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  options: [
+                    { value: 'false', label: 'falseItemText' },
+                    { value: 'true', label: 'trueItemText' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const record = {
+        id: 'someId',
+        recordType: 'someRecordType',
+        validationType: 'someValidationType',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete', 'trash'],
+        data: {
+          recordInfo: {
+            inTrashBin: { value: 'false', required: true },
+          },
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+
+      render(
+        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
+      );
+
+      expect(
+        screen.getByRole('button', { name: 'divaClient_trashRecordText' }),
+      ).toBeInTheDocument();
     });
   });
 });

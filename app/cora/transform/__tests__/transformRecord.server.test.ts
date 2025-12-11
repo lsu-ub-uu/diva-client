@@ -96,6 +96,8 @@ import type {
   BFFText,
   BFFMember,
   BFFValidationType,
+  BFFMetadataTextVariable,
+  BFFMetadataRecordLink,
 } from '../bffTypes.server';
 import {
   transformAttributes,
@@ -103,6 +105,7 @@ import {
   transformRecord,
   transformRecordData,
 } from '../transformRecord.server';
+import { dependencies } from 'server/depencencies';
 
 describe('transformRecord', () => {
   let metadataPool: Lookup<string, BFFMetadata>;
@@ -3183,5 +3186,114 @@ describe('transformRecord', () => {
         },
       });
     });
+  });
+});
+
+describe('userRights', () => {
+  it('includes trash right when inTrashBin is present in recordInfo', () => {
+    const dependencies = {
+      validationTypePool: listToPool<BFFValidationType>([
+        {
+          id: 'diva-person',
+          metadataGroupId: 'someRootGroup',
+          validatesRecordTypeId: 'diva-person',
+        } as BFFValidationType,
+      ]),
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someRootGroup',
+          type: 'group',
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'recordInfoGroup',
+          type: 'group',
+          children: [
+            { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+            { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+            { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+            { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'recordInfoGroup',
+          type: 'textVariable',
+          nameInData: 'inTrashBin',
+        } as BFFMetadataTextVariable,
+        {
+          id: 'idVar',
+          type: 'textVariable',
+          nameInData: 'id',
+        } as BFFMetadataTextVariable,
+        {
+          id: 'typeLink',
+          type: 'recordLink',
+          nameInData: 'type',
+          linkedRecordType: 'recordType',
+        } as BFFMetadataRecordLink,
+        {
+          id: 'validationTypeLink',
+          type: 'recordLink',
+          nameInData: 'validationType',
+          linkedRecordType: 'validationType',
+        } as BFFMetadataRecordLink,
+      ]),
+      recordTypePool: listToPool<BFFRecordType>([
+        {
+          id: 'someRecordTypeId',
+          metadataId: 'someRootGroup',
+        } as BFFRecordType,
+      ]),
+    } as Dependencies;
+
+    const record: RecordWrapper = {
+      record: {
+        data: {
+          name: 'someRootGroup',
+          children: [
+            {
+              name: 'recordInfo',
+              children: [
+                { name: 'id', value: '1234' },
+                {
+                  name: 'type',
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'recordType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'diva-person',
+                    },
+                  ],
+                },
+                {
+                  name: 'validationType',
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'validationType',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: 'diva-person',
+                    },
+                  ],
+                },
+                { name: 'inTrashBin', value: 'false' },
+              ],
+            },
+          ],
+        },
+        actionLinks: {},
+      },
+    };
+
+    const result = transformRecord(dependencies, record, 'update');
+
+    expect(result.userRights).toContain('trash');
   });
 });
