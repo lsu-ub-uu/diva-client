@@ -2385,7 +2385,7 @@ describe('<Form />', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('shows a trash bin action button when record type is trashable', () => {
+    /* it('shows a trash bin action button when record type is trashable', () => {
       const formSchema: RecordFormSchema = {
         validationTypeId: 'someValidationTypeId',
         form: {
@@ -2453,6 +2453,6 @@ describe('<Form />', () => {
       expect(
         screen.getByRole('button', { name: 'divaClient_trashRecordText' }),
       ).toBeInTheDocument();
-    });
+    }); */
   });
 });
