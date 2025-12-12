@@ -3,18 +3,25 @@ import type { BFFDataRecord } from '@/types/record';
 import { CodeIcon, ShredderIcon, Trash2Icon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
-import style from './ActionBar.module.css';
+import styles from './ActionBar.module.css';
+import clsx from 'clsx';
 
 interface ActionBarProps {
   record: BFFDataRecord;
   apiUrl?: string;
+  outputPage: boolean;
 }
-export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
+export const ActionBar = ({ record, apiUrl, outputPage }: ActionBarProps) => {
   const { t } = useTranslation();
   const fetcher = useFetcher();
 
   return (
-    <div className={style['action-bar']}>
+    <div
+      className={clsx(
+        styles['action-bar'],
+        !outputPage && styles['dynamic-page-margin'],
+      )}
+    >
       {record.userRights?.includes('delete') && (
         <fetcher.Form
           key={`${record.id}_ab_delete`}
@@ -29,7 +36,7 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
           <Button
             type='submit'
             variant='tertiary'
-            className={style['action-bar-button']}
+            className={styles['action-bar-button']}
           >
             <ShredderIcon />
             {t('divaClient_deleteRecordText')}
@@ -51,7 +58,7 @@ export const ActionBar = ({ record, apiUrl }: ActionBarProps) => {
             type='submit'
             variant='tertiary'
             target='_blank'
-            className={style['action-bar-button']}
+            className={styles['action-bar-button']}
           >
             <Trash2Icon />
             {t('divaClient_trashRecordText')}

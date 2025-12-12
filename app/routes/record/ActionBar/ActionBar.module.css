@@ -9,6 +9,10 @@
   }
 }
 
+.dynamic-page-margin {
+  margin-top: -3em;
+}
+
 .action-bar-button {
   @media (width < 900px) {
     width: 100%;

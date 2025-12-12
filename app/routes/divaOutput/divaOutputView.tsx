@@ -111,7 +111,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='diva-output-view-page'>
           <div className='top-content'>
             <Breadcrumbs />
-            <ActionBar record={record} apiUrl={apiUrl} />
+            <ActionBar record={record} apiUrl={apiUrl} outputPage={true} />
           </div>
           <OutputView data={record.data} />
           <FloatingActionButtonContainer>

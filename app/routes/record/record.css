@@ -24,6 +24,10 @@
   position: relative;
 }
 
+.info-alert {
+  margin-bottom: var(--gap);
+}
+
 .preview {
   --color-card-dark: var(--color-card-inactive-dark);
 

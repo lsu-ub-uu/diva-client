@@ -60,7 +60,7 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <ActionBar record={record} apiUrl={apiUrl} />
+      <ActionBar record={record} apiUrl={apiUrl} outputPage={false} />
       <div className='record-wrapper'>
         <ReadOnlyForm
           recordData={record.data}
