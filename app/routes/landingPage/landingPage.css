@@ -117,6 +117,12 @@
   background: transparent;
 }
 
+.landing-info-alert {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: var(--gap);
+}
+
 .navigation-grid {
   display: grid;
   justify-content: center;
