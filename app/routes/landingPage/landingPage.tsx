@@ -27,6 +27,7 @@ import { ImageAttribution } from './ImageAttribution';
 import { useLanguage } from '@/i18n/useLanguage';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Footer } from '@/components/Layout/Footer/Footer';
+import { Alert } from '@/components/Alert/Alert';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const auth = context.get(sessionContext);
@@ -128,6 +129,11 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
               </button>
             </div>
           </Form>
+        </div>
+        <div>
+          <Alert severity='warning' className='landing-info-alert'>
+            {t('divaClient_metadataWarningText')}
+          </Alert>
         </div>
         <div className='navigation-grid'>
           <NavigationCard

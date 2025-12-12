@@ -35,6 +35,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
+import { Alert } from '@/components/Alert/Alert';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -112,6 +113,9 @@ export default function OutputSearchRoute({
     <div className='search-layout'>
       <main>
         <div className='search-wrapper'>
+          <Alert severity='warning'>
+            {t('divaClient_metadataWarningText')}
+          </Alert>
           <div className='search-extras'>
             <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 
