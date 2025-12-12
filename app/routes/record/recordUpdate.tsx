@@ -199,8 +199,7 @@ export default function UpdateRecordRoute({
         </Alert>
       )}
       <ActionBar record={record} outputPage={false} />
-      {record?.data?.output?.recordInfo?.visibility?.value ===
-        'unpublished' && (
+      {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
         <Alert severity='warning' className='info-alert'>
           {t('divaClient_trashWarningAlertText')}
         </Alert>

@@ -30,6 +30,10 @@
   }
 }
 
+.info-alert {
+  margin-bottom: var(--gap);
+}
+
 p,
 dd {
   max-width: 100ch;

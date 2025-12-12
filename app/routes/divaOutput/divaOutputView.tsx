@@ -13,7 +13,6 @@ import {
 } from 'react-router';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import css from './divaOutputView.css?url';
-
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
@@ -30,6 +29,7 @@ import { i18nContext } from 'server/i18n';
 import { ActionBar } from '../record/ActionBar/ActionBar';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { Alert } from '@/components/Alert/Alert';
 
 export const loader = async ({
   request,
@@ -113,6 +113,11 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <Breadcrumbs />
             <ActionBar record={record} apiUrl={apiUrl} outputPage={true} />
           </div>
+          {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
+            <Alert severity='warning' className='info-alert'>
+              {t('divaClient_trashWarningAlertText')}
+            </Alert>
+          )}
           <OutputView data={record.data} />
           <FloatingActionButtonContainer>
             {record.userRights?.includes('update') && (
