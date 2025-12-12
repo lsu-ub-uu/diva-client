@@ -24,9 +24,8 @@
   position: relative;
 }
 
-.api-button {
-  grid-column: span 2;
-  justify-self: end;
+.info-alert {
+  margin-bottom: var(--gap);
 }
 
 .preview {

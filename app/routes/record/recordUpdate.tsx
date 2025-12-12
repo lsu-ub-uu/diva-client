@@ -42,6 +42,8 @@ import { useDeferredValue, useState } from 'react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { ActionBar } from './ActionBar/ActionBar';
+import { useTranslation } from 'react-i18next';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -167,6 +169,7 @@ export default function UpdateRecordRoute({
     notification,
     defaultValues,
   } = loaderData;
+  const { t } = useTranslation();
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
 
@@ -195,6 +198,13 @@ export default function UpdateRecordRoute({
           {notification.details}
         </Alert>
       )}
+      <ActionBar record={record} outputPage={false} />
+      {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
+        <Alert severity='warning' className='info-alert'>
+          {t('divaClient_trashWarningAlertText')}
+        </Alert>
+      )}
+
       <div className='record-wrapper'>
         <RecordForm
           key={lastUpdate}

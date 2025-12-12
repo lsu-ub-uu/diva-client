@@ -7,6 +7,7 @@ import { FormGeneratorContext } from '../FormGeneratorContext';
 import type { FormComponentWithData } from '../types';
 import { PlusCircleIcon, XIcon } from 'lucide-react';
 import { IconButton } from '@/components/IconButton/IconButton';
+import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
 
 interface OptionalComponentProps {
   anchorId?: string;
@@ -27,7 +28,7 @@ export const OptionalComponent = ({
   const { enhancedFields } = use(FormGeneratorContext);
 
   const notRemovableEnhancement =
-    enhancedFields?.[name]?.type === 'notRemovable';
+    getEnhancement(enhancedFields, name)?.type === 'notRemovable';
 
   const showDeleteButton =
     component.mode === 'input' && !notRemovableEnhancement;

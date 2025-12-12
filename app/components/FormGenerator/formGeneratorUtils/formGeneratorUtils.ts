@@ -38,6 +38,7 @@ import type {
 import type { Option } from '@/components';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
 import { get } from 'lodash-es';
+import type { EnhancedFieldsConfig } from '../FormGeneratorContext';
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -213,4 +214,38 @@ export const findOptionLabelByValue = (
   if (array === undefined) return 'Failed to translate';
   const option = array.find((opt) => opt.value === value);
   return option?.label ?? 'Failed to translate';
+};
+
+export const getEnhancement = (
+  enhancedFields: Record<string, EnhancedFieldsConfig> | undefined,
+  componentPath: string,
+) => {
+  if (enhancedFields === undefined || componentPath === '') {
+    return undefined;
+  }
+
+  for (const [key, value] of Object.entries(enhancedFields)) {
+    if (matches(key, componentPath)) {
+      return value;
+    }
+  }
+  return enhancedFields?.[componentPath];
+};
+
+const matches = (pattern: string, path: string) => {
+  const patternSegments = pattern.split('.');
+  const pathSegments = path.split('.');
+  if (patternSegments.length !== pathSegments.length) {
+    return false;
+  }
+
+  for (let i = 0; i < patternSegments.length; i++) {
+    if (patternSegments[i] === '*') {
+      continue;
+    }
+    if (patternSegments[i] !== pathSegments[i]) {
+      return false;
+    }
+  }
+  return true;
 };

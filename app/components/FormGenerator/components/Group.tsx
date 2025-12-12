@@ -28,6 +28,7 @@ import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
   checkIfPresentationStyleIsInline,
+  getEnhancement,
   getGroupLevel,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
@@ -61,8 +62,7 @@ export const Group = ({
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
   const { enhancedFields } = use(FormGeneratorContext);
-  const enhancement =
-    enhancedFields && enhancedFields[currentComponentNamePath];
+  const enhancement = getEnhancement(enhancedFields, currentComponentNamePath);
   const expandable =
     onExpandButtonClick !== undefined && expanded !== undefined;
   const { getValues } = useRemixFormContext();
@@ -100,9 +100,7 @@ export const Group = ({
         expanded={expanded !== false}
       >
         <CardHeader
-          enhancedFields={
-            enhancement?.type === 'group' && enhancement?.alert === true
-          }
+          alert={enhancement?.type === 'group' && enhancement?.alert === true}
           attributes={
             <Attributes component={component} path={currentComponentNamePath} />
           }

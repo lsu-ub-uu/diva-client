@@ -29,6 +29,7 @@ import { Link } from 'react-router';
 import styles from './OutputField.module.css';
 import { useTranslation } from 'react-i18next';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
 
 interface OutputFieldProps {
   path: string;
@@ -56,7 +57,7 @@ export const OutputField = ({
 }: OutputFieldProps) => {
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
-  const enhancement = enhancedFields?.[path];
+  const enhancement = getEnhancement(enhancedFields, path);
 
   const collapsable = value?.length && value.length > 300;
 

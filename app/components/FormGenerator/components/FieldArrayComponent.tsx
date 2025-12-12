@@ -18,7 +18,10 @@
  */
 
 import { Button } from '@/components/Button/Button';
-import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  getEnhancement,
+  isComponentSingularAndOptional,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import { Fragment, use, useState, type ReactNode } from 'react';
 import type { Control } from 'react-hook-form';
@@ -57,7 +60,7 @@ export const FieldArrayComponent = ({
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
   const notRemovableEnhancement =
-    enhancedFields?.[name]?.type === 'notRemovable';
+    getEnhancement(enhancedFields, name)?.type === 'notRemovable';
   const [appended, setAppended] = useState<string | null>(null);
 
   const { fields, append, move, remove } = useFieldArray({
