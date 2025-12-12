@@ -2,8 +2,10 @@
   display: flex;
   gap: var(--gap);
   justify-content: flex-end;
+}
 
-  @media (width < 900px) {
+@media (width < 900px) {
+  .action-bar {
     flex-direction: column;
     align-items: stretch;
   }
@@ -11,6 +13,12 @@
 
 .dynamic-page-margin {
   margin-top: -3em;
+}
+
+@media (width < 900px) {
+  .dynamic-page-margin {
+    margin-top: 0;
+  }
 }
 
 .action-bar-button {
