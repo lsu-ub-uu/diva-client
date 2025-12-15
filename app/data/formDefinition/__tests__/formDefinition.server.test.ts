@@ -448,6 +448,7 @@ describe('formDefinition', () => {
       defTextId: 'someDefText',
       groupOfRecordType: [],
       recordTypeCategory: [],
+      useTrashBin: false,
     };
 
     recordTypePool.set(metadata.id, metadata);
@@ -2095,6 +2096,7 @@ describe('formDefinition', () => {
         defTextId: 'someDefTextId',
         groupOfRecordType: [],
         recordTypeCategory: [],
+        useTrashBin: false,
       });
 
       metadataPool.set('personUpdateGroup', {
@@ -2443,6 +2445,7 @@ describe('formDefinition', () => {
         defTextId: 'someDefTextId',
         groupOfRecordType: [],
         recordTypeCategory: [],
+        useTrashBin: false,
       });
 
       metadataPool.set('personNewGroup', {
