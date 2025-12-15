@@ -1,27 +1,63 @@
 import { Button } from '@/components/Button/Button';
 import type { BFFDataRecord } from '@/types/record';
-import { CodeIcon, ShredderIcon, Trash2Icon } from 'lucide-react';
+import {
+  CodeIcon,
+  FilePenIcon,
+  FileTextIcon,
+  ShredderIcon,
+  Trash2Icon,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useFetcher } from 'react-router';
+import {
+  href,
+  Link,
+  useFetcher,
+  useMatch,
+  useMatches,
+  useRoutes,
+} from 'react-router';
 import styles from './ActionBar.module.css';
 import clsx from 'clsx';
 
 interface ActionBarProps {
   record: BFFDataRecord;
   apiUrl?: string;
-  outputPage: boolean;
+  className?: string;
 }
-export const ActionBar = ({ record, apiUrl, outputPage }: ActionBarProps) => {
+export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
+  const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
-
+  const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
+  const isOnViewPage =
+    matches.at(-1)?.id === 'routes/record/record' ||
+    matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
   return (
-    <div
-      className={clsx(
-        styles['action-bar'],
-        !outputPage && styles['dynamic-page-margin'],
+    <div className={clsx(styles['action-bar'], className)}>
+      {isOnUpdatePage && (
+        <Button
+          as={Link}
+          to={href('/:recordType/:recordId', {
+            recordType: record.recordType,
+            recordId: record.id,
+          })}
+          variant='tertiary'
+        >
+          <FileTextIcon /> {t('divaClient_viewRecordText')}
+        </Button>
       )}
-    >
+      {isOnViewPage && record.userRights?.includes('update') && (
+        <Button
+          as={Link}
+          to={href('/:recordType/:recordId/update', {
+            recordType: record.recordType,
+            recordId: record.id,
+          })}
+          variant='tertiary'
+        >
+          <FilePenIcon /> {t('divaClient_editRecordText')}
+        </Button>
+      )}
       {record.userRights?.includes('delete') && (
         <fetcher.Form
           key={`${record.id}_ab_delete`}

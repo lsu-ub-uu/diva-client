@@ -24,6 +24,7 @@ import {
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
+  XIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
@@ -31,6 +32,7 @@ import {
   ConfirmDialog,
   useConfirmDialog,
 } from '../ConfirmDialog/ConfirmDialog';
+import { Fragment } from 'react';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -40,12 +42,27 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
   const { t } = useTranslation();
   const fetcher = useFetcher();
 
-  const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
+  const {
+    showConfirmDialog: showDeleteConfirmDialog,
+    confirmDialogRef: deleteConfirmDialogRef,
+  } = useConfirmDialog();
+
+  const {
+    showConfirmDialog: showTrashConfirmDialog,
+    confirmDialogRef: trashConfirmDialogRef,
+  } = useConfirmDialog();
 
   const deleteRecord = () => {
     fetcher.submit(null, {
       method: 'post',
       action: `/${record.recordType}/${record.id}/delete`,
+    });
+  };
+
+  const trashRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/trash`,
     });
   };
 
@@ -77,44 +94,59 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
         );
       case 'delete':
         return (
-          <div key={`${record.id}_rab_${userRight}`}>
+          <Fragment key={`${record.id}_rab_${userRight}`}>
             <IconButton
-              type='submit'
               size='small'
               tooltip={t('divaClient_deleteRecordText')}
-              onClick={() => showConfirmDialog(deleteRecord)}
+              onClick={() => showDeleteConfirmDialog(deleteRecord)}
             >
               <ShredderIcon />
             </IconButton>
             <ConfirmDialog
-              headingText='Är du säker på att du vill radera posten permanent?'
-              messageText='Den kommer inte gå att få tillbaka!!!'
-              confirmButtonText='Ja, radera permanent'
-              cancelButtonText='Avbryt'
-              ref={confirmDialogRef}
+              headingText={t('divaClient_confirmDeleteHeadingText')}
+              messageText={t('divaClient_confirmDeleteText')}
+              confirmButtonText={
+                <>
+                  <ShredderIcon /> {t('divaClient_confirmText')}
+                </>
+              }
+              cancelButtonText={
+                <>
+                  <XIcon />
+                  {t('divaClient_cancelText')}
+                </>
+              }
+              ref={deleteConfirmDialogRef}
             />
-          </div>
+          </Fragment>
         );
       case 'trash':
         return (
-          <fetcher.Form
-            key={`${record.id}_rab_${userRight}`}
-            method='POST'
-            action={`/${record.recordType}/${record.id}/trash`}
-            onSubmit={(e) => {
-              if (!window.confirm(t('divaClient_confirmTrashText'))) {
-                e.preventDefault();
-              }
-            }}
-          >
+          <Fragment key={`${record.id}_rab_${userRight}`}>
             <IconButton
-              type='submit'
               size='small'
               tooltip={t('divaClient_trashRecordText')}
+              onClick={() => showTrashConfirmDialog(trashRecord)}
             >
               <Trash2Icon />
             </IconButton>
-          </fetcher.Form>
+            <ConfirmDialog
+              headingText={t('divaClient_confirmTrashHeadingText')}
+              messageText={t('divaClient_confirmTrashText')}
+              confirmButtonText={
+                <>
+                  <Trash2Icon /> {t('divaClient_confirmText')}
+                </>
+              }
+              cancelButtonText={
+                <>
+                  <XIcon />
+                  {t('divaClient_cancelText')}
+                </>
+              }
+              ref={trashConfirmDialogRef}
+            />
+          </Fragment>
         );
       default:
         return null;

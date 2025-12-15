@@ -1,10 +1,13 @@
-import { useRef, type Ref } from 'react';
+import { useRef, type ReactNode, type Ref } from 'react';
+import styles from './ConfirmDialog.module.css';
+import { Button } from '../Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmDialogProps {
   headingText: string;
   messageText?: string;
-  confirmButtonText?: string;
-  cancelButtonText?: string;
+  confirmButtonText: ReactNode;
+  cancelButtonText: ReactNode;
   ref: Ref<HTMLDialogElement>;
 }
 
@@ -16,12 +19,18 @@ export const ConfirmDialog = ({
   ref,
 }: ConfirmDialogProps) => {
   return (
-    <dialog ref={ref}>
+    <dialog ref={ref} className={styles.dialog} closedby='any'>
       <form method='dialog'>
-        <h2>{headingText}</h2>
+        <h2 className={styles['heading']}>{headingText}</h2>
         <p>{messageText}</p>
-        <button value='cancel'>{cancelButtonText}</button>
-        <button value='confirm'>{confirmButtonText}</button>
+        <div className={styles['button-container']}>
+          <Button variant='secondary' value='cancel' type='submit'>
+            {cancelButtonText}
+          </Button>
+          <Button variant='primary' value='confirm' type='submit'>
+            {confirmButtonText}
+          </Button>
+        </div>
       </form>
     </dialog>
   );

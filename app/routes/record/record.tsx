@@ -28,11 +28,15 @@ import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
 import css from './record.css?url';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { ActionBar } from './ActionBar/ActionBar';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
+  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
 
   try {
     const record = await getRecordByRecordTypeAndRecordId({
@@ -46,7 +50,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     const breadcrumb = getRecordTitle(record) ?? record.id;
     const pageTitle = getRecordTitle(record);
 
-    return { record, breadcrumb, pageTitle };
+    return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {
     throw createRouteErrorResponse(error);
   }
@@ -95,9 +99,19 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   return <UnhandledErrorPage error={error} />;
 };
 
-export default function RecordTypeRoute() {
+export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
   return (
     <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Breadcrumbs />
+        <ActionBar record={loaderData.record} apiUrl={loaderData.apiUrl} />
+      </div>
       <Outlet />
     </div>
   );

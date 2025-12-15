@@ -17,25 +17,17 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
-import { FilePenIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordView';
-import { ActionBar } from './ActionBar/ActionBar';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
-  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies,
     recordType,
@@ -51,16 +43,14 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     'view',
   );
 
-  return { record, formDefinition, apiUrl };
+  return { record, formDefinition };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition, apiUrl } = loaderData;
-  const { t } = useTranslation();
+  const { record, formDefinition } = loaderData;
 
   return (
     <main>
-      <ActionBar record={record} apiUrl={apiUrl} outputPage={false} />
       <div className='record-wrapper'>
         <ReadOnlyForm
           recordData={record.data}
@@ -68,19 +58,6 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
           key={record?.id}
         />
       </div>
-      <FloatingActionButtonContainer>
-        {record.userRights?.includes('update') && (
-          <FloatingActionButton
-            as={Link}
-            to={href('/:recordType/:recordId/update', {
-              recordType: record.recordType,
-              recordId: record.id,
-            })}
-            text={t('divaClient_editRecordText')}
-            icon={<FilePenIcon />}
-          />
-        )}
-      </FloatingActionButtonContainer>
     </main>
   );
 }

@@ -1,8 +1,17 @@
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Alert } from '@/components/Alert/Alert';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
+import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
+import { assertDefined } from '@/utils/invariant';
 import { useTranslation } from 'react-i18next';
 import {
   href,
@@ -11,25 +20,13 @@ import {
   useRouteLoaderData,
   type MetaDescriptor,
 } from 'react-router';
-import type { Route } from '../divaOutput/+types/divaOutputView';
-import css from './divaOutputView.css?url';
-import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
-import { externalCoraApiUrl } from '@/cora/helper.server';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import { OutputView } from '@/routes/divaOutput/components/OutputView';
-import { assertDefined } from '@/utils/invariant';
-import { FilePenIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
+import type { Route } from '../divaOutput/+types/divaOutputView';
 import { ActionBar } from '../record/ActionBar/ActionBar';
+import css from './divaOutputView.css?url';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { Alert } from '@/components/Alert/Alert';
 
 export const loader = async ({
   request,
@@ -111,7 +108,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='diva-output-view-page'>
           <div className='top-content'>
             <Breadcrumbs />
-            <ActionBar record={record} apiUrl={apiUrl} outputPage={true} />
+            <ActionBar record={record} apiUrl={apiUrl} />
           </div>
           {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
             <Alert severity='warning' className='info-alert'>
@@ -119,19 +116,6 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             </Alert>
           )}
           <OutputView data={record.data} />
-          <FloatingActionButtonContainer>
-            {record.userRights?.includes('update') && (
-              <FloatingActionButton
-                as={Link}
-                to={href('/:recordType/:recordId/update', {
-                  recordType: record.recordType,
-                  recordId: record.id,
-                })}
-                text={t('divaClient_editRecordText')}
-                icon={<FilePenIcon />}
-              />
-            )}
-          </FloatingActionButtonContainer>
         </div>
       </div>
     </>

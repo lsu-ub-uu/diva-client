@@ -47,6 +47,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({
   request,
@@ -239,7 +240,8 @@ export default function CreateRecordRoute({
     setPreviewData(data);
   };
   return (
-    <>
+    <div>
+      <Breadcrumbs />
       <SidebarLayout
         sidebarContent={
           <NavigationPanel
@@ -272,6 +274,6 @@ export default function CreateRecordRoute({
           )}
         </div>
       </SidebarLayout>
-    </>
+    </div>
   );
 }

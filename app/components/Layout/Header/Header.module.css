@@ -79,7 +79,7 @@
   }
 
   &::backdrop {
-    background-color: rgb(0 0 0 / 50%);
+    background-color: var(--color-modal-backdrop);
     transition:
       background-color 0.3s ease-in-out,
       overlay 0.3s allow-discrete,

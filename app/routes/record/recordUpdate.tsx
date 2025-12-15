@@ -44,6 +44,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 import { ActionBar } from './ActionBar/ActionBar';
 import { useTranslation } from 'react-i18next';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -198,7 +199,7 @@ export default function UpdateRecordRoute({
           {notification.details}
         </Alert>
       )}
-      <ActionBar record={record} outputPage={false} />
+
       {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
         <Alert severity='warning' className='info-alert'>
           {t('divaClient_trashWarningAlertText')}

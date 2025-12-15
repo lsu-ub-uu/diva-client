@@ -29,7 +29,6 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { dependencies } = context.get(dependenciesContext);
@@ -54,7 +53,6 @@ export default function RecordTypeRoute() {
         />
       </aside>
       <div className='content'>
-        <Breadcrumbs />
         <Outlet />
       </div>
     </>

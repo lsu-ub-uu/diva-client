@@ -36,6 +36,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
 import { Alert } from '@/components/Alert/Alert';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -110,52 +111,55 @@ export default function OutputSearchRoute({
   const { t } = useTranslation();
 
   return (
-    <div className='search-layout'>
-      <main>
-        <div className='search-wrapper'>
-          <Alert severity='warning'>
-            {t('divaClient_metadataWarningText')}
-          </Alert>
-          <div className='search-extras'>
-            <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
+    <div>
+      <Breadcrumbs />
+      <div className='search-layout'>
+        <main>
+          <div className='search-wrapper'>
+            <Alert severity='warning'>
+              {t('divaClient_metadataWarningText')}
+            </Alert>
+            <div className='search-extras'>
+              <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 
-            <Suspense
-              fallback={
-                <Button
-                  as={Link}
-                  variant='secondary'
-                  to={href('/:recordType/create', {
-                    recordType: loaderData.recordTypeId,
-                  })}
-                  size='large'
-                >
-                  <CirclePlusIcon />
-                  {t('divaClient_createText', {
-                    type: t(recordTypeTextId).toLowerCase(),
-                  })}
-                </Button>
-              }
-            >
-              <Await resolve={validationTypes} errorElement={<Fragment />}>
-                {(validationTypes) => (
-                  <CreateRecordMenu
-                    validationTypes={validationTypes}
-                    recordTypeTextId={recordTypeTextId}
-                  />
-                )}
-              </Await>
-            </Suspense>
+              <Suspense
+                fallback={
+                  <Button
+                    as={Link}
+                    variant='secondary'
+                    to={href('/:recordType/create', {
+                      recordType: loaderData.recordTypeId,
+                    })}
+                    size='large'
+                  >
+                    <CirclePlusIcon />
+                    {t('divaClient_createText', {
+                      type: t(recordTypeTextId).toLowerCase(),
+                    })}
+                  </Button>
+                }
+              >
+                <Await resolve={validationTypes} errorElement={<Fragment />}>
+                  {(validationTypes) => (
+                    <CreateRecordMenu
+                      validationTypes={validationTypes}
+                      recordTypeTextId={recordTypeTextId}
+                    />
+                  )}
+                </Await>
+              </Suspense>
+            </div>
+
+            <RecordSearch
+              key={searchId}
+              searchForm={searchForm}
+              query={query}
+              searchResults={searchResults}
+              apiUrl={loaderData.apiUrl}
+            />
           </div>
-
-          <RecordSearch
-            key={searchId}
-            searchForm={searchForm}
-            query={query}
-            searchResults={searchResults}
-            apiUrl={loaderData.apiUrl}
-          />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
