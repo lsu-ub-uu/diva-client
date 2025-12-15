@@ -61,3 +61,31 @@
 .error-alert {
   margin-bottom: var(--gap);
 }
+
+.record-trash-bin-banner {
+  background-color: var(--color-output-card-background);
+  border: var(--color-output-card-border) 1px solid;
+  border-radius: var(--border-radius-s);
+  padding: var(--gap-l) var(--gap);
+  display: flex;
+  align-items: center;
+  margin-block: var(--gap-l);
+  gap: var(--gap);
+
+  button {
+    margin-left: auto;
+  }
+
+  @media (width <900px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap);
+  }
+}
+
+.record-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-l);
+}

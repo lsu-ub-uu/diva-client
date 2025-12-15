@@ -31,6 +31,8 @@ import css from './record.css?url';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { ActionBar } from './ActionBar/ActionBar';
 import { externalCoraApiUrl } from '@/cora/helper.server';
+import { Button } from '@/components/Button/Button';
+import { ArchiveRestoreIcon, Trash2Icon } from 'lucide-react';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -100,17 +102,35 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
+  const { record, apiUrl } = loaderData;
+
+  function isInTrashBin() {
+    const rootGroup = Object.values(record.data)[0];
+    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
+  }
+
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      {isInTrashBin() && (
+        <div className='record-trash-bin-banner'>
+          <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Trash2Icon fontSize='var(--font-size-icon)' />{' '}
+            <strong>Denna post befinner sig i papperskorgen.</strong>
+          </p>
+          <p>
+            Den har tagits bort, och är inte synlig för de flesta användare.
+            Klicka på knappen för att återställa posten.
+          </p>
+          {record.userRights?.includes('update') && (
+            <Button variant='secondary'>
+              Återställ från papperskorgen <ArchiveRestoreIcon />
+            </Button>
+          )}
+        </div>
+      )}
+      <div className='record-top-bar'>
         <Breadcrumbs />
-        <ActionBar record={loaderData.record} apiUrl={loaderData.apiUrl} />
+        <ActionBar record={record} apiUrl={apiUrl} />
       </div>
       <Outlet />
     </div>

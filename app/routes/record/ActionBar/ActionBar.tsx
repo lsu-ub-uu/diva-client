@@ -41,6 +41,11 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
     matches.at(-1)?.id === 'routes/record/record' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
 
+  function isInTrashBin() {
+    const rootGroup = Object.values(record.data)[0];
+    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
+  }
+
   const deleteRecord = () => {
     fetcher.submit(
       { redirect: true },
@@ -114,7 +119,7 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
           />
         </div>
       )}
-      {record.userRights?.includes('trash') && (
+      {!isInTrashBin() && record.userRights?.includes('trash') && (
         <div className={styles['action-bar-button']}>
           <Button
             type='submit'
