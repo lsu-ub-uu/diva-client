@@ -31,6 +31,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     defTextId: '',
     groupOfRecordType: [],
     recordTypeCategory: [],
+    useTrashBin: false,
   },
   {
     id: '2',
@@ -41,6 +42,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     defTextId: '',
     groupOfRecordType: [],
     recordTypeCategory: [],
+    useTrashBin: false,
   },
   {
     id: '3',
@@ -51,6 +53,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
     defTextId: '',
     groupOfRecordType: [],
     recordTypeCategory: [],
+    useTrashBin: false,
   },
 ];
 

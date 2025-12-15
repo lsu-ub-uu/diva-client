@@ -41,7 +41,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <ActionBar record={record} outputPage={false} />,
       },
     ]);
 
@@ -87,7 +87,9 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} apiUrl='someUrl/1234' />,
+        Component: () => (
+          <ActionBar record={record} apiUrl='someUrl/1234' outputPage={false} />
+        ),
       },
     ]);
 
