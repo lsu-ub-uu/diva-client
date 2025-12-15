@@ -6,7 +6,6 @@ import type {
   DivaOutput,
   TitleInfoLangGroup,
 } from '@/generatedTypes/divaTypes';
-import { cloneDeep } from 'lodash-es';
 
 const divaOutput = {
   output: {
@@ -164,7 +163,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_title without subtitle', () => {
-    const divaOutputWithoutSubtitle = cloneDeep(divaOutput);
+    const divaOutputWithoutSubtitle = structuredClone(divaOutput);
     divaOutputWithoutSubtitle.output.titleInfo!.subtitle = {
       value: '',
     } as TitleInfoLangGroup['subtitle'];
@@ -203,7 +202,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_publication_date with only year', () => {
-    const divaOutputWithYearOnly = cloneDeep(divaOutput);
+    const divaOutputWithYearOnly = structuredClone(divaOutput);
     divaOutputWithYearOnly.output.originInfo!.dateIssued = {
       year: { value: '2024' },
     } as DateIssuedGroup;
@@ -227,7 +226,7 @@ describe('generateCitationMeta', () => {
   });
 
   it('generates citation_online_date with only year', () => {
-    const divaOutputWithYearOnly = cloneDeep(divaOutput);
+    const divaOutputWithYearOnly = structuredClone(divaOutput);
     divaOutputWithYearOnly.output.originInfo!.dateOther_type_online = {
       year: { value: '2024' },
     } as DateOtherOnlineGroup;

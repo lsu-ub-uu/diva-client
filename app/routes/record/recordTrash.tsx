@@ -17,12 +17,17 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import {
+  getFirstDataAtomicWithNameInData,
+  getFirstDataGroupWithNameInData,
+  hasChildWithNameInData,
+} from '@/cora/cora-data/CoraDataUtils.server';
 import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
-import type { Route } from './+types/recordDelete';
 import { i18nContext } from 'server/i18n';
+import type { Route } from './+types/recordDelete';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
@@ -35,14 +40,12 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
     recordId,
     auth?.data.token,
   );
-  const recordWrapper = response.data;
-  const newWrapper = updateVariableBeforeUpdating(recordWrapper);
-  const newDataGroup = newWrapper.record.data as DataGroup;
+  const updatedRecordData = updateRecordToBeTrashed(response.data.record.data);
 
   try {
     await updateRecordDataById<RecordWrapper>(
       recordId,
-      newDataGroup,
+      updatedRecordData,
       recordType,
       auth?.data.token,
     );
@@ -56,21 +59,19 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   }
 };
 
-const updateVariableBeforeUpdating = (obj: RecordWrapper): RecordWrapper => {
-  function recursiveUpdate(o: unknown): unknown {
-    if (Array.isArray(o)) {
-      return o.map(recursiveUpdate);
-    } else if (o && typeof o === 'object') {
-      if ((o as any).name === 'inTrashBin' && (o as any).value === 'false') {
-        return { ...(o as any), value: 'true' };
-      }
-      const newObj: any = {};
-      for (const key in o) {
-        newObj[key] = recursiveUpdate((o as any)[key]);
-      }
-      return newObj;
+export const updateRecordToBeTrashed = (record: DataGroup): DataGroup => {
+  const updatedRecord = structuredClone(record);
+  const recordInfo = getFirstDataGroupWithNameInData(
+    updatedRecord,
+    'recordInfo',
+  );
+  if (hasChildWithNameInData(recordInfo, 'inTrashBin')) {
+    const trashBin = getFirstDataAtomicWithNameInData(recordInfo, 'inTrashBin');
+    if (trashBin) {
+      trashBin.value = 'true';
     }
-    return o;
+  } else {
+    recordInfo.children.push({ name: 'inTrashBin', value: 'true' });
   }
-  return recursiveUpdate(obj) as RecordWrapper;
+  return updatedRecord;
 };
