@@ -390,6 +390,11 @@ export interface RecordInfoSeriesUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -500,6 +505,11 @@ export interface RecordInfoOrganisationUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -918,6 +928,11 @@ export interface RecordInfoPublisherUpdateGroup {
   createdBy: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -939,6 +954,11 @@ export interface RecordInfoProjectUpdateGroup {
   createdBy: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -972,6 +992,11 @@ export interface RecordInfoPersonUpdateGroup {
   createdBy: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -1728,6 +1753,11 @@ export interface RecordInfoSubjectUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -2175,6 +2205,11 @@ export interface RecordInfoFunderUpdateGroup {
   createdBy: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -2656,6 +2691,11 @@ export interface RecordInfoCourseUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -2704,6 +2744,11 @@ export interface RecordInfoProgrammeUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -3007,6 +3052,11 @@ export interface RecordInfoJournalUpdateGroup {
   createdBy: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -3401,15 +3451,15 @@ export interface RelatedOutputConstituentGroup {
 
 export type AccessConditionCollection = 'gratis' | 'restricted';
 
-export interface DivaLocalLabels {
-  localLabels: LocalLabelsUpdateGroup;
+export interface DivaLocalLabel {
+  localLabel: LocalLabelUpdateGroup;
 }
 
-export interface RecordInfoLocalLabelsUpdateGroup {
+export interface RecordInfoLocalLabelUpdateGroup {
   id: { value: string; __text?: { sv: string; en: string } };
-  type: { value: 'diva-localLabels'; __text?: { sv: string; en: string } };
+  type: { value: 'diva-localLabel'; __text?: { sv: string; en: string } };
   validationType: {
-    value: 'diva-localLabels';
+    value: 'diva-localLabel';
     __text?: { sv: string; en: string };
   };
   dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
@@ -3417,11 +3467,16 @@ export interface RecordInfoLocalLabelsUpdateGroup {
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 
-export interface LocalLabelsUpdateGroup {
-  recordInfo: RecordInfoLocalLabelsUpdateGroup;
+export interface LocalLabelUpdateGroup {
+  recordInfo: RecordInfoLocalLabelUpdateGroup;
   localLabel?: { value: string; __text?: { sv: string; en: string } };
   description?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
@@ -3831,10 +3886,10 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  localLabels?: {
+  localLabel?: {
     value: string;
     linkedRecord: {
-      localLabels: LocalLabelsUpdateGroup;
+      localLabel: LocalLabelUpdateGroup;
     };
 
     __text?: { sv: string; en: string };
