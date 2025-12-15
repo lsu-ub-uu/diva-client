@@ -27,6 +27,10 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
+import {
+  ConfirmDialog,
+  useConfirmDialog,
+} from '../ConfirmDialog/ConfirmDialog';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -35,6 +39,15 @@ interface RecordActionButtonProps {
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
   const { t } = useTranslation();
   const fetcher = useFetcher();
+
+  const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
+
+  const deleteRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/delete`,
+    });
+  };
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
@@ -64,24 +77,23 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
         );
       case 'delete':
         return (
-          <fetcher.Form
-            key={`${record.id}_rab_${userRight}`}
-            method='POST'
-            action={`/${record.recordType}/${record.id}/delete`}
-            onSubmit={(e) => {
-              if (!window.confirm(t('divaClient_confirmDeleteText'))) {
-                e.preventDefault();
-              }
-            }}
-          >
+          <div key={`${record.id}_rab_${userRight}`}>
             <IconButton
               type='submit'
               size='small'
               tooltip={t('divaClient_deleteRecordText')}
+              onClick={() => showConfirmDialog(deleteRecord)}
             >
               <ShredderIcon />
             </IconButton>
-          </fetcher.Form>
+            <ConfirmDialog
+              headingText='Är du säker på att du vill radera posten permanent?'
+              messageText='Den kommer inte gå att få tillbaka!!!'
+              confirmButtonText='Ja, radera permanent'
+              cancelButtonText='Avbryt'
+              ref={confirmDialogRef}
+            />
+          </div>
         );
       case 'trash':
         return (
