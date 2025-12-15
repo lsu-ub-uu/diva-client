@@ -1,4 +1,5 @@
 .dialog {
+  inset: 0;
   margin-inline: auto;
   margin-block: auto;
   padding: var(--gap-l);

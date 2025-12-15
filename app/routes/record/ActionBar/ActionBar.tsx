@@ -6,18 +6,16 @@ import {
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
+  XIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import {
-  href,
-  Link,
-  useFetcher,
-  useMatch,
-  useMatches,
-  useRoutes,
-} from 'react-router';
+import { href, Link, useFetcher, useMatches } from 'react-router';
 import styles from './ActionBar.module.css';
 import clsx from 'clsx';
+import {
+  ConfirmDialog,
+  useConfirmDialog,
+} from '@/components/ConfirmDialog/ConfirmDialog';
 
 interface ActionBarProps {
   record: BFFDataRecord;
@@ -28,90 +26,134 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
+  const {
+    showConfirmDialog: showDeleteConfirmDialog,
+    confirmDialogRef: deleteConfirmDialogRef,
+  } = useConfirmDialog();
+
+  const {
+    showConfirmDialog: showTrashConfirmDialog,
+    confirmDialogRef: trashConfirmDialogRef,
+  } = useConfirmDialog();
+
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
     matches.at(-1)?.id === 'routes/record/record' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
+
+  const deleteRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/delete`,
+    });
+  };
+
+  const trashRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/trash`,
+    });
+  };
+
   return (
     <div className={clsx(styles['action-bar'], className)}>
       {isOnUpdatePage && (
-        <Button
-          as={Link}
-          to={href('/:recordType/:recordId', {
-            recordType: record.recordType,
-            recordId: record.id,
-          })}
-          variant='tertiary'
-        >
-          <FileTextIcon /> {t('divaClient_viewRecordText')}
-        </Button>
+        <div className={styles['action-bar-button']}>
+          <Button
+            as={Link}
+            to={href('/:recordType/:recordId', {
+              recordType: record.recordType,
+              recordId: record.id,
+            })}
+            variant='tertiary'
+          >
+            <FileTextIcon /> {t('divaClient_viewRecordText')}
+          </Button>
+        </div>
       )}
       {isOnViewPage && record.userRights?.includes('update') && (
-        <Button
-          as={Link}
-          to={href('/:recordType/:recordId/update', {
-            recordType: record.recordType,
-            recordId: record.id,
-          })}
-          variant='tertiary'
-        >
-          <FilePenIcon /> {t('divaClient_editRecordText')}
-        </Button>
+        <div className={styles['action-bar-button']}>
+          <Button
+            as={Link}
+            to={href('/:recordType/:recordId/update', {
+              recordType: record.recordType,
+              recordId: record.id,
+            })}
+            variant='tertiary'
+          >
+            <FilePenIcon /> {t('divaClient_editRecordText')}
+          </Button>
+        </div>
       )}
       {record.userRights?.includes('delete') && (
-        <fetcher.Form
-          key={`${record.id}_ab_delete`}
-          method='POST'
-          action={`/${record.recordType}/${record.id}/delete`}
-          onSubmit={(e: any) => {
-            if (!window.confirm(t('divaClient_confirmDeleteText'))) {
-              e.preventDefault();
-            }
-          }}
-        >
+        <div className={styles['action-bar-button']}>
           <Button
             type='submit'
             variant='tertiary'
-            className={styles['action-bar-button']}
+            onClick={() => showDeleteConfirmDialog(deleteRecord)}
           >
             <ShredderIcon />
             {t('divaClient_deleteRecordText')}
           </Button>
-        </fetcher.Form>
+          <ConfirmDialog
+            headingText={t('divaClient_confirmDeleteHeadingText')}
+            messageText={t('divaClient_confirmDeleteText')}
+            confirmButtonText={
+              <>
+                <ShredderIcon /> {t('divaClient_confirmText')}
+              </>
+            }
+            cancelButtonText={
+              <>
+                <XIcon />
+                {t('divaClient_cancelText')}
+              </>
+            }
+            ref={deleteConfirmDialogRef}
+          />
+        </div>
       )}
       {record.userRights?.includes('trash') && (
-        <fetcher.Form
-          key={`${record.id}_ab_trash`}
-          method='POST'
-          action={`/${record.recordType}/${record.id}/trash`}
-          onSubmit={(e: any) => {
-            if (!window.confirm(t('divaClient_confirmTrashText'))) {
-              e.preventDefault();
-            }
-          }}
-        >
+        <div className={styles['action-bar-button']}>
           <Button
             type='submit'
             variant='tertiary'
-            target='_blank'
-            className={styles['action-bar-button']}
+            onClick={() => showTrashConfirmDialog(trashRecord)}
           >
-            <Trash2Icon />
+            <ShredderIcon />
             {t('divaClient_trashRecordText')}
           </Button>
-        </fetcher.Form>
+          <ConfirmDialog
+            headingText={t('divaClient_confirmTrashHeadingText')}
+            messageText={t('divaClient_confirmTrashText')}
+            confirmButtonText={
+              <>
+                <ShredderIcon /> {t('divaClient_confirmText')}
+              </>
+            }
+            cancelButtonText={
+              <>
+                <XIcon />
+                {t('divaClient_cancelText')}
+              </>
+            }
+            ref={trashConfirmDialogRef}
+          />
+        </div>
       )}
       {apiUrl && (
-        <Button
-          variant='tertiary'
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <CodeIcon />
-          {t('divaClient_viewInApiText')}
-        </Button>
+        <div className={styles['action-bar-button']}>
+          <Button
+            variant='tertiary'
+            as='a'
+            href={apiUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <CodeIcon />
+            {t('divaClient_viewInApiText')}
+          </Button>
+        </div>
       )}
     </div>
   );
