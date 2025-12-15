@@ -9,7 +9,7 @@ import {
   XIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useFetcher, useMatches } from 'react-router';
+import { href, Link, useFetcher, useMatches, useNavigate } from 'react-router';
 import styles from './ActionBar.module.css';
 import clsx from 'clsx';
 import {
@@ -42,17 +42,23 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
 
   const deleteRecord = () => {
-    fetcher.submit(null, {
-      method: 'post',
-      action: `/${record.recordType}/${record.id}/delete`,
-    });
+    fetcher.submit(
+      { redirect: true },
+      {
+        method: 'post',
+        action: `/${record.recordType}/${record.id}/delete`,
+      },
+    );
   };
 
   const trashRecord = () => {
-    fetcher.submit(null, {
-      method: 'post',
-      action: `/${record.recordType}/${record.id}/trash`,
-    });
+    fetcher.submit(
+      { redirect: true },
+      {
+        method: 'post',
+        action: `/${record.recordType}/${record.id}/trash`,
+      },
+    );
   };
 
   return (
@@ -100,15 +106,10 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             messageText={t('divaClient_confirmDeleteText')}
             confirmButtonText={
               <>
-                <ShredderIcon /> {t('divaClient_confirmText')}
+                {t('divaClient_confirmText')} <ShredderIcon />
               </>
             }
-            cancelButtonText={
-              <>
-                <XIcon />
-                {t('divaClient_cancelText')}
-              </>
-            }
+            cancelButtonText={<>{t('divaClient_cancelText')}</>}
             ref={deleteConfirmDialogRef}
           />
         </div>
@@ -120,7 +121,7 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             variant='tertiary'
             onClick={() => showTrashConfirmDialog(trashRecord)}
           >
-            <ShredderIcon />
+            <Trash2Icon />
             {t('divaClient_trashRecordText')}
           </Button>
           <ConfirmDialog
@@ -128,15 +129,11 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             messageText={t('divaClient_confirmTrashText')}
             confirmButtonText={
               <>
-                <ShredderIcon /> {t('divaClient_confirmText')}
+                {t('divaClient_confirmText')}
+                <Trash2Icon />
               </>
             }
-            cancelButtonText={
-              <>
-                <XIcon />
-                {t('divaClient_cancelText')}
-              </>
-            }
+            cancelButtonText={<>{t('divaClient_cancelText')}</>}
             ref={trashConfirmDialogRef}
           />
         </div>

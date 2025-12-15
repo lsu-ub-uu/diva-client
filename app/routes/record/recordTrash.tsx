@@ -17,61 +17,54 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import {
-  getFirstDataAtomicWithNameInData,
-  getFirstDataGroupWithNameInData,
-  hasChildWithNameInData,
-} from '@/cora/cora-data/CoraDataUtils.server';
-import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
+import { trashRecord } from '@/data/trashRecord.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
+import { redirect } from 'react-router';
 
-export const action = async ({ params, context }: Route.ActionArgs) => {
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.ActionArgs) => {
   const { recordType, recordId } = params;
+  const formData = await request.formData();
+  const shouldRedirect = formData.get('redirect') === 'true';
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
 
-  const response = await getRecordDataById<RecordWrapper>(
-    recordType,
-    recordId,
-    auth?.data.token,
-  );
-  const updatedRecordData = updateRecordToBeTrashed(response.data.record.data);
-
   try {
-    await updateRecordDataById<RecordWrapper>(
-      recordId,
-      updatedRecordData,
+    const response = await getRecordDataById<RecordWrapper>(
       recordType,
+      recordId,
       auth?.data.token,
     );
+
+    const trashedRecord = await trashRecord(
+      recordId,
+      response.data.record.data,
+      recordType,
+      auth,
+    );
+
     flashNotification({
       severity: 'success',
       summary: t('divaClient_recordSuccessfullyTrashedText', { id: recordId }),
     });
+
+    if (
+      shouldRedirect &&
+      trashedRecord.data.record.actionLinks.read === undefined
+    ) {
+      // User cannot view the trashed record, redirect to listing
+      return redirect(`/${recordType}`);
+    }
   } catch (error) {
     console.error(error);
     flashNotification(createNotificationFromAxiosError(t, error));
   }
-};
-
-export const updateRecordToBeTrashed = (record: DataGroup): DataGroup => {
-  const updatedRecord = structuredClone(record);
-  const recordInfo = getFirstDataGroupWithNameInData(
-    updatedRecord,
-    'recordInfo',
-  );
-  if (hasChildWithNameInData(recordInfo, 'inTrashBin')) {
-    const trashBin = getFirstDataAtomicWithNameInData(recordInfo, 'inTrashBin');
-    if (trashBin) {
-      trashBin.value = 'true';
-    }
-  } else {
-    recordInfo.children.push({ name: 'inTrashBin', value: 'true' });
-  }
-  return updatedRecord;
 };

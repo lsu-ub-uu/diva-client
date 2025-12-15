@@ -38,13 +38,12 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { Trash2Icon } from 'lucide-react';
 import { useDeferredValue, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { ActionBar } from './ActionBar/ActionBar';
-import { useTranslation } from 'react-i18next';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -183,6 +182,11 @@ export default function UpdateRecordRoute({
     setPreviewData(data);
   };
 
+  function isInTrashBin() {
+    const rootGroup = Object.values(record.data)[0];
+    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
+  }
+
   return (
     <SidebarLayout
       sidebarContent={
@@ -200,8 +204,8 @@ export default function UpdateRecordRoute({
         </Alert>
       )}
 
-      {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
-        <Alert severity='warning' className='info-alert'>
+      {isInTrashBin() && (
+        <Alert severity='warning' className='info-alert' icon={<Trash2Icon />}>
           {t('divaClient_trashWarningAlertText')}
         </Alert>
       )}

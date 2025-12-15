@@ -12,6 +12,7 @@ import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
+import { Trash2Icon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   href,
@@ -111,7 +112,11 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             <ActionBar record={record} apiUrl={apiUrl} />
           </div>
           {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
-            <Alert severity='warning' className='info-alert'>
+            <Alert
+              severity='warning'
+              className='info-alert'
+              icon={<Trash2Icon />}
+            >
               {t('divaClient_trashWarningAlertText')}
             </Alert>
           )}

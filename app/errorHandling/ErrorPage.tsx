@@ -24,7 +24,7 @@ import {
   BanIcon,
   FrownIcon,
   LockIcon,
-  MehIcon,
+  SearchSlashIcon,
   ServerCrashIcon,
   SwordsIcon,
 } from 'lucide-react';
@@ -64,7 +64,7 @@ export const getIconByHTTPStatus = (status: number) => {
     case 403:
       return <BanIcon />;
     case 404:
-      return <MehIcon />;
+      return <SearchSlashIcon />;
     case 409:
       return <SwordsIcon />;
     case 500:
