@@ -51,7 +51,7 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
     );
     flashNotification({
       severity: 'success',
-      summary: 'Successfully trashed record',
+      summary: t('divaClient_recordSuccessfullyTrashedText', { id: recordId }),
     });
   } catch (error) {
     console.error(error);

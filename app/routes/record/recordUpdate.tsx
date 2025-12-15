@@ -147,7 +147,7 @@ export const action = async ({
     );
     flashNotification({
       severity: 'success',
-      summary: `Record was successfully updated`,
+      summary: t('divaClient_recordSuccessfullyUpdatedText', { id: recordId }),
     });
   } catch (error) {
     console.error(error);

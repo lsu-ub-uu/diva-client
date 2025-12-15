@@ -175,7 +175,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     );
     flashNotification({
       severity: 'success',
-      summary: `Record was successfully created ${id}`,
+      summary: t('divaClient_recordSuccessfullyCreatedText', { id }),
     });
     return redirect(`/${recordType}/${id}/update`);
   } catch (error) {

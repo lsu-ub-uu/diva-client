@@ -21,6 +21,7 @@ import { deleteRecord } from '@/data/deleteRecord.server';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordDelete';
+import { i18nContext } from 'server/i18n';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType, recordId } = params;
@@ -28,11 +29,12 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { flashNotification } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
   await deleteRecord(dependencies, recordType, recordId, auth);
 
   flashNotification({
     severity: 'success',
-    summary: 'Successfully deleted record',
+    summary: t('divaClient_recordSuccessfullyDeletedText', { id: recordId }),
   });
 };

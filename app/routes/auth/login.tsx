@@ -102,13 +102,14 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
   const { flashNotification, setAuth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
   const auth = await authenticate(form);
 
   if (auth === null) {
     flashNotification({
       severity: 'error',
-      summary: 'Invalid credentials',
+      summary: t('divaClient_loginInvalidCredentialsText'),
     });
 
     // Redirect back to the login page with errors.
