@@ -45,7 +45,7 @@ export const icons: Record<string, ReactNode> = {
   'diva-subject': <FlaskRoundIcon />,
   'diva-programme': <GraduationCapIcon />,
   'diva-series': <LibraryIcon />,
-  'diva-localLabels': <TagIcon />,
+  'diva-localLabel': <TagIcon />,
   'diva-publisher': <BookCheckIcon />,
   'diva-funder': <HandCoinsIcon />,
 };
@@ -60,7 +60,7 @@ const sortOrder = [
   'diva-subject',
   'diva-programme',
   'diva-series',
-  'diva-localLabels',
+  'diva-localLabel',
   'diva-publisher',
   'diva-funder',
 ];
