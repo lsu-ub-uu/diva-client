@@ -39,11 +39,6 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   const newWrapper = updateVariableBeforeUpdating(recordWrapper);
   const newDataGroup = newWrapper.record.data as DataGroup;
 
-  flashNotification({
-    severity: 'success',
-    summary: 'Successfully trashed record',
-  });
-
   try {
     await updateRecordDataById<RecordWrapper>(
       recordId,
@@ -53,7 +48,7 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
     );
     flashNotification({
       severity: 'success',
-      summary: `Record was successfully updated`,
+      summary: 'Successfully trashed record',
     });
   } catch (error) {
     console.error(error);

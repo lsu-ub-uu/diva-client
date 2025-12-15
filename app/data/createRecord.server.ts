@@ -54,7 +54,6 @@ export const createRecord = async (
 
   const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
 
-  console.log('Form metadata:', JSON.stringify(record, null, 2));
   const transformData = transformToCoraData(formMetaDataPathLookup, record);
 
   const response = await postRecordData<RecordWrapper>(

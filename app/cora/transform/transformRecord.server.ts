@@ -29,6 +29,7 @@ import {
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
+  ActionLinks,
   CoraData,
   DataAtomic,
   DataGroup,
@@ -52,7 +53,7 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { FormDefinitionMode } from './bffTypes.server';
+import type { BFFRecordType, FormDefinitionMode } from './bffTypes.server';
 
 /**
  * Transforms records
@@ -89,11 +90,11 @@ export const transformRecord = (
   const id = extractIdFromRecordInfo(recordWrapper.record.data);
   const recordInfo = extractRecordInfoDataGroup(recordWrapper.record.data);
 
-  const recordType = extractLinkedRecordIdFromNamedRecordLink(
+  const recordTypeId = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
     'type',
   );
-  const validationType = extractLinkedRecordIdFromNamedRecordLink(
+  const validationTypeId = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
     'validationType',
   );
@@ -121,14 +122,19 @@ export const transformRecord = (
   if (coraRecord.actionLinks !== undefined) {
     userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
   }
-  if (coraRecord.actionLinks.update !== undefined) {
+  if (
+    hasTrashRight(
+      dependencies.recordTypePool.get(recordTypeId),
+      coraRecord.actionLinks,
+    )
+  ) {
     userRights.push('trash');
   }
 
   return removeEmpty({
     id,
-    recordType,
-    validationType,
+    recordType: recordTypeId,
+    validationType: validationTypeId,
     createdAt,
     createdBy,
     updated,
@@ -464,4 +470,15 @@ export const isRepeating = (metadata: FormMetaData) => {
 
 export const isRequired = (metadata: FormMetaData) => {
   return metadata.repeat.repeatMin > 0;
+};
+
+const hasTrashRight = (
+  recordType: BFFRecordType,
+  actionLinks: ActionLinks | undefined,
+): boolean => {
+  if (!actionLinks?.update) {
+    return false;
+  }
+
+  return recordType.useTrashBin;
 };

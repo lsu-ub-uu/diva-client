@@ -41,6 +41,7 @@ describe('transformCoraRecordType', () => {
       defTextId: 'exampleDevOutputDefText',
       groupOfRecordType: ['publicationType'],
       recordTypeCategory: ['clientNavigation'],
+      useTrashBin: true,
     };
     expect(firstRecordType).toStrictEqual(expected);
   });
