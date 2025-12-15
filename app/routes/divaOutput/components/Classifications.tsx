@@ -66,15 +66,15 @@ export const Classifications = ({ output }: ClassificationsProps) => {
           }))}
         />
       )}
-      {output.localLabels && (
+      {output.localLabel && (
         <SearchLinkList
           pill
-          heading={output.localLabels[0].__text?.[language]}
+          heading={output.localLabel[0].__text?.[language]}
           searchTerm='localLabelsLinkSearchTerm'
-          items={output.localLabels.map((label, index) => ({
+          items={output.localLabel.map((label, index) => ({
             key: index,
-            label: label.linkedRecord?.localLabels?.localLabel?.value,
-            href: `diva-localLabels_${label.value}`,
+            label: label.linkedRecord?.localLabel?.localLabel?.value,
+            href: `diva-localLabel_${label.value}`,
           }))}
         />
       )}

@@ -19,7 +19,7 @@
 import { createCookie } from 'react-router';
 
 export interface UserPreferences {
-  colorScheme: 'light' | 'dark' | 'auto';
+  colorScheme: 'light' | 'dark';
 }
 
 export const userPreferencesCookie = createCookie('userPreferences', {
@@ -32,7 +32,9 @@ export const parseUserPreferencesCookie = async (
 ): Promise<UserPreferences> => {
   const cookieHeader = request.headers.get('Cookie');
   const userPreferences = await userPreferencesCookie.parse(cookieHeader);
-  return userPreferences || ({ colorScheme: 'auto' } satisfies UserPreferences);
+  return (
+    userPreferences || ({ colorScheme: 'light' } satisfies UserPreferences)
+  );
 };
 
 export const serializeUserPreferencesCookie = (

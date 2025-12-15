@@ -27,17 +27,7 @@ git clone git@github.com:lsu-ub-uu/diva-client.git
 npm install
 ```
 
-3. Create a file named `.env` in the project root
-
-```.dotenv
-# Cora API URLs (mandatory)
-CORA_API_URL=https://cora.epc.ub.uu.se/diva/rest
-CORA_LOGIN_URL=https://cora.epc.ub.uu.se/diva/login/rest
-
-# Additional variables (optional)
-BASE_PATH=/divaclient
-PORT=5173
-```
+3. Create a file named `.env` in the project root. See environment variables section below for a list of available variables.
 
 ### Starting the development server
 
@@ -90,6 +80,30 @@ When running the application, open the DevTools console and run the following:
 localStorage.setItem('diva-dev', 'true');
 ```
 
+## Environment variables
+
+### Mandatory variable
+
+The following variables must be set in order to start the server.
+
+- `CORA_API_URL`: Path to the Cora REST API (E.g. https://preview.diva.cora.epc.ub.uu.se/rest)
+- `CORA_LOGIN_URL`: Path to the Cora login API (E.g. https://cora.epc.ub.uu.se/diva/login/rest)
+- `CORA_EXTERAL_SYSTEM_URL`: Public path to the Cora system. Must be accessible externally. (E.g. https://preview.diva.cora.epc.ub.uu.se)
+- `APP_TOKEN_USERS`: A list of users with app tokens that will be available as test login options. (E.g. `[{"displayName":"Diva Admin","loginId":"divaAdmin@cora.epc.ub.uu.se","appToken":"xxxxx-xxxx-xxxx-xxxx-xxxxxxx"}]`)
+
+### Additional variables (optional)
+
+The follwing variables are optional and have some
+
+- `BASE_PATH`: A base URL path under which all routes are served. (E.g. `/divaclient`)
+  BASE_PATH=/divaclient
+- `PORT`: The port on which the server will listen (Default `5173`)
+- `SESSION_SECURE`: Whether to use a secure session cookie (Default `true`)
+- `SESSION_SECRETS`: A comma separated list of secrets to use for the secure session cookie. Add items to the list to rotate in new secrets without breaking the old. (E.g. `s3cret,h3mlis`)
+
+```
+
 ## License
 
 This application is released under the [GNU General Public License](https://github.com/lsu-ub-uu/diva-client/blob/master/LICENSE)
+```
