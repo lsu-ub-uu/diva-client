@@ -20,19 +20,21 @@ import { Link, useFetcher } from 'react-router';
 
 import type { BFFDataRecord } from '@/types/record';
 import {
+  ArchiveRestoreIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
-  XIcon,
 } from 'lucide-react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '../IconButton/IconButton';
+import { href } from 'react-router';
 import {
   ConfirmDialog,
   useConfirmDialog,
 } from '../ConfirmDialog/ConfirmDialog';
-import { Fragment } from 'react';
+import { IconButton } from '../IconButton/IconButton';
+import { CircularLoader } from '../Loader/CircularLoader';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -65,6 +67,26 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
       action: `/${record.recordType}/${record.id}/trash`,
     });
   };
+
+  const untrashRecord = () => {
+    fetcher.submit(
+      {},
+      {
+        method: 'post',
+        action: href('/:recordType/:recordId/untrash', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
+      },
+    );
+  };
+
+  const isDeleting =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
+  const isTrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
+  const isUntrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
@@ -100,22 +122,18 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               tooltip={t('divaClient_deleteRecordText')}
               onClick={() => showDeleteConfirmDialog(deleteRecord)}
             >
-              <ShredderIcon />
+              {isDeleting ? <CircularLoader /> : <ShredderIcon />}
             </IconButton>
             <ConfirmDialog
               headingText={t('divaClient_confirmDeleteHeadingText')}
               messageText={t('divaClient_confirmDeleteText')}
               confirmButtonText={
                 <>
-                  <ShredderIcon /> {t('divaClient_confirmText')}
+                  {t('divaClient_deleteRecordText')}
+                  <ShredderIcon />
                 </>
               }
-              cancelButtonText={
-                <>
-                  <XIcon />
-                  {t('divaClient_cancelText')}
-                </>
-              }
+              cancelButtonText={t('divaClient_cancelText')}
               ref={deleteConfirmDialogRef}
             />
           </Fragment>
@@ -128,25 +146,31 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               tooltip={t('divaClient_trashRecordText')}
               onClick={() => showTrashConfirmDialog(trashRecord)}
             >
-              <Trash2Icon />
+              {isTrashing ? <CircularLoader /> : <Trash2Icon />}
             </IconButton>
             <ConfirmDialog
               headingText={t('divaClient_confirmTrashHeadingText')}
               messageText={t('divaClient_confirmTrashText')}
               confirmButtonText={
                 <>
-                  <Trash2Icon /> {t('divaClient_confirmText')}
+                  {t('divaClient_trashRecordText')} <Trash2Icon />
                 </>
               }
-              cancelButtonText={
-                <>
-                  <XIcon />
-                  {t('divaClient_cancelText')}
-                </>
-              }
+              cancelButtonText={t('divaClient_cancelText')}
               ref={trashConfirmDialogRef}
             />
           </Fragment>
+        );
+      case 'untrash':
+        return (
+          <IconButton
+            size='small'
+            key={`${record.id}_rab_${userRight}`}
+            tooltip={t('divaClient_untrashButtonText')}
+            onClick={untrashRecord}
+          >
+            {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
+          </IconButton>
         );
       default:
         return null;

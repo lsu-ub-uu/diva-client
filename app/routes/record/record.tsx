@@ -17,6 +17,9 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
@@ -27,12 +30,8 @@ import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
-import css from './record.css?url';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { ActionBar } from './ActionBar/ActionBar';
-import { externalCoraApiUrl } from '@/cora/helper.server';
-import { Button } from '@/components/Button/Button';
-import { ArchiveRestoreIcon, Trash2Icon } from 'lucide-react';
+import css from './record.css?url';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -111,23 +110,11 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      {isInTrashBin() && (
-        <div className='record-trash-bin-banner'>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Trash2Icon fontSize='var(--font-size-icon)' />{' '}
-            <strong>Denna post befinner sig i papperskorgen.</strong>
-          </p>
-          <p>
-            Den har tagits bort, och är inte synlig för de flesta användare.
-            Klicka på knappen för att återställa posten.
-          </p>
-          {record.userRights?.includes('update') && (
-            <Button variant='secondary'>
-              Återställ från papperskorgen <ArchiveRestoreIcon />
-            </Button>
-          )}
-        </div>
-      )}
+      <div className='record-status-bar'>
+        {isInTrashBin() && (
+          <TrashAlert recordType={record.recordType} recordId={record.id} />
+        )}
+      </div>
       <div className='record-top-bar'>
         <Breadcrumbs />
         <ActionBar record={record} apiUrl={apiUrl} />

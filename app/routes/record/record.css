@@ -83,6 +83,10 @@
   }
 }
 
+.record-status-bar {
+  margin-block: var(--gap-l);
+}
+
 .record-top-bar {
   display: flex;
   justify-content: space-between;

@@ -168,17 +168,21 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   }
 
   try {
-    const { recordType, id } = await createRecord(
+    const { recordType: recordTypeId, id } = await createRecord(
       dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,
     );
+    const recordType = dependencies.recordTypePool.get(recordTypeId);
     flashNotification({
       severity: 'success',
-      summary: t('divaClient_recordSuccessfullyCreatedText', { id }),
+      summary: t('divaClient_recordSuccessfullyCreatedText', {
+        recordType: t(recordType.textId),
+        id,
+      }),
     });
-    return redirect(`/${recordType}/${id}/update`);
+    return redirect(`/${recordTypeId}/${id}/update`);
   } catch (error) {
     flashNotification(createNotificationFromAxiosError(t, error));
     console.error(error);

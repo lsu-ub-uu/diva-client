@@ -7,13 +7,14 @@ import {
 import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 
-export const trashRecord = async (
+export const setRecordTrash = async (
   recordId: string,
   recordData: DataGroup,
   recordType: string,
+  trash: boolean,
   auth: Auth | undefined,
 ) => {
-  const updatedRecordData = updateRecordToBeTrashed(recordData);
+  const updatedRecordData = updateRecordToBeTrashed(recordData, trash);
   return updateRecordDataById<RecordWrapper>(
     recordId,
     updatedRecordData,
@@ -22,7 +23,11 @@ export const trashRecord = async (
   );
 };
 
-export const updateRecordToBeTrashed = (record: DataGroup): DataGroup => {
+export const updateRecordToBeTrashed = (
+  record: DataGroup,
+  trash: boolean,
+): DataGroup => {
+  const newValue = trash ? 'true' : 'false';
   const updatedRecord = structuredClone(record);
   const recordInfo = getFirstDataGroupWithNameInData(
     updatedRecord,
@@ -31,10 +36,13 @@ export const updateRecordToBeTrashed = (record: DataGroup): DataGroup => {
   if (hasChildWithNameInData(recordInfo, 'inTrashBin')) {
     const trashBin = getFirstDataAtomicWithNameInData(recordInfo, 'inTrashBin');
     if (trashBin) {
-      trashBin.value = 'true';
+      trashBin.value = newValue;
     }
   } else {
-    recordInfo.children.push({ name: 'inTrashBin', value: 'true' });
+    recordInfo.children.push({
+      name: 'inTrashBin',
+      value: newValue,
+    });
   }
   return updatedRecord;
 };

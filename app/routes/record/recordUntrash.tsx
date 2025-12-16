@@ -23,23 +23,16 @@ import { setRecordTrash } from '@/data/setRecordTrash.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
-import { redirect } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: Route.ActionArgs) => {
+export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;
-  const formData = await request.formData();
-  const shouldRedirect = formData.get('redirect') === 'true';
+
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const recordType = dependencies.recordTypePool.get(recordTypeId);
-
   try {
     const response = await getRecordDataById<RecordWrapper>(
       recordTypeId,
@@ -47,29 +40,21 @@ export const action = async ({
       auth?.data.token,
     );
 
-    const trashedRecord = await setRecordTrash(
+    await setRecordTrash(
       recordId,
       response.data.record.data,
       recordTypeId,
-      true,
+      false,
       auth,
     );
 
     flashNotification({
       severity: 'success',
-      summary: t('divaClient_recordSuccessfullyTrashedText', {
+      summary: t('divaClient_recordSuccessfullyUntrashedText', {
         recordType: t(recordType.textId),
-        recid: recordId,
+        id: recordId,
       }),
     });
-
-    if (
-      shouldRedirect &&
-      trashedRecord.data.record.actionLinks.read === undefined
-    ) {
-      // User cannot view the trashed record, redirect to listing
-      return redirect(`/${recordTypeId}`);
-    }
   } catch (error) {
     console.error(error);
     flashNotification(createNotificationFromAxiosError(t, error));

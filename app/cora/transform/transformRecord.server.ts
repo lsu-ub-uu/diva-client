@@ -29,8 +29,8 @@ import {
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
-  ActionLinks,
   CoraData,
+  CoraRecord,
   DataAtomic,
   DataGroup,
   DataListWrapper,
@@ -118,18 +118,7 @@ export const transformRecord = (
   );
 
   const coraRecord = recordWrapper.record;
-  let userRights: BFFUserRight[] = [];
-  if (coraRecord.actionLinks !== undefined) {
-    userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
-  }
-  if (
-    hasTrashRight(
-      dependencies.recordTypePool.get(recordTypeId),
-      coraRecord.actionLinks,
-    )
-  ) {
-    userRights.push('trash');
-  }
+  const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   return removeEmpty({
     id,
@@ -138,7 +127,7 @@ export const transformRecord = (
     createdAt,
     createdBy,
     updated,
-    userRights,
+    userRights: createUserRights(recordType, coraRecord),
     actionLinks: coraRecord.actionLinks,
     data,
   });
@@ -472,13 +461,53 @@ export const isRequired = (metadata: FormMetaData) => {
   return metadata.repeat.repeatMin > 0;
 };
 
+const createUserRights = (
+  recordType: BFFRecordType,
+  coraRecord: CoraRecord,
+): BFFUserRight[] => {
+  let userRights: BFFUserRight[] = [];
+  if (coraRecord.actionLinks !== undefined) {
+    userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
+  }
+  if (hasTrashRight(recordType, coraRecord)) {
+    userRights.push('trash');
+  }
+
+  if (hasUntrashRight(recordType, coraRecord)) {
+    userRights.push('untrash');
+  }
+  return userRights;
+};
+
 const hasTrashRight = (
   recordType: BFFRecordType,
-  actionLinks: ActionLinks | undefined,
+  coraRecord: CoraRecord,
 ): boolean => {
-  if (!actionLinks?.update) {
+  if (!coraRecord.actionLinks?.update) {
     return false;
   }
 
-  return recordType.useTrashBin;
+  return recordType.useTrashBin && !isInTrashBin(coraRecord);
+};
+
+const hasUntrashRight = (
+  recordType: BFFRecordType,
+  coraRecord: CoraRecord,
+): boolean => {
+  if (!coraRecord.actionLinks?.update) {
+    return false;
+  }
+
+  return recordType.useTrashBin && isInTrashBin(coraRecord);
+};
+
+const isInTrashBin = (coraRecord: CoraRecord) => {
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+  return (
+    hasChildWithNameInData(recordInfo, 'inTrashBin') &&
+    getFirstDataAtomicValueWithNameInData(recordInfo, 'inTrashBin') === 'true'
+  );
 };

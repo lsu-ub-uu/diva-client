@@ -38,9 +38,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { Trash2Icon } from 'lucide-react';
 import { useDeferredValue, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
@@ -103,7 +101,7 @@ export const action = async ({
   params,
   context,
 }: Route.ActionArgs) => {
-  const { recordType, recordId } = params;
+  const { recordType: recordTypeId, recordId } = params;
   const { t } = context.get(i18nContext);
   const { auth, flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
@@ -112,11 +110,13 @@ export const action = async ({
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies,
-    recordType,
+    recordType: recordTypeId,
     recordId,
     authToken: auth?.data.token,
     mode: 'update',
   });
+
+  const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   assertDefined(validationType, 'Failed to get validation type from record');
 
@@ -147,7 +147,10 @@ export const action = async ({
     );
     flashNotification({
       severity: 'success',
-      summary: t('divaClient_recordSuccessfullyUpdatedText', { id: recordId }),
+      summary: t('divaClient_recordSuccessfullyUpdatedText', {
+        recordType: t(recordType.textId),
+        id: recordId,
+      }),
     });
   } catch (error) {
     console.error(error);
@@ -169,7 +172,6 @@ export default function UpdateRecordRoute({
     notification,
     defaultValues,
   } = loaderData;
-  const { t } = useTranslation();
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
 
@@ -181,11 +183,6 @@ export default function UpdateRecordRoute({
   const handleFormChange = (data: BFFDataRecordData) => {
     setPreviewData(data);
   };
-
-  function isInTrashBin() {
-    const rootGroup = Object.values(record.data)[0];
-    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
-  }
 
   return (
     <SidebarLayout
@@ -201,12 +198,6 @@ export default function UpdateRecordRoute({
         <Alert severity={notification.severity} className='error-alert'>
           <AlertTitle>{notification.summary}</AlertTitle>
           {notification.details}
-        </Alert>
-      )}
-
-      {isInTrashBin() && (
-        <Alert severity='warning' className='info-alert' icon={<Trash2Icon />}>
-          {t('divaClient_trashWarningAlertText')}
         </Alert>
       )}
 

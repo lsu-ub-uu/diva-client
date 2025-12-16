@@ -1,7 +1,7 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Alert } from '@/components/Alert/Alert';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
@@ -12,7 +12,6 @@ import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
-import { Trash2Icon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   href,
@@ -93,10 +92,10 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const { recordTypes, editableMember } = useRouteLoaderData('root');
 
-  const { t } = useTranslation();
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
-
+  const isInTrashBin =
+    record.data.output.recordInfo?.inTrashBin?.value === 'true';
   return (
     <>
       <aside className='nav-rail'>
@@ -106,20 +105,16 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         />
       </aside>
       <div className='content'>
+        <div className='record-status-bar'>
+          {isInTrashBin && (
+            <TrashAlert recordType='diva-output' recordId={record.id} />
+          )}
+        </div>
         <div className='diva-output-view-page'>
           <div className='top-content'>
             <Breadcrumbs />
             <ActionBar record={record} apiUrl={apiUrl} />
           </div>
-          {record?.data?.output?.recordInfo?.inTrashBin?.value === 'true' && (
-            <Alert
-              severity='warning'
-              className='info-alert'
-              icon={<Trash2Icon />}
-            >
-              {t('divaClient_trashWarningAlertText')}
-            </Alert>
-          )}
           <OutputView data={record.data} />
         </div>
       </div>

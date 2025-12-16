@@ -1,21 +1,22 @@
 import { Button } from '@/components/Button/Button';
-import type { BFFDataRecord } from '@/types/record';
 import {
+  ConfirmDialog,
+  useConfirmDialog,
+} from '@/components/ConfirmDialog/ConfirmDialog';
+import type { BFFDataRecord } from '@/types/record';
+import clsx from 'clsx';
+import {
+  ArchiveRestoreIcon,
   CodeIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
-  XIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useFetcher, useMatches, useNavigate } from 'react-router';
+import { href, Link, useFetcher, useMatches } from 'react-router';
 import styles from './ActionBar.module.css';
-import clsx from 'clsx';
-import {
-  ConfirmDialog,
-  useConfirmDialog,
-} from '@/components/ConfirmDialog/ConfirmDialog';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 interface ActionBarProps {
   record: BFFDataRecord;
@@ -38,13 +39,8 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
 
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
-    matches.at(-1)?.id === 'routes/record/record' ||
+    matches.at(-1)?.id === 'routes/record/recordView' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
-
-  function isInTrashBin() {
-    const rootGroup = Object.values(record.data)[0];
-    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
-  }
 
   const deleteRecord = () => {
     fetcher.submit(
@@ -66,9 +62,29 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
     );
   };
 
+  const untrashRecord = () => {
+    fetcher.submit(
+      {},
+      {
+        method: 'post',
+        action: href('/:recordType/:recordId/untrash', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
+      },
+    );
+  };
+
+  const isDeleting =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
+  const isTrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
+  const isUntrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
+
   return (
     <div className={clsx(styles['action-bar'], className)}>
-      {isOnUpdatePage && (
+      {!isOnViewPage && record.userRights?.includes('read') && (
         <div className={styles['action-bar-button']}>
           <Button
             as={Link}
@@ -76,13 +92,14 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
               recordType: record.recordType,
               recordId: record.id,
             })}
+            size='small'
             variant='tertiary'
           >
             <FileTextIcon /> {t('divaClient_viewRecordText')}
           </Button>
         </div>
       )}
-      {isOnViewPage && record.userRights?.includes('update') && (
+      {!isOnUpdatePage && record.userRights?.includes('update') && (
         <div className={styles['action-bar-button']}>
           <Button
             as={Link}
@@ -91,6 +108,7 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
               recordId: record.id,
             })}
             variant='tertiary'
+            size='small'
           >
             <FilePenIcon /> {t('divaClient_editRecordText')}
           </Button>
@@ -101,9 +119,10 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
           <Button
             type='submit'
             variant='tertiary'
+            size='small'
             onClick={() => showDeleteConfirmDialog(deleteRecord)}
           >
-            <ShredderIcon />
+            {isDeleting ? <CircularLoader /> : <ShredderIcon />}
             {t('divaClient_deleteRecordText')}
           </Button>
           <ConfirmDialog
@@ -111,22 +130,23 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             messageText={t('divaClient_confirmDeleteText')}
             confirmButtonText={
               <>
-                {t('divaClient_confirmText')} <ShredderIcon />
+                {t('divaClient_deleteRecordText')} <ShredderIcon />
               </>
             }
-            cancelButtonText={<>{t('divaClient_cancelText')}</>}
+            cancelButtonText={t('divaClient_cancelText')}
             ref={deleteConfirmDialogRef}
           />
         </div>
       )}
-      {!isInTrashBin() && record.userRights?.includes('trash') && (
+      {record.userRights?.includes('trash') && (
         <div className={styles['action-bar-button']}>
           <Button
             type='submit'
             variant='tertiary'
+            size='small'
             onClick={() => showTrashConfirmDialog(trashRecord)}
           >
-            <Trash2Icon />
+            {isTrashing ? <CircularLoader /> : <Trash2Icon />}
             {t('divaClient_trashRecordText')}
           </Button>
           <ConfirmDialog
@@ -134,18 +154,32 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             messageText={t('divaClient_confirmTrashText')}
             confirmButtonText={
               <>
-                {t('divaClient_confirmText')}
+                {t('divaClient_trashRecordText')}
                 <Trash2Icon />
               </>
             }
-            cancelButtonText={<>{t('divaClient_cancelText')}</>}
+            cancelButtonText={t('divaClient_cancelText')}
             ref={trashConfirmDialogRef}
           />
+        </div>
+      )}
+      {record.userRights?.includes('untrash') && (
+        <div className={styles['action-bar-button']}>
+          <Button
+            type='submit'
+            variant='tertiary'
+            size='small'
+            onClick={untrashRecord}
+          >
+            {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
+            {t('divaClient_untrashButtonText')}
+          </Button>
         </div>
       )}
       {apiUrl && (
         <div className={styles['action-bar-button']}>
           <Button
+            size='small'
             variant='tertiary'
             as='a'
             href={apiUrl}

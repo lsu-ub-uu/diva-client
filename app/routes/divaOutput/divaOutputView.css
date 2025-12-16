@@ -3,6 +3,10 @@
   padding-bottom: var(--gap-xxl);
 }
 
+.record-status-bar {
+  margin-block: var(--gap-l);
+}
+
 .diva-output-view {
   display: grid;
   justify-items: start;
@@ -23,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: var(--gap-l);
 
   @media (width < 900px) {
     flex-direction: column;
