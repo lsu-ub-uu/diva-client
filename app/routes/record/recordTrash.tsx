@@ -47,13 +47,13 @@ export const action = async ({
       auth?.data.token,
     );
 
-    const trashedRecord = await setRecordTrash(
+    const trashedRecord = await setRecordTrash({
       recordId,
-      response.data.record.data,
-      recordTypeId,
-      true,
+      recordData: response.data.record.data,
+      recordType: recordTypeId,
+      trash: true,
       auth,
-    );
+    });
 
     flashNotification({
       severity: 'success',

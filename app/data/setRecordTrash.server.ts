@@ -7,13 +7,21 @@ import {
 import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 
-export const setRecordTrash = async (
-  recordId: string,
-  recordData: DataGroup,
-  recordType: string,
-  trash: boolean,
-  auth: Auth | undefined,
-) => {
+interface SetRecordTrashParams {
+  recordId: string;
+  recordData: DataGroup;
+  recordType: string;
+  trash: boolean;
+  auth: Auth | undefined;
+}
+
+export const setRecordTrash = async ({
+  recordId,
+  recordData,
+  recordType,
+  trash,
+  auth,
+}: SetRecordTrashParams) => {
   const updatedRecordData = updateRecordToBeTrashed(recordData, trash);
   return updateRecordDataById<RecordWrapper>(
     recordId,

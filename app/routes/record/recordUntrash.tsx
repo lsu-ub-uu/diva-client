@@ -40,14 +40,13 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
       auth?.data.token,
     );
 
-    await setRecordTrash(
+    await setRecordTrash({
       recordId,
-      response.data.record.data,
-      recordTypeId,
-      false,
+      recordData: response.data.record.data,
+      recordType: recordTypeId,
+      trash: false,
       auth,
-    );
-
+    });
     flashNotification({
       severity: 'success',
       summary: t('divaClient_recordSuccessfullyUntrashedText', {
