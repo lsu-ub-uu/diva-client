@@ -50,11 +50,15 @@ export const useConfirmDialog = () => {
   return {
     showConfirmDialog: (onConfirm: () => void) => {
       confirmDialogRef.current?.showModal();
-      confirmDialogRef.current?.addEventListener('close', () => {
-        if (confirmDialogRef.current?.returnValue === 'confirm') {
-          onConfirm();
-        }
-      });
+      confirmDialogRef.current?.addEventListener(
+        'close',
+        () => {
+          if (confirmDialogRef.current?.returnValue === 'confirm') {
+            onConfirm();
+          }
+        },
+        { once: true },
+      );
     },
     confirmDialogRef,
   };
