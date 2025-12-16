@@ -40,7 +40,7 @@ export const PasswordLogin = ({
         open={validationErrorShown}
         onClose={() => setValidationErrorShown(false)}
         severity='error'
-        text={t('divaClient_validationErrorsText')}
+        text={t('divaClient_formValidationErrorsText')}
       />
       {notification && notification.severity === 'error' ? (
         <Alert severity='error'>{notification.summary}</Alert>

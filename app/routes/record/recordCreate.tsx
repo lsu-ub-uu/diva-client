@@ -47,6 +47,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({
   request,
@@ -167,17 +168,21 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   }
 
   try {
-    const { recordType, id } = await createRecord(
+    const { recordType: recordTypeId, id } = await createRecord(
       dependencies,
       formDefinition,
       validatedFormData as BFFDataRecordData,
       auth,
     );
+    const recordType = dependencies.recordTypePool.get(recordTypeId);
     flashNotification({
       severity: 'success',
-      summary: `Record was successfully created ${id}`,
+      summary: t('divaClient_recordSuccessfullyCreatedText', {
+        recordType: t(recordType.textId),
+        id,
+      }),
     });
-    return redirect(`/${recordType}/${id}/update`);
+    return redirect(`/${recordTypeId}/${id}/update`);
   } catch (error) {
     flashNotification(createNotificationFromAxiosError(t, error));
     console.error(error);
@@ -239,7 +244,8 @@ export default function CreateRecordRoute({
     setPreviewData(data);
   };
   return (
-    <>
+    <div>
+      <Breadcrumbs />
       <SidebarLayout
         sidebarContent={
           <NavigationPanel
@@ -272,6 +278,6 @@ export default function CreateRecordRoute({
           )}
         </div>
       </SidebarLayout>
-    </>
+    </div>
   );
 }

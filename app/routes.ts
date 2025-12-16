@@ -11,6 +11,8 @@ export default [
       index('routes/record/recordView.tsx'),
       route('update', 'routes/record/recordUpdate.tsx'),
       route('delete', 'routes/record/recordDelete.tsx'),
+      route('trash', 'routes/record/recordTrash.tsx'),
+      route('untrash', 'routes/record/recordUntrash.tsx'),
     ]),
   ]),
 

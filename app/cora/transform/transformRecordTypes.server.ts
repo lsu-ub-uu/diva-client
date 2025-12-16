@@ -11,7 +11,9 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
+  hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
+import { getFirstDataAtomicValueWithNameInData } from '../cora-data/CoraDataUtilsWrappers.server';
 
 export const transformCoraRecordTypes = (
   dataListWrapper: DataListWrapper,
@@ -59,6 +61,11 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     'defTextId',
   );
 
+  const useTrashBin =
+    hasChildWithNameInData(dataRecordGroup, 'useTrashBin') &&
+    getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'useTrashBin') ===
+      'true';
+
   // Some recordTypes does not have autocomplete as it seems (?)
   let autocompletePresentationView;
   if (
@@ -92,5 +99,6 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     defTextId,
     groupOfRecordType,
     recordTypeCategory,
+    useTrashBin,
   }) satisfies BFFRecordType;
 };

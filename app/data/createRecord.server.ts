@@ -51,6 +51,7 @@ export const createRecord = async (
     validationTypeId,
     FORM_MODE_NEW,
   );
+
   const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
 
   const transformData = transformToCoraData(formMetaDataPathLookup, record);

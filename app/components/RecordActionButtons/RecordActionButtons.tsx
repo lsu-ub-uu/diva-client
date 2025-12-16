@@ -19,9 +19,22 @@
 import { Link, useFetcher } from 'react-router';
 
 import type { BFFDataRecord } from '@/types/record';
-import { FilePenIcon, FileTextIcon, ShredderIcon } from 'lucide-react';
+import {
+  ArchiveRestoreIcon,
+  FilePenIcon,
+  FileTextIcon,
+  ShredderIcon,
+  Trash2Icon,
+} from 'lucide-react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
+import { href } from 'react-router';
+import {
+  ConfirmDialog,
+  useConfirmDialog,
+} from '../ConfirmDialog/ConfirmDialog';
 import { IconButton } from '../IconButton/IconButton';
+import { CircularLoader } from '../Loader/CircularLoader';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -30,6 +43,50 @@ interface RecordActionButtonProps {
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
   const { t } = useTranslation();
   const fetcher = useFetcher();
+
+  const {
+    showConfirmDialog: showDeleteConfirmDialog,
+    confirmDialogRef: deleteConfirmDialogRef,
+  } = useConfirmDialog();
+
+  const {
+    showConfirmDialog: showTrashConfirmDialog,
+    confirmDialogRef: trashConfirmDialogRef,
+  } = useConfirmDialog();
+
+  const deleteRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/delete`,
+    });
+  };
+
+  const trashRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/trash`,
+    });
+  };
+
+  const untrashRecord = () => {
+    fetcher.submit(
+      {},
+      {
+        method: 'post',
+        action: href('/:recordType/:recordId/untrash', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
+      },
+    );
+  };
+
+  const isDeleting =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
+  const isTrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
+  const isUntrashing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
@@ -59,24 +116,61 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
         );
       case 'delete':
         return (
-          <fetcher.Form
-            key={`${record.id}_rab_${userRight}`}
-            method='POST'
-            action={`/${record.recordType}/${record.id}/delete`}
-            onSubmit={(e) => {
-              if (!window.confirm(t('divaClient_confirmDeleteText'))) {
-                e.preventDefault();
-              }
-            }}
-          >
+          <Fragment key={`${record.id}_rab_${userRight}`}>
             <IconButton
-              type='submit'
               size='small'
               tooltip={t('divaClient_deleteRecordText')}
+              onClick={() => showDeleteConfirmDialog(deleteRecord)}
             >
-              <ShredderIcon />
+              {isDeleting ? <CircularLoader /> : <ShredderIcon />}
             </IconButton>
-          </fetcher.Form>
+            <ConfirmDialog
+              headingText={t('divaClient_confirmDeleteHeadingText')}
+              messageText={t('divaClient_confirmDeleteText')}
+              confirmButtonText={
+                <>
+                  {t('divaClient_deleteRecordText')}
+                  <ShredderIcon />
+                </>
+              }
+              cancelButtonText={t('divaClient_cancelText')}
+              ref={deleteConfirmDialogRef}
+            />
+          </Fragment>
+        );
+      case 'trash':
+        return (
+          <Fragment key={`${record.id}_rab_${userRight}`}>
+            <IconButton
+              size='small'
+              tooltip={t('divaClient_trashRecordText')}
+              onClick={() => showTrashConfirmDialog(trashRecord)}
+            >
+              {isTrashing ? <CircularLoader /> : <Trash2Icon />}
+            </IconButton>
+            <ConfirmDialog
+              headingText={t('divaClient_confirmTrashHeadingText')}
+              messageText={t('divaClient_confirmTrashText')}
+              confirmButtonText={
+                <>
+                  {t('divaClient_trashRecordText')} <Trash2Icon />
+                </>
+              }
+              cancelButtonText={t('divaClient_cancelText')}
+              ref={trashConfirmDialogRef}
+            />
+          </Fragment>
+        );
+      case 'untrash':
+        return (
+          <IconButton
+            size='small'
+            key={`${record.id}_rab_${userRight}`}
+            tooltip={t('divaClient_untrashButtonText')}
+            onClick={untrashRecord}
+          >
+            {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
+          </IconButton>
         );
       default:
         return null;

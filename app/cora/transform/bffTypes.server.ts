@@ -39,6 +39,7 @@ export interface BFFRecordType extends BFFBase {
   defTextId: string;
   groupOfRecordType: string[];
   recordTypeCategory: string[];
+  useTrashBin: boolean;
 }
 
 export interface BFFMetadataBase extends BFFBase {
@@ -174,8 +175,7 @@ type SurroundingContainerBase = Omit<
   'presentationOf'
 >;
 
-export interface BFFPresentationSurroundingContainer
-  extends SurroundingContainerBase {
+export interface BFFPresentationSurroundingContainer extends SurroundingContainerBase {
   presentationsOf?: string[];
 }
 

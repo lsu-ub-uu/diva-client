@@ -1,0 +1,28 @@
+.action-bar {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  background-color: var(--color-card);
+  padding: var(--gap-s);
+  border-radius: var(--border-radius-s);
+  border: 1px solid var(--color-card-dark);
+}
+
+@media (width < 900px) {
+  .action-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.action-bar-button {
+  &:not(:last-child) {
+    border-right: 1px solid var(--color-thin-border);
+    padding-right: var(--gap-s);
+    margin-right: var(--gap-s);
+  }
+
+  @media (width < 900px) {
+    width: 100%;
+  }
+}

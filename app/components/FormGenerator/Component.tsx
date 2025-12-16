@@ -23,6 +23,7 @@ import { SurroundingContainer } from '@/components/FormGenerator/components/Surr
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
+  getEnhancement,
   isComponentContainer,
   isComponentGroup,
   isComponentResourceLink,
@@ -71,8 +72,9 @@ export const Component = ({
       />
     );
   }
-
-  if (enhancedFields?.[currentComponentNamePath]?.type === 'hidden') {
+  if (
+    getEnhancement(enhancedFields, currentComponentNamePath)?.type === 'hidden'
+  ) {
     return (
       <DevInfo
         component={component}

@@ -56,7 +56,7 @@
       color: var(--color-text-inverted);
 
       &:hover {
-        --primary-button-color: var(--color-button-primary-hover);
+        --color-button: var(--color-button-primary-hover);
       }
 
       &:active {

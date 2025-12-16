@@ -86,7 +86,6 @@ export const Header = ({
             <dialog
               ref={mobileDialogRef}
               className={styles['mobile-menu-dialog']}
-              // eslint-disable-next-line react/no-unknown-property
               closedby='any'
             >
               <div className={styles['mobile-menu-header']}>

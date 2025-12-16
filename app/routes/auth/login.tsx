@@ -8,7 +8,7 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
 import { useTranslation } from 'react-i18next';
-import { data, href, isRouteErrorResponse, redirect } from 'react-router';
+import { data, isRouteErrorResponse, redirect } from 'react-router';
 
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
@@ -102,17 +102,18 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
   const { flashNotification, setAuth } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
   const auth = await authenticate(form);
 
   if (auth === null) {
     flashNotification({
       severity: 'error',
-      summary: 'Invalid credentials',
+      summary: t('divaClient_loginInvalidCredentialsText'),
     });
 
     // Redirect back to the login page with errors.
-    return redirect(href('/login'));
+    return;
   }
 
   setAuth(auth);

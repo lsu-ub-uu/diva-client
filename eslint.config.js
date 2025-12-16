@@ -50,6 +50,7 @@ export default [
           allow: ['error', 'warn', 'info', 'trace'],
         },
       ],
+      'react/no-unknown-property': ['error', { ignore: ['closedby'] }],
     },
   },
 ];

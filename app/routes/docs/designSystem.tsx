@@ -42,6 +42,8 @@ import {
   MehIcon,
   ShoppingCartIcon,
   SquirrelIcon,
+  Trash2Icon,
+  UndoIcon,
   XIcon,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -709,12 +711,33 @@ export default function DesignSystem() {
               Text
             </Alert>
 
+            <Alert severity='neutral' icon={<Trash2Icon />}>
+              <AlertTitle>Custom Icon title</AlertTitle>
+              Text
+            </Alert>
+
             <Alert severity='success'>Text</Alert>
             <Alert severity='info'>Text</Alert>
             <Alert severity='warning'>Text</Alert>
             <Alert severity='error'>Text</Alert>
             <Alert severity='info' icon={<MehIcon />}>
               Custom Icon Text
+            </Alert>
+            <Alert
+              severity='neutral'
+              icon={<Trash2Icon />}
+              action={
+                <Button variant='secondary'>
+                  Undo
+                  <UndoIcon />
+                </Button>
+              }
+            >
+              <AlertTitle>Alert with action</AlertTitle>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                euismod, nunc ut.
+              </p>
             </Alert>
           </div>
         </section>

@@ -17,25 +17,17 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
-import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
-import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
-import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
-import { useTranslation } from 'react-i18next';
-import { Form, href, Link } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/recordView';
-import { CodeIcon, FilePenIcon, ShredderIcon } from 'lucide-react';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
-  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies,
     recordType,
@@ -51,55 +43,21 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     'view',
   );
 
-  return { record, formDefinition, apiUrl };
+  return { record, formDefinition };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition, apiUrl } = loaderData;
-  const { t } = useTranslation();
+  const { record, formDefinition } = loaderData;
 
   return (
     <main>
       <div className='record-wrapper'>
-        <Button
-          className='api-button'
-          variant='tertiary'
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <CodeIcon />
-          {t('divaClient_viewInApiText')}
-        </Button>
         <ReadOnlyForm
           recordData={record.data}
           formSchema={formDefinition}
           key={record?.id}
         />
       </div>
-      <FloatingActionButtonContainer>
-        {record.userRights?.includes('update') && (
-          <FloatingActionButton
-            as={Link}
-            to={href('/:recordType/:recordId/update', {
-              recordType: record.recordType,
-              recordId: record.id,
-            })}
-            text={t('divaClient_editRecordText')}
-            icon={<FilePenIcon />}
-          />
-        )}
-        {record.userRights?.includes('delete') && (
-          <Form method='POST' action='delete'>
-            <FloatingActionButton
-              type='submit'
-              text={t('divaClient_deleteRecordText')}
-              icon={<ShredderIcon />}
-            />
-          </Form>
-        )}
-      </FloatingActionButtonContainer>
     </main>
   );
 }

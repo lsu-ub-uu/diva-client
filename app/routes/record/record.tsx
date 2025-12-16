@@ -17,6 +17,9 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
@@ -27,12 +30,14 @@ import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
+import { ActionBar } from './ActionBar/ActionBar';
 import css from './record.css?url';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
+  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
 
   try {
     const record = await getRecordByRecordTypeAndRecordId({
@@ -46,7 +51,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     const breadcrumb = getRecordTitle(record) ?? record.id;
     const pageTitle = getRecordTitle(record);
 
-    return { record, breadcrumb, pageTitle };
+    return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {
     throw createRouteErrorResponse(error);
   }
@@ -95,9 +100,25 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
   return <UnhandledErrorPage error={error} />;
 };
 
-export default function RecordTypeRoute() {
+export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
+  const { record, apiUrl } = loaderData;
+
+  function isInTrashBin() {
+    const rootGroup = Object.values(record.data)[0];
+    return rootGroup.recordInfo?.inTrashBin?.value === 'true';
+  }
+
   return (
     <div>
+      <div className='record-status-bar'>
+        {isInTrashBin() && (
+          <TrashAlert recordType={record.recordType} recordId={record.id} />
+        )}
+      </div>
+      <div className='record-top-bar'>
+        <Breadcrumbs />
+        <ActionBar record={record} apiUrl={apiUrl} />
+      </div>
       <Outlet />
     </div>
   );

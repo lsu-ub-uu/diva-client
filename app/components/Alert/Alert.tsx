@@ -27,11 +27,14 @@ import {
 import type { ReactNode } from 'react';
 import styles from './Alert.module.css';
 
+export type Severity = 'success' | 'info' | 'warning' | 'error' | 'neutral';
+
 export interface AlertProps {
   icon?: ReactNode;
-  severity: 'success' | 'info' | 'warning' | 'error';
+  severity: Severity;
   children: ReactNode;
   className?: string;
+  action?: ReactNode;
 }
 
 interface AlertTitleProps {
@@ -43,13 +46,14 @@ export const AlertTitle = ({ children }: AlertTitleProps) => {
 };
 
 interface GetIconProps {
-  severity: 'success' | 'info' | 'warning' | 'error';
+  severity: Severity;
 }
 const GetIcons = ({ severity }: GetIconProps) => {
   switch (severity) {
     case 'success':
       return <CircleCheckBigIcon />;
     case 'info':
+    case 'neutral':
       return <InfoIcon />;
     case 'error':
       return <CircleXIcon />;
@@ -59,13 +63,20 @@ const GetIcons = ({ severity }: GetIconProps) => {
   }
 };
 
-export const Alert = ({ icon, severity, children, className }: AlertProps) => {
+export const Alert = ({
+  icon,
+  severity,
+  children,
+  action,
+  className,
+}: AlertProps) => {
   return (
     <div className={clsx(styles['alert'], className)} data-severity={severity}>
       <div className={styles['icon']}>
         {icon === undefined ? <GetIcons severity={severity} /> : icon}
       </div>
       <div className={styles['content']}>{children}</div>
+      {action && <div className={styles['action']}>{action}</div>}
     </div>
   );
 };

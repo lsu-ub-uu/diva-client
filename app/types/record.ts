@@ -42,7 +42,9 @@ export type BFFUserRight =
   | 'read_incoming_links'
   | 'update'
   | 'index'
-  | 'delete';
+  | 'delete'
+  | 'trash'
+  | 'untrash';
 
 export interface BFFUpdate {
   updateAt: string;

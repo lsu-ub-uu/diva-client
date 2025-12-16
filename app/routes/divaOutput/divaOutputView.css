@@ -3,6 +3,10 @@
   padding-bottom: var(--gap-xxl);
 }
 
+.record-status-bar {
+  margin-block: var(--gap-l);
+}
+
 .diva-output-view {
   display: grid;
   justify-items: start;
@@ -23,6 +27,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: var(--gap-l);
+
+  @media (width < 900px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.info-alert {
+  margin-bottom: var(--gap);
 }
 
 p,
@@ -163,10 +177,6 @@ section:last-of-type {
 address {
   font-style: normal;
   display: inline;
-}
-
-.api-button {
-  justify-self: end;
 }
 
 .icon-text {

@@ -101,7 +101,7 @@ export const action = async ({
   params,
   context,
 }: Route.ActionArgs) => {
-  const { recordType, recordId } = params;
+  const { recordType: recordTypeId, recordId } = params;
   const { t } = context.get(i18nContext);
   const { auth, flashNotification } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
@@ -110,11 +110,13 @@ export const action = async ({
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies,
-    recordType,
+    recordType: recordTypeId,
     recordId,
     authToken: auth?.data.token,
     mode: 'update',
   });
+
+  const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   assertDefined(validationType, 'Failed to get validation type from record');
 
@@ -145,7 +147,10 @@ export const action = async ({
     );
     flashNotification({
       severity: 'success',
-      summary: `Record was successfully updated`,
+      summary: t('divaClient_recordSuccessfullyUpdatedText', {
+        recordType: t(recordType.textId),
+        id: recordId,
+      }),
     });
   } catch (error) {
     console.error(error);
@@ -195,6 +200,7 @@ export default function UpdateRecordRoute({
           {notification.details}
         </Alert>
       )}
+
       <div className='record-wrapper'>
         <RecordForm
           key={lastUpdate}

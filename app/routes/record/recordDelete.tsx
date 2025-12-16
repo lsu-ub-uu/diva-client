@@ -20,19 +20,36 @@ import { deleteRecord } from '@/data/deleteRecord.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { dependenciesContext } from 'server/depencencies';
+import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordDelete';
+import { redirect } from 'react-router';
 
-export const action = async ({ params, context }: Route.ActionArgs) => {
-  const { recordType, recordId } = params;
-
+export const action = async ({
+  request,
+  params,
+  context,
+}: Route.ActionArgs) => {
+  const { recordType: recordTypeId, recordId } = params;
+  const formData = await request.formData();
+  const shouldRedirect = formData.get('redirect') === 'true';
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { flashNotification } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
 
-  await deleteRecord(dependencies, recordType, recordId, auth);
+  const recordType = dependencies.recordTypePool.get(recordTypeId);
+
+  await deleteRecord(dependencies, recordTypeId, recordId, auth);
 
   flashNotification({
     severity: 'success',
-    summary: 'Successfully deleted record',
+    summary: t('divaClient_recordSuccessfullyDeletedText', {
+      recordType: t(recordType.textId),
+      id: recordId,
+    }),
   });
+
+  if (shouldRedirect) {
+    return redirect(`/${recordTypeId}`);
+  }
 };

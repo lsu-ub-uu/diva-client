@@ -92,6 +92,7 @@ export const someManuscriptRecordType: BFFRecordType = {
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
+  useTrashBin: false,
 };
 
 export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
@@ -1712,6 +1713,7 @@ export const someNationalSubjectCategoryRecordType: BFFRecordType = {
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
+  useTrashBin: false,
 };
 
 export const newNationalSubjectCategoryRecordTypeNewGroup: BFFMetadataGroup = {
@@ -2196,6 +2198,7 @@ export const someRecordTypeForRepeatingTitleInfo: BFFRecordType = {
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
+  useTrashBin: false,
 };
 
 export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataGroup =
@@ -2389,6 +2392,7 @@ export const someRecordTypeNamePart: BFFRecordType = {
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
+  useTrashBin: false,
 };
 
 export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
@@ -2444,6 +2448,7 @@ export const someRecordTypeNamePartWithAttributes: BFFRecordType = {
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
+  useTrashBin: false,
 };
 
 export const someNewMetadataGroupRepeatingNamePartWithAttributesGroup: BFFMetadataGroup =
