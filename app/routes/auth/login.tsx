@@ -113,7 +113,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
     });
 
     // Redirect back to the login page with errors.
-    return redirect(href('/login'));
+    return;
   }
 
   setAuth(auth);
