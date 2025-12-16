@@ -1,7 +1,6 @@
 import { useRef, type ReactNode, type Ref } from 'react';
-import styles from './ConfirmDialog.module.css';
 import { Button } from '../Button/Button';
-import { useTranslation } from 'react-i18next';
+import styles from './ConfirmDialog.module.css';
 
 interface ConfirmDialogProps {
   headingText: string;
@@ -24,10 +23,20 @@ export const ConfirmDialog = ({
         <h2 className={styles['heading']}>{headingText}</h2>
         <p>{messageText}</p>
         <div className={styles['button-container']}>
-          <Button variant='secondary' value='cancel' type='submit'>
+          <Button
+            data-testid='dialog-cancel-button'
+            variant='secondary'
+            value='cancel'
+            type='submit'
+          >
             {cancelButtonText}
           </Button>
-          <Button variant='primary' value='confirm' type='submit'>
+          <Button
+            data-testid='dialog-confirm-button'
+            variant='primary'
+            value='confirm'
+            type='submit'
+          >
             {confirmButtonText}
           </Button>
         </div>

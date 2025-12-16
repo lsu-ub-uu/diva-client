@@ -117,7 +117,6 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
       {record.userRights?.includes('delete') && (
         <div className={styles['action-bar-button']}>
           <Button
-            type='submit'
             variant='tertiary'
             size='small'
             onClick={() => showDeleteConfirmDialog(deleteRecord)}
@@ -141,7 +140,6 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
       {record.userRights?.includes('trash') && (
         <div className={styles['action-bar-button']}>
           <Button
-            type='submit'
             variant='tertiary'
             size='small'
             onClick={() => showTrashConfirmDialog(trashRecord)}
@@ -165,12 +163,7 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
       )}
       {record.userRights?.includes('untrash') && (
         <div className={styles['action-bar-button']}>
-          <Button
-            type='submit'
-            variant='tertiary'
-            size='small'
-            onClick={untrashRecord}
-          >
+          <Button variant='tertiary' size='small' onClick={untrashRecord}>
             {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
             {t('divaClient_untrashButtonText')}
           </Button>

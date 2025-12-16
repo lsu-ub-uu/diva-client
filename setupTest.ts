@@ -19,6 +19,10 @@ beforeAll(() => {
   HTMLElement.prototype.hidePopover = vi.fn();
   CSS.supports = vi.fn().mockReturnValue(true);
 
+  HTMLDialogElement.prototype.showModal = vi.fn();
+  HTMLDialogElement.prototype.close = vi.fn();
+  HTMLDialogElement.prototype.show = vi.fn();
+
   // @ts-expect-error: this is fine
   global.IS_REACT_ACT_ENVIRONMENT = true;
 
