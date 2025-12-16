@@ -22,8 +22,7 @@ import type {
   FormComponentGroup,
   PresentationSize,
 } from '@/components/FormGenerator/types';
-import { get, isEmpty } from 'lodash-es';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -54,6 +53,7 @@ type PresentationState = 'default' | 'alternative';
 export const AlternativePresentationSwitcher = (
   props: ComponentPresentationSwitcherProps,
 ) => {
+  const switcherRef = useRef<HTMLDivElement>(null);
   const { component, currentComponentNamePath, parentPath } = props;
 
   const {
@@ -76,31 +76,31 @@ export const AlternativePresentationSwitcher = (
     alternativePresentation,
     expanded,
   } = getAccordionConfiguration(component, currentPresentation);
-  const [prevValidationErrors, setPrevValidationErrors] = useState(false);
+
+  useEffect(() => {
+    // Expand accordion if it contains validation errors
+
+    const containsValidationErrors = switcherRef.current?.querySelector(
+      ':has([aria-invalid="true"])',
+    );
+    if (containsValidationErrors) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentPresentation(
+        presentationSize === 'singleInitiallyVisible'
+          ? 'default'
+          : 'alternative',
+      );
+    }
+  }, [errors, presentationSize]);
 
   if (hasNoValuablePresentation(parentPath, component, getValues)) {
     return null;
   }
 
-  const containsValidationError = !isEmpty(
-    get(errors, currentComponentNamePath),
-  );
-
-  // For accordion with single presentation, expand it when validation errors appear
-  if (
-    !alternativePresentation &&
-    containsValidationError &&
-    !prevValidationErrors
-  ) {
-    setPrevValidationErrors(true);
-    setCurrentPresentation(
-      presentationSize === 'singleInitiallyVisible' ? 'default' : 'alternative',
-    );
-  }
-
   if (isComponentGroup(component)) {
     return (
       <Group
+        ref={switcherRef}
         expanded={presentationSize === 'bothEqual' ? 'bothEqual' : expanded}
         onExpandButtonClick={() =>
           setCurrentPresentation(
@@ -124,6 +124,7 @@ export const AlternativePresentationSwitcher = (
 
   return (
     <div
+      ref={switcherRef}
       id={props.anchorId}
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}

@@ -34,7 +34,7 @@ import {
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { Typography } from '@/components/Typography/Typography';
 import { hasValuableData } from '@/utils/cleanFormData';
-import { type ReactNode, use } from 'react';
+import { type ReactNode, type Ref, use } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -47,6 +47,7 @@ interface GroupProps {
   expanded?: boolean | 'bothEqual';
   onExpandButtonClick?: () => void;
   childrenHidden?: boolean;
+  ref: Ref<HTMLDivElement>;
 }
 
 export const Group = ({
@@ -58,6 +59,7 @@ export const Group = ({
   expanded,
   onExpandButtonClick,
   childrenHidden,
+  ref,
 }: GroupProps) => {
   const { t } = useTranslation();
   const { boxGroups, showTooltips } = use(FormGeneratorContext);
@@ -92,6 +94,7 @@ export const Group = ({
       id={anchorId}
       className='form-component-item anchorLink'
       data-colspan={component.gridColSpan ?? 12}
+      ref={ref}
     >
       <DevInfo component={component} path={currentComponentNamePath} />
       <Card
