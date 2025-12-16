@@ -8,7 +8,7 @@ import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
 import { useTranslation } from 'react-i18next';
-import { data, href, isRouteErrorResponse, redirect } from 'react-router';
+import { data, isRouteErrorResponse, redirect } from 'react-router';
 
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
