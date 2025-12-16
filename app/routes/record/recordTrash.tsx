@@ -59,7 +59,7 @@ export const action = async ({
       severity: 'success',
       summary: t('divaClient_recordSuccessfullyTrashedText', {
         recordType: t(recordType.textId),
-        recid: recordId,
+        id: recordId,
       }),
     });
 
