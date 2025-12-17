@@ -100,10 +100,10 @@ if (DEVELOPMENT) {
 
 app.use(morgan('tiny'));
 
-app.listen(PORT, async () => {
-  // Don't start accepting requests until dependencies are loaded
-  await dependenciesPromise;
+// Don't start accepting requests until dependencies are loaded
+await dependenciesPromise;
 
+app.listen(PORT, async () => {
   console.info(
     'Application version:',
     dependencies.deploymentInfo?.applicationVersion,
