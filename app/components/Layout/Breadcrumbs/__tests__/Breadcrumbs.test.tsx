@@ -63,7 +63,7 @@ describe('<Breadcrumbs />', () => {
     const breadcrumbs = screen.getByRole('navigation', {
       name: 'divaClient_breadcrumbText',
     });
-    within(breadcrumbs).getByRole('link', { name: 'Publikationer' });
+    within(breadcrumbs).getByRole('link', { name: 'diva-outputText' });
     within(breadcrumbs).getByRole('link', { name: 'Lorem ipsum' });
   });
 

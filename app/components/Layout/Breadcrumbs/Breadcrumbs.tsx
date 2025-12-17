@@ -59,7 +59,6 @@ export const Breadcrumbs = () => {
         </li>
 
         {matches.filter(hasBreadcrumb).flatMap((match) => {
-          console.log('match.handle', match.id);
           const crumbs = [];
           if (match.id === 'routes/divaOutput/divaOutputView') {
             crumbs.push(
