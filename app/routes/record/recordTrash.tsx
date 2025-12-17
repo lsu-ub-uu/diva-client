@@ -61,11 +61,11 @@ export const action = async ({
         recordType: t(recordType.textId),
         id: recordId,
       }),
-    });
-
+    }); 
+ 
     if (
       shouldRedirect &&
-      trashedRecord.data.record.actionLinks.read === undefined
+      trashedRecord.data?.record?.actionLinks?.read === undefined
     ) {
       // User cannot view the trashed record, redirect to listing
       return redirect(`/${recordTypeId}`);
