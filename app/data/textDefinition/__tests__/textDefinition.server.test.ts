@@ -17,18 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  type BFFOrganisation,
-  type BFFLoginUnit,
-  type BFFLoginWebRedirect,
-  type BFFMetadata,
-  type BFFPresentation,
-  type BFFRecordType,
-  type BFFSearch,
-  type BFFText,
-  type BFFMember,
-  type BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+import { type BFFText } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -45,16 +34,7 @@ describe('textDefinition', () => {
 
     dependencies = {
       textPool,
-      validationTypePool: listToPool<BFFValidationType>([]),
-      metadataPool: listToPool<BFFMetadata>([]),
-      presentationPool: listToPool<BFFPresentation>([]),
-      recordTypePool: listToPool<BFFRecordType>([]),
-      searchPool: listToPool<BFFSearch>([]),
-      loginUnitPool: listToPool<BFFLoginUnit>([]),
-      loginPool: listToPool<BFFLoginWebRedirect>([]),
-      memberPool: listToPool<BFFMember>([]),
-      organisationPool: listToPool<BFFOrganisation>([]),
-    };
+    } as Dependencies;
   });
 
   it('should generate an object with id value pair for swedish', () => {

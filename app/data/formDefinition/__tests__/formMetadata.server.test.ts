@@ -84,19 +84,13 @@ import {
 } from '@/__mocks__/bff/form/bffMock';
 import type {
   BFFGuiElement,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
   BFFMetadataBase,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
-  BFFOrganisation,
   BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
@@ -121,10 +115,6 @@ describe('formMetadata', () => {
     | BFFGuiElement
   >;
   let recordTypePool: Lookup<string, BFFRecordType>;
-  let textPool: Lookup<string, BFFText>;
-  let searchPool: Lookup<string, BFFSearch>;
-  let loginUnitPool: Lookup<string, BFFLoginUnit>;
-  let loginPool: Lookup<string, BFFLoginWebRedirect>;
 
   let dependencies: Dependencies;
   beforeEach(() => {
@@ -203,23 +193,12 @@ describe('formMetadata', () => {
       pSomeMainTitleTitleInfoTextVariable,
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
-    textPool = listToPool<BFFText>([]);
-    searchPool = listToPool<BFFSearch>([]);
-    loginUnitPool = listToPool<BFFLoginUnit>([]);
-    loginPool = listToPool<BFFLoginWebRedirect>([]);
-
     dependencies = {
       validationTypePool,
       metadataPool,
       presentationPool,
       recordTypePool,
-      textPool,
-      searchPool,
-      loginUnitPool,
-      loginPool,
-      memberPool: listToPool<BFFMember>([]),
-      organisationPool: listToPool<BFFOrganisation>([]),
-    };
+    } as Dependencies;
   });
   it('should return form meta data for a given validation type', () => {
     const FORM_MODE_NEW = 'create';

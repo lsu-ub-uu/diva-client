@@ -191,7 +191,7 @@ describe('transformRecord', () => {
         loginPool: listToPool<BFFLoginWebRedirect>([]),
         memberPool: listToPool<BFFMember>([]),
         organisationPool: listToPool<BFFOrganisation>([]),
-      };
+      } as Dependencies;
     });
     describe('transformRecord', () => {
       it('should transform a record for view mode', () => {

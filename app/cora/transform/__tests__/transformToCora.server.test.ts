@@ -555,7 +555,7 @@ describe('transformToCora', () => {
         loginPool: listToPool<BFFLoginWebRedirect>([]),
         memberPool: listToPool<BFFMember>([]),
         organisationPool: listToPool<BFFOrganisation>([]),
-      };
+      } as Dependencies;
     });
 
     it('should take a form payload with someRecordType group containing title group with a mainTitle text variable', () => {

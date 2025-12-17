@@ -99,12 +99,11 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
+import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 import type {
   BFFAttributeReference,
   BFFGuiElement,
   BFFLinkedRecordPresentation,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
   BFFMetadata,
   BFFMetadataBase,
   BFFMetadataChildReference,
@@ -113,7 +112,6 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
-  BFFOrganisation,
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationChildReference,
@@ -124,7 +122,6 @@ import type {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFMember,
   BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
@@ -142,7 +139,6 @@ import {
   hasLinkedPresentation,
 } from '../formDefinition.server';
 import type { Dependencies } from '../formDefinitionsDep.server';
-import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -151,8 +147,6 @@ describe('formDefinition', () => {
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
   let searchPool: Lookup<string, BFFSearch>;
-  let loginUnitPool: Lookup<string, BFFLoginUnit>;
-  let loginPool: Lookup<string, BFFLoginWebRedirect>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
@@ -254,9 +248,6 @@ describe('formDefinition', () => {
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
     searchPool = listToPool<BFFSearch>([]);
-    loginUnitPool = listToPool<BFFLoginUnit>([]);
-    loginPool = listToPool<BFFLoginWebRedirect>([]);
-
     dependencies = {
       validationTypePool,
       metadataPool,
@@ -264,11 +255,7 @@ describe('formDefinition', () => {
       recordTypePool,
       textPool,
       searchPool,
-      loginPool,
-      loginUnitPool,
-      memberPool: listToPool<BFFMember>([]),
-      organisationPool: listToPool<BFFOrganisation>([]),
-    };
+    } as Dependencies;
 
     createRecordType('testRecordType');
   });
