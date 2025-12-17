@@ -126,7 +126,6 @@ export interface RecordInfoGroup {
   validationType: { value: string; __text?: { sv: string; en: string } };
   dataDivider: { value: string; __text?: { sv: string; en: string } };
   createdBy: { value: string; __text?: { sv: string; en: string } };
-  permissionUnit?: { value: string; __text?: { sv: string; en: string } }[];
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedGroup[];
   __text?: { sv: string; en: string };

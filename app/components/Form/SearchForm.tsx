@@ -51,11 +51,15 @@ export const SearchForm = ({
   const { t } = useTranslation();
   const submit = useSubmit();
   const defaultValues = createDefaultValuesFromFormSchema(formSchema, data);
-  set(
-    defaultValues,
-    'search.include.includePart.trashBinSearchTerm.value',
-    'false',
-  );
+
+  if (!containsTrashBinSearchTerm(defaultValues)) {
+    set(
+      defaultValues,
+      'search.include.includePart.trashBinSearchTerm.value',
+      'false',
+    );
+  }
+
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -148,4 +152,8 @@ const SearchButton = ({ searching }: { searching: boolean }) => {
 
 const formHasPermissionUnitSearchTerm = (formSchema: SearchFormSchema) => {
   return JSON.stringify(formSchema).includes('permissionUnitSearchTerm');
+};
+
+const containsTrashBinSearchTerm = (defaultValues: any) => {
+  return JSON.stringify(defaultValues).includes('trashBinSearchTerm');
 };
