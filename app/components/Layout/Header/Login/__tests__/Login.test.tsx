@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
+import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -48,18 +48,18 @@ const loginUnits = [
   },
 ] as LoginDefinition[];
 
-const appTokenLogins: AppTokenLogin[] = [
+const exampleUsers = [
   {
-    displayName: 'DiVA Admin',
+    name: 'DiVA Admin',
     loginId: 'diva-admin',
     appToken: 'diva-admin-token',
   },
   {
-    displayName: 'DiVA Everything',
+    name: 'DiVA Everything',
     loginId: 'diva-everything',
     appToken: 'diva-everything-token',
   },
-];
+] as ExampleUser[];
 
 describe('<Login/>', () => {
   it('shows the accounts in a list', async () => {
@@ -69,7 +69,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
         ),
       },
     ]);
@@ -108,7 +108,7 @@ describe('<Login/>', () => {
         {
           path: '/',
           Component: () => (
-            <LoginMenu loginUnits={loginUnits} appTokenLogins={[]} />
+            <LoginMenu loginUnits={loginUnits} exampleUsers={[]} />
           ),
         },
       ]);
@@ -141,7 +141,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} exampleUsers={[]} />
         ),
       },
     ]);
@@ -169,7 +169,7 @@ describe('<Login/>', () => {
       {
         path: '/',
         Component: () => (
-          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} exampleUsers={[]} />
         ),
       },
     ]);
@@ -191,13 +191,13 @@ describe('<Login/>', () => {
         type: 'password',
       } as LoginDefinition,
     ];
-    const singleAppTokenLogin: AppTokenLogin[] = [
+    const singleExampleUsers = [
       {
-        displayName: 'DiVA Admin',
+        name: 'DiVA Admin',
         loginId: 'diva-admin',
         appToken: 'aaaaa',
       },
-    ];
+    ] as ExampleUser[];
 
     const RoutesStub = createRoutesStub([
       {
@@ -205,7 +205,7 @@ describe('<Login/>', () => {
         Component: () => (
           <LoginMenu
             loginUnits={singleLoginUnits}
-            appTokenLogins={singleAppTokenLogin}
+            exampleUsers={singleExampleUsers}
           />
         ),
       },
@@ -240,7 +240,7 @@ describe('<Login/>', () => {
       {
         path: '/somepath/som_e-subpath',
         Component: () => (
-          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} exampleUsers={[]} />
         ),
       },
     ]);
@@ -270,7 +270,7 @@ describe('<Login/>', () => {
       {
         path: '/login',
         Component: () => (
-          <LoginMenu loginUnits={singleLoginUnits} appTokenLogins={[]} />
+          <LoginMenu loginUnits={singleLoginUnits} exampleUsers={[]} />
         ),
       },
     ]);

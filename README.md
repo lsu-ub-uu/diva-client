@@ -89,7 +89,6 @@ The following variables must be set in order to start the server.
 - `CORA_API_URL`: Path to the Cora REST API (E.g. https://preview.diva.cora.epc.ub.uu.se/rest)
 - `CORA_LOGIN_URL`: Path to the Cora login API (E.g. https://cora.epc.ub.uu.se/diva/login/rest)
 - `CORA_EXTERAL_SYSTEM_URL`: Public path to the Cora system. Must be accessible externally. (E.g. https://preview.diva.cora.epc.ub.uu.se)
-- `APP_TOKEN_USERS`: A list of users with app tokens that will be available as test login options. (E.g. `[{"displayName":"Diva Admin","loginId":"divaAdmin@cora.epc.ub.uu.se","appToken":"xxxxx-xxxx-xxxx-xxxx-xxxxxxx"}]`)
 
 ### Additional variables (optional)
 
