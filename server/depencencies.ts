@@ -45,7 +45,10 @@ import { transformCoraPresentations } from '@/cora/transform/transformPresentati
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type {
+  Dependencies,
+  DeploymentInfo,
+} from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
 import 'dotenv/config';
@@ -58,8 +61,6 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
-let poolsInitialized = false;
-
 const dependencies: Dependencies = {
   metadataPool: listToPool<BFFMetadata>([]),
   presentationPool: listToPool<BFFPresentation>([]),
@@ -71,7 +72,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
-  deploymentInfo: undefined,
+  deploymentInfo: {} as DeploymentInfo,
 };
 
 const loadDependencies = async () => {
@@ -150,15 +151,6 @@ const loadDependencies = async () => {
   dependencies.deploymentInfo = await getDeploymentInfo();
 
   console.info('Loaded stuff from Cora');
-  console.info(JSON.stringify(dependencies.deploymentInfo, null, 2));
-  poolsInitialized = true;
-};
-
-export const getDependencies = async () => {
-  if (!poolsInitialized) {
-    await loadDependencies();
-  }
-  return dependencies;
 };
 
 export { dependencies, loadDependencies };

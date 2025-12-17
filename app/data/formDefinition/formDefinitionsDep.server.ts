@@ -24,7 +24,7 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
-  deploymentInfo: DeploymentInfo | undefined;
+  deploymentInfo: DeploymentInfo;
 }
 
 export interface DeploymentInfo {
