@@ -116,9 +116,7 @@ export default function OutputSearchRoute({
       <div className='search-layout'>
         <main>
           <div className='search-wrapper'>
-            <Alert severity='warning'>
-              {t('divaClient_metadataWarningText')}
-            </Alert>
+           
             <div className='search-extras'>
               <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 

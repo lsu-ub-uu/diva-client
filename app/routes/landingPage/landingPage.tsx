@@ -130,11 +130,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
             </div>
           </Form>
         </div>
-        <div>
-          <Alert severity='warning' className='landing-info-alert'>
-            {t('divaClient_metadataWarningText')}
-          </Alert>
-        </div>
         <div className='navigation-grid'>
           <NavigationCard
             to={href('/:recordType', { recordType: 'diva-output' })}
