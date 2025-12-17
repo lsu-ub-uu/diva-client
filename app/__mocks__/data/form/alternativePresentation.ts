@@ -143,3 +143,64 @@ export const alternativePresentationWithMinNumberRepeatingToShow: RecordFormSche
       mode: 'input',
     },
   };
+
+export const twoSinglePresentationSwitchers: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    showLabel: true,
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData1',
+        showLabel: true,
+        label: 'someLabelTextId1',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        mode: 'input',
+        title: 'someTitle1',
+        titleHeadlineLevel: 'h4',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData2',
+        showLabel: true,
+        label: 'someLabelTextId2',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        mode: 'input',
+        title: 'someTitle2',
+        titleHeadlineLevel: 'h4',
+      },
+    ],
+    mode: 'input',
+  },
+};

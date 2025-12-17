@@ -17,7 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
+import {
+  createAlternativePresentationFormDef,
+  twoSinglePresentationSwitchers,
+} from '@/__mocks__/data/form/alternativePresentation';
 import {
   formSchemaWithBinary,
   linkedBinaryMock,
@@ -1750,6 +1753,40 @@ describe('<Form />', () => {
         screen.getByRole('textbox', { name: 'someLabelTextId' }),
       ).toBeVisible();
     });
+
+    // FIXME Try this with in browser mode
+    it.todo(
+      'exands only the accordion with validation error when multiple are present',
+      async () => {
+        const user = userEvent.setup();
+        render(
+          <RecordFormWithRoutesStub
+            formSchema={twoSinglePresentationSwitchers}
+          />,
+        );
+        user.click(
+          screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+        );
+
+        expect(
+          screen.getByRole('button', { name: 'someTitle1' }),
+        ).toHaveAttribute('aria-expanded', 'true');
+
+        expect(
+          screen.getByRole('button', { name: 'someTitle2' }),
+        ).toHaveAttribute('aria-expanded', 'false');
+        expect(
+          screen.getByRole('textbox', { name: 'someLabelTextId1' }),
+        ).toBeVisible();
+        expect(
+          screen.getByRole('textbox', { name: 'someLabelTextId1' }),
+        ).toBeInvalid();
+
+        expect(
+          screen.queryByRole('textbox', { name: 'someLabelTextId1' }),
+        ).not.toBeVisible();
+      },
+    );
   });
 
   describe('optionalComponent', () => {
