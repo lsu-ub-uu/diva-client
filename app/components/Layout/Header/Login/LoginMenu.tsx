@@ -35,11 +35,11 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import {
   logInWithWebRedirect,
   useWebRedirectLogin,
 } from '@/auth/useWebRedirectLogin';
+import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useHydrated } from '@/utils/useHydrated';
@@ -48,12 +48,12 @@ import styles from './Login.module.css';
 
 interface LoginMenuProps {
   loginUnits: LoginDefinition[];
-  appTokenLogins: AppTokenLogin[];
+  exampleUsers: ExampleUser[];
 }
 
 export default function LoginMenu({
   loginUnits,
-  appTokenLogins,
+  exampleUsers,
 }: LoginMenuProps) {
   const user = useUser();
   const fetcher = useFetcher();
@@ -72,12 +72,12 @@ export default function LoginMenu({
     navigation.state !== 'idle' && navigation.formAction?.includes('/login');
   useWebRedirectLogin({ returnTo });
 
-  const handleDevSelection = (account: AppTokenLogin) => {
+  const handleDevSelection = ({ loginId, appToken }: ExampleUser) => {
     submit(
       {
         loginType: 'appToken',
-        loginId: account.loginId,
-        appToken: account.appToken,
+        loginId,
+        appToken,
         returnTo,
       },
       { action: '/login', method: 'post' },
@@ -102,7 +102,7 @@ export default function LoginMenu({
   );
 
   if (!user) {
-    if (loginUnits.length === 1 && appTokenLogins.length === 0) {
+    if (loginUnits.length === 1 && exampleUsers.length === 0) {
       const loginUnit = loginUnits[0];
       return (
         <div className={styles['login']}>
@@ -158,7 +158,7 @@ export default function LoginMenu({
           </Button>
           <DropdownMenu anchor='bottom end'>
             <DevAccountLoginOptions
-              appTokenLogins={appTokenLogins}
+              exampleUsers={exampleUsers}
               onSelect={handleDevSelection}
             />
             <WebRedirectLoginMenuOptions

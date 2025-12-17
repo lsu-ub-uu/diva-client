@@ -1,12 +1,12 @@
 import DivaLogo from '@/assets/divaLogo.svg?react';
 import type { User } from '@/auth/createUser';
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type {
   BFFMember,
   BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
+import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { clsx } from 'clsx';
@@ -26,7 +26,7 @@ interface HeaderProps {
   user: User | undefined;
   userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
-  appTokenLogins: AppTokenLogin[];
+  exampleUsers: ExampleUser[];
   recordTypes: BFFRecordType[];
   editableMember: string | undefined;
 }
@@ -37,7 +37,7 @@ export const Header = ({
   user,
   userPreferences,
   loginUnits,
-  appTokenLogins,
+  exampleUsers,
   recordTypes,
   editableMember,
 }: HeaderProps) => {
@@ -120,7 +120,7 @@ export const Header = ({
           <div className={styles['language-switcher']}>
             <LanguageSwitcher />
           </div>
-          <LoginMenu loginUnits={loginUnits} appTokenLogins={appTokenLogins} />
+          <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
         </div>
       </div>
     </header>

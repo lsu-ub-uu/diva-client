@@ -17,6 +17,7 @@
  */
 
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
   BFFGuiElement,
@@ -44,7 +45,10 @@ import { transformCoraPresentations } from '@/cora/transform/transformPresentati
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type {
+  Dependencies,
+  DeploymentInfo,
+} from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
 import 'dotenv/config';
@@ -57,8 +61,6 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
-let poolsInitialized = false;
-
 const dependencies: Dependencies = {
   metadataPool: listToPool<BFFMetadata>([]),
   presentationPool: listToPool<BFFPresentation>([]),
@@ -70,6 +72,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
+  deploymentInfo: {} as DeploymentInfo,
 };
 
 const loadDependencies = async () => {
@@ -145,15 +148,9 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
-  console.info('Loaded stuff from Cora');
-  poolsInitialized = true;
-};
+  dependencies.deploymentInfo = await getDeploymentInfo();
 
-export const getDependencies = async () => {
-  if (!poolsInitialized) {
-    await loadDependencies();
-  }
-  return dependencies;
+  console.info('Loaded stuff from Cora');
 };
 
 export { dependencies, loadDependencies };

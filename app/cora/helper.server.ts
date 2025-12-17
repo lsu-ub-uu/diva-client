@@ -32,6 +32,10 @@ export const RECORD_GROUP_CONTENT_TYPE =
 export const LOGIN_CONTENT_TYPE = 'application/vnd.cora.login';
 export const AUTHENTICATION_CONTENT_TYPE =
   'application/vnd.cora.authentication+json';
+
+export const DEPLOYMENT_INFO_CONTENT_TYPE =
+  'application/vnd.cora.deploymentInfo+json';
+
 export const createHeaders = (
   init: Record<string, string | undefined>,
   authToken?: string,

@@ -121,7 +121,11 @@ export const TopNavigation = ({
               />
             </li>
             <li>
-              <Form action={href('/refreshDefinitions')} method='POST'>
+              <Form
+                action={href('/refreshDefinitions')}
+                method='POST'
+                reloadDocument
+              >
                 <input type='hidden' name='returnTo' value={returnTo} />
                 <Button variant='tertiary' type='submit' fullWidth>
                   <RefreshCwIcon />

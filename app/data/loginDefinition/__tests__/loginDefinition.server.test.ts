@@ -23,14 +23,8 @@ import type {
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-  BFFOrganisation,
   BFFPresentationGroup,
   BFFPresentationTextVar,
-  BFFRecordType,
-  BFFSearch,
-  BFFText,
-  BFFMember,
-  BFFValidationType,
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { listToPool } from '@/utils/structs/listToPool';
@@ -173,17 +167,11 @@ describe('loginDefinition', () => {
     ]);
 
     dependencies = {
-      textPool: listToPool<BFFText>([]),
-      validationTypePool: listToPool<BFFValidationType>([]),
       metadataPool,
       presentationPool,
-      recordTypePool: listToPool<BFFRecordType>([]),
-      searchPool: listToPool<BFFSearch>([]),
       loginUnitPool,
       loginPool,
-      memberPool: listToPool<BFFMember>([]),
-      organisationPool: listToPool<BFFOrganisation>([]),
-    };
+    } as Dependencies;
   });
 
   const result = [

@@ -18,28 +18,28 @@
 
 import { useTranslation } from 'react-i18next';
 
-import type { AppTokenLogin } from '@/auth/getAppTokenLogins.server';
+import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import { MenuItem } from '@headlessui/react';
 
 interface DevAccountsProps {
-  appTokenLogins: AppTokenLogin[];
-  onSelect: (account: AppTokenLogin) => void;
+  exampleUsers: ExampleUser[];
+  onSelect: (account: ExampleUser) => void;
 }
 export const DevAccountLoginOptions = ({
-  appTokenLogins,
+  exampleUsers,
   onSelect,
 }: DevAccountsProps) => {
   const { t } = useTranslation();
-  if (!appTokenLogins || appTokenLogins.length === 0) {
+  if (!exampleUsers || exampleUsers.length === 0) {
     return null;
   }
   return (
     <>
       <h2>{t('divaClient_LoginDevAccountText')}</h2>
-      {appTokenLogins.map((devAccount) => (
-        <MenuItem key={devAccount.loginId}>
-          <button onClick={() => onSelect(devAccount)}>
-            {devAccount.displayName}
+      {exampleUsers.map((exampleUser) => (
+        <MenuItem key={exampleUser.loginId}>
+          <button onClick={() => onSelect(exampleUser)}>
+            {exampleUser.name}
           </button>
         </MenuItem>
       ))}

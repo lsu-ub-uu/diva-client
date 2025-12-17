@@ -43,7 +43,6 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
-import { getAppTokenLogins } from './auth/getAppTokenLogins.server';
 import { renewAuthMiddleware } from './auth/renewAuthMiddleware.server';
 import {
   sessionContext,
@@ -68,7 +67,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const appTokenLogins = getAppTokenLogins();
+  const exampleUsers = dependencies.deploymentInfo.exampleUsers;
   const locale = context.get(i18nContext).language;
   const recordTypes = await getRecordTypes(dependencies, auth);
   const user = auth && createUser(auth);
@@ -79,7 +78,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     user,
     locale,
     loginUnits,
-    appTokenLogins,
+    exampleUsers,
     member,
     recordTypes,
     userPreferences,
@@ -233,7 +232,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     userPreferences,
     member,
     loginUnits,
-    appTokenLogins,
+    exampleUsers,
     user,
     userCanEditMemberSettings,
     auth,
@@ -255,7 +254,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         user={user}
         userPreferences={userPreferences}
         loginUnits={loginUnits}
-        appTokenLogins={appTokenLogins}
+        exampleUsers={exampleUsers}
         recordTypes={recordTypes}
         editableMember={editableMember}
       />
