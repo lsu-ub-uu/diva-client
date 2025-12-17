@@ -30,6 +30,7 @@ import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { CodeIcon, SearchIcon } from 'lucide-react';
 import { CircularLoader } from '../Loader/CircularLoader';
+import { set } from 'lodash-es';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -49,11 +50,17 @@ export const SearchForm = ({
   const member = useMember();
   const { t } = useTranslation();
   const submit = useSubmit();
+  const defaultValues = createDefaultValuesFromFormSchema(formSchema, data);
+  set(
+    defaultValues,
+    'search.include.includePart.trashBinSearchTerm.value',
+    'false',
+  );
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
+    defaultValues,
   });
 
   return (
