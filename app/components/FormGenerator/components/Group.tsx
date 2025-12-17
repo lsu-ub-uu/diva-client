@@ -47,7 +47,7 @@ interface GroupProps {
   expanded?: boolean | 'bothEqual';
   onExpandButtonClick?: () => void;
   childrenHidden?: boolean;
-  ref: Ref<HTMLDivElement>;
+  ref?: Ref<HTMLDivElement>;
 }
 
 export const Group = ({
