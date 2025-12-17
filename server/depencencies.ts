@@ -17,6 +17,7 @@
  */
 
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
   BFFGuiElement,
@@ -70,6 +71,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
+  deploymentInfo: undefined,
 };
 
 const loadDependencies = async () => {
@@ -145,7 +147,10 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
+  dependencies.deploymentInfo = await getDeploymentInfo();
+
   console.info('Loaded stuff from Cora');
+  console.info(JSON.stringify(dependencies.deploymentInfo, null, 2));
   poolsInitialized = true;
 };
 

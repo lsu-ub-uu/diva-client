@@ -24,4 +24,30 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
+  deploymentInfo: DeploymentInfo | undefined;
+}
+
+export interface DeploymentInfo {
+  applicationName: string;
+  deploymentName: string;
+  coraVersion: string;
+  applicationVersion: string;
+  urls: {
+    REST: string;
+    appTokenLogin: string;
+    passwordLogin: string;
+    record: string;
+    recordType: string;
+    iiif: string;
+    [key: string]: string;
+  };
+  exampleUsers: ExampleUser[];
+}
+
+export interface ExampleUser {
+  name: string;
+  text: string;
+  type: string;
+  loginId: string;
+  appToken: string;
 }
