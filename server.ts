@@ -21,9 +21,6 @@ import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
-import { dependencies, loadDependencies } from 'server/depencencies';
-
-const dependenciesPromise = loadDependencies();
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -75,8 +72,7 @@ if (DEVELOPMENT) {
   app.use(async (req, res, next) => {
     try {
       const appModule = await viteDevServer.ssrLoadModule('./server/app.ts');
-      const app = appModule.createApp(dependencies, loadDependencies);
-      return await app(req, res, next);
+      return await appModule.app(req, res, next);
     } catch (error) {
       if (typeof error === 'object' && error instanceof Error) {
         viteDevServer.ssrFixStacktrace(error);
@@ -91,24 +87,12 @@ if (DEVELOPMENT) {
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
   app.use(express.static('dist/client', { maxAge: '1h' }));
-  app.use(
-    await import(BUILD_PATH).then((appModule) =>
-      appModule.createApp(dependencies, loadDependencies),
-    ),
-  );
+  app.use(await import(BUILD_PATH).then((appModule) => appModule.app));
 }
 
 app.use(morgan('tiny'));
 
-// Don't start accepting requests until dependencies are loaded
-await dependenciesPromise;
-
 app.listen(PORT, async () => {
-  console.info(
-    'Application version:',
-    dependencies.deploymentInfo?.applicationVersion,
-  );
-  console.info('Cora version:', dependencies.deploymentInfo?.coraVersion);
   console.info(`CORA_API_URL ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
