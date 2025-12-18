@@ -172,29 +172,7 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
           </Button>
         </div>
       )}
-      {record.userRights?.includes('delete') && (
-        <div className={styles['action-bar-button']}>
-          <Button
-            variant='tertiary'
-            size='small'
-            onClick={() => showDeleteConfirmDialog(deleteRecord)}
-          >
-            {isDeleting ? <CircularLoader /> : <ShredderIcon />}
-            {t('divaClient_deleteRecordText')}
-          </Button>
-          <ConfirmDialog
-            headingText={t('divaClient_confirmDeleteHeadingText')}
-            messageText={t('divaClient_confirmDeleteText')}
-            confirmButtonText={
-              <>
-                {t('divaClient_deleteRecordText')} <ShredderIcon />
-              </>
-            }
-            cancelButtonText={t('divaClient_cancelText')}
-            ref={deleteConfirmDialogRef}
-          />
-        </div>
-      )}
+
       {record.userRights?.includes('trash') && (
         <div className={styles['action-bar-button']}>
           <Button
@@ -225,6 +203,29 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
             {t('divaClient_untrashButtonText')}
           </Button>
+        </div>
+      )}
+      {record.userRights?.includes('delete') && (
+        <div className={styles['action-bar-button']}>
+          <Button
+            variant='tertiary'
+            size='small'
+            onClick={() => showDeleteConfirmDialog(deleteRecord)}
+          >
+            {isDeleting ? <CircularLoader /> : <ShredderIcon />}
+            {t('divaClient_deleteRecordText')}
+          </Button>
+          <ConfirmDialog
+            headingText={t('divaClient_confirmDeleteHeadingText')}
+            messageText={t('divaClient_confirmDeleteText')}
+            confirmButtonText={
+              <>
+                {t('divaClient_deleteRecordText')} <ShredderIcon />
+              </>
+            }
+            cancelButtonText={t('divaClient_cancelText')}
+            ref={deleteConfirmDialogRef}
+          />
         </div>
       )}
       {apiUrl && (
