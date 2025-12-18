@@ -28,6 +28,7 @@ import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { performSearch } from '@/routes/record/utils/performSearch';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { CirclePlusIcon } from 'lucide-react';
 import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -40,8 +41,8 @@ import css from './recordSearch.css?url';
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-
   const { dependencies } = context.get(dependenciesContext);
+  const member = getMemberFromHostname(request, dependencies);
 
   const recordType = dependencies.recordTypePool.get(params.recordType);
 
@@ -60,6 +61,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
       auth,
       yupSchema,
       decorated,
+      member,
     );
     const apiUrl =
       query &&
