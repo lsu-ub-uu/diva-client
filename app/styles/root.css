@@ -152,6 +152,7 @@
 .root-layout {
   display: grid;
   grid-template:
+    'global-alert global-alert' auto
     'header header' auto
     'nav main' 1fr;
   grid-template-columns: auto 1fr;
@@ -159,10 +160,15 @@
 
   @media (width < 900px) {
     grid-template:
+      'global-alert' auto
       'header' auto
       'main' 1fr;
     grid-template-columns: auto;
   }
+}
+
+.global-alert {
+  grid-area: global-alert;
 }
 
 .header {

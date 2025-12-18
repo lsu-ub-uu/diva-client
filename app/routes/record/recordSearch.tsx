@@ -20,6 +20,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getSearchForm } from '@/data/getSearchForm.server';
@@ -27,6 +28,7 @@ import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { performSearch } from '@/routes/record/utils/performSearch';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { CirclePlusIcon } from 'lucide-react';
 import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,9 +37,6 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
-import { Alert } from '@/components/Alert/Alert';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -118,9 +117,6 @@ export default function OutputSearchRoute({
       <div className='search-layout'>
         <main>
           <div className='search-wrapper'>
-            <Alert severity='warning'>
-              {t('divaClient_metadataWarningText')}
-            </Alert>
             <div className='search-extras'>
               <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 

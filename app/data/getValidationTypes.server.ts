@@ -59,12 +59,14 @@ export const getValidationTypes = async (
 
     const validationTypes = transformCoraValidationTypes(response.data);
 
-    return validationTypes.map(
-      (validationType): Option => ({
-        value: validationType.id,
-        label: validationType.nameTextId,
-      }),
-    );
+    return validationTypes
+      .filter((validationType) => !validationType.id.startsWith('classic_'))
+      .map(
+        (validationType): Option => ({
+          value: validationType.id,
+          label: validationType.nameTextId,
+        }),
+      );
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 403) {
       return [];

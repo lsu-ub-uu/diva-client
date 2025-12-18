@@ -1,5 +1,8 @@
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Footer } from '@/components/Layout/Footer/Footer';
 import { icons } from '@/components/Layout/TopNavigation/TopNavigation';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { useLanguage } from '@/i18n/useLanguage';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import {
   BookOpenIcon,
@@ -21,13 +24,9 @@ import { i18nContext } from 'server/i18n';
 import { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';
 import { heroImages } from './heroImages';
+import { ImageAttribution } from './ImageAttribution';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
-import { ImageAttribution } from './ImageAttribution';
-import { useLanguage } from '@/i18n/useLanguage';
-import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Footer } from '@/components/Layout/Footer/Footer';
-import { Alert } from '@/components/Alert/Alert';
 
 export const loader = ({ request, context }: LoaderFunctionArgs) => {
   const auth = context.get(sessionContext);
@@ -129,11 +128,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
               </button>
             </div>
           </Form>
-        </div>
-        <div>
-          <Alert severity='warning' className='landing-info-alert'>
-            {t('divaClient_metadataWarningText')}
-          </Alert>
         </div>
         <div className='navigation-grid'>
           <NavigationCard

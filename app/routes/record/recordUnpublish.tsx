@@ -19,21 +19,14 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { setRecordTrash } from '@/data/setRecordTrash.server';
+import { setRecordVisibility } from '@/data/setRecordVisibility';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
-import { redirect } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: Route.ActionArgs) => {
+export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;
-  const formData = await request.formData();
-  const shouldRedirect = formData.get('redirect') === 'true';
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
@@ -47,29 +40,21 @@ export const action = async ({
       auth?.data.token,
     );
 
-    const trashedRecord = await setRecordTrash({
+    await setRecordVisibility({
       recordId,
       recordData: response.data.record.data,
       recordType: recordTypeId,
-      trash: true,
+      visibility: 'unpublished',
       auth,
     });
 
     flashNotification({
       severity: 'success',
-      summary: t('divaClient_recordSuccessfullyTrashedText', {
+      summary: t('divaClient_recordSuccessfullyUnpublishedText', {
         recordType: t(recordType.textId),
         id: recordId,
       }),
-    }); 
- 
-    if (
-      shouldRedirect &&
-      trashedRecord.data?.record?.actionLinks?.read === undefined
-    ) {
-      // User cannot view the trashed record, redirect to listing
-      return redirect(`/${recordTypeId}`);
-    }
+    });
   } catch (error) {
     console.error(error);
     flashNotification(createNotificationFromAxiosError(t, error));
