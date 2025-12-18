@@ -59,6 +59,16 @@
 
   color: var(--color-alert-font);
   background-color: var(--color-alert-bg);
+
+  &[data-variant='banner'] {
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .alert-title {

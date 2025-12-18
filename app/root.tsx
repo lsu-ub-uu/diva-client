@@ -57,6 +57,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { Alert, type Severity } from './components/Alert/Alert';
 
 const { MODE } = import.meta.env;
 
@@ -65,7 +66,8 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
-  const member = getMemberFromHostname(request, dependencies);
+  const { t } = context.get(i18nContext);
+  const member = getMemberFromHostname(request, dependencies); 
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;
   const locale = context.get(i18nContext).language;
@@ -73,6 +75,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
+  const globalAlert = { severity: 'warning' as Severity, text: t('divaClient_metadataWarningText') }
 
   return {
     user,
@@ -85,6 +88,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     notification,
     userCanEditMemberSettings,
     auth,
+    globalAlert
   };
 }
 
@@ -237,6 +241,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     userCanEditMemberSettings,
     auth,
     recordTypes,
+    globalAlert
   } = loaderData;
 
   const editableMember = userCanEditMemberSettings ? member?.id : undefined;
@@ -247,7 +252,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         key={loaderData.notification?.summary}
         notification={loaderData.notification}
       />
-
+      {globalAlert && <div className='global-alert'><Alert severity={globalAlert.severity} variant='banner'>{globalAlert.text}</Alert></div>}
       <Header
         className='header'
         member={member}
