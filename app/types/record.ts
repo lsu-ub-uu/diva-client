@@ -44,7 +44,9 @@ export type BFFUserRight =
   | 'index'
   | 'delete'
   | 'trash'
-  | 'untrash';
+  | 'untrash'
+  | 'publish'
+  | 'unpublish';
 
 export interface BFFUpdate {
   updateAt: string;
