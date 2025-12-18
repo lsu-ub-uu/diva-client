@@ -528,7 +528,7 @@ const hasPublishRight = (coraRecord: CoraRecord): boolean => {
     'visibility',
   );
 
-  return visibility === 'unpublished';
+  return !isInTrashBin(coraRecord) && visibility === 'unpublished';
 };
 
 const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {

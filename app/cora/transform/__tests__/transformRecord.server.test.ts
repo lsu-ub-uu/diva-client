@@ -4119,6 +4119,126 @@ describe('transformRecord', () => {
         expect(result.userRights).toContain('publish');
       });
 
+      it('does not include publish right when record is in trash bin', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'trashBinVar',
+              type: 'textVariable',
+              nameInData: 'inTrashBin',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'inTrashBin', value: 'true' },
+                    { name: 'visibility', value: 'unpublished' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('publish');
+      });
       it('does not include unpublish right when user does not have update action link', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
