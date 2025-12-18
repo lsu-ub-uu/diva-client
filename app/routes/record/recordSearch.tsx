@@ -37,12 +37,13 @@ import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
 import { Alert } from '@/components/Alert/Alert';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-
   const { dependencies } = context.get(dependenciesContext);
+  const member = getMemberFromHostname(request, dependencies);
 
   const recordType = dependencies.recordTypePool.get(params.recordType);
 
@@ -61,6 +62,7 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
       auth,
       yupSchema,
       decorated,
+      member,
     );
     const apiUrl =
       query &&

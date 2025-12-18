@@ -17,10 +17,12 @@
  */
 
 import type { Auth } from '@/auth/Auth';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { merge } from 'lodash-es';
 import { type ObjectSchema, ValidationError } from 'yup';
 
 export const performSearch = async (
@@ -30,10 +32,11 @@ export const performSearch = async (
   auth: Auth | undefined,
   yupSchema: ObjectSchema<Record<string, any>>,
   decorated = false,
+  member: BFFMember | undefined,
 ) => {
   const url = new URL(request.url);
-  const query = parseFormDataFromSearchParams(url.searchParams);
 
+  const query = createQuery(url.searchParams, member, searchId, dependencies);
   try {
     if (isEmptySearch(query)) {
       return { query };
@@ -60,4 +63,33 @@ const isEmptySearch = (query: Record<string, any>) => {
   const cleaned = cleanFormData(query);
   const rootKey = Object.keys(query)[0];
   return cleaned[rootKey]?.include === undefined;
+};
+
+const createQuery = (
+  searchParams: URLSearchParams,
+  member: BFFMember | undefined,
+  searchId: string,
+  dependencies: Dependencies,
+) => {
+  const search = dependencies.searchPool.get(searchId);
+  const searchMetadata = dependencies.metadataPool.get(search.metadataId);
+  const searchRootName = searchMetadata.nameInData;
+
+  const queryFromSearchParams = parseFormDataFromSearchParams(searchParams);
+
+  const defaultQuery = {
+    [searchRootName]: {
+      include: {
+        includePart: {
+          recordIdSearchTerm: { value: '**' },
+          trashBinSearchTerm: { value: 'false' },
+          permissionUnitSearchTerm: {
+            value: `permissionUnit_${member?.memberPermissionUnit ?? ''}`,
+          },
+        },
+      },
+      rows: { value: '10' },
+    },
+  };
+  return merge(defaultQuery, queryFromSearchParams);
 };

@@ -30,7 +30,7 @@ import type { SearchFormSchema } from '../FormGenerator/types';
 import styles from './SearchForm.module.css';
 import { CodeIcon, SearchIcon } from 'lucide-react';
 import { CircularLoader } from '../Loader/CircularLoader';
-import { set } from 'lodash-es';
+import { get, set } from 'lodash-es';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
@@ -39,7 +39,6 @@ interface SearchFormProps {
   apiUrl?: string;
   searching: boolean;
 }
-
 export const SearchForm = ({
   data,
   formSchema,
@@ -47,18 +46,9 @@ export const SearchForm = ({
   apiUrl,
   searching,
 }: SearchFormProps) => {
-  const member = useMember();
   const { t } = useTranslation();
   const submit = useSubmit();
   const defaultValues = createDefaultValuesFromFormSchema(formSchema, data);
-
-  if (!containsTrashBinSearchTerm(defaultValues)) {
-    set(
-      defaultValues,
-      'search.include.includePart.trashBinSearchTerm.value',
-      'false',
-    );
-  }
 
   const methods = useRemixForm({
     mode: 'onChange',
@@ -76,34 +66,12 @@ export const SearchForm = ({
             enhancedFields={{
               'search.rows': { type: 'hidden' },
               'search.start': { type: 'hidden' },
-              ...(member?.memberPermissionUnit && {
-                'search.include.includePart.permissionUnitSearchTerm': {
-                  type: 'hidden',
-                },
-              }),
               'search.include.includePart.genericSearchTerm': {
                 type: 'notRemovable',
               },
             }}
           />
           <SearchButton searching={searching} />
-          {!searchResults && (
-            <input
-              type='hidden'
-              name='search.rows.value'
-              value='10'
-              data-testid='rowsHiddenSearchTerm'
-            />
-          )}
-          {formHasPermissionUnitSearchTerm(formSchema) &&
-            member?.memberPermissionUnit && (
-              <input
-                type='hidden'
-                name='search.include.includePart.permissionUnitSearchTerm.value'
-                value={`permissionUnit_${member.memberPermissionUnit}`}
-                data-testid='permissionUnitHiddenSearchTerm'
-              />
-            )}
           {data && searchResults && (
             <div className={styles['search-result-wrapper']}>
               {apiUrl && (
@@ -148,12 +116,4 @@ const SearchButton = ({ searching }: { searching: boolean }) => {
       )}
     </Button>
   );
-};
-
-const formHasPermissionUnitSearchTerm = (formSchema: SearchFormSchema) => {
-  return JSON.stringify(formSchema).includes('permissionUnitSearchTerm');
-};
-
-const containsTrashBinSearchTerm = (defaultValues: any) => {
-  return JSON.stringify(defaultValues).includes('trashBinSearchTerm');
 };
