@@ -33,6 +33,7 @@ import { SaveIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
+import { FormNavigationBlocker } from './FormNavigationBlocker';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -48,10 +49,11 @@ export const RecordForm = ({
   const { t } = useTranslation();
   const navigation = useNavigation();
   const location = useLocation();
-  const submitting =
-    navigation.state !== 'idle' &&
-    navigation.formAction?.includes(location.pathname);
 
+  const submitting =
+  navigation.state !== 'idle' &&
+  navigation.formAction?.includes(location.pathname);
+  
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -60,6 +62,7 @@ export const RecordForm = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
   const { handleSubmit, subscribe } = methods;
+  
 
   useEffect(() => {
     const unsubscribe = subscribe({
@@ -78,6 +81,9 @@ export const RecordForm = ({
   }, [subscribe, onChange]);
 
   return (
+    <>
+    <FormNavigationBlocker control={methods.control} />
+
     <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
@@ -105,5 +111,6 @@ export const RecordForm = ({
         />
       </FloatingActionButtonContainer>
     </Form>
+    </>
   );
 };
