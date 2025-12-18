@@ -46,13 +46,12 @@ export const SearchForm = ({
 }: SearchFormProps) => {
   const { t } = useTranslation();
   const submit = useSubmit();
-  const defaultValues = createDefaultValuesFromFormSchema(formSchema, data);
 
   const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues,
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, data),
   });
 
   return (
