@@ -21,6 +21,8 @@ import { Link, useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
+  BookCheckIcon,
+  BookDashedIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
@@ -81,12 +83,30 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
     );
   };
 
+  const publishRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/publish`,
+    });
+  };
+
+  const unpublishRecord = () => {
+    fetcher.submit(null, {
+      method: 'post',
+      action: `/${record.recordType}/${record.id}/unpublish`,
+    });
+  };
+
   const isDeleting =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
   const isTrashing =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
   const isUntrashing =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
+  const isPublishing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/publish');
+  const isUnpublishing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/unpublish');
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
@@ -112,6 +132,28 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             tooltip={t('divaClient_editRecordText')}
           >
             <FilePenIcon />
+          </IconButton>
+        );
+      case 'publish':
+        return (
+          <IconButton
+            size='small'
+            key={`${record.id}_rab_${userRight}`}
+            tooltip={t('divaClient_publishRecordText')}
+            onClick={publishRecord}
+          >
+            {isPublishing ? <CircularLoader /> : <BookCheckIcon />}
+          </IconButton>
+        );
+      case 'unpublish':
+        return (
+          <IconButton
+            size='small'
+            key={`${record.id}_rab_${userRight}`}
+            tooltip={t('divaClient_unpublishRecordText')}
+            onClick={unpublishRecord}
+          >
+            {isUnpublishing ? <CircularLoader /> : <BookDashedIcon />}
           </IconButton>
         );
       case 'delete':

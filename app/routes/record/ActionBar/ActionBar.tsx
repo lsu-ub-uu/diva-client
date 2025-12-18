@@ -7,6 +7,8 @@ import type { BFFDataRecord } from '@/types/record';
 import clsx from 'clsx';
 import {
   ArchiveRestoreIcon,
+  BookCheckIcon,
+  BookDashedIcon,
   CodeIcon,
   FilePenIcon,
   FileTextIcon,
@@ -75,12 +77,42 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
     );
   };
 
+  const publishRecord = () => {
+    fetcher.submit(
+      {},
+      {
+        method: 'post',
+        action: href('/:recordType/:recordId/publish', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
+      },
+    );
+  };
+
+  const unpublishRecord = () => {
+    fetcher.submit(
+      {},
+      {
+        method: 'post',
+        action: href('/:recordType/:recordId/unpublish', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
+      },
+    );
+  };
+
   const isDeleting =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
   const isTrashing =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
   const isUntrashing =
     fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
+  const isPublishing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/publish');
+  const isUnpublishing =
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/unpublish');
 
   return (
     <div className={clsx(styles['action-bar'], className)}>
@@ -111,6 +143,32 @@ export const ActionBar = ({ record, apiUrl, className }: ActionBarProps) => {
             size='small'
           >
             <FilePenIcon /> {t('divaClient_editRecordText')}
+          </Button>
+        </div>
+      )}
+      {record.userRights?.includes('publish') && (
+        <div className={styles['action-bar-button']}>
+          <Button
+            variant='tertiary'
+            size='small'
+            onClick={publishRecord}
+            disabled={isPublishing || isUnpublishing}
+          >
+            {isPublishing ? <CircularLoader /> : <BookCheckIcon />}
+            {t('divaClient_publishRecordText')}
+          </Button>
+        </div>
+      )}
+      {record.userRights?.includes('unpublish') && (
+        <div className={styles['action-bar-button']}>
+          <Button
+            variant='tertiary'
+            size='small'
+            onClick={unpublishRecord}
+            disabled={isPublishing || isUnpublishing}
+          >
+            {isUnpublishing ? <CircularLoader /> : <BookDashedIcon />}
+            {t('divaClient_unpublishRecordText')}
           </Button>
         </div>
       )}

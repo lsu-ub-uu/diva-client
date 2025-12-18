@@ -476,6 +476,14 @@ const createUserRights = (
   if (hasUntrashRight(recordType, coraRecord)) {
     userRights.push('untrash');
   }
+
+  if (hasPublishRight(coraRecord)) {
+    userRights.push('publish');
+  }
+
+  if (hasUnpublishRight(coraRecord)) {
+    userRights.push('unpublish');
+  }
   return userRights;
 };
 
@@ -499,6 +507,50 @@ const hasUntrashRight = (
   }
 
   return recordType.useTrashBin && isInTrashBin(coraRecord);
+};
+
+const hasPublishRight = (coraRecord: CoraRecord): boolean => {
+  if (!coraRecord.actionLinks?.update) {
+    return false;
+  }
+
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+
+  if (!hasChildWithNameInData(recordInfo, 'visibility')) {
+    return false;
+  }
+
+  const visibility = getFirstDataAtomicValueWithNameInData(
+    recordInfo,
+    'visibility',
+  );
+
+  return visibility === 'unpublished';
+};
+
+const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {
+  if (!coraRecord.actionLinks?.update) {
+    return false;
+  }
+
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+
+  if (!hasChildWithNameInData(recordInfo, 'visibility')) {
+    return false;
+  }
+
+  const visibility = getFirstDataAtomicValueWithNameInData(
+    recordInfo,
+    'visibility',
+  );
+
+  return visibility === 'published';
 };
 
 const isInTrashBin = (coraRecord: CoraRecord) => {

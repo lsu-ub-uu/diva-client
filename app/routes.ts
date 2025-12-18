@@ -13,6 +13,8 @@ export default [
       route('delete', 'routes/record/recordDelete.tsx'),
       route('trash', 'routes/record/recordTrash.tsx'),
       route('untrash', 'routes/record/recordUntrash.tsx'),
+      route('publish', 'routes/record/recordPublish.tsx'),
+      route('unpublish', 'routes/record/recordUnpublish.tsx'),
     ]),
   ]),
 
