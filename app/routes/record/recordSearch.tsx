@@ -20,6 +20,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getSearchForm } from '@/data/getSearchForm.server';
@@ -35,8 +36,6 @@ import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordSearch';
 import css from './recordSearch.css?url';
-import { Alert } from '@/components/Alert/Alert';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, context, params }: Route.LoaderArgs) {
   const { auth } = context.get(sessionContext);
@@ -116,7 +115,6 @@ export default function OutputSearchRoute({
       <div className='search-layout'>
         <main>
           <div className='search-wrapper'>
-           
             <div className='search-extras'>
               <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
 
