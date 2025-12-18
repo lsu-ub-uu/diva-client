@@ -84,7 +84,9 @@ const createQuery = (
           recordIdSearchTerm: { value: '**' },
           trashBinSearchTerm: { value: 'false' },
           permissionUnitSearchTerm: {
-            value: `permissionUnit_${member?.memberPermissionUnit ?? ''}`,
+            value: member?.memberPermissionUnit
+              ? `permissionUnit_${member?.memberPermissionUnit}`
+              : '',
           },
         },
       },
