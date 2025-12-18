@@ -22,15 +22,13 @@ import { Pagination } from '@/components/Form/Pagination';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
-import { useMember } from '@/utils/rootLoaderDataUtils';
+import { CodeIcon, SearchIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import type { SearchFormSchema } from '../FormGenerator/types';
-import styles from './SearchForm.module.css';
-import { CodeIcon, SearchIcon } from 'lucide-react';
 import { CircularLoader } from '../Loader/CircularLoader';
-import { get, set } from 'lodash-es';
+import styles from './SearchForm.module.css';
 
 interface SearchFormProps {
   data?: BFFDataRecordData;
