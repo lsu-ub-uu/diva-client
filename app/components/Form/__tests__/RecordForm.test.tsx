@@ -2351,6 +2351,861 @@ describe('<Form />', () => {
     });
   });
 
+  describe('classic quality', () => {
+    it.todo('renders a record with classic quality form and data', () => {
+      const formSchemaClassic: RecordFormSchema = {
+        validationTypeId: 'classic_publication_report',
+        form: {
+          presentationId: 'outputUpdatePGroup',
+          type: 'group',
+          name: 'output',
+          mode: 'input',
+          tooltip: {
+            title: 'reportUpdateGroupText',
+            body: 'reportUpdateGroupDefText',
+          },
+          label: 'reportUpdateGroupText',
+          headlineLevel: 'h1',
+          showLabel: true,
+          components: [
+            {
+              presentationId: 'languageSContainer',
+              type: 'container',
+              name: 'languageSContainer',
+              mode: 'input',
+              containerType: 'surrounding',
+              components: [
+                {
+                  presentationId: 'languagePGroup',
+                  type: 'group',
+                  name: 'language',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageGroupText',
+                    body: 'languageGroupDefText',
+                  },
+                  label: 'languageGroupText',
+                  showLabel: false,
+                  components: [
+                    {
+                      presentationId: 'languageTermPCollVar',
+                      type: 'collectionVariable',
+                      name: 'languageTerm',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'languageTermCollectionVarText',
+                        body: 'languageTermCollectionVarDefText',
+                      },
+                      label: 'languageTermCollectionVarText',
+                      showLabel: true,
+                      attributesToShow: 'selectable',
+                      options: [
+                        {
+                          value: 'swe',
+                          label: 'sweLangItemText',
+                        },
+                      ],
+                      attributes: [
+                        {
+                          type: 'collectionVariable',
+                          name: 'type',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'input',
+                          tooltip: {
+                            title: 'languageTermTypeCollectionVarText',
+                            body: 'languageTermTypeCollectionVarDefText',
+                          },
+                          label: 'languageTermTypeCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'code',
+                              label: 'codeItemText',
+                            },
+                          ],
+                          finalValue: 'code',
+                        },
+                        {
+                          type: 'collectionVariable',
+                          name: 'authority',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'input',
+                          tooltip: {
+                            title: 'languageTermAuthorityCollectionVarText',
+                            body: 'languageTermAuthorityCollectionVarDefText',
+                          },
+                          label: 'languageTermAuthorityCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'iso639-2b',
+                              label: 'iso639-2bItemText',
+                            },
+                          ],
+                          finalValue: 'iso639-2b',
+                        },
+                      ],
+                      childStyle: [],
+                      gridColSpan: 12,
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1.7976931348623157e308,
+                      },
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                },
+              ],
+              childStyle: [],
+              gridColSpan: 12,
+              presentationSize: 'singleInitiallyHidden',
+              title: 'languageGroupText',
+              titleHeadlineLevel: 'h2',
+            },
+          ],
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          gridColSpan: 12,
+        },
+      };
+
+      const values = {
+        output: {
+          language: [
+            {
+              'languageTerm_authority_iso639-2b_type_code': [
+                {
+                  value: '',
+                  _type: 'code',
+                  _authority: 'iso639-2b',
+                  repeatId: '1766151426726',
+                },
+              ],
+              repeatId: '1766151426726',
+            },
+          ],
+          required: true,
+          dataQuality: [
+            {
+              value: 'classic',
+              final: true,
+              repeatId: '1',
+            },
+          ],
+          genre_type_outputType: [
+            {
+              value: 'publication_report',
+              final: true,
+              _type: 'outputType',
+              repeatId: '2',
+            },
+          ],
+          artisticWork_type_outputType: [
+            {
+              value: '',
+              _type: 'outputType',
+              repeatId: '1766151426726',
+            },
+          ],
+          genre_type_contentType: [
+            {
+              value: '',
+              _type: 'contentType',
+              repeatId: '1766151426726',
+            },
+          ],
+          titleInfo: [
+            {
+              title: [
+                {
+                  value: 'En titel för classic',
+                  repeatId: '0',
+                },
+              ],
+              subtitle: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _lang: 'swe',
+              repeatId: '34',
+            },
+          ],
+          titleInfo_type_alternative: [],
+          name_type_personal: [
+            {
+              person: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              namePart_type_family: [
+                {
+                  value: '',
+                  _type: 'family',
+                  repeatId: '1766151426726',
+                },
+              ],
+              namePart_type_given: [
+                {
+                  value: '',
+                  _type: 'given',
+                  repeatId: '1766151426726',
+                },
+              ],
+              namePart_type_date: [],
+              nameIdentifier_type_orcid: [
+                {
+                  value: '',
+                  _type: 'orcid',
+                  repeatId: '1766151426726',
+                },
+              ],
+              nameIdentifier_type_localId: [
+                {
+                  value: '',
+                  _type: 'localId',
+                  repeatId: '1766151426726',
+                },
+              ],
+              role: [
+                {
+                  roleTerm: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              affiliation: [
+                {
+                  organisation: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  namePart: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  identifier_type_ror: [
+                    {
+                      value: '',
+                      _type: 'ror',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  country: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  description: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              _type: 'personal',
+              repeatId: '1766151426726',
+            },
+          ],
+          name_type_corporate: [
+            {
+              organisation: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              role: [
+                {
+                  roleTerm: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              namePart: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              identifier_type_ror: [
+                {
+                  value: '',
+                  _type: 'ror',
+                  repeatId: '1766151426726',
+                },
+              ],
+              description: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _type: 'corporate',
+              repeatId: '1766151426726',
+            },
+          ],
+          note_type_creatorCount: [
+            {
+              value: '',
+              _type: 'creatorCount',
+              repeatId: '1766151426726',
+            },
+          ],
+          physicalDescription: [
+            {
+              extent_unit_pages: [
+                {
+                  value: '',
+                  _unit: 'pages',
+                  repeatId: '1766151426726',
+                },
+              ],
+              repeatId: '1766151426726',
+            },
+          ],
+          abstract: [
+            {
+              value: '',
+              _lang: '',
+              repeatId: '1766151426726',
+            },
+          ],
+          subject: [
+            {
+              topic: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _lang: '',
+              repeatId: '1766151426726',
+            },
+          ],
+          originInfo: [
+            {
+              dateIssued: [
+                {
+                  year: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  month: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  day: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              copyrightDate: [],
+              dateOther_type_online: [],
+              agent: [
+                {
+                  publisher: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  namePart: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  role: {
+                    roleTerm: {
+                      value: 'pbl',
+                      final: true,
+                    },
+                    required: true,
+                  },
+                  repeatId: '1766151426726',
+                },
+              ],
+              place: [
+                {
+                  placeTerm: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              edition: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              repeatId: '1766151426726',
+            },
+          ],
+          classification_authority_ssif: [
+            {
+              value: '',
+              _authority: 'ssif',
+              repeatId: '1766151426726',
+            },
+          ],
+          subject_authority_diva: [
+            {
+              topic: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _authority: 'diva',
+              repeatId: '1766151426726',
+            },
+          ],
+          subject_authority_sdg: [
+            {
+              topic: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _authority: 'sdg',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_isbn: [
+            {
+              value: '',
+              _type: 'isbn',
+              _displayLabel: '',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_isrn: [
+            {
+              value: '',
+              _type: 'isrn',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_doi: [
+            {
+              value: '',
+              _type: 'doi',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_openAlex: [
+            {
+              value: '',
+              _type: 'openAlex',
+              repeatId: '1766151426726',
+            },
+          ],
+          'identifier_type_se-libr': [
+            {
+              value: '',
+              _type: 'se-libr',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_archiveNumber: [
+            {
+              value: '',
+              _type: 'archiveNumber',
+              repeatId: '1766151426726',
+            },
+          ],
+          identifier_type_localId: [
+            {
+              value: '',
+              _type: 'localId',
+              repeatId: '1766151426726',
+            },
+          ],
+          location: [
+            {
+              url: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              displayLabel: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              repeatId: '1766151426726',
+            },
+          ],
+          location_displayLabel_orderLink: [
+            {
+              url: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              displayLabel: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _displayLabel: 'orderLink',
+              repeatId: '1766151426726',
+            },
+          ],
+          note_type_external: [
+            {
+              value: '',
+              _type: 'external',
+              repeatId: '1766151426726',
+            },
+          ],
+          relatedItem_otherType_link_type_series: [
+            {
+              series: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              partNumber: [
+                {
+                  value: '',
+                  repeatId: '1766151426726',
+                },
+              ],
+              _type: 'series',
+              _otherType: 'link',
+              repeatId: '1766151426726',
+            },
+          ],
+          relatedItem_otherType_text_type_series: [],
+          relatedItem_type_researchData: [
+            {
+              titleInfo: [
+                {
+                  title: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  subtitle: [
+                    {
+                      value: '',
+                      repeatId: '1766151426726',
+                    },
+                  ],
+                  repeatId: '1766151426726',
+                },
+              ],
+              identifier_type_doi: [
+                {
+                  value: '',
+                  _type: 'doi',
+                  repeatId: '1766151426727',
+                },
+              ],
+              location: [
+                {
+                  url: [
+                    {
+                      value: '',
+                      repeatId: '1766151426727',
+                    },
+                  ],
+                  displayLabel: [
+                    {
+                      value: '',
+                      repeatId: '1766151426727',
+                    },
+                  ],
+                  repeatId: '1766151426727',
+                },
+              ],
+              _type: 'researchData',
+              repeatId: '1766151426727',
+            },
+          ],
+          relatedItem_otherType_link_type_project: [
+            {
+              project: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              _type: 'project',
+              _otherType: 'link',
+              repeatId: '1766151426727',
+            },
+          ],
+          relatedItem_otherType_text_type_project: [],
+          relatedItem_type_funder: [
+            {
+              funder: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              identifier_type_project: [
+                {
+                  value: '',
+                  _type: 'project',
+                  repeatId: '1766151426727',
+                },
+              ],
+              _type: 'funder',
+              repeatId: '1766151426727',
+            },
+          ],
+          relatedItem_type_initiative: [
+            {
+              sfo: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              _type: 'initiative',
+              repeatId: '1766151426727',
+            },
+          ],
+          related: [
+            {
+              output: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              repeatId: '1766151426727',
+            },
+          ],
+          'accessCondition_authority_kb-se': [
+            {
+              value: '',
+              _authority: 'kb.se',
+              repeatId: '1766151426727',
+            },
+          ],
+          localLabel: [
+            {
+              value: '',
+              repeatId: '1766151426727',
+            },
+          ],
+          adminInfo: [
+            {
+              reviewed: [
+                {
+                  value: 'true',
+                  repeatId: '0',
+                },
+              ],
+              note_type_internal: [
+                {
+                  value: 'aaaaaa',
+                  _type: 'internal',
+                  repeatId: '1',
+                },
+              ],
+              repeatId: '33',
+            },
+          ],
+          attachment: [
+            {
+              attachmentFile: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              type: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              displayLabel: [
+                {
+                  value: '',
+                  repeatId: '1766151426727',
+                },
+              ],
+              adminInfo: [
+                {
+                  availability: [
+                    {
+                      value: '',
+                      repeatId: '1766151426727',
+                    },
+                  ],
+                  dateAvailability: [
+                    {
+                      year: [
+                        {
+                          value: '',
+                          repeatId: '1766151426727',
+                        },
+                      ],
+                      month: [
+                        {
+                          value: '',
+                          repeatId: '1766151426727',
+                        },
+                      ],
+                      day: [
+                        {
+                          value: '',
+                          repeatId: '1766151426727',
+                        },
+                      ],
+                      repeatId: '1766151426727',
+                    },
+                  ],
+                  note_type_attachment: [
+                    {
+                      value: '',
+                      _type: 'attachment',
+                      repeatId: '1766151426727',
+                    },
+                  ],
+                  repeatId: '1766151426727',
+                },
+              ],
+              repeatId: '1766151426727',
+            },
+          ],
+          recordInfo: {
+            visibility: {
+              value: 'published',
+              required: true,
+            },
+            inTrashBin: {
+              value: 'false',
+              required: true,
+            },
+            permissionUnit: {
+              value: 'uu',
+              required: true,
+            },
+            type: {
+              value: 'diva-output',
+              final: true,
+              required: true,
+            },
+            validationType: {
+              value: 'classic_publication_report',
+              final: true,
+              required: true,
+            },
+            dataDivider: {
+              value: 'divaData',
+              final: true,
+              required: true,
+            },
+            required: true,
+            tsVisibility: {
+              value: '2025-12-19T13:36:20.601674Z',
+            },
+            id: {
+              value: '25',
+              required: true,
+            },
+            createdBy: {
+              value: '161616',
+              required: true,
+            },
+            tsCreated: {
+              value: '2025-12-19T13:36:20.613501Z',
+              required: true,
+            },
+            updated: [
+              {
+                tsUpdated: {
+                  value: '2025-12-19T13:36:20.613501Z',
+                  required: true,
+                },
+                updatedBy: {
+                  value: '161616',
+                  required: true,
+                },
+                required: true,
+                repeatId: '0',
+              },
+            ],
+          },
+        },
+      };
+
+      const record = {
+        id: 'divaOutput:1729757581842184',
+        recordType: 'divaOutput',
+        validationType: 'nationalSubjectCategory',
+        actionLinks: {
+          read: { url: '', requestMethod: 'get', rel: 'read' },
+        },
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          values,
+        },
+      } as BFFDataRecord<BFFDataRecordData>;
+      render(
+        <RecordFormWithRoutesStub
+          formSchema={formSchemaClassic}
+          record={record}
+        />,
+      );
+    });
+  });
+
   describe('trash bin', () => {
     it('hides trash bin collection var from input form', () => {
       const formSchema: RecordFormSchema = {
