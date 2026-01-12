@@ -7,20 +7,6 @@
     margin-left: 0.5rem;
   }
 
-  .data-quality {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-
-    .data-quality-2026 {
-      color: var(--color-alert-success-icon);
-    }
-
-    .data-quality-classic {
-      color: var(--color-alert-warning-icon);
-    }
-  }
-
   @media (width < 900px) {
     flex-direction: column;
     gap: 0;
