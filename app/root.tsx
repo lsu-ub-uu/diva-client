@@ -22,7 +22,7 @@ import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import {
   data,
   isRouteErrorResponse,
@@ -48,6 +48,7 @@ import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
+import { Alert, type Severity } from './components/Alert/Alert';
 import { AuthLogger } from './components/dev/AuthLogger';
 import { Header } from './components/Layout/Header/Header';
 import {
@@ -57,7 +58,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { Alert, type Severity } from './components/Alert/Alert';
+import { p } from 'node_modules/@react-router/dev/dist/routes-CZR-bKRt';
 
 const { MODE } = import.meta.env;
 
@@ -67,7 +68,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-  const member = getMemberFromHostname(request, dependencies); 
+  const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;
   const locale = context.get(i18nContext).language;
@@ -75,7 +76,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
-  const globalAlert = { severity: 'warning' as Severity, text: t('divaClient_metadataWarningText') }
+  const globalAlert = {
+    severity: 'warning' as Severity,
+    text: t('divaClient_metadataWarningText'),
+  };
+  const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
   return {
     user,
@@ -88,7 +93,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     notification,
     userCanEditMemberSettings,
     auth,
-    globalAlert
+    globalAlert,
+    blockRobotIndexing,
   };
 }
 
@@ -202,7 +208,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const userPreferences = data?.userPreferences;
   const locale = data?.locale ?? 'sv';
-  const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
   useChangeLanguage(locale);
 
   return (
@@ -212,11 +217,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Meta />
         <Links />
-        <meta
-          ref={emotionInsertionPointRef}
-          name='emotion-insertion-point'
-          content='emotion-insertion-point'
-        />
       </head>
       <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
         {children}
@@ -241,18 +241,26 @@ export default function App({ loaderData }: Route.ComponentProps) {
     userCanEditMemberSettings,
     auth,
     recordTypes,
-    globalAlert
+    globalAlert,
+    blockRobotIndexing,
   } = loaderData;
 
   const editableMember = userCanEditMemberSettings ? member?.id : undefined;
 
   return (
     <div className='root-layout'>
+      {blockRobotIndexing && <meta name='robots' content='noindex, nofollow' />}
       <NotificationSnackbar
         key={loaderData.notification?.summary}
         notification={loaderData.notification}
       />
-      {globalAlert && <div className='global-alert'><Alert severity={globalAlert.severity} variant='banner'>{globalAlert.text}</Alert></div>}
+      {globalAlert && (
+        <div className='global-alert'>
+          <Alert severity={globalAlert.severity} variant='banner'>
+            {globalAlert.text}
+          </Alert>
+        </div>
+      )}
       <Header
         className='header'
         member={member}
