@@ -58,7 +58,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { p } from 'node_modules/@react-router/dev/dist/routes-CZR-bKRt';
 
 const { MODE } = import.meta.env;
 
