@@ -31,6 +31,7 @@ export const SearchLinkList = ({
               {item.href ? (
                 <Link
                   to={`/diva-output?search.include.includePart.${searchTerm}.value=${item.href}&search.rows.value=10`}
+                  rel='nofollow'
                 >
                   {item.label}
                 </Link>

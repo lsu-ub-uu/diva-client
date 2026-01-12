@@ -40,6 +40,10 @@ describe('SearchLinkList', () => {
       'href',
       `/diva-output?search.include.includePart.someSearchTerm.value=${items[0].href}&search.rows.value=10`,
     );
+    expect(screen.getByRole('link', { name: 'Some label' })).toHaveAttribute(
+      'rel',
+      'nofollow',
+    );
   });
   it('renders links without href as pill', () => {
     const items = [
