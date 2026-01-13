@@ -71,65 +71,6 @@ import {
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
 
-describe('custom validate yupSchemas for array schemas', () => {
-  it('should validate a list with a simple leaf value object being empty in the array', async () => {
-    const optionalStringSchema = yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required() : field,
-      );
-
-    const schema = yup.object({
-      testArray: yup
-        .array()
-        .min(1)
-        .max(3)
-        .transform((array) =>
-          array
-            .map(cleanFormData)
-            .filter((o: any) => Object.keys(o).length > 0),
-        )
-        .of(
-          yup.object().shape({
-            value: optionalStringSchema,
-          }),
-        ),
-    });
-    const data = {
-      testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
-    };
-
-    const actualData = await schema.validate(data);
-    const expectedData = {
-      testArray: [{ value: 'test' }],
-    };
-    expect(expectedData).toStrictEqual(actualData);
-  });
-});
-describe('util functions', () => {
-  describe('createYupArrayFromSchema', () => {
-    it('creates one Yup Array', () => {
-      const schema = yup.object().shape({
-        person: yup.object().shape({
-          firstName: yup.string().required(),
-        }),
-      });
-      const actualData = createYupArrayFromSchema(
-        schema,
-        {
-          minNumberOfRepeatingToShow: 0,
-          repeatMin: 0,
-          repeatMax: 10,
-        },
-        true,
-      );
-      expect(actualData).toMatchSnapshot();
-    });
-  });
-});
-
 describe('yupSchema', async () => {
   describe('form validation', () => {
     describe('textVariable', () => {
@@ -1285,118 +1226,177 @@ describe('yupSchema', async () => {
 
     await expect(yupSchema.isValid(data)).resolves.toBe(true);
   });
-});
 
-describe('grandparent value validation', () => {
-  describe('optional ancestor group with a required field and required child group that has a required field', () => {
-    const formSchema = {
-      form: {
-        name: 'root',
-        type: 'group',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'grandPaGroup',
-            type: 'group',
-            repeat: {
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            components: [
-              {
-                name: 'uncleVar',
-                type: 'textVariable',
-                repeat: {
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-              },
-              {
-                name: 'parentGroup',
-                type: 'group',
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                components: [
-                  {
-                    name: 'childVar',
-                    type: 'textVariable',
-                    repeat: {
-                      repeatMin: 1,
-                      repeatMax: 1,
-                    },
-                    validation: {
-                      type: 'regex',
-                      pattern: '.+',
-                    },
-                  },
-                ],
-              },
-            ],
-          } as FormComponentGroup,
-        ],
-      },
-    } as FormSchema;
+  describe('custom validate yupSchemas for array schemas', () => {
+    it('should validate a list with a simple leaf value object being empty in the array', async () => {
+      const optionalStringSchema = yup
+        .string()
+        .nullable()
+        .transform((value) => (value === '' ? null : value))
+        .when('$isNotNull', (isNotNull, field) =>
+          isNotNull[0] ? field.required() : field,
+        );
 
-    it('is invalid when child field is empty and optional ancestor has value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
+      const schema = yup.object({
+        testArray: yup
+          .array()
+          .min(1)
+          .max(3)
+          .transform((array) =>
+            array
+              .map(cleanFormData)
+              .filter((o: any) => Object.keys(o).length > 0),
+          )
+          .of(
+            yup.object().shape({
+              value: optionalStringSchema,
+            }),
+          ),
+      });
       const data = {
-        root: {
-          grandPaGroup: {
-            uncleVar: { value: 'Uncle Value' },
-            parentGroup: {
-              childVar: { value: '' },
-            },
-          },
-        },
+        testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+      const actualData = await schema.validate(data);
+      const expectedData = {
+        testArray: [{ value: 'test' }],
+      };
+      expect(expectedData).toStrictEqual(actualData);
     });
+  });
+  describe('util functions', () => {
+    describe('createYupArrayFromSchema', () => {
+      it('creates one Yup Array', () => {
+        const schema = yup.object().shape({
+          person: yup.object().shape({
+            firstName: yup.string().required(),
+          }),
+        });
+        const actualData = createYupArrayFromSchema(
+          schema,
+          {
+            minNumberOfRepeatingToShow: 0,
+            repeatMin: 0,
+            repeatMax: 10,
+          },
+          true,
+        );
+        expect(actualData).toMatchSnapshot();
+      });
+    });
+  });
 
-    it('is valid when child and ancestor fields have value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+  describe('grandparent value validation', () => {
+    describe('optional ancestor group with a required field and required child group that has a required field', () => {
+      const formSchema = {
+        form: {
+          name: 'root',
+          type: 'group',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'grandPaGroup',
+              type: 'group',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  name: 'uncleVar',
+                  type: 'textVariable',
+                  repeat: {
+                    repeatMin: 0,
+                    repeatMax: 1,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+                {
+                  name: 'parentGroup',
+                  type: 'group',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  components: [
+                    {
+                      name: 'childVar',
+                      type: 'textVariable',
+                      repeat: {
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                    },
+                  ],
+                },
+              ],
+            } as FormComponentGroup,
+          ],
+        },
+      } as FormSchema;
 
-      await expect(
-        yupSchema.isValid({
+      it('is invalid when child field is empty and optional ancestor has value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+        const data = {
           root: {
             grandPaGroup: {
               uncleVar: { value: 'Uncle Value' },
-              parentGroup: {
-                childVar: { value: 'Child Value' },
-              },
-            },
-          },
-        }),
-      ).resolves.toBe(true);
-    });
-
-    it('is valid when neither child nor ancestor has value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
-      await expect(
-        yupSchema.isValid({
-          root: {
-            grandPaGroup: {
-              uncleVar: { value: '' },
               parentGroup: {
                 childVar: { value: '' },
               },
             },
           },
-        }),
-      ).resolves.toBe(true);
+        };
+
+        await expect(yupSchema.validate(data)).rejects.toThrow(
+          'divaClient_fieldRequiredText',
+        );
+      });
+
+      it('is valid when child and ancestor fields have value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+        await expect(
+          yupSchema.isValid({
+            root: {
+              grandPaGroup: {
+                uncleVar: { value: 'Uncle Value' },
+                parentGroup: {
+                  childVar: { value: 'Child Value' },
+                },
+              },
+            },
+          }),
+        ).resolves.toBe(true);
+      });
+
+      it('is valid when neither child nor ancestor has value', async () => {
+        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+        await expect(
+          yupSchema.isValid({
+            root: {
+              grandPaGroup: {
+                uncleVar: { value: '' },
+                parentGroup: {
+                  childVar: { value: '' },
+                },
+              },
+            },
+          }),
+        ).resolves.toBe(true);
+      });
     });
   });
 });
