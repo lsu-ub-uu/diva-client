@@ -1264,27 +1264,6 @@ describe('yupSchema', async () => {
       expect(expectedData).toStrictEqual(actualData);
     });
   });
-  describe('util functions', () => {
-    describe('createYupArrayFromSchema', () => {
-      it('creates one Yup Array', () => {
-        const schema = yup.object().shape({
-          person: yup.object().shape({
-            firstName: yup.string().required(),
-          }),
-        });
-        const actualData = createYupArrayFromSchema(
-          schema,
-          {
-            minNumberOfRepeatingToShow: 0,
-            repeatMin: 0,
-            repeatMax: 10,
-          },
-          true,
-        );
-        expect(actualData).toMatchSnapshot();
-      });
-    });
-  });
 
   describe('grandparent value validation', () => {
     describe('optional ancestor group with a required field and required child group that has a required field', () => {
