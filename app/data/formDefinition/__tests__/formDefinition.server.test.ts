@@ -1914,7 +1914,6 @@ describe('formDefinition', () => {
           gridColSpan: 12,
           name: 'divaOutput',
           presentationId: 'pSomeNewMetadataGroupForMissingChildIdId',
-
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1960,23 +1959,39 @@ describe('formDefinition', () => {
                   finalValue: 'divaData',
                   name: 'dataDivider',
                   type: 'hidden',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
                 {
                   attributesToShow: 'none',
                   finalValue: 'diva-output',
                   name: 'type',
                   type: 'hidden',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
                 {
                   attributesToShow: 'none',
                   finalValue: 'diva-output',
                   name: 'validationType',
                   type: 'hidden',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
               ],
               mode: 'input',
               name: 'recordInfo',
               type: 'group',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
             },
           ],
           mode: 'input',
@@ -4265,12 +4280,20 @@ describe('formDefinition', () => {
             type: 'group',
             name: 'role',
             mode: 'input',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
             components: [
               {
                 type: 'hidden',
                 name: 'roleTerm',
                 finalValue: 'pbl',
                 attributesToShow: 'none',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
               },
             ],
           },

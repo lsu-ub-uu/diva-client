@@ -30,11 +30,15 @@ import type {
   FormComponent,
   FormComponentGroup,
   FormComponentHidden,
+  FormComponentRepeat,
 } from '@/components/FormGenerator/types';
 import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createAttributes } from './createAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFMetadataTypes } from '../formDefinition.server';
+import {
+  determineRepeatMax,
+  type BFFMetadataTypes,
+} from '../formDefinition.server';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,
@@ -43,12 +47,9 @@ export const createHiddenComponents = (
 ): FormComponent[] => {
   return metadataChildReferences
     .map((metadataChildReference) =>
-      dependencies.metadataPool.get(metadataChildReference.childId),
-    )
-    .map((metadata) =>
       createHiddenComponentsForMetadata(
         dependencies,
-        metadata,
+        metadataChildReference,
         presentationChildReferences,
       ),
     )
@@ -57,22 +58,23 @@ export const createHiddenComponents = (
 
 const createHiddenComponentsForMetadata = (
   dependencies: Dependencies,
-  metadata: BFFMetadata,
+  metadataChildReference: BFFMetadataChildReference,
   presentationChildReferences: BFFPresentationChildReference[],
 ): FormComponent | undefined => {
+  const metadata = dependencies.metadataPool.get(
+    metadataChildReference.childId,
+  );
+
   const presentation = getPresentation(
     presentationChildReferences,
     dependencies,
     metadata,
   );
 
-  if (isMetadataGroup(metadata)) {
-    return createHiddenComponentsForGroup(
-      dependencies,
-      metadata,
-      presentation as BFFPresentationGroup,
-    );
-  }
+  const repeat = {
+    repeatMin: parseInt(metadataChildReference.repeatMin),
+    repeatMax: determineRepeatMax(metadataChildReference.repeatMax),
+  };
 
   const attributes = createAttributes(
     metadata as BFFMetadataTypes,
@@ -81,10 +83,21 @@ const createHiddenComponentsForMetadata = (
     'input',
   );
 
+  if (isMetadataGroup(metadata)) {
+    return createHiddenComponentsForGroup(
+      dependencies,
+      metadata,
+      presentation as BFFPresentationGroup,
+      attributes,
+      repeat,
+    );
+  }
+
   const hiddenComponent = createHiddenVariable(
     presentation,
     metadata,
     attributes,
+    repeat,
   );
   return hiddenComponent;
 };
@@ -93,6 +106,8 @@ const createHiddenComponentsForGroup = (
   dependencies: Dependencies,
   group: BFFMetadataGroup,
   presentation: BFFPresentationGroup | undefined,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: FormComponentRepeat,
 ): FormComponent | undefined => {
   const hasPresentation = presentation !== undefined;
 
@@ -105,6 +120,8 @@ const createHiddenComponentsForGroup = (
         name: group.nameInData,
         mode: 'input',
         components,
+        attributes,
+        repeat,
       });
       return groupComponent as FormComponentGroup;
     }
@@ -115,6 +132,7 @@ function createHiddenVariable(
   presentation: BFFPresentation | undefined,
   metadata: BFFMetadata,
   attributes: FormAttributeCollection[] | undefined,
+  repeat: FormComponentRepeat,
 ): FormComponentHidden | undefined {
   const hasPresentation = presentation !== undefined;
   const isFinalValue =
@@ -127,6 +145,7 @@ function createHiddenVariable(
       finalValue: metadata.finalValue!,
       attributes,
       attributesToShow: 'none',
+      repeat,
     };
   }
 }

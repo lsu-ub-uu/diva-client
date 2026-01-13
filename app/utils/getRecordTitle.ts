@@ -23,7 +23,9 @@ export const getRecordTitle = (record: BFFDataRecord): string | undefined => {
   const root = data[Object.keys(data)[0]];
 
   if (record.recordType === 'diva-output') {
-    return root?.titleInfo?.title?.value;
+    return (
+      root?.titleInfo?.title?.value || root?.titleInfo?.[0]?.title?.[0]?.value
+    );
   }
 
   if (record.recordType === 'diva-person') {

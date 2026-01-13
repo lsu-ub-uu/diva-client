@@ -112,6 +112,7 @@ export interface FormComponentHidden extends FormComponentBase {
   finalValue: string;
   attributes?: FormAttributeCollection[];
   attributesToShow: 'none';
+  repeat: FormComponentRepeat;
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {

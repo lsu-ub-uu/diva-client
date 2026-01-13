@@ -32,8 +32,10 @@ import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../record/+types/record';
 import { ActionBar } from './ActionBar/ActionBar';
 import css from './record.css?url';
+import { i18nContext } from 'server/i18n';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
@@ -49,7 +51,8 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     });
 
     const breadcrumb = getRecordTitle(record) ?? record.id;
-    const pageTitle = getRecordTitle(record);
+    const pageTitle =
+      getRecordTitle(record) || t('divaClient_missingTitleText');
 
     return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {
