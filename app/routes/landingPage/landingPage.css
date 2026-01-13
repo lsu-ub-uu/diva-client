@@ -24,7 +24,7 @@
   position: absolute;
   bottom: var(--gap-s);
   left: var(--gap-s);
-  color: #eee;
+  color: var(--color-gray-light);
   font-size: var(--font-size-xs);
   text-align: left;
 
