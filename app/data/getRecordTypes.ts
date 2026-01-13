@@ -21,12 +21,15 @@ import type { Auth } from '@/auth/Auth';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecordType } from '@/cora/transform/transformRecordTypes.server';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type {
+  BFFMember,
+  BFFRecordType,
+} from '@/cora/transform/bffTypes.server';
 
 export const getRecordTypes = async (
   dependencies: Dependencies,
   auth?: Auth,
-) => {
+): Promise<BFFRecordType[]> => {
   const divaClientRecordTypes = Array.from(
     dependencies.recordTypePool.values(),
   ).filter((recordType) =>
