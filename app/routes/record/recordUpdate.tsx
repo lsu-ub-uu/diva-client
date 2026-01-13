@@ -59,7 +59,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     mode: 'update',
   });
 
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record) || t('divaClient_missingTitleText')} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();
