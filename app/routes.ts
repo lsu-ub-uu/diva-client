@@ -34,6 +34,7 @@ export default [
   route('translations/:lang', 'routes/resourceRoutes/translations.tsx'),
   route('binaryRecord', 'routes/resourceRoutes/binaryRecord.ts'),
   route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
+  route('sitemap.xml', 'routes/resourceRoutes/sitemap.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
 ] satisfies RouteConfig;
