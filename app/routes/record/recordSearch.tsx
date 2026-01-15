@@ -1,163 +1,214 @@
-/*
- * Copyright 2023 Uppsala University Library
- *
- * This file is part of DiVA Client.
- *
- *     DiVA Client is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     DiVA Client is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- */
-
-import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
-import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-import { externalCoraApiUrl } from '@/cora/helper.server';
-import { getSearchForm } from '@/data/getSearchForm.server';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { createCoraSearchQuery } from '@/data/searchRecords.server';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { performSearch } from '@/routes/record/utils/performSearch';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { CirclePlusIcon } from 'lucide-react';
-import { Fragment, Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Await, data, href, Link } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
-import { i18nContext } from 'server/i18n';
-import type { Route } from '../record/+types/recordSearch';
+import { useRef, useCallback } from 'react';
+// Debounce hook for callbacks
+function useDebouncedCallback<T extends (...args: any[]) => void>(
+  callback: T,
+  delay: number,
+) {
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  return useCallback(
+    (...args: Parameters<T>) => {
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    },
+    [callback, delay],
+  );
+}
 import css from './recordSearch.css?url';
+import type { Route } from './+types/recordSearch';
+import { i18nContext } from 'server/i18n';
+import { dependenciesContext } from 'server/depencencies';
+import { data, Form, useNavigation, useSubmit } from 'react-router';
+import { Fieldset } from '@/components/Input/Fieldset';
+import { Input } from '@/components/Input/Input';
+import { FilterIcon, ListFilterIcon, SearchIcon } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { searchRecords } from '@/data/searchRecords.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
+import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import type {
+  BFFMetadata,
+  BFFMetadataGroup,
+} from '@/cora/transform/bffTypes.server';
+import { useTranslation } from 'react-i18next';
+import { Select } from '@/components/Input/Select';
 
-export async function loader({ request, context, params }: Route.LoaderArgs) {
-  const { auth } = context.get(sessionContext);
+export const loader = async ({
+  request,
+  context,
+  params,
+}: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
   const member = getMemberFromHostname(request, dependencies);
-
   const recordType = dependencies.recordTypePool.get(params.recordType);
+  const { auth } = context.get(sessionContext);
 
-  if (!recordType.searchId) {
+  const searchParams = new URL(request.url).searchParams;
+  const genericSearchTermValue = searchParams.get('q') ?? '';
+
+  const searchId = recordType.searchId;
+  if (!searchId) {
     throw data('Record type has no search', { status: 404 });
   }
-  try {
-    const searchForm = await getSearchForm(dependencies, recordType.searchId);
-    const decorated = recordType.id === 'diva-output';
+  const search = dependencies.searchPool.get(searchId);
+  const searchMetadata = dependencies.metadataPool.get(
+    search.metadataId,
+  ) as BFFMetadataGroup;
 
-    const yupSchema = generateYupSchemaFromFormSchema(searchForm);
-    const { query, searchResults, errors } = await performSearch(
-      request,
-      dependencies,
-      recordType.searchId,
-      auth,
-      yupSchema,
-      decorated,
-      member,
-    );
-    const apiUrl =
-      query &&
-      encodeURI(
-        externalCoraApiUrl(
-          `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(recordType.searchId), query))}`,
-        ),
-      );
+  const includeGroup = dependencies.metadataPool.get(
+    searchMetadata.children[0].childId,
+  ) as BFFMetadataGroup;
+  const includePartGroup = dependencies.metadataPool.get(
+    includeGroup.children[0].childId,
+  ) as BFFMetadataGroup;
 
-    const validationTypes = getValidationTypes(
-      params.recordType,
-      auth?.data.token,
-    );
+  const excludedSearchTerms = ['genericSearchTerm'];
+  const searchTerms = includePartGroup.children
+    .map((c) => dependencies.metadataPool.get(c.childId))
+    .filter((metadata) => !excludedSearchTerms.includes(metadata.nameInData));
 
-    return {
-      searchId: recordType.searchId,
-      recordTypeTextId: recordType.textId,
-      recordTypeId: recordType.id,
-      validationTypes,
-      query,
-      searchForm,
-      searchResults,
-      title: `DiVA | ${t(recordType.textId)}`,
-      errors,
-      apiUrl,
-    };
-  } catch (error) {
-    throw createRouteErrorResponse(error);
-  }
-}
+  console.log(searchTerms);
+  const searchRootName = searchMetadata.nameInData;
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title }];
+  const searchQuery = {
+    [searchRootName]: {
+      include: {
+        includePart: {
+          genericSearchTerm: { value: genericSearchTermValue },
+          recordIdSearchTerm: { value: '**' },
+          trashBinSearchTerm: { value: 'false' },
+          permissionUnitSearchTerm: {
+            value: member?.memberPermissionUnit
+              ? `permissionUnit_${member?.memberPermissionUnit}`
+              : '',
+          },
+        },
+      },
+      rows: { value: '10' },
+    },
+  };
+
+  const decorated = recordType.id === 'diva-output';
+
+  const searchResults = await searchRecords(
+    dependencies,
+    searchId,
+    searchQuery,
+    auth,
+    decorated,
+  );
+
+  return {
+    title: t(recordType.textId),
+    query: genericSearchTermValue,
+    searchResults,
+    searchTerms,
+  };
 };
+
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
-export default function OutputSearchRoute({
-  loaderData,
-}: Route.ComponentProps) {
-  const {
-    searchId,
-    recordTypeTextId,
-    searchForm,
-    validationTypes,
-    searchResults,
-    query,
-  } = loaderData;
-  const { t } = useTranslation();
+export default function RecordSearch({ loaderData }: Route.ComponentProps) {
+  const { title, query, searchResults, searchTerms } = loaderData;
+  const navigation = useNavigation();
+  const submit = useSubmit();
+
+  const searching = Boolean(
+    navigation.state !== 'idle' &&
+    navigation.formAction?.includes(location.pathname),
+  );
+
+  // Debounced submit handler for the form
+  const debouncedSubmit = useDebouncedCallback(
+    (form: HTMLFormElement) => submit(form),
+    400,
+  );
 
   return (
     <div>
-      <Breadcrumbs />
       <div className='search-layout'>
-        <main>
-          <div className='search-wrapper'>
-            <div className='search-extras'>
-              <h1 className='record-type-title'>{t(recordTypeTextId)}</h1>
+        <div>
+          <Breadcrumbs />
+          <h1>{title}</h1>
 
-              <Suspense
-                fallback={
-                  <Button
-                    as={Link}
-                    variant='secondary'
-                    to={href('/:recordType/create', {
-                      recordType: loaderData.recordTypeId,
-                    })}
-                    size='large'
-                  >
-                    <CirclePlusIcon />
-                    {t('divaClient_createText', {
-                      type: t(recordTypeTextId).toLowerCase(),
-                    })}
-                  </Button>
-                }
-              >
-                <Await resolve={validationTypes} errorElement={<Fragment />}>
-                  {(validationTypes) => (
-                    <CreateRecordMenu
-                      validationTypes={validationTypes}
-                      recordTypeTextId={recordTypeTextId}
-                    />
-                  )}
-                </Await>
-              </Suspense>
-            </div>
-
-            <RecordSearch
-              key={searchId}
-              searchForm={searchForm}
-              query={query}
-              searchResults={searchResults}
-              apiUrl={loaderData.apiUrl}
-            />
+          <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
+            <Fieldset label='Sök efter publikationer' size='large'>
+              <div className='search-query-wrapper'>
+                <Input
+                  name='q'
+                  className='search-query-input'
+                  placeholder='Sök på titel, abstract, författare, nyckelord, organisation, utviningsår, förlag, ISBN, DOI med mera.'
+                  defaultValue={query}
+                />
+                <div className='search-button'>
+                  <IconButton type='submit' tooltip='Sök'>
+                    <SearchIcon />
+                  </IconButton>
+                </div>
+              </div>
+            </Fieldset>
+          </Form>
+          <div className='search-result'>
+            <div>Din sökning gav {searchResults.totalNo} träffar</div>
+            <ol className={'result-list'} aria-busy={searching}>
+              {searchResults.data.map((record) => (
+                <li key={record.id} className={'result-list-item'}>
+                  <div className='result-list-item-content'>
+                    {record.recordType &&
+                    record.recordType === 'diva-output' ? (
+                      <DivaOutputSearchResult searchResult={record} />
+                    ) : (
+                      <SearchResultForm
+                        record={record}
+                        formSchema={record.presentation!}
+                      />
+                    )}
+                    <div className='record-action-buttons'>
+                      <RecordActionButtons record={record} />
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
-        </main>
+        </div>
+        <div className='filters'>
+          <h2>
+            <ListFilterIcon /> Filter
+          </h2>
+          <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
+            {searchTerms.map((searchTerm) => (
+              <SearchTerm term={searchTerm} key={searchTerm.id} />
+            ))}
+          </Form>
+        </div>
       </div>
     </div>
   );
 }
+
+const SearchTerm = ({ term }: { term: BFFMetadata }) => {
+  const { t } = useTranslation();
+  if (term.type === 'textVariable') {
+    return (
+      <Fieldset label={t(term.textId)} size='small'>
+        <Input name={term.nameInData} />
+      </Fieldset>
+    );
+  }
+
+  if (term.type === 'collectionVariable') {
+    return (
+      <Fieldset label={t(term.textId)} size='small'>
+        <Select name={term.nameInData} />
+      </Fieldset>
+    );
+  }
+  return <div>{term.nameInData}</div>;
+};

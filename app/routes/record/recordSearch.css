@@ -1,55 +1,112 @@
-/*
- * Copyright 2025 Uppsala University Library
- *
- * This file is part of DiVA Client.
- *
- *     DiVA Client is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     DiVA Client is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 .search-layout {
   display: grid;
-  grid-template-columns: 8fr 2fr;
+  grid-template-columns: 6fr 2fr;
   gap: var(--gap-xl);
-  max-width: 1800px;
 
-  /* padding-top: var(--gap-xl); */
-}
-
-@media (width < 900px) {
-  .search-layout {
+  @media (width < 900px) {
     grid-template-columns: 1fr;
   }
 }
 
-.search-wrapper {
+.search-query-wrapper {
+  position: relative;
+}
+
+.search-button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.record-search {
+  display: grid;
+  gap: var(--gap-l);
+  margin-bottom: 3em;
+}
+
+.search-result {
+  margin-top: var(--gap-xl);
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  list-style: outside;
+  list-style-type: decimal;
+  padding-left: 2em;
+  transition: opacity 0.1s;
+
+  @media (width < 900px) {
+    padding-left: 0;
+    list-style: none;
+
+    .result-list-item {
+      padding-left: 0;
+    }
+  }
+
+  &[aria-busy='true'] {
+    opacity: 0.5;
+  }
+}
+
+.result-list-item::marker {
+  font-size: var(--font-size-l);
+}
+
+.result-list-item {
+  display: list-item;
+  flex-direction: row;
+  padding-left: var(--gap-l);
+  padding-top: var(--gap-l);
+  padding-bottom: var(--gap-l);
+  border-bottom: 1px solid var(--color-thin-border);
+}
+
+.result-list-item:last-child {
+  border: none;
+}
+
+.result-list-item-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--gap);
+
+  @media (width < 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.record-action-buttons {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+  color: var(--color-label);
+
+  @media (width < 900px) {
+    flex-direction: row;
+    justify-self: end;
+  }
 }
 
-.search-extras {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.filters {
+  background-color: var(--color-gray-light);
+  border-left: 1px solid var(--color-thin-border);
+  padding: var(--gap-l);
+  display: grid;
+  gap: var(--gap-l);
 
-  @media (width < 600px) {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    gap: var(--gap-l);
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+  }
 
-    button {
-      align-self: flex-end;
-    }
+  form {
+    display: grid;
+    gap: var(--gap);
   }
 }

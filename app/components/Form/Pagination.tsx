@@ -39,8 +39,8 @@ interface PaginationProps {
   onRowsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const ROWS_START_INPUT_NAME = 'search.start.value';
-const ROWS_PER_PAGE_INPUT_NAME = 'search.rows.value';
+const ROWS_START_INPUT_NAME = 'start';
+const ROWS_PER_PAGE_INPUT_NAME = 'rows';
 const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
 export const Pagination = ({
@@ -52,7 +52,7 @@ export const Pagination = ({
 
   const { fromNo, toNo, totalNo } = searchResults;
   const rowsPerPage =
-    Number(get(query, 'search.rows.value')) || toNo - fromNo + 1;
+    Number(get(query, ROWS_PER_PAGE_INPUT_NAME)) || toNo - fromNo + 1;
 
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
