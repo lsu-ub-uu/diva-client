@@ -17,11 +17,16 @@ export const action = async ({
   const { auth } = context.get(sessionContext);
   const { id, name } = params;
 
-  return await fetch(coraBinaryUrl({ id, name, auth }), {
+  const response = await fetch(coraBinaryUrl({ id, name, auth }), {
     body: request.body,
     headers: request.headers,
     method: request.method,
     // @ts-expect-error duplex is not yet in RequestInit
     duplex: 'half',
+  });
+
+  return new Response(null, {
+    status: response.status,
+    statusText: response.statusText,
   });
 };

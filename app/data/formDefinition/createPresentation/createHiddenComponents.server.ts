@@ -122,6 +122,7 @@ const createHiddenComponentsForGroup = (
         components,
         attributes,
         repeat,
+        hidden: true,
       });
       return groupComponent as FormComponentGroup;
     }

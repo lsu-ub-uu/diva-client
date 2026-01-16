@@ -192,6 +192,7 @@ describe('createHiddenComponents', () => {
         name: 'someGroupNameInData',
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: 1 },
+        hidden: true,
         components: [
           {
             attributesToShow: 'none',
@@ -275,6 +276,7 @@ describe('createHiddenComponents', () => {
         name: 'someGroupNameInData',
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: 1 },
+        hidden: true,
         components: [
           {
             attributesToShow: 'none',
@@ -476,6 +478,7 @@ describe('createHiddenComponents', () => {
         name: 'someGroupNameInData',
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
+        hidden: true,
         components: [
           {
             attributesToShow: 'none',

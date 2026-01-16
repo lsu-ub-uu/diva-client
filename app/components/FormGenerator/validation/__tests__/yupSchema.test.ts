@@ -66,10 +66,7 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { describe, expect, it } from 'vitest';
 import * as yup from 'yup';
 import type { FormComponentGroup, FormSchema } from '../../types';
-import {
-  createYupArrayFromSchema,
-  generateYupSchemaFromFormSchema,
-} from '../yupSchema';
+import { generateYupSchemaFromFormSchema } from '../yupSchema';
 
 describe('yupSchema', async () => {
   describe('form validation', () => {
