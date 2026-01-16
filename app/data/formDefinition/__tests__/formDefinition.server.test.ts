@@ -1988,6 +1988,7 @@ describe('formDefinition', () => {
               mode: 'input',
               name: 'recordInfo',
               type: 'group',
+              hidden: true,
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,
@@ -4280,6 +4281,7 @@ describe('formDefinition', () => {
             type: 'group',
             name: 'role',
             mode: 'input',
+            hidden: true,
             repeat: {
               repeatMin: 1,
               repeatMax: 1,
