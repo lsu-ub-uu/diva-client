@@ -161,6 +161,7 @@ export interface FormComponentGroup extends FormComponentMetadata {
   components?: FormComponent[];
   label: string;
   showLabel: boolean;
+  hidden?: boolean;
   presentAs?:
     | 'map'
     | 'recordRelation'
