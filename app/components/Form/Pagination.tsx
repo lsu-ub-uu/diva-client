@@ -17,10 +17,7 @@
  */
 
 import type { BFFSearchResult } from '@/types/record';
-
-import type { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Select } from '@/components/Input/Select';
 import {
@@ -66,9 +63,12 @@ export const Pagination = ({ rowsPerPage, searchResults }: PaginationProps) => {
       <Fieldset
         label={t('divaClient_paginationRowsPerPageText')}
         variant='inline'
-        size='small'
       >
-        <Select name={ROWS_PER_PAGE_INPUT_NAME} defaultValue={rowsPerPage}>
+        <Select
+          name={ROWS_PER_PAGE_INPUT_NAME}
+          defaultValue={rowsPerPage}
+          key={rowsPerPage}
+        >
           {rowsPerPageOptions.map((rows) => (
             <option key={rows} value={rows}>
               {rows}
