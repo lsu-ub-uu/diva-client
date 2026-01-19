@@ -21,7 +21,7 @@ export const ActiveFilters = ({
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
   return (
-    <div className='active-filters'>
+    <div className={styles['active-filters']}>
       <div>Aktiva filter: </div>
 
       {activeFilters.map((filter) => (
