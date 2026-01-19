@@ -1,28 +1,22 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Pagination } from '@/components/Form/Pagination';
-import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
-import { Select } from '@/components/Input/Select';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import type {
-  BFFMetadata,
-  BFFMetadataBase,
-  BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
-  BFFMetadataItemCollection,
-  BFFMetadataNumberVariable,
-  BFFMetadataTextVariable,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
+import {
+  ActiveFilters,
+  type ActiveFilter,
+} from '@/components/search/ActiveFilters';
+import { Filter } from '@/components/search/Filter';
+import { Pagination } from '@/components/search/Pagination';
+import { SearchResults } from '@/components/search/SearchResults';
+import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
+import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { ListFilterIcon, SearchIcon, XIcon } from 'lucide-react';
+import { ListFilterIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { data, Form, useNavigation, useSubmit } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
@@ -44,13 +38,6 @@ function useDebouncedCallback<T extends (...args: any[]) => void>(
     },
     [callback, delay],
   );
-}
-
-interface ActiveFilter {
-  name: string;
-  value: string;
-  textId: string;
-  valueTextId?: string;
 }
 
 export const loader = async ({
@@ -148,9 +135,8 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const { title, query, searchResults, filters, activeFilters, rows, start } =
     loaderData;
-  const navigation = useNavigation();
   const submit = useSubmit();
-  const { t } = useTranslation();
+  const navigation = useNavigation();
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -164,7 +150,6 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   );
 
   const handleFilterChange = (form: HTMLFormElement) => {
-    console.log('filter change', form);
     const formData = new FormData(form);
     for (const [key, value] of Array.from(formData.entries())) {
       if (typeof value === 'string' && value.trim() === '') {
@@ -210,7 +195,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
                 />
                 <div className='search-button'>
                   <IconButton type='submit' tooltip='Sök'>
-                    <SearchIcon />
+                    {searching ? <CircularLoader /> : <SearchIcon />}
                   </IconButton>
                 </div>
               </div>
@@ -231,58 +216,13 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           </Form>
 
           {activeFilters.length > 0 && (
-            <div className='active-filters'>
-              <div>Aktiva filter: </div>
-
-              {activeFilters.map((filter) => (
-                <div key={filter.name} className='active-filter'>
-                  <div className='active-filter-texts'>
-                    <div className='active-filter-name'>
-                      {t(filter.textId)}:
-                    </div>
-                    <div className='active-filter-value'>
-                      {filter.valueTextId
-                        ? t(filter.valueTextId)
-                        : filter.value}
-                    </div>
-                  </div>
-
-                  <IconButton
-                    tooltip='Ta bort filter'
-                    size='small'
-                    type='submit'
-                    onClick={() => handleRemoveFilter(filter.name)}
-                    className='active-filter-remove-button'
-                  >
-                    <XIcon />
-                  </IconButton>
-                </div>
-              ))}
-            </div>
+            <ActiveFilters
+              activeFilters={activeFilters}
+              handleRemoveFilter={handleRemoveFilter}
+            />
           )}
 
-          <div className='search-result'>
-            <ol className={'result-list'} aria-busy={searching}>
-              {searchResults.data.map((record) => (
-                <li key={record.id} className={'result-list-item'}>
-                  <div className='result-list-item-content'>
-                    {record.recordType &&
-                    record.recordType === 'diva-output' ? (
-                      <DivaOutputSearchResult searchResult={record} />
-                    ) : (
-                      <SearchResultForm
-                        record={record}
-                        formSchema={record.presentation!}
-                      />
-                    )}
-                    <div className='record-action-buttons'>
-                      <RecordActionButtons record={record} />
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <SearchResults searchResults={searchResults} searching={searching} />
 
           {searchResults.totalNo > 0 && (
             <Form
@@ -332,144 +272,3 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
-
-const Filter = ({
-  filter,
-  defaultValue,
-}: {
-  filter: TextFilter | NumberFilter | CollectionFilter;
-  defaultValue?: string;
-}) => {
-  const { t } = useTranslation();
-
-  switch (filter.type) {
-    case 'text':
-      return (
-        <Fieldset label={t(filter.textId)} size='small'>
-          <Input name={filter.name} defaultValue={defaultValue} />
-        </Fieldset>
-      );
-    case 'number':
-      return (
-        <Fieldset label={t(filter.textId)} size='small'>
-          <Input
-            type='number'
-            name={filter.name}
-            min={filter.min}
-            max={filter.max}
-            defaultValue={defaultValue}
-          />
-        </Fieldset>
-      );
-    case 'collection':
-      return (
-        <Fieldset label={t(filter.textId)} size='small'>
-          <Select name={filter.name} defaultValue={defaultValue}>
-            <option value=''>--</option>
-            {filter.options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(option.text)}
-              </option>
-            ))}
-          </Select>
-        </Fieldset>
-      );
-  }
-};
-
-interface TextFilter {
-  id: string;
-  type: 'text';
-  name: string;
-  regex: string;
-  textId: string;
-}
-
-interface NumberFilter {
-  id: string;
-  type: 'number';
-  name: string;
-  min?: number;
-  max?: number;
-  warningMin?: number;
-  warningMax?: number;
-  textId: string;
-}
-
-interface CollectionFilter {
-  id: string;
-  type: 'collection';
-  name: string;
-  textId: string;
-  options: { text: string; value: string }[];
-}
-
-const createFilters = (
-  searchMetadata: BFFMetadataGroup,
-  dependencies: Dependencies,
-): (TextFilter | NumberFilter | CollectionFilter)[] => {
-  const includeGroup = dependencies.metadataPool.get(
-    searchMetadata.children[0].childId,
-  ) as BFFMetadataGroup;
-  const includePartGroup = dependencies.metadataPool.get(
-    includeGroup.children[0].childId,
-  ) as BFFMetadataGroup;
-
-  const excludedSearchTerms = ['genericSearchTerm'];
-  return includePartGroup.children
-    .map((c) => dependencies.metadataPool.get(c.childId))
-    .filter((metadata) => !excludedSearchTerms.includes(metadata.nameInData))
-    .map((metadata) => createFilter(metadata, dependencies))
-    .filter(Boolean) as (TextFilter | NumberFilter | CollectionFilter)[];
-};
-
-const createFilter = (
-  metadata: BFFMetadata,
-  depencencies: Dependencies,
-): TextFilter | NumberFilter | CollectionFilter | undefined => {
-  if (metadata.type === 'textVariable') {
-    const textVariable = metadata as BFFMetadataTextVariable;
-    return {
-      type: 'text',
-      id: textVariable.id,
-      name: textVariable.nameInData,
-      regex: textVariable.regEx,
-      textId: textVariable.textId,
-    };
-  }
-
-  if (metadata.type === 'numberVariable') {
-    const numberVariable = metadata as BFFMetadataNumberVariable;
-    return {
-      type: 'number',
-      id: numberVariable.id,
-      name: numberVariable.nameInData,
-      textId: numberVariable.textId,
-      min: Number(numberVariable.min),
-      max: Number(numberVariable.max),
-      warningMin: Number(numberVariable.warningMin),
-      warningMax: Number(numberVariable.warningMax),
-    };
-  }
-
-  if (metadata.type === 'collectionVariable') {
-    const collectionVariable = metadata as BFFMetadataCollectionVariable;
-    const collection = depencencies.metadataPool.get(
-      collectionVariable.refCollection,
-    ) as BFFMetadataItemCollection;
-    const options = collection.collectionItemReferences.map((itemRef) => {
-      const item = depencencies.metadataPool.get(
-        itemRef.refCollectionItemId,
-      ) as BFFMetadataBase;
-      return { text: item.textId, value: item.nameInData };
-    });
-    return {
-      type: 'collection',
-      id: collectionVariable.id,
-      name: collectionVariable.nameInData,
-      textId: collectionVariable.textId,
-      options,
-    };
-  }
-  return undefined;
-};

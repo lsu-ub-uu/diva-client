@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Pagination } from '@/components/Form/Pagination';
+import { Pagination } from '@/components/search/Pagination';
 import type { BFFSearchResult } from '@/types/record';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

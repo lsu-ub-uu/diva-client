@@ -117,30 +117,3 @@
   align-self: end;
   margin-block: var(--gap-l);
 }
-
-.active-filters {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  gap: var(--gap);
-  margin-top: var(--gap-l);
-}
-
-.active-filter-texts {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.active-filter {
-  padding: var(--gap-s) var(--gap);
-  border-radius: var(--border-radius);
-  display: flex;
-  align-items: center;
-  background-color: var(--color-gray-light);
-  border: 1px solid var(--color-thin-border);
-}
-
-.active-filter-value {
-  font-style: italic;
-  margin-inline: var(--gap-s);
-}

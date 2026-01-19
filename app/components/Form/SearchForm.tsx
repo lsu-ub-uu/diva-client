@@ -18,7 +18,7 @@
  */
 
 import { Button } from '@/components/Button/Button';
-import { Pagination } from '@/components/Form/Pagination';
+import { Pagination } from '@/components/search/Pagination';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
