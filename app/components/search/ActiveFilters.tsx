@@ -31,7 +31,8 @@ export const ActiveFilters = ({
               {t(filter.textId)}:
             </div>
             <div className={styles['active-filter-value']}>
-              {filter.valueTextId ? t(filter.valueTextId) : filter.value}
+              &quot;{filter.valueTextId ? t(filter.valueTextId) : filter.value}
+              &quot;
             </div>
           </div>
 

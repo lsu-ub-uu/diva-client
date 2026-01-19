@@ -7,20 +7,37 @@ import type {
   NumberFilter,
   TextFilter,
 } from '@/data/search/createFilterDefinition.server';
+import { useState } from 'react';
 
 interface FilterProps {
   filter: TextFilter | NumberFilter | CollectionFilter;
-  defaultValue?: string;
+  currentValue?: string;
 }
 
-export const Filter = ({ filter, defaultValue }: FilterProps) => {
+export const Filter = ({ filter, currentValue }: FilterProps) => {
   const { t } = useTranslation();
+  const [prevValue, setPrevValue] = useState(currentValue);
+  const [value, setValue] = useState(currentValue ?? '');
+  const [focused, setFocused] = useState(false);
+
+  if (currentValue !== prevValue) {
+    setPrevValue(currentValue);
+    if (!focused) {
+      setValue(currentValue ?? '');
+    }
+  }
 
   switch (filter.type) {
     case 'text':
       return (
         <Fieldset label={t(filter.textId)} size='small'>
-          <Input name={filter.name} defaultValue={defaultValue} />
+          <Input
+            name={filter.name}
+            value={value}
+            onChange={(e) => setValue(e.currentTarget.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+          />
         </Fieldset>
       );
     case 'number':
@@ -31,14 +48,21 @@ export const Filter = ({ filter, defaultValue }: FilterProps) => {
             name={filter.name}
             min={filter.min}
             max={filter.max}
-            defaultValue={defaultValue}
+            value={value}
+            onChange={(e) => setValue(e.currentTarget.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
           />
         </Fieldset>
       );
     case 'collection':
       return (
         <Fieldset label={t(filter.textId)} size='small'>
-          <Select name={filter.name} defaultValue={defaultValue}>
+          <Select
+            name={filter.name}
+            value={value}
+            onChange={(e) => setValue(e.currentTarget.value)}
+          >
             <option value=''>--</option>
             {filter.options.map((option) => (
               <option key={option.value} value={option.value}>

@@ -16,29 +16,12 @@ import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { ListFilterIcon, SearchIcon } from 'lucide-react';
-import { useCallback, useRef } from 'react';
 import { data, Form, useNavigation, useSubmit } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import css from './recordSearch.css?url';
-
-// Debounce hook for callbacks
-function useDebouncedCallback<T extends (...args: any[]) => void>(
-  callback: T,
-  delay: number,
-) {
-  const timer = useRef<NodeJS.Timeout | null>(null);
-  return useCallback(
-    (...args: Parameters<T>) => {
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => {
-        callback(...args);
-      }, delay);
-    },
-    [callback, delay],
-  );
-}
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 
 export const loader = async ({
   request,
@@ -62,7 +45,7 @@ export const loader = async ({
 
   const filters = createFilters(searchMetadata, dependencies);
   const searchParams = new URL(request.url).searchParams;
-  const genericSearchTermValue = searchParams.get('q') ?? '';
+  const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
   const rows = Number(searchParams.get('rows')) || 10;
 
@@ -91,7 +74,7 @@ export const loader = async ({
     [searchRootName]: {
       include: {
         includePart: {
-          genericSearchTerm: { value: genericSearchTermValue },
+          genericSearchTerm: { value: q },
           recordIdSearchTerm: { value: '**' },
           trashBinSearchTerm: { value: 'false' },
           permissionUnitSearchTerm: {
@@ -121,7 +104,7 @@ export const loader = async ({
 
   return {
     title: t(recordType.textId),
-    query: genericSearchTermValue,
+    query: q,
     start,
     rows,
     searchResults,
@@ -143,13 +126,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     navigation.formAction?.includes(location.pathname),
   );
 
-  // Debounced submit handler for the form
-  const debouncedSubmit = useDebouncedCallback(
+  const handleQueryChange = useDebouncedCallback(
     (form: HTMLFormElement) => submit(form),
     400,
   );
 
-  const handleFilterChange = (form: HTMLFormElement) => {
+  const handleFilterChange = useDebouncedCallback((form: HTMLFormElement) => {
     const formData = new FormData(form);
     for (const [key, value] of Array.from(formData.entries())) {
       if (typeof value === 'string' && value.trim() === '') {
@@ -157,12 +139,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       }
     }
     submit(formData, { method: 'GET' });
-  };
-
-  const debouncedFilterChange = useDebouncedCallback(
-    (form: HTMLFormElement) => handleFilterChange(form),
-    400,
-  );
+  }, 400);
 
   const handleRemoveFilter = (filterName: string) => {
     const formData = new FormData();
@@ -184,7 +161,10 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           <Breadcrumbs />
           <h1>{title}</h1>
 
-          <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
+          <Form
+            method='GET'
+            onChange={(e) => handleQueryChange(e.currentTarget)}
+          >
             <Fieldset label='Sök efter publikationer' size='large'>
               <div className='search-query-wrapper'>
                 <Input
@@ -228,7 +208,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
             <Form
               className='pagination'
               method='GET'
-              onChange={(e) => debouncedSubmit(e.currentTarget)}
+              onChange={(e) => handleQueryChange(e.currentTarget)}
             >
               <input type='hidden' name='q' value={query} />
               {activeFilters.map((filter) => (
@@ -249,7 +229,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           </h2>
           <Form
             method='GET'
-            onChange={(e) => debouncedFilterChange(e.currentTarget)}
+            onChange={(e) => handleFilterChange(e.currentTarget)}
           >
             <input type='hidden' name='q' value={query} />
             <input type='hidden' name='start' value={start} />
@@ -259,11 +239,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
                 (f) => f.name === filter.name,
               )?.value;
               return (
-                <Filter
-                  filter={filter}
-                  key={`${filter.id}-${value}`}
-                  defaultValue={value}
-                />
+                <Filter filter={filter} key={filter.id} currentValue={value} />
               );
             })}
           </Form>
