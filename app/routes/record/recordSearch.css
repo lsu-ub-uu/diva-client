@@ -98,6 +98,7 @@
   padding: var(--gap-l);
   display: grid;
   gap: var(--gap-l);
+  grid-template-rows: auto 1fr;
 
   h2 {
     display: flex;
@@ -106,7 +107,8 @@
   }
 
   form {
-    display: grid;
-    gap: var(--gap);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-l);
   }
 }

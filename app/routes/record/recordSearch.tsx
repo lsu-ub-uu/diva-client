@@ -23,7 +23,7 @@ import { dependenciesContext } from 'server/depencencies';
 import { data, Form, useNavigation, useSubmit } from 'react-router';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
-import { FilterIcon, ListFilterIcon, SearchIcon } from 'lucide-react';
+import { ListFilterIcon, SearchIcon } from 'lucide-react';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { searchRecords } from '@/data/searchRecords.server';
@@ -37,6 +37,7 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/Input/Select';
+import { Pagination } from '@/components/Form/Pagination';
 
 export const loader = async ({
   request,
@@ -51,6 +52,8 @@ export const loader = async ({
 
   const searchParams = new URL(request.url).searchParams;
   const genericSearchTermValue = searchParams.get('q') ?? '';
+  const start = Number(searchParams.get('start')) || 1;
+  const rows = Number(searchParams.get('rows')) || 10;
 
   const searchId = recordType.searchId;
   if (!searchId) {
@@ -73,7 +76,6 @@ export const loader = async ({
     .map((c) => dependencies.metadataPool.get(c.childId))
     .filter((metadata) => !excludedSearchTerms.includes(metadata.nameInData));
 
-  console.log(searchTerms);
   const searchRootName = searchMetadata.nameInData;
 
   const searchQuery = {
@@ -90,7 +92,8 @@ export const loader = async ({
           },
         },
       },
-      rows: { value: '10' },
+      start: { value: start.toString() },
+      rows: { value: rows.toString() },
     },
   };
 
@@ -107,6 +110,8 @@ export const loader = async ({
   return {
     title: t(recordType.textId),
     query: genericSearchTermValue,
+    start,
+    rows,
     searchResults,
     searchTerms,
   };
@@ -115,7 +120,7 @@ export const loader = async ({
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function RecordSearch({ loaderData }: Route.ComponentProps) {
-  const { title, query, searchResults, searchTerms } = loaderData;
+  const { title, query, searchResults, searchTerms, rows } = loaderData;
   const navigation = useNavigation();
   const submit = useSubmit();
 
@@ -153,9 +158,10 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
                 </div>
               </div>
             </Fieldset>
+            <Pagination rowsPerPage={rows} searchResults={searchResults} />
           </Form>
+
           <div className='search-result'>
-            <div>Din sökning gav {searchResults.totalNo} träffar</div>
             <ol className={'result-list'} aria-busy={searching}>
               {searchResults.data.map((record) => (
                 <li key={record.id} className={'result-list-item'}>
@@ -177,12 +183,17 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
               ))}
             </ol>
           </div>
+
+          <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
+            <Pagination rowsPerPage={rows} searchResults={searchResults} />
+          </Form>
         </div>
         <div className='filters'>
           <h2>
             <ListFilterIcon /> Filter
           </h2>
           <Form method='GET' onChange={(e) => debouncedSubmit(e.currentTarget)}>
+            <input type='hidden' name='q' value={query} />
             {searchTerms.map((searchTerm) => (
               <SearchTerm term={searchTerm} key={searchTerm.id} />
             ))}

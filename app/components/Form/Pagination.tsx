@@ -16,14 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { BFFDataRecordData, BFFSearchResult } from '@/types/record';
+import type { BFFSearchResult } from '@/types/record';
 
 import type { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Select } from '@/components/Input/Select';
-import { get } from 'lodash-es';
 import {
   ChevronFirstIcon,
   ChevronLastIcon,
@@ -34,25 +33,18 @@ import { IconButton } from '../IconButton/IconButton';
 import styles from './Pagination.module.css';
 
 interface PaginationProps {
-  query: BFFDataRecordData;
+  rowsPerPage: number;
   searchResults: BFFSearchResult;
-  onRowsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const ROWS_START_INPUT_NAME = 'start';
 const ROWS_PER_PAGE_INPUT_NAME = 'rows';
 const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
-export const Pagination = ({
-  query,
-  searchResults,
-  onRowsPerPageChange,
-}: PaginationProps) => {
+export const Pagination = ({ rowsPerPage, searchResults }: PaginationProps) => {
   const { t } = useTranslation();
 
   const { fromNo, toNo, totalNo } = searchResults;
-  const rowsPerPage =
-    Number(get(query, ROWS_PER_PAGE_INPUT_NAME)) || toNo - fromNo + 1;
 
   const isOnFirstPage = fromNo <= 1;
   const isOnLastPage = toNo >= totalNo;
@@ -76,11 +68,7 @@ export const Pagination = ({
         variant='inline'
         size='small'
       >
-        <Select
-          name={ROWS_PER_PAGE_INPUT_NAME}
-          onChange={onRowsPerPageChange}
-          defaultValue={rowsPerPage}
-        >
+        <Select name={ROWS_PER_PAGE_INPUT_NAME} defaultValue={rowsPerPage}>
           {rowsPerPageOptions.map((rows) => (
             <option key={rows} value={rows}>
               {rows}
