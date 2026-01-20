@@ -24,7 +24,6 @@ export interface BaseFilter {
 
 export interface TextFilter extends BaseFilter {
   type: 'text';
-  regex: string;
 }
 
 export interface NumberFilter extends BaseFilter {
@@ -61,10 +60,10 @@ export const createFilters = (
     includeGroup.children[0].childId,
   ) as BFFMetadataGroup;
 
-  const excludedSearchTerms = ['genericSearchTerm'];
-  return includePartGroup.children
+  const filterSearchTerms = includePartGroup.children.slice(1);
+
+  return filterSearchTerms
     .map((c) => dependencies.metadataPool.get(c.childId))
-    .filter((metadata) => !excludedSearchTerms.includes(metadata.nameInData))
     .map((metadata) => createFilter(metadata, dependencies))
     .filter(Boolean) as FilterType[];
 };
@@ -108,23 +107,16 @@ const createFilter = (
   }
 
   if (metadata.type === 'textVariable') {
-    const textVariable = metadata as BFFMetadataTextVariable;
     return {
       ...commonValues,
       type: 'text',
-      regex: textVariable.regEx,
     };
   }
 
   if (metadata.type === 'numberVariable') {
-    const numberVariable = metadata as BFFMetadataNumberVariable;
     return {
       ...commonValues,
       type: 'number',
-      min: Number(numberVariable.min),
-      max: Number(numberVariable.max),
-      warningMin: Number(numberVariable.warningMin),
-      warningMax: Number(numberVariable.warningMax),
     };
   }
 

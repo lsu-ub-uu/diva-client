@@ -124,16 +124,6 @@ const AutocompleteFilter = ({
       [filter.searchTerm]: comboboxInputValue,
     };
 
-    console.log('AutocompleteFilter data:', fetcher.data);
-
-    // if (
-    //   recordLinkSearchPresentation.permissionUnitSearchTerm &&
-    //   member?.memberPermissionUnit
-    // ) {
-    //   data[recordLinkSearchPresentation.permissionUnitSearchTerm.name] =
-    //     `permissionUnit_${member?.memberPermissionUnit}`;
-    // }
-
     fetcher.submit(data, {
       method: 'GET',
       action: href('/autocompleteSearch/:searchType', {

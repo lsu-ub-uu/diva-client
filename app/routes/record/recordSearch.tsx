@@ -15,8 +15,21 @@ import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { ListFilterIcon, SearchIcon, SearchSlashIcon } from 'lucide-react';
-import { data, Form, useNavigation, useSubmit } from 'react-router';
+import {
+  CirclePlusIcon,
+  ListFilterIcon,
+  SearchIcon,
+  SearchSlashIcon,
+} from 'lucide-react';
+import {
+  Await,
+  data,
+  Form,
+  href,
+  Link,
+  useNavigation,
+  useSubmit,
+} from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -24,7 +37,10 @@ import css from './recordSearch.css?url';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { useTranslation } from 'react-i18next';
-import { useRef } from 'react';
+import { Fragment, Suspense, useRef } from 'react';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { Button } from '@/components/Button/Button';
 
 export const loader = async ({
   request,
@@ -73,11 +89,20 @@ export const loader = async ({
 
   const searchRootName = searchMetadata.nameInData;
 
+  const includeGroup = dependencies.metadataPool.get(
+    searchMetadata.children[0].childId,
+  ) as BFFMetadataGroup;
+  const includePartGroup = dependencies.metadataPool.get(
+    includeGroup.children[0].childId,
+  ) as BFFMetadataGroup;
+  const mainSearchTerm = dependencies.metadataPool.get(
+    includePartGroup.children[0].childId,
+  );
+
   const searchQuery = {
     [searchRootName]: {
       include: {
         includePart: {
-          genericSearchTerm: { value: q },
           recordIdSearchTerm: { value: '**' },
           trashBinSearchTerm: { value: 'false' },
           permissionUnitSearchTerm: {
@@ -85,6 +110,7 @@ export const loader = async ({
               ? `permissionUnit_${member?.memberPermissionUnit}`
               : '',
           },
+          [mainSearchTerm.nameInData]: { value: q || '**' },
           ...activeFilters.reduce((acc, filter) => {
             return { ...acc, [filter.name]: { value: filter.value } };
           }, {}),
@@ -105,7 +131,15 @@ export const loader = async ({
     decorated,
   );
 
+  const validationTypes = getValidationTypes(
+    params.recordType,
+    auth?.data.token,
+  );
+
   return {
+    recordTypeId: recordType.id,
+    recordTypeTextId: recordType.textId,
+    mainSearchTerm,
     searchId,
     title: t(recordType.textId),
     query: q,
@@ -114,6 +148,7 @@ export const loader = async ({
     searchResults,
     filters,
     activeFilters,
+    validationTypes,
   };
 };
 
@@ -123,12 +158,16 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const {
     searchId,
     title,
+    mainSearchTerm,
     query,
     searchResults,
     filters,
     activeFilters,
     rows,
     start,
+    recordTypeId,
+    recordTypeTextId,
+    validationTypes,
   } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -178,23 +217,54 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     <div className='search-layout' key={searchId}>
       <div className='search-main'>
         <Breadcrumbs />
-        <h1>{title}</h1>
+        <div className='title-wrapper'>
+          <h1>{title}</h1>
 
+          <Suspense
+            fallback={
+              <Button
+                as={Link}
+                variant='secondary'
+                to={href('/:recordType/create', {
+                  recordType: recordTypeId,
+                })}
+                size='large'
+              >
+                <CirclePlusIcon />
+                {t('divaClient_createText', {
+                  type: t(recordTypeTextId).toLowerCase(),
+                })}
+              </Button>
+            }
+          >
+            <Await resolve={validationTypes} errorElement={<Fragment />}>
+              {(validationTypes) => (
+                <CreateRecordMenu
+                  validationTypes={validationTypes}
+                  recordTypeTextId={recordTypeTextId}
+                />
+              )}
+            </Await>
+          </Suspense>
+        </div>
         <Form
           method='GET'
           onChange={(e) => handleQueryChange(e.currentTarget)}
           className='main-query-form'
         >
-          <Fieldset label='Sök efter publikationer' size='large'>
+          <Fieldset label={t(mainSearchTerm.textId)} size='large'>
             <div className='search-query-wrapper'>
               <Input
                 name='q'
                 className='search-query-input'
-                placeholder='Sök på titel, abstract, författare, nyckelord, organisation, utviningsår, förlag, ISBN, DOI med mera.'
+                placeholder={t(mainSearchTerm.defTextId)}
                 defaultValue={query}
               />
               <div className='search-button'>
-                <IconButton type='submit' tooltip='Sök'>
+                <IconButton
+                  type='submit'
+                  tooltip={t('divaClient_SearchButtonText')}
+                >
                   {searching ? <CircularLoader /> : <SearchIcon />}
                 </IconButton>
               </div>
@@ -256,7 +326,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       </div>
       <div className='filters'>
         <h2>
-          <ListFilterIcon /> Filter
+          <ListFilterIcon /> {t('divaClient_filterTitleText')}
         </h2>
         <Form method='GET' onChange={handleFilterChange} ref={filterFormRef}>
           <input type='hidden' name='q' value={query} />

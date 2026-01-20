@@ -8,6 +8,12 @@
   }
 }
 
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .search-main {
   display: flex;
   flex-direction: column;
@@ -27,9 +33,17 @@
 
 .search-button {
   position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
+  padding-right: var(--gap-s);
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  background-color: var(--color-background);
+  display: grid;
+  place-items: center;
+
+  button {
+    transform: translateY(-2px);
+  }
 }
 
 .record-search {

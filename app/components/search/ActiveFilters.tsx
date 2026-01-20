@@ -20,33 +20,43 @@ export const ActiveFilters = ({
   handleRemoveFilter,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
+  if (activeFilters.length === 0) {
+    return null;
+  }
+
   return (
     <div className={styles['active-filters']}>
-      <div>Aktiva filter: </div>
+      <div>{t('divaClient_activeFiltersText')}</div>
 
-      {activeFilters.map((filter) => (
-        <div key={filter.name} className={styles['active-filter']}>
-          <div className={styles['active-filter-texts']}>
-            <div className={styles['active-filter-name']}>
-              {t(filter.textId)}:
-            </div>
-            <div className={styles['active-filter-value']}>
-              &quot;{filter.valueTextId ? t(filter.valueTextId) : filter.value}
-              &quot;
-            </div>
-          </div>
-
-          <IconButton
-            tooltip='Ta bort filter'
-            size='small'
-            type='submit'
-            onClick={() => handleRemoveFilter(filter.name)}
-            className='active-filter-remove-button'
+      <ul>
+        {activeFilters.map((filter) => (
+          <li
+            key={filter.name}
+            className={styles['active-filter']}
+            aria-label={t(filter.textId)}
           >
-            <XIcon />
-          </IconButton>
-        </div>
-      ))}
+            <div className={styles['active-filter-texts']}>
+              <div className={styles['active-filter-name']}>
+                {t(filter.textId)}:
+              </div>
+              <div className={styles['active-filter-value']}>
+                &quot;
+                {filter.valueTextId ? t(filter.valueTextId) : filter.value}
+                &quot;
+              </div>
+            </div>
+
+            <IconButton
+              tooltip={t('divaClient_filterRemoveText')}
+              size='small'
+              type='submit'
+              onClick={() => handleRemoveFilter(filter.name)}
+            >
+              <XIcon />
+            </IconButton>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
