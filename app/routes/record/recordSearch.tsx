@@ -15,13 +15,15 @@ import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
 import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { ListFilterIcon, SearchIcon } from 'lucide-react';
+import { ListFilterIcon, SearchIcon, SearchSlashIcon } from 'lucide-react';
 import { data, Form, useNavigation, useSubmit } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import css from './recordSearch.css?url';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { useTranslation } from 'react-i18next';
 
 export const loader = async ({
   request,
@@ -103,6 +105,7 @@ export const loader = async ({
   );
 
   return {
+    searchId,
     title: t(recordType.textId),
     query: q,
     start,
@@ -116,10 +119,21 @@ export const loader = async ({
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function RecordSearch({ loaderData }: Route.ComponentProps) {
-  const { title, query, searchResults, filters, activeFilters, rows, start } =
-    loaderData;
+  const {
+    searchId,
+    title,
+    query,
+    searchResults,
+    filters,
+    activeFilters,
+    rows,
+    start,
+  } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
+  const userHasSearched = query || activeFilters.length > 0;
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -155,36 +169,73 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div>
-      <div className='search-layout'>
-        <div>
-          <Breadcrumbs />
-          <h1>{title}</h1>
+    <div className='search-layout' key={searchId}>
+      <div className='search-main'>
+        <Breadcrumbs />
+        <h1>{title}</h1>
 
+        <Form
+          method='GET'
+          onChange={(e) => handleQueryChange(e.currentTarget)}
+          className='main-query-form'
+        >
+          <Fieldset label='Sök efter publikationer' size='large'>
+            <div className='search-query-wrapper'>
+              <Input
+                name='q'
+                className='search-query-input'
+                placeholder='Sök på titel, abstract, författare, nyckelord, organisation, utviningsår, förlag, ISBN, DOI med mera.'
+                defaultValue={query}
+              />
+              <div className='search-button'>
+                <IconButton type='submit' tooltip='Sök'>
+                  {searching ? <CircularLoader /> : <SearchIcon />}
+                </IconButton>
+              </div>
+            </div>
+          </Fieldset>
+          {searchResults.totalNo > 0 && (
+            <div className='pagination'>
+              <Pagination rowsPerPage={rows} searchResults={searchResults} />
+            </div>
+          )}
+          {activeFilters.map((filter) => (
+            <input
+              key={filter.name}
+              type='hidden'
+              name={filter.name}
+              value={filter.value}
+            />
+          ))}
+        </Form>
+
+        {activeFilters.length > 0 && (
+          <ActiveFilters
+            activeFilters={activeFilters}
+            handleRemoveFilter={handleRemoveFilter}
+          />
+        )}
+
+        {userHasSearched && searchResults.totalNo === 0 && (
+          <Alert severity='info' icon={<SearchSlashIcon />}>
+            <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
+            {t('divaClient_noSearchResultsBodyText')}
+          </Alert>
+        )}
+
+        <SearchResults
+          searchResults={searchResults}
+          start={start}
+          searching={searching}
+        />
+
+        {searchResults.totalNo > 0 && (
           <Form
+            className='pagination'
             method='GET'
             onChange={(e) => handleQueryChange(e.currentTarget)}
           >
-            <Fieldset label='Sök efter publikationer' size='large'>
-              <div className='search-query-wrapper'>
-                <Input
-                  name='q'
-                  className='search-query-input'
-                  placeholder='Sök på titel, abstract, författare, nyckelord, organisation, utviningsår, förlag, ISBN, DOI med mera.'
-                  defaultValue={query}
-                />
-                <div className='search-button'>
-                  <IconButton type='submit' tooltip='Sök'>
-                    {searching ? <CircularLoader /> : <SearchIcon />}
-                  </IconButton>
-                </div>
-              </div>
-            </Fieldset>
-            {searchResults.totalNo > 0 && (
-              <div className='pagination'>
-                <Pagination rowsPerPage={rows} searchResults={searchResults} />
-              </div>
-            )}
+            <input type='hidden' name='q' value={query} />
             {activeFilters.map((filter) => (
               <input
                 key={filter.name}
@@ -193,57 +244,30 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
                 value={filter.value}
               />
             ))}
+            <Pagination rowsPerPage={rows} searchResults={searchResults} />
           </Form>
-
-          {activeFilters.length > 0 && (
-            <ActiveFilters
-              activeFilters={activeFilters}
-              handleRemoveFilter={handleRemoveFilter}
-            />
-          )}
-
-          <SearchResults searchResults={searchResults} searching={searching} />
-
-          {searchResults.totalNo > 0 && (
-            <Form
-              className='pagination'
-              method='GET'
-              onChange={(e) => handleQueryChange(e.currentTarget)}
-            >
-              <input type='hidden' name='q' value={query} />
-              {activeFilters.map((filter) => (
-                <input
-                  key={filter.name}
-                  type='hidden'
-                  name={filter.name}
-                  value={filter.value}
-                />
-              ))}
-              <Pagination rowsPerPage={rows} searchResults={searchResults} />
-            </Form>
-          )}
-        </div>
-        <div className='filters'>
-          <h2>
-            <ListFilterIcon /> Filter
-          </h2>
-          <Form
-            method='GET'
-            onChange={(e) => handleFilterChange(e.currentTarget)}
-          >
-            <input type='hidden' name='q' value={query} />
-            <input type='hidden' name='start' value={start} />
-            <input type='hidden' name='rows' value={rows} />
-            {filters.map((filter) => {
-              const value = activeFilters.find(
-                (f) => f.name === filter.name,
-              )?.value;
-              return (
-                <Filter filter={filter} key={filter.id} currentValue={value} />
-              );
-            })}
-          </Form>
-        </div>
+        )}
+      </div>
+      <div className='filters'>
+        <h2>
+          <ListFilterIcon /> Filter
+        </h2>
+        <Form
+          method='GET'
+          onChange={(e) => handleFilterChange(e.currentTarget)}
+        >
+          <input type='hidden' name='q' value={query} />
+          <input type='hidden' name='start' value={start} />
+          <input type='hidden' name='rows' value={rows} />
+          {filters.map((filter) => {
+            const value = activeFilters.find(
+              (f) => f.name === filter.name,
+            )?.value;
+            return (
+              <Filter filter={filter} key={filter.id} currentValue={value} />
+            );
+          })}
+        </Form>
       </div>
     </div>
   );
