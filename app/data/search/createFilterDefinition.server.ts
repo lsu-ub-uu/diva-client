@@ -10,37 +10,50 @@ import type {
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { uniqBy } from 'lodash-es';
 
-export interface TextFilter {
+export type FilterType =
+  | TextFilter
+  | NumberFilter
+  | CollectionFilter
+  | AutocompleteFilter;
+
+export interface BaseFilter {
   id: string;
-  type: 'text';
   name: string;
-  regex: string;
   textId: string;
 }
 
-export interface NumberFilter {
-  id: string;
+export interface TextFilter extends BaseFilter {
+  type: 'text';
+  regex: string;
+}
+
+export interface NumberFilter extends BaseFilter {
   type: 'number';
-  name: string;
   min?: number;
   max?: number;
   warningMin?: number;
   warningMax?: number;
-  textId: string;
 }
 
-export interface CollectionFilter {
-  id: string;
+export interface CollectionFilter extends BaseFilter {
   type: 'collection';
-  name: string;
-  textId: string;
   options: { text: string; value: string }[];
+}
+
+export interface AutocompleteFilter extends BaseFilter {
+  type: 'autocomplete';
+  searchType: string;
+  searchTerm: string;
+  presentationPath: {
+    sv: string;
+    en: string;
+  };
 }
 
 export const createFilters = (
   searchMetadata: BFFMetadataGroup,
   dependencies: Dependencies,
-): (TextFilter | NumberFilter | CollectionFilter)[] => {
+): FilterType[] => {
   const includeGroup = dependencies.metadataPool.get(
     searchMetadata.children[0].childId,
   ) as BFFMetadataGroup;
@@ -53,23 +66,27 @@ export const createFilters = (
     .map((c) => dependencies.metadataPool.get(c.childId))
     .filter((metadata) => !excludedSearchTerms.includes(metadata.nameInData))
     .map((metadata) => createFilter(metadata, dependencies))
-    .filter(Boolean) as (TextFilter | NumberFilter | CollectionFilter)[];
+    .filter(Boolean) as FilterType[];
 };
 
 const createFilter = (
   metadata: BFFMetadata,
   depencencies: Dependencies,
-): TextFilter | NumberFilter | CollectionFilter | undefined => {
+): FilterType | undefined => {
+  const commonValues = {
+    id: metadata.id,
+    name: metadata.nameInData,
+    textId: metadata.textId,
+  };
+
   if (metadata.nameInData === 'permissionUnitSearchTerm') {
     const members = uniqBy(
       Array.from(depencencies.memberPool.values()),
       (m) => m.id,
     ).filter((m) => m.id !== 'diva');
     return {
+      ...commonValues,
       type: 'collection',
-      id: metadata.id,
-      name: metadata.nameInData,
-      textId: metadata.textId,
       options: members.map((m) => ({
         text: m.id,
         value: `permissionUnit_${m.id}`,
@@ -77,24 +94,33 @@ const createFilter = (
     };
   }
 
+  if (metadata.nameInData === 'subjectTopicSearchTerm') {
+    return {
+      ...commonValues,
+      type: 'autocomplete',
+      searchType: 'diva-subjectMinimalSearch',
+      searchTerm: `search.include.includePart.topicSearchTerm[0].value`,
+      presentationPath: {
+        sv: 'subject.authority_lang_swe.topic.value',
+        en: 'subject.variant_lang_eng.topic.value',
+      },
+    };
+  }
+
   if (metadata.type === 'textVariable') {
     const textVariable = metadata as BFFMetadataTextVariable;
     return {
+      ...commonValues,
       type: 'text',
-      id: textVariable.id,
-      name: textVariable.nameInData,
       regex: textVariable.regEx,
-      textId: textVariable.textId,
     };
   }
 
   if (metadata.type === 'numberVariable') {
     const numberVariable = metadata as BFFMetadataNumberVariable;
     return {
+      ...commonValues,
       type: 'number',
-      id: numberVariable.id,
-      name: numberVariable.nameInData,
-      textId: numberVariable.textId,
       min: Number(numberVariable.min),
       max: Number(numberVariable.max),
       warningMin: Number(numberVariable.warningMin),
@@ -114,12 +140,11 @@ const createFilter = (
       return { text: item.textId, value: item.nameInData };
     });
     return {
+      ...commonValues,
       type: 'collection',
-      id: collectionVariable.id,
-      name: collectionVariable.nameInData,
-      textId: collectionVariable.textId,
       options,
     };
   }
+
   return undefined;
 };

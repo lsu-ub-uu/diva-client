@@ -24,6 +24,7 @@ import css from './recordSearch.css?url';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { useTranslation } from 'react-i18next';
+import { useRef } from 'react';
 
 export const loader = async ({
   request,
@@ -137,7 +138,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
-    navigation.formAction?.includes(location.pathname),
+      navigation.formAction?.includes(location.pathname),
   );
 
   const handleQueryChange = useDebouncedCallback(
@@ -145,14 +146,19 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     400,
   );
 
-  const handleFilterChange = useDebouncedCallback((form: HTMLFormElement) => {
-    const formData = new FormData(form);
-    for (const [key, value] of Array.from(formData.entries())) {
-      if (typeof value === 'string' && value.trim() === '') {
-        formData.delete(key);
+  const filterFormRef = useRef<HTMLFormElement>(null);
+
+  const handleFilterChange = useDebouncedCallback(() => {
+    if (filterFormRef.current) {
+      const formData = new FormData(filterFormRef.current);
+
+      for (const [key, value] of Array.from(formData.entries())) {
+        if (typeof value === 'string' && value.trim() === '') {
+          formData.delete(key);
+        }
       }
+      submit(formData, { method: 'GET' });
     }
-    submit(formData, { method: 'GET' });
   }, 400);
 
   const handleRemoveFilter = (filterName: string) => {
@@ -252,10 +258,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
         <h2>
           <ListFilterIcon /> Filter
         </h2>
-        <Form
-          method='GET'
-          onChange={(e) => handleFilterChange(e.currentTarget)}
-        >
+        <Form method='GET' onChange={handleFilterChange} ref={filterFormRef}>
           <input type='hidden' name='q' value={query} />
           <input type='hidden' name='start' value={start} />
           <input type='hidden' name='rows' value={rows} />
@@ -264,7 +267,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
               (f) => f.name === filter.name,
             )?.value;
             return (
-              <Filter filter={filter} key={filter.id} currentValue={value} />
+              <Filter
+                filter={filter}
+                key={filter.id}
+                currentValue={value}
+                forceSubmit={handleFilterChange}
+              />
             );
           })}
         </Form>

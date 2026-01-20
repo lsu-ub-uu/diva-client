@@ -49,7 +49,6 @@ export const searchRecords = async (
 
   const search = dependencies.searchPool.get(searchType);
   const coraQuery = createCoraSearchQuery(dependencies, search, query);
-
   const response = await getSearchResultDataListBySearchType<DataListWrapper>(
     searchType,
     coraQuery,
