@@ -49,7 +49,6 @@ import {
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
 import { Alert, type Severity } from './components/Alert/Alert';
-import { AuthLogger } from './components/dev/AuthLogger';
 import { Header } from './components/Layout/Header/Header';
 import {
   parseUserPreferencesCookie,
@@ -91,7 +90,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     userPreferences,
     notification,
     userCanEditMemberSettings,
-    auth,
     globalAlert,
     blockRobotIndexing,
   };
@@ -238,7 +236,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
     exampleUsers,
     user,
     userCanEditMemberSettings,
-    auth,
     recordTypes,
     globalAlert,
     blockRobotIndexing,
@@ -271,7 +268,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
         editableMember={editableMember}
       />
       <Outlet />
-      <AuthLogger auth={auth} />
     </div>
   );
 }

@@ -94,6 +94,9 @@ export const Component = ({
   }
 
   if (isComponentGroup(component)) {
+    if (component.hidden) {
+      return null;
+    }
     return (
       <Group
         currentComponentNamePath={currentComponentNamePath}
