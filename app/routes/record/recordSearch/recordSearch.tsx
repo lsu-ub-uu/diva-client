@@ -8,8 +8,8 @@ import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { CirclePlusIcon } from 'lucide-react';
-import { Fragment, Suspense, useRef } from 'react';
+import { CirclePlusIcon, FunnelIcon } from 'lucide-react';
+import { Activity, Fragment, Suspense, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Await,
@@ -157,8 +157,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const navigation = useNavigation();
   const { t } = useTranslation();
-
-  const userHasSearched = query.length > 0 || activeFilters.length > 0;
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -250,6 +249,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
             </Await>
           </Suspense>
         </div>
+
         <RecordSearchView
           query={query}
           onQueryChange={handleQueryChange}
@@ -262,10 +262,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           activeFilters={activeFilters}
           onRemoveFilter={handleRemoveFilter}
           onClearAllFilters={handleClearAllFilters}
-          userHasSearched={userHasSearched}
+          filtersOpen={filtersOpen}
+          setFiltersOpen={setFiltersOpen}
         />
       </div>
       <Filters
+        open={filtersOpen}
         ref={filterFormRef}
         filters={filters}
         activeFilters={activeFilters}
@@ -273,6 +275,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
         start={start}
         rows={rows}
         onFilterChange={handleFilterChange}
+        onClose={() => setFiltersOpen(false)}
       />
     </div>
   );

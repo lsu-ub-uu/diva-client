@@ -7,7 +7,7 @@ import type {
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 
-export type FilterType =
+export type FilterDefinition =
   | TextFilter
   | NumberFilter
   | CollectionFilter
@@ -17,6 +17,7 @@ export interface BaseFilter {
   id: string;
   name: string;
   textId: string;
+  placeholderTextId: string;
 }
 
 export interface TextFilter extends BaseFilter {
@@ -49,7 +50,7 @@ export interface AutocompleteFilter extends BaseFilter {
 
 const autocompleteSearchTerms: Record<
   string,
-  Omit<AutocompleteFilter, 'type' | 'id' | 'name' | 'textId'>
+  Omit<AutocompleteFilter, keyof BaseFilter | 'type'>
 > = {
   subjectTopicSearchTerm: {
     searchType: 'diva-subjectMinimalSearch',
@@ -75,7 +76,7 @@ const autocompleteSearchTerms: Record<
 export const createFilters = (
   searchMetadata: BFFMetadataGroup,
   dependencies: Dependencies,
-): FilterType[] => {
+): FilterDefinition[] => {
   const includeGroup = dependencies.metadataPool.get(
     searchMetadata.children[0].childId,
   ) as BFFMetadataGroup;
@@ -88,24 +89,25 @@ export const createFilters = (
   return filterSearchTerms
     .map((c) => dependencies.metadataPool.get(c.childId))
     .map((metadata) => createFilter(metadata, dependencies))
-    .filter(Boolean) as FilterType[];
+    .filter(Boolean) as FilterDefinition[];
 };
 
 const createFilter = (
   metadata: BFFMetadata,
   depencencies: Dependencies,
-): FilterType | undefined => {
+): FilterDefinition | undefined => {
   const commonValues = {
     id: metadata.id,
     name: metadata.nameInData,
     textId: metadata.textId,
+    placeholderTextId: metadata.defTextId,
   };
 
   if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
     return {
       ...commonValues,
-      type: 'autocomplete',
       ...autocompleteSearchTerms[metadata.nameInData],
+      type: 'autocomplete',
     };
   }
 

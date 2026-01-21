@@ -1,4 +1,4 @@
-import { FunnelXIcon, XIcon } from 'lucide-react';
+import { FunnelIcon, FunnelXIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ActiveFilters.module.css';
 import { Button } from '@/components/Button/Button';
@@ -15,12 +15,16 @@ interface ActiveFiltersProps {
   activeFilters: ActiveFilter[];
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
+  filtersOpen: boolean;
+  setFiltersOpen: (open: boolean) => void;
 }
 
 export const ActiveFilters = ({
   activeFilters,
   onRemoveFilter,
   onClearAllFilters,
+  filtersOpen,
+  setFiltersOpen,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
   if (activeFilters.length === 0) {
@@ -29,7 +33,24 @@ export const ActiveFilters = ({
 
   return (
     <div className={styles['active-filters']}>
-      <div>{t('divaClient_activeFiltersText')}</div>
+      <div className={styles['active-filters-header']}>
+        <h2>{t('divaClient_activeFiltersText')}</h2>
+        <Button onClick={onClearAllFilters} variant='tertiary'>
+          <FunnelXIcon />
+          {t('divaClient_clearAllFiltersText')}
+        </Button>
+        <Button
+          onClick={() => setFiltersOpen(!filtersOpen)}
+          variant='secondary'
+          className='filters-toggle-button'
+        >
+          <FunnelIcon />
+          {filtersOpen ? 'divaClient_hideFilters' : t('divaClient_showFilters')}
+          {activeFilters.length > 0 && (
+            <div className='filter-counter'>{activeFilters.length}</div>
+          )}
+        </Button>
+      </div>
 
       <ul>
         {activeFilters.map((filter) => (
@@ -59,12 +80,6 @@ export const ActiveFilters = ({
             </IconButton>
           </li>
         ))}
-        <li>
-          <Button onClick={onClearAllFilters} variant='tertiary'>
-            <FunnelXIcon />
-            {t('divaClient_clearAllFiltersText')}
-          </Button>
-        </li>
       </ul>
     </div>
   );

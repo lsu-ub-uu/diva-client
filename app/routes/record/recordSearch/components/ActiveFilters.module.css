@@ -1,9 +1,7 @@
 .active-filters {
   display: flex;
-  flex-flow: row wrap;
-  align-items: center;
+  flex-direction: column;
   gap: var(--gap);
-  margin-top: var(--gap-l);
 
   ul {
     display: flex;
@@ -11,6 +9,15 @@
     gap: var(--gap);
     list-style: none;
     align-items: center;
+  }
+}
+
+.active-filters-header {
+  display: flex;
+  align-items: center;
+
+  h2 {
+    margin-right: auto;
   }
 }
 

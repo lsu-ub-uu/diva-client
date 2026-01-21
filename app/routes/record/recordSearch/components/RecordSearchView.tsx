@@ -1,13 +1,10 @@
+import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
+import type { BFFSearchResult } from '@/types/record';
 import { Form } from 'react-router';
+import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
-import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { SearchResults } from './SearchResults';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { SearchSlashIcon } from 'lucide-react';
-import type { BFFSearchResult } from '@/types/record';
-import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
-import { useTranslation } from 'react-i18next';
 
 interface RecordSearchViewProps {
   query: string;
@@ -21,7 +18,8 @@ interface RecordSearchViewProps {
   activeFilters: ActiveFilter[];
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
-  userHasSearched: boolean;
+  filtersOpen: boolean;
+  setFiltersOpen: (open: boolean) => void;
 }
 
 export const RecordSearchView = ({
@@ -36,9 +34,9 @@ export const RecordSearchView = ({
   activeFilters,
   onRemoveFilter,
   onClearAllFilters,
-  userHasSearched,
+  filtersOpen,
+  setFiltersOpen,
 }: RecordSearchViewProps) => {
-  const { t } = useTranslation();
   return (
     <>
       <Form
@@ -52,11 +50,8 @@ export const RecordSearchView = ({
           searching={searching}
           onClearMainQuery={onClearMainQuery}
         />
-        {searchResults.totalNo > 0 && (
-          <div className='pagination'>
-            <Pagination rowsPerPage={rows} searchResults={searchResults} />
-          </div>
-        )}
+        <input type='hidden' name='start' value={start} />
+        <input type='hidden' name='rows' value={rows} />
         {activeFilters.map((filter) => (
           <input
             key={filter.name}
@@ -67,25 +62,12 @@ export const RecordSearchView = ({
         ))}
       </Form>
 
-      {activeFilters.length > 0 && (
-        <ActiveFilters
-          activeFilters={activeFilters}
-          onRemoveFilter={onRemoveFilter}
-          onClearAllFilters={onClearAllFilters}
-        />
-      )}
-
-      {userHasSearched && searchResults.totalNo === 0 && (
-        <Alert severity='info' icon={<SearchSlashIcon />}>
-          <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
-          {t('divaClient_noSearchResultsBodyText')}
-        </Alert>
-      )}
-
-      <SearchResults
-        searchResults={searchResults}
-        start={start}
-        searching={searching}
+      <ActiveFilters
+        activeFilters={activeFilters}
+        onRemoveFilter={onRemoveFilter}
+        onClearAllFilters={onClearAllFilters}
+        filtersOpen={filtersOpen}
+        setFiltersOpen={setFiltersOpen}
       />
 
       {searchResults.totalNo > 0 && (
@@ -94,6 +76,28 @@ export const RecordSearchView = ({
           method='GET'
           onChange={(e) => onQueryChange(e.currentTarget)}
         >
+          <input type='hidden' name='q' value={query} />
+          {activeFilters.map((filter) => (
+            <input
+              key={filter.name}
+              type='hidden'
+              name={filter.name}
+              value={filter.value}
+            />
+          ))}
+          <Pagination rowsPerPage={rows} searchResults={searchResults} />
+        </Form>
+      )}
+
+      <SearchResults
+        searchResults={searchResults}
+        start={start}
+        searching={searching}
+        userHasSearched={query.length > 0 || activeFilters.length > 0}
+      />
+
+      {searchResults.totalNo > 0 && (
+        <Form method='GET' onChange={(e) => onQueryChange(e.currentTarget)}>
           <input type='hidden' name='q' value={query} />
           {activeFilters.map((filter) => (
             <input

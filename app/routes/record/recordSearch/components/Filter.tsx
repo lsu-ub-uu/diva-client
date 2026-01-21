@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import type {
-  FilterType,
+  FilterDefinition,
   AutocompleteFilter,
 } from '@/data/search/createFilterDefinition.server';
 import { useState } from 'react';
@@ -22,7 +22,7 @@ import { Select } from '@/components/Input/Select';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 
 interface FilterProps {
-  filter: FilterType;
+  filter: FilterDefinition;
   currentValue?: string;
   onChange?: (newValue: string) => void;
   forceSubmit: () => void;
@@ -142,7 +142,12 @@ const AutocompleteFilter = ({
           onChange(newValue ? `${filter.recordType}_${newValue}` : '');
         }}
       >
-        <ComboboxInput onChange={handleComboboxInputChange} />
+        <ComboboxInput
+          onChange={handleComboboxInputChange}
+          placeholder={t('divaClient_recordLinkAutocompletePlaceholderText', {
+            recordType: t(filter.textId).toLowerCase(),
+          })}
+        />
         <ComboboxOptions anchor='bottom'>
           {fetcher.state === 'idle' &&
             fetcher.data &&
