@@ -1,7 +1,8 @@
-import { XIcon } from 'lucide-react';
+import { FunnelXIcon, XIcon } from 'lucide-react';
 import { IconButton } from '../IconButton/IconButton';
 import { useTranslation } from 'react-i18next';
 import styles from './ActiveFilters.module.css';
+import { Button } from '../Button/Button';
 
 export interface ActiveFilter {
   name: string;
@@ -12,12 +13,14 @@ export interface ActiveFilter {
 
 interface ActiveFiltersProps {
   activeFilters: ActiveFilter[];
-  handleRemoveFilter: (name: string) => void;
+  onRemoveFilter: (name: string) => void;
+  onClearAllFilters: () => void;
 }
 
 export const ActiveFilters = ({
   activeFilters,
-  handleRemoveFilter,
+  onRemoveFilter,
+  onClearAllFilters,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
   if (activeFilters.length === 0) {
@@ -50,12 +53,18 @@ export const ActiveFilters = ({
               tooltip={t('divaClient_filterRemoveText')}
               size='small'
               type='submit'
-              onClick={() => handleRemoveFilter(filter.name)}
+              onClick={() => onRemoveFilter(filter.name)}
             >
               <XIcon />
             </IconButton>
           </li>
         ))}
+        <li>
+          <Button onClick={onClearAllFilters} variant='tertiary'>
+            <FunnelXIcon />
+            {t('divaClient_clearAllFiltersText')}
+          </Button>
+        </li>
       </ul>
     </div>
   );

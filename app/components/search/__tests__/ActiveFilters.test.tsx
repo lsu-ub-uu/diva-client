@@ -5,7 +5,13 @@ import userEvent from '@testing-library/user-event';
 
 describe('ActiveFilters', () => {
   it('renders nothing when no active filters', () => {
-    render(<ActiveFilters activeFilters={[]} handleRemoveFilter={vi.fn()} />);
+    render(
+      <ActiveFilters
+        activeFilters={[]}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={vi.fn()}
+      />,
+    );
     expect(
       screen.queryByText('divaClient_activeFiltersText'),
     ).not.toBeInTheDocument();
@@ -25,7 +31,8 @@ describe('ActiveFilters', () => {
             valueTextId: 'Value2Text',
           },
         ]}
-        handleRemoveFilter={vi.fn()}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={vi.fn()}
       />,
     );
 
@@ -39,8 +46,6 @@ describe('ActiveFilters', () => {
 
     expect(screen.getByText(/^Filter2Text/)).toBeInTheDocument();
     expect(screen.getByText(/Value2Text/)).toBeInTheDocument();
-
-    expect(screen.getAllByRole('button').length).toBe(2);
   });
 
   it('removes filter on button click', async () => {
@@ -58,7 +63,8 @@ describe('ActiveFilters', () => {
             valueTextId: 'Value2Text',
           },
         ]}
-        handleRemoveFilter={removeFilterSpy}
+        onRemoveFilter={removeFilterSpy}
+        onClearAllFilters={vi.fn()}
       />,
     );
 
@@ -68,5 +74,30 @@ describe('ActiveFilters', () => {
     });
     await user.click(removeButton);
     expect(removeFilterSpy).toHaveBeenCalledWith('filter1');
+  });
+
+  it('renders active clear all filters button', async () => {
+    const user = userEvent.setup();
+    const clearAllFiltersSpy = vi.fn();
+    render(
+      <ActiveFilters
+        activeFilters={[
+          { name: 'filter1', textId: 'Filter1Text', value: 'filter1' },
+          {
+            name: 'filter2',
+            textId: 'Filter2Text',
+            value: 'filter2',
+            valueTextId: 'Value2Text',
+          },
+        ]}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={clearAllFiltersSpy}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_clearAllFiltersText' }),
+    );
+    expect(clearAllFiltersSpy).toHaveBeenCalled();
   });
 });

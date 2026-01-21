@@ -27,25 +27,6 @@
   gap: var(--gap-l);
 }
 
-.search-query-wrapper {
-  position: relative;
-}
-
-.search-button {
-  position: absolute;
-  padding-right: var(--gap-s);
-  right: 2px;
-  top: 2px;
-  bottom: 2px;
-  background-color: var(--color-background);
-  display: grid;
-  place-items: center;
-
-  button {
-    transform: translateY(-2px);
-  }
-}
-
 .record-search {
   display: grid;
   gap: var(--gap-l);

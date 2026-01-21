@@ -9,6 +9,8 @@
     display: flex;
     flex-flow: row wrap;
     gap: var(--gap);
+    list-style: none;
+    align-items: center;
   }
 }
 

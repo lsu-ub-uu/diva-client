@@ -17,9 +17,11 @@ import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import {
   CirclePlusIcon,
+  FunnelIcon,
   ListFilterIcon,
   SearchIcon,
   SearchSlashIcon,
+  XIcon,
 } from 'lucide-react';
 import {
   Await,
@@ -41,6 +43,7 @@ import { Fragment, Suspense, useRef } from 'react';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Button } from '@/components/Button/Button';
+import { MainSearchInput } from '@/components/search/MainSearchInput';
 
 export const loader = async ({
   request,
@@ -177,7 +180,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
-      navigation.formAction?.includes(location.pathname),
+    navigation.formAction?.includes(location.pathname),
   );
 
   const handleQueryChange = useDebouncedCallback(
@@ -209,6 +212,24 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       if (filter.name !== filterName) {
         formData.append(filter.name, filter.value);
       }
+    });
+    submit(formData, { method: 'GET' });
+  };
+
+  const handleClearAllFilters = () => {
+    const formData = new FormData();
+    formData.append('q', query);
+    formData.append('start', start.toString());
+    formData.append('rows', rows.toString());
+    submit(formData, { method: 'GET' });
+  };
+
+  const handleClearMainQuery = () => {
+    const formData = new FormData();
+    formData.append('start', start.toString());
+    formData.append('rows', rows.toString());
+    activeFilters.forEach((filter) => {
+      formData.append(filter.name, filter.value);
     });
     submit(formData, { method: 'GET' });
   };
@@ -252,24 +273,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           onChange={(e) => handleQueryChange(e.currentTarget)}
           className='main-query-form'
         >
-          <Fieldset label={t(mainSearchTerm.textId)} size='large'>
-            <div className='search-query-wrapper'>
-              <Input
-                name='q'
-                className='search-query-input'
-                placeholder={t(mainSearchTerm.defTextId)}
-                defaultValue={query}
-              />
-              <div className='search-button'>
-                <IconButton
-                  type='submit'
-                  tooltip={t('divaClient_SearchButtonText')}
-                >
-                  {searching ? <CircularLoader /> : <SearchIcon />}
-                </IconButton>
-              </div>
-            </div>
-          </Fieldset>
+          <MainSearchInput
+            query={query}
+            mainSearchTerm={mainSearchTerm}
+            searching={searching}
+            onClearMainQuery={handleClearMainQuery}
+          />
           {searchResults.totalNo > 0 && (
             <div className='pagination'>
               <Pagination rowsPerPage={rows} searchResults={searchResults} />
@@ -288,7 +297,8 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
         {activeFilters.length > 0 && (
           <ActiveFilters
             activeFilters={activeFilters}
-            handleRemoveFilter={handleRemoveFilter}
+            onRemoveFilter={handleRemoveFilter}
+            onClearAllFilters={handleClearAllFilters}
           />
         )}
 
@@ -326,7 +336,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       </div>
       <div className='filters'>
         <h2>
-          <ListFilterIcon /> {t('divaClient_filterTitleText')}
+          <FunnelIcon /> {t('divaClient_filterTitleText')}
         </h2>
         <Form method='GET' onChange={handleFilterChange} ref={filterFormRef}>
           <input type='hidden' name='q' value={query} />
