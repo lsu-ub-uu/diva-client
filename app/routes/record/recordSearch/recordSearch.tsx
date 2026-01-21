@@ -21,7 +21,7 @@ import {
 } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
-import type { Route } from '../+types/recordSearch';
+import type { Route } from './+types/recordSearch';
 import type { ActiveFilter } from './components/ActiveFilters';
 import { SearchLayout } from './components/RecordSearchContent';
 import css from './recordSearch.css?url';
