@@ -4,6 +4,12 @@
   align-items: center;
   gap: var(--gap);
   margin-top: var(--gap-l);
+
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--gap);
+  }
 }
 
 .active-filter-texts {

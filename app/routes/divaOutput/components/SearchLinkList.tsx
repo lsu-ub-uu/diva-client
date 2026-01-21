@@ -30,7 +30,7 @@ export const SearchLinkList = ({
             <li key={item.href} className={pill ? 'pill' : ''}>
               {item.href ? (
                 <Link
-                  to={`/diva-output?search.include.includePart.${searchTerm}.value=${item.href}&search.rows.value=10`}
+                  to={`/diva-output?${searchTerm}=${item.href}`}
                   rel='nofollow'
                 >
                   {item.label}
