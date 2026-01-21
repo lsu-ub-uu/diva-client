@@ -53,6 +53,16 @@ export const SearchLayout = ({
     }
   }, 400);
 
+  console.log('props', {
+    query,
+    mainSearchTerm,
+    searching,
+    searchResults,
+    rows,
+    start,
+    filters,
+    activeFilters,
+  });
   return (
     <div className='search-layout'>
       <main className='search-main'>

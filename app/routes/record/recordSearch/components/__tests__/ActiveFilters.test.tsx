@@ -10,12 +10,20 @@ describe('ActiveFilters', () => {
         activeFilters={[]}
         onRemoveFilter={vi.fn()}
         onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
       />,
     );
+
+    // Use await with findByRole since it's asynchronous
+    const button = screen.getByRole('button', {
+      name: 'divaClient_showFiltersText',
+    });
+    expect(button).toBeInTheDocument();
+
     expect(
       screen.queryByText('divaClient_activeFiltersText'),
     ).not.toBeInTheDocument();
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
