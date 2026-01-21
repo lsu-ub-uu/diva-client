@@ -27,18 +27,21 @@ export const ActiveFilters = ({
   setFiltersOpen,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
-  if (activeFilters.length === 0) {
-    return null;
-  }
+
+  const hasActiveFilters = activeFilters.length > 0;
 
   return (
     <div className={styles['active-filters']}>
       <div className={styles['active-filters-header']}>
-        <h2>{t('divaClient_activeFiltersText')}</h2>
-        <Button onClick={onClearAllFilters} variant='tertiary'>
-          <FunnelXIcon />
-          {t('divaClient_clearAllFiltersText')}
-        </Button>
+        {hasActiveFilters && (
+          <>
+            <h2>{t('divaClient_activeFiltersText')}</h2>
+            <Button onClick={onClearAllFilters} variant='tertiary'>
+              <FunnelXIcon />
+              {t('divaClient_clearAllFiltersText')}
+            </Button>
+          </>
+        )}
         <Button
           onClick={() => setFiltersOpen(!filtersOpen)}
           variant='secondary'
@@ -51,36 +54,37 @@ export const ActiveFilters = ({
           )}
         </Button>
       </div>
-
-      <ul>
-        {activeFilters.map((filter) => (
-          <li
-            key={filter.name}
-            className={styles['active-filter']}
-            aria-label={t(filter.textId)}
-          >
-            <div className={styles['active-filter-texts']}>
-              <div className={styles['active-filter-name']}>
-                {t(filter.textId)}:
-              </div>
-              <div className={styles['active-filter-value']}>
-                &quot;
-                {filter.valueTextId ? t(filter.valueTextId) : filter.value}
-                &quot;
-              </div>
-            </div>
-
-            <IconButton
-              tooltip={t('divaClient_filterRemoveText')}
-              size='small'
-              type='submit'
-              onClick={() => onRemoveFilter(filter.name)}
+      {hasActiveFilters && (
+        <ul>
+          {activeFilters.map((filter) => (
+            <li
+              key={filter.name}
+              className={styles['active-filter']}
+              aria-label={t(filter.textId)}
             >
-              <XIcon />
-            </IconButton>
-          </li>
-        ))}
-      </ul>
+              <div className={styles['active-filter-texts']}>
+                <div className={styles['active-filter-name']}>
+                  {t(filter.textId)}:
+                </div>
+                <div className={styles['active-filter-value']}>
+                  &quot;
+                  {filter.valueTextId ? t(filter.valueTextId) : filter.value}
+                  &quot;
+                </div>
+              </div>
+
+              <IconButton
+                tooltip={t('divaClient_filterRemoveText')}
+                size='small'
+                type='submit'
+                onClick={() => onRemoveFilter(filter.name)}
+              >
+                <XIcon />
+              </IconButton>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
