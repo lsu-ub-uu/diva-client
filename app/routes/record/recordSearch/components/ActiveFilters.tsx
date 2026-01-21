@@ -48,7 +48,9 @@ export const ActiveFilters = ({
           className='filters-toggle-button'
         >
           <FunnelIcon />
-          {filtersOpen ? 'divaClient_hideFilters' : t('divaClient_showFilters')}
+          {filtersOpen
+            ? t('divaClient_hideFiltersText')
+            : t('divaClient_showFiltersText')}
           {activeFilters.length > 0 && (
             <div className='filter-counter'>{activeFilters.length}</div>
           )}

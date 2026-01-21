@@ -199,8 +199,22 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className='search-layout' key={searchId}>
-      <div className='search-main'>
+    <SearchLayout
+      key={searchId}
+      query={query}
+      mainSearchTerm={mainSearchTerm}
+      searching={searching}
+      searchResults={searchResults}
+      rows={rows}
+      start={start}
+      filters={filters}
+      activeFilters={activeFilters}
+      onQueryChange={handleQueryChange}
+      onClearMainQuery={handleClearMainQuery}
+      onRemoveFilter={handleRemoveFilter}
+      onClearAllFilters={handleClearAllFilters}
+    >
+      <>
         <Breadcrumbs />
         <div className='title-wrapper'>
           <h1>{title}</h1>
@@ -232,22 +246,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
             </Await>
           </Suspense>
         </div>
-
-        <SearchLayout
-          query={query}
-          mainSearchTerm={mainSearchTerm}
-          searching={searching}
-          searchResults={searchResults}
-          rows={rows}
-          start={start}
-          filters={filters}
-          activeFilters={activeFilters}
-          onQueryChange={handleQueryChange}
-          onClearMainQuery={handleClearMainQuery}
-          onRemoveFilter={handleRemoveFilter}
-          onClearAllFilters={handleClearAllFilters}
-        />
-      </div>
-    </div>
+      </>
+    </SearchLayout>
   );
 }

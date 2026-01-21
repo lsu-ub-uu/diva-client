@@ -32,7 +32,7 @@ export const Filters = ({
 }: FiltersProps) => {
   const { t } = useTranslation();
   return (
-    <div className='filters' data-open={open}>
+    <aside className='filters' data-open={open}>
       <button className='filters-backdrop' onClick={onClose} />
       <div className='filters-content'>
         <div className='filters-header'>
@@ -62,6 +62,6 @@ export const Filters = ({
           })}
         </Form>
       </div>
-    </div>
+    </aside>
   );
 };

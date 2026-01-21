@@ -18,6 +18,7 @@ interface SearchLayoutProps {
   onClearMainQuery: () => void;
   onRemoveFilter: (filterName: string) => void;
   onClearAllFilters: () => void;
+  children?: React.ReactNode;
 }
 
 export const SearchLayout = ({
@@ -33,6 +34,7 @@ export const SearchLayout = ({
   onClearMainQuery,
   onRemoveFilter,
   onClearAllFilters,
+  children,
 }: SearchLayoutProps) => {
   const submit = useSubmit();
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -52,22 +54,25 @@ export const SearchLayout = ({
   }, 400);
 
   return (
-    <>
-      <RecordSearchView
-        query={query}
-        onQueryChange={onQueryChange}
-        mainSearchTerm={mainSearchTerm}
-        searching={searching}
-        onClearMainQuery={onClearMainQuery}
-        searchResults={searchResults}
-        rows={rows}
-        start={start}
-        activeFilters={activeFilters}
-        onRemoveFilter={onRemoveFilter}
-        onClearAllFilters={onClearAllFilters}
-        filtersOpen={filtersOpen}
-        setFiltersOpen={setFiltersOpen}
-      />
+    <div className='search-layout'>
+      <main className='search-main'>
+        {children}
+        <RecordSearchView
+          query={query}
+          onQueryChange={onQueryChange}
+          mainSearchTerm={mainSearchTerm}
+          searching={searching}
+          onClearMainQuery={onClearMainQuery}
+          searchResults={searchResults}
+          rows={rows}
+          start={start}
+          activeFilters={activeFilters}
+          onRemoveFilter={onRemoveFilter}
+          onClearAllFilters={onClearAllFilters}
+          filtersOpen={filtersOpen}
+          setFiltersOpen={setFiltersOpen}
+        />
+      </main>
       <Filters
         open={filtersOpen}
         ref={filterFormRef}
@@ -79,6 +84,6 @@ export const SearchLayout = ({
         onFilterChange={handleFilterChange}
         onClose={() => setFiltersOpen(false)}
       />
-    </>
+    </div>
   );
 };
