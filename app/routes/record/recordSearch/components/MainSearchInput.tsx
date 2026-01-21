@@ -1,12 +1,12 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import { SearchIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '../IconButton/IconButton';
-import { Fieldset } from '../Input/Fieldset';
-import { Input } from '../Input/Input';
-import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './MainSearchInput.module.css';
 import { useState } from 'react';
+import { Fieldset } from '@/components/Input/Fieldset';
+import { Input } from '@/components/Input/Input';
+import { IconButton } from '@/components/IconButton/IconButton';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 interface MainSearchInputProps {
   query: string;

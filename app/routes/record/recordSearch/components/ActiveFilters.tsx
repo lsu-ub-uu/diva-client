@@ -1,8 +1,8 @@
 import { FunnelXIcon, XIcon } from 'lucide-react';
-import { IconButton } from '../IconButton/IconButton';
 import { useTranslation } from 'react-i18next';
 import styles from './ActiveFilters.module.css';
-import { Button } from '../Button/Button';
+import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 export interface ActiveFilter {
   name: string;

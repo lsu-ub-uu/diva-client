@@ -1,9 +1,9 @@
 import type { BFFSearchResult } from '@/types/record';
-import { DivaOutputSearchResult } from '../Form/SearchResult/DivaOutputSearchResult';
-import { SearchResultForm } from '../Form/SearchResultForm';
-import { RecordActionButtons } from '../RecordActionButtons/RecordActionButtons';
 
 import styles from './SearchResults.module.css';
+import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
+import { SearchResultForm } from '@/components/Form/SearchResultForm';
 
 interface SearchResultsProps {
   searchResults: BFFSearchResult;

@@ -1,32 +1,19 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { IconButton } from '@/components/IconButton/IconButton';
-import { Fieldset } from '@/components/Input/Fieldset';
-import { Input } from '@/components/Input/Input';
+import { Button } from '@/components/Button/Button';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { CircularLoader } from '@/components/Loader/CircularLoader';
-import {
-  ActiveFilters,
-  type ActiveFilter,
-} from '@/components/search/ActiveFilters';
-import { Filter } from '@/components/search/Filter';
-import { Pagination } from '@/components/search/Pagination';
-import { SearchResults } from '@/components/search/SearchResults';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
+import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import {
-  CirclePlusIcon,
-  FunnelIcon,
-  ListFilterIcon,
-  SearchIcon,
-  SearchSlashIcon,
-  XIcon,
-} from 'lucide-react';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
+import { CirclePlusIcon } from 'lucide-react';
+import { Fragment, Suspense, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Await,
   data,
-  Form,
   href,
   Link,
   useNavigation,
@@ -34,16 +21,11 @@ import {
 } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
-import type { Route } from './+types/recordSearch';
+import type { Route } from '../+types/recordSearch';
+import { Filters } from './components/Filters';
+import { RecordSearchView } from './components/RecordSearchView';
 import css from './recordSearch.css?url';
-import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { useTranslation } from 'react-i18next';
-import { Fragment, Suspense, useRef } from 'react';
-import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { Button } from '@/components/Button/Button';
-import { MainSearchInput } from '@/components/search/MainSearchInput';
+import type { ActiveFilter } from './components/ActiveFilters';
 
 export const loader = async ({
   request,
@@ -176,7 +158,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const userHasSearched = query || activeFilters.length > 0;
+  const userHasSearched = query.length > 0 || activeFilters.length > 0;
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -268,95 +250,30 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
             </Await>
           </Suspense>
         </div>
-        <Form
-          method='GET'
-          onChange={(e) => handleQueryChange(e.currentTarget)}
-          className='main-query-form'
-        >
-          <MainSearchInput
-            query={query}
-            mainSearchTerm={mainSearchTerm}
-            searching={searching}
-            onClearMainQuery={handleClearMainQuery}
-          />
-          {searchResults.totalNo > 0 && (
-            <div className='pagination'>
-              <Pagination rowsPerPage={rows} searchResults={searchResults} />
-            </div>
-          )}
-          {activeFilters.map((filter) => (
-            <input
-              key={filter.name}
-              type='hidden'
-              name={filter.name}
-              value={filter.value}
-            />
-          ))}
-        </Form>
-
-        {activeFilters.length > 0 && (
-          <ActiveFilters
-            activeFilters={activeFilters}
-            onRemoveFilter={handleRemoveFilter}
-            onClearAllFilters={handleClearAllFilters}
-          />
-        )}
-
-        {userHasSearched && searchResults.totalNo === 0 && (
-          <Alert severity='info' icon={<SearchSlashIcon />}>
-            <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
-            {t('divaClient_noSearchResultsBodyText')}
-          </Alert>
-        )}
-
-        <SearchResults
-          searchResults={searchResults}
-          start={start}
+        <RecordSearchView
+          query={query}
+          onQueryChange={handleQueryChange}
+          mainSearchTerm={mainSearchTerm}
           searching={searching}
+          onClearMainQuery={handleClearMainQuery}
+          searchResults={searchResults}
+          rows={rows}
+          start={start}
+          activeFilters={activeFilters}
+          onRemoveFilter={handleRemoveFilter}
+          onClearAllFilters={handleClearAllFilters}
+          userHasSearched={userHasSearched}
         />
-
-        {searchResults.totalNo > 0 && (
-          <Form
-            className='pagination'
-            method='GET'
-            onChange={(e) => handleQueryChange(e.currentTarget)}
-          >
-            <input type='hidden' name='q' value={query} />
-            {activeFilters.map((filter) => (
-              <input
-                key={filter.name}
-                type='hidden'
-                name={filter.name}
-                value={filter.value}
-              />
-            ))}
-            <Pagination rowsPerPage={rows} searchResults={searchResults} />
-          </Form>
-        )}
       </div>
-      <div className='filters'>
-        <h2>
-          <FunnelIcon /> {t('divaClient_filterTitleText')}
-        </h2>
-        <Form method='GET' onChange={handleFilterChange} ref={filterFormRef}>
-          <input type='hidden' name='q' value={query} />
-          <input type='hidden' name='start' value={start} />
-          <input type='hidden' name='rows' value={rows} />
-          {filters.map((filter) => {
-            const value = activeFilters.find(
-              (f) => f.name === filter.name,
-            )?.value;
-            return (
-              <Filter
-                filter={filter}
-                key={filter.id}
-                currentValue={value}
-                forceSubmit={handleFilterChange}
-              />
-            );
-          })}
-        </Form>
-      </div>
+      <Filters
+        ref={filterFormRef}
+        filters={filters}
+        activeFilters={activeFilters}
+        query={query}
+        start={start}
+        rows={rows}
+        onFilterChange={handleFilterChange}
+      />
     </div>
   );
 }

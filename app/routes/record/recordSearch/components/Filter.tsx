@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Fieldset } from '../Input/Fieldset';
-import { Input } from '../Input/Input';
-import { Select } from '../Input/Select';
+
 import type {
   FilterType,
   AutocompleteFilter,
@@ -18,7 +16,10 @@ import type { BFFDataRecord } from '@/types/record';
 
 import { get } from 'lodash-es';
 import { useLanguage } from '@/i18n/useLanguage';
-import { AutocompleteForm } from '../Form/AutocompleteForm';
+import { Fieldset } from '@/components/Input/Fieldset';
+import { Input } from '@/components/Input/Input';
+import { Select } from '@/components/Input/Select';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 
 interface FilterProps {
   filter: FilterType;

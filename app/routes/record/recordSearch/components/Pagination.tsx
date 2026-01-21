@@ -26,8 +26,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
-import { IconButton } from '../IconButton/IconButton';
+
 import styles from './Pagination.module.css';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface PaginationProps {
   rowsPerPage: number;
