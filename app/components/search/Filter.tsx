@@ -138,7 +138,7 @@ const AutocompleteFilter = ({
         name={filter.name}
         value={value}
         onChange={(newValue) => {
-          onChange(newValue ? `diva-subject_${newValue}` : '');
+          onChange(newValue ? `${filter.recordType}_${newValue}` : '');
         }}
       >
         <ComboboxInput onChange={handleComboboxInputChange} />

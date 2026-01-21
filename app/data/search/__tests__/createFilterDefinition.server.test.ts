@@ -1,18 +1,15 @@
-import { describe, it, expect } from 'vitest';
-import { createFilters } from '../createFilterDefinition.server';
 import type {
   BFFMetadata,
-  BFFMetadataGroup,
-  BFFMetadataTextVariable,
-  BFFMetadataNumberVariable,
   BFFMetadataCollectionVariable,
-  BFFCollectionItemReference,
+  BFFMetadataGroup,
   BFFMetadataItemCollection,
-  BFFBase,
+  BFFMetadataNumberVariable,
+  BFFMetadataTextVariable,
 } from '@/cora/transform/bffTypes.server';
-import type {} from '@/cora/transform/bffTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { listToPool } from '@/utils/structs/listToPool';
+import { describe, expect, it } from 'vitest';
+import { createFilters } from '../createFilterDefinition.server';
 
 describe('createFilters', () => {
   it('creates a text filter', () => {

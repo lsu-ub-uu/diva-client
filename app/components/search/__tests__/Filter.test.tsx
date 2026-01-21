@@ -17,7 +17,6 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
-      regex: '.+',
     };
 
     render(
@@ -40,7 +39,6 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
-      regex: '.+',
     };
 
     render(
@@ -63,7 +61,6 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
-      regex: '.+',
     };
 
     const { rerender } = render(

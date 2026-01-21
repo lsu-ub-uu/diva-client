@@ -4,11 +4,8 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
-  BFFMetadataNumberVariable,
-  BFFMetadataTextVariable,
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { uniqBy } from 'lodash-es';
 
 export type FilterType =
   | TextFilter
@@ -43,11 +40,37 @@ export interface AutocompleteFilter extends BaseFilter {
   type: 'autocomplete';
   searchType: string;
   searchTerm: string;
+  recordType: string;
   presentationPath: {
     sv: string;
     en: string;
   };
 }
+
+const autocompleteSearchTerms: Record<
+  string,
+  Omit<AutocompleteFilter, 'type' | 'id' | 'name' | 'textId'>
+> = {
+  subjectTopicSearchTerm: {
+    searchType: 'diva-subjectMinimalSearch',
+    recordType: 'diva-subject',
+    searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
+    presentationPath: {
+      sv: 'subject.authority_lang_swe.topic.value',
+      en: 'subject.variant_lang_eng.topic.value',
+    },
+  },
+  permissionUnitSearchTerm: {
+    recordType: 'permissionUnit',
+    searchType: 'permissionUnitSearch',
+    searchTerm:
+      'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
+    presentationPath: {
+      sv: 'permissionUnit.recordInfo.id.value',
+      en: 'permissionUnit.recordInfo.id.value',
+    },
+  },
+};
 
 export const createFilters = (
   searchMetadata: BFFMetadataGroup,
@@ -78,31 +101,11 @@ const createFilter = (
     textId: metadata.textId,
   };
 
-  if (metadata.nameInData === 'permissionUnitSearchTerm') {
-    const members = uniqBy(
-      Array.from(depencencies.memberPool.values()),
-      (m) => m.id,
-    ).filter((m) => m.id !== 'diva');
-    return {
-      ...commonValues,
-      type: 'collection',
-      options: members.map((m) => ({
-        text: m.id,
-        value: `permissionUnit_${m.id}`,
-      })),
-    };
-  }
-
-  if (metadata.nameInData === 'subjectTopicSearchTerm') {
+  if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
     return {
       ...commonValues,
       type: 'autocomplete',
-      searchType: 'diva-subjectMinimalSearch',
-      searchTerm: `search.include.includePart.topicSearchTerm[0].value`,
-      presentationPath: {
-        sv: 'subject.authority_lang_swe.topic.value',
-        en: 'subject.variant_lang_eng.topic.value',
-      },
+      ...autocompleteSearchTerms[metadata.nameInData],
     };
   }
 
