@@ -8,8 +8,8 @@ import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { CirclePlusIcon, FunnelIcon } from 'lucide-react';
-import { Activity, Fragment, Suspense, useRef, useState } from 'react';
+import { CirclePlusIcon } from 'lucide-react';
+import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Await,
@@ -22,10 +22,9 @@ import {
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../+types/recordSearch';
-import { Filters } from './components/Filters';
-import { RecordSearchView } from './components/RecordSearchView';
-import css from './recordSearch.css?url';
 import type { ActiveFilter } from './components/ActiveFilters';
+import { SearchLayout } from './components/RecordSearchContent';
+import css from './recordSearch.css?url';
 
 export const loader = async ({
   request,
@@ -157,7 +156,6 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -168,21 +166,6 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     (form: HTMLFormElement) => submit(form),
     400,
   );
-
-  const filterFormRef = useRef<HTMLFormElement>(null);
-
-  const handleFilterChange = useDebouncedCallback(() => {
-    if (filterFormRef.current) {
-      const formData = new FormData(filterFormRef.current);
-
-      for (const [key, value] of Array.from(formData.entries())) {
-        if (typeof value === 'string' && value.trim() === '') {
-          formData.delete(key);
-        }
-      }
-      submit(formData, { method: 'GET' });
-    }
-  }, 400);
 
   const handleRemoveFilter = (filterName: string) => {
     const formData = new FormData();
@@ -250,33 +233,21 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
           </Suspense>
         </div>
 
-        <RecordSearchView
+        <SearchLayout
           query={query}
-          onQueryChange={handleQueryChange}
           mainSearchTerm={mainSearchTerm}
           searching={searching}
-          onClearMainQuery={handleClearMainQuery}
           searchResults={searchResults}
           rows={rows}
           start={start}
+          filters={filters}
           activeFilters={activeFilters}
+          onQueryChange={handleQueryChange}
+          onClearMainQuery={handleClearMainQuery}
           onRemoveFilter={handleRemoveFilter}
           onClearAllFilters={handleClearAllFilters}
-          filtersOpen={filtersOpen}
-          setFiltersOpen={setFiltersOpen}
         />
       </div>
-      <Filters
-        open={filtersOpen}
-        ref={filterFormRef}
-        filters={filters}
-        activeFilters={activeFilters}
-        query={query}
-        start={start}
-        rows={rows}
-        onFilterChange={handleFilterChange}
-        onClose={() => setFiltersOpen(false)}
-      />
     </div>
   );
 }
