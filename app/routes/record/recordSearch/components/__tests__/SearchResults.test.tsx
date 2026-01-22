@@ -23,6 +23,7 @@ describe('SearchResults', () => {
         }}
         searching={true}
         start={1}
+        userHasSearched={false}
       />,
     );
 
@@ -100,6 +101,7 @@ describe('SearchResults', () => {
             searchResults={searchResults}
             searching={false}
             start={1}
+            userHasSearched={false}
           />
         ),
       },
@@ -164,6 +166,7 @@ describe('SearchResults', () => {
             searchResults={searchResults}
             searching={false}
             start={1}
+            userHasSearched={false}
           />
         ),
       },

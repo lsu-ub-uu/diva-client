@@ -17,6 +17,7 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
+      placeholderTextId: 'textFilterPlaceholderText',
     };
 
     render(
@@ -39,6 +40,7 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
+      placeholderTextId: 'textFilterPlaceholderText',
     };
 
     render(
@@ -61,6 +63,7 @@ describe('Filter', () => {
       id: 'someTextFilterId',
       name: 'someTextFilterName',
       textId: 'textFilterText',
+      placeholderTextId: 'textFilterPlaceholderText',
     };
 
     const { rerender } = render(
@@ -98,6 +101,7 @@ describe('Filter', () => {
       textId: 'numberFilterText',
       min: 0,
       max: 100,
+      placeholderTextId: 'numberFilterPlaceholderText',
     };
 
     render(
@@ -122,6 +126,7 @@ describe('Filter', () => {
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
       textId: 'collectionFilterText',
+      placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
         { value: 'option2', text: 'Option 2' },
@@ -161,6 +166,7 @@ describe('Filter', () => {
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
       textId: 'collectionFilterText',
+      placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
         { value: 'option2', text: 'Option 2' },
@@ -190,6 +196,7 @@ describe('Filter', () => {
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
       textId: 'collectionFilterText',
+      placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
         { value: 'option2', text: 'Option 2' },
@@ -230,6 +237,7 @@ describe('Filter', () => {
 
   it('renders a AutocompleteFilter', () => {
     const filter: AutocompleteFilter = {
+      recordType: 'someRecordType',
       type: 'autocomplete',
       id: 'someAutocompleteFilterId',
       name: 'someAutocompleteFilterName',
@@ -240,6 +248,7 @@ describe('Filter', () => {
         sv: 'some.sv.path',
         en: 'some.en.path',
       },
+      placeholderTextId: 'autocompleteFilterPlaceholderText',
     };
 
     const autocompleteMock = vi.fn();
@@ -272,6 +281,7 @@ describe('Filter', () => {
   it('is possible to search in autocomplete filter', async () => {
     const user = userEvent.setup();
     const filter: AutocompleteFilter = {
+      recordType: 'someRecordType',
       type: 'autocomplete',
       id: 'someAutocompleteFilterId',
       name: 'someAutocompleteFilterName',
@@ -282,6 +292,7 @@ describe('Filter', () => {
         sv: 'some.sv.path',
         en: 'some.en.path',
       },
+      placeholderTextId: 'autocompleteFilterPlaceholderText',
     };
 
     const autocompleteMock = vi.fn().mockReturnValue({
