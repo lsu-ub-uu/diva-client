@@ -4,7 +4,7 @@ import { ActiveFilters } from '../ActiveFilters';
 import userEvent from '@testing-library/user-event';
 
 describe('ActiveFilters', () => {
-  it('renders nothing when no active filters', () => {
+  it('renders when no active filters', () => {
     render(
       <ActiveFilters
         activeFilters={[]}
@@ -24,6 +24,9 @@ describe('ActiveFilters', () => {
     expect(
       screen.queryByText('divaClient_activeFiltersText'),
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_clearAllFiltersText' }),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
@@ -41,6 +44,8 @@ describe('ActiveFilters', () => {
         ]}
         onRemoveFilter={vi.fn()}
         onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
       />,
     );
 
@@ -73,6 +78,8 @@ describe('ActiveFilters', () => {
         ]}
         onRemoveFilter={removeFilterSpy}
         onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
       />,
     );
 
@@ -100,6 +107,8 @@ describe('ActiveFilters', () => {
         ]}
         onRemoveFilter={vi.fn()}
         onClearAllFilters={clearAllFiltersSpy}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
       />,
     );
 
@@ -107,5 +116,25 @@ describe('ActiveFilters', () => {
       screen.getByRole('button', { name: 'divaClient_clearAllFiltersText' }),
     );
     expect(clearAllFiltersSpy).toHaveBeenCalled();
+  });
+
+  it('toggles filters open state on button click', async () => {
+    const user = userEvent.setup();
+    const setFiltersOpenSpy = vi.fn();
+    render(
+      <ActiveFilters
+        activeFilters={[]}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={setFiltersOpenSpy}
+      />,
+    );
+
+    const toggleButton = screen.getByRole('button', {
+      name: 'divaClient_showFiltersText',
+    });
+    await user.click(toggleButton);
+    expect(setFiltersOpenSpy).toHaveBeenCalledWith(true);
   });
 });
