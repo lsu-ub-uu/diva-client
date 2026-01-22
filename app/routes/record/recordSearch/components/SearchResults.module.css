@@ -1,17 +1,8 @@
-.record-search {
-  display: grid;
-  gap: var(--gap-l);
-  margin-bottom: 3em;
-}
-
 .result-list {
-  display: flex;
-  flex-direction: column;
   padding: 0;
   margin: 0;
-  list-style: outside;
-  list-style-type: decimal;
-  padding-left: 2em;
+  list-style: none;
+  counter-reset: result 0;
   transition: opacity 0.1s;
 
   @media (width < 900px) {
@@ -28,12 +19,9 @@
   }
 }
 
-.result-list-item::marker {
-  font-size: var(--font-size-l);
-}
-
 .result-list-item {
-  display: list-item;
+  counter-increment: result;
+  display: flex;
   flex-direction: row;
   padding-left: var(--gap-l);
   padding-top: var(--gap-l);
@@ -45,8 +33,16 @@
   border: none;
 }
 
+.result-list-item::before {
+  content: counter(result) '. ';
+  font-size: var(--font-size-l);
+  margin-right: var(--gap);
+}
+
 .result-list-item-content {
-  display: grid;
+  display: inline-grid;
+  width: 100%;
+  margin-left: var(--gap);
   grid-template-columns: 1fr auto;
   gap: var(--gap);
 

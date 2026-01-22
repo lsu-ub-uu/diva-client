@@ -100,14 +100,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
             className='search-form'
             method='GET'
           >
-            <input type='hidden' name='search.rows.value' value='10' />
-            {member?.memberPermissionUnit && (
-              <input
-                type='hidden'
-                name='search.include.includePart.permissionUnitSearchTerm.value'
-                value={`permissionUnit_${member.memberPermissionUnit}`}
-              />
-            )}
             <div className='search-container'>
               <label className='search-label' htmlFor='landing-search'>
                 {t('divaClient_heroLabelText')}
@@ -117,7 +109,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
                 id='landing-search'
                 type='search'
                 className='search-input'
-                name='search.include.includePart.genericSearchTerm.value'
+                name='q'
               />
               <button
                 type='submit'

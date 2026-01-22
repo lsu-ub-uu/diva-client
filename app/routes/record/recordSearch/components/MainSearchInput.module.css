@@ -1,0 +1,20 @@
+.search-query-wrapper {
+  position: relative;
+}
+
+.search-buttons {
+  position: absolute;
+  padding-right: var(--gap-s);
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  background-color: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-s);
+
+  .search-button {
+    transform: translateY(-1px);
+  }
+}

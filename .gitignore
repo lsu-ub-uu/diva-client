@@ -43,3 +43,6 @@ vite.config.ts.timestamp-*
 
 # Test
 junit-report.xml
+
+# Fedora
+.directory
