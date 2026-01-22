@@ -79,7 +79,6 @@ export const SearchLayout = ({
         filters={filters}
         activeFilters={activeFilters}
         query={query}
-        start={start}
         rows={rows}
         onFilterChange={handleFilterChange}
         onClose={() => setFiltersOpen(false)}

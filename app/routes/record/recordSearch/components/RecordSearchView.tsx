@@ -53,7 +53,7 @@ export const RecordSearchView = ({
         />
         <SearchHiddenInputs
           rows={rows}
-          start={start}
+          start={1}
           activeFilters={activeFilters}
         />
       </Form>

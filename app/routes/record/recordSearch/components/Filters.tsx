@@ -14,7 +14,6 @@ interface FiltersProps {
   filters: FilterDefinition[];
   activeFilters: ActiveFilter[];
   query: string;
-  start: number;
   rows: number;
   onFilterChange: () => void;
   onClose: () => void;
@@ -26,7 +25,6 @@ export const Filters = ({
   filters,
   activeFilters,
   query,
-  start,
   rows,
   onFilterChange,
   onClose,
@@ -45,7 +43,7 @@ export const Filters = ({
           </IconButton>
         </div>
         <Form method='GET' onChange={onFilterChange} ref={ref}>
-          <SearchHiddenInputs query={query} rows={rows} start={start} />
+          <SearchHiddenInputs query={query} rows={rows} start={1} />
           {filters.map((filter) => {
             const value = activeFilters.find(
               (f) => f.name === filter.name,
