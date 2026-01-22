@@ -6,6 +6,7 @@ import type { FilterDefinition } from '@/data/search/createFilterDefinition.serv
 import type { ActiveFilter } from './ActiveFilters';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '@/components/IconButton/IconButton';
+import { SearchHiddenInputs } from './SearchHiddenInputs';
 
 interface FiltersProps {
   open: boolean;
@@ -44,9 +45,7 @@ export const Filters = ({
           </IconButton>
         </div>
         <Form method='GET' onChange={onFilterChange} ref={ref}>
-          <input type='hidden' name='q' value={query} />
-          <input type='hidden' name='start' value={start} />
-          <input type='hidden' name='rows' value={rows} />
+          <SearchHiddenInputs query={query} rows={rows} start={start} />
           {filters.map((filter) => {
             const value = activeFilters.find(
               (f) => f.name === filter.name,

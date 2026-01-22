@@ -1,5 +1,6 @@
 /*
- * Copyright 2025 Uppsala University Library
+ * Copyright 2025 Uppsala 
+niversity Library
  *
  * This file is part of DiVA Client.
  *
@@ -29,17 +30,31 @@ import {
 
 import styles from './Pagination.module.css';
 import { IconButton } from '@/components/IconButton/IconButton';
+import { Form } from 'react-router';
+import type { ActiveFilter } from './ActiveFilters';
+import { SearchHiddenInputs } from './SearchHiddenInputs';
 
 interface PaginationProps {
   rowsPerPage: number;
   searchResults: BFFSearchResult;
+  start: number;
+  query: string;
+  onQueryChange: (form: HTMLFormElement) => void;
+  activeFilters: ActiveFilter[];
 }
 
 const ROWS_START_INPUT_NAME = 'start';
 const ROWS_PER_PAGE_INPUT_NAME = 'rows';
-const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
+const rowsPerPageOptions = [10, 20, 40, 60, 100];
 
-export const Pagination = ({ rowsPerPage, searchResults }: PaginationProps) => {
+export const Pagination = ({
+  rowsPerPage,
+  searchResults,
+  start,
+  query,
+  onQueryChange,
+  activeFilters,
+}: PaginationProps) => {
   const { t } = useTranslation();
 
   const { fromNo, toNo, totalNo } = searchResults;
@@ -61,23 +76,32 @@ export const Pagination = ({ rowsPerPage, searchResults }: PaginationProps) => {
           totalNo,
         })}
       </span>
-      <Fieldset
-        label={t('divaClient_paginationRowsPerPageText')}
-        variant='inline'
-      >
-        <Select
-          name={ROWS_PER_PAGE_INPUT_NAME}
-          defaultValue={rowsPerPage}
-          key={rowsPerPage}
+
+      <Form method='GET' onChange={(e) => onQueryChange(e.currentTarget)}>
+        <Fieldset
+          label={t('divaClient_paginationRowsPerPageText')}
+          variant='inline'
         >
-          {rowsPerPageOptions.map((rows) => (
-            <option key={rows} value={rows}>
-              {rows}
-            </option>
-          ))}
-        </Select>
-      </Fieldset>
-      <span className={styles['pagination-buttons']}>
+          <Select
+            name={ROWS_PER_PAGE_INPUT_NAME}
+            defaultValue={rowsPerPage}
+            key={rowsPerPage}
+          >
+            {rowsPerPageOptions.map((rows) => (
+              <option key={rows} value={rows}>
+                {rows}
+              </option>
+            ))}
+          </Select>
+        </Fieldset>
+        <SearchHiddenInputs
+          query={query}
+          start={start}
+          activeFilters={activeFilters}
+        />
+      </Form>
+
+      <Form method='GET' className={styles['pagination-buttons']}>
         <IconButton
           type='submit'
           tooltip={t('divaClient_paginationFirstPageText')}
@@ -114,7 +138,12 @@ export const Pagination = ({ rowsPerPage, searchResults }: PaginationProps) => {
         >
           <ChevronLastIcon />
         </IconButton>
-      </span>
+        <SearchHiddenInputs
+          query={query}
+          rows={rowsPerPage}
+          activeFilters={activeFilters}
+        />
+      </Form>
     </div>
   );
 };

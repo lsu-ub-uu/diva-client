@@ -5,6 +5,7 @@ import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
 import { SearchResults } from './SearchResults';
+import { SearchHiddenInputs } from './SearchHiddenInputs';
 
 interface RecordSearchViewProps {
   query: string;
@@ -50,16 +51,11 @@ export const RecordSearchView = ({
           searching={searching}
           onClearMainQuery={onClearMainQuery}
         />
-        <input type='hidden' name='start' value={start} />
-        <input type='hidden' name='rows' value={rows} />
-        {activeFilters.map((filter) => (
-          <input
-            key={filter.name}
-            type='hidden'
-            name={filter.name}
-            value={filter.value}
-          />
-        ))}
+        <SearchHiddenInputs
+          rows={rows}
+          start={start}
+          activeFilters={activeFilters}
+        />
       </Form>
 
       <ActiveFilters
@@ -71,22 +67,14 @@ export const RecordSearchView = ({
       />
 
       {searchResults.totalNo > 0 && (
-        <Form
-          className='pagination'
-          method='GET'
-          onChange={(e) => onQueryChange(e.currentTarget)}
-        >
-          <input type='hidden' name='q' value={query} />
-          {activeFilters.map((filter) => (
-            <input
-              key={filter.name}
-              type='hidden'
-              name={filter.name}
-              value={filter.value}
-            />
-          ))}
-          <Pagination rowsPerPage={rows} searchResults={searchResults} />
-        </Form>
+        <Pagination
+          rowsPerPage={rows}
+          searchResults={searchResults}
+          start={start}
+          query={query}
+          onQueryChange={onQueryChange}
+          activeFilters={activeFilters}
+        />
       )}
 
       <SearchResults
@@ -97,18 +85,14 @@ export const RecordSearchView = ({
       />
 
       {searchResults.totalNo > 0 && (
-        <Form method='GET' onChange={(e) => onQueryChange(e.currentTarget)}>
-          <input type='hidden' name='q' value={query} />
-          {activeFilters.map((filter) => (
-            <input
-              key={filter.name}
-              type='hidden'
-              name={filter.name}
-              value={filter.value}
-            />
-          ))}
-          <Pagination rowsPerPage={rows} searchResults={searchResults} />
-        </Form>
+        <Pagination
+          rowsPerPage={rows}
+          searchResults={searchResults}
+          start={start}
+          query={query}
+          onQueryChange={onQueryChange}
+          activeFilters={activeFilters}
+        />
       )}
     </>
   );

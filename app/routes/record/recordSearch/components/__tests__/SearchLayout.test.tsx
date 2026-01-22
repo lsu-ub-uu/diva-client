@@ -64,8 +64,6 @@ describe('SearchLayout', () => {
     ]);
 
     render(<RoutesStub />);
-    expect(
-      screen.getByLabelText('genericSearchTextVarText'),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
 });

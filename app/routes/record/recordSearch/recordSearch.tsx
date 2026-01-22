@@ -50,7 +50,7 @@ export const loader = async ({
   const searchParams = new URL(request.url).searchParams;
   const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
-  const rows = Number(searchParams.get('rows')) || 10;
+  const rows = Number(searchParams.get('rows')) || 20;
 
   const activeFilters = filters
     .map((filter) => {
@@ -159,7 +159,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
-    navigation.formAction?.includes(location.pathname),
+      navigation.formAction?.includes(location.pathname),
   );
 
   const handleQueryChange = useDebouncedCallback(

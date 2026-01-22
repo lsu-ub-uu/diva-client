@@ -18,22 +18,34 @@
 
 import type { BFFSearchResult } from '@/types/record';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { createRoutesStub } from 'react-router';
+import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 import { Pagination } from '../Pagination';
 
 describe('<Pagination />', () => {
   it('renders rows per page select', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 1,
-          toNo: 10,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 1,
+              toNo: 10,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     const rowsPerPageSelect = screen.getByRole('combobox', {
       name: 'divaClient_paginationRowsPerPageText',
@@ -44,16 +56,27 @@ describe('<Pagination />', () => {
   });
 
   it('renders next page button with correct value', async () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 1,
-          toNo: 10,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 1,
+              toNo: 10,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     const nextPageButton = screen.getByRole('button', {
       name: 'divaClient_paginationNextPageText',
@@ -64,16 +87,28 @@ describe('<Pagination />', () => {
   });
 
   it('renders previous page button with correct value', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 21,
-          toNo: 30,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 21,
+              toNo: 30,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
     const prevPageButton = screen.getByRole('button', {
       name: 'divaClient_paginationPreviousPageText',
     });
@@ -83,16 +118,27 @@ describe('<Pagination />', () => {
   });
 
   it('renders first page button with correct value', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 21,
-          toNo: 30,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 21,
+              toNo: 30,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     const firstPageButton = screen.getByRole('button', {
       name: 'divaClient_paginationFirstPageText',
@@ -103,16 +149,27 @@ describe('<Pagination />', () => {
   });
 
   it('renders last page button with correct value', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 11,
-          toNo: 20,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 11,
+              toNo: 20,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     const lastPageButton = screen.getByRole('button', {
       name: 'divaClient_paginationLastPageText',
@@ -123,16 +180,27 @@ describe('<Pagination />', () => {
   });
 
   it('disables first and previous page buttons when on first page', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 1,
-          toNo: 10,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 1,
+              toNo: 10,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     expect(
       screen.getByLabelText('divaClient_paginationFirstPageText'),
@@ -149,16 +217,28 @@ describe('<Pagination />', () => {
   });
 
   it('disables next and last page buttons when on last page', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 91,
-          toNo: 100,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 91,
+              toNo: 100,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
     expect(
       screen.getByLabelText('divaClient_paginationFirstPageText'),
     ).not.toBeDisabled();
@@ -174,16 +254,27 @@ describe('<Pagination />', () => {
   });
 
   it('disables all buttons when only one page', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 1,
-          toNo: 8,
-          totalNo: 8,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 1,
+              toNo: 8,
+              totalNo: 8,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     expect(
       screen.getByLabelText('divaClient_paginationFirstPageText'),
@@ -200,16 +291,27 @@ describe('<Pagination />', () => {
   });
 
   it('does not render negative value for previous page button', () => {
-    render(
-      <Pagination
-        rowsPerPage={10}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 2,
-          toNo: 10,
-          totalNo: 100,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={10}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 2,
+              toNo: 10,
+              totalNo: 100,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     expect(
       screen.getByLabelText('divaClient_paginationPreviousPageText'),
@@ -217,16 +319,27 @@ describe('<Pagination />', () => {
   });
 
   it('renders correct value for back button when on last page with few items', () => {
-    render(
-      <Pagination
-        rowsPerPage={5}
-        searchResults={mock<BFFSearchResult>({
-          fromNo: 11,
-          toNo: 12,
-          totalNo: 12,
-        })}
-      />,
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <Pagination
+            rowsPerPage={5}
+            searchResults={mock<BFFSearchResult>({
+              fromNo: 11,
+              toNo: 12,
+              totalNo: 12,
+            })}
+            query=''
+            onQueryChange={vi.fn()}
+            start={1}
+            activeFilters={[]}
+          />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
 
     expect(
       screen.getByLabelText('divaClient_paginationPreviousPageText'),
