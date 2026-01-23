@@ -4,14 +4,6 @@
   align-items: center;
   gap: var(--gap-xl);
   font-size: var(--font-size);
-
-  @media (width < 900px) {
-    align-self: stretch;
-
-    .pagination-buttons {
-      margin-left: auto;
-    }
-  }
 }
 
 .result-text {
@@ -22,4 +14,14 @@
 
 .pagination-buttons {
   display: flex;
+}
+
+@media (width < 900px) {
+  .pagination {
+    display: grid;
+
+    .pagination-buttons {
+      margin-left: auto;
+    }
+  }
 }

@@ -51,7 +51,7 @@
   }
 
   &[data-severity='neutral'] {
-    --color-alert-bg: var(--color-output-card-background);
+    --color-alert-bg: var(--color-alert-neutral-bg);
     --color-alert-icon: var(--color-text);
     --color-alert-font: var(--color-text);
     --color-alert-border: var(--color-thin-border);

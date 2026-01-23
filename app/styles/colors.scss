@@ -1,12 +1,14 @@
 :root {
   /* Color palette */
   --color-background: rgb(255 255 255);
+  --color-background-darker: var(--color-gray-light);
   --color-background-inverted: rgb(33 33 33);
   --color-text: rgb(33 33 33);
   --color-text-inverted: rgb(255 255 255);
   --color-primary: rgb(51 51 51);
   --color-secondary: rgb(1 1 1);
   --color-accent-light: rgb(150 136 162);
+  --color-diva-purple: rgb(117 89 142);
   --color-accent: rgb(117 89 142);
   --color-accent-dark: rgb(97 57 133);
   --color-error-light: rgb(238 220 219);
@@ -53,11 +55,11 @@
   --color-alert-warning-icon: rgb(237 108 2);
   --color-alert-warning-font: rgb(102 60 0);
   --color-alert-warning-border: var(--color-alert-warning-icon);
+  --color-alert-neutral-bg: var(--color-output-card-background);
   --color-fab-primary-text: rgb(255 255 255);
   --color-fab-primary-bg: rgb(117 89 142);
   --color-fab-secondary-text: rgb(0 0 0);
   --color-fab-secondary-bg: rgb(255 255 255);
-  --color-nav-rail: var(--color-gray-light);
   --color-output-card-background: var(--color-gray-light);
   --color-output-card-border: var(--color-thin-border);
   --background-image-filter: saturate(0.7) brightness(0.7) contrast(0.8);
@@ -65,6 +67,7 @@
 
   @mixin dark-color-scheme {
     --color-background: rgb(33 33 33);
+    --color-background-darker: rgb(26 26 22);
     --color-background-inverted: rgb(233 233 233);
     --color-text: rgb(233 233 233);
     --color-text-inverted: rgb(66 66 66);
@@ -75,18 +78,23 @@
     --color-accent: var(--color-accent-light);
     --color-label: rgb(255 255 255 / 66%);
     --color-error-main: rgb(247 130 130);
-    --color-alert-success-font: rgb(237 247 237);
-    --color-alert-success-icon: rgb(59 168 65);
-    --color-alert-success-bg: rgb(30 70 32);
-    --color-alert-info-font: rgb(229 246 253);
-    --color-alert-info-icon: rgb(3 163 249);
-    --color-alert-info-bg: rgb(1 67 97);
-    --color-alert-error-font: rgb(255 236 240);
-    --color-alert-error-icon: rgb(251 47 88);
-    --color-alert-error-bg: rgb(102 27 42);
-    --color-alert-warning-font: rgb(255 244 229);
-    --color-alert-warning-icon: rgb(254 139 45);
-    --color-alert-warning-bg: rgb(102 60 0);
+    --color-alert-success-font: rgb(204 232 205);
+    --color-alert-success-icon: rgb(102 187 106);
+    --color-alert-success-bg: rgb(12 19 13);
+    --color-alert-success-border: rgb(30 70 32);
+    --color-alert-info-font: rgb(184 231 251);
+    --color-alert-info-icon: rgb(41 182 246);
+    --color-alert-info-bg: rgb(7 17 24);
+    --color-alert-info-border: rgb(1 67 97);
+    --color-alert-error-font: rgb(244 199 199);
+    --color-alert-error-icon: rgb(244 67 54);
+    --color-alert-error-bg: rgb(22 11 11);
+    --color-alert-error-border: rgb(102 27 42);
+    --color-alert-warning-font: rgb(255 226 183);
+    --color-alert-warning-icon: rgb(255 167 38);
+    --color-alert-warning-bg: rgb(25 18 7);
+    --color-alert-warning-border: rgb(102 60 0);
+    --color-alert-neutral-bg: rgb(17 17 17);
     --color-thin-border: rgb(255 255 255 / 20%);
     --color-lighter-border: rgb(255 255 255 / 12%);
     --color-card-dark: rgb(103 159 243 / 30%);
@@ -95,11 +103,10 @@
     --color-card-inactive: rgb(255 255 255 / 8%);
     --color-button-primary-active: rgb(255 255 255);
     --color-button-secondary-hover: rgb(255 255 255 / 10%);
-    --color-button-secondary-active: rgb(255 255 255 / 20%);
+    --color-button-secondary-active: rgb(56 43 43 / 20%);
     --color-link: rgb(144 224 255);
     --color-link-selected: rgb(198 237 250);
     --color-link-visited: rgb(211 138 247);
-    --color-nav-rail: rgb(26 26 22);
     --color-output-card-background: var(--color-card);
     --color-output-card-border: var(--color-card-dark);
     --background-image-filter: saturate(0.7) brightness(0.5) contrast(0.8);

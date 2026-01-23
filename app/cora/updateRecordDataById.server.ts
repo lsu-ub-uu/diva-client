@@ -37,5 +37,6 @@ export const updateRecordDataById = async <T>(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
+  console.log('update', apiUrl, JSON.stringify(payload, null, 2), headers);
   return axios.post(apiUrl, payload, { headers });
 };
