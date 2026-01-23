@@ -347,7 +347,7 @@ export default function DesignSystem() {
             <div
               className='color-swatch'
               style={{
-                backgroundColor: 'var(--color-nav-rail)',
+                backgroundColor: 'var(--color-background-darker)',
                 color: 'var(--color-text)',
               }}
             >
