@@ -2,7 +2,7 @@ import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import { SearchIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { IconButton } from '@/components/IconButton/IconButton';
@@ -22,13 +22,15 @@ export const MainSearchInput = ({
   onClearMainQuery,
 }: MainSearchInputProps) => {
   const { t } = useTranslation();
-  const [prevValue, setPrevValue] = useState(query);
   const [value, setValue] = useState(query);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  if (query !== prevValue) {
-    setPrevValue(query);
-    setValue(query);
-  }
+  useEffect(() => {
+    const searchField = inputRef.current;
+    if (searchField !== null && searchField !== document.activeElement) {
+      searchField.value = query || '';
+    }
+  }, [query]);
 
   return (
     <Fieldset label={t(mainSearchTerm.textId)} size='large'>
@@ -39,6 +41,7 @@ export const MainSearchInput = ({
           placeholder={t(mainSearchTerm.defTextId)}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
+          ref={inputRef}
         />
         <div className={styles['search-buttons']}>
           {query.length > 0 && (
