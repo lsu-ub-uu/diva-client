@@ -182,7 +182,7 @@ export const transformDataGroup = (
   metadataGroup: FormMetaData,
   dependencies: Dependencies,
 ): Metadata => {
-  const init = {} as Metadata;
+  const init = { fromStorage: true } as Metadata;
   return dataGroup.children.reduce<Metadata>((group, dataChild) => {
     const matchingMetadata = findMatchingMetadata(dataChild, metadataGroup);
 

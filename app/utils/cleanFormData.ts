@@ -18,9 +18,6 @@ export const hasValuableData = (obj: Record<string, any>): boolean => {
 const cleanFormDataRecursively = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<Record<string, any>> => {
-  if (Array.isArray(obj)) {
-    return cleanArray(obj);
-  }
   if (isObject(obj)) {
     if (isResourceLink(obj)) {
       return cleanResourceLink(obj);
@@ -51,16 +48,6 @@ const isLeaf = (obj: any) => {
   return (
     typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
   );
-};
-
-const cleanArray = (arr: any[]): ValuableDataWrapper<any[]> => {
-  const cleanedArray = arr
-    .values()
-    .map(cleanFormDataRecursively)
-    .filter(({ hasValuableData }) => hasValuableData)
-    .map(({ data }) => data)
-    .toArray();
-  return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
 };
 
 const cleanResourceLink = (
@@ -97,18 +84,38 @@ const cleanGroup = (group: Record<string, any>): ValuableDataWrapper<any> => {
       return;
     }
 
-    const cleaned = cleanFormDataRecursively(value);
-    if (cleaned.hasValuableData) {
-      groupIsValuable = true;
-    }
+    if (Array.isArray(value)) {
+      const cleanedArray = value.map(cleanFormDataRecursively);
 
-    if (!isEmpty(cleaned.data)) {
-      cleanedObj[key] = cleaned.data;
+      if (cleanedArray.some(({ hasValuableData }) => hasValuableData)) {
+        groupIsValuable = true;
+      }
+
+      const arrayData = cleanedArray
+        .filter(({ data }) => !isEmpty(data))
+        .map(({ data }) => data);
+
+      if (arrayData.length > 0) {
+        cleanedObj[key] = arrayData;
+      }
+    } else {
+      const cleaned = cleanFormDataRecursively(value);
+
+      if (cleaned.hasValuableData) {
+        groupIsValuable = true;
+      }
+
+      if (!isEmpty(cleaned.data)) {
+        cleanedObj[key] = cleaned.data;
+      }
     }
   });
 
+  const shouldRemoveGroup =
+    !group.fromStorage && !groupIsValuable && !group.required;
+
   return {
-    data: groupIsValuable || group.required ? cleanedObj : {},
+    data: shouldRemoveGroup ? {} : cleanedObj,
     hasValuableData: groupIsValuable,
   };
 };

@@ -288,7 +288,9 @@ describe('transformRecord', () => {
           ],
           data: {
             divaOutput: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
                   value: 'coraUser:490742519075086',
                   required: true,
@@ -311,6 +313,7 @@ describe('transformRecord', () => {
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2023-10-11T09:24:30.511487Z',
@@ -323,8 +326,8 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
-
                     tsUpdated: {
                       value: '2023-10-18T09:09:13.554736Z',
                       required: true,
@@ -336,6 +339,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2023-10-26T12:33:22.260532Z',
@@ -348,6 +352,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '3',
                     tsUpdated: {
                       value: '2023-10-26T12:35:28.748398Z',
@@ -360,6 +365,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '4',
                     tsUpdated: {
                       value: '2023-10-26T12:35:40.545698Z',
@@ -372,6 +378,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '5',
                     tsUpdated: {
                       value: '2023-10-26T12:35:52.293623Z',
@@ -391,6 +398,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               title: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'aaaaaa',
                   required: true,
@@ -399,6 +407,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               alternativeTitle: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'bbbbb',
                   required: true,
@@ -406,15 +415,12 @@ describe('transformRecord', () => {
                 subTitle: {
                   value: 'subTitle1',
                 },
-
                 _language: 'epo',
                 _titleType: 'alternativeTitle',
               },
-
               nationalSubjectCategory: {
                 value: 'nationalSubjectCategory:6325370460697648',
               },
-
               abstract: {
                 value: 'hej!',
                 _language: 'fao',
@@ -507,7 +513,9 @@ describe('transformRecord', () => {
           ],
           data: {
             output: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
                   value: '161616',
                   required: true,
@@ -530,6 +538,7 @@ describe('transformRecord', () => {
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
@@ -542,6 +551,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
@@ -554,6 +564,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
@@ -573,6 +584,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               titleInfo: {
+                fromStorage: true,
                 _lang: 'ady',
                 title: {
                   value: 'EN utmärkt titel',
@@ -581,6 +593,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               titleInfo_type_alternative: {
+                fromStorage: true,
                 _lang: 'amh',
                 _type: 'alternative',
                 title: {
@@ -676,7 +689,9 @@ describe('transformRecord', () => {
           ],
           data: {
             output: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
                   value: '161616',
                   required: true,
@@ -699,6 +714,7 @@ describe('transformRecord', () => {
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
@@ -711,6 +727,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
@@ -723,6 +740,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
@@ -742,6 +760,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               titleInfo: {
+                fromStorage: true,
                 _lang: 'ady',
                 title: {
                   value: 'EN utmärkt titel',
@@ -837,7 +856,9 @@ describe('transformRecord', () => {
           ],
           data: {
             name: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
                   value: '161616',
                   required: true,
@@ -860,6 +881,7 @@ describe('transformRecord', () => {
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
@@ -872,6 +894,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
@@ -884,6 +907,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
@@ -999,7 +1023,9 @@ describe('transformRecord', () => {
           ],
           data: {
             name: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
                   value: '161616',
                   required: true,
@@ -1022,6 +1048,7 @@ describe('transformRecord', () => {
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
@@ -1034,6 +1061,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
@@ -1046,6 +1074,7 @@ describe('transformRecord', () => {
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
@@ -1141,7 +1170,9 @@ describe('transformRecord', () => {
           updated: [],
           data: {
             divaOutput: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 dataDivider: {
                   value: 'diva',
                   required: true,
@@ -1150,7 +1181,6 @@ describe('transformRecord', () => {
                   value: 'divaOutput:519333261463755',
                   required: true,
                 },
-
                 type: {
                   value: 'manuscriptRecordTypeId',
                   required: true,
@@ -1162,6 +1192,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               title: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'aaaaaa',
                   required: true,
@@ -1170,6 +1201,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               alternativeTitle: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'bbbbb',
                   required: true,
@@ -1177,15 +1209,12 @@ describe('transformRecord', () => {
                 subTitle: {
                   value: 'subTitle1',
                 },
-
                 _language: 'epo',
                 _titleType: 'alternativeTitle',
               },
-
               nationalSubjectCategory: {
                 value: 'nationalSubjectCategory:6325370460697648',
               },
-
               abstract: {
                 value: 'hej!',
                 _language: 'fao',
@@ -1225,6 +1254,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -1274,12 +1304,14 @@ describe('transformRecord', () => {
         const expected = {
           divaOutput: {
             childGroup: {
+              fromStorage: true,
               title: {
                 value: 'testTitleVal',
                 required: true,
               },
               required: true,
             },
+            fromStorage: true,
           },
         };
         expect(transformData).toStrictEqual(expected);
@@ -1322,6 +1354,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -1391,6 +1424,7 @@ describe('transformRecord', () => {
               value: '99.00',
               required: true,
             },
+            fromStorage: true,
           },
         };
         expect(transformData).toStrictEqual(expected);
@@ -1435,6 +1469,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             exampleNumberVar: [
               {
                 value: '12.99',
@@ -1500,6 +1535,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             exampleNumberVar: [
               {
                 repeatId: '0',
@@ -1574,8 +1610,10 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             childGroup: [
               {
+                fromStorage: true,
                 repeatId: '0',
                 title: {
                   value: 'testTitleVal1',
@@ -1584,6 +1622,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               {
+                fromStorage: true,
                 repeatId: '1',
                 title: {
                   value: 'testTitleVal2',
@@ -1632,6 +1671,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory: {
               value: 'nationalSubjectCategory:6325370460697648',
               required: true,
@@ -1697,6 +1737,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory: [
               {
                 value: 'nationalSubjectCategory:6325370460697648',
@@ -1763,6 +1804,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             subject_language_eng: {
               value: 'value1',
               _language: 'eng',
@@ -1819,6 +1861,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             subject: {
               value: 'value1',
               required: true,
@@ -1902,7 +1945,9 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           output: {
+            fromStorage: true,
             titleInfo: {
+              fromStorage: true,
               _lang: 'ady',
               title: {
                 value: 'EN utmärkt titel',
@@ -1912,6 +1957,7 @@ describe('transformRecord', () => {
             },
             titleInfo_type_alternative: [
               {
+                fromStorage: true,
                 _lang: 'amh',
                 _type: 'alternative',
                 repeatId: '7',
@@ -1974,6 +2020,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             domain_language_eng: {
               value: 'hb',
               _language: 'eng',
@@ -2056,6 +2103,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory_language_swe: {
               value: 'nationalSubjectCategory:1111111111111111',
               _language: 'swe',
@@ -2143,7 +2191,9 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             author_language_eng: {
+              fromStorage: true,
               _language: 'eng',
               name: {
                 value: 'value1',
@@ -2152,6 +2202,7 @@ describe('transformRecord', () => {
               required: true,
             },
             author_language_swe: {
+              fromStorage: true,
               _language: 'swe',
               name: {
                 value: 'value2',
@@ -2206,6 +2257,7 @@ describe('transformRecord', () => {
 
         const expected = {
           output: {
+            fromStorage: true,
             namePart: {
               value: 'value1',
               required: true,
@@ -2323,10 +2375,12 @@ describe('transformRecord', () => {
 
         const expected = {
           someRootGroup: {
+            fromStorage: true,
             someRecordLink: {
               value: 'someRecordId',
               linkedRecord: {
                 someLinkedRecordRootGroup: {
+                  fromStorage: true,
                   someTextVariable: {
                     value: 'value1',
                     required: true,
@@ -2584,8 +2638,10 @@ describe('transformRecord', () => {
         );
 
         const expected = {
+          fromStorage: true,
           name_type_personal: [
             {
+              fromStorage: true,
               namePart_type_family: {
                 value: 'eeeeeee',
                 _type: 'family',
@@ -2629,7 +2685,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
 
         const expected = {
-          divaOutput: {},
+          divaOutput: { fromStorage: true },
         };
 
         expect(transformData).toStrictEqual(expected);
@@ -2662,6 +2718,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -2712,6 +2769,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             master: {
               id: 'binary:8037579210342018',
               mimeType: 'audio/mpeg',
@@ -2757,6 +2815,7 @@ describe('transformRecord', () => {
 
         expect(transformedData).toStrictEqual({
           root: {
+            fromStorage: true,
             someFinalValueName: {
               value: 'someFinalValue',
               final: true,
@@ -2796,6 +2855,7 @@ describe('transformRecord', () => {
 
       expect(transformedData).toStrictEqual({
         root: {
+          fromStorage: true,
           someFinalValueName: {
             value: 'valueInMetadata',
             final: true,
@@ -2856,8 +2916,10 @@ describe('transformRecord', () => {
 
       const expected = {
         binary: {
+          fromStorage: true,
           _type: 'sound',
           master: {
+            fromStorage: true,
             resourceId: {
               value: 'binary:8037579210342018-master',
               required: true,
@@ -3039,13 +3101,14 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:4',
               displayName: {
                 en: 'Uppsala University',
                 sv: 'Uppsala universitet',
               },
-              linkedRecord: { organisation: {} },
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
@@ -3117,13 +3180,14 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:1',
               displayName: {
                 en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
                 sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
               },
-              linkedRecord: { organisation: {} },
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
@@ -3198,9 +3262,10 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'someNonExistingOrganisationId',
-              linkedRecord: { organisation: {} },
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
