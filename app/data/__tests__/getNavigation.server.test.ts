@@ -1,78 +1,151 @@
-import { vi, describe, it, expect } from 'vitest'
+import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import { BFFMetadata, type BFFMetadataTextVariable, type BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { getNavigation } from '../getNavigation';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { RecordWrapper, ActionLinks, DataGroup } from '@/cora/cora-data/types.server';
-import type { AxiosResponse } from 'axios';
+import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import { describe, expect, it, vi } from 'vitest';
+import { getNavigation } from '../getNavigation.server';
+import { searchRecords } from '@/data/searchRecords.server';
+import type { Auth } from '@/auth/Auth';
+import type { ActionLink } from '@/cora/cora-data/types.server';
 
-
-const coraRecordInfoId = {
-    "children": [
-        {
-            "name": "id",
-            "value": "someId"
-        },
-    ],
-    "name": "recordInfo"
-};
-
-vi.mock('@/cora/getRecordDataById.server');
+vi.mock('@/data/searchRecords.server');
 
 describe('getNavigation', () => {
-    it('returns main and other navigation items', async () => {
+  it('makes correct search query', async () => {
+    vi.mocked(searchRecords).mockResolvedValue({
+      data: [] as BFFDataRecord<BFFRecordType>[],
+    } as BFFSearchResult<BFFRecordType>);
 
+    const mockDependencies = {} as Dependencies;
+    const mockAuth = {} as Auth;
+    await getNavigation(mockDependencies, mockAuth);
 
-        vi.mocked(getRecordDataById).mockResolvedValue({
-            data: {
-                record: {
-                    data: { children: [coraRecordInfoId], name: 'someRecordType' } as DataGroup,
-                    actionLinks: {
-                        search: '/someSearchLink'
-                    } as ActionLinks
-                }
-            }
-        } as AxiosResponse<RecordWrapper>)
+    expect(searchRecords).toHaveBeenCalledWith(
+      mockDependencies,
+      'recordTypeSearch',
+      {
+        recordTypeSearch: {
+          include: {
+            includePart: {
+              recordTypeCategorySearchTerm: 'clientMainNavigation',
+            },
+          },
+        },
+      },
+      mockAuth,
+    );
+  });
 
+  it('returns main and other navigation items', async () => {
+    vi.mocked(searchRecords).mockResolvedValue({
+      data: [
+        createMockRecordType('someMainRecordType', true),
+        createMockRecordType('someOtherMainRecordType', true),
+        createMockRecordType('someRecordType'),
+        createMockRecordType('someOtherRecordType'),
+      ],
+    } as BFFSearchResult<BFFRecordType>);
 
-        const dependencies = {
-            metadataPool: listToPool<BFFMetadata>([
-                { id: 'id', textId: 'textId', type: 'textVariable' } as BFFMetadataTextVariable,
-            ]),
-            recordTypePool: listToPool<BFFRecordType>([
-                {
-                    id: 'someRecordTypeId',
-                    textId: 'someRecordTypeText',
-                    recordTypeCategory: ['clientMainNavigation'],
-                    metadataId: 'string',
-                    presentationViewId: 'string',
-                    listPresentationViewId: 'string',
-                    searchId: 'string',
-                    defTextId: 'string',
-                    groupOfRecordType: ['string'],
-                    useTrashBin: true
-                } as BFFRecordType,
-            ])
-        } as Dependencies
+    const mockDependencies = {} as Dependencies;
 
-        const navigation = await getNavigation(dependencies)
-        expect(navigation.mainNavigationItems).toEqual([
-            { link: '/someRecordTypeId', textId: 'someRecordTypeText' }
-        ])
-        expect(navigation.otherNavigationItems).toEqual([
+    const navigation = await getNavigation(mockDependencies);
 
-        ])
-    })
+    expect(navigation.mainNavigationItems).toEqual([
+      { link: '/someMainRecordType', textId: 'someMainRecordTypeText' },
+      {
+        link: '/someOtherMainRecordType',
+        textId: 'someOtherMainRecordTypeText',
+      },
+    ]);
 
-    it.todo('sorts record types', async () => {
-    })
+    expect(navigation.otherNavigationItems).toEqual([
+      { link: '/someRecordType', textId: 'someRecordTypeText' },
+      { link: '/someOtherRecordType', textId: 'someOtherRecordTypeText' },
+    ]);
+  });
 
-    it('only returns record types that the user may search for')
+  it('sorts record types', async () => {
+    vi.mocked(searchRecords).mockResolvedValue({
+      data: [
+        createMockRecordType('diva-funder'),
+        createMockRecordType('diva-series'),
+        createMockRecordType('diva-journal'),
+        createMockRecordType('diva-output', true),
+        createMockRecordType('diva-person', true),
+        createMockRecordType('diva-localLabel'),
+        createMockRecordType('diva-programme'),
+        createMockRecordType('diva-publisher'),
+        createMockRecordType('someUnhandledRecordType'),
+        createMockRecordType('diva-organisation'),
+        createMockRecordType('diva-course'),
+        createMockRecordType('diva-project', true),
+        createMockRecordType('diva-subject'),
+      ],
+    } as BFFSearchResult<BFFRecordType>);
 
-    it('includes member settings item')
+    const mockDependencies = {} as Dependencies;
 
-    it('includes dev items when dev cookie')
-})
+    const navigation = await getNavigation(mockDependencies);
 
+    expect(navigation.mainNavigationItems.map((item) => item.link)).toEqual([
+      '/diva-output',
+      '/diva-person',
+      '/diva-project',
+    ]);
 
+    expect(navigation.otherNavigationItems.map((item) => item.link)).toEqual([
+      '/diva-course',
+      '/diva-organisation',
+      '/diva-journal',
+      '/diva-subject',
+      '/diva-programme',
+      '/diva-series',
+      '/diva-localLabel',
+      '/diva-publisher',
+      '/diva-funder',
+      '/someUnhandledRecordType',
+    ]);
+  });
+
+  it('only returns record types that the user may search for', async () => {
+    vi.mocked(searchRecords).mockResolvedValue({
+      data: [
+        createMockRecordType('someMainRecordType', true),
+        createMockRecordType('someOtherMainRecordType', true, false),
+        createMockRecordType('someRecordType'),
+        createMockRecordType('someOtherRecordType', false, false),
+      ],
+    } as BFFSearchResult<BFFRecordType>);
+
+    const mockDependencies = {} as Dependencies;
+
+    const navigation = await getNavigation(mockDependencies);
+
+    expect(navigation.mainNavigationItems).toEqual([
+      { link: '/someMainRecordType', textId: 'someMainRecordTypeText' },
+    ]);
+
+    expect(navigation.otherNavigationItems).toEqual([
+      { link: '/someRecordType', textId: 'someRecordTypeText' },
+    ]);
+  });
+
+  it('includes member settings item');
+
+  it('includes dev items when dev cookie');
+});
+
+const createMockRecordType = (
+  name: string,
+  mainNavigation: boolean = false,
+  searchAllowed = true,
+) =>
+  ({
+    data: {
+      id: `${name}`,
+      textId: `${name}Text`,
+      recordTypeCategory: mainNavigation
+        ? ['clientNavigation', 'clientMainNavigation']
+        : ['clientNavigation'],
+    },
+    actionLinks: searchAllowed ? { search: {} as ActionLink } : {},
+  }) as BFFDataRecord<BFFRecordType>;

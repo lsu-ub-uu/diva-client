@@ -17,6 +17,7 @@
  */
 
 import type { Auth } from '@/auth/Auth';
+import type { Metadata } from '@/types/record';
 import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type {
@@ -36,7 +37,7 @@ import {
 import type { BFFSearchResult } from '@/types/record';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 
-export const searchRecords = async (
+export const searchRecords = async <T = Metadata>(
   dependencies: Dependencies,
   searchType: string,
   query: any,
@@ -89,7 +90,7 @@ export const searchRecords = async (
     totalNo: Number(totalNo),
     containDataOfType,
     data: transformedRecords,
-  } as BFFSearchResult;
+  } as BFFSearchResult<T>;
 };
 
 export const createCoraSearchQuery = (

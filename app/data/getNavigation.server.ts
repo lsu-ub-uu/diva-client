@@ -25,6 +25,9 @@ import type {
   BFFMember,
   BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
+import { searchRecords } from './searchRecords.server';
+import type { BFFSearchResult } from '@/types/record';
+import { map } from 'lodash';
 
 export interface NavigationItem {
   link: string;
@@ -36,11 +39,11 @@ export interface Navigation {
   otherNavigationItems: NavigationItem[];
 }
 
-/** 
+/**
  * Byt namn till getNavigation (typa upp den)
- * 
+ *
  * Lägg till recordTypeCategory clientMainNavigation på output, person, project
- * 
+ *
  * Ta med "special items" här. Member settings, dev links.
  */
 
@@ -63,41 +66,58 @@ export const getNavigation = async (
   dependencies: Dependencies,
   auth?: Auth,
 ): Promise<Navigation> => {
-  const divaClientRecordTypes = Array.from(
-    dependencies.recordTypePool.values(),
-  )
+  const searchQuery = {
+    recordTypeSearch: {
+      include: {
+        includePart: {
+          recordTypeCategorySearchTerm: 'clientMainNavigation',
+        },
+      },
+    },
+  };
 
-  const userRecordTypes = await Promise.allSettled(
-    divaClientRecordTypes.map((recordType) =>
-      getRecordDataById<RecordWrapper>(
-        'recordType',
-        recordType.id,
-        auth?.data?.token,
-      ),
-    ),
+  const searchResult = await searchRecords<BFFRecordType>(
+    dependencies,
+    'recordTypeSearch',
+    searchQuery,
+    auth,
   );
 
-  userRecordTypes
-    .filter((result) => result.status === 'fulfilled')
-    .map((result) => result.value)
-    .map((response) => response.data)
-    .filter((recordType) => recordType.record.actionLinks.search !== undefined)
-    .map(transformRecordType);
+  const navigationRecordTypes = searchResult.data
+    .filter((result) => result.actionLinks.search !== undefined)
+    .map((result) => result.data)
+    .sort(recordTypeComparator);
 
-  const mainNavigationItems = divaClientRecordTypes
-    .filter((recordType) =>
-      recordType.recordTypeCategory.includes('clientNavigation'),
+  const mainNavigationItems = navigationRecordTypes
+    .filter(({ recordTypeCategory }) =>
+      recordTypeCategory.includes('clientMainNavigation'),
     )
-    .map((recordType) => ({
-      link: `/records/${recordType.id}`,
-      textId: recordType.textId,
-    }));
+    .map(createNavigationItemFromRecordType);
+
+  const otherNavigationItems = navigationRecordTypes
+    .filter(
+      ({ recordTypeCategory }) =>
+        !recordTypeCategory.includes('clientMainNavigation'),
+    )
+    .map(createNavigationItemFromRecordType);
 
   return { mainNavigationItems, otherNavigationItems };
-
-
-
 };
+
+const recordTypeComparator = (a: BFFRecordType, b: BFFRecordType) => {
+  const aIndex = sortOrder.indexOf(a.id);
+  const bIndex = sortOrder.indexOf(b.id);
+  return (
+    (aIndex === -1 ? Infinity : aIndex) - (bIndex === -1 ? Infinity : bIndex)
+  );
+};
+
+const createNavigationItemFromRecordType = (
+  recordType: BFFRecordType,
+): NavigationItem => ({
+  link: `/` + recordType.id,
+  textId: recordType.textId,
+});
 
 export const canEditMemberSettings = async (
   member?: BFFMember,

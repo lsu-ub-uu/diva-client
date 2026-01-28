@@ -23,7 +23,20 @@ import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, href, useLocation } from 'react-router';
 import styles from './TopNavigation.module.css';
-
+const sortOrder = [
+  'diva-output',
+  'diva-person',
+  'diva-project',
+  'diva-course',
+  'diva-organisation',
+  'diva-journal',
+  'diva-subject',
+  'diva-programme',
+  'diva-series',
+  'diva-localLabel',
+  'diva-publisher',
+  'diva-funder',
+];
 export interface TopNavigationLink {
   label: string;
   to: string;
