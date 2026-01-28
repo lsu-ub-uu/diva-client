@@ -36,7 +36,7 @@ import {
 import rootCss from './styles/root.css?url';
 
 import divaLogo from '@/assets/divaLogo.svg';
-import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
+import { canEditMemberSettings, getNavigation } from '@/data/getRecordTypes';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { AngryIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
@@ -70,7 +70,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;
   const locale = context.get(i18nContext).language;
-  const recordTypes = await getRecordTypes(dependencies, auth);
+  const recordTypes = await getNavigation(dependencies, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
   const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
