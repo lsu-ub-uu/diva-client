@@ -50,21 +50,6 @@ export const icons: Record<string, ReactNode> = {
   'diva-funder': <HandCoinsIcon />,
 };
 
-const sortOrder = [
-  'diva-output',
-  'diva-person',
-  'diva-project',
-  'diva-course',
-  'diva-organisation',
-  'diva-journal',
-  'diva-subject',
-  'diva-programme',
-  'diva-series',
-  'diva-localLabel',
-  'diva-publisher',
-  'diva-funder',
-];
-
 export const TopNavigation = ({
   recordTypes,
   editableMember,

@@ -113,6 +113,11 @@ export const Header = ({
             <DivaLogo className={styles.logo} />
           </Link>
         </div>
+        <TopNavigation
+          recordTypes={recordTypes}
+          editableMember={editableMember}
+          onNavigationClick={() => mobileDialogRef.current?.close()}
+        />
         <div className={styles['header-bar-right']}>
           <div className={styles['color-theme-switcher']}>
             <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />

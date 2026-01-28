@@ -44,16 +44,28 @@ export interface Navigation {
  * Ta med "special items" här. Member settings, dev links.
  */
 
+const sortOrder = [
+  'diva-output',
+  'diva-person',
+  'diva-project',
+  'diva-course',
+  'diva-organisation',
+  'diva-journal',
+  'diva-subject',
+  'diva-programme',
+  'diva-series',
+  'diva-localLabel',
+  'diva-publisher',
+  'diva-funder',
+];
 
 export const getNavigation = async (
   dependencies: Dependencies,
   auth?: Auth,
-): Promise<BFFRecordType[]> => {
+): Promise<Navigation> => {
   const divaClientRecordTypes = Array.from(
     dependencies.recordTypePool.values(),
-  ).filter((recordType) =>
-    recordType.recordTypeCategory.includes('clientNavigation'),
-  );
+  )
 
   const userRecordTypes = await Promise.allSettled(
     divaClientRecordTypes.map((recordType) =>
@@ -65,12 +77,26 @@ export const getNavigation = async (
     ),
   );
 
-  return userRecordTypes
+  userRecordTypes
     .filter((result) => result.status === 'fulfilled')
     .map((result) => result.value)
     .map((response) => response.data)
     .filter((recordType) => recordType.record.actionLinks.search !== undefined)
     .map(transformRecordType);
+
+  const mainNavigationItems = divaClientRecordTypes
+    .filter((recordType) =>
+      recordType.recordTypeCategory.includes('clientNavigation'),
+    )
+    .map((recordType) => ({
+      link: `/records/${recordType.id}`,
+      textId: recordType.textId,
+    }));
+
+  return { mainNavigationItems, otherNavigationItems };
+
+
+
 };
 
 export const canEditMemberSettings = async (

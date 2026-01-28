@@ -46,12 +46,12 @@ export default function RecordTypeRoute() {
   const { recordTypes, editableMember } = useRouteLoaderData('root');
   return (
     <>
-      <aside className='nav-rail'>
+      {/* <aside className='nav-rail'>
         <TopNavigation
           recordTypes={recordTypes}
           editableMember={editableMember}
         />
-      </aside>
+      </aside> */}
       <div className='content'>
         <Outlet />
       </div>

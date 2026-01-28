@@ -1,6 +1,6 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { getRecordTypes } from '@/data/getRecordTypes';
+import { getNavigation } from '@/data/getRecordTypes';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 
@@ -8,7 +8,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
-  const recordTypes = await getRecordTypes(dependencies, auth);
+  const recordTypes = await getNavigation(dependencies, auth);
   const origin = new URL(request.url).origin;
 
   const sitemap = await generateSitemapXml(origin, recordTypes);

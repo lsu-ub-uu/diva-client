@@ -98,12 +98,12 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
     record.data.output.recordInfo?.inTrashBin?.value === 'true';
   return (
     <>
-      <aside className='nav-rail'>
+      {/* <aside className='nav-rail'>
         <TopNavigation
           recordTypes={recordTypes}
           editableMember={editableMember}
         />
-      </aside>
+      </aside> */}
       <div className='content'>
         <div className='record-status-bar'>
           {isInTrashBin && (
