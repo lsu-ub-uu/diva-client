@@ -4443,6 +4443,7 @@ export type GroupOfRecordTypeCollection =
 
 export type RecordTypeCategoryCollection =
   | 'clientNavigation'
+  | 'clientMainNavigation'
   | 'categoryOne'
   | 'categoryTwo'
   | 'categoryThree';
@@ -4483,6 +4484,14 @@ export interface RecordTypeGroup {
     __text?: { sv: string; en: string };
   };
   textId?: {
+    value: string;
+    linkedRecord: {
+      text: TextGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  };
+  pluralTextId?: {
     value: string;
     linkedRecord: {
       text: TextGroup;
