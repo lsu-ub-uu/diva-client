@@ -14,6 +14,7 @@ interface SearchLayoutProps {
   start: number;
   filters: any;
   activeFilters: ActiveFilter[];
+  apiUrl: string;
   onQueryChange: (form: HTMLFormElement) => void;
   onClearMainQuery: () => void;
   onRemoveFilter: (filterName: string) => void;
@@ -30,6 +31,7 @@ export const SearchLayout = ({
   start,
   filters,
   activeFilters,
+  apiUrl,
   onQueryChange,
   onClearMainQuery,
   onRemoveFilter,
@@ -71,6 +73,7 @@ export const SearchLayout = ({
           onClearAllFilters={onClearAllFilters}
           filtersOpen={filtersOpen}
           setFiltersOpen={setFiltersOpen}
+          apiUrl={apiUrl}
         />
       </main>
       <Filters

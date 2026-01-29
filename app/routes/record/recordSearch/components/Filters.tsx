@@ -45,14 +45,15 @@ export const Filters = ({
         <Form method='GET' onChange={onFilterChange} ref={ref}>
           <SearchHiddenInputs query={query} rows={rows} start={1} />
           {filters.map((filter) => {
-            const value = activeFilters.find(
+            const activeFilter = activeFilters.find(
               (f) => f.name === filter.name,
-            )?.value;
+            );
             return (
               <Filter
                 filter={filter}
                 key={filter.id}
-                currentValue={value}
+                currentValue={activeFilter?.value1}
+                currentValueText={activeFilter?.valueTextId}
                 forceSubmit={onFilterChange}
               />
             );

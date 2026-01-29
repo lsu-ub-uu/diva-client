@@ -1,4 +1,4 @@
-import { FunnelIcon, FunnelXIcon, XIcon } from 'lucide-react';
+import { CodeIcon, FunnelIcon, FunnelXIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ActiveFilters.module.css';
 import { Button } from '@/components/Button/Button';
@@ -17,6 +17,7 @@ interface ActiveFiltersProps {
   onClearAllFilters: () => void;
   filtersOpen: boolean;
   setFiltersOpen: (open: boolean) => void;
+  apiUrl: string;
 }
 
 export const ActiveFilters = ({
@@ -25,6 +26,7 @@ export const ActiveFilters = ({
   onClearAllFilters,
   filtersOpen,
   setFiltersOpen,
+  apiUrl,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
 
@@ -33,14 +35,23 @@ export const ActiveFilters = ({
   return (
     <div className={styles['active-filters']}>
       <div className={styles['active-filters-header']}>
+        {hasActiveFilters && <h2>{t('divaClient_activeFiltersText')}</h2>}
+        <Button
+          variant='tertiary'
+          as='a'
+          href={apiUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+          style={{ alignSelf: 'flex-end' }}
+        >
+          <CodeIcon />
+          {t('divaClient_viewInApiText')}
+        </Button>
         {hasActiveFilters && (
-          <>
-            <h2>{t('divaClient_activeFiltersText')}</h2>
-            <Button onClick={onClearAllFilters} variant='tertiary'>
-              <FunnelXIcon />
-              {t('divaClient_clearAllFiltersText')}
-            </Button>
-          </>
+          <Button onClick={onClearAllFilters} variant='tertiary'>
+            <FunnelXIcon />
+            {t('divaClient_clearAllFiltersText')}
+          </Button>
         )}
         <Button
           onClick={() => setFiltersOpen(!filtersOpen)}

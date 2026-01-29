@@ -1,11 +1,12 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
+import { useTranslation } from 'react-i18next';
 import { Form } from 'react-router';
 import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
-import { SearchResults } from './SearchResults';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { SearchResults } from './SearchResults';
 
 interface RecordSearchViewProps {
   query: string;
@@ -21,6 +22,7 @@ interface RecordSearchViewProps {
   onClearAllFilters: () => void;
   filtersOpen: boolean;
   setFiltersOpen: (open: boolean) => void;
+  apiUrl: string;
 }
 
 export const RecordSearchView = ({
@@ -37,6 +39,7 @@ export const RecordSearchView = ({
   onClearAllFilters,
   filtersOpen,
   setFiltersOpen,
+  apiUrl,
 }: RecordSearchViewProps) => {
   return (
     <>
@@ -64,6 +67,7 @@ export const RecordSearchView = ({
         onClearAllFilters={onClearAllFilters}
         filtersOpen={filtersOpen}
         setFiltersOpen={setFiltersOpen}
+        apiUrl={apiUrl}
       />
 
       {searchResults.totalNo > 0 && (
