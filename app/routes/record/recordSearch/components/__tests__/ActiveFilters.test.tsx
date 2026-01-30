@@ -2,6 +2,7 @@ import { vi, describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { ActiveFilters } from '../ActiveFilters';
 import userEvent from '@testing-library/user-event';
+import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 
 describe('ActiveFilters', () => {
   it('renders when no active filters', () => {
@@ -12,6 +13,8 @@ describe('ActiveFilters', () => {
         onClearAllFilters={vi.fn()}
         filtersOpen={false}
         setFiltersOpen={vi.fn()}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
       />,
     );
 
@@ -46,6 +49,8 @@ describe('ActiveFilters', () => {
         onClearAllFilters={vi.fn()}
         filtersOpen={false}
         setFiltersOpen={vi.fn()}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
       />,
     );
 
@@ -80,6 +85,8 @@ describe('ActiveFilters', () => {
         onClearAllFilters={vi.fn()}
         filtersOpen={false}
         setFiltersOpen={vi.fn()}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
       />,
     );
 
@@ -109,6 +116,8 @@ describe('ActiveFilters', () => {
         onClearAllFilters={clearAllFiltersSpy}
         filtersOpen={false}
         setFiltersOpen={vi.fn()}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
       />,
     );
 
@@ -128,6 +137,8 @@ describe('ActiveFilters', () => {
         onClearAllFilters={vi.fn()}
         filtersOpen={false}
         setFiltersOpen={setFiltersOpenSpy}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
       />,
     );
 
@@ -136,5 +147,45 @@ describe('ActiveFilters', () => {
     });
     await user.click(toggleButton);
     expect(setFiltersOpenSpy).toHaveBeenCalledWith(true);
+  });
+
+  it('does not render view in api button when no search results', () => {
+    render(
+      <ActiveFilters
+        activeFilters={[]}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
+        apiUrl=''
+        searchResults={{ data: [] as BFFDataRecord[] } as BFFSearchResult}
+      />,
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_viewInApiText' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders view in api button when there are search results', () => {
+    render(
+      <ActiveFilters
+        activeFilters={[]}
+        onRemoveFilter={vi.fn()}
+        onClearAllFilters={vi.fn()}
+        filtersOpen={false}
+        setFiltersOpen={vi.fn()}
+        apiUrl='http://api.example.com'
+        searchResults={
+          {
+            data: [{} as BFFDataRecord],
+          } as BFFSearchResult
+        }
+      />,
+    );
+
+    expect(
+      screen.getByRole('link', { name: 'divaClient_viewInApiText' }),
+    ).toHaveAttribute('href', 'http://api.example.com');
   });
 });

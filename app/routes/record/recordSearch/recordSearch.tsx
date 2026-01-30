@@ -1,8 +1,12 @@
+import type { Auth } from '@/auth/Auth';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import {
   createFilters,
@@ -15,7 +19,8 @@ import {
 } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { CirclePlusIcon, CodeIcon } from 'lucide-react';
+import { get } from 'lodash-es';
+import { CirclePlusIcon } from 'lucide-react';
 import { Fragment, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,11 +37,6 @@ import type { Route } from './+types/recordSearch';
 import type { ActiveFilter } from './components/ActiveFilters';
 import { SearchLayout } from './components/SearchLayout';
 import css from './recordSearch.css?url';
-import { externalCoraApiUrl } from '@/cora/helper.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { get } from 'lodash-es';
-import type { Auth } from '@/auth/Auth';
 
 export const loader = async ({
   request,
@@ -187,15 +187,20 @@ const getValueTextForAutocompleteFilter = async (
   dependencies: Dependencies,
   language: 'sv' | 'en',
 ) => {
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies,
-    recordType: filter.recordType,
-    mode: 'view',
-    authToken: auth?.data.token,
-    recordId: value.split('_')[1],
-  });
+  return value;
+  try {
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies,
+      recordType: filter.recordType,
+      mode: 'view',
+      authToken: auth?.data.token,
+      recordId: value.split('_')[1],
+    });
 
-  return get(record.data, filter.presentationPath[language]);
+    return get(record.data, filter.presentationPath[language]);
+  } catch {
+    return value;
+  }
 };
 
 export const links = () => [{ rel: 'stylesheet', href: css }];

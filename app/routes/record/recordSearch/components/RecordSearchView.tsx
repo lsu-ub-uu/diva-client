@@ -1,6 +1,5 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
-import { useTranslation } from 'react-i18next';
 import { Form } from 'react-router';
 import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
@@ -68,9 +67,10 @@ export const RecordSearchView = ({
         filtersOpen={filtersOpen}
         setFiltersOpen={setFiltersOpen}
         apiUrl={apiUrl}
+        searchResults={searchResults}
       />
 
-      {searchResults.totalNo > 0 && (
+      {searchResults.data.length > 0 && (
         <Pagination
           rowsPerPage={rows}
           searchResults={searchResults}
@@ -88,7 +88,7 @@ export const RecordSearchView = ({
         userHasSearched={query.length > 0 || activeFilters.length > 0}
       />
 
-      {searchResults.totalNo > 0 && (
+      {searchResults.data.length > 0 && (
         <Pagination
           rowsPerPage={rows}
           searchResults={searchResults}

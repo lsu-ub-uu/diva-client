@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './ActiveFilters.module.css';
 import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
+import type { BFFSearchResult } from '@/types/record';
 
 export interface ActiveFilter {
   name: string;
@@ -18,6 +19,7 @@ interface ActiveFiltersProps {
   filtersOpen: boolean;
   setFiltersOpen: (open: boolean) => void;
   apiUrl: string;
+  searchResults: BFFSearchResult;
 }
 
 export const ActiveFilters = ({
@@ -27,6 +29,7 @@ export const ActiveFilters = ({
   filtersOpen,
   setFiltersOpen,
   apiUrl,
+  searchResults,
 }: ActiveFiltersProps) => {
   const { t } = useTranslation();
 
@@ -36,17 +39,19 @@ export const ActiveFilters = ({
     <div className={styles['active-filters']}>
       <div className={styles['active-filters-header']}>
         {hasActiveFilters && <h2>{t('divaClient_activeFiltersText')}</h2>}
-        <Button
-          variant='tertiary'
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          style={{ alignSelf: 'flex-end' }}
-        >
-          <CodeIcon />
-          {t('divaClient_viewInApiText')}
-        </Button>
+        {searchResults.data.length > 0 && (
+          <Button
+            variant='tertiary'
+            as='a'
+            href={apiUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{ alignSelf: 'flex-end' }}
+          >
+            <CodeIcon />
+            {t('divaClient_viewInApiText')}
+          </Button>
+        )}
         {hasActiveFilters && (
           <Button onClick={onClearAllFilters} variant='tertiary'>
             <FunnelXIcon />

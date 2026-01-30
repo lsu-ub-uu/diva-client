@@ -24,7 +24,7 @@ export const SearchResults = ({
   const { t } = useTranslation();
   return (
     <div className={styles['search-result']}>
-      {userHasSearched && searchResults.totalNo === 0 && (
+      {userHasSearched && searchResults.data.length === 0 && (
         <Alert severity='info' icon={<SearchSlashIcon />}>
           <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
           {t('divaClient_noSearchResultsBodyText')}
