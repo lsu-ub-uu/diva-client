@@ -37,7 +37,6 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
           href={createDownloadLinkFromResourceLink(
             attachment.attachmentFile.linkedRecord.binary.master.master,
           )}
-          download='hej.pdf'
           type={
             attachment.attachmentFile.linkedRecord.binary.master?.mimeType
               ?.value
