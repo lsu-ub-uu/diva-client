@@ -41,3 +41,7 @@
   font-style: italic;
   margin-inline: var(--gap-s);
 }
+
+.api-link-button {
+  align-self: flex-end;
+}

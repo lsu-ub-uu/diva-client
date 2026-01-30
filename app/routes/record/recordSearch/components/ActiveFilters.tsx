@@ -46,7 +46,7 @@ export const ActiveFilters = ({
             href={apiUrl}
             target='_blank'
             rel='noopener noreferrer'
-            style={{ alignSelf: 'flex-end' }}
+            className={styles['api-link-button']}
           >
             <CodeIcon />
             {t('divaClient_viewInApiText')}
