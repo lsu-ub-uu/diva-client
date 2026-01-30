@@ -93,7 +93,6 @@ export const Filter = ({
                 value: option.value,
                 label: option.text,
               }))}
-              {...(value && { 'data-has-value': '' })}
             />
           </Fieldset>
         );
