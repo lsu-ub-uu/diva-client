@@ -58,6 +58,7 @@ describe('SearchLayout', () => {
             onClearMainQuery={onClearMainQuery}
             onRemoveFilter={onRemoveFilter}
             onClearAllFilters={onClearAllFilters}
+            apiUrl=''
           />
         ),
       },

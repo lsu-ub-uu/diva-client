@@ -187,7 +187,6 @@ const getValueTextForAutocompleteFilter = async (
   dependencies: Dependencies,
   language: 'sv' | 'en',
 ) => {
-  return value;
   try {
     const record = await getRecordByRecordTypeAndRecordId({
       dependencies,

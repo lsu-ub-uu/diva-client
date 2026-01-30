@@ -52,7 +52,7 @@ export const Filters = ({
               <Filter
                 filter={filter}
                 key={filter.id}
-                currentValue={activeFilter?.value1}
+                currentValue={activeFilter?.value}
                 currentValueText={activeFilter?.valueTextId}
                 forceSubmit={onFilterChange}
               />
