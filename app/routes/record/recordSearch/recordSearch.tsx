@@ -187,14 +187,14 @@ const getValueTextForAutocompleteFilter = async (
   dependencies: Dependencies,
   language: 'sv' | 'en',
 ) => {
-  const [, recordId] = value.split('_');
-  if (!recordId) {
+  const [recordType, recordId] = value.split('_');
+  if (!recordType || !recordId) {
     return value;
   }
   try {
     const record = await getRecordByRecordTypeAndRecordId({
       dependencies,
-      recordType: filter.recordType,
+      recordType,
       mode: 'view',
       authToken: auth?.data.token,
       recordId,
