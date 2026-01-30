@@ -4,8 +4,8 @@ import { Form } from 'react-router';
 import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
-import { SearchResults } from './SearchResults';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { SearchResults } from './SearchResults';
 
 interface RecordSearchViewProps {
   query: string;
@@ -21,6 +21,7 @@ interface RecordSearchViewProps {
   onClearAllFilters: () => void;
   filtersOpen: boolean;
   setFiltersOpen: (open: boolean) => void;
+  apiUrl: string;
 }
 
 export const RecordSearchView = ({
@@ -37,6 +38,7 @@ export const RecordSearchView = ({
   onClearAllFilters,
   filtersOpen,
   setFiltersOpen,
+  apiUrl,
 }: RecordSearchViewProps) => {
   return (
     <>
@@ -64,9 +66,11 @@ export const RecordSearchView = ({
         onClearAllFilters={onClearAllFilters}
         filtersOpen={filtersOpen}
         setFiltersOpen={setFiltersOpen}
+        apiUrl={apiUrl}
+        searchResults={searchResults}
       />
 
-      {searchResults.totalNo > 0 && (
+      {searchResults.data.length > 0 && (
         <Pagination
           rowsPerPage={rows}
           searchResults={searchResults}
@@ -84,7 +88,7 @@ export const RecordSearchView = ({
         userHasSearched={query.length > 0 || activeFilters.length > 0}
       />
 
-      {searchResults.totalNo > 0 && (
+      {searchResults.data.length > 0 && (
         <Pagination
           rowsPerPage={rows}
           searchResults={searchResults}
