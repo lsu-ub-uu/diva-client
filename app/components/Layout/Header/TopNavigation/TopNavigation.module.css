@@ -1,17 +1,3 @@
-.top-navigation {
-  ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    list-style: none;
-    gap: var(--gap);
-  }
-
-  @media (width < 900px) {
-    display: none;
-  }
-}
-
 /*
  * Copyright 2025 Uppsala University Library
  *
@@ -29,6 +15,20 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+
+.top-navigation {
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style: none;
+    gap: var(--gap);
+  }
+
+  @media (width < 900px) {
+    display: none;
+  }
+}
 
 .navigation-link {
   cursor: pointer;
@@ -48,22 +48,16 @@
   }
 
   &:global(.pending) {
-    background-color: var(--color-gray-main);
+    background-color: var(--color-background-darker);
   }
 
-  &[aria-current='page'] {
+  &[aria-current='page'],
+  &[data-active='true'] {
     background-color: var(--color-card-dark);
   }
 
   svg {
     font-size: 1.5rem;
-  }
-
-  .label {
-    font-size: var(--font-size);
-    max-width: 15ch;
-    text-align: center;
-    line-height: 1;
   }
 
   @media (width < 900px) {
@@ -77,5 +71,24 @@
       font-size: var(--font-size);
       max-width: none;
     }
+  }
+}
+
+.menu-navigation-button[data-open] {
+  background-color: var(--color-card-dark);
+
+  .menu-navigation-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.menu-navigation-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap);
+
+  &[aria-current='page'] {
+    background-color: var(--color-card-dark);
   }
 }

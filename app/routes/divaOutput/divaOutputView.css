@@ -21,19 +21,6 @@
   }
 }
 
-.top-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--gap-l);
-
-  @media (width < 900px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--gap);
-  }
-}
-
 .info-alert {
   margin-bottom: var(--gap);
 }

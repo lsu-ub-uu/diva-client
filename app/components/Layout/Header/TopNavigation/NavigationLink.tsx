@@ -18,7 +18,7 @@ export const NavigationLink = ({
   return (
     <NavLink className={styles['navigation-link']} to={to} onClick={onClick}>
       {icon}
-      <span className={styles['label']}> {label}</span>
+      {label}
     </NavLink>
   );
 };

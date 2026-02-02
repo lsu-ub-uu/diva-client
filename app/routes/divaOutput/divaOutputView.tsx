@@ -1,6 +1,5 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
@@ -17,17 +16,15 @@ import {
   href,
   isRouteErrorResponse,
   Link,
-  useRouteLoaderData,
   type MetaDescriptor,
 } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
-import { ActionBar } from '../record/ActionBar/ActionBar';
+import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 
 export const loader = async ({
   request,
@@ -103,7 +100,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         </div>
       )}
       <div className='diva-output-view-page grid-col-12'>
-        <div className='top-content'>
+        <div className='top-bar'>
           <Breadcrumbs />
           <RecordActionBar record={record} apiUrl={apiUrl} />
         </div>

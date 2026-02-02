@@ -244,7 +244,7 @@ export default function CreateRecordRoute({
   };
   return (
     <div className='grid main-content'>
-      <div className='grid-col-12 record-top-bar'>
+      <div className='grid-col-12 top-bar'>
         <Breadcrumbs />
       </div>
       <aside className='navigation-sidebar grid-col-2 grid-col-l-3 grid-col-m-hidden'>

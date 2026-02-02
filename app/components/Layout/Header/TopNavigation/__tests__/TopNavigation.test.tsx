@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import { TopNavigation } from '@/components/Layout/Header/TopNavigation/TopNavigation';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';

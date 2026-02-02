@@ -19,10 +19,6 @@
   }
 }
 
-.main-content {
-  margin-top: var(--gap-l);
-}
-
 @for $i from 1 through 12 {
   .grid-col-#{$i} {
     grid-column: span #{$i} / span #{$i};
@@ -62,5 +58,22 @@
 .grid-col-l-hidden {
   @media (width < 1200px) {
     display: none;
+  }
+}
+
+.main-content {
+  margin-top: var(--gap-l);
+}
+
+.top-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--gap-l);
+
+  @media (width < 900px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap);
   }
 }

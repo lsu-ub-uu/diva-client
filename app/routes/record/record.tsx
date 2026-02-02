@@ -119,7 +119,7 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
             <TrashAlert recordType={record.recordType} recordId={record.id} />
           </div>
         )}
-        <div className='record-top-bar grid-col-12'>
+        <div className='top-bar grid-col-12'>
           <Breadcrumbs />
           <RecordActionBar record={record} apiUrl={apiUrl} />
         </div>

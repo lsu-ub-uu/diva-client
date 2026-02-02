@@ -21,7 +21,7 @@ import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { ActionBar } from '@/routes/record/ActionBar/ActionBar';
 import { ActionBarButton } from '@/routes/record/ActionBar/ActionBarButton';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
-import { FilePlusIcon, PlusCircleIcon } from 'lucide-react';
+import { FilePlusIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 

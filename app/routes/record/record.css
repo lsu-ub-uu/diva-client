@@ -66,16 +66,3 @@
 .record-status-bar {
   margin-block: var(--gap-l);
 }
-
-.record-top-bar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: var(--gap-l);
-
-  @media (width < 900px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--gap);
-  }
-}
