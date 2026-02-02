@@ -56,7 +56,7 @@ export const SearchLayout = ({
   return (
     <div className='grid'>
       <div className='grid-col-12'>{children}</div>
-      <main className='grid-col-9 search-main'>
+      <main className='grid-col-9 grid-col-l-12 search-main'>
         <RecordSearchView
           query={query}
           onQueryChange={onQueryChange}

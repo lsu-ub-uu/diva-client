@@ -17,15 +17,15 @@ Se till att mobil nav funkar igen
 Gå igenom alla vyer och sätt upp grids så att de ser bra ut på alla skärmbredder
 - ✓ Header och footer och memberbar (skall hålla sig inom grid max-width)
 - ✓ Landningssida (Fixa bild)
-- Söksida (hur hantera filter?)
-- Visningssida
-- Skapasida
-- Uppdatera
-- Visa diva-output
+- ✓ Söksida (hur hantera filter?)
+- ✓ Visningssida
+- ✓ Skapasida
+- ✓ Uppdatera
+- ✓ Visa diva-output
 - ✓ Login
 
 
 
 Extra
-- skapa knappen som actionButton
+- ✓ skapa knappen som actionButton
 - ✓ LoginForm

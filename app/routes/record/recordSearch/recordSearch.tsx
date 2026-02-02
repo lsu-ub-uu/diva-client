@@ -1,5 +1,4 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import type { BFFMetadataGroup } from '@/cora/transform/bffTypes.server';
@@ -8,17 +7,7 @@ import { createFilters } from '@/data/search/createFilterDefinition.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { CirclePlusIcon } from 'lucide-react';
-import { Fragment, Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  Await,
-  data,
-  href,
-  Link,
-  useNavigation,
-  useSubmit,
-} from 'react-router';
+import { data, useNavigation, useSubmit } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -115,7 +104,7 @@ export const loader = async ({
     decorated,
   );
 
-  const validationTypes = getValidationTypes(
+  const validationTypes = await getValidationTypes(
     params.recordType,
     auth?.data.token,
   );
@@ -149,13 +138,11 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     activeFilters,
     rows,
     start,
-    recordTypeId,
     recordTypeTextId,
     validationTypes,
   } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
-  const { t } = useTranslation();
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -215,21 +202,14 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       onClearAllFilters={handleClearAllFilters}
     >
       <div className='main-content'>
-        <Breadcrumbs />
-        <div className='title-wrapper'>
-          <h1>{title}</h1>
-
-          <Suspense>
-            <Await resolve={validationTypes} errorElement={<Fragment />}>
-              {(validationTypes) => (
-                <CreateRecordMenu
-                  validationTypes={validationTypes}
-                  recordTypeTextId={recordTypeTextId}
-                />
-              )}
-            </Await>
-          </Suspense>
+        <div className='top-bar'>
+          <Breadcrumbs />
+          <CreateRecordMenu
+            validationTypes={validationTypes}
+            recordTypeTextId={recordTypeTextId}
+          />
         </div>
+        <h1>{title}</h1>
       </div>
     </SearchLayout>
   );

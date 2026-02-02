@@ -50,8 +50,8 @@ export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
 
   return (
-    <main>
-      <div className='record-wrapper'>
+    <main className='grid'>
+      <div className='grid-col-8 grid-col-l-12'>
         <ReadOnlyForm
           recordData={record.data}
           formSchema={formDefinition}

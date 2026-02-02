@@ -6,7 +6,7 @@
   max-width: var(--content-max-width);
   margin: 0 auto;
 
-  @media (width <= 1800px) {
+  @media (width <= calc(1800px + 4rem)) {
     padding-inline: var(--gap-xxl);
   }
 
@@ -16,10 +16,6 @@
 
   @media (width < 900px) {
     padding-inline: var(--gap-l);
-  }
-
-  @media (width < 600px) {
-    padding-inline: var(--gap);
   }
 }
 

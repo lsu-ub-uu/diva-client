@@ -38,7 +38,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
   const output = data.output;
   return (
     <>
-      <main className='grid-col-8 grid-col-s-12'>
+      <main className='grid-col-8 grid-col-m-12'>
         <article>
           <h1
             lang={
@@ -190,7 +190,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           )}
         </article>
       </main>
-      <aside className='grid-col-4 grid-col-s-12'>
+      <aside className='grid-col-4 grid-col-m-12'>
         <RecordDetails output={output} />
 
         <Attachments attachments={output.attachment} />

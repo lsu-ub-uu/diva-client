@@ -6,6 +6,10 @@
     list-style: none;
     gap: var(--gap);
   }
+
+  @media (width < 900px) {
+    display: none;
+  }
 }
 
 /*

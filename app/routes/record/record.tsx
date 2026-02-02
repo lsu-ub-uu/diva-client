@@ -29,10 +29,10 @@ import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
-import type { Route } from '../record/+types/record';
-import { ActionBar } from './ActionBar/ActionBar';
-import css from './record.css?url';
 import { i18nContext } from 'server/i18n';
+import type { Route } from '../record/+types/record';
+import { RecordActionBar } from './ActionBar/RecordActionBar';
+import css from './record.css?url';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
@@ -121,7 +121,7 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
         )}
         <div className='record-top-bar grid-col-12'>
           <Breadcrumbs />
-          <ActionBar record={record} apiUrl={apiUrl} />
+          <RecordActionBar record={record} apiUrl={apiUrl} />
         </div>
       </div>
       <Outlet />

@@ -26,7 +26,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getValidatedFormData } from 'remix-hook-form';
 
 import { RecordForm } from '@/components/Form/RecordForm';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
@@ -42,7 +41,6 @@ import { useDeferredValue, useState } from 'react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);

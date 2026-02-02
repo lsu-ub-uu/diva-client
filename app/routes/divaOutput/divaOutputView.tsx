@@ -27,6 +27,7 @@ import { ActionBar } from '../record/ActionBar/ActionBar';
 import css from './divaOutputView.css?url';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 
 export const loader = async ({
   request,
@@ -90,8 +91,6 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
-  const { recordTypes, editableMember } = useRouteLoaderData('root');
-
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
   const isInTrashBin =
@@ -106,7 +105,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
       <div className='diva-output-view-page grid-col-12'>
         <div className='top-content'>
           <Breadcrumbs />
-          <ActionBar record={record} apiUrl={apiUrl} />
+          <RecordActionBar record={record} apiUrl={apiUrl} />
         </div>
       </div>
       <OutputView data={record.data} />

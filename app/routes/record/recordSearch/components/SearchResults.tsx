@@ -5,7 +5,7 @@ import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActi
 import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { SearchSlashIcon } from 'lucide-react';
+import { SearchAlertIcon, SearchSlashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface SearchResultsProps {
@@ -24,6 +24,13 @@ export const SearchResults = ({
   const { t } = useTranslation();
   return (
     <div className={styles['search-result']}>
+      {!userHasSearched && searchResults.totalNo === 0 && (
+        <Alert severity='info' icon={<SearchAlertIcon />}>
+          <AlertTitle>{t('divaClient_noPostResultsTitleText')}</AlertTitle>
+          {t('divaClient_noPostResultsBodyText')}
+        </Alert>
+      )}
+
       {userHasSearched && searchResults.totalNo === 0 && (
         <Alert severity='info' icon={<SearchSlashIcon />}>
           <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>

@@ -17,13 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.record-wrapper {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: var(--gap-l);
-  position: relative;
-}
-
 .info-alert {
   margin-bottom: var(--gap);
 }
@@ -52,9 +45,11 @@
   top: 0;
   overflow-y: auto;
   height: 100vh;
-  padding-left: var(--gap-l);
-  padding-top: var(--gap);
+  padding: var(--gap-l);
   padding-bottom: 10rem;
+  background-color: var(--color-background-darker);
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
 }
 
 .preview-heading {
@@ -74,6 +69,7 @@
 
 .record-top-bar {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: var(--gap-l);
 
