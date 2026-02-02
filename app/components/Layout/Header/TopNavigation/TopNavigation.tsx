@@ -8,6 +8,8 @@ import {
   BuildingIcon,
   ChartGanttIcon,
   ChevronDownIcon,
+  EllipsisIcon,
+  EllipsisVerticalIcon,
   FlaskRoundIcon,
   GraduationCapIcon,
   HandCoinsIcon,
@@ -61,8 +63,8 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const isOtherNavActive = navigation.otherNavigationItems.some(
-    (navItem) => navItem.link === location.pathname,
+  const isOtherNavActive = navigation.otherNavigationItems.some((navItem) =>
+    location.pathname.startsWith(navItem.link),
   );
 
   return (
@@ -89,7 +91,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
               )}
               data-active={isOtherNavActive}
             >
-              <MenuIcon />
+              <EllipsisIcon />
               <span className={styles['label']}>
                 {t('divaClient_moreNavigationText')}
               </span>

@@ -1,6 +1,5 @@
 .diva-output-view-page {
   display: grid;
-  padding-bottom: var(--gap-xxl);
 }
 
 .record-status-bar {

@@ -87,6 +87,12 @@
   flex-direction: row;
   align-items: center;
   gap: var(--gap);
+  font-size: var(--font-size);
+  margin-block: var(--gap-s);
+
+  svg {
+    font-size: 1.5rem;
+  }
 
   &[aria-current='page'] {
     background-color: var(--color-card-dark);
