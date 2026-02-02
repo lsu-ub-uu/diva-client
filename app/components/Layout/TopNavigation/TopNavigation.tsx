@@ -1,21 +1,23 @@
 import { Button } from '@/components/Button/Button';
-import { NavigationLink } from '@/components/Layout/NavigationLink/NavigationLink';
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import { NavigationLink } from '@/components/Layout/TopNavigation/NavigationLink';
+import type { Navigation } from '@/data/getNavigation';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import {
   BookCheckIcon,
   BookOpenIcon,
   BuildingIcon,
   ChartGanttIcon,
+  ChevronDownIcon,
+  EllipsisVerticalIcon,
   FlaskRoundIcon,
   GraduationCapIcon,
   HandCoinsIcon,
   LibraryIcon,
+  MenuIcon,
   NewspaperIcon,
   NotebookTabsIcon,
   PaletteIcon,
   RefreshCwIcon,
-  Settings2Icon,
   TagIcon,
   UsersIcon,
 } from 'lucide-react';
@@ -43,8 +45,7 @@ export interface TopNavigationLink {
 }
 
 export interface TopNavigationProps {
-  recordTypes: BFFRecordType[];
-  editableMember?: string;
+  navigation: Navigation;
   onNavigationClick?: () => void;
 }
 
@@ -64,8 +65,7 @@ export const icons: Record<string, ReactNode> = {
 };
 
 export const TopNavigation = ({
-  recordTypes,
-  editableMember,
+  navigation,
   onNavigationClick,
 }: TopNavigationProps) => {
   const devMode = useIsDevMode();
@@ -77,7 +77,7 @@ export const TopNavigation = ({
   return (
     <nav className={styles['top-navigation']}>
       <ul>
-        {recordTypes
+        {navigation.mainNavigationItems
           .sort((a, b) => {
             const aIndex = sortOrder.indexOf(a.id);
             const bIndex = sortOrder.indexOf(b.id);
@@ -86,29 +86,25 @@ export const TopNavigation = ({
               (bIndex === -1 ? Infinity : bIndex)
             );
           })
-          .map((recordType) => (
-            <li key={recordType.id}>
+          .map((navItem) => (
+            <li key={navItem.id}>
               <NavigationLink
-                to={href('/:recordType', { recordType: recordType.id })}
-                label={t(recordType.textId)}
-                icon={icons[recordType.id]}
+                to={navItem.link}
+                label={t(navItem.textId)}
+                icon={icons[navItem.id]}
                 onClick={onNavigationClick}
               />
             </li>
           ))}
-        {editableMember && (
-          <li>
-            <NavigationLink
-              to={href('/:recordType/:recordId/update', {
-                recordType: 'diva-member',
-                recordId: editableMember,
-              })}
-              label='Medlems­inställningar'
-              icon={<Settings2Icon />}
-              onClick={onNavigationClick}
-            />
-          </li>
-        )}
+
+        <li>
+          <button className={styles['navigation-link']}>
+            <MenuIcon />
+            <span className={styles['label']}>Mer</span>
+            <ChevronDownIcon />
+          </button>
+        </li>
+
         {devMode && (
           <>
             <li>

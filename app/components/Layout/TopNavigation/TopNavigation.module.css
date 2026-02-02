@@ -2,9 +2,76 @@
   ul {
     display: flex;
     flex-direction: row;
+    align-items: center;
     list-style: none;
-    font-size: var(--font-size-h4);
-    transform: translateY(var(--gap));
     gap: var(--gap);
+  }
+}
+
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+.navigation-link {
+  cursor: pointer;
+  background-color: transparent;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: background-color 0.1s;
+  gap: var(--gap);
+  border-radius: var(--border-radius-s);
+  padding: var(--gap-s) var(--gap-l);
+
+  &:hover {
+    background-color: var(--color-card);
+  }
+
+  &:global(.pending) {
+    background-color: var(--color-gray-main);
+  }
+
+  &[aria-current='page'] {
+    background-color: var(--color-card-dark);
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  .label {
+    font-size: var(--font-size);
+    max-width: 15ch;
+    text-align: center;
+    line-height: 1;
+  }
+
+  @media (width < 900px) {
+    flex-direction: row;
+
+    svg {
+      font-size: 1.5rem;
+    }
+
+    .label {
+      font-size: var(--font-size);
+      max-width: none;
+    }
   }
 }

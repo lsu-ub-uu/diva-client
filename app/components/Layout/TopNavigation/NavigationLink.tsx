@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router';
 import type { ReactNode } from 'react';
-import styles from './NavigationLink.module.css';
+import styles from './TopNavigation.module.css';
 
 interface NavigationLinkProps {
   icon: ReactNode;
@@ -17,7 +17,7 @@ export const NavigationLink = ({
 }: NavigationLinkProps) => {
   return (
     <NavLink className={styles['navigation-link']} to={to} onClick={onClick}>
-      <span className={styles['icon-wrapper']}>{icon}</span>
+      {icon}
       <span className={styles['label']}> {label}</span>
     </NavLink>
   );

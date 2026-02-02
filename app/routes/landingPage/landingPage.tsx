@@ -68,7 +68,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => [
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const { title, member, heroImage } = loaderData;
   const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
-  const recordTypes = rootLoaderData?.recordTypes ?? [];
+  const navigation = rootLoaderData?.navigation;
   const { t } = useTranslation();
   const language = useLanguage();
 
@@ -121,45 +121,47 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
             </div>
           </Form>
         </div>
-        <div className='navigation-grid'>
-          <NavigationCard
-            to={href('/:recordType', { recordType: 'diva-output' })}
-            icon={BookOpenIcon}
-            iconColor='card-icon-publications'
-            title={t('divaClient_navigationCardPublicationTitleText')}
-            description={t(
-              'divaClient_navigationCardPublicationDescriptionText',
-            )}
-          />
-          <NavigationCard
-            to={href('/:recordType', { recordType: 'diva-person' })}
-            icon={UsersIcon}
-            iconColor='card-icon-people'
-            title={t('divaClient_navigationCardPersonTitleText')}
-            description={t('divaClient_navigationCardPersonDescriptionText')}
-          />
-          <NavigationCard
-            to={href('/:recordType', { recordType: 'diva-project' })}
-            icon={ChartGanttIcon}
-            iconColor='card-icon-projects'
-            title={t('divaClient_navigationCardProjectTitleText')}
-            description={t('divaClient_navigationCardProjectDescriptionText')}
-          />
-        </div>
+        {navigation && (
+          <div className='navigation-grid'>
+            <NavigationCard
+              to={href('/:recordType', { recordType: 'diva-output' })}
+              icon={BookOpenIcon}
+              iconColor='card-icon-publications'
+              title={t('divaClient_navigationCardPublicationTitleText')}
+              description={t(
+                'divaClient_navigationCardPublicationDescriptionText',
+              )}
+            />
+            <NavigationCard
+              to={href('/:recordType', { recordType: 'diva-person' })}
+              icon={UsersIcon}
+              iconColor='card-icon-people'
+              title={t('divaClient_navigationCardPersonTitleText')}
+              description={t('divaClient_navigationCardPersonDescriptionText')}
+            />
+            <NavigationCard
+              to={href('/:recordType', { recordType: 'diva-project' })}
+              icon={ChartGanttIcon}
+              iconColor='card-icon-projects'
+              title={t('divaClient_navigationCardProjectTitleText')}
+              description={t('divaClient_navigationCardProjectDescriptionText')}
+            />
+          </div>
+        )}
         <section className='other-record-types'>
           <h2>{t('divaClient_allRecordTypesText')}</h2>
           <nav>
             <ul>
-              {recordTypes.map((recordType) => (
-                <li key={recordType.id}>
+              {navigation?.otherNavigationItems.map((navItem) => (
+                <li key={navItem.id}>
                   <NavLink
                     className='other-record-type-link'
-                    to={href('/:recordType', { recordType: recordType.id })}
+                    to={href('/:recordType', { recordType: navItem.id })}
                   >
                     {({ isPending }) => (
                       <>
-                        {isPending ? <CircularLoader /> : icons[recordType.id]}
-                        <h3>{t(recordType.textId)}</h3>
+                        {isPending ? <CircularLoader /> : icons[navItem.id]}
+                        <h3>{t(navItem.textId)}</h3>
                       </>
                     )}
                   </NavLink>
@@ -169,7 +171,6 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
           </nav>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

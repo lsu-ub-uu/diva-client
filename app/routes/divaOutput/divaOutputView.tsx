@@ -97,28 +97,20 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
   const isInTrashBin =
     record.data.output.recordInfo?.inTrashBin?.value === 'true';
   return (
-    <>
-      {/* <aside className='nav-rail'>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-        />
-      </aside> */}
-      <div className='content'>
-        <div className='record-status-bar'>
-          {isInTrashBin && (
-            <TrashAlert recordType='diva-output' recordId={record.id} />
-          )}
+    <div className='grid main-content'>
+      {isInTrashBin && (
+        <div className='record-status-bar grid-col-12'>
+          <TrashAlert recordType='diva-output' recordId={record.id} />
         </div>
-        <div className='diva-output-view-page'>
-          <div className='top-content'>
-            <Breadcrumbs />
-            <ActionBar record={record} apiUrl={apiUrl} />
-          </div>
-          <OutputView data={record.data} />
+      )}
+      <div className='diva-output-view-page grid-col-12'>
+        <div className='top-content'>
+          <Breadcrumbs />
+          <ActionBar record={record} apiUrl={apiUrl} />
         </div>
       </div>
-    </>
+      <OutputView data={record.data} />
+    </div>
   );
 }
 

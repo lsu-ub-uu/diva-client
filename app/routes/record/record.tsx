@@ -112,17 +112,19 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <div>
-      <div className='record-status-bar'>
+    <>
+      <div className='grid main-content'>
         {isInTrashBin() && (
-          <TrashAlert recordType={record.recordType} recordId={record.id} />
+          <div className='record-status-bar grid-col-12'>
+            <TrashAlert recordType={record.recordType} recordId={record.id} />
+          </div>
         )}
-      </div>
-      <div className='record-top-bar'>
-        <Breadcrumbs />
-        <ActionBar record={record} apiUrl={apiUrl} />
+        <div className='record-top-bar grid-col-12'>
+          <Breadcrumbs />
+          <ActionBar record={record} apiUrl={apiUrl} />
+        </div>
       </div>
       <Outlet />
-    </div>
+    </>
   );
 }

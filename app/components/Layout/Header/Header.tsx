@@ -20,6 +20,7 @@ import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
 import styles from './Header.module.css';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import LoginMenu from './Login/LoginMenu';
+import type { Navigation } from '@/data/getNavigation';
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -27,8 +28,7 @@ interface HeaderProps {
   userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
   exampleUsers: ExampleUser[];
-  recordTypes: BFFRecordType[];
-  editableMember: string | undefined;
+  navigation: Navigation;
 }
 
 export const Header = ({
@@ -38,8 +38,7 @@ export const Header = ({
   userPreferences,
   loginUnits,
   exampleUsers,
-  recordTypes,
-  editableMember,
+  navigation,
 }: HeaderProps) => {
   const headerRef = useRef<HTMLElement>(null);
 
@@ -74,58 +73,58 @@ export const Header = ({
     <header className={clsx(styles.header, className)} ref={headerRef}>
       <NavigationLoader />
       <MemberBar member={member} loggedIn={user !== undefined} />
-      <div className={styles['diva-header-bar']}>
-        <div className={styles['header-bar-left']}>
-          <div className={styles['header-mobile-menu-button']}>
-            <IconButton
-              tooltip={t('divaClient_showMenuText')}
-              onClick={() => mobileDialogRef.current?.showModal()}
-            >
-              <MenuIcon />
-            </IconButton>
-            <dialog
-              ref={mobileDialogRef}
-              className={styles['mobile-menu-dialog']}
-              closedby='any'
-            >
-              <div className={styles['mobile-menu-header']}>
-                <LanguageSwitcher />
-                <ColorSchemeSwitcher
-                  colorScheme={userPreferences.colorScheme}
+      <div className={clsx(styles['diva-header-bar'])}>
+        <div className={clsx(styles['header-bar-content'], 'grid')}>
+          <div className={styles['header-bar-left']}>
+            <div className={styles['header-mobile-menu-button']}>
+              <IconButton
+                tooltip={t('divaClient_showMenuText')}
+                onClick={() => mobileDialogRef.current?.showModal()}
+              >
+                <MenuIcon />
+              </IconButton>
+              <dialog
+                ref={mobileDialogRef}
+                className={styles['mobile-menu-dialog']}
+                closedby='any'
+              >
+                <div className={styles['mobile-menu-header']}>
+                  <LanguageSwitcher />
+                  <ColorSchemeSwitcher
+                    colorScheme={userPreferences.colorScheme}
+                  />
+                  <IconButton
+                    className={styles['menu-close-button']}
+                    tooltip={t('divaClient_closeText')}
+                    onClick={() => mobileDialogRef.current?.close()}
+                  >
+                    <XIcon />
+                  </IconButton>
+                </div>
+                <hr />
+                <TopNavigation
+                  navigation={navigation}
+                  onNavigationClick={() => mobileDialogRef.current?.close()}
                 />
-                <IconButton
-                  className={styles['menu-close-button']}
-                  tooltip={t('divaClient_closeText')}
-                  onClick={() => mobileDialogRef.current?.close()}
-                >
-                  <XIcon />
-                </IconButton>
-              </div>
-              <hr />
-              <TopNavigation
-                recordTypes={recordTypes}
-                editableMember={editableMember}
-                onNavigationClick={() => mobileDialogRef.current?.close()}
-              />
-            </dialog>
+              </dialog>
+            </div>
+            <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
+              <DivaLogo className={styles.logo} />
+            </Link>
+            <TopNavigation
+              navigation={navigation}
+              onNavigationClick={() => mobileDialogRef.current?.close()}
+            />
           </div>
-          <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
-            <DivaLogo className={styles.logo} />
-          </Link>
-        </div>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-          onNavigationClick={() => mobileDialogRef.current?.close()}
-        />
-        <div className={styles['header-bar-right']}>
-          <div className={styles['color-theme-switcher']}>
-            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+          <div className={styles['header-bar-right']}>
+            <div className={styles['color-theme-switcher']}>
+              <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+            </div>
+            <div className={styles['language-switcher']}>
+              <LanguageSwitcher />
+            </div>
+            <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
           </div>
-          <div className={styles['language-switcher']}>
-            <LanguageSwitcher />
-          </div>
-          <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
         </div>
       </div>
     </header>

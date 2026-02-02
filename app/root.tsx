@@ -34,9 +34,8 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 import rootCss from './styles/root.css?url';
-
 import divaLogo from '@/assets/divaLogo.svg';
-import { canEditMemberSettings, getNavigation } from '@/data/getRecordTypes';
+import { getNavigation } from '@/data/getNavigation';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { AngryIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
@@ -49,6 +48,7 @@ import {
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
 import { Alert, type Severity } from './components/Alert/Alert';
+import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
 import {
   parseUserPreferencesCookie,
@@ -70,10 +70,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;
   const locale = context.get(i18nContext).language;
-  const recordTypes = await getNavigation(dependencies, auth);
+  const navigation = await getNavigation(dependencies, member, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
-  const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
   const globalAlert = {
     severity: 'warning' as Severity,
     text: t('divaClient_metadataWarningText'),
@@ -86,10 +85,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     loginUnits,
     exampleUsers,
     member,
-    recordTypes,
+    navigation,
     userPreferences,
     notification,
-    userCanEditMemberSettings,
     globalAlert,
     blockRobotIndexing,
   };
@@ -235,16 +233,13 @@ export default function App({ loaderData }: Route.ComponentProps) {
     loginUnits,
     exampleUsers,
     user,
-    userCanEditMemberSettings,
-    recordTypes,
+    navigation,
     globalAlert,
     blockRobotIndexing,
   } = loaderData;
 
-  const editableMember = userCanEditMemberSettings ? member?.id : undefined;
-
   return (
-    <div className='root-layout'>
+    <div>
       {blockRobotIndexing && <meta name='robots' content='noindex, nofollow' />}
       <NotificationSnackbar
         key={loaderData.notification?.summary}
@@ -264,10 +259,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
         userPreferences={userPreferences}
         loginUnits={loginUnits}
         exampleUsers={exampleUsers}
-        recordTypes={recordTypes}
-        editableMember={editableMember}
+        navigation={navigation}
       />
       <Outlet />
+      <Footer />
     </div>
   );
 }

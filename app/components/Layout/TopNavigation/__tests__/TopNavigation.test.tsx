@@ -33,10 +33,7 @@ describe('<TopNavigation />', () => {
       {
         path: '/',
         Component: () => (
-          <TopNavigation
-            recordTypes={recordTypes}
-            onNavigationClick={vi.fn()}
-          />
+          <TopNavigation navigation={recordTypes} onNavigationClick={vi.fn()} />
         ),
       },
     ]);

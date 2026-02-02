@@ -1,6 +1,6 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { getNavigation } from '@/data/getRecordTypes';
+import { getNavigation } from '@/data/getNavigation';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 

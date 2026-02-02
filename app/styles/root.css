@@ -21,6 +21,7 @@
 @import './spacing.css' layer(root);
 @import './normalize.css' layer(root);
 @import './form-component.css' layer(components);
+@import './grid.scss' layer(root);
 
 @layer root, components;
 
@@ -41,6 +42,7 @@
     --header-height: calc(
       var(--member-bar-height) + var(--diva-header-bar-height)
     );
+    --content-max-width: 1800px;
 
     /* Shadows */
     --elevation:
@@ -50,6 +52,8 @@
     *:focus-visible {
       outline: 2px solid var(--color-link-selected);
     }
+
+    background-color: var(--color-background-darker);
 
     body {
       margin: 0;
@@ -151,11 +155,7 @@
 
 .root-layout {
   display: grid;
-  grid-template:
-    'global-alert global-alert' auto
-    'header header' auto
-    'nav main' 1fr;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: repeat(12, 1fr);
   min-height: 100vh;
 
   @media (width < 900px) {
@@ -168,11 +168,33 @@
 }
 
 .global-alert {
-  grid-area: global-alert;
+  grid-row: global-alert;
+  grid-column: span 12;
 }
 
 .header {
-  grid-area: header;
+  grid-row: header;
+  grid-column: span 12;
+}
+
+.layout-left {
+  grid-row: main;
+  grid-column: span 2;
+}
+
+.layout-main {
+  grid-row: main;
+  grid-column: span 8;
+}
+
+.layout-right {
+  grid-row: main;
+  grid-column: span 2;
+}
+
+.footer {
+  grid-row: footer;
+  grid-column: span 12;
 }
 
 .nav-rail {
@@ -198,15 +220,6 @@
 
 .scrolled-past-header .nav-rail nav {
   max-height: 100vh;
-}
-
-.content {
-  grid-area: main;
-  padding: 0 var(--gap-l);
-
-  @media (width < 900px) {
-    padding: 0 var(--gap);
-  }
 }
 
 .flash {

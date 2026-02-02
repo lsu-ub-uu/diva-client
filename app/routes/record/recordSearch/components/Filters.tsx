@@ -31,14 +31,18 @@ export const Filters = ({
 }: FiltersProps) => {
   const { t } = useTranslation();
   return (
-    <aside className='filters' data-open={open}>
+    <div className='filters' data-open={open}>
       <button className='filters-backdrop' onClick={onClose} />
       <div className='filters-content'>
         <div className='filters-header'>
           <h2>
             <FunnelIcon /> {t('divaClient_filterTitleText')}
           </h2>
-          <IconButton tooltip={t('divaClient_closeText')} onClick={onClose}>
+          <IconButton
+            className='filters-close-button'
+            tooltip={t('divaClient_closeText')}
+            onClick={onClose}
+          >
             <XIcon />
           </IconButton>
         </div>
@@ -59,6 +63,6 @@ export const Filters = ({
           })}
         </Form>
       </div>
-    </aside>
+    </div>
   );
 };

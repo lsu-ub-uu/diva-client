@@ -5,12 +5,29 @@
 
 .diva-header-bar {
   height: var(--diva-header-bar-height);
-  padding: var(--gap) var(--gap-xl);
   border-bottom: 1px solid var(--color-thin-border);
+  transition-behavior: allow-discrete;
+  display: flex;
+  align-items: center;
+
+  @media (width < 900px) {
+    .logo {
+      height: 100%;
+      max-width: 5rem;
+    }
+
+    .language-switcher,
+    .color-theme-switcher {
+      display: none;
+    }
+  }
+}
+
+.header-bar-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition-behavior: allow-discrete;
+  flex-grow: 1;
 
   .logo {
     height: 100%;
@@ -27,20 +44,6 @@
     display: flex;
     align-items: center;
     gap: var(--gap-l);
-  }
-
-  @media (width < 900px) {
-    padding: var(--gap) var(--gap-l);
-
-    .logo {
-      height: 100%;
-      max-width: 5rem;
-    }
-
-    .language-switcher,
-    .color-theme-switcher {
-      display: none;
-    }
   }
 }
 

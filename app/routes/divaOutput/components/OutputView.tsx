@@ -37,8 +37,8 @@ export const OutputView = ({ data }: OutputViewProps) => {
   const { t } = useTranslation();
   const output = data.output;
   return (
-    <div className='diva-output-view'>
-      <main>
+    <>
+      <main className='grid-col-8 grid-col-s-12'>
         <article>
           <h1
             lang={
@@ -190,7 +190,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
           )}
         </article>
       </main>
-      <aside>
+      <aside className='grid-col-4 grid-col-s-12'>
         <RecordDetails output={output} />
 
         <Attachments attachments={output.attachment} />
@@ -248,6 +248,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
 
         <Classifications output={output} />
       </aside>
-    </div>
+    </>
   );
 };

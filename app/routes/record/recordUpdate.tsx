@@ -42,6 +42,7 @@ import { useDeferredValue, useState } from 'react';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -185,29 +186,30 @@ export default function UpdateRecordRoute({
   };
 
   return (
-    <SidebarLayout
-      sidebarContent={
+    <div className='grid'>
+      <aside className='navigation-sidebar grid-col-2 grid-col-l-3 grid-col-m-hidden'>
         <NavigationPanel
           links={
             formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
         />
-      }
-    >
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity} className='error-alert'>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
+      </aside>
+      <main className='record-form grid-col-6 grid-col-l-9 grid-col-m-12'>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity} className='error-alert'>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
 
-      <div className='record-wrapper'>
         <RecordForm
           key={lastUpdate}
           defaultValues={defaultValues}
           formSchema={formDefinition}
           onChange={handleFormChange}
         />
+      </main>
+      <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
             <ReadOnlyForm
@@ -216,7 +218,7 @@ export default function UpdateRecordRoute({
             />
           </div>
         )}
-      </div>
-    </SidebarLayout>
+      </aside>
+    </div>
   );
 }

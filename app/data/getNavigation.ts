@@ -16,17 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { Auth } from '@/auth/Auth';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import { transformRecordType } from '@/cora/transform/transformRecordTypes.server';
-import type {
-  BFFMember,
-  BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
+import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import { href } from 'react-router';
 
 export interface NavigationItem {
+  id: string;
   link: string;
   textId: string;
 }
@@ -36,47 +35,81 @@ export interface Navigation {
   otherNavigationItems: NavigationItem[];
 }
 
-/** 
+const sortOrder = [
+  'diva-output',
+  'diva-person',
+  'diva-project',
+  'diva-course',
+  'diva-organisation',
+  'diva-journal',
+  'diva-subject',
+  'diva-programme',
+  'diva-series',
+  'diva-localLabel',
+  'diva-publisher',
+  'diva-funder',
+];
+
+/**
  * Byt namn till getNavigation (typa upp den)
- * 
+ *
  * Lägg till recordTypeCategory clientMainNavigation på output, person, project
- * 
+ *
  * Ta med "special items" här. Member settings, dev links.
  */
 
-
 export const getNavigation = async (
   dependencies: Dependencies,
+  member?: BFFMember,
   auth?: Auth,
-): Promise<BFFRecordType[]> => {
-  const divaClientRecordTypes = Array.from(
-    dependencies.recordTypePool.values(),
-  ).filter((recordType) =>
-    recordType.recordTypeCategory.includes('clientNavigation'),
-  );
-
+): Promise<Navigation> => {
   const userRecordTypes = await Promise.allSettled(
-    divaClientRecordTypes.map((recordType) =>
+    sortOrder.map((recordType) =>
       getRecordDataById<RecordWrapper>(
         'recordType',
-        recordType.id,
+        recordType,
         auth?.data?.token,
       ),
     ),
   );
 
-  return userRecordTypes
+  const recordTypes = userRecordTypes
     .filter((result) => result.status === 'fulfilled')
     .map((result) => result.value)
     .map((response) => response.data)
     .filter((recordType) => recordType.record.actionLinks.search !== undefined)
     .map(transformRecordType);
+
+  const navigation = {
+    mainNavigationItems: recordTypes.slice(0, 3).map((rt) => ({
+      id: rt.id,
+      link: href('/:recordType', { recordType: rt.id }),
+      textId: rt.textId,
+    })),
+    otherNavigationItems: [
+      ...recordTypes.slice(3).map((rt) => ({
+        id: rt.id,
+        link: href('/:recordType', { recordType: rt.id }),
+        textId: rt.textId,
+      })),
+    ],
+  };
+
+  if (await canEditMemberSettings(member, auth)) {
+    navigation.otherNavigationItems.push({
+      id: 'diva-member',
+      link: href('/:recordType/:recordId/update', {
+        recordType: 'diva-member',
+        recordId: member!.id,
+      }),
+      textId: 'diva-memberText',
+    });
+  }
+
+  return navigation;
 };
 
-export const canEditMemberSettings = async (
-  member?: BFFMember,
-  auth?: Auth,
-) => {
+const canEditMemberSettings = async (member?: BFFMember, auth?: Auth) => {
   if (!auth || !member) {
     return false;
   }

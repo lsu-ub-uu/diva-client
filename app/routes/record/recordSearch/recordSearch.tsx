@@ -159,7 +159,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
-      navigation.formAction?.includes(location.pathname),
+    navigation.formAction?.includes(location.pathname),
   );
 
   const handleQueryChange = useDebouncedCallback(
@@ -214,28 +214,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       onRemoveFilter={handleRemoveFilter}
       onClearAllFilters={handleClearAllFilters}
     >
-      <>
+      <div className='main-content'>
         <Breadcrumbs />
         <div className='title-wrapper'>
           <h1>{title}</h1>
 
-          <Suspense
-            fallback={
-              <Button
-                as={Link}
-                variant='secondary'
-                to={href('/:recordType/create', {
-                  recordType: recordTypeId,
-                })}
-                size='large'
-              >
-                <CirclePlusIcon />
-                {t('divaClient_createText', {
-                  type: t(recordTypeTextId).toLowerCase(),
-                })}
-              </Button>
-            }
-          >
+          <Suspense>
             <Await resolve={validationTypes} errorElement={<Fragment />}>
               {(validationTypes) => (
                 <CreateRecordMenu
@@ -246,7 +230,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
             </Await>
           </Suspense>
         </div>
-      </>
+      </div>
     </SearchLayout>
   );
 }

@@ -8,10 +8,8 @@
 }
 
 .diva-output-view {
-  display: grid;
   justify-items: start;
   gap: var(--gap-xxl);
-  grid-template-columns: 3fr 2fr;
   font-variant-numeric: tabular-nums;
   max-width: 2000px;
   padding-bottom: var(--gap-xl);
@@ -25,7 +23,6 @@
 
 .top-content {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-bottom: var(--gap-l);
 
