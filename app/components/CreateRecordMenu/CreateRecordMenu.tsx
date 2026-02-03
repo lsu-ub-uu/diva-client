@@ -55,8 +55,7 @@ export const CreateRecordMenu = ({
         </ActionBarButton>
       ) : (
         <Menu>
-          <MenuButton as={ActionBarButton}>
-            <FilePlusIcon />
+          <MenuButton as={ActionBarButton} icon={<FilePlusIcon />}>
             {buttonText}
           </MenuButton>
 

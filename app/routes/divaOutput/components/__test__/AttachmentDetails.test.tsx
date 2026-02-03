@@ -21,12 +21,12 @@ describe('AttachmentDetails', () => {
         __text: { en: 'Display Label' },
         value: 'Test Document',
       },
-      type: {
+      label: {
         __text: { en: 'Type' },
         __valueText: { en: 'Attachment' },
         value: 'attachment',
       },
-      attachmentFile: {
+      file: {
         value: 'binary:123456',
         linkedRecord: {
           binary: {

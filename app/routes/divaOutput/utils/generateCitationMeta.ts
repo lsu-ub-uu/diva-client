@@ -76,13 +76,13 @@ export const generateCitationMeta = (
 
   const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
     (attachment) =>
-      attachment?.type?.value === 'fullText' &&
-      attachment?.attachmentFile?.linkedRecord?.binary?.master?.master
-        ?.mimeType === 'application/pdf',
+      attachment?.label?.value === 'fullText' &&
+      attachment?.file?.linkedRecord?.binary?.master?.master?.mimeType ===
+        'application/pdf',
   );
 
   pdfFulltextAttachments
-    .map((attachment) => attachment?.attachmentFile?.linkedRecord?.binary)
+    .map((attachment) => attachment?.file?.linkedRecord?.binary)
     .filter((binary) => binary?.recordInfo.visibility.value === 'published')
     .forEach((binary) => {
       if (binary?.master?.master) {

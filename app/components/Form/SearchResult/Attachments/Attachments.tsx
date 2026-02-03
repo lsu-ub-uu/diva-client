@@ -17,7 +17,7 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
   return (
     <ul className={styles['attachments']}>
       {attachments.map((attachment, i) => {
-        const binary = attachment?.attachmentFile?.linkedRecord?.binary;
+        const binary = attachment?.file?.linkedRecord?.binary;
 
         if (!binary?.master?.master) {
           return null;

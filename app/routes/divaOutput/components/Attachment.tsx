@@ -14,38 +14,34 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
 
-  if (!attachment.attachmentFile?.linkedRecord?.binary.master) {
+  if (!attachment.file?.linkedRecord?.binary.master) {
     return null;
   }
 
   return (
     <div className='attachment'>
       <h3>{formatHeading(attachment, language)} </h3>
-      {attachment.attachmentFile.linkedRecord.binary.large?.large && (
+      {attachment.file.linkedRecord.binary.large?.large && (
         <img
           className='attachment-thumbnail'
           src={createDownloadLinkFromResourceLink(
-            attachment.attachmentFile.linkedRecord.binary.large.large,
+            attachment.file.linkedRecord.binary.large.large,
           )}
           alt={attachment.__text?.[language]}
         />
       )}
       <AttachmentDetails attachment={attachment} />
-      {attachment.attachmentFile.linkedRecord.binary.master?.master && (
+      {attachment.file.linkedRecord.binary.master?.master && (
         <a
           className='icon-text'
           href={createDownloadLinkFromResourceLink(
-            attachment.attachmentFile.linkedRecord.binary.master.master,
+            attachment.file.linkedRecord.binary.master.master,
           )}
-          type={
-            attachment.attachmentFile.linkedRecord.binary.master?.mimeType
-              ?.value
-          }
+          type={attachment.file.linkedRecord.binary.master?.mimeType?.value}
         >
           <DownloadIcon />
           {`${t('resourceLinkDownloadText')} (${formatBytes(
-            attachment.attachmentFile.linkedRecord.binary.master?.fileSize
-              ?.value,
+            attachment.file.linkedRecord.binary.master?.fileSize?.value,
           )})`}
         </a>
       )}
@@ -57,7 +53,7 @@ const formatHeading = (
   attachment: AttachmentGroup,
   language: 'en' | 'sv',
 ): string => {
-  const attachmentTypeText = attachment.type?.__valueText?.[language];
+  const attachmentTypeText = attachment.label?.__valueText?.[language];
 
   if (attachment.displayLabel) {
     let label = attachment.displayLabel.value;
