@@ -30,6 +30,11 @@ export const Filters = ({
   onClose,
 }: FiltersProps) => {
   const { t } = useTranslation();
+
+  if (filters.length === 0) {
+    return null;
+  }
+
   return (
     <div className='filters' data-open={open}>
       <button className='filters-backdrop' onClick={onClose} />

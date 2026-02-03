@@ -185,6 +185,27 @@
                   },
                   {
                     "name": "linkedRecordId",
+                    "value": "exampleDevOutputPluralText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/exampleDevOutputPluralText",
+                    "accept": "application/vnd.cora.record+json"
+                  }
+                },
+                "name": "pluralTextId"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
                     "value": "exampleDevOutputDefText"
                   }
                 ],
@@ -475,6 +496,27 @@
                   }
                 },
                 "name": "textId"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "exampleDevOutputPluralText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/exampleDevOutputPluralText",
+                    "accept": "application/vnd.cora.record+json"
+                  }
+                },
+                "name": "pluralTextId"
               },
               {
                 "children": [

@@ -33,7 +33,11 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     throw data('divaClient_errorRecordTypeNotFoundText', { status: 404 });
   }
   const recordType = dependencies.recordTypePool.get(params.recordType);
-  return { breadcrumb: t(recordType.textId) };
+  return { breadcrumb: t(recordType.pluralTextId) };
+};
+
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  return [{ title: `${loaderData?.breadcrumb} | DiVA` }];
 };
 
 export default function RecordTypeRoute() {

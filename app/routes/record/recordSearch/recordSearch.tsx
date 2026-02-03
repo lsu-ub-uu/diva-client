@@ -114,7 +114,7 @@ export const loader = async ({
     recordTypeTextId: recordType.textId,
     mainSearchTerm,
     searchId,
-    title: t(recordType.textId),
+    title: t(recordType.pluralTextId),
     query: q,
     start,
     rows,

@@ -54,7 +54,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export const meta = ({ loaderData }: Route.MetaArgs) => {
   return [
     {
-      title: ['DiVA', `${loaderData?.breadcrumb}`].filter(Boolean).join(' | '),
+      title: [`${loaderData?.breadcrumb}`, 'DiVA'].filter(Boolean).join(' | '),
     },
   ];
 };

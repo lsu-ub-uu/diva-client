@@ -3486,6 +3486,8 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
+export type AdminInfoStatusCollection = 'notReady' | 'ready';
+
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3501,6 +3503,11 @@ export interface AdminInfoDivaGroup {
     value: string;
     _type: 'internal';
     __text?: { sv: string; en: string };
+  };
+  status?: {
+    value: AdminInfoStatusCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   __text?: { sv: string; en: string };
 }
@@ -3604,7 +3611,12 @@ export interface BinaryGroup {
   __text?: { sv: string; en: string };
 }
 
-export type AttachmentTypeCollection =
+export type AttachmentStatusCollection =
+  | 'published'
+  | 'unpublished'
+  | 'confidential';
+
+export type AttachmentLabelCollection =
   | 'fullText'
   | 'attachment'
   | 'audio'
@@ -3626,6 +3638,24 @@ export type AttachmentVersionCollection =
   | 'submitted'
   | 'accepted'
   | 'published';
+
+export type DigitizedCollection = 'true' | 'false';
+
+export type PrintOnDemandCollection = 'true' | 'false';
+
+export interface DateToBePublishedGroup {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface DateToBeUnpublishedGroup {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
 
 export type AttachmentAvailabilityCollection =
   | 'archiveOnly'
@@ -3667,7 +3697,7 @@ export interface AdminInfoAttachmentGroup {
 }
 
 export interface AttachmentGroup {
-  attachmentFile?: {
+  file?: {
     value: string;
     linkedRecord: {
       binary: BinaryGroup;
@@ -3675,18 +3705,45 @@ export interface AttachmentGroup {
 
     __text?: { sv: string; en: string };
   };
-  type?: {
-    value: AttachmentTypeCollection;
+  status?: {
+    value: AttachmentStatusCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  identifier_type_registrationNumber?: {
+    value: string;
+    _type: 'registrationNumber';
+    __text?: { sv: string; en: string };
+  };
+  label?: {
+    value: AttachmentLabelCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   note_type_attachmentVersion?: {
     value: AttachmentVersionCollection;
     _type: 'attachmentVersion';
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  digitized?: {
+    value: DigitizedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  printReadyFile?: {
+    value: PrintOnDemandCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  note_type_attachment?: {
+    value: string;
+    _type: 'attachment';
+    __text?: { sv: string; en: string };
+  };
+  dateToBePublished?: DateToBePublishedGroup;
+  dateToBeUnpublished?: DateToBeUnpublishedGroup;
   adminInfo?: AdminInfoAttachmentGroup;
   __text?: { sv: string; en: string };
 }
@@ -4443,7 +4500,6 @@ export type GroupOfRecordTypeCollection =
 
 export type RecordTypeCategoryCollection =
   | 'clientNavigation'
-  | 'clientMainNavigation'
   | 'categoryOne'
   | 'categoryTwo'
   | 'categoryThree';

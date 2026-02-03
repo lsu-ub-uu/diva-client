@@ -66,7 +66,11 @@ export const links: Route.LinksFunction = () => [
 
 export const meta = ({ loaderData, error }: Route.MetaArgs) => {
   return [
-    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
+    {
+      title: error
+        ? getMetaTitleFromError(error)
+        : `${loaderData?.pageTitle} | DiVA`,
+    },
   ];
 };
 

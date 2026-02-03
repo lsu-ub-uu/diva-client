@@ -157,8 +157,8 @@ export const action = async ({
   }
 };
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title }];
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  return [{ title: `${loaderData?.title} | DiVA` }];
 };
 
 export default function UpdateRecordRoute({

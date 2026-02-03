@@ -206,7 +206,9 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
-  return [{ title: error ? getMetaTitleFromError(error) : data?.title }];
+  return [
+    { title: error ? getMetaTitleFromError(error) : `${data?.title} | DiVA` },
+  ];
 };
 
 export const links: Route.LinksFunction = () => [

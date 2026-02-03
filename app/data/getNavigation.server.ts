@@ -72,19 +72,11 @@ export const getNavigation = async (
     .sort(recordTypeComparator);
 
   const navigation = {
-    mainNavigationItems: recordTypes.slice(0, 3).map((rt) => ({
-      id: rt.id,
-      link: href('/:recordType', { recordType: rt.id }),
-      textId: rt.textId,
-    })),
+    mainNavigationItems: recordTypes
+      .slice(0, 3)
+      .map(createNavigationItemFromRecordType),
     otherNavigationItems: auth
-      ? [
-          ...recordTypes.slice(3).map((rt) => ({
-            id: rt.id,
-            link: href('/:recordType', { recordType: rt.id }),
-            textId: rt.textId,
-          })),
-        ]
+      ? [...recordTypes.slice(3).map(createNavigationItemFromRecordType)]
       : [],
   };
 
@@ -101,6 +93,12 @@ export const getNavigation = async (
 
   return navigation;
 };
+
+const createNavigationItemFromRecordType = (recordType: BFFRecordType) => ({
+  id: recordType.id,
+  link: href('/:recordType', { recordType: recordType.id }),
+  textId: recordType.pluralTextId,
+});
 
 const recordTypeComparator = (a: BFFRecordType, b: BFFRecordType) => {
   const aIndex = sortOrder.indexOf(a.id);

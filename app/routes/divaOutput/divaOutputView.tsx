@@ -80,7 +80,11 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
     console.error('Failed to generate citation meta:', error);
   }
   return [
-    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
+    {
+      title: error
+        ? getMetaTitleFromError(error)
+        : `${loaderData?.pageTitle} | DiVA`,
+    },
     ...citationMeta,
   ];
 };
