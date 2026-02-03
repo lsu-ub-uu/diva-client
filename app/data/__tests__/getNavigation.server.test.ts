@@ -1,90 +1,152 @@
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import type { Auth } from '@/auth/Auth';
+import type {
+  ActionLink,
+  CoraRecord,
+  DataGroup,
+  RecordWrapper,
+} from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type {
+  BFFMember,
+  BFFRecordType,
+} from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import { listToPool } from '@/utils/structs/listToPool';
+import type { AxiosResponse } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
 import { getNavigation } from '../getNavigation.server';
-import { searchRecords } from '@/data/searchRecords.server';
-import type { Auth } from '@/auth/Auth';
-import type { ActionLink } from '@/cora/cora-data/types.server';
 
-vi.mock('@/data/searchRecords.server');
+vi.mock('@/cora/getRecordDataById.server');
 
 describe('getNavigation', () => {
-  it('makes correct search query', async () => {
-    vi.mocked(searchRecords).mockResolvedValue({
-      data: [] as BFFDataRecord<BFFRecordType>[],
-    } as BFFSearchResult<BFFRecordType>);
+  it('returns main navigation items when not authenticated', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
 
-    const mockDependencies = {} as Dependencies;
-    const mockAuth = {} as Auth;
-    await getNavigation(mockDependencies, mockAuth);
-
-    expect(searchRecords).toHaveBeenCalledWith(
+    const navigation = await getNavigation(
       mockDependencies,
-      'recordTypeSearch',
-      {
-        recordTypeSearch: {
-          include: {
-            includePart: {
-              recordTypeCategorySearchTerm: 'clientMainNavigation',
-            },
-          },
-        },
-      },
-      mockAuth,
+      undefined,
+      undefined,
     );
-  });
-
-  it('returns main and other navigation items', async () => {
-    vi.mocked(searchRecords).mockResolvedValue({
-      data: [
-        createMockRecordType('someMainRecordType', true),
-        createMockRecordType('someOtherMainRecordType', true),
-        createMockRecordType('someRecordType'),
-        createMockRecordType('someOtherRecordType'),
-      ],
-    } as BFFSearchResult<BFFRecordType>);
-
-    const mockDependencies = {} as Dependencies;
-
-    const navigation = await getNavigation(mockDependencies);
 
     expect(navigation.mainNavigationItems).toEqual([
-      { link: '/someMainRecordType', textId: 'someMainRecordTypeText' },
       {
+        id: 'someMainRecordType',
+        link: '/someMainRecordType',
+        textId: 'someMainRecordTypePluralText',
+      },
+      {
+        id: 'someOtherMainRecordType',
         link: '/someOtherMainRecordType',
-        textId: 'someOtherMainRecordTypeText',
+        textId: 'someOtherMainRecordTypePluralText',
+      },
+    ]);
+
+    expect(navigation.otherNavigationItems).toEqual([]);
+  });
+
+  it('returns main navigation and other navigation items when authenticated', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
+
+    const mockAuth = {
+      data: { token: '1234 ' },
+    } as Auth;
+
+    const navigation = await getNavigation(
+      mockDependencies,
+      undefined,
+      mockAuth,
+    );
+
+    expect(navigation.mainNavigationItems).toEqual([
+      {
+        id: 'someMainRecordType',
+        link: '/someMainRecordType',
+        textId: 'someMainRecordTypePluralText',
+      },
+      {
+        id: 'someOtherMainRecordType',
+        link: '/someOtherMainRecordType',
+        textId: 'someOtherMainRecordTypePluralText',
       },
     ]);
 
     expect(navigation.otherNavigationItems).toEqual([
-      { link: '/someRecordType', textId: 'someRecordTypeText' },
-      { link: '/someOtherRecordType', textId: 'someOtherRecordTypeText' },
+      {
+        id: 'someRecordType',
+        link: '/someRecordType',
+        textId: 'someRecordTypePluralText',
+      },
+      {
+        id: 'someOtherRecordType',
+        link: '/someOtherRecordType',
+        textId: 'someOtherRecordTypePluralText',
+      },
     ]);
   });
 
   it('sorts record types', async () => {
-    vi.mocked(searchRecords).mockResolvedValue({
-      data: [
-        createMockRecordType('diva-funder'),
-        createMockRecordType('diva-series'),
-        createMockRecordType('diva-journal'),
-        createMockRecordType('diva-output', true),
-        createMockRecordType('diva-person', true),
-        createMockRecordType('diva-localLabel'),
-        createMockRecordType('diva-programme'),
-        createMockRecordType('diva-publisher'),
-        createMockRecordType('someUnhandledRecordType'),
-        createMockRecordType('diva-organisation'),
-        createMockRecordType('diva-course'),
-        createMockRecordType('diva-project', true),
-        createMockRecordType('diva-subject'),
-      ],
-    } as BFFSearchResult<BFFRecordType>);
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({ id: 'diva-funder' }),
+        createMockRecordType({ id: 'diva-series' }),
+        createMockRecordType({ id: 'diva-journal' }),
+        createMockRecordType({ id: 'diva-output', publicationType: true }),
+        createMockRecordType({ id: 'diva-person', publicationType: true }),
+        createMockRecordType({ id: 'diva-localLabel' }),
+        createMockRecordType({ id: 'diva-programme' }),
+        createMockRecordType({ id: 'diva-publisher' }),
+        createMockRecordType({ id: 'someUnhandledRecordType' }),
+        createMockRecordType({ id: 'diva-organisation' }),
+        createMockRecordType({ id: 'diva-course' }),
+        createMockRecordType({ id: 'diva-project', publicationType: true }),
+        createMockRecordType({ id: 'diva-subject' }),
+        createMockRecordType({ id: 'metadata', clientNavigation: false }),
+      ]),
+    } as Dependencies;
 
-    const mockDependencies = {} as Dependencies;
+    const mockAuth = {
+      data: { token: '1234 ' },
+    } as Auth;
 
-    const navigation = await getNavigation(mockDependencies);
+    const navigation = await getNavigation(
+      mockDependencies,
+      undefined,
+      mockAuth,
+    );
 
     expect(navigation.mainNavigationItems.map((item) => item.link)).toEqual([
       '/diva-output',
@@ -106,46 +168,128 @@ describe('getNavigation', () => {
     ]);
   });
 
-  it('only returns record types that the user may search for', async () => {
-    vi.mocked(searchRecords).mockResolvedValue({
-      data: [
-        createMockRecordType('someMainRecordType', true),
-        createMockRecordType('someOtherMainRecordType', true, false),
-        createMockRecordType('someRecordType'),
-        createMockRecordType('someOtherRecordType', false, false),
-      ],
-    } as BFFSearchResult<BFFRecordType>);
+  it('includes member settings item when user has update permission', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
 
-    const mockDependencies = {} as Dependencies;
+    const mockAuth = {
+      data: { token: '1234' },
+    } as Auth;
 
-    const navigation = await getNavigation(mockDependencies);
+    const mockMember = { id: 'someMemberId' } as BFFMember;
 
-    expect(navigation.mainNavigationItems).toEqual([
-      { link: '/someMainRecordType', textId: 'someMainRecordTypeText' },
-    ]);
+    vi.mocked(getRecordDataById).mockResolvedValue({
+      data: {
+        record: {
+          data: {} as DataGroup,
+          actionLinks: { update: { url: 'someurl' } as ActionLink },
+        } as CoraRecord,
+      } as RecordWrapper,
+    } as AxiosResponse<RecordWrapper>);
 
-    expect(navigation.otherNavigationItems).toEqual([
-      { link: '/someRecordType', textId: 'someRecordTypeText' },
-    ]);
+    const navigation = await getNavigation(
+      mockDependencies,
+      mockMember,
+      mockAuth,
+    );
+
+    expect(getRecordDataById).toHaveBeenCalledWith(
+      'diva-member',
+      'someMemberId',
+      '1234',
+    );
+
+    expect(navigation.otherNavigationItems).toContainEqual({
+      id: 'diva-member',
+      link: '/diva-member/someMemberId/update',
+      textId: 'divaClient_memberSettingsText',
+    });
   });
 
-  it('includes member settings item');
+  it('does not include member settings item when user lacks update permission', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
 
-  it('includes dev items when dev cookie');
+    const mockAuth = {
+      data: { token: '1234' },
+    } as Auth;
+
+    const mockMember = { id: 'someMemberId' } as BFFMember;
+
+    vi.mocked(getRecordDataById).mockResolvedValue({
+      data: {
+        record: {
+          data: {} as DataGroup,
+          actionLinks: { read: { url: 'someurl' } as ActionLink },
+        } as CoraRecord,
+      } as RecordWrapper,
+    } as AxiosResponse<RecordWrapper>);
+
+    const navigation = await getNavigation(
+      mockDependencies,
+      mockMember,
+      mockAuth,
+    );
+
+    expect(getRecordDataById).toHaveBeenCalledWith(
+      'diva-member',
+      'someMemberId',
+      '1234',
+    );
+
+    expect(navigation.otherNavigationItems).not.toContainEqual({
+      id: 'diva-member',
+      link: '/diva-member/someMemberId/update',
+      textId: 'divaClient_memberSettingsText',
+    });
+  });
 });
 
-const createMockRecordType = (
-  name: string,
-  mainNavigation: boolean = false,
-  searchAllowed = true,
-) =>
+const createMockRecordType = ({
+  id,
+  clientNavigation = true,
+  publicationType: resourceType = false,
+}: {
+  id: string;
+  clientNavigation?: boolean;
+  publicationType?: boolean;
+}) =>
   ({
-    data: {
-      id: `${name}`,
-      textId: `${name}Text`,
-      recordTypeCategory: mainNavigation
-        ? ['clientNavigation', 'clientMainNavigation']
-        : ['clientNavigation'],
-    },
-    actionLinks: searchAllowed ? { search: {} as ActionLink } : {},
-  }) as BFFDataRecord<BFFRecordType>;
+    id: `${id}`,
+    textId: `${id}Text`,
+    pluralTextId: `${id}PluralText`,
+    recordTypeCategory: clientNavigation ? ['clientNavigation'] : [],
+    groupOfRecordType: resourceType ? ['publicationType'] : ['controlledLists'],
+  }) as BFFRecordType;

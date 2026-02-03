@@ -1,13 +1,13 @@
 import { IconButton } from '@/components/IconButton/IconButton';
-import { MenuIcon, XIcon } from 'lucide-react';
-import { LanguageSwitcher } from '../LanguageSwitcher';
-import { useRef } from 'react';
-import { ColorSchemeSwitcher } from '../ColorSchemeSwitcher';
-import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
-import { useTranslation } from 'react-i18next';
 import type { Navigation } from '@/data/getNavigation.server';
+import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { MenuIcon, XIcon } from 'lucide-react';
+import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ColorSchemeSwitcher } from '../ColorSchemeSwitcher';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 import { NavigationLink } from '../TopNavigation/NavigationLink';
-import { compareNavigationItems, icons } from '../TopNavigation/TopNavigation';
+import { icons } from '../TopNavigation/TopNavigation';
 import styles from './MobileNavigation.module.css';
 
 interface MobileNavigationProps {

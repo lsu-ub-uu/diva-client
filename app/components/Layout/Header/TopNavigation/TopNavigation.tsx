@@ -34,7 +34,6 @@ export interface TopNavigationLink {
 
 export interface TopNavigationProps {
   navigation: Navigation;
-  onNavigationClick?: () => void;
 }
 
 export const icons: Record<string, ReactNode> = {

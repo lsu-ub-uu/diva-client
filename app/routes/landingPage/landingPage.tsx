@@ -3,12 +3,7 @@ import { icons } from '@/components/Layout/Header/TopNavigation/TopNavigation';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { useLanguage } from '@/i18n/useLanguage';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import {
-  BookOpenIcon,
-  ChartGanttIcon,
-  SearchIcon,
-  UsersIcon,
-} from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   Form,
@@ -63,6 +58,12 @@ export const meta: Route.MetaFunction = ({ loaderData }) => [
     description: loaderData.decription,
   },
 ];
+
+const navigationCardDescriptions: Record<string, string> = {
+  'diva-output': 'divaClient_navigationCardPublicationDescriptionText',
+  'diva-person': 'divaClient_navigationCardPersonDescriptionText',
+  'diva-project': 'divaClient_navigationCardProjectDescriptionText',
+};
 
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const { title, member, heroImage } = loaderData;
@@ -122,53 +123,42 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
         </div>
         {navigation && (
           <div className='navigation-grid'>
-            <NavigationCard
-              to={href('/:recordType', { recordType: 'diva-output' })}
-              icon={BookOpenIcon}
-              iconColor='card-icon-publications'
-              title={t('divaClient_navigationCardPublicationTitleText')}
-              description={t(
-                'divaClient_navigationCardPublicationDescriptionText',
-              )}
-            />
-            <NavigationCard
-              to={href('/:recordType', { recordType: 'diva-person' })}
-              icon={UsersIcon}
-              iconColor='card-icon-people'
-              title={t('divaClient_navigationCardPersonTitleText')}
-              description={t('divaClient_navigationCardPersonDescriptionText')}
-            />
-            <NavigationCard
-              to={href('/:recordType', { recordType: 'diva-project' })}
-              icon={ChartGanttIcon}
-              iconColor='card-icon-projects'
-              title={t('divaClient_navigationCardProjectTitleText')}
-              description={t('divaClient_navigationCardProjectDescriptionText')}
-            />
+            {navigation.mainNavigationItems.map((navItem) => (
+              <NavigationCard
+                key={navItem.id}
+                to={navItem.link}
+                icon={icons[navItem.id]}
+                title={t(navItem.textId)}
+                iconColor={`card-icon-${navItem.id}`}
+                description={t(navigationCardDescriptions[navItem.id])}
+              />
+            ))}
           </div>
         )}
-        <section className='other-record-types'>
-          <h2>{t('divaClient_allRecordTypesText')}</h2>
-          <nav>
-            <ul>
-              {navigation?.otherNavigationItems.map((navItem) => (
-                <li key={navItem.id}>
-                  <NavLink
-                    className='other-record-type-link'
-                    to={href('/:recordType', { recordType: navItem.id })}
-                  >
-                    {({ isPending }) => (
-                      <>
-                        {isPending ? <CircularLoader /> : icons[navItem.id]}
-                        <h3>{t(navItem.textId)}</h3>
-                      </>
-                    )}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </section>
+        {navigation && navigation.otherNavigationItems.length > 0 && (
+          <section className='other-record-types'>
+            <h2>{t('divaClient_allRecordTypesText')}</h2>
+            <nav>
+              <ul>
+                {navigation?.otherNavigationItems.map((navItem) => (
+                  <li key={navItem.id}>
+                    <NavLink
+                      className='other-record-type-link'
+                      to={href('/:recordType', { recordType: navItem.id })}
+                    >
+                      {({ isPending }) => (
+                        <>
+                          {isPending ? <CircularLoader /> : icons[navItem.id]}
+                          <h3>{t(navItem.textId)}</h3>
+                        </>
+                      )}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </section>
+        )}
       </main>
     </div>
   );

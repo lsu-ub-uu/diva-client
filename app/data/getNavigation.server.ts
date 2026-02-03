@@ -37,6 +37,9 @@ export interface Navigation {
   otherNavigationItems: NavigationItem[];
 }
 
+const CLIENT_NAVIGATION_RECORD_TYPE_CATEGORY = 'clientNavigation';
+const MAIN_NAVIGATION_RECORD_TYPE_GROUP = 'publicationType';
+
 const sortOrder = [
   'diva-output',
   'diva-person',
@@ -52,14 +55,6 @@ const sortOrder = [
   'diva-funder',
 ];
 
-/**
- * Byt namn till getNavigation (typa upp den)
- *
- * Lägg till recordTypeCategory clientMainNavigation på output, person, project
- *
- * Ta med "special items" här. Member settings, dev links.
- */
-
 export const getNavigation = async (
   dependencies: Dependencies,
   member?: BFFMember,
@@ -67,16 +62,29 @@ export const getNavigation = async (
 ): Promise<Navigation> => {
   const recordTypes = Array.from(dependencies.recordTypePool.values())
     .filter((recordType) =>
-      recordType.recordTypeCategory.includes('clientNavigation'),
+      recordType.recordTypeCategory.includes(
+        CLIENT_NAVIGATION_RECORD_TYPE_CATEGORY,
+      ),
     )
     .sort(recordTypeComparator);
 
   const navigation = {
     mainNavigationItems: recordTypes
-      .slice(0, 3)
+      .filter((recordType) =>
+        recordType.groupOfRecordType.includes(
+          MAIN_NAVIGATION_RECORD_TYPE_GROUP,
+        ),
+      )
       .map(createNavigationItemFromRecordType),
     otherNavigationItems: auth
-      ? [...recordTypes.slice(3).map(createNavigationItemFromRecordType)]
+      ? recordTypes
+          .filter(
+            (recordType) =>
+              !recordType.groupOfRecordType.includes(
+                MAIN_NAVIGATION_RECORD_TYPE_GROUP,
+              ),
+          )
+          .map(createNavigationItemFromRecordType)
       : [],
   };
 

@@ -18,30 +18,52 @@
  */
 
 import { TopNavigation } from '@/components/Layout/Header/TopNavigation/TopNavigation';
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
+import type { Navigation } from '@/data/getNavigation.server';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('<TopNavigation />', () => {
-  it('renders the topNavigation when more than one record type in props', () => {
-    const recordTypes = [
-      { textId: 'Output', id: 'someRecordType' } as BFFRecordType,
-      { textId: 'Personer', id: 'someOtherLink' } as BFFRecordType,
-    ];
+  it('renders the topNavigation when more than one record type in props', async () => {
+    const navigation: Navigation = {
+      mainNavigationItems: [
+        {
+          id: 'someRecordType',
+          link: '/record/someRecordType',
+          textId: 'Output',
+        },
+        {
+          id: 'someOtherLink',
+          link: '/record/someOtherLink',
+          textId: 'Personer',
+        },
+      ],
+      otherNavigationItems: [
+        {
+          id: 'someRecordType',
+          link: '/record/someThirdLink',
+          textId: 'Organisationer',
+        },
+      ],
+    };
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => (
-          <TopNavigation navigation={recordTypes} onNavigationClick={vi.fn()} />
-        ),
+        Component: () => <TopNavigation navigation={navigation} />,
       },
     ]);
     render(<RoutesStub />);
-    const output = screen.getByRole('link', { name: 'Output' });
-    const person = screen.getByRole('link', { name: 'Personer' });
 
-    expect(output).toBeInTheDocument();
-    expect(person).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Output' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Personer' })).toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'divaClient_moreNavigationText' }),
+    );
+
+    expect(
+      screen.getByRole('menuitem', { name: 'Organisationer' }),
+    ).toBeInTheDocument();
   });
 });
