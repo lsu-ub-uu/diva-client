@@ -69,6 +69,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;
+  const applicationVersion = dependencies.deploymentInfo.applicationVersion;
   const locale = context.get(i18nContext).language;
   const navigation = await getNavigation(dependencies, member, auth);
   const user = auth && createUser(auth);
@@ -90,6 +91,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     notification,
     globalAlert,
     blockRobotIndexing,
+    applicationVersion,
   };
 }
 
@@ -236,6 +238,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     navigation,
     globalAlert,
     blockRobotIndexing,
+    applicationVersion,
   } = loaderData;
 
   return (
@@ -262,7 +265,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         navigation={navigation}
       />
       <Outlet />
-      <Footer />
+      <Footer applicationVersion={applicationVersion} />
     </div>
   );
 }
