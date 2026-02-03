@@ -47,10 +47,10 @@ export const CreateRecordMenu = ({
     <ActionBar>
       {validationTypes.length === 1 ? (
         <ActionBarButton
+          icon={<FilePlusIcon />}
           as={Link}
           to={`create?validationType=${validationTypes[0].value}`}
         >
-          <FilePlusIcon />
           {buttonText}
         </ActionBarButton>
       ) : (

@@ -2,7 +2,6 @@ import {
   ConfirmDialog,
   useConfirmDialog,
 } from '@/components/ConfirmDialog/ConfirmDialog';
-import { CircularLoader } from '@/components/Loader/CircularLoader';
 import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
@@ -32,15 +31,6 @@ export const RecordActionBar = ({
   const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
-  const {
-    showConfirmDialog: showDeleteConfirmDialog,
-    confirmDialogRef: deleteConfirmDialogRef,
-  } = useConfirmDialog();
-
-  const {
-    showConfirmDialog: showTrashConfirmDialog,
-    confirmDialogRef: trashConfirmDialogRef,
-  } = useConfirmDialog();
 
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
@@ -126,8 +116,9 @@ export const RecordActionBar = ({
             recordType: record.recordType,
             recordId: record.id,
           })}
+          icon={<FileTextIcon />}
         >
-          <FileTextIcon /> {t('divaClient_viewRecordText')}
+          {t('divaClient_viewRecordText')}
         </ActionBarButton>
       )}
       {!isOnUpdatePage && record.userRights?.includes('update') && (
@@ -137,68 +128,67 @@ export const RecordActionBar = ({
             recordType: record.recordType,
             recordId: record.id,
           })}
+          icon={<FilePenIcon />}
         >
-          <FilePenIcon /> {t('divaClient_editRecordText')}
+          {t('divaClient_editRecordText')}
         </ActionBarButton>
       )}
       {record.userRights?.includes('publish') && (
         <ActionBarButton
-          onClick={publishRecord}
+          onAction={publishRecord}
           disabled={isPublishing || isUnpublishing}
+          icon={<BookCheckIcon />}
+          pending={isPublishing}
         >
-          {isPublishing ? <CircularLoader /> : <BookCheckIcon />}
-          {t('divaClient_publishRecordText')}
+          ´ {t('divaClient_publishRecordText')}
         </ActionBarButton>
       )}
       {record.userRights?.includes('unpublish') && (
         <ActionBarButton
-          onClick={unpublishRecord}
+          onAction={unpublishRecord}
           disabled={isPublishing || isUnpublishing}
+          icon={<BookDashedIcon />}
+          pending={isUnpublishing}
         >
-          {isUnpublishing ? <CircularLoader /> : <BookDashedIcon />}
           {t('divaClient_unpublishRecordText')}
         </ActionBarButton>
       )}
 
       {record.userRights?.includes('trash') && (
-        <ActionBarButton onClick={() => showTrashConfirmDialog(trashRecord)}>
-          {isTrashing ? <CircularLoader /> : <Trash2Icon />}
+        <ActionBarButton
+          onAction={trashRecord}
+          icon={<Trash2Icon />}
+          pending={isTrashing}
+          confirmDialog={{
+            headingText: t('divaClient_confirmTrashHeadingText'),
+            messageText: t('divaClient_confirmTrashText'),
+            confirmButtonText: t('divaClient_trashRecordText'),
+          }}
+        >
           {t('divaClient_trashRecordText')}
-          <ConfirmDialog
-            headingText={t('divaClient_confirmTrashHeadingText')}
-            messageText={t('divaClient_confirmTrashText')}
-            confirmButtonText={
-              <>
-                {t('divaClient_trashRecordText')}
-                <Trash2Icon />
-              </>
-            }
-            cancelButtonText={t('divaClient_cancelText')}
-            ref={trashConfirmDialogRef}
-          />
         </ActionBarButton>
       )}
       {record.userRights?.includes('untrash') && (
-        <ActionBarButton onClick={untrashRecord}>
-          {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}
+        <ActionBarButton
+          onAction={untrashRecord}
+          icon={<ArchiveRestoreIcon />}
+          pending={isUntrashing}
+        >
           {t('divaClient_untrashButtonText')}
         </ActionBarButton>
       )}
       {record.userRights?.includes('delete') && (
-        <ActionBarButton onClick={() => showDeleteConfirmDialog(deleteRecord)}>
-          {isDeleting ? <CircularLoader /> : <ShredderIcon />}
+        <ActionBarButton
+          onAction={deleteRecord}
+          icon={<ShredderIcon />}
+          pending={isDeleting}
+          confirmDialog={{
+            headingText: t('divaClient_confirmDeleteHeadingText'),
+            messageText: t('divaClient_confirmDeleteText'),
+            confirmButtonText: t('divaClient_deleteRecordText'),
+          }}
+        >
           {t('divaClient_deleteRecordText')}
-          <ConfirmDialog
-            headingText={t('divaClient_confirmDeleteHeadingText')}
-            messageText={t('divaClient_confirmDeleteText')}
-            confirmButtonText={
-              <>
-                {t('divaClient_deleteRecordText')} <ShredderIcon />
-              </>
-            }
-            cancelButtonText={t('divaClient_cancelText')}
-            ref={deleteConfirmDialogRef}
-          />
         </ActionBarButton>
       )}
       {apiUrl && (
@@ -207,8 +197,8 @@ export const RecordActionBar = ({
           href={apiUrl}
           target='_blank'
           rel='noopener noreferrer'
+          icon={<CodeIcon />}
         >
-          <CodeIcon />
           {t('divaClient_viewInApiText')}
         </ActionBarButton>
       )}
