@@ -1,7 +1,3 @@
-import {
-  ConfirmDialog,
-  useConfirmDialog,
-} from '@/components/ConfirmDialog/ConfirmDialog';
 import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
