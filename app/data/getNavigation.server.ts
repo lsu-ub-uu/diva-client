@@ -23,7 +23,6 @@ import type {
   BFFMember,
   BFFRecordType,
 } from '@/cora/transform/bffTypes.server';
-import { transformRecordType } from '@/cora/transform/transformRecordTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { href } from 'react-router';
 

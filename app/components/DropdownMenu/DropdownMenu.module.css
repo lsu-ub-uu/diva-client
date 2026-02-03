@@ -6,6 +6,8 @@
   border-radius: var(--border-radius-s);
   box-shadow: var(--elevation);
 
+  --anchor-gap: var(--gap);
+
   &:focus-visible {
     outline: none;
   }

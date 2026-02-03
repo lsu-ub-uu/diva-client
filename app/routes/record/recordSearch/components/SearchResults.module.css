@@ -23,9 +23,7 @@
   counter-increment: result;
   display: flex;
   flex-direction: row;
-  padding-left: var(--gap-l);
-  padding-top: var(--gap-l);
-  padding-bottom: var(--gap-l);
+  padding-block: var(--gap-l);
   border-bottom: 1px solid var(--color-thin-border);
 }
 

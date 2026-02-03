@@ -35,7 +35,7 @@ import {
 } from 'react-router';
 import rootCss from './styles/root.css?url';
 import divaLogo from '@/assets/divaLogo.svg';
-import { getNavigation } from '@/data/getNavigation';
+import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { AngryIcon } from 'lucide-react';
 import { dependenciesContext } from 'server/depencencies';
