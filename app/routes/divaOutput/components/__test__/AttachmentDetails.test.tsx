@@ -78,7 +78,7 @@ describe('AttachmentDetails', () => {
   it('displays visibility information with formatted timestamp when available', async () => {
     const user = userEvent.setup();
     const mockAttachment = {
-      attachmentFile: {
+      file: {
         linkedRecord: {
           binary: {
             recordInfo: {
