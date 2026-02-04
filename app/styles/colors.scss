@@ -111,7 +111,8 @@
     --color-output-card-background: var(--color-card);
     --color-output-card-border: var(--color-card-dark);
     --background-image-filter: saturate(0.7) brightness(0.5) contrast(0.8);
-    --color-highligted: var(--color-button-secondary-hover);
+    --color-highlighted: var(--color-button-secondary-hover);
+    --color-highligted: var(--color-highlighted);
   }
 
   [data-color-scheme='dark'] {
