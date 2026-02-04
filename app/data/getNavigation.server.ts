@@ -68,39 +68,25 @@ export const getNavigation = async (
     )
     .sort(recordTypeComparator);
 
-  const navigation = {
-    mainNavigationItems: recordTypes
-      .filter((recordType) =>
-        recordType.groupOfRecordType.includes(
-          MAIN_NAVIGATION_RECORD_TYPE_GROUP,
-        ),
-      )
-      .map(createNavigationItemFromRecordType),
-    otherNavigationItems: auth
-      ? recordTypes
-          .filter(
-            (recordType) =>
-              !recordType.groupOfRecordType.includes(
-                MAIN_NAVIGATION_RECORD_TYPE_GROUP,
-              ),
-          )
-          .map(createNavigationItemFromRecordType)
-      : [],
-  };
+  const mainNavigationItems = recordTypes
+    .filter(isMainNavigationRecordType)
+    .map(createNavigationItemFromRecordType);
 
-  if (await canEditMemberSettings(member, auth)) {
-    navigation.otherNavigationItems.push({
-      id: 'diva-member',
-      link: href('/:recordType/:recordId/update', {
-        recordType: 'diva-member',
-        recordId: member!.id,
-      }),
-      textId: 'divaClient_memberSettingsText',
-    });
+  const otherNavigationItems = auth
+    ? recordTypes
+        .filter((recordType) => !isMainNavigationRecordType(recordType))
+        .map(createNavigationItemFromRecordType)
+    : [];
+
+  if (member && auth && (await canEditMemberSettings(member, auth))) {
+    otherNavigationItems.push(createNavigationItemForMemberSettings(member));
   }
 
-  return navigation;
+  return { mainNavigationItems, otherNavigationItems };
 };
+
+const isMainNavigationRecordType = (recordType: BFFRecordType) =>
+  recordType.groupOfRecordType.includes(MAIN_NAVIGATION_RECORD_TYPE_GROUP);
 
 const createNavigationItemFromRecordType = (recordType: BFFRecordType) => ({
   id: recordType.id,
@@ -116,10 +102,7 @@ const recordTypeComparator = (a: BFFRecordType, b: BFFRecordType) => {
   );
 };
 
-const canEditMemberSettings = async (member?: BFFMember, auth?: Auth) => {
-  if (!auth || !member) {
-    return false;
-  }
+const canEditMemberSettings = async (member: BFFMember, auth: Auth) => {
   try {
     const memberData = await getRecordDataById<RecordWrapper>(
       'diva-member',
@@ -135,3 +118,12 @@ const canEditMemberSettings = async (member?: BFFMember, auth?: Auth) => {
     return false;
   }
 };
+
+const createNavigationItemForMemberSettings = (member: BFFMember) => ({
+  id: 'diva-member',
+  link: href('/:recordType/:recordId/update', {
+    recordType: 'diva-member',
+    recordId: member!.id,
+  }),
+  textId: 'divaClient_memberSettingsText',
+});
