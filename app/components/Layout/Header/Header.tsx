@@ -7,9 +7,9 @@ import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.serve
 import type { Navigation } from '@/data/getNavigation.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 import { clsx } from 'clsx';
 import { RefreshCwIcon } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link, useLocation } from 'react-router';
 import { MemberBar } from '../MemberBar/MemberBar';
@@ -38,38 +38,12 @@ export const Header = ({
   exampleUsers,
   navigation,
 }: HeaderProps) => {
-  const headerRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const returnTo = encodeURIComponent(location.pathname + location.search);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === headerRef.current) {
-            if (entry.isIntersecting) {
-              document.body.classList.remove('scrolled-past-header');
-            } else {
-              document.body.classList.add('scrolled-past-header');
-            }
-          }
-        });
-      },
-      { threshold: [0] },
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
+  const devMode = useIsDevMode();
   const { t } = useTranslation();
   return (
-    <header className={clsx(styles.header, className)} ref={headerRef}>
+    <header className={clsx(styles.header, className)}>
       <NavigationLoader />
       <MemberBar member={member} loggedIn={user !== undefined} />
       <div className={clsx(styles['diva-header-bar'])}>
@@ -85,16 +59,18 @@ export const Header = ({
             <TopNavigation navigation={navigation} />
           </div>
           <div className={styles['header-bar-right']}>
-            <Form
-              action={href('/refreshDefinitions')}
-              method='POST'
-              reloadDocument
-            >
-              <input type='hidden' name='returnTo' value={returnTo} />
-              <IconButton type='submit' tooltip='Refresh definitions'>
-                <RefreshCwIcon />
-              </IconButton>
-            </Form>
+            {devMode && (
+              <Form
+                action={href('/refreshDefinitions')}
+                method='POST'
+                reloadDocument
+              >
+                <input type='hidden' name='returnTo' value={returnTo} />
+                <IconButton type='submit' tooltip='Refresh definitions'>
+                  <RefreshCwIcon />
+                </IconButton>
+              </Form>
+            )}
 
             <div className={styles['color-theme-switcher']}>
               <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />

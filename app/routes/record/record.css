@@ -24,14 +24,8 @@
 .navigation-sidebar {
   position: sticky;
   top: 0;
-  max-height: calc(100vh - var(--header-height) - 21px - 2rem);
+  max-height: 100vh;
   overflow: hidden auto;
-}
-
-:global(.scrolled-past-header) {
-  .navigation-sidebar {
-    max-height: 100vh;
-  }
 }
 
 .record-form {
