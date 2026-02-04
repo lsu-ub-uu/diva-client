@@ -31,7 +31,7 @@ export const SearchResults = ({
         </Alert>
       )}
 
-      {userHasSearched && searchResults.totalNo === 0 && (
+      {userHasSearched && searchResults.data.length === 0 && (
         <Alert severity='info' icon={<SearchSlashIcon />}>
           <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
           {t('divaClient_noSearchResultsBodyText')}

@@ -20,19 +20,28 @@ import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { useHydrated } from '@/utils/useHydrated';
 
 interface FilterProps {
   filter: FilterDefinition;
   currentValue?: string;
   onChange?: (newValue: string) => void;
   forceSubmit: () => void;
+  currentValueText?: string;
 }
 
-export const Filter = ({ filter, currentValue, forceSubmit }: FilterProps) => {
+export const Filter = ({
+  filter,
+  currentValue,
+  forceSubmit,
+  currentValueText,
+}: FilterProps) => {
   const { t } = useTranslation();
   const [prevValue, setPrevValue] = useState(currentValue);
   const [value, setValue] = useState(currentValue ?? '');
   const [focused, setFocused] = useState(false);
+  const hydrated = useHydrated();
 
   if (currentValue !== prevValue) {
     setPrevValue(currentValue);
@@ -70,6 +79,24 @@ export const Filter = ({ filter, currentValue, forceSubmit }: FilterProps) => {
         </Fieldset>
       );
     case 'collection':
+      if (hydrated && filter.options.length > 20) {
+        return (
+          <Fieldset label={t(filter.textId)} size='small'>
+            <ComboboxSelect
+              name={filter.name}
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue as string);
+                forceSubmit();
+              }}
+              options={filter.options.map((option) => ({
+                value: option.value,
+                label: option.text,
+              }))}
+            />
+          </Fieldset>
+        );
+      }
       return (
         <Fieldset label={t(filter.textId)} size='small'>
           <Select
@@ -95,6 +122,7 @@ export const Filter = ({ filter, currentValue, forceSubmit }: FilterProps) => {
             setValue(newValue);
             forceSubmit();
           }}
+          currentValueText={currentValueText}
         />
       );
   }
@@ -104,12 +132,14 @@ interface AutocompleteFilterProps {
   filter: AutocompleteFilter;
   value: string;
   onChange: (newValue: string) => void;
+  currentValueText?: string;
 }
 
 const AutocompleteFilter = ({
   filter,
   value,
   onChange,
+  currentValueText,
 }: AutocompleteFilterProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
@@ -147,6 +177,7 @@ const AutocompleteFilter = ({
           placeholder={t('divaClient_recordLinkAutocompletePlaceholderText', {
             recordType: t(filter.textId).toLowerCase(),
           })}
+          displayValue={(item) => currentValueText ?? item}
         />
         <ComboboxOptions anchor='bottom'>
           {fetcher.state === 'idle' &&

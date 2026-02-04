@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: var(--gap-s);
 
   h2 {
     margin-right: auto;
@@ -39,4 +40,8 @@
 .active-filter-value {
   font-style: italic;
   margin-inline: var(--gap-s);
+}
+
+.api-link-button {
+  align-self: flex-end;
 }

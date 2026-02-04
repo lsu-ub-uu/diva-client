@@ -4500,6 +4500,7 @@ export type GroupOfRecordTypeCollection =
 
 export type RecordTypeCategoryCollection =
   | 'clientNavigation'
+  | 'clientMainNavigation'
   | 'categoryOne'
   | 'categoryTwo'
   | 'categoryThree';
