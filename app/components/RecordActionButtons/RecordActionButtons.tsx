@@ -111,6 +111,9 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
   return record.userRights?.map((userRight) => {
     switch (userRight) {
       case 'read':
+        if (record.recordType === 'diva-output') {
+          return null;
+        }
         return (
           <IconButton
             size='small'

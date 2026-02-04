@@ -42,7 +42,8 @@ interface OutputFieldProps {
     title: string;
     body: string;
   };
-  adornment?: ReactNode;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const OutputField = ({
@@ -53,7 +54,8 @@ export const OutputField = ({
   variant = 'block',
   textStyle,
   info,
-  adornment,
+  attributes,
+  actionButtonGroup,
 }: OutputFieldProps) => {
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
@@ -65,6 +67,7 @@ export const OutputField = ({
     <div
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
+      data-has-label={label ? 'true' : 'false'}
     >
       <div className={styles['label-wrapper']}>
         {label && (
@@ -77,11 +80,11 @@ export const OutputField = ({
             {t(label)}
           </Typography>
         )}
-        {label && info && <FieldInfo {...info} />}
-        {adornment && (
-          <div className={styles['adornment-wrapper']}>{adornment}</div>
-        )}
+
+        {attributes}
+        {actionButtonGroup}
       </div>
+
       <Enhancement enhancement={enhancement}>
         {collapsable && value && (
           <div className={styles['value']} aria-labelledby={`${path}-label`}>

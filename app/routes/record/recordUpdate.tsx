@@ -44,7 +44,7 @@ import type { Route } from '../record/+types/recordUpdate';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
-  const { t } = context.get(i18nContext);
+  const { t, language } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
@@ -58,7 +58,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     mode: 'update',
   });
 
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record) || t('divaClient_missingTitleText')} | DiVA`;
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record, language) || t('divaClient_missingTitleText')} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();

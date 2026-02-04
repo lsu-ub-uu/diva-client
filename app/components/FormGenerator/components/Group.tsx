@@ -27,7 +27,6 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import {
-  checkIfPresentationStyleIsInline,
   getEnhancement,
   getGroupLevel,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -70,9 +69,10 @@ export const Group = ({
   const { getValues } = useRemixFormContext();
 
   const groupLevel = getGroupLevel(currentComponentNamePath);
-  const inline = checkIfPresentationStyleIsInline(component);
+  const inline = parentPresentationStyle === 'inline';
 
   const hasNoValues = !hasValuableData(getValues(currentComponentNamePath));
+  const textStyle = component.textStyle;
 
   if (!expandable && component.mode === 'output' && hasNoValues) {
     return null;
@@ -142,6 +142,7 @@ export const Group = ({
           <div
             className='form-component-container'
             data-layout={inline ? 'inline' : 'grid'}
+            data-text-style={textStyle}
           >
             {component.title && component.showLabel && (
               <Typography
