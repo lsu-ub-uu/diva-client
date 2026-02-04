@@ -1,9 +1,11 @@
 import { Button } from '@/components/Button/Button';
-import styles from './Footer.module.css';
-import { useEffect, useState, type ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useIsDevMode } from '@/utils/useIsDevMode';
+import { useState, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './Footer.module.css';
+import { IconButton } from '@/components/IconButton/IconButton';
+import { BugOffIcon } from 'lucide-react';
 
 interface FooterProps {
   applicationVersion: string;
@@ -29,26 +31,31 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
     if (devModeClickCount > 4) {
       localStorage.setItem('diva-dev', 'true');
       window.location.reload();
-    } else {
-      setDevModeClickCount(devModeClickCount + 1);
     }
+    setDevModeClickCount(devModeClickCount + 1);
   };
 
   return (
     <footer className={styles.footer}>
       <div className={styles['footer-links']}>
         {devMode && (
-          <button
+          <IconButton
+            tooltip='Disable dev mode'
+            size='small'
             onClick={() => {
               localStorage.removeItem('diva-dev');
               window.location.reload();
             }}
           >
-            Disable dev mode
-          </button>
+            <BugOffIcon />
+          </IconButton>
         )}
         {/* eslint-disable-next-line  */}
-        <span className={styles['footer-link']} onClick={handleVersionClick}>
+        <span
+          className={styles['footer-link']}
+          onClick={handleVersionClick}
+          style={{ transform: `rotate(${devModeClickCount}deg)` }}
+        >
           {t('divaClient_footerVersionText', { version: applicationVersion })}
         </span>
         <FooterLink href={accessibilityLink[language]}>
