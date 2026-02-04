@@ -12,7 +12,7 @@ const CI_MODE = process.env.CI_MODE === 'true';
 
 export const i18nContext = createContext<i18n>();
 export const createi18nInstance = async (request: Request) => {
-  const i18nInstance = createInstance();
+  const i18nInstance = createInstance({ supportedLngs: ['en', 'sv'] });
   const dependencies = await getDependencies();
   const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
   const locale = languageCookie ?? 'sv';

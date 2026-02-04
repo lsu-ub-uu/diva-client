@@ -35,7 +35,7 @@ import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const { t } = context.get(i18nContext);
+  const { t, language } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
@@ -50,9 +50,9 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
       mode: 'view',
     });
 
-    const breadcrumb = getRecordTitle(record) ?? record.id;
+    const breadcrumb = getRecordTitle(record, language) ?? record.id;
     const pageTitle =
-      getRecordTitle(record) || t('divaClient_missingTitleText');
+      getRecordTitle(record, language) || t('divaClient_missingTitleText');
 
     return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {

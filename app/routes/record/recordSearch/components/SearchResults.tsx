@@ -46,19 +46,7 @@ export const SearchResults = ({
       >
         {searchResults.data.map((record) => (
           <li key={record.id} className={styles['result-list-item']}>
-            <div className={styles['result-list-item-content']}>
-              {record.recordType && record.recordType === 'diva-output' ? (
-                <DivaOutputSearchResult searchResult={record} />
-              ) : (
-                <SearchResultForm
-                  record={record}
-                  formSchema={record.presentation!}
-                />
-              )}
-              <div className={styles['record-action-buttons']}>
-                <RecordActionButtons record={record} />
-              </div>
-            </div>
+            <SearchResult />
           </li>
         ))}
       </ol>
