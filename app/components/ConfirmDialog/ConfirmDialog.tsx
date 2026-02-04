@@ -1,12 +1,13 @@
 import { useRef, type ReactNode, type Ref } from 'react';
 import { Button } from '../Button/Button';
 import styles from './ConfirmDialog.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmDialogProps {
   headingText: string;
   messageText?: string;
   confirmButtonText: ReactNode;
-  cancelButtonText: ReactNode;
+  cancelButtonText?: ReactNode;
   ref: Ref<HTMLDialogElement>;
 }
 
@@ -17,6 +18,7 @@ export const ConfirmDialog = ({
   cancelButtonText,
   ref,
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation();
   return (
     <dialog ref={ref} className={styles.dialog} closedby='any'>
       <form method='dialog'>
@@ -29,7 +31,7 @@ export const ConfirmDialog = ({
             value='cancel'
             type='submit'
           >
-            {cancelButtonText}
+            {cancelButtonText ?? t('divaClient_cancelText')}
           </Button>
           <Button
             data-testid='dialog-confirm-button'

@@ -23,13 +23,13 @@ import css from './login.css?url';
 import { PasswordLogin } from './PasswordLogin';
 import { PasswordLoginOptions } from './PasswordLoginOptions';
 import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const loginUnit = url.searchParams.get('loginUnit');
-
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('auth')) {
@@ -54,7 +54,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export const meta = ({ loaderData }: Route.MetaArgs) => {
   return [
     {
-      title: ['DiVA', `${loaderData?.breadcrumb}`].filter(Boolean).join(' | '),
+      title: [`${loaderData?.breadcrumb}`, 'DiVA'].filter(Boolean).join(' | '),
     },
   ];
 };
@@ -157,34 +157,36 @@ export default function Login({ loaderData }: Route.ComponentProps) {
       ? loginUnits[0]
       : undefined;
 
-  if (selectedLoginUnit?.type === 'password') {
-    return (
-      <main>
-        <PasswordLogin
-          presentation={selectedLoginUnit.presentation}
-          notification={notification}
-          returnTo={returnTo}
-        />
-      </main>
-    );
-  }
-
   return (
-    <main>
-      <h1>{t('divaClient_LoginText')}</h1>
-      <div className='login-options'>
-        {passwordLoginUnits.length > 0 && (
-          <PasswordLoginOptions
-            passwordLoginUnits={passwordLoginUnits}
+    <div className='grid main-content'>
+      <Breadcrumbs />
+      <main className='grid-col-12'>
+        {selectedLoginUnit?.type === 'password' ? (
+          <PasswordLogin
+            presentation={selectedLoginUnit.presentation}
+            notification={notification}
             returnTo={returnTo}
           />
+        ) : (
+          <>
+            <h1>{t('divaClient_LoginText')}</h1>
+
+            <div className='login-options'>
+              {passwordLoginUnits.length > 0 && (
+                <PasswordLoginOptions
+                  passwordLoginUnits={passwordLoginUnits}
+                  returnTo={returnTo}
+                />
+              )}
+              {webRedirectLoginUnits.length > 0 && (
+                <WebRedirectLoginOptions
+                  webRedirectLoginUnits={webRedirectLoginUnits}
+                />
+              )}
+            </div>
+          </>
         )}
-        {webRedirectLoginUnits.length > 0 && (
-          <WebRedirectLoginOptions
-            webRedirectLoginUnits={webRedirectLoginUnits}
-          />
-        )}
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

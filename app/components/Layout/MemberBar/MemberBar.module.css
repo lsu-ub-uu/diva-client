@@ -20,7 +20,6 @@
 .member-bar {
   background-color: var(--member-background-color);
   color: var(--member-text-color);
-  padding: 0 var(--gap-xl);
   display: flex;
   height: var(--member-bar-height);
   gap: var(--gap-xxl);
@@ -32,6 +31,12 @@
     padding: 0 var(--gap);
     gap: var(--gap);
   }
+}
+
+.bar-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
 }
 
 :global([data-color-scheme='dark']) .member-bar {

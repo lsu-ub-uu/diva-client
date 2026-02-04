@@ -37,4 +37,50 @@
     --font-size-xxl: 2.5rem;
     --font-size-l: 1.2rem;
   }
+
+  /* Typography */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-h1);
+    margin-bottom: var(--gap);
+    font-family: var(--font-family-serif);
+  }
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-h2);
+  }
+
+  h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-h3);
+  }
+
+  h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-h4);
+  }
+
+  h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-h5);
+    font-family: var(--font-family-main);
+  }
+
+  h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-h6);
+    font-family: var(--font-family-main);
+    text-transform: uppercase;
+  }
 }

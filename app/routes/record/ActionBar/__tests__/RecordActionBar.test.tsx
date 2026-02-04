@@ -2,9 +2,9 @@ import type { BFFDataRecord } from '@/types/record';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
-import { ActionBar } from '../ActionBar';
+import { RecordActionBar } from '../RecordActionBar';
 
-describe('ActionBar', () => {
+describe('RecordActionBar', () => {
   it('renders view record link and not update record link when on update page', () => {
     const record = {
       id: '1234',
@@ -41,12 +41,12 @@ describe('ActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -97,12 +97,12 @@ describe('ActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -153,7 +153,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -199,7 +199,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -245,7 +245,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -292,7 +292,9 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} apiUrl='someUrl/1234' />,
+        Component: () => (
+          <RecordActionBar record={record} apiUrl='someUrl/1234' />
+        ),
       },
     ]);
 
@@ -337,12 +339,12 @@ describe('ActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -389,12 +391,12 @@ describe('ActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -441,7 +443,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -487,7 +489,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 
@@ -533,7 +535,7 @@ describe('ActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <ActionBar record={record} />,
+        Component: () => <RecordActionBar record={record} />,
       },
     ]);
 

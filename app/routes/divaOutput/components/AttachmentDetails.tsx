@@ -13,7 +13,7 @@ interface AttachmentProps {
 export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
-  const binaryRecord = attachment?.attachmentFile?.linkedRecord?.binary;
+  const binaryRecord = attachment?.file?.linkedRecord?.binary;
 
   return (
     <details className='record-details'>
@@ -28,8 +28,8 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
           value={attachment.displayLabel?.value}
         />
         <Term
-          label={attachment.type?.__text?.[language]}
-          value={attachment.type?.__valueText?.[language]}
+          label={attachment.label?.__text?.[language]}
+          value={attachment.label?.__valueText?.[language]}
         />
         <Term
           label={binaryRecord?.originalFileName?.__text?.[language]}

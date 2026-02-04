@@ -1,12 +1,12 @@
 import type { BFFSearchResult } from '@/types/record';
 
-import styles from './SearchResults.module.css';
-import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
 import { SearchResultForm } from '@/components/Form/SearchResultForm';
-import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { SearchSlashIcon } from 'lucide-react';
+import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { CircleDashedIcon, SearchSlashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import styles from './SearchResults.module.css';
 
 interface SearchResultsProps {
   searchResults: BFFSearchResult;
@@ -24,6 +24,13 @@ export const SearchResults = ({
   const { t } = useTranslation();
   return (
     <div className={styles['search-result']}>
+      {!userHasSearched && searchResults.totalNo === 0 && (
+        <Alert severity='info' icon={<CircleDashedIcon />}>
+          <AlertTitle>{t('divaClient_noPostResultsTitleText')}</AlertTitle>
+          {t('divaClient_noPostResultsBodyText')}
+        </Alert>
+      )}
+
       {userHasSearched && searchResults.data.length === 0 && (
         <Alert severity='info' icon={<SearchSlashIcon />}>
           <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>

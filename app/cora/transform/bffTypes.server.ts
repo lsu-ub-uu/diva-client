@@ -36,6 +36,7 @@ export interface BFFRecordType extends BFFBase {
   listPresentationViewId: string;
   searchId?: string;
   textId: string;
+  pluralTextId: string;
   defTextId: string;
   groupOfRecordType: string[];
   recordTypeCategory: string[];

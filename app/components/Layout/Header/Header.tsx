@@ -2,24 +2,23 @@ import DivaLogo from '@/assets/divaLogo.svg?react';
 import type { User } from '@/auth/createUser';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import type {
-  BFFMember,
-  BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/transform/bffTypes.server';
 import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Navigation } from '@/data/getNavigation.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
+import { useIsDevMode } from '@/utils/useIsDevMode';
 import { clsx } from 'clsx';
-import { MenuIcon, XIcon } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { RefreshCwIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Form, href, Link, useLocation } from 'react-router';
 import { MemberBar } from '../MemberBar/MemberBar';
-import { TopNavigation } from '../TopNavigation/TopNavigation';
 import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
 import styles from './Header.module.css';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import LoginMenu from './Login/LoginMenu';
+import { MobileNavigation } from './MobileNavigation/MobileNavigation';
+import { TopNavigation } from './TopNavigation/TopNavigation';
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -27,8 +26,7 @@ interface HeaderProps {
   userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
   exampleUsers: ExampleUser[];
-  recordTypes: BFFRecordType[];
-  editableMember: string | undefined;
+  navigation: Navigation;
 }
 
 export const Header = ({
@@ -38,89 +36,50 @@ export const Header = ({
   userPreferences,
   loginUnits,
   exampleUsers,
-  recordTypes,
-  editableMember,
+  navigation,
 }: HeaderProps) => {
-  const headerRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === headerRef.current) {
-            if (entry.isIntersecting) {
-              document.body.classList.remove('scrolled-past-header');
-            } else {
-              document.body.classList.add('scrolled-past-header');
-            }
-          }
-        });
-      },
-      { threshold: [0] },
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
+  const location = useLocation();
+  const returnTo = encodeURIComponent(location.pathname + location.search);
+  const devMode = useIsDevMode();
   const { t } = useTranslation();
-  const mobileDialogRef = useRef<HTMLDialogElement>(null);
   return (
-    <header className={clsx(styles.header, className)} ref={headerRef}>
+    <header className={clsx(styles.header, className)}>
       <NavigationLoader />
       <MemberBar member={member} loggedIn={user !== undefined} />
-      <div className={styles['diva-header-bar']}>
-        <div className={styles['header-bar-left']}>
-          <div className={styles['header-mobile-menu-button']}>
-            <IconButton
-              tooltip={t('divaClient_showMenuText')}
-              onClick={() => mobileDialogRef.current?.showModal()}
-            >
-              <MenuIcon />
-            </IconButton>
-            <dialog
-              ref={mobileDialogRef}
-              className={styles['mobile-menu-dialog']}
-              closedby='any'
-            >
-              <div className={styles['mobile-menu-header']}>
-                <LanguageSwitcher />
-                <ColorSchemeSwitcher
-                  colorScheme={userPreferences.colorScheme}
-                />
-                <IconButton
-                  className={styles['menu-close-button']}
-                  tooltip={t('divaClient_closeText')}
-                  onClick={() => mobileDialogRef.current?.close()}
-                >
-                  <XIcon />
+      <div className={clsx(styles['diva-header-bar'])}>
+        <div className={clsx(styles['header-bar-content'], 'grid')}>
+          <div className={styles['header-bar-left']}>
+            <MobileNavigation
+              navigation={navigation}
+              userPreferences={userPreferences}
+            />
+            <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
+              <DivaLogo className={styles.logo} />
+            </Link>
+            <TopNavigation navigation={navigation} />
+          </div>
+          <div className={styles['header-bar-right']}>
+            {devMode && (
+              <Form
+                action={href('/refreshDefinitions')}
+                method='POST'
+                reloadDocument
+              >
+                <input type='hidden' name='returnTo' value={returnTo} />
+                <IconButton type='submit' tooltip='Refresh definitions'>
+                  <RefreshCwIcon />
                 </IconButton>
-              </div>
-              <hr />
-              <TopNavigation
-                recordTypes={recordTypes}
-                editableMember={editableMember}
-                onNavigationClick={() => mobileDialogRef.current?.close()}
-              />
-            </dialog>
+              </Form>
+            )}
+
+            <div className={styles['color-theme-switcher']}>
+              <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+            </div>
+            <div className={styles['language-switcher']}>
+              <LanguageSwitcher />
+            </div>
+            <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
           </div>
-          <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
-            <DivaLogo className={styles.logo} />
-          </Link>
-        </div>
-        <div className={styles['header-bar-right']}>
-          <div className={styles['color-theme-switcher']}>
-            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-          </div>
-          <div className={styles['language-switcher']}>
-            <LanguageSwitcher />
-          </div>
-          <LoginMenu loginUnits={loginUnits} exampleUsers={exampleUsers} />
         </div>
       </div>
     </header>

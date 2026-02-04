@@ -1,6 +1,5 @@
 import type { Auth } from '@/auth/Auth';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { Button } from '@/components/Button/Button';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { externalCoraApiUrl } from '@/cora/helper.server';
@@ -20,17 +19,7 @@ import {
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { get } from 'lodash-es';
-import { CirclePlusIcon } from 'lucide-react';
-import { Fragment, Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  Await,
-  data,
-  href,
-  Link,
-  useNavigation,
-  useSubmit,
-} from 'react-router';
+import { data, useNavigation, useSubmit } from 'react-router';
 import { dependenciesContext } from 'server/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -120,7 +109,7 @@ export const loader = async ({
     decorated,
   );
 
-  const validationTypes = getValidationTypes(
+  const validationTypes = await getValidationTypes(
     params.recordType,
     auth?.data.token,
   );
@@ -138,7 +127,7 @@ export const loader = async ({
     recordTypeTextId: recordType.textId,
     mainSearchTerm,
     searchId,
-    title: t(recordType.textId),
+    title: t(recordType.pluralTextId),
     query: q,
     start,
     rows,
@@ -219,14 +208,12 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     activeFilters,
     rows,
     start,
-    recordTypeId,
     recordTypeTextId,
     validationTypes,
     apiUrl,
   } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
-  const { t } = useTranslation();
 
   const searching = Boolean(
     navigation.state !== 'idle' &&
@@ -286,39 +273,16 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       onRemoveFilter={handleRemoveFilter}
       onClearAllFilters={handleClearAllFilters}
     >
-      <>
-        <Breadcrumbs />
-        <div className='title-wrapper'>
-          <h1>{title}</h1>
-
-          <Suspense
-            fallback={
-              <Button
-                as={Link}
-                variant='secondary'
-                to={href('/:recordType/create', {
-                  recordType: recordTypeId,
-                })}
-                size='large'
-              >
-                <CirclePlusIcon />
-                {t('divaClient_createText', {
-                  type: t(recordTypeTextId).toLowerCase(),
-                })}
-              </Button>
-            }
-          >
-            <Await resolve={validationTypes} errorElement={<Fragment />}>
-              {(validationTypes) => (
-                <CreateRecordMenu
-                  validationTypes={validationTypes}
-                  recordTypeTextId={recordTypeTextId}
-                />
-              )}
-            </Await>
-          </Suspense>
+      <div className='main-content'>
+        <div className='top-bar'>
+          <Breadcrumbs />
+          <CreateRecordMenu
+            validationTypes={validationTypes}
+            recordTypeTextId={recordTypeTextId}
+          />
         </div>
-      </>
+        <h1>{title}</h1>
+      </div>
     </SearchLayout>
   );
 }

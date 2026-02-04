@@ -73,8 +73,8 @@ const divaOutput = {
     ],
     attachment: [
       {
-        type: { value: 'movie' },
-        attachmentFile: {
+        label: { value: 'movie' },
+        file: {
           linkedRecord: {
             binary: {
               recordInfo: { visibility: { value: 'published' } },
@@ -90,8 +90,8 @@ const divaOutput = {
         },
       },
       {
-        type: { value: 'fullText' },
-        attachmentFile: {
+        label: { value: 'fullText' },
+        file: {
           linkedRecord: {
             binary: {
               recordInfo: { visibility: { value: 'published' } },
@@ -107,8 +107,8 @@ const divaOutput = {
         },
       },
       {
-        type: { value: 'fullText' },
-        attachmentFile: {
+        label: { value: 'fullText' },
+        file: {
           linkedRecord: {
             binary: {
               recordInfo: { visibility: { value: 'published' } },
@@ -124,8 +124,8 @@ const divaOutput = {
         },
       },
       {
-        type: { value: 'fullText' },
-        attachmentFile: {
+        label: { value: 'fullText' },
+        file: {
           linkedRecord: {
             binary: {
               recordInfo: { visibility: { value: 'hidden' } },

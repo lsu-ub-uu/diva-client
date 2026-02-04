@@ -23,6 +23,7 @@
   --color-warning-main: rgb(246 194 68);
   --color-thin-border: rgb(0 0 0 / 20%);
   --color-lighter-border: rgb(0 0 0 / 8%);
+  --color-highligted: var(--color-gray-main);
 
   /* Component colors */
   --color-link: rgb(5 85 164);
@@ -110,6 +111,8 @@
     --color-output-card-background: var(--color-card);
     --color-output-card-border: var(--color-card-dark);
     --background-image-filter: saturate(0.7) brightness(0.5) contrast(0.8);
+    --color-highlighted: var(--color-button-secondary-hover);
+    --color-highligted: var(--color-highlighted);
   }
 
   [data-color-scheme='dark'] {

@@ -17,15 +17,19 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.record-wrapper {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: var(--gap-l);
-  position: relative;
-}
-
 .info-alert {
   margin-bottom: var(--gap);
+}
+
+.navigation-sidebar {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow: hidden auto;
+}
+
+.record-form {
+  padding: var(--gap);
 }
 
 .preview {
@@ -35,10 +39,11 @@
   top: 0;
   overflow-y: auto;
   height: 100vh;
-  border-left: 1px solid var(--color-thin-border);
-  padding-left: var(--gap-l);
-  padding-top: var(--gap);
+  padding: var(--gap-l);
   padding-bottom: 10rem;
+  background-color: var(--color-background-darker);
+  border: 1px solid var(--color-thin-border);
+  border-radius: var(--border-radius);
 }
 
 .preview-heading {
@@ -48,33 +53,10 @@
   color: var(--color-label);
 }
 
-@media (width < 1600px) {
-  .record-wrapper {
-    display: block;
-  }
-
-  .preview {
-    display: none;
-  }
-}
-
 .error-alert {
   margin-bottom: var(--gap);
 }
 
 .record-status-bar {
   margin-block: var(--gap-l);
-}
-
-.record-top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--gap-l);
-
-  @media (width < 900px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--gap);
-  }
 }

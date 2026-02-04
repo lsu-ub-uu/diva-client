@@ -21,6 +21,7 @@
 @import './spacing.css' layer(root);
 @import './normalize.css' layer(root);
 @import './form-component.css' layer(components);
+@import './grid.scss' layer(root);
 
 @layer root, components;
 
@@ -41,6 +42,7 @@
     --header-height: calc(
       var(--member-bar-height) + var(--diva-header-bar-height)
     );
+    --content-max-width: 1800px;
 
     /* Shadows */
     --elevation:
@@ -51,6 +53,8 @@
       outline: 2px solid var(--color-link-selected);
     }
 
+    background-color: var(--color-background-darker);
+
     body {
       margin: 0;
       font-family: var(--font-family-main), sans-serif;
@@ -58,52 +62,6 @@
       line-height: var(--line-height-base);
       color: var(--color-text);
       background-color: var(--color-background);
-    }
-
-    /* Typography */
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      margin: 0;
-    }
-
-    h1 {
-      font-size: var(--font-size-h1);
-      font-weight: var(--font-weight-h1);
-      margin-bottom: var(--gap);
-      font-family: var(--font-family-serif);
-    }
-
-    h2 {
-      font-size: var(--font-size-h2);
-      font-weight: var(--font-weight-h2);
-    }
-
-    h3 {
-      font-size: var(--font-size-h3);
-      font-weight: var(--font-weight-h3);
-    }
-
-    h4 {
-      font-size: var(--font-size-h4);
-      font-weight: var(--font-weight-h4);
-    }
-
-    h5 {
-      font-size: var(--font-size-h5);
-      font-weight: var(--font-weight-h5);
-      font-family: var(--font-family-main);
-    }
-
-    h6 {
-      font-size: var(--font-size-h6);
-      font-weight: var(--font-weight-h6);
-      font-family: var(--font-family-main);
-      text-transform: uppercase;
     }
 
     a {
@@ -139,74 +97,6 @@
 
 .diva-logo-star {
   fill: var(--color-accent);
-}
-
-@layer components {
-  .container {
-    max-width: 1536px;
-    margin: 0 auto;
-    padding: 0 var(--gap-l);
-  }
-}
-
-.root-layout {
-  display: grid;
-  grid-template:
-    'global-alert global-alert' auto
-    'header header' auto
-    'nav main' 1fr;
-  grid-template-columns: auto 1fr;
-  min-height: 100vh;
-
-  @media (width < 900px) {
-    grid-template:
-      'global-alert' auto
-      'header' auto
-      'main' 1fr;
-    grid-template-columns: auto;
-  }
-}
-
-.global-alert {
-  grid-area: global-alert;
-}
-
-.header {
-  grid-area: header;
-}
-
-.nav-rail {
-  grid-area: nav;
-  background-color: var(--color-background-darker);
-  border-right: 1px solid var(--color-lighter-border);
-  padding: 0;
-
-  nav {
-    position: sticky;
-    top: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    max-height: calc(100vh - var(--header-height));
-    padding-top: var(--gap);
-    padding-bottom: var(--gap-xl);
-  }
-
-  @media (width < 900px) {
-    display: none;
-  }
-}
-
-.scrolled-past-header .nav-rail nav {
-  max-height: 100vh;
-}
-
-.content {
-  grid-area: main;
-  padding: 0 var(--gap-l);
-
-  @media (width < 900px) {
-    padding: 0 var(--gap);
-  }
 }
 
 .flash {

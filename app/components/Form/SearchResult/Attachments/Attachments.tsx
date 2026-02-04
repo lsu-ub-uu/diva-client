@@ -15,7 +15,7 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
   }
 
   const firstAttachment = attachments[0];
-  const binary = firstAttachment?.attachmentFile?.linkedRecord?.binary;
+  const binary = firstAttachment?.file?.linkedRecord?.binary;
 
   if (!binary?.master?.master || !binary?.thumbnail?.thumbnail) {
     return null;

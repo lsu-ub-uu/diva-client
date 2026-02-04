@@ -56,9 +56,9 @@ export const SearchLayout = ({
   }, 400);
 
   return (
-    <div className='search-layout'>
-      <main className='search-main'>
-        {children}
+    <div className='grid'>
+      <div className='grid-col-12'>{children}</div>
+      <main className='grid-col-9 grid-col-l-12 search-main'>
         <RecordSearchView
           query={query}
           onQueryChange={onQueryChange}
@@ -76,16 +76,18 @@ export const SearchLayout = ({
           apiUrl={apiUrl}
         />
       </main>
-      <Filters
-        open={filtersOpen}
-        ref={filterFormRef}
-        filters={filters}
-        activeFilters={activeFilters}
-        query={query}
-        rows={rows}
-        onFilterChange={handleFilterChange}
-        onClose={() => setFiltersOpen(false)}
-      />
+      <div className='grid-col-3'>
+        <Filters
+          open={filtersOpen}
+          ref={filterFormRef}
+          filters={filters}
+          activeFilters={activeFilters}
+          query={query}
+          rows={rows}
+          onFilterChange={handleFilterChange}
+          onClose={() => setFiltersOpen(false)}
+        />
+      </div>
     </div>
   );
 };

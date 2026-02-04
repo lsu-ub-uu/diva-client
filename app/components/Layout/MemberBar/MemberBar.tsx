@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import clsx from 'clsx';
 
 interface MemberBarProps {
   member: BFFMember | undefined;
@@ -57,61 +58,63 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
       }
       aria-label={member.pageTitle[lang]}
     >
-      {member.logo.svg && (
-        <div
-          role='img'
-          aria-label={`${member.pageTitle[lang]} logo`}
-          className={styles['logo-wrapper']}
-          dangerouslySetInnerHTML={{
-            __html: member.logo.svg,
-          }}
-        />
-      )}
-      {!member.logo.svg && member.logo.url && (
-        <img src={member.logo.url} alt={`${member.pageTitle[lang]} logo`} />
-      )}
+      <div className={clsx(styles['bar-content'], 'grid')}>
+        {member.logo.svg && (
+          <div
+            role='img'
+            aria-label={`${member.pageTitle[lang]} logo`}
+            className={styles['logo-wrapper']}
+            dangerouslySetInnerHTML={{
+              __html: member.logo.svg,
+            }}
+          />
+        )}
+        {!member.logo.svg && member.logo.url && (
+          <img src={member.logo.url} alt={`${member.pageTitle[lang]} logo`} />
+        )}
 
-      {links && (
-        <>
-          <div className={styles['links']}>
-            <ul>
-              {links.map((link, index) => (
-                <li key={index}>
-                  <a href={link[lang].url} target='_blank' rel='noreferrer'>
-                    {link[lang].displayLabel}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Popover className='relative'>
-            <PopoverButton
-              as={Button}
-              variant='tertiary'
-              className={styles['links-popover-button']}
-              aria-hidden={true}
-            >
-              {t('divaClient_memberBarLinksText')} <ChevronDownIcon />
-            </PopoverButton>
-            <PopoverPanel
-              anchor='bottom'
-              className={styles['links-popover-panel']}
-            >
+        {links && (
+          <>
+            <div className={styles['links']}>
               <ul>
-                {links.map((link) => (
-                  <li key={link[lang].url}>
+                {links.map((link, index) => (
+                  <li key={index}>
                     <a href={link[lang].url} target='_blank' rel='noreferrer'>
                       {link[lang].displayLabel}
                     </a>
                   </li>
                 ))}
               </ul>
-            </PopoverPanel>
-          </Popover>
-        </>
-      )}
+            </div>
+            <Popover className='relative'>
+              <PopoverButton
+                as={Button}
+                variant='tertiary'
+                className={styles['links-popover-button']}
+                aria-hidden={true}
+              >
+                {t('divaClient_memberBarLinksText')} <ChevronDownIcon />
+              </PopoverButton>
+              <PopoverPanel
+                anchor='bottom'
+                className={styles['links-popover-panel']}
+              >
+                <ul>
+                  {links.map((link) => (
+                    <li key={link[lang].url}>
+                      <a href={link[lang].url} target='_blank' rel='noreferrer'>
+                        {link[lang].displayLabel}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </PopoverPanel>
+            </Popover>
+          </>
+        )}
 
-      <div className={styles['button-wrapper']}>{children}</div>
+        <div className={styles['button-wrapper']}>{children}</div>
+      </div>
     </section>
   );
 };

@@ -23,7 +23,6 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
@@ -207,7 +206,9 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 };
 
 export const meta = ({ data, error }: Route.MetaArgs) => {
-  return [{ title: error ? getMetaTitleFromError(error) : data?.title }];
+  return [
+    { title: error ? getMetaTitleFromError(error) : `${data?.title} | DiVA` },
+  ];
 };
 
 export const links: Route.LinksFunction = () => [
@@ -244,40 +245,40 @@ export default function CreateRecordRoute({
     setPreviewData(data);
   };
   return (
-    <div>
-      <Breadcrumbs />
-      <SidebarLayout
-        sidebarContent={
-          <NavigationPanel
-            links={
-              formDefinition ? linksFromFormSchema(formDefinition) || [] : []
-            }
-          />
-        }
-      >
+    <div className='grid main-content'>
+      <div className='grid-col-12 top-bar'>
+        <Breadcrumbs />
+      </div>
+      <aside className='navigation-sidebar grid-col-2 grid-col-l-3 grid-col-m-hidden'>
+        <NavigationPanel
+          links={
+            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
+          }
+        />
+      </aside>
+      <main className='record-form grid-col-6 grid-col-l-9 grid-col-m-12'>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity} className='error-alert'>
             <AlertTitle>{notification.summary}</AlertTitle>
             {notification.details}
           </Alert>
         )}
-        <div className='record-wrapper'>
-          <RecordForm
-            formSchema={formDefinition}
-            defaultValues={defaultValues}
-            onChange={handleFormChange}
-          />
-
-          {deferredPreviewData && (
-            <div className='preview'>
-              <ReadOnlyForm
-                recordData={deferredPreviewData}
-                formSchema={previewFormDefinition}
-              />
-            </div>
-          )}
-        </div>
-      </SidebarLayout>
+        <RecordForm
+          formSchema={formDefinition}
+          defaultValues={defaultValues}
+          onChange={handleFormChange}
+        />
+      </main>
+      <aside className='grid-col-4 grid-col-l-hidden'>
+        {deferredPreviewData && (
+          <div className='preview'>
+            <ReadOnlyForm
+              recordData={deferredPreviewData}
+              formSchema={previewFormDefinition}
+            />
+          </div>
+        )}
+      </aside>
     </div>
   );
 }

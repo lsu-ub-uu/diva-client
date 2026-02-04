@@ -16,45 +16,48 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.navigation-link {
-  text-decoration: none;
-  color: var(--color-text);
-  border-bottom: 4px solid transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: background-color 0.1s;
-  gap: var(--gap-s);
-
-  .icon-wrapper {
-    width: 4rem;
-    display: grid;
-    place-items: center;
-    padding: var(--gap-s) 0;
-    border-radius: 9999999px;
+.top-navigation {
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style: none;
+    gap: var(--gap);
   }
 
-  &:hover .icon-wrapper {
+  @media (width < 900px) {
+    display: none;
+  }
+}
+
+.navigation-link {
+  cursor: pointer;
+  background-color: transparent;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: background-color 0.1s;
+  gap: var(--gap);
+  border-radius: var(--border-radius-s);
+  padding: var(--gap-s) var(--gap-l);
+
+  &:hover {
     background-color: var(--color-card);
   }
 
-  &:global(.pending) .icon-wrapper {
-    background-color: var(--color-gray-main);
+  &:global(.pending) {
+    background-color: var(--color-background-darker);
   }
 
-  &[aria-current='page'] .icon-wrapper {
+  &[aria-current='page'],
+  &[data-active='true'] {
     background-color: var(--color-card-dark);
   }
 
   svg {
-    font-size: 1.2rem;
-  }
-
-  .label {
-    font-size: var(--font-size-xs);
-    max-width: 15ch;
-    text-align: center;
-    line-height: 1;
+    font-size: 1.5rem;
   }
 
   @media (width < 900px) {
@@ -68,5 +71,30 @@
       font-size: var(--font-size);
       max-width: none;
     }
+  }
+}
+
+.menu-navigation-button[data-open] {
+  background-color: var(--color-card-dark);
+
+  .menu-navigation-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.menu-navigation-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap);
+  font-size: var(--font-size);
+  margin-block: var(--gap-s);
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  &[aria-current='page'] {
+    background-color: var(--color-card-dark);
   }
 }

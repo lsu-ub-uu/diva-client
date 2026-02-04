@@ -38,6 +38,7 @@ describe('transformCoraRecordType', () => {
       autocompletePresentationView: 'exampleDevOutputAutocompletePGroup',
       searchId: 'exampleSearch',
       textId: 'exampleDevOutputText',
+      pluralTextId: 'exampleDevOutputPluralText',
       defTextId: 'exampleDevOutputDefText',
       groupOfRecordType: ['publicationType'],
       recordTypeCategory: ['clientNavigation'],

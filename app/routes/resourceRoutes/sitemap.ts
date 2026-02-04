@@ -1,17 +1,14 @@
-import { sessionContext } from '@/auth/sessionMiddleware.server';
-import type { BFFRecordType } from '@/cora/transform/bffTypes.server';
-import { getRecordTypes } from '@/data/getRecordTypes';
+import { getNavigation, type Navigation } from '@/data/getNavigation.server';
 import { dependenciesContext } from 'server/depencencies';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
 
-  const recordTypes = await getRecordTypes(dependencies, auth);
+  const navigation = await getNavigation(dependencies, undefined, undefined);
   const origin = new URL(request.url).origin;
 
-  const sitemap = await generateSitemapXml(origin, recordTypes);
+  const sitemap = await generateSitemapXml(origin, navigation);
 
   return new Response(sitemap, {
     headers: {
@@ -22,9 +19,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 export const generateSitemapXml = async (
   origin: string,
-  recordTypes: BFFRecordType[],
+  navigation: Navigation,
 ): Promise<string> => {
-  const recordTypeUrls = recordTypes.map((recordType) => `/${recordType.id}`);
+  const recordTypeUrls = navigation.mainNavigationItems.map(
+    (recordType) => `/${recordType.id}`,
+  );
   const urls = [''].concat(recordTypeUrls);
 
   let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
