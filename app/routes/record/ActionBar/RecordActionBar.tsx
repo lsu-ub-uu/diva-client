@@ -136,7 +136,7 @@ export const RecordActionBar = ({
           icon={<BookCheckIcon />}
           pending={isPublishing}
         >
-          ´ {t('divaClient_publishRecordText')}
+          {t('divaClient_publishRecordText')}
         </ActionBarButton>
       )}
       {record.userRights?.includes('unpublish') && (
