@@ -3505,6 +3505,8 @@ export interface AdminInfoDivaGroup {
   __text?: { sv: string; en: string };
 }
 
+export type FilesReviewedCollection = 'true' | 'false';
+
 export interface Binary {
   binary: BinaryGroup;
 }
@@ -3701,6 +3703,11 @@ export interface AttachmentsVersionGroup {
     value: string;
     _type: 'attachment';
     __text?: { sv: string; en: string };
+  };
+  filesReviewed?: {
+    value: FilesReviewedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   attachment?: AttachmentVersionGroup[];
   __text?: { sv: string; en: string };

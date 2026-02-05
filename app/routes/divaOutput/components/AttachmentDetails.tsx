@@ -1,13 +1,13 @@
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ChevronDownIcon, InfoIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';
 import { DateDisplay } from './DateDisplay';
 import { Term } from './Term';
+import type { AttachmentVersionGroup } from '@/generatedTypes/divaTypes';
 
 interface AttachmentProps {
-  attachment: AttachmentGroup;
+  attachment: AttachmentVersionGroup;
 }
 
 export const AttachmentDetails = ({ attachment }: AttachmentProps) => {

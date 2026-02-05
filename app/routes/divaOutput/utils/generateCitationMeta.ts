@@ -74,7 +74,9 @@ export const generateCitationMeta = (
     });
   }
 
-  const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
+  const pdfFulltextAttachments = (
+    divaOutput.output.attachments?.attachment || []
+  ).filter(
     (attachment) =>
       attachment?.label?.value === 'fullText' &&
       attachment?.file?.linkedRecord?.binary?.master?.master?.mimeType ===
