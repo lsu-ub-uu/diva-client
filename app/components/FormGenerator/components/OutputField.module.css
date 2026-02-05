@@ -52,10 +52,6 @@
     margin-right: var(--gap-s);
   }
 
-  /*   .value {
-    padding-left: var(--gap-s);
-  } */
-
   .label::after {
     content: ':';
   }
@@ -67,8 +63,4 @@
 
 .output-field[data-variant='block'] {
   flex-direction: column;
-
-  /*  &:has(.label) > .value {
-    padding-left: var(--gap-l);
-  } */
 }
