@@ -26,6 +26,7 @@ import {
   loadDependencies,
 } from './depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
+import type { i18n } from 'i18next';
 
 export const app = express();
 
@@ -42,7 +43,7 @@ app.use(
         refreshDependencies: loadDependencies,
       });
 
-      context.set(i18nContext, await createi18nInstance(request));
+      context.set(i18nContext, (await createi18nInstance(request)) as i18n);
 
       return context;
     },

@@ -55,13 +55,7 @@ export const loader = async ({
 
   const activeFilters = await Promise.all(
     filters.map((filter) =>
-      createActiveFilter(
-        filter,
-        searchParams,
-        dependencies,
-        auth,
-        language as 'sv' | 'en',
-      ),
+      createActiveFilter(filter, searchParams, dependencies, auth, language),
     ),
   ).then((results) => results.filter(Boolean) as ActiveFilter[]);
 

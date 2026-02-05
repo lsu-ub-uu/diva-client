@@ -31,10 +31,50 @@
   &[data-layout='inline'] {
     display: flex;
     flex-direction: column;
+    gap: 0 0.25em;
 
     @media (width >= 900px) {
       flex-flow: row wrap;
     }
+  }
+
+  &[data-text-style='h1TextStyle'] {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-h1);
+    font-family: var(--font-family-serif);
+  }
+
+  &[data-text-style='h2TextStyle'] {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-h2);
+  }
+
+  &[data-text-style='h3TextStyle'] {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-h3);
+  }
+
+  &[data-text-style='h4TextStyle'] {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-h4);
+  }
+
+  &[data-text-style='h5TextStyle'] {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-h5);
+  }
+
+  &[data-text-style='h6TextStyle'] {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-h6);
+  }
+
+  &[data-text-style='boldTextStyle'] {
+    font-weight: bold;
+  }
+
+  &[data-text-style='italicTextStyle'] {
+    font-style: italic;
   }
 }
 

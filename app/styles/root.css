@@ -110,3 +110,10 @@
   width: 1em;
   height: 1em;
 }
+
+.output-card {
+  background: var(--color-output-card-background);
+  border: 1px solid var(--color-output-card-border);
+  border-radius: var(--border-radius);
+  padding: var(--gap-l);
+}

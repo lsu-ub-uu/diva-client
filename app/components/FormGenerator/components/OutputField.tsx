@@ -25,11 +25,10 @@ import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
 import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
-import { Link } from 'react-router';
-import styles from './OutputField.module.css';
 import { useTranslation } from 'react-i18next';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { Link } from 'react-router';
 import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
+import styles from './OutputField.module.css';
 
 interface OutputFieldProps {
   path: string;
@@ -38,11 +37,8 @@ interface OutputFieldProps {
   value?: string;
   variant?: 'inline' | 'block';
   textStyle?: TextStyle;
-  info?: {
-    title: string;
-    body: string;
-  };
-  adornment?: ReactNode;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const OutputField = ({
@@ -52,8 +48,8 @@ export const OutputField = ({
   value,
   variant = 'block',
   textStyle,
-  info,
-  adornment,
+  attributes,
+  actionButtonGroup,
 }: OutputFieldProps) => {
   const { t } = useTranslation();
   const { enhancedFields } = use(FormGeneratorContext);
@@ -65,6 +61,7 @@ export const OutputField = ({
     <div
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
+      data-has-label={label ? 'true' : 'false'}
     >
       <div className={styles['label-wrapper']}>
         {label && (
@@ -77,11 +74,11 @@ export const OutputField = ({
             {t(label)}
           </Typography>
         )}
-        {label && info && <FieldInfo {...info} />}
-        {adornment && (
-          <div className={styles['adornment-wrapper']}>{adornment}</div>
-        )}
+
+        {attributes}
+        {actionButtonGroup}
       </div>
+
       <Enhancement enhancement={enhancement}>
         {collapsable && value && (
           <div className={styles['value']} aria-labelledby={`${path}-label`}>

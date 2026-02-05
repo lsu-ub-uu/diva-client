@@ -61,7 +61,14 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
             </span>
           }
         />
-
+        <Term
+          label={attachment?.digitized?.__text?.[language]}
+          value={attachment?.digitized?.value}
+        />
+        <Term
+          label={attachment?.printReadyFile?.__text?.[language]}
+          value={attachment?.printReadyFile?.value}
+        />
         <Term
           label={attachment?.note_type_attachmentVersion?.__text?.[language]}
           value={
@@ -70,31 +77,21 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
         />
         <Term
           label={
-            attachment?.adminInfo?.identifier_type_registrationNumber?.__text?.[
-              language
-            ]
+            attachment?.identifier_type_registrationNumber?.__text?.[language]
           }
-          value={
-            attachment?.adminInfo?.identifier_type_registrationNumber?.value
-          }
+          value={attachment?.identifier_type_registrationNumber?.value}
         />
         <Term
-          label={attachment?.adminInfo?.availability?.__text?.[language]}
-          value={attachment?.adminInfo?.availability?.__valueText?.[language]}
+          label={attachment?.availability?.__text?.[language]}
+          value={attachment?.availability?.__valueText?.[language]}
         />
         <Term
-          label={attachment?.adminInfo?.dateAvailability?.__text?.[language]}
-          value={<DateDisplay date={attachment?.adminInfo?.dateAvailability} />}
+          label={attachment?.dateToBePublished?.__text?.[language]}
+          value={<DateDisplay date={attachment?.dateToBePublished} />}
         />
         <Term
-          label={attachment?.adminInfo?.secrecy?.__text?.[language]}
-          value={attachment?.adminInfo?.secrecy?.__valueText?.[language]}
-        />
-        <Term
-          label={
-            attachment?.adminInfo?.note_type_attachment?.__text?.[language]
-          }
-          value={attachment?.adminInfo?.note_type_attachment?.value}
+          label={attachment?.dateToBeUnpublished?.__text?.[language]}
+          value={<DateDisplay date={attachment?.dateToBeUnpublished} />}
         />
       </dl>
     </details>
