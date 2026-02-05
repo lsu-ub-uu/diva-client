@@ -36,7 +36,7 @@ export const DivaOutputSearchResult = ({
         <RelatedBook relatedBook={output.relatedItem_type_book} />
         <Related related={output.related} />
       </div>
-      <Attachments attachments={output.attachment} />
+      <Attachments attachments={output.attachments} />
     </div>
   );
 };

@@ -3486,8 +3486,6 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
-export type AdminInfoStatusCollection = 'notReady' | 'ready';
-
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3504,13 +3502,10 @@ export interface AdminInfoDivaGroup {
     _type: 'internal';
     __text?: { sv: string; en: string };
   };
-  status?: {
-    value: AdminInfoStatusCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
   __text?: { sv: string; en: string };
 }
+
+export type FilesReviewedCollection = 'true' | 'false';
 
 export interface Binary {
   binary: BinaryGroup;
@@ -3657,7 +3652,7 @@ export interface DateToBeUnpublishedGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface AttachmentGroup {
+export interface AttachmentVersionGroup {
   file?: {
     value: string;
     linkedRecord: {
@@ -3700,6 +3695,21 @@ export interface AttachmentGroup {
   };
   dateToBePublished?: DateToBePublishedGroup;
   dateToBeUnpublished?: DateToBeUnpublishedGroup;
+  __text?: { sv: string; en: string };
+}
+
+export interface AttachmentsVersionGroup {
+  note_type_attachment?: {
+    value: string;
+    _type: 'attachment';
+    __text?: { sv: string; en: string };
+  };
+  filesReviewed?: {
+    value: FilesReviewedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  attachment?: AttachmentVersionGroup[];
   __text?: { sv: string; en: string };
 }
 
@@ -3907,7 +3917,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
   }[];
   adminInfo?: AdminInfoDivaGroup;
-  attachment?: AttachmentGroup[];
+  attachments?: AttachmentsVersionGroup;
   __text?: { sv: string; en: string };
 }
 

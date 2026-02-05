@@ -193,7 +193,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
       <aside className='grid-col-4 grid-col-m-12'>
         <RecordDetails output={output} />
 
-        <Attachments attachments={output.attachment} />
+        <Attachments attachments={output.attachments} />
         <dl>
           <Term
             label={

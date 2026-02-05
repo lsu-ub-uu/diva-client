@@ -1,13 +1,13 @@
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import { DownloadIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes } from '../utils/format';
 import { AttachmentDetails } from './AttachmentDetails';
+import type { AttachmentVersionGroup } from '@/generatedTypes/divaTypes';
 
 interface AttachmentProps {
-  attachment: AttachmentGroup;
+  attachment: AttachmentVersionGroup;
 }
 
 export const Attachment = ({ attachment }: AttachmentProps) => {
@@ -50,7 +50,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
 };
 
 const formatHeading = (
-  attachment: AttachmentGroup,
+  attachment: AttachmentVersionGroup,
   language: 'en' | 'sv',
 ): string => {
   const attachmentTypeText = attachment.label?.__valueText?.[language];
