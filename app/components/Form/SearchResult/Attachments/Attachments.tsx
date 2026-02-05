@@ -1,22 +1,26 @@
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
-import styles from './Attachments.module.css';
-import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import type { AttachmentsVersionGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import styles from './Attachments.module.css';
 
 interface AttachmentsProps {
-  attachments?: AttachmentGroup[];
+  attachments?: AttachmentsVersionGroup;
 }
 
 export const Attachments = ({ attachments }: AttachmentsProps) => {
   const language = useLanguage();
 
-  if (!attachments || attachments.length === 0) {
+  if (
+    !attachments ||
+    !attachments.attachment ||
+    attachments.attachment.length === 0
+  ) {
     return null;
   }
 
-  const firstAttachment = attachments[0];
+  const firstAttachment = attachments.attachment[0];
   const binary = firstAttachment?.file?.linkedRecord?.binary;
-
+  console.log('binary', binary);
   if (!binary?.master?.master || !binary?.thumbnail?.thumbnail) {
     return null;
   }
