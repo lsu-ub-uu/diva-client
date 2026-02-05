@@ -1,11 +1,10 @@
 import type { BFFSearchResult } from '@/types/record';
 
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import { CircleDashedIcon, SearchSlashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SearchResultItem } from './SearchResultItem';
 import styles from './SearchResults.module.css';
 
 interface SearchResultsProps {
@@ -46,7 +45,12 @@ export const SearchResults = ({
       >
         {searchResults.data.map((record) => (
           <li key={record.id} className={styles['result-list-item']}>
-            <SearchResult />
+            <div className={styles['result-list-item-content']}>
+              <SearchResultItem record={record} />
+              <div className={styles['record-action-buttons']}>
+                <RecordActionButtons record={record} />
+              </div>
+            </div>
           </li>
         ))}
       </ol>

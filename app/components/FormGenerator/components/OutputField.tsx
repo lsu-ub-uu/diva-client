@@ -25,11 +25,10 @@ import { Typography } from '@/components/Typography/Typography';
 import type { TextStyle } from '@/cora/transform/bffTypes.server';
 import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
-import { Link } from 'react-router';
-import styles from './OutputField.module.css';
 import { useTranslation } from 'react-i18next';
-import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { Link } from 'react-router';
 import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
+import styles from './OutputField.module.css';
 
 interface OutputFieldProps {
   path: string;

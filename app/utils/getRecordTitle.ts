@@ -21,6 +21,7 @@ import type {
   DivaFunder,
   DivaJournal,
   DivaLocalLabel,
+  DivaMember,
   DivaOrganisation,
   DivaOutput,
   DivaPerson,
@@ -32,6 +33,22 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 
+export const handledRecordTypes = [
+  'diva-output',
+  'diva-person',
+  'diva-project',
+  'diva-course',
+  'diva-organization',
+  'diva-journal',
+  'diva-subject',
+  'diva-programme',
+  'diva-series',
+  'diva-localLabel',
+  'diva-publisher',
+  'diva-funder',
+  'diva-member',
+];
+
 export const getRecordTitle = (
   record: BFFDataRecord,
   lang: 'sv' | 'en',
@@ -39,12 +56,12 @@ export const getRecordTitle = (
   const data = record.data;
 
   if (record.recordType === 'diva-output') {
-    const divaOutput = record as unknown as DivaOutput;
+    const divaOutput = data as DivaOutput;
     return divaOutput?.output?.titleInfo?.title?.value;
   }
 
   if (record.recordType === 'diva-person') {
-    const divaPerson = data as unknown as DivaPerson;
+    const divaPerson = data as DivaPerson;
     const familyName =
       divaPerson.person.authority?.name_type_personal?.namePart_type_family
         ?.value;
@@ -59,12 +76,12 @@ export const getRecordTitle = (
   }
 
   if (record.recordType === 'diva-project') {
-    const divaProject = record as unknown as DivaProject;
+    const divaProject = data as DivaProject;
     return divaProject?.project?.titleInfo?.title?.value;
   }
 
   if (record.recordType === 'diva-course') {
-    const divaCourse = data as unknown as DivaCourse;
+    const divaCourse = data as DivaCourse;
     if (lang === 'en' && divaCourse?.course?.variant_lang_eng?.topic?.value) {
       return divaCourse.course.variant_lang_eng.topic.value;
     }
@@ -72,7 +89,7 @@ export const getRecordTitle = (
   }
 
   if (record.recordType === 'diva-organization') {
-    const divaOrganisation = data as unknown as DivaOrganisation;
+    const divaOrganisation = data as DivaOrganisation;
     if (
       lang === 'en' &&
       divaOrganisation?.organisation?.variant_lang_eng?.name_type_corporate
@@ -86,12 +103,12 @@ export const getRecordTitle = (
   }
 
   if (record.recordType === 'diva-journal') {
-    const divaJournal = data as unknown as DivaJournal;
+    const divaJournal = data as DivaJournal;
     return divaJournal?.journal?.titleInfo?.title?.value;
   }
 
   if (record.recordType === 'diva-subject') {
-    const divaSubject = data as unknown as DivaSubject;
+    const divaSubject = data as DivaSubject;
     if (lang === 'en' && divaSubject?.subject?.variant_lang_eng?.topic?.value) {
       return divaSubject.subject.variant_lang_eng.topic.value;
     }
@@ -99,7 +116,7 @@ export const getRecordTitle = (
   }
 
   if (record.recordType === 'diva-programme') {
-    const divaProgramme = data as unknown as DivaProgramme;
+    const divaProgramme = data as DivaProgramme;
     if (
       lang === 'en' &&
       divaProgramme?.programme?.variant_lang_eng?.topic?.value
@@ -110,21 +127,21 @@ export const getRecordTitle = (
   }
 
   if (record.recordType === 'diva-series') {
-    const divaSeries = data as unknown as DivaSeries;
+    const divaSeries = data as DivaSeries;
     return divaSeries?.series?.titleInfo?.title?.value;
   }
 
   if (record.recordType === 'diva-localLabel') {
-    const divaLocalLabel = data as unknown as DivaLocalLabel;
+    const divaLocalLabel = data as DivaLocalLabel;
     return divaLocalLabel?.localLabel?.localLabel?.value;
   }
   if (record.recordType === 'diva-publisher') {
-    const divaPublisher = data as unknown as DivaPublisher;
+    const divaPublisher = data as DivaPublisher;
     return divaPublisher?.publisher?.name_type_corporate?.namePart?.value;
   }
 
   if (record.recordType === 'diva-funder') {
-    const divaFunder = data as unknown as DivaFunder;
+    const divaFunder = data as DivaFunder;
     if (
       lang === 'en' &&
       divaFunder?.funder?.variant_lang_eng?.name_type_corporate?.namePart?.value
@@ -136,7 +153,15 @@ export const getRecordTitle = (
       ?.value;
   }
 
-  //member
+  if (record.recordType === 'diva-member') {
+    const divaMember = data as DivaMember;
+
+    if (lang === 'en' && divaMember?.['diva-member']?.pageTitleEn?.value) {
+      return divaMember?.['diva-member']?.pageTitleEn?.value;
+    }
+
+    return divaMember?.['diva-member']?.pageTitleSv?.value;
+  }
 
   return record.id;
 };

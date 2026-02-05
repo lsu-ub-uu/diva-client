@@ -15,6 +15,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord, RecordInfo } from '@/types/record';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { describe, expect, it } from 'vitest';
@@ -35,8 +36,7 @@ describe('getRecordTitle', () => {
       ],
       userRights: ['read', 'update', 'index', 'delete'],
       data: {
-        report: {
-          recordInfo,
+        output: {
           titleInfo: {
             title: {
               value: 'someTitle',
@@ -44,10 +44,10 @@ describe('getRecordTitle', () => {
             _lang: 'arg',
           },
         },
-      },
+      } as DivaOutput,
       actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
-    } satisfies BFFDataRecord;
-    const actual = getRecordTitle(formData);
+    } satisfies BFFDataRecord<DivaOutput>;
+    const actual = getRecordTitle(formData, 'sv');
     expect(actual).toBe('someTitle');
   });
 
@@ -79,7 +79,7 @@ describe('getRecordTitle', () => {
       actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
     } satisfies BFFDataRecord;
 
-    const actual = getRecordTitle(formData);
+    const actual = getRecordTitle(formData, 'sv');
     expect(actual).toBe('someTitle');
   });
 
@@ -105,7 +105,7 @@ describe('getRecordTitle', () => {
       actionLinks: { read: { url: '', rel: 'read', requestMethod: 'GET' } },
     } satisfies BFFDataRecord;
 
-    const actual = getRecordTitle(formData);
+    const actual = getRecordTitle(formData, 'sv');
     expect(actual).toBeUndefined();
   });
 });

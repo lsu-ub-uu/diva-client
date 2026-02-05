@@ -434,25 +434,6 @@ export interface OriginInfoDateIssuedStartEndGroup {
   __text?: { sv: string; en: string };
 }
 
-export type RelatedSeriesTypeCollection = 'host' | 'preceding';
-
-export interface DivaSeries {
-  series: SeriesUpdateGroup;
-}
-
-export interface RelatedSeriesGroup {
-  series?: {
-    value: string;
-    linkedRecord: {
-      series: SeriesUpdateGroup;
-    };
-
-    __text?: { sv: string; en: string };
-  };
-  _type: RelatedSeriesTypeCollection;
-  __text?: { sv: string; en: string };
-}
-
 export interface LocationGroup {
   url?: { value: string; __text?: { sv: string; en: string } };
   displayLabel?: { value: string; __text?: { sv: string; en: string } };
@@ -876,6 +857,25 @@ export interface OrganisationUpdateGroup {
   __text?: { sv: string; en: string };
 }
 
+export type RelatedSeriesTypeCollection = 'host' | 'preceding';
+
+export interface DivaSeries {
+  series: SeriesUpdateGroup;
+}
+
+export interface RelatedSeriesGroup {
+  series?: {
+    value: string;
+    linkedRecord: {
+      series: SeriesUpdateGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  };
+  _type: RelatedSeriesTypeCollection;
+  __text?: { sv: string; en: string };
+}
+
 export interface SeriesUpdateGroup {
   recordInfo: RecordInfoSeriesUpdateGroup;
   titleInfo?: TitleInfoGroup;
@@ -893,7 +893,6 @@ export interface SeriesUpdateGroup {
     _displayLabel: 'eissn';
     __text?: { sv: string; en: string };
   };
-  related?: RelatedSeriesGroup[];
   location?: LocationGroup;
   note_type_internal?: {
     value: string;
@@ -914,6 +913,7 @@ export interface SeriesUpdateGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
+  related?: RelatedSeriesGroup[];
   __text?: { sv: string; en: string };
 }
 
@@ -3486,6 +3486,8 @@ export type FailedCollection = 'true' | 'false';
 
 export type ReviewedCollection = 'true' | 'false';
 
+export type AdminInfoStatusCollection = 'notReady' | 'ready';
+
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
@@ -3501,6 +3503,11 @@ export interface AdminInfoDivaGroup {
     value: string;
     _type: 'internal';
     __text?: { sv: string; en: string };
+  };
+  status?: {
+    value: AdminInfoStatusCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
   };
   __text?: { sv: string; en: string };
 }
@@ -3604,7 +3611,12 @@ export interface BinaryGroup {
   __text?: { sv: string; en: string };
 }
 
-export type AttachmentTypeCollection =
+export type AttachmentAvailabilityCollection =
+  | 'available'
+  | 'unavailable'
+  | 'confidential';
+
+export type AttachmentLabelCollection =
   | 'fullText'
   | 'attachment'
   | 'audio'
@@ -3627,29 +3639,36 @@ export type AttachmentVersionCollection =
   | 'accepted'
   | 'published';
 
-export type AttachmentAvailabilityCollection =
-  | 'archiveOnly'
-  | 'availableNow'
-  | 'availableLater';
+export type DigitizedCollection = 'true' | 'false';
 
-export interface DateAttachmentAvailabilityGroup {
+export type PrintReadyFileCollection = 'true' | 'false';
+
+export interface DateToBePublishedGroup {
   year?: { value: string; __text?: { sv: string; en: string } };
   month?: { value: string; __text?: { sv: string; en: string } };
   day?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
-export type SecrecyCollection = 'true' | 'false';
+export interface DateToBeUnpublishedGroup {
+  year?: { value: string; __text?: { sv: string; en: string } };
+  month?: { value: string; __text?: { sv: string; en: string } };
+  day?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
 
-export interface AdminInfoAttachmentGroup {
+export interface AttachmentGroup {
+  file?: {
+    value: string;
+    linkedRecord: {
+      binary: BinaryGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
   availability?: {
     value: AttachmentAvailabilityCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
-  dateAvailability?: DateAttachmentAvailabilityGroup;
-  secrecy?: {
-    value: SecrecyCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
@@ -3658,36 +3677,29 @@ export interface AdminInfoAttachmentGroup {
     _type: 'registrationNumber';
     __text?: { sv: string; en: string };
   };
-  note_type_attachment?: {
-    value: string;
-    _type: 'attachment';
-    __text?: { sv: string; en: string };
-  };
-  __text?: { sv: string; en: string };
-}
-
-export interface AttachmentGroup {
-  attachmentFile?: {
-    value: string;
-    linkedRecord: {
-      binary: BinaryGroup;
-    };
-
-    __text?: { sv: string; en: string };
-  };
-  type?: {
-    value: AttachmentTypeCollection;
+  label?: {
+    value: AttachmentLabelCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
   note_type_attachmentVersion?: {
     value: AttachmentVersionCollection;
     _type: 'attachmentVersion';
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  adminInfo?: AdminInfoAttachmentGroup;
+  digitized?: {
+    value: DigitizedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  printReadyFile?: {
+    value: PrintReadyFileCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  dateToBePublished?: DateToBePublishedGroup;
+  dateToBeUnpublished?: DateToBeUnpublishedGroup;
   __text?: { sv: string; en: string };
 }
 

@@ -57,7 +57,10 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     'textId',
   );
 
-  const pluralTextId = textId;
+  const pluralTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'pluralTextId',
+  );
 
   const defTextId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
