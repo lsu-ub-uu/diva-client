@@ -37,10 +37,6 @@ interface OutputFieldProps {
   value?: string;
   variant?: 'inline' | 'block';
   textStyle?: TextStyle;
-  info?: {
-    title: string;
-    body: string;
-  };
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
@@ -52,7 +48,6 @@ export const OutputField = ({
   value,
   variant = 'block',
   textStyle,
-  info,
   attributes,
   actionButtonGroup,
 }: OutputFieldProps) => {
