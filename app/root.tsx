@@ -217,7 +217,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </head>
       <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
         {children}
-        <ScrollRestoration />
+        <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
     </html>
