@@ -26,6 +26,20 @@ describe('AttachmentDetails', () => {
         __valueText: { en: 'Attachment' },
         value: 'attachment',
       },
+      digitized: {
+        value: 'true',
+        __text: {
+          en: 'Digitized',
+        },
+        __valueText: {
+          en: 'Yes',
+        },
+      },
+      printReadyFile: {
+        value: 'true',
+        __text: { en: 'Print ready file' },
+        __valueText: { sv: 'Yes' },
+      },
       file: {
         value: 'binary:123456',
         linkedRecord: {
