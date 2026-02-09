@@ -63,11 +63,11 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
         />
         <Term
           label={attachment?.digitized?.__text?.[language]}
-          value={attachment?.digitized?.value}
+          value={attachment?.digitized?.__valueText?.[language]}
         />
         <Term
           label={attachment?.printReadyFile?.__text?.[language]}
-          value={attachment?.printReadyFile?.value}
+          value={attachment?.printReadyFile?.__valueText?.[language]}
         />
         <Term
           label={attachment?.note_type_attachmentVersion?.__text?.[language]}
