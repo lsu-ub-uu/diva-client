@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type {
   FilterDefinition,
   AutocompleteFilter,
-} from '@/data/search/createFilterDefinition.server';
+} from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { useState } from 'react';
 import { useFetcher, href } from 'react-router';
 import {

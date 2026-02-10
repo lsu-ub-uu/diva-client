@@ -36,6 +36,12 @@ describe('SearchLayout', () => {
       },
     ];
 
+    const searchFormDefinition = {
+      searchRootName: 'search',
+      mainSearchTerm,
+      filters,
+    };
+
     const onQueryChange = vi.fn();
     const onClearMainQuery = vi.fn();
     const onRemoveFilter = vi.fn();
@@ -47,12 +53,11 @@ describe('SearchLayout', () => {
         Component: () => (
           <SearchLayout
             query={query}
-            mainSearchTerm={mainSearchTerm}
+            searchFormDefinition={searchFormDefinition}
             searching={searching}
             searchResults={searchResults}
             rows={rows}
             start={starts}
-            filters={filters}
             activeFilters={activeFilters}
             onQueryChange={onQueryChange}
             onClearMainQuery={onClearMainQuery}

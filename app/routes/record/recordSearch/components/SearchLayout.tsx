@@ -1,18 +1,18 @@
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { useRef, useState } from 'react';
 import { useSubmit } from 'react-router';
-import type { ActiveFilter } from './ActiveFilters';
 import { Filters } from './Filters';
 import { RecordSearchView } from './RecordSearchView';
+import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface SearchLayoutProps {
   query: string;
-  mainSearchTerm: any;
+  searchFormDefinition: SearchFormDefinition;
   searching: boolean;
   searchResults: any;
   rows: number;
   start: number;
-  filters: any;
   activeFilters: ActiveFilter[];
   apiUrl: string;
   onQueryChange: (form: HTMLFormElement) => void;
@@ -24,12 +24,11 @@ interface SearchLayoutProps {
 
 export const SearchLayout = ({
   query,
-  mainSearchTerm,
+  searchFormDefinition,
   searching,
   searchResults,
   rows,
   start,
-  filters,
   activeFilters,
   apiUrl,
   onQueryChange,
@@ -62,7 +61,7 @@ export const SearchLayout = ({
         <RecordSearchView
           query={query}
           onQueryChange={onQueryChange}
-          mainSearchTerm={mainSearchTerm}
+          mainSearchTerm={searchFormDefinition.mainSearchTerm}
           searching={searching}
           onClearMainQuery={onClearMainQuery}
           searchResults={searchResults}
@@ -80,7 +79,7 @@ export const SearchLayout = ({
         <Filters
           open={filtersOpen}
           ref={filterFormRef}
-          filters={filters}
+          filters={searchFormDefinition.filters}
           activeFilters={activeFilters}
           query={query}
           rows={rows}

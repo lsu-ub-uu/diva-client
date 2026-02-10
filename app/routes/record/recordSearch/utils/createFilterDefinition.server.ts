@@ -2,7 +2,6 @@ import type {
   BFFMetadata,
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
   BFFMetadataItemCollection,
 } from '@/cora/transform/bffTypes.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
@@ -74,20 +73,10 @@ const autocompleteSearchTerms: Record<
 };
 
 export const createFilters = (
-  searchMetadata: BFFMetadataGroup,
+  filterMetadatas: BFFMetadata[],
   dependencies: Dependencies,
 ): FilterDefinition[] => {
-  const includeGroup = dependencies.metadataPool.get(
-    searchMetadata.children[0].childId,
-  ) as BFFMetadataGroup;
-  const includePartGroup = dependencies.metadataPool.get(
-    includeGroup.children[0].childId,
-  ) as BFFMetadataGroup;
-
-  const filterSearchTerms = includePartGroup.children.slice(1);
-
-  return filterSearchTerms
-    .map((c) => dependencies.metadataPool.get(c.childId))
+  return filterMetadatas
     .map((metadata) => createFilter(metadata, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };

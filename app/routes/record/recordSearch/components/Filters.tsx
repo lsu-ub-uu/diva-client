@@ -2,11 +2,11 @@ import { FunnelIcon, XIcon } from 'lucide-react';
 import { Form } from 'react-router';
 import { Filter } from './Filter';
 import type { Ref } from 'react';
-import type { FilterDefinition } from '@/data/search/createFilterDefinition.server';
-import type { ActiveFilter } from './ActiveFilters';
+import type { FilterDefinition } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface FiltersProps {
   open: boolean;
