@@ -1,8 +1,10 @@
 import type { Auth } from '@/auth/Auth';
+import type { Notification } from '@/auth/sessions.server';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { isAxiosError } from 'axios';
+import type { BFFSearchResult } from '@/types/record';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import type { TFunction } from 'i18next';
 
 interface PerformSearchParams {
   dependencies: Dependencies;
@@ -10,6 +12,11 @@ interface PerformSearchParams {
   searchQuery: any;
   auth: Auth | undefined;
   decorated?: boolean;
+  t: TFunction;
+}
+
+export interface PerformSearchResult extends BFFSearchResult {
+  alert?: Notification;
 }
 
 export const performSearch = async ({
@@ -18,13 +25,18 @@ export const performSearch = async ({
   searchQuery,
   auth,
   decorated = false,
-}: PerformSearchParams) => {
+  t,
+}: PerformSearchParams): Promise<PerformSearchResult> => {
   try {
-    return searchRecords(dependencies, searchId, searchQuery, auth, decorated);
+    return await searchRecords(
+      dependencies,
+      searchId,
+      searchQuery,
+      auth,
+      decorated,
+    );
   } catch (error) {
-    if (isAxiosError(error) && error.status && error.status >= 500) {
-      throw createRouteErrorResponse(error);
-    }
+    const notification = createNotificationFromAxiosError(t, error);
 
     return {
       data: [],
@@ -32,6 +44,7 @@ export const performSearch = async ({
       toNo: 0,
       totalNo: 0,
       containDataOfType: 'mixed',
+      alert: notification,
     };
   }
 };

@@ -16,6 +16,9 @@ import css from './recordSearch.css?url';
 import { createActiveFilters } from './utils/createActiveFilters.server';
 import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
+import type { Auth } from '@/auth/Auth';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
 
 export const loader = async ({
   request,
@@ -25,9 +28,9 @@ export const loader = async ({
   const { t, language } = context.get(i18nContext);
   const { dependencies } = context.get(dependenciesContext);
   const member = getMemberFromHostname(request, dependencies);
-  const recordType = dependencies.recordTypePool.get(params.recordType);
   const { auth } = context.get(sessionContext);
-
+  const recordType = dependencies.recordTypePool.get(params.recordType);
+  const userRights = await getUserRightsForRecordType(params.recordType, auth);
   const searchId = recordType.searchId;
   if (!searchId) {
     throw data('Record type has no search', { status: 404 });
@@ -69,6 +72,7 @@ export const loader = async ({
     searchQuery,
     auth,
     decorated,
+    t,
   });
 
   const apiUrl =
@@ -78,11 +82,7 @@ export const loader = async ({
         `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(searchId), searchQuery))}`,
       ),
     );
-
-  const validationTypes = await getValidationTypes(
-    params.recordType,
-    auth?.data.token,
-  );
+  const validationTypes = getValidationTypes(params.recordType, dependencies);
 
   return {
     recordTypeId: recordType.id,
@@ -97,6 +97,7 @@ export const loader = async ({
     activeFilters,
     validationTypes,
     apiUrl,
+    userRights,
   };
 };
 
@@ -115,6 +116,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     recordTypeTextId,
     validationTypes,
     apiUrl,
+    userRights,
   } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -175,17 +177,35 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       onClearMainQuery={handleClearMainQuery}
       onRemoveFilter={handleRemoveFilter}
       onClearAllFilters={handleClearAllFilters}
+      userRights={userRights}
     >
       <div className='main-content'>
         <div className='top-bar'>
           <Breadcrumbs />
-          <CreateRecordMenu
-            validationTypes={validationTypes}
-            recordTypeTextId={recordTypeTextId}
-          />
+          {userRights.includes('create') && (
+            <CreateRecordMenu
+              validationTypes={validationTypes}
+              recordTypeTextId={recordTypeTextId}
+            />
+          )}
         </div>
         <h1>{title}</h1>
       </div>
     </SearchLayout>
   );
 }
+
+const getUserRightsForRecordType = async (
+  recordTypeId: string,
+  auth?: Auth,
+) => {
+  const response = await getRecordDataById<RecordWrapper>(
+    'recordType',
+    recordTypeId,
+    auth?.data?.token,
+  );
+
+  return response.data.record.actionLinks
+    ? Object.keys(response.data.record.actionLinks)
+    : [];
+};

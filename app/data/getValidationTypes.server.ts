@@ -17,60 +17,23 @@
  */
 
 import type { Option } from '@/components';
-import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
-import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
-import { isAxiosError } from 'axios';
+import type { Dependencies } from './formDefinition/formDefinitionsDep.server';
 
-export const getValidationTypes = async (
+export const getValidationTypes = (
   recordType: string,
-  authToken?: string,
+  dependencies: Dependencies,
 ) => {
-  if (!authToken) {
-    return null;
-  }
+  const validationTypes = Array.from(dependencies.validationTypePool.values());
 
-  const searchQuery: DataGroup = {
-    name: 'validationTypeSearch',
-    children: [
-      {
-        name: 'include',
-        children: [
-          {
-            name: 'includePart',
-            children: [
-              {
-                name: 'validatesRecordTypeSearchTerm',
-                value: `recordType_${recordType}`,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
-
-  try {
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-      'validationTypeSearch',
-      searchQuery,
-      authToken,
+  return validationTypes
+    .filter(
+      (validationType) => validationType.validatesRecordTypeId === recordType,
+    )
+    .filter((validationType) => !validationType.id.startsWith('classic_'))
+    .map(
+      (validationType): Option => ({
+        value: validationType.id,
+        label: validationType.nameTextId,
+      }),
     );
-
-    const validationTypes = transformCoraValidationTypes(response.data);
-
-    return validationTypes
-      .filter((validationType) => !validationType.id.startsWith('classic_'))
-      .map(
-        (validationType): Option => ({
-          value: validationType.id,
-          label: validationType.nameTextId,
-        }),
-      );
-  } catch (error) {
-    if (isAxiosError(error) && error.response?.status === 403) {
-      return [];
-    }
-    throw error;
-  }
 };

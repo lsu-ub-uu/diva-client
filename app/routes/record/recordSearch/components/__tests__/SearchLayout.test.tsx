@@ -1,14 +1,17 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { SearchLayout } from '../SearchLayout';
-import type { ActiveFilter } from '../ActiveFilters';
 import { createRoutesStub } from 'react-router';
+import type { SearchFormDefinition } from '../../utils/createSearchFormDefinition.server';
+import type { ActiveFilter } from '../../utils/createActiveFilters.server';
+import type { BFFMetadataTextVariable } from '@/cora/transform/bffTypes.server';
+import type { FilterDefinition } from '../../utils/createFilterDefinition.server';
 
 describe('SearchLayout', () => {
   it('renders a form', () => {
     const query = '';
     const activeFilters = [] as ActiveFilter[];
-    const mainSearchTerm = {
+    const mainSearchTerm: BFFMetadataTextVariable = {
       nameInData: 'genericSearchTerm',
       regEx: '.+',
       id: 'genericSearchTextVar',
@@ -26,7 +29,7 @@ describe('SearchLayout', () => {
       containDataOfType: 'mix',
       data: [],
     };
-    const filters = [
+    const filters: FilterDefinition[] = [
       {
         id: 'searchRecordIdTextVar',
         name: 'recordIdSearchTerm',
@@ -36,7 +39,7 @@ describe('SearchLayout', () => {
       },
     ];
 
-    const searchFormDefinition = {
+    const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'search',
       mainSearchTerm,
       filters,
@@ -64,6 +67,7 @@ describe('SearchLayout', () => {
             onRemoveFilter={onRemoveFilter}
             onClearAllFilters={onClearAllFilters}
             apiUrl=''
+            userRights={['search']}
           />
         ),
       },

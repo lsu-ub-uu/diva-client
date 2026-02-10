@@ -1,18 +1,23 @@
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { AxiosError } from 'axios';
+import { AxiosError, type AxiosResponse } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
 import { performSearch } from '../performSearch.server';
 import type { Auth } from '@/auth/Auth';
 import type { BFFDataRecord } from '@/types/record';
+import type { TFunction } from 'i18next';
+import { mock } from 'vitest-mock-extended';
+
+const mockTFunction: TFunction = vi.fn((key) => key);
 
 describe('performSearch', () => {
   vi.mock('@/data/searchRecords.server');
 
-  it('returns empty response on 400 error', async () => {
+  it('returns empty response with alert on 400 error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {
       const error = new AxiosError('Server error');
       error.status = 400;
+      error.response = { data: 'Invalid search query' } as AxiosResponse;
       throw error;
     });
 
@@ -22,6 +27,7 @@ describe('performSearch', () => {
       searchQuery: {},
       auth: undefined,
       decorated: false,
+      t: mockTFunction,
     });
 
     expect(result).toEqual({
@@ -30,26 +36,39 @@ describe('performSearch', () => {
       toNo: 0,
       totalNo: 0,
       containDataOfType: 'mixed',
+      alert: {
+        severity: 'error',
+        summary: 'divaClient_error400TitleText',
+        details: 'Invalid search query',
+      },
     });
   });
 
-  it('returns route error response on 500 error', async () => {
+  it('returns empty respone with alert on non-axios error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {
-      const error = new AxiosError('Server error');
-      error.status = 500;
-      throw error;
+      throw new Error('Unexpected error');
     });
 
-    try {
-      await performSearch({
-        dependencies: {} as Dependencies,
-        searchId: 'test-search',
-        searchQuery: {},
-        auth: undefined,
-      });
-    } catch (error: any) {
-      expect(error.init.status).toBe(500);
-    }
+    const result = await performSearch({
+      dependencies: {} as Dependencies,
+      searchId: 'test-search',
+      searchQuery: {},
+      auth: undefined,
+      t: mockTFunction,
+    });
+
+    expect(result).toEqual({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+      alert: {
+        severity: 'error',
+        summary: 'divaClient_unknownErrorTitleText',
+        details: 'divaClient_unknownErrorBodyText',
+      },
+    });
   });
 
   it('calls performSearch with correct parameters', async () => {
@@ -67,6 +86,7 @@ describe('performSearch', () => {
       searchQuery: { query: 'test' },
       auth: {} as Auth,
       decorated: true,
+      t: mockTFunction,
     };
 
     const result = await performSearch(params);
