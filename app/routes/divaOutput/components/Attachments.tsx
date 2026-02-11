@@ -1,10 +1,8 @@
 import { ShowMoreOrLessButton } from '@/components/CollapsableText/ShowMoreOrLessButton';
 import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
-import { useLanguage } from '@/i18n/useLanguage';
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Attachment } from './Attachment';
-import { Term } from './Term';
 
 interface AttachmentsProps {
   attachments?: AttachmentsGroup;
@@ -13,7 +11,6 @@ export const Attachments = ({
   attachments: attachmentsGroup,
 }: AttachmentsProps) => {
   const { t } = useTranslation();
-  const language = useLanguage();
   const id = useId();
   const [expanded, setExpanded] = useState(false);
 
@@ -27,14 +24,6 @@ export const Attachments = ({
 
   return (
     <div className='attachments'>
-      {attachmentsGroup.note_type_attachment?.value && (
-        <dl>
-          <Term
-            label={attachmentsGroup.note_type_attachment.__text?.[language]}
-            value={attachmentsGroup.note_type_attachment.value}
-          />
-        </dl>
-      )}
       <ul id={id}>
         {attachmentsToShow.map((attachment, index) => (
           <li key={index}>
