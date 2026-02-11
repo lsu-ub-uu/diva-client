@@ -4,13 +4,7 @@ import styles from './ActiveFilters.module.css';
 import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import type { BFFSearchResult } from '@/types/record';
-
-export interface ActiveFilter {
-  name: string;
-  value: string;
-  textId: string;
-  valueTextId?: string;
-}
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface ActiveFiltersProps {
   activeFilters: ActiveFilter[];

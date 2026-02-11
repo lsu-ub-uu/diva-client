@@ -1,11 +1,12 @@
 import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
 import { Form } from 'react-router';
-import { ActiveFilters, type ActiveFilter } from './ActiveFilters';
+import { ActiveFilters } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
 import { SearchResults } from './SearchResults';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface RecordSearchViewProps {
   query: string;

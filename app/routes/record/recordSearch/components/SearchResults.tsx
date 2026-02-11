@@ -1,14 +1,13 @@
-import type { BFFSearchResult } from '@/types/record';
-
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import { CircleDashedIcon, SearchSlashIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import type { PerformSearchResult } from '../utils/performSearch.server';
 import { SearchResultItem } from './SearchResultItem';
 import styles from './SearchResults.module.css';
 
 interface SearchResultsProps {
-  searchResults: BFFSearchResult;
+  searchResults: PerformSearchResult;
   searching?: boolean;
   start: number;
   userHasSearched: boolean;
@@ -21,6 +20,16 @@ export const SearchResults = ({
   userHasSearched,
 }: SearchResultsProps) => {
   const { t } = useTranslation();
+
+  if (searchResults.alert) {
+    return (
+      <Alert severity={searchResults.alert.severity}>
+        <AlertTitle>{t(searchResults.alert.summary)}</AlertTitle>
+        {searchResults.alert.details}
+      </Alert>
+    );
+  }
+
   return (
     <div className={styles['search-result']}>
       {!userHasSearched && searchResults.totalNo === 0 && (

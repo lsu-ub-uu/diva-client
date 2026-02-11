@@ -7,7 +7,7 @@ import type {
   NumberFilter,
   CollectionFilter,
   AutocompleteFilter,
-} from '@/data/search/createFilterDefinition.server';
+} from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { createRoutesStub } from 'react-router';
 
 describe('Filter', () => {

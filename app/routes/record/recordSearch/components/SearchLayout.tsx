@@ -1,18 +1,18 @@
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { useRef, useState } from 'react';
 import { useSubmit } from 'react-router';
-import type { ActiveFilter } from './ActiveFilters';
 import { Filters } from './Filters';
 import { RecordSearchView } from './RecordSearchView';
+import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface SearchLayoutProps {
   query: string;
-  mainSearchTerm: any;
+  searchFormDefinition: SearchFormDefinition;
   searching: boolean;
   searchResults: any;
   rows: number;
   start: number;
-  filters: any;
   activeFilters: ActiveFilter[];
   apiUrl: string;
   onQueryChange: (form: HTMLFormElement) => void;
@@ -20,16 +20,16 @@ interface SearchLayoutProps {
   onRemoveFilter: (filterName: string) => void;
   onClearAllFilters: () => void;
   children?: React.ReactNode;
+  userRights: string[];
 }
 
 export const SearchLayout = ({
   query,
-  mainSearchTerm,
+  searchFormDefinition,
   searching,
   searchResults,
   rows,
   start,
-  filters,
   activeFilters,
   apiUrl,
   onQueryChange,
@@ -37,6 +37,7 @@ export const SearchLayout = ({
   onRemoveFilter,
   onClearAllFilters,
   children,
+  userRights,
 }: SearchLayoutProps) => {
   const submit = useSubmit();
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -58,36 +59,41 @@ export const SearchLayout = ({
   return (
     <div className='grid'>
       <div className='grid-col-12'>{children}</div>
-      <main className='grid-col-9 grid-col-l-12 search-main'>
-        <RecordSearchView
-          query={query}
-          onQueryChange={onQueryChange}
-          mainSearchTerm={mainSearchTerm}
-          searching={searching}
-          onClearMainQuery={onClearMainQuery}
-          searchResults={searchResults}
-          rows={rows}
-          start={start}
-          activeFilters={activeFilters}
-          onRemoveFilter={onRemoveFilter}
-          onClearAllFilters={onClearAllFilters}
-          filtersOpen={filtersOpen}
-          setFiltersOpen={setFiltersOpen}
-          apiUrl={apiUrl}
-        />
-      </main>
-      <div className='grid-col-3'>
-        <Filters
-          open={filtersOpen}
-          ref={filterFormRef}
-          filters={filters}
-          activeFilters={activeFilters}
-          query={query}
-          rows={rows}
-          onFilterChange={handleFilterChange}
-          onClose={() => setFiltersOpen(false)}
-        />
-      </div>
+
+      {userRights.includes('search') && (
+        <>
+          <main className='grid-col-9 grid-col-l-12 search-main'>
+            <RecordSearchView
+              query={query}
+              onQueryChange={onQueryChange}
+              mainSearchTerm={searchFormDefinition.mainSearchTerm}
+              searching={searching}
+              onClearMainQuery={onClearMainQuery}
+              searchResults={searchResults}
+              rows={rows}
+              start={start}
+              activeFilters={activeFilters}
+              onRemoveFilter={onRemoveFilter}
+              onClearAllFilters={onClearAllFilters}
+              filtersOpen={filtersOpen}
+              setFiltersOpen={setFiltersOpen}
+              apiUrl={apiUrl}
+            />
+          </main>
+          <div className='grid-col-3'>
+            <Filters
+              open={filtersOpen}
+              ref={filterFormRef}
+              filters={searchFormDefinition.filters}
+              activeFilters={activeFilters}
+              query={query}
+              rows={rows}
+              onFilterChange={handleFilterChange}
+              onClose={() => setFiltersOpen(false)}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

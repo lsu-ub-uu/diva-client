@@ -66,10 +66,7 @@ export const loader = async ({
     if (!auth) {
       throw data(null, { status: 401 });
     }
-    const validationTypes = await getValidationTypes(
-      params.recordType,
-      auth?.data.token,
-    );
+    const validationTypes = getValidationTypes(params.recordType, dependencies);
     if (validationTypes && validationTypes.length === 1) {
       validationTypeId = validationTypes[0].value;
     } else {
@@ -85,10 +82,7 @@ export const loader = async ({
         notification,
         title: title,
         breadcrumb: title,
-        validationTypes: await getValidationTypes(
-          params.recordType,
-          auth?.data.token,
-        ),
+        validationTypes,
       };
     }
   }

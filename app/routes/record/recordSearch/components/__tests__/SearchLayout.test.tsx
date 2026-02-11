@@ -1,14 +1,17 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { SearchLayout } from '../SearchLayout';
-import type { ActiveFilter } from '../ActiveFilters';
 import { createRoutesStub } from 'react-router';
+import type { SearchFormDefinition } from '../../utils/createSearchFormDefinition.server';
+import type { ActiveFilter } from '../../utils/createActiveFilters.server';
+import type { BFFMetadataTextVariable } from '@/cora/transform/bffTypes.server';
+import type { FilterDefinition } from '../../utils/createFilterDefinition.server';
 
 describe('SearchLayout', () => {
   it('renders a form', () => {
     const query = '';
     const activeFilters = [] as ActiveFilter[];
-    const mainSearchTerm = {
+    const mainSearchTerm: BFFMetadataTextVariable = {
       nameInData: 'genericSearchTerm',
       regEx: '.+',
       id: 'genericSearchTextVar',
@@ -26,7 +29,7 @@ describe('SearchLayout', () => {
       containDataOfType: 'mix',
       data: [],
     };
-    const filters = [
+    const filters: FilterDefinition[] = [
       {
         id: 'searchRecordIdTextVar',
         name: 'recordIdSearchTerm',
@@ -35,6 +38,12 @@ describe('SearchLayout', () => {
         type: 'text',
       },
     ];
+
+    const searchFormDefinition: SearchFormDefinition = {
+      searchRootName: 'search',
+      mainSearchTerm,
+      filters,
+    };
 
     const onQueryChange = vi.fn();
     const onClearMainQuery = vi.fn();
@@ -47,18 +56,18 @@ describe('SearchLayout', () => {
         Component: () => (
           <SearchLayout
             query={query}
-            mainSearchTerm={mainSearchTerm}
+            searchFormDefinition={searchFormDefinition}
             searching={searching}
             searchResults={searchResults}
             rows={rows}
             start={starts}
-            filters={filters}
             activeFilters={activeFilters}
             onQueryChange={onQueryChange}
             onClearMainQuery={onClearMainQuery}
             onRemoveFilter={onRemoveFilter}
             onClearAllFilters={onClearAllFilters}
             apiUrl=''
+            userRights={['search']}
           />
         ),
       },

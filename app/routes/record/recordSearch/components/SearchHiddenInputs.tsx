@@ -1,4 +1,4 @@
-import type { ActiveFilter } from './ActiveFilters';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface SearchHiddenInputsProps {
   query?: string;
