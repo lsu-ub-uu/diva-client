@@ -1,14 +1,8 @@
-import validationTypeList from '@/__mocks__/bff/validationTypeList.json';
-import validationTypeListWithClassicAndRegular from '@/__mocks__/bff/validationTypeListWithClassicAndRegular.json';
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
-import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
-import { describe, expect, it, vi } from 'vitest';
-import { getValidationTypes } from '../getValidationTypes.server';
-
-import { BFFValidationType } from '@/cora/transform/bffTypes.server';
+import type { BFFValidationType } from '@/cora/transform/bffTypes.server';
 import { listToPool } from '@/utils/structs/listToPool';
-import { type AxiosResponse } from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 import type { Dependencies } from '../formDefinition/formDefinitionsDep.server';
+import { getValidationTypes } from '../getValidationTypes.server';
 
 vi.mock('@/cora/getSearchResultDataListBySearchType.server');
 

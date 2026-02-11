@@ -31,8 +31,8 @@ import {
 import styles from './Pagination.module.css';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { Form } from 'react-router';
-import type { ActiveFilter } from './ActiveFilters';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface PaginationProps {
   rowsPerPage: number;

@@ -1,14 +1,13 @@
+import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { searchRecords } from '@/data/searchRecords.server';
+import type { BFFDataRecord } from '@/types/record';
 import { AxiosError, type AxiosResponse } from 'axios';
+import type { TFunction } from 'i18next';
 import { describe, expect, it, vi } from 'vitest';
 import { performSearch } from '../performSearch.server';
-import type { Auth } from '@/auth/Auth';
-import type { BFFDataRecord } from '@/types/record';
-import type { TFunction } from 'i18next';
-import { mock } from 'vitest-mock-extended';
 
-const mockTFunction: TFunction = vi.fn((key) => key);
+const mockTFunction = vi.fn((key) => key) as unknown as TFunction;
 
 describe('performSearch', () => {
   vi.mock('@/data/searchRecords.server');

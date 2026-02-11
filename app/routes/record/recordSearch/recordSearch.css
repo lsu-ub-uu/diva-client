@@ -49,13 +49,6 @@
 
 .filters {
   margin-top: var(--gap-xl);
-  /* position: sticky;
-  top: var(--gap);
-
-  .filters-content {
-    max-height: calc(100vh - var(--gap-l));
-    overflow-y: auto;
-  } */
 }
 
 .filters-close-button {
