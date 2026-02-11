@@ -1,10 +1,10 @@
-import type { AttachmentsVersionGroup } from '@/generatedTypes/divaTypes';
+import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import styles from './Attachments.module.css';
 
 interface AttachmentsProps {
-  attachments?: AttachmentsVersionGroup;
+  attachments?: AttachmentsGroup;
 }
 
 export const Attachments = ({ attachments }: AttachmentsProps) => {

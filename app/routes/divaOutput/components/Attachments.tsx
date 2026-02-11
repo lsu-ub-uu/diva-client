@@ -1,13 +1,13 @@
 import { ShowMoreOrLessButton } from '@/components/CollapsableText/ShowMoreOrLessButton';
-import type { AttachmentsVersionGroup } from '@/generatedTypes/divaTypes';
+import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
+import { useLanguage } from '@/i18n/useLanguage';
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Attachment } from './Attachment';
 import { Term } from './Term';
-import { useLanguage } from '@/i18n/useLanguage';
 
 interface AttachmentsProps {
-  attachments?: AttachmentsVersionGroup;
+  attachments?: AttachmentsGroup;
 }
 export const Attachments = ({
   attachments: attachmentsGroup,

@@ -3492,20 +3492,18 @@ export interface AdminInfoDivaGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  reviewed?: {
-    value: ReviewedCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
   note_type_internal?: {
     value: string;
     _type: 'internal';
     __text?: { sv: string; en: string };
   };
+  reviewed?: {
+    value: ReviewedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
-
-export type FilesReviewedCollection = 'true' | 'false';
 
 export interface Binary {
   binary: BinaryGroup;
@@ -3606,9 +3604,9 @@ export interface BinaryGroup {
   __text?: { sv: string; en: string };
 }
 
-export type AttachmentAvailabilityCollection =
-  | 'available'
-  | 'unavailable'
+export type AttachmentRequestedVisibilityCollection =
+  | 'published'
+  | 'unpublished'
   | 'confidential';
 
 export type AttachmentLabelCollection =
@@ -3652,7 +3650,7 @@ export interface DateToBeUnpublishedGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface AttachmentVersionGroup {
+export interface AttachmentGroup {
   file?: {
     value: string;
     linkedRecord: {
@@ -3662,8 +3660,8 @@ export interface AttachmentVersionGroup {
     __text?: { sv: string; en: string };
   };
   displayLabel?: { value: string; __text?: { sv: string; en: string } };
-  availability?: {
-    value: AttachmentAvailabilityCollection;
+  requestedVisibility?: {
+    value: AttachmentRequestedVisibilityCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
@@ -3698,18 +3696,20 @@ export interface AttachmentVersionGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface AttachmentsVersionGroup {
+export type FilesReviewedCollection = 'true' | 'false';
+
+export interface AttachmentsGroup {
+  attachment?: AttachmentGroup[];
   note_type_attachment?: {
     value: string;
     _type: 'attachment';
     __text?: { sv: string; en: string };
   };
-  filesReviewed?: {
+  reviewed?: {
     value: FilesReviewedCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  attachment?: AttachmentVersionGroup[];
   __text?: { sv: string; en: string };
 }
 
@@ -3917,7 +3917,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
   }[];
   adminInfo?: AdminInfoDivaGroup;
-  attachments?: AttachmentsVersionGroup;
+  attachments?: AttachmentsGroup;
   __text?: { sv: string; en: string };
 }
 

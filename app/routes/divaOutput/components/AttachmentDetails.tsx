@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';
 import { DateDisplay } from './DateDisplay';
 import { Term } from './Term';
-import type { AttachmentVersionGroup } from '@/generatedTypes/divaTypes';
+import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 
 interface AttachmentProps {
-  attachment: AttachmentVersionGroup;
+  attachment: AttachmentGroup;
 }
 
 export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
@@ -82,8 +82,8 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
           value={attachment?.identifier_type_registrationNumber?.value}
         />
         <Term
-          label={attachment?.availability?.__text?.[language]}
-          value={attachment?.availability?.__valueText?.[language]}
+          label={attachment?.requestedVisibility?.__text?.[language]}
+          value={attachment?.requestedVisibility?.__valueText?.[language]}
         />
         <Term
           label={attachment?.dateToBePublished?.__text?.[language]}

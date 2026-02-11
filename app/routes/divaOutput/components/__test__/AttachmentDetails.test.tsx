@@ -1,4 +1,4 @@
-import type { AttachmentVersionGroup } from '@/generatedTypes/divaTypes';
+import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
@@ -61,7 +61,7 @@ describe('AttachmentDetails', () => {
           },
         },
       },
-    } as AttachmentVersionGroup;
+    } as AttachmentGroup;
 
     const RoutesStub = createRoutesStub([
       {
@@ -107,7 +107,7 @@ describe('AttachmentDetails', () => {
           },
         },
       },
-    } as AttachmentVersionGroup;
+    } as AttachmentGroup;
 
     const RoutesStub = createRoutesStub([
       {
@@ -131,7 +131,7 @@ describe('AttachmentDetails', () => {
         __text: { en: 'Registration Number', sv: 'Registreringsnummer' },
         value: 'REG-123456',
       },
-      availability: {
+      requestedVisibility: {
         __text: { en: 'Availability', sv: 'Tillgänglighet' },
         __valueText: { en: 'Available', sv: 'Tillgänglig' },
       },
@@ -152,7 +152,7 @@ describe('AttachmentDetails', () => {
           sv: 'Detta är ett viktigt dokument',
         },
       },
-    } as AttachmentVersionGroup;
+    } as AttachmentGroup;
 
     const RoutesStub = createRoutesStub([
       {
@@ -183,7 +183,7 @@ describe('AttachmentDetails', () => {
         __text: { en: 'Attachment Version', sv: 'Bilageversion' },
         __valueText: { en: 'Final Version', sv: 'Slutgiltig version' },
       },
-    } as AttachmentVersionGroup;
+    } as AttachmentGroup;
 
     const RoutesStub = createRoutesStub([
       {
@@ -200,7 +200,7 @@ describe('AttachmentDetails', () => {
   });
 
   it('handles missing or empty data gracefully', async () => {
-    const mockAttachment = {} as AttachmentVersionGroup;
+    const mockAttachment = {} as AttachmentGroup;
 
     const RoutesStub = createRoutesStub([
       {

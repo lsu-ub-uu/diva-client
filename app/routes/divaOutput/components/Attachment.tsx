@@ -4,10 +4,10 @@ import { DownloadIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes } from '../utils/format';
 import { AttachmentDetails } from './AttachmentDetails';
-import type { AttachmentVersionGroup } from '@/generatedTypes/divaTypes';
+import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 
 interface AttachmentProps {
-  attachment: AttachmentVersionGroup;
+  attachment: AttachmentGroup;
 }
 
 export const Attachment = ({ attachment }: AttachmentProps) => {
@@ -50,7 +50,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
 };
 
 const formatHeading = (
-  attachment: AttachmentVersionGroup,
+  attachment: AttachmentGroup,
   language: 'en' | 'sv',
 ): string => {
   const attachmentTypeText = attachment.label?.__valueText?.[language];
