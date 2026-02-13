@@ -20,7 +20,7 @@ export const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   const { t } = useTranslation();
   return (
-    <dialog ref={ref} className={styles.dialog} closedby='any'>
+    <dialog ref={ref} className={styles.dialog}>
       <form method='dialog'>
         <h2 className={styles['heading']}>{headingText}</h2>
         <p>{messageText}</p>

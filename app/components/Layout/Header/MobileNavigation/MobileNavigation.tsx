@@ -33,37 +33,35 @@ export const MobileNavigation = ({
       >
         <MenuIcon />
       </IconButton>
-      <dialog
-        ref={mobileDialogRef}
-        className={styles['mobile-menu-dialog']}
-        closedby='any'
-      >
-        <div className={styles['mobile-menu-header']}>
-          <LanguageSwitcher />
-          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-          <IconButton
-            className={styles['menu-close-button']}
-            tooltip={t('divaClient_closeText')}
-            onClick={() => mobileDialogRef.current?.close()}
-          >
-            <XIcon />
-          </IconButton>
+      <dialog ref={mobileDialogRef} className={styles['mobile-menu-dialog']}>
+        <div className={styles['mobile-menu-dialog-panel']}>
+          <div className={styles['mobile-menu-header']}>
+            <LanguageSwitcher />
+            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+            <IconButton
+              className={styles['menu-close-button']}
+              tooltip={t('divaClient_closeText')}
+              onClick={() => mobileDialogRef.current?.close()}
+            >
+              <XIcon />
+            </IconButton>
+          </div>
+          <hr />
+          <nav>
+            <ul className={styles['mobile-navigation-list']}>
+              {navigationItems.map((navItem) => (
+                <li key={navItem.id}>
+                  <NavigationLink
+                    to={navItem.link}
+                    label={t(navItem.textId)}
+                    icon={icons[navItem.id]}
+                    onClick={() => mobileDialogRef.current?.close()}
+                  />
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <hr />
-        <nav>
-          <ul className={styles['mobile-navigation-list']}>
-            {navigationItems.map((navItem) => (
-              <li key={navItem.id}>
-                <NavigationLink
-                  to={navItem.link}
-                  label={t(navItem.textId)}
-                  icon={icons[navItem.id]}
-                  onClick={() => mobileDialogRef.current?.close()}
-                />
-              </li>
-            ))}
-          </ul>
-        </nav>
       </dialog>
     </div>
   );
