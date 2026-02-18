@@ -62,9 +62,18 @@ export const FileUpload = ({
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setFileName(file.name);
+
+      const currentUrl = window.location.href;
+
+      const urlParts = currentUrl.split('/');
+      const recordType = urlParts[urlParts.length - 2];
+      const recordId = urlParts[urlParts.length - 1];
+
       const response = await axios.post(withBaseName(href('/binaryRecord')), {
         fileName: file.name,
         fileSize: String(file.size),
+        hostRecordType: recordType,
+        hostRecordId: recordId,
       });
       const binaryRecord: BFFDataRecord = response.data.binaryRecord;
 

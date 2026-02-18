@@ -24,11 +24,13 @@ import type { Route } from './+types/binaryRecord';
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const { auth } = context.get(sessionContext);
   const { dependencies } = context.get(dependenciesContext);
-  const { fileName, fileSize } = await request.json();
+  const { fileName, fileSize, hostRecordType, hostRecordId } = await request.json();
 
   const createBinaryRecordResponse = await createBinaryRecord(
     fileName,
     fileSize,
+    hostRecordType,
+    hostRecordId,
     auth?.data?.token,
   );
 

@@ -27,6 +27,8 @@ import axios from 'axios';
 export const createBinaryRecord = async (
   fileName: string,
   fileSize: string,
+  hostRecordType: string,
+  hostRecordId: string,
   authToken?: string,
 ) => {
   const payload = {
@@ -50,6 +52,13 @@ export const createBinaryRecord = async (
             ],
           },
           { name: 'visibility', value: 'unpublished' },
+          {
+            name: 'hostRecord',
+            children: [
+              { name: 'linkedRecordType', value: hostRecordType },
+              { name: 'linkedRecordId', value: hostRecordId },
+            ],
+          },
         ],
       },
       { name: 'originalFileName', value: fileName },
