@@ -51,6 +51,7 @@ export type FormComponentMode = 'input' | 'output' | undefined;
 
 export type FormComponentType =
   | 'recordLink'
+  | 'anyTypeRecordLink'
   | 'collectionVariable'
   | 'numberVariable'
   | 'textVariable'
@@ -136,6 +137,16 @@ export interface FormComponentCollItem {
 export interface FormComponentRecordLink extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   recordLinkType?: string;
+  presentationRecordLinkId?: string;
+  searchPresentation?: RecordLinkSearchPresentation;
+  linkedRecordPresentation?: LinkedPresentation;
+  label: string;
+  showLabel: boolean;
+  presentAs?: 'onlyTranslatedText' | 'permissionUnit';
+}
+
+export interface FormComponentAnyTypeRecordLink extends FormComponentMetadata {
+  attributes?: FormAttributeCollection[];
   presentationRecordLinkId?: string;
   searchPresentation?: RecordLinkSearchPresentation;
   linkedRecordPresentation?: LinkedPresentation;

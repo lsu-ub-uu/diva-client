@@ -25,22 +25,24 @@ import { type ReactNode, use } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FileUpload } from './FileUpload';
 import { RecordLinkOnlyTranslatedText } from './RecordLinkOnlyTranslatedText';
+import { OutputRecordLink } from './OutputRecordLink';
 
 interface RecordLinkProps {
   component: FormComponentRecordLink;
-  name: string;
+  path: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
 
 export const RecordLink = ({
-  name,
+  path,
   component,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
 }: RecordLinkProps) => {
+  const name = `${path}.value`;
   const value = useWatch({ name });
 
   const { linkedData } = use(FormGeneratorContext);
@@ -85,6 +87,18 @@ export const RecordLink = ({
       <RecordLinkWithLinkedPresentation
         component={component}
         name={name}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+      />
+    );
+  }
+
+  if (component.mode === 'output' && value) {
+    return (
+      <OutputRecordLink
+        component={component}
+        path={path}
+        parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />

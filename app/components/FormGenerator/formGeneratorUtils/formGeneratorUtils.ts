@@ -21,6 +21,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import type { FieldValues, FormState } from 'react-hook-form';
 import type {
   FormComponent,
+  FormComponentAnyTypeRecordLink,
   FormComponentCollVar,
   FormComponentContainer,
   FormComponentGroup,
@@ -78,6 +79,10 @@ export const isComponentCollVar = (
 export const isComponentRecordLink = (
   component: FormComponent,
 ): component is FormComponentRecordLink => component.type === 'recordLink';
+export const isComponentAnyTypeRecordLink = (
+  component: FormComponent,
+): component is FormComponentAnyTypeRecordLink =>
+  component.type === 'anyTypeRecordLink';
 
 export const isComponentText = (
   component: FormComponent,

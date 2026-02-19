@@ -196,8 +196,16 @@ const transformLeaf = (
   value: any,
   repeatId: string | undefined,
 ) => {
+  if (['recordLink', 'anyTypeRecordLink'].includes(fieldMetadata.type)) {
+    return createRecordLink(
+      removeAttributeFromName(key, attributes),
+      fieldMetadata.linkedRecordType ?? value.linkedRecordType,
+      value.value,
+      attributes,
+      repeatId,
+    );
+  }
   return createLeaf(
-    fieldMetadata,
     removeAttributeFromName(key, attributes),
     value.value,
     repeatId,
@@ -231,7 +239,6 @@ export const isVariable = (item: DataGroup | DataAtomic) => {
 };
 
 export const createLeaf = (
-  metaData: FormMetaData,
   name: string,
   value: string,
   repeatId: string | undefined = undefined,
@@ -241,34 +248,20 @@ export const createLeaf = (
     return undefined;
   }
 
-  if (
-    ['numberVariable', 'textVariable', 'collectionVariable'].includes(
-      metaData.type,
-    )
-  ) {
-    const atomic: DataAtomic = {
-      name,
-      value,
-    };
+  const atomic: DataAtomic = {
+    name,
+    value,
+  };
 
-    if (attributes) {
-      atomic.attributes = attributes;
-    }
-
-    if (repeatId) {
-      atomic.repeatId = repeatId;
-    }
-
-    return atomic;
+  if (attributes) {
+    atomic.attributes = attributes;
   }
 
-  return createRecordLink(
-    name,
-    metaData.linkedRecordType ?? '',
-    value,
-    attributes,
-    repeatId,
-  );
+  if (repeatId) {
+    atomic.repeatId = repeatId;
+  }
+
+  return atomic;
 };
 
 const createGroup = (

@@ -229,7 +229,7 @@ const transformData = (
     return transformDataGroup(data as DataGroup, metadata, dependencies);
   }
 
-  if (metadata.type === 'recordLink') {
+  if (metadata.type === 'recordLink' || metadata.type === 'anyTypeRecordLink') {
     return transformRecordLink(data as RecordLink, dependencies);
   }
 
@@ -286,6 +286,7 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 
   return removeEmpty({
     value: recordLinkId,
+    linkedRecordType: linkedRecordType,
     linkedRecord,
     displayName,
   });

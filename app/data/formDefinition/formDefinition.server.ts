@@ -46,6 +46,7 @@ export interface FormMetaData {
     | 'group'
     | 'numberVariable'
     | 'resourceLink'
+    | 'anyTypeRecordLink'
     | 'recordLink'
     | 'textVariable'
     | 'collectionVariable';
