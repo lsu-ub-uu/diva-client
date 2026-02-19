@@ -43,7 +43,7 @@ export const AnyTypeRecordLink = ({
         data-colspan={component.gridColSpan ?? 12}
       >
         <DevInfo
-          label='PermissionUnitRecordLink'
+          label='AnyTypeRecordLink'
           component={component}
           path={path}
         />
