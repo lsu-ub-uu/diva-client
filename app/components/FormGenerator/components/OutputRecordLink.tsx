@@ -10,6 +10,7 @@ import { Typography } from '@/components/Typography/Typography';
 import clsx from 'clsx';
 import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
+import { isComponentRecordLink } from '../formGeneratorUtils/formGeneratorUtils';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
@@ -30,10 +31,9 @@ export const OutputRecordLink = ({
   const { getValues } = useRemixFormContext();
   const variant = parentPresentationStyle === 'inline' ? 'inline' : 'block';
   const label = component.showLabel ? t(component.label) : undefined;
-  const linkedRecordType =
-    'linkedRecordType' in component
-      ? component.linkedRecordType
-      : getValues(`${path}.linkedRecordType`);
+  const linkedRecordType = isComponentRecordLink(component)
+    ? component.recordLinkType
+    : getValues(`${path}.linkedRecordType`);
   const linkedRecordId = component.finalValue ?? getValues(`${path}.value`);
   return (
     <div

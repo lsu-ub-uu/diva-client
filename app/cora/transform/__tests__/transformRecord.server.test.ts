@@ -292,10 +292,12 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: 'coraUser:490742519075086',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'diva',
                   required: true,
                 },
@@ -308,6 +310,7 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'manuscriptRecordTypeId',
                   required: true,
                 },
@@ -320,6 +323,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: 'coraUser:490742519075086',
                       required: true,
                     },
@@ -333,6 +337,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -346,6 +351,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -359,6 +365,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -372,6 +379,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -385,6 +393,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -392,6 +401,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'manuscript',
                   required: true,
                 },
@@ -419,6 +429,7 @@ describe('transformRecord', () => {
                 _titleType: 'alternativeTitle',
               },
               nationalSubjectCategory: {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
               },
               abstract: {
@@ -517,10 +528,12 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'divaData',
                   required: true,
                 },
@@ -533,6 +546,7 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
@@ -545,6 +559,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -558,6 +573,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -571,6 +587,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -578,6 +595,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
@@ -693,10 +711,14 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
+
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
+
                   value: 'divaData',
                   required: true,
                 },
@@ -709,6 +731,7 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
@@ -721,6 +744,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -734,6 +758,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -747,6 +772,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -754,6 +780,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
@@ -860,10 +887,14 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
+
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
+
                   value: 'divaData',
                   required: true,
                 },
@@ -876,6 +907,7 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'namePartValidationTypeId',
                   required: true,
                 },
@@ -888,6 +920,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -901,6 +934,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -914,6 +948,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -921,6 +956,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'namePartValidationTypeId',
                   required: true,
                 },
@@ -1027,10 +1063,12 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'divaData',
                   required: true,
                 },
@@ -1043,6 +1081,7 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'namePartPartWithAttributesRecordTypeId',
                   required: true,
                 },
@@ -1055,6 +1094,8 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
+
                       value: '161616',
                       required: true,
                     },
@@ -1068,6 +1109,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -1081,6 +1123,7 @@ describe('transformRecord', () => {
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -1088,6 +1131,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'namePartPartWithAttributesValidationTypeId',
                   required: true,
                 },
@@ -1174,6 +1218,7 @@ describe('transformRecord', () => {
               recordInfo: {
                 fromStorage: true,
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'diva',
                   required: true,
                 },
@@ -1182,10 +1227,12 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'manuscriptRecordTypeId',
                   required: true,
                 },
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'manuscript',
                   required: true,
                 },
@@ -1213,6 +1260,7 @@ describe('transformRecord', () => {
                 _titleType: 'alternativeTitle',
               },
               nationalSubjectCategory: {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
               },
               abstract: {
@@ -1673,6 +1721,7 @@ describe('transformRecord', () => {
           divaOutput: {
             fromStorage: true,
             nationalSubjectCategory: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:6325370460697648',
               required: true,
             },
@@ -1740,12 +1789,14 @@ describe('transformRecord', () => {
             fromStorage: true,
             nationalSubjectCategory: [
               {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
                 _language: 'eng',
                 repeatId: '0',
                 required: true,
               },
               {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697641',
                 _language: 'swe',
                 repeatId: '1',
@@ -2105,11 +2156,13 @@ describe('transformRecord', () => {
           divaOutput: {
             fromStorage: true,
             nationalSubjectCategory_language_swe: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:1111111111111111',
               _language: 'swe',
               required: true,
             },
             nationalSubjectCategory_language_eng: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:2222222222222222',
               _language: 'eng',
               required: true,
@@ -2378,6 +2431,7 @@ describe('transformRecord', () => {
             fromStorage: true,
             someRecordLink: {
               value: 'someRecordId',
+              linkedRecordType: 'someLinkedRecordTypeId',
               linkedRecord: {
                 someLinkedRecordRootGroup: {
                   fromStorage: true,
@@ -3104,6 +3158,7 @@ describe('transformRecord', () => {
             fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:4',
+              linkedRecordType: 'diva-organisation',
               displayName: {
                 en: 'Uppsala University',
                 sv: 'Uppsala universitet',
@@ -3183,6 +3238,7 @@ describe('transformRecord', () => {
             fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:1',
+              linkedRecordType: 'diva-organisation',
               displayName: {
                 en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
                 sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
@@ -3265,6 +3321,7 @@ describe('transformRecord', () => {
             fromStorage: true,
             someOrganisationRecordLink: {
               value: 'someNonExistingOrganisationId',
+              linkedRecordType: 'diva-organisation',
               linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
