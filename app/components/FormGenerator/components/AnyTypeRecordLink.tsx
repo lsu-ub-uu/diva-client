@@ -10,6 +10,11 @@ import type {
 import styles from './AnyTypeRecordLink.module.css';
 import { DevInfo } from './DevInfo';
 import { OutputRecordLink } from './OutputRecordLink';
+import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
+import { Card } from '@/components/Card/Card';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardTitle } from '@/components/Card/CardTitle';
+import { CardContent } from '@/components/Card/CardContent';
 
 interface AnyTypeRecordLinkProps {
   component: FormComponentAnyTypeRecordLink;
@@ -42,15 +47,29 @@ export const AnyTypeRecordLink = ({
           component={component}
           path={path}
         />
-        <fieldset className={styles.fieldset}>
-          {label && <legend>{label}</legend>}
-          <Fieldset label={t('linkedRecordTypeTextVarText')}>
-            <Input {...register(`${path}.linkedRecordType`)} />
-          </Fieldset>
-          <Fieldset label={t('linkedRecordIdTextVarText')}>
-            <Input {...register(`${path}.value`)} />
-          </Fieldset>
-        </fieldset>
+        <Card boxed>
+          <CardHeader
+            attributes={attributes}
+            actionButtonGroup={actionButtonGroup}
+          >
+            <CardTitle
+              level={component.titleHeadlineLevel}
+              info={component.tooltip && <FieldInfo {...component.tooltip} />}
+            >
+              {label}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className={styles.fieldset}>
+              <Fieldset label={t('linkedRecordTypeTextVarText')}>
+                <Input {...register(`${path}.linkedRecordType`)} />
+              </Fieldset>
+              <Fieldset label={t('linkedRecordIdTextVarText')}>
+                <Input {...register(`${path}.value`)} />
+              </Fieldset>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

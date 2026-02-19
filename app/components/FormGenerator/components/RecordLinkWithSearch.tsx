@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
+import type {
+  FormComponentAnyTypeRecordLink,
+  FormComponentRecordLink,
+} from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -39,7 +42,7 @@ import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
 
 interface RecordLinkWithSearchProps {
-  component: FormComponentRecordLink;
+  component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
   path: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
