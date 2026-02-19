@@ -78,7 +78,7 @@ export const generateCitationMeta = (
     divaOutput.output.attachments?.attachment || []
   ).filter(
     (attachment) =>
-      attachment?._label === 'fullText' &&
+      attachment?.label?.value === 'fullText' &&
       attachment?.file?.linkedRecord?.binary?.master?.master?.mimeType ===
         'application/pdf',
   );

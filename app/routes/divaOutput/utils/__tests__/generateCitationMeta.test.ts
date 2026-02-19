@@ -74,7 +74,7 @@ const divaOutput = {
     attachments: {
       attachment: [
         {
-          _label: 'movie',
+          label: { value: 'movie' },
           file: {
             linkedRecord: {
               binary: {
@@ -91,7 +91,7 @@ const divaOutput = {
           },
         },
         {
-          _label: 'fullText',
+          label: { value: 'fullText' },
           file: {
             linkedRecord: {
               binary: {
@@ -108,7 +108,7 @@ const divaOutput = {
           },
         },
         {
-          _label: 'fullText',
+          label: { value: 'fullText' },
           file: {
             linkedRecord: {
               binary: {
@@ -125,7 +125,7 @@ const divaOutput = {
           },
         },
         {
-          _label: 'fullText',
+          label: { value: 'fullText' },
           file: {
             linkedRecord: {
               binary: {
