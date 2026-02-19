@@ -28,7 +28,6 @@ import type {
   FormComponentGuiElement,
   FormComponentHidden,
   FormComponentLeaf,
-  FormComponentMetadata,
   FormComponentNumVar,
   FormComponentRecordLink,
   FormComponentResourceLink,
