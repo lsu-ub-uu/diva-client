@@ -24,12 +24,12 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
       </summary>
       <dl>
         <Term
-          label={attachment.displayLabel?.__text?.[language]}
-          value={attachment.displayLabel?.value}
+          label={t('attachmentLabelFullTextCollectionVarText')}
+          value={t(`${attachment._label}ItemText`)}
         />
         <Term
-          label={attachment.label?.__text?.[language]}
-          value={attachment.label?.__valueText?.[language]}
+          label={attachment.displayLabel?.__text?.[language]}
+          value={attachment.displayLabel?.value}
         />
         <Term
           label={binaryRecord?.originalFileName?.__text?.[language]}

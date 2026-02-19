@@ -21,11 +21,7 @@ describe('AttachmentDetails', () => {
         __text: { en: 'Display Label' },
         value: 'Test Document',
       },
-      label: {
-        __text: { en: 'Type' },
-        __valueText: { en: 'Attachment' },
-        value: 'attachment',
-      },
+      _label: 'attachment',
       digitized: {
         value: 'true',
         __text: {
@@ -76,8 +72,10 @@ describe('AttachmentDetails', () => {
     expect(screen.getByText('Display Label')).toBeInTheDocument();
     expect(screen.getByText('Test Document')).toBeInTheDocument();
 
-    expect(screen.getByText('Type')).toBeInTheDocument();
-    expect(screen.getByText('Attachment')).toBeInTheDocument();
+    expect(
+      screen.getByText('attachmentLabelFullTextCollectionVarText'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('attachmentItemText')).toBeInTheDocument();
 
     expect(screen.getByText('Original File Name')).toBeInTheDocument();
     expect(screen.getByText('document.pdf')).toBeInTheDocument();
