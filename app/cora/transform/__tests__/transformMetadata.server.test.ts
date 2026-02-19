@@ -11,6 +11,7 @@ import testNumberVariableWithFinalValueMetaData from '@/__mocks__/bff/coraMetada
 import testNumberWithTwoAttributes from '@/__mocks__/bff/coraMetadataNumberVarWithTwoAttributes.json';
 import testMetadataRecordLink from '@/__mocks__/bff/coraMetadataRecordLink.json';
 import testMetadataRecordLinkWithFinalValue from '@/__mocks__/bff/coraMetadataRecordLinkWithFinalValue.json';
+import testMetadataAnyTypeRecordLink from '@/__mocks__/bff/coraMetadataAnyTypeRecordLink.json';
 import testResourceLinkThumbnailMetaData from '@/__mocks__/bff/coraMetadataResourceLinkThumbnail.json';
 import testTextWithOneAttribute from '@/__mocks__/bff/coraMetadataTextVarWithOneAttribute.json';
 import testTestWithTwoAttributes from '@/__mocks__/bff/coraMetadataTextVarWithTwoAttributes.json';
@@ -376,6 +377,22 @@ describe('transformMetadata', () => {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar',
           },
         ],
+      });
+    });
+  });
+
+  describe('anyTypeRecordLink', () => {
+    it('Returns one BFFMetadata for recordLink without finalValue', () => {
+      const metadataList = transformMetadata(
+        testMetadataAnyTypeRecordLink as DataListWrapper,
+      );
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'hostRecordRecordLink',
+        nameInData: 'hostRecord',
+        type: 'anyTypeRecordLink',
+        textId: 'hostRecordRecordLinkText',
+        defTextId: 'hostRecordRecordLinkDefText',
       });
     });
   });

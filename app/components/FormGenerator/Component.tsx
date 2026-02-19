@@ -118,7 +118,7 @@ export const Component = ({
   return (
     <LeafComponent
       component={component}
-      name={`${currentComponentNamePath}.value`}
+      path={currentComponentNamePath}
       parentPresentationStyle={parentPresentationStyle}
       attributes={
         isComponentWithData(component) && (

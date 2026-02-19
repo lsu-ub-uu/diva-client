@@ -7,6 +7,8 @@
   "scripts": {
     "build": "BASE_PATH=/@BASENAME@ react-router build",
     "dev": "npm run typegen && NODE_ENV=development tsx server.ts",
+    "dev:minikube": "npm run typegen && NODE_ENV=development CORA_API_URL=http://minikube:30982/rest CORA_LOGIN_URL=http://minikube:30982/login/rest CORA_EXTERNAL_SYSTEM_URL=http://minikube:30982 tsx server.ts",
+    "dev:preview": "npm run typegen && NODE_ENV=development CORA_API_URL=preview.diva.cora.epc.ub.uu.se/rest CORA_LOGIN_URL=preview.diva.cora.epc.ub.uu.se/login/rest CORA_EXTERNAL_SYSTEM_URL=preview.diva.cora.epc.ub.uu.se tsx server.ts",
     "prestart": "node scripts/prestart.js",
     "start": "npm run prestart && tsx server.ts",
     "typegen": "tsx typegen/main.ts",

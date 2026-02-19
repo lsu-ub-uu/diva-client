@@ -22,6 +22,9 @@ const cleanFormDataRecursively = (
     if (isResourceLink(obj)) {
       return cleanResourceLink(obj);
     }
+    if (isRecordLink(obj)) {
+      return cleanRecordLink(obj);
+    }
     if (isLeaf(obj)) {
       return cleanLeaf(obj);
     } else {
@@ -44,6 +47,10 @@ const isResourceLink = (obj: Record<string, any>) => {
   );
 };
 
+const isRecordLink = (obj: Record<string, any>) => {
+  return Object.hasOwn(obj, 'linkedRecordType') && Object.hasOwn(obj, 'value');
+};
+
 const isLeaf = (obj: any) => {
   return (
     typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
@@ -54,6 +61,19 @@ const cleanResourceLink = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<any> => {
   if (isEmpty(obj.id)) {
+    return { data: {}, hasValuableData: false };
+  }
+
+  return {
+    data: obj,
+    hasValuableData: true,
+  };
+};
+
+const cleanRecordLink = (
+  obj: Record<string, any>,
+): ValuableDataWrapper<any> => {
+  if (isEmpty(obj.value)) {
     return { data: {}, hasValuableData: false };
   }
 

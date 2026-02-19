@@ -1,5 +1,6 @@
 import type {
   BFFMetadata,
+  BFFMetadataAnyTypeRecordLink,
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
@@ -78,6 +79,7 @@ describe('generateTypesForRecordTypes', () => {
             repeatMax: '1',
           },
           { childId: 'aRecordLink', repeatMin: '1', repeatMax: '1' },
+          { childId: 'anAnyTypeRecordLink', repeatMin: '0', repeatMax: '1' },
         ],
       } as BFFMetadataGroup,
       {
@@ -86,6 +88,11 @@ describe('generateTypesForRecordTypes', () => {
         linkedRecordType: 'anotherRecordTypeId',
         type: 'recordLink',
       } as BFFMetadataRecordLink,
+      {
+        id: 'anAnyTypeRecordLink',
+        nameInData: 'anotherRecordOfAnyType',
+        type: 'anyTypeRecordLink',
+      } as BFFMetadataAnyTypeRecordLink,
       {
         id: 'fooVar',
         nameInData: 'foo',
@@ -204,6 +211,10 @@ describe('generateTypesForRecordTypes', () => {
              anotherRoot: AnotherMetadataGroupId;
            };
            
+           __text?: { sv: string; en: string };
+         };
+        anotherRecordOfAnyType?: {
+           value: string;
            __text?: { sv: string; en: string };
          };
          __text?: { sv: string; en: string };

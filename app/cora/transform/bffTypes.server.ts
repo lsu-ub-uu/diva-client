@@ -51,6 +51,7 @@ export interface BFFMetadataBase extends BFFBase {
     | 'resourceLink'
     | 'collectionItem'
     | 'recordLink'
+    | 'anyTypeRecordLink'
     | 'textVariable'
     | 'collectionVariable'
     | 'itemCollection';
@@ -63,6 +64,7 @@ export type BFFMetadata =
   | BFFMetadataTextVariable
   | BFFMetadataNumberVariable
   | BFFMetadataRecordLink
+  | BFFMetadataAnyTypeRecordLink
   | BFFMetadataCollectionVariable
   | BFFMetadataGroup
   | BFFMetadataItemCollection;
@@ -92,6 +94,12 @@ export interface BFFMetadataNumberVariable extends BFFMetadataBase {
 export interface BFFMetadataRecordLink extends BFFMetadataBase {
   type: 'recordLink';
   linkedRecordType: string;
+  finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
+}
+
+export interface BFFMetadataAnyTypeRecordLink extends BFFMetadataBase {
+  type: 'anyTypeRecordLink';
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }

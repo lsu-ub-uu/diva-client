@@ -914,6 +914,7 @@ export interface SeriesUpdateGroup {
     __text?: { sv: string; en: string };
   };
   related?: RelatedSeriesGroup[];
+  hostRecord?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
@@ -3479,6 +3480,11 @@ export interface LocalLabelUpdateGroup {
   recordInfo: RecordInfoLocalLabelUpdateGroup;
   localLabel?: { value: string; __text?: { sv: string; en: string } };
   description?: { value: string; __text?: { sv: string; en: string } };
+  note_type_internal?: {
+    value: string;
+    _type: 'internal';
+    __text?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 
@@ -3504,6 +3510,24 @@ export interface AdminInfoDivaGroup {
   };
   __text?: { sv: string; en: string };
 }
+
+export type AttachmentLabelCollection =
+  | 'fullText'
+  | 'attachment'
+  | 'audio'
+  | 'cover'
+  | 'dataSet'
+  | 'errata'
+  | 'image'
+  | 'inside'
+  | 'movie'
+  | 'notificationOfSubmissionOfAThesis'
+  | 'popularSummary'
+  | 'previewImage'
+  | 'references'
+  | 'software'
+  | 'summary'
+  | 'toc';
 
 export interface Binary {
   binary: BinaryGroup;
@@ -3533,6 +3557,7 @@ export interface RecordInfoBinaryGroup {
     __valueText?: { sv: string; en: string };
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
+  hostRecord?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
@@ -3609,24 +3634,6 @@ export type AttachmentRequestedVisibilityCollection =
   | 'unpublished'
   | 'confidential';
 
-export type AttachmentLabelCollection =
-  | 'fullText'
-  | 'attachment'
-  | 'audio'
-  | 'cover'
-  | 'dataSet'
-  | 'errata'
-  | 'image'
-  | 'inside'
-  | 'movie'
-  | 'notificationOfSubmissionOfAThesis'
-  | 'popularSummary'
-  | 'previewImage'
-  | 'references'
-  | 'software'
-  | 'summary'
-  | 'toc';
-
 export type AttachmentVersionCollection =
   | 'submitted'
   | 'accepted'
@@ -3670,11 +3677,6 @@ export interface AttachmentGroup {
     _type: 'registrationNumber';
     __text?: { sv: string; en: string };
   };
-  label?: {
-    value: AttachmentLabelCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
   note_type_attachmentVersion?: {
     value: AttachmentVersionCollection;
     _type: 'attachmentVersion';
@@ -3693,6 +3695,7 @@ export interface AttachmentGroup {
   };
   dateToBePublished?: DateToBePublishedGroup;
   dateToBeUnpublished?: DateToBeUnpublishedGroup;
+  _label: AttachmentLabelCollection;
   __text?: { sv: string; en: string };
 }
 

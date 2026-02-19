@@ -108,6 +108,7 @@ function createValueForMetadata(
       attributes,
     );
   }
+
   if (metadata.type === 'resourceLink') {
     return '{ id: string; mimeType: string; name: string; }';
   }

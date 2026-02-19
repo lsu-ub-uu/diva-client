@@ -38,6 +38,7 @@ import {
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
   BFFMetadata,
+  BFFMetadataAnyTypeRecordLink,
   BFFMetadataBase,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
@@ -90,12 +91,18 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'recordLink': {
       return transformRecordLink(dataRecordGroup, metadata);
     }
-
+    case 'anyTypeRecordLink': {
+      return transformAnyTypeRecordLink(dataRecordGroup, metadata);
+    }
     case 'resourceLink': {
       // Basic metadata is enough for a resourceLink
       return metadata;
     }
     default: {
+      const unknownMetadata = metadata as any;
+      console.warn(
+        `Unknown metadata type: ${unknownMetadata.type} for metadata with id: ${unknownMetadata.id}`,
+      );
       return undefined;
     }
   }
@@ -185,6 +192,26 @@ const transformRecordLink = (
     linkedRecordType,
     attributeReferences,
   }) as BFFMetadataRecordLink;
+};
+
+const transformAnyTypeRecordLink = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadataBase,
+): BFFMetadataAnyTypeRecordLink => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(
+      dataRecordGroup,
+      'finalValue',
+    );
+    metadata = { ...metadata, finalValue } as BFFMetadataBase;
+  }
+
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+
+  return removeEmpty({
+    ...metadata,
+    attributeReferences,
+  }) as BFFMetadataAnyTypeRecordLink;
 };
 
 const transformItemCollection = (
