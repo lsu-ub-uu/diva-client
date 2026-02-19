@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { formatBytes } from '../utils/format';
 import { AttachmentDetails } from './AttachmentDetails';
 import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
+import type { TFunction } from 'i18next';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
@@ -20,7 +21,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
 
   return (
     <div className='attachment'>
-      <h3>{formatHeading(attachment, language)} </h3>
+      <h3>{formatHeading(attachment, t)} </h3>
       {attachment.file.linkedRecord.binary.large?.large && (
         <img
           className='attachment-thumbnail'
@@ -49,11 +50,8 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
   );
 };
 
-const formatHeading = (
-  attachment: AttachmentGroup,
-  language: 'en' | 'sv',
-): string => {
-  const attachmentTypeText = attachment.label?.__valueText?.[language];
+const formatHeading = (attachment: AttachmentGroup, t: TFunction): string => {
+  const attachmentTypeText = t(`${attachment._label}ItemText`);
 
   if (attachment.displayLabel) {
     let label = attachment.displayLabel.value;
