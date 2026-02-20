@@ -1,4 +1,7 @@
-import { IconButton } from '@/components/IconButton/IconButton';
+import {
+  DrawerDialog,
+  useDrawerDialog,
+} from '@/components/DrawerDialog/DrawerDialog';
 import type { Navigation } from '@/data/getNavigation.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { MenuIcon, XIcon } from 'lucide-react';
@@ -9,6 +12,7 @@ import { LanguageSwitcher } from '../LanguageSwitcher';
 import { NavigationLink } from '../TopNavigation/NavigationLink';
 import { icons } from '../TopNavigation/TopNavigation';
 import styles from './MobileNavigation.module.css';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface MobileNavigationProps {
   navigation: Navigation;
@@ -25,44 +29,45 @@ export const MobileNavigation = ({
     ...navigation.mainNavigationItems,
     ...navigation.otherNavigationItems,
   ];
+  const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
+    useDrawerDialog();
   return (
-    <div className={styles['header-mobile-menu-button']}>
+    <>
       <IconButton
+        className={styles['header-mobile-menu-button']}
         tooltip={t('divaClient_showMenuText')}
-        onClick={() => mobileDialogRef.current?.showModal()}
+        onClick={showDrawerDialog}
       >
         <MenuIcon />
       </IconButton>
-      <dialog ref={mobileDialogRef} className={styles['mobile-menu-dialog']}>
-        <div className={styles['mobile-menu-dialog-panel']}>
-          <div className={styles['mobile-menu-header']}>
-            <LanguageSwitcher />
-            <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
-            <IconButton
-              className={styles['menu-close-button']}
-              tooltip={t('divaClient_closeText')}
-              onClick={() => mobileDialogRef.current?.close()}
-            >
-              <XIcon />
-            </IconButton>
-          </div>
-          <hr />
-          <nav>
-            <ul className={styles['mobile-navigation-list']}>
-              {navigationItems.map((navItem) => (
-                <li key={navItem.id}>
-                  <NavigationLink
-                    to={navItem.link}
-                    label={t(navItem.textId)}
-                    icon={icons[navItem.id]}
-                    onClick={() => mobileDialogRef.current?.close()}
-                  />
-                </li>
-              ))}
-            </ul>
-          </nav>
+      <DrawerDialog ref={drawerDialogRef}>
+        <div className={styles['mobile-menu-header']}>
+          <LanguageSwitcher />
+          <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
+          <IconButton
+            tooltip={t('divaClient_closeMenuText')}
+            onClick={closeDrawerDialog}
+            className={styles['menu-close-button']}
+          >
+            <XIcon />
+          </IconButton>
         </div>
-      </dialog>
-    </div>
+        <hr />
+        <nav>
+          <ul className={styles['mobile-navigation-list']}>
+            {navigationItems.map((navItem) => (
+              <li key={navItem.id}>
+                <NavigationLink
+                  to={navItem.link}
+                  label={t(navItem.textId)}
+                  icon={icons[navItem.id]}
+                  onClick={() => mobileDialogRef.current?.close()}
+                />
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </DrawerDialog>
+    </>
   );
 };

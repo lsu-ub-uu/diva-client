@@ -1,15 +1,14 @@
-import { FunnelIcon, XIcon } from 'lucide-react';
-import { Form } from 'react-router';
-import { Filter } from './Filter';
-import type { Ref } from 'react';
 import type { FilterDefinition } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
+import { FunnelIcon, XIcon } from 'lucide-react';
+import type { Ref } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '@/components/IconButton/IconButton';
-import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { Form } from 'react-router';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
+import { Filter } from './Filter';
+import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface FiltersProps {
-  open: boolean;
   ref: Ref<HTMLFormElement>;
   filters: FilterDefinition[];
   activeFilters: ActiveFilter[];
@@ -20,7 +19,6 @@ interface FiltersProps {
 }
 
 export const Filters = ({
-  open,
   ref,
   filters,
   activeFilters,
@@ -36,17 +34,16 @@ export const Filters = ({
   }
 
   return (
-    <div className='filters' data-open={open}>
-      <button className='filters-backdrop' onClick={onClose} />
-      <div className='filters-content'>
+    <div className='filters'>
+      <div className='filters-content desktop-filters'>
         <div className='filters-header'>
           <h2>
             <FunnelIcon /> {t('divaClient_filterTitleText')}
           </h2>
           <IconButton
-            className='filters-close-button'
-            tooltip={t('divaClient_closeText')}
             onClick={onClose}
+            tooltip={t('divaClient_closeFiltersText')}
+            className='filter-dialog-close-button'
           >
             <XIcon />
           </IconButton>

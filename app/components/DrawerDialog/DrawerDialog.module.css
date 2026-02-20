@@ -1,0 +1,63 @@
+.dialog-trigger-button {
+  display: none;
+
+  @media (width < 900px) {
+    display: block;
+  }
+}
+
+.dialog {
+  height: 100dvh;
+  width: 80vw;
+  max-height: none;
+  color: var(--color-text);
+  padding: var(--gap-l);
+  box-shadow: var(--elevation);
+  background-color: var(--color-background);
+  transform: translateX(-100%);
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out,
+    display 0.3s ease-out allow-discrete,
+    overlay 0.3s ease-out allow-discrete;
+
+  &[open] {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.2s ease-in;
+  }
+
+  &::backdrop {
+    background-color: var(--color-modal-backdrop);
+    transition:
+      background-color 0.2s ease-in-out,
+      overlay 0.2s allow-discrete,
+      display 0.2s ease-in-out allow-discrete;
+  }
+}
+
+.dialog-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+
+  .dialog-close-button {
+    margin-left: auto;
+  }
+}
+
+@starting-style {
+  .dialog[open] {
+    transform: translateX(-100%);
+  }
+
+  .dialog[open]::backdrop {
+    background-color: rgb(0 0 0 / 0%);
+  }
+}

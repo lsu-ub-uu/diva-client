@@ -21,7 +21,7 @@ interface RecordSearchViewProps {
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
   filtersOpen: boolean;
-  setFiltersOpen: (open: boolean) => void;
+  showFilterDialog: () => void;
   apiUrl: string;
 }
 
@@ -38,7 +38,7 @@ export const RecordSearchView = ({
   onRemoveFilter,
   onClearAllFilters,
   filtersOpen,
-  setFiltersOpen,
+  showFilterDialog,
   apiUrl,
 }: RecordSearchViewProps) => {
   return (
@@ -66,7 +66,7 @@ export const RecordSearchView = ({
         onRemoveFilter={onRemoveFilter}
         onClearAllFilters={onClearAllFilters}
         filtersOpen={filtersOpen}
-        setFiltersOpen={setFiltersOpen}
+        onShowFilterDialog={showFilterDialog}
         apiUrl={apiUrl}
         searchResults={searchResults}
       />

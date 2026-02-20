@@ -11,7 +11,7 @@ interface ActiveFiltersProps {
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
   filtersOpen: boolean;
-  setFiltersOpen: (open: boolean) => void;
+  onShowFilterDialog: () => void;
   apiUrl: string;
   searchResults: BFFSearchResult;
 }
@@ -21,7 +21,7 @@ export const ActiveFilters = ({
   onRemoveFilter,
   onClearAllFilters,
   filtersOpen,
-  setFiltersOpen,
+  onShowFilterDialog,
   apiUrl,
   searchResults,
 }: ActiveFiltersProps) => {
@@ -53,7 +53,7 @@ export const ActiveFilters = ({
           </Button>
         )}
         <Button
-          onClick={() => setFiltersOpen(!filtersOpen)}
+          onClick={onShowFilterDialog}
           variant='secondary'
           className='filters-toggle-button'
         >

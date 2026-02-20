@@ -5,6 +5,10 @@ import { Filters } from './Filters';
 import { RecordSearchView } from './RecordSearchView';
 import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
+import {
+  DrawerDialog,
+  useDrawerDialog,
+} from '@/components/DrawerDialog/DrawerDialog';
 
 interface SearchLayoutProps {
   query: string;
@@ -56,6 +60,9 @@ export const SearchLayout = ({
     }
   }, 400);
 
+  const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
+    useDrawerDialog();
+
   return (
     <div className='grid'>
       <div className='grid-col-12'>{children}</div>
@@ -76,22 +83,32 @@ export const SearchLayout = ({
               onRemoveFilter={onRemoveFilter}
               onClearAllFilters={onClearAllFilters}
               filtersOpen={filtersOpen}
-              setFiltersOpen={setFiltersOpen}
               apiUrl={apiUrl}
+              showFilterDialog={showDrawerDialog}
             />
           </main>
-          <div className='grid-col-3'>
+          <div className='grid-col-3 grid-col-l-hidden'>
             <Filters
-              open={filtersOpen}
               ref={filterFormRef}
               filters={searchFormDefinition.filters}
               activeFilters={activeFilters}
               query={query}
               rows={rows}
               onFilterChange={handleFilterChange}
-              onClose={() => setFiltersOpen(false)}
+              onClose={closeDrawerDialog}
             />
           </div>
+          <DrawerDialog ref={drawerDialogRef}>
+            <Filters
+              ref={filterFormRef}
+              filters={searchFormDefinition.filters}
+              activeFilters={activeFilters}
+              query={query}
+              rows={rows}
+              onFilterChange={handleFilterChange}
+              onClose={closeDrawerDialog}
+            />
+          </DrawerDialog>
         </>
       )}
     </div>
