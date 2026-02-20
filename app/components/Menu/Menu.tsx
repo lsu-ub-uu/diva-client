@@ -15,7 +15,7 @@ interface MenuProps {
   title: string;
   id: string;
   onToggle: (open: boolean) => void;
-  registerItem: (ref: HTMLElement) => void;
+  registerItem: (ref: HTMLLIElement) => void;
   unRegisterItem: (id: string) => void;
   activeItemId: string | undefined;
   filterProps: React.InputHTMLAttributes<HTMLInputElement>;
@@ -23,7 +23,7 @@ interface MenuProps {
 }
 
 interface MenuContextValue {
-  registerItem: (ref: HTMLElement) => void;
+  registerItem: (ref: HTMLLIElement) => void;
   unRegisterItem: (id: string) => void;
   activeItemId: string | undefined;
   filter: string;
@@ -49,6 +49,7 @@ export const Menu = ({
       popover='auto'
       className={styles['menu']}
       tabIndex={-1}
+      aria-activedescendant={activeItemId}
     >
       <div className={styles['menu-content']}>
         <h2 className={styles['menu-title']}>{title}</h2>
@@ -56,18 +57,18 @@ export const Menu = ({
           <Input placeholder='Filtrera...' {...filterProps} />
           <FilterIcon className={styles['menu-filter-icon']} />
         </Fieldset>
-        <div className={styles['menu-items']}>
-          <MenuContext
-            value={{
-              registerItem,
-              unRegisterItem,
-              activeItemId,
-              filter: filterProps.value as string,
-            }}
-          >
+        <MenuContext
+          value={{
+            registerItem,
+            unRegisterItem,
+            activeItemId,
+            filter: filterProps.value as string,
+          }}
+        >
+          <ul className={styles['menu-items']} tabIndex={-1}>
             {children}
-          </MenuContext>
-        </div>
+          </ul>
+        </MenuContext>
       </div>
     </div>
   );
@@ -76,7 +77,7 @@ export const Menu = ({
 export const useMenu = () => {
   const menuId = useId();
   const [open, setOpen] = useState(false);
-  const itemRefs = useRef<HTMLElement[]>([]);
+  const itemRefs = useRef<HTMLLIElement[]>([]);
   const filterInputRef = useRef<HTMLInputElement>(null);
   const [activeItemId, setActiveItemId] = useState<string | undefined>(
     undefined,
@@ -160,7 +161,7 @@ export const useMenu = () => {
       setOpen(open);
     },
     activeItemId,
-    registerItem: (ref: HTMLElement) => {
+    registerItem: (ref: HTMLLIElement) => {
       itemRefs.current.push(ref);
     },
     unRegisterItem: (id: string) => {
@@ -172,7 +173,6 @@ export const useMenu = () => {
   const triggerProps = {
     'aria-haspopup': 'menu' as const,
     'aria-controls': menuId,
-    'aria-activedescendant': open ? activeItemId : undefined,
     'aria-expanded': open,
     popoverTarget: menuId,
     onKeyDown: handleKeyDown,
