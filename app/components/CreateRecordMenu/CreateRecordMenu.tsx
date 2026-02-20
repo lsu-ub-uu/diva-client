@@ -17,13 +17,13 @@
  */
 
 import type { Option } from '@/components';
-import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { ActionBar } from '@/routes/record/ActionBar/ActionBar';
 import { ActionBarButton } from '@/routes/record/ActionBar/ActionBarButton';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { FilePlusIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { Menu, useMenu } from '../Menu/Menu';
+import { MenuItem } from '../Menu/MenuItem';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
@@ -35,6 +35,7 @@ export const CreateRecordMenu = ({
   recordTypeTextId,
 }: CreateRecordMenuProps) => {
   const { t } = useTranslation();
+  const { menuProps, triggerProps } = useMenu();
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
   }
@@ -54,21 +55,20 @@ export const CreateRecordMenu = ({
           {buttonText}
         </ActionBarButton>
       ) : (
-        <Menu>
-          <MenuButton as={ActionBarButton} icon={<FilePlusIcon />}>
+        <>
+          <ActionBarButton icon={<FilePlusIcon />} {...triggerProps}>
             {buttonText}
-          </MenuButton>
-
-          <DropdownMenu anchor='bottom end'>
+          </ActionBarButton>
+          <Menu {...menuProps} title={'Välj valideringstyp'}>
             {validationTypes.map((option) => (
-              <MenuItem key={option.value}>
+              <MenuItem key={option.value} text={t(option.label)}>
                 <Link to={`create?validationType=${option.value}`}>
                   {t(option.label)}
                 </Link>
               </MenuItem>
             ))}
-          </DropdownMenu>
-        </Menu>
+          </Menu>
+        </>
       )}
     </ActionBar>
   );
