@@ -31,10 +31,11 @@ export const OutputRecordLink = ({
   const { getValues } = useRemixFormContext();
   const variant = parentPresentationStyle === 'inline' ? 'inline' : 'block';
   const label = component.showLabel ? t(component.label) : undefined;
+  const value = getValues(`${path}`);
   const linkedRecordType = isComponentRecordLink(component)
     ? component.recordLinkType
-    : getValues(`${path}.linkedRecordType`);
-  const linkedRecordId = component.finalValue ?? getValues(`${path}.value`);
+    : value?.linkedRecordType;
+  const linkedRecordId = component.finalValue ?? value?.value;
   return (
     <div
       className='form-component-item'
@@ -67,7 +68,7 @@ export const OutputRecordLink = ({
             recordId: linkedRecordId,
           })}
         >
-          {linkedRecordType}/{linkedRecordId}
+          {t(value?.linkedRecordTypeTextId)} / {linkedRecordId}
         </Link>
       </div>
     </div>

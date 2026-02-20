@@ -59,12 +59,7 @@ export const RecordLink = ({
     );
   }
 
-  if (
-    component.searchPresentation &&
-    component.mode === 'input' &&
-    !value &&
-    !linkedData
-  ) {
+  if (component.searchPresentation && component.mode === 'input') {
     return (
       <RecordLinkWithSearch
         component={component}

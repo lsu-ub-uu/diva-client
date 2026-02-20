@@ -258,6 +258,8 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     data,
     'linkedRecordType',
   );
+  const linkedRecordTypeTextId =
+    dependencies.recordTypePool.get(linkedRecordType)?.textId;
 
   const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
     ? transformLinkedRecord(data, dependencies)
@@ -286,7 +288,8 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 
   return removeEmpty({
     value: recordLinkId,
-    linkedRecordType: linkedRecordType,
+    linkedRecordType,
+    linkedRecordTypeTextId,
     linkedRecord,
     displayName,
   });
