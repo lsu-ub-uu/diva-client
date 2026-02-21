@@ -1,15 +1,10 @@
-import {
-  createContext,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react';
-import { Fieldset } from '../Input/Fieldset';
-import { Input } from '../Input/Input';
-import styles from './Menu.module.css';
 import { FilterIcon } from 'lucide-react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { Fieldset } from '../Input/Fieldset';
+import { Input, type InputProps } from '../Input/Input';
+import styles from './Menu.module.css';
+import { MenuContext } from './MenuContext';
+import type { ButtonProps } from '../Button/Button';
 
 interface MenuProps {
   title?: string;
@@ -20,20 +15,11 @@ interface MenuProps {
   registerItem: (ref: HTMLLIElement) => void;
   unRegisterItem: (id: string) => void;
   activeItemId: string | undefined;
-  filterProps: React.InputHTMLAttributes<HTMLInputElement>;
-  children: ReactNode;
+  filterInputProps: InputProps;
+  children?: ReactNode;
   menuRef: React.RefObject<HTMLDivElement | null>;
+  triggerId?: string;
 }
-
-interface MenuContextValue {
-  registerItem: (ref: HTMLLIElement) => void;
-  unRegisterItem: (id: string) => void;
-  activeItemId: string | undefined;
-  filter: string;
-  closeMenu: () => void;
-}
-
-export const MenuContext = createContext<MenuContextValue | null>(null);
 
 export const Menu = ({
   title,
@@ -43,10 +29,11 @@ export const Menu = ({
   registerItem,
   unRegisterItem,
   activeItemId,
-  filterProps,
+  filterInputProps,
   children,
   alignment = 'end',
   menuRef,
+  triggerId,
 }: MenuProps) => {
   return (
     <div
@@ -57,19 +44,15 @@ export const Menu = ({
       className={styles['menu']}
       tabIndex={-1}
       aria-activedescendant={activeItemId}
-      aria-labelledby={`${id}-title`}
+      aria-labelledby={triggerId}
       data-alignment={alignment}
       ref={menuRef}
     >
       <div className={styles['menu-content']}>
-        {title && (
-          <h2 id={`${id}-title`} className={styles['menu-title']}>
-            {title}
-          </h2>
-        )}
+        {title && <h2 className={styles['menu-title']}>{title}</h2>}
         {useFilter && (
           <Fieldset size='small' className={styles['menu-filter']}>
-            <Input placeholder='Filtrera...' {...filterProps} />
+            <Input placeholder='Filtrera...' {...filterInputProps} />
             <FilterIcon className={styles['menu-filter-icon']} />
           </Fieldset>
         )}
@@ -78,7 +61,7 @@ export const Menu = ({
             registerItem,
             unRegisterItem,
             activeItemId,
-            filter: filterProps.value as string,
+            filter: filterInputProps.value as string,
             closeMenu: () => menuRef.current?.hidePopover(),
           }}
         >
@@ -155,7 +138,7 @@ export const useMenu = () => {
     }
   };
 
-  const filterProps = {
+  const filterInputProps: InputProps = {
     ref: filterInputRef,
     onKeyDown: handleKeyDown,
     'aria-controls': menuId,
@@ -166,7 +149,7 @@ export const useMenu = () => {
     },
   };
 
-  const menuProps = {
+  const menuProps: MenuProps = {
     id: menuId,
     onToggle: (open: boolean) => {
       if (!open) {
@@ -186,11 +169,13 @@ export const useMenu = () => {
     unRegisterItem: (id: string) => {
       itemRefs.current = itemRefs.current.filter((r) => r.id !== id);
     },
-    filterProps,
+    filterInputProps,
     menuRef,
+    triggerId: `${menuId}-trigger`,
   };
 
-  const triggerProps = {
+  const triggerProps: ButtonProps = {
+    id: `${menuId}-trigger`,
     'aria-haspopup': 'menu' as const,
     'aria-controls': menuId,
     'aria-expanded': open,

@@ -36,7 +36,7 @@ export const PasswordLoginMenuOptions = ({
   }
   return (
     <>
-      <h2>{t('divaClient_LoginPasswordText')}</h2>
+      <h3>{t('divaClient_LoginPasswordText')}</h3>
       {passwordLoginUnits.map(({ loginDescription, id }) => (
         <MenuItem key={id} text={t(loginDescription)}>
           <Link

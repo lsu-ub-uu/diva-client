@@ -34,7 +34,7 @@ export const WebRedirectLoginMenuOptions = ({
   }
   return (
     <>
-      <h2>{t('divaClient_LoginWebRedirectText')}</h2>
+      <h3>{t('divaClient_LoginWebRedirectText')}</h3>
       {webRedirectLoginUnits.map(({ loginDescription, url }) => (
         <MenuItem key={loginDescription} text={t(loginDescription)}>
           <button onClick={() => logInWithWebRedirect(url!)}>

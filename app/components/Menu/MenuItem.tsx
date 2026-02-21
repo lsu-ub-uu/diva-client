@@ -1,6 +1,6 @@
 import { use, useId } from 'react';
-import { MenuContext } from './Menu';
 import styles from './Menu.module.css';
+import { MenuContext } from './MenuContext';
 
 interface MenuItemProps {
   children: React.ReactNode;
@@ -28,6 +28,7 @@ export const MenuItem = ({ children, text }: MenuItemProps) => {
           menuContext?.unRegisterItem(id);
         }
       }}
+      onMouseUp={() => menuContext?.closeMenu()}
     >
       {children}
     </li>
