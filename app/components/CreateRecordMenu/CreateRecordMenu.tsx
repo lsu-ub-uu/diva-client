@@ -59,7 +59,7 @@ export const CreateRecordMenu = ({
           <ActionBarButton icon={<FilePlusIcon />} {...triggerProps}>
             {buttonText}
           </ActionBarButton>
-          <Menu {...menuProps} title={'Välj valideringstyp'}>
+          <Menu {...menuProps} useFilter title={'Välj valideringstyp'}>
             {validationTypes.map((option) => (
               <MenuItem key={option.value} text={t(option.label)}>
                 <Link to={`create?validationType=${option.value}`}>

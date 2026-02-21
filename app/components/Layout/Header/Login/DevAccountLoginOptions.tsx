@@ -19,7 +19,7 @@
 import { useTranslation } from 'react-i18next';
 
 import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
-import { MenuItem } from '@headlessui/react';
+import { MenuItem } from '@/components/Menu/MenuItem';
 
 interface DevAccountsProps {
   exampleUsers: ExampleUser[];
@@ -37,7 +37,7 @@ export const DevAccountLoginOptions = ({
     <>
       <h2>{t('divaClient_LoginDevAccountText')}</h2>
       {exampleUsers.map((exampleUser) => (
-        <MenuItem key={exampleUser.loginId}>
+        <MenuItem key={exampleUser.loginId} text={exampleUser.name}>
           <button onClick={() => onSelect(exampleUser)}>
             {exampleUser.name}
           </button>

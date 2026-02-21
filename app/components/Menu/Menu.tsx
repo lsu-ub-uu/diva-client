@@ -12,14 +12,17 @@ import styles from './Menu.module.css';
 import { FilterIcon } from 'lucide-react';
 
 interface MenuProps {
-  title: string;
+  title?: string;
   id: string;
+  useFilter?: boolean;
+  alignment?: 'start' | 'end' | 'center';
   onToggle: (open: boolean) => void;
   registerItem: (ref: HTMLLIElement) => void;
   unRegisterItem: (id: string) => void;
   activeItemId: string | undefined;
   filterProps: React.InputHTMLAttributes<HTMLInputElement>;
   children: ReactNode;
+  menuRef: React.RefObject<HTMLDivElement | null>;
 }
 
 interface MenuContextValue {
@@ -27,6 +30,7 @@ interface MenuContextValue {
   unRegisterItem: (id: string) => void;
   activeItemId: string | undefined;
   filter: string;
+  closeMenu: () => void;
 }
 
 export const MenuContext = createContext<MenuContextValue | null>(null);
@@ -34,12 +38,15 @@ export const MenuContext = createContext<MenuContextValue | null>(null);
 export const Menu = ({
   title,
   id,
+  useFilter = false,
   onToggle,
   registerItem,
   unRegisterItem,
   activeItemId,
   filterProps,
   children,
+  alignment = 'end',
+  menuRef,
 }: MenuProps) => {
   return (
     <div
@@ -50,19 +57,29 @@ export const Menu = ({
       className={styles['menu']}
       tabIndex={-1}
       aria-activedescendant={activeItemId}
+      aria-labelledby={`${id}-title`}
+      data-alignment={alignment}
+      ref={menuRef}
     >
       <div className={styles['menu-content']}>
-        <h2 className={styles['menu-title']}>{title}</h2>
-        <Fieldset size='small' className={styles['menu-filter']}>
-          <Input placeholder='Filtrera...' {...filterProps} />
-          <FilterIcon className={styles['menu-filter-icon']} />
-        </Fieldset>
+        {title && (
+          <h2 id={`${id}-title`} className={styles['menu-title']}>
+            {title}
+          </h2>
+        )}
+        {useFilter && (
+          <Fieldset size='small' className={styles['menu-filter']}>
+            <Input placeholder='Filtrera...' {...filterProps} />
+            <FilterIcon className={styles['menu-filter-icon']} />
+          </Fieldset>
+        )}
         <MenuContext
           value={{
             registerItem,
             unRegisterItem,
             activeItemId,
             filter: filterProps.value as string,
+            closeMenu: () => menuRef.current?.hidePopover(),
           }}
         >
           <ul className={styles['menu-items']} tabIndex={-1}>
@@ -83,6 +100,7 @@ export const useMenu = () => {
     undefined,
   );
   const [filter, setFilter] = useState('');
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Set the first item as active when filter changes and menu is open
@@ -133,6 +151,7 @@ export const useMenu = () => {
       } else if (button) {
         button.click();
       }
+      menuRef.current?.hidePopover();
     }
   };
 
@@ -168,6 +187,7 @@ export const useMenu = () => {
       itemRefs.current = itemRefs.current.filter((r) => r.id !== id);
     },
     filterProps,
+    menuRef,
   };
 
   const triggerProps = {

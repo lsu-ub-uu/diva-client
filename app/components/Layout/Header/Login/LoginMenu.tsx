@@ -27,18 +27,18 @@ import {
 } from 'react-router';
 
 import { Button, type ButtonProps } from '@/components/Button/Button';
-import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
 import { PasswordLoginMenuOptions } from '@/components/Layout/Header/Login/PasswordLoginMenuOptions';
 import { WebRedirectLoginMenuOptions } from '@/components/Layout/Header/Login/WebRedirectLoginMenuOptions';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
 import {
   logInWithWebRedirect,
   useWebRedirectLogin,
 } from '@/auth/useWebRedirectLogin';
+import { Menu, useMenu } from '@/components/Menu/Menu';
+import { MenuItem } from '@/components/Menu/MenuItem';
 import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
@@ -62,6 +62,11 @@ export default function LoginMenu({
   const location = useLocation();
   const navigation = useNavigation();
   const hydrated = useHydrated();
+
+  const { menuProps: loginMenuProps, triggerProps: loginTriggerProps } =
+    useMenu();
+  const { menuProps: logoutMenuProps, triggerProps: logoutTriggerProps } =
+    useMenu();
 
   const searchParams = new URLSearchParams(location.search);
   const rawReturnTo =
@@ -146,33 +151,35 @@ export default function LoginMenu({
 
     return (
       <div className={styles['login']}>
-        <Menu>
-          <Button
-            variant='tertiary'
-            as={MenuButton}
-            disabled={submitting}
-            aria-busy={submitting}
-            className={styles['login-button']}
-          >
-            {loginButtonChildren}
-          </Button>
-          <DropdownMenu anchor='bottom end'>
-            <DevAccountLoginOptions
-              exampleUsers={exampleUsers}
-              onSelect={handleDevSelection}
-            />
-            <WebRedirectLoginMenuOptions
-              webRedirectLoginUnits={loginUnits.filter(
-                ({ type }) => type === 'webRedirect',
-              )}
-            />
-            <PasswordLoginMenuOptions
-              passwordLoginUnits={loginUnits.filter(
-                ({ type }) => type === 'password',
-              )}
-              returnTo={returnTo}
-            />
-          </DropdownMenu>
+        <Button
+          variant='tertiary'
+          disabled={submitting}
+          aria-busy={submitting}
+          className={styles['login-button']}
+          {...loginTriggerProps}
+        >
+          {loginButtonChildren}
+        </Button>
+        <Menu
+          title='Välj inloggningsmetod'
+          useFilter={exampleUsers.length + loginUnits.length > 0}
+          {...loginMenuProps}
+        >
+          <DevAccountLoginOptions
+            exampleUsers={exampleUsers}
+            onSelect={handleDevSelection}
+          />
+          <WebRedirectLoginMenuOptions
+            webRedirectLoginUnits={loginUnits.filter(
+              ({ type }) => type === 'webRedirect',
+            )}
+          />
+          <PasswordLoginMenuOptions
+            passwordLoginUnits={loginUnits.filter(
+              ({ type }) => type === 'password',
+            )}
+            returnTo={returnTo}
+          />
         </Menu>
       </div>
     );
@@ -206,24 +213,22 @@ export default function LoginMenu({
 
   return (
     <div className={styles['login']}>
-      <Menu>
-        <Button
-          variant='tertiary'
-          className={styles['login-button']}
-          as={MenuButton}
-          disabled={submitting}
-          aria-busy={submitting}
-        >
-          {logoutButtonChildren}
-        </Button>
-        <DropdownMenu anchor='bottom end'>
-          <MenuItem>
-            <button onClick={logout} className={styles['logout-button']}>
-              {t('divaClient_LogoutText')}
-              <LogOutIcon />
-            </button>
-          </MenuItem>
-        </DropdownMenu>
+      <Button
+        variant='tertiary'
+        className={styles['login-button']}
+        disabled={submitting}
+        aria-busy={submitting}
+        {...logoutTriggerProps}
+      >
+        {logoutButtonChildren}
+      </Button>
+      <Menu {...logoutMenuProps}>
+        <MenuItem>
+          <button onClick={logout} className={styles['logout-button']}>
+            {t('divaClient_LogoutText')}
+            <LogOutIcon />
+          </button>
+        </MenuItem>
       </Menu>
     </div>
   );

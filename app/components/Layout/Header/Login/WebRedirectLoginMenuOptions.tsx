@@ -17,8 +17,8 @@
  */
 
 import { logInWithWebRedirect } from '@/auth/useWebRedirectLogin';
+import { MenuItem } from '@/components/Menu/MenuItem';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import { MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 
 interface WebRedirectLoginOptionsProps {
@@ -36,7 +36,7 @@ export const WebRedirectLoginMenuOptions = ({
     <>
       <h2>{t('divaClient_LoginWebRedirectText')}</h2>
       {webRedirectLoginUnits.map(({ loginDescription, url }) => (
-        <MenuItem key={loginDescription}>
+        <MenuItem key={loginDescription} text={t(loginDescription)}>
           <button onClick={() => logInWithWebRedirect(url!)}>
             {t(loginDescription)}
           </button>
