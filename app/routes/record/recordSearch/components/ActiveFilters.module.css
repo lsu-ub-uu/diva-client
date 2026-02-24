@@ -16,9 +16,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media (width < 1200px) {
+    flex-wrap: wrap;
+  }
+
   gap: var(--gap-s);
 
-  h2 {
+  .active-filters-title {
     margin-right: auto;
   }
 }
@@ -44,4 +49,10 @@
 
 .api-link-button {
   align-self: flex-end;
+}
+
+.filters-toggle-button {
+  @media (width > 1200px) {
+    display: none;
+  }
 }

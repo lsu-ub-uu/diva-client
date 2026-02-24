@@ -55,7 +55,7 @@ export const ActiveFilters = ({
         <Button
           onClick={onShowFilterDialog}
           variant='secondary'
-          className='filters-toggle-button'
+          className={styles['filters-toggle-button']}
         >
           <FunnelIcon />
           {filtersOpen

@@ -48,7 +48,6 @@
   gap: var(--gap);
   color: var(--color-text);
   padding: var(--gap-l);
-  box-shadow: var(--elevation);
   background-color: var(--color-background);
 }
 

@@ -61,7 +61,7 @@ export const MobileNavigation = ({
                   to={navItem.link}
                   label={t(navItem.textId)}
                   icon={icons[navItem.id]}
-                  onClick={() => mobileDialogRef.current?.close()}
+                  onClick={() => drawerDialogRef.current?.close()}
                 />
               </li>
             ))}
