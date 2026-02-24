@@ -4619,6 +4619,11 @@ export interface RecordTypeGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
+  useHostRecordForPermissions?: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
   __text?: { sv: string; en: string };
 }
 

@@ -98,7 +98,7 @@ export const SearchLayout = ({
               onClose={closeDrawerDialog}
             />
           </div>
-          <DrawerDialog ref={drawerDialogRef}>
+          <DrawerDialog ref={drawerDialogRef} variant='right'>
             <Filters
               ref={filterFormRef}
               filters={searchFormDefinition.filters}
