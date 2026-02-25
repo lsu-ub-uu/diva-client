@@ -42,4 +42,8 @@ export class Lookup<K, V> implements KeyValueStorage<K, V> {
   entries(): IterableIterator<[K, V]> {
     return this.internalMap.entries();
   }
+
+  delete(key: K) {
+    this.internalMap.delete(key);
+  }
 }

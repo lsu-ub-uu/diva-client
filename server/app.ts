@@ -18,17 +18,23 @@
 
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
+import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
 import {
   dependenciesContext,
   getDependencies,
+  handleDataChanged,
   loadDependencies,
 } from './depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
-import type { i18n } from 'i18next';
+import { startConsumer } from './rabbitMqConsumer';
 
 export const app = express();
+
+// startMockProducer();
+startConsumer(handleDataChanged);
+console.log('app.ts hellow');
 
 app.use(
   createRequestHandler({

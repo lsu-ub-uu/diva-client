@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import type {
+  RecordWrapper,
+  DataListWrapper,
+} from '@/cora/cora-data/types.server';
 import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
@@ -53,6 +56,8 @@ import { listToPool } from '@/utils/structs/listToPool';
 import { Lookup } from '@/utils/structs/lookup';
 import 'dotenv/config';
 import { createContext } from 'react-router';
+import type { DataChangedHeaders } from './rabbitMqConsumer';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -77,7 +82,7 @@ const dependencies: Dependencies = {
   deploymentInfo: {} as DeploymentInfo,
 };
 
-type DependencyType =
+export type DependencyType =
   | 'metadata'
   | 'presentation'
   | 'validationType'
@@ -152,7 +157,7 @@ const loadDependencies = async (type?: DependencyType) => {
 
     try {
       const members = await transformMembers(coraMembers.data);
-      dependencies.memberPool = groupMembersByHostname(members);
+      dependencies.memberPool = listToPool<BFFMember>(members);
     } catch (error) {
       console.error('Error transforming members:', error);
       dependencies.memberPool = new Lookup<string, BFFMember>();
@@ -285,6 +290,58 @@ export const getDependencies = async () => {
   }
 
   return dependencies;
+};
+
+const poolTypeMap = {
+  recordType: 'recordTypePool',
+  metadata: 'metadataPool',
+  presentation: 'presentationPool',
+  validationType: 'validationTypePool',
+  guiElement: 'presentationPool',
+  search: 'searchPool',
+  loginUnit: 'loginUnitPool',
+  login: 'loginPool',
+  'diva-member': 'memberPool',
+  'diva-organisation': 'organisationPool',
+  text: 'textPool',
+} as const;
+
+const transformFunctionMap = {
+  recordType: transformCoraRecordTypes,
+  metadata: transformMetadata,
+  presentation: transformCoraPresentations,
+  validationType: transformCoraValidationTypes,
+  guiElement: transformCoraPresentations,
+  search: transformCoraSearch,
+  loginUnit: transformLoginUnit,
+  login: transformLogin,
+  'diva-member': transformMembers,
+  'diva-organisation': transformOrganisations,
+  text: transformCoraTexts,
+} as const;
+
+export const handleDataChanged = async ({
+  type,
+  id,
+  action,
+}: DataChangedHeaders) => {
+  const poolKey = poolTypeMap[type as keyof typeof poolTypeMap];
+  const tranformFunction =
+    transformFunctionMap[type as keyof typeof transformFunctionMap];
+
+  if (action === 'delete') {
+    dependencies[poolKey].delete(id);
+  }
+
+  if (action === 'update' || action === 'create') {
+    const recordData = await getRecordDataById<RecordWrapper>(type, id);
+    const transformedData = await tranformFunction({
+      dataList: {
+        data: [recordData.data],
+      },
+    } as DataListWrapper);
+    dependencies[poolKey].set(id, transformedData[0]);
+  }
 };
 
 export { dependencies, loadDependencies };

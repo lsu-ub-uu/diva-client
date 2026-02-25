@@ -6,7 +6,7 @@ export const getMemberFromHostname = (
   dependencies: Dependencies,
 ): BFFMember | undefined => {
   const { hostname } = new URL(request.url);
-  return dependencies.memberPool.has(hostname)
-    ? dependencies.memberPool.get(hostname)
-    : undefined;
+  return Array.from(dependencies.memberPool.values()).find((member) =>
+    member.hostnames?.includes(hostname),
+  );
 };
