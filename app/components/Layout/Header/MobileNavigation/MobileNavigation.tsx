@@ -2,17 +2,16 @@ import {
   DrawerDialog,
   useDrawerDialog,
 } from '@/components/DrawerDialog/DrawerDialog';
+import { IconButton } from '@/components/IconButton/IconButton';
 import type { Navigation } from '@/data/getNavigation.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { MenuIcon, XIcon } from 'lucide-react';
-import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorSchemeSwitcher } from '../ColorSchemeSwitcher';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 import { NavigationLink } from '../TopNavigation/NavigationLink';
 import { icons } from '../TopNavigation/TopNavigation';
 import styles from './MobileNavigation.module.css';
-import { IconButton } from '@/components/IconButton/IconButton';
 
 interface MobileNavigationProps {
   navigation: Navigation;
@@ -24,7 +23,6 @@ export const MobileNavigation = ({
   userPreferences,
 }: MobileNavigationProps) => {
   const { t } = useTranslation();
-  const mobileDialogRef = useRef<HTMLDialogElement>(null);
   const navigationItems = [
     ...navigation.mainNavigationItems,
     ...navigation.otherNavigationItems,
