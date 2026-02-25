@@ -1,7 +1,12 @@
 .active-filters {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--gap);
+
+  @media (width < 1200px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   ul {
     display: flex;
@@ -9,22 +14,6 @@
     gap: var(--gap);
     list-style: none;
     align-items: center;
-  }
-}
-
-.active-filters-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  @media (width < 1200px) {
-    flex-wrap: wrap;
-  }
-
-  gap: var(--gap-s);
-
-  .active-filters-title {
-    margin-right: auto;
   }
 }
 
@@ -45,10 +34,6 @@
 .active-filter-value {
   font-style: italic;
   margin-inline: var(--gap-s);
-}
-
-.api-link-button {
-  align-self: flex-end;
 }
 
 .filters-toggle-button {

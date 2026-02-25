@@ -1,11 +1,3 @@
-.dialog-trigger-button {
-  display: none;
-
-  @media (width < 900px) {
-    display: block;
-  }
-}
-
 .dialog {
   height: 100dvh;
   width: 80vw;

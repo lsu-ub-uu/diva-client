@@ -83,8 +83,10 @@
   }
 }
 
-.filter-dialog-close-button {
-  @media (width >= 1200px) {
+.filter-dialog-close-button,
+.filters-dialog-button,
+.filter-dialog {
+  @media (width > 1200px) {
     display: none;
   }
 }
@@ -93,4 +95,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.search-result-buttons {
+  display: flex;
+  gap: var(--gap);
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
