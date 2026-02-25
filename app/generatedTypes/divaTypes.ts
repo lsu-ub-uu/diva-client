@@ -914,7 +914,6 @@ export interface SeriesUpdateGroup {
     __text?: { sv: string; en: string };
   };
   related?: RelatedSeriesGroup[];
-  hostRecord?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
@@ -3557,7 +3556,7 @@ export interface RecordInfoBinaryGroup {
     __valueText?: { sv: string; en: string };
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
-  hostRecord?: { value: string; __text?: { sv: string; en: string } };
+  hostRecord: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
@@ -4616,6 +4615,11 @@ export interface RecordTypeGroup {
     __valueText?: { sv: string; en: string };
   };
   useTrashBin?: {
+    value: TrueFalseCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  useHostRecordForPermissions?: {
     value: TrueFalseCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
