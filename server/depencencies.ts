@@ -275,7 +275,7 @@ const loadDependencies = async (type?: DependencyType) => {
       break;
     }
     default:
-      throw new Error(`Unknown dependency type: ${type}`);
+      console.log(`Unknown dependency type: ${type}`);
   }
 };
 
