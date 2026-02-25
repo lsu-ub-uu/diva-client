@@ -20,6 +20,7 @@ import compression from 'compression';
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
+import os from 'os';
 import process from 'node:process';
 
 // Short-circuit the type-checking of the built output.
@@ -102,9 +103,24 @@ app.listen(PORT, async () => {
     console.info(
       `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
+    console.info(
+      `*** Local network http://${getLocalIp()}:${PORT}${BASE_PATH} ***`,
+    );
   } else {
     console.info(
       `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
 });
+
+const getLocalIp = () => {
+  const interfaces = os.networkInterfaces();
+
+  for (const iface of Object.values(interfaces)) {
+    for (const address of iface ?? []) {
+      if (address.family === 'IPv4' && !address.internal) {
+        return address.address;
+      }
+    }
+  }
+};
