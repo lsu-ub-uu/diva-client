@@ -16,12 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import divaLogo from '@/assets/divaLogo.svg';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
+import { getNavigation } from '@/data/getNavigation.server';
+import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
+import { AngryIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,
@@ -33,12 +37,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import rootCss from './styles/root.css?url';
-import divaLogo from '@/assets/divaLogo.svg';
-import { getNavigation } from '@/data/getNavigation.server';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { AngryIcon } from 'lucide-react';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { dependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -50,6 +49,7 @@ import {
 import { Alert, type Severity } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
+import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -63,7 +63,6 @@ const { MODE } = import.meta.env;
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
   const member = getMemberFromHostname(request, dependencies);

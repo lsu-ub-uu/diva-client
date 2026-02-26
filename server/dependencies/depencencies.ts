@@ -231,7 +231,7 @@ export const handleDataChanged = async ({
   }
 };
 
-export { loadDependencies };
+export { dependencies, loadDependencies };
 
 export const dependenciesContext = createContext<{
   dependencies: Dependencies;
