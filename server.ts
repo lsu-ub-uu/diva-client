@@ -22,6 +22,7 @@ import express from 'express';
 import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
+import cache from 'cachtest';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -44,7 +45,7 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
 }
 
 const app = express();
-
+const myCache = cache;
 app.use(compression());
 app.disable('x-powered-by');
 
@@ -58,6 +59,9 @@ if (BASE_PATH && BASE_PATH !== '/') {
     res.redirect(BASE_PATH);
   });
 }
+
+console.info(myCache.getTest());
+myCache.setTest('newVal');
 
 if (DEVELOPMENT) {
   console.info('Starting development server');
@@ -73,7 +77,8 @@ if (DEVELOPMENT) {
   app.use(async (req, res, next) => {
     try {
       const appModule = await viteDevServer.ssrLoadModule('./server/app.ts');
-      return await appModule.app(req, res, next);
+      const app = appModule.createApp(cache);
+      return await app(req, res, next);
     } catch (error) {
       if (typeof error === 'object' && error instanceof Error) {
         viteDevServer.ssrFixStacktrace(error);
@@ -88,7 +93,9 @@ if (DEVELOPMENT) {
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
   app.use(express.static('dist/client', { maxAge: '1h' }));
-  app.use(await import(BUILD_PATH).then((appModule) => appModule.app));
+  app.use(
+    await import(BUILD_PATH).then((appModule) => appModule.createApp(cache)),
+  );
 }
 
 app.use(morgan('tiny'));
@@ -106,6 +113,7 @@ app.listen(PORT, async () => {
     console.info(
       `*** Local network http://${getLocalIp()}:${PORT}${BASE_PATH} ***`,
     );
+    console.info('serverts', myCache.getTest());
   } else {
     console.info(
       `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
