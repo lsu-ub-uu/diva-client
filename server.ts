@@ -22,10 +22,6 @@ import express from 'express';
 import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
-import {
-  getDependencies,
-  refreshDependencies,
-} from './server/dependencies/depencencies';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -46,8 +42,6 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
     'Missing required environment variable CORA_EXTERNAL_SYSTEM_URL',
   );
 }
-
-const dependencies = await getDependencies();
 
 const app = express();
 
@@ -79,7 +73,7 @@ if (DEVELOPMENT) {
   app.use(async (req, res, next) => {
     try {
       const appModule = await viteDevServer.ssrLoadModule('./server/app.ts');
-      const app = appModule.createApp(dependencies, refreshDependencies);
+      const app = appModule.createApp();
       return await app(req, res, next);
     } catch (error) {
       if (typeof error === 'object' && error instanceof Error) {
@@ -97,7 +91,7 @@ if (DEVELOPMENT) {
   app.use(express.static('dist/client', { maxAge: '1h' }));
   app.use(
     await import(BUILD_PATH).then((appModule) =>
-      appModule.createApp(dependencies, refreshDependencies),
+      appModule.createApp(),
     ),
   );
 }

@@ -21,14 +21,16 @@ import express from 'express';
 import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
-import { dependenciesContext } from './dependencies/depencencies';
+import {
+  dependenciesContext,
+  getDependencies,
+  loadDependencies,
+} from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
-import type { Dependencies } from '@/cora/bffTypes.server';
 
-export const createApp = (
-  dependencies: Dependencies,
-  loadDependencies: () => Promise<void>,
-) => {
+const dependencies = await getDependencies();
+
+export const createApp = () => {
   const app = express();
 
   app.use(
