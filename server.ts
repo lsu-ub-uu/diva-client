@@ -64,17 +64,18 @@ if (DEVELOPMENT) {
   app.get('/devLogin', (req, res) => {
     res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
   });
+
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
     }),
   );
+  const reactRouterApp = await viteDevServer.ssrLoadModule('./server/app.ts');
+
   app.use(viteDevServer.middlewares);
   app.use(async (req, res, next) => {
     try {
-      const appModule = await viteDevServer.ssrLoadModule('./server/app.ts');
-      const app = appModule.createApp();
-      return await app(req, res, next);
+      return await reactRouterApp.app(req, res, next);
     } catch (error) {
       if (typeof error === 'object' && error instanceof Error) {
         viteDevServer.ssrFixStacktrace(error);
@@ -84,16 +85,13 @@ if (DEVELOPMENT) {
   });
 } else {
   console.info('Starting production server');
+  const reactRouterApp = await import(BUILD_PATH);
   app.use(
     `${BASE_PATH}/assets`,
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
   app.use(express.static('dist/client', { maxAge: '1h' }));
-  app.use(
-    await import(BUILD_PATH).then((appModule) =>
-      appModule.createApp(),
-    ),
-  );
+  app.use(reactRouterApp.app);
 }
 
 app.use(morgan('tiny'));

@@ -30,29 +30,26 @@ import { createi18nInstance, i18nContext } from './i18n';
 
 const dependencies = await getDependencies();
 
-export const createApp = () => {
-  const app = express();
+export const app = express();
 
-  app.use(
-    createRequestHandler({
-      build: () => import('virtual:react-router/server-build'),
+app.use(
+  createRequestHandler({
+    build: () => import('virtual:react-router/server-build'),
 
-      getLoadContext: async (request) => {
-        const context = new RouterContextProvider();
+    getLoadContext: async (request) => {
+      const context = new RouterContextProvider();
 
-        context.set(dependenciesContext, {
-          dependencies,
-          refreshDependencies: loadDependencies,
-        });
+      context.set(dependenciesContext, {
+        dependencies,
+        refreshDependencies: loadDependencies,
+      });
 
-        context.set(
-          i18nContext,
-          (await createi18nInstance(request, dependencies)) as i18n,
-        );
+      context.set(
+        i18nContext,
+        (await createi18nInstance(request, dependencies)) as i18n,
+      );
 
-        return context;
-      },
-    }),
-  );
-  return app;
-};
+      return context;
+    },
+  }),
+);
