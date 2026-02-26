@@ -6,7 +6,7 @@ import styles from './Menu.module.css';
 import { MenuContext } from './MenuContext';
 import type { ButtonProps } from '../Button/Button';
 
-interface MenuProps {
+export interface MenuProps {
   title?: string;
   id: string;
   useFilter?: boolean;
