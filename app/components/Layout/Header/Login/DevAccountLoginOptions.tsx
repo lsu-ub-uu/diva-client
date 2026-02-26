@@ -18,7 +18,7 @@
 
 import { useTranslation } from 'react-i18next';
 
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { ExampleUser } from '@/cora/bffTypes.server';
 import { MenuItem } from '@headlessui/react';
 
 interface DevAccountsProps {

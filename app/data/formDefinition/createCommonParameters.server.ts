@@ -18,10 +18,7 @@
  */
 
 import type { FormComponentType } from '@/components/FormGenerator/types';
-import type {
-  BFFMetadata,
-  BFFPresentation,
-} from '@/cora/transform/bffTypes.server';
+import type { BFFMetadata, BFFPresentation } from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const createCommonParameters = (

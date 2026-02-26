@@ -1,4 +1,4 @@
-import type { DeploymentInfo } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { DeploymentInfo } from '@/cora/bffTypes.server';
 import { coraApiUrl, DEPLOYMENT_INFO_CONTENT_TYPE } from './helper.server';
 import axios from 'axios';
 

@@ -23,7 +23,7 @@ import { setRecordTrash } from '@/data/setRecordTrash.server';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;

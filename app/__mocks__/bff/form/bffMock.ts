@@ -15,7 +15,7 @@ import type {
   BFFPresentationTextVar,
   BFFRecordType,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 
 export const someValidationTypeData: BFFValidationType = {
   id: 'someValidationTypeId',

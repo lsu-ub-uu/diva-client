@@ -4,7 +4,7 @@ import { SearchLayout } from '../SearchLayout';
 import { createRoutesStub } from 'react-router';
 import type { SearchFormDefinition } from '../../utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from '../../utils/createActiveFilters.server';
-import type { BFFMetadataTextVariable } from '@/cora/transform/bffTypes.server';
+import type { BFFMetadataTextVariable } from '@/cora/bffTypes.server';
 import type { FilterDefinition } from '../../utils/createFilterDefinition.server';
 
 describe('SearchLayout', () => {

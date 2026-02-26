@@ -17,9 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { type BFFText } from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
+import { type BFFText } from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createTextDefinition } from '../textDefinition.server';
 

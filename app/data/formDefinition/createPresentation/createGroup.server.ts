@@ -22,10 +22,10 @@ import type {
   BFFMetadataGroup,
   BFFPresentationChildReference,
   BFFPresentationGroup,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createAttributes } from './createAttributes';
 import type {

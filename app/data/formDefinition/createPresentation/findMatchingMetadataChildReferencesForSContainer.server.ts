@@ -22,9 +22,9 @@ import type {
   BFFMetadataChildReference,
   BFFPresentationContainer,
   BFFPresentationSurroundingContainer,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { Lookup } from '@/utils/structs/lookup';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 
 export const findMatchingMetadataChildReferencesForSContainer = (

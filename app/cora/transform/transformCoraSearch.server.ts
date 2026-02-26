@@ -21,7 +21,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFSearch } from './bffTypes.server';
+import type { BFFSearch } from '../bffTypes.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,

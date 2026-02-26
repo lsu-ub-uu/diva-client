@@ -18,7 +18,7 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { createBinaryRecord } from '@/cora/createBinaryRecord.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import type { Route } from './+types/binaryRecord';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {

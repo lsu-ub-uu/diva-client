@@ -22,7 +22,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFLoginUnit } from './bffTypes.server';
+import type { BFFLoginUnit } from '../bffTypes.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,

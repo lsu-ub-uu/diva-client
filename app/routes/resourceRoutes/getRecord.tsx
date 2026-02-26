@@ -20,7 +20,7 @@ import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAn
 import { assertDefined } from '@/utils/invariant';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/getRecord';
 
 export const loader = async ({

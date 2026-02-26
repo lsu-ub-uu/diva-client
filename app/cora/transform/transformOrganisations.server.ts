@@ -10,7 +10,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '../cora-data/types.server';
-import type { BFFOrganisation } from './bffTypes.server';
+import type { BFFOrganisation } from '../bffTypes.server';
 
 export const transformOrganisations = (
   data: DataListWrapper,

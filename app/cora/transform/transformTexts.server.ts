@@ -29,7 +29,7 @@ import {
 import { getAllChildrenWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFText } from './bffTypes.server';
+import type { BFFText } from '../bffTypes.server';
 
 export const transformCoraTexts = (
   dataListWrapper: DataListWrapper,

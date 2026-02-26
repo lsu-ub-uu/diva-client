@@ -1,7 +1,7 @@
 import type {
   BFFMetadataChildReference,
   BFFPresentationChildReference,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { determineRepeatMax } from '../formDefinition.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 

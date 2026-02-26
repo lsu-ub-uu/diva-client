@@ -1,6 +1,6 @@
 import type { Auth } from '@/auth/Auth';
 import type { Notification } from '@/auth/sessions.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import type { BFFSearchResult } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
+import type { BFFPresentationChildReference } from '@/cora/bffTypes.server';
 
 export const createBFFPresentationReference = (
   childId: string,

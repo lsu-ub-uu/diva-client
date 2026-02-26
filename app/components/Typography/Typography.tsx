@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import type { TextStyle } from '@/cora/bffTypes.server';
 import clsx from 'clsx';
 import type { ElementType, HTMLProps } from 'react';
 import styles from './Typography.module.css';

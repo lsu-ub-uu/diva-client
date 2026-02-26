@@ -39,7 +39,7 @@ import type {
   BFFPresentationResourceLink,
   BFFPresentationTextVar,
   BFFResourceLink,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createCollVar } from '@/data/formDefinition/createPresentation/createCollVar.server';
 import { createContainer } from '@/data/formDefinition/createPresentation/createContainer.server';
 import { createGroup } from '@/data/formDefinition/createPresentation/createGroup.server';
@@ -51,8 +51,8 @@ import { createResourceLink } from '@/data/formDefinition/createPresentation/cre
 import { createText } from '@/data/formDefinition/createPresentation/createText.server';
 import { createTextVar } from '@/data/formDefinition/createPresentation/createTextVar.server';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { createPresentationChildReferenceParameters } from '@/data/formDefinition/createPresentationChildReferenceParameters.server';
 import { createRepeat } from '@/data/formDefinition/createPresentation/createRepeat.server';

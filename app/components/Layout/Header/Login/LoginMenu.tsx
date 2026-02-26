@@ -39,7 +39,7 @@ import {
   logInWithWebRedirect,
   useWebRedirectLogin,
 } from '@/auth/useWebRedirectLogin';
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { ExampleUser } from '@/cora/bffTypes.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useHydrated } from '@/utils/useHydrated';

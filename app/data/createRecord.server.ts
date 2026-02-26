@@ -26,7 +26,7 @@ import { transformToCoraData } from '@/cora/transform/transformToCora.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { postRecordData } from '@/cora/postRecordData.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const createRecord = async (
   dependencies: Dependencies,

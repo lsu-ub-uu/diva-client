@@ -1,4 +1,4 @@
-import type { HeadlineLevel } from '@/cora/transform/bffTypes.server';
+import type { HeadlineLevel } from '@/cora/bffTypes.server';
 import type { RelatedItemSeriesGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useId } from 'react';

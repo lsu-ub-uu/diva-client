@@ -5,11 +5,11 @@ import type {
   BFFMetadataRecordLink,
   BFFPresentationChildReference,
   BFFPresentationRecordLink,
-} from '@/cora/transform/bffTypes.server';
-import { Lookup } from '@/utils/structs/lookup';
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { Lookup } from 'server/dependencies/util/lookup';
 import { describe, expect, it } from 'vitest';
 import { createRecordLink } from '../createRecordLink.server';
-import type { Dependencies } from '../../formDefinitionsDep.server';
 
 describe('createRecordLink', () => {
   it('transforms recordLink', () => {

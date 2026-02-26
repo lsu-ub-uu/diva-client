@@ -18,6 +18,7 @@
  */
 
 import type { ActionLink } from '@/cora/cora-data/types.server';
+import type { Lookup } from 'server/dependencies/util/lookup';
 
 export interface BFFRecordLink {
   name: string;
@@ -372,3 +373,42 @@ export interface BFFOrganisation {
 }
 
 export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';
+
+export interface DeploymentInfo {
+  applicationName: string;
+  deploymentName: string;
+  coraVersion: string;
+  applicationVersion: string;
+  urls: {
+    REST: string;
+    appTokenLogin: string;
+    passwordLogin: string;
+    record: string;
+    recordType: string;
+    iiif: string;
+    [key: string]: string;
+  };
+  exampleUsers: ExampleUser[];
+}
+
+export interface ExampleUser {
+  name: string;
+  text: string;
+  type: string;
+  loginId: string;
+  appToken: string;
+}
+
+export interface Dependencies {
+  validationTypePool: Lookup<string, BFFValidationType>;
+  metadataPool: Lookup<string, BFFMetadata>;
+  presentationPool: Lookup<string, BFFPresentation>;
+  textPool: Lookup<string, BFFText>;
+  recordTypePool: Lookup<string, BFFRecordType>;
+  searchPool: Lookup<string, BFFSearch>;
+  loginUnitPool: Lookup<string, BFFLoginUnit>;
+  loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
+  memberPool: Lookup<string, BFFMember>;
+  organisationPool: Lookup<string, BFFOrganisation>;
+  deploymentInfo: DeploymentInfo;
+}

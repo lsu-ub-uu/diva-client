@@ -1,5 +1,5 @@
 import type { User } from '@/auth/createUser';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 
 export const getAutoPermissionUnit = (
   member: BFFMember | undefined,

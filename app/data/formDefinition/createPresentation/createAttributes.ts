@@ -1,11 +1,11 @@
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import type { BFFMetadataTypes } from '../formDefinition.server';
 import type {
   BFFAttributeReference,
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
   BFFPresentationBase,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import type { FormAttributeCollection } from '@/components/FormGenerator/types';
 import { createCommonParameters } from '../createCommonParameters.server';
 import { createCollectionVariableOptions } from './createGroupOrComponent';

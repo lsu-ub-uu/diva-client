@@ -27,10 +27,10 @@ import type {
   BFFMetadataNumberVariable,
   BFFPresentationBase,
   BFFPresentationChildReference,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { createNumberVariableValidation } from '@/data/formDefinition/formValidation.server';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { createAttributes } from './createAttributes';
 import { createRepeat } from './createRepeat.server';

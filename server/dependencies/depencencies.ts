@@ -37,7 +37,9 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+  DeploymentInfo,
+} from '@/cora/bffTypes.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
@@ -48,12 +50,9 @@ import { transformCoraPresentations } from '@/cora/transform/transformPresentati
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import type {
-  Dependencies,
-  DeploymentInfo,
-} from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import { Lookup } from '@/utils/structs/lookup';
+
+import { listToPool } from './util/listToPool';
+import { Lookup } from './util/lookup';
 import 'dotenv/config';
 import { createContext } from 'react-router';
 import type { DataChangedHeaders } from './rabbitMqConsumer';

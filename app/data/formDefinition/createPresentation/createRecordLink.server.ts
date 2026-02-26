@@ -26,11 +26,11 @@ import type {
   BFFMetadataRecordLink,
   BFFPresentationChildReference,
   BFFPresentationRecordLink,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
-import type { Dependencies } from '../formDefinitionsDep.server';
 import { createAttributes } from './createAttributes';
 import { createRecordLinkSearchPresentation } from './createRecordLinkSearchPresentation.server';
 import { createRepeat } from './createRepeat.server';

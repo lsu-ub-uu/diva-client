@@ -6,7 +6,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/cora/cora-data/CoraDataTransforms.server';
-import type { BFFRecordType } from './bffTypes.server';
+import type { BFFRecordType } from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   containsChildWithNameInData,

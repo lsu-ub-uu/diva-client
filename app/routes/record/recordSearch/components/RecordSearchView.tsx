@@ -1,4 +1,4 @@
-import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
+import type { BFFMetadata } from '@/cora/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
 import { Form } from 'react-router';
 import { ActiveFilters } from './ActiveFilters';

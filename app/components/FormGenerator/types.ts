@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { ChildStyle, TextStyle } from '@/cora/transform/bffTypes.server';
+import type { ChildStyle, TextStyle } from '@/cora/bffTypes.server';
 import type { RecordLinkSearchPresentation } from '@/data/formDefinition/createPresentation/createRecordLinkSearchPresentation.server';
 
 export interface FormSchema {

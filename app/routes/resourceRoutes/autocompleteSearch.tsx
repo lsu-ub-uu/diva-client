@@ -20,7 +20,7 @@ import { searchRecords } from '@/data/searchRecords.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
 export const loader = async ({

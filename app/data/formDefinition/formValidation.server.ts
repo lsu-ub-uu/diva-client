@@ -20,7 +20,7 @@
 import type {
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import type {
   FormNumberValidation,
   FormRegexValidation,

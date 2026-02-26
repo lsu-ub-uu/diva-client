@@ -17,7 +17,7 @@
  */
 
 import LoginMenu from '@/components/Layout/Header/Login/LoginMenu';
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { ExampleUser } from '@/cora/bffTypes.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

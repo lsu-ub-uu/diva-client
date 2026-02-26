@@ -38,7 +38,7 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { AngryIcon } from 'lucide-react';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';

@@ -2,7 +2,7 @@ import { Menu } from '@headlessui/react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { DevAccountLoginOptions } from '../DevAccountLoginOptions';
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { ExampleUser } from '@/cora/bffTypes.server';
 
 describe('DevAccountLoginOptions', () => {
   it('should render correctly when there are dev accounts', async () => {

@@ -1,12 +1,12 @@
 import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import {
   createFilters,
   type FilterDefinition,
 } from './createFilterDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export interface SearchFormDefinition {
   searchRootName: string;

@@ -17,7 +17,7 @@
  */
 
 import styles from './MemberBar.module.css';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';

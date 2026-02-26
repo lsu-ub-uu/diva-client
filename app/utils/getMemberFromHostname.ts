@@ -1,5 +1,5 @@
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const getMemberFromHostname = (
   request: Request,

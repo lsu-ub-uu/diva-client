@@ -26,7 +26,7 @@ import {
   getDependencies,
   handleDataChanged,
   loadDependencies,
-} from './depencencies';
+} from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
 import { startConsumer } from './rabbitMqConsumer';
 

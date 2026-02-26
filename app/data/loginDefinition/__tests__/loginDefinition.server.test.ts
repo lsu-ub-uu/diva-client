@@ -25,9 +25,9 @@ import type {
   BFFMetadataTextVariable,
   BFFPresentationGroup,
   BFFPresentationTextVar,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createLoginDefinition } from '../loginDefinition.server';
 
