@@ -42,10 +42,5 @@
     "**/.client/**/*.tsx",
     ".react-router/types/**/*"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "target",
-    "server/dependencies/util/target"
-  ]
+  "exclude": ["node_modules", "dist", "target"]
 }
