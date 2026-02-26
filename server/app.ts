@@ -28,34 +28,24 @@ import {
 import { createi18nInstance, i18nContext } from './i18n';
 import type { i18n } from 'i18next';
 
-export const createApp = (cache: any) => {
-  const app = express();
+export const app = express();
 
-  app.use(
-    createRequestHandler({
-      build: () => import('virtual:react-router/server-build'),
+app.use(
+  createRequestHandler({
+    build: () => import('virtual:react-router/server-build'),
 
-      getLoadContext: async (request) => {
-        console.info('getLoadContext', cache.getTest());
-        const context = new RouterContextProvider();
+    getLoadContext: async (request) => {
+      const context = new RouterContextProvider();
 
-        context.set(dependenciesContext, {
-          dependencies: await getDependencies(),
+      context.set(dependenciesContext, {
+        dependencies: await getDependencies(),
 
-          refreshDependencies: () => {
-            cache.setTest(
-              'updated in refreshDependencies' + new Date().toISOString(),
-            );
-            return loadDependencies();
-          },
-        });
+        refreshDependencies: loadDependencies,
+      });
 
-        context.set(i18nContext, (await createi18nInstance(request)) as i18n);
+      context.set(i18nContext, (await createi18nInstance(request)) as i18n);
 
-        return context;
-      },
-    }),
-  );
-
-  return app;
-};
+      return context;
+    },
+  }),
+);
