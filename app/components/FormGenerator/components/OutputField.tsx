@@ -22,7 +22,7 @@ import {
   FormGeneratorContext,
 } from '@/components/FormGenerator/FormGeneratorContext';
 import { Typography } from '@/components/Typography/Typography';
-import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import type { TextStyle } from '@/cora/bffTypes.server';
 import clsx from 'clsx';
 import { type ReactNode, use } from 'react';
 import { useTranslation } from 'react-i18next';

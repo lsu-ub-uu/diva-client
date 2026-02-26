@@ -86,10 +86,10 @@ import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/pa
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type {
@@ -108,7 +108,7 @@ import type {
   BFFText,
   BFFMember,
   BFFValidationType,
-} from '../bffTypes.server';
+} from '../../bffTypes.server';
 import {
   createLeaf,
   createRecordLink,

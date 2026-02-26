@@ -123,7 +123,8 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
@@ -131,14 +132,13 @@ import {
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
 } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition.server';
-import type { Dependencies } from '../formDefinitionsDep.server';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

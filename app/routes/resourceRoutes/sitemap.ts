@@ -1,5 +1,5 @@
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {

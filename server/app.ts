@@ -18,34 +18,39 @@
 
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
+import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
-import {
-  dependenciesContext,
-  getDependencies,
-  loadDependencies,
-} from './depencencies';
+import { dependenciesContext } from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
-import type { i18n } from 'i18next';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
-export const app = express();
+export const createApp = (
+  dependencies: Dependencies,
+  loadDependencies: () => Promise<void>,
+) => {
+  const app = express();
 
-app.use(
-  createRequestHandler({
-    build: () => import('virtual:react-router/server-build'),
+  app.use(
+    createRequestHandler({
+      build: () => import('virtual:react-router/server-build'),
 
-    getLoadContext: async (request) => {
-      const context = new RouterContextProvider();
+      getLoadContext: async (request) => {
+        const context = new RouterContextProvider();
 
-      context.set(dependenciesContext, {
-        dependencies: await getDependencies(),
+        context.set(dependenciesContext, {
+          dependencies,
+          refreshDependencies: loadDependencies,
+        });
 
-        refreshDependencies: loadDependencies,
-      });
+        context.set(
+          i18nContext,
+          (await createi18nInstance(request, dependencies)) as i18n,
+        );
 
-      context.set(i18nContext, (await createi18nInstance(request)) as i18n);
-
-      return context;
-    },
-  }),
-);
+        return context;
+      },
+    }),
+  );
+  return app;
+};

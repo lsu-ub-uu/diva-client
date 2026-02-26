@@ -23,9 +23,9 @@ import type {
   BFFMetadataCollectionVariable,
   BFFPresentationBase,
   BFFPresentationChildReference,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createCollectionVariableOptions } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createAttributes } from './createAttributes';

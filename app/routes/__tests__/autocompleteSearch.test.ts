@@ -23,14 +23,14 @@ import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
   BFFSearch,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { loader } from '@/routes/resourceRoutes/autocompleteSearch';
 import type { BFFDataRecord } from '@/types/record';
-import { listToPool } from '@/utils/structs/listToPool';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { RouterContextProvider } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
 

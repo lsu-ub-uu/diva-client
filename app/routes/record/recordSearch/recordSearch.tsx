@@ -8,7 +8,7 @@ import { createSearchFormDefinition } from '@/routes/record/recordSearch/utils/c
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { data, useNavigation, useSubmit } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import { SearchLayout } from './components/SearchLayout';

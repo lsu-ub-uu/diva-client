@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type * as TYPES from '@/cora/transform/bffTypes.server';
-import type { BFFPresentationGroup } from '@/cora/transform/bffTypes.server';
+import type * as TYPES from '@/cora/bffTypes.server';
+import type { BFFPresentationGroup } from '@/cora/bffTypes.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 
 interface GetRecordByRecordTypeAndRecordIdArgs {

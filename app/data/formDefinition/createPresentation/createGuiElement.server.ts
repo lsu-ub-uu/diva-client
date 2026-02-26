@@ -20,7 +20,7 @@
 import type {
   BFFGuiElement,
   BFFPresentationChildReference,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 

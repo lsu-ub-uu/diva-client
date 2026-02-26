@@ -1,9 +1,8 @@
 import { expect, it, vi } from 'vitest';
 import { describe } from 'vitest';
 import { searchRecords } from '../searchRecords.server';
-import type { Dependencies } from '../formDefinition/formDefinitionsDep.server';
-import { Lookup } from '@/utils/structs/lookup';
-import { listToPool } from '@/utils/structs/listToPool';
+import { Lookup } from 'server/dependencies/util/lookup';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import type {
   BFFMetadata,
   BFFMetadataGroup,
@@ -11,7 +10,8 @@ import type {
   BFFPresentation,
   BFFRecordType,
   BFFSearch,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type { AxiosResponse } from 'axios';
 import type {

@@ -1,8 +1,8 @@
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { createBFFMetadataReference } from '@/data/formDefinition/formMetadata.server';
 import { createBFFPresentationReference } from '@/data/formDefinition/formPresentation.server';

@@ -24,7 +24,7 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { redirect } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 
 export const action = async ({
   request,
@@ -61,8 +61,8 @@ export const action = async ({
         recordType: t(recordType.textId),
         id: recordId,
       }),
-    }); 
- 
+    });
+
     if (
       shouldRedirect &&
       trashedRecord.data?.record?.actionLinks?.read === undefined

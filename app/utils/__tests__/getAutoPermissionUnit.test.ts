@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getAutoPermissionUnit } from '../getAutoPermissionUnit';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import type { User } from '@/auth/createUser';
 
 describe('getAutoPermissionUnit', () => {

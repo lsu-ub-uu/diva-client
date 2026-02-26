@@ -22,7 +22,7 @@ import type {
   BFFPresentationChildReference,
   BFFPresentationResourceLink,
   BFFResourceLink,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type {

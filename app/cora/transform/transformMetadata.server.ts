@@ -44,7 +44,7 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataRecordLink,
-} from './bffTypes.server';
+} from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 export const transformMetadata = (

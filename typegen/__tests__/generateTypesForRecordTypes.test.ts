@@ -8,8 +8,8 @@ import type {
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
+} from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { format } from 'prettier';
 import { describe, expect, it } from 'vitest';
 import {

@@ -50,7 +50,7 @@ import coraPresentationGroupWithAddText from '@/__mocks__/bff/coraPresentationGr
 import presentationListWithTwoPNumVar from '@/__mocks__/bff/coraPresentationWithTwoNumberVariables.json';
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 import { describe, expect, it } from 'vitest';
-import type { BFFPresentationGroup } from '../bffTypes.server';
+import type { BFFPresentationGroup } from '../../bffTypes.server';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
+import type { BFFPresentationChildReference } from '@/cora/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import type { FormComponentText } from '@/components/FormGenerator/types';

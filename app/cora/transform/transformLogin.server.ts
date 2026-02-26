@@ -21,7 +21,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes.server';
+import type { BFFLoginPassword, BFFLoginWebRedirect } from '../bffTypes.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,

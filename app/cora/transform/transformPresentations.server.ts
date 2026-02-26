@@ -40,7 +40,7 @@ import type {
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
-} from './bffTypes.server';
+} from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata.server';
 import {

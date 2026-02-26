@@ -17,7 +17,7 @@
  */
 
 import type { Option } from '@/components';
-import type { Dependencies } from './formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const getValidationTypes = (
   recordType: string,

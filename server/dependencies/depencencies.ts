@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import type {
+  RecordWrapper,
+  DataListWrapper,
+} from '@/cora/cora-data/types.server';
 import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import type {
@@ -34,7 +37,9 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+  DeploymentInfo,
+} from '@/cora/bffTypes.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
@@ -45,14 +50,13 @@ import { transformCoraPresentations } from '@/cora/transform/transformPresentati
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
-import type {
-  Dependencies,
-  DeploymentInfo,
-} from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import { Lookup } from '@/utils/structs/lookup';
+
+import { listToPool } from './util/listToPool';
+import { Lookup } from './util/lookup';
 import 'dotenv/config';
 import { createContext } from 'react-router';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type { DataChangedHeaders } from 'server/rabbitMqConsumer';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -77,25 +81,25 @@ const dependencies: Dependencies = {
   deploymentInfo: {} as DeploymentInfo,
 };
 
-const loadDependencies = async () => {
-  console.info('Loading Cora metadata...');
+export type DependencyType =
+  | 'metadata'
+  | 'presentation'
+  | 'validationType'
+  | 'guiElement'
+  | 'recordType'
+  | 'search'
+  | 'loginUnit'
+  | 'login'
+  | 'diva-member'
+  | 'diva-organisation'
+  | 'text'
+  | 'deploymentInfo';
 
+const loadDependencies = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
   dependencies.textPool = listToPool<BFFText>(texts);
 
-  const types = [
-    'metadata',
-    'presentation',
-    'validationType',
-    'guiElement',
-    'recordType',
-    'search',
-    'loginUnit',
-    'login',
-    'diva-member',
-    'diva-organisation',
-  ];
   const [
     coraMetadata,
     coraPresentations,
@@ -107,14 +111,24 @@ const loadDependencies = async () => {
     coraLogins,
     coraMembers,
     coraOrganisations,
-  ] = await getPoolsFromCora(types);
+  ] = await getPoolsFromCora([
+    'metadata',
+    'presentation',
+    'validationType',
+    'guiElement',
+    'recordType',
+    'search',
+    'loginUnit',
+    'login',
+    'diva-member',
+    'diva-organisation',
+  ]);
 
   const metadata = transformMetadata(coraMetadata.data);
   dependencies.metadataPool = listToPool<BFFMetadata>(metadata);
 
   const presentation = transformCoraPresentations(coraPresentations.data);
   const guiElements = transformCoraPresentations(coraGuiElements.data);
-
   dependencies.presentationPool = listToPool<
     BFFPresentationBase | BFFPresentationGroup | BFFGuiElement
   >([...presentation, ...guiElements]);
@@ -122,8 +136,8 @@ const loadDependencies = async () => {
   const validationTypes = transformCoraValidationTypes(
     coraValidationTypes.data,
   );
-  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-  dependencies.validationTypePool = validationTypePool;
+  dependencies.validationTypePool =
+    listToPool<BFFValidationType>(validationTypes);
 
   const recordTypes = transformCoraRecordTypes(coraRecordTypes.data);
   dependencies.recordTypePool = listToPool<BFFRecordType>(recordTypes);
@@ -141,7 +155,7 @@ const loadDependencies = async () => {
 
   try {
     const members = await transformMembers(coraMembers.data);
-    dependencies.memberPool = groupMembersByHostname(members);
+    dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
     console.error('Error transforming members:', error);
     dependencies.memberPool = new Lookup<string, BFFMember>();
@@ -164,23 +178,66 @@ export const getDependencies = async () => {
   return dependencies;
 };
 
-export { dependencies, loadDependencies };
+const poolTypeMap = {
+  recordType: 'recordTypePool',
+  metadata: 'metadataPool',
+  presentation: 'presentationPool',
+  validationType: 'validationTypePool',
+  guiElement: 'presentationPool',
+  search: 'searchPool',
+  loginUnit: 'loginUnitPool',
+  login: 'loginPool',
+  'diva-member': 'memberPool',
+  'diva-organisation': 'organisationPool',
+  text: 'textPool',
+} as const;
 
-const groupMembersByHostname = (
-  members: BFFMember[],
-): Lookup<string, BFFMember> => {
-  const groupedMembers = new Lookup<string, BFFMember>();
+const transformFunctionMap = {
+  recordType: transformCoraRecordTypes,
+  metadata: transformMetadata,
+  presentation: transformCoraPresentations,
+  validationType: transformCoraValidationTypes,
+  guiElement: transformCoraPresentations,
+  search: transformCoraSearch,
+  loginUnit: transformLoginUnit,
+  login: transformLogin,
+  'diva-member': transformMembers,
+  'diva-organisation': transformOrganisations,
+  text: transformCoraTexts,
+} as const;
 
-  members.forEach((member) => {
-    member.hostnames.forEach((hostname) => {
-      groupedMembers.set(hostname, member);
-    });
-  });
+export const handleDataChanged = async ({
+  type,
+  id,
+  action,
+}: DataChangedHeaders) => {
+  const poolKey = poolTypeMap[type as keyof typeof poolTypeMap];
+  const tranformFunction =
+    transformFunctionMap[type as keyof typeof transformFunctionMap];
 
-  return groupedMembers;
+  if (action === 'delete') {
+    dependencies[poolKey].delete(id);
+  }
+
+  if (action === 'update' || action === 'create') {
+    const recordData = await getRecordDataById<RecordWrapper>(type, id);
+    const transformedData = await tranformFunction({
+      dataList: {
+        data: [recordData.data],
+      },
+    } as DataListWrapper);
+    // @ts-expect-error WIP
+    dependencies[poolKey].set(id, transformedData[0]);
+  }
 };
+
+export { loadDependencies };
 
 export const dependenciesContext = createContext<{
   dependencies: Dependencies;
   refreshDependencies: () => Promise<void>;
 }>();
+
+export const refreshDependencies = async () => {
+  await loadDependencies();
+};

@@ -79,9 +79,9 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type {
   BFFGuiElement,
@@ -102,7 +102,7 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '../bffTypes.server';
+} from '../../bffTypes.server';
 import {
   transformAttributes,
   transformDataGroup,

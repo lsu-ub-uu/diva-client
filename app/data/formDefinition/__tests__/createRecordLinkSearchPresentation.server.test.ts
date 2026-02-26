@@ -1,8 +1,8 @@
-import { listToPool } from '@/utils/structs/listToPool';
-import { Lookup } from '@/utils/structs/lookup';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import { Lookup } from 'server/dependencies/util/lookup';
 import { describe, expect, it } from 'vitest';
 import { createRecordLinkSearchPresentation } from '../createPresentation/createRecordLinkSearchPresentation.server';
-import type { Dependencies } from '../formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 describe('createRecordLinkSearchPresentation', () => {
   it('creates a record link search presentation with the first search term as autocomplete search term', () => {

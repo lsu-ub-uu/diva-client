@@ -18,7 +18,7 @@ import {
   Link,
   type MetaDescriptor,
 } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';

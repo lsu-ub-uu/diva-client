@@ -39,7 +39,7 @@ import type {
   ResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+
 import {
   createFormMetaData,
   createViewMetadata,
@@ -53,7 +53,11 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFRecordType, FormDefinitionMode } from './bffTypes.server';
+import type {
+  BFFRecordType,
+  Dependencies,
+  FormDefinitionMode,
+} from '../bffTypes.server';
 
 /**
  * Transforms records

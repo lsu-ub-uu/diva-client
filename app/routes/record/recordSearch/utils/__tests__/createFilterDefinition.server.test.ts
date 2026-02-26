@@ -4,9 +4,9 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it } from 'vitest';
 import { createFilters } from '../createFilterDefinition.server';
 

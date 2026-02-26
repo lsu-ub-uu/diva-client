@@ -13,7 +13,7 @@ import {
   useRouteLoaderData,
   type LoaderFunctionArgs,
 } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';

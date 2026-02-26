@@ -24,11 +24,10 @@ import type {
   BFFMetadataGroup,
   BFFMetadataRecordLink,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { Dependencies } from './formDefinitionsDep.server';
-import type { FormMetaData } from './formDefinition.server';
-import { determineRepeatMax } from './formDefinition.server';
+import { determineRepeatMax, type FormMetaData } from './formDefinition.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,

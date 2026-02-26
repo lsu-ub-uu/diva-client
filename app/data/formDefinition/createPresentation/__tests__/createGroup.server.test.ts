@@ -6,10 +6,10 @@ import type {
   BFFPresentation,
   BFFPresentationChildReference,
   BFFPresentationGroup,
-} from '@/cora/transform/bffTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it } from 'vitest';
-import type { Dependencies } from '../../formDefinitionsDep.server';
 import { createGroup } from '../createGroup.server';
 
 describe('createGroup', () => {

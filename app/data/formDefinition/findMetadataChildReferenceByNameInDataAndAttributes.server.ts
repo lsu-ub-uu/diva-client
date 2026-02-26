@@ -1,12 +1,12 @@
 import type {
   BFFMetadata,
   BFFMetadataChildReference,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import {
   type BFFMetadataTypes,
   getAttributesByAttributeReferences,
 } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (
   metadataPool: Dependencies['metadataPool'],

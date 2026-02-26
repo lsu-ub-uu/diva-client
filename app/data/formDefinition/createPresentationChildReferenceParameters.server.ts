@@ -1,5 +1,5 @@
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
-import type { BFFPresentationChildReference } from '@/cora/transform/bffTypes.server';
+import type { BFFPresentationChildReference } from '@/cora/bffTypes.server';
 
 export const createPresentationChildReferenceParameters = (
   presentationChildReference: BFFPresentationChildReference,

@@ -25,11 +25,11 @@ import type {
   BFFMetadataChildReference,
   BFFPresentationChildReference,
   BFFPresentationContainer,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import { findMatchingMetadataChildReferencesForRContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForRContainer';
 import { findMatchingMetadataChildReferencesForSContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForSContainer.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 

@@ -25,9 +25,9 @@ import type {
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentationRecordLink,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createCollectionVariableOptions } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 
 export type BFFMetadataTypes =
   | BFFMetadataCollectionVariable

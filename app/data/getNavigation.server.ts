@@ -19,11 +19,8 @@
 import type { Auth } from '@/auth/Auth';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type {
-  BFFMember,
-  BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { BFFMember, BFFRecordType } from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { href } from 'react-router';
 
 export interface NavigationItem {

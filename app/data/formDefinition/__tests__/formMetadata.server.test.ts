@@ -92,13 +92,13 @@ import type {
   BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFValidationType,
-} from '@/cora/transform/bffTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { FormMetaData } from '../formDefinition.server';
-import type { Dependencies } from '../formDefinitionsDep.server';
 import {
   createFormMetaData,
   createMetaDataFromChildReference,

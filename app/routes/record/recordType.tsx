@@ -20,7 +20,7 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, Outlet } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordType';
 

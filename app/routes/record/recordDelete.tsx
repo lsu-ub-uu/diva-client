@@ -19,7 +19,7 @@
 import { deleteRecord } from '@/data/deleteRecord.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { dependenciesContext } from 'server/depencencies';
+import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordDelete';
 import { redirect } from 'react-router';
