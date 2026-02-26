@@ -1,5 +1,5 @@
 import { vi, describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Filter } from '../Filter';
 import userEvent from '@testing-library/user-event';
 import type {
@@ -335,6 +335,8 @@ describe('Filter', () => {
 
     await user.type(autocomplete, 'A');
 
-    await expect(screen.getByText('Result 1')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Result 1')).toBeInTheDocument();
+    });
   });
 });

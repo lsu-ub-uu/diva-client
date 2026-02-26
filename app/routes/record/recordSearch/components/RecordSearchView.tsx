@@ -1,12 +1,13 @@
 import type { BFFMetadata } from '@/cora/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
 import { Form } from 'react-router';
+import type { ActiveFilter } from '../utils/createActiveFilters.server';
 import { ActiveFilters } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
 import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { SearchResultButtons } from './SearchResultButtons';
 import { SearchResults } from './SearchResults';
-import type { ActiveFilter } from '../utils/createActiveFilters.server';
 
 interface RecordSearchViewProps {
   query: string;
@@ -20,8 +21,7 @@ interface RecordSearchViewProps {
   activeFilters: ActiveFilter[];
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
-  filtersOpen: boolean;
-  setFiltersOpen: (open: boolean) => void;
+  showFilterDialog: () => void;
   apiUrl: string;
 }
 
@@ -37,8 +37,7 @@ export const RecordSearchView = ({
   activeFilters,
   onRemoveFilter,
   onClearAllFilters,
-  filtersOpen,
-  setFiltersOpen,
+  showFilterDialog,
   apiUrl,
 }: RecordSearchViewProps) => {
   return (
@@ -61,14 +60,17 @@ export const RecordSearchView = ({
         />
       </Form>
 
+      <SearchResultButtons
+        searchResults={searchResults}
+        apiUrl={apiUrl}
+        activeFilters={activeFilters}
+        onClearAllFilters={onClearAllFilters}
+        showFilterDialog={showFilterDialog}
+      />
+
       <ActiveFilters
         activeFilters={activeFilters}
         onRemoveFilter={onRemoveFilter}
-        onClearAllFilters={onClearAllFilters}
-        filtersOpen={filtersOpen}
-        setFiltersOpen={setFiltersOpen}
-        apiUrl={apiUrl}
-        searchResults={searchResults}
       />
 
       {searchResults.data.length > 0 && (
