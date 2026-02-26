@@ -25,7 +25,7 @@ import process from 'node:process';
 import {
   getDependencies,
   refreshDependencies,
-} from 'server/dependencies/depencencies';
+} from './server/dependencies/depencencies';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
