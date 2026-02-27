@@ -180,6 +180,39 @@ describe('dependencies', () => {
       expect(dependencies.textPool.has('someRecordId')).toBe(false);
     });
 
+    it('handle exit gracefully on delete when poolType is undefined', async () => {
+      const { getDependencies, handleDataChanged } =
+        await importDependenciesModule();
+
+      setUpMocks();
+      const dependencies = await getDependencies();
+
+      handleDataChanged({
+        type: 'unknownType',
+        id: 'someRecordId',
+        action: 'delete',
+        messagingId: '1234',
+      });
+
+      expect(dependencies.textPool.has('someRecordId')).toBe(false);
+    })
+    it('handle exit gracefully on update when poolType is undefined', async () => {
+      const { getDependencies, handleDataChanged } =
+        await importDependenciesModule();
+
+      setUpMocks();
+      const dependencies = await getDependencies();
+
+      handleDataChanged({
+        type: 'unknownType',
+        id: 'someRecordId',
+        action: 'update',
+        messagingId: '1234',
+      });
+
+      expect(dependencies.textPool.has('someRecordId')).toBe(false);
+    })
+
     it('handles update', async () => {
       const { getDependencies, handleDataChanged } =
         await importDependenciesModule();
@@ -205,54 +238,80 @@ describe('dependencies', () => {
       const newValue = dependencies.textPool.get('someRecordId');
       expect(newValue).not.toBe(oldValue);
     });
-  });
 
-  it.each([
-    ['text', 'someText', 'textPool'],
-    ['metadata', 'someTextVar', 'metadataPool'],
-    ['presentation', 'someNewPGroup', 'presentationPool'],
-    ['validationType', 'someValidationTypeId', 'validationTypePool'],
-    ['guiElement', 'demoTestLinkGuiElement', 'presentationPool'],
-    ['recordType', 'someId', 'recordTypePool'],
-    ['validationType', 'someValidationTypeId', 'validationTypePool'],
-    ['search', 'personSearch', 'searchPool'],
-    ['loginUnit', 'someLoginUnitId', 'loginUnitPool'],
-    ['login', 'someLoginUnitId', 'loginPool'],
-    ['diva-member', 'uu-theme', 'memberPool'],
-    [
-      'diva-organisation',
-      'diva-organisation:19263605242540875',
-      'organisationPool',
-    ],
-  ])(
-    'handles update with correct transformation for recordType %s',
-    async (recordType, recordId, poolName) => {
+    it('handles create', async () => {
       const { getDependencies, handleDataChanged } =
         await importDependenciesModule();
 
       setUpMocks();
 
       const dependencies = await getDependencies();
-      const pool = dependencies[
-        poolName as keyof typeof dependencies
-      ] as Lookup<string, any>;
-      const oldValue = pool.get(recordId);
 
       vi.mocked(getRecordDataById).mockResolvedValueOnce({
-        data: testDataByRecordTypeId[recordType].dataList
-          .data[0] as RecordWrapper,
+        data: coraTexts.dataList.data[0] as RecordWrapper,
       } as AxiosResponse<RecordWrapper>);
 
       await handleDataChanged({
-        action: 'update',
-        type: recordType,
-        id: recordId,
+        type: 'text',
+        id: 'someRecordId',
+        action: 'create',
         messagingId: '1234',
       });
-      expect(getRecordDataById).toHaveBeenCalledWith(recordType, recordId);
 
-      const newValue = pool.get(recordId);
-      expect(newValue).not.toBe(oldValue);
-    },
-  );
+      expect(getRecordDataById).toHaveBeenCalledWith('text', 'someRecordId');
+
+      const newValue = dependencies.textPool.get('someRecordId');
+      expect(newValue).not.toBe(undefined);
+    });
+
+    it.each([
+      ['text', 'someText', 'textPool'],
+      ['metadata', 'someTextVar', 'metadataPool'],
+      ['presentation', 'someNewPGroup', 'presentationPool'],
+      ['validationType', 'someValidationTypeId', 'validationTypePool'],
+      ['guiElement', 'demoTestLinkGuiElement', 'presentationPool'],
+      ['recordType', 'someId', 'recordTypePool'],
+      ['validationType', 'someValidationTypeId', 'validationTypePool'],
+      ['search', 'personSearch', 'searchPool'],
+      ['loginUnit', 'someLoginUnitId', 'loginUnitPool'],
+      ['login', 'someLoginUnitId', 'loginPool'],
+      ['diva-member', 'uu-theme', 'memberPool'],
+      [
+        'diva-organisation',
+        'diva-organisation:19263605242540875',
+        'organisationPool',
+      ],
+    ])(
+      'handles update with correct transformation for recordType %s',
+      async (recordType, recordId, poolName) => {
+        const { getDependencies, handleDataChanged } =
+          await importDependenciesModule();
+
+        setUpMocks();
+
+        const dependencies = await getDependencies();
+        const pool = dependencies[
+          poolName as keyof typeof dependencies
+        ] as Lookup<string, any>;
+        const oldValue = pool.get(recordId);
+
+        vi.mocked(getRecordDataById).mockResolvedValueOnce({
+          data: testDataByRecordTypeId[recordType].dataList
+            .data[0] as RecordWrapper,
+        } as AxiosResponse<RecordWrapper>);
+
+        await handleDataChanged({
+          action: 'update',
+          type: recordType,
+          id: recordId,
+          messagingId: '1234',
+        });
+        expect(getRecordDataById).toHaveBeenCalledWith(recordType, recordId);
+
+        const newValue = pool.get(recordId);
+        expect(newValue).not.toBe(oldValue);
+      },
+    );
+  });
+
 });
