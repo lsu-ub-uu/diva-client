@@ -32,11 +32,11 @@ import { listToPool } from 'server/dependencies/util/listToPool';
 import { RouterContextProvider } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 vi.mock('@/data/searchRecords.server');
 vi.mock('@/utils/invariant');
-vi.mock('server/dependencies');
+vi.mock('server/dependencies/depencencies');
 
 describe('autocompleteSearch', () => {
   describe('loader', () => {
@@ -67,8 +67,7 @@ describe('autocompleteSearch', () => {
         destroySession: vi.fn(),
       });
 
-      vi.mocked(dependencies).searchPool = mockDependencies.searchPool;
-      vi.mocked(dependencies).metadataPool = mockDependencies.metadataPool;
+      vi.mocked(getDependencies).mockResolvedValue(mockDependencies);
 
       vi.mocked(searchRecords).mockResolvedValue({
         data: [],
@@ -137,8 +136,7 @@ describe('autocompleteSearch', () => {
         destroySession: vi.fn(),
       });
 
-      vi.mocked(dependencies).searchPool = mockDependencies.searchPool;
-      vi.mocked(dependencies).metadataPool = mockDependencies.metadataPool;
+      vi.mocked(getDependencies).mockResolvedValue(mockDependencies);
 
       vi.mocked(searchRecords).mockResolvedValue({
         data: [{ id: 'result1' }, { id: 'result2' }] as BFFDataRecord[],
