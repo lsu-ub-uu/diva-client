@@ -17,12 +17,6 @@
  */
 
 import type {
-  RecordWrapper,
-  DataListWrapper,
-} from '@/cora/cora-data/types.server';
-import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
-import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
-import type {
   BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
@@ -40,6 +34,12 @@ import type {
   Dependencies,
   DeploymentInfo,
 } from '@/cora/bffTypes.server';
+import type {
+  DataListWrapper,
+  RecordWrapper,
+} from '@/cora/cora-data/types.server';
+import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
+import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import { transformCoraSearch } from '@/cora/transform/transformCoraSearch.server';
 import { transformLogin } from '@/cora/transform/transformLogin.server';
 import { transformLoginUnit } from '@/cora/transform/transformLoginUnit.server';
@@ -51,12 +51,11 @@ import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.
 import { transformCoraTexts } from '@/cora/transform/transformTexts.server';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes.server';
 
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import 'dotenv/config';
+import type { DataChangedHeaders } from 'server/rabbitMqConsumer';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
-import 'dotenv/config';
-import { createContext } from 'react-router';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { DataChangedHeaders } from 'server/rabbitMqConsumer';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -232,11 +231,6 @@ export const handleDataChanged = async ({
 };
 
 export { dependencies, loadDependencies };
-
-export const dependenciesContext = createContext<{
-  dependencies: Dependencies;
-  refreshDependencies: () => Promise<void>;
-}>();
 
 export const refreshDependencies = async () => {
   await loadDependencies();

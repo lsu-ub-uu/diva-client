@@ -23,6 +23,7 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
@@ -42,11 +43,10 @@ import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { dependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const loader = async ({
   request,
@@ -55,7 +55,6 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { auth, notification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
@@ -137,7 +136,6 @@ export const loader = async ({
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const { auth, flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
 

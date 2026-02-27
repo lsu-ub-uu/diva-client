@@ -28,16 +28,15 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
 import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
+import { dependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
   const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
 

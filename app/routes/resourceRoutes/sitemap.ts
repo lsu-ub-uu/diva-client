@@ -1,10 +1,8 @@
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
-import { dependenciesContext } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/sitemap';
+import { dependencies } from 'server/dependencies/depencencies';
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const { dependencies } = context.get(dependenciesContext);
-
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const navigation = await getNavigation(dependencies, undefined, undefined);
   const origin = new URL(request.url).origin;
 

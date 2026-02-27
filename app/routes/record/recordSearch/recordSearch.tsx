@@ -8,7 +8,7 @@ import { createSearchFormDefinition } from '@/routes/record/recordSearch/utils/c
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { data, useNavigation, useSubmit } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { dependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import { SearchLayout } from './components/SearchLayout';
@@ -26,7 +26,6 @@ export const loader = async ({
   params,
 }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
-  const { dependencies } = context.get(dependenciesContext);
   const member = getMemberFromHostname(request, dependencies);
   const { auth } = context.get(sessionContext);
   const recordType = dependencies.recordTypePool.get(params.recordType);

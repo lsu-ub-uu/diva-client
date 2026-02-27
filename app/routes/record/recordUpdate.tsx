@@ -38,14 +38,13 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
-import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { dependencies } from 'server/dependencies/depencencies';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const { t, language } = context.get(i18nContext);
-  const { dependencies } = context.get(dependenciesContext);
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
   const { recordType, recordId } = params;
@@ -103,7 +102,6 @@ export const action = async ({
   const { recordType: recordTypeId, recordId } = params;
   const { t } = context.get(i18nContext);
   const { auth, flashNotification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
 
   const formData = await request.formData();
 

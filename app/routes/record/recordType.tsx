@@ -20,13 +20,11 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, Outlet } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordType';
+import { dependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const { dependencies } = context.get(dependenciesContext);
-
   const { t } = context.get(i18nContext);
 
   if (!dependencies.recordTypePool.has(params.recordType)) {
