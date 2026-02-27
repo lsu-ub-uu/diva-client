@@ -21,10 +21,15 @@ import express from 'express';
 import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
-import { getDependencies } from './dependencies/depencencies';
+import {
+  getDependencies,
+  handleDataChanged,
+} from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
+import { listenForDataChange } from './listenForDataChange';
 
 const dependencies = await getDependencies();
+listenForDataChange(handleDataChanged);
 
 export const app = express();
 

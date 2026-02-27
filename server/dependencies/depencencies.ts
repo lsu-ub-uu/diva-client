@@ -53,7 +53,7 @@ import { transformCoraValidationTypes } from '@/cora/transform/transformValidati
 
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
-import type { DataChangedHeaders } from 'server/rabbitMqConsumer';
+import type { DataChangedHeaders } from '../listenForDataChange';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
 
