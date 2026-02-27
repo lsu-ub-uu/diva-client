@@ -13,7 +13,7 @@ import {
   useRouteLoaderData,
   type LoaderFunctionArgs,
 } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';
@@ -22,16 +22,16 @@ import { ImageAttribution } from './ImageAttribution';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
 
-export const loader = ({ request, context }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const auth = context.get(sessionContext);
 
   if (auth?.auth?.data.token) {
     return redirect(href('/:recordType', { recordType: 'diva-output' }));
   }
 
-  const { dependencies } = context.get(dependenciesContext);
   const i18n = context.get(i18nContext);
   const language = i18n.language as 'sv' | 'en';
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const title = member
     ? member.id !== 'diva'

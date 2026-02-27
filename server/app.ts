@@ -22,13 +22,14 @@ import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
 import {
-  dependenciesContext,
   getDependencies,
-  loadDependencies,
+  handleDataChanged,
 } from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
+import { listenForDataChange } from './listenForDataChange';
 
 const dependencies = await getDependencies();
+listenForDataChange(handleDataChanged);
 
 export const app = express();
 
@@ -38,11 +39,6 @@ app.use(
 
     getLoadContext: async (request) => {
       const context = new RouterContextProvider();
-
-      context.set(dependenciesContext, {
-        dependencies,
-        refreshDependencies: loadDependencies,
-      });
 
       context.set(
         i18nContext,

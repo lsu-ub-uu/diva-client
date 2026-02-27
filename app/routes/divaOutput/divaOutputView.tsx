@@ -18,7 +18,7 @@ import {
   Link,
   type MetaDescriptor,
 } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
@@ -33,14 +33,13 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
 
   const origin = new URL(request.url).origin;
-
+  const dependencies = await getDependencies();
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
       dependencies,

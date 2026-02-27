@@ -26,7 +26,9 @@ export const transformCoraRecordTypes = (
   return coraRecords.map(transformRecordType);
 };
 
-export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
+export const transformRecordType = (
+  coraRecordWrapper: RecordWrapper,
+): BFFRecordType => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);

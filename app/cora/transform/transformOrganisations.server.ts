@@ -18,7 +18,7 @@ export const transformOrganisations = (
   return data.dataList.data.map(transformOrganisation);
 };
 
-const transformOrganisation = (data: RecordWrapper): BFFOrganisation => {
+export const transformOrganisation = (data: RecordWrapper): BFFOrganisation => {
   const organisationDataGroup = data.record.data;
   return {
     id: getId(organisationDataGroup),

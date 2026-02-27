@@ -29,7 +29,7 @@ import {
 } from '@/cora/cora-data/CoraDataTransforms.server';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
-export const transformLoginUnit = (
+export const transformLoginUnits = (
   dataListWrapper: DataListWrapper,
 ): BFFLoginUnit[] => {
   if (dataListWrapper.dataList.data.length === 0) {
@@ -42,7 +42,7 @@ export const transformLoginUnit = (
     .filter((item) => item !== undefined);
 };
 
-const transformCoraLoginUnitToBFFLoginUnit = (
+export const transformCoraLoginUnitToBFFLoginUnit = (
   coraRecordWrapper: RecordWrapper,
 ) => {
   const coraRecord = coraRecordWrapper.record;

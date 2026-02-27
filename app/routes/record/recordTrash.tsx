@@ -24,7 +24,7 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { redirect } from 'react-router';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const action = async ({
   request,
@@ -37,7 +37,7 @@ export const action = async ({
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
+  const dependencies = await getDependencies();
   const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   try {

@@ -21,7 +21,7 @@ import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { setRecordVisibility } from '@/data/setRecordVisibility';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
-import { dependenciesContext } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 
@@ -30,7 +30,7 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
+  const dependencies = await getDependencies();
   const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   try {

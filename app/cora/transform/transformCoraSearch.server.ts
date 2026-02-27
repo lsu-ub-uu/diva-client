@@ -43,7 +43,8 @@ export const transformCoraSearch = (
   const coraRecordWrappers = dataListWrapper.dataList.data;
   return coraRecordWrappers.map(transformCoraSearchToBFFSearch);
 };
-const transformCoraSearchToBFFSearch = (
+
+export const transformCoraSearchToBFFSearch = (
   coraRecordWrapper: RecordWrapper,
 ): BFFSearch => {
   const dataRecordGroup = coraRecordWrapper.record.data;

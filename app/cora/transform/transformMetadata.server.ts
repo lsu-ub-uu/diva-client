@@ -47,7 +47,7 @@ import type {
 } from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
-export const transformMetadata = (
+export const transformMetadatas = (
   dataListWrapper: DataListWrapper,
 ): BFFMetadata[] => {
   if (dataListWrapper.dataList.data.length === 0) {
@@ -56,11 +56,11 @@ export const transformMetadata = (
 
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords
-    .map(transformCoraRecordToBFFMetaData)
+    .map(transformMetadata)
     .filter((item) => item !== undefined);
 };
 
-const transformCoraRecordToBFFMetaData = (
+export const transformMetadata = (
   coraRecordWrapper: RecordWrapper,
 ): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
