@@ -43,7 +43,7 @@ import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
@@ -56,6 +56,7 @@ export const loader = async ({
   const { t } = context.get(i18nContext);
   const { auth, notification } = context.get(sessionContext);
   const url = new URL(request.url);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
 
@@ -138,9 +139,9 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   const { t } = context.get(i18nContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-
   assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
+  const dependencies = await getDependencies();
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
     validationTypeId,

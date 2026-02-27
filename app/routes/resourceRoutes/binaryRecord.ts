@@ -19,7 +19,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { createBinaryRecord } from '@/cora/createBinaryRecord.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import type { Route } from './+types/binaryRecord';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const { auth } = context.get(sessionContext);
@@ -33,6 +33,8 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
     hostRecordId,
     auth?.data?.token,
   );
+
+  const dependencies = await getDependencies();
 
   const binaryRecord = transformRecord(
     dependencies,

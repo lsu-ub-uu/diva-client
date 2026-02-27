@@ -21,12 +21,13 @@ import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { recordType, recordId } = params;
+  const dependencies = await getDependencies();
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies,
     recordType,

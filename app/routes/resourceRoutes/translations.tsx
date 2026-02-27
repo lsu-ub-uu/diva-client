@@ -20,11 +20,11 @@ import { createTextDefinition } from '@/data/textDefinition/textDefinition.serve
 import { assertDefined } from '@/utils/invariant';
 
 import type { Route } from '../resourceRoutes/+types/translations';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const { lang } = params;
   assertDefined(lang, 'Missing param lang');
-
+  const dependencies = await getDependencies();
   return Response.json(createTextDefinition(dependencies, lang));
 };

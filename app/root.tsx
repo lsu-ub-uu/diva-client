@@ -37,7 +37,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -65,6 +65,7 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
   const exampleUsers = dependencies.deploymentInfo.exampleUsers;

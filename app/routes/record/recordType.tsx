@@ -22,11 +22,12 @@ import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, Outlet } from 'react-router';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordType';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
 
+  const dependencies = await getDependencies();
   if (!dependencies.recordTypePool.has(params.recordType)) {
     throw data('divaClient_errorRecordTypeNotFoundText', { status: 404 });
   }

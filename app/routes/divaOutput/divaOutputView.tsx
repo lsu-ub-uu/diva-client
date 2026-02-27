@@ -18,13 +18,13 @@ import {
   Link,
   type MetaDescriptor,
 } from 'react-router';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { dependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({
   request,
@@ -39,7 +39,7 @@ export const loader = async ({
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
 
   const origin = new URL(request.url).origin;
-
+  const dependencies = await getDependencies();
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
       dependencies,

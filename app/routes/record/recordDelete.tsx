@@ -19,10 +19,10 @@
 import { deleteRecord } from '@/data/deleteRecord.server';
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { redirect } from 'react-router';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordDelete';
-import { redirect } from 'react-router';
-import { dependencies } from 'server/dependencies/depencencies';
 
 export const action = async ({
   request,
@@ -35,7 +35,7 @@ export const action = async ({
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-
+  const dependencies = await getDependencies();
   const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   await deleteRecord(dependencies, recordTypeId, recordId, auth);

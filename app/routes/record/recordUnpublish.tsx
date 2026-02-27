@@ -23,13 +23,14 @@ import { setRecordVisibility } from '@/data/setRecordVisibility';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { flashNotification } = context.get(sessionContext);
+  const dependencies = await getDependencies();
   const recordType = dependencies.recordTypePool.get(recordTypeId);
 
   try {

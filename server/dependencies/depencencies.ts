@@ -230,7 +230,7 @@ export const handleDataChanged = async ({
   }
 };
 
-export { dependencies, loadDependencies };
+export { loadDependencies };
 
 export const refreshDependencies = async () => {
   await loadDependencies();

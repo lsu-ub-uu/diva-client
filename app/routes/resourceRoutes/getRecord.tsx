@@ -19,8 +19,8 @@
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { dependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/getRecord';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({
   request,
@@ -41,6 +41,7 @@ export const loader = async ({
       presentationRecordLinkId,
       'Missing presentationRecordLinkId param',
     );
+    const dependencies = await getDependencies();
 
     const record = await getRecordByRecordTypeAndRecordId({
       dependencies,

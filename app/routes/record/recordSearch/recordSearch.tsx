@@ -1,6 +1,9 @@
+import type { Auth } from '@/auth/Auth';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
@@ -8,7 +11,7 @@ import { createSearchFormDefinition } from '@/routes/record/recordSearch/utils/c
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { data, useNavigation, useSubmit } from 'react-router';
-import { dependencies } from 'server/dependencies/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import { SearchLayout } from './components/SearchLayout';
@@ -16,9 +19,6 @@ import css from './recordSearch.css?url';
 import { createActiveFilters } from './utils/createActiveFilters.server';
 import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
-import type { Auth } from '@/auth/Auth';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { RecordWrapper } from '@/cora/cora-data/types.server';
 
 export const loader = async ({
   request,
@@ -26,6 +26,7 @@ export const loader = async ({
   params,
 }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const { auth } = context.get(sessionContext);
   const recordType = dependencies.recordTypePool.get(params.recordType);
