@@ -71,7 +71,7 @@ export const transformCoraPresentations = (
   )[];
 };
 
-const transformCoraPresentationToBFFPresentation = (
+export const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
 ):
   | BFFPresentationBase
@@ -79,8 +79,7 @@ const transformCoraPresentationToBFFPresentation = (
   | BFFPresentationSurroundingContainer
   | BFFGuiElement
   | BFFPresentationRecordLink
-  | BFFPresentationResourceLink
-  | undefined => {
+  | BFFPresentationResourceLink => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
@@ -123,7 +122,7 @@ const transformCoraPresentationToBFFPresentation = (
     }
 
     default: {
-      return undefined;
+      throw new Error(`Unknown presentation type: ${type}`);
     }
   }
 };

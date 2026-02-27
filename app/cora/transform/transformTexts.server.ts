@@ -42,7 +42,9 @@ export const transformCoraTexts = (
   return coraRecordWrappers.map(transformCoraTextToBFFText);
 };
 
-const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
+export const transformCoraTextToBFFText = (
+  coraRecordWrapper: RecordWrapper,
+) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);

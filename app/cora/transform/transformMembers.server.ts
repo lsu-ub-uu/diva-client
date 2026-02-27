@@ -21,7 +21,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFMember } from '@/cora/bffTypes.server';
+
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import {
   getAllDataAtomicsWithNameInData,
@@ -36,6 +36,7 @@ import {
   extractLinkedRecordIdFromNamedRecordLink,
   fetchLinkedRecordForRecordLinkWithNameInData,
 } from '@/cora/cora-data/CoraDataTransforms.server';
+import type { BFFMember } from '../bffTypes.server';
 
 export const transformMembers = (
   dataListWrapper: DataListWrapper,
@@ -43,7 +44,7 @@ export const transformMembers = (
   return Promise.all(dataListWrapper.dataList.data.map(transformMember));
 };
 
-const transformMember = async (
+export const transformMember = async (
   recordWrapper: RecordWrapper,
 ): Promise<BFFMember> => {
   const data = recordWrapper.record.data;

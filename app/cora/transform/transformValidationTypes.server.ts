@@ -17,10 +17,10 @@ export const transformCoraValidationTypes = (
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoraToBFF);
+  return coraRecords.map(transformValidationType);
 };
 
-const transformCoraToBFF = (coraRecordWrapper: RecordWrapper) => {
+export const transformValidationType = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
 
