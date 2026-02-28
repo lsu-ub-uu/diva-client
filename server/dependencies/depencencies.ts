@@ -245,8 +245,7 @@ export const handleDataChanged = async ({
   const tranformFunction =
     transformFunctionMap[type as keyof typeof transformFunctionMap];
 
-  if (poolKey === undefined) {
-    console.error(`Unknown pool type: ${type}`);
+  if (!poolKey || !tranformFunction) {
     return;
   }
 
