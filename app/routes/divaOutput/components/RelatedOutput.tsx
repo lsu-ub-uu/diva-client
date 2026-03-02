@@ -6,7 +6,7 @@ import type {
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { href, Link } from 'react-router';
-import { createTitle } from '../utils/createTitle';
+import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 
 interface RelatedOutputProps {
   relatedOutput:
@@ -29,7 +29,7 @@ export const RelatedOutput = ({ relatedOutput }: RelatedOutputProps) => {
             recordId: relatedOutput.output?.value,
           })}
         >
-          {createTitle(relatedOutput.output?.linkedRecord?.output?.titleInfo)}
+          {getFullTitleForOutput(relatedOutput.output?.linkedRecord)}
         </Link>
       }
     />

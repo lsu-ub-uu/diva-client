@@ -3,8 +3,8 @@ import type {
   TitleInfoLangGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { createTitle } from '../utils/createTitle';
 import { Term } from './Term';
+import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
 
 interface TitleInfoProps {
   titleInfo: TitleInfoLangGroup | TitleInfoGroup | undefined;
@@ -16,7 +16,7 @@ export const TitleInfo = ({ titleInfo }: TitleInfoProps) => {
   return (
     <Term
       label={titleInfo?.__text?.[language]}
-      value={createTitle(titleInfo)}
+      value={getTitleFromTitleInfo(titleInfo)}
       lang={'_lang' in titleInfo ? titleInfo._lang : undefined}
     />
   );

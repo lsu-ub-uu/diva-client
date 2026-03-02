@@ -3,9 +3,9 @@ import type { RelatedItemSeriesGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
-import { createTitle } from '../utils/createTitle';
 import { Term } from './Term';
 import { TitleInfo } from './TitleInfo';
+import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
 
 interface SeriesProps {
   series: RelatedItemSeriesGroup | undefined;
@@ -37,7 +37,9 @@ export const Series = ({ series, headlineLevel = 'h2' }: SeriesProps) => {
                   recordId: series.series.value,
                 })}
               >
-                {createTitle(series.series.linkedRecord.series.titleInfo)}
+                {getTitleFromTitleInfo(
+                  series.series.linkedRecord.series.titleInfo,
+                )}
               </Link>
             }
           />
