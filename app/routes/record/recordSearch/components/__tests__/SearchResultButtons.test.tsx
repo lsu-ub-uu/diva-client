@@ -81,6 +81,9 @@ describe('SearchResultButton', () => {
     expect(
       screen.getByRole('link', { name: 'divaClient_viewInApiText' }),
     ).toHaveAttribute('href', 'http://api.example.com');
+    expect(
+      screen.getByRole('link', { name: 'divaClient_viewInApiText' }),
+    ).toHaveAttribute('rel', 'noopener noreferrer nofollow');
   });
 
   it('renders show filter dialog button with correct filter count', async () => {

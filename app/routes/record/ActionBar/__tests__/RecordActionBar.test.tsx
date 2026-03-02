@@ -301,6 +301,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub />);
 
     expect(screen.getByText('divaClient_viewInApiText')).toBeInTheDocument();
+    expect(screen.getByText('divaClient_viewInApiText')).toHaveAttribute(
+      'rel',
+      'noopener noreferrer nofollow',
+    );
   });
 
   it('does not show view record link when user lacks read right', () => {

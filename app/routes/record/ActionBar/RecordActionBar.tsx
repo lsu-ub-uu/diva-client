@@ -192,7 +192,7 @@ export const RecordActionBar = ({
           as='a'
           href={apiUrl}
           target='_blank'
-          rel='noopener noreferrer'
+          rel='noopener noreferrer nofollow'
           icon={<CodeIcon />}
         >
           {t('divaClient_viewInApiText')}
