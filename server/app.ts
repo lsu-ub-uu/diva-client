@@ -28,8 +28,8 @@ import {
 import { createi18nInstance, i18nContext } from './i18n';
 import { listenForDataChange } from './listenForDataChange';
 
-const dependencies = await getDependencies();
-listenForDataChange(handleDataChanged);
+const dependenciesPromise = getDependencies();
+dependenciesPromise.then(() => listenForDataChange(handleDataChanged));
 
 export const app = express();
 
@@ -39,12 +39,12 @@ app.use(
 
     getLoadContext: async (request) => {
       const context = new RouterContextProvider();
+      const dependencies = await dependenciesPromise;
 
       context.set(
         i18nContext,
         (await createi18nInstance(request, dependencies)) as i18n,
       );
-
       return context;
     },
   }),

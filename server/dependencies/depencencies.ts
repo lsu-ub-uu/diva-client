@@ -125,6 +125,7 @@ export type DependencyType =
   | 'deploymentInfo';
 
 const loadDependencies = async () => {
+  console.info('Loading stuff from Cora...');
   const [
     coraTexts,
     coraMetadata,
@@ -197,6 +198,7 @@ const loadDependencies = async () => {
   dependencies.deploymentInfo = await getDeploymentInfo();
 
   poolsInitialized = true;
+
   console.info('Loaded stuff from Cora');
 };
 
