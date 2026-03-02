@@ -374,31 +374,6 @@ export interface BFFOrganisation {
 
 export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';
 
-export interface DeploymentInfo {
-  applicationName: string;
-  deploymentName: string;
-  coraVersion: string;
-  applicationVersion: string;
-  urls: {
-    REST: string;
-    appTokenLogin: string;
-    passwordLogin: string;
-    record: string;
-    recordType: string;
-    iiif: string;
-    [key: string]: string;
-  };
-  exampleUsers: ExampleUser[];
-}
-
-export interface ExampleUser {
-  name: string;
-  text: string;
-  type: string;
-  loginId: string;
-  appToken: string;
-}
-
 export interface Dependencies {
   validationTypePool: Lookup<string, BFFValidationType>;
   metadataPool: Lookup<string, BFFMetadata>;
@@ -410,5 +385,4 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
-  deploymentInfo: DeploymentInfo;
 }

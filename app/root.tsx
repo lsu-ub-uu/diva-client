@@ -57,6 +57,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 
 const { MODE } = import.meta.env;
 
@@ -68,8 +69,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const exampleUsers = dependencies.deploymentInfo.exampleUsers;
-  const applicationVersion = dependencies.deploymentInfo.applicationVersion;
+  const { exampleUsers, applicationVersion } = await getDeploymentInfo();
   const locale = context.get(i18nContext).language;
   const navigation = await getNavigation(dependencies, member, auth);
   const user = auth && createUser(auth);

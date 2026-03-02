@@ -1,12 +1,14 @@
 import axios, { AxiosError } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
-import { getDeploymentInfo } from '../getDeploymentInfo.server';
 import { DEPLOYMENT_INFO_CONTENT_TYPE } from '../helper.server';
 
 vi.mock('axios');
 
 describe('getDeploymentInfo', () => {
   it('returns deployment info', async () => {
+    vi.resetModules();
+    const { getDeploymentInfo } = await import('../getDeploymentInfo.server');
+
     const requestSpy = vi.spyOn(axios, 'get').mockResolvedValue({
       status: 200,
       data: mockDeploymentInfo,
@@ -24,9 +26,29 @@ describe('getDeploymentInfo', () => {
   });
 
   it('throws error when request fails', async () => {
+    vi.resetModules();
+    const { getDeploymentInfo } = await import('../getDeploymentInfo.server');
+
     vi.spyOn(axios, 'get').mockRejectedValue(new AxiosError('Fail', '500'));
 
     await expect(getDeploymentInfo()).rejects.toThrow(AxiosError);
+  });
+
+  it('returns cached deployment info on subsequent calls', async () => {
+    vi.resetModules();
+    const { getDeploymentInfo } = await import('../getDeploymentInfo.server');
+
+    const requestSpy = vi.spyOn(axios, 'get').mockResolvedValue({
+      status: 200,
+      data: mockDeploymentInfo,
+    });
+
+    const result1 = await getDeploymentInfo();
+    const result2 = await getDeploymentInfo();
+
+    expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(result1).toStrictEqual(mockDeploymentInfo);
+    expect(result2).toStrictEqual(mockDeploymentInfo);
   });
 });
 
