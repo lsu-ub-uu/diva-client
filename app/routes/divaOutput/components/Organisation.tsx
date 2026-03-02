@@ -4,10 +4,9 @@ import type {
   NameOrganisationPatentHolderGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Term } from './Term';
-import { ExternalLinkIcon } from 'lucide-react';
 import { getTitleForOrganization } from '@/utils/getRecordTitle';
-import { link } from 'node:fs';
+import { ExternalLinkIcon } from 'lucide-react';
+import { Term } from './Term';
 
 export interface OrganisationProps {
   organisation:
