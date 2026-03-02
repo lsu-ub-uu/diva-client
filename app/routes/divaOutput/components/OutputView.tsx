@@ -3,7 +3,6 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
 import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
-import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
 import { ShoppingCartIcon } from 'lucide-react';
@@ -27,6 +26,10 @@ import { RelatedOutput } from './RelatedOutput';
 import { ResearchData } from './ResearchData';
 import { Series } from './Series';
 import { StudentDegrees } from './StudentDegrees';
+import {
+  getFullTitleForOutput,
+  getTitleFromTitleInfo,
+} from '@/utils/getRecordTitle';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -48,7 +51,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             dir='auto'
           >
             {output.titleInfo
-              ? createTitle(output.titleInfo)
+              ? getFullTitleForOutput(data)
               : t('divaClient_missingTitleText')}
           </h1>
           <dl>
@@ -62,7 +65,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
               <Term
                 key={index}
                 label={`${title.__text?.[language]} (${t(getLanguageTextId(title._lang))})`}
-                value={createTitle(title)}
+                value={getTitleFromTitleInfo(title)}
                 lang={title._lang}
               />
             ))}

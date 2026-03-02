@@ -6,6 +6,8 @@ import type {
 import { useLanguage } from '@/i18n/useLanguage';
 import { Term } from './Term';
 import { ExternalLinkIcon } from 'lucide-react';
+import { getTitleForOrganization } from '@/utils/getRecordTitle';
+import { link } from 'node:fs';
 
 export interface OrganisationProps {
   organisation:
@@ -65,20 +67,15 @@ export const formatOrganisationName = (
 
   if ('organisation' in organisation) {
     const displayName = organisation.organisation?.displayName?.[language];
-    const linkedRecordSwedishName =
-      organisation.organisation?.linkedRecord?.organisation?.authority_lang_swe
-        ?.name_type_corporate?.namePart?.value;
-    const linkedRecordEnglishName =
-      organisation.organisation?.linkedRecord?.organisation?.variant_lang_eng
-        ?.name_type_corporate?.namePart?.value;
 
     if (displayName) {
       return displayName;
     }
-    if (language === 'en' && linkedRecordEnglishName) {
-      return linkedRecordEnglishName;
+    const linkedRecord = organisation.organisation?.linkedRecord;
+
+    if (linkedRecord) {
+      return getTitleForOrganization(linkedRecord, language);
     }
-    return linkedRecordSwedishName;
   }
 
   return '';

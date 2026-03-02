@@ -23,8 +23,8 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
-import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 
 export const loader = async ({
   request,
@@ -52,7 +52,7 @@ export const loader = async ({
     return {
       record: record,
       pageTitle: record.data.output.titleInfo
-        ? createTitle(record.data.output.titleInfo)
+        ? getFullTitleForOutput(record.data)
         : t('divaClient_missingTitleText'),
       breadcrumb: record.data.output.titleInfo?.title?.value
         ? t(record.data.output.titleInfo.title.value)

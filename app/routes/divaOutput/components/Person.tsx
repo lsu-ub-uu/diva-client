@@ -29,6 +29,7 @@ import { href, Link } from 'react-router';
 import { formatPersonName } from '../utils/formatPersonName';
 import { Term } from './Term';
 import { ExternalLinkIcon } from 'lucide-react';
+import { getTitleForOrganization } from '@/utils/getRecordTitle';
 
 export type PersonType =
   | NamePersonalGroup
@@ -144,21 +145,13 @@ const formatLinkedAffiliationName = (
 ) => {
   const linkedOrganisationDisplayName =
     affiliation.organisation?.displayName?.[language];
-  const linkedRecordSwedishName =
-    affiliation.organisation?.linkedRecord?.organisation?.authority_lang_swe
-      ?.name_type_corporate?.namePart?.value;
-  const linkedRecordEnglishName =
-    affiliation.organisation?.linkedRecord?.organisation?.variant_lang_eng
-      ?.name_type_corporate?.namePart?.value;
+  const linkedRecord = affiliation.organisation?.linkedRecord;
 
   if (linkedOrganisationDisplayName) {
     return linkedOrganisationDisplayName;
   }
-  if (language === 'en' && linkedRecordEnglishName) {
-    return linkedRecordEnglishName;
-  }
-  if (linkedRecordSwedishName) {
-    return linkedRecordSwedishName;
+  if (linkedRecord) {
+    return getTitleForOrganization(linkedRecord, language);
   }
   return '';
 };

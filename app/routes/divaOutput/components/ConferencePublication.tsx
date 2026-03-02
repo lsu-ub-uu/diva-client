@@ -1,12 +1,12 @@
 import { Term } from './Term';
 import { useLanguage } from '@/i18n/useLanguage';
 import { href, Link } from 'react-router';
-import { createTitle } from '../utils/createTitle';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { Series } from './Series';
 import { useId } from 'react';
 import { TitleInfo } from './TitleInfo';
 import type { RelatedItemProceedingGroup } from '@/generatedTypes/divaTypes';
+import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
 
 export interface ConferencePublicationProps {
   conferencePublication: RelatedItemProceedingGroup | undefined;
@@ -34,7 +34,7 @@ export const ConferencePublication = ({
                   recordId: conferencePublication.proceeding.value,
                 })}
               >
-                {createTitle(
+                {getTitleFromTitleInfo(
                   conferencePublication.proceeding?.linkedRecord.output
                     .titleInfo,
                 )}
