@@ -1,11 +1,11 @@
 import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useIsDevMode } from '@/utils/useIsDevMode';
+import { BugOffIcon } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
-import { IconButton } from '@/components/IconButton/IconButton';
-import { BugOffIcon } from 'lucide-react';
 
 interface FooterProps {
   applicationVersion: string;
