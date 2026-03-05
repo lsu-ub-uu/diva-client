@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect, useRef, type ReactNode, type RefObject } from 'react';
-// Utility to detect iOS (2026-safe)
 import styles from './DrawerDialog.module.css';
 import { clsx } from 'clsx';
 
