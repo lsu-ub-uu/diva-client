@@ -32,13 +32,11 @@ import type {
   BFFText,
   BFFValidationType,
   Dependencies,
-  DeploymentInfo,
 } from '@/cora/bffTypes.server';
 import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import {
   transformCoraSearch,
@@ -107,7 +105,6 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
-  deploymentInfo: {} as DeploymentInfo,
 };
 
 export type DependencyType =
@@ -121,8 +118,7 @@ export type DependencyType =
   | 'login'
   | 'diva-member'
   | 'diva-organisation'
-  | 'text'
-  | 'deploymentInfo';
+  | 'text';
 
 const loadDependencies = async () => {
   console.info('Loading stuff from Cora...');
@@ -194,8 +190,6 @@ const loadDependencies = async () => {
 
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
-
-  dependencies.deploymentInfo = await getDeploymentInfo();
 
   poolsInitialized = true;
 
