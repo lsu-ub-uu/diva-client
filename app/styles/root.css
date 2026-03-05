@@ -117,3 +117,10 @@
   border-radius: var(--border-radius);
   padding: var(--gap-l);
 }
+
+body.dialog-open {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
