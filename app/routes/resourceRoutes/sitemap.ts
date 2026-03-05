@@ -1,6 +1,14 @@
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 import { getDependencies } from 'server/dependencies/depencencies';
+import type {
+  BFFDataRecord,
+  BFFDataRecordData,
+  BFFSearchResult,
+} from '@/types/record';
+import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
+import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
@@ -38,3 +46,5 @@ export const generateSitemapXml = async (
 
   return sitemap;
 };
+
+//sök

@@ -1,0 +1,27 @@
+{
+  "dataList": {
+    "fromNo": "1",
+    "data": [
+      {
+        "name": "output",
+        "children": [
+          {
+            "name": "recordInfo",
+            "children": [
+              { "name": "id", "value": "2" },
+              {
+                "name": "updated",
+                "children": [
+                  {
+                    "name": "tsUpdated",
+                    "value": "2026-02-26T12:23:48.968871Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
