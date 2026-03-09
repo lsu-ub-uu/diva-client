@@ -499,8 +499,6 @@ export type OrganisationTypeCollection =
   | 'topOrganisation'
   | 'partOfOrganisation';
 
-export type LanguageSweEngCollection = 'swe' | 'eng';
-
 export interface NameCorporateGroup {
   namePart?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
@@ -509,12 +507,13 @@ export interface NameCorporateGroup {
 
 export interface AuthorityCorporateLangGroup {
   name_type_corporate?: NameCorporateGroup;
-  _lang: LanguageSweEngCollection;
+  _lang: 'swe';
   __text?: { sv: string; en: string };
 }
 
 export interface VariantCorporateLangGroup {
   name_type_corporate?: NameCorporateGroup;
+  _lang: 'eng';
   __text?: { sv: string; en: string };
 }
 
@@ -827,8 +826,8 @@ export interface OrganisationUpdateGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  authority?: AuthorityCorporateLangGroup[];
-  variant?: VariantCorporateLangGroup[];
+  authority_lang_swe?: AuthorityCorporateLangGroup;
+  variant_lang_eng?: VariantCorporateLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   address?: AddressGroup;
@@ -963,6 +962,8 @@ export interface RecordInfoProjectUpdateGroup {
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
+
+export type LanguageSweEngCollection = 'swe' | 'eng';
 
 export interface TitleInfoLangSweEngGroup {
   title?: { value: string; __text?: { sv: string; en: string } };
@@ -1763,14 +1764,20 @@ export interface RecordInfoSubjectUpdateGroup {
 
 export interface AuthorityTopicLangGroup {
   topic?: { value: string; __text?: { sv: string; en: string } };
-  _lang: LanguageSweEngCollection;
+  _lang: 'swe';
+  __text?: { sv: string; en: string };
+}
+
+export interface VariantTopicLangGroup {
+  topic?: { value: string; __text?: { sv: string; en: string } };
+  _lang: 'eng';
   __text?: { sv: string; en: string };
 }
 
 export type RelatedTypeEarlierBroaderCollection = 'earlier' | 'broader';
 
 export interface RelatedSubjectGroup {
-  subject?: {
+  topic?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
@@ -1784,20 +1791,21 @@ export interface RelatedSubjectGroup {
 
 export interface SubjectUpdateGroup {
   recordInfo: RecordInfoSubjectUpdateGroup;
-  authority?: AuthorityTopicLangGroup[];
+  authority_lang_swe?: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
   related?: RelatedSubjectGroup[];
   __text?: { sv: string; en: string };
 }
 
 export interface SubjectSubjectGroup {
-  subject?: {
+  topic?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
@@ -2208,8 +2216,8 @@ export interface RecordInfoFunderUpdateGroup {
 
 export interface FunderUpdateGroup {
   recordInfo: RecordInfoFunderUpdateGroup;
-  authority?: AuthorityCorporateLangGroup[];
-  variant?: VariantCorporateLangGroup[];
+  authority_lang_swe?: AuthorityCorporateLangGroup;
+  variant_lang_eng?: VariantCorporateLangGroup;
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_organisationNumber?: {
@@ -2707,14 +2715,15 @@ export interface RelatedCourseGroup {
 
 export interface CourseUpdateGroup {
   recordInfo: RecordInfoCourseUpdateGroup;
-  authority?: AuthorityTopicLangGroup[];
+  authority_lang_swe?: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
   related?: RelatedCourseGroup[];
   __text?: { sv: string; en: string };
 }
@@ -2759,14 +2768,15 @@ export interface RelatedProgrammeGroup {
 
 export interface ProgrammeUpdateGroup {
   recordInfo: RecordInfoProgrammeUpdateGroup;
-  authority?: AuthorityTopicLangGroup[];
+  authority_lang_swe?: AuthorityTopicLangGroup;
+  variant_lang_eng?: VariantTopicLangGroup;
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
   related?: RelatedProgrammeGroup[];
   __text?: { sv: string; en: string };
 }

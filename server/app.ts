@@ -27,11 +27,12 @@ import {
 } from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
 import { listenForDataChange } from './listenForDataChange';
+import { populateCache } from './sitemapCache';
 
 const dependenciesPromise = getDependencies();
 dependenciesPromise.then(() => listenForDataChange(handleDataChanged));
 
-//
+populateCache();
 
 export const app = express();
 

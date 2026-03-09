@@ -1,21 +1,17 @@
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
-import type { Route } from '../resourceRoutes/+types/sitemap';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { getDependencies } from 'server/dependencies/depencencies';
-import type {
-  BFFDataRecord,
-  BFFDataRecordData,
-  BFFSearchResult,
-} from '@/types/record';
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
-import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import { getEntries } from 'server/sitemapCache';
+import type { Route } from '../resourceRoutes/+types/sitemap';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
+  const member = getMemberFromHostname(request, dependencies);
   const navigation = await getNavigation(dependencies, undefined, undefined);
   const origin = new URL(request.url).origin;
 
-  const sitemap = await generateSitemapXml(origin, navigation);
+  const sitemap = await generateSitemapXml(origin, navigation, member);
 
   return new Response(sitemap, {
     headers: {
@@ -27,6 +23,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export const generateSitemapXml = async (
   origin: string,
   navigation: Navigation,
+  member: BFFMember | undefined,
 ): Promise<string> => {
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,
@@ -42,8 +39,21 @@ export const generateSitemapXml = async (
     sitemap += `  </url>\n`;
   });
 
-  sitemap += `</urlset>`;
+  const recordEntries = getEntries(
+    0,
+    10000,
+    member ? member.memberPermissionUnit : undefined,
+  );
 
+  recordEntries.forEach((entry) => {
+    sitemap += `  <url>\n`;
+    sitemap += `    <loc>${origin}/diva-output/${entry.id}</loc>\n`;
+    sitemap += `    <lastmod>${entry.tsUpdated}</lastmod>\n`;
+    sitemap += `    <changefreq>yearly</changefreq>\n`;
+    sitemap += `  </url>\n`;
+  });
+
+  sitemap += `</urlset>`;
   return sitemap;
 };
 

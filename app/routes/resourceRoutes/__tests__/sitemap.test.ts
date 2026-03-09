@@ -5,101 +5,9 @@ import expectedSitemap from './expectedSitemap.xml?raw';
 import { vi } from 'vitest';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type { AxiosResponse } from 'axios';
-import {
-  getEntries,
-  populateCache,
-  transformSearchResults,
-} from 'server/sitemapCache';
-
-const mockSearchResults: DataListWrapper = {
-  dataList: {
-    fromNo: '1',
-    toNo: '2',
-    totalNo: '2',
-    containDataOfType: 'mix',
-    data: [
-      {
-        record: {
-          actionLinks: {},
-          data: {
-            name: 'output',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '1' },
-                  {
-                    name: 'updated',
-                    children: [
-                      {
-                        name: 'tsUpdated',
-                        value: '2026-02-25T12:23:48.968871Z',
-                      },
-                    ],
-                  },
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'permissionUnit',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'nordiskamuseet',
-                      },
-                    ],
-                    name: 'permissionUnit',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-      {
-        record: {
-          actionLinks: {},
-          data: {
-            name: 'output',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '2' },
-                  {
-                    name: 'updated',
-                    children: [
-                      {
-                        name: 'tsUpdated',
-                        value: '2026-02-26T12:23:48.968871Z',
-                      },
-                    ],
-                  },
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'permissionUnit',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'nordiskamuseet',
-                      },
-                    ],
-                    name: 'permissionUnit',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    ],
-  },
-};
+import type { SitemapEntry } from 'server/sitemapCache';
 
 vi.mock('@/cora/getSearchResultDataListBySearchType.server');
-
 describe('generateSitemapXml', () => {
   it('generates correct sitemap xml', async () => {
     const sitemap = await generateSitemapXml('http://example.com', {
@@ -132,29 +40,291 @@ describe('generateSitemapXml', () => {
   </url>
 </urlset>`);
   });
-
-  /* it('generates correct cache for diva-outputs', async () => {
-    const sitemapOutput = await transformSearchResults(mockSearchResults);
-    expect(sitemapOutput).toStrictEqual([
-      { id: '1', tsUpdated: '2026-02-25T12:23:48.968Z' },
-      { id: '2', tsUpdated: '2026-02-26T12:23:48.968Z' },
-    ]);
-  }); */
 });
 
-it('populates cache', async () => {
-  vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
-    data: mockSearchResults,
-  } as AxiosResponse<DataListWrapper>);
+describe('sitemapCache', () => {
+  it('populates cache', async () => {
+    vi.resetModules();
+    const sitemapCache = await import('server/sitemapCache');
+    const expectedEntries: SitemapEntry[] = [
+      {
+        id: '1',
+        tsUpdated: '2026-02-25T12:23:48.968Z',
+        permissionUnit: 'nordiskamuseet',
+      },
+      {
+        id: '2',
+        tsUpdated: '2026-02-26T12:23:48.968Z',
+        permissionUnit: 'nordiskamuseet',
+      },
+    ];
+    vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
+      data: generateSearchResultMock(expectedEntries),
+    } as AxiosResponse<DataListWrapper>);
 
-  await populateCache();
+    await sitemapCache.populateCache();
 
-  const entries = getEntries(0, 1000);
+    const entries = sitemapCache.getEntries(0, 1000);
 
-  expect(entries).toStrictEqual({
-    nordiskamuseet: {
-      1: { id: '1', tsUpdated: '2026-02-25T12:23:48.968Z' },
-      2: { id: '2', tsUpdated: '2026-02-26T12:23:48.968Z' },
-    },
+    expect(entries).toStrictEqual(expectedEntries);
   });
+
+  it('populates cache that requires multiple searches', async () => {
+    vi.resetModules();
+    const sitemapCache = await import('server/sitemapCache');
+    vi.mocked(getSearchResultDataListBySearchType)
+      .mockResolvedValueOnce({
+        data: generateSearchResultMock(
+          [
+            {
+              id: '1',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+              permissionUnit: 'uu',
+            },
+            {
+              id: '2',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '3',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '4',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '5',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '6',
+              permissionUnit: 'nordiskamuseet',
+              tsUpdated: '2026-02-26T12:23:48.968Z',
+            },
+            {
+              id: '7',
+              permissionUnit: 'nordiskamuseet',
+              tsUpdated: '2026-02-26T12:23:48.968Z',
+            },
+            {
+              id: '8',
+              permissionUnit: 'nordiskamuseet',
+              tsUpdated: '2026-02-26T12:23:48.968Z',
+            },
+            {
+              id: '9',
+              permissionUnit: 'nordiskamuseet',
+              tsUpdated: '2026-02-26T12:23:48.968Z',
+            },
+            {
+              id: '10',
+              permissionUnit: 'kth',
+              tsUpdated: '2021-02-26T12:23:48.968Z',
+            },
+          ],
+          '1',
+          '10',
+          '15',
+        ),
+      } as AxiosResponse<DataListWrapper>)
+      .mockResolvedValueOnce({
+        data: generateSearchResultMock(
+          [
+            {
+              id: '11',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+              permissionUnit: 'uu',
+            },
+            {
+              id: '12',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '13',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '14',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+            {
+              id: '15',
+              permissionUnit: 'uu',
+              tsUpdated: '2026-02-25T12:23:48.968Z',
+            },
+          ],
+          '11',
+          '15',
+          '15',
+        ),
+      } as AxiosResponse<DataListWrapper>);
+
+    await sitemapCache.populateCache();
+
+    const entries = sitemapCache.getEntries(0, 1000);
+    expect(entries).toHaveLength(15);
+  });
+
+  it('populates cache 2 permissionUnits and return entries for a specific permissionUnit', async () => {
+    vi.resetModules();
+    const sitemapCache = await import('server/sitemapCache');
+
+    vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
+      data: generateSearchResultMock([
+        {
+          id: '1',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '2',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'nordiskamuseet',
+        },
+        {
+          id: '3',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'kth',
+        },
+      ]),
+    } as AxiosResponse<DataListWrapper>);
+
+    await sitemapCache.populateCache();
+
+    const entries = sitemapCache.getEntries(0, 1000, 'uu');
+
+    expect(entries).toStrictEqual([
+      {
+        id: '1',
+        tsUpdated: '2026-02-25T12:23:48.968Z',
+        permissionUnit: 'uu',
+      },
+    ]);
+  });
+
+  it('populates cache and gets entries with from and entries params ', async () => {
+    vi.resetModules();
+    const sitemapCache = await import('server/sitemapCache');
+
+    vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
+      data: generateSearchResultMock([
+        {
+          id: '1',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '2',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '3',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '4',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '5',
+          permissionUnit: 'uu',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+        },
+        {
+          id: '6',
+          permissionUnit: 'nordiskamuseet',
+          tsUpdated: '2026-02-26T12:23:48.968Z',
+        },
+        {
+          id: '7',
+          permissionUnit: 'nordiskamuseet',
+          tsUpdated: '2026-02-26T12:23:48.968Z',
+        },
+        {
+          id: '8',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '9',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '10',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+      ]),
+    } as AxiosResponse<DataListWrapper>);
+
+    await sitemapCache.populateCache();
+
+    const entries = sitemapCache.getEntries(3, 5);
+
+    expect(entries.length).toBe(5);
+  });
+});
+
+const generateSearchResultMock = (
+  entries: SitemapEntry[],
+  fromNo?: string,
+  toNo?: string,
+  totalNo?: string,
+): DataListWrapper => ({
+  dataList: {
+    fromNo: fromNo ?? '1',
+    toNo: toNo ?? String(entries.length),
+    totalNo: totalNo ?? String(entries.length),
+    containDataOfType: 'mix',
+    data: entries.map((entry) => ({
+      record: {
+        actionLinks: {},
+        data: {
+          name: 'output',
+          children: [
+            {
+              name: 'recordInfo',
+              children: [
+                { name: 'id', value: entry.id },
+                {
+                  name: 'updated',
+                  children: [
+                    {
+                      name: 'tsUpdated',
+                      value: entry.tsUpdated,
+                    },
+                  ],
+                },
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'permissionUnit',
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: entry.permissionUnit,
+                    },
+                  ],
+                  name: 'permissionUnit',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    })),
+  },
 });
