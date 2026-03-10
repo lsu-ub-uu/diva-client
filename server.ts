@@ -23,6 +23,9 @@ import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
 
+// Metrics endpoint dependencies
+import { performance } from 'node:perf_hooks';
+
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
 
@@ -48,6 +51,8 @@ const app = express();
 app.use(compression());
 app.disable('x-powered-by');
 
+app.get('/metrics', metrics);
+
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
 });
@@ -63,6 +68,12 @@ if (DEVELOPMENT) {
   console.info('Starting development server');
   app.get('/devLogin', (req, res) => {
     res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
+  });
+
+  app.get('/metrics-dashboard', (req, res) => {
+    res.sendFile(
+      new URL('app/assets/metrics-dashboard.html', import.meta.url).pathname,
+    );
   });
 
   const viteDevServer = await import('vite').then((vite) =>
@@ -127,3 +138,29 @@ const getLocalIp = () => {
     }
   }
 };
+
+function metrics(_req: express.Request, res: express.Response) {
+  const memoryUsage = process.memoryUsage();
+  const uptime = process.uptime();
+  const cpuUsage = process.cpuUsage();
+  const eventLoopDelay = performance.eventLoopUtilization?.() || {};
+  const metrics = {
+    status: 'ok',
+    uptime,
+    memory: {
+      rss: memoryUsage.rss,
+      heapTotal: memoryUsage.heapTotal,
+      heapUsed: memoryUsage.heapUsed,
+      external: memoryUsage.external,
+      arrayBuffers: memoryUsage.arrayBuffers,
+    },
+    cpu: {
+      user: cpuUsage.user,
+      system: cpuUsage.system,
+    },
+    eventLoopDelay,
+    timestamp: Date.now(),
+  };
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(metrics);
+}

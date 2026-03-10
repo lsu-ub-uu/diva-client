@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Node.js Metrics Dashboard</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #0001;
+        padding: 2rem;
+      }
+      h1 {
+        text-align: center;
+      }
+      canvas {
+        display: block;
+        margin: 2rem auto;
+        background: #fafafa;
+        border: 1px solid #eee;
+        border-radius: 4px;
+      }
+      .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+      }
+      .chart-block {
+        flex: 1 1 350px;
+        min-width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Node.js Metrics Dashboard</h1>
+      <div class="charts">
+        <div class="chart-block">
+          <h2>Heap Used (MB)</h2>
+          <canvas id="heapChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-block">
+          <h2>CPU Usage (User+System, ms)</h2>
+          <canvas id="cpuChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-block">
+          <h2>Event Loop Delay (utilization)</h2>
+          <canvas id="eventLoopChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+      <p style="text-align: center; color: #888">
+        Auto-refreshes every second. For local testing only.
+      </p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const heapData = { labels: [], data: [] };
+      const cpuData = { labels: [], data: [] };
+      const eventLoopData = { labels: [], data: [] };
+      const maxPoints = 60;
+
+      const heapChart = new Chart(
+        document.getElementById('heapChart').getContext('2d'),
+        {
+          type: 'line',
+          data: {
+            labels: heapData.labels,
+            datasets: [
+              {
+                label: 'Heap Used (MB)',
+                data: heapData.data,
+                borderColor: '#36a2eb',
+                fill: false,
+              },
+            ],
+          },
+          options: { animation: false, scales: { y: { beginAtZero: true } } },
+        },
+      );
+      const cpuChart = new Chart(
+        document.getElementById('cpuChart').getContext('2d'),
+        {
+          type: 'line',
+          data: {
+            labels: cpuData.labels,
+            datasets: [
+              {
+                label: 'CPU (ms)',
+                data: cpuData.data,
+                borderColor: '#ff6384',
+                fill: false,
+              },
+            ],
+          },
+          options: { animation: false, scales: { y: { beginAtZero: true } } },
+        },
+      );
+      const eventLoopChart = new Chart(
+        document.getElementById('eventLoopChart').getContext('2d'),
+        {
+          type: 'line',
+          data: {
+            labels: eventLoopData.labels,
+            datasets: [
+              {
+                label: 'Event Loop Utilization',
+                data: eventLoopData.data,
+                borderColor: '#4bc0c0',
+                fill: false,
+              },
+            ],
+          },
+          options: { animation: false, scales: { y: { min: 0, max: 1 } } },
+        },
+      );
+
+      let lastCpu = null;
+      function updateCharts(metrics) {
+        const now = new Date(metrics.timestamp).toLocaleTimeString();
+        // Heap
+        heapData.labels.push(now);
+        heapData.data.push((metrics.memory.heapUsed / 1024 / 1024).toFixed(2));
+        if (heapData.labels.length > maxPoints) {
+          heapData.labels.shift();
+          heapData.data.shift();
+        }
+        heapChart.update();
+        // CPU (delta)
+        if (lastCpu) {
+          const userDelta = metrics.cpu.user - lastCpu.user;
+          const sysDelta = metrics.cpu.system - lastCpu.system;
+          cpuData.labels.push(now);
+          cpuData.data.push(((userDelta + sysDelta) / 1000).toFixed(2));
+          if (cpuData.labels.length > maxPoints) {
+            cpuData.labels.shift();
+            cpuData.data.shift();
+          }
+          cpuChart.update();
+        }
+        lastCpu = { ...metrics.cpu };
+        // Event loop
+        let elUtil = metrics.eventLoopDelay.utilization || 0;
+        eventLoopData.labels.push(now);
+        eventLoopData.data.push(elUtil.toFixed(3));
+        if (eventLoopData.labels.length > maxPoints) {
+          eventLoopData.labels.shift();
+          eventLoopData.data.shift();
+        }
+        eventLoopChart.update();
+      }
+
+      async function fetchMetrics() {
+        try {
+          const res = await fetch('/metrics');
+          if (!res.ok) throw new Error('Failed to fetch metrics');
+          const metrics = await res.json();
+          updateCharts(metrics);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      setInterval(fetchMetrics, 1000);
+      fetchMetrics();
+    </script>
+  </body>
+</html>
