@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { FormComponentCollVar } from '../FormGenerator/types';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
+import { Attributes } from './Attributes';
 
 interface OutputCollectionVariableProps {
   component: FormComponentCollVar;
@@ -22,9 +23,14 @@ export const OutputCollectionVariable = ({
 
   return (
     <div style={{ marginBottom: '0.5rem' }}>
-      {component.showLabel && (
-        <div style={{ color: 'var(--color-label)' }}>{t(component.label)}</div>
-      )}
+      <div>
+        {component.showLabel && (
+          <div style={{ color: 'var(--color-label)' }}>
+            {t(component.label)}
+          </div>
+        )}
+        <Attributes component={component} data={data} />
+      </div>
       <div style={component.showLabel ? { paddingLeft: '0.5rem' } : undefined}>
         {t(optionText)}
       </div>

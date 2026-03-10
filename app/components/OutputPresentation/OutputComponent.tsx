@@ -1,4 +1,9 @@
-import type { DataAtomic, RecordLink } from '@/cora/cora-data/types.server';
+import type {
+  CoraData,
+  DataAtomic,
+  DataGroup,
+  RecordLink,
+} from '@/cora/cora-data/types.server';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -14,14 +19,17 @@ import { OutputRecordLink } from './OutputRecordLink';
 
 interface OutputComponentProps {
   component: FormComponent;
-  data: Record<string, any>;
+  data: CoraData;
 }
 
 export const OutputComponent = ({ component, data }: OutputComponentProps) => {
   switch (component.type) {
     case 'group':
       return (
-        <OutputGroup component={component as FormComponentGroup} data={data} />
+        <OutputGroup
+          component={component as FormComponentGroup}
+          data={data as DataGroup}
+        />
       );
     case 'textVariable':
       return (
@@ -51,6 +59,11 @@ export const OutputComponent = ({ component, data }: OutputComponentProps) => {
           data={data as RecordLink}
         />
       );
+    case 'resourceLink': // TODO
+    case 'container': // TODO
+    case 'anyTypeRecordLink': // TODO
+    case 'guiElementLink': // TODO
+    case 'text': // TODO
     default:
       return (
         <div>

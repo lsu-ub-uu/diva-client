@@ -13,7 +13,13 @@ export const OutputRecordLink = ({
   data,
 }: OutputRecordLinkProps) => {
   const { t } = useTranslation();
-  if (!data.value) {
+  const linkedRecordType = data.children.find(
+    (child) => child.name === 'linkedRecordType',
+  )?.value;
+  const linkedRecordId = data.children.find(
+    (child) => child.name === 'linkedRecordId',
+  )?.value;
+  if (!linkedRecordType || !linkedRecordId) {
     return null;
   }
   return (
@@ -21,14 +27,24 @@ export const OutputRecordLink = ({
       {component.showLabel && (
         <div style={{ color: 'var(--color-label)' }}>{t(component.label)}</div>
       )}
+      {component.attributes?.map((attribute) => (
+        <div key={attribute.name} style={{ fontStyle: 'italic' }}>
+          {t(attribute.label)}:{' '}
+          {t(
+            attribute.options?.find(
+              (opt) => opt.value === data.attributes?.[attribute.name],
+            )?.label || '',
+          )}
+        </div>
+      ))}
       <div style={component.showLabel ? { paddingLeft: '0.5rem' } : undefined}>
         <Link
           to={href('/:recordType/:recordId', {
-            recordType: data.linkedRecordType,
-            recordId: data.value,
+            recordType: linkedRecordType,
+            recordId: linkedRecordId,
           })}
         >
-          {data.linkedRecordType} / {data.value}
+          {linkedRecordType}/{linkedRecordId}
         </Link>
       </div>
     </div>

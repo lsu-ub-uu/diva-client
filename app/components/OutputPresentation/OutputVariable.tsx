@@ -4,6 +4,7 @@ import type {
   FormComponentTextVar,
 } from '../FormGenerator/types';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
+import { Attributes } from './Attributes';
 
 interface OutputVariableProps {
   component: FormComponentNumVar | FormComponentTextVar;
@@ -20,6 +21,8 @@ export const OutputVariable = ({ component, data }: OutputVariableProps) => {
       {component.showLabel && (
         <div style={{ color: 'var(--color-label)' }}>{t(component.label)}</div>
       )}
+      <Attributes component={component} data={data} />
+
       <div style={component.showLabel ? { paddingLeft: '0.5rem' } : undefined}>
         {data.value}
       </div>

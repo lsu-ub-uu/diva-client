@@ -35,13 +35,16 @@ import { assertDefined } from '@/utils/invariant';
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transform } from 'lodash-es';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -58,6 +61,15 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     authToken: auth?.data.token,
     mode: 'update',
   });
+
+  const rawRecordResponse = await getRecordDataById<RecordWrapper>(
+    recordType,
+    recordId,
+    auth?.data.token,
+    false,
+  );
+
+  const rawRecord = rawRecordResponse.data;
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record, language) || t('divaClient_missingTitleText')} | DiVA`;
 
@@ -93,6 +105,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     notification,
     title,
     breadcrumb,
+    rawRecord,
   };
 }
 
@@ -171,6 +184,7 @@ export default function UpdateRecordRoute({
     previewFormDefinition,
     notification,
     defaultValues,
+    rawRecord,
   } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
@@ -212,7 +226,7 @@ export default function UpdateRecordRoute({
         {deferredPreviewData && (
           <div className='preview'>
             <OutputPresentation
-              data={deferredPreviewData}
+              data={transformToRaw(deferredPreviewData)}
               formSchema={previewFormDefinition}
             />
           </div>

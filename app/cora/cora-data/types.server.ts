@@ -24,8 +24,6 @@ export interface RecordLink extends DataElement {
   children: DataAtomic[];
   attributes?: Attributes;
   linkedRecord?: DataGroup;
-  value: string;
-  linkedRecordType: string;
 }
 
 export interface ResourceLink extends DataElement {

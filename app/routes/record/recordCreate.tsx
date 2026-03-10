@@ -266,10 +266,10 @@ export default function CreateRecordRoute({
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
-            <OutputPresentation
+            {/* <OutputPresentation
               data={deferredPreviewData}
               formSchema={previewFormDefinition}
-            />
+            /> */}
           </div>
         )}
       </aside>
