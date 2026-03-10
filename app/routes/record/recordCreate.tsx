@@ -47,6 +47,14 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { transformToCoraData } from '@/cora/transform/transformToCora.server';
+import type {
+  FormComponent,
+  FormComponentGroup,
+  FormComponentWithData,
+  FormSchema,
+} from '@/components/FormGenerator/types';
+import { isComponentWithData } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 export const loader = async ({
   request,
@@ -235,6 +243,13 @@ export default function CreateRecordRoute({
   }
 
   const handleFormChange = (data: BFFDataRecordData) => {
+    const outputData = transformToOutputData(data, previewFormDefinition.form);
+    console.log(
+      'Transformed data for output:',
+      outputData,
+      previewFormDefinition,
+    );
+
     setPreviewData(data);
   };
   return (
@@ -275,3 +290,35 @@ export default function CreateRecordRoute({
     </div>
   );
 }
+
+const transformToOutputData = (data: any, formComponent: FormComponent) => {
+  // { value: '' }
+  if (typeof data !== 'object' || data === null || 'value' in data) {
+    return data;
+  }
+
+  // { someName: { value: '' }, someOtherName_someAttr_someFinal: { value: '' } }
+
+  return Object.entries(data).reduce((acc, curr) => {
+    const [key, value] = curr;
+    const attributes =
+      value !== undefined
+        ? Object.fromEntries(
+            Object.entries(value).filter(([key]) => key.startsWith('_')),
+          )
+        : {};
+
+    const nameInData = !key.startsWith('_') ? key.split('_')[0] : key;
+
+    const matchingFormComponents = (
+      formComponent as FormComponentGroup
+    ).components.filter((comp) => comp.name === nameInData);
+
+    if (matchingFormComponents.length > 0) {
+      console.log({ key, nameInData, attributes, matchingFormComponents });
+    }
+
+    acc[nameInData] = transformToOutputData(value, formComponent);
+    return acc;
+  }, {});
+};
