@@ -47,6 +47,7 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 
 export const loader = async ({
   request,
@@ -265,8 +266,8 @@ export default function CreateRecordRoute({
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
-            <ReadOnlyForm
-              recordData={deferredPreviewData}
+            <OutputPresentation
+              data={deferredPreviewData}
               formSchema={previewFormDefinition}
             />
           </div>
