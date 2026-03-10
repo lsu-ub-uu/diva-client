@@ -1001,14 +1001,14 @@ export interface RecordInfoPersonUpdateGroup {
 }
 
 export interface NamePersonGroup {
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_termsOfAddress?: {
@@ -1031,14 +1031,14 @@ export interface AuthorityPersonalGroup {
 }
 
 export interface NamePersonVariantGroup {
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   _type: 'personal';
@@ -1667,14 +1667,14 @@ export interface NamePersonalProjectGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_date?: {
@@ -1770,7 +1770,7 @@ export interface AuthorityTopicLangGroup {
 export type RelatedTypeEarlierBroaderCollection = 'earlier' | 'broader';
 
 export interface RelatedSubjectGroup {
-  topic?: {
+  subject?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
@@ -1797,7 +1797,7 @@ export interface SubjectUpdateGroup {
 }
 
 export interface SubjectSubjectGroup {
-  topic?: {
+  subject?: {
     value: string;
     linkedRecord: {
       subject: SubjectUpdateGroup;
@@ -2419,14 +2419,14 @@ export interface NamePersonalGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_date?: {
@@ -2854,14 +2854,14 @@ export interface NamePersonalThesisAdvisorGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_termsOfAddress?: {
@@ -2904,14 +2904,14 @@ export interface NamePersonalDegreeSupervisorGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_termsOfAddress?: {
@@ -2954,14 +2954,14 @@ export interface NamePersonalOpponentGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart_type_given?: {
-    value: string;
-    _type: 'given';
-    __text?: { sv: string; en: string };
-  };
   namePart_type_family?: {
     value: string;
     _type: 'family';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_given?: {
+    value: string;
+    _type: 'given';
     __text?: { sv: string; en: string };
   };
   namePart_type_termsOfAddress?: {
