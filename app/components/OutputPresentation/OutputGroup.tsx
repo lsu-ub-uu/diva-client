@@ -18,10 +18,10 @@ export const OutputGroup = ({ component, data }: OutputGroupProps) => {
       className='form-component-container'
       data-text-style={component.textStyle}
     >
-      <div style={{ marginBottom: '.5rem' }}>
-        <h3 style={{ marginTop: '1rem' }}>
-          {component.showLabel && t(component.label)}
-        </h3>
+      <div>
+        {component.showLabel && (
+          <h3 style={{ marginTop: '1rem' }}>{t(component.label)}</h3>
+        )}
         <Attributes component={component} data={data} />
       </div>
       {component.components?.map((childComponent, index) => {
