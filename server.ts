@@ -22,6 +22,7 @@ import express from 'express';
 import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
+import { prometheusMetrics, prometheusMiddleware } from 'metrics';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -47,6 +48,9 @@ const app = express();
 
 app.use(compression());
 app.disable('x-powered-by');
+
+app.use(prometheusMiddleware);
+app.get('/metrics', prometheusMetrics);
 
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
