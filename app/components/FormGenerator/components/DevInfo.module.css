@@ -23,7 +23,7 @@
   color: antiquewhite;
 
   .copy-btn {
-    position: absolute;
+    position: fixed;
     top: 4px;
     right: 4px;
     z-index: 2;
@@ -74,6 +74,7 @@
   }
 
   pre {
+    position: relative;
     margin: 0;
     overflow-x: auto;
     max-width: 900px;

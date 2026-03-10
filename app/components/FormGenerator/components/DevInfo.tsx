@@ -73,21 +73,19 @@ export const DevInfo = ({ label, component, path }: DevInfoProps) => {
       {expanded && (
         <div className={styles['expand-info']}>
           <pre className={styles['path']}>{path}</pre>
-          <div style={{ position: 'relative' }}>
+          <pre style={{ marginTop: 0 }}>
             <CopyButton getText={() => JSON.stringify(component, null, 2)} />
-            <pre style={{ marginTop: 0 }}>
-              <strong>FORM DEF</strong>
-              {JSON.stringify(component, null, 2)}
-            </pre>
-          </div>
+            <strong>FORM DEF</strong>
+            {JSON.stringify(component, null, 2)}
+          </pre>
           {data && (
-            <div style={{ position: 'relative' }}>
-              <CopyButton getText={() => JSON.stringify(data, null, 2)} />
+            <>
               <pre style={{ marginTop: 0 }}>
+                <CopyButton getText={() => JSON.stringify(data, null, 2)} />
                 <strong>DATA ({path})</strong>
                 {JSON.stringify(data, null, 2)}
               </pre>
-            </div>
+            </>
           )}
         </div>
       )}
