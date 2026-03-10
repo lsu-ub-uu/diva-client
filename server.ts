@@ -18,11 +18,15 @@
 
 import compression from 'compression';
 import 'dotenv/config';
-import express from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
-import { prometheusMetrics, prometheusMiddleware } from 'metrics';
+import prometheusClient from 'prom-client';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -43,6 +47,22 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
     'Missing required environment variable CORA_EXTERNAL_SYSTEM_URL',
   );
 }
+
+prometheusClient.collectDefaultMetrics();
+
+const httpRequestCounter = new prometheusClient.Counter({
+  name: 'diva_client_http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+});
+
+const httpRequestDuration = new prometheusClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'HTTP request duration in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.1, 0.5, 1, 5],
+  registers: [prometheusClient.register],
+});
 
 const app = express();
 
@@ -131,3 +151,31 @@ const getLocalIp = () => {
     }
   }
 };
+
+function prometheusMiddleware(req: Request, res: Response, next: NextFunction) {
+  const end = httpRequestDuration.startTimer({
+    method: req.method,
+    route: req.path,
+  });
+
+  res.on('finish', () => {
+    end({ status_code: res.statusCode });
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.route ? req.route.path : req.path,
+      status_code: res.statusCode,
+    });
+  });
+  next();
+}
+
+async function prometheusMetrics(_req: Request, res: Response) {
+  try {
+    res.setHeader('Content-Type', prometheusClient.register.contentType);
+    res.end(await prometheusClient.register.metrics());
+  } catch (err) {
+    res
+      .status(500)
+      .end(err instanceof Error ? err.message : 'Error collecting metrics');
+  }
+}
