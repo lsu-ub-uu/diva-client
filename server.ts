@@ -70,7 +70,7 @@ app.use(compression());
 app.disable('x-powered-by');
 
 app.use(prometheusMiddleware);
-app.get('/metrics', prometheusMetrics);
+app.get(`${BASE_PATH}/metrics`, prometheusMetrics);
 
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
