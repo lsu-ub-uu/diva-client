@@ -1,0 +1,17 @@
+.output-field {
+  margin-bottom: var(--gap);
+
+  &[data-variant='inline'] {
+    display: flex;
+    gap: var(--gap);
+    align-items: center;
+  }
+}
+
+.label {
+  color: var(--color-label);
+}
+
+.output-field[data-variant='block']:has(.label) .value {
+  padding-left: var(--gap);
+}

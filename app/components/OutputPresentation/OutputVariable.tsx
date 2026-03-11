@@ -2,30 +2,34 @@ import { useTranslation } from 'react-i18next';
 import type {
   FormComponentNumVar,
   FormComponentTextVar,
+  PresentationStyle,
 } from '../FormGenerator/types';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
 import { Attributes } from './Attributes';
+import { OutputField } from './OutputField';
 
 interface OutputVariableProps {
   component: FormComponentNumVar | FormComponentTextVar;
   data: DataAtomic;
+  parentPresentationStyle?: PresentationStyle;
 }
 
-export const OutputVariable = ({ component, data }: OutputVariableProps) => {
+export const OutputVariable = ({
+  component,
+  data,
+  parentPresentationStyle,
+}: OutputVariableProps) => {
   const { t } = useTranslation();
   if (!data.value) {
     return null;
   }
-  return (
-    <div style={{ marginBottom: '0.5rem' }}>
-      {component.showLabel && (
-        <div style={{ color: 'var(--color-label)' }}>{t(component.label)}</div>
-      )}
-      <Attributes component={component} data={data} />
 
-      <div style={component.showLabel ? { paddingLeft: '0.5rem' } : undefined}>
-        {data.value}
-      </div>
-    </div>
+  return (
+    <OutputField
+      label={component.showLabel ? t(component.label) : undefined}
+      attributes={<Attributes component={component} data={data} />}
+      value={data.value}
+      variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+    />
   );
 };

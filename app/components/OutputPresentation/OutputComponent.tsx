@@ -8,27 +8,39 @@ import type {
   FormComponent,
   FormComponentCollVar,
   FormComponentGroup,
+  FormComponentGuiElement,
   FormComponentNumVar,
   FormComponentRecordLink,
+  FormComponentText,
   FormComponentTextVar,
+  PresentationStyle,
 } from '../FormGenerator/types';
 import { OutputCollectionVariable } from './OutputCollectionVariable';
 import { OutputGroup } from './OutputGroup';
 import { OutputVariable } from './OutputVariable';
 import { OutputRecordLink } from './OutputRecordLink';
+import { OutputContainer } from './OutputContainer';
+import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
+import { Text } from '../FormGenerator/components/Text';
 
 interface OutputComponentProps {
   component: FormComponent;
-  data: CoraData;
+  data?: CoraData;
+  parentPresentationStyle?: PresentationStyle;
 }
 
-export const OutputComponent = ({ component, data }: OutputComponentProps) => {
+export const OutputComponent = ({
+  component,
+  data,
+  parentPresentationStyle,
+}: OutputComponentProps) => {
   switch (component.type) {
     case 'group':
       return (
         <OutputGroup
           component={component as FormComponentGroup}
           data={data as DataGroup}
+          parentPresentationStyle={parentPresentationStyle}
         />
       );
     case 'textVariable':
@@ -36,6 +48,7 @@ export const OutputComponent = ({ component, data }: OutputComponentProps) => {
         <OutputVariable
           component={component as FormComponentTextVar}
           data={data as DataAtomic}
+          parentPresentationStyle={parentPresentationStyle}
         />
       );
     case 'numberVariable':
@@ -43,6 +56,7 @@ export const OutputComponent = ({ component, data }: OutputComponentProps) => {
         <OutputVariable
           component={component as FormComponentNumVar}
           data={data as DataAtomic}
+          parentPresentationStyle={parentPresentationStyle}
         />
       );
     case 'collectionVariable':
@@ -50,6 +64,7 @@ export const OutputComponent = ({ component, data }: OutputComponentProps) => {
         <OutputCollectionVariable
           component={component as FormComponentCollVar}
           data={data as DataAtomic}
+          parentPresentationStyle={parentPresentationStyle}
         />
       );
     case 'recordLink':
@@ -57,13 +72,25 @@ export const OutputComponent = ({ component, data }: OutputComponentProps) => {
         <OutputRecordLink
           component={component as FormComponentRecordLink}
           data={data as RecordLink}
+          parentPresentationStyle={parentPresentationStyle}
         />
       );
+    case 'container':
+      return (
+        <OutputContainer
+          component={component}
+          data={data as DataGroup}
+          parentPresentationStyle={parentPresentationStyle}
+        />
+      );
+    case 'text':
+      return <Text component={component as FormComponentText} />;
     case 'resourceLink': // TODO
-    case 'container': // TODO
     case 'anyTypeRecordLink': // TODO
-    case 'guiElementLink': // TODO
-    case 'text': // TODO
+    case 'guiElementLink':
+      return (
+        <GuiElementLink component={component as FormComponentGuiElement} />
+      );
     default:
       return (
         <div>

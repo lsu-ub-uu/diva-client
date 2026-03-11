@@ -42,8 +42,6 @@ export const Text = ({ component }: TextProps) => {
             : '2em',
       }}
     >
-      <DevInfo component={component} />
-
       <Typography
         as={mapTextStyleToComponent(component.textStyle)}
         variant={component.textStyle ?? 'bodyTextStyle'}

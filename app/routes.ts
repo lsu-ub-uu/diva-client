@@ -37,4 +37,5 @@ export default [
   route('sitemap.xml', 'routes/resourceRoutes/sitemap.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
+  route('presentation-playground', 'routes/docs/presentationPlayground.tsx'),
 ] satisfies RouteConfig;

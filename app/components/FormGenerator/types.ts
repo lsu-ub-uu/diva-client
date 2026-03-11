@@ -85,12 +85,19 @@ export interface FormComponentMetadata extends FormComponentBase {
   gridColSpan?: number;
   childStyle?: ChildStyle[];
   textStyle?: TextStyle;
-  presentationStyle?: string;
+  presentationStyle?: PresentationStyle;
   presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   addText?: string;
 }
+
+export type PresentationStyle =
+  | 'inline'
+  | 'frame'
+  | 'specification'
+  | 'highlight'
+  | 'rowBased';
 
 export type PresentationSize =
   | 'firstSmaller'
