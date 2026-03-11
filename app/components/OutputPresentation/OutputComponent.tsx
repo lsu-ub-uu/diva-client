@@ -3,14 +3,17 @@ import type {
   DataAtomic,
   DataGroup,
   RecordLink,
+  ResourceLink,
 } from '@/cora/cora-data/types.server';
 import type {
   FormComponent,
+  FormComponentAnyTypeRecordLink,
   FormComponentCollVar,
   FormComponentGroup,
   FormComponentGuiElement,
   FormComponentNumVar,
   FormComponentRecordLink,
+  FormComponentResourceLink,
   FormComponentText,
   FormComponentTextVar,
   PresentationStyle,
@@ -22,6 +25,7 @@ import { OutputRecordLink } from './OutputRecordLink';
 import { OutputContainer } from './OutputContainer';
 import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
 import { Text } from '../FormGenerator/components/Text';
+import { OutputResourceLink } from './OutputResourceLink';
 
 interface OutputComponentProps {
   component: FormComponent;
@@ -34,6 +38,9 @@ export const OutputComponent = ({
   data,
   parentPresentationStyle,
 }: OutputComponentProps) => {
+  if (component.presentationId === 'attachmentsOutputPGroup') {
+    console.log('rendering attachments group:', component, data);
+  }
   switch (component.type) {
     case 'group':
       return (
@@ -75,6 +82,14 @@ export const OutputComponent = ({
           parentPresentationStyle={parentPresentationStyle}
         />
       );
+    case 'anyTypeRecordLink':
+      return (
+        <OutputRecordLink
+          component={component as FormComponentAnyTypeRecordLink}
+          data={data as RecordLink}
+          parentPresentationStyle={parentPresentationStyle}
+        />
+      );
     case 'container':
       return (
         <OutputContainer
@@ -85,17 +100,27 @@ export const OutputComponent = ({
       );
     case 'text':
       return <Text component={component as FormComponentText} />;
-    case 'resourceLink': // TODO
-    case 'anyTypeRecordLink': // TODO
+    case 'resourceLink':
+      return (
+        <OutputResourceLink
+          component={component as FormComponentResourceLink}
+          data={data as ResourceLink}
+        />
+      );
     case 'guiElementLink':
       return (
         <GuiElementLink component={component as FormComponentGuiElement} />
       );
     default:
-      return (
-        <div>
-          Unhandled component: {component.name} - {component.type}
-        </div>
-      );
+      return null;
   }
 };
+
+/* 
+ - Skriva intergrationstester på OutputPresentation
+ - Skriv enhetstester på komponenterna
+ - Komponenter ska ha fullt stöd för headlineLevel, attributesToShow, etc...
+ - Dubbla presentationer
+ - Avgränsning: Endast outputpanelen?
+
+*/

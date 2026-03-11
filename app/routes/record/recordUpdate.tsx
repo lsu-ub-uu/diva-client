@@ -43,7 +43,6 @@ import { useDeferredValue, useState } from 'react';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { transform } from 'lodash-es';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {

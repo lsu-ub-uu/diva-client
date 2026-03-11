@@ -1,19 +1,15 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
 import type {
-  FormComponentContainer,
   FormComponentGroup,
-  FormComponentGuiElement,
   FormComponentText,
   PresentationStyle,
 } from '../FormGenerator/types';
 import { Attributes } from './Attributes';
 import { OutputComponent } from './OutputComponent';
 import { findChildData } from './findChildData';
-import { OutputContainer } from './OutputContainer';
-import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
-import { Text } from '../FormGenerator/components/Text';
 import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Text } from '../FormGenerator/components/Text';
 
 interface OutputGroupProps {
   component: FormComponentGroup;
@@ -35,8 +31,9 @@ export const OutputGroup = ({
     >
       <div>
         {component.showLabel && (
-          <h3 style={{ marginTop: '1rem' }}>{t(component.label)}</h3>
+          <Text component={component as FormComponentText} />
         )}
+        {/* <h3 style={{ marginTop: '1rem' }}>{t(component.label)}</h3> */}
         <Attributes component={component} data={data} />
       </div>
       {component.components?.map((childComponent, index) => {

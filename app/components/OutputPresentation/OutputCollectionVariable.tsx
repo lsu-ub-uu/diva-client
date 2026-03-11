@@ -36,15 +36,3 @@ export const OutputCollectionVariable = ({
     />
   );
 };
-
-/* 
- - Bryta ut ui komponenter och ta bort inline styling
- - Skriva intergrationstester på OutputPresentation
- - Skriv enhetstester på komponenterna
- - Komponenter ska ha fullt stöd för headlineLevel, showLabel, attributesToShow, etc...
- - Dubbla presentationer
- - case 'resourceLink': // TODO
- - case 'anyTypeRecordLink': // TODO
- - Avgränsning: Endast outputpanelen?
-
-*/

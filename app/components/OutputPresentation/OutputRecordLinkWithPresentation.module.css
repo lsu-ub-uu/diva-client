@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+}
+
+.presentation-border {
+  border: 1px dashed var(--color-label);
+  border-radius: var(--border-radius);
+  padding: var(--gap);
+}

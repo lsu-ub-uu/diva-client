@@ -26,6 +26,10 @@ export default [
 
   /* Resource routes */
   route('record/:recordType/:recordId', 'routes/resourceRoutes/getRecord.tsx'),
+  route(
+    'linkedRecord/:recordType/:recordId',
+    'routes/resourceRoutes/getLinkedRecord.tsx',
+  ),
   route('refreshDefinitions', 'routes/resourceRoutes/refreshDefinitions.tsx'),
   route(
     'autocompleteSearch/:searchType',

@@ -17,12 +17,14 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { assertDefined } from '@/utils/invariant';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../record/+types/recordView';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -36,6 +38,12 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     mode: 'view',
   });
 
+  const rawRecordResponse = await getRecordDataById<RecordWrapper>(
+    recordType,
+    recordId,
+    auth?.data.token,
+  );
+
   assertDefined(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
@@ -43,17 +51,17 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     'view',
   );
 
-  return { record, formDefinition };
+  return { record, formDefinition, rawRecord: rawRecordResponse.data };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
+  const { record, formDefinition, rawRecord } = loaderData;
 
   return (
     <main className='grid'>
       <div className='grid-col-6 grid-col-l-12'>
-        <ReadOnlyForm
-          recordData={record.data}
+        <OutputPresentation
+          data={rawRecord.record.data}
           formSchema={formDefinition}
           key={record?.id}
         />

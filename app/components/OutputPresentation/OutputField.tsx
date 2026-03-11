@@ -23,10 +23,8 @@ export const OutputField = ({
       data-variant={variant}
       data-text-style={textStyle}
     >
-      <div>
-        {label && <div className={styles['label']}>{label}</div>}
-        {attributes}
-      </div>
+      {label && <div className={styles['label']}>{label}</div>}
+      {attributes}
       <div className={styles['value']}>{value}</div>
     </div>
   );
