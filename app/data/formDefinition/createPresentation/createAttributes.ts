@@ -1,24 +1,31 @@
-import type { Lookup } from 'server/dependencies/util/lookup';
-import type { BFFMetadataTypes } from '../formDefinition.server';
+import type { FormAttributeCollection } from '@/components/FormGenerator/types';
 import type {
   BFFAttributeReference,
+  BFFMetadata,
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
+  BFFPresentation,
   BFFPresentationBase,
 } from '@/cora/bffTypes.server';
-import type { FormAttributeCollection } from '@/components/FormGenerator/types';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createCommonParameters } from '../createCommonParameters.server';
 import { createCollectionVariableOptions } from './createGroupOrComponent';
 
 export const createAttributes = (
-  metadataVariable: BFFMetadataTypes,
+  metadataVariable: BFFMetadata,
   metadataPool: Lookup<string, BFFMetadataBase>,
   options: any,
-  presentationMode: 'input' | 'output',
+  presentation: BFFPresentation,
 ): FormAttributeCollection[] | undefined => {
-  if (metadataVariable.attributeReferences === undefined) {
+  if (!('attributeReferences' in metadataVariable)) {
     return undefined;
   }
+
+  if (!('mode' in presentation)) {
+    return undefined;
+  }
+
+  const presentationMode = presentation.mode;
 
   return metadataVariable.attributeReferences?.map(
     (attributeReference: BFFAttributeReference) => {

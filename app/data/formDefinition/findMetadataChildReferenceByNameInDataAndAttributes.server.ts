@@ -119,8 +119,8 @@ const attributesMatch = (
     metadataCandidate.attributeReferences,
   );
   return firstAttributesExistsInSecond(
-    candidateAttributes,
     currentPresentationAttributes,
+    candidateAttributes,
   );
 };
 

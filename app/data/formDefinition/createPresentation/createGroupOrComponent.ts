@@ -302,6 +302,7 @@ const createFormPartsForGroupOrVariable = (
   const presentation = presentationPool.get(presentationChildId) as
     | BFFPresentationBase
     | BFFPresentationGroup;
+
   if (
     presentation.type !== 'container' &&
     noIdMatchForChildRefAndPresentationOf(metadataChildReferences, presentation)

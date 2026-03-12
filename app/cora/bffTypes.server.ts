@@ -291,10 +291,11 @@ export interface BFFGuiElement extends BFFBase {
 
 export type BFFPresentation =
   | BFFPresentationBase
+  | BFFPresentationTextVar
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
-  | BFFGuiElement
-  | BFFPresentationResourceLink;
+  | BFFPresentationResourceLink
+  | BFFGuiElement;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
