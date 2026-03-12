@@ -101,7 +101,6 @@ import {
 } from '@/__mocks__/bff/form/bffMock';
 import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 import type {
-  BFFAttributeReference,
   BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFMetadata,
@@ -128,17 +127,10 @@ import type {
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import {
-  findMetadataChildReferenceByNameInDataAndAttributes,
-  firstAttributesExistsInSecond,
-} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  getAttributesByAttributeReferences,
-  hasLinkedPresentation,
-} from '../formDefinition.server';
+import { hasLinkedPresentation } from '../formDefinition.server';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -376,35 +368,6 @@ describe('formDefinition', () => {
     createItemCollection(`${id}Collection`, 'someNameInData', itemIds);
 
     values.forEach((value: string) => createCollItem(value));
-
-    return metadata;
-  };
-
-  const createCollVarFinal = (
-    id: string,
-    nameInData: string,
-    finalValue: string,
-    attributeReferenceIds: string[],
-  ): BFFMetadataCollectionVariable => {
-    const metadata: BFFMetadataCollectionVariable = {
-      id,
-      nameInData,
-      type: 'collectionVariable',
-      textId: 'someTextId',
-      defTextId: 'someDefTextId',
-      refCollection: `${id}Collection`,
-      finalValue,
-    };
-
-    if (attributeReferenceIds.length > 0) {
-      const attributeIds = attributeReferenceIds?.map((attrId) => {
-        return {
-          refCollectionVarId: attrId,
-        };
-      });
-      metadata.attributeReferences = attributeIds;
-    }
-    addToPool(metadata);
 
     return metadata;
   };

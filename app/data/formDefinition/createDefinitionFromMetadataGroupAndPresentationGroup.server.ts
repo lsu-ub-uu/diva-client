@@ -4,12 +4,19 @@ import type {
 } from '@/components/FormGenerator/types';
 import type {
   BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
+  BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentation,
+  BFFPresentationBase,
   BFFPresentationChildReference,
   BFFPresentationGroup,
+  BFFPresentationRecordLink,
+  BFFPresentationResourceLink,
   BFFPresentationTextVar,
+  BFFResourceLink,
   Dependencies,
 } from '@/cora/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
@@ -21,12 +28,17 @@ import {
   type CommonParameters,
 } from './createCommonParameters.server';
 import { createAttributes } from './createPresentation/createAttributes';
-import { createTextVariableValidation } from './formValidation.server';
+import {
+  createNumberVariableValidation,
+  createTextVariableValidation,
+} from './formValidation.server';
 import { createText } from './createPresentation/createText.server';
 import { createGuiElement } from './createPresentation/createGuiElement.server';
 import { Presentation } from 'lucide-react';
 import { findMetadataChildReferenceByNameInDataAndAttributes } from './findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createRepeat } from './createPresentation/createRepeat.server';
+import { createCollectionVariableOptions } from './createPresentation/createGroupOrComponent';
+import { createRecordLinkSearchPresentation } from './createPresentation/createRecordLinkSearchPresentation.server';
 
 export interface Repeat {
   repeatMin: number;
@@ -106,6 +118,36 @@ const createComponent = (
         presentationChildReferenceData,
         commonParameters,
       );
+    case 'pNumVar':
+      return createNumVar(
+        metadata as BFFMetadataNumberVariable,
+        presentation as BFFPresentationBase,
+        attributes,
+        repeat,
+        presentationChildReferenceData,
+        commonParameters,
+      );
+
+    case 'pCollVar':
+      return createCollVar(
+        dependencies,
+        metadata as BFFMetadataCollectionVariable,
+        presentation as BFFPresentationBase,
+        attributes,
+        repeat,
+        presentationChildReferenceData,
+        commonParameters,
+      );
+    case 'pRecordLink':
+      return createRecordLink(
+        dependencies,
+        metadata as BFFMetadataRecordLink,
+        presentation as BFFPresentationBase,
+        attributes,
+        repeat,
+        presentationChildReferenceData,
+        commonParameters,
+      );
     case 'pGroup':
       return createGroup(
         dependencies,
@@ -116,7 +158,283 @@ const createComponent = (
         presentationChildReferenceData,
         commonParameters,
       );
+    case 'pResourceLink':
+      return createResourceLink(
+        metadata as BFFResourceLink,
+        presentation as BFFPresentationResourceLink,
+        attributes,
+        repeat,
+        presentationChildReferenceData,
+        commonParameters,
+      );
   }
+};
+
+const createTextVar = (
+  metadata: BFFMetadataTextVariable,
+  presentation: BFFPresentationTextVar,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
+) => {
+  const validation = createTextVariableValidation(metadata);
+  const finalValue = metadata.finalValue;
+  const inputFormat = presentation.inputFormat;
+  const type = metadata.type;
+
+  const inputType = presentation.inputType;
+  const {
+    childStyle,
+    textStyle,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = commonParameters;
+
+  return removeEmpty({
+    presentationId: presentation.id,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
+    validation,
+    finalValue,
+    inputFormat,
+    attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    inputType,
+    // alternativePresentation,
+    addText,
+  });
+};
+
+const createNumVar = (
+  metadata: BFFMetadataNumberVariable,
+  presentation: BFFPresentationBase,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
+) => {
+  const validation = createNumberVariableValidation(metadata);
+  const finalValue = metadata.finalValue;
+  const type = metadata.type;
+
+  const {
+    childStyle,
+    textStyle,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = commonParameters;
+
+  return removeEmpty({
+    presentationId: presentation.id,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
+    validation,
+    finalValue,
+    attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    // alternativePresentation,
+    addText,
+  });
+};
+
+const createCollVar = (
+  dependencies: Dependencies,
+  metadata: BFFMetadataCollectionVariable,
+  presentation: BFFPresentationBase,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
+) => {
+  const finalValue = metadata.finalValue;
+  const inputFormat = presentation.inputFormat;
+  const type = metadata.type;
+  const options = createCollectionVariableOptions(
+    dependencies.metadataPool,
+    metadata,
+  );
+
+  const {
+    childStyle,
+    textStyle,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = commonParameters;
+
+  return removeEmpty({
+    presentationId: presentation.id,
+    options,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
+    finalValue,
+    inputFormat,
+    attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    // alternativePresentation,
+    addText,
+  });
+};
+
+const createRecordLink = (
+  dependencies: Dependencies,
+  metadata: BFFMetadataRecordLink,
+  presentation: BFFPresentationRecordLink,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
+) => {
+  const finalValue = metadata.finalValue;
+  const recordLinkType = metadata.linkedRecordType;
+  const type = metadata.type;
+  let searchPresentation;
+  if (presentation.search !== undefined) {
+    searchPresentation = createRecordLinkSearchPresentation(
+      dependencies,
+      presentation.search,
+    );
+  }
+  let linkedRecordPresentation;
+  if (presentation.linkedRecordPresentations !== undefined) {
+    linkedRecordPresentation = presentation.linkedRecordPresentations[0];
+  }
+  const presentationRecordLinkId = presentation.id;
+
+  const {
+    childStyle,
+    textStyle,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = commonParameters;
+
+  return removeEmpty({
+    presentationId: presentation.id,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
+    recordLinkType,
+    searchPresentation,
+    linkedRecordPresentation,
+    presentationRecordLinkId,
+    presentAs: presentation.presentAs,
+    finalValue,
+    attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    //alternativePresentation,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  });
 };
 
 const createGroup = (
@@ -183,6 +501,66 @@ const createGroup = (
     title,
     titleHeadlineLevel,
     presentAs,
+    addText,
+  });
+};
+
+const createResourceLink = (
+  metadata: BFFResourceLink,
+  presentation: BFFPresentationResourceLink,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
+) => {
+  const inputFormat = presentation.inputFormat;
+  const type = metadata.type;
+  const outputFormat = presentation.outputFormat;
+
+  const {
+    childStyle,
+    textStyle,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    addText,
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
+
+  const {
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = commonParameters;
+
+  return removeEmpty({
+    presentationId: presentation.id,
+    name,
+    placeholder,
+    mode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    type,
+    outputFormat,
+    inputFormat,
+    attributes,
+    repeat,
+    childStyle,
+    textStyle,
+    gridColSpan,
+    presentationSize,
+    title,
+    titleHeadlineLevel,
+    // alternativePresentation,
     addText,
   });
 };
@@ -267,70 +645,6 @@ const findMatchingMetadataChildRef = (
       metadataFromPresentation,
     );
   }
-};
-
-const createTextVar = (
-  metadata: BFFMetadataTextVariable,
-  presentation: BFFPresentationTextVar,
-  attributes: FormAttributeCollection[] | undefined,
-  repeat: Repeat,
-  presentationChildReferenceData: PresentationChildReferenceData,
-  commonParameters: CommonParameters,
-) => {
-  const validation = createTextVariableValidation(metadata);
-  const finalValue = metadata.finalValue;
-  const inputFormat = presentation.inputFormat;
-  const type = metadata.type;
-
-  const inputType = presentation.inputType;
-  const {
-    childStyle,
-    textStyle,
-    presentationSize,
-    title,
-    titleHeadlineLevel,
-    addText,
-  } = presentationChildReferenceData;
-
-  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
-
-  const {
-    name,
-    placeholder,
-    mode,
-    tooltip,
-    label,
-    headlineLevel,
-    showLabel,
-    attributesToShow,
-  } = commonParameters;
-
-  return removeEmpty({
-    presentationId: presentation.id,
-    name,
-    placeholder,
-    mode,
-    tooltip,
-    label,
-    headlineLevel,
-    showLabel,
-    attributesToShow,
-    type,
-    validation,
-    finalValue,
-    inputFormat,
-    attributes,
-    repeat,
-    childStyle,
-    textStyle,
-    gridColSpan,
-    presentationSize,
-    title,
-    titleHeadlineLevel,
-    inputType,
-    // alternativePresentation,
-    addText,
-  });
 };
 
 export const createPresentationChildReferenceParameters = (
