@@ -8,7 +8,7 @@ import type {
   BFFPresentationBase,
 } from '@/cora/bffTypes.server';
 import type { Lookup } from 'server/dependencies/util/lookup';
-import { createCommonParameters } from '../createCommonParameters.server';
+import { createCommonParameters } from '../utils/createCommonParameters.server';
 import { createCollectionVariableOptions } from './createGroupOrComponent';
 
 export const createAttributes = (

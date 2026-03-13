@@ -18,81 +18,69 @@
  */
 
 import type {
-  BFFMetadataChildReference,
-  BFFMetadataGroup,
-  BFFPresentationChildReference,
-  BFFPresentationGroup,
-} from '@/cora/bffTypes.server';
-import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
-import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { createAttributes } from './createAttributes';
-import type {
-  FormComponent,
+  FormAttributeCollection,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat.server';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import type {
+  BFFMetadataGroup,
+  BFFPresentationGroup,
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
+import {
+  type PresentationChildReferenceData,
+  type Repeat,
+} from './createPresentationComponent';
+import type { CommonParameters } from '../utils/createCommonParameters.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { createChildComponents } from './createChildComponents.server';
 
 export const createGroup = (
   dependencies: Dependencies,
   metadata: BFFMetadataGroup,
   presentation: BFFPresentationGroup,
-  metadataChildReference: BFFMetadataChildReference,
-  presentationChildReference: BFFPresentationChildReference,
-  alternativePresentation: FormComponent | undefined,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
 ): FormComponentGroup => {
   const type = metadata.type;
   const presentationStyle = presentation.presentationStyle;
   const presentAs = presentation.presentAs;
 
-  const attributes = createAttributes(
-    metadata,
-    dependencies.metadataPool,
-    undefined,
-    presentation.mode,
-  );
-
-  const components = createComponentsFromChildReferences(
+  const components = createChildComponents(
     dependencies,
     metadata.children,
     presentation.children,
-    false,
-  );
-
-  const repeat = createRepeat(
-    presentationChildReference,
-    metadataChildReference,
   );
 
   const {
     childStyle,
     textStyle,
-    gridColSpan,
     presentationSize,
     title,
     titleHeadlineLevel,
     addText,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
     showLabel,
     attributesToShow,
-  } = createCommonParameters(metadata, presentation);
+  } = commonParameters;
 
   return removeEmpty({
     presentationId: presentation.id,
     type,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -105,7 +93,6 @@ export const createGroup = (
     childStyle,
     gridColSpan,
     textStyle,
-    alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,

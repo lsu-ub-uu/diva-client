@@ -16,7 +16,7 @@ describe('findChildData', () => {
       children: [{ name: 'other', value: 'someValue' }],
     } as DataGroup;
 
-    expect(findChildData(component, data)).toBeUndefined();
+    expect(findChildData(component, data)).toEqual([]);
   });
 
   it('returns matching name and no attributes', () => {
@@ -32,7 +32,7 @@ describe('findChildData', () => {
     } as DataGroup;
 
     const result = findChildData(component, data);
-    expect(result).toEqual({ name: 'test', value: 'someValue' });
+    expect(result).toEqual([{ name: 'test', value: 'someValue' }]);
   });
 
   it('returns matching name and attributes', () => {
@@ -61,11 +61,13 @@ describe('findChildData', () => {
     } as DataGroup;
 
     const result = findChildData(component, data);
-    expect(result).toEqual({
-      name: 'test',
-      attributes: { attr1: 'opt2' },
-      value: 'someValue',
-    });
+    expect(result).toEqual([
+      {
+        name: 'test',
+        attributes: { attr1: 'opt2' },
+        value: 'someValue',
+      },
+    ]);
   });
 
   it('returns when data matches final value attribute', () => {
@@ -99,10 +101,12 @@ describe('findChildData', () => {
     } as DataGroup;
 
     const result = findChildData(component, data);
-    expect(result).toEqual({
-      name: 'test',
-      attributes: { attr1: 'opt2' },
-      value: 'someValue',
-    });
+    expect(result).toEqual([
+      {
+        name: 'test',
+        attributes: { attr1: 'opt2' },
+        value: 'someValue',
+      },
+    ]);
   });
 });

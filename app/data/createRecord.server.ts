@@ -20,7 +20,7 @@ import type { BFFDataRecord } from '@/types/record';
 
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import type { Auth } from '@/auth/Auth';
-import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
+import { createFormMetaData } from '@/data/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/cora/transform/transformToCora.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';

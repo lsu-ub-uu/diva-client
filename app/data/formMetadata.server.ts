@@ -27,7 +27,10 @@ import type {
   Dependencies,
 } from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { determineRepeatMax, type FormMetaData } from './formDefinition.server';
+import {
+  determineRepeatMax,
+  type FormMetaData,
+} from './formDefinition/utils/formDefinitionUtils.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,

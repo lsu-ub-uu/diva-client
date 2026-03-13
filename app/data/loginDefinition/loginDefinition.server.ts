@@ -25,7 +25,7 @@ import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
 } from '@/cora/bffTypes.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
+import { createLinkedRecordDefinition } from '../formDefinition/createFormDefinition.server';
 
 export interface LoginDefinition {
   id: string;

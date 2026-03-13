@@ -27,8 +27,8 @@ import type {
 import { findMatchingMetadataChildReferencesForRContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForRContainer';
 import { findMatchingMetadataChildReferencesForSContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForSContainer.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { createChildComponents } from '../createDefinitionFromMetadataGroupAndPresentationGroup.server';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import { createChildComponents } from './createChildComponents.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 
 export const createContainer = (
   dependencies: Dependencies,
@@ -68,14 +68,10 @@ export const createContainer = (
     presentation.children,
   );
 
-  const {
-    childStyle,
-    textStyle,
-    gridColSpan,
-    presentationSize,
-    title,
-    titleHeadlineLevel,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  const { childStyle, textStyle, presentationSize, title, titleHeadlineLevel } =
+    presentationChildReference;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const container: FormComponentContainer = {
     presentationId: presentation.id,

@@ -18,44 +18,41 @@
  */
 
 import type {
-  BFFMetadataChildReference,
+  FormAttributeCollection,
+  FormComponentResourceLink,
+} from '@/components/FormGenerator/types';
+import type {
   BFFPresentationChildReference,
   BFFPresentationResourceLink,
   BFFResourceLink,
 } from '@/cora/bffTypes.server';
-import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { type CommonParameters } from '@/data/formDefinition/utils/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type {
-  FormComponent,
-  FormComponentResourceLink,
-} from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat.server';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
+import type { Repeat } from './createPresentationComponent';
 
 export const createResourceLink = (
   metadata: BFFResourceLink,
   presentation: BFFPresentationResourceLink,
-  metadataChildReference: BFFMetadataChildReference,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
   presentationChildReference: BFFPresentationChildReference,
-  alternativePresentation: FormComponent | undefined,
+  commonParameters: CommonParameters,
 ): FormComponentResourceLink => {
+  const inputFormat = presentation.inputFormat;
   const type = metadata.type;
   const outputFormat = presentation.outputFormat;
-
-  const repeat = createRepeat(
-    presentationChildReference,
-    metadataChildReference,
-  );
 
   const {
     childStyle,
     textStyle,
-    gridColSpan,
     presentationSize,
     title,
     titleHeadlineLevel,
     addText,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  } = presentationChildReference;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const {
     name,
@@ -65,27 +62,29 @@ export const createResourceLink = (
     headlineLevel,
     showLabel,
     attributesToShow,
-  } = createCommonParameters(metadata, presentation);
+  } = commonParameters;
 
   return removeEmpty({
     presentationId: presentation.id,
-    type,
     name,
     placeholder,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
     showLabel,
     attributesToShow,
+    type,
+    outputFormat,
+    inputFormat,
+    attributes,
     repeat,
     childStyle,
     textStyle,
     gridColSpan,
-    alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,
-    outputFormat,
     addText,
   });
 };

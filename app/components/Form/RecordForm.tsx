@@ -81,13 +81,7 @@ export const RecordForm = ({
     <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
       <RemixFormProvider {...methods}>
         <ValidationErrorSnackbar />
-        <FormGenerator
-          formSchema={formSchema}
-          boxGroups
-          enhancedFields={{
-            '*.recordInfo.inTrashBin': { type: 'hidden' },
-          }}
-        />
+        <FormGenerator formSchema={formSchema} boxGroups />
       </RemixFormProvider>
 
       <FloatingActionButtonContainer>

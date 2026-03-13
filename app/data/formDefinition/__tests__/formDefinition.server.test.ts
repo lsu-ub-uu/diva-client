@@ -125,8 +125,10 @@ import type {
   BFFValidationType,
   Dependencies,
 } from '@/cora/bffTypes.server';
-import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
+import {
+  createFormDefinition,
+  createLinkedRecordDefinition,
+} from '@/data/formDefinition/createFormDefinition.server';
 import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import {
   findMetadataChildReferenceByNameInDataAndAttributes,
@@ -138,7 +140,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
-} from '../formDefinition.server';
+} from '../utils/formDefinitionUtils.server';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -471,25 +473,6 @@ describe('formDefinition', () => {
       // Update/Edit
       metadataGroupId: `some${id}EditMetadataGroupId`,
       presentationGroupId: `pSome${id}EditMetadataGroupId`,
-      nameTextId: `some${id}TextId`,
-      defTextId: `some${id}DefTextId`,
-    };
-
-    validationTypePool.set(metadata.id, metadata);
-    return metadata;
-  };
-  const createValidationTypeWithReusedPresentation = (
-    id: string,
-    pId: string,
-  ): BFFValidationType => {
-    const metadata = {
-      id,
-      validatesRecordTypeId: pId,
-      newMetadataGroupId: `some${id}MetadataGroupId`,
-      newPresentationGroupId: `pSome${pId}NewMetadataGroupId`,
-      // Update/Edit
-      metadataGroupId: `some${id}EditMetadataGroupId`,
-      presentationGroupId: `pSome${pId}EditMetadataGroupId`,
       nameTextId: `some${id}TextId`,
       defTextId: `some${id}DefTextId`,
     };
@@ -4444,6 +4427,186 @@ describe('formDefinition', () => {
           type: 'group',
         },
         validationTypeId: 'thesisManuscript',
+      });
+    });
+
+    it('reusing journalUpdatePGroup for journalNewGroup', () => {
+      const dependencies = {
+        recordTypePool: listToPool([{} as BFFRecordType]),
+        validationTypePool: listToPool([
+          {
+            id: 'journalNew',
+            validatesRecordTypeId: 'journal',
+            newMetadataGroupId: 'journalNewGroup',
+            newPresentationGroupId: 'journalUpdatePGroup',
+          } as BFFValidationType,
+        ]),
+        metadataPool: listToPool([
+          {
+            id: 'journalNewGroup',
+            type: 'group',
+            nameInData: 'journal',
+            children: [
+              { childId: 'titleTextVar', repeatMin: '1', repeatMax: '1' },
+              {
+                childId: 'recordInfoJournalNewGroup',
+                repeatMin: '1',
+                repeatMax: '1',
+              },
+            ],
+          } as BFFMetadataGroup,
+          {
+            id: 'titleTextVar',
+            type: 'textVariable',
+            nameInData: 'title',
+          } as BFFMetadataTextVariable,
+          {
+            id: 'recordInfoJournalNewGroup',
+            type: 'group',
+            nameInData: 'recordInfo',
+            children: [
+              { childId: 'trashBinTextVar', repeatMin: '0', repeatMax: '1' },
+            ],
+          } as BFFMetadataGroup,
+          {
+            id: 'journalUpdateGroup',
+            type: 'group',
+            nameInData: 'journal',
+            children: [
+              { childId: 'titleTextVar', repeatMin: '1', repeatMax: '1' },
+              {
+                childId: 'recordInfoJournalUpdateGroup',
+                repeatMin: '1',
+                repeatMax: '1',
+              },
+            ],
+          } as BFFMetadataGroup,
+          {
+            id: 'recordInfoJournalUpdateGroup',
+            type: 'group',
+            nameInData: 'recordInfo',
+            children: [
+              { childId: 'trashBinTextVar', repeatMin: '1', repeatMax: '1' },
+            ],
+          } as BFFMetadataGroup,
+          {
+            id: 'trashBinTextVar',
+            type: 'textVariable',
+            nameInData: 'trashBin',
+          } as BFFMetadataTextVariable,
+        ]),
+        presentationPool: listToPool([
+          {
+            id: 'journalUpdatePGroup',
+            presentationOf: 'journalUpdateGroup',
+            type: 'pGroup',
+            mode: 'input',
+            children: [
+              { refGroups: [{ childId: 'titlePVar', type: 'presentation' }] },
+              {
+                refGroups: [
+                  {
+                    childId: 'recordInfoJournalUpdatePGroup',
+                    type: 'presentation',
+                  },
+                ],
+              },
+            ],
+          } as BFFPresentationGroup,
+          {
+            id: 'titlePVar',
+            presentationOf: 'titleTextVar',
+            type: 'pVar',
+            mode: 'input',
+          } as BFFPresentationTextVar,
+          {
+            id: 'recordInfoJournalUpdatePGroup',
+            presentationOf: 'recordInfoJournalUpdateGroup',
+            type: 'pGroup',
+            mode: 'input',
+            children: [
+              {
+                refGroups: [{ childId: 'trashBinPVar', type: 'presentation' }],
+              },
+            ],
+          } as BFFPresentationGroup,
+          {
+            id: 'trashBinPVar',
+            presentationOf: 'trashBinTextVar',
+            type: 'pVar',
+            mode: 'input',
+          } as BFFPresentationTextVar,
+        ]),
+      } as Dependencies;
+      const formDefinition = createFormDefinition(
+        dependencies,
+        'journalNew',
+        FORM_MODE_NEW,
+      );
+      expect(formDefinition).toStrictEqual({
+        form: {
+          components: [
+            {
+              gridColSpan: 12,
+              mode: 'input',
+              name: 'title',
+              presentationId: 'titlePVar',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {},
+              type: 'textVariable',
+              validation: {
+                type: 'regex',
+              },
+            },
+            {
+              components: [
+                {
+                  gridColSpan: 12,
+                  mode: 'input',
+                  name: 'trashBin',
+                  presentationId: 'trashBinPVar',
+                  repeat: {
+                    repeatMax: 0,
+                    repeatMin: 1,
+                  },
+                  showLabel: true,
+                  tooltip: {},
+                  type: 'textVariable',
+                  validation: {
+                    type: 'regex',
+                  },
+                },
+              ],
+              gridColSpan: 12,
+              mode: 'input',
+              name: 'recordInfo',
+              presentationId: 'recordInfoJournalUpdatePGroup',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {},
+              type: 'group',
+            },
+          ],
+          gridColSpan: 12,
+          mode: 'input',
+          name: 'journal',
+          presentationId: 'journalUpdatePGroup',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {},
+          type: 'group',
+        },
+        validationTypeId: 'journalNew',
       });
     });
   });

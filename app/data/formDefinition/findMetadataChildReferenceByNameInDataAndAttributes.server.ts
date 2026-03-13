@@ -5,7 +5,7 @@ import type {
 import {
   type BFFMetadataTypes,
   getAttributesByAttributeReferences,
-} from '@/data/formDefinition/formDefinition.server';
+} from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (

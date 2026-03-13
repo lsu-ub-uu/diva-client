@@ -1,5 +1,9 @@
 import type { Dependencies } from '@/cora/bffTypes.server';
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type {
+  FormComponentGroup,
+  FormSchema,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
@@ -8,7 +12,7 @@ import type {
   FormDefinitionMode,
 } from '@/cora/bffTypes.server';
 
-import { createDefinitionFromMetadataGroupAndPresentationGroup } from '@/data/formDefinition/createDefinitionFromMetadataGroupAndPresentationGroup.server';
+import { createPresentationComponent } from '@/data/formDefinition/createPresentation/createPresentationComponent';
 
 /**
  * Creates a complete form definition
@@ -44,13 +48,28 @@ export const createFormDefinition = (
         validationTypeId,
         form: createFormDefinitionForList(dependencies, validationTypeId),
       };
-
     default:
       return {
         validationTypeId,
         form: createFormDefinitionForView(dependencies, validationTypeId),
       };
   }
+};
+
+export const createLinkedRecordDefinition = (
+  dependencies: Dependencies,
+  metadataGroup: BFFMetadataGroup,
+  presentationGroup: BFFPresentationGroup,
+): FormSchema => {
+  const form = createDefinitionFromMetadataGroupAndPresentationGroup(
+    dependencies,
+    metadataGroup,
+    presentationGroup,
+  );
+
+  return {
+    form,
+  };
 };
 
 const createFormDefinitionForCreate = (
@@ -153,4 +172,21 @@ const createFormDefinitionFromRecordTypeUsingKey = (
     metadataGroup,
     presentationGroup,
   );
+};
+
+const createDefinitionFromMetadataGroupAndPresentationGroup = (
+  dependencies: Dependencies,
+  metadataGroup: BFFMetadataGroup,
+  presentationGroup: BFFPresentationGroup,
+): FormComponentGroup => {
+  return createPresentationComponent(
+    dependencies,
+    metadataGroup.id,
+    presentationGroup.id,
+    { refGroups: [] },
+    {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+  ) as FormComponentGroup;
 };

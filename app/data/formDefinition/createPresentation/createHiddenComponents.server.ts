@@ -38,7 +38,7 @@ import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   determineRepeatMax,
   type BFFMetadataTypes,
-} from '../formDefinition.server';
+} from '../utils/formDefinitionUtils.server';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,

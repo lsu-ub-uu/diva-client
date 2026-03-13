@@ -78,7 +78,7 @@ import type {
   DataGroup,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
