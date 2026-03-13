@@ -1,6 +1,11 @@
 import type {
   FormAttributeCollection,
+  FormComponent,
+  FormComponentCollVar,
   FormComponentGroup,
+  FormComponentNumVar,
+  FormComponentRecordLink,
+  FormComponentResourceLink,
   FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import type {
@@ -16,6 +21,7 @@ import type {
   BFFPresentationChildRefGroup,
   BFFPresentationContainer,
   BFFPresentationGroup,
+  BFFPresentationOfSingleMetadata,
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
   BFFPresentationTextVar,
@@ -81,12 +87,7 @@ const createPresentationComponent = (
   const presentation = presentationPool.get(presentationId);
   const metadata = metadataPool.get(metadataId);
 
-  const attributes = createAttributes(
-    metadata,
-    metadataPool,
-    undefined,
-    presentation,
-  );
+  const attributes = createAttributes(metadata, metadataPool, presentation);
 
   const commonParameters = createCommonParameters(metadata, presentation);
 
@@ -124,7 +125,7 @@ const createPresentationComponent = (
       return createRecordLink(
         dependencies,
         metadata as BFFMetadataRecordLink,
-        presentation as BFFPresentationBase,
+        presentation as BFFPresentationRecordLink,
         attributes,
         repeat,
         presentationChildReferenceData,
@@ -180,7 +181,6 @@ const createTextVar = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -192,7 +192,7 @@ const createTextVar = (
     presentationId: presentation.id,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -211,7 +211,6 @@ const createTextVar = (
     title,
     titleHeadlineLevel,
     inputType,
-    // alternativePresentation,
     addText,
   });
 };
@@ -223,7 +222,7 @@ const createNumVar = (
   repeat: Repeat,
   presentationChildReferenceData: PresentationChildReferenceData,
   commonParameters: CommonParameters,
-) => {
+): FormComponentNumVar => {
   const validation = createNumberVariableValidation(metadata);
   const finalValue = metadata.finalValue;
   const type = metadata.type;
@@ -242,7 +241,6 @@ const createNumVar = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -254,7 +252,7 @@ const createNumVar = (
     presentationId: presentation.id,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -284,7 +282,7 @@ const createCollVar = (
   repeat: Repeat,
   presentationChildReferenceData: PresentationChildReferenceData,
   commonParameters: CommonParameters,
-) => {
+): FormComponentCollVar => {
   const finalValue = metadata.finalValue;
   const inputFormat = presentation.inputFormat;
   const type = metadata.type;
@@ -307,7 +305,6 @@ const createCollVar = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -320,7 +317,7 @@ const createCollVar = (
     options,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -337,7 +334,6 @@ const createCollVar = (
     presentationSize,
     title,
     titleHeadlineLevel,
-    // alternativePresentation,
     addText,
   });
 };
@@ -350,7 +346,7 @@ const createRecordLink = (
   repeat: Repeat,
   presentationChildReferenceData: PresentationChildReferenceData,
   commonParameters: CommonParameters,
-) => {
+): FormComponentRecordLink => {
   const finalValue = metadata.finalValue;
   const recordLinkType = metadata.linkedRecordType;
   const type = metadata.type;
@@ -381,7 +377,6 @@ const createRecordLink = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -393,7 +388,7 @@ const createRecordLink = (
     presentationId: presentation.id,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -411,7 +406,6 @@ const createRecordLink = (
     childStyle,
     textStyle,
     gridColSpan,
-    //alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,
@@ -438,12 +432,6 @@ const createGroup = (
     presentation.children,
   );
 
-  const hiddenComponents = createHiddenComponents(
-    dependencies,
-    metadata.children,
-    presentation.children,
-  );
-
   const {
     childStyle,
     textStyle,
@@ -458,7 +446,6 @@ const createGroup = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -471,7 +458,7 @@ const createGroup = (
     type,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -479,12 +466,11 @@ const createGroup = (
     attributesToShow,
     presentationStyle,
     attributes,
-    components: [...components, ...hiddenComponents],
+    components,
     repeat,
     childStyle,
     gridColSpan,
     textStyle,
-    // alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,
@@ -500,7 +486,7 @@ const createResourceLink = (
   repeat: Repeat,
   presentationChildReferenceData: PresentationChildReferenceData,
   commonParameters: CommonParameters,
-) => {
+): FormComponentResourceLink => {
   const inputFormat = presentation.inputFormat;
   const type = metadata.type;
   const outputFormat = presentation.outputFormat;
@@ -519,7 +505,6 @@ const createResourceLink = (
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
@@ -531,7 +516,7 @@ const createResourceLink = (
     presentationId: presentation.id,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -548,36 +533,49 @@ const createResourceLink = (
     presentationSize,
     title,
     titleHeadlineLevel,
-    // alternativePresentation,
     addText,
   });
 };
 
-const createChildComponents = (
+export const createChildComponents = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
-) => {
-  return presentationChildReferences.map((presentationChildReference) => {
-    const refGroup = presentationChildReference.refGroups[0]; // TODO alternative
+): FormComponent[] => {
+  const components = presentationChildReferences
+    .map((presentationChildReference) => {
+      const [mainRefGroup, alternativeRefGroup] =
+        presentationChildReference.refGroups;
 
-    const childComponent = createChildComponent(
-      dependencies,
-      metadataChildReferences,
-      presentationChildReference,
-      refGroup,
-    );
-
-    if (presentationChildReference.refGroups.length > 1) {
-      childComponent.alternativePresentation = createChildComponent(
+      const childComponent = createChildComponent(
         dependencies,
         metadataChildReferences,
         presentationChildReference,
-        presentationChildReference.refGroups[1],
+        mainRefGroup,
       );
-    }
-    return childComponent;
-  });
+
+      if (childComponent && alternativeRefGroup) {
+        childComponent.alternativePresentation = createChildComponent(
+          dependencies,
+          metadataChildReferences,
+          presentationChildReference,
+          alternativeRefGroup,
+        );
+      }
+      return childComponent;
+    })
+    .filter(
+      (component): component is NonNullable<typeof component> =>
+        component !== undefined,
+    );
+
+  const hiddenComponents = createHiddenComponents(
+    dependencies,
+    metadataChildReferences,
+    presentationChildReferences,
+  );
+
+  return [...components, ...hiddenComponents];
 };
 
 const createChildComponent = (
@@ -587,22 +585,21 @@ const createChildComponent = (
   refGroup: BFFPresentationChildRefGroup,
 ) => {
   if (refGroup.type === 'text') {
-    return createText(
-      presentationChildReference,
-      false, //alternative,
-    );
+    return createText(presentationChildReference, refGroup);
   }
 
   if (refGroup.type === 'guiElement') {
     return createGuiElement(
       presentationChildReference,
       dependencies.presentationPool,
-      false, //alternative,
+      refGroup,
     );
   }
 
   if (refGroup.type === 'presentation') {
-    const presentation = dependencies.presentationPool.get(refGroup.childId);
+    const presentation = dependencies.presentationPool.get(refGroup.childId) as
+      | BFFPresentationOfSingleMetadata
+      | BFFPresentationContainer;
 
     if (presentation.type === 'container') {
       return createContainer(
@@ -610,7 +607,6 @@ const createChildComponent = (
         metadataChildReferences,
         presentation as BFFPresentationContainer,
         presentationChildReference,
-        undefined, //alternative,
       );
     }
 

@@ -46,12 +46,7 @@ export const createCollVar = (
 ): FormComponentCollVar => {
   const finalValue = metadata.finalValue;
   const options = createCollectionVariableOptions(metadataPool, metadata);
-  const attributes = createAttributes(
-    metadata,
-    metadataPool,
-    undefined,
-    presentation.mode,
-  );
+  const attributes = createAttributes(metadata, metadataPool, presentation);
   const type = metadata.type;
   const repeat = createRepeat(
     presentationChildReference,

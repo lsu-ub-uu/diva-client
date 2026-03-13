@@ -14,7 +14,6 @@ import { createCollectionVariableOptions } from './createGroupOrComponent';
 export const createAttributes = (
   metadataVariable: BFFMetadata,
   metadataPool: Lookup<string, BFFMetadataBase>,
-  options: any,
   presentation: BFFPresentation,
 ): FormAttributeCollection[] | undefined => {
   if (!('attributeReferences' in metadataVariable)) {
@@ -27,54 +26,60 @@ export const createAttributes = (
 
   const presentationMode = presentation.mode;
 
-  return metadataVariable.attributeReferences?.map(
-    (attributeReference: BFFAttributeReference) => {
-      const refCollectionVar = metadataPool.get(
-        attributeReference.refCollectionVarId,
-      ) as BFFMetadataCollectionVariable;
-
-      const attributePresentation = createPresentationForAttributes(
-        'someFakeId',
-        refCollectionVar.id,
-        presentationMode,
-      );
-      const { finalValue } = refCollectionVar;
-      const {
-        type,
-        name,
-        placeholder,
-        mode,
-        tooltip,
-        label,
-        headlineLevel,
-        showLabel,
-        attributesToShow,
-      } = createCommonParameters(refCollectionVar, attributePresentation);
-      options = createCollectionVariableOptions(metadataPool, refCollectionVar);
-      return {
-        type,
-        name,
-        placeholder,
-        mode,
-        tooltip,
-        label,
-        headlineLevel,
-        showLabel,
-        attributesToShow,
-        options,
-        finalValue,
-      };
-    },
+  return metadataVariable.attributeReferences?.map((attributeReference) =>
+    createAttribute(attributeReference, metadataPool, presentationMode),
   );
+};
+
+const createAttribute = (
+  attributeReference: BFFAttributeReference,
+  metadataPool: Lookup<string, BFFMetadataBase>,
+  presentationMode: 'input' | 'output',
+): FormAttributeCollection => {
+  const refCollectionVar = metadataPool.get(
+    attributeReference.refCollectionVarId,
+  ) as BFFMetadataCollectionVariable;
+
+  const attributePresentation = createPresentationForAttributes(
+    refCollectionVar.id,
+    presentationMode,
+  );
+  const { finalValue } = refCollectionVar;
+  const {
+    type,
+    name,
+    placeholder,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+  } = createCommonParameters(refCollectionVar, attributePresentation);
+
+  const options = createCollectionVariableOptions(
+    metadataPool,
+    refCollectionVar,
+  );
+  return {
+    type,
+    name,
+    placeholder,
+    mode: presentationMode,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel,
+    attributesToShow,
+    options,
+    finalValue,
+  };
 };
 
 const createPresentationForAttributes = (
   id: string,
-  presentationOf: string,
   mode: 'input' | 'output',
 ): BFFPresentationBase => ({
   id,
-  presentationOf,
   type: 'pCollVar',
   mode,
   emptyTextId: 'initialEmptyValueText',

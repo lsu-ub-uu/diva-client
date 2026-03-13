@@ -17,7 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { ChildStyle, TextStyle } from '@/cora/bffTypes.server';
+import type {
+  ChildStyle,
+  PresentationSize,
+  PresentationStyle,
+  TextStyle,
+} from '@/cora/bffTypes.server';
 import type { RecordLinkSearchPresentation } from '@/data/formDefinition/createPresentation/createRecordLinkSearchPresentation.server';
 
 export interface FormSchema {
@@ -72,6 +77,8 @@ export interface FormComponentBase {
   type: FormComponentType;
   name: string;
   alternativePresentation?: FormComponent;
+  gridColSpan?: number;
+  childStyle?: ChildStyle[];
 }
 
 export interface FormComponentMetadata extends FormComponentBase {
@@ -82,8 +89,7 @@ export interface FormComponentMetadata extends FormComponentBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
   finalValue?: string;
-  gridColSpan?: number;
-  childStyle?: ChildStyle[];
+
   textStyle?: TextStyle;
   presentationStyle?: PresentationStyle;
   presentationSize?: PresentationSize;
@@ -91,20 +97,6 @@ export interface FormComponentMetadata extends FormComponentBase {
   titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   addText?: string;
 }
-
-export type PresentationStyle =
-  | 'inline'
-  | 'frame'
-  | 'specification'
-  | 'highlight'
-  | 'rowBased';
-
-export type PresentationSize =
-  | 'firstSmaller'
-  | 'firstLarger'
-  | 'bothEqual'
-  | 'singleInitiallyVisible'
-  | 'singleInitiallyHidden';
 
 export interface FormComponentTextVar extends FormComponentMetadata {
   inputType: 'input' | 'textarea';
@@ -195,6 +187,7 @@ export interface FormComponentGuiElement extends FormComponentBase {
   url: string;
   elementText: string;
   presentAs: 'link' | 'image';
+  type: 'guiElementLink';
 }
 
 export type FormComponent =

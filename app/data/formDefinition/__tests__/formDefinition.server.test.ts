@@ -101,6 +101,7 @@ import {
 } from '@/__mocks__/bff/form/bffMock';
 import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 import type {
+  BFFAttributeReference,
   BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFMetadata,
@@ -127,10 +128,17 @@ import type {
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { createGroupOrComponent } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
+import {
+  findMetadataChildReferenceByNameInDataAndAttributes,
+  firstAttributesExistsInSecond,
+} from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { hasLinkedPresentation } from '../formDefinition.server';
+import {
+  getAttributesByAttributeReferences,
+  hasLinkedPresentation,
+} from '../formDefinition.server';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -372,6 +380,35 @@ describe('formDefinition', () => {
     return metadata;
   };
 
+  const createCollVarFinal = (
+    id: string,
+    nameInData: string,
+    finalValue: string,
+    attributeReferenceIds: string[],
+  ): BFFMetadataCollectionVariable => {
+    const metadata: BFFMetadataCollectionVariable = {
+      id,
+      nameInData,
+      type: 'collectionVariable',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      refCollection: `${id}Collection`,
+      finalValue,
+    };
+
+    if (attributeReferenceIds.length > 0) {
+      const attributeIds = attributeReferenceIds?.map((attrId) => {
+        return {
+          refCollectionVarId: attrId,
+        };
+      });
+      metadata.attributeReferences = attributeIds;
+    }
+    addToPool(metadata);
+
+    return metadata;
+  };
+
   const addToPool = (metadata: BFFMetadataBase | BFFMetadataGroup) => {
     metadataPool.set(metadata.id, metadata);
   };
@@ -434,6 +471,25 @@ describe('formDefinition', () => {
       // Update/Edit
       metadataGroupId: `some${id}EditMetadataGroupId`,
       presentationGroupId: `pSome${id}EditMetadataGroupId`,
+      nameTextId: `some${id}TextId`,
+      defTextId: `some${id}DefTextId`,
+    };
+
+    validationTypePool.set(metadata.id, metadata);
+    return metadata;
+  };
+  const createValidationTypeWithReusedPresentation = (
+    id: string,
+    pId: string,
+  ): BFFValidationType => {
+    const metadata = {
+      id,
+      validatesRecordTypeId: pId,
+      newMetadataGroupId: `some${id}MetadataGroupId`,
+      newPresentationGroupId: `pSome${pId}NewMetadataGroupId`,
+      // Update/Edit
+      metadataGroupId: `some${id}EditMetadataGroupId`,
+      presentationGroupId: `pSome${pId}EditMetadataGroupId`,
       nameTextId: `some${id}TextId`,
       defTextId: `some${id}DefTextId`,
     };
@@ -2679,11 +2735,13 @@ describe('formDefinition', () => {
             id: 'onlyBlueChildPVar',
             presentationOf: 'onlyBlueChildVar',
             type: 'pVar',
+            mode: 'output',
           } as BFFPresentationTextVar,
           {
             id: 'redAndYellowChildPVar',
             presentationOf: 'redAndYellowChildVar',
             type: 'pVar',
+            mode: 'output',
           } as BFFPresentationTextVar,
         ]),
       } as Dependencies;
@@ -2699,6 +2757,7 @@ describe('formDefinition', () => {
               attributes: [
                 {
                   label: 'onlyBlueCollectionVarText',
+                  mode: 'output',
                   name: 'color',
                   finalValue: 'blue',
                   options: [
@@ -2722,7 +2781,8 @@ describe('formDefinition', () => {
                 },
               ],
               gridColSpan: 12,
-
+              label: 'onlyBlueChildVarTextId',
+              mode: 'output',
               name: 'child',
               presentationId: 'onlyBlueChildPVar',
               repeat: {
@@ -2744,6 +2804,7 @@ describe('formDefinition', () => {
                 {
                   label: 'redAndYellowCollectionVarText',
                   name: 'color',
+                  mode: 'output',
                   options: [
                     {
                       value: 'red',
@@ -2764,6 +2825,8 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               name: 'child',
               presentationId: 'redAndYellowChildPVar',
+              label: 'redAndYellowChildVarTextId',
+              mode: 'output',
               repeat: {
                 repeatMax: 1.7976931348623157e308,
                 repeatMin: 0,
@@ -3551,7 +3614,7 @@ describe('formDefinition', () => {
     });
   });
 
-  /*   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
+  describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
       const test = findMetadataChildReferenceByNameInDataAndAttributes(
         mockDependencies.metadataPool,
@@ -4221,7 +4284,7 @@ describe('formDefinition', () => {
         expect(actual).toStrictEqual(expected);
       });
     });
-  }); */
+  });
 
   describe('hasLinkedPresentation', () => {
     it('return true for link presentation with presentation', () => {

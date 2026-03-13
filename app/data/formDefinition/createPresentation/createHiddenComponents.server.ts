@@ -79,8 +79,7 @@ const createHiddenComponentsForMetadata = (
   const attributes = createAttributes(
     metadata as BFFMetadataTypes,
     dependencies.metadataPool,
-    undefined,
-    { mode: 'input' },
+    { mode: 'input' } as BFFPresentation,
   );
 
   if (isMetadataGroup(metadata)) {

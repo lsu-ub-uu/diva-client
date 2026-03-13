@@ -32,7 +32,7 @@ export interface CommonParameters {
   };
   label: string;
   headlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  showLabel?: boolean;
+  showLabel: boolean;
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
@@ -69,10 +69,6 @@ const getHeadlineLevel = (presentation: BFFPresentation): HeadlineLevel => {
 
 const getTooltip = (metadata: BFFMetadata) => {
   return { title: metadata.textId, body: metadata.defTextId };
-};
-
-const getInputType = (presentation: BFFPresentation) => {
-  return 'inputType' in presentation ? presentation.inputType : undefined;
 };
 
 const getMode = (presentation: BFFPresentation) => {
