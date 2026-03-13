@@ -1,0 +1,36 @@
+.wrapper {
+  border-radius: var(--border-radius);
+
+  &:has(> .presentation-switcher-button:hover) {
+    outline: 1px solid var(--color-thin-border);
+  }
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+}
+
+.clickable-title {
+  cursor: pointer;
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  background: none;
+
+  svg {
+    font-size: var(--font-size-icon);
+  }
+}
+
+.presentation-switcher-button {
+  width: 100%;
+  padding: var(--gap);
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  background: none;
+}
+
+.content {
+  padding: var(--gap-s);
+}

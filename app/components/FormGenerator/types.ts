@@ -113,6 +113,7 @@ export interface FormComponentHidden extends FormComponentBase {
   attributes?: FormAttributeCollection[];
   attributesToShow: 'none';
   repeat: FormComponentRepeat;
+  presentationSize?: PresentationSize;
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {
@@ -188,6 +189,9 @@ export interface FormComponentGuiElement extends FormComponentBase {
   elementText: string;
   presentAs: 'link' | 'image';
   type: 'guiElementLink';
+  presentationSize?: PresentationSize;
+  title?: string;
+  titleHeadlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 export type FormComponent =

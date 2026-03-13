@@ -2,11 +2,11 @@ import { useTranslation } from 'react-i18next';
 import type {
   FormComponentNumVar,
   FormComponentTextVar,
-  PresentationStyle,
 } from '../FormGenerator/types';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
 import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputVariableProps {
   component: FormComponentNumVar | FormComponentTextVar;

@@ -1,7 +1,6 @@
 import type { FormComponent } from '@/components/FormGenerator/types';
 import type {
   BFFMetadataChildReference,
-  BFFPresentation,
   BFFPresentationChildReference,
   BFFPresentationChildRefGroup,
   BFFPresentationContainer,
@@ -89,53 +88,47 @@ const createChildComponent = (
       );
     }
 
-    const metadataFromPresentation = dependencies.metadataPool.get(
-      presentation.presentationOf,
-    );
-
-    const matchingChildRef = findMatchingMetadataChildRef(
+    const metadataChildRef = findMatchingMetadataChildRef(
       dependencies,
       presentation,
       metadataChildReferences,
     );
 
-    if (!matchingChildRef) {
+    if (!metadataChildRef) {
       // Presentation child does not have matching metadata and is ignored.
       return undefined;
     }
 
     return createPresentationComponent(
       dependencies,
-      metadataFromPresentation.id,
+      metadataChildRef.childId,
       presentation.id,
       presentationChildReference,
-      createRepeat(presentationChildReference, matchingChildRef),
+      createRepeat(presentationChildReference, metadataChildRef),
     );
   }
 };
 
 const findMatchingMetadataChildRef = (
   dependencies: Dependencies,
-  presentation: BFFPresentation,
+  presentation: BFFPresentationOfSingleMetadata,
   metadataChildReferences: BFFMetadataChildReference[],
 ) => {
-  if ('presentationOf' in presentation) {
-    const metadataMatchingById = metadataChildReferences.find(
-      (metadataChildReference) =>
-        metadataChildReference.childId === presentation.presentationOf,
-    );
-    if (metadataMatchingById) {
-      return metadataMatchingById;
-    }
-
-    const metadataFromPresentation = dependencies.metadataPool.get(
-      presentation.presentationOf,
-    );
-
-    return findMetadataChildReferenceByNameInDataAndAttributes(
-      dependencies.metadataPool,
-      metadataChildReferences,
-      metadataFromPresentation,
-    );
+  const metadataMatchingById = metadataChildReferences.find(
+    (metadataChildReference) =>
+      metadataChildReference.childId === presentation.presentationOf,
+  );
+  if (metadataMatchingById) {
+    return metadataMatchingById;
   }
+
+  const metadataFromPresentation = dependencies.metadataPool.get(
+    presentation.presentationOf,
+  );
+
+  return findMetadataChildReferenceByNameInDataAndAttributes(
+    dependencies.metadataPool,
+    metadataChildReferences,
+    metadataFromPresentation,
+  );
 };

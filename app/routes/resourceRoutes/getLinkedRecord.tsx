@@ -25,10 +25,10 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
 import { assertDefined } from '@/utils/invariant';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from './+types/getRecord';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/createFormDefinition.server';
 
 export const loader = async ({
   request,

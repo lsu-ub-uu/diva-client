@@ -17,7 +17,7 @@
  */
 
 .form-component-container {
-  gap: var(--gap-l);
+  gap: var(--gap);
 
   &[data-layout='grid'] {
     display: grid;

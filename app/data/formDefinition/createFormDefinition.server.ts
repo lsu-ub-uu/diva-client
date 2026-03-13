@@ -161,8 +161,7 @@ const createFormDefinitionFromRecordTypeUsingKey = (
 
   const recordType = recordTypePool.get(validationType.validatesRecordTypeId);
   const metadataGroup = metadataPool.get(
-    recordType.metadataId,
-    //validationType.metadataGroupId,
+    validationType.metadataGroupId,
   ) as BFFMetadataGroup;
   const presentationId = recordType[presentationKey] as string;
   const presentationGroup = presentationPool.get(

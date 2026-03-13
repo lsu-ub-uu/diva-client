@@ -1,3 +1,4 @@
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type {
   CoraData,
   DataAtomic,
@@ -5,6 +6,8 @@ import type {
   RecordLink,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
+import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
+import { Text } from '../FormGenerator/components/Text';
 import type {
   FormComponent,
   FormComponentAnyTypeRecordLink,
@@ -16,16 +19,17 @@ import type {
   FormComponentResourceLink,
   FormComponentText,
   FormComponentTextVar,
-  PresentationStyle,
 } from '../FormGenerator/types';
 import { OutputCollectionVariable } from './OutputCollectionVariable';
-import { OutputGroup } from './OutputGroup';
-import { OutputVariable } from './OutputVariable';
-import { OutputRecordLink } from './OutputRecordLink';
 import { OutputContainer } from './OutputContainer';
-import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
-import { Text } from '../FormGenerator/components/Text';
+import { OutputGroup } from './OutputGroup';
+import { OutputRecordLink } from './OutputRecordLink';
 import { OutputResourceLink } from './OutputResourceLink';
+import { OutputVariable } from './OutputVariable';
+import {
+  OutputPresentationSwitcher,
+  OutputSinglePresentationSwitcher,
+} from './OutputPresentationSwitcher';
 
 interface OutputComponentProps {
   component: FormComponent;
@@ -38,9 +42,26 @@ export const OutputComponent = ({
   data,
   parentPresentationStyle,
 }: OutputComponentProps) => {
-  if (component.presentationId === 'attachmentsOutputPGroup') {
-    console.log('rendering attachments group:', component, data);
+  if (component.alternativePresentation) {
+    return (
+      <OutputPresentationSwitcher
+        component={component}
+        data={data}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
   }
+
+  if ('title' in component && component.title) {
+    return (
+      <OutputSinglePresentationSwitcher
+        component={component}
+        data={data}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  }
+
   switch (component.type) {
     case 'group':
       return (

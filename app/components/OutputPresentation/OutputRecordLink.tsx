@@ -1,13 +1,13 @@
 import type { RecordLink } from '@/cora/cora-data/types.server';
+import { useTranslation } from 'react-i18next';
+import { href, Link } from 'react-router';
 import type {
   FormComponentAnyTypeRecordLink,
   FormComponentRecordLink,
   PresentationStyle,
 } from '../FormGenerator/types';
-import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
-import { OutputField } from './OutputField';
 import { Attributes } from './Attributes';
+import { OutputField } from './OutputField';
 import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
 
 interface OutputRecordLinkProps {
