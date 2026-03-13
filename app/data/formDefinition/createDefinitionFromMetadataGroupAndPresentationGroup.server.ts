@@ -1,6 +1,7 @@
 import type {
   FormAttributeCollection,
   FormComponentGroup,
+  FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import type {
   BFFMetadataChildReference,
@@ -12,6 +13,8 @@ import type {
   BFFPresentation,
   BFFPresentationBase,
   BFFPresentationChildReference,
+  BFFPresentationChildRefGroup,
+  BFFPresentationContainer,
   BFFPresentationGroup,
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
@@ -20,25 +23,24 @@ import type {
   Dependencies,
 } from '@/cora/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
-import { createBFFMetadataReference } from '@/data/formDefinition/formMetadata.server';
-import { createBFFPresentationReference } from '@/data/formDefinition/formPresentation.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   createCommonParameters,
   type CommonParameters,
 } from './createCommonParameters.server';
 import { createAttributes } from './createPresentation/createAttributes';
+import { createContainer } from './createPresentation/createContainer.server';
+import { createCollectionVariableOptions } from './createPresentation/createGroupOrComponent';
+import { createGuiElement } from './createPresentation/createGuiElement.server';
+import { createHiddenComponents } from './createPresentation/createHiddenComponents.server';
+import { createRecordLinkSearchPresentation } from './createPresentation/createRecordLinkSearchPresentation.server';
+import { createRepeat } from './createPresentation/createRepeat.server';
+import { createText } from './createPresentation/createText.server';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from './findMetadataChildReferenceByNameInDataAndAttributes.server';
 import {
   createNumberVariableValidation,
   createTextVariableValidation,
 } from './formValidation.server';
-import { createText } from './createPresentation/createText.server';
-import { createGuiElement } from './createPresentation/createGuiElement.server';
-import { Presentation } from 'lucide-react';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from './findMetadataChildReferenceByNameInDataAndAttributes.server';
-import { createRepeat } from './createPresentation/createRepeat.server';
-import { createCollectionVariableOptions } from './createPresentation/createGroupOrComponent';
-import { createRecordLinkSearchPresentation } from './createPresentation/createRecordLinkSearchPresentation.server';
 
 export interface Repeat {
   repeatMin: number;
@@ -56,39 +58,19 @@ export const createDefinitionFromMetadataGroupAndPresentationGroup = (
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup,
 ): FormComponentGroup => {
-  const formRootReference = createBFFMetadataReference(metadataGroup.id);
-  const formRootPresentationReference = createBFFPresentationReference(
-    presentationGroup.id,
-  );
-  const formRootRepeat = {
-    repeatMin: 1,
-    repeatMax: 1,
-  };
-
-  // const form = createGroupOrComponent(
-  //   dependencies,
-  //   [formRootReference],
-  //   formRootPresentationReference,
-  //   false,
-  //   metadataGroup.id,
-  // ) as FormComponentGroup;
-
-  const form = createComponent(
+  return createPresentationComponent(
     dependencies,
     metadataGroup.id,
     presentationGroup.id,
     {},
-    formRootRepeat,
+    {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
   ) as FormComponentGroup;
-
-  if (!form) {
-    throw new Error('Failed to create form definition');
-  }
-
-  return form;
 };
 
-const createComponent = (
+const createPresentationComponent = (
   dependencies: Dependencies,
   metadataId: string,
   presentationId: string,
@@ -177,7 +159,7 @@ const createTextVar = (
   repeat: Repeat,
   presentationChildReferenceData: PresentationChildReferenceData,
   commonParameters: CommonParameters,
-) => {
+): FormComponentTextVar => {
   const validation = createTextVariableValidation(metadata);
   const finalValue = metadata.finalValue;
   const inputFormat = presentation.inputFormat;
@@ -456,6 +438,12 @@ const createGroup = (
     presentation.children,
   );
 
+  const hiddenComponents = createHiddenComponents(
+    dependencies,
+    metadata.children,
+    presentation.children,
+  );
+
   const {
     childStyle,
     textStyle,
@@ -491,7 +479,7 @@ const createGroup = (
     attributesToShow,
     presentationStyle,
     attributes,
-    components,
+    components: [...components, ...hiddenComponents],
     repeat,
     childStyle,
     gridColSpan,
@@ -573,52 +561,82 @@ const createChildComponents = (
   return presentationChildReferences.map((presentationChildReference) => {
     const refGroup = presentationChildReference.refGroups[0]; // TODO alternative
 
-    if (refGroup.type === 'text') {
-      return createText(
-        presentationChildReference,
-        false, //alternative,
-      );
-    }
+    const childComponent = createChildComponent(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReference,
+      refGroup,
+    );
 
-    if (refGroup.type === 'guiElement') {
-      return createGuiElement(
-        presentationChildReference,
-        dependencies.presentationPool,
-        false, //alternative,
-      );
-    }
-
-    if (refGroup.type === 'presentation') {
-      const presentation = dependencies.presentationPool.get(refGroup.childId);
-
-      if (presentation.type === 'container') {
-        return undefined; //createContainer();
-      }
-
-      const metadataFromPresentation = dependencies.metadataPool.get(
-        presentation.presentationOf,
-      );
-
-      const matchingChildRef = findMatchingMetadataChildRef(
+    if (presentationChildReference.refGroups.length > 1) {
+      childComponent.alternativePresentation = createChildComponent(
         dependencies,
-        presentation,
         metadataChildReferences,
-      );
-
-      if (!matchingChildRef) {
-        // Presentation child does not have matching metadata and is ignored.
-        return undefined;
-      }
-
-      return createComponent(
-        dependencies,
-        metadataFromPresentation.id,
-        presentation.id,
         presentationChildReference,
-        createRepeat(presentationChildReference, matchingChildRef),
+        presentationChildReference.refGroups[1],
       );
     }
+    return childComponent;
   });
+};
+
+const createChildComponent = (
+  dependencies: Dependencies,
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference,
+  refGroup: BFFPresentationChildRefGroup,
+) => {
+  if (refGroup.type === 'text') {
+    return createText(
+      presentationChildReference,
+      false, //alternative,
+    );
+  }
+
+  if (refGroup.type === 'guiElement') {
+    return createGuiElement(
+      presentationChildReference,
+      dependencies.presentationPool,
+      false, //alternative,
+    );
+  }
+
+  if (refGroup.type === 'presentation') {
+    const presentation = dependencies.presentationPool.get(refGroup.childId);
+
+    if (presentation.type === 'container') {
+      return createContainer(
+        dependencies,
+        metadataChildReferences,
+        presentation as BFFPresentationContainer,
+        presentationChildReference,
+        undefined, //alternative,
+      );
+    }
+
+    const metadataFromPresentation = dependencies.metadataPool.get(
+      presentation.presentationOf,
+    );
+
+    const matchingChildRef = findMatchingMetadataChildRef(
+      dependencies,
+      presentation,
+      metadataChildReferences,
+    );
+
+    if (!matchingChildRef) {
+      // Presentation child does not have matching metadata and is ignored.
+      return undefined;
+    }
+
+    return createPresentationComponent(
+      dependencies,
+      metadataFromPresentation.id,
+      presentation.id,
+      presentationChildReference,
+      createRepeat(presentationChildReference, matchingChildRef),
+    );
+  }
 };
 
 const findMatchingMetadataChildRef = (

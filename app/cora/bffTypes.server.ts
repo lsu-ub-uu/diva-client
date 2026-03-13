@@ -142,7 +142,6 @@ export interface BFFPresentationBase extends BFFBase {
     | 'container'
     | 'pRecordLink'
     | 'pResourceLink';
-  presentationOf: string;
   mode: 'input' | 'output';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
@@ -154,16 +153,19 @@ export interface BFFPresentationBase extends BFFBase {
 export interface BFFPresentationTextVar extends BFFPresentationBase {
   type: 'pVar';
   inputType: 'input' | 'textarea';
+  presentationOf: string;
 }
 
 export interface BFFPresentationResourceLink extends BFFPresentationBase {
   outputFormat: 'image' | 'download';
   type: 'pResourceLink';
+  presentationOf: string;
   mode: never;
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
+  presentationOf: string;
   search?: string;
   presentAs?: 'onlyTranslatedText' | 'permissionUnit';
 }
@@ -180,12 +182,7 @@ export interface BFFPresentationContainer extends BFFPresentationBase {
   children: BFFPresentationChildReference[];
 }
 
-type SurroundingContainerBase = Omit<
-  BFFPresentationContainer,
-  'presentationOf'
->;
-
-export interface BFFPresentationSurroundingContainer extends SurroundingContainerBase {
+export interface BFFPresentationSurroundingContainer extends BFFPresentationContainer {
   presentationsOf?: string[];
 }
 

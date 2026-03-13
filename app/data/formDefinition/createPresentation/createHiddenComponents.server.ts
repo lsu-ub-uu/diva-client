@@ -80,7 +80,7 @@ const createHiddenComponentsForMetadata = (
     metadata as BFFMetadataTypes,
     dependencies.metadataPool,
     undefined,
-    'input',
+    { mode: 'input' },
   );
 
   if (isMetadataGroup(metadata)) {
