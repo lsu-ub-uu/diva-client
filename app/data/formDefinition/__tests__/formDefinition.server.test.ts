@@ -102,7 +102,6 @@ import {
 import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 import type {
   BFFAttributeReference,
-  BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFMetadata,
   BFFMetadataBase,
@@ -112,8 +111,6 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
-  BFFPresentation,
-  BFFPresentationBase,
   BFFPresentationChildReference,
   BFFPresentationGroup,
   BFFPresentationOfSingleMetadata,
@@ -121,10 +118,8 @@ import type {
   BFFPresentationSurroundingContainer,
   BFFPresentationTextVar,
   BFFRecordType,
-  BFFSearch,
-  BFFText,
   BFFValidationType,
-  Dependencies,
+  Dependencies
 } from '@/cora/bffTypes.server';
 import {
   createFormDefinition,
@@ -135,8 +130,7 @@ import {
   firstAttributesExistsInSecond,
 } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
-import type { Lookup } from 'server/dependencies/util/lookup';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createPresentationComponent } from '../createPresentation/createPresentationComponent';
 import {
   getAttributesByAttributeReferences,
@@ -2532,117 +2526,119 @@ describe('formDefinition', () => {
       const mockDependencies = {
         recordTypePool: listToPool([{}]),
         validationTypePool: listToPool([{}]),
-        metadataPool: listToPool([{}]),
-        presentationPool: listToPool([{}]),
+        metadataPool: listToPool([
+          createRecordLink(
+            'divaPersonOutputPLink',
+            'personWhenLinkedOutputPGroup',
+          ) as BFFMetadataRecordLink,
+          createGroup('personGroup', 'personGroup', ['personNameGroup']),
+          createTextVar('personFirstNameTextVar', 'givenName', []),
+          createTextVar('personLastNameTextVar', 'familyName', []),
+          createGroup('personNameGroup', 'personNameGroup', [
+            'lastNameTextVar',
+            'firstNameTextVar',
+          ]),
+          createTextVar('lastNameTextVar', 'familyName', []),
+          createTextVar('firstNameTextVar', 'givenName', []),
+        ]),
+        presentationPool: listToPool([
+          createPresentationRecordLink(
+            'divaPersonOutputPLink',
+            'divaPersonLink',
+            'personWhenLinkedOutputPGroup',
+          ) as BFFPresentationRecordLink,
+          createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
+            {
+              refGroups: [
+                {
+                  childId: 'personNameLinkOutputPGroup',
+                  type: 'presentation',
+                },
+              ],
+            },
+          ]),
+          createPresentationGroup('personPGroup', 'personGroup', [
+            {
+              refGroups: [
+                {
+                  childId: 'personNamePGroup',
+                  type: 'presentation',
+                },
+              ],
+            },
+          ]),
+          createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
+            {
+              refGroups: [
+                {
+                  childId: 'personNameLinkOutputPGroup',
+                  type: 'presentation',
+                },
+              ],
+            },
+          ]),
+          createPresentationGroup('personNameLinkOutputPGroup', 'personNameGroup', [
+            {
+              refGroups: [
+                {
+                  childId: 'personLastNameOutputPVar',
+                  type: 'presentation',
+                },
+              ],
+            },
+            {
+              refGroups: [
+                {
+                  childId: 'personNameLinkSContainer',
+                  type: 'presentation',
+                },
+              ],
+            },
+          ]),
+          createPresentationSContainer(
+            'personNameLinkSContainer',
+            ['personFirstNameTextVar'],
+            [
+              {
+                refGroups: [
+                  {
+                    childId: 'commaText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'spaceText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'personFirstNameOutputPVar',
+                    type: 'presentation',
+                  },
+                ],
+              },
+            ],
+          ),
+          createPresentationVar(
+            'personFirstNameOutputPVar',
+            'personFirstNameTextVar',
+            'pVar',
+            'output',
+          ),
+          createPresentationVar(
+            'personLastNameOutputPVar',
+            'personLastNameTextVar',
+            'pVar',
+            'output',
+          )
+        ]),
       } as Dependencies;
-      createRecordLink(
-        'divaPersonOutputPLink',
-        'personWhenLinkedOutputPGroup',
-      ) as BFFMetadataRecordLink;
-      createPresentationRecordLink(
-        'divaPersonOutputPLink',
-        'divaPersonLink',
-        'personWhenLinkedOutputPGroup',
-      );
-      createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
-        {
-          refGroups: [
-            {
-              childId: 'personNameLinkOutputPGroup',
-              type: 'presentation',
-            },
-          ],
-        },
-      ]);
-      createGroup('personGroup', 'personGroup', ['personNameGroup']);
-      createPresentationGroup('personPGroup', 'personGroup', [
-        {
-          refGroups: [
-            {
-              childId: 'personNamePGroup',
-              type: 'presentation',
-            },
-          ],
-        },
-      ]);
-      createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
-        {
-          refGroups: [
-            {
-              childId: 'personNameLinkOutputPGroup',
-              type: 'presentation',
-            },
-          ],
-        },
-      ]);
-      createPresentationGroup('personNameLinkOutputPGroup', 'personNameGroup', [
-        {
-          refGroups: [
-            {
-              childId: 'personLastNameOutputPVar',
-              type: 'presentation',
-            },
-          ],
-        },
-        {
-          refGroups: [
-            {
-              childId: 'personNameLinkSContainer',
-              type: 'presentation',
-            },
-          ],
-        },
-      ]);
-      createPresentationSContainer(
-        'personNameLinkSContainer',
-        ['personFirstNameTextVar'],
-        [
-          {
-            refGroups: [
-              {
-                childId: 'commaText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'spaceText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'personFirstNameOutputPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );
-      createPresentationVar(
-        'personFirstNameOutputPVar',
-        'personFirstNameTextVar',
-        'pVar',
-        'output',
-      );
-      createPresentationVar(
-        'personLastNameOutputPVar',
-        'personLastNameTextVar',
-        'pVar',
-        'output',
-      );
-      createTextVar('personFirstNameTextVar', 'givenName', []);
-      createTextVar('personLastNameTextVar', 'familyName', []);
-      createGroup('personNameGroup', 'personNameGroup', [
-        'lastNameTextVar',
-        'firstNameTextVar',
-      ]);
-      createTextVar('lastNameTextVar', 'familyName', []);
-      createTextVar('firstNameTextVar', 'givenName', []);
 
       const metadataGroup = mockDependencies.metadataPool.get('personGroup');
       const presentationGroup = mockDependencies.presentationPool.get(
@@ -2768,193 +2764,199 @@ describe('formDefinition', () => {
     });
 
     it('should return a linked record definition for a nationalSubjectCategoryOutputPLink', () => {
-      createRecordLink(
-        'nationalSubjectCategoryLink',
-        'nationalSubjectCategory',
-      );
-      createPresentationRecordLink(
-        'nationalSubjectCategoryOutputPLink',
-        'nationalSubjectCategoryLink',
-        'nationalSubjectCategoryWhenLinkedPGroup',
-      );
-      createPresentationGroup(
-        'nationalSubjectCategoryWhenLinkedPGroup',
-        'nationalSubjectCategoryGroup',
-        [
-          {
-            refGroups: [
+      const mockDependencies = {
+        metadataPool: listToPool([
+          createRecordLink(
+            'nationalSubjectCategoryLink',
+            'nationalSubjectCategory',
+          ) as BFFMetadataRecordLink,
+          createGroup('nationalSubjectCategoryGroup', 'nationalSubjectCategory', [
+            'nationalSubjectCategoryNameGroup',
+            'nationalSubjectCategoryAlternativeNameGroup',
+            'subjectCodeTextVar',
+          ]),
+          createGroup('nationalSubjectCategoryNameGroup', 'name', [
+            'nationalSubjectCategoryNameTextVar',
+            'sweLanguageCollectionVar',
+          ]),
+          createCollVar('sweLanguageCollectionVar', 'sweLanguage', ['swe'], []),
+          createCollVar('engLanguageCollectionVar', 'engLanguage', ['eng'], []),
+          createGroup(
+            'nationalSubjectCategoryAlternativeNameGroup',
+            'alternativeName',
+            ['nationalSubjectCategoryNameTextVar', 'engLanguageCollectionVar'],
+          ),
+          createTextVar(
+            'nationalSubjectCategoryNameTextVar',
+            'nationalSubjectCategoryName',
+            [],
+          ),
+          createTextVar('subjectCodeTextVar', 'subjectCode', [])
+        ]),
+        presentationPool: listToPool([
+          createPresentationRecordLink(
+            'nationalSubjectCategoryOutputPLink',
+            'nationalSubjectCategoryLink',
+            'nationalSubjectCategoryWhenLinkedPGroup',
+          ) as BFFPresentationRecordLink,
+          createPresentationGroup(
+            'nationalSubjectCategoryWhenLinkedPGroup',
+            'nationalSubjectCategoryGroup',
+            [
               {
-                childId: 'nationalSubjectCategoryNameOutputPGroup',
-                type: 'presentation',
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryNameOutputPGroup',
+                    type: 'presentation',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'semicolonText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'spaceText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryAlternativeNameOutputPGroup',
+                    type: 'presentation',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'spaceText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'firstHalfParenthesisText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'subjectCodeOutputPVar',
+                    type: 'presentation',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'secondHalfParenthesisText',
+                    type: 'text',
+                  },
+                ],
               },
             ],
-          },
-          {
-            refGroups: [
+          ),
+          createPresentationGroup(
+            'nationalSubjectCategoryNameOutputPGroup',
+            'nationalSubjectCategoryNameGroup',
+            [
               {
-                childId: 'semicolonText',
-                type: 'text',
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryNameOutputPVar',
+                    type: 'presentation',
+                  },
+                ],
               },
             ],
-          },
-          {
-            refGroups: [
+          ),
+          createPresentationGroup(
+            'nationalSubjectCategoryAlternativeNameOutputPGroup',
+            'nationalSubjectCategoryAlternativeNameGroup',
+            [
               {
-                childId: 'spaceText',
-                type: 'text',
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryNameOutputPVar',
+                    type: 'presentation',
+                  },
+                ],
               },
             ],
-          },
-          {
-            refGroups: [
+          ),
+          createPresentationVar(
+            'nationalSubjectCategoryNameOutputPVar',
+            'nationalSubjectCategoryNameTextVar',
+            'pVar',
+            'output',
+          ),
+          createPresentationGroup(
+            'nationalSubjectCategoryPGroup',
+            'nationalSubjectCategoryGroup',
+            [
               {
-                childId: 'nationalSubjectCategoryAlternativeNameOutputPGroup',
-                type: 'presentation',
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryNamePGroup',
+                    type: 'presentation',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'nationalSubjectCategoryAlternativeNamePGroup',
+                    type: 'presentation',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'subjectCodeTextVarText',
+                    type: 'text',
+                  },
+                ],
+              },
+              {
+                refGroups: [
+                  {
+                    childId: 'subjectCodePVar',
+                    type: 'presentation',
+                  },
+                ],
               },
             ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'spaceText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'firstHalfParenthesisText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'subjectCodeOutputPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'secondHalfParenthesisText',
-                type: 'text',
-              },
-            ],
-          },
-        ],
-      );
-      createGroup('nationalSubjectCategoryGroup', 'nationalSubjectCategory', [
-        'nationalSubjectCategoryNameGroup',
-        'nationalSubjectCategoryAlternativeNameGroup',
-        'subjectCodeTextVar',
-      ]);
-      createGroup('nationalSubjectCategoryNameGroup', 'name', [
-        'nationalSubjectCategoryNameTextVar',
-        'sweLanguageCollectionVar',
-      ]);
-      createCollVar('sweLanguageCollectionVar', 'sweLanguage', ['swe'], []);
-      createCollVar('engLanguageCollectionVar', 'engLanguage', ['eng'], []);
-      createGroup(
-        'nationalSubjectCategoryAlternativeNameGroup',
-        'alternativeName',
-        ['nationalSubjectCategoryNameTextVar', 'engLanguageCollectionVar'],
-      );
-      createTextVar(
-        'nationalSubjectCategoryNameTextVar',
-        'nationalSubjectCategoryName',
-        [],
-      );
-      createPresentationGroup(
-        'nationalSubjectCategoryNameOutputPGroup',
-        'nationalSubjectCategoryNameGroup',
-        [
-          {
-            refGroups: [
-              {
-                childId: 'nationalSubjectCategoryNameOutputPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );
-      createPresentationGroup(
-        'nationalSubjectCategoryAlternativeNameOutputPGroup',
-        'nationalSubjectCategoryAlternativeNameGroup',
-        [
-          {
-            refGroups: [
-              {
-                childId: 'nationalSubjectCategoryNameOutputPVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );
-      createPresentationVar(
-        'nationalSubjectCategoryNameOutputPVar',
-        'nationalSubjectCategoryNameTextVar',
-        'pVar',
-        'output',
-      );
-      createPresentationGroup(
-        'nationalSubjectCategoryPGroup',
-        'nationalSubjectCategoryGroup',
-        [
-          {
-            refGroups: [
-              {
-                childId: 'nationalSubjectCategoryText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'nationalSubjectCategoryNamePGroup',
-                type: 'presentation',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'nationalSubjectCategoryAlternativeNamePGroup',
-                type: 'presentation',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'subjectCodeTextVarText',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            refGroups: [
-              {
-                childId: 'subjectCodePVar',
-                type: 'presentation',
-              },
-            ],
-          },
-        ],
-      );
-      createTextVar('subjectCodeTextVar', 'subjectCode', []);
-      createPresentationVar(
-        'subjectCodeOutputPVar',
-        'subjectCodeTextVar',
-        'pVar',
-        'output',
-      );
+          ),
+          createPresentationVar(
+            'subjectCodeOutputPVar',
+            'subjectCodeTextVar',
+            'pVar',
+            'output',
+          )
+        ]),
+      } as Dependencies;
 
       const metadataGroup = mockDependencies.metadataPool.get(
         'nationalSubjectCategoryGroup',
@@ -3133,53 +3135,61 @@ describe('formDefinition', () => {
   });
 
   it('should return a linked record definition for a password', () => {
-    createGroup('viewDefinitionPasswordGroup', 'password', [
-      'loginIdTextVar',
-      'loginPasswordTextVar',
-    ]);
-    createPresentationGroup(
-      'viewDefinitionPasswordPGroup',
-      'viewDefinitionPasswordGroup',
-      [
-        {
-          refGroups: [
+    const mockDependencies = {
+      recordTypePool: listToPool([{}]),
+      validationTypePool: listToPool([{}]),
+      metadataPool: listToPool([
+        createGroup('viewDefinitionPasswordGroup', 'password', [
+          'loginIdTextVar',
+          'loginPasswordTextVar',
+        ]),
+        createTextVar(
+          'loginIdTextVar',
+          'loginId',
+          [],
+          '^[0-9A-Za-z:-_]{2,50}@[0-9A-Za-z:-_.]{2,300}$',
+        ),
+        createTextVar(
+          'loginPasswordTextVar',
+          'password',
+          [],
+          '(^[0-9A-Za-z:-_]{2,50}$)',
+        )
+      ]),
+      presentationPool: listToPool([
+        createPresentationGroup(
+          'viewDefinitionPasswordPGroup',
+          'viewDefinitionPasswordGroup',
+          [
             {
-              childId: 'loginIdPVar',
-              type: 'presentation',
+              refGroups: [
+                {
+                  childId: 'loginIdPVar',
+                  type: 'presentation',
+                },
+              ],
+            },
+            {
+              refGroups: [
+                {
+                  childId: 'loginPasswordPVar',
+                  type: 'presentation',
+                },
+              ],
             },
           ],
-        },
-        {
-          refGroups: [
-            {
-              childId: 'loginPasswordPVar',
-              type: 'presentation',
-            },
-          ],
-        },
-      ],
-      'input',
-    );
-    createTextVar(
-      'loginIdTextVar',
-      'loginId',
-      [],
-      '^[0-9A-Za-z:-_]{2,50}@[0-9A-Za-z:-_.]{2,300}$',
-    );
-    createTextVar(
-      'loginPasswordTextVar',
-      'password',
-      [],
-      '(^[0-9A-Za-z:-_]{2,50}$)',
-    );
-    createPresentationVar('loginIdPVar', 'loginIdTextVar', 'pVar', 'input');
-    createPresentationVar(
-      'loginPasswordPVar',
-      'loginPasswordTextVar',
-      'pVar',
-      'input',
-      'password',
-    );
+          'input',
+        ),
+        createPresentationVar('loginIdPVar', 'loginIdTextVar', 'pVar', 'input'),
+        createPresentationVar(
+          'loginPasswordPVar',
+          'loginPasswordTextVar',
+          'pVar',
+          'input',
+          'password',
+        )
+      ]),
+    } as Dependencies;
 
     const passwordGroup = createLinkedRecordDefinition(
       mockDependencies,
@@ -3294,7 +3304,7 @@ describe('formDefinition', () => {
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
       const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        mockDependencies.metadataPool,
+        createBasicDependencies().metadataPool,
         someNewMetadataGroupForMissingChildId.children,
         someMetadataCollectionVariable,
       );
@@ -3311,7 +3321,7 @@ describe('formDefinition', () => {
       const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
-        metadataPool,
+        mockDependencies.metadataPool,
         childRefs,
         pmTextVar,
       );
@@ -3325,7 +3335,7 @@ describe('formDefinition', () => {
       const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
-        metadataPool,
+        createBasicDependencies().metadataPool,
         childRefs,
         pmTextVar,
       );
@@ -3515,7 +3525,7 @@ describe('formDefinition', () => {
       const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
-        metadataPool,
+        mockDependencies.metadataPool,
         childRefs,
         pmTextVar,
       );
@@ -3912,14 +3922,18 @@ describe('formDefinition', () => {
       });
 
       it('should return an object with nameInData and item values for finalValue', () => {
-        const mmAttribute = createCollVarFinal(
-          'mmAttribute',
-          'attributeName',
-          'blue',
-          [],
-        );
+        const mockDependencies = {
+          metadataPool: listToPool([
+            createCollVarFinal(
+              'mmAttribute',
+              'attributeName',
+              'blue',
+              [],
+            ),
+          ]),
+        }
         const attributeReferences: BFFAttributeReference[] = [
-          { refCollectionVarId: mmAttribute.id },
+          { refCollectionVarId: 'mmAttribute' },
         ];
 
         const actual = getAttributesByAttributeReferences(
@@ -3927,7 +3941,7 @@ describe('formDefinition', () => {
           attributeReferences,
         );
 
-        const expected = { [mmAttribute.nameInData]: ['blue'] };
+        const expected = { ['attributeName']: ['blue'] };
         expect(actual).toStrictEqual(expected);
       });
 
@@ -3955,8 +3969,8 @@ describe('formDefinition', () => {
         );
 
         const expected = {
-          [mmAttribute.nameInData]: ['blue', 'pink', 'yellow'],
-          [pmAttribute.nameInData]: ['green', 'red', 'black'],
+          ['mmAttribute']: ['blue', 'pink', 'yellow'],
+          ['pmAttribute']: ['green', 'red', 'black'],
         };
         expect(actual).toStrictEqual(expected);
       });
@@ -4307,93 +4321,88 @@ describe('formDefinition', () => {
 
   describe('finalValue no presentation', () => {
     it('generates a group with a textVar that has no presentation but finalValue', () => {
-      // Metadata
-      const agentGroup: BFFMetadataGroup = {
-        id: 'agentGroup',
-        nameInData: 'agent',
-        type: 'group',
-        textId: 'agentGroupText',
-        defTextId: 'agentGroupDefText',
-        children: [
+      const mockDependencies = {
+        metadataPool: listToPool([
           {
-            childId: 'namePartTextVar',
-            repeatMin: '0',
-            repeatMax: 'X',
-          },
-          {
-            childId: 'rolePublisherGroup',
-            repeatMin: '1',
-            repeatMax: '1',
-          },
-        ],
-      };
-      metadataPool.set('agentGroup', agentGroup);
-
-      const namePartTextVar: BFFMetadataTextVariable = {
-        nameInData: 'namePart',
-        regEx: '.+',
-        id: 'namePartTextVar',
-        type: 'textVariable',
-        textId: 'namePartTextVarText',
-        defTextId: 'namePartTextVarDefText',
-      };
-      metadataPool.set('namePartTextVar', namePartTextVar);
-
-      const rolePublisherGroup: BFFMetadataGroup = {
-        id: 'rolePublisherGroup',
-        nameInData: 'role',
-        type: 'group',
-        textId: 'rolePublisherGroupText',
-        defTextId: 'rolePublisherGroupDefText',
-        children: [
-          {
-            childId: 'rolePublisherTextVar',
-            repeatMin: '1',
-            repeatMax: '1',
-          },
-        ],
-      };
-      metadataPool.set('rolePublisherGroup', rolePublisherGroup);
-
-      const rolePublisherTextVar: BFFMetadataTextVariable = {
-        nameInData: 'roleTerm',
-        regEx: '.+',
-        id: 'rolePublisherTextVar',
-        finalValue: 'pbl',
-        type: 'textVariable',
-        textId: 'rolePublisherTextVarText',
-        defTextId: 'rolePublisherTextVarDefText',
-      };
-      metadataPool.set('rolePublisherTextVar', rolePublisherTextVar);
-
-      // Presentation
-      const agentPGroup: BFFPresentationGroup = {
-        id: 'agentPGroup',
-        presentationOf: 'agentGroup',
-        mode: 'input',
-        children: [
-          {
-            refGroups: [
+            id: 'agentGroup',
+            nameInData: 'agent',
+            type: 'group',
+            textId: 'agentGroupText',
+            defTextId: 'agentGroupDefText',
+            children: [
               {
-                childId: 'namePartPVar',
-                type: 'presentation',
+                childId: 'namePartTextVar',
+                repeatMin: '0',
+                repeatMax: 'X',
+              },
+              {
+                childId: 'rolePublisherGroup',
+                repeatMin: '1',
+                repeatMax: '1',
               },
             ],
-            minNumberOfRepeatingToShow: '0',
-          },
-        ],
-        type: 'pGroup',
-      };
-      presentationPool.set('agentPGroup', agentPGroup);
+          } as BFFMetadataGroup,
+          {
+            nameInData: 'namePart',
+            regEx: '.+',
+            id: 'namePartTextVar',
+            type: 'textVariable',
+            textId: 'namePartTextVarText',
+            defTextId: 'namePartTextVarDefText',
+          } as BFFMetadataTextVariable,
+          {
+            id: 'rolePublisherGroup',
+            nameInData: 'role',
+            type: 'group',
+            textId: 'rolePublisherGroupText',
+            defTextId: 'rolePublisherGroupDefText',
+            children: [
+              {
+                childId: 'rolePublisherTextVar',
+                repeatMin: '1',
+                repeatMax: '1',
+              },
+            ],
+          } as BFFMetadataGroup,
+          {
+            nameInData: 'roleTerm',
+            regEx: '.+',
+            id: 'rolePublisherTextVar',
+            finalValue: 'pbl',
+            type: 'textVariable',
+            textId: 'rolePublisherTextVarText',
+            defTextId: 'rolePublisherTextVarDefText',
+          } as BFFMetadataTextVariable,
+        ]),
+        presentationPool: listToPool([{
 
-      const namePartPVar: BFFPresentationTextVar = {
-        id: 'namePartPVar',
-        presentationOf: 'namePartTextVar',
-        mode: 'input',
-        type: 'pVar',
-        inputType: 'input',
-      };
-      presentationPool.set('namePartPVar', namePartPVar);
+          id: 'agentPGroup',
+          presentationOf: 'agentGroup',
+          mode: 'input',
+          children: [
+            {
+              refGroups: [
+                {
+                  childId: 'namePartPVar',
+                  type: 'presentation',
+                },
+              ],
+              minNumberOfRepeatingToShow: '0',
+            },
+          ],
+          type: 'pGroup',
+        } as BFFPresentationGroup,
+        {
+          id: 'namePartPVar',
+          presentationOf: 'namePartTextVar',
+          mode: 'input',
+          type: 'pVar',
+          inputType: 'input',
+        } as BFFPresentationTextVar
+        ]),
+
+      } as Dependencies;
+
 
       const actual = createPresentationComponent(
         mockDependencies,
@@ -4844,5 +4853,9 @@ const createBasicDependencies = (): Dependencies => {
     searchPool: listToPool([]),
     textPool: listToPool([]),
     recordTypePool: listToPool([]),
-  };
+    loginUnitPool: listToPool([]),
+    loginPool: listToPool([]),
+    memberPool: listToPool([]),
+    organisationPool: listToPool([]),
+  }
 };
