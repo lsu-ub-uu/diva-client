@@ -9,7 +9,7 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { createCommonParameters } from '../utils/createCommonParameters.server';
-import { createCollectionVariableOptions } from './createGroupOrComponent';
+import { createCollectionVariableOptions } from '../utils/formDefinitionUtils.server';
 
 export const createAttributes = (
   metadataVariable: BFFMetadata,

@@ -25,7 +25,7 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import type { Lookup } from 'server/dependencies/util/lookup';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 
 export const findMatchingMetadataChildReferencesForSContainer = (
   presentation: BFFPresentationContainer,

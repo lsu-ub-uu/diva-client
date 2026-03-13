@@ -14,7 +14,7 @@ import { createGuiElement } from './createGuiElement.server';
 import { createContainer } from './createContainer.server';
 import { createPresentationComponent } from './createPresentationComponent';
 import { createRepeat } from './createRepeat.server';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '../findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from '../utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 
 export const createChildComponents = (
   dependencies: Dependencies,

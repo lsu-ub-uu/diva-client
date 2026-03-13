@@ -190,7 +190,7 @@ export type PresentationSize =
   | 'singleInitiallyVisible'
   | 'singleInitiallyHidden';
 
-export interface BFFPresentationContainer extends BFFPresentationBase {
+export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadata {
   type: 'container';
   repeat: 'children' | 'this';
   presentationStyle?: PresentationStyle;

@@ -32,7 +32,7 @@ import type {
   FormComponentHidden,
   FormComponentRepeat,
 } from '@/components/FormGenerator/types';
-import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createAttributes } from './createAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {

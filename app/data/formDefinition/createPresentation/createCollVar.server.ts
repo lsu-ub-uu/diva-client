@@ -33,6 +33,7 @@ import type {
 } from './createPresentationComponent';
 import type { CommonParameters } from '../utils/createCommonParameters.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { createCollectionVariableOptions } from '../utils/formDefinitionUtils.server';
 
 export const createCollVar = (
   dependencies: Dependencies,

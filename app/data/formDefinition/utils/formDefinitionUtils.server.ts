@@ -19,14 +19,16 @@
 
 import type {
   BFFAttributeReference,
+  BFFCollectionItemReference,
+  BFFMetadataBase,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
+  BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentationRecordLink,
 } from '@/cora/bffTypes.server';
-import { createCollectionVariableOptions } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 import type { Dependencies } from '@/cora/bffTypes.server';
 
 export type BFFMetadataTypes =
@@ -108,4 +110,22 @@ export const hasLinkedPresentation = (
     return false;
   }
   return rLPresentation.linkedRecordPresentations.length > 0;
+};
+
+export const createCollectionVariableOptions = (
+  metadataPool: any,
+  collectionVariable: BFFMetadataCollectionVariable,
+): { label: string; value: string }[] => {
+  const collection = metadataPool.get(
+    collectionVariable.refCollection,
+  ) as BFFMetadataItemCollection;
+  const itemReferences = collection.collectionItemReferences;
+  return itemReferences.map((itemRef: BFFCollectionItemReference) => {
+    const collectionItem = metadataPool.get(
+      itemRef.refCollectionItemId,
+    ) as BFFMetadataBase;
+    const label = collectionItem.textId;
+    const value = collectionItem.nameInData;
+    return { value, label };
+  });
 };
