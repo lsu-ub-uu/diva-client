@@ -167,12 +167,12 @@ const getExpandIcon = (
   }
   if (presentationSize === 'firstSmaller') {
     return showingAlternativePresentation ? (
-      <Maximize2Icon />
-    ) : (
       <Minimize2Icon />
+    ) : (
+      <Maximize2Icon />
     );
   }
-  return showingAlternativePresentation ? <Minimize2Icon /> : <Maximize2Icon />;
+  return showingAlternativePresentation ? <Maximize2Icon /> : <Minimize2Icon />;
 };
 
 const getExpandButtonText = (
@@ -184,10 +184,10 @@ const getExpandButtonText = (
   }
   if (presentationSize === 'firstSmaller') {
     return showingAlternativePresentation
-      ? 'divaClient_showMoreText'
-      : 'divaClient_showLessText';
+      ? 'divaClient_showLessText'
+      : 'divaClient_showMoreText';
   }
   return showingAlternativePresentation
-    ? 'divaClient_showLessText'
-    : 'divaClient_showMoreText';
+    ? 'divaClient_showMoreText'
+    : 'divaClient_showLessText';
 };
