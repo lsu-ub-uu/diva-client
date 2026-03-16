@@ -61,15 +61,6 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     mode: 'update',
   });
 
-  const rawRecordResponse = await getRecordDataById<RecordWrapper>(
-    recordType,
-    recordId,
-    auth?.data.token,
-    false,
-  );
-
-  const rawRecord = rawRecordResponse.data;
-
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record, language) || t('divaClient_missingTitleText')} | DiVA`;
 
   if (record?.validationType == null) {
@@ -104,7 +95,6 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     notification,
     title,
     breadcrumb,
-    rawRecord,
   };
 }
 
@@ -183,7 +173,6 @@ export default function UpdateRecordRoute({
     previewFormDefinition,
     notification,
     defaultValues,
-    rawRecord,
   } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;

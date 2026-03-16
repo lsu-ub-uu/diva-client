@@ -4,11 +4,11 @@ import { href, Link } from 'react-router';
 import type {
   FormComponentAnyTypeRecordLink,
   FormComponentRecordLink,
-  PresentationStyle,
 } from '../FormGenerator/types';
 import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
 import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
@@ -23,10 +23,10 @@ export const OutputRecordLink = ({
 }: OutputRecordLinkProps) => {
   const { t } = useTranslation();
 
-  const linkedRecordType = data.children.find(
+  const linkedRecordType = data.children?.find(
     (child) => child.name === 'linkedRecordType',
   )?.value;
-  const linkedRecordId = data.children.find(
+  const linkedRecordId = data.children?.find(
     (child) => child.name === 'linkedRecordId',
   )?.value;
 

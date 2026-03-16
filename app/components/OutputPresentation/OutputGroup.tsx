@@ -25,6 +25,7 @@ export const OutputGroup = ({
       <div>
         {component.showLabel && (
           <Typography
+            as={component.headlineLevel}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
             style={{ marginTop: '1rem' }}
           >

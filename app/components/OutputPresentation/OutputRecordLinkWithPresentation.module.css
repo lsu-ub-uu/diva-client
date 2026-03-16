@@ -4,8 +4,9 @@
   gap: var(--gap);
 }
 
-.presentation-border {
+.linked-presentation {
   border: 1px dashed var(--color-label);
   border-radius: var(--border-radius);
   padding: var(--gap);
+  flex-grow: 1;
 }
