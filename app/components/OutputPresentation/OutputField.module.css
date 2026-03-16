@@ -10,6 +10,10 @@
   color: var(--color-label);
 }
 
+.value {
+  overflow-wrap: break-word;
+}
+
 .output-field[data-variant='block']:has(> .label) > .value {
   padding-left: var(--gap);
 }

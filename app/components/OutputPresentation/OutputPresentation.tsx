@@ -11,5 +11,6 @@ export const OutputPresentation = ({
   formSchema,
   data,
 }: OutputPresentationProps) => {
+  console.log('OutputPresentation', { formSchema, data });
   return <OutputGroup component={formSchema.form} data={data} />;
 };

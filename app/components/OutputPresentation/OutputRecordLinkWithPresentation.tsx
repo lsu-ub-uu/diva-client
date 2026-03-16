@@ -36,7 +36,7 @@ export const OutputRecordLinkWithPresentation = ({
     const presentation = data.presentation as FormSchema;
     return (
       <div className={styles['wrapper']}>
-        <div className={styles['presentation-border']}>
+        <div className={styles['linked-presentation']}>
           <OutputPresentation formSchema={presentation} data={dataGroup} />
         </div>
         <IconButton
