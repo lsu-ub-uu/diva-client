@@ -47,13 +47,7 @@ export const createChildComponents = (
     },
   );
 
-  const hiddenComponents = createHiddenComponents(
-    dependencies,
-    metadataChildReferences,
-    presentationChildReferences,
-  );
-
-  return [...components, ...hiddenComponents];
+  return components;
 };
 
 const createChildComponentsForPresentationChildRef = (

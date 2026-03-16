@@ -34,6 +34,7 @@ import {
 import type { CommonParameters } from '../utils/createCommonParameters.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 import { createChildComponents } from './createChildComponents.server';
+import { createHiddenComponents } from './createHiddenComponents.server';
 
 export const createGroup = (
   dependencies: Dependencies,
@@ -49,6 +50,12 @@ export const createGroup = (
   const presentAs = presentation.presentAs;
 
   const components = createChildComponents(
+    dependencies,
+    metadata.children,
+    presentation.children,
+  );
+
+  const hiddenComponents = createHiddenComponents(
     dependencies,
     metadata.children,
     presentation.children,
@@ -88,7 +95,7 @@ export const createGroup = (
     attributesToShow,
     presentationStyle,
     attributes,
-    components,
+    components: [...components, ...hiddenComponents],
     repeat,
     childStyle,
     gridColSpan,
