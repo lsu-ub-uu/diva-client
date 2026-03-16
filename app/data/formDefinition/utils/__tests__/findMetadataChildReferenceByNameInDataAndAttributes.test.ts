@@ -26,11 +26,13 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       someMetadataCollectionVariable,
     );
 
-    expect(test).toStrictEqual({
-      childId: 'exampleCollectionVarId',
-      repeatMax: '1',
-      repeatMin: '0',
-    });
+    expect(test).toStrictEqual([
+      {
+        childId: 'exampleCollectionVarId',
+        repeatMax: '1',
+        repeatMin: '0',
+      },
+    ]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes equal nameInData`, () => {
@@ -49,7 +51,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toStrictEqual(childRefs[0]);
+    expect(actual).toStrictEqual(childRefs);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes unequal nameInData`, () => {
@@ -68,7 +70,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData and unequal number of attributes`, () => {
@@ -114,7 +116,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -145,7 +147,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toStrictEqual(childRefs[0]);
+    expect(actual).toStrictEqual(childRefs);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -183,7 +185,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toStrictEqual(children[0]);
+    expect(actual).toStrictEqual(children);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -225,7 +227,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toStrictEqual(childRefs[0]);
+    expect(actual).toStrictEqual([childRefs[0]]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -263,7 +265,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       pmTextVar,
     );
 
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -300,7 +302,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefs,
       pmTextVar,
     );
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -343,7 +345,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       valueOneOrTwoTextVar,
     );
-    expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    expect(actual).toStrictEqual([childRefsForCurrentGroup[0]]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -381,7 +383,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       pmTextVar,
     );
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   // FINAL VALUE FOR ATTRIBUTES
@@ -419,7 +421,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       pmTextVar,
     );
-    expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    expect(actual).toStrictEqual([childRefsForCurrentGroup[0]]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -456,7 +458,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       pmTextVar,
     );
-    expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    expect(actual).toStrictEqual([childRefsForCurrentGroup[0]]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -499,7 +501,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       metadataFromPresentation,
     );
-    expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    expect(actual).toStrictEqual([childRefsForCurrentGroup[0]]);
   });
 
   it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
@@ -543,7 +545,7 @@ describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
       childRefsForCurrentGroup,
       metadataFromPresentation,
     );
-    expect(actual).toBe(undefined);
+    expect(actual).toStrictEqual([]);
   });
 
   describe('firstAttributesExistsInSecond', () => {

@@ -38,7 +38,6 @@ export const findMatchingMetadataChildReferencesForSContainer = (
   return presentationsOf
     .flatMap((presentationMetadataId) => {
       return metadataChildReferences.filter((metadataChildRef) => {
-        // If ID matches, return true
         if (metadataChildRef.childId === presentationMetadataId) {
           return true;
         }
@@ -62,9 +61,11 @@ const matchPresentationWithMetadata = (
     presentationMetadataId,
   );
 
-  return findMetadataChildReferenceByNameInDataAndAttributes(
-    metadataPool,
-    [definitionChildRef],
-    metadataFromCurrentPresentation,
+  return (
+    findMetadataChildReferenceByNameInDataAndAttributes(
+      metadataPool,
+      [definitionChildRef],
+      metadataFromCurrentPresentation,
+    ).length > 0
   );
 };
