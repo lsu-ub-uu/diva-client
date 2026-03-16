@@ -6,7 +6,7 @@ import { CircularLoader } from '../Loader/CircularLoader';
 import { OutputPresentation } from './OutputPresentation';
 import { LinkIcon } from 'lucide-react';
 import { IconButton } from '../IconButton/IconButton';
-import styles from './OutputRecordLinkWithPresentation.module.css';
+import styles from './OutputPresentation.module.css';
 
 interface OutputRecordLinkWithPresentationProps {
   linkedRecordType: string;
@@ -35,7 +35,7 @@ export const OutputRecordLinkWithPresentation = ({
     const dataGroup = data.record.record.data as DataGroup;
     const presentation = data.presentation as FormSchema;
     return (
-      <div className={styles['wrapper']}>
+      <div className={styles['record-link-with-presentation']}>
         <div className={styles['linked-presentation']}>
           <OutputPresentation formSchema={presentation} data={dataGroup} />
         </div>

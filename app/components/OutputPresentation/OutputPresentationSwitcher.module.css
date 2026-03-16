@@ -1,13 +1,48 @@
-.wrapper {
+.accordion {
   border-radius: var(--border-radius);
+  border: 1px solid var(--color-output-card-border);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 4%);
+  margin-bottom: var(--gap-l);
+  overflow: hidden;
+  background-color: var(--color-output-card-background);
+}
 
-  &:has(> .presentation-switcher-button:hover) {
-    outline: 1px solid var(--color-thin-border);
+.accordion-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  border: none;
+  width: 100%;
+  padding: var(--gap-s) var(--gap-l);
+  font: inherit;
+  outline: none;
+  background-color: transparent;
+  transition: background-color 0.2s;
+
+  svg {
+    font-size: var(--font-size-icon);
   }
 
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: start;
+  &:not(:has(> .accordion-title)) {
+    justify-content: flex-end;
+  }
+}
+
+.accordion-header:hover {
+  background-color: var(--color-gray-main);
+}
+
+.accordion-title {
+  flex: 1;
+  text-align: left;
+}
+
+.accordion-content {
+  padding: var(--gap);
+  border-top: 1px solid var(--color-output-card-border);
+  background-color: var(--color-output-card);
+  transition: max-height 0.2s;
 }
 
 .clickable-title {
@@ -16,7 +51,8 @@
   display: flex;
   align-items: center;
   gap: var(--gap);
-  background: none;
+  background-color: transparent;
+  transition: background-color 0.2s;
 
   svg {
     font-size: var(--font-size-icon);
@@ -33,4 +69,8 @@
 
 .content {
   padding: var(--gap-s);
+}
+
+.accordion-icon {
+  font-size: var(--font-size-icon);
 }

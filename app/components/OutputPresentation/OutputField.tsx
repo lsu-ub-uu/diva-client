@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import styles from './OutputField.module.css';
 import type { TextStyle } from '@/cora/bffTypes.server';
+import styles from './OutputPresentation.module.css';
 
 interface OutputFieldProps {
   label?: string;

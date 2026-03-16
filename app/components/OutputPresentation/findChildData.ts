@@ -34,9 +34,17 @@ const doesDataMatchComponent = (
   }
 
   return componentAttributes.every((attribute) => {
-    if (attribute.finalValue) {
-      return dataChildAttributes[attribute.name] === attribute.finalValue;
+    const dataAttributeValue = dataChildAttributes[attribute.name];
+    if (dataAttributeValue) {
+      if (attribute.finalValue) {
+        return dataAttributeValue === attribute.finalValue;
+      }
+
+      return attribute.options.some(
+        (option) => option.value === dataAttributeValue,
+      );
     }
+
     return attribute.name in dataChildAttributes;
   });
 };

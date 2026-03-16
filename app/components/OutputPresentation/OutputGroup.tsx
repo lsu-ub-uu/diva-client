@@ -6,6 +6,7 @@ import type { FormComponentGroup } from '../FormGenerator/types';
 import { Typography } from '../Typography/Typography';
 import { Attributes } from './Attributes';
 import { ComponentChildren } from './ComponentChildren';
+import styles from './OutputPresentation.module.css';
 
 interface OutputGroupProps {
   component: FormComponentGroup;
@@ -21,13 +22,12 @@ export const OutputGroup = ({
   const { t } = useTranslation();
 
   return (
-    <div data-text-style={component.textStyle}>
+    <div className={styles['group']} data-text-style={component.textStyle}>
       <div>
         {component.showLabel && (
           <Typography
             as={component.headlineLevel}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-            style={{ marginTop: '1rem' }}
           >
             {t(component.label)}
           </Typography>

@@ -3,6 +3,7 @@ import type {
   PresentationStyle,
 } from '@/cora/bffTypes.server';
 import type { CoraData } from '@/cora/cora-data/types.server';
+import { hasValuableData } from '@/utils/cleanFormData';
 import {
   ArrowLeftRightIcon,
   ChevronDownIcon,
@@ -11,14 +12,14 @@ import {
   Minimize2Icon,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponent } from '../FormGenerator/types';
-import { IconButton } from '../IconButton/IconButton';
+import { Tooltip } from '../Tooltip/Tooltip';
+import { useTooltip } from '../Tooltip/useTooltip';
+import { Typography } from '../Typography/Typography';
 import { OutputComponent } from './OutputComponent';
 import styles from './OutputPresentationSwitcher.module.css';
-import { useTranslation } from 'react-i18next';
-import { Typography } from '../Typography/Typography';
-import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { hasValuableData } from '@/utils/cleanFormData';
 
 interface OutputPresentationSwitcherProps {
   component: FormComponent;
@@ -44,35 +45,37 @@ export const OutputSinglePresentationSwitcher = ({
   }
 
   return (
-    <div className={styles['wrapper']}>
-      {component.title && (
-        <button
-          className={styles['clickable-title']}
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+    <div className={styles['accordion']}>
+      <button
+        className={styles['accordion-header']}
+        onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+      >
+        {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        {component.title && (
           <Typography
             variant={headlineLevelToTypographyVariant(
               component.titleHeadlineLevel,
             )}
-            className={styles['clickable-title-text']}
+            className={styles['accordion-title']}
           >
             {t(component.title)}
           </Typography>
-        </button>
-      )}
-      <div className={styles['content']}>
-        {expanded ? (
-          <OutputComponent
-            component={{
-              ...component,
-              alternativePresentation: undefined,
-              title: undefined,
-            }}
-            data={data}
-            parentPresentationStyle={parentPresentationStyle}
-          />
-        ) : null}
+        )}
+      </button>
+      <div
+        className={styles['accordion-content']}
+        style={{ display: expanded ? 'block' : 'none' }}
+      >
+        <OutputComponent
+          component={{
+            ...component,
+            alternativePresentation: undefined,
+            title: undefined,
+          }}
+          data={data}
+          parentPresentationStyle={parentPresentationStyle}
+        />
       </div>
     </div>
   );
@@ -86,35 +89,58 @@ export const OutputPresentationSwitcher = ({
   const { t } = useTranslation();
   const [showingAlternativePresentation, setShowingAlternativePresentation] =
     useState(false);
+  const { tooltipWrapperProps, tooltipTriggerProps, tooltipProps } =
+    useTooltip();
   if (component.type === 'hidden') {
     return null;
   }
 
   return (
-    <div className={styles['wrapper']}>
-      {component.title && (
-        <button
-          className={styles['clickable-title']}
-          onClick={() =>
-            setShowingAlternativePresentation(!showingAlternativePresentation)
-          }
-        >
-          {showingAlternativePresentation ? (
-            <ChevronUpIcon />
-          ) : (
-            <ChevronDownIcon />
-          )}
+    <div className={styles['accordion']} {...tooltipWrapperProps}>
+      <button
+        className={styles['accordion-header']}
+        onClick={() =>
+          setShowingAlternativePresentation(!showingAlternativePresentation)
+        }
+        aria-expanded={showingAlternativePresentation}
+        aria-label={
+          component.title === undefined
+            ? t(
+                getExpandButtonText(
+                  component.presentationSize,
+                  showingAlternativePresentation,
+                ),
+              )
+            : undefined
+        }
+        {...tooltipTriggerProps}
+      >
+        {getExpandIcon(
+          component.presentationSize,
+          showingAlternativePresentation,
+        )}
+        {component.title && (
           <Typography
             variant={headlineLevelToTypographyVariant(
               component.titleHeadlineLevel,
             )}
-            className={styles['clickable-title-text']}
+            className={styles['accordion-title']}
           >
             {t(component.title)}
           </Typography>
-        </button>
+        )}
+      </button>
+      {!component.title && (
+        <Tooltip {...tooltipProps}>
+          {t(
+            getExpandButtonText(
+              component.presentationSize,
+              showingAlternativePresentation,
+            ),
+          )}
+        </Tooltip>
       )}
-      <div className={styles['content']}>
+      <div className={styles['accordion-content']}>
         {showingAlternativePresentation ? (
           component.alternativePresentation ? (
             <OutputComponent
@@ -135,25 +161,6 @@ export const OutputPresentationSwitcher = ({
           />
         )}
       </div>
-      {!component.title && (
-        <IconButton
-          tooltip={t(
-            getExpandButtonText(
-              component.presentationSize,
-              showingAlternativePresentation,
-            ),
-          )}
-          className={styles['presentation-switcher-button']}
-          onClick={() =>
-            setShowingAlternativePresentation(!showingAlternativePresentation)
-          }
-        >
-          {getExpandIcon(
-            component.presentationSize,
-            showingAlternativePresentation,
-          )}
-        </IconButton>
-      )}
     </div>
   );
 };

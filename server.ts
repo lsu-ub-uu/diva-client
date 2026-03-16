@@ -120,7 +120,7 @@ if (DEVELOPMENT) {
 
 app.use(morgan('tiny'));
 
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   console.info(`CORA_API_URL ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
@@ -137,6 +137,18 @@ app.listen(PORT, async () => {
     console.info(
       `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
+  }
+});
+
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(
+      `Port ${PORT} is already in use. Please choose another port or stop the process using it.`,
+    );
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+    process.exit(1);
   }
 });
 

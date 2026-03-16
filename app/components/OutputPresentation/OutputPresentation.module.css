@@ -1,0 +1,29 @@
+.output-field {
+  &[data-variant='inline'] {
+    display: flex;
+    gap: var(--gap);
+    align-items: center;
+  }
+
+  .label {
+    color: var(--color-label);
+  }
+
+  .value {
+    overflow-wrap: break-word;
+  }
+
+  .output-field[data-variant='block']:has(> .label) > .value {
+    padding-left: var(--gap);
+  }
+}
+
+.record-link-with-presentation {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+
+  .linked-presentation {
+    flex-grow: 1;
+  }
+}

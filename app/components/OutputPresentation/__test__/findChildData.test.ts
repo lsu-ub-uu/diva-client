@@ -109,4 +109,53 @@ describe('findChildData', () => {
       },
     ]);
   });
+
+  it('matches by attribute value', () => {
+    const component = {
+      type: 'textVariable',
+      name: 'test',
+      attributes: [
+        {
+          name: 'color',
+          options: [{ value: 'blue' }, { value: 'red' }],
+        },
+      ],
+    } as FormComponentTextVar;
+
+    const data = {
+      name: 'root',
+      type: 'group',
+      children: [
+        {
+          name: 'test',
+          attributes: { color: 'blue' },
+          value: 'someOtherValue',
+        },
+        {
+          name: 'test',
+          attributes: { color: 'red' },
+          value: 'someValue',
+        },
+        {
+          name: 'test',
+          attributes: { color: 'yellow' },
+          value: 'someValue',
+        },
+      ],
+    } as DataGroup;
+
+    const result = findChildData(component, data);
+    expect(result).toEqual([
+      {
+        name: 'test',
+        attributes: { color: 'blue' },
+        value: 'someOtherValue',
+      },
+      {
+        name: 'test',
+        attributes: { color: 'red' },
+        value: 'someValue',
+      },
+    ]);
+  });
 });

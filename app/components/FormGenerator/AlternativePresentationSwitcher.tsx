@@ -152,7 +152,7 @@ export const AlternativePresentationSwitcher = (
           </CardTitle>
         </CardHeader>
         {alternativePresentation !== undefined ? ( // Switch between two presentations
-          <CardContent className='form-component-container'>
+          <CardContent>
             <Component
               {...props}
               component={
@@ -164,7 +164,7 @@ export const AlternativePresentationSwitcher = (
           </CardContent>
         ) : (
           // Switch between no content and single presentation
-          <CardContent className='form-component-container' hidden={!expanded}>
+          <CardContent hidden={!expanded}>
             <Component
               {...props}
               component={{ ...component, title: undefined } as FormComponent}
