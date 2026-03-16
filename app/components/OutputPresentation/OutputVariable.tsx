@@ -30,6 +30,7 @@ export const OutputVariable = ({
       attributes={<Attributes component={component} data={data} />}
       value={data.value}
       variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+      colspan={component.gridColSpan}
     />
   );
 };

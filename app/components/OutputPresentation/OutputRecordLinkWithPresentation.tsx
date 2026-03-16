@@ -34,6 +34,11 @@ export const OutputRecordLinkWithPresentation = ({
   if (state === 'idle' && data) {
     const dataGroup = data.record.record.data as DataGroup;
     const presentation = data.presentation as FormSchema;
+    console.log(
+      'OutputRecordLinkWithPresentation data',
+      presentation,
+      dataGroup,
+    );
     return (
       <div className={styles['record-link-with-presentation']}>
         <div className={styles['linked-presentation']}>

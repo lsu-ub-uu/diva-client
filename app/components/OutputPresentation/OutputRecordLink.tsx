@@ -39,6 +39,7 @@ export const OutputRecordLink = ({
       label={component.showLabel ? t(component.label) : undefined}
       attributes={<Attributes component={component} data={data} />}
       variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+      colspan={component.gridColSpan}
       value={
         <RecordLinkValue
           component={component}

@@ -33,6 +33,7 @@ export const OutputCollectionVariable = ({
       attributes={<Attributes component={component} data={data} />}
       value={t(optionText)}
       variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+      colspan={component.gridColSpan}
     />
   );
 };

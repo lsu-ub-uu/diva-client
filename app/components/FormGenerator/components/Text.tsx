@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentText } from '@/components/FormGenerator/types';
 import {

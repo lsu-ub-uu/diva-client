@@ -20,6 +20,7 @@ import { useTooltip } from '../Tooltip/useTooltip';
 import { Typography } from '../Typography/Typography';
 import { OutputComponent } from './OutputComponent';
 import styles from './OutputPresentationSwitcher.module.css';
+import clsx from 'clsx';
 
 interface OutputPresentationSwitcherProps {
   component: FormComponent;
@@ -45,7 +46,10 @@ export const OutputSinglePresentationSwitcher = ({
   }
 
   return (
-    <div className={styles['accordion']}>
+    <div
+      className={clsx(styles['accordion'], 'form-component-item')}
+      data-colspan={component.gridColSpan ?? 12}
+    >
       <button
         className={styles['accordion-header']}
         onClick={() => setExpanded(!expanded)}
@@ -96,7 +100,11 @@ export const OutputPresentationSwitcher = ({
   }
 
   return (
-    <div className={styles['accordion']} {...tooltipWrapperProps}>
+    <div
+      className={clsx(styles['accordion'], 'form-component-item')}
+      data-colspan={component.gridColSpan ?? 12}
+      {...tooltipWrapperProps}
+    >
       <button
         className={styles['accordion-header']}
         onClick={() =>

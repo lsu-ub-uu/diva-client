@@ -16,7 +16,8 @@ export const OutputContainer = ({
 }: OutputContainerProps) => {
   return (
     <div
-      className='form-component-container'
+      className='form-component-container form-component-item'
+      data-colspan={component.gridColSpan ?? 12}
       data-layout={component.presentationStyle === 'inline' ? 'inline' : 'grid'}
       data-text-style={component.textStyle}
     >

@@ -35,6 +35,9 @@
   gap: var(--gap);
 
   .linked-presentation {
+    border: 1px dashed var(--color-output-card-border);
+    border-radius: var(--border-radius);
+    padding: var(--gap-s);
     flex-grow: 1;
   }
 }

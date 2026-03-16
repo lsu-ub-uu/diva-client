@@ -7,6 +7,8 @@ import { Typography } from '../Typography/Typography';
 import { Attributes } from './Attributes';
 import { ComponentChildren } from './ComponentChildren';
 import styles from './OutputPresentation.module.css';
+import { dataHasValues } from './dataHasValues';
+import clsx from 'clsx';
 
 interface OutputGroupProps {
   component: FormComponentGroup;
@@ -21,19 +23,25 @@ export const OutputGroup = ({
 }: OutputGroupProps) => {
   const { t } = useTranslation();
 
+  if (!dataHasValues(data)) {
+    return null;
+  }
+
   return (
-    <div className={styles['group']} data-text-style={component.textStyle}>
-      <div>
-        {component.showLabel && (
-          <Typography
-            as={component.headlineLevel}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          >
-            {t(component.label)}
-          </Typography>
-        )}
-        <Attributes component={component} data={data} />
-      </div>
+    <div
+      className={clsx(styles['group'], 'form-component-item')}
+      data-colspan={component.gridColSpan ?? 12}
+      data-text-style={component.textStyle}
+    >
+      {component.showLabel && (
+        <Typography
+          as={component.headlineLevel}
+          variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+        >
+          {t(component.label)}
+        </Typography>
+      )}
+      <Attributes component={component} data={data} />
       <div
         className='form-component-container'
         data-layout={

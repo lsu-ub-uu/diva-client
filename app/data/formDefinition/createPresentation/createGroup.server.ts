@@ -55,11 +55,14 @@ export const createGroup = (
     presentation.children,
   );
 
-  const hiddenComponents = createHiddenComponents(
-    dependencies,
-    metadata.children,
-    presentation.children,
-  );
+  const hiddenComponents =
+    presentation.mode === 'input'
+      ? createHiddenComponents(
+          dependencies,
+          metadata.children,
+          presentation.children,
+        )
+      : [];
 
   const {
     childStyle,

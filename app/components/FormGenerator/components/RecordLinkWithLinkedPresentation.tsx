@@ -33,6 +33,7 @@ import {
   isComponentRepeating,
 } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
+import { OutputRecordLinkWithPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithPresentation';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -112,9 +113,11 @@ export const RecordLinkWithLinkedPresentation = ({
         </div>
       </div>
 
-      <LinkedRecord
-        recordType={component.linkedRecordPresentation.presentedRecordType}
-        id={linkedRecordId}
+      <OutputRecordLinkWithPresentation
+        linkedRecordType={
+          component.linkedRecordPresentation.presentedRecordType
+        }
+        linkedRecordId={linkedRecordId}
         presentationRecordLinkId={
           component.linkedRecordPresentation.presentationId
         }

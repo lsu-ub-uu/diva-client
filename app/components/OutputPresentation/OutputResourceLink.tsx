@@ -31,7 +31,10 @@ export const OutputResourceLink = ({
     href('/binary/:id/:name', { id: linkedRecordId, name: data.name }),
   );
   return (
-    <div>
+    <div
+      className='form-component-item'
+      data-colspan={component.gridColSpan ?? 12}
+    >
       {component.outputFormat === 'image' && (
         <img src={resourceUrl} alt={data.name} />
       )}

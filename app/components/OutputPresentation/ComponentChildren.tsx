@@ -16,45 +16,42 @@ export const ComponentChildren = ({
   data,
   parentPresentationStyle,
 }: ComponentChildrenProps) => {
-  return components?.map((childComponent, index) => {
-    if (!isComponentWithData(childComponent)) {
-      return (
-        <div
-          className='form-component-item'
-          data-colspan={childComponent.gridColSpan ?? 12}
-          key={`${index}`}
-        >
-          <OutputComponent
-            key={index}
-            component={childComponent}
-            parentPresentationStyle={parentPresentationStyle}
-          />
-        </div>
-      );
-    }
+  return components
+    ?.filter((component) => component.type !== 'hidden')
+    .map((childComponent, index) => {
+      if (!isComponentWithData(childComponent)) {
+        return (
+          <div
+            className='form-component-item'
+            data-colspan={childComponent.gridColSpan ?? 12}
+            key={`${index}`}
+            data-type={childComponent.type}
+          >
+            <OutputComponent
+              key={index}
+              component={childComponent}
+              parentPresentationStyle={parentPresentationStyle}
+            />
+          </div>
+        );
+      }
 
-    const childData =
-      childComponent.type === 'container'
-        ? [data]
-        : findChildData(childComponent, data);
+      const childData =
+        childComponent.type === 'container'
+          ? [data]
+          : findChildData(childComponent, data);
 
-    if (!childData) {
-      return null;
-    }
+      if (!childData) {
+        return `Missing data for component ${childComponent.name}`;
+      }
 
-    return childData.map((data, childIndex) => (
-      <div
-        className='form-component-item'
-        data-colspan={childComponent.gridColSpan ?? 12}
-        key={`${index}-${childIndex}`}
-      >
+      return childData.map((data, childIndex) => (
         <OutputComponent
           key={`${index}-${childIndex}`}
           component={childComponent}
           data={data}
           parentPresentationStyle={parentPresentationStyle}
         />
-      </div>
-    ));
-  });
+      ));
+    });
 };
