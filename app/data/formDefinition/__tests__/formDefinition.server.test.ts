@@ -19,6 +19,7 @@
 
 import type { FormComponentTextVar } from '@/components/FormGenerator/types';
 import type {
+  BFFMetadata,
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
@@ -40,7 +41,6 @@ import {
 } from '@/data/formDefinition/createFormDefinition.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it } from 'vitest';
-import { createPresentationComponent } from '../createPresentation/createPresentationComponent';
 import {
   createBasicDependencies,
   createCollVar,
@@ -801,7 +801,7 @@ describe('formDefinition', () => {
       });
     });
 
-    it('should return a form definition for a edit metadata group', () => {
+    it('should return a form definition for an edit metadata group', () => {
       const validationTypeId = 'someValidationTypeId';
       const formDefinition = createFormDefinition(
         createBasicDependencies(),
@@ -1208,7 +1208,6 @@ describe('formDefinition', () => {
               type: 'container',
               name: 'pSomeContainerId',
               presentationId: 'pSomeContainerId',
-              // frame
               containerType: 'surrounding',
               gridColSpan: 12,
 
@@ -2481,6 +2480,199 @@ describe('formDefinition', () => {
         validationTypeId: 'journalNew',
       });
     });
+
+    it('creates multiple components for presentation that matches multiple metadata children', () => {
+      const mockDependencies = {
+        recordTypePool: listToPool([
+          {
+            id: 'someRecordTypeId',
+            presentationViewId: 'rootPGroup',
+          } as BFFRecordType,
+        ]),
+        validationTypePool: listToPool([
+          {
+            id: 'someValidationTypeId',
+            validatesRecordTypeId: 'someRecordTypeId',
+            metadataGroupId: 'rootGroup',
+          } as BFFValidationType,
+        ]),
+        metadataPool: listToPool([
+          {
+            id: 'rootGroup',
+            type: 'group',
+            nameInData: 'rootGroup',
+            children: [
+              { childId: 'redChild', repeatMin: '0', repeatMax: '1' },
+              { childId: 'blueChild', repeatMin: '0', repeatMax: '1' },
+            ],
+          } as BFFMetadataGroup,
+          {
+            id: 'redChild',
+            nameInData: 'child',
+            type: 'textVariable',
+            attributeReferences: [{ refCollectionVarId: 'redCollection' }],
+          } as BFFMetadataTextVariable,
+          {
+            id: 'blueChild',
+            nameInData: 'child',
+            type: 'textVariable',
+            attributeReferences: [{ refCollectionVarId: 'blueCollection' }],
+          } as BFFMetadataTextVariable,
+          {
+            id: 'redOrBlueChild',
+            nameInData: 'child',
+            type: 'textVariable',
+            attributeReferences: [
+              { refCollectionVarId: 'redOrBlueCollection' },
+            ],
+          } as BFFMetadataTextVariable,
+          {
+            id: 'redCollection',
+            nameInData: 'color',
+            finalValue: 'red',
+            refCollection: 'colorCollection',
+          } as BFFMetadataCollectionVariable,
+          {
+            id: 'blueCollection',
+            nameInData: 'color',
+            finalValue: 'blue',
+            refCollection: 'colorCollection',
+          } as BFFMetadataCollectionVariable,
+          {
+            id: 'redOrBlueCollection',
+            nameInData: 'color',
+            refCollection: 'colorCollection',
+          } as BFFMetadataCollectionVariable,
+          {
+            id: 'colorCollection',
+            nameInData: 'color',
+            type: 'itemCollection',
+            collectionItemReferences: [
+              { refCollectionItemId: 'redItem' },
+              { refCollectionItemId: 'blueItem' },
+            ],
+          } as BFFMetadataItemCollection,
+          {
+            id: 'redItem',
+            nameInData: 'red',
+          } as BFFMetadataBase,
+          {
+            id: 'blueItem',
+            nameInData: 'blue',
+          } as BFFMetadataBase,
+        ]),
+        presentationPool: listToPool([
+          {
+            id: 'rootPGroup',
+            presentationOf: 'rootGroup',
+            type: 'pGroup',
+            mode: 'output',
+            children: [
+              {
+                refGroups: [{ childId: 'redOrBluePVar', type: 'presentation' }],
+              },
+            ],
+          } as BFFPresentationGroup,
+          {
+            id: 'redOrBluePVar',
+            presentationOf: 'redOrBlueChild',
+            type: 'pVar',
+            mode: 'output',
+          } as BFFPresentationTextVar,
+        ]),
+      } as Dependencies;
+      const formSchema = createFormDefinition(
+        mockDependencies,
+        'someValidationTypeId',
+        'view',
+      );
+      expect(formSchema).toStrictEqual({
+        form: {
+          components: [
+            {
+              attributes: [
+                {
+                  finalValue: 'red',
+                  mode: 'output',
+                  name: 'color',
+                  options: [
+                    {
+                      value: 'red',
+                    },
+                    {
+                      value: 'blue',
+                    },
+                  ],
+                  placeholder: 'initialEmptyValueText',
+                  showLabel: true,
+                  tooltip: {},
+                },
+              ],
+              gridColSpan: 12,
+              mode: 'output',
+              name: 'child',
+              presentationId: 'redOrBluePVar',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 0,
+              },
+              showLabel: true,
+              tooltip: {},
+              type: 'textVariable',
+              validation: {
+                type: 'regex',
+              },
+            },
+            {
+              attributes: [
+                {
+                  finalValue: 'blue',
+                  mode: 'output',
+                  name: 'color',
+                  options: [
+                    {
+                      value: 'red',
+                    },
+                    {
+                      value: 'blue',
+                    },
+                  ],
+                  placeholder: 'initialEmptyValueText',
+                  showLabel: true,
+                  tooltip: {},
+                },
+              ],
+              gridColSpan: 12,
+              mode: 'output',
+              name: 'child',
+              presentationId: 'redOrBluePVar',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 0,
+              },
+              showLabel: true,
+              tooltip: {},
+              type: 'textVariable',
+              validation: {
+                type: 'regex',
+              },
+            },
+          ],
+          gridColSpan: 12,
+          mode: 'output',
+          name: 'rootGroup',
+          presentationId: 'rootPGroup',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {},
+          type: 'group',
+        },
+        validationTypeId: 'someValidationTypeId',
+      });
+    });
   });
 
   describe('createLinkedRecordDefinition', () => {
@@ -2494,8 +2686,6 @@ describe('formDefinition', () => {
             'personWhenLinkedOutputPGroup',
           ) as BFFMetadataRecordLink,
           createGroup('personGroup', 'personGroup', ['personNameGroup']),
-          createTextVar('personFirstNameTextVar', 'givenName', []),
-          createTextVar('personLastNameTextVar', 'familyName', []),
           createGroup('personNameGroup', 'personNameGroup', [
             'lastNameTextVar',
             'firstNameTextVar',
@@ -2509,30 +2699,6 @@ describe('formDefinition', () => {
             'divaPersonLink',
             'personWhenLinkedOutputPGroup',
           ) as BFFPresentationRecordLink,
-          createPresentationGroup(
-            'personWhenLinkedOutputPGroup',
-            'personGroup',
-            [
-              {
-                refGroups: [
-                  {
-                    childId: 'personNameLinkOutputPGroup',
-                    type: 'presentation',
-                  },
-                ],
-              },
-            ],
-          ),
-          createPresentationGroup('personPGroup', 'personGroup', [
-            {
-              refGroups: [
-                {
-                  childId: 'personNamePGroup',
-                  type: 'presentation',
-                },
-              ],
-            },
-          ]),
           createPresentationGroup(
             'personWhenLinkedOutputPGroup',
             'personGroup',
@@ -2571,7 +2737,7 @@ describe('formDefinition', () => {
           ),
           createPresentationSContainer(
             'personNameLinkSContainer',
-            ['personFirstNameTextVar'],
+            ['firstNameTextVar'],
             [
               {
                 refGroups: [
@@ -2601,13 +2767,13 @@ describe('formDefinition', () => {
           ),
           createPresentationVar(
             'personFirstNameOutputPVar',
-            'personFirstNameTextVar',
+            'firstNameTextVar',
             'pVar',
             'output',
           ),
           createPresentationVar(
             'personLastNameOutputPVar',
-            'personLastNameTextVar',
+            'lastNameTextVar',
             'pVar',
             'output',
           ),
@@ -2657,13 +2823,11 @@ describe('formDefinition', () => {
                   components: [
                     {
                       gridColSpan: 12,
-
                       name: 'commaText',
                       type: 'text',
                     },
                     {
                       gridColSpan: 12,
-
                       name: 'spaceText',
                       type: 'text',
                     },
@@ -3121,6 +3285,7 @@ describe('formDefinition', () => {
         },
       });
     });
+
     it('should return a linked record definition for a password', () => {
       const mockDependencies = {
         recordTypePool: listToPool([{}]),

@@ -20,32 +20,32 @@ export const createChildComponents = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[],
 ): FormComponent[] => {
-  const components = presentationChildReferences
-    .map((presentationChildReference) => {
+  const components = presentationChildReferences.flatMap(
+    (presentationChildReference) => {
       const [mainRefGroup, alternativeRefGroup] =
         presentationChildReference.refGroups;
 
-      const childComponent = createChildComponent(
+      const childComponents = createChildComponentsForPresentationChildRef(
         dependencies,
         metadataChildReferences,
         presentationChildReference,
         mainRefGroup,
       );
 
-      if (childComponent && alternativeRefGroup) {
-        childComponent.alternativePresentation = createChildComponent(
-          dependencies,
-          metadataChildReferences,
-          presentationChildReference,
-          alternativeRefGroup,
-        );
+      if (childComponents && alternativeRefGroup) {
+        childComponents.forEach((childComponent) => {
+          childComponent.alternativePresentation =
+            createChildComponentsForPresentationChildRef(
+              dependencies,
+              metadataChildReferences,
+              presentationChildReference,
+              alternativeRefGroup,
+            )[0];
+        });
       }
-      return childComponent;
-    })
-    .filter(
-      (component): component is NonNullable<typeof component> =>
-        component !== undefined,
-    );
+      return childComponents;
+    },
+  );
 
   const hiddenComponents = createHiddenComponents(
     dependencies,
@@ -56,22 +56,24 @@ export const createChildComponents = (
   return [...components, ...hiddenComponents];
 };
 
-const createChildComponent = (
+const createChildComponentsForPresentationChildRef = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
   refGroup: BFFPresentationChildRefGroup,
-) => {
+): FormComponent[] => {
   if (refGroup.type === 'text') {
-    return createText(presentationChildReference, refGroup);
+    return [createText(presentationChildReference, refGroup)];
   }
 
   if (refGroup.type === 'guiElement') {
-    return createGuiElement(
-      presentationChildReference,
-      dependencies.presentationPool,
-      refGroup,
-    );
+    return [
+      createGuiElement(
+        presentationChildReference,
+        dependencies.presentationPool,
+        refGroup,
+      ),
+    ];
   }
 
   if (refGroup.type === 'presentation') {
@@ -80,48 +82,55 @@ const createChildComponent = (
       | BFFPresentationContainer;
 
     if (presentation.type === 'container') {
-      return createContainer(
+      const container = createContainer(
         dependencies,
         metadataChildReferences,
         presentation as BFFPresentationContainer,
         presentationChildReference,
       );
+
+      if (!container) {
+        return [];
+      }
+
+      return [container];
     }
 
-    const metadataChildRef = findMatchingMetadataChildRef(
+    const metadataChildRefs = findMatchingMetadataChildRefs(
       dependencies,
       presentation,
       metadataChildReferences,
     );
 
-    if (!metadataChildRef) {
+    if (!metadataChildRefs || metadataChildRefs.length === 0) {
       // Presentation child does not have matching metadata and is ignored.
-      return undefined;
+      return [];
     }
 
-    return createPresentationComponent(
-      dependencies,
-      metadataChildRef.childId,
-      presentation.id,
-      presentationChildReference,
-      createRepeat(presentationChildReference, metadataChildRef),
-    );
+    return metadataChildRefs
+      .map((metadataChildRef) =>
+        createPresentationComponent(
+          dependencies,
+          metadataChildRef.childId,
+          presentation.id,
+          presentationChildReference,
+          createRepeat(presentationChildReference, metadataChildRef),
+        ),
+      )
+      .filter(
+        (component): component is NonNullable<typeof component> =>
+          component !== undefined,
+      );
   }
+
+  return [];
 };
 
-const findMatchingMetadataChildRef = (
+const findMatchingMetadataChildRefs = (
   dependencies: Dependencies,
   presentation: BFFPresentationOfSingleMetadata,
   metadataChildReferences: BFFMetadataChildReference[],
 ) => {
-  const metadataMatchingById = metadataChildReferences.find(
-    (metadataChildReference) =>
-      metadataChildReference.childId === presentation.presentationOf,
-  );
-  if (metadataMatchingById) {
-    return metadataMatchingById;
-  }
-
   const metadataFromPresentation = dependencies.metadataPool.get(
     presentation.presentationOf,
   );

@@ -31,13 +31,13 @@ export const findMatchingMetadataChildReferencesForSContainer = (
   presentation: BFFPresentationContainer,
   metadataChildReferences: BFFMetadataChildReference[],
   dependencies: Dependencies,
-) => {
+): BFFMetadataChildReference[] => {
   const presentationsOf =
     (presentation as BFFPresentationSurroundingContainer).presentationsOf ?? [];
 
   return presentationsOf
-    .map((presentationMetadataId) => {
-      return metadataChildReferences.find((metadataChildRef) => {
+    .flatMap((presentationMetadataId) => {
+      return metadataChildReferences.filter((metadataChildRef) => {
         // If ID matches, return true
         if (metadataChildRef.childId === presentationMetadataId) {
           return true;
