@@ -24,6 +24,7 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
+  BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentationChildReference,
@@ -3458,34 +3459,108 @@ describe('formDefinition', () => {
       });
     });
   });
+  describe('tempFormDefTests', () => {
+    it('creates a formDef for a rootGroup with a textVar', () => {
+      const FORM_MODE_NEW = 'create';
+      const validationTypeId = 'someValidationTypeId';
+
+      const mockDependencies = {
+        validationTypePool: listToPool([testValidationTypeData]),
+        recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+        metadataPool: listToPool([testGroupWithTextVar1, testMetadataTextVariable]),
+        presentationPool: listToPool([pSomeNewMetadataGroup, pSomeMetadataTextVariable]),
+      } as Dependencies;
+
+      const formDefinition = createFormDefinition(
+        mockDependencies,
+        validationTypeId,
+        FORM_MODE_NEW,
+      );
+      expect(formDefinition.form!.components).toHaveLength(19);
+      expect(formDefinition).toStrictEqual({
+      });
+    });
+  });
 });
 
 
+const someTestRecordType: BFFRecordType = {
+  id: 'someRecordTypeId',
+  metadataId: 'rootGroupId',
+  textId: '',
+  pluralTextId: '',
+  defTextId: '',
+  presentationViewId: '',
+  listPresentationViewId: '',
+  groupOfRecordType: [],
+  recordTypeCategory: [],
+  useTrashBin: false,
+};
+
+const testValidationTypeData: BFFValidationType = {
+  id: 'someValidationTypeId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'rootGroupId',
+  newPresentationGroupId: 'rootPGroupId',
+  // Update/Edit
+  metadataGroupId: 'rootGroupId',
+  presentationGroupId: 'rootPGroupId',
+  nameTextId: 'name123',
+  defTextId: 'defName456',
+};
 
 
-
-
-
-
-
-
-TextVar
-export const someGroupWithTextVar1: BFFMetadataGroup = {
-
-  id: 'someMetadataTextVariableId',
-  nameInData: 'someMetadataTextVariableNameInData',
+const testGroupWithTextVar1: BFFMetadataGroup = {
+  id: 'rootGroupId',
+  nameInData: 'rootGroupNameInData',
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',
   children: [
     {
-        childId: 'someMetadataTextVariableId',
-        repeatMin: '1',
-        repeatMax: '3',
-      },
+      childId: 'someMetadataTextVariableId',
+      repeatMin: '1',
+      repeatMax: '3',
+    },
   ],
 }
 
+export const testMetadataTextVariable: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariableId',
+  nameInData: 'someNameInData',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
+
+export const pSomeNewMetadataGroup: BFFPresentationGroup = {
+  id: 'rootPGroupId',
+  type: 'pGroup',
+  presentationOf: 'rootGroupId',
+  mode: 'input',
+
+  children: [
+    {
+      refGroups: [
+        { childId: 'someMetadataTextVariableId', type: 'presentation' },
+      ],
+      childStyle: ['twelveChildStyle'],
+    },
+  ]
+}
+
+export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
+  id: 'pSomeMetadataTextVariableId',
+  presentationOf: 'someMetadataTextVariableId',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId',
+};
+
+/* left */
 export const someGroupWithTextVar2: BFFMetadataGroup = {
   id: 'someMetadataTextVariable2Id',
   nameInData: 'someMetadataTextVariable2NameInData',
@@ -3501,6 +3576,15 @@ export const someGroupWithTextVar2: BFFMetadataGroup = {
   ],
 }
 
+export const someMetadataTextVariable2: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable2Id',
+  nameInData: 'someNameInData2',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
+
 export const someGroupWithTextVar3: BFFMetadataGroup = {
   id: 'someMetadataTextVariable3Id',
   nameInData: 'someMetadataTextVariable3NameInData',
@@ -3515,7 +3599,17 @@ export const someGroupWithTextVar3: BFFMetadataGroup = {
     },
   ],
 }
-    
+
+export const someMetadataTextVariable3: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable3Id',
+  nameInData: 'someNameInData3',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  finalValue: 'someFinalValue',
+};
+
 export const someGroupWithTextVar4: BFFMetadataGroup = {
   id: 'someMetadataTextVariable4Id',
   nameInData: 'someMetadataTextVariable4NameInData',
@@ -3528,22 +3622,41 @@ export const someGroupWithTextVar4: BFFMetadataGroup = {
       repeatMin: '1',
       repeatMax: '3',
     },
-]
+  ]
 }
-   
+
+export const someMetadataTextVariable4: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable4Id',
+  nameInData: 'someNameInData4',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
+
 export const someGroupWithTextVar5: BFFMetadataGroup = {
-    id: 'someMetadataTextVariable5Id',
-    nameInData: 'someMetadataTextVariable5NameInData',
-    type: 'group',
-    textId: 'textId678',
-    defTextId: 'defTextId901',
-    children: [
-      {
+  id: 'someMetadataTextVariable5Id',
+  nameInData: 'someMetadataTextVariable5NameInData',
+  type: 'group',
+  textId: 'textId678',
+  defTextId: 'defTextId901',
+  children: [
+    {
       childId: 'someMetadataTextVariable5Id',
       repeatMin: '1',
       repeatMax: '3',
-      },
-   ], },
+    },
+  ],
+};
+
+export const someMetadataTextVariable5: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable5Id',
+  nameInData: 'someNameInData5',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
 
 
 export const someGroupWithTextVar6: BFFMetadataGroup = {
@@ -3558,115 +3671,217 @@ export const someGroupWithTextVar6: BFFMetadataGroup = {
       repeatMin: '1',
       repeatMax: '1',
     },
-]}
-    
-export const someGroupWithNumVar1: BFFMetadataGroup = {
-    id: 'someMetadataNumberVarId',
-    nameInData: 'someMetadataNumberVarNameInData',
-    type: 'group',
-    textId: 'textId789',
-    defTextId: 'defTextId012',
-    children: [
-        {
-            childId: 'someMetadataNumberVarId',
-            repeatMin: '0',
-            repeatMax: '1',
-          },
-    ],
+  ]
 }
+
+export const someMetadataTextVariable6: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable6Id',
+  nameInData: 'someNameInData6',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
+
+export const someGroupWithNumVar1: BFFMetadataGroup = {
+  id: 'someMetadataNumberVarId',
+  nameInData: 'someMetadataNumberVarNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataNumberVarId',
+      repeatMin: '0',
+      repeatMax: '1',
+    },
+  ],
+}
+
+export const someMetadataNumberVar: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberVarId',
+  nameInData: 'someNameInDataNumberVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+};
 
 export const someGroupWithCollectionVar: BFFMetadataGroup = {
-    id: 'someMetadataCollectionVarId',
-    nameInData: 'someMetadataCollectionVarNameInData',
-    type: 'group',
-    textId: 'textId789',
-    defTextId: 'defTextId012',
-    children: [
-        {
-            childId: 'exampleCollectionVarId',
-            repeatMin: '1',
-            repeatMax: '1',
-          },
-    ],
+  id: 'someMetadataCollectionVarId',
+  nameInData: 'someMetadataCollectionVarNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
 }
+
+export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink', // added this for now
+};
 
 export const someGroupWithCollVarsWithAttributes: BFFMetadataGroup = {
-    id: 'someGroupWithCollVarsWithAttributesId',
-    nameInData: 'someGroupWithCollVarsWithAttributesNameInData',
-    type: 'group',
-    textId: 'textId789',
-    defTextId: 'defTextId012',
-    children: [
-        {
-            childId: 'someMetadataCollectionVariableWithAttributeId',
-            repeatMin: '1',
-            repeatMax: '1',
-        },
-    ],
+  id: 'someGroupWithCollVarsWithAttributesId',
+  nameInData: 'someGroupWithCollVarsWithAttributesNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataCollectionVariableWithAttributeId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
 }
+
+export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable =
+{
+  id: 'someMetadataCollectionVariableWithAttributeId',
+  nameInData: 'colourAttributeVar',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId',
+    },
+  ],
+};
 
 export const someGroupWithNumVarWithAttribute: BFFMetadataGroup = {
-    id: 'someGroupWithNumVarWithAttributeId',
-    nameInData: 'someGroupWithNumVarWithAttributeNameInData',
-    type: 'group',
-    textId: 'textId789',
-    defTextId: 'defTextId012',
-    children: [
-        {
-            childId: 'someMetadataNumberWithAttributeVarId',
-            repeatMin: '1',
-            repeatMax: '1',
-        },
-    ],
+  id: 'someGroupWithNumVarWithAttributeId',
+  nameInData: 'someGroupWithNumVarWithAttributeNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
 }
 
+export const someGroupWithVarWithAttribute2: BFFMetadataGroup = {
+  id: 'someGroupWithVarWithAttribute2Id',
+  nameInData: 'someGroupWithVarWithAttribute2NameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataTextVariableWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
-Attributes:
+export const someGroupWithGroup: BFFMetadataGroup = {
+  id: 'someGroupWithGroupId',
+  nameInData: 'someGroupWithGroupNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
-someGroupWithVarWithAttribute2:
-  {
-    childId: 'someMetadataTextVariableWithAttributeVarId',
-    repeatMin: '1',
-    repeatMax: '1',
-  },
+export const someGroupWithGroup2: BFFMetadataGroup = {
+  id: 'someGroupWithGroup2Id',
+  nameInData: 'someGroupWithGroup2NameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someManuscriptGroupId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
-someGroupWithGroup:
-{
-    childId: 'someMetadataChildGroupId',
-    repeatMin: '1',
-    repeatMax: '1',
-  },
-someGroupWithGroup2:
-{
-    childId: 'someManuscriptGroupId',
-    repeatMin: '1',
-    repeatMax: '1',
-  },
+export const someGroupWithRecordLink: BFFMetadataGroup = {
+  id: 'someGroupWithRecordLinkId',
+  nameInData: 'someGroupWithRecordLinkNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'nationalSubjectCategoryLinkId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
-RecordLinks:
-someGroupWithRecordLink:
-{
-    childId: 'nationalSubjectCategoryLinkId',
-    repeatMin: '1',
-    repeatMax: '1',
-},
-someGroupWithRecordLink:
-  {
-    childId: 'someNewRecordLinkId',
-    repeatMin: '1',
-    repeatMax: '1',
-  },
+export const someGroupWithRecordLink2: BFFMetadataGroup = {
+  id: 'someGroupWithRecordLink2Id',
+  nameInData: 'someGroupWithRecordLink2NameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someNewRecordLinkId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
+export const someGroupWithVarWithSpecifiedHeadline: BFFMetadataGroup = {
+  id: 'someGroupWithVarWithSpecifiedHeadlineId',
+  nameInData: 'someGroupWithVarWithSpecifiedHeadlineNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
 
-someGroupWithVarWithExtraPresentations:
-{
-    childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
-    repeatMin: '1',
-    repeatMax: '1',
-},
-someGroupWithVarWithExtraPresentations2:
-  {
-    childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
-    repeatMin: '1',
-    repeatMax: '1',
-  },
+export const someGroupWithVarWithShowHeadlineFalse: BFFMetadataGroup = {
+  id: 'someGroupWithVarWithShowHeadlineFalseId',
+  nameInData: 'someGroupWithVarWithShowHeadlineFalseNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
