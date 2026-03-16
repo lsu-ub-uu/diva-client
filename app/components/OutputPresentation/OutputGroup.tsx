@@ -36,7 +36,9 @@ export const OutputGroup = ({
       </div>
       <div
         className='form-component-container'
-        data-layout={parentPresentationStyle === 'inline' ? 'inline' : 'grid'}
+        data-layout={
+          component.presentationStyle === 'inline' ? 'inline' : 'grid'
+        }
         data-text-style={component.textStyle}
       >
         <ComponentChildren

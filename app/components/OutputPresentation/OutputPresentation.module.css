@@ -1,16 +1,27 @@
 .output-field {
-  &[data-variant='inline'] {
-    display: flex;
-    gap: var(--gap);
-    align-items: center;
-  }
-
   .label {
     color: var(--color-label);
+    font-weight: var(--font-weight-bold);
   }
 
   .value {
     overflow-wrap: break-word;
+  }
+
+  &[data-variant='inline'] {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-s);
+
+    .label {
+      &::after {
+        content: ':';
+      }
+    }
+
+    &:has(> .label) .value {
+      margin-right: var(--gap);
+    }
   }
 
   .output-field[data-variant='block']:has(> .label) > .value {
@@ -25,5 +36,11 @@
 
   .linked-presentation {
     flex-grow: 1;
+  }
+}
+
+.group {
+  :global(.form-component-container) {
+    gap: var(--gap-l);
   }
 }

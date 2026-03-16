@@ -17,6 +17,7 @@ export const OutputContainer = ({
   return (
     <div
       className='form-component-container'
+      data-layout={component.presentationStyle === 'inline' ? 'inline' : 'grid'}
       data-text-style={component.textStyle}
     >
       <ComponentChildren
