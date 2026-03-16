@@ -3459,3 +3459,214 @@ describe('formDefinition', () => {
     });
   });
 });
+
+
+
+
+
+
+
+
+
+
+TextVar
+export const someGroupWithTextVar1: BFFMetadataGroup = {
+
+  id: 'someMetadataTextVariableId',
+  nameInData: 'someMetadataTextVariableNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  children: [
+    {
+        childId: 'someMetadataTextVariableId',
+        repeatMin: '1',
+        repeatMax: '3',
+      },
+  ],
+}
+
+export const someGroupWithTextVar2: BFFMetadataGroup = {
+  id: 'someMetadataTextVariable2Id',
+  nameInData: 'someMetadataTextVariable2NameInData',
+  type: 'group',
+  textId: 'textId456',
+  defTextId: 'defTextId789',
+  children: [
+    {
+      childId: 'someMetadataTextVariable2Id',
+      repeatMin: '1',
+      repeatMax: 'X',
+    },
+  ],
+}
+
+export const someGroupWithTextVar3: BFFMetadataGroup = {
+  id: 'someMetadataTextVariable3Id',
+  nameInData: 'someMetadataTextVariable3NameInData',
+  type: 'group',
+  textId: 'textId567',
+  defTextId: 'defTextId890',
+  children: [
+    {
+      childId: 'someMetadataTextVariable3Id',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+}
+    
+export const someGroupWithTextVar4: BFFMetadataGroup = {
+  id: 'someMetadataTextVariable4Id',
+  nameInData: 'someMetadataTextVariable4NameInData',
+  type: 'group',
+  textId: 'textId678',
+  defTextId: 'defTextId901',
+  children: [
+    {
+      childId: 'someMetadataTextVariable4Id',
+      repeatMin: '1',
+      repeatMax: '3',
+    },
+]
+}
+   
+export const someGroupWithTextVar5: BFFMetadataGroup = {
+    id: 'someMetadataTextVariable5Id',
+    nameInData: 'someMetadataTextVariable5NameInData',
+    type: 'group',
+    textId: 'textId678',
+    defTextId: 'defTextId901',
+    children: [
+      {
+      childId: 'someMetadataTextVariable5Id',
+      repeatMin: '1',
+      repeatMax: '3',
+      },
+   ], },
+
+
+export const someGroupWithTextVar6: BFFMetadataGroup = {
+  id: 'someMetadataTextVariable6Id',
+  nameInData: 'someMetadataTextVariable6NameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataTextVariable6Id',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+]}
+    
+export const someGroupWithNumVar1: BFFMetadataGroup = {
+    id: 'someMetadataNumberVarId',
+    nameInData: 'someMetadataNumberVarNameInData',
+    type: 'group',
+    textId: 'textId789',
+    defTextId: 'defTextId012',
+    children: [
+        {
+            childId: 'someMetadataNumberVarId',
+            repeatMin: '0',
+            repeatMax: '1',
+          },
+    ],
+}
+
+export const someGroupWithCollectionVar: BFFMetadataGroup = {
+    id: 'someMetadataCollectionVarId',
+    nameInData: 'someMetadataCollectionVarNameInData',
+    type: 'group',
+    textId: 'textId789',
+    defTextId: 'defTextId012',
+    children: [
+        {
+            childId: 'exampleCollectionVarId',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+    ],
+}
+
+export const someGroupWithCollVarsWithAttributes: BFFMetadataGroup = {
+    id: 'someGroupWithCollVarsWithAttributesId',
+    nameInData: 'someGroupWithCollVarsWithAttributesNameInData',
+    type: 'group',
+    textId: 'textId789',
+    defTextId: 'defTextId012',
+    children: [
+        {
+            childId: 'someMetadataCollectionVariableWithAttributeId',
+            repeatMin: '1',
+            repeatMax: '1',
+        },
+    ],
+}
+
+export const someGroupWithNumVarWithAttribute: BFFMetadataGroup = {
+    id: 'someGroupWithNumVarWithAttributeId',
+    nameInData: 'someGroupWithNumVarWithAttributeNameInData',
+    type: 'group',
+    textId: 'textId789',
+    defTextId: 'defTextId012',
+    children: [
+        {
+            childId: 'someMetadataNumberWithAttributeVarId',
+            repeatMin: '1',
+            repeatMax: '1',
+        },
+    ],
+}
+
+
+Attributes:
+
+someGroupWithVarWithAttribute2:
+  {
+    childId: 'someMetadataTextVariableWithAttributeVarId',
+    repeatMin: '1',
+    repeatMax: '1',
+  },
+
+someGroupWithGroup:
+{
+    childId: 'someMetadataChildGroupId',
+    repeatMin: '1',
+    repeatMax: '1',
+  },
+someGroupWithGroup2:
+{
+    childId: 'someManuscriptGroupId',
+    repeatMin: '1',
+    repeatMax: '1',
+  },
+
+RecordLinks:
+someGroupWithRecordLink:
+{
+    childId: 'nationalSubjectCategoryLinkId',
+    repeatMin: '1',
+    repeatMax: '1',
+},
+someGroupWithRecordLink:
+  {
+    childId: 'someNewRecordLinkId',
+    repeatMin: '1',
+    repeatMax: '1',
+  },
+
+
+someGroupWithVarWithExtraPresentations:
+{
+    childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
+    repeatMin: '1',
+    repeatMax: '1',
+},
+someGroupWithVarWithExtraPresentations2:
+  {
+    childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
+    repeatMin: '1',
+    repeatMax: '1',
+  },
