@@ -18,7 +18,7 @@ export const findChildData = (
   );
 };
 
-const doesDataMatchComponent = (
+export const doesDataMatchComponent = (
   component: FormComponentWithData,
   data: CoraData,
 ) => {

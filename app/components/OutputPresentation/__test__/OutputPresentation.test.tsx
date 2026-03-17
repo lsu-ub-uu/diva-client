@@ -1,12 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { OutputPresentation } from '../OutputPresentation';
 import type {
   FormComponentText,
   FormSchema,
 } from '@/components/FormGenerator/types';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { renderWithRoutesStub } from '@/utils/testUtils';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { OutputPresentation } from '../OutputPresentation';
 
 describe('OutputPresentation', () => {
   it('renders a group with a text variable', () => {
@@ -521,5 +521,187 @@ describe('OutputPresentation', () => {
     expect(screen.getAllByText('Name')).toHaveLength(2);
     expect(screen.getByText('Alice')).toBeInTheDocument();
     expect(screen.getByText('Bob')).toBeInTheDocument();
+  });
+
+  it('doers not render a group with no data', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Empty Group',
+        name: 'emptyGroup',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'textVariable',
+            label: 'Empty Variable',
+            name: 'emptyVariable',
+            showLabel: true,
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'emptyGroup',
+      children: [
+        {
+          name: 'emptyVariable',
+          value: '',
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+    expect(
+      screen.queryByRole('heading', { level: 1, name: 'Empty Group' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Empty Variable')).not.toBeInTheDocument();
+  });
+
+  it('does not render a group with nested group with no data', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Outer Group',
+        name: 'outerGroup',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'group',
+            label: 'Inner Group',
+            name: 'innerGroup',
+            showLabel: true,
+            headlineLevel: 'h2',
+            components: [
+              {
+                type: 'textVariable',
+                label: 'Inner Text',
+                name: 'innerText',
+                showLabel: true,
+              },
+            ],
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'outerGroup',
+      children: [
+        {
+          name: 'innerGroup',
+          children: [
+            {
+              name: 'innerText',
+              value: '',
+            },
+          ],
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+    expect(
+      screen.queryByRole('heading', { level: 1, name: 'Outer Group' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { level: 2, name: 'Inner Group' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Inner Text')).not.toBeInTheDocument();
+  });
+
+  it('does not render accordion for a group with no data', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Accordion Group',
+        name: 'accordionGroup',
+        showLabel: true,
+        headlineLevel: 'h1',
+        title: 'Accordion Title',
+        components: [
+          {
+            type: 'textVariable',
+            label: 'Text',
+            name: 'text',
+            showLabel: true,
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'accordionGroup',
+      children: [
+        {
+          name: 'text',
+          value: '',
+        },
+      ],
+    };
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+    expect(
+      screen.queryByRole('button', { name: 'Accordion Title' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not render an accordion for container with no data', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Group with Container',
+        name: 'groupWithContainer',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'container',
+            name: 'container',
+            showLabel: true,
+            title: 'Container Title',
+            components: [
+              {
+                type: 'textVariable',
+                label: 'Text in Container',
+                name: 'textInContainer',
+                showLabel: true,
+              },
+            ],
+          },
+          {
+            type: 'textVariable',
+            name: 'otherText',
+            label: 'Other Text',
+            showLabel: true,
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'groupWithContainer',
+      children: [
+        {
+          name: 'textInContainer',
+          value: '',
+        },
+        {
+          name: 'otherText',
+          value: 'someValue',
+        },
+      ],
+    };
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(
+      screen.queryByRole('button', { name: 'Container Title' }),
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByText('Text in Container')).not.toBeInTheDocument();
+    expect(screen.getByText('Other Text')).toBeInTheDocument();
   });
 });

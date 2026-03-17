@@ -1,11 +1,9 @@
 import type { DataAtomic } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
-import type {
-  FormComponentCollVar,
-  PresentationStyle,
-} from '../FormGenerator/types';
+import type { FormComponentCollVar } from '../FormGenerator/types';
 import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputCollectionVariableProps {
   component: FormComponentCollVar;

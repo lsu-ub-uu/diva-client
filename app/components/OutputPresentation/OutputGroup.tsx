@@ -1,5 +1,6 @@
 import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentGroup } from '../FormGenerator/types';
@@ -7,8 +8,6 @@ import { Typography } from '../Typography/Typography';
 import { Attributes } from './Attributes';
 import { ComponentChildren } from './ComponentChildren';
 import styles from './OutputPresentation.module.css';
-import { dataHasValues } from './dataHasValues';
-import clsx from 'clsx';
 
 interface OutputGroupProps {
   component: FormComponentGroup;
@@ -24,10 +23,6 @@ export const OutputGroup = ({
   compact,
 }: OutputGroupProps) => {
   const { t } = useTranslation();
-
-  if (!dataHasValues(data)) {
-    return null;
-  }
 
   return (
     <div

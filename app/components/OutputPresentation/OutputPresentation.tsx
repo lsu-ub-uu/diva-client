@@ -1,6 +1,7 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { FormSchema } from '../FormGenerator/types';
-import { OutputGroup } from './OutputGroup';
+import { OutputComponent } from './OutputComponent';
+import styles from './OutputPresentation.module.css';
 
 interface OutputPresentationProps {
   formSchema: FormSchema;
@@ -14,6 +15,11 @@ export const OutputPresentation = ({
   compact,
 }: OutputPresentationProps) => {
   return (
-    <OutputGroup component={formSchema.form} data={data} compact={compact} />
+    <div
+      className={styles['output-presentation']}
+      data-compact={compact === true}
+    >
+      <OutputComponent component={formSchema.form} data={data} />
+    </div>
   );
 };

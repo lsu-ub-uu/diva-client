@@ -42,14 +42,14 @@
   }
 }
 
-.group {
+.output-presentation {
   :global(.form-component-container) {
     gap: var(--gap-l);
   }
 
   &[data-compact='true'] {
     :global(.form-component-container) {
-      gap: var(--gap);
+      gap: var(--gap-s);
     }
   }
 }

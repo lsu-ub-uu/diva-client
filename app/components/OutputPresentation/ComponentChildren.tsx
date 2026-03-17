@@ -1,8 +1,14 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type { FormComponent } from '../FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentContainer,
+} from '../FormGenerator/types';
 import { OutputComponent } from './OutputComponent';
-import { findChildData } from './findChildData';
+import {
+  doesDataMatchComponent,
+  findChildData as findChildData,
+} from './findChildData';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface ComponentChildrenProps {
@@ -21,28 +27,21 @@ export const ComponentChildren = ({
     .map((childComponent, index) => {
       if (!isComponentWithData(childComponent)) {
         return (
-          <div
-            className='form-component-item'
-            data-colspan={childComponent.gridColSpan ?? 12}
-            key={`${index}`}
-            data-type={childComponent.type}
-          >
-            <OutputComponent
-              key={index}
-              component={childComponent}
-              parentPresentationStyle={parentPresentationStyle}
-            />
-          </div>
+          <OutputComponent
+            key={index}
+            component={childComponent}
+            parentPresentationStyle={parentPresentationStyle}
+          />
         );
       }
 
       const childData =
         childComponent.type === 'container'
-          ? [data]
+          ? [getContainerData(childComponent, data)]
           : findChildData(childComponent, data);
 
       if (!childData) {
-        return `Missing data for component ${childComponent.name}`;
+        return null;
       }
 
       return childData.map((data, childIndex) => (
@@ -54,4 +53,22 @@ export const ComponentChildren = ({
         />
       ));
     });
+};
+
+/**
+ * Gets a copy of the data group with only the children that match the components in the container.
+ */
+const getContainerData = (
+  container: FormComponentContainer,
+  dataGroup: DataGroup,
+) => {
+  const matchingChildren = dataGroup.children.filter((childData) => {
+    return container.components?.some((childComponent) => {
+      if (!isComponentWithData(childComponent)) {
+        return false;
+      }
+      return doesDataMatchComponent(childComponent, childData);
+    });
+  });
+  return { ...dataGroup, children: matchingChildren };
 };

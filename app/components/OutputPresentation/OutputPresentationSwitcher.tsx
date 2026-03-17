@@ -3,7 +3,6 @@ import type {
   PresentationStyle,
 } from '@/cora/bffTypes.server';
 import type { CoraData } from '@/cora/cora-data/types.server';
-import { hasValuableData } from '@/utils/cleanFormData';
 import clsx from 'clsx';
 import {
   ArrowLeftRightIcon,
@@ -35,11 +34,8 @@ export const OutputSinglePresentationSwitcher = ({
     component.presentationSize === 'singleInitiallyVisible';
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(initiallyVisible);
-  if (component.type === 'hidden') {
-    return null;
-  }
 
-  if (!data || !hasValuableData(data)) {
+  if (component.type === 'hidden') {
     return null;
   }
 

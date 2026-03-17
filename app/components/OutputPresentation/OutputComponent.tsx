@@ -8,6 +8,10 @@ import type {
 } from '@/cora/cora-data/types.server';
 import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
 import { Text } from '../FormGenerator/components/Text';
+import {
+  isComponentHidden,
+  isComponentWithData,
+} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponent,
   FormComponentAnyTypeRecordLink,
@@ -20,6 +24,7 @@ import type {
   FormComponentText,
   FormComponentTextVar,
 } from '../FormGenerator/types';
+import { dataHasValues } from './dataHasValues';
 import { OutputCollectionVariable } from './OutputCollectionVariable';
 import { OutputContainer } from './OutputContainer';
 import { OutputGroup } from './OutputGroup';
@@ -42,6 +47,14 @@ export const OutputComponent = ({
   data,
   parentPresentationStyle,
 }: OutputComponentProps) => {
+  if (isComponentHidden(component)) {
+    return null;
+  }
+
+  if (!shouldRender(component, data)) {
+    return null;
+  }
+
   if (component.alternativePresentation) {
     return (
       <OutputPresentationSwitcher
@@ -137,11 +150,10 @@ export const OutputComponent = ({
   }
 };
 
-/* 
- - Skriva intergrationstester på OutputPresentation
- - Skriv enhetstester på komponenterna
- - Komponenter ska ha fullt stöd för headlineLevel, attributesToShow, etc...
- - Dubbla presentationer
- - Avgränsning: Endast outputpanelen?
+const shouldRender = (component: FormComponent, data?: CoraData) => {
+  if (!isComponentWithData(component)) {
+    return true;
+  }
 
-*/
+  return data && dataHasValues(data);
+};
