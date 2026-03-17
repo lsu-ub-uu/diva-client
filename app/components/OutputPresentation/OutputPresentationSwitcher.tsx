@@ -4,6 +4,7 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { CoraData } from '@/cora/cora-data/types.server';
 import { hasValuableData } from '@/utils/cleanFormData';
+import clsx from 'clsx';
 import {
   ArrowLeftRightIcon,
   ChevronDownIcon,
@@ -15,12 +16,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponent } from '../FormGenerator/types';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { useTooltip } from '../Tooltip/useTooltip';
 import { Typography } from '../Typography/Typography';
 import { OutputComponent } from './OutputComponent';
 import styles from './OutputPresentationSwitcher.module.css';
-import clsx from 'clsx';
 
 interface OutputPresentationSwitcherProps {
   component: FormComponent;
@@ -93,8 +91,6 @@ export const OutputPresentationSwitcher = ({
   const { t } = useTranslation();
   const [showingAlternativePresentation, setShowingAlternativePresentation] =
     useState(false);
-  const { tooltipWrapperProps, tooltipTriggerProps, tooltipProps } =
-    useTooltip();
   if (component.type === 'hidden') {
     return null;
   }
@@ -103,7 +99,6 @@ export const OutputPresentationSwitcher = ({
     <div
       className={clsx(styles['accordion'], 'form-component-item')}
       data-colspan={component.gridColSpan ?? 12}
-      {...tooltipWrapperProps}
     >
       <button
         className={styles['accordion-header']}
@@ -121,8 +116,17 @@ export const OutputPresentationSwitcher = ({
               )
             : undefined
         }
-        {...tooltipTriggerProps}
       >
+        {!component.title && (
+          <span className={styles['expand-buttom-text']}>
+            {t(
+              getExpandButtonText(
+                component.presentationSize,
+                showingAlternativePresentation,
+              ),
+            )}
+          </span>
+        )}
         {getExpandIcon(
           component.presentationSize,
           showingAlternativePresentation,
@@ -138,16 +142,6 @@ export const OutputPresentationSwitcher = ({
           </Typography>
         )}
       </button>
-      {!component.title && (
-        <Tooltip {...tooltipProps}>
-          {t(
-            getExpandButtonText(
-              component.presentationSize,
-              showingAlternativePresentation,
-            ),
-          )}
-        </Tooltip>
-      )}
       <div className={styles['accordion-content']}>
         {showingAlternativePresentation ? (
           component.alternativePresentation ? (

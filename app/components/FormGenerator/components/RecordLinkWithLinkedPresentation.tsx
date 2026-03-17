@@ -22,10 +22,9 @@ import { use, type ReactNode } from 'react';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { IconButton } from '@/components/IconButton/IconButton';
-import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
-import { LinkIcon, XIcon } from 'lucide-react';
+import { OutputRecordLinkWithPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithPresentation';
+import { XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import {
@@ -33,7 +32,6 @@ import {
   isComponentRepeating,
 } from '../formGeneratorUtils/formGeneratorUtils';
 import styles from './RecordLinkWithLinkedPresentation.module.css';
-import { OutputRecordLinkWithPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithPresentation';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
@@ -66,11 +64,6 @@ export const RecordLinkWithLinkedPresentation = ({
     !isComponentRepeating(component) &&
     !isComponentOptional(component);
 
-  const recordHref = href('/:recordType/:recordId', {
-    recordType: component.linkedRecordPresentation.presentedRecordType,
-    recordId: linkedRecordId,
-  });
-
   return (
     <div
       className='form-component-item'
@@ -102,14 +95,6 @@ export const RecordLinkWithLinkedPresentation = ({
               <XIcon />
             </IconButton>
           )}
-          <IconButton
-            as={Link}
-            size='small'
-            to={recordHref}
-            tooltip={t('divaClient_linkToRecordText')}
-          >
-            <LinkIcon />
-          </IconButton>
         </div>
       </div>
 

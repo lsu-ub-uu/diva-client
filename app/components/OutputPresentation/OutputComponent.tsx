@@ -23,13 +23,13 @@ import type {
 import { OutputCollectionVariable } from './OutputCollectionVariable';
 import { OutputContainer } from './OutputContainer';
 import { OutputGroup } from './OutputGroup';
-import { OutputRecordLink } from './OutputRecordLink';
-import { OutputResourceLink } from './OutputResourceLink';
-import { OutputVariable } from './OutputVariable';
 import {
   OutputPresentationSwitcher,
   OutputSinglePresentationSwitcher,
 } from './OutputPresentationSwitcher';
+import { OutputRecordLink } from './OutputRecordLink';
+import { OutputResourceLink } from './OutputResourceLink';
+import { OutputVariable } from './OutputVariable';
 
 interface OutputComponentProps {
   component: FormComponent;

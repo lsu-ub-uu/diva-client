@@ -32,13 +32,12 @@ export const OutputRecordLinkWithPresentation = ({
   }
 
   if (state === 'idle' && data) {
-    const dataGroup = data.record.record.data as DataGroup;
-    const presentation = data.presentation as FormSchema;
-    console.log(
-      'OutputRecordLinkWithPresentation data',
-      presentation,
-      dataGroup,
-    );
+    const dataGroup = data?.record?.record?.data as DataGroup;
+    const presentation = data?.presentation as FormSchema;
+    if (!dataGroup || !presentation) {
+      return null;
+    }
+
     return (
       <div className={styles['record-link-with-presentation']}>
         <div className={styles['linked-presentation']}>

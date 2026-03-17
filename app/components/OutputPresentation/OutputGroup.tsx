@@ -14,12 +14,14 @@ interface OutputGroupProps {
   component: FormComponentGroup;
   data: DataGroup;
   parentPresentationStyle?: PresentationStyle;
+  compact?: boolean;
 }
 
 export const OutputGroup = ({
   component,
   data,
   parentPresentationStyle,
+  compact,
 }: OutputGroupProps) => {
   const { t } = useTranslation();
 
@@ -32,6 +34,7 @@ export const OutputGroup = ({
       className={clsx(styles['group'], 'form-component-item')}
       data-colspan={component.gridColSpan ?? 12}
       data-text-style={component.textStyle}
+      data-compact={compact === true}
     >
       {component.showLabel && (
         <Typography

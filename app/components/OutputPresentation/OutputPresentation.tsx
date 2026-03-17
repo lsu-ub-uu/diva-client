@@ -5,11 +5,15 @@ import { OutputGroup } from './OutputGroup';
 interface OutputPresentationProps {
   formSchema: FormSchema;
   data: DataGroup;
+  compact?: boolean;
 }
 
 export const OutputPresentation = ({
   formSchema,
   data,
+  compact,
 }: OutputPresentationProps) => {
-  return <OutputGroup component={formSchema.form} data={data} />;
+  return (
+    <OutputGroup component={formSchema.form} data={data} compact={compact} />
+  );
 };

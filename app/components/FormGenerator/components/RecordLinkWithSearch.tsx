@@ -40,6 +40,8 @@ import { useMember } from '@/utils/rootLoaderDataUtils';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
@@ -135,9 +137,10 @@ export const RecordLinkWithSearch = ({
                   fetcher.data &&
                   fetcher.data.result.map((result: BFFDataRecord) => (
                     <ComboboxOption key={result.id} value={result.id}>
-                      <AutocompleteForm
-                        record={result}
+                      <OutputPresentation
+                        data={transformToRaw(result.data)}
                         formSchema={result.presentation!}
+                        compact
                       />
                     </ComboboxOption>
                   ))}

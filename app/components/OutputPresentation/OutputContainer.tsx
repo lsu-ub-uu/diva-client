@@ -1,7 +1,7 @@
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { FormComponentContainer } from '../FormGenerator/types';
 import { ComponentChildren } from './ComponentChildren';
-import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputContainerProps {
   component: FormComponentContainer;

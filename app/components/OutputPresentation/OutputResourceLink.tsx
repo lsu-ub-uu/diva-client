@@ -39,7 +39,7 @@ export const OutputResourceLink = ({
         <img src={resourceUrl} alt={data.name} />
       )}
       {component.outputFormat === 'download' && (
-        <a href={resourceUrl} type={mimeType}>
+        <a href={resourceUrl} type={mimeType} className='icon-text'>
           {t('resourceLinkDownloadText')}
           <DownloadIcon />
         </a>

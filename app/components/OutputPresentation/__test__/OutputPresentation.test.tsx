@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OutputPresentation } from '../OutputPresentation';
-import type { FormSchema } from '@/components/FormGenerator/types';
+import type {
+  FormComponentText,
+  FormSchema,
+} from '@/components/FormGenerator/types';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { renderWithRoutesStub } from '@/utils/testUtils';
 
@@ -202,7 +205,10 @@ describe('OutputPresentation', () => {
       children: [
         {
           name: 'image',
-          value: 'https://example.com/image.png',
+          children: [
+            { name: 'linkedRecordId', value: 'resource-123' },
+            { name: 'mimeType', value: 'image/png' },
+          ],
         },
       ],
     } as DataGroup;
@@ -211,11 +217,13 @@ describe('OutputPresentation', () => {
     expect(
       screen.getByRole('heading', { level: 5, name: 'Resources' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Image')).toBeInTheDocument();
-    expect(screen.getByAltText('Image')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'image' })).toHaveAttribute(
+      'src',
+      '/binary/resource-123/image',
+    );
   });
 
-  it('renders a text component', () => {
+  it('does not render a group with only text and no data', () => {
     const formSchema = {
       form: {
         type: 'group',
@@ -242,10 +250,50 @@ describe('OutputPresentation', () => {
 
     render(<OutputPresentation formSchema={formSchema} data={data} />);
     expect(
+      screen.queryByRole('heading', { level: 6, name: 'Info' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Information')).not.toBeInTheDocument();
+    expect(screen.queryByText('Some info')).not.toBeInTheDocument();
+  });
+
+  it('renders a group with text and data', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Info',
+        name: 'info',
+        showLabel: true,
+        headlineLevel: 'h6',
+        components: [
+          {
+            type: 'text',
+            name: 'infoText',
+          } as FormComponentText,
+          {
+            type: 'textVariable',
+            name: 'infoVariable',
+            label: 'Info Variable',
+            showLabel: true,
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'info',
+      children: [
+        {
+          name: 'infoVariable',
+          value: 'Variable info',
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+    expect(
       screen.getByRole('heading', { level: 6, name: 'Info' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Information')).toBeInTheDocument();
-    expect(screen.getByText('Some info')).toBeInTheDocument();
+    expect(screen.getByText('infoText')).toBeInTheDocument();
   });
 
   it('renders nested groups', () => {

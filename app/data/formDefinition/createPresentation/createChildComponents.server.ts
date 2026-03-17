@@ -7,13 +7,12 @@ import type {
   BFFPresentationOfSingleMetadata,
   Dependencies,
 } from '@/cora/bffTypes.server';
-import { createHiddenComponents } from './createHiddenComponents.server';
-import { createText } from './createText.server';
-import { createGuiElement } from './createGuiElement.server';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from '../utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createContainer } from './createContainer.server';
+import { createGuiElement } from './createGuiElement.server';
 import { createPresentationComponent } from './createPresentationComponent';
 import { createRepeat } from './createRepeat.server';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '../utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { createText } from './createText.server';
 
 export const createChildComponents = (
   dependencies: Dependencies,

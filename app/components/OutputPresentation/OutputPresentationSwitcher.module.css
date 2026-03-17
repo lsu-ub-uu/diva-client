@@ -2,9 +2,7 @@
   border-radius: var(--border-radius);
   border: 1px solid var(--color-output-card-border);
   box-shadow: 0 1px 4px rgb(0 0 0 / 4%);
-  margin-bottom: var(--gap-l);
   overflow: hidden;
-  background-color: var(--color-output-card-background);
 }
 
 .accordion-header {
@@ -17,8 +15,8 @@
   padding: var(--gap-s) var(--gap-l);
   font: inherit;
   outline: none;
-  background-color: transparent;
   transition: background-color 0.2s;
+  background-color: var(--color-output-card-background);
 
   svg {
     font-size: var(--font-size-icon);
@@ -27,6 +25,11 @@
   &:not(:has(> .accordion-title)) {
     justify-content: flex-end;
   }
+}
+
+.expand-buttom-text {
+  color: var(--color-label);
+  font-size: var(--font-size-s);
 }
 
 .accordion-header:hover {
@@ -41,7 +44,6 @@
 .accordion-content {
   padding: var(--gap);
   border-top: 1px solid var(--color-output-card-border);
-  background-color: var(--color-output-card);
   transition: max-height 0.2s;
 }
 

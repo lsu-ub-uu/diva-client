@@ -23,7 +23,6 @@ import {
 } from '@/__mocks__/data/form/alternativePresentation';
 import {
   formSchemaWithBinary,
-  linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
 import { formDefWithOneCollectionVariableWithModeOutput } from '@/__mocks__/data/form/collVar';
@@ -218,7 +217,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -369,7 +367,6 @@ describe('<Form />', () => {
                     'parentNationalSubjectCategoryPLink',
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -512,7 +509,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -610,7 +606,6 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -708,12 +703,10 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -1404,34 +1397,14 @@ describe('<Form />', () => {
             />
           ),
         },
-        {
-          path: '/record/:recordType/:recordId',
-          loader: () => {
-            return { record: linkedBinaryMock };
-          },
-        },
-        {
-          path: '/binary/:id/:name',
-          loader: () => {
-            return '';
-          },
-        },
       ]);
 
       await act(() => render(<RoutesStub />));
-      expect(
-        screen.getByRole('heading', {
-          level: 2,
-          name: /attachmentgrouptext/i,
-        }),
-      ).toBeInTheDocument();
 
       expect(screen.getByRole('presentation')).toHaveAttribute(
         'src',
-        '/binary/binary:1283806137807105/thumbnail',
+        '/binary/binary:34466800953608169/binary',
       );
-
-      expect(screen.getByText('cat.jpg')).toBeInTheDocument();
 
       const downloadLink = screen.getByRole('link', {
         name: /resourcelinkdownloadtext/i,
@@ -1439,7 +1412,7 @@ describe('<Form />', () => {
 
       expect(downloadLink).toHaveAttribute(
         'href',
-        '/binary/binary:1283806137807105/master',
+        '/binary/binary:34466800953608169/binary',
       );
       expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
     });

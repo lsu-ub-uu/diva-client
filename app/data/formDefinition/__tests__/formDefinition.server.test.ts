@@ -3458,7 +3458,7 @@ describe('formDefinition', () => {
       });
     });
   });
-  describe.skip('tempFormDefTests', () => {
+  describe('tempFormDefTests', () => {
     it('creates a formDef for a rootGroup with a textVar', () => {
       const FORM_MODE_NEW = 'create';
       const validationTypeId = 'someValidationTypeId';
@@ -3481,8 +3481,119 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_NEW,
       );
-      expect(formDefinition.form!.components).toHaveLength(19);
-      expect(formDefinition).toStrictEqual({});
+      expect(formDefinition).toStrictEqual({
+        form: {
+          components: [
+            {
+              childStyle: ['twelveChildStyle'],
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'someTextId',
+              mode: 'input',
+              name: 'someNameInData',
+              placeholder: 'someEmptyTextId',
+              presentationId: 'pSomeMetadataVariableId',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId',
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: 'someRegex',
+                type: 'regex',
+              },
+            },
+          ],
+          gridColSpan: 12,
+          label: 'textId345',
+          mode: 'input',
+          name: 'rootGroupNameInData',
+          presentationId: 'rootPGroupId',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'defTextId678',
+            title: 'textId345',
+          },
+          type: 'group',
+        },
+        validationTypeId: 'someValidationTypeId',
+      });
+    });
+
+    it('creates a formDef for a rootGroup with a numVar', () => {
+      const FORM_MODE_NEW = 'create';
+      const validationTypeId = 'someValidationTypeId';
+
+      const mockDependencies = {
+        validationTypePool: listToPool([testValidationTypeData]),
+        recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+        metadataPool: listToPool([someGroupWithNumVar1, someMetadataNumberVar]),
+        presentationPool: listToPool([
+          pSomeNewMetadataGroup,
+          pSomeMetadataTextVariable,
+        ]),
+      } as Dependencies;
+
+      const formDefinition = createFormDefinition(
+        mockDependencies,
+        validationTypeId,
+        FORM_MODE_NEW,
+      );
+      expect(formDefinition).toStrictEqual({
+        form: {
+          components: [
+            {
+              childStyle: ['twelveChildStyle'],
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'someTextId',
+              mode: 'input',
+              name: 'someNameInData',
+              placeholder: 'someEmptyTextId',
+              presentationId: 'pSomeMetadataVariableId',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1,
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId',
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: 'someRegex',
+                type: 'regex',
+              },
+            },
+          ],
+          gridColSpan: 12,
+          label: 'textId345',
+          mode: 'input',
+          name: 'rootGroupNameInData',
+          presentationId: 'rootPGroupId',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1,
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'defTextId678',
+            title: 'textId345',
+          },
+          type: 'group',
+        },
+        validationTypeId: 'someValidationTypeId',
+      });
     });
   });
 });
@@ -3545,16 +3656,14 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
 
   children: [
     {
-      refGroups: [
-        { childId: 'someMetadataTextVariableId', type: 'presentation' },
-      ],
+      refGroups: [{ childId: 'pSomeMetadataVariableId', type: 'presentation' }],
       childStyle: ['twelveChildStyle'],
     },
   ],
 };
 
 export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
-  id: 'pSomeMetadataTextVariableId',
+  id: 'pSomeMetadataVariableId',
   presentationOf: 'someMetadataTextVariableId',
   mode: 'input',
   inputType: 'input',
@@ -3562,8 +3671,36 @@ export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
   emptyTextId: 'someEmptyTextId',
 };
 
+export const someGroupWithNumVar1: BFFMetadataGroup = {
+  id: 'rootGroupId',
+  nameInData: 'rootGroupNameInData',
+  type: 'group',
+  textId: 'textId789',
+  defTextId: 'defTextId012',
+  children: [
+    {
+      childId: 'someMetadataNumberVarId',
+      repeatMin: '0',
+      repeatMax: '1',
+    },
+  ],
+};
+
+export const someMetadataNumberVar: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberVarId',
+  nameInData: 'someNameInDataNumberVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+};
+
 /* left */
-export const someGroupWithTextVar2: BFFMetadataGroup = {
+/* export const someGroupWithTextVar2: BFFMetadataGroup = {
   id: 'someMetadataTextVariable2Id',
   nameInData: 'someMetadataTextVariable2NameInData',
   type: 'group',
@@ -3682,35 +3819,7 @@ export const someMetadataTextVariable6: BFFMetadataTextVariable = {
   textId: 'someTextId',
   defTextId: 'someDefTextId',
   regEx: 'someRegex',
-};
-
-export const someGroupWithNumVar1: BFFMetadataGroup = {
-  id: 'someMetadataNumberVarId',
-  nameInData: 'someMetadataNumberVarNameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someMetadataNumberVarId',
-      repeatMin: '0',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someMetadataNumberVar: BFFMetadataNumberVariable = {
-  id: 'someMetadataNumberVarId',
-  nameInData: 'someNameInDataNumberVar',
-  type: 'numberVariable',
-  textId: 'someNumberVarTextId',
-  defTextId: 'someNumberVarDefTextId',
-  min: '0',
-  max: '20',
-  warningMin: '2',
-  warningMax: '10',
-  numberOfDecimals: '0',
-};
+}; */
 
 export const someGroupWithCollectionVar: BFFMetadataGroup = {
   id: 'someMetadataCollectionVarId',
