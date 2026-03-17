@@ -26,12 +26,16 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
+  BFFPresentationBase,
   BFFPresentationChildReference,
   BFFPresentationGroup,
+  BFFPresentationOfSingleMetadata,
   BFFPresentationRecordLink,
+  BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
   BFFPresentationTextVar,
   BFFRecordType,
+  BFFResourceLink,
   BFFValidationType,
   Dependencies,
 } from '@/cora/bffTypes.server';
@@ -89,1299 +93,847 @@ describe('formDefinition', () => {
       }
     });
 
-    it('should return a form definition for a new metadata group', () => {
-      const validationTypeId = 'someValidationTypeId';
+    describe('should return a form definition for a new metadata group', () => {
+      it('creates a formDef for a rootGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
 
-      const formDefinition = createFormDefinition(
-        createBasicDependencies(),
-        validationTypeId,
-        FORM_MODE_NEW,
-      );
-      expect(formDefinition.form!.components).toHaveLength(19);
-      expect(formDefinition).toStrictEqual({
-        validationTypeId,
-        form: {
-          type: 'group',
-          label: 'textId345',
-          showLabel: true,
-          gridColSpan: 12,
-          name: 'someNewMetadataGroupNameInData',
-          presentationId: 'pSomeNewMetadataGroupId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
+          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                inputType: 'input',
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'textVariable',
+                validation: {
+                  pattern: 'someRegex',
+                  type: 'regex',
+                },
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          tooltip: {
-            title: 'textId345',
-            body: 'defTextId678',
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a numVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataNumberVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'numberVariable',
+                validation: {
+                  max: 20,
+                  min: 0,
+                  numberOfDecimals: 0,
+                  type: 'number',
+                  warningMax: 10,
+                  warningMin: 2,
+                },
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          attributes: [
-            {
-              finalValue: 'pink',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              mode: 'input',
-              name: 'colour',
-              options: [
-                {
-                  label: 'exampleBlueItemText',
-                  value: 'blue',
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a collVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testRootGroup,
+            testMetadataCollectionVariable,
+            someMetadataItemCollection,
+            someMetadataCollectionItemBlue,
+          ]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataCollectionVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                options: [
+                  {
+                    label: 'exampleBlueItemText',
+                    value: 'blue',
+                  },
+                ],
+
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-                {
-                  label: 'examplePinkItemText',
-                  value: 'pink',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-                {
-                  label: 'exampleYellowItemText',
-                  value: 'yellow',
+                type: 'collectionVariable',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a recordLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataRecordLink,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                linkedRecordPresentation: {
+                  presentationId: 'somePresentationIdPresentation',
+                  presentedRecordType: 'somePresentedRecordType',
                 },
-              ],
-              placeholder: 'initialEmptyValueText',
-              tooltip: {
-                body: 'exampleCollectionVarDefText',
-                title: 'exampleCollectionVarText',
-              },
-              type: 'collectionVariable',
-            },
-          ],
-          components: [
-            {
-              type: 'text',
-              name: 'someHeadlineTextId',
-              textStyle: 'boldTextStyle',
-              gridColSpan: 12,
-              childStyle: ['twelveChildStyle'],
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData',
-              presentationId: 'pSomeMetadataTextVariableId',
-              label: 'someTextId',
-              placeholder: 'someEmptyTextId',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 3,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input',
-              inputType: 'input',
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData2',
-              presentationId: 'pSomeMetadataTextVariable2Id',
 
-              label: 'someOtherLabelTextId', // overridden label
-              showLabel: true,
-              placeholder: 'someEmptyTextId',
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              repeat: {
-                repeatMin: 1,
-                repeatMax: Number.MAX_VALUE,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input', // output
-              inputType: 'input', // textarea
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData3',
-              presentationId: 'pSomeMetadataTextVariable3Id',
-              label: 'someTextId',
-              showLabel: true,
-              placeholder: 'someEmptyTextId',
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input', // output
-              inputType: 'input', // textarea
-              finalValue: 'someFinalValue',
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData6',
-              presentationId: 'pSomeMetadataTextVariable6Id',
-              label: 'someTextId',
-              showLabel: true,
-              placeholder: 'someEmptyTextId',
-              gridColSpan: 12,
-
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'output', // output
-              inputType: 'input', // textarea
-            },
-            {
-              type: 'numberVariable',
-              name: 'someNameInDataNumberVar',
-              presentationId: 'pSomeMetadataNumberVariableId',
-
-              label: 'someNumberVarTextId', // hidden
-              showLabel: false,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 0,
-                repeatMax: 1,
-                minNumberOfRepeatingToShow: 1,
-              },
-              tooltip: {
-                title: 'someNumberVarTextId',
-                body: 'someNumberVarDefTextId',
-              },
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 20,
-                warningMin: 2,
-                warningMax: 10,
-                numberOfDecimals: 0,
-              },
-              mode: 'input',
-            },
-            {
-              type: 'collectionVariable',
-              name: 'colour',
-              finalValue: 'pink',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              presentationId: 'pSomeMetadataCollectionVariableId',
-
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'collectionVariable',
-              name: 'colourAttributeVar',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              presentationId: 'pSomeMetadataCollectionVariableWithAttributeId',
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              attributes: [
-                {
-                  finalValue: 'pink',
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+                mode: 'input',
+                name: 'someNameInData',
+                presentationId: 'pSomeMetadataVariableId',
+                presentationRecordLinkId: 'pSomeMetadataVariableId',
+                recordLinkType: 'someLinkedRecordType',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-              ],
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'numberVariable',
-              name: 'someNameInDataNumberWithAttributeVar',
-              presentationId: 'pSomeMetadataNumberWithAttributeVarId',
-              label: 'someNumberVarTextId',
-              showLabel: true,
-              gridColSpan: 12,
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someNumberVarTextId',
-                body: 'someNumberVarDefTextId',
-              },
-              attributesToShow: 'none',
-              attributes: [
-                {
-                  finalValue: 'pink',
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-              ],
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 20,
-                warningMin: 2,
-                warningMax: 10,
-                numberOfDecimals: 0,
+                type: 'recordLink',
               },
-              mode: 'input',
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-            {
-              type: 'textVariable',
-              name: 'someNameInDataTextWithAttrib',
-              presentationId: 'pSomeMetadataTextVariableWithAttributeVarId',
-              label: 'someTextId',
-              showLabel: true,
-              gridColSpan: 12,
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
 
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              attributes: [
-                {
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  finalValue: 'pink',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+      it('creates a formDef for a rootGroup with a resourceLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
+          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                name: 'someNameInData',
+                outputFormat: 'image',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-              ],
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input',
-              inputType: 'input',
-            },
-            {
-              type: 'group',
-              label: 'someChildGroupTextId',
-              showLabel: true,
-              gridColSpan: 12,
-              presentationId: 'pSomeMetadataChildGroupId',
-
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              name: 'someChildGroupNameInData',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-                  label: 'someTextId',
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-              ],
-              mode: 'input',
+                type: 'resourceLink',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              label: 'nationalSubjectCategoryLinkText',
-              presentationId: 'nationalSubjectCategoryPLinkId',
-              linkedRecordPresentation: {
-                presentationId: 'someSubjectCategoryPresentation',
-                presentedRecordType: 'nationalSubjectCategory',
-              },
-              showLabel: true,
-              gridColSpan: 12,
-
-              mode: 'input',
-              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
-              recordLinkType: 'nationalSubjectCategory',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'nationalSubjectCategoryLinkText',
-                body: 'nationalSubjectCategoryLinkDefText',
-              },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
             },
-            {
-              type: 'recordLink',
-              name: 'someNewRecordLink',
-              presentationId: 'someNewRecordPLinkId',
-              label: 'someNewRecordLinkText',
-              linkedRecordPresentation: {
-                presentationId: 'someNewRecordLink',
-                presentedRecordType: 'someNewRecordLink',
-              },
-              showLabel: true,
-              gridColSpan: 12,
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
 
-              mode: 'input',
-              presentationRecordLinkId: 'someNewRecordPLinkId',
-              recordLinkType: 'someNewRecordLink',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someNewRecordLinkText',
-                body: 'someNewRecordLinkDefText',
-              },
-            },
-            {
-              type: 'container',
-              name: 'pSomeContainerId',
-              presentationId: 'pSomeContainerId',
-              // frame
-              containerType: 'surrounding',
-              gridColSpan: 12,
+      it('creates a formDef for a rootGroup with a childGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
 
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData4',
-                  presentationId: 'pSomeMetadataTextVariable4Id',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 6,
-                  childStyle: ['sixChildStyle'],
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 3,
-                    minNumberOfRepeatingToShow: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
-            },
-            {
-              name: 'pSomeGuiElementLinkId',
-              gridColSpan: 12,
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testOtherRootGroup,
+            testChildGroup,
+            testMetadataTextVariable,
+          ]),
+          presentationPool: listToPool([
+            pTestOtherRootGroup,
+            pTestChildGroup,
+            pSomeMetadataVariable,
+          ]),
+        } as Dependencies;
 
-              url: 'http://www.google.se',
-              elementText: 'demoTestLinkGuiElementText',
-              presentAs: 'link',
-              type: 'guiElementLink',
-            },
-            {
-              type: 'container',
-              name: 'pSomeRepeatingContainerId',
-              presentationId: 'pSomeRepeatingContainerId',
-              presentationStyle: 'label',
-              containerType: 'repeating',
-              gridColSpan: 12,
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData5',
-                  presentationId: 'pSomeMetadataTextVariable5Id',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 6,
-                  childStyle: ['sixChildStyle'],
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 3,
-                    minNumberOfRepeatingToShow: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'group',
-              label: 'someOtherHeadlineTextId',
-              showLabel: true,
-              headlineLevel: 'h3',
-              gridColSpan: 12,
-
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
-              presentationId:
-                'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'group',
-              label: 'someChildGroupTextId',
-              showLabel: false,
-              gridColSpan: 12,
-
-              name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
-              presentationId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
-            },
-            {
-              gridColSpan: 12,
-
-              label: 'textId345',
-              showLabel: true,
-              mode: 'input',
-              name: 'someManuscriptGroupNameInData',
-              presentationId: 'pSomeManuscriptGroupId',
-              repeat: {
-                repeatMax: 1,
-                repeatMin: 1,
-              },
-              tooltip: {
-                body: 'defTextId678',
-                title: 'textId345',
-              },
-              type: 'group',
-
-              components: [
-                {
-                  containerType: 'surrounding',
-                  gridColSpan: 12,
-
-                  mode: 'input',
-                  name: 'pSomeManuscriptIdContainer',
-                  presentationId: 'pSomeManuscriptIdContainer',
-                  type: 'container',
-
-                  components: [
-                    {
-                      gridColSpan: 12,
-
-                      inputType: 'input',
-                      label: 'someTextId',
-                      showLabel: true,
-                      mode: 'input',
-                      name: 'archiveNumber',
-                      presentationId: 'pArchiveNumberTextVarId',
-                      placeholder: 'someEmptyTextId',
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMax: 1,
-                        repeatMin: 1,
-                      },
-                      tooltip: {
-                        body: 'someDefTextId',
-                        title: 'someTextId',
-                      },
-                      type: 'textVariable',
-                      validation: {
-                        pattern: 'someRegex',
-                        type: 'regex',
-                      },
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_NEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                components: [
+                  {
+                    childStyle: ['twelveChildStyle'],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                    label: 'someTextId',
+                    mode: 'input',
+                    name: 'someNameInData',
+                    placeholder: 'someEmptyTextId',
+                    presentationId: 'pSomeMetadataVariableId',
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
                     },
-                    {
-                      gridColSpan: 12,
-
-                      inputType: 'input',
-                      label: 'someTextId',
-                      showLabel: true,
-                      mode: 'input',
-                      name: 'localId',
-                      presentationId: 'pLocalIdTextVarId',
-                      placeholder: 'someEmptyTextId',
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMax: 1,
-                        repeatMin: 1,
-                      },
-                      tooltip: {
-                        body: 'someDefTextId',
-                        title: 'someTextId',
-                      },
-                      type: 'textVariable',
-                      validation: {
-                        pattern: 'someRegex',
-                        type: 'regex',
-                      },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
                     },
-                  ],
+                    type: 'textVariable',
+                    validation: {
+                      pattern: 'someRegex',
+                      type: 'regex',
+                    },
+                  },
+                ],
+                gridColSpan: 12,
+                label: 'textId345',
+                mode: 'input',
+                name: 'childGroupNameInData',
+                presentationId: 'childPGroupId',
+                repeat: {
+                  repeatMax: 1,
+                  repeatMin: 1,
                 },
-              ],
+                showLabel: true,
+                tooltip: {
+                  body: 'defTextId678',
+                  title: 'textId345',
+                },
+                type: 'group',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-          ],
-          mode: 'input',
-        },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
       });
     });
 
-    it('should return a form definition for an edit metadata group', () => {
-      const validationTypeId = 'someValidationTypeId';
-      const formDefinition = createFormDefinition(
-        createBasicDependencies(),
-        validationTypeId,
-        FORM_MODE_EDIT,
-      );
-      expect(formDefinition.form!.components).toHaveLength(16);
-      expect(formDefinition).toStrictEqual({
-        validationTypeId,
-        form: {
-          type: 'group',
-          label: 'textId345',
-          showLabel: true,
-          gridColSpan: 12,
-          presentationStyle: 'card',
-          name: 'someEditMetadataGroupNameInData',
-          presentationId: 'pSomeEditMetadataGroupId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
+    describe('should return a form definition for an edit metadata group', () => {
+      it('creates a formDef for a rootGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
+          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                inputType: 'input',
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'textVariable',
+                validation: {
+                  pattern: 'someRegex',
+                  type: 'regex',
+                },
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          tooltip: {
-            title: 'textId345',
-            body: 'defTextId678',
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a numVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataNumberVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'numberVariable',
+                validation: {
+                  max: 20,
+                  min: 0,
+                  numberOfDecimals: 0,
+                  type: 'number',
+                  warningMax: 10,
+                  warningMin: 2,
+                },
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          attributes: [
-            {
-              finalValue: 'pink',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              mode: 'input',
-              name: 'colour',
-              options: [
-                {
-                  label: 'exampleBlueItemText',
-                  value: 'blue',
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a collVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testRootGroup,
+            testMetadataCollectionVariable,
+            someMetadataItemCollection,
+            someMetadataCollectionItemBlue,
+          ]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataCollectionVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                options: [
+                  {
+                    label: 'exampleBlueItemText',
+                    value: 'blue',
+                  },
+                ],
+
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-                {
-                  label: 'examplePinkItemText',
-                  value: 'pink',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-                {
-                  label: 'exampleYellowItemText',
-                  value: 'yellow',
+                type: 'collectionVariable',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a recordLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataRecordLink,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                linkedRecordPresentation: {
+                  presentationId: 'somePresentationIdPresentation',
+                  presentedRecordType: 'somePresentedRecordType',
                 },
-              ],
-              placeholder: 'initialEmptyValueText',
-              tooltip: {
-                body: 'exampleCollectionVarDefText',
-                title: 'exampleCollectionVarText',
-              },
-              type: 'collectionVariable',
-            },
-          ],
 
-          components: [
-            {
-              type: 'text',
-              name: 'someEditHeadlineTextId',
-              textStyle: 'boldTextStyle',
-              gridColSpan: 12,
-              childStyle: ['twelveChildStyle'],
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData',
-              presentationId: 'pSomeMetadataTextVariableId',
-
-              placeholder: 'someEmptyTextId',
-              label: 'someTextId',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 3,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input',
-              inputType: 'input',
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData2',
-              presentationId: 'pSomeMetadataTextVariable2Id',
-              label: 'someOtherLabelTextId', // overridden label
-              showLabel: true,
-              placeholder: 'someEmptyTextId',
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-
-              repeat: {
-                repeatMin: 1,
-                repeatMax: Number.MAX_VALUE,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input', // output
-              inputType: 'input', // textarea
-            },
-            {
-              type: 'textVariable',
-              name: 'someNameInData3',
-              label: 'someTextId',
-              showLabel: true,
-              placeholder: 'someEmptyTextId',
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-              presentationId: 'pSomeMetadataTextVariable3Id',
-
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input', // output
-              inputType: 'input', // textarea
-              finalValue: 'someFinalValue',
-            },
-            {
-              type: 'numberVariable',
-              name: 'someNameInDataNumberVar',
-              presentationId: 'pSomeMetadataNumberVariableId',
-              label: 'someNumberVarTextId', // hidden
-              showLabel: false,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 0,
-                repeatMax: 1,
-                minNumberOfRepeatingToShow: 1,
-              },
-              tooltip: {
-                title: 'someNumberVarTextId',
-                body: 'someNumberVarDefTextId',
-              },
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 20,
-                warningMin: 2,
-                warningMax: 10,
-                numberOfDecimals: 0,
-              },
-              mode: 'input',
-            },
-            {
-              type: 'collectionVariable',
-              name: 'colour',
-              presentationId: 'pSomeMetadataCollectionVariableId',
-              finalValue: 'pink',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'collectionVariable',
-              name: 'colourAttributeVar',
-              presentationId: 'pSomeMetadataCollectionVariableWithAttributeId',
-              label: 'exampleCollectionVarText',
-              showLabel: true,
-              gridColSpan: 3,
-              childStyle: ['threeChildStyle'],
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText',
-              },
-              attributes: [
-                {
-                  finalValue: 'pink',
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+                mode: 'input',
+                name: 'someNameInData',
+                presentationId: 'pSomeMetadataVariableId',
+                presentationRecordLinkId: 'pSomeMetadataVariableId',
+                recordLinkType: 'someLinkedRecordType',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-              ],
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' },
-              ],
-              mode: 'input',
-            },
-            {
-              type: 'numberVariable',
-              name: 'someNameInDataNumberWithAttributeVar',
-              presentationId: 'pSomeMetadataNumberWithAttributeVarId',
-              label: 'someNumberVarTextId',
-              showLabel: true,
-              gridColSpan: 12,
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someNumberVarTextId',
-                body: 'someNumberVarDefTextId',
-              },
-              attributesToShow: 'none',
-              attributes: [
-                {
-                  finalValue: 'pink',
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-              ],
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 20,
-                warningMin: 2,
-                warningMax: 10,
-                numberOfDecimals: 0,
+                type: 'recordLink',
               },
-              mode: 'input',
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-            {
-              type: 'textVariable',
-              name: 'someNameInDataTextWithAttrib',
-              presentationId: 'pSomeMetadataTextVariableWithAttributeVarId',
-              label: 'someTextId',
-              showLabel: true,
-              gridColSpan: 12,
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
 
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId',
-              },
-              attributes: [
-                {
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  finalValue: 'pink',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText',
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' },
-                  ],
-                  mode: 'input',
+      it('creates a formDef for a rootGroup with a resourceLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
+          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                name: 'someNameInData',
+                outputFormat: 'image',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
                 },
-              ],
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex',
-              },
-              mode: 'input',
-              inputType: 'input',
-            },
-            {
-              type: 'group',
-              label: 'someChildGroupTextId',
-              showLabel: true,
-              gridColSpan: 12,
-
-              name: 'someChildGroupNameInData',
-              presentationId: 'pSomeMetadataChildGroupId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
                 },
-              ],
-              mode: 'input',
+                type: 'resourceLink',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              presentationId: 'nationalSubjectCategoryPLinkId',
-              label: 'nationalSubjectCategoryLinkText',
-              linkedRecordPresentation: {
-                presentationId: 'someSubjectCategoryPresentation',
-                presentedRecordType: 'nationalSubjectCategory',
-              },
-              showLabel: true,
-              gridColSpan: 12,
-
-              mode: 'input',
-              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
-              recordLinkType: 'nationalSubjectCategory',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'nationalSubjectCategoryLinkText',
-                body: 'nationalSubjectCategoryLinkDefText',
-              },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
             },
-            {
-              type: 'container',
-              name: 'pSomeContainerId',
-              presentationId: 'pSomeContainerId',
-              containerType: 'surrounding',
-              gridColSpan: 12,
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
 
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData4',
-                  presentationId: 'pSomeMetadataTextVariable4Id',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 6,
-                  childStyle: ['sixChildStyle'],
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 3,
-                    minNumberOfRepeatingToShow: 1,
+      it('creates a formDef for a rootGroup with a childGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testOtherRootGroup,
+            testChildGroup,
+            testMetadataTextVariable,
+          ]),
+          presentationPool: listToPool([
+            pTestOtherRootGroup,
+            pTestChildGroup,
+            pSomeMetadataVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_EDIT,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                components: [
+                  {
+                    childStyle: ['twelveChildStyle'],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                    label: 'someTextId',
+                    mode: 'input',
+                    name: 'someNameInData',
+                    placeholder: 'someEmptyTextId',
+                    presentationId: 'pSomeMetadataVariableId',
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
+                    },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
+                    },
+                    type: 'textVariable',
+                    validation: {
+                      pattern: 'someRegex',
+                      type: 'regex',
+                    },
                   },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
+                ],
+                gridColSpan: 12,
+                label: 'textId345',
+                mode: 'input',
+                name: 'childGroupNameInData',
+                presentationId: 'childPGroupId',
+                repeat: {
+                  repeatMax: 1,
+                  repeatMin: 1,
                 },
-              ],
-              mode: 'input',
-            },
-            {
-              name: 'pSomeGuiElementLinkId',
-              gridColSpan: 12,
-              url: 'http://www.google.se',
-              elementText: 'demoTestLinkGuiElementText',
-              presentAs: 'link',
-              type: 'guiElementLink',
-            },
-            {
-              type: 'container',
-              name: 'pSomeRepeatingContainerId',
-              presentationId: 'pSomeRepeatingContainerId',
-              presentationStyle: 'label',
-              containerType: 'repeating',
-              gridColSpan: 12,
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData5',
-                  presentationId: 'pSomeMetadataTextVariable5Id',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 6,
-                  childStyle: ['sixChildStyle'],
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 3,
-                    minNumberOfRepeatingToShow: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
+                showLabel: true,
+                tooltip: {
+                  body: 'defTextId678',
+                  title: 'textId345',
                 },
-              ],
-              mode: 'input',
+                type: 'group',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-            {
-              type: 'group',
-              label: 'someOtherHeadlineTextId',
-              showLabel: true,
-              headlineLevel: 'h3',
-              gridColSpan: 12,
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
-              presentationId:
-                'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
             },
-            {
-              type: 'group',
-              label: 'someChildGroupTextId',
-              showLabel: false,
-              gridColSpan: 12,
-              presentationStyle: 'someMetadataChildGroupPresentationStyle',
-              name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
-              presentationId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someChildGroupTextId',
-                body: 'someChildGroupDefTextId',
-              },
-
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  presentationId: 'pSomeMetadataTextVariableId',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId',
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex',
-                  },
-                  mode: 'input',
-                  inputType: 'input',
-                },
-              ],
-              mode: 'input',
-            },
-          ],
-          mode: 'input',
-        },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
       });
     });
 
@@ -1485,108 +1037,425 @@ describe('formDefinition', () => {
       });
     });
 
-    it('should return a form definition for (output) view presentation metadata group', () => {
-      const validationTypeId = 'validationTypeId';
-      const validationType = createValidationType(validationTypeId);
-      const recordType = createRecordType(validationType.validatesRecordTypeId);
+    describe('should return a form definition for (output) view presentation', () => {
+      it('creates a formDef for a rootGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
 
-      const metaDataGroup = createGroup(
-        validationType.metadataGroupId,
-        'validationTypeIdOutputGroup',
-        ['someMetadataTextVariable6Id'],
-      );
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
+          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+        } as Dependencies;
 
-      const presentationChild = {
-        refGroups: [
-          { childId: 'pSomeMetadataTextVariable6Id', type: 'presentation' },
-        ],
-      } as BFFPresentationChildReference;
-
-      const someMetadataTextVariable6: BFFMetadataTextVariable = {
-        id: 'someMetadataTextVariable6Id',
-        nameInData: 'someNameInData6',
-        type: 'textVariable',
-        textId: 'someTextId',
-        defTextId: 'someDefTextId',
-        regEx: 'someRegex',
-      };
-
-      const pSomeMetadataTextVariable6: BFFPresentationTextVar = {
-        id: 'pSomeMetadataTextVariable6Id',
-        presentationOf: 'someMetadataTextVariable6Id',
-        mode: 'output',
-        inputType: 'input',
-        type: 'pVar',
-        emptyTextId: 'someEmptyTextId',
-      };
-
-      const mockDependencies = {
-        validationTypePool: listToPool([validationType]),
-        recordTypePool: listToPool([recordType]),
-        metadataPool: listToPool([metaDataGroup, someMetadataTextVariable6]),
-        presentationPool: listToPool([
-          createPresentationGroup(
-            recordType.presentationViewId,
-            metaDataGroup.nameInData,
-            [presentationChild],
-          ),
-          pSomeMetadataTextVariable6,
-        ]),
-      } as Dependencies;
-
-      const formDefinition = createFormDefinition(
-        mockDependencies,
-        validationTypeId,
-        FORM_MODE_VIEW,
-      );
-      expect(formDefinition.form!.components).toHaveLength(1);
-      expect(formDefinition).toStrictEqual({
-        validationTypeId,
-        form: {
-          components: [
-            {
-              gridColSpan: 12,
-              inputType: 'input',
-              label: 'someTextId',
-              showLabel: true,
-
-              mode: 'output',
-              name: 'someNameInData6',
-              presentationId: 'pSomeMetadataTextVariable6Id',
-
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMax: 1,
-                repeatMin: 1,
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                inputType: 'input',
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'textVariable',
+                validation: {
+                  pattern: 'someRegex',
+                  type: 'regex',
+                },
               },
-              tooltip: {
-                body: 'someDefTextId',
-                title: 'someTextId',
-              },
-              type: 'textVariable',
-              validation: {
-                pattern: 'someRegex',
-                type: 'regex',
-              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
             },
-          ],
-          gridColSpan: 12,
-          label: 'someTextId',
-          showLabel: true,
-          mode: 'output',
-          name: 'validationTypeIdOutputGroup',
-          presentationId: 'validationTypeIdOutputPGroup',
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
 
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
+      it('creates a formDef for a rootGroup with a numVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataNumberVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'numberVariable',
+                validation: {
+                  max: 20,
+                  min: 0,
+                  numberOfDecimals: 0,
+                  type: 'number',
+                  warningMax: 10,
+                  warningMin: 2,
+                },
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          tooltip: {
-            body: 'someDefTextId',
-            title: 'someTextId',
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a collVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testRootGroup,
+            testMetadataCollectionVariable,
+            someMetadataItemCollection,
+            someMetadataCollectionItemBlue,
+          ]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataCollectionVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                mode: 'input',
+                name: 'someNameInData',
+                options: [
+                  {
+                    label: 'exampleBlueItemText',
+                    value: 'blue',
+                  },
+                ],
+
+                placeholder: 'someEmptyTextId',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'collectionVariable',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
           },
-          type: 'group',
-        },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a recordLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          presentationPool: listToPool([
+            pTestRootGroup,
+            pSomeMetadataRecordLink,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                linkedRecordPresentation: {
+                  presentationId: 'somePresentationIdPresentation',
+                  presentedRecordType: 'somePresentedRecordType',
+                },
+
+                mode: 'input',
+                name: 'someNameInData',
+                presentationId: 'pSomeMetadataVariableId',
+                presentationRecordLinkId: 'pSomeMetadataVariableId',
+                recordLinkType: 'someLinkedRecordType',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'recordLink',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a resourceLink', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
+          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                gridColSpan: 12,
+                label: 'someTextId',
+                name: 'someNameInData',
+                outputFormat: 'image',
+                presentationId: 'pSomeMetadataVariableId',
+                repeat: {
+                  repeatMax: 3,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'someDefTextId',
+                  title: 'someTextId',
+                },
+                type: 'resourceLink',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
+      });
+
+      it('creates a formDef for a rootGroup with a childGroup with a textVar', () => {
+        const validationTypeId = 'someValidationTypeId';
+
+        const mockDependencies = {
+          validationTypePool: listToPool([testValidationTypeData]),
+          recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
+          metadataPool: listToPool([
+            testOtherRootGroup,
+            testChildGroup,
+            testMetadataTextVariable,
+          ]),
+          presentationPool: listToPool([
+            pTestOtherRootGroup,
+            pTestChildGroup,
+            pSomeMetadataVariable,
+          ]),
+        } as Dependencies;
+
+        const formDefinition = createFormDefinition(
+          mockDependencies,
+          validationTypeId,
+          FORM_MODE_VIEW,
+        );
+        expect(formDefinition).toStrictEqual({
+          form: {
+            components: [
+              {
+                childStyle: ['twelveChildStyle'],
+                components: [
+                  {
+                    childStyle: ['twelveChildStyle'],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                    label: 'someTextId',
+                    mode: 'input',
+                    name: 'someNameInData',
+                    placeholder: 'someEmptyTextId',
+                    presentationId: 'pSomeMetadataVariableId',
+                    repeat: {
+                      repeatMax: 1,
+                      repeatMin: 1,
+                    },
+                    showLabel: true,
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId',
+                    },
+                    type: 'textVariable',
+                    validation: {
+                      pattern: 'someRegex',
+                      type: 'regex',
+                    },
+                  },
+                ],
+                gridColSpan: 12,
+                label: 'textId345',
+                mode: 'input',
+                name: 'childGroupNameInData',
+                presentationId: 'childPGroupId',
+                repeat: {
+                  repeatMax: 1,
+                  repeatMin: 1,
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'defTextId678',
+                  title: 'textId345',
+                },
+                type: 'group',
+              },
+            ],
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'rootGroupNameInData',
+            presentationId: 'rootPGroupId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1,
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345',
+            },
+            type: 'group',
+          },
+          validationTypeId: 'someValidationTypeId',
+        });
       });
     });
 
@@ -3458,144 +3327,6 @@ describe('formDefinition', () => {
       });
     });
   });
-  describe('tempFormDefTests', () => {
-    it('creates a formDef for a rootGroup with a textVar', () => {
-      const FORM_MODE_NEW = 'create';
-      const validationTypeId = 'someValidationTypeId';
-
-      const mockDependencies = {
-        validationTypePool: listToPool([testValidationTypeData]),
-        recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-        metadataPool: listToPool([
-          testGroupWithTextVar1,
-          testMetadataTextVariable,
-        ]),
-        presentationPool: listToPool([
-          pSomeNewMetadataGroup,
-          pSomeMetadataTextVariable,
-        ]),
-      } as Dependencies;
-
-      const formDefinition = createFormDefinition(
-        mockDependencies,
-        validationTypeId,
-        FORM_MODE_NEW,
-      );
-      expect(formDefinition).toStrictEqual({
-        form: {
-          components: [
-            {
-              childStyle: ['twelveChildStyle'],
-              gridColSpan: 12,
-              inputType: 'input',
-              label: 'someTextId',
-              mode: 'input',
-              name: 'someNameInData',
-              placeholder: 'someEmptyTextId',
-              presentationId: 'pSomeMetadataVariableId',
-              repeat: {
-                repeatMax: 3,
-                repeatMin: 1,
-              },
-              showLabel: true,
-              tooltip: {
-                body: 'someDefTextId',
-                title: 'someTextId',
-              },
-              type: 'textVariable',
-              validation: {
-                pattern: 'someRegex',
-                type: 'regex',
-              },
-            },
-          ],
-          gridColSpan: 12,
-          label: 'textId345',
-          mode: 'input',
-          name: 'rootGroupNameInData',
-          presentationId: 'rootPGroupId',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          showLabel: true,
-          tooltip: {
-            body: 'defTextId678',
-            title: 'textId345',
-          },
-          type: 'group',
-        },
-        validationTypeId: 'someValidationTypeId',
-      });
-    });
-
-    it('creates a formDef for a rootGroup with a numVar', () => {
-      const FORM_MODE_NEW = 'create';
-      const validationTypeId = 'someValidationTypeId';
-
-      const mockDependencies = {
-        validationTypePool: listToPool([testValidationTypeData]),
-        recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-        metadataPool: listToPool([someGroupWithNumVar1, someMetadataNumberVar]),
-        presentationPool: listToPool([
-          pSomeNewMetadataGroup,
-          pSomeMetadataTextVariable,
-        ]),
-      } as Dependencies;
-
-      const formDefinition = createFormDefinition(
-        mockDependencies,
-        validationTypeId,
-        FORM_MODE_NEW,
-      );
-      expect(formDefinition).toStrictEqual({
-        form: {
-          components: [
-            {
-              childStyle: ['twelveChildStyle'],
-              gridColSpan: 12,
-              inputType: 'input',
-              label: 'someTextId',
-              mode: 'input',
-              name: 'someNameInData',
-              placeholder: 'someEmptyTextId',
-              presentationId: 'pSomeMetadataVariableId',
-              repeat: {
-                repeatMax: 3,
-                repeatMin: 1,
-              },
-              showLabel: true,
-              tooltip: {
-                body: 'someDefTextId',
-                title: 'someTextId',
-              },
-              type: 'textVariable',
-              validation: {
-                pattern: 'someRegex',
-                type: 'regex',
-              },
-            },
-          ],
-          gridColSpan: 12,
-          label: 'textId345',
-          mode: 'input',
-          name: 'rootGroupNameInData',
-          presentationId: 'rootPGroupId',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1,
-          },
-          showLabel: true,
-          tooltip: {
-            body: 'defTextId678',
-            title: 'textId345',
-          },
-          type: 'group',
-        },
-        validationTypeId: 'someValidationTypeId',
-      });
-    });
-  });
 });
 
 const someTestRecordType: BFFRecordType = {
@@ -3604,7 +3335,7 @@ const someTestRecordType: BFFRecordType = {
   textId: '',
   pluralTextId: '',
   defTextId: '',
-  presentationViewId: '',
+  presentationViewId: 'rootPGroupId',
   listPresentationViewId: '',
   groupOfRecordType: [],
   recordTypeCategory: [],
@@ -3613,7 +3344,7 @@ const someTestRecordType: BFFRecordType = {
 
 const testValidationTypeData: BFFValidationType = {
   id: 'someValidationTypeId',
-  validatesRecordTypeId: 'record123',
+  validatesRecordTypeId: 'someRecordTypeId',
   // New
   newMetadataGroupId: 'rootGroupId',
   newPresentationGroupId: 'rootPGroupId',
@@ -3624,7 +3355,7 @@ const testValidationTypeData: BFFValidationType = {
   defTextId: 'defName456',
 };
 
-const testGroupWithTextVar1: BFFMetadataGroup = {
+const testRootGroup: BFFMetadataGroup = {
   id: 'rootGroupId',
   nameInData: 'rootGroupNameInData',
   type: 'group',
@@ -3632,7 +3363,7 @@ const testGroupWithTextVar1: BFFMetadataGroup = {
   defTextId: 'defTextId678',
   children: [
     {
-      childId: 'someMetadataTextVariableId',
+      childId: 'someMetadataVariableId',
       repeatMin: '1',
       repeatMax: '3',
     },
@@ -3640,7 +3371,7 @@ const testGroupWithTextVar1: BFFMetadataGroup = {
 };
 
 export const testMetadataTextVariable: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariableId',
+  id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   type: 'textVariable',
   textId: 'someTextId',
@@ -3648,7 +3379,7 @@ export const testMetadataTextVariable: BFFMetadataTextVariable = {
   regEx: 'someRegex',
 };
 
-export const pSomeNewMetadataGroup: BFFPresentationGroup = {
+export const pTestRootGroup: BFFPresentationGroup = {
   id: 'rootPGroupId',
   type: 'pGroup',
   presentationOf: 'rootGroupId',
@@ -3662,219 +3393,165 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   ],
 };
 
-export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
+export const pSomeMetadataVariable: BFFPresentationTextVar = {
   id: 'pSomeMetadataVariableId',
-  presentationOf: 'someMetadataTextVariableId',
+  presentationOf: 'someMetadataVariableId',
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-
-export const someGroupWithNumVar1: BFFMetadataGroup = {
-  id: 'rootGroupId',
-  nameInData: 'rootGroupNameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someMetadataNumberVarId',
-      repeatMin: '0',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someMetadataNumberVar: BFFMetadataNumberVariable = {
-  id: 'someMetadataNumberVarId',
-  nameInData: 'someNameInDataNumberVar',
-  type: 'numberVariable',
-  textId: 'someNumberVarTextId',
-  defTextId: 'someNumberVarDefTextId',
+export const testMetadataNumberVar: BFFMetadataNumberVariable = {
+  id: 'someMetadataVariableId',
+  nameInData: 'someNameInData',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
   min: '0',
   max: '20',
   warningMin: '2',
   warningMax: '10',
   numberOfDecimals: '0',
+  type: 'numberVariable',
 };
 
-/* left */
-/* export const someGroupWithTextVar2: BFFMetadataGroup = {
-  id: 'someMetadataTextVariable2Id',
-  nameInData: 'someMetadataTextVariable2NameInData',
-  type: 'group',
-  textId: 'textId456',
-  defTextId: 'defTextId789',
-  children: [
-    {
-      childId: 'someMetadataTextVariable2Id',
-      repeatMin: '1',
-      repeatMax: 'X',
-    },
-  ],
+export const pSomeMetadataNumberVariable: BFFPresentationOfSingleMetadata = {
+  id: 'pSomeMetadataVariableId',
+  presentationOf: 'someMetadataVariableId',
+  mode: 'input',
+  type: 'pNumVar',
+  emptyTextId: 'someEmptyTextId',
 };
 
-export const someMetadataTextVariable2: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariable2Id',
-  nameInData: 'someNameInData2',
-  type: 'textVariable',
-  textId: 'someTextId',
-  defTextId: 'someDefTextId',
-  regEx: 'someRegex',
-};
-
-export const someGroupWithTextVar3: BFFMetadataGroup = {
-  id: 'someMetadataTextVariable3Id',
-  nameInData: 'someMetadataTextVariable3NameInData',
-  type: 'group',
-  textId: 'textId567',
-  defTextId: 'defTextId890',
-  children: [
-    {
-      childId: 'someMetadataTextVariable3Id',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someMetadataTextVariable3: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariable3Id',
-  nameInData: 'someNameInData3',
-  type: 'textVariable',
-  textId: 'someTextId',
-  defTextId: 'someDefTextId',
-  regEx: 'someRegex',
-  finalValue: 'someFinalValue',
-};
-
-export const someGroupWithTextVar4: BFFMetadataGroup = {
-  id: 'someMetadataTextVariable4Id',
-  nameInData: 'someMetadataTextVariable4NameInData',
-  type: 'group',
-  textId: 'textId678',
-  defTextId: 'defTextId901',
-  children: [
-    {
-      childId: 'someMetadataTextVariable4Id',
-      repeatMin: '1',
-      repeatMax: '3',
-    },
-  ],
-};
-
-export const someMetadataTextVariable4: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariable4Id',
-  nameInData: 'someNameInData4',
-  type: 'textVariable',
-  textId: 'someTextId',
-  defTextId: 'someDefTextId',
-  regEx: 'someRegex',
-};
-
-export const someGroupWithTextVar5: BFFMetadataGroup = {
-  id: 'someMetadataTextVariable5Id',
-  nameInData: 'someMetadataTextVariable5NameInData',
-  type: 'group',
-  textId: 'textId678',
-  defTextId: 'defTextId901',
-  children: [
-    {
-      childId: 'someMetadataTextVariable5Id',
-      repeatMin: '1',
-      repeatMax: '3',
-    },
-  ],
-};
-
-export const someMetadataTextVariable5: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariable5Id',
-  nameInData: 'someNameInData5',
-  type: 'textVariable',
-  textId: 'someTextId',
-  defTextId: 'someDefTextId',
-  regEx: 'someRegex',
-};
-
-export const someGroupWithTextVar6: BFFMetadataGroup = {
-  id: 'someMetadataTextVariable6Id',
-  nameInData: 'someMetadataTextVariable6NameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someMetadataTextVariable6Id',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someMetadataTextVariable6: BFFMetadataTextVariable = {
-  id: 'someMetadataTextVariable6Id',
-  nameInData: 'someNameInData6',
-  type: 'textVariable',
-  textId: 'someTextId',
-  defTextId: 'someDefTextId',
-  regEx: 'someRegex',
-}; */
-
-export const someGroupWithCollectionVar: BFFMetadataGroup = {
-  id: 'someMetadataCollectionVarId',
-  nameInData: 'someMetadataCollectionVarNameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'exampleCollectionVarId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
-  id: 'exampleCollectionVarId',
-  nameInData: 'colour',
+export const testMetadataCollectionVariable: BFFMetadataCollectionVariable = {
+  id: 'someMetadataVariableId',
+  nameInData: 'someNameInData',
   type: 'collectionVariable',
-  textId: 'exampleCollectionVarText',
-  defTextId: 'exampleCollectionVarDefText',
-  refCollection: 'exampleCollection',
-  finalValue: 'pink', // added this for now
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  refCollection: 'someCollection',
 };
 
-export const someGroupWithCollVarsWithAttributes: BFFMetadataGroup = {
-  id: 'someGroupWithCollVarsWithAttributesId',
-  nameInData: 'someGroupWithCollVarsWithAttributesNameInData',
+export const someMetadataItemCollection: BFFMetadataItemCollection = {
+  id: 'someCollection',
+  nameInData: 'colour',
+  type: 'itemCollection',
+  textId: 'exampleCollectionText',
+  defTextId: 'exampleCollectionDefText',
+  collectionItemReferences: [{ refCollectionItemId: 'exampleBlueItem' }],
+};
+
+export const pSomeMetadataCollectionVariable: BFFPresentationBase = {
+  id: 'pSomeMetadataVariableId',
+  presentationOf: 'someMetadataVariableId',
+  mode: 'input',
+  type: 'pCollVar',
+  emptyTextId: 'someEmptyTextId',
+};
+
+export const someMetadataCollectionItemBlue: BFFMetadataBase = {
+  id: 'exampleBlueItem',
+  nameInData: 'blue',
+  type: 'collectionItem',
+  textId: 'exampleBlueItemText',
+  defTextId: 'exampleBlueItemDefText',
+};
+
+export const testMetadataRecordLink: BFFMetadataRecordLink = {
+  id: 'someMetadataVariableId',
+  nameInData: 'someNameInData',
+  type: 'recordLink',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  linkedRecordType: 'someLinkedRecordType',
+};
+
+export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
+  id: 'pSomeMetadataVariableId',
+  type: 'pRecordLink',
+  presentationOf: 'someMetadataVariableId',
+  mode: 'input',
+  linkedRecordPresentations: [
+    {
+      presentedRecordType: 'somePresentedRecordType',
+      presentationId: 'somePresentationIdPresentation',
+    },
+  ],
+};
+
+export const testMetadataResourceLink: BFFResourceLink = {
+  id: 'someMetadataVariableId',
+  nameInData: 'someNameInData',
+  type: 'resourceLink',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+};
+
+export const pSomeResourceLink: BFFPresentationResourceLink = {
+  id: 'pSomeMetadataVariableId',
+  presentationOf: 'someMetadataVariableId',
+  outputFormat: 'image',
+  type: 'pResourceLink',
+};
+
+const testOtherRootGroup: BFFMetadataGroup = {
+  id: 'rootGroupId',
+  nameInData: 'rootGroupNameInData',
   type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
   children: [
     {
-      childId: 'someMetadataCollectionVariableWithAttributeId',
+      childId: 'someChildGroupId',
       repeatMin: '1',
       repeatMax: '1',
     },
   ],
 };
 
-export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable =
-  {
-    id: 'someMetadataCollectionVariableWithAttributeId',
-    nameInData: 'colourAttributeVar',
-    type: 'collectionVariable',
-    textId: 'exampleCollectionVarText',
-    defTextId: 'exampleCollectionVarDefText',
-    refCollection: 'exampleCollection',
-    attributeReferences: [
-      {
-        refCollectionVarId: 'exampleCollectionVarId',
-      },
-    ],
-  };
+const testChildGroup: BFFMetadataGroup = {
+  id: 'someChildGroupId',
+  nameInData: 'childGroupNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  children: [
+    {
+      childId: 'someMetadataVariableId',
+      repeatMin: '1',
+      repeatMax: '1',
+    },
+  ],
+};
+
+export const pTestOtherRootGroup: BFFPresentationGroup = {
+  id: 'rootPGroupId',
+  type: 'pGroup',
+  presentationOf: 'rootGroupId',
+  mode: 'input',
+
+  children: [
+    {
+      refGroups: [{ childId: 'childPGroupId', type: 'presentation' }],
+      childStyle: ['twelveChildStyle'],
+    },
+  ],
+};
+
+export const pTestChildGroup: BFFPresentationGroup = {
+  id: 'childPGroupId',
+  type: 'pGroup',
+  presentationOf: 'someChildGroupId',
+  mode: 'input',
+
+  children: [
+    {
+      refGroups: [{ childId: 'pSomeMetadataVariableId', type: 'presentation' }],
+      childStyle: ['twelveChildStyle'],
+    },
+  ],
+};
+
+/* Other? */
 
 export const someGroupWithNumVarWithAttribute: BFFMetadataGroup = {
   id: 'someGroupWithNumVarWithAttributeId',
@@ -3885,81 +3562,6 @@ export const someGroupWithNumVarWithAttribute: BFFMetadataGroup = {
   children: [
     {
       childId: 'someMetadataNumberWithAttributeVarId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someGroupWithVarWithAttribute2: BFFMetadataGroup = {
-  id: 'someGroupWithVarWithAttribute2Id',
-  nameInData: 'someGroupWithVarWithAttribute2NameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someMetadataTextVariableWithAttributeVarId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someGroupWithGroup: BFFMetadataGroup = {
-  id: 'someGroupWithGroupId',
-  nameInData: 'someGroupWithGroupNameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someMetadataChildGroupId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someGroupWithGroup2: BFFMetadataGroup = {
-  id: 'someGroupWithGroup2Id',
-  nameInData: 'someGroupWithGroup2NameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someManuscriptGroupId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someGroupWithRecordLink: BFFMetadataGroup = {
-  id: 'someGroupWithRecordLinkId',
-  nameInData: 'someGroupWithRecordLinkNameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'nationalSubjectCategoryLinkId',
-      repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
-};
-
-export const someGroupWithRecordLink2: BFFMetadataGroup = {
-  id: 'someGroupWithRecordLink2Id',
-  nameInData: 'someGroupWithRecordLink2NameInData',
-  type: 'group',
-  textId: 'textId789',
-  defTextId: 'defTextId012',
-  children: [
-    {
-      childId: 'someNewRecordLinkId',
       repeatMin: '1',
       repeatMax: '1',
     },
