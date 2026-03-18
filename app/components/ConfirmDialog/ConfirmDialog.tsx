@@ -8,7 +8,6 @@ interface ConfirmDialogProps {
   messageText?: string;
   confirmButtonText: ReactNode;
   cancelButtonText?: ReactNode;
-  extraActionButtonText?: ReactNode;
   ref: Ref<HTMLDialogElement>;
 }
 
