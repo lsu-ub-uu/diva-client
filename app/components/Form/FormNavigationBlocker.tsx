@@ -1,17 +1,27 @@
-import { useFormState, type Control } from 'react-hook-form';
+import { SquareArrowRightExitIcon } from 'lucide-react';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useBlocker } from 'react-router';
 import {
   ConfirmDialog,
   useConfirmDialog,
 } from '../ConfirmDialog/ConfirmDialog';
-import { useBlocker } from 'react-router';
-import { useEffect } from 'react';
 
-export const FormNavigationBlocker = ({ control }: { control: Control }) => {
+interface FormNavigationBlockerProps {
+  isDirty: boolean;
+}
+
+export const FormNavigationBlocker = ({
+  isDirty,
+}: FormNavigationBlockerProps) => {
+  const { t } = useTranslation();
   const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
-  const { dirtyFields } = useFormState({ control });
-  const isDirty = Object.keys(dirtyFields).length > 0;
-  const blocker = useBlocker(isDirty);
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      currentLocation.pathname !== nextLocation.pathname && isDirty,
+  );
 
+  // Block browser navigation (closing tab, refreshing, etc.)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -24,6 +34,7 @@ export const FormNavigationBlocker = ({ control }: { control: Control }) => {
     };
   }, [isDirty]);
 
+  // Block in-app navigation
   useEffect(() => {
     if (blocker.state === 'blocked') {
       showConfirmDialog(blocker.proceed, blocker.reset);
@@ -33,10 +44,15 @@ export const FormNavigationBlocker = ({ control }: { control: Control }) => {
   return (
     <ConfirmDialog
       ref={confirmDialogRef}
-      headingText='Osparade ändringar'
-      messageText='Är du säker på att du vill lämna formuläret? Dina ändringar kommer inte att sparas'
-      confirmButtonText='Ja, lämna'
-      cancelButtonText='Nej, stanna kvar'
+      headingText={t('divaClient_unsavedChangesConfirmHeadingText')} //Osparade ändringar
+      messageText={t('divaClient_unsavedChangesConfirmMessageText')} //Är du säker på att du vill lämna formuläret? Dina ändringar kommer inte att sparas
+      confirmButtonText={
+        <>
+          {t('divaClient_unsavedChangesConfirmButtonText')}
+          <SquareArrowRightExitIcon />
+        </>
+      } //Ja, lämna
+      cancelButtonText={t('divaClient_unsavedChangesCancelButtonText')} //Nej, stanna kvar
     />
   );
 };

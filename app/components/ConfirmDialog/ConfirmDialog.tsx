@@ -8,6 +8,7 @@ interface ConfirmDialogProps {
   messageText?: string;
   confirmButtonText: ReactNode;
   cancelButtonText?: ReactNode;
+  extraActionButtonText?: ReactNode;
   ref: Ref<HTMLDialogElement>;
 }
 
@@ -51,7 +52,7 @@ export const useConfirmDialog = () => {
   const confirmDialogRef = useRef<HTMLDialogElement>(null);
 
   const showConfirmDialog = useCallback(
-    (onConfirm: () => void, onCancel: () => void) => {
+    (onConfirm: () => void, onCancel?: () => void) => {
       confirmDialogRef.current?.showModal();
       confirmDialogRef.current?.addEventListener(
         'close',
@@ -60,7 +61,7 @@ export const useConfirmDialog = () => {
             onConfirm();
           }
 
-          if (confirmDialogRef.current?.returnValue === 'cancel') {
+          if (onCancel && confirmDialogRef.current?.returnValue === 'cancel') {
             onCancel();
           }
         },
