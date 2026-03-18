@@ -10,6 +10,8 @@ import {
   findChildData as findChildData,
 } from './findChildData';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { Fragment } from 'react/jsx-runtime';
+import { OutputDevInfo } from './OutputDevInfo';
 
 interface ComponentChildrenProps {
   components?: FormComponent[];
@@ -45,12 +47,20 @@ export const ComponentChildren = ({
       }
 
       return childData.map((data, childIndex) => (
-        <OutputComponent
-          key={`${index}-${childIndex}`}
-          component={childComponent}
-          data={data}
-          parentPresentationStyle={parentPresentationStyle}
-        />
+        <Fragment key={`${index}-${childIndex}`}>
+          <OutputDevInfo
+            component={childComponent}
+            data={data}
+            parentPresentationStyle={parentPresentationStyle}
+          />
+
+          <OutputComponent
+            key={`${index}-${childIndex}`}
+            component={childComponent}
+            data={data}
+            parentPresentationStyle={parentPresentationStyle}
+          />
+        </Fragment>
       ));
     });
 };

@@ -43,7 +43,7 @@ import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
 
 interface RecordLinkWithSearchProps {
-  component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
+  component: FormComponentRecordLink;
   path: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -58,7 +58,7 @@ export const RecordLinkWithSearch = ({
   const { t } = useTranslation();
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
-  const errorMessage = getErrorMessageForField(formState, path);
+  const errorMessage = getErrorMessageForField(formState, `${path}.value`);
   const member = useMember();
   const fetcher = useFetcher();
   const recordLinkSearchPresentation = component.searchPresentation;
@@ -119,7 +119,12 @@ export const RecordLinkWithSearch = ({
             <Combobox
               name={name}
               value={value}
-              onChange={(recordId) => onChange(recordId)}
+              onChange={(recordId) =>
+                onChange({
+                  linkedRecordType: component.recordLinkType,
+                  value: recordId,
+                })
+              }
             >
               <ComboboxInput
                 aria-invalid={errorMessage !== undefined}
