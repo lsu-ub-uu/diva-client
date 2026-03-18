@@ -1,7 +1,0 @@
-Output visar inte bägge tidsskriftfälten
-
-Se över nya OutputView (tester).
-    Felhantering för LinkedRecord
-
-Använda nya OutputView i sökresultat, autocomplete, linked presentation, etc.
-+
