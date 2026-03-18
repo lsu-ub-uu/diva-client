@@ -57,7 +57,7 @@ import type {
 } from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRoutesStub } from 'react-router';
+import { createRoutesStub, Link } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
 const actionSpy = vi.fn();
@@ -100,6 +100,89 @@ describe('<Form />', () => {
   }));
 
   describe('form', () => {
+    it('asks for confirmation before navigating away with unsaved changes', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <Link to={'/other-page'}>Go to other page</Link>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+        {
+          path: '/other-page',
+          Component: () => <div>This is the other page</div>,
+        },
+      ]);
+
+      const user = userEvent.setup();
+
+      render(<RoutesStub />);
+
+      user.type(screen.getByRole('textbox'), 'some unsaved changes');
+
+      user.click(screen.getByRole('link', { name: 'Go to other page' }));
+
+      expect(
+        screen.queryByText('This is the other page'),
+      ).not.toBeInTheDocument();
+
+      expect(
+        screen.getByText('divaClient_unsavedChangesConfirmHeadingText'),
+      ).toBeInTheDocument();
+
+      user.click(
+        screen.getByRole('button', {
+          name: 'divaClient_unsavedChangesConfirmButtonText',
+          hidden: true, // workaround because jsdom doesn't handle native dialogs
+        }),
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('This is the other page')).toBeInTheDocument();
+      });
+    });
+
+    it('does not ask for confirmation before navigating away with no unsaved changes', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <Link to={'/other-page'}>Go to other page</Link>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+        {
+          path: '/other-page',
+          Component: () => <div>This is the other page</div>,
+        },
+      ]);
+
+      const user = userEvent.setup();
+
+      render(<RoutesStub />);
+
+      user.click(screen.getByRole('link', { name: 'Go to other page' }));
+
+      await waitFor(() => {
+        expect(screen.getByText('This is the other page')).toBeInTheDocument();
+      });
+    });
+
     it('renders a form from a given definition', () => {
       render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
