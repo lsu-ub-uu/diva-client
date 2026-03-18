@@ -1,4 +1,4 @@
-import { useRef, type ReactNode, type Ref } from 'react';
+import { useCallback, useRef, type ReactNode, type Ref } from 'react';
 import { Button } from '../Button/Button';
 import styles from './ConfirmDialog.module.css';
 import { useTranslation } from 'react-i18next';
@@ -49,8 +49,9 @@ export const ConfirmDialog = ({
 
 export const useConfirmDialog = () => {
   const confirmDialogRef = useRef<HTMLDialogElement>(null);
-  return {
-    showConfirmDialog: (onConfirm: () => void) => {
+
+  const showConfirmDialog = useCallback(
+    (onConfirm: () => void, onCancel?: () => void) => {
       confirmDialogRef.current?.showModal();
       confirmDialogRef.current?.addEventListener(
         'close',
@@ -58,10 +59,19 @@ export const useConfirmDialog = () => {
           if (confirmDialogRef.current?.returnValue === 'confirm') {
             onConfirm();
           }
+
+          if (onCancel && confirmDialogRef.current?.returnValue === 'cancel') {
+            onCancel();
+          }
         },
         { once: true },
       );
     },
+    [],
+  );
+
+  return {
+    showConfirmDialog,
     confirmDialogRef,
   };
 };

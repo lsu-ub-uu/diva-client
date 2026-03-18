@@ -33,6 +33,7 @@ import { SaveIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
+import { FormNavigationBlocker } from './FormNavigationBlocker';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -57,9 +58,14 @@ export const RecordForm = ({
     reValidateMode: 'onChange',
     shouldFocusError: true,
     defaultValues,
+
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
-  const { handleSubmit, subscribe } = methods;
+  const {
+    handleSubmit,
+    subscribe,
+    formState: { dirtyFields },
+  } = methods;
 
   useEffect(() => {
     const unsubscribe = subscribe({
@@ -78,26 +84,30 @@ export const RecordForm = ({
   }, [subscribe, onChange]);
 
   return (
-    <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
-      <RemixFormProvider {...methods}>
-        <ValidationErrorSnackbar />
-        <FormGenerator formSchema={formSchema} boxGroups />
-      </RemixFormProvider>
+    <>
+      <FormNavigationBlocker isDirty={Object.keys(dirtyFields).length > 0} />
 
-      <FloatingActionButtonContainer>
-        <FloatingActionButton
-          variant='primary'
-          type='submit'
-          aria-busy={submitting}
-          icon={submitting ? <CircularLoader /> : <SaveIcon />}
-          text={
-            submitting
-              ? t('divaClient_SubmittingButtonText')
-              : t('divaClient_SubmitButtonText')
-          }
-          disabled={submitting}
-        />
-      </FloatingActionButtonContainer>
-    </Form>
+      <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
+        <RemixFormProvider {...methods}>
+          <ValidationErrorSnackbar />
+          <FormGenerator formSchema={formSchema} boxGroups />
+        </RemixFormProvider>
+
+        <FloatingActionButtonContainer>
+          <FloatingActionButton
+            variant='primary'
+            type='submit'
+            aria-busy={submitting}
+            icon={submitting ? <CircularLoader /> : <SaveIcon />}
+            text={
+              submitting
+                ? t('divaClient_SubmittingButtonText')
+                : t('divaClient_SubmitButtonText')
+            }
+            disabled={submitting}
+          />
+        </FloatingActionButtonContainer>
+      </Form>
+    </>
   );
 };
