@@ -17,16 +17,14 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { assertDefined } from '@/utils/invariant';
-import { getDependencies } from 'server/dependencies/depencencies';
-import type { Route } from '../record/+types/recordView';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { extractLinkedRecordIdFromNamedRecordLink } from '@/cora/cora-data/CoraDataTransforms.server';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getDependencies } from 'server/dependencies/depencencies';
+import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
