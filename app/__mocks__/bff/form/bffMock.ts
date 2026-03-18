@@ -7,7 +7,6 @@ import type {
   BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
-  BFFPresentationBase,
   BFFPresentationContainer,
   BFFPresentationGroup,
   BFFPresentationOfSingleMetadata,

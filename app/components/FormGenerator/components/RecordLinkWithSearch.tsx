@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentAnyTypeRecordLink,
-  FormComponentRecordLink,
-} from '@/components/FormGenerator/types';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
