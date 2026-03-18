@@ -27,7 +27,6 @@ import type {
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentationBase,
-  BFFPresentationChildReference,
   BFFPresentationGroup,
   BFFPresentationOfSingleMetadata,
   BFFPresentationRecordLink,
@@ -37,7 +36,7 @@ import type {
   BFFRecordType,
   BFFResourceLink,
   BFFValidationType,
-  Dependencies,
+  Dependencies
 } from '@/cora/bffTypes.server';
 import {
   createFormDefinition,
@@ -54,9 +53,7 @@ import {
   createPresentationSContainer,
   createPresentationVar,
   createRecordLink,
-  createRecordType,
-  createTextVar,
-  createValidationType,
+  createTextVar
 } from './utils';
 
 describe('formDefinition', () => {
@@ -93,15 +90,15 @@ describe('formDefinition', () => {
       }
     });
 
-    describe('should return a form definition for a new metadata group', () => {
+    describe('form definition for a new metadata group', () => {
       it('creates a formDef for a rootGroup with a textVar', () => {
         const validationTypeId = 'someValidationTypeId';
 
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
-          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+          metadataPool: listToPool([rootGroup, textVariable]),
+          presentationPool: listToPool([rootPGroup, metadataPVariable]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -163,10 +160,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          metadataPool: listToPool([rootGroup, numberVariable]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataNumberVariable,
+            rootPGroup,
+            numberPVariable,
           ]),
         } as Dependencies;
 
@@ -233,14 +230,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testRootGroup,
-            testMetadataCollectionVariable,
-            someMetadataItemCollection,
-            someMetadataCollectionItemBlue,
+            rootGroup,
+            collectionVariable,
+            itemCollection,
+            itemBlue,
           ]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataCollectionVariable,
+            rootPGroup,
+            collectionPVariable,
           ]),
         } as Dependencies;
 
@@ -305,10 +302,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          metadataPool: listToPool([rootGroup, recordLink]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataRecordLink,
+            rootPGroup,
+            recordPLink,
           ]),
         } as Dependencies;
 
@@ -372,8 +369,8 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
-          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+          metadataPool: listToPool([rootGroup, resourceLink]),
+          presentationPool: listToPool([rootPGroup, resourcePLink]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -430,14 +427,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testOtherRootGroup,
-            testChildGroup,
-            testMetadataTextVariable,
+            otherRootGroup,
+            childGroup,
+            textVariable,
           ]),
           presentationPool: listToPool([
-            pTestOtherRootGroup,
-            pTestChildGroup,
-            pSomeMetadataVariable,
+            rootPGroup,
+            childPGroup,
+            metadataPVariable,
           ]),
         } as Dependencies;
 
@@ -515,15 +512,15 @@ describe('formDefinition', () => {
       });
     });
 
-    describe('should return a form definition for an edit metadata group', () => {
+    describe('form definition for an edit metadata group', () => {
       it('creates a formDef for a rootGroup with a textVar', () => {
         const validationTypeId = 'someValidationTypeId';
 
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
-          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+          metadataPool: listToPool([rootGroup, textVariable]),
+          presentationPool: listToPool([rootPGroup, metadataPVariable]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -585,10 +582,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          metadataPool: listToPool([rootGroup, numberVariable]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataNumberVariable,
+            rootPGroup,
+            numberPVariable,
           ]),
         } as Dependencies;
 
@@ -655,14 +652,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testRootGroup,
-            testMetadataCollectionVariable,
-            someMetadataItemCollection,
-            someMetadataCollectionItemBlue,
+            rootGroup,
+            collectionVariable,
+            itemCollection,
+            itemBlue,
           ]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataCollectionVariable,
+            rootPGroup,
+            collectionPVariable,
           ]),
         } as Dependencies;
 
@@ -727,10 +724,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          metadataPool: listToPool([rootGroup, recordLink]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataRecordLink,
+            rootPGroup,
+            recordPLink,
           ]),
         } as Dependencies;
 
@@ -794,8 +791,8 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
-          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+          metadataPool: listToPool([rootGroup, resourceLink]),
+          presentationPool: listToPool([rootPGroup, resourcePLink]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -852,14 +849,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testOtherRootGroup,
-            testChildGroup,
-            testMetadataTextVariable,
+            otherRootGroup,
+            childGroup,
+            textVariable,
           ]),
           presentationPool: listToPool([
-            pTestOtherRootGroup,
-            pTestChildGroup,
-            pSomeMetadataVariable,
+            rootPGroup,
+            childPGroup,
+            metadataPVariable,
           ]),
         } as Dependencies;
 
@@ -1037,15 +1034,15 @@ describe('formDefinition', () => {
       });
     });
 
-    describe('should return a form definition for (output) view presentation', () => {
+    describe('form definition for (output) view presentation', () => {
       it('creates a formDef for a rootGroup with a textVar', () => {
         const validationTypeId = 'someValidationTypeId';
 
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataTextVariable]),
-          presentationPool: listToPool([pTestRootGroup, pSomeMetadataVariable]),
+          metadataPool: listToPool([rootGroup, textVariable]),
+          presentationPool: listToPool([rootPGroup, metadataPVariable]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -1107,10 +1104,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataNumberVar]),
+          metadataPool: listToPool([rootGroup, numberVariable]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataNumberVariable,
+            rootPGroup,
+            numberPVariable,
           ]),
         } as Dependencies;
 
@@ -1177,14 +1174,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testRootGroup,
-            testMetadataCollectionVariable,
-            someMetadataItemCollection,
-            someMetadataCollectionItemBlue,
+            rootGroup,
+            collectionVariable,
+            itemCollection,
+            itemBlue,
           ]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataCollectionVariable,
+            rootPGroup,
+            collectionPVariable,
           ]),
         } as Dependencies;
 
@@ -1249,10 +1246,10 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataRecordLink]),
+          metadataPool: listToPool([rootGroup, recordLink]),
           presentationPool: listToPool([
-            pTestRootGroup,
-            pSomeMetadataRecordLink,
+            rootPGroup,
+            recordPLink,
           ]),
         } as Dependencies;
 
@@ -1316,8 +1313,8 @@ describe('formDefinition', () => {
         const mockDependencies = {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
-          metadataPool: listToPool([testRootGroup, testMetadataResourceLink]),
-          presentationPool: listToPool([pTestRootGroup, pSomeResourceLink]),
+          metadataPool: listToPool([rootGroup, resourceLink]),
+          presentationPool: listToPool([rootPGroup, resourcePLink]),
         } as Dependencies;
 
         const formDefinition = createFormDefinition(
@@ -1374,14 +1371,14 @@ describe('formDefinition', () => {
           validationTypePool: listToPool([testValidationTypeData]),
           recordTypePool: listToPool([someTestRecordType as BFFRecordType]),
           metadataPool: listToPool([
-            testOtherRootGroup,
-            testChildGroup,
-            testMetadataTextVariable,
+            otherRootGroup,
+            childGroup,
+            textVariable,
           ]),
           presentationPool: listToPool([
-            pTestOtherRootGroup,
-            pTestChildGroup,
-            pSomeMetadataVariable,
+            rootPGroup,
+            childPGroup,
+            metadataPVariable,
           ]),
         } as Dependencies;
 
@@ -3355,7 +3352,7 @@ const testValidationTypeData: BFFValidationType = {
   defTextId: 'defName456',
 };
 
-const testRootGroup: BFFMetadataGroup = {
+const rootGroup: BFFMetadataGroup = {
   id: 'rootGroupId',
   nameInData: 'rootGroupNameInData',
   type: 'group',
@@ -3370,7 +3367,7 @@ const testRootGroup: BFFMetadataGroup = {
   ],
 };
 
-export const testMetadataTextVariable: BFFMetadataTextVariable = {
+export const textVariable: BFFMetadataTextVariable = {
   id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   type: 'textVariable',
@@ -3379,7 +3376,7 @@ export const testMetadataTextVariable: BFFMetadataTextVariable = {
   regEx: 'someRegex',
 };
 
-export const pTestRootGroup: BFFPresentationGroup = {
+export const rootPGroup: BFFPresentationGroup = {
   id: 'rootPGroupId',
   type: 'pGroup',
   presentationOf: 'rootGroupId',
@@ -3393,7 +3390,7 @@ export const pTestRootGroup: BFFPresentationGroup = {
   ],
 };
 
-export const pSomeMetadataVariable: BFFPresentationTextVar = {
+export const metadataPVariable: BFFPresentationTextVar = {
   id: 'pSomeMetadataVariableId',
   presentationOf: 'someMetadataVariableId',
   mode: 'input',
@@ -3401,7 +3398,7 @@ export const pSomeMetadataVariable: BFFPresentationTextVar = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
-export const testMetadataNumberVar: BFFMetadataNumberVariable = {
+export const numberVariable: BFFMetadataNumberVariable = {
   id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   textId: 'someTextId',
@@ -3414,7 +3411,7 @@ export const testMetadataNumberVar: BFFMetadataNumberVariable = {
   type: 'numberVariable',
 };
 
-export const pSomeMetadataNumberVariable: BFFPresentationOfSingleMetadata = {
+export const numberPVariable: BFFPresentationOfSingleMetadata = {
   id: 'pSomeMetadataVariableId',
   presentationOf: 'someMetadataVariableId',
   mode: 'input',
@@ -3422,7 +3419,7 @@ export const pSomeMetadataNumberVariable: BFFPresentationOfSingleMetadata = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const testMetadataCollectionVariable: BFFMetadataCollectionVariable = {
+export const collectionVariable: BFFMetadataCollectionVariable = {
   id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   type: 'collectionVariable',
@@ -3431,7 +3428,7 @@ export const testMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   refCollection: 'someCollection',
 };
 
-export const someMetadataItemCollection: BFFMetadataItemCollection = {
+export const itemCollection: BFFMetadataItemCollection = {
   id: 'someCollection',
   nameInData: 'colour',
   type: 'itemCollection',
@@ -3440,7 +3437,7 @@ export const someMetadataItemCollection: BFFMetadataItemCollection = {
   collectionItemReferences: [{ refCollectionItemId: 'exampleBlueItem' }],
 };
 
-export const pSomeMetadataCollectionVariable: BFFPresentationBase = {
+export const collectionPVariable: BFFPresentationBase = {
   id: 'pSomeMetadataVariableId',
   presentationOf: 'someMetadataVariableId',
   mode: 'input',
@@ -3448,7 +3445,7 @@ export const pSomeMetadataCollectionVariable: BFFPresentationBase = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const someMetadataCollectionItemBlue: BFFMetadataBase = {
+export const itemBlue: BFFMetadataBase = {
   id: 'exampleBlueItem',
   nameInData: 'blue',
   type: 'collectionItem',
@@ -3456,7 +3453,7 @@ export const someMetadataCollectionItemBlue: BFFMetadataBase = {
   defTextId: 'exampleBlueItemDefText',
 };
 
-export const testMetadataRecordLink: BFFMetadataRecordLink = {
+export const recordLink: BFFMetadataRecordLink = {
   id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   type: 'recordLink',
@@ -3465,7 +3462,7 @@ export const testMetadataRecordLink: BFFMetadataRecordLink = {
   linkedRecordType: 'someLinkedRecordType',
 };
 
-export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
+export const recordPLink: BFFPresentationRecordLink = {
   id: 'pSomeMetadataVariableId',
   type: 'pRecordLink',
   presentationOf: 'someMetadataVariableId',
@@ -3478,7 +3475,7 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   ],
 };
 
-export const testMetadataResourceLink: BFFResourceLink = {
+export const resourceLink: BFFResourceLink = {
   id: 'someMetadataVariableId',
   nameInData: 'someNameInData',
   type: 'resourceLink',
@@ -3486,14 +3483,14 @@ export const testMetadataResourceLink: BFFResourceLink = {
   defTextId: 'someDefTextId',
 };
 
-export const pSomeResourceLink: BFFPresentationResourceLink = {
+export const resourcePLink: BFFPresentationResourceLink = {
   id: 'pSomeMetadataVariableId',
   presentationOf: 'someMetadataVariableId',
   outputFormat: 'image',
   type: 'pResourceLink',
 };
 
-const testOtherRootGroup: BFFMetadataGroup = {
+const otherRootGroup: BFFMetadataGroup = {
   id: 'rootGroupId',
   nameInData: 'rootGroupNameInData',
   type: 'group',
@@ -3508,7 +3505,7 @@ const testOtherRootGroup: BFFMetadataGroup = {
   ],
 };
 
-const testChildGroup: BFFMetadataGroup = {
+const childGroup: BFFMetadataGroup = {
   id: 'someChildGroupId',
   nameInData: 'childGroupNameInData',
   type: 'group',
@@ -3523,7 +3520,7 @@ const testChildGroup: BFFMetadataGroup = {
   ],
 };
 
-export const pTestOtherRootGroup: BFFPresentationGroup = {
+export const rootPGroup: BFFPresentationGroup = {
   id: 'rootPGroupId',
   type: 'pGroup',
   presentationOf: 'rootGroupId',
@@ -3537,7 +3534,7 @@ export const pTestOtherRootGroup: BFFPresentationGroup = {
   ],
 };
 
-export const pTestChildGroup: BFFPresentationGroup = {
+export const childPGroup: BFFPresentationGroup = {
   id: 'childPGroupId',
   type: 'pGroup',
   presentationOf: 'someChildGroupId',
