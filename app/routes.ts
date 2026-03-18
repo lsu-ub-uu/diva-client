@@ -25,7 +25,6 @@ export default [
   route('logout', 'routes/auth/logout.tsx'),
 
   /* Resource routes */
-  route('record/:recordType/:recordId', 'routes/resourceRoutes/getRecord.tsx'),
   route(
     'linkedRecord/:recordType/:recordId',
     'routes/resourceRoutes/getLinkedRecord.tsx',
