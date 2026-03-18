@@ -25,46 +25,43 @@ import type { Route } from '../record/+types/recordView';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { extractLinkedRecordIdFromNamedRecordLink } from '@/cora/cora-data/CoraDataTransforms.server';
+import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { recordType, recordId } = params;
   const dependencies = await getDependencies();
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies,
-    recordType,
-    recordId,
-    authToken: auth?.data.token,
-    mode: 'view',
-  });
 
-  const rawRecordResponse = await getRecordDataById<RecordWrapper>(
+  const recordResponse = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
     auth?.data.token,
   );
 
-  assertDefined(record.validationType, 'Record has no validation type');
+  const validationTypeId = extractLinkedRecordIdFromNamedRecordLink(
+    getFirstDataGroupWithNameInData(
+      recordResponse.data.record.data,
+      'recordInfo',
+    ),
+    'validationType',
+  );
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
-    record.validationType,
+    validationTypeId,
     'view',
   );
 
-  return { record, formDefinition, rawRecord: rawRecordResponse.data };
+  return { formDefinition, recordData: recordResponse.data.record.data };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition, rawRecord } = loaderData;
-
+  const { formDefinition, recordData } = loaderData;
   return (
     <main className='grid'>
       <div className='grid-col-6 grid-col-l-12'>
-        <OutputPresentation
-          data={rawRecord.record.data}
-          formSchema={formDefinition}
-          key={record?.id}
-        />
+        <OutputPresentation data={recordData} formSchema={formDefinition} />
       </div>
     </main>
   );

@@ -1,7 +1,7 @@
 import type { CoraData } from '@/cora/cora-data/types.server';
 import type { FormComponentWithData } from '../FormGenerator/types';
 import { useTranslation } from 'react-i18next';
-
+import styles from './OutputPresentation.module.css';
 interface AttributesProps {
   component: FormComponentWithData;
   data: CoraData;
@@ -28,15 +28,9 @@ export const Attributes = ({ component, data }: AttributesProps) => {
     return null;
   }
   return (
-    <div style={{ marginBottom: '0.5rem' }}>
+    <div className={styles['attributes']}>
       {attributesToShow.map((attribute) => (
-        <div
-          key={attribute.name}
-          style={{
-            fontStyle: 'italic',
-            fontSize: '0.9em',
-          }}
-        >
+        <div key={attribute.name}>
           {t(attribute.label)}:{' '}
           {t(
             attribute.options?.find(

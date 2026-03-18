@@ -48,6 +48,7 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export const loader = async ({
   request,
@@ -267,7 +268,7 @@ export default function CreateRecordRoute({
         {deferredPreviewData && (
           <div className='preview'>
             <OutputPresentation
-              data={transformToRaw(deferredPreviewData)}
+              data={transformToRaw(cleanFormData(deferredPreviewData))}
               formSchema={previewFormDefinition}
             />
           </div>

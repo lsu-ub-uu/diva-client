@@ -53,3 +53,9 @@
     }
   }
 }
+
+.attributes {
+  margin-bottom: var(--gap-s);
+  font-style: italic;
+  font-size: var(--font-size-s);
+}

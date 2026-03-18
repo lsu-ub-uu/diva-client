@@ -26,10 +26,6 @@
     pointer-events: none;
     color: var(--color-label);
   }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-thin-border);
-  }
 }
 
 .combobox-input-wrapper {

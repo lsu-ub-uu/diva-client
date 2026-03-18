@@ -42,6 +42,7 @@ import { useDeferredValue, useState } from 'react';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -212,7 +213,7 @@ export default function UpdateRecordRoute({
         {deferredPreviewData && (
           <div className='preview'>
             <OutputPresentation
-              data={transformToRaw(deferredPreviewData)}
+              data={transformToRaw(cleanFormData(deferredPreviewData))}
               formSchema={previewFormDefinition}
             />
           </div>

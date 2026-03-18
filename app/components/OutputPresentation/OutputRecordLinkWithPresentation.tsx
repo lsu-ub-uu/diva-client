@@ -35,7 +35,16 @@ export const OutputRecordLinkWithPresentation = ({
     const dataGroup = data?.record?.record?.data as DataGroup;
     const presentation = data?.presentation as FormSchema;
     if (!dataGroup || !presentation) {
-      return null;
+      return (
+        <Link
+          to={href('/:recordType/:recordId', {
+            recordType: linkedRecordType,
+            recordId: linkedRecordId,
+          })}
+        >
+          {linkedRecordType}/{linkedRecordId}
+        </Link>
+      );
     }
 
     return (
