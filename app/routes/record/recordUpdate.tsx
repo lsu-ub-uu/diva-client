@@ -36,14 +36,12 @@ import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import type { RecordWrapper } from '@/cora/cora-data/types.server';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);

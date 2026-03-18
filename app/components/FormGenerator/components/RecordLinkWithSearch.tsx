@@ -23,7 +23,6 @@ import type {
 import { type ReactNode, use } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -34,14 +33,14 @@ import {
   ComboboxOptions,
 } from '@/components/Input/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
 import { useMember } from '@/utils/rootLoaderDataUtils';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
-import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;

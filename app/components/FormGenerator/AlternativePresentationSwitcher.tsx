@@ -20,7 +20,6 @@ import { Component } from '@/components/FormGenerator/Component';
 import type {
   FormComponent,
   FormComponentGroup,
-  PresentationSize,
 } from '@/components/FormGenerator/types';
 import { use, useEffect, useRef, useState } from 'react';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -38,6 +37,7 @@ import {
   isComponentWithData,
 } from './formGeneratorUtils/formGeneratorUtils';
 import { FormGeneratorContext } from './FormGeneratorContext';
+import type { PresentationSize } from '@/cora/bffTypes.server';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;

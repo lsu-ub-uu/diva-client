@@ -68,7 +68,6 @@ export const createResourceLink = (
     presentationId: presentation.id,
     name,
     placeholder,
-    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,

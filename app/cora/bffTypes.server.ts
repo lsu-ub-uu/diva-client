@@ -159,10 +159,12 @@ export interface BFFPresentationTextVar extends BFFPresentationOfSingleMetadata 
   inputType: 'input' | 'textarea';
 }
 
-export interface BFFPresentationResourceLink extends BFFPresentationOfSingleMetadata {
+export interface BFFPresentationResourceLink extends Omit<
+  BFFPresentationOfSingleMetadata,
+  'mode'
+> {
   outputFormat: 'image' | 'download';
   type: 'pResourceLink';
-  mode: never;
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentationOfSingleMetadata {
@@ -197,7 +199,10 @@ export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadat
   children: BFFPresentationChildReference[];
 }
 
-export interface BFFPresentationSurroundingContainer extends BFFPresentationContainer {
+export interface BFFPresentationSurroundingContainer extends Omit<
+  BFFPresentationContainer,
+  'presentationOf'
+> {
   presentationsOf?: string[];
 }
 

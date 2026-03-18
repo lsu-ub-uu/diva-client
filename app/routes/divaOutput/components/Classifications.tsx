@@ -48,7 +48,7 @@ export const Classifications = ({ output }: ClassificationsProps) => {
           pill
           heading={output.subject_authority_diva.__text?.[language]}
           searchTerm='subjectTopicSearchTerm'
-          items={output.subject_authority_diva?.subject?.map((subject) => ({
+          items={output.subject_authority_diva?.topic?.map((subject) => ({
             label:
               getTitleForSubject(subject.linkedRecord, language) ||
               subject.value,

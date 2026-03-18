@@ -16,10 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  PresentationSize,
-  RecordFormSchema,
-} from '@/components/FormGenerator/types';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { PresentationSize } from '@/cora/bffTypes.server';
 
 export const createAlternativePresentationFormDef = (
   presentationSize?: PresentationSize,

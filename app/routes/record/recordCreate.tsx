@@ -19,14 +19,15 @@
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
@@ -47,8 +48,6 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
 
 export const loader = async ({
   request,

@@ -379,12 +379,12 @@ export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
             },
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -449,12 +449,12 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
             },
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },

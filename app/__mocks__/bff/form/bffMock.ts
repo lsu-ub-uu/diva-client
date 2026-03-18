@@ -10,6 +10,7 @@ import type {
   BFFPresentationBase,
   BFFPresentationContainer,
   BFFPresentationGroup,
+  BFFPresentationOfSingleMetadata,
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
   BFFPresentationTextVar,
@@ -910,7 +911,7 @@ export const someRecordInfo: BFFMetadataGroup = {
   ],
 };
 
-export const pSomeMetadataNumberVar: BFFPresentationBase = {
+export const pSomeMetadataNumberVar: BFFPresentationOfSingleMetadata = {
   id: 'pSomeMetadataNumberVariableId',
   presentationOf: 'someMetadataNumberVarId',
   mode: 'input',
@@ -919,14 +920,15 @@ export const pSomeMetadataNumberVar: BFFPresentationBase = {
   showLabel: 'false',
 };
 
-export const pSomeMetadataNumberWithAttributeVar: BFFPresentationBase = {
-  id: 'pSomeMetadataNumberWithAttributeVarId',
-  presentationOf: 'someMetadataNumberWithAttributeVarId',
-  mode: 'input',
-  type: 'pNumVar',
-  emptyTextId: 'someEmptyTextId',
-  attributesToShow: 'none',
-};
+export const pSomeMetadataNumberWithAttributeVar: BFFPresentationOfSingleMetadata =
+  {
+    id: 'pSomeMetadataNumberWithAttributeVarId',
+    presentationOf: 'someMetadataNumberWithAttributeVarId',
+    mode: 'input',
+    type: 'pNumVar',
+    emptyTextId: 'someEmptyTextId',
+    attributesToShow: 'none',
+  };
 
 export const pSomeMetadataTextVariable: BFFPresentationTextVar = {
   id: 'pSomeMetadataTextVariableId',
@@ -991,15 +993,16 @@ export const pSomeMetadataTextVariable6: BFFPresentationTextVar = {
   emptyTextId: 'someEmptyTextId',
 };
 
-export const pSomeMetadataCollectionVariable: BFFPresentationBase = {
-  id: 'pSomeMetadataCollectionVariableId',
-  presentationOf: 'exampleCollectionVarId',
-  mode: 'input',
-  type: 'pCollVar',
-  emptyTextId: 'someEmptyTextId',
-};
+export const pSomeMetadataCollectionVariable: BFFPresentationOfSingleMetadata =
+  {
+    id: 'pSomeMetadataCollectionVariableId',
+    presentationOf: 'exampleCollectionVarId',
+    mode: 'input',
+    type: 'pCollVar',
+    emptyTextId: 'someEmptyTextId',
+  };
 
-export const pSomeOtherMetadataCollectionVariableWithMissingChildId: BFFPresentationBase =
+export const pSomeOtherMetadataCollectionVariableWithMissingChildId: BFFPresentationOfSingleMetadata =
   {
     id: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
     presentationOf: 'exampleOtherCollectionVarId',
@@ -1008,7 +1011,7 @@ export const pSomeOtherMetadataCollectionVariableWithMissingChildId: BFFPresenta
     emptyTextId: 'someEmptyTextId',
   };
 
-export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentationBase =
+export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentationOfSingleMetadata =
   {
     id: 'pSomeMetadataCollectionVariableWithAttributeId',
     presentationOf: 'someMetadataCollectionVariableWithAttributeId',
@@ -1021,7 +1024,7 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
   id: 'pSomeMetadataChildGroupId',
   type: 'pGroup',
   presentationOf: 'someMetadataChildGroupId', // metadata
-  presentationStyle: 'someMetadataChildGroupPresentationStyle',
+  presentationStyle: 'inline',
   mode: 'input',
   children: [
     {
@@ -1037,7 +1040,7 @@ export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGr
     id: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
     type: 'pGroup',
     presentationOf: 'someMetadataChildGroupWithSpecifiedHeadlineTextId', // metadata
-    presentationStyle: 'someMetadataChildGroupPresentationStyle',
+    presentationStyle: 'inline',
     mode: 'input',
     specifiedHeadlineTextId: 'someOtherHeadlineTextId',
     specifiedHeadlineLevel: 'h3',
@@ -1055,7 +1058,7 @@ export const pSomeMetadataChildGroupWithShowHeadlineFalse: BFFPresentationGroup 
     id: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
     type: 'pGroup',
     presentationOf: 'someMetadataChildGroupWithShowHeadlineFalseId', // metadata
-    presentationStyle: 'someMetadataChildGroupPresentationStyle',
+    presentationStyle: 'inline',
     mode: 'input',
     showHeadline: 'false',
     children: [
@@ -1192,7 +1195,7 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
   type: 'pGroup',
   presentationOf: 'someEditMetadataGroupId', // metadata
   mode: 'input',
-  presentationStyle: 'card',
+  presentationStyle: 'inline',
   children: [
     {
       refGroups: [{ childId: 'someEditHeadlineTextId', type: 'text' }],
@@ -1316,7 +1319,7 @@ export const pSomeContainer: BFFPresentationSurroundingContainer = {
 export const pSomeRepeatingContainer: BFFPresentationContainer = {
   id: 'pSomeRepeatingContainerId',
   type: 'container',
-  presentationStyle: 'label',
+  presentationStyle: 'inline',
   presentationOf: 'someMetadataTextVariable5Id',
   mode: 'input',
   children: [
@@ -1822,19 +1825,21 @@ export const pNewNationSubjectCategoryMetadataGroup: BFFPresentationGroup = {
     },
   ],
 };
-export const pNewNationSubjectCategorySweVar: BFFPresentationBase = {
-  id: 'subjectSwePVar',
-  type: 'pVar',
-  presentationOf: 'subjectSweTextVar',
-  mode: 'input',
-};
+export const pNewNationSubjectCategorySweVar: BFFPresentationOfSingleMetadata =
+  {
+    id: 'subjectSwePVar',
+    type: 'pVar',
+    presentationOf: 'subjectSweTextVar',
+    mode: 'input',
+  };
 
-export const pNewNationSubjectCategoryEngVar: BFFPresentationBase = {
-  id: 'subjectEngPVar',
-  type: 'pVar',
-  presentationOf: 'subjectEngTextVar',
-  mode: 'input',
-};
+export const pNewNationSubjectCategoryEngVar: BFFPresentationOfSingleMetadata =
+  {
+    id: 'subjectEngPVar',
+    type: 'pVar',
+    presentationOf: 'subjectEngTextVar',
+    mode: 'input',
+  };
 
 export const divaOutputValidationType: BFFValidationType = {
   id: 'preprint',

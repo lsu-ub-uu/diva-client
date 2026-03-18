@@ -131,7 +131,7 @@ const nationalSubjectCategory = {
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: ['compact'],
           gridColSpan: 12,
         },
@@ -187,7 +187,7 @@ const nationalSubjectCategory = {
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: ['compact'],
           gridColSpan: 12,
         },
