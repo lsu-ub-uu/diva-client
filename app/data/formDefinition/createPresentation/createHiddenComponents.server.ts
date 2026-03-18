@@ -32,13 +32,13 @@ import type {
   FormComponentHidden,
   FormComponentRepeat,
 } from '@/components/FormGenerator/types';
-import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createAttributes } from './createAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   determineRepeatMax,
   type BFFMetadataTypes,
-} from '../formDefinition.server';
+} from '../utils/formDefinitionUtils.server';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,
@@ -79,8 +79,7 @@ const createHiddenComponentsForMetadata = (
   const attributes = createAttributes(
     metadata as BFFMetadataTypes,
     dependencies.metadataPool,
-    undefined,
-    'input',
+    { mode: 'input' } as BFFPresentation,
   );
 
   if (isMetadataGroup(metadata)) {

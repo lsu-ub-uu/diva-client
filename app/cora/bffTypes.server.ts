@@ -142,7 +142,6 @@ export interface BFFPresentationBase extends BFFBase {
     | 'container'
     | 'pRecordLink'
     | 'pResourceLink';
-  presentationOf: string;
   mode: 'input' | 'output';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
@@ -151,18 +150,24 @@ export interface BFFPresentationBase extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
-export interface BFFPresentationTextVar extends BFFPresentationBase {
+export interface BFFPresentationOfSingleMetadata extends BFFPresentationBase {
+  presentationOf: string;
+}
+
+export interface BFFPresentationTextVar extends BFFPresentationOfSingleMetadata {
   type: 'pVar';
   inputType: 'input' | 'textarea';
 }
 
-export interface BFFPresentationResourceLink extends BFFPresentationBase {
+export interface BFFPresentationResourceLink extends Omit<
+  BFFPresentationOfSingleMetadata,
+  'mode'
+> {
   outputFormat: 'image' | 'download';
   type: 'pResourceLink';
-  mode: never;
 }
 
-export interface BFFPresentationRecordLink extends BFFPresentationBase {
+export interface BFFPresentationRecordLink extends BFFPresentationOfSingleMetadata {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
   presentAs?: 'onlyTranslatedText' | 'permissionUnit';
@@ -173,26 +178,37 @@ export interface BFFLinkedRecordPresentation {
   presentationId: string;
 }
 
-export interface BFFPresentationContainer extends BFFPresentationBase {
+export type PresentationStyle =
+  | 'inline'
+  | 'frame'
+  | 'specification'
+  | 'highlight'
+  | 'rowBased';
+
+export type PresentationSize =
+  | 'firstSmaller'
+  | 'firstLarger'
+  | 'bothEqual'
+  | 'singleInitiallyVisible'
+  | 'singleInitiallyHidden';
+
+export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadata {
   type: 'container';
   repeat: 'children' | 'this';
-  presentationStyle?: string;
+  presentationStyle?: PresentationStyle;
   children: BFFPresentationChildReference[];
 }
 
-type SurroundingContainerBase = Omit<
+export interface BFFPresentationSurroundingContainer extends Omit<
   BFFPresentationContainer,
   'presentationOf'
->;
-
-export interface BFFPresentationSurroundingContainer extends SurroundingContainerBase {
+> {
   presentationsOf?: string[];
 }
 
-export interface BFFPresentationGroup extends BFFPresentationBase {
+export interface BFFPresentationGroup extends BFFPresentationOfSingleMetadata {
   type: 'pGroup';
-  presentationOf: string;
-  presentationStyle?: string;
+  presentationStyle?: PresentationStyle;
   children: BFFPresentationChildReference[];
   specifiedHeadlineTextId?: string;
   specifiedHeadlineLevel?: string;
@@ -211,7 +227,7 @@ export interface BFFPresentationChildReference {
   minNumberOfRepeatingToShow?: string;
   textStyle?: TextStyle;
   childStyle?: ChildStyle[];
-  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
@@ -256,7 +272,7 @@ export interface BFFPresentationChildReference {
   minNumberOfRepeatingToShow?: string;
   textStyle?: TextStyle;
   childStyle?: ChildStyle[];
-  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
@@ -286,15 +302,16 @@ export interface BFFGuiElement extends BFFBase {
   url: string;
   elementText: string;
   presentAs: 'link' | 'image';
-  type: string;
+  type: 'guiElementLink';
 }
 
 export type BFFPresentation =
   | BFFPresentationBase
+  | BFFPresentationTextVar
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
-  | BFFGuiElement
-  | BFFPresentationResourceLink;
+  | BFFPresentationResourceLink
+  | BFFGuiElement;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;

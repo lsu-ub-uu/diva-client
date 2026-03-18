@@ -16,14 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type {
-  FormComponentAnyTypeRecordLink,
-  FormComponentRecordLink,
-} from '@/components/FormGenerator/types';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -34,6 +30,8 @@ import {
   ComboboxOptions,
 } from '@/components/Input/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
 import { useMember } from '@/utils/rootLoaderDataUtils';
@@ -42,7 +40,7 @@ import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
 
 interface RecordLinkWithSearchProps {
-  component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
+  component: FormComponentRecordLink;
   path: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -57,7 +55,7 @@ export const RecordLinkWithSearch = ({
   const { t } = useTranslation();
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
-  const errorMessage = getErrorMessageForField(formState, path);
+  const errorMessage = getErrorMessageForField(formState, `${path}.value`);
   const member = useMember();
   const fetcher = useFetcher();
   const recordLinkSearchPresentation = component.searchPresentation;
@@ -118,7 +116,12 @@ export const RecordLinkWithSearch = ({
             <Combobox
               name={name}
               value={value}
-              onChange={(recordId) => onChange(recordId)}
+              onChange={(recordId) =>
+                onChange({
+                  linkedRecordType: component.recordLinkType,
+                  value: recordId,
+                })
+              }
             >
               <ComboboxInput
                 aria-invalid={errorMessage !== undefined}
@@ -135,9 +138,10 @@ export const RecordLinkWithSearch = ({
                   fetcher.data &&
                   fetcher.data.result.map((result: BFFDataRecord) => (
                     <ComboboxOption key={result.id} value={result.id}>
-                      <AutocompleteForm
-                        record={result}
+                      <OutputPresentation
+                        data={transformToRaw(result.data)}
                         formSchema={result.presentation!}
+                        compact
                       />
                     </ComboboxOption>
                   ))}

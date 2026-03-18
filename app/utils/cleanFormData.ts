@@ -99,7 +99,7 @@ const cleanGroup = (group: Record<string, any>): ValuableDataWrapper<any> => {
   const cleanedObj: Record<string, any> = {};
 
   Object.entries(group).forEach(([key, value]) => {
-    if (isAttributeKey(key) && !isEmpty(value)) {
+    if (isAttributeKey(key)) {
       cleanedObj[key] = value;
       return;
     }

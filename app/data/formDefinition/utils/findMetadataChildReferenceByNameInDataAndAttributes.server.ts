@@ -5,15 +5,15 @@ import type {
 import {
   type BFFMetadataTypes,
   getAttributesByAttributeReferences,
-} from '@/data/formDefinition/formDefinition.server';
+} from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (
   metadataPool: Dependencies['metadataPool'],
   metadataChildReferences: BFFMetadataChildReference[],
   metadataFromCurrentPresentation: BFFMetadata,
-): BFFMetadataChildReference | undefined => {
-  return metadataChildReferences.find((metadataChildReferenceCandidate) => {
+): BFFMetadataChildReference[] => {
+  return metadataChildReferences.filter((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(
       metadataChildReferenceCandidate.childId,
     );

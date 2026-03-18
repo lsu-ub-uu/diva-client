@@ -1,5 +1,6 @@
 import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
-import { SearchResultForm } from '@/components/Form/SearchResultForm';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord, Metadata } from '@/types/record';
 
 interface SearchResultItemProps {
@@ -33,5 +34,12 @@ export const SearchResultItem = ({ record }: SearchResultItemProps) => {
 
   // diva-funder
 
-  return <SearchResultForm record={record} formSchema={record.presentation!} />;
+  return (
+    <div>
+      <OutputPresentation
+        data={transformToRaw(record.data)}
+        formSchema={record.presentation!}
+      />
+    </div>
+  );
 };

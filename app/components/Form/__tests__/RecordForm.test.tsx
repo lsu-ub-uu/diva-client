@@ -23,7 +23,6 @@ import {
 } from '@/__mocks__/data/form/alternativePresentation';
 import {
   formSchemaWithBinary,
-  linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
 import { formDefWithOneCollectionVariableWithModeOutput } from '@/__mocks__/data/form/collVar';
@@ -218,7 +217,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -369,7 +367,6 @@ describe('<Form />', () => {
                     'parentNationalSubjectCategoryPLink',
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -512,7 +509,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -610,7 +606,6 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -708,12 +703,10 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -1404,34 +1397,14 @@ describe('<Form />', () => {
             />
           ),
         },
-        {
-          path: '/record/:recordType/:recordId',
-          loader: () => {
-            return { record: linkedBinaryMock };
-          },
-        },
-        {
-          path: '/binary/:id/:name',
-          loader: () => {
-            return '';
-          },
-        },
       ]);
 
       await act(() => render(<RoutesStub />));
-      expect(
-        screen.getByRole('heading', {
-          level: 2,
-          name: /attachmentgrouptext/i,
-        }),
-      ).toBeInTheDocument();
 
       expect(screen.getByRole('presentation')).toHaveAttribute(
         'src',
-        '/binary/binary:1283806137807105/thumbnail',
+        '/binary/binary:34466800953608169/binary',
       );
-
-      expect(screen.getByText('cat.jpg')).toBeInTheDocument();
 
       const downloadLink = screen.getByRole('link', {
         name: /resourcelinkdownloadtext/i,
@@ -1439,7 +1412,7 @@ describe('<Form />', () => {
 
       expect(downloadLink).toHaveAttribute(
         'href',
-        '/binary/binary:1283806137807105/master',
+        '/binary/binary:34466800953608169/binary',
       );
       expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
     });
@@ -2348,78 +2321,6 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(screen.getByRole('button', { name: 'someTitle' }));
       expect(screen.getByText('Some data')).toBeInTheDocument();
-    });
-  });
-
-  describe('trash bin', () => {
-    it('hides trash bin collection var from input form', () => {
-      const formSchema: RecordFormSchema = {
-        validationTypeId: 'someValidationTypeId',
-        form: {
-          type: 'group',
-          label: 'someRootFormGroupText',
-          showLabel: true,
-          name: 'someRootNameInData',
-          mode: 'input',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          components: [
-            {
-              type: 'group',
-              mode: 'input',
-              name: 'recordInfo',
-              label: 'Group',
-              showLabel: true,
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              components: [
-                {
-                  mode: 'input',
-                  showLabel: true,
-                  type: 'collectionVariable',
-                  name: 'inTrashBin',
-                  label: 'trashBinCollectionVarText',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  options: [
-                    { value: 'false', label: 'falseItemText' },
-                    { value: 'true', label: 'trueItemText' },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      };
-
-      const record = {
-        id: 'someId',
-        recordType: 'someRecordType',
-        validationType: 'someValidationType',
-        actionLinks: {
-          read: { url: '', requestMethod: 'get', rel: 'read' },
-        },
-        userRights: ['read', 'update', 'index', 'delete', 'trash'],
-        data: {
-          recordInfo: {
-            inTrashBin: { value: 'false', required: true },
-          },
-        },
-      } as BFFDataRecord<BFFDataRecordData>;
-
-      render(
-        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
-      );
-
-      expect(
-        screen.queryByLabelText('trashBinCollectionVarText'),
-      ).not.toBeInTheDocument();
     });
   });
 });

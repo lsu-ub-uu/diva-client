@@ -24,12 +24,18 @@ import { ExternalLinkIcon } from 'lucide-react';
 interface LinkButtonProps {
   text: string;
   href: string;
+  className?: string;
 }
 
 export const LinkButton = (props: LinkButtonProps) => {
   const { t } = useTranslation();
   return (
-    <a href={props.href} target='_blank' rel='noreferrer'>
+    <a
+      href={props.href}
+      target='_blank'
+      rel='noreferrer'
+      className={props.className}
+    >
       <span className={styles['link']}>
         {t(props.text)}
         <ExternalLinkIcon />

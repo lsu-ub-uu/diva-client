@@ -21,16 +21,30 @@ import type { FormComponentType } from '@/components/FormGenerator/types';
 import type { BFFMetadata, BFFPresentation } from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
+export interface CommonParameters {
+  name: string;
+  type: FormComponentType;
+  placeholder?: string;
+  mode?: string;
+  tooltip: {
+    title: string;
+    body: string;
+  };
+  label: string;
+  headlineLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  showLabel: boolean;
+  attributesToShow?: 'all' | 'selectable' | 'none';
+}
+
 export const createCommonParameters = (
   metadata: BFFMetadata,
   presentation: BFFPresentation,
-) => {
+): CommonParameters => {
   return removeEmpty({
     name: metadata.nameInData,
     type: metadata.type as FormComponentType,
     placeholder: getPlaceholder(presentation),
     mode: getMode(presentation),
-    inputType: getInputType(presentation),
     tooltip: getTooltip(metadata),
     label: getLabel(metadata, presentation),
     headlineLevel: getHeadlineLevel(presentation),
@@ -55,10 +69,6 @@ const getHeadlineLevel = (presentation: BFFPresentation): HeadlineLevel => {
 
 const getTooltip = (metadata: BFFMetadata) => {
   return { title: metadata.textId, body: metadata.defTextId };
-};
-
-const getInputType = (presentation: BFFPresentation) => {
-  return 'inputType' in presentation ? presentation.inputType : undefined;
 };
 
 const getMode = (presentation: BFFPresentation) => {

@@ -27,10 +27,12 @@
     "node": "22.14.0"
   },
   "dependencies": {
+    "@codemirror/lang-json": "^6.0.2",
     "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.1.1",
     "@react-router/express": "^7.13.0",
     "@react-router/node": "^7.13.0",
+    "@uiw/react-codemirror": "^4.25.8",
     "amqplib": "^0.10.9",
     "axios": "^1.13.5",
     "clsx": "^2.1.1",

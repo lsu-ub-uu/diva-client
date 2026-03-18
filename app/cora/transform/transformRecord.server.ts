@@ -38,12 +38,12 @@ import type {
   RecordWrapper,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 
 import {
   createFormMetaData,
   createViewMetadata,
-} from '@/data/formDefinition/formMetadata.server';
+} from '@/data/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,

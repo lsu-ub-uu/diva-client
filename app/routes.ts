@@ -25,7 +25,10 @@ export default [
   route('logout', 'routes/auth/logout.tsx'),
 
   /* Resource routes */
-  route('record/:recordType/:recordId', 'routes/resourceRoutes/getRecord.tsx'),
+  route(
+    'linkedRecord/:recordType/:recordId',
+    'routes/resourceRoutes/getLinkedRecord.tsx',
+  ),
   route('refreshDefinitions', 'routes/resourceRoutes/refreshDefinitions.tsx'),
   route(
     'autocompleteSearch/:searchType',
@@ -37,4 +40,5 @@ export default [
   route('sitemap.xml', 'routes/resourceRoutes/sitemap.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
+  route('presentation-playground', 'routes/docs/presentationPlayground.tsx'),
 ] satisfies RouteConfig;

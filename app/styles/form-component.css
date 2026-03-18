@@ -17,7 +17,7 @@
  */
 
 .form-component-container {
-  gap: var(--gap-l);
+  gap: var(--gap);
 
   &[data-layout='grid'] {
     display: grid;
@@ -31,7 +31,7 @@
   &[data-layout='inline'] {
     display: flex;
     flex-direction: column;
-    gap: 0 0.25em;
+    gap: 0 var(--gap);
 
     @media (width >= 900px) {
       flex-flow: row wrap;

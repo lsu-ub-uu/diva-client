@@ -124,3 +124,9 @@ body.dialog-open {
   left: 0;
   width: 100%;
 }
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}

@@ -98,11 +98,11 @@ import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { FormMetaData } from '../formDefinition.server';
+import type { FormMetaData } from '../utils/formDefinitionUtils.server';
 import {
   createFormMetaData,
   createMetaDataFromChildReference,
-} from '../formMetadata.server';
+} from '../../formMetadata.server';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

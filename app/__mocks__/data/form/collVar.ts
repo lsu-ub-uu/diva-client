@@ -145,7 +145,7 @@ export const formDefCollVarsWithSameNameInData: RecordFormSchema = {
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -277,7 +277,7 @@ export const formDefCollVarsWithSameNameInDataNEW: RecordFormSchema = {
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -482,7 +482,7 @@ export const formDefRequiredRepeatingCollectionVar1_X: RecordFormSchema = {
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -552,12 +552,12 @@ export const formDefRequiredRepeatingCollection2Var: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
