@@ -28,17 +28,18 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
+import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
-import { ActionBar } from './ActionBar/ActionBar';
+import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const { t, language } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
   const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
-
+  const dependencies = await getDependencies();
   try {
     const record = await getRecordByRecordTypeAndRecordId({
       dependencies,
@@ -48,8 +49,9 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
       mode: 'view',
     });
 
-    const breadcrumb = getRecordTitle(record) ?? record.id;
-    const pageTitle = getRecordTitle(record);
+    const breadcrumb = getRecordTitle(record, language) ?? record.id;
+    const pageTitle =
+      getRecordTitle(record, language) || t('divaClient_missingTitleText');
 
     return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {
@@ -63,7 +65,11 @@ export const links: Route.LinksFunction = () => [
 
 export const meta = ({ loaderData, error }: Route.MetaArgs) => {
   return [
-    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
+    {
+      title: error
+        ? getMetaTitleFromError(error)
+        : `${loaderData?.pageTitle} | DiVA`,
+    },
   ];
 };
 
@@ -109,17 +115,19 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <div>
-      <div className='record-status-bar'>
+    <>
+      <div className='grid main-content'>
         {isInTrashBin() && (
-          <TrashAlert recordType={record.recordType} recordId={record.id} />
+          <div className='record-status-bar grid-col-12'>
+            <TrashAlert recordType={record.recordType} recordId={record.id} />
+          </div>
         )}
-      </div>
-      <div className='record-top-bar'>
-        <Breadcrumbs />
-        <ActionBar record={record} apiUrl={apiUrl} />
+        <div className='top-bar grid-col-12'>
+          <Breadcrumbs />
+          <RecordActionBar record={record} apiUrl={apiUrl} />
+        </div>
       </div>
       <Outlet />
-    </div>
+    </>
   );
 }

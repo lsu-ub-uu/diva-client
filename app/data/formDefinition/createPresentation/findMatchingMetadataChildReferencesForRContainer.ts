@@ -20,7 +20,7 @@
 import type {
   BFFMetadataChildReference,
   BFFPresentationContainer,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 
 export const findMatchingMetadataChildReferencesForRContainer = (
   presentation: BFFPresentationContainer,

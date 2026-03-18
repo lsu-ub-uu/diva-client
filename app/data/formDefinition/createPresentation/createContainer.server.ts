@@ -17,28 +17,24 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type {
-  FormComponent,
-  FormComponentContainer,
-} from '@/components/FormGenerator/types';
+import type { FormComponentContainer } from '@/components/FormGenerator/types';
 import type {
   BFFMetadataChildReference,
   BFFPresentationChildReference,
   BFFPresentationContainer,
-} from '@/cora/transform/bffTypes.server';
-import { createComponentsFromChildReferences } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { findMatchingMetadataChildReferencesForRContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForRContainer';
 import { findMatchingMetadataChildReferencesForSContainer } from '@/data/formDefinition/createPresentation/findMatchingMetadataChildReferencesForSContainer.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { createChildComponents } from './createChildComponents.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
 
 export const createContainer = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentation: BFFPresentationContainer,
   presentationChildReference: BFFPresentationChildReference,
-  alternativePresentation: FormComponent | undefined,
 ): FormComponentContainer | undefined => {
   const name = presentation.id; // container does not have a nameInData so use id instead.
   const { type, mode } = presentation;
@@ -66,21 +62,16 @@ export const createContainer = (
     return undefined;
   }
 
-  const components = createComponentsFromChildReferences(
+  const components = createChildComponents(
     dependencies,
     matchingMetadataChildReferences,
     presentation.children,
-    false,
   );
 
-  const {
-    childStyle,
-    textStyle,
-    gridColSpan,
-    presentationSize,
-    title,
-    titleHeadlineLevel,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  const { childStyle, textStyle, presentationSize, title, titleHeadlineLevel } =
+    presentationChildReference;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const container: FormComponentContainer = {
     presentationId: presentation.id,
@@ -93,7 +84,6 @@ export const createContainer = (
     childStyle,
     gridColSpan,
     textStyle,
-    alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,

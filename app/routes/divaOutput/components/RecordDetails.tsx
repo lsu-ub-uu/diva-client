@@ -89,6 +89,14 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           label={output.adminInfo?.reviewed?.__text?.[language]}
           value={output.adminInfo?.reviewed?.__valueText?.[language]}
         />
+        <Term
+          label={output.attachments?.note_type_attachment?.__text?.[language]}
+          value={output.attachments?.note_type_attachment?.value}
+        />
+        <Term
+          label={output.attachments?.reviewed?.__text?.[language]}
+          value={output.attachments?.reviewed?.__valueText?.[language]}
+        />
       </dl>
     </details>
   );

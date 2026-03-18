@@ -2,8 +2,11 @@ import type {
   DivaOutput,
   RelatedItemJournalGroup,
 } from '@/generatedTypes/divaTypes';
+import {
+  getFullTitleForOutput,
+  getTitleFromTitleInfo,
+} from '@/utils/getRecordTitle';
 import type { MetaDescriptor } from 'react-router';
-import { createTitle } from './createTitle';
 import { formatPersonName } from './formatPersonName';
 
 export const generateCitationMeta = (
@@ -15,7 +18,7 @@ export const generateCitationMeta = (
   if (divaOutput.output.titleInfo) {
     meta.push({
       name: 'citation_title',
-      content: createTitle(divaOutput.output.titleInfo),
+      content: getFullTitleForOutput(divaOutput),
     });
   }
 
@@ -74,15 +77,17 @@ export const generateCitationMeta = (
     });
   }
 
-  const pdfFulltextAttachments = (divaOutput.output.attachment || []).filter(
+  const pdfFulltextAttachments = (
+    divaOutput.output.attachments?.attachment || []
+  ).filter(
     (attachment) =>
-      attachment?.type?.value === 'fullText' &&
-      attachment?.attachmentFile?.linkedRecord?.binary?.master?.master
-        ?.mimeType === 'application/pdf',
+      attachment?._label === 'fullText' &&
+      attachment?.file?.linkedRecord?.binary?.master?.master?.mimeType ===
+        'application/pdf',
   );
 
   pdfFulltextAttachments
-    .map((attachment) => attachment?.attachmentFile?.linkedRecord?.binary)
+    .map((attachment) => attachment?.file?.linkedRecord?.binary)
     .filter((binary) => binary?.recordInfo.visibility.value === 'published')
     .forEach((binary) => {
       if (binary?.master?.master) {
@@ -104,7 +109,7 @@ const addMetaJournalInfo = (
   if (journal.titleInfo) {
     meta.push({
       name: 'citation_journal_title',
-      content: createTitle(journal.titleInfo),
+      content: getTitleFromTitleInfo(journal.titleInfo),
     });
   }
 

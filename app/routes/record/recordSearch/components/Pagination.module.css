@@ -1,0 +1,27 @@
+.pagination {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xl);
+  font-size: var(--font-size);
+}
+
+.result-text {
+  grid-column: span 2;
+  white-space: nowrap;
+  margin-right: auto;
+}
+
+.pagination-buttons {
+  display: flex;
+}
+
+@media (width < 900px) {
+  .pagination {
+    display: grid;
+
+    .pagination-buttons {
+      margin-left: auto;
+    }
+  }
+}

@@ -16,47 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  data,
-  isRouteErrorResponse,
-  Outlet,
-  useRouteLoaderData,
-} from 'react-router';
-import type { Route } from '../record/+types/recordType';
-import { getIconByHTTPStatus, ErrorPage } from '@/errorHandling/ErrorPage';
-import { useTranslation } from 'react-i18next';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { dependenciesContext } from 'server/depencencies';
+import { useTranslation } from 'react-i18next';
+import { data, isRouteErrorResponse, Outlet } from 'react-router';
 import { i18nContext } from 'server/i18n';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
+import type { Route } from '../record/+types/recordType';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-  const { dependencies } = context.get(dependenciesContext);
-
   const { t } = context.get(i18nContext);
 
+  const dependencies = await getDependencies();
   if (!dependencies.recordTypePool.has(params.recordType)) {
     throw data('divaClient_errorRecordTypeNotFoundText', { status: 404 });
   }
   const recordType = dependencies.recordTypePool.get(params.recordType);
-  return { breadcrumb: t(recordType.textId) };
+  return { breadcrumb: t(recordType.pluralTextId) };
+};
+
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  return [{ title: `${loaderData?.breadcrumb} | DiVA` }];
 };
 
 export default function RecordTypeRoute() {
-  const { recordTypes, editableMember } = useRouteLoaderData('root');
-  return (
-    <>
-      <aside className='nav-rail'>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-        />
-      </aside>
-      <div className='content'>
-        <Outlet />
-      </div>
-    </>
-  );
+  return <Outlet />;
 }
 
 export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {

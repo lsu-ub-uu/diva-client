@@ -22,7 +22,7 @@ export const CardExpandButton = ({
   ...rest
 }: CardExpandButtonProps) => {
   const { t } = useTranslation();
-  const { ids } = use(CardContext);
+  const { ids, boxed } = use(CardContext);
 
   const getIcon = () => {
     if (expanded === 'bothEqual') {
@@ -49,8 +49,9 @@ export const CardExpandButton = ({
       type='button'
       data-action-button
     >
-      {getIcon()}
+      {boxed && getIcon()}
       {children}
+      {!boxed && getIcon()}
       <ValueIcon aria-hidden='true' className={styles['value-icon']} />
       <TriangleAlertIcon className={styles['error-icon']} aria-hidden='true' />
     </button>

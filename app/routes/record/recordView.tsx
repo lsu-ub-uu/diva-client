@@ -17,46 +17,49 @@
  */
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { extractLinkedRecordIdFromNamedRecordLink } from '@/cora/cora-data/CoraDataTransforms.server';
+import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { assertDefined } from '@/utils/invariant';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../record/+types/recordView';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const { recordType, recordId } = params;
-  const record = await getRecordByRecordTypeAndRecordId({
-    dependencies,
+  const dependencies = await getDependencies();
+
+  const recordResponse = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
-    authToken: auth?.data.token,
-    mode: 'view',
-  });
+    auth?.data.token,
+  );
 
-  assertDefined(record.validationType, 'Record has no validation type');
+  const validationTypeId = extractLinkedRecordIdFromNamedRecordLink(
+    getFirstDataGroupWithNameInData(
+      recordResponse.data.record.data,
+      'recordInfo',
+    ),
+    'validationType',
+  );
+
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
-    record.validationType,
+    validationTypeId,
     'view',
   );
 
-  return { record, formDefinition };
+  return { formDefinition, recordData: recordResponse.data.record.data };
 };
 
 export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
-
+  const { formDefinition, recordData } = loaderData;
   return (
-    <main>
-      <div className='record-wrapper'>
-        <ReadOnlyForm
-          recordData={record.data}
-          formSchema={formDefinition}
-          key={record?.id}
-        />
+    <main className='grid'>
+      <div className='grid-col-6 grid-col-l-12'>
+        <OutputPresentation data={recordData} formSchema={formDefinition} />
       </div>
     </main>
   );

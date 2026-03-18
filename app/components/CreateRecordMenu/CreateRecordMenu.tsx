@@ -17,12 +17,13 @@
  */
 
 import type { Option } from '@/components';
+import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { ActionBar } from '@/routes/record/ActionBar/ActionBar';
+import { ActionBarButton } from '@/routes/record/ActionBar/ActionBarButton';
+import { Menu, MenuButton, MenuItem } from '@headlessui/react';
+import { FilePlusIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { Button } from '@/components/Button/Button';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
-import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
-import { PlusCircleIcon } from 'lucide-react';
 
 interface CreateRecordMenuProps {
   validationTypes: Option[] | null;
@@ -42,36 +43,33 @@ export const CreateRecordMenu = ({
     type: t(recordTypeTextId).toLowerCase(),
   });
 
-  if (validationTypes.length === 1) {
-    return (
-      <Button
-        variant='secondary'
-        as={Link}
-        to={`create?validationType=${validationTypes[0].value}`}
-        size='large'
-      >
-        <PlusCircleIcon />
-        {buttonText}
-      </Button>
-    );
-  }
-
   return (
-    <Menu>
-      <MenuButton as={Button} variant='secondary' size='large'>
-        <PlusCircleIcon />
-        {buttonText}
-      </MenuButton>
+    <ActionBar>
+      {validationTypes.length === 1 ? (
+        <ActionBarButton
+          icon={<FilePlusIcon />}
+          as={Link}
+          to={`create?validationType=${validationTypes[0].value}`}
+        >
+          {buttonText}
+        </ActionBarButton>
+      ) : (
+        <Menu>
+          <MenuButton as={ActionBarButton} icon={<FilePlusIcon />}>
+            {buttonText}
+          </MenuButton>
 
-      <DropdownMenu anchor='bottom end'>
-        {validationTypes.map((option) => (
-          <MenuItem key={option.value}>
-            <Link to={`create?validationType=${option.value}`}>
-              {t(option.label)}
-            </Link>
-          </MenuItem>
-        ))}
-      </DropdownMenu>
-    </Menu>
+          <DropdownMenu anchor='bottom end'>
+            {validationTypes.map((option) => (
+              <MenuItem key={option.value}>
+                <Link to={`create?validationType=${option.value}`}>
+                  {t(option.label)}
+                </Link>
+              </MenuItem>
+            ))}
+          </DropdownMenu>
+        </Menu>
+      )}
+    </ActionBar>
   );
 };

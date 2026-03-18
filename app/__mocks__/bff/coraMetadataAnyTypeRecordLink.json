@@ -1,0 +1,194 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "hostRecordRecordLink"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "cora"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/system/cora",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "dataDivider"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadataAnyTypeRecordLink"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/validationType/metadataAnyTypeRecordLink",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "validationType"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadata"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/recordType/metadata",
+                        "accept": "application/vnd.cora.record+json"
+                      }
+                    },
+                    "name": "type"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "141414"
+                      }
+                    ],
+                    "name": "createdBy"
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2026-02-17T12:40:50.341231Z"
+                  },
+                  {
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "tsUpdated",
+                        "value": "2026-02-17T12:40:50.341231Z"
+                      },
+                      {
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ],
+                        "name": "updatedBy"
+                      }
+                    ],
+                    "name": "updated"
+                  }
+                ],
+                "name": "recordInfo"
+              },
+              {
+                "name": "nameInData",
+                "value": "hostRecord"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "hostRecordRecordLinkText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/text/hostRecordRecordLinkText",
+                    "accept": "application/vnd.cora.record+json"
+                  }
+                },
+                "name": "textId"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "hostRecordRecordLinkDefText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/text/hostRecordRecordLinkDefText",
+                    "accept": "application/vnd.cora.record+json"
+                  }
+                },
+                "name": "defTextId"
+              }
+            ],
+            "name": "metadata",
+            "attributes": {
+              "type": "anyTypeRecordLink"
+            }
+          },
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/metadata/hostRecordRecordLink",
+              "accept": "application/vnd.cora.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://preview.diva.cora.epc.ub.uu.se/rest/record/metadata/hostRecordRecordLink/incomingLinks",
+              "accept": "application/vnd.cora.recordList+json"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "metadata",
+    "toNo": "1"
+  }
+}

@@ -18,12 +18,12 @@ export const hasValuableData = (obj: Record<string, any>): boolean => {
 const cleanFormDataRecursively = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<Record<string, any>> => {
-  if (Array.isArray(obj)) {
-    return cleanArray(obj);
-  }
   if (isObject(obj)) {
     if (isResourceLink(obj)) {
       return cleanResourceLink(obj);
+    }
+    if (isRecordLink(obj)) {
+      return cleanRecordLink(obj);
     }
     if (isLeaf(obj)) {
       return cleanLeaf(obj);
@@ -47,26 +47,33 @@ const isResourceLink = (obj: Record<string, any>) => {
   );
 };
 
+const isRecordLink = (obj: Record<string, any>) => {
+  return Object.hasOwn(obj, 'linkedRecordType') && Object.hasOwn(obj, 'value');
+};
+
 const isLeaf = (obj: any) => {
   return (
     typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
   );
 };
 
-const cleanArray = (arr: any[]): ValuableDataWrapper<any[]> => {
-  const cleanedArray = arr
-    .values()
-    .map(cleanFormDataRecursively)
-    .filter(({ hasValuableData }) => hasValuableData)
-    .map(({ data }) => data)
-    .toArray();
-  return { data: cleanedArray, hasValuableData: cleanedArray.length > 0 };
-};
-
 const cleanResourceLink = (
   obj: Record<string, any>,
 ): ValuableDataWrapper<any> => {
   if (isEmpty(obj.id)) {
+    return { data: {}, hasValuableData: false };
+  }
+
+  return {
+    data: obj,
+    hasValuableData: true,
+  };
+};
+
+const cleanRecordLink = (
+  obj: Record<string, any>,
+): ValuableDataWrapper<any> => {
+  if (isEmpty(obj.value)) {
     return { data: {}, hasValuableData: false };
   }
 
@@ -92,23 +99,43 @@ const cleanGroup = (group: Record<string, any>): ValuableDataWrapper<any> => {
   const cleanedObj: Record<string, any> = {};
 
   Object.entries(group).forEach(([key, value]) => {
-    if (isAttributeKey(key) && !isEmpty(value)) {
+    if (isAttributeKey(key)) {
       cleanedObj[key] = value;
       return;
     }
 
-    const cleaned = cleanFormDataRecursively(value);
-    if (cleaned.hasValuableData) {
-      groupIsValuable = true;
-    }
+    if (Array.isArray(value)) {
+      const cleanedArray = value.map(cleanFormDataRecursively);
 
-    if (!isEmpty(cleaned.data)) {
-      cleanedObj[key] = cleaned.data;
+      if (cleanedArray.some(({ hasValuableData }) => hasValuableData)) {
+        groupIsValuable = true;
+      }
+
+      const arrayData = cleanedArray
+        .filter(({ data }) => !isEmpty(data))
+        .map(({ data }) => data);
+
+      if (arrayData.length > 0) {
+        cleanedObj[key] = arrayData;
+      }
+    } else {
+      const cleaned = cleanFormDataRecursively(value);
+
+      if (cleaned.hasValuableData) {
+        groupIsValuable = true;
+      }
+
+      if (!isEmpty(cleaned.data)) {
+        cleanedObj[key] = cleaned.data;
+      }
     }
   });
 
+  const shouldRemoveGroup =
+    !group.fromStorage && !groupIsValuable && !group.required;
+
   return {
-    data: groupIsValuable || group.required ? cleanedObj : {},
+    data: shouldRemoveGroup ? {} : cleanedObj,
     hasValuableData: groupIsValuable,
   };
 };

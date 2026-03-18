@@ -34,11 +34,11 @@ export const Select = ({ className, adornment, ref, ...rest }: SelectProps) => {
       {adornment && (
         <div className={clsx(styles['select-adornment'])}>{adornment}</div>
       )}
+      <select id={ids.input} {...rest} ref={ref} />
       <ChevronDownIcon
         className={styles['select-chevron']}
         aria-hidden='true'
       />
-      <select id={ids.input} {...rest} ref={ref} />
     </div>
   );
 };

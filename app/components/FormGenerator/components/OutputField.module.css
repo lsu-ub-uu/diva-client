@@ -18,7 +18,6 @@
 
 .output-field {
   display: flex;
-  gap: var(--gap-s);
 }
 
 .label {
@@ -29,6 +28,10 @@
   display: flex;
   align-items: center;
   gap: var(--gap);
+
+  & > :global(.action-button-group) {
+    margin-left: auto;
+  }
 }
 
 .adornment-wrapper {
@@ -45,19 +48,19 @@
 .output-field[data-variant='inline'] {
   align-items: center;
 
-  .value {
-    padding-left: var(--gap-s);
+  .label {
+    margin-right: var(--gap-s);
   }
 
   .label::after {
     content: ':';
   }
+
+  &[data-has-label='true'] {
+    margin-right: var(--gap-l);
+  }
 }
 
 .output-field[data-variant='block'] {
   flex-direction: column;
-
-  &:has(.label) > .value {
-    padding-left: var(--gap-l);
-  }
 }

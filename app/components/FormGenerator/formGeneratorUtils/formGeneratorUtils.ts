@@ -21,6 +21,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import type { FieldValues, FormState } from 'react-hook-form';
 import type {
   FormComponent,
+  FormComponentAnyTypeRecordLink,
   FormComponentCollVar,
   FormComponentContainer,
   FormComponentGroup,
@@ -36,7 +37,7 @@ import type {
 } from '../types';
 
 import type { Option } from '@/components';
-import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import type { TextStyle } from '@/cora/bffTypes.server';
 import { get } from 'lodash-es';
 import type { EnhancedFieldsConfig } from '../FormGeneratorContext';
 
@@ -78,6 +79,10 @@ export const isComponentCollVar = (
 export const isComponentRecordLink = (
   component: FormComponent,
 ): component is FormComponentRecordLink => component.type === 'recordLink';
+export const isComponentAnyTypeRecordLink = (
+  component: FormComponent,
+): component is FormComponentAnyTypeRecordLink =>
+  component.type === 'anyTypeRecordLink';
 
 export const isComponentText = (
   component: FormComponent,

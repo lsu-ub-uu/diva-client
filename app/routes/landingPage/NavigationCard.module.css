@@ -45,15 +45,15 @@
   font-size: var(--font-size-xl);
 }
 
-.card-icon-publications {
+.card-icon-diva-output {
   color: var(--color-link);
 }
 
-.card-icon-people {
+.card-icon-diva-person {
   color: var(--color-alert-success-icon);
 }
 
-.card-icon-projects {
+.card-icon-diva-project {
   color: var(--color-error-main);
 }
 

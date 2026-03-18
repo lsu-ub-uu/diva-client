@@ -78,10 +78,10 @@ import type {
   DataGroup,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type {
   BFFGuiElement,
@@ -102,7 +102,7 @@ import type {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '../bffTypes.server';
+} from '../../bffTypes.server';
 import {
   transformAttributes,
   transformDataGroup,
@@ -288,12 +288,16 @@ describe('transformRecord', () => {
           ],
           data: {
             divaOutput: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: 'coraUser:490742519075086',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'diva',
                   required: true,
                 },
@@ -306,78 +310,90 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'manuscriptRecordTypeId',
                   required: true,
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2023-10-11T09:24:30.511487Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: 'coraUser:490742519075086',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
-
                     tsUpdated: {
                       value: '2023-10-18T09:09:13.554736Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2023-10-26T12:33:22.260532Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '3',
                     tsUpdated: {
                       value: '2023-10-26T12:35:28.748398Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '4',
                     tsUpdated: {
                       value: '2023-10-26T12:35:40.545698Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '5',
                     tsUpdated: {
                       value: '2023-10-26T12:35:52.293623Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -385,12 +401,14 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'manuscript',
                   required: true,
                 },
                 required: true,
               },
               title: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'aaaaaa',
                   required: true,
@@ -399,6 +417,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               alternativeTitle: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'bbbbb',
                   required: true,
@@ -406,15 +425,13 @@ describe('transformRecord', () => {
                 subTitle: {
                   value: 'subTitle1',
                 },
-
                 _language: 'epo',
                 _titleType: 'alternativeTitle',
               },
-
               nationalSubjectCategory: {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
               },
-
               abstract: {
                 value: 'hej!',
                 _language: 'fao',
@@ -507,12 +524,16 @@ describe('transformRecord', () => {
           ],
           data: {
             output: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'divaData',
                   required: true,
                 },
@@ -525,41 +546,48 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -567,12 +595,14 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
                 required: true,
               },
               titleInfo: {
+                fromStorage: true,
                 _lang: 'ady',
                 title: {
                   value: 'EN utmärkt titel',
@@ -581,6 +611,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               titleInfo_type_alternative: {
+                fromStorage: true,
                 _lang: 'amh',
                 _type: 'alternative',
                 title: {
@@ -676,12 +707,18 @@ describe('transformRecord', () => {
           ],
           data: {
             output: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
+
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
+
                   value: 'divaData',
                   required: true,
                 },
@@ -694,41 +731,48 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -736,12 +780,14 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'divaOutputSwepub',
                   required: true,
                 },
                 required: true,
               },
               titleInfo: {
+                fromStorage: true,
                 _lang: 'ady',
                 title: {
                   value: 'EN utmärkt titel',
@@ -837,12 +883,18 @@ describe('transformRecord', () => {
           ],
           data: {
             name: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
+
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
+
                   value: 'divaData',
                   required: true,
                 },
@@ -855,41 +907,48 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'namePartValidationTypeId',
                   required: true,
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -897,6 +956,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'namePartValidationTypeId',
                   required: true,
                 },
@@ -999,12 +1059,16 @@ describe('transformRecord', () => {
           ],
           data: {
             name: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 createdBy: {
+                  linkedRecordType: 'user',
                   value: '161616',
                   required: true,
                 },
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'divaData',
                   required: true,
                 },
@@ -1017,41 +1081,49 @@ describe('transformRecord', () => {
                   required: true,
                 },
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'namePartPartWithAttributesRecordTypeId',
                   required: true,
                 },
                 updated: [
                   {
+                    fromStorage: true,
                     repeatId: '0',
                     tsUpdated: {
                       value: '2024-09-13T11:49:37.288927Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
+
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '1',
                     tsUpdated: {
                       value: '2024-09-13T11:49:54.085586Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
                     required: true,
                   },
                   {
+                    fromStorage: true,
                     repeatId: '2',
                     tsUpdated: {
                       value: '2024-09-16T08:00:42.892622Z',
                       required: true,
                     },
                     updatedBy: {
+                      linkedRecordType: 'user',
                       value: '161616',
                       required: true,
                     },
@@ -1059,6 +1131,7 @@ describe('transformRecord', () => {
                   },
                 ],
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'namePartPartWithAttributesValidationTypeId',
                   required: true,
                 },
@@ -1141,8 +1214,11 @@ describe('transformRecord', () => {
           updated: [],
           data: {
             divaOutput: {
+              fromStorage: true,
               recordInfo: {
+                fromStorage: true,
                 dataDivider: {
+                  linkedRecordType: 'system',
                   value: 'diva',
                   required: true,
                 },
@@ -1150,18 +1226,20 @@ describe('transformRecord', () => {
                   value: 'divaOutput:519333261463755',
                   required: true,
                 },
-
                 type: {
+                  linkedRecordType: 'recordType',
                   value: 'manuscriptRecordTypeId',
                   required: true,
                 },
                 validationType: {
+                  linkedRecordType: 'validationType',
                   value: 'manuscript',
                   required: true,
                 },
                 required: true,
               },
               title: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'aaaaaa',
                   required: true,
@@ -1170,6 +1248,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               alternativeTitle: {
+                fromStorage: true,
                 mainTitle: {
                   value: 'bbbbb',
                   required: true,
@@ -1177,15 +1256,13 @@ describe('transformRecord', () => {
                 subTitle: {
                   value: 'subTitle1',
                 },
-
                 _language: 'epo',
                 _titleType: 'alternativeTitle',
               },
-
               nationalSubjectCategory: {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
               },
-
               abstract: {
                 value: 'hej!',
                 _language: 'fao',
@@ -1225,6 +1302,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -1274,12 +1352,14 @@ describe('transformRecord', () => {
         const expected = {
           divaOutput: {
             childGroup: {
+              fromStorage: true,
               title: {
                 value: 'testTitleVal',
                 required: true,
               },
               required: true,
             },
+            fromStorage: true,
           },
         };
         expect(transformData).toStrictEqual(expected);
@@ -1322,6 +1402,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -1391,6 +1472,7 @@ describe('transformRecord', () => {
               value: '99.00',
               required: true,
             },
+            fromStorage: true,
           },
         };
         expect(transformData).toStrictEqual(expected);
@@ -1435,6 +1517,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             exampleNumberVar: [
               {
                 value: '12.99',
@@ -1500,6 +1583,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             exampleNumberVar: [
               {
                 repeatId: '0',
@@ -1574,8 +1658,10 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             childGroup: [
               {
+                fromStorage: true,
                 repeatId: '0',
                 title: {
                   value: 'testTitleVal1',
@@ -1584,6 +1670,7 @@ describe('transformRecord', () => {
                 required: true,
               },
               {
+                fromStorage: true,
                 repeatId: '1',
                 title: {
                   value: 'testTitleVal2',
@@ -1632,7 +1719,9 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:6325370460697648',
               required: true,
             },
@@ -1697,14 +1786,17 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory: [
               {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697648',
                 _language: 'eng',
                 repeatId: '0',
                 required: true,
               },
               {
+                linkedRecordType: 'nationalSubjectCategory',
                 value: 'nationalSubjectCategory:6325370460697641',
                 _language: 'swe',
                 repeatId: '1',
@@ -1763,6 +1855,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             subject_language_eng: {
               value: 'value1',
               _language: 'eng',
@@ -1819,6 +1912,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           divaOutput: {
+            fromStorage: true,
             subject: {
               value: 'value1',
               required: true,
@@ -1902,7 +1996,9 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
         const expected = {
           output: {
+            fromStorage: true,
             titleInfo: {
+              fromStorage: true,
               _lang: 'ady',
               title: {
                 value: 'EN utmärkt titel',
@@ -1912,6 +2008,7 @@ describe('transformRecord', () => {
             },
             titleInfo_type_alternative: [
               {
+                fromStorage: true,
                 _lang: 'amh',
                 _type: 'alternative',
                 repeatId: '7',
@@ -1974,6 +2071,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             domain_language_eng: {
               value: 'hb',
               _language: 'eng',
@@ -2056,12 +2154,15 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             nationalSubjectCategory_language_swe: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:1111111111111111',
               _language: 'swe',
               required: true,
             },
             nationalSubjectCategory_language_eng: {
+              linkedRecordType: 'nationalSubjectCategory',
               value: 'nationalSubjectCategory:2222222222222222',
               _language: 'eng',
               required: true,
@@ -2143,7 +2244,9 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             author_language_eng: {
+              fromStorage: true,
               _language: 'eng',
               name: {
                 value: 'value1',
@@ -2152,6 +2255,7 @@ describe('transformRecord', () => {
               required: true,
             },
             author_language_swe: {
+              fromStorage: true,
               _language: 'swe',
               name: {
                 value: 'value2',
@@ -2206,6 +2310,7 @@ describe('transformRecord', () => {
 
         const expected = {
           output: {
+            fromStorage: true,
             namePart: {
               value: 'value1',
               required: true,
@@ -2323,10 +2428,13 @@ describe('transformRecord', () => {
 
         const expected = {
           someRootGroup: {
+            fromStorage: true,
             someRecordLink: {
               value: 'someRecordId',
+              linkedRecordType: 'someLinkedRecordTypeId',
               linkedRecord: {
                 someLinkedRecordRootGroup: {
+                  fromStorage: true,
                   someTextVariable: {
                     value: 'value1',
                     required: true,
@@ -2584,8 +2692,10 @@ describe('transformRecord', () => {
         );
 
         const expected = {
+          fromStorage: true,
           name_type_personal: [
             {
+              fromStorage: true,
               namePart_type_family: {
                 value: 'eeeeeee',
                 _type: 'family',
@@ -2629,7 +2739,7 @@ describe('transformRecord', () => {
         const transformData = transformRecordData(data, metadata, dependencies);
 
         const expected = {
-          divaOutput: {},
+          divaOutput: { fromStorage: true },
         };
 
         expect(transformData).toStrictEqual(expected);
@@ -2662,6 +2772,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             title: {
               value: 'testTitleVal',
               required: true,
@@ -2712,6 +2823,7 @@ describe('transformRecord', () => {
 
         const expected = {
           divaOutput: {
+            fromStorage: true,
             master: {
               id: 'binary:8037579210342018',
               mimeType: 'audio/mpeg',
@@ -2757,6 +2869,7 @@ describe('transformRecord', () => {
 
         expect(transformedData).toStrictEqual({
           root: {
+            fromStorage: true,
             someFinalValueName: {
               value: 'someFinalValue',
               final: true,
@@ -2796,6 +2909,7 @@ describe('transformRecord', () => {
 
       expect(transformedData).toStrictEqual({
         root: {
+          fromStorage: true,
           someFinalValueName: {
             value: 'valueInMetadata',
             final: true,
@@ -2856,8 +2970,10 @@ describe('transformRecord', () => {
 
       const expected = {
         binary: {
+          fromStorage: true,
           _type: 'sound',
           master: {
+            fromStorage: true,
             resourceId: {
               value: 'binary:8037579210342018-master',
               required: true,
@@ -3039,13 +3155,15 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:4',
+              linkedRecordType: 'diva-organisation',
               displayName: {
                 en: 'Uppsala University',
                 sv: 'Uppsala universitet',
               },
-              linkedRecord: { organisation: {} },
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
@@ -3117,13 +3235,15 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'organisation:1',
+              linkedRecordType: 'diva-organisation',
               displayName: {
                 en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
                 sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
               },
-              linkedRecord: { organisation: {} },
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
@@ -3198,9 +3318,11 @@ describe('transformRecord', () => {
 
         expect(result).toStrictEqual({
           parent: {
+            fromStorage: true,
             someOrganisationRecordLink: {
               value: 'someNonExistingOrganisationId',
-              linkedRecord: { organisation: {} },
+              linkedRecordType: 'diva-organisation',
+              linkedRecord: { organisation: { fromStorage: true } },
               required: true,
             },
           },
@@ -3210,441 +3332,1487 @@ describe('transformRecord', () => {
   });
 
   describe('userRights', () => {
-    it('includes trash right when recordType has useTrashBin set to true and data has an update actionLink', () => {
-      const dependencies = {
-        validationTypePool: listToPool<BFFValidationType>([
-          {
-            id: 'diva-person',
-            metadataGroupId: 'someRootGroup',
-            validatesRecordTypeId: 'someRecordTypeId',
-          } as BFFValidationType,
-        ]),
-        metadataPool: listToPool<BFFMetadata>([
-          {
-            id: 'someRootGroup',
-            type: 'group',
-            children: [
-              { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'recordInfoGroup',
-            nameInData: 'recordInfo',
-            type: 'group',
-            children: [
-              { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
-              { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'trashBinVar',
-            type: 'textVariable',
-            nameInData: 'inTrashBin',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'idVar',
-            type: 'textVariable',
-            nameInData: 'id',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'typeLink',
-            type: 'recordLink',
-            nameInData: 'type',
-            linkedRecordType: 'recordType',
-          } as BFFMetadataRecordLink,
-          {
-            id: 'validationTypeLink',
-            type: 'recordLink',
-            nameInData: 'validationType',
-            linkedRecordType: 'validationType',
-          } as BFFMetadataRecordLink,
-        ]),
-        recordTypePool: listToPool<BFFRecordType>([
-          {
-            id: 'someRecordTypeId',
-            metadataId: 'someRootGroup',
-            useTrashBin: true,
-          } as BFFRecordType,
-        ]),
-      } as Dependencies;
+    describe('trash/untrash rights', () => {
+      it('includes trash right when recordType has useTrashBin set to true and data has an update actionLink', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'trashBinVar',
+              type: 'textVariable',
+              nameInData: 'inTrashBin',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
 
-      const record: RecordWrapper = {
-        record: {
-          data: {
-            name: 'someRootGroup',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '1234' },
-                  {
-                    name: 'type',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'someRecordTypeId',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'validationType',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'validationType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'diva-person',
-                      },
-                    ],
-                  },
-                  { name: 'inTrashBin', value: 'false' },
-                ],
-              },
-            ],
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'inTrashBin', value: 'false' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              update: {} as ActionLink,
+            },
           },
-          actionLinks: {
-            update: {} as ActionLink,
-          },
-        },
-      };
+        };
 
-      const result = transformRecord(dependencies, record, 'update');
-      expect(result.userRights).toContain('trash');
-      expect(result.userRights).not.toContain('untrash');
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).toContain('trash');
+        expect(result.userRights).not.toContain('untrash');
+      });
+
+      it('does not include trash right when inTrashBin is not present in recordInfo and data has an update actionLink', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: false,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'inTrashBin',
+                      value: 'false',
+                    },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('trash');
+      });
+
+      it('does not include trash right when recordType has useTrashBin set to true and data does not have an update actionLink', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'trashBinVar',
+              type: 'textVariable',
+              nameInData: 'inTrashBin',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'inTrashBin', value: 'false' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {},
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('trash');
+      });
+
+      it('includes untrash right when recordType has useTrashBin set to true and data has an update actionLink and record is in trash', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'trashBinVar',
+              type: 'textVariable',
+              nameInData: 'inTrashBin',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'inTrashBin', value: 'true' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).toContain('untrash');
+        expect(result.userRights).not.toContain('trash');
+      });
     });
 
-    it('does not include trash right when inTrashBin is not present in recordInfo and data has an update actionLink', () => {
-      const dependencies = {
-        validationTypePool: listToPool<BFFValidationType>([
-          {
-            id: 'diva-person',
-            metadataGroupId: 'someRootGroup',
-            validatesRecordTypeId: 'someRecordTypeId',
-          } as BFFValidationType,
-        ]),
-        metadataPool: listToPool<BFFMetadata>([
-          {
-            id: 'someRootGroup',
-            type: 'group',
-            children: [
-              { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'recordInfoGroup',
-            nameInData: 'recordInfo',
-            type: 'group',
-            children: [
-              { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
-              { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'idVar',
-            type: 'textVariable',
-            nameInData: 'id',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'typeLink',
-            type: 'recordLink',
-            nameInData: 'type',
-            linkedRecordType: 'recordType',
-          } as BFFMetadataRecordLink,
-          {
-            id: 'validationTypeLink',
-            type: 'recordLink',
-            nameInData: 'validationType',
-            linkedRecordType: 'validationType',
-          } as BFFMetadataRecordLink,
-        ]),
-        recordTypePool: listToPool<BFFRecordType>([
-          {
-            id: 'someRecordTypeId',
-            metadataId: 'someRootGroup',
-            useTrashBin: false,
-          } as BFFRecordType,
-        ]),
-      } as Dependencies;
+    describe('publish / unpublish right', () => {
+      it('does not include publish right when user does not have update action link', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
 
-      const record: RecordWrapper = {
-        record: {
-          data: {
-            name: 'someRootGroup',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '1234' },
-                  {
-                    name: 'type',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'someRecordTypeId',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'validationType',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'validationType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'diva-person',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'inTrashBin',
-                    value: 'false',
-                  },
-                ],
-              },
-            ],
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'unpublished' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+            },
           },
-          actionLinks: {
-            update: {} as ActionLink,
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('publish');
+      });
+
+      it('does not include publish right when record does not have visibility', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
           },
-        },
-      };
+        };
 
-      const result = transformRecord(dependencies, record, 'update');
-      expect(result.userRights).not.toContain('trash');
-    });
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('publish');
+      });
 
-    it('does not include trash right when recordType has useTrashBin set to true and data does not have an update actionLink', () => {
-      const dependencies = {
-        validationTypePool: listToPool<BFFValidationType>([
-          {
-            id: 'diva-person',
-            metadataGroupId: 'someRootGroup',
-            validatesRecordTypeId: 'someRecordTypeId',
-          } as BFFValidationType,
-        ]),
-        metadataPool: listToPool<BFFMetadata>([
-          {
-            id: 'someRootGroup',
-            type: 'group',
-            children: [
-              { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'recordInfoGroup',
-            nameInData: 'recordInfo',
-            type: 'group',
-            children: [
-              { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
-              { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'trashBinVar',
-            type: 'textVariable',
-            nameInData: 'inTrashBin',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'idVar',
-            type: 'textVariable',
-            nameInData: 'id',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'typeLink',
-            type: 'recordLink',
-            nameInData: 'type',
-            linkedRecordType: 'recordType',
-          } as BFFMetadataRecordLink,
-          {
-            id: 'validationTypeLink',
-            type: 'recordLink',
-            nameInData: 'validationType',
-            linkedRecordType: 'validationType',
-          } as BFFMetadataRecordLink,
-        ]),
-        recordTypePool: listToPool<BFFRecordType>([
-          {
-            id: 'someRecordTypeId',
-            metadataId: 'someRootGroup',
-            useTrashBin: true,
-          } as BFFRecordType,
-        ]),
-      } as Dependencies;
+      it('does not include publish right when visibility is published', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
 
-      const record: RecordWrapper = {
-        record: {
-          data: {
-            name: 'someRootGroup',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '1234' },
-                  {
-                    name: 'type',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'someRecordTypeId',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'validationType',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'validationType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'diva-person',
-                      },
-                    ],
-                  },
-                  { name: 'inTrashBin', value: 'false' },
-                ],
-              },
-            ],
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'published' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
           },
-          actionLinks: {},
-        },
-      };
+        };
 
-      const result = transformRecord(dependencies, record, 'update');
-      expect(result.userRights).not.toContain('trash');
-    });
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('publish');
+      });
 
-    it('includes untrash right when recordType has useTrashBin set to true and data has an update actionLink and record is in trash', () => {
-      const dependencies = {
-        validationTypePool: listToPool<BFFValidationType>([
-          {
-            id: 'diva-person',
-            metadataGroupId: 'someRootGroup',
-            validatesRecordTypeId: 'someRecordTypeId',
-          } as BFFValidationType,
-        ]),
-        metadataPool: listToPool<BFFMetadata>([
-          {
-            id: 'someRootGroup',
-            type: 'group',
-            children: [
-              { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'recordInfoGroup',
-            nameInData: 'recordInfo',
-            type: 'group',
-            children: [
-              { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
-              { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
-              { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
-            ],
-          } as BFFMetadataGroup,
-          {
-            id: 'trashBinVar',
-            type: 'textVariable',
-            nameInData: 'inTrashBin',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'idVar',
-            type: 'textVariable',
-            nameInData: 'id',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'typeLink',
-            type: 'recordLink',
-            nameInData: 'type',
-            linkedRecordType: 'recordType',
-          } as BFFMetadataRecordLink,
-          {
-            id: 'validationTypeLink',
-            type: 'recordLink',
-            nameInData: 'validationType',
-            linkedRecordType: 'validationType',
-          } as BFFMetadataRecordLink,
-        ]),
-        recordTypePool: listToPool<BFFRecordType>([
-          {
-            id: 'someRecordTypeId',
-            metadataId: 'someRootGroup',
-            useTrashBin: true,
-          } as BFFRecordType,
-        ]),
-      } as Dependencies;
+      it('does include publish right when user does have update action link and visibility is unpublished', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
 
-      const record: RecordWrapper = {
-        record: {
-          data: {
-            name: 'someRootGroup',
-            children: [
-              {
-                name: 'recordInfo',
-                children: [
-                  { name: 'id', value: '1234' },
-                  {
-                    name: 'type',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'someRecordTypeId',
-                      },
-                    ],
-                  },
-                  {
-                    name: 'validationType',
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'validationType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'diva-person',
-                      },
-                    ],
-                  },
-                  { name: 'inTrashBin', value: 'true' },
-                ],
-              },
-            ],
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'unpublished' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
           },
-          actionLinks: {
-            update: {} as ActionLink,
-          },
-        },
-      };
+        };
 
-      const result = transformRecord(dependencies, record, 'update');
-      expect(result.userRights).toContain('untrash');
-      expect(result.userRights).not.toContain('trash');
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).toContain('publish');
+      });
+
+      it('does not include publish right when record is in trash bin', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'trashBinVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'trashBinVar',
+              type: 'textVariable',
+              nameInData: 'inTrashBin',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'inTrashBin', value: 'true' },
+                    { name: 'visibility', value: 'unpublished' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('publish');
+      });
+      it('does not include unpublish right when user does not have update action link', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'published' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('unpublish');
+      });
+
+      it('does not include unpublish right when record does not have visibility', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('unpublish');
+      });
+
+      it('does not include unpublish right when visibility is unpublished', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'unpublished' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).not.toContain('unpublish');
+      });
+
+      it('does include unpublish right when user does have update action link and visibility is published', () => {
+        const dependencies = {
+          validationTypePool: listToPool<BFFValidationType>([
+            {
+              id: 'diva-person',
+              metadataGroupId: 'someRootGroup',
+              validatesRecordTypeId: 'someRecordTypeId',
+            } as BFFValidationType,
+          ]),
+          metadataPool: listToPool<BFFMetadata>([
+            {
+              id: 'someRootGroup',
+              type: 'group',
+              children: [
+                { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'recordInfoGroup',
+              nameInData: 'recordInfo',
+              type: 'group',
+              children: [
+                { childId: 'visibilityVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+                { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+                {
+                  childId: 'validationTypeLink',
+                  repeatMin: '1',
+                  repeatMax: '1',
+                },
+              ],
+            } as BFFMetadataGroup,
+            {
+              id: 'visibilityVar',
+              type: 'textVariable',
+              nameInData: 'visibility',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'idVar',
+              type: 'textVariable',
+              nameInData: 'id',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'typeLink',
+              type: 'recordLink',
+              nameInData: 'type',
+              linkedRecordType: 'recordType',
+            } as BFFMetadataRecordLink,
+            {
+              id: 'validationTypeLink',
+              type: 'recordLink',
+              nameInData: 'validationType',
+              linkedRecordType: 'validationType',
+            } as BFFMetadataRecordLink,
+          ]),
+          recordTypePool: listToPool<BFFRecordType>([
+            {
+              id: 'someRecordTypeId',
+              metadataId: 'someRootGroup',
+              useTrashBin: true,
+            } as BFFRecordType,
+          ]),
+        } as Dependencies;
+
+        const record: RecordWrapper = {
+          record: {
+            data: {
+              name: 'someRootGroup',
+              children: [
+                {
+                  name: 'recordInfo',
+                  children: [
+                    { name: 'id', value: '1234' },
+                    {
+                      name: 'type',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'someRecordTypeId',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'validationType',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva-person',
+                        },
+                      ],
+                    },
+                    { name: 'visibility', value: 'published' },
+                  ],
+                },
+              ],
+            },
+            actionLinks: {
+              read: {} as ActionLink,
+              update: {} as ActionLink,
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+        expect(result.userRights).toContain('unpublish');
+      });
     });
   });
 });

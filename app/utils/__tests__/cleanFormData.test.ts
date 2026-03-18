@@ -479,6 +479,87 @@ describe('cleanFormData', () => {
     });
   });
 
+  it('does not clear groups with final values that are from storage', () => {
+    const testObject = {
+      root: {
+        repeatId: '1',
+        child: {
+          value: 'someFinalValue',
+          final: true,
+        },
+        groupWithOnlyFinal: {
+          fromStorage: true,
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedEmpty: {
+            value: '',
+          },
+        },
+        groupWithFinalValueAndAttribute: {
+          fromStorage: true,
+          final: {
+            value: 'finalNextToAttr',
+            final: true,
+          },
+          _attribute: 'someAttr',
+        },
+        groupWithVarAndFinalValueAndAttribute: {
+          fromStorage: true,
+          final: {
+            value: 'varWithFinalNextToAttr',
+            final: true,
+            _attribute: 'someOtherAttr',
+          },
+        },
+        groupWithFinalAndValuable: {
+          fromStorage: true,
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+            final: true,
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: {
+        child: {
+          value: 'someFinalValue',
+        },
+        groupWithOnlyFinal: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+          },
+        },
+        groupWithFinalValueAndAttribute: {
+          final: {
+            value: 'finalNextToAttr',
+          },
+          _attribute: 'someAttr',
+        },
+        groupWithVarAndFinalValueAndAttribute: {
+          final: {
+            value: 'varWithFinalNextToAttr',
+            _attribute: 'someOtherAttr',
+          },
+        },
+        groupWithFinalAndValuable: {
+          nestedFinalValue: {
+            value: 'someNestedFinalValue',
+          },
+          nestedValuable: {
+            value: 'someValuableValue',
+          },
+        },
+      },
+    });
+  });
+
   it('does not clear group with only final values that is required', () => {
     const testObject = {
       root: {
@@ -547,6 +628,33 @@ describe('cleanFormData', () => {
             value: 'someValuableValue',
           },
         },
+      },
+    });
+  });
+
+  it('does not clear final value in array', () => {
+    const testObject = {
+      root: {
+        required: true,
+        repeatId: '1',
+        someOtherChild: { value: 'test' },
+        child: [
+          {
+            value: 'someFinalValue',
+            final: true,
+          },
+        ],
+      },
+    };
+
+    expect(cleanFormData(testObject)).toEqual({
+      root: {
+        someOtherChild: { value: 'test' },
+        child: [
+          {
+            value: 'someFinalValue',
+          },
+        ],
       },
     });
   });

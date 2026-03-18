@@ -1,10 +1,10 @@
 import type { RelatedItemProjectGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { getFullTitleForProject } from '@/utils/getRecordTitle';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { Term } from './Term';
 import { TitleInfo } from './TitleInfo';
-import { createTitle } from '../utils/createTitle';
 
 interface ProjectProps {
   project: RelatedItemProjectGroup | undefined;
@@ -31,7 +31,7 @@ export const Project = ({ project }: ProjectProps) => {
                   recordId: project.project?.value,
                 })}
               >
-                {createTitle(project.project?.linkedRecord?.project?.titleInfo)}
+                {getFullTitleForProject(project.project?.linkedRecord)}
               </Link>
             }
           />

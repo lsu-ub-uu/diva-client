@@ -1,45 +1,40 @@
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
-import styles from './Attachments.module.css';
-import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import styles from './Attachments.module.css';
 
 interface AttachmentsProps {
-  attachments?: AttachmentGroup[];
+  attachments?: AttachmentsGroup;
 }
 
 export const Attachments = ({ attachments }: AttachmentsProps) => {
   const language = useLanguage();
 
-  if (!attachments) {
+  if (
+    !attachments ||
+    !attachments.attachment ||
+    attachments.attachment.length === 0
+  ) {
+    return null;
+  }
+
+  const firstAttachment = attachments.attachment[0];
+  const binary = firstAttachment?.file?.linkedRecord?.binary;
+  if (!binary?.master?.master || !binary?.thumbnail?.thumbnail) {
     return null;
   }
 
   return (
-    <ul className={styles['attachments']}>
-      {attachments.map((attachment, i) => {
-        const binary = attachment?.attachmentFile?.linkedRecord?.binary;
-
-        if (!binary?.master?.master) {
-          return null;
-        }
-        return (
-          <li key={i}>
-            {binary?.thumbnail?.thumbnail && (
-              <a
-                href={createDownloadLinkFromResourceLink(binary.master.master)}
-              >
-                <img
-                  className={styles['attachment-thumbnail']}
-                  src={createDownloadLinkFromResourceLink(
-                    binary.thumbnail.thumbnail,
-                  )}
-                  alt={attachment.__text?.[language]}
-                />
-              </a>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <a
+      href={createDownloadLinkFromResourceLink(binary.master.master)}
+      target='_blank'
+      rel='noopener noreferrer'
+    >
+      <img
+        className={styles['attachment-thumbnail']}
+        src={createDownloadLinkFromResourceLink(binary.thumbnail.thumbnail)}
+        alt={firstAttachment.__text?.[language]}
+      />
+    </a>
   );
 };

@@ -22,23 +22,22 @@ import type {
   BFFMetadataChildReference,
   BFFPresentationContainer,
   BFFPresentationSurroundingContainer,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import type { Lookup } from '@/utils/structs/lookup';
-import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import type { Lookup } from 'server/dependencies/util/lookup';
+import { findMetadataChildReferenceByNameInDataAndAttributes } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 
 export const findMatchingMetadataChildReferencesForSContainer = (
   presentation: BFFPresentationContainer,
   metadataChildReferences: BFFMetadataChildReference[],
   dependencies: Dependencies,
-) => {
+): BFFMetadataChildReference[] => {
   const presentationsOf =
     (presentation as BFFPresentationSurroundingContainer).presentationsOf ?? [];
 
   return presentationsOf
-    .map((presentationMetadataId) => {
-      return metadataChildReferences.find((metadataChildRef) => {
-        // If ID matches, return true
+    .flatMap((presentationMetadataId) => {
+      return metadataChildReferences.filter((metadataChildRef) => {
         if (metadataChildRef.childId === presentationMetadataId) {
           return true;
         }
@@ -62,9 +61,11 @@ const matchPresentationWithMetadata = (
     presentationMetadataId,
   );
 
-  return findMetadataChildReferenceByNameInDataAndAttributes(
-    metadataPool,
-    [definitionChildRef],
-    metadataFromCurrentPresentation,
+  return (
+    findMetadataChildReferenceByNameInDataAndAttributes(
+      metadataPool,
+      [definitionChildRef],
+      metadataFromCurrentPresentation,
+    ).length > 0
   );
 };

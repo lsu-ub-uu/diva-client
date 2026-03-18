@@ -21,6 +21,7 @@ import { IconButton } from '@/components/IconButton/IconButton';
 import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
+import clsx from 'clsx';
 
 interface ActionButtonGroupProps {
   entityName?: string;
@@ -45,8 +46,8 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
   return (
     <div
       role='group'
-      aria-label='Actions'
-      className={styles['action-button-group']}
+      aria-label={t('divaClient_actionsForFieldText')}
+      className={clsx(styles['action-button-group'], 'action-button-group')}
     >
       {!props.hideMoveButtons && (
         <IconButton

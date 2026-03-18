@@ -26,7 +26,7 @@ import type {
   RecordLink,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { BFFRecordLink } from '../transform/bffTypes.server';
+import type { BFFRecordLink } from '../bffTypes.server';
 
 export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,

@@ -5,28 +5,28 @@ import testLoginWithTwoLDAP from '@/__mocks__/bff/coraLoginWithTwoLDAP.json';
 import testLoginWithTwoWebRedirect from '@/__mocks__/bff/coraLoginWithTwoWebRedirect.json';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import { describe, expect, it } from 'vitest';
-import { transformLogin } from '../transformLogin.server';
+import { transformLogins } from '../transformLogin.server';
 
 describe('transformLogin', () => {
   it('Empty list should return empty', () => {
-    const login = transformLogin(emptyTestData);
+    const login = transformLogins(emptyTestData);
     expect(login).toStrictEqual([]);
   });
 
   it('Returns one login entry', () => {
-    const login = transformLogin(testLoginWebRedirect);
+    const login = transformLogins(testLoginWebRedirect);
     expect(login).toHaveLength(1);
   });
 
   it('Returns one loginUnit entry with id', () => {
-    const login = transformLogin(testLoginWebRedirect);
+    const login = transformLogins(testLoginWebRedirect);
     const firstLogin = login[0];
     expect(firstLogin.id).toEqual('someLoginUnitId');
   });
 
   describe('webRedirect', () => {
     it('Returns one login entry with correct keys', () => {
-      const login = transformLogin(testLoginWebRedirect);
+      const login = transformLogins(testLoginWebRedirect);
       expect(login).toHaveLength(1);
       expect(login[0]).toStrictEqual({
         id: 'someLoginUnitId',
@@ -37,7 +37,7 @@ describe('transformLogin', () => {
     });
 
     it('Returns two login entries correct keys', () => {
-      const login = transformLogin(testLoginWithTwoWebRedirect);
+      const login = transformLogins(testLoginWithTwoWebRedirect);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
         id: 'someLoginUnitId',
@@ -56,7 +56,7 @@ describe('transformLogin', () => {
 
   describe('ldap', () => {
     it('Returns one login entry with correct keys', () => {
-      const login = transformLogin(testLoginLDAP);
+      const login = transformLogins(testLoginLDAP);
       expect(login).toHaveLength(1);
       expect(login[0]).toStrictEqual({
         id: 'systemOneLoginPassword',
@@ -68,7 +68,7 @@ describe('transformLogin', () => {
     });
 
     it('Returns two login entries correct keys', () => {
-      const login = transformLogin(testLoginWithTwoLDAP);
+      const login = transformLogins(testLoginWithTwoLDAP);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
         id: 'systemOneLoginPassword',
@@ -89,7 +89,7 @@ describe('transformLogin', () => {
 
   describe('mixed', () => {
     it('Returns two login entries mixed types', () => {
-      const login = transformLogin(testLoginMixed);
+      const login = transformLogins(testLoginMixed);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
         id: 'systemOneLoginPassword',

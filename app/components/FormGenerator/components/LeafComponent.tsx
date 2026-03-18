@@ -23,6 +23,7 @@ import { RecordLink } from '@/components/FormGenerator/components/RecordLink';
 import { Text } from '@/components/FormGenerator/components/Text';
 import { Variable } from '@/components/FormGenerator/components/Variable';
 import {
+  isComponentAnyTypeRecordLink,
   isComponentCollVar,
   isComponentGuiElement,
   isComponentNumVar,
@@ -31,10 +32,11 @@ import {
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { ReactNode } from 'react';
+import { AnyTypeRecordLink } from './AnyTypeRecordLink';
 
 interface LeafComponentProps {
   component: FormComponent;
-  name: string;
+  path: string;
   parentPresentationStyle?: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
@@ -42,7 +44,7 @@ interface LeafComponentProps {
 
 export const LeafComponent = ({
   component,
-  name,
+  path,
   parentPresentationStyle,
   attributes,
   actionButtonGroup,
@@ -55,7 +57,7 @@ export const LeafComponent = ({
     return (
       <Variable
         component={component}
-        path={name}
+        path={`${path}.value`}
         parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
@@ -66,10 +68,23 @@ export const LeafComponent = ({
   if (isComponentRecordLink(component)) {
     return (
       <RecordLink
-        name={name}
+        path={path}
         component={component}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    );
+  }
+
+  if (isComponentAnyTypeRecordLink(component)) {
+    return (
+      <AnyTypeRecordLink
+        path={path}
+        component={component}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+        parentPresentationStyle={parentPresentationStyle}
       />
     );
   }

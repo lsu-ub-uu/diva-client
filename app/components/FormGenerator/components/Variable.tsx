@@ -75,14 +75,9 @@ export const Variable = ({
           label={label}
           value={getOutputDisplayValue(component, value)}
           textStyle={component.textStyle}
-          info={showTooltips ? component.tooltip : undefined}
           variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
-          adornment={
-            <>
-              {attributes}
-              {actionButtonGroup}
-            </>
-          }
+          attributes={attributes}
+          actionButtonGroup={actionButtonGroup}
           path={path}
         />
       )}

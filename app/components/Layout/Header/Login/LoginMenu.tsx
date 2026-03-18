@@ -39,12 +39,12 @@ import {
   logInWithWebRedirect,
   useWebRedirectLogin,
 } from '@/auth/useWebRedirectLogin';
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useHydrated } from '@/utils/useHydrated';
 import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 
 interface LoginMenuProps {
   loginUnits: LoginDefinition[];

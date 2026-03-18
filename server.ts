@@ -18,12 +18,15 @@
 
 import compression from 'compression';
 import 'dotenv/config';
-import express from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 import morgan from 'morgan';
+import os from 'os';
 import process from 'node:process';
-import { dependencies, loadDependencies } from 'server/depencencies';
-
-const dependenciesPromise = loadDependencies();
+import prometheusClient from 'prom-client';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -45,10 +48,29 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
   );
 }
 
+prometheusClient.collectDefaultMetrics();
+
+const httpRequestCounter = new prometheusClient.Counter({
+  name: 'diva_client_http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+});
+
+const httpRequestDuration = new prometheusClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'HTTP request duration in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.1, 0.5, 1, 5],
+  registers: [prometheusClient.register],
+});
+
 const app = express();
 
 app.use(compression());
 app.disable('x-powered-by');
+
+app.use(prometheusMiddleware);
+app.get(`${BASE_PATH}/metrics`, prometheusMetrics);
 
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
@@ -66,17 +88,18 @@ if (DEVELOPMENT) {
   app.get('/devLogin', (req, res) => {
     res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
   });
+
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
     }),
   );
+  const reactRouterApp = await viteDevServer.ssrLoadModule('./server/app.ts');
+
   app.use(viteDevServer.middlewares);
   app.use(async (req, res, next) => {
     try {
-      const appModule = await viteDevServer.ssrLoadModule('./server/app.ts');
-      const app = appModule.createApp(dependencies, loadDependencies);
-      return await app(req, res, next);
+      return await reactRouterApp.app(req, res, next);
     } catch (error) {
       if (typeof error === 'object' && error instanceof Error) {
         viteDevServer.ssrFixStacktrace(error);
@@ -86,29 +109,18 @@ if (DEVELOPMENT) {
   });
 } else {
   console.info('Starting production server');
+  const reactRouterApp = await import(BUILD_PATH);
   app.use(
     `${BASE_PATH}/assets`,
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
   app.use(express.static('dist/client', { maxAge: '1h' }));
-  app.use(
-    await import(BUILD_PATH).then((appModule) =>
-      appModule.createApp(dependencies, loadDependencies),
-    ),
-  );
+  app.use(reactRouterApp.app);
 }
 
 app.use(morgan('tiny'));
 
-// Don't start accepting requests until dependencies are loaded
-await dependenciesPromise;
-
-app.listen(PORT, async () => {
-  console.info(
-    'Application version:',
-    dependencies.deploymentInfo?.applicationVersion,
-  );
-  console.info('Cora version:', dependencies.deploymentInfo?.coraVersion);
+const server = app.listen(PORT, async () => {
   console.info(`CORA_API_URL ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
@@ -118,9 +130,64 @@ app.listen(PORT, async () => {
     console.info(
       `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
+    console.info(
+      `*** Local network http://${getLocalIp()}:${PORT}${BASE_PATH} ***`,
+    );
   } else {
     console.info(
       `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
 });
+
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(
+      `Port ${PORT} is already in use. Please choose another port or stop the process using it.`,
+    );
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+    process.exit(1);
+  }
+});
+
+const getLocalIp = () => {
+  const interfaces = os.networkInterfaces();
+
+  for (const iface of Object.values(interfaces)) {
+    for (const address of iface ?? []) {
+      if (address.family === 'IPv4' && !address.internal) {
+        return address.address;
+      }
+    }
+  }
+};
+
+function prometheusMiddleware(req: Request, res: Response, next: NextFunction) {
+  const end = httpRequestDuration.startTimer({
+    method: req.method,
+    route: req.path,
+  });
+
+  res.on('finish', () => {
+    end({ status_code: res.statusCode });
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.route ? req.route.path : req.path,
+      status_code: res.statusCode,
+    });
+  });
+  next();
+}
+
+async function prometheusMetrics(_req: Request, res: Response) {
+  try {
+    res.setHeader('Content-Type', prometheusClient.register.contentType);
+    res.end(await prometheusClient.register.metrics());
+  } catch (err) {
+    res
+      .status(500)
+      .end(err instanceof Error ? err.message : 'Error collecting metrics');
+  }
+}

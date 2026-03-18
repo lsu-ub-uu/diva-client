@@ -35,6 +35,7 @@ export interface AlertProps {
   children: ReactNode;
   className?: string;
   action?: ReactNode;
+  variant?: 'standard' | 'banner';
 }
 
 interface AlertTitleProps {
@@ -69,9 +70,10 @@ export const Alert = ({
   children,
   action,
   className,
+  variant = 'standard',
 }: AlertProps) => {
   return (
-    <div className={clsx(styles['alert'], className)} data-severity={severity}>
+    <div className={clsx(styles['alert'], className)} data-severity={severity} data-variant={variant}>
       <div className={styles['icon']}>
         {icon === undefined ? <GetIcons severity={severity} /> : icon}
       </div>

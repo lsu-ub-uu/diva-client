@@ -38,12 +38,12 @@ import type {
   RecordWrapper,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+
 import {
   createFormMetaData,
   createViewMetadata,
-} from '@/data/formDefinition/formMetadata.server';
+} from '@/data/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -53,7 +53,11 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFRecordType, FormDefinitionMode } from './bffTypes.server';
+import type {
+  BFFRecordType,
+  Dependencies,
+  FormDefinitionMode,
+} from '../bffTypes.server';
 
 /**
  * Transforms records
@@ -182,7 +186,7 @@ export const transformDataGroup = (
   metadataGroup: FormMetaData,
   dependencies: Dependencies,
 ): Metadata => {
-  const init = {} as Metadata;
+  const init = { fromStorage: true } as Metadata;
   return dataGroup.children.reduce<Metadata>((group, dataChild) => {
     const matchingMetadata = findMatchingMetadata(dataChild, metadataGroup);
 
@@ -229,7 +233,7 @@ const transformData = (
     return transformDataGroup(data as DataGroup, metadata, dependencies);
   }
 
-  if (metadata.type === 'recordLink') {
+  if (metadata.type === 'recordLink' || metadata.type === 'anyTypeRecordLink') {
     return transformRecordLink(data as RecordLink, dependencies);
   }
 
@@ -286,6 +290,7 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
 
   return removeEmpty({
     value: recordLinkId,
+    linkedRecordType: linkedRecordType,
     linkedRecord,
     displayName,
   });
@@ -476,6 +481,14 @@ const createUserRights = (
   if (hasUntrashRight(recordType, coraRecord)) {
     userRights.push('untrash');
   }
+
+  if (hasPublishRight(coraRecord)) {
+    userRights.push('publish');
+  }
+
+  if (hasUnpublishRight(coraRecord)) {
+    userRights.push('unpublish');
+  }
   return userRights;
 };
 
@@ -499,6 +512,50 @@ const hasUntrashRight = (
   }
 
   return recordType.useTrashBin && isInTrashBin(coraRecord);
+};
+
+const hasPublishRight = (coraRecord: CoraRecord): boolean => {
+  if (!coraRecord.actionLinks?.update) {
+    return false;
+  }
+
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+
+  if (!hasChildWithNameInData(recordInfo, 'visibility')) {
+    return false;
+  }
+
+  const visibility = getFirstDataAtomicValueWithNameInData(
+    recordInfo,
+    'visibility',
+  );
+
+  return !isInTrashBin(coraRecord) && visibility === 'unpublished';
+};
+
+const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {
+  if (!coraRecord.actionLinks?.update) {
+    return false;
+  }
+
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+
+  if (!hasChildWithNameInData(recordInfo, 'visibility')) {
+    return false;
+  }
+
+  const visibility = getFirstDataAtomicValueWithNameInData(
+    recordInfo,
+    'visibility',
+  );
+
+  return visibility === 'published';
 };
 
 const isInTrashBin = (coraRecord: CoraRecord) => {

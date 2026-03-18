@@ -35,7 +35,7 @@ export const PasswordLogin = ({
   });
   const { handleSubmit } = methods;
   return (
-    <div>
+    <div className='password-login'>
       <Snackbar
         open={validationErrorShown}
         onClose={() => setValidationErrorShown(false)}

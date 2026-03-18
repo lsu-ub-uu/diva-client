@@ -17,11 +17,16 @@ describe('Funder', () => {
         linkedRecord: {
           funder: {
             recordInfo: { type: { value: 'diva-funder' } },
-            authority_lang_swe: {
-              name_type_corporate: {
-                namePart: { value: 'Linked funder SV' },
+            authority: [
+              {
+                _lang: 'swe',
+                name_type_corporate: {
+                  namePart: {
+                    value: 'Linked funder SV',
+                  },
+                },
               },
-            },
+            ],
           },
         },
         __text: { en: 'Linked funder' },
@@ -52,16 +57,24 @@ describe('Funder', () => {
         linkedRecord: {
           funder: {
             recordInfo: { type: { value: 'diva-funder' } },
-            authority_lang_swe: {
-              name_type_corporate: {
-                namePart: { value: 'Linked funder' },
+            authority: [
+              {
+                _lang: 'swe',
+                name_type_corporate: {
+                  namePart: {
+                    value: 'Linked funder',
+                  },
+                },
               },
-            },
-            variant_lang_eng: {
-              name_type_corporate: {
-                namePart: { value: 'Linked funder EN' },
+              {
+                _lang: 'eng',
+                name_type_corporate: {
+                  namePart: {
+                    value: 'Linked funder EN',
+                  },
+                },
               },
-            },
+            ],
           },
         },
         __text: { en: 'Linked funder' },

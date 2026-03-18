@@ -6,7 +6,7 @@ import { Series } from './Series';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { useId } from 'react';
 import { TitleInfo } from './TitleInfo';
-import { createTitle } from '../utils/createTitle';
+import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 
 interface BookProps {
   book: RelatedItemBookGroup | undefined;
@@ -32,7 +32,7 @@ export const Book = ({ book }: BookProps) => {
                   recordId: book.book.value,
                 })}
               >
-                {createTitle(book.book.linkedRecord.output.titleInfo)}
+                {getFullTitleForOutput(book.book.linkedRecord)}
               </Link>
             }
           />

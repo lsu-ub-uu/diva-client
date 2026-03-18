@@ -103,6 +103,11 @@
   font-size: var(--font-size-s);
 
   --input-height: var(--input-height-small);
+
+  .label {
+    margin-bottom: var(--gap-s);
+    font-size: var(--font-size-s);
+  }
 }
 
 .fieldset[data-size='medium'] {

@@ -16,35 +16,36 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
+import type { i18n } from 'i18next';
 import 'react-router';
 import { RouterContextProvider } from 'react-router';
-import { dependenciesContext } from './depencencies';
+import {
+  getDependencies,
+  handleDataChanged,
+} from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
+import { listenForDataChange } from './listenForDataChange';
 
-export const createApp = (
-  dependencies: Dependencies,
-  refreshDependencies: () => Promise<void>,
-) => {
-  const app = express();
-  app.use(
-    createRequestHandler({
-      build: () => import('virtual:react-router/server-build'),
-      getLoadContext: async (request) => {
-        const context = new RouterContextProvider();
-        context.set(dependenciesContext, {
-          dependencies,
-          refreshDependencies,
-        });
-        context.set(
-          i18nContext,
-          await createi18nInstance(request, dependencies),
-        );
-        return context;
-      },
-    }),
-  );
-  return app;
-};
+const dependenciesPromise = getDependencies();
+dependenciesPromise.then(() => listenForDataChange(handleDataChanged));
+
+export const app = express();
+
+app.use(
+  createRequestHandler({
+    build: () => import('virtual:react-router/server-build'),
+
+    getLoadContext: async (request) => {
+      const context = new RouterContextProvider();
+      const dependencies = await dependenciesPromise;
+
+      context.set(
+        i18nContext,
+        (await createi18nInstance(request, dependencies)) as i18n,
+      );
+      return context;
+    },
+  }),
+);

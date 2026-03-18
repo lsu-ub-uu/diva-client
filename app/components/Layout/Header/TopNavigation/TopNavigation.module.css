@@ -1,0 +1,100 @@
+/*
+ * Copyright 2025 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+.top-navigation {
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style: none;
+    gap: var(--gap);
+  }
+
+  @media (width < 900px) {
+    display: none;
+  }
+}
+
+.navigation-link {
+  cursor: pointer;
+  background-color: transparent;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: background-color 0.1s;
+  gap: var(--gap);
+  border-radius: var(--border-radius-s);
+  padding: var(--gap-s) var(--gap-l);
+
+  &:hover {
+    background-color: var(--color-card);
+  }
+
+  &:global(.pending) {
+    background-color: var(--color-background-darker);
+  }
+
+  &[aria-current='page'],
+  &[data-active='true'] {
+    background-color: var(--color-card-dark);
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  @media (width < 900px) {
+    flex-direction: row;
+
+    svg {
+      font-size: 1.5rem;
+    }
+
+    .label {
+      font-size: var(--font-size);
+      max-width: none;
+    }
+  }
+}
+
+.menu-navigation-button[data-open] {
+  background-color: var(--color-card-dark);
+
+  .menu-navigation-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.menu-navigation-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap);
+  font-size: var(--font-size);
+  margin-block: var(--gap-s);
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  &[aria-current='page'] {
+    background-color: var(--color-card-dark);
+  }
+}

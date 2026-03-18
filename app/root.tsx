@@ -16,13 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import divaLogo from '@/assets/divaLogo.svg';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
+import { getNavigation } from '@/data/getNavigation.server';
+import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { type ReactNode, useEffect, useRef } from 'react';
+import { AngryIcon } from 'lucide-react';
+import { type ReactNode, useEffect } from 'react';
 import {
   data,
   isRouteErrorResponse,
@@ -33,13 +37,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import rootCss from './styles/root.css?url';
-
-import divaLogo from '@/assets/divaLogo.svg';
-import { canEditMemberSettings, getRecordTypes } from '@/data/getRecordTypes';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { AngryIcon } from 'lucide-react';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -48,8 +46,10 @@ import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
-import { AuthLogger } from './components/dev/AuthLogger';
+import { Alert, type Severity } from './components/Alert/Alert';
+import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
+import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
@@ -57,22 +57,28 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
+  const { t } = context.get(i18nContext);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const exampleUsers = dependencies.deploymentInfo.exampleUsers;
+  const { exampleUsers, applicationVersion } = await getDeploymentInfo();
   const locale = context.get(i18nContext).language;
-  const recordTypes = await getRecordTypes(dependencies, auth);
+  const navigation = await getNavigation(dependencies, member, auth);
   const user = auth && createUser(auth);
   const userPreferences = await parseUserPreferencesCookie(request);
-  const userCanEditMemberSettings = await canEditMemberSettings(member, auth);
+  const globalAlert = {
+    severity: 'warning' as Severity,
+    text: t('divaClient_metadataWarningText'),
+  };
+  const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
   return {
     user,
@@ -80,11 +86,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     loginUnits,
     exampleUsers,
     member,
-    recordTypes,
+    navigation,
     userPreferences,
     notification,
-    userCanEditMemberSettings,
-    auth,
+    globalAlert,
+    blockRobotIndexing,
+    applicationVersion,
   };
 }
 
@@ -198,7 +205,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const userPreferences = data?.userPreferences;
   const locale = data?.locale ?? 'sv';
-  const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
   useChangeLanguage(locale);
 
   return (
@@ -208,15 +214,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Meta />
         <Links />
-        <meta
-          ref={emotionInsertionPointRef}
-          name='emotion-insertion-point'
-          content='emotion-insertion-point'
-        />
       </head>
       <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
         {children}
-        <ScrollRestoration />
+        <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
     </html>
@@ -234,20 +235,26 @@ export default function App({ loaderData }: Route.ComponentProps) {
     loginUnits,
     exampleUsers,
     user,
-    userCanEditMemberSettings,
-    auth,
-    recordTypes,
+    navigation,
+    globalAlert,
+    blockRobotIndexing,
+    applicationVersion,
   } = loaderData;
 
-  const editableMember = userCanEditMemberSettings ? member?.id : undefined;
-
   return (
-    <div className='root-layout'>
+    <div>
+      {blockRobotIndexing && <meta name='robots' content='noindex, nofollow' />}
       <NotificationSnackbar
         key={loaderData.notification?.summary}
         notification={loaderData.notification}
       />
-
+      {globalAlert && (
+        <div className='global-alert'>
+          <Alert severity={globalAlert.severity} variant='banner'>
+            {globalAlert.text}
+          </Alert>
+        </div>
+      )}
       <Header
         className='header'
         member={member}
@@ -255,11 +262,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
         userPreferences={userPreferences}
         loginUnits={loginUnits}
         exampleUsers={exampleUsers}
-        recordTypes={recordTypes}
-        editableMember={editableMember}
+        navigation={navigation}
       />
       <Outlet />
-      <AuthLogger auth={auth} />
+      <Footer applicationVersion={applicationVersion} />
     </div>
   );
 }

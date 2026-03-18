@@ -1,6 +1,5 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { TopNavigation } from '@/components/Layout/TopNavigation/TopNavigation';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
@@ -17,16 +16,15 @@ import {
   href,
   isRouteErrorResponse,
   Link,
-  useRouteLoaderData,
   type MetaDescriptor,
 } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../divaOutput/+types/divaOutputView';
-import { ActionBar } from '../record/ActionBar/ActionBar';
+import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
-import { createTitle } from './utils/createTitle';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 
 export const loader = async ({
   request,
@@ -35,14 +33,13 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const { recordId } = params;
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
 
   const origin = new URL(request.url).origin;
-
+  const dependencies = await getDependencies();
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
       dependencies,
@@ -55,7 +52,7 @@ export const loader = async ({
     return {
       record: record,
       pageTitle: record.data.output.titleInfo
-        ? createTitle(record.data.output.titleInfo)
+        ? getFullTitleForOutput(record.data)
         : t('divaClient_missingTitleText'),
       breadcrumb: record.data.output.titleInfo?.title?.value
         ? t(record.data.output.titleInfo.title.value)
@@ -82,7 +79,11 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
     console.error('Failed to generate citation meta:', error);
   }
   return [
-    { title: error ? getMetaTitleFromError(error) : loaderData?.pageTitle },
+    {
+      title: error
+        ? getMetaTitleFromError(error)
+        : `${loaderData?.pageTitle} | DiVA`,
+    },
     ...citationMeta,
   ];
 };
@@ -90,35 +91,25 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
-  const { recordTypes, editableMember } = useRouteLoaderData('root');
-
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
   const isInTrashBin =
     record.data.output.recordInfo?.inTrashBin?.value === 'true';
   return (
-    <>
-      <aside className='nav-rail'>
-        <TopNavigation
-          recordTypes={recordTypes}
-          editableMember={editableMember}
-        />
-      </aside>
-      <div className='content'>
-        <div className='record-status-bar'>
-          {isInTrashBin && (
-            <TrashAlert recordType='diva-output' recordId={record.id} />
-          )}
+    <div className='grid main-content'>
+      {isInTrashBin && (
+        <div className='record-status-bar grid-col-12'>
+          <TrashAlert recordType='diva-output' recordId={record.id} />
         </div>
-        <div className='diva-output-view-page'>
-          <div className='top-content'>
-            <Breadcrumbs />
-            <ActionBar record={record} apiUrl={apiUrl} />
-          </div>
-          <OutputView data={record.data} />
+      )}
+      <div className='diva-output-view-page grid-col-12'>
+        <div className='top-bar'>
+          <Breadcrumbs />
+          <RecordActionBar record={record} apiUrl={apiUrl} />
         </div>
       </div>
-    </>
+      <OutputView data={record.data} />
+    </div>
   );
 }
 

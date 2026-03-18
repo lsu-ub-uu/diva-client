@@ -26,7 +26,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getValidatedFormData } from 'remix-hook-form';
 
 import { RecordForm } from '@/components/Form/RecordForm';
-import { SidebarLayout } from '@/components/Layout/SidebarLayout/SidebarLayout';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
@@ -36,17 +35,19 @@ import { assertDefined } from '@/utils/invariant';
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
-  const { t } = context.get(i18nContext);
-  const { dependencies } = context.get(dependenciesContext);
+  const { t, language } = context.get(i18nContext);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
   const { recordType, recordId } = params;
@@ -59,7 +60,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     mode: 'update',
   });
 
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record, language) || t('divaClient_missingTitleText')} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();
@@ -104,9 +105,9 @@ export const action = async ({
   const { recordType: recordTypeId, recordId } = params;
   const { t } = context.get(i18nContext);
   const { auth, flashNotification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
 
   const formData = await request.formData();
+  const dependencies = await getDependencies();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies,
@@ -158,8 +159,8 @@ export const action = async ({
   }
 };
 
-export const meta = ({ data }: Route.MetaArgs) => {
-  return [{ title: data?.title }];
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  return [{ title: `${loaderData?.title} | DiVA` }];
 };
 
 export default function UpdateRecordRoute({
@@ -185,38 +186,39 @@ export default function UpdateRecordRoute({
   };
 
   return (
-    <SidebarLayout
-      sidebarContent={
+    <div className='grid'>
+      <aside className='navigation-sidebar grid-col-2 grid-col-l-3 grid-col-m-hidden'>
         <NavigationPanel
           links={
             formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
         />
-      }
-    >
-      {notification && notification.severity === 'error' && (
-        <Alert severity={notification.severity} className='error-alert'>
-          <AlertTitle>{notification.summary}</AlertTitle>
-          {notification.details}
-        </Alert>
-      )}
+      </aside>
+      <main className='record-form grid-col-6 grid-col-l-9 grid-col-m-12'>
+        {notification && notification.severity === 'error' && (
+          <Alert severity={notification.severity} className='error-alert'>
+            <AlertTitle>{notification.summary}</AlertTitle>
+            {notification.details}
+          </Alert>
+        )}
 
-      <div className='record-wrapper'>
         <RecordForm
           key={lastUpdate}
           defaultValues={defaultValues}
           formSchema={formDefinition}
           onChange={handleFormChange}
         />
+      </main>
+      <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
-            <ReadOnlyForm
-              recordData={deferredPreviewData}
+            <OutputPresentation
+              data={transformToRaw(cleanFormData(deferredPreviewData))}
               formSchema={previewFormDefinition}
             />
           </div>
         )}
-      </div>
-    </SidebarLayout>
+      </aside>
+    </div>
   );
 }

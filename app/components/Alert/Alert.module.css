@@ -51,7 +51,7 @@
   }
 
   &[data-severity='neutral'] {
-    --color-alert-bg: var(--color-output-card-background);
+    --color-alert-bg: var(--color-alert-neutral-bg);
     --color-alert-icon: var(--color-text);
     --color-alert-font: var(--color-text);
     --color-alert-border: var(--color-thin-border);
@@ -59,6 +59,16 @@
 
   color: var(--color-alert-font);
   background-color: var(--color-alert-bg);
+
+  &[data-variant='banner'] {
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .alert-title {

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import type {
   BFFMetadata,
   BFFMetadataChildReference,
@@ -24,17 +24,21 @@ import type {
   BFFPresentation,
   BFFPresentationChildReference,
   BFFPresentationGroup,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import type {
   FormAttributeCollection,
   FormComponent,
   FormComponentGroup,
   FormComponentHidden,
+  FormComponentRepeat,
 } from '@/components/FormGenerator/types';
-import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/findMetadataChildReferenceByNameInDataAndAttributes.server';
+import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
 import { createAttributes } from './createAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFMetadataTypes } from '../formDefinition.server';
+import {
+  determineRepeatMax,
+  type BFFMetadataTypes,
+} from '../utils/formDefinitionUtils.server';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,
@@ -43,12 +47,9 @@ export const createHiddenComponents = (
 ): FormComponent[] => {
   return metadataChildReferences
     .map((metadataChildReference) =>
-      dependencies.metadataPool.get(metadataChildReference.childId),
-    )
-    .map((metadata) =>
       createHiddenComponentsForMetadata(
         dependencies,
-        metadata,
+        metadataChildReference,
         presentationChildReferences,
       ),
     )
@@ -57,13 +58,28 @@ export const createHiddenComponents = (
 
 const createHiddenComponentsForMetadata = (
   dependencies: Dependencies,
-  metadata: BFFMetadata,
+  metadataChildReference: BFFMetadataChildReference,
   presentationChildReferences: BFFPresentationChildReference[],
 ): FormComponent | undefined => {
+  const metadata = dependencies.metadataPool.get(
+    metadataChildReference.childId,
+  );
+
   const presentation = getPresentation(
     presentationChildReferences,
     dependencies,
     metadata,
+  );
+
+  const repeat = {
+    repeatMin: parseInt(metadataChildReference.repeatMin),
+    repeatMax: determineRepeatMax(metadataChildReference.repeatMax),
+  };
+
+  const attributes = createAttributes(
+    metadata as BFFMetadataTypes,
+    dependencies.metadataPool,
+    { mode: 'input' } as BFFPresentation,
   );
 
   if (isMetadataGroup(metadata)) {
@@ -71,20 +87,16 @@ const createHiddenComponentsForMetadata = (
       dependencies,
       metadata,
       presentation as BFFPresentationGroup,
+      attributes,
+      repeat,
     );
   }
-
-  const attributes = createAttributes(
-    metadata as BFFMetadataTypes,
-    dependencies.metadataPool,
-    undefined,
-    'input',
-  );
 
   const hiddenComponent = createHiddenVariable(
     presentation,
     metadata,
     attributes,
+    repeat,
   );
   return hiddenComponent;
 };
@@ -93,6 +105,8 @@ const createHiddenComponentsForGroup = (
   dependencies: Dependencies,
   group: BFFMetadataGroup,
   presentation: BFFPresentationGroup | undefined,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: FormComponentRepeat,
 ): FormComponent | undefined => {
   const hasPresentation = presentation !== undefined;
 
@@ -105,6 +119,9 @@ const createHiddenComponentsForGroup = (
         name: group.nameInData,
         mode: 'input',
         components,
+        attributes,
+        repeat,
+        hidden: true,
       });
       return groupComponent as FormComponentGroup;
     }
@@ -115,6 +132,7 @@ function createHiddenVariable(
   presentation: BFFPresentation | undefined,
   metadata: BFFMetadata,
   attributes: FormAttributeCollection[] | undefined,
+  repeat: FormComponentRepeat,
 ): FormComponentHidden | undefined {
   const hasPresentation = presentation !== undefined;
   const isFinalValue =
@@ -127,6 +145,7 @@ function createHiddenVariable(
       finalValue: metadata.finalValue!,
       attributes,
       attributesToShow: 'none',
+      repeat,
     };
   }
 }

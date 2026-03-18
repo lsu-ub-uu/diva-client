@@ -28,7 +28,7 @@ import {
   isComponentVariable,
   isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { getAutoPermissionUnit } from '@/utils/getAutoPermissionUnit';
 import type {

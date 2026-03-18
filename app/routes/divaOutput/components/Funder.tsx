@@ -1,8 +1,9 @@
 import type {
-  FunderUpdateGroup,
+  DivaFunder,
   RelatedItemFunderGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { getTitleForFunder } from '@/utils/getRecordTitle';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { Term } from './Term';
@@ -33,7 +34,7 @@ export const Funder = ({ funder }: FunderProps) => {
                   recordId: funder.funder.value,
                 })}
               >
-                {formatFunderName(funder.funder.linkedRecord.funder, language)}
+                {formatFunderName(funder.funder.linkedRecord, language)}
               </Link>
             }
           />
@@ -47,20 +48,7 @@ export const Funder = ({ funder }: FunderProps) => {
   );
 };
 
-const formatFunderName = (
-  funder: FunderUpdateGroup | undefined,
-  language: 'sv' | 'en',
-) => {
+const formatFunderName = (funder: DivaFunder, language: 'sv' | 'en') => {
   if (!funder) return undefined;
-
-  const nameSwedish =
-    funder.authority_lang_swe?.name_type_corporate?.namePart?.value;
-  const nameEnglish =
-    funder.variant_lang_eng?.name_type_corporate?.namePart?.value;
-
-  if (language === 'en' && nameEnglish) {
-    return nameEnglish;
-  }
-
-  return nameSwedish;
+  return getTitleForFunder(funder, language);
 };

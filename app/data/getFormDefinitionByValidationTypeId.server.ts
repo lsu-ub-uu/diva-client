@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { createFormDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 
-export const getFormDefinitionByValidationTypeId = async (
+export const getFormDefinitionByValidationTypeId = (
   dependencies: Dependencies,
   validationTypeId: string,
   mode: 'create' | 'update' | 'view',

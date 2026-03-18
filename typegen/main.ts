@@ -1,12 +1,9 @@
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
-import type {
-  BFFMetadata,
-  BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
-import { transformMetadata } from '@/cora/transform/transformMetadata.server';
+import type { BFFMetadata, BFFRecordType } from '@/cora/bffTypes.server';
+import { transformMetadatas } from '@/cora/transform/transformMetadata.server';
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
@@ -64,7 +61,7 @@ async function getMetadataPool() {
   const coraMetadata =
     await getRecordDataListByType<DataListWrapper>('metadata');
 
-  const metadata = transformMetadata(coraMetadata.data);
+  const metadata = transformMetadatas(coraMetadata.data);
 
   return listToPool<BFFMetadata>(metadata);
 }

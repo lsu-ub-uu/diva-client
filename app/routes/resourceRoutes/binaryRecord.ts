@@ -16,21 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { createBinaryRecord } from '@/cora/createBinaryRecord';
+import { createBinaryRecord } from '@/cora/createBinaryRecord.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
-import { dependenciesContext } from 'server/depencencies';
 import type { Route } from './+types/binaryRecord';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const { auth } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
-  const { fileName, fileSize } = await request.json();
+  const { fileName, fileSize, hostRecordType, hostRecordId } =
+    await request.json();
 
   const createBinaryRecordResponse = await createBinaryRecord(
     fileName,
     fileSize,
+    hostRecordType,
+    hostRecordId,
     auth?.data?.token,
   );
+
+  const dependencies = await getDependencies();
 
   const binaryRecord = transformRecord(
     dependencies,

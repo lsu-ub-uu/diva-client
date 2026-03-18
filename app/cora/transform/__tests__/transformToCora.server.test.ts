@@ -85,11 +85,11 @@ import {
 import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
-import { listToPool } from '@/utils/structs/listToPool';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { createFormMetaData } from '@/data/formMetadata.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type {
@@ -108,7 +108,7 @@ import type {
   BFFText,
   BFFMember,
   BFFValidationType,
-} from '../bffTypes.server';
+} from '../../bffTypes.server';
 import {
   createLeaf,
   createRecordLink,
@@ -284,53 +284,12 @@ describe('transformToCora', () => {
   });
 
   describe('createLeaf', () => {
-    it('convert recordLink with createLeaf to Cora recordLink format', () => {
-      const expected = {
-        children: [
-          {
-            name: 'linkedRecordType',
-            value: 'nationalSubjectCategory',
-          },
-          {
-            name: 'linkedRecordId',
-            value: 'linkValue',
-          },
-        ],
-        name: 'nationalSubjectCategory',
-      };
-      const actual = createLeaf(
-        {
-          name: 'nationalSubjectCategory',
-          type: 'recordLink',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          linkedRecordType: 'nationalSubjectCategory',
-        },
-        'nationalSubjectCategory',
-        'linkValue',
-      );
-      expect(actual).toStrictEqual(expected);
-    });
-
     it('convert textVariable with createLeaf to Cora atomic format', () => {
       const expected = {
         name: 'someNameInData',
         value: 'someValue',
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-      );
+      const actual = createLeaf('someNameInData', 'someValue');
       expect(actual).toStrictEqual(expected);
     });
 
@@ -339,18 +298,7 @@ describe('transformToCora', () => {
         name: 'someNameInData',
         value: 'someValue',
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'numberVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-      );
+      const actual = createLeaf('someNameInData', 'someValue');
       expect(actual).toStrictEqual(expected);
     });
 
@@ -359,18 +307,7 @@ describe('transformToCora', () => {
         name: 'someNameInData',
         value: 'someValue',
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'collectionVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-      );
+      const actual = createLeaf('someNameInData', 'someValue');
       expect(actual).toStrictEqual(expected);
     });
 
@@ -380,19 +317,7 @@ describe('transformToCora', () => {
         value: 'someValue',
         repeatId: '2',
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-        '2',
-      );
+      const actual = createLeaf('someNameInData', 'someValue', '2');
       expect(actual).toStrictEqual(expected);
     });
 
@@ -404,20 +329,9 @@ describe('transformToCora', () => {
           _someAttributes: 'a',
         },
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-        undefined,
-        { _someAttributes: 'a' },
-      );
+      const actual = createLeaf('someNameInData', 'someValue', undefined, {
+        _someAttributes: 'a',
+      });
       expect(actual).toStrictEqual(expected);
     });
 
@@ -430,20 +344,9 @@ describe('transformToCora', () => {
         },
         repeatId: '2',
       };
-      const actual = createLeaf(
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-          },
-        },
-        'someNameInData',
-        'someValue',
-        '2',
-        { _someAttributes: 'a' },
-      );
+      const actual = createLeaf('someNameInData', 'someValue', '2', {
+        _someAttributes: 'a',
+      });
       expect(actual).toStrictEqual(expected);
     });
   });

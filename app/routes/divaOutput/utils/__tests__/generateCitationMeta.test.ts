@@ -71,76 +71,78 @@ const divaOutput = {
         role: { roleTerm: [{ value: 'edt' }, { value: 'aut' }] },
       },
     ],
-    attachment: [
-      {
-        type: { value: 'movie' },
-        attachmentFile: {
-          linkedRecord: {
-            binary: {
-              recordInfo: { visibility: { value: 'published' } },
-              master: {
+    attachments: {
+      attachment: [
+        {
+          _label: 'movie',
+          file: {
+            linkedRecord: {
+              binary: {
+                recordInfo: { visibility: { value: 'published' } },
                 master: {
-                  mimeType: 'video/mp4',
-                  id: 'binary:iamavideo',
-                  name: 'master',
+                  master: {
+                    mimeType: 'video/mp4',
+                    id: 'binary:iamavideo',
+                    name: 'master',
+                  },
                 },
               },
             },
           },
         },
-      },
-      {
-        type: { value: 'fullText' },
-        attachmentFile: {
-          linkedRecord: {
-            binary: {
-              recordInfo: { visibility: { value: 'published' } },
-              master: {
+        {
+          _label: 'fullText',
+          file: {
+            linkedRecord: {
+              binary: {
+                recordInfo: { visibility: { value: 'published' } },
                 master: {
-                  mimeType: 'application/pdf',
-                  id: 'binary:iamafulltext',
-                  name: 'master',
+                  master: {
+                    mimeType: 'application/pdf',
+                    id: 'binary:iamafulltext',
+                    name: 'master',
+                  },
                 },
               },
             },
           },
         },
-      },
-      {
-        type: { value: 'fullText' },
-        attachmentFile: {
-          linkedRecord: {
-            binary: {
-              recordInfo: { visibility: { value: 'published' } },
-              master: {
+        {
+          _label: 'fullText',
+          file: {
+            linkedRecord: {
+              binary: {
+                recordInfo: { visibility: { value: 'published' } },
                 master: {
-                  mimeType: 'application/pdf',
-                  id: 'binary:iamafulltext',
-                  name: 'master',
+                  master: {
+                    mimeType: 'application/pdf',
+                    id: 'binary:iamafulltext',
+                    name: 'master',
+                  },
                 },
               },
             },
           },
         },
-      },
-      {
-        type: { value: 'fullText' },
-        attachmentFile: {
-          linkedRecord: {
-            binary: {
-              recordInfo: { visibility: { value: 'hidden' } },
-              master: {
+        {
+          _label: 'fullText',
+          file: {
+            linkedRecord: {
+              binary: {
+                recordInfo: { visibility: { value: 'hidden' } },
                 master: {
-                  mimeType: 'application/pdf',
-                  id: 'binary:iamafulltext',
-                  name: 'master',
+                  master: {
+                    mimeType: 'application/pdf',
+                    id: 'binary:iamafulltext',
+                    name: 'master',
+                  },
                 },
               },
             },
           },
         },
-      },
-    ],
+      ],
+    },
   },
 } as DivaOutput;
 

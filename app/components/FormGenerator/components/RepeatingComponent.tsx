@@ -43,6 +43,10 @@ export const RepeatingComponent = ({
 
   const { control } = useRemixFormContext();
 
+  if ('hidden' in component && component.hidden) {
+    return null;
+  }
+
   return isComponentSingularAndOptional(component) ? (
     <OptionalComponent
       anchorId={anchorId}

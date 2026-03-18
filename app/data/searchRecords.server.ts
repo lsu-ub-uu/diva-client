@@ -17,26 +17,27 @@
  */
 
 import type { Auth } from '@/auth/Auth';
+import type { Metadata } from '@/types/record';
 import type { DataGroup, DataListWrapper } from '@/cora/cora-data/types.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
   BFFSearch,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { transformRecords } from '@/cora/transform/transformRecord.server';
 import { transformToCoraData } from '@/cora/transform/transformToCora.server';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import {
   createBFFMetadataReference,
   createMetaDataFromChildReference,
-} from '@/data/formDefinition/formMetadata.server';
+} from '@/data/formMetadata.server';
 import type { BFFSearchResult } from '@/types/record';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
+import { createLinkedRecordDefinition } from './formDefinition/createFormDefinition.server';
 
-export const searchRecords = async (
+export const searchRecords = async <T = Metadata>(
   dependencies: Dependencies,
   searchType: string,
   query: any,
@@ -49,7 +50,6 @@ export const searchRecords = async (
 
   const search = dependencies.searchPool.get(searchType);
   const coraQuery = createCoraSearchQuery(dependencies, search, query);
-
   const response = await getSearchResultDataListBySearchType<DataListWrapper>(
     searchType,
     coraQuery,
@@ -90,7 +90,7 @@ export const searchRecords = async (
     totalNo: Number(totalNo),
     containDataOfType,
     data: transformedRecords,
-  } as BFFSearchResult;
+  } as BFFSearchResult<T>;
 };
 
 export const createCoraSearchQuery = (

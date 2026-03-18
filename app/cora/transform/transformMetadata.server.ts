@@ -38,15 +38,16 @@ import {
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import type {
   BFFMetadata,
+  BFFMetadataAnyTypeRecordLink,
   BFFMetadataBase,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataRecordLink,
-} from './bffTypes.server';
+} from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 
-export const transformMetadata = (
+export const transformMetadatas = (
   dataListWrapper: DataListWrapper,
 ): BFFMetadata[] => {
   if (dataListWrapper.dataList.data.length === 0) {
@@ -55,11 +56,11 @@ export const transformMetadata = (
 
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords
-    .map(transformCoraRecordToBFFMetaData)
+    .map(transformMetadata)
     .filter((item) => item !== undefined);
 };
 
-const transformCoraRecordToBFFMetaData = (
+export const transformMetadata = (
   coraRecordWrapper: RecordWrapper,
 ): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
@@ -90,12 +91,18 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'recordLink': {
       return transformRecordLink(dataRecordGroup, metadata);
     }
-
+    case 'anyTypeRecordLink': {
+      return transformAnyTypeRecordLink(dataRecordGroup, metadata);
+    }
     case 'resourceLink': {
       // Basic metadata is enough for a resourceLink
       return metadata;
     }
     default: {
+      const unknownMetadata = metadata as any;
+      console.warn(
+        `Unknown metadata type: ${unknownMetadata.type} for metadata with id: ${unknownMetadata.id}`,
+      );
       return undefined;
     }
   }
@@ -185,6 +192,26 @@ const transformRecordLink = (
     linkedRecordType,
     attributeReferences,
   }) as BFFMetadataRecordLink;
+};
+
+const transformAnyTypeRecordLink = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadataBase,
+): BFFMetadataAnyTypeRecordLink => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(
+      dataRecordGroup,
+      'finalValue',
+    );
+    metadata = { ...metadata, finalValue } as BFFMetadataBase;
+  }
+
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+
+  return removeEmpty({
+    ...metadata,
+    attributeReferences,
+  }) as BFFMetadataAnyTypeRecordLink;
 };
 
 const transformItemCollection = (

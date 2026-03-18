@@ -23,7 +23,7 @@ import { useIsDevMode } from '@/utils/useIsDevMode';
 import { use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import styles from './DevInfo.module.css';
-import { BracesIcon } from 'lucide-react';
+import { BracesIcon, CheckIcon, CopyIcon } from 'lucide-react';
 
 interface DevInfoProps {
   label?: string;
@@ -34,6 +34,26 @@ interface DevInfoProps {
 interface ToggleDevInfoButtonProps {
   onClick: () => void;
 }
+
+const CopyButton = ({ getText }: { getText: () => string }) => {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type='button'
+      aria-label='Copy JSON'
+      className={styles['copy-btn']}
+      style={{ position: 'absolute', top: 4, right: 4, zIndex: 1 }}
+      onClick={async (e) => {
+        e.stopPropagation();
+        await navigator.clipboard.writeText(getText());
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+      }}
+    >
+      {copied ? <CheckIcon /> : <CopyIcon />}
+    </button>
+  );
+};
 
 export const DevInfo = ({ label, component, path }: DevInfoProps) => {
   const { showDevInfo } = use(FormGeneratorContext);
@@ -53,15 +73,21 @@ export const DevInfo = ({ label, component, path }: DevInfoProps) => {
       {expanded && (
         <div className={styles['expand-info']}>
           <pre className={styles['path']}>{path}</pre>
-          <pre>
-            <strong>FORM DEF</strong>
-            {JSON.stringify(component, null, 2)}
-          </pre>
-          {data && (
-            <pre>
-              <strong>DATA ({path})</strong>
-              {JSON.stringify(data, null, 2)}
+          <div style={{ position: 'relative' }}>
+            <CopyButton getText={() => JSON.stringify(component, null, 2)} />
+            <pre style={{ marginTop: 0 }}>
+              <strong>FORM DEF</strong>
+              {JSON.stringify(component, null, 2)}
             </pre>
+          </div>
+          {data && (
+            <div style={{ position: 'relative' }}>
+              <CopyButton getText={() => JSON.stringify(data, null, 2)} />
+              <pre style={{ marginTop: 0 }}>
+                <strong>DATA ({path})</strong>
+                {JSON.stringify(data, null, 2)}
+              </pre>
+            </div>
           )}
         </div>
       )}

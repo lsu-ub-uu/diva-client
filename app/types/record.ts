@@ -44,15 +44,17 @@ export type BFFUserRight =
   | 'index'
   | 'delete'
   | 'trash'
-  | 'untrash';
+  | 'untrash'
+  | 'publish'
+  | 'unpublish';
 
 export interface BFFUpdate {
   updateAt: string;
   updatedBy: string;
 }
 
-export interface BFFSearchResult {
-  data: BFFDataRecord<Metadata>[];
+export interface BFFSearchResult<T = Metadata> {
+  data: BFFDataRecord<T>[];
   fromNo: number;
   toNo: number;
   totalNo: number;

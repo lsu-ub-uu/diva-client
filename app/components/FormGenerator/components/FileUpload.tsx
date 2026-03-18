@@ -52,7 +52,9 @@ export const FileUpload = ({
   const [progress, setProgress] = useState(0);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
   const value = getValues(path);
-
+  const dataRoot = Object.values(getValues())[0];
+  const hostRecordId = dataRoot?.recordInfo?.id?.value;
+  const hostRecordType = dataRoot?.recordInfo?.type?.value;
   const errorMessage = getErrorMessageForField(formState, path);
   if (component.mode === 'output' && !value) {
     return null;
@@ -65,6 +67,8 @@ export const FileUpload = ({
       const response = await axios.post(withBaseName(href('/binaryRecord')), {
         fileName: file.name,
         fileSize: String(file.size),
+        hostRecordType,
+        hostRecordId,
       });
       const binaryRecord: BFFDataRecord = response.data.binaryRecord;
 

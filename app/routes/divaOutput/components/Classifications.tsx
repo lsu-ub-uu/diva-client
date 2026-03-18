@@ -1,8 +1,6 @@
-import type {
-  DivaOutputGroup,
-  SubjectUpdateGroup,
-} from '@/generatedTypes/divaTypes';
+import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { getTitleForSubject } from '@/utils/getRecordTitle';
 import { SdgImage } from './SdgImage';
 import { SearchLinkList } from './SearchLinkList';
 
@@ -50,9 +48,11 @@ export const Classifications = ({ output }: ClassificationsProps) => {
           pill
           heading={output.subject_authority_diva.__text?.[language]}
           searchTerm='subjectTopicSearchTerm'
-          items={output.subject_authority_diva?.topic?.map((topic) => ({
-            label: getSubjectTopicName(topic, language) || topic.value,
-            href: `diva-subject_${topic.value}`,
+          items={output.subject_authority_diva?.topic?.map((subject) => ({
+            label:
+              getTitleForSubject(subject.linkedRecord, language) ||
+              subject.value,
+            href: `diva-subject_${subject.value}`,
           }))}
         />
       )}
@@ -81,24 +81,3 @@ export const Classifications = ({ output }: ClassificationsProps) => {
     </>
   );
 };
-
-function getSubjectTopicName(
-  topic: {
-    value: string;
-    linkedRecord: {
-      subject: SubjectUpdateGroup;
-    };
-
-    __text?: { sv: string; en: string };
-  },
-  language: 'en' | 'sv',
-): string | undefined {
-  if (!topic) {
-    return undefined;
-  }
-
-  if (language === 'en') {
-    return topic?.linkedRecord?.subject?.variant_lang_eng?.topic?.value || '';
-  }
-  return topic?.linkedRecord?.subject?.authority_lang_swe?.topic?.value || '';
-}

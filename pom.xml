@@ -23,15 +23,15 @@
   <parent>
     <groupId>se.uu.ub.cora</groupId>
     <artifactId>cora-parent</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.119-SNAPSHOT</version>
+  <version>1.153-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>
-    <frontend-maven-plugin.version>1.15.10-atlassian-2</frontend-maven-plugin.version>
+    <frontend-maven-plugin.version>2.0.0</frontend-maven-plugin.version>
     <nodeVersion>v22.14.0</nodeVersion>
   </properties>
 
@@ -55,6 +55,13 @@
       <resource>
         <directory>server</directory>
         <targetPath>server</targetPath>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>app/cora</directory>
+        <targetPath>app/cora</targetPath>
         <includes>
           <include>**/*</include>
         </includes>

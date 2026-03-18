@@ -1,0 +1,136 @@
+import type {
+  BFFMetadata,
+  BFFMetadataBase,
+  BFFMetadataCollectionVariable,
+  BFFMetadataItemCollection,
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+
+export type FilterDefinition =
+  | TextFilter
+  | NumberFilter
+  | CollectionFilter
+  | AutocompleteFilter;
+
+export interface BaseFilter {
+  id: string;
+  name: string;
+  textId: string;
+  placeholderTextId: string;
+}
+
+export interface TextFilter extends BaseFilter {
+  type: 'text';
+}
+
+export interface NumberFilter extends BaseFilter {
+  type: 'number';
+  min?: number;
+  max?: number;
+  warningMin?: number;
+  warningMax?: number;
+}
+
+export interface CollectionFilter extends BaseFilter {
+  type: 'collection';
+  options: { text: string; value: string }[];
+}
+
+export interface AutocompleteFilter extends BaseFilter {
+  type: 'autocomplete';
+  searchType: string;
+  searchTerm: string;
+  recordType: string;
+  presentationPath: {
+    sv: string;
+    en: string;
+  };
+}
+
+const autocompleteSearchTerms: Record<
+  string,
+  Omit<AutocompleteFilter, keyof BaseFilter | 'type'>
+> = {
+  subjectTopicSearchTerm: {
+    searchType: 'diva-subjectMinimalSearch',
+    recordType: 'diva-subject',
+    searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
+    presentationPath: {
+      sv: 'subject.authority_lang_swe.topic.value',
+      en: 'subject.variant_lang_eng.topic.value',
+    },
+  },
+  permissionUnitSearchTerm: {
+    recordType: 'permissionUnit',
+    searchType: 'permissionUnitSearch',
+    searchTerm:
+      'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
+    presentationPath: {
+      sv: 'permissionUnit.recordInfo.id.value',
+      en: 'permissionUnit.recordInfo.id.value',
+    },
+  },
+};
+
+export const createFilters = (
+  filterMetadatas: BFFMetadata[],
+  dependencies: Dependencies,
+): FilterDefinition[] => {
+  return filterMetadatas
+    .map((metadata) => createFilter(metadata, dependencies))
+    .filter(Boolean) as FilterDefinition[];
+};
+
+const createFilter = (
+  metadata: BFFMetadata,
+  depencencies: Dependencies,
+): FilterDefinition | undefined => {
+  const commonValues = {
+    id: metadata.id,
+    name: metadata.nameInData,
+    textId: metadata.textId,
+    placeholderTextId: metadata.defTextId,
+  };
+
+  if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
+    return {
+      ...commonValues,
+      ...autocompleteSearchTerms[metadata.nameInData],
+      type: 'autocomplete',
+    };
+  }
+
+  if (metadata.type === 'textVariable') {
+    return {
+      ...commonValues,
+      type: 'text',
+    };
+  }
+
+  if (metadata.type === 'numberVariable') {
+    return {
+      ...commonValues,
+      type: 'number',
+    };
+  }
+
+  if (metadata.type === 'collectionVariable') {
+    const collectionVariable = metadata as BFFMetadataCollectionVariable;
+    const collection = depencencies.metadataPool.get(
+      collectionVariable.refCollection,
+    ) as BFFMetadataItemCollection;
+    const options = collection.collectionItemReferences.map((itemRef) => {
+      const item = depencencies.metadataPool.get(
+        itemRef.refCollectionItemId,
+      ) as BFFMetadataBase;
+      return { text: item.textId, value: item.nameInData };
+    });
+    return {
+      ...commonValues,
+      type: 'collection',
+      options,
+    };
+  }
+
+  return undefined;
+};

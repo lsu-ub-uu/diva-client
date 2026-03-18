@@ -20,9 +20,8 @@ import { Component } from '@/components/FormGenerator/Component';
 import type {
   FormComponent,
   FormComponentGroup,
-  PresentationSize,
 } from '@/components/FormGenerator/types';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -37,6 +36,8 @@ import {
   isComponentGroup,
   isComponentWithData,
 } from './formGeneratorUtils/formGeneratorUtils';
+import { FormGeneratorContext } from './FormGeneratorContext';
+import type { PresentationSize } from '@/cora/bffTypes.server';
 
 interface ComponentPresentationSwitcherProps {
   component: FormComponent;
@@ -55,6 +56,7 @@ export const AlternativePresentationSwitcher = (
 ) => {
   const switcherRef = useRef<HTMLDivElement>(null);
   const { component, currentComponentNamePath, parentPath } = props;
+  const { boxGroups } = use(FormGeneratorContext);
 
   const {
     getValues,
@@ -118,6 +120,7 @@ export const AlternativePresentationSwitcher = (
         currentComponentNamePath={currentComponentNamePath}
         anchorId={props.anchorId}
         childrenHidden={alternativePresentation === undefined && !expanded}
+        parentPresentationStyle={props.parentPresentationStyle}
       />
     );
   }
@@ -129,7 +132,7 @@ export const AlternativePresentationSwitcher = (
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
     >
-      <Card boxed expanded={expanded}>
+      <Card boxed={boxGroups} expanded={expanded}>
         <CardHeader>
           <CardTitle level={titleHeadlineLevel}>
             <CardExpandButton
@@ -149,7 +152,7 @@ export const AlternativePresentationSwitcher = (
           </CardTitle>
         </CardHeader>
         {alternativePresentation !== undefined ? ( // Switch between two presentations
-          <CardContent className='form-component-container'>
+          <CardContent>
             <Component
               {...props}
               component={
@@ -161,7 +164,7 @@ export const AlternativePresentationSwitcher = (
           </CardContent>
         ) : (
           // Switch between no content and single presentation
-          <CardContent className='form-component-container' hidden={!expanded}>
+          <CardContent hidden={!expanded}>
             <Component
               {...props}
               component={{ ...component, title: undefined } as FormComponent}

@@ -6,7 +6,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/cora/cora-data/CoraDataTransforms.server';
-import type { BFFRecordType } from './bffTypes.server';
+import type { BFFRecordType } from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   containsChildWithNameInData,
@@ -26,7 +26,9 @@ export const transformCoraRecordTypes = (
   return coraRecords.map(transformRecordType);
 };
 
-export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
+export const transformRecordType = (
+  coraRecordWrapper: RecordWrapper,
+): BFFRecordType => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
@@ -56,6 +58,12 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     dataRecordGroup,
     'textId',
   );
+
+  const pluralTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'pluralTextId',
+  );
+
   const defTextId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
     'defTextId',
@@ -96,6 +104,7 @@ export const transformRecordType = (coraRecordWrapper: RecordWrapper) => {
     autocompletePresentationView,
     searchId,
     textId,
+    pluralTextId,
     defTextId,
     groupOfRecordType,
     recordTypeCategory,

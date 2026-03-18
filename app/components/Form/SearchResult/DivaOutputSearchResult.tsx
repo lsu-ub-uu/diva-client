@@ -7,8 +7,8 @@ import { Persons } from './Persons';
 import { Related } from './Related/Related';
 import { RelatedBook } from './RelatedBook/RelatedBook';
 import { InfoBox } from './InfoBox/InfoBox';
-import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { useTranslation } from 'react-i18next';
+import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
 
 interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
@@ -26,7 +26,8 @@ export const DivaOutputSearchResult = ({
             to={`/${searchResult.recordType}/${searchResult.id}`}
             prefetch='intent'
           >
-            {createTitle(output?.titleInfo) || t('divaClient_missingTitleText')}
+            {getTitleFromTitleInfo(output?.titleInfo) ||
+              t('divaClient_missingTitleText')}
           </Link>
         </h2>
         <span>
@@ -36,7 +37,7 @@ export const DivaOutputSearchResult = ({
         <RelatedBook relatedBook={output.relatedItem_type_book} />
         <Related related={output.related} />
       </div>
-      <Attachments attachments={output.attachment} />
+      <Attachments attachments={output.attachments} />
     </div>
   );
 };

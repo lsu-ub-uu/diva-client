@@ -23,19 +23,20 @@ import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
   BFFSearch,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+} from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { loader } from '@/routes/resourceRoutes/autocompleteSearch';
 import type { BFFDataRecord } from '@/types/record';
-import { listToPool } from '@/utils/structs/listToPool';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { RouterContextProvider } from 'react-router';
-import { dependenciesContext } from 'server/depencencies';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 vi.mock('@/data/searchRecords.server');
 vi.mock('@/utils/invariant');
+vi.mock('server/dependencies/depencencies');
 
 describe('autocompleteSearch', () => {
   describe('loader', () => {
@@ -65,10 +66,8 @@ describe('autocompleteSearch', () => {
         flashNotification: vi.fn(),
         destroySession: vi.fn(),
       });
-      context.set(dependenciesContext, {
-        dependencies: mockDependencies,
-        refreshDependencies: vi.fn(),
-      });
+
+      vi.mocked(getDependencies).mockResolvedValue(mockDependencies);
 
       vi.mocked(searchRecords).mockResolvedValue({
         data: [],
@@ -136,10 +135,8 @@ describe('autocompleteSearch', () => {
         flashNotification: vi.fn(),
         destroySession: vi.fn(),
       });
-      context.set(dependenciesContext, {
-        dependencies: mockDependencies,
-        refreshDependencies: vi.fn(),
-      });
+
+      vi.mocked(getDependencies).mockResolvedValue(mockDependencies);
 
       vi.mocked(searchRecords).mockResolvedValue({
         data: [{ id: 'result1' }, { id: 'result2' }] as BFFDataRecord[],

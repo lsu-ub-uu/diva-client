@@ -2,9 +2,9 @@ import type {
   BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataGroup,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { Dependencies } from '../formDefinitionsDep.server';
 
 export interface RecordLinkSearchPresentation {
   searchType: string;

@@ -22,6 +22,7 @@
   right: var(--gap-l);
   box-shadow: var(--elevation);
   border-radius: var(--border-radius);
+  z-index: 1;
   transition:
     opacity 0.25s ease-out,
     transform 0.25s ease-out;

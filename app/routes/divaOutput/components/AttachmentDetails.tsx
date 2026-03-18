@@ -1,10 +1,10 @@
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { ChevronDownIcon, InfoIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';
 import { DateDisplay } from './DateDisplay';
 import { Term } from './Term';
+import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
@@ -13,7 +13,7 @@ interface AttachmentProps {
 export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
   const { t } = useTranslation();
   const language = useLanguage();
-  const binaryRecord = attachment?.attachmentFile?.linkedRecord?.binary;
+  const binaryRecord = attachment?.file?.linkedRecord?.binary;
 
   return (
     <details className='record-details'>
@@ -24,12 +24,12 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
       </summary>
       <dl>
         <Term
-          label={attachment.displayLabel?.__text?.[language]}
-          value={attachment.displayLabel?.value}
+          label={t('attachmentLabelFullTextCollectionVarText')}
+          value={t(`${attachment._label}ItemText`)}
         />
         <Term
-          label={attachment.type?.__text?.[language]}
-          value={attachment.type?.__valueText?.[language]}
+          label={attachment.displayLabel?.__text?.[language]}
+          value={attachment.displayLabel?.value}
         />
         <Term
           label={binaryRecord?.originalFileName?.__text?.[language]}
@@ -61,7 +61,14 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
             </span>
           }
         />
-
+        <Term
+          label={attachment?.digitized?.__text?.[language]}
+          value={attachment?.digitized?.__valueText?.[language]}
+        />
+        <Term
+          label={attachment?.printReadyFile?.__text?.[language]}
+          value={attachment?.printReadyFile?.__valueText?.[language]}
+        />
         <Term
           label={attachment?.note_type_attachmentVersion?.__text?.[language]}
           value={
@@ -70,31 +77,21 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
         />
         <Term
           label={
-            attachment?.adminInfo?.identifier_type_registrationNumber?.__text?.[
-              language
-            ]
+            attachment?.identifier_type_registrationNumber?.__text?.[language]
           }
-          value={
-            attachment?.adminInfo?.identifier_type_registrationNumber?.value
-          }
+          value={attachment?.identifier_type_registrationNumber?.value}
         />
         <Term
-          label={attachment?.adminInfo?.availability?.__text?.[language]}
-          value={attachment?.adminInfo?.availability?.__valueText?.[language]}
+          label={attachment?.requestedVisibility?.__text?.[language]}
+          value={attachment?.requestedVisibility?.__valueText?.[language]}
         />
         <Term
-          label={attachment?.adminInfo?.dateAvailability?.__text?.[language]}
-          value={<DateDisplay date={attachment?.adminInfo?.dateAvailability} />}
+          label={attachment?.dateToBePublished?.__text?.[language]}
+          value={<DateDisplay date={attachment?.dateToBePublished} />}
         />
         <Term
-          label={attachment?.adminInfo?.secrecy?.__text?.[language]}
-          value={attachment?.adminInfo?.secrecy?.__valueText?.[language]}
-        />
-        <Term
-          label={
-            attachment?.adminInfo?.note_type_attachment?.__text?.[language]
-          }
-          value={attachment?.adminInfo?.note_type_attachment?.value}
+          label={attachment?.dateToBeUnpublished?.__text?.[language]}
+          value={<DateDisplay date={attachment?.dateToBeUnpublished} />}
         />
       </dl>
     </details>

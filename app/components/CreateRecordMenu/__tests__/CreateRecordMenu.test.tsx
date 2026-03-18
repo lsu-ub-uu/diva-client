@@ -17,6 +17,7 @@
  */
 
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { renderWithRoutesStub } from '@/utils/testUtils';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
@@ -47,22 +48,18 @@ describe('CreateRecordMenu', () => {
 
   it('renders a dropdown when two validation type', async () => {
     const user = userEvent.setup();
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <CreateRecordMenu
-            validationTypes={[
-              { value: 'someValue', label: 'someLabel' },
-              { value: 'someOtherValue', label: 'someOtherLabel' },
-            ]}
-            recordTypeTextId={'id'}
-          />
-        ),
-      },
-    ]);
 
-    await act(() => render(<RoutesStub />));
+    await act(() =>
+      renderWithRoutesStub(
+        <CreateRecordMenu
+          validationTypes={[
+            { value: 'someValue', label: 'someLabel' },
+            { value: 'someOtherValue', label: 'someOtherLabel' },
+          ]}
+          recordTypeTextId={'id'}
+        />,
+      ),
+    );
 
     const button = screen.getByRole('button', {
       name: 'divaClient_createText',

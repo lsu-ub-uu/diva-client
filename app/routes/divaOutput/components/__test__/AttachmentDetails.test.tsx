@@ -21,12 +21,22 @@ describe('AttachmentDetails', () => {
         __text: { en: 'Display Label' },
         value: 'Test Document',
       },
-      type: {
-        __text: { en: 'Type' },
-        __valueText: { en: 'Attachment' },
-        value: 'attachment',
+      _label: 'attachment',
+      digitized: {
+        value: 'true',
+        __text: {
+          en: 'Digitized',
+        },
+        __valueText: {
+          en: 'Yes',
+        },
       },
-      attachmentFile: {
+      printReadyFile: {
+        value: 'true',
+        __text: { en: 'Print ready file' },
+        __valueText: { sv: 'Yes' },
+      },
+      file: {
         value: 'binary:123456',
         linkedRecord: {
           binary: {
@@ -62,8 +72,10 @@ describe('AttachmentDetails', () => {
     expect(screen.getByText('Display Label')).toBeInTheDocument();
     expect(screen.getByText('Test Document')).toBeInTheDocument();
 
-    expect(screen.getByText('Type')).toBeInTheDocument();
-    expect(screen.getByText('Attachment')).toBeInTheDocument();
+    expect(
+      screen.getByText('attachmentLabelFullTextCollectionVarText'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('attachmentItemText')).toBeInTheDocument();
 
     expect(screen.getByText('Original File Name')).toBeInTheDocument();
     expect(screen.getByText('document.pdf')).toBeInTheDocument();
@@ -78,7 +90,7 @@ describe('AttachmentDetails', () => {
   it('displays visibility information with formatted timestamp when available', async () => {
     const user = userEvent.setup();
     const mockAttachment = {
-      attachmentFile: {
+      file: {
         linkedRecord: {
           binary: {
             recordInfo: {
@@ -113,27 +125,29 @@ describe('AttachmentDetails', () => {
   it('displays admin info fields when available', async () => {
     const user = userEvent.setup();
     const mockAttachment = {
-      adminInfo: {
-        identifier_type_registrationNumber: {
-          __text: { en: 'Registration Number', sv: 'Registreringsnummer' },
-          value: 'REG-123456',
-        },
-        availability: {
-          __text: { en: 'Availability', sv: 'Tillgänglighet' },
-          __valueText: { en: 'Available', sv: 'Tillgänglig' },
-        },
-        dateAvailability: {
-          year: { value: '2023' },
-          month: { value: '06' },
-          day: { value: '15' },
-        },
-        secrecy: {
-          __text: { en: 'Secrecy', sv: 'Sekretess' },
-          __valueText: { en: 'Open', sv: 'Öppen' },
-        },
-        note_type_attachment: {
-          __text: { en: 'Attachment Note', sv: 'Bilagenotering' },
-          value: 'This is an important document',
+      identifier_type_registrationNumber: {
+        __text: { en: 'Registration Number', sv: 'Registreringsnummer' },
+        value: 'REG-123456',
+      },
+      requestedVisibility: {
+        __text: { en: 'Availability', sv: 'Tillgänglighet' },
+        __valueText: { en: 'Available', sv: 'Tillgänglig' },
+      },
+      dateToBePublished: {
+        year: { value: '2023' },
+        month: { value: '06' },
+        day: { value: '15' },
+      },
+      dateToBeUnpublished: {
+        year: { value: '2024' },
+        month: { value: '06' },
+        day: { value: '15' },
+      },
+      note_type_attachmentVersion: {
+        __text: { en: 'Attachment Note', sv: 'Bilagenotering' },
+        __valueText: {
+          en: 'This is an important document',
+          sv: 'Detta är ett viktigt dokument',
         },
       },
     } as AttachmentGroup;
@@ -153,9 +167,6 @@ describe('AttachmentDetails', () => {
 
     expect(screen.getByText('Availability')).toBeInTheDocument();
     expect(screen.getByText('Available')).toBeInTheDocument();
-
-    expect(screen.getByText('Secrecy')).toBeInTheDocument();
-    expect(screen.getByText('Open')).toBeInTheDocument();
 
     expect(screen.getByText('Attachment Note')).toBeInTheDocument();
     expect(

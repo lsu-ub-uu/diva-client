@@ -21,7 +21,7 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFSearch } from './bffTypes.server';
+import type { BFFSearch } from '../bffTypes.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
@@ -43,7 +43,8 @@ export const transformCoraSearch = (
   const coraRecordWrappers = dataListWrapper.dataList.data;
   return coraRecordWrappers.map(transformCoraSearchToBFFSearch);
 };
-const transformCoraSearchToBFFSearch = (
+
+export const transformCoraSearchToBFFSearch = (
   coraRecordWrapper: RecordWrapper,
 ): BFFSearch => {
   const dataRecordGroup = coraRecordWrapper.record.data;
