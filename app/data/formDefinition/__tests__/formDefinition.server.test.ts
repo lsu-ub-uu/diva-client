@@ -432,7 +432,7 @@ describe('formDefinition', () => {
             textVariable,
           ]),
           presentationPool: listToPool([
-            rootPGroup,
+            otherRootPGroup,
             childPGroup,
             metadataPVariable,
           ]),
@@ -854,7 +854,7 @@ describe('formDefinition', () => {
             textVariable,
           ]),
           presentationPool: listToPool([
-            rootPGroup,
+            otherRootPGroup,
             childPGroup,
             metadataPVariable,
           ]),
@@ -1376,7 +1376,7 @@ describe('formDefinition', () => {
             textVariable,
           ]),
           presentationPool: listToPool([
-            rootPGroup,
+            otherRootPGroup,
             childPGroup,
             metadataPVariable,
           ]),
@@ -3520,7 +3520,7 @@ const childGroup: BFFMetadataGroup = {
   ],
 };
 
-export const rootPGroup: BFFPresentationGroup = {
+export const otherRootPGroup: BFFPresentationGroup = {
   id: 'rootPGroupId',
   type: 'pGroup',
   presentationOf: 'rootGroupId',
