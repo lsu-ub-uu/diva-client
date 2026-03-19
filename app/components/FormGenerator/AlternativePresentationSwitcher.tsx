@@ -85,7 +85,7 @@ export const AlternativePresentationSwitcher = (
     const containsValidationErrors = switcherRef.current?.querySelector(
       ':has([aria-invalid="true"])',
     );
-    if (containsValidationErrors) {
+    if (containsValidationErrors && alternativePresentation === undefined) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentPresentation(
         presentationSize === 'singleInitiallyVisible'
@@ -93,7 +93,7 @@ export const AlternativePresentationSwitcher = (
           : 'alternative',
       );
     }
-  }, [errors, presentationSize]);
+  }, [errors, presentationSize, alternativePresentation]);
 
   if (hasNoValuablePresentation(parentPath, component, getValues)) {
     return null;
