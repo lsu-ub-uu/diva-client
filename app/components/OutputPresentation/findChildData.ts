@@ -1,27 +1,24 @@
 import type { CoraData, DataGroup } from '@/cora/cora-data/types.server';
 import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type {
-  FormComponent,
-  FormComponentWithData,
-} from '../FormGenerator/types';
+import type { FormComponent } from '../FormGenerator/types';
 
 export const findChildData = (
   component: FormComponent,
   group: DataGroup,
 ): CoraData[] => {
-  if (!isComponentWithData(component)) {
-    return [];
-  }
-
   return group.children.filter((child) =>
     doesDataMatchComponent(component, child),
   );
 };
 
 export const doesDataMatchComponent = (
-  component: FormComponentWithData,
+  component: FormComponent,
   data: CoraData,
 ) => {
+  if (!isComponentWithData(component)) {
+    return false;
+  }
+
   if (data.name !== component.name) {
     return false;
   }

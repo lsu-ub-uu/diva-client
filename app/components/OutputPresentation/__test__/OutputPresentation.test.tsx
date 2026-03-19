@@ -395,6 +395,60 @@ describe('OutputPresentation', () => {
     expect(screen.getByText('Hello from the container!')).toBeInTheDocument();
   });
 
+  it('renders a nested container', () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Outer Group',
+        name: 'outerGroup',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'container',
+            name: 'container',
+            showLabel: true,
+            components: [
+              {
+                type: 'container',
+                name: 'nestedContainer',
+                showLabel: true,
+                components: [
+                  {
+                    type: 'textVariable',
+                    label: 'Text in Container',
+                    name: 'textInContainer',
+                    showLabel: true,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'outerGroup',
+      children: [
+        {
+          name: 'textInContainer',
+          value: 'Hello from the nested container!',
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Outer Group' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Text in Container')).toBeInTheDocument();
+    expect(
+      screen.getByText('Hello from the nested container!'),
+    ).toBeInTheDocument();
+  });
+
   it('renders repeating data', () => {
     const formSchema = {
       form: {

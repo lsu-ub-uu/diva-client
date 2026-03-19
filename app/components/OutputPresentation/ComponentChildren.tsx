@@ -1,5 +1,8 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  isComponentContainer,
+  isComponentWithData,
+} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponent,
   FormComponentContainer,
@@ -41,7 +44,6 @@ export const ComponentChildren = ({
         childComponent.type === 'container'
           ? [getContainerData(childComponent, data)]
           : findChildData(childComponent, data);
-
       if (!childData) {
         return null;
       }
@@ -74,11 +76,15 @@ const getContainerData = (
 ) => {
   const matchingChildren = dataGroup.children.filter((childData) => {
     return container.components?.some((childComponent) => {
-      if (!isComponentWithData(childComponent)) {
-        return false;
+      if (isComponentContainer(childComponent)) {
+        return childComponent.components?.some((nestedChild) =>
+          doesDataMatchComponent(nestedChild, childData),
+        );
       }
+
       return doesDataMatchComponent(childComponent, childData);
     });
   });
+
   return { ...dataGroup, children: matchingChildren };
 };
