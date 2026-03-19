@@ -37,6 +37,7 @@ import {
 } from '../ConfirmDialog/ConfirmDialog';
 import { IconButton } from '../IconButton/IconButton';
 import { CircularLoader } from '../Loader/CircularLoader';
+import { Button } from '../Button/Button';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;
@@ -170,16 +171,20 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               {isDeleting ? <CircularLoader /> : <ShredderIcon />}
             </IconButton>
             <ConfirmDialog
+              ref={deleteConfirmDialogRef}
               headingText={t('divaClient_confirmDeleteHeadingText')}
               messageText={t('divaClient_confirmDeleteText')}
-              confirmButtonText={
+              actions={
                 <>
-                  {t('divaClient_deleteRecordText')}
-                  <ShredderIcon />
+                  <Button variant='secondary' value='cancel' type='submit'>
+                    {t('divaClient_cancelText')}
+                  </Button>
+                  <Button variant='primary' value='submit' type='submit'>
+                    {t('divaClient_deleteRecordText')}
+                    <ShredderIcon />
+                  </Button>
                 </>
               }
-              cancelButtonText={t('divaClient_cancelText')}
-              ref={deleteConfirmDialogRef}
             />
           </Fragment>
         );
@@ -194,15 +199,20 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
               {isTrashing ? <CircularLoader /> : <Trash2Icon />}
             </IconButton>
             <ConfirmDialog
+              ref={trashConfirmDialogRef}
               headingText={t('divaClient_confirmTrashHeadingText')}
               messageText={t('divaClient_confirmTrashText')}
-              confirmButtonText={
+              actions={
                 <>
-                  {t('divaClient_trashRecordText')} <Trash2Icon />
+                  <Button variant='secondary' value='cancel' type='submit'>
+                    {t('divaClient_cancelText')}
+                  </Button>
+                  <Button variant='primary' value='submit' type='submit'>
+                    {t('divaClient_trashRecordText')}
+                    <Trash2Icon />
+                  </Button>
                 </>
               }
-              cancelButtonText={t('divaClient_cancelText')}
-              ref={trashConfirmDialogRef}
             />
           </Fragment>
         );

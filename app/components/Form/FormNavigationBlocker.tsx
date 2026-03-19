@@ -1,4 +1,4 @@
-import { SquareArrowRightExitIcon } from 'lucide-react';
+import { ExternalLinkIcon, SquareArrowRightExitIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBlocker } from 'react-router';
@@ -6,6 +6,7 @@ import {
   ConfirmDialog,
   useConfirmDialog,
 } from '../ConfirmDialog/ConfirmDialog';
+import { Button } from '../Button/Button';
 
 interface FormNavigationBlockerProps {
   isDirty: boolean;
@@ -37,22 +38,46 @@ export const FormNavigationBlocker = ({
   // Block in-app navigation
   useEffect(() => {
     if (blocker.state === 'blocked') {
-      showConfirmDialog(blocker.proceed, blocker.reset);
+      showConfirmDialog((returnValue) => {
+        if (returnValue === 'confirm') {
+          blocker.proceed();
+        }
+
+        if (returnValue === 'openInNewTab') {
+          blocker.reset();
+          window.open(
+            blocker.location.pathname + blocker.location.search,
+            '_blank',
+          );
+        }
+
+        if (returnValue === 'cancel') {
+          blocker.reset();
+        }
+      });
     }
-  }, [blocker.state, blocker.proceed, blocker.reset, showConfirmDialog]);
+  }, [blocker, showConfirmDialog]);
 
   return (
     <ConfirmDialog
       ref={confirmDialogRef}
       headingText={t('divaClient_unsavedChangesConfirmHeadingText')} //Osparade ändringar
       messageText={t('divaClient_unsavedChangesConfirmMessageText')} //Är du säker på att du vill lämna formuläret? Dina ändringar kommer inte att sparas
-      confirmButtonText={
+      actions={
         <>
-          {t('divaClient_unsavedChangesConfirmButtonText')}
-          <SquareArrowRightExitIcon />
+          <Button variant='secondary' value='cancel' type='submit'>
+            {t('divaClient_unsavedChangesCancelButtonText')}
+          </Button>
+          <Button variant='secondary' value='openInNewTab' type='submit'>
+            Öppna sidan i ny flik
+            <ExternalLinkIcon />
+          </Button>
+          <Button variant='primary' value='confirm' type='submit'>
+            {t('divaClient_unsavedChangesConfirmButtonText')}
+            <SquareArrowRightExitIcon />
+          </Button>
         </>
-      } //Ja, lämna
-      cancelButtonText={t('divaClient_unsavedChangesCancelButtonText')} //Nej, stanna kvar
+      }
     />
   );
 };
