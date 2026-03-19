@@ -85,7 +85,6 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     if (!node.value) {
       return undefined;
     }
-
     return {
       name: node.name,
       attributes,
@@ -97,9 +96,13 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     .map(finalizeNode)
     .filter((child): child is CoraData => child !== undefined);
 
+  if (children.length === 0) {
+    return undefined;
+  }
+
   return {
     name: node.name,
     attributes,
-    ...(children.length > 0 ? { children } : {}),
+    children,
   } as CoraData;
 };
