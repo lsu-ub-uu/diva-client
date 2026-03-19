@@ -136,14 +136,22 @@ export const loader = async ({
   };
 };
 
-export const action = async ({ context, request }: Route.ActionArgs) => {
+export const action = async ({
+  context,
+  request,
+  params,
+}: Route.ActionArgs) => {
+  const dependencies = await getDependencies();
   const { auth, flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
   const url = new URL(request.url);
-  const validationTypeId = url.searchParams.get('validationType');
+  const validationTypes = getValidationTypes(params.recordType, dependencies);
+
+  const validationTypeId =
+    url.searchParams.get('validationType') ?? validationTypes?.[0]?.value;
+
   assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
-  const dependencies = await getDependencies();
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
     validationTypeId,
@@ -229,9 +237,11 @@ export default function CreateRecordRoute({
 
   if (!formDefinition) {
     return (
-      <main>
-        <h1>{t('divaClient_selectValidationTypeText')}</h1>
-        <ValidationTypePicker validationTypes={validationTypes ?? []} />
+      <main className='grid main-content'>
+        <div className='grid-col-12'>
+          <h1>{t('divaClient_selectValidationTypeText')}</h1>
+          <ValidationTypePicker validationTypes={validationTypes ?? []} />
+        </div>
       </main>
     );
   }

@@ -22,9 +22,8 @@
     background-color: var(--color-button-secondary-hover);
   }
 
-  &:disabled {
-    pointer-events: none;
-    color: var(--color-label);
+  &[data-disabled] {
+    cursor: default;
   }
 }
 

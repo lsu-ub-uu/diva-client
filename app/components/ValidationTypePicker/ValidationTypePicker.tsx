@@ -22,7 +22,6 @@ export const ValidationTypePicker = ({
               fullWidth
               name='validationType'
               value={type.value}
-              size='large'
             >
               {t(type.label)}
             </Button>

@@ -31,6 +31,7 @@ export const OutputVariable = ({
       value={data.value}
       variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
       colspan={component.gridColSpan}
+      tooltip={component.tooltip}
     />
   );
 };

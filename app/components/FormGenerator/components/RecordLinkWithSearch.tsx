@@ -37,7 +37,9 @@ import { assertDefined } from '@/utils/invariant';
 import { useMember } from '@/utils/rootLoaderDataUtils';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { href, useFetcher } from 'react-router';
+import { href, Link, useFetcher } from 'react-router';
+import { Button } from '@/components/Button/Button';
+import { FilePlusIcon } from 'lucide-react';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -132,6 +134,7 @@ export const RecordLinkWithSearch = ({
                 )}
                 name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
                 onChange={handleComboboxInputChange}
+                autoComplete='off'
               />
               <ComboboxOptions anchor='bottom'>
                 {fetcher.state === 'idle' &&
@@ -148,8 +151,26 @@ export const RecordLinkWithSearch = ({
                 {fetcher.state === 'idle' &&
                   fetcher.data &&
                   fetcher.data.result.length === 0 && (
-                    <ComboboxOption disabled value=''>
+                    <ComboboxOption
+                      disabled
+                      value=''
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
                       {t('divaClient_recordLinkAutocompleteNoResultsText')}
+                      <Button
+                        variant='secondary'
+                        as={Link}
+                        to={href('/:recordType/create', {
+                          recordType: component.recordLinkType!,
+                        })}
+                        target='_blank'
+                      >
+                        <FilePlusIcon /> Skapa ny
+                      </Button>
                     </ComboboxOption>
                   )}
                 {fetcher.state === 'loading' && (

@@ -2,6 +2,11 @@
   .label {
     color: var(--color-label);
     font-weight: var(--font-weight-bold);
+    background: none;
+
+    &[popoverTarget] {
+      cursor: help;
+    }
   }
 
   .value {
