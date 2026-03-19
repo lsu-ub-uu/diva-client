@@ -30,7 +30,7 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { isEmpty, mapValues } from 'lodash-es';
 
-type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
+export type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
 
 interface TransformEntryArgs {
   lookup: Record<string, FormMetaData>;

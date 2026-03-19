@@ -20,7 +20,10 @@ import type { BFFDataRecord } from '@/types/record';
 import type { Auth } from '@/auth/Auth';
 import { createFormMetaData } from '@/data/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
-import { transformToCoraData } from '@/cora/transform/transformToCora.server';
+import {
+  transformToCoraData,
+  type Data,
+} from '@/cora/transform/transformToCora.server';
 import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformRecord } from '@/cora/transform/transformRecord.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
@@ -51,12 +54,55 @@ export const updateRecord = async (
 
   const transformData = transformToCoraData(formMetaDataPathLookup, data);
 
-  const response = await updateRecordDataById<RecordWrapper>(
-    recordId,
-    transformData[0] as DataGroup,
-    recordType,
-    auth?.data.token,
-  );
+  let response;
+  if (recordType === 'diva-output') {
+    const classicRecordAs2026 =
+      convertClassicQualityTo2026Quality(transformData);
+    try {
+      response = await updateRecordDataById<RecordWrapper>(
+        recordId,
+        classicRecordAs2026[0] as DataGroup,
+        recordType,
+        auth?.data.token,
+      );
+    } catch {
+      response = await updateRecordDataById<RecordWrapper>(
+        recordId,
+        transformData[0] as DataGroup,
+        recordType,
+        auth?.data.token,
+      );
+    }
+  } else {
+    response = await updateRecordDataById<RecordWrapper>(
+      recordId,
+      transformData[0] as DataGroup,
+      recordType,
+      auth?.data.token,
+    );
+  }
 
   return transformRecord(dependencies, response.data, FORM_MODE_UPDATE);
+};
+
+const convertClassicQualityTo2026Quality = (recordData: unknown): Data[] => {
+  const findChildren = (data: any): any => {
+    if (Array.isArray(data)) return data.map(findChildren);
+    if (data && typeof data === 'object') {
+      const node = { ...data };
+      if (
+        node.name === 'linkedRecordId' &&
+        node.value === 'classic_publication_report'
+      ) {
+        node.value = 'publication_report';
+      }
+      if (node.name === 'dataQuality' && node.value === 'classic') {
+        node.value = '2026';
+      }
+      if (node.children) node.children = findChildren(node.children);
+      return node;
+    }
+    return data;
+  };
+  return findChildren(recordData);
 };
