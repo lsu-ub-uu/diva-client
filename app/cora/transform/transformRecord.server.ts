@@ -174,7 +174,7 @@ export const transformRecordData = (
   dependencies: Dependencies,
 ) => {
   return {
-    [dataRecordGroup.name]: {
+    [createDataName(dataRecordGroup, formMetadata)]: {
       ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
       ...transformAttributes(dataRecordGroup),
     },

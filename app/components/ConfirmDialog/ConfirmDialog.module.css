@@ -6,7 +6,6 @@
   border-radius: var(--border-radius);
   box-shadow: var(--elevation);
   transform: scale(0.9);
-  max-width: 600px;
   opacity: 0;
   transition:
     transform 0.15s ease-in,

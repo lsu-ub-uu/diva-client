@@ -48,12 +48,19 @@ const isResourceLink = (obj: Record<string, any>) => {
 };
 
 const isRecordLink = (obj: Record<string, any>) => {
-  return Object.hasOwn(obj, 'linkedRecordType') && Object.hasOwn(obj, 'value');
+  return (
+    Object.hasOwn(obj, 'linkedRecordType') &&
+    Object.hasOwn(obj, 'value') &&
+    typeof obj.value !== 'object'
+  );
 };
 
 const isLeaf = (obj: any) => {
   return (
-    typeof obj === 'object' && !isEmpty(obj) && Object.hasOwn(obj, 'value')
+    typeof obj === 'object' &&
+    !isEmpty(obj) &&
+    Object.hasOwn(obj, 'value') &&
+    typeof obj.value !== 'object'
   );
 };
 
