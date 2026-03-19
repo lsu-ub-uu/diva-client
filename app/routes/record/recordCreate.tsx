@@ -49,6 +49,10 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { transformFormDataToCora } from './transformFormDataToCora';
+import { postRecordData } from '@/cora/postRecordData.server';
 
 export const loader = async ({
   request,
@@ -136,7 +140,11 @@ export const loader = async ({
   };
 };
 
-export const action = async ({ context, request }: Route.ActionArgs) => {
+export const action = async ({
+  context,
+  request,
+  params,
+}: Route.ActionArgs) => {
   const { auth, flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
   const url = new URL(request.url);
@@ -149,38 +157,75 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     validationTypeId,
     'create',
   );
-  const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
-  const resolver = yupResolver(yupSchema);
 
-  const {
-    errors,
-    data: validatedFormData,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData(request, resolver);
-  if (errors) {
-    return { errors, defaultValues };
-  }
+  const formData = await request.formData();
+
+  console.log('Received form data:', formData);
+
+  const transformedFormData = transformFormDataToCora(formData);
+
+  console.log(
+    'Transformed form data:',
+    JSON.stringify(transformedFormData, null, 2),
+  );
 
   try {
-    const { recordType: recordTypeId, id } = await createRecord(
-      dependencies,
-      formDefinition,
-      validatedFormData as BFFDataRecordData,
-      auth,
+    await postRecordData(
+      transformedFormData,
+      params.recordType,
+      auth?.data?.token,
     );
-    const recordType = dependencies.recordTypePool.get(recordTypeId);
     flashNotification({
       severity: 'success',
-      summary: t('divaClient_recordSuccessfullyCreatedText', {
-        recordType: t(recordType.textId),
-        id,
-      }),
+      summary: 'yess',
     });
-    return redirect(`/${recordTypeId}/${id}/update`);
   } catch (error) {
     flashNotification(createNotificationFromAxiosError(t, error));
     console.error(error);
   }
+
+  //  { const yupSchema = generateYupSchemaFromFormSchema(formDefinition);
+  //   const resolver = yupResolver(yupSchema);
+
+  //   const {
+  //     errors,
+  //     data: validatedFormData,
+  //     receivedValues: defaultValues,
+  //   } = await getValidatedFormData(request, resolver);
+  //   if (errors) {
+  //     return { errors, defaultValues };
+  //   }
+
+  //   try {
+  //     const { recordType: recordTypeId, id } = await createRecord(
+  //       dependencies,
+  //       formDefinition,
+  //       validatedFormData as BFFDataRecordData,
+  //       auth,
+  //     );
+  //     const recordType = dependencies.recordTypePool.get(recordTypeId);
+  //     flashNotification({
+  //       severity: 'success',
+  //       summary: t('divaClient_recordSuccessfullyCreatedText', {
+  //         recordType: t(recordType.textId),
+  //         id,
+  //       }),
+  //     });
+  //     return redirect(`/${recordTypeId}/${id}/update`);
+  //   } catch (error) {
+  //     flashNotification(createNotificationFromAxiosError(t, error));
+  //     console.error(error);
+  //   }}
+};
+
+const transformFormData = (formData: FormData): Record<string, any> => {
+  const coraData = {};
+
+  let currentLevel = coraData;
+  formData.forEach((value, key) => {
+    const keys = key.split('.').map((part) => part.replace(/\[\d+\]/g, ''));
+  });
+  return coraData;
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
@@ -239,6 +284,7 @@ export default function CreateRecordRoute({
   const handleFormChange = (data: BFFDataRecordData) => {
     setPreviewData(data);
   };
+
   return (
     <div className='grid main-content'>
       <div className='grid-col-12 top-bar'>
@@ -258,11 +304,7 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <RecordForm
-          formSchema={formDefinition}
-          defaultValues={defaultValues}
-          onChange={handleFormChange}
-        />
+        <InputPresentation formSchema={formDefinition} />
       </main>
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
