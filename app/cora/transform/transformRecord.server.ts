@@ -293,7 +293,6 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     linkedRecordType: linkedRecordType,
     linkedRecord,
     displayName,
-    atomic: true,
   });
 };
 
@@ -336,14 +335,12 @@ const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
   if (metadata.finalValue) {
     return {
       value: metadata.finalValue,
-      atomic: true,
       final: true,
     };
   }
 
   return {
     value: data.value,
-    atomic: true,
   };
 };
 

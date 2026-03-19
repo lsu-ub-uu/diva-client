@@ -235,7 +235,7 @@ export const isRepeating = (value: any) => {
 };
 
 export const isVariable = (item: DataGroup | DataAtomic) => {
-  return 'value' in item;
+  return 'value' in item && typeof item.value !== 'object';
 };
 
 export const createLeaf = (
