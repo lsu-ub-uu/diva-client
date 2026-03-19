@@ -22,7 +22,6 @@ export const FormNavigationBlocker = ({
       currentLocation.pathname !== nextLocation.pathname && isDirty,
   );
 
-  // Block browser navigation (closing tab, refreshing, etc.)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -35,7 +34,6 @@ export const FormNavigationBlocker = ({
     };
   }, [isDirty]);
 
-  // Block in-app navigation
   useEffect(() => {
     if (blocker.state === 'blocked') {
       showConfirmDialog((returnValue) => {
@@ -61,15 +59,15 @@ export const FormNavigationBlocker = ({
   return (
     <ConfirmDialog
       ref={confirmDialogRef}
-      headingText={t('divaClient_unsavedChangesConfirmHeadingText')} //Osparade ändringar
-      messageText={t('divaClient_unsavedChangesConfirmMessageText')} //Är du säker på att du vill lämna formuläret? Dina ändringar kommer inte att sparas
+      headingText={t('divaClient_unsavedChangesConfirmHeadingText')}
+      messageText={t('divaClient_unsavedChangesConfirmMessageText')}
       actions={
         <>
           <Button variant='secondary' value='cancel' type='submit'>
             {t('divaClient_unsavedChangesCancelButtonText')}
           </Button>
           <Button variant='secondary' value='openInNewTab' type='submit'>
-            Öppna sidan i ny flik
+            {t('divaClient_unsavedChangesOpenInNewTabButtonText')}
             <ExternalLinkIcon />
           </Button>
           <Button variant='primary' value='confirm' type='submit'>

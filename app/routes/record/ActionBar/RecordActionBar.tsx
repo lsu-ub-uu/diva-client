@@ -159,6 +159,7 @@ export const RecordActionBar = ({
             headingText: t('divaClient_confirmTrashHeadingText'),
             messageText: t('divaClient_confirmTrashText'),
             confirmButtonText: t('divaClient_trashRecordText'),
+            cancelButtonText: t('divaClient_cancelText'),
           }}
         >
           {t('divaClient_trashRecordText')}
@@ -178,11 +179,7 @@ export const RecordActionBar = ({
           onAction={deleteRecord}
           icon={<ShredderIcon />}
           pending={isDeleting}
-          confirmDialog={{
-            headingText: t('divaClient_confirmDeleteHeadingText'),
-            messageText: t('divaClient_confirmDeleteText'),
-            confirmButtonText: t('divaClient_deleteRecordText'),
-          }}
+          confirmDialog={{}}
         >
           {t('divaClient_deleteRecordText')}
         </ActionBarButton>

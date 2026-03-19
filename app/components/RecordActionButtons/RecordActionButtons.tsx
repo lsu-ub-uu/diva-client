@@ -166,7 +166,13 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             <IconButton
               size='small'
               tooltip={t('divaClient_deleteRecordText')}
-              onClick={() => showDeleteConfirmDialog(deleteRecord)}
+              onClick={() =>
+                showDeleteConfirmDialog((returnValue) => {
+                  if (returnValue === 'submit') {
+                    deleteRecord();
+                  }
+                })
+              }
             >
               {isDeleting ? <CircularLoader /> : <ShredderIcon />}
             </IconButton>
@@ -194,7 +200,13 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             <IconButton
               size='small'
               tooltip={t('divaClient_trashRecordText')}
-              onClick={() => showTrashConfirmDialog(trashRecord)}
+              onClick={() =>
+                showTrashConfirmDialog((returnValue) => {
+                  if (returnValue === 'submit') {
+                    trashRecord();
+                  }
+                })
+              }
             >
               {isTrashing ? <CircularLoader /> : <Trash2Icon />}
             </IconButton>
