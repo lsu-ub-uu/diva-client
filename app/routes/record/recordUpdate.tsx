@@ -43,6 +43,9 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -51,6 +54,12 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
   const { recordType, recordId } = params;
+
+  const rawRecordResponse = await getRecordDataById<RecordWrapper>(
+    recordType,
+    recordId,
+    auth?.data.token,
+  );
 
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies,
@@ -88,6 +97,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   return {
     record,
+    rawRecord: rawRecordResponse.data.record,
     formDefinition,
     previewFormDefinition,
     defaultValues,
@@ -172,6 +182,7 @@ export default function UpdateRecordRoute({
     previewFormDefinition,
     notification,
     defaultValues,
+    rawRecord,
   } = loaderData;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
@@ -202,12 +213,7 @@ export default function UpdateRecordRoute({
           </Alert>
         )}
 
-        <RecordForm
-          key={lastUpdate}
-          defaultValues={defaultValues}
-          formSchema={formDefinition}
-          onChange={handleFormChange}
-        />
+        <InputPresentation formSchema={formDefinition} data={rawRecord.data} />
       </main>
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (

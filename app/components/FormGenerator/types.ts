@@ -114,6 +114,7 @@ export interface FormComponentHidden extends FormComponentBase {
   attributesToShow: 'none';
   repeat: FormComponentRepeat;
   presentationSize?: PresentationSize;
+  linkedRecordType?: string;
 }
 
 export interface FormComponentNumVar extends FormComponentMetadata {

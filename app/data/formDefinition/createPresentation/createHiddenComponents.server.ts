@@ -146,6 +146,8 @@ function createHiddenVariable(
       attributes,
       attributesToShow: 'none',
       repeat,
+      linkedRecordType:
+        'linkedRecordType' in metadata ? metadata.linkedRecordType : undefined,
     };
   }
 }

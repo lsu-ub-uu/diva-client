@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import type { FormComponentWithData } from '../FormGenerator/types';
 
 interface AttributesProps {
@@ -7,7 +6,6 @@ interface AttributesProps {
 }
 
 export const InputAttributes = ({ path, component }: AttributesProps) => {
-  const { t } = useTranslation();
   if (!component.attributes) {
     return null;
   }

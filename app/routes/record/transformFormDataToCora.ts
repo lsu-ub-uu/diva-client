@@ -7,6 +7,7 @@ interface Node {
   children: Node[];
   childLookup: Map<string, Node>;
   value?: any;
+  repeatId?: string;
 }
 
 export const transformFormDataToCora = (formData: FormData): DataGroup => {
@@ -19,6 +20,11 @@ export const transformFormDataToCora = (formData: FormData): DataGroup => {
 
     segments.forEach((segment, index) => {
       const isLastSegment = index === segments.length - 1;
+
+      if (segment === '_repeatId') {
+        currentNode.repeatId = value;
+        return;
+      }
 
       if (segment.startsWith('_')) {
         currentNode.attributes[segment.slice(1)] = value;
@@ -46,6 +52,7 @@ const createNode = (name: string, index: number): Node => ({
   attributes: {},
   children: [],
   childLookup: new Map(),
+  repeatId: undefined,
 });
 
 const getOrCreateChild = (parent: Node, segment: string) => {
@@ -89,6 +96,7 @@ const finalizeNode = (node: Node): CoraData | undefined => {
       name: node.name,
       attributes,
       value: node.value,
+      repeatId: node.repeatId,
     };
   }
 
@@ -104,5 +112,6 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     name: node.name,
     attributes,
     children,
+    repeatId: node.repeatId,
   } as CoraData;
 };
