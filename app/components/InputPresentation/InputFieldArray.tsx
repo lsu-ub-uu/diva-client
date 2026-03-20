@@ -21,34 +21,34 @@ interface InputFieldArrayProps {
 export const InputFieldArray = ({
   path,
   component,
-  initialData,
+  initialData: data,
 }: InputFieldArrayProps) => {
   const { t } = useTranslation();
   const repeatMin = component.repeat?.repeatMin ?? 1;
   const repeatMax = component.repeat?.repeatMax ?? 1;
+  const minToShow = component.repeat?.minNumberOfRepeatingToShow ?? 1;
 
-  const initialFields = initialData.map((data, index) => ({
-    key: crypto.randomUUID(),
-    data,
-    repeatId: data.repeatId ?? String(index),
-  }));
+  const [fields, setFields] = useState(() => {
+    const dataFields = data.map((d) => ({
+      data: d,
+      repeatId: d.repeatId ?? crypto.randomUUID(),
+    }));
 
-  const emptyFieldCount = Math.max(0, repeatMin - initialFields.length);
-  const emptyFields = Array.from({ length: emptyFieldCount }, (_, i) => ({
-    key: crypto.randomUUID(),
-    data: undefined,
-    repeatId: String(initialFields.length + i),
-  }));
+    const emptyCount = Math.max(0, minToShow - dataFields.length);
+    const emptyFields = Array.from({ length: emptyCount }, () => ({
+      data: undefined as CoraData | undefined,
+      repeatId: crypto.randomUUID(),
+    }));
 
-  const [fields, setFields] = useState([...initialFields, ...emptyFields]);
+    return [...dataFields, ...emptyFields];
+  });
 
   const handleAppend = () => {
     setFields((prev) => [
       ...prev,
       {
-        key: crypto.randomUUID(),
         data: undefined,
-        repeatId: String(Date.now()),
+        repeatId: crypto.randomUUID(),
       },
     ]);
   };
@@ -72,7 +72,7 @@ export const InputFieldArray = ({
         const fieldPath = `${path}.${component.name}[${index}]`;
         return (
           <div
-            key={field.key}
+            key={field.repeatId}
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
             style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}
@@ -93,7 +93,11 @@ export const InputFieldArray = ({
               <div
                 role='group'
                 aria-label={t('divaClient_actionsForFieldText')}
-                style={{ display: 'flex', gap: '0.25rem' }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.25rem',
+                }}
               >
                 <IconButton
                   size='small'

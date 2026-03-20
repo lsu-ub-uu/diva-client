@@ -60,11 +60,13 @@ const createChildren = (
   data?: DataGroup,
 ) => {
   const nameIndices = new Map<string, number>();
-  const rendered = new Set<string>();
 
   return components?.map((childComponent, index) => {
+    const componentKey =
+      childComponent.presentationId ?? `${childComponent.name}-${index}`;
+
     if (!isComponentWithData(childComponent)) {
-      return <OutputComponent component={childComponent} key={index} />;
+      return <OutputComponent component={childComponent} key={componentKey} />;
     }
 
     if (childComponent.mode === 'output') {
@@ -76,7 +78,7 @@ const createChildren = (
       return (
         <OutputComponent
           component={childComponent}
-          key={index}
+          key={componentKey}
           data={childData}
         />
       );
@@ -86,16 +88,10 @@ const createChildren = (
       childComponent.repeat && childComponent.repeat.repeatMax > 1;
 
     if (isRepeating) {
-      const componentKey = `${childComponent.name}-${index}`;
-      if (rendered.has(componentKey)) {
-        return null;
-      }
-      rendered.add(componentKey);
-
       const allChildData = data ? findChildData(childComponent, data) : [];
       return (
         <InputFieldArray
-          key={index}
+          key={componentKey}
           path={path}
           component={childComponent as FormComponentWithData}
           initialData={allChildData}
@@ -114,7 +110,7 @@ const createChildren = (
 
     return (
       <InputComponent
-        key={childPath}
+        key={componentKey}
         component={childComponent}
         path={childPath}
         data={childData}
