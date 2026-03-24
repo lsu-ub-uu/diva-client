@@ -22,7 +22,7 @@ import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUti
 import type {
   DataAtomic,
   DataGroup,
-  RecordLink,
+  DataRecordLink,
 } from '@/cora/cora-data/types.server';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 
@@ -50,7 +50,7 @@ export const createPath = (path: string, metaDataGroup: FormMetaData) => {
   return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
 };
 export const addAttributesToNameServer = (
-  metaDataGroup: FormMetaData | (DataGroup | DataAtomic | RecordLink),
+  metaDataGroup: FormMetaData | (DataGroup | DataAtomic | DataRecordLink),
 ) => {
   if (metaDataGroup.attributes === undefined) {
     return metaDataGroup.name;

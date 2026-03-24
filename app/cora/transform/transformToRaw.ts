@@ -22,8 +22,8 @@ import type {
   CoraData,
   DataAtomic,
   DataGroup,
-  RecordLink,
-  ResourceLink,
+  DataRecordLink,
+  DataResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { BFFDataRecordData, BFFDataResourceLink } from '@/types/record';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -119,7 +119,7 @@ const transformResourceLink = (
   name: string,
   attributes: undefined | Record<string, string>,
   value: BFFDataResourceLink,
-): ResourceLink => {
+): DataResourceLink => {
   return removeEmpty({
     name: removeAttributeFromName(name, attributes),
     children: [
@@ -180,7 +180,7 @@ export const createLeaf = (
   name: string,
   value: string,
   attributes: Attributes | undefined = undefined,
-): DataAtomic | RecordLink | undefined => {
+): DataAtomic | DataRecordLink | undefined => {
   if (isEmpty(value)) {
     return undefined;
   }
@@ -219,8 +219,8 @@ export const createRecordLink = (
   linkedRecordType: string,
   linkedRecordId: string,
   attributes: Attributes | undefined = undefined,
-): RecordLink => {
-  const recordLink: RecordLink = {
+): DataRecordLink => {
+  const recordLink: DataRecordLink = {
     name,
     children: [
       generateAtomicValue('linkedRecordType', linkedRecordType),

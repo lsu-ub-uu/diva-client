@@ -1,4 +1,4 @@
-import type { RecordLink } from '@/cora/cora-data/types.server';
+import type { DataRecordLink } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 import type {
@@ -12,7 +12,7 @@ import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
-  data: RecordLink;
+  data: DataRecordLink;
   parentPresentationStyle?: PresentationStyle;
 }
 

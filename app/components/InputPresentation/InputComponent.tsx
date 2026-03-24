@@ -2,6 +2,7 @@ import type {
   CoraData,
   DataAtomic,
   DataGroup,
+  DataRecordLink,
 } from '@/cora/cora-data/types.server';
 import type {
   FormComponent,
@@ -9,6 +10,7 @@ import type {
   FormComponentGroup,
   FormComponentHidden,
   FormComponentNumVar,
+  FormComponentRecordLink,
   FormComponentTextVar,
 } from '../FormGenerator/types';
 import { InputCollectionVariable } from './InputCollectionVariable';
@@ -16,6 +18,7 @@ import { InputGroup } from './InputGroup';
 import { InputNumberVariable } from './InputNumberVariable';
 import { InputVariable } from './InputVariable';
 import { HiddenInputComponent } from './HiddenInputComponent';
+import { InputRecordLink } from './InputRecordLink';
 
 interface InputComponentProps {
   path: string;
@@ -66,6 +69,14 @@ export const InputComponent = ({
           component={component as FormComponentNumVar}
           path={path}
           data={data as DataAtomic}
+        />
+      );
+    case 'recordLink':
+      return (
+        <InputRecordLink
+          path={path}
+          component={component as FormComponentRecordLink}
+          data={data as DataRecordLink}
         />
       );
     default:

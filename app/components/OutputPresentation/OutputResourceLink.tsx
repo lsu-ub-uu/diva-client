@@ -1,4 +1,4 @@
-import type { ResourceLink } from '@/cora/cora-data/types.server';
+import type { DataResourceLink } from '@/cora/cora-data/types.server';
 import type { FormComponentResourceLink } from '../FormGenerator/types';
 import { withBaseName } from '@/utils/withBasename';
 import { href } from 'react-router';
@@ -7,7 +7,7 @@ import { DownloadIcon } from 'lucide-react';
 
 interface OutputResourceLinkProps {
   component: FormComponentResourceLink;
-  data: ResourceLink;
+  data: DataResourceLink;
 }
 
 export const OutputResourceLink = ({

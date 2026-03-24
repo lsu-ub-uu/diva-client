@@ -46,6 +46,8 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { transformFormDataToCora } from './transformFormDataToCora';
+import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -118,7 +120,24 @@ export const action = async ({
 
   const formData = await request.formData();
   const dependencies = await getDependencies();
+  const transformedFormData = transformFormDataToCora(formData);
 
+  try {
+    await updateRecordDataById(
+      recordId,
+      transformedFormData,
+      recordTypeId,
+      auth?.data.token,
+    );
+    flashNotification({
+      severity: 'success',
+      summary: 'yess',
+    });
+  } catch (error) {
+    flashNotification(createNotificationFromAxiosError(t, error));
+    console.error(error);
+  }
+  /*
   const { validationType } = await getRecordByRecordTypeAndRecordId({
     dependencies,
     recordType: recordTypeId,
@@ -166,7 +185,7 @@ export const action = async ({
   } catch (error) {
     console.error(error);
     flashNotification(createNotificationFromAxiosError(t, error));
-  }
+  }*/
 };
 
 export const meta = ({ loaderData }: Route.MetaArgs) => {

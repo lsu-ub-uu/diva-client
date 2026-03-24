@@ -95,7 +95,6 @@ export const InputFieldArray = ({
                 aria-label={t('divaClient_actionsForFieldText')}
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
                   gap: '0.25rem',
                 }}
               >

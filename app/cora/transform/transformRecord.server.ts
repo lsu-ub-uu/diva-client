@@ -34,9 +34,9 @@ import type {
   DataAtomic,
   DataGroup,
   DataListWrapper,
-  RecordLink,
+  DataRecordLink,
   RecordWrapper,
-  ResourceLink,
+  DataResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 
@@ -234,7 +234,7 @@ const transformData = (
   }
 
   if (metadata.type === 'recordLink' || metadata.type === 'anyTypeRecordLink') {
-    return transformRecordLink(data as RecordLink, dependencies);
+    return transformRecordLink(data as DataRecordLink, dependencies);
   }
 
   if (
@@ -246,14 +246,17 @@ const transformData = (
   }
 
   if (metadata.type === 'resourceLink') {
-    return transformResourceLink(data as ResourceLink);
+    return transformResourceLink(data as DataResourceLink);
   }
 
   console.warn('Unhandled metadata type', metadata.type);
   return transformDataAtomic(data as DataAtomic, metadata);
 };
 
-const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
+const transformRecordLink = (
+  data: DataRecordLink,
+  dependencies: Dependencies,
+) => {
   const recordLinkId = getFirstDataAtomicValueWithNameInData(
     data,
     'linkedRecordId',
@@ -321,7 +324,7 @@ const formatLinkedOrganisationName = (
 };
 
 const transformLinkedRecord = (
-  data: RecordLink,
+  data: DataRecordLink,
   dependencies: Dependencies,
 ) => {
   const linkedRecordGroup = getFirstDataGroupWithNameInData(
@@ -344,7 +347,7 @@ const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
   };
 };
 
-const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {
+const transformResourceLink = (data: DataResourceLink): BFFDataResourceLink => {
   const name = data.name;
   const id = getFirstDataAtomicValueWithNameInData(data, 'linkedRecordId');
   const mimeType = getFirstDataAtomicValueWithNameInData(data, 'mimeType');

@@ -26,7 +26,7 @@ export const InputCollectionVariable = ({
       <InputAttributes path={path} component={component} />
       <Fieldset label={component.showLabel ? t(component.label) : undefined}>
         <Select name={path} defaultValue={data?.value}>
-          <option value=''>{t('divaClient_selectText')}</option>
+          <option value=''>{t('initialEmptyValueText')}</option>
           {component.options.map((option) => (
             <option key={option.value} value={option.value}>
               {t(option.label)}

@@ -20,7 +20,7 @@
 import type {
   DataGroup,
   DataListWrapper,
-  RecordLink,
+  DataRecordLink,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import {
@@ -260,7 +260,7 @@ export const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
     );
     return attribRefs.map((attribRef) => {
       const refCollectionVarId = getFirstDataAtomicValueWithNameInData(
-        attribRef as RecordLink,
+        attribRef as DataRecordLink,
         'linkedRecordId',
       );
       return { refCollectionVarId };
