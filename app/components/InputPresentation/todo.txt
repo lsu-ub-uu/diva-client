@@ -1,0 +1,50 @@
+Validering
+Containers
+Styling
+Record link m länkad presentation
+Alternativa presentationer
+Kolla att output komponenter faktiskt funkar
+Tester
+
+nya textnycklar:
+divaClient_inalidNumberOfDecimalsText
+
+
+
+
+formSchema = {
+    type: 'group'
+    name: 'person'
+    repeat: {repatMin:0}
+    components: [
+        { name: 'firstName', repeatMin: 1 }
+    ]
+}
+
+data = {
+    name: 'person',
+    children: [
+        { name: 'firstname', value: ''},
+        { name: 'lastname', value: 'Danielsson' }
+    ]
+}
+
+formData = [
+    'person[0].firstname[0]': 'Leo',
+    'person[0].lastname[0]': 'Danielsson'
+]
+
+
+const validate = (formSchema, data): Map<fält, list[fel]>;
+
+formData = request.formData
+validate(formData)
+
+if (valid) {
+    transform
+}
+
+
+errors = [
+    'person[0].firstname[0]': { message: 'fieldRequiredText', required: true }
+]

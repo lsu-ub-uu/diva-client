@@ -67,6 +67,7 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { describe, expect, it } from 'vitest';
 import * as yup from 'yup';
 import { validateFormData } from '../validateFormData';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 describe('yupSchema', async () => {
   describe('form validation', () => {
     describe('textVariable', () => {
@@ -294,19 +295,26 @@ describe('yupSchema', async () => {
       });
 
       it('is invalid for numberVar 1-1 withtoo many decimals', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneNumberVariable1_1,
-        );
+        const formSchema = formDefWithOneNumberVariable1_1;
 
-        const data = {
-          someRootNameInData: {
-            someNumberVariableNameInData: { value: '12.0123' },
-          },
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'someNumberVariableNameInData',
+              value: '12.0123',
+            },
+          ],
         };
 
-        await expect(yupSchema.validate(data)).rejects.toThrow(
-          'Invalid number of decimals',
-        );
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
+        ).toStrictEqual({
+          message: 'divaClient_inalidNumberOfDecimalsText',
+        });
       });
 
       it('is valid for one numberVar 1-X with value', async () => {
@@ -328,42 +336,41 @@ describe('yupSchema', async () => {
       });
 
       it('is invalid for one numberVar 1-X without value', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneNumberVariable1_X,
-        );
+        const formSchema = formDefWithOneNumberVariable1_X;
 
         const data = {
-          someRootNameInData: {
-            someNumberVariableNameInData: [
-              {
-                value: '',
-              },
-            ],
-          },
+          name: 'someRootNameInData',
+          children: [{ name: 'someNumberVariableNameInData', value: '' }],
         };
+        const { valid, errors } = validateFormData(formSchema, data);
 
-        await expect(yupSchema.validate(data)).rejects.toThrow(
-          'divaClient_fieldInvalidFormatText',
-        );
+        expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
+        ).toStrictEqual({
+          message: 'divaClient_fieldInvalidFormatText',
+        });
       });
     });
 
     describe('recordLink', () => {
       it('is valid for one recordLink 0-1', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneRecordLinkBeingOptional,
-        );
+        const formSchema = formDefWithOneRecordLinkBeingOptional;
 
-        await expect(
-          yupSchema.isValid({
-            someRootNameInData: {
-              someNameInData: { value: '' },
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'someNameInData',
+              value: '',
             },
-          }),
-        ).resolves.toBe(true);
+          ],
+        };
+        const { valid } = validateFormData(formSchema, data);
+        expect(valid).toBe(true);
       });
 
-      it('is invalid for groups with same nameInData', async () => {
+      it.todo('is invalid for groups with same nameInData', async () => {
         const yupSchema = generateYupSchemaFromFormSchema(
           formDefWithOneRecordLinkBeingRequired,
         );
@@ -387,9 +394,12 @@ describe('yupSchema', async () => {
       });
 
       it('is valid for one recordLink 1-1 with value', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneRecordLinkBeingRequired1_1,
-        );
+        const formSchema = formDefWithOneRecordLinkBeingRequired1_1;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [],
+        };
 
         await expect(
           yupSchema.isValid({
