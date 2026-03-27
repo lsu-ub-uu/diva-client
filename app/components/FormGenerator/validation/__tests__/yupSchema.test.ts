@@ -18,6 +18,7 @@
  */
 
 import {
+  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOneNumberVariableWithAttributeCollection0_1,
   formDefWithOneNumberVariableWithAttributeCollection1_1,
   formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
@@ -346,29 +347,6 @@ describe('yupSchema', async () => {
         ).resolves.toBe(true);
       });
 
-      it('is invalid for groups with same nameInData', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneRecordLinkBeingRequired,
-        );
-
-        const data = {
-          root: {
-            titleInfo: {
-              title: { value: '' },
-            },
-            titleInfo_type_alternative: [
-              {
-                title: { value: '' },
-              },
-            ],
-          },
-        };
-
-        await expect(yupSchema.validate(data)).rejects.toThrow(
-          'divaClient_fieldRequiredText',
-        );
-      });
-
       it('is valid for one recordLink 1-1 with value', async () => {
         const yupSchema = generateYupSchemaFromFormSchema(
           formDefWithOneRecordLinkBeingRequired1_1,
@@ -637,7 +615,7 @@ describe('yupSchema', async () => {
 
     it('is valid for numberVar 1-1 and 0-1 with attribute', async () => {
       const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneNumberVariableWithAttributeCollection0_1,
+        formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
       );
 
       const data = {

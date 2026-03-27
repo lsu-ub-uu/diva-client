@@ -1195,3 +1195,57 @@ export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
     mode: 'output',
   },
 };
+
+export const formDefWithTwoRepeatingTextVariable: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    showLabel: true,
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'root',
+    presentationId: 'someRootNameInDataPGroup',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        presentationId: 'somePVar',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          minNumberOfRepeatingToShow: 3,
+          repeatMin: 1,
+          repeatMax: 3,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+      },
+      {
+        type: 'textVariable',
+        name: 'someOtherNameInData',
+        presentationId: 'somePVar',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          minNumberOfRepeatingToShow: 3,
+          repeatMin: 1,
+          repeatMax: 3,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};

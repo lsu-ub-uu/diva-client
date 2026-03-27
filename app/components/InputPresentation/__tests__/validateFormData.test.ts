@@ -18,6 +18,8 @@
  */
 
 import {
+  formDefWithOneCollectionVariableWithAttributeCollection0_1,
+  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOneNumberVariableWithAttributeCollection0_1,
   formDefWithOneNumberVariableWithAttributeCollection1_1,
   formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
@@ -25,27 +27,21 @@ import {
   formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
   formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
   formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes,
+  formDefWithOneRecordLinkWithAttributeCollection0_1,
+  formDefWithOneTextVariableWithAttributeCollection0_1,
   formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
 } from '@/__mocks__/data/form/attributeCollection';
 import {
   formDefCollVarsWithSameNameInDataNEW,
   formDefRequiredRepeatingCollectionVar1_X,
+  formDefWithHiddenComponents,
   formDefWithOneCollectionVariable1_1,
 } from '@/__mocks__/data/form/collVar';
-import {
-  formDefContributorGroupWithAuthorGroupAuthor,
-  formDefTitleInfoGroupSameNameInData,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-  formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLink,
-  formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithWithOptionalGroupWithRequiredVar,
-} from '@/__mocks__/data/form/group';
 import {
   formDefWithOneNumberVariable0_1,
   formDefWithOneNumberVariable1_1,
   formDefWithOneNumberVariable1_X,
+  formDefWithTwoRepeatingNumberVariable,
 } from '@/__mocks__/data/form/numVar';
 import {
   formDefWithOneRecordLinkBeingOptional,
@@ -60,15 +56,31 @@ import {
   formDefWithOneTextVariableNEW0_1REGEX,
   formDefWithOneTextVariableNEW1_1,
   formDefWithOneTextVariableNEW1_X,
+  formDefWithTwoRepeatingTextVariable,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
-import type { CoraData } from '@/cora/cora-data/types.server';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { describe, expect, it } from 'vitest';
-import * as yup from 'yup';
-import { validateFormData } from '../validateFormData';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-describe('yupSchema', async () => {
+import type { CoraData } from '@/cora/cora-data/types.server';
+import { describe, expect, it } from 'vitest';
+import { validateFormData } from '../validateFormData';
+import {
+  formDefContributorGroupWithAuthorGroupAuthor,
+  formDefTitleInfoGroupSameNameInData,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVarButOneIsFinalValue,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
+  formDefWithWithOptionalGroupWithRequiredVar,
+} from '@/__mocks__/data/form/group';
+import type {
+  FormComponentGroup,
+  FormSchema,
+} from '@/components/FormGenerator/types';
+import { formDefWithHiddenComponents2 } from '@/__mocks__/data/form/hiddenInput';
+describe('validateFormData', async () => {
   describe('form validation', () => {
     describe('textVariable', () => {
       it('is valid for one textVar 0-1 with value', async () => {
@@ -118,86 +130,87 @@ describe('yupSchema', async () => {
           message: 'divaClient_fieldRequiredText',
         });
       });
+    });
 
-      it('is valid for one textVar 1-X with value', async () => {
-        const formSchema = formDefWithOneTextVariableNEW1_X;
+    it('is valid for one textVar 1-X with value', async () => {
+      const formSchema = formDefWithOneTextVariableNEW1_X;
 
-        const data: CoraData = {
-          name: 'root',
-          children: [
-            { name: 'someNameInData', value: 'someValue' },
-            { name: 'someNameInData', value: 'someValue2' },
-            { name: 'someNameInData', value: 'someValue3' },
-            { name: 'someNameInData', value: 'someValue4' },
-          ],
-        };
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          { name: 'someNameInData', value: 'someValue' },
+          { name: 'someNameInData', value: 'someValue2' },
+          { name: 'someNameInData', value: 'someValue3' },
+          { name: 'someNameInData', value: 'someValue4' },
+        ],
+      };
 
-        const { valid } = validateFormData(formSchema, data);
-        expect(valid).toBe(true);
-      });
+      const { valid } = validateFormData(formSchema, data);
+      expect(valid).toBe(true);
+    });
 
-      it('is invalid for one textVar 1-X without field', async () => {
-        const formSchema = formDefWithOneTextVariableNEW1_X;
+    it('is invalid for one textVar 1-X without field', async () => {
+      const formSchema = formDefWithOneTextVariableNEW1_X;
 
-        const data: CoraData = {
-          name: 'root',
-          children: [],
-        };
+      const data: CoraData = {
+        name: 'root',
+        children: [],
+      };
 
-        const { valid, errors } = validateFormData(formSchema, data);
-        expect(valid).toBe(false);
-        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-          message: 'divaClient_fieldRequiredText',
-        });
-      });
-
-      it('is invalid for one textVar 1-X without value', async () => {
-        const formSchema = formDefWithOneTextVariableNEW1_X;
-
-        const data: CoraData = {
-          name: 'root',
-          children: [{ name: 'someNameInData', value: '' }],
-        };
-
-        const { valid, errors } = validateFormData(formSchema, data);
-        expect(valid).toBe(false);
-        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-          message: 'divaClient_fieldRequiredText',
-        });
-      });
-
-      it('is valid for two textVar 1-1 with value', async () => {
-        const formSchema = formDefWithTwoTextVariableHavingFinalValue;
-
-        const data: CoraData = {
-          name: 'root',
-          children: [
-            { name: 'someNameInData', value: 'someFinalValue1' },
-            { name: 'someOtherNameInData', value: 'someFinalValue2' },
-          ],
-        };
-
-        const { valid } = validateFormData(formSchema, data);
-
-        expect(valid).toBe(true);
-      });
-
-      it('is invalid for one textVar 0-1 with bad regex', async () => {
-        const formSchema = formDefWithOneTextVariableNEW0_1REGEX;
-
-        const data: CoraData = {
-          name: 'root',
-          children: [{ name: 'someNameInData', value: '???' }],
-        };
-
-        const { valid, errors } = validateFormData(formSchema, data);
-
-        expect(valid).toBe(false);
-        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-          message: 'divaClient_fieldInvalidFormatText',
-        });
+      const { valid, errors } = validateFormData(formSchema, data);
+      expect(valid).toBe(false);
+      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
       });
     });
+
+    it('is invalid for one textVar 1-X without value', async () => {
+      const formSchema = formDefWithOneTextVariableNEW1_X;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [{ name: 'someNameInData', value: '' }],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+      expect(valid).toBe(false);
+      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
+    });
+
+    it('is valid for two textVar 1-1 with value', async () => {
+      const formSchema = formDefWithTwoTextVariableHavingFinalValue;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          { name: 'someNameInData', value: 'someFinalValue1' },
+          { name: 'someOtherNameInData', value: 'someFinalValue2' },
+        ],
+      };
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('is invalid for one textVar 0-1 with bad regex', async () => {
+      const formSchema = formDefWithOneTextVariableNEW0_1REGEX;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [{ name: 'someNameInData', value: '???' }],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+        message: 'divaClient_fieldInvalidFormatText',
+      });
+    });
+
     describe('numberVariable', () => {
       it('is valid for one numberVar 0-1 with no value', async () => {
         const formSchema = formDefWithOneNumberVariable0_1;
@@ -362,35 +375,15 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'someNameInData',
-              value: '',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: '' },
+              ],
             },
           ],
         };
         const { valid } = validateFormData(formSchema, data);
         expect(valid).toBe(true);
-      });
-
-      it.todo('is invalid for groups with same nameInData', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(
-          formDefWithOneRecordLinkBeingRequired,
-        );
-
-        const data: CoraData = {
-          root: {
-            titleInfo: {
-              title: { value: '' },
-            },
-            titleInfo_type_alternative: [
-              {
-                title: { value: '' },
-              },
-            ],
-          },
-        };
-
-        await expect(yupSchema.validate(data)).rejects.toThrow(
-          'divaClient_fieldRequiredText',
-        );
       });
 
       it('is valid for one recordLink 1-1 with value', async () => {
@@ -401,7 +394,10 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'link',
-              value: 'someLink',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: 'someLink' },
+              ],
             },
           ],
         };
@@ -418,7 +414,10 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'link',
-              value: 'someLink',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: '' },
+              ],
             },
           ],
         };
@@ -426,14 +425,12 @@ describe('yupSchema', async () => {
         const { valid, errors } = validateFormData(formSchema, data);
 
         expect(valid).toBe(false);
-        expect(
-          errors['root[0].link[0]'],
-        ).toStrictEqual({
+        expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
       });
 
-      it('is valid for one recordLink 1-X with value', async () => {
+      it('is valid for two recordLinks 1-X with value', async () => {
         const formSchema = formDefWithOneRecordLinkBeingRequired1_X;
 
         const data: CoraData = {
@@ -441,7 +438,17 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'link',
-              value: 'someLink',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: 'someLink' },
+              ],
+            },
+            {
+              name: 'link',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: 'someOtherLink' },
+              ],
             },
           ],
         };
@@ -458,7 +465,10 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'link',
-              value: '',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: '' },
+              ],
             },
           ],
         };
@@ -466,9 +476,23 @@ describe('yupSchema', async () => {
         const { valid, errors } = validateFormData(formSchema, data);
 
         expect(valid).toBe(false);
-        expect(
-          errors['root[0].link[0]'],
-        ).toStrictEqual({
+        expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
+          message: 'divaClient_fieldRequiredText',
+        });
+      });
+
+      it('is invalid for one recordLink 1-X without data', async () => {
+        const formSchema = formDefWithOneRecordLinkBeingRequired1_X;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
       });
@@ -481,7 +505,10 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'attachmentFile',
-              value: 'someValue.pdf',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: 'someValue.pdf' },
+              ],
             },
           ],
         };
@@ -498,7 +525,10 @@ describe('yupSchema', async () => {
           children: [
             {
               name: 'attachmentFile',
-              value: '',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: '' },
+              ],
             },
           ],
         };
@@ -507,11 +537,10 @@ describe('yupSchema', async () => {
 
         expect(valid).toBe(false);
         expect(
-          errors['someRootNameInData[0].attachmentFile[0]'],
+          errors['someRootNameInData[0].attachmentFile[0].linkedRecordId'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
-
       });
     });
 
@@ -534,7 +563,7 @@ describe('yupSchema', async () => {
       });
 
       it('is invalid for one collectionVar 1-1 without value', async () => {
-        const formSchema = formDefWithOneTextVariableNEW1_1;
+        const formSchema = formDefWithOneCollectionVariable1_1;
 
         const data: CoraData = {
           name: 'someRootNameInData',
@@ -548,9 +577,7 @@ describe('yupSchema', async () => {
 
         const { valid, errors } = validateFormData(formSchema, data);
         expect(valid).toBe(false);
-        expect(
-          errors['someRootNameInData[0].colour[0]'],
-        ).toStrictEqual({
+        expect(errors['someRootNameInData[0].colour[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
       });
@@ -564,6 +591,27 @@ describe('yupSchema', async () => {
             {
               name: 'languageTerm',
               value: 'eng',
+            },
+          ],
+        };
+
+        const { valid } = validateFormData(formSchema, data);
+        expect(valid).toBe(true);
+      });
+
+      it('is valid for two collectionVar 1-X with value', async () => {
+        const formSchema = formDefRequiredRepeatingCollectionVar1_X;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            {
+              name: 'languageTerm',
+              value: 'eng',
+            },
+            {
+              name: 'languageTerm',
+              value: 'swe',
             },
           ],
         };
@@ -587,17 +635,16 @@ describe('yupSchema', async () => {
 
         const { valid, errors } = validateFormData(formSchema, data);
         expect(valid).toBe(false);
-        expect(
-          errors['root[0].languageTerm[0]'],
-        ).toStrictEqual({
+        expect(errors['root[0].languageTerm[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
       });
     });
 
     describe('attribute collection', () => {
-      it('is invalid for numberVar 0-1 with skipped attribute', async () => {
-        const formSchema = formDefWithOneNumberVariableWithAttributeCollection0_1;
+      it('is valid for numberVar 0-1 with skipped value and attribute', async () => {
+        const formSchema =
+          formDefWithOneNumberVariableWithAttributeCollection0_1;
 
         const data: CoraData = {
           name: 'someRootNameInData',
@@ -609,11 +656,101 @@ describe('yupSchema', async () => {
           ],
         };
         const { valid } = validateFormData(formSchema, data);
+        expect(valid).toBe(true);
+      });
+
+      it('is invalid for numberVar 0-1 with skipped attribute', async () => {
+        const formSchema =
+          formDefWithOneNumberVariableWithAttributeCollection0_1;
+
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'numberVar',
+              value: '1',
+            },
+          ],
+        };
+        const { valid, errors } = validateFormData(formSchema, data);
         expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].numberVar[0]._colour'],
+        ).toStrictEqual({
+          message: 'divaClient_fieldRequiredText',
+        });
+      });
+
+      it('is invalid for textVar 0-1 with skipped attribute', async () => {
+        const formSchema = formDefWithOneTextVariableWithAttributeCollection0_1;
+
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'textVar',
+              value: '1',
+            },
+          ],
+        };
+        const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].textVar[0]._colour'],
+        ).toStrictEqual({
+          message: 'divaClient_fieldRequiredText',
+        });
+      });
+
+      it('is invalid for recordLink 0-1 with skipped attribute', async () => {
+        const formSchema = formDefWithOneRecordLinkWithAttributeCollection0_1;
+
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'recordLink',
+              children: [
+                { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                { name: 'linkedRecordId', value: 'someLink' },
+              ],
+            },
+          ],
+        };
+        const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].recordLink[0]._colour'],
+        ).toStrictEqual({
+          message: 'divaClient_fieldRequiredText',
+        });
+      });
+
+      it('is invalid for collectionVar 0-1 with skipped attribute', async () => {
+        const formSchema =
+          formDefWithOneCollectionVariableWithAttributeCollection0_1;
+
+        const data: CoraData = {
+          name: 'someRootNameInData',
+          children: [
+            {
+              name: 'collectionVar',
+              value: 'swe',
+            },
+          ],
+        };
+        const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(false);
+        expect(
+          errors['someRootNameInData[0].collectionVar[0]._colour'],
+        ).toStrictEqual({
+          message: 'divaClient_fieldRequiredText',
+        });
       });
 
       it('is invalid for numberVar 1-1 with skipped attribute', async () => {
-        const formSchema = formDefWithOneNumberVariableWithAttributeCollection1_1;
+        const formSchema =
+          formDefWithOneNumberVariableWithAttributeCollection1_1;
 
         const data: CoraData = {
           name: 'someRootNameInData',
@@ -634,8 +771,9 @@ describe('yupSchema', async () => {
         });
       });
 
-      it('is invalid for numberVar 1-1 with attribue and skipped value', async () => {
-        const formSchema = formDefWithOneNumberVariableWithAttributeCollection1_1;
+      it('is invalid for numberVar 1-1 with attribute and skipped value', async () => {
+        const formSchema =
+          formDefWithOneNumberVariableWithAttributeCollection1_1;
 
         const data: CoraData = {
           name: 'someRootNameInData',
@@ -644,7 +782,7 @@ describe('yupSchema', async () => {
               name: 'numberVar',
               value: '',
               attributes: {
-                '_colour': 'blue',
+                colour: 'blue',
               },
             },
           ],
@@ -652,18 +790,14 @@ describe('yupSchema', async () => {
 
         const { valid, errors } = validateFormData(formSchema, data);
         expect(valid).toBe(false);
-        expect(
-          errors['someRootNameInData[0].numberVar[0]'],
-        ).toStrictEqual({
+        expect(errors['someRootNameInData[0].numberVar[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
         });
       });
     });
 
     it('is valid for numberVar 1-1 with attribute', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneNumberVariableWithAttributeCollection1_1,
-      );
+      const formSchema = formDefWithOneNumberVariableWithAttributeCollection1_1;
 
       const data: CoraData = {
         name: 'someRootNameInData',
@@ -672,656 +806,840 @@ describe('yupSchema', async () => {
             name: 'numberVar',
             value: '12',
             attributes: {
-              _colour: 'blue',
+              colour: 'blue',
             },
           },
         ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
-    it('is valid for numberVar 1-1 with skipped value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneNumberVariableWithAttributeCollection0_1,
-      );
+    it('is valid for numberVar 0-1 with skipped value', async () => {
+      const formSchema = formDefWithOneNumberVariableWithAttributeCollection0_1;
 
       const data: CoraData = {
-        someRootNameInData: {
-          numberVar: {
+        name: 'someRootNameInData',
+        children: [
+          {
+            name: 'numberVar',
             value: '',
-            _colour: 'blue',
+            attributes: {
+              colour: 'blue',
+            },
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for numberVar 1-1 and 0-1 with attribute', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneNumberVariableWithAttributeCollection0_1,
-      );
+      const formSchema =
+        formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection;
 
       const data: CoraData = {
-        someRootNameInData: {
-          numberVar1: {
-            value: '2',
+        name: 'someRootNameInData',
+        children: [
+          {
+            name: 'numberVar1',
+            value: '12',
           },
-          numberVar2: {
+          {
+            name: 'numberVar2',
             value: '',
-            _colour: 'blue',
-          },
-        },
-      };
-
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
-    });
-  });
-  describe('group', () => {
-    it('is valid for one group 0-1 and one textVar 1-1', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithRequiredTextVar,
-      );
-
-      const data: CoraData = {
-        root: {
-          group: {
-            variable: {
-              value: '',
+            attributes: {
+              colour: 'blue',
             },
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+      expect(valid).toBe(true);
+    });
+  });
+
+  describe('group', () => {
+    it('is valid for one group 0-1 and one textVar 1-1', async () => {
+      const formSchema = formDefWithOptionalGroupWithRequiredTextVar;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          {
+            name: 'group',
+            children: [
+              {
+                name: 'textVariable',
+                value: '',
+              },
+            ],
+          },
+        ],
+      };
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-1 and one number variable 1-1', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithRequiredNumberVar,
-      );
+      const formSchema = formDefWithOptionalGroupWithRequiredNumberVar;
 
       const data: CoraData = {
-        root: {
-          group: {
-            numberVariable: {
-              value: '12',
-            },
+        name: 'root',
+        children: [
+          {
+            name: 'group',
+            children: [
+              {
+                name: 'numberVariable',
+                value: '12',
+              },
+            ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-1 and one recordLink 1-1', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithRequiredRecordLink,
-      );
+      const formSchema = formDefWithOptionalGroupWithRequiredRecordLink;
 
       const data: CoraData = {
-        root: {
-          group: {
-            link: {
-              value: 'someLink',
-            },
+        name: 'root',
+        children: [
+          {
+            name: 'group',
+            children: [
+              {
+                name: 'link',
+                children: [
+                  { name: 'linkedRecordType', value: 'someLinkedRecordType' },
+                  { name: 'linkedRecordId', value: 'someLink' },
+                ],
+              },
+            ],
           },
-        },
+        ],
       };
+      const { valid } = validateFormData(formSchema, data);
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-X and two textVar with attribute without value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithWithOptionalGroupWithRequiredVar,
-      );
+      const formSchema = formDefWithWithOptionalGroupWithRequiredVar;
 
       const data: CoraData = {
-        root: {
-          mainGroup_type_personal: [
-            {
-              textVar1_type_first: {
-                value: '',
-                _type: 'first',
-              },
-              textVar2_type_second: {
-                value: '',
-                _type: 'second',
-              },
-              _type: 'personal',
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            attributes: {
+              type: 'personal',
             },
-          ],
-        },
+            children: [
+              {
+                name: 'textVar1',
+                attributes: {
+                  type: 'first',
+                },
+                value: '',
+              },
+              {
+                name: 'textVar2',
+                attributes: {
+                  type: 'second',
+                },
+                value: '',
+              },
+            ],
+          },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-X and two textVar 1-1 without value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-      );
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar;
 
       const data: CoraData = {
-        root: {
-          polygon: {
-            point: [
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
               {
-                longitude: {
-                  value: '',
-                },
-                latitude: {
-                  value: '',
-                },
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
               },
             ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-X and two textVar 1-1 with value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-      );
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar;
 
       const data: CoraData = {
-        root: {
-          polygon: {
-            point: [
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
               {
-                longitude: {
-                  value: '17.631091',
-                },
-                latitude: {
-                  value: '59.855239',
-                },
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17.631091',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '59.855239',
+                  },
+                ],
               },
             ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
-    it('is valid for one group 0-X and two textVar 1-1 with partial value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-      );
+    it('is invalid for one group 0-X and two textVar 1-1 with partial value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar;
 
       const data: CoraData = {
-        root: {
-          polygon: {
-            point: [
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
               {
-                longitude: {
-                  value: '17.631091',
-                },
-                latitude: {
-                  value: '',
-                },
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17.631091',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
               },
             ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
     });
 
-    it('is valid for one group 0-X and two numberVar 1-1 with partial value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
-      );
+    it('is invalid for one group 0-X and two recordLink 1-1 with partial value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar;
 
       const data: CoraData = {
-        root: {
-          polygon: {
-            point: [
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
               {
-                longitude: {
-                  value: '17',
-                },
-                latitude: {
-                  value: '',
-                },
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    children: [
+                      {
+                        name: 'linkedRecordType',
+                        value: 'someLinkedRecordType',
+                      },
+                      { name: 'linkedRecordId', value: 'someLink' },
+                    ],
+                  },
+                  {
+                    name: 'latitude',
+                    children: [
+                      {
+                        name: 'linkedRecordType',
+                        value: 'someLinkedRecordType',
+                      },
+                      { name: 'linkedRecordId', value: '' },
+                    ],
+                  },
+                ],
               },
             ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
     });
 
-    it('is valid for one group 0-X and two collVar 1-1 with partial value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
-      );
+    it('is invalid for one group 0-X and two textVar 1-1 with partial value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar;
 
       const data: CoraData = {
-        root: {
-          polygon: {
-            point: [
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
               {
-                longitude: {
-                  value: '17',
-                },
-                latitude: {
-                  value: '',
-                },
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17.631091',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
               },
             ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
     });
 
-    it('is invalid for one group 0-X and two textVar 1-1 with partial value2', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefContributorGroupWithAuthorGroupAuthor,
-      );
+    it('is valid for one group 0-X and two textVar 1-1 with partial value that is final value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithTextVarButOneIsFinalValue;
 
       const data: CoraData = {
-        root: {
-          mainGroup: [
-            {
-              divaPerson: {
-                value: '',
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
+              {
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17.631091',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
               },
-              givenName: {
-                value: '',
-              },
-              correspondingAuthor: {
-                value: '',
-              },
-              birthYear: {
-                value: '',
-              },
-            },
-          ],
-        },
+            ],
+          },
+        ],
       };
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('is invalid for one group 0-X and two numberVar 1-1 with partial value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
+              {
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
+    });
+
+    it('is invalid for one group 0-X and two collVar 1-1 with partial value', async () => {
+      const formSchema =
+        formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          {
+            name: 'polygon',
+            children: [
+              {
+                name: 'point',
+                children: [
+                  {
+                    name: 'longitude',
+                    value: '17',
+                  },
+                  {
+                    name: 'latitude',
+                    value: '',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
+        message: 'divaClient_fieldRequiredText',
+      });
+    });
+
+    it('is invalid for one group 1-X and a textVar 1-1 and other Vars 0-1', async () => {
+      const formSchema = formDefContributorGroupWithAuthorGroupAuthor;
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'divaPerson',
+                children: [
+                  { name: 'linkedRecordType', value: 'person' },
+                  { name: 'linkedRecordId', value: '' },
+                ],
+              },
+              {
+                name: 'givenName',
+                value: '',
+              },
+              {
+                name: 'correspondingAuthor',
+                value: '',
+              },
+              {
+                name: 'birthYear',
+                value: '',
+              },
+            ],
+          },
+        ],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors).toStrictEqual({
+        'root[0].mainGroup[0].givenName[0]': {
+          message: 'divaClient_fieldRequiredText',
+        },
+      });
     });
 
     it('is valid for one group 0-1 with attribute and one textVar 1-1', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1,
-      );
-
+      const formSchema =
+        formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1;
       const data: CoraData = {
-        root: {
-          group: {
-            variable: {
-              value: '',
+        name: 'root',
+        children: [
+          {
+            name: 'group',
+            children: [
+              {
+                name: 'variable',
+                value: '',
+              },
+            ],
+            attributes: {
+              language: 'aar',
             },
-            _language: 'aar',
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 1-1 attribute and with one textVar 1-1', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1,
-      );
+      const formSchema =
+        formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1;
 
       const data: CoraData = {
-        root: {
-          group: {
-            variable: {
-              value: 'someValue',
-            },
-            _language: 'aar',
+        name: 'root',
+        children: [
+          {
+            name: 'group',
+            children: [
+              {
+                name: 'variable',
+                value: 'someValue',
+              },
+            ],
+            attributes: { language: 'aar' },
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 1-1 and nested group 1-1 with attribute with one textVar 1-1 with value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
-      );
+      const formSchema =
+        formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW;
 
       const data: CoraData = {
-        root: {
-          mainGroup: {
-            nestedGroup: {
-              variable: {
-                value: 'someValue',
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'nestedGroup',
+                children: [
+                  {
+                    name: 'variable',
+                    value: 'someValue',
+                  },
+                ],
+                attributes: {
+                  language: 'nau',
+                },
               },
-              _language: 'nau',
-            },
+            ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is invalid for one group 1-1 and nested group 1-1 with attribute with one textVar 1-1 without value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
-      );
+      const formSchema =
+        formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW;
 
       const data: CoraData = {
-        root: {
-          mainGroup: {
-            nestedGroup: {
-              variable: {
-                value: '',
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'nestedGroup',
+                children: [
+                  {
+                    name: 'variable',
+                    value: '',
+                  },
+                ],
+                attributes: {
+                  language: '',
+                },
               },
-              _language: '',
-            },
+            ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors).toStrictEqual({
+        'root[0].mainGroup[0].nestedGroup[0].variable[0]': {
+          message: 'divaClient_fieldRequiredText',
+        },
+      });
     });
 
     it('is valid for one group 0-1 with attribute with one textVariable 1-1 with attribute and with value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
-      );
+      const formSchema =
+        formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute;
 
       const data: CoraData = {
-        root: {
-          mainGroup: {
-            variable: {
-              value: 'someValue',
-              _variableAttribute: 'blue',
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'variable',
+                value: 'someValue',
+                attributes: {
+                  variableAttribute: 'blue',
+                },
+              },
+            ],
+            attributes: {
+              language: 'nau',
             },
-            _language: 'nau',
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 0-X with attribute with one textVar 1-1 with two attributes and with value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes,
-      );
+      const formSchema =
+        formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes;
 
       const data: CoraData = {
-        root: {
-          mainGroup: [
-            {
-              variable: {
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'variable',
                 value: 'someValue',
+                attributes: {
+                  language: 'aar',
+                  titleType: 'type',
+                },
               },
-              _language: 'aar',
-              _titleType: 'type',
-            },
-          ],
-        },
+            ],
+          },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is valid for one group 1-1 nested group 0-1 with attribute with one textVar 1-1 with two attributes and without value', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-      );
+      const formSchema =
+        formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection;
 
       const data: CoraData = {
-        root: {
-          mainGroup: {
-            nestedGroup: {
-              mainTitle: {
-                value: '',
+        name: 'root',
+        children: [
+          {
+            name: 'mainGroup',
+            children: [
+              {
+                name: 'nestedGroup',
+                children: [
+                  {
+                    name: 'mainTitle',
+                    value: '',
+                  },
+                ],
+                attributes: {
+                  _language: '',
+                  _titleType: '',
+                },
               },
-              _language: '',
-              _titleType: '',
-            },
+            ],
           },
-        },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
   });
 
   describe('same nameInData', () => {
     it('is valid for groups with same nameInData', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefTitleInfoGroupSameNameInData,
-      );
+      const formSchema = formDefTitleInfoGroupSameNameInData;
 
       const data: CoraData = {
-        root: {
-          titleInfo: {
-            title: {
-              value: 'someValue',
+        name: 'root',
+        children: [
+          {
+            name: 'titleInfo',
+            children: [{ name: 'title', value: 'someValue' }],
+            attributes: {
+              lang: 'eng',
             },
-            _lang: 'eng',
           },
-          titleInfo_type_alternative: [
-            {
-              title: {
-                value: 'someOtherValue',
-              },
-              _lang: 'swe',
-              _type: 'alternative',
+          {
+            name: 'titleInfo',
+            children: [{ name: 'title', value: 'someOtherValue' }],
+            attributes: {
+              lang: 'eng',
+              type: 'alternative',
             },
-          ],
-        },
+          },
+        ],
       };
 
-      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
 
     it('is invalid for groups with same nameInData', async () => {
-      const yupSchema = generateYupSchemaFromFormSchema(
-        formDefTitleInfoGroupSameNameInData,
-      );
+      const formSchema = formDefTitleInfoGroupSameNameInData;
 
       const data: CoraData = {
-        root: {
-          titleInfo: {
-            title: { value: '' },
-          },
-          titleInfo_type_alternative: [
-            {
-              title: { value: '' },
+        name: 'root',
+        children: [
+          {
+            name: 'titleInfo',
+            children: [{ name: 'title', value: '' }],
+            attributes: {
+              lang: 'eng',
             },
-          ],
-        },
+          },
+          {
+            name: 'titleInfo',
+            children: [{ name: 'title', value: '' }],
+            attributes: {
+              lang: 'eng',
+              type: 'alternative',
+            },
+          },
+        ],
       };
 
-      await expect(yupSchema.validate(data)).rejects.toThrow(
-        'divaClient_fieldRequiredText',
-      );
-    });
-  });
-  it('is valid for textVar with same nameInData', async () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefTextVarsWithSameNameInDataNew,
-    );
+      const { valid, errors } = validateFormData(formSchema, data);
 
-    const data: CoraData = {
-      root: {
-        subject_language_swe: {
-          value: 'someValue',
-          _language: 'swe',
+      expect(valid).toBe(false);
+      expect(errors).toStrictEqual({
+        'root[0].titleInfo[0].title[0]': {
+          message: 'divaClient_fieldRequiredText',
         },
-        subject_language_eng: {
-          value: 'someOtherValue',
-          _language: 'eng',
-        },
-      },
-    };
-
-    await expect(yupSchema.isValid(data)).resolves.toBe(true);
-  });
-
-  it('is valid for collVar with same nameInData', async () => {
-    const yupSchema = generateYupSchemaFromFormSchema(
-      formDefCollVarsWithSameNameInDataNEW,
-    );
-
-    const data: CoraData = {
-      root: {
-        genre_type_code: {
-          value: 'artistic-work_original-creative-work',
-          _type: 'code',
-        },
-        genre_type_contentType: {
-          value: 'artistic-work_artistic-thesis',
-          _type: 'contentType',
-        },
-      },
-    };
-
-    await expect(yupSchema.isValid(data)).resolves.toBe(true);
-  });
-
-  it('should not validate hidden fields', async () => {
-    const formSchema = {
-      presentationId: 'organisationUpdatePGroup',
-      type: 'group',
-      name: 'organisation',
-      mode: 'input',
-      tooltip: {
-        title: 'topOrganisationNewGroupText',
-        body: 'topOrganisationNewGroupDefText',
-      },
-      label: 'topOrganisationNewGroupText',
-      headlineLevel: 'h1',
-      showLabel: true,
-      components: [
-        {
-          presentationId: 'namePartPVar',
-          name: 'namePart',
-          mode: 'input',
-          tooltip: {
-            title: 'namePartTextVarText',
-            body: 'namePartTextVarDefText',
-          },
-          label: 'namePartTextVarText',
-          showLabel: true,
-          type: 'textVariable',
-          validation: {
-            type: 'regex',
-            pattern: '.+',
-          },
-          repeat: {
-            minNumberOfRepeatingToShow: 1,
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          childStyle: [],
-          gridColSpan: 12,
-          inputType: 'input',
-        },
-        {
-          type: 'hidden',
-          name: 'genre',
-          finalValue: 'topOrganisation',
-          attributes: [
-            {
-              type: 'collectionVariable',
-              name: 'type',
-              placeholder: 'initialEmptyValueText',
-              mode: 'input',
-              tooltip: {
-                title: 'organisationTypeTypeCollectionVarText',
-                body: 'organisationTypeTypeCollectionVarDefText',
-              },
-              label: 'organisationTypeTypeCollectionVarText',
-              showLabel: true,
-              options: [
-                {
-                  value: 'organisationType',
-                  label: 'organisationTypeItemText',
-                },
-              ],
-              finalValue: 'organisationType',
-            },
-          ],
-          attributesToShow: 'none',
-        },
-      ],
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1,
-      },
-      gridColSpan: 12,
-    };
-
-    const data: CoraData = {
-      organisation: {
-        namePart: { value: 'Some organisation' },
-      },
-    };
-
-    const yupSchema = generateYupSchemaFromFormSchema({
-      form: formSchema,
-    } as FormSchema);
-
-    await expect(yupSchema.isValid(data)).resolves.toBe(true);
-  });
-
-  describe('custom validate yupSchemas for array schemas', () => {
-    it('should validate a list with a simple leaf value object being empty in the array', async () => {
-      const optionalStringSchema = yup
-        .string()
-        .nullable()
-        .transform((value) => (value === '' ? null : value))
-        .when('$isNotNull', (isNotNull, field) =>
-          isNotNull[0] ? field.required() : field,
-        );
-
-      const schema = yup.object({
-        testArray: yup
-          .array()
-          .min(1)
-          .max(3)
-          .transform((array) =>
-            array
-              .map(cleanFormData)
-              .filter((o: any) => Object.keys(o).length > 0),
-          )
-          .of(
-            yup.object().shape({
-              value: optionalStringSchema,
-            }),
-          ),
       });
+    });
+
+    it('is valid for textVar with same nameInData', async () => {
+      const formSchema = formDefTextVarsWithSameNameInDataNew;
+
       const data: CoraData = {
-        testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
+        name: 'root',
+        children: [
+          {
+            name: 'subject',
+            value: 'someValue',
+            attributes: { language: 'swe' },
+          },
+          {
+            name: 'subject',
+            value: 'someOtherValue',
+            attributes: { language: 'eng' },
+          },
+        ],
       };
 
-      const actualData = await schema.validate(data);
-      const expectedData = {
-        testArray: [{ value: 'test' }],
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('is valid for collVar with same nameInData', async () => {
+      const formSchema = formDefCollVarsWithSameNameInDataNEW;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [
+          {
+            name: 'genre',
+            value: 'artistic-work_original-creative-work',
+            attributes: { type: 'code' },
+          },
+          {
+            name: 'genre',
+            value: 'artistic-work_artistic-thesis',
+            attributes: { type: 'contentType' },
+          },
+        ],
       };
-      expect(expectedData).toStrictEqual(actualData);
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('should not validate hidden fields', async () => {
+      const formSchema: FormSchema = formDefWithHiddenComponents2;
+
+      const data: CoraData = {
+        name: 'organisation',
+        children: [{ name: 'namePart', value: 'Some organisation' }],
+      };
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
     });
   });
 
@@ -1385,56 +1703,305 @@ describe('yupSchema', async () => {
       } as FormSchema;
 
       it('is invalid when child field is empty and optional ancestor has value', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
         const data: CoraData = {
-          root: {
-            grandPaGroup: {
-              uncleVar: { value: 'Uncle Value' },
-              parentGroup: {
-                childVar: { value: '' },
-              },
+          name: 'root',
+          children: [
+            {
+              name: 'grandPaGroup',
+              children: [
+                {
+                  name: 'uncleVar',
+                  value: 'Uncle Value',
+                },
+                {
+                  name: 'parentGroup',
+                  children: [
+                    {
+                      name: 'childVar',
+                      value: '',
+                    },
+                  ],
+                },
+              ],
             },
-          },
+          ],
         };
 
-        await expect(yupSchema.validate(data)).rejects.toThrow(
-          'divaClient_fieldRequiredText',
-        );
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].grandPaGroup[0].parentGroup[0].childVar[0]': {
+            message: 'divaClient_fieldRequiredText',
+          },
+        });
       });
 
       it('is valid when child and ancestor fields have value', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
-        await expect(
-          yupSchema.isValid({
-            root: {
-              grandPaGroup: {
-                uncleVar: { value: 'Uncle Value' },
-                parentGroup: {
-                  childVar: { value: 'Child Value' },
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            {
+              name: 'grandPaGroup',
+              children: [
+                {
+                  name: 'uncleVar',
+                  value: 'Uncle Value',
                 },
-              },
+                {
+                  name: 'parentGroup',
+                  children: [
+                    {
+                      name: 'childVar',
+                      value: 'Child Value',
+                    },
+                  ],
+                },
+              ],
             },
-          }),
-        ).resolves.toBe(true);
+          ],
+        };
+
+        const { valid } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(true);
       });
 
       it('is valid when neither child nor ancestor has value', async () => {
-        const yupSchema = generateYupSchemaFromFormSchema(formSchema);
-
-        await expect(
-          yupSchema.isValid({
-            root: {
-              grandPaGroup: {
-                uncleVar: { value: '' },
-                parentGroup: {
-                  childVar: { value: '' },
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            {
+              name: 'grandPaGroup',
+              children: [
+                {
+                  name: 'uncleVar',
+                  value: '',
                 },
-              },
+                {
+                  name: 'parentGroup',
+                  children: [
+                    {
+                      name: 'childVar',
+                      value: '',
+                    },
+                  ],
+                },
+              ],
             },
-          }),
-        ).resolves.toBe(true);
+          ],
+        };
+
+        const { valid } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(true);
+      });
+    });
+  });
+
+  describe('multiple errors', () => {
+    describe('textVariable', () => {
+      it('returns same error for different fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingTextVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '???' },
+            { name: 'someOtherNameInData', value: '???' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+        });
+      });
+
+      it('returns different error for required fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingTextVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '' },
+            { name: 'someOtherNameInData', value: '???' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldRequiredText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+        });
+      });
+
+      it('returns different error for required fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingTextVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [{ name: 'someOtherNameInData', value: '???' }],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldRequiredText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+        });
+      });
+
+      it('returns multiple errors for repeating fields', () => {
+        const formSchema = formDefWithTwoRepeatingTextVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '!!!' },
+            { name: 'someNameInData', value: '???' },
+            { name: 'someOtherNameInData', value: '???' },
+            { name: 'someOtherNameInData', value: '!!!' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+          'root[0].someNameInData[1]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+          'root[0].someOtherNameInData[1]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+        });
+      });
+    });
+    describe('numberVariable', () => {
+      it('returns same error for different fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingNumberVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '4' },
+            { name: 'someOtherNameInData', value: '24' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_invalidRangeMinText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_invalidRangeMaxText',
+          },
+        });
+      });
+
+      it('returns different error for required fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingNumberVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '' },
+            { name: 'someOtherNameInData', value: '21' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldRequiredText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_invalidRangeMaxText',
+          },
+        });
+      });
+
+      it('returns different error for required fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingNumberVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [{ name: 'someOtherNameInData', value: '21' }],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldRequiredText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_invalidRangeMaxText',
+          },
+        });
+      });
+
+      it('returns multiple errors for repeating fields', () => {
+        const formSchema = formDefWithTwoRepeatingNumberVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '4' },
+            { name: 'someNameInData', value: '4' },
+            { name: 'someOtherNameInData', value: '22' },
+            { name: 'someOtherNameInData', value: '22' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_invalidRangeMinText',
+          },
+          'root[0].someNameInData[1]': {
+            message: 'divaClient_invalidRangeMinText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_invalidRangeMaxText',
+          },
+          'root[0].someOtherNameInData[1]': {
+            message: 'divaClient_invalidRangeMaxText',
+          },
+        });
       });
     });
   });

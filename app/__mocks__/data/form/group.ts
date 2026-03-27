@@ -248,7 +248,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
 export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
-    name: 'divaOutput',
+    name: 'root',
     type: 'group',
     presentationId: 'somePGroup',
     mode: 'input',
@@ -545,7 +545,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             attributes: [
               {
                 name: 'type',
-                type: 'numberVariable',
+                type: 'collectionVariable',
                 presentationId: 'somePColVar',
                 placeholder: 'initialEmptyValueText',
                 mode: 'input',
@@ -596,7 +596,7 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             attributes: [
               {
                 name: 'type',
-                type: 'numberVariable',
+                type: 'collectionVariable',
                 presentationId: 'somePColVar',
                 placeholder: 'initialEmptyValueText',
                 mode: 'input',
@@ -668,7 +668,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
           showLabel: true,
           repeat: {
             minNumberOfRepeatingToShow: 1,
-            repeatMin: 0, // For the test
+            repeatMin: 0,
             repeatMax: 1.7976931348623157e308,
           },
           components: [
@@ -776,7 +776,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
           showLabel: true,
           repeat: {
             minNumberOfRepeatingToShow: 1,
-            repeatMin: 0, // For the test
+            repeatMin: 0,
             repeatMax: 1.7976931348623157e308,
           },
           components: [
@@ -1068,6 +1068,129 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
     },
   };
 
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVarButOneIsFinalValue: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'root',
+      type: 'group',
+      presentationId: 'somePGroup',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'polygon',
+          type: 'group',
+          presentationId: 'somePGroup',
+          mode: 'input',
+          tooltip: {
+            title: 'polygonGroupText',
+            body: 'polygonGroupDefText',
+          },
+          label: 'polygonGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              presentationId: 'somePGroup',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
+              },
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1.7976931348623157e308,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'textVariable',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'longitudeTextVarText',
+                    body: 'longitudeTextVarDefText',
+                  },
+                  label: 'longitudeTextVarText',
+                  finalValue: '17.631091',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'latitude',
+                  type: 'textVariable',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'latitudeTextVarText',
+                    body: 'latiudeTextVarDefText',
+                  },
+                  label: 'latitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+
+              childStyle: [],
+              gridColSpan: 12,
+            },
+          ],
+
+          childStyle: [],
+          gridColSpan: 12,
+        },
+      ],
+
+      childStyle: [],
+      gridColSpan: 12,
+    },
+  };
+
 export const formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
@@ -1119,7 +1242,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar: Recor
               showLabel: true,
               repeat: {
                 minNumberOfRepeatingToShow: 1,
-                repeatMin: 0, // For the test
+                repeatMin: 0,
                 repeatMax: 1.7976931348623157e308,
               },
               components: [
@@ -1243,7 +1366,7 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar: RecordF
               showLabel: true,
               repeat: {
                 minNumberOfRepeatingToShow: 1,
-                repeatMin: 0, // For the test
+                repeatMin: 0,
                 repeatMax: 1.7976931348623157e308,
               },
               components: [
@@ -1316,6 +1439,122 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar: RecordF
     },
   };
 
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithRecordLink: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'root',
+      type: 'group',
+      presentationId: 'somePGroup',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'polygon',
+          type: 'group',
+          presentationId: 'somePGroup',
+          mode: 'input',
+          tooltip: {
+            title: 'polygonGroupText',
+            body: 'polygonGroupDefText',
+          },
+          label: 'polygonGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              presentationId: 'somePGroup',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
+              },
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0,
+                repeatMax: 1.7976931348623157e308,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'recordLink',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'longitudeTextVarText',
+                    body: 'longitudeTextVarDefText',
+                  },
+                  label: 'longitudeTextVarText',
+                  recordLinkType: 'someRecordLinkType',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  placeholder: 'someLongitudeTextId',
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'latitude',
+                  type: 'recordLink',
+                  presentationId: 'somePTextVar',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'latitudeTextVarText',
+                    body: 'latitudeTextVarDefText',
+                  },
+                  label: 'latitudeTextVarText',
+                  recordLinkType: 'someRecordLinkType',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  placeholder: 'someLatitudeTextId',
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+
+              childStyle: [],
+              gridColSpan: 12,
+            },
+          ],
+
+          childStyle: [],
+          gridColSpan: 12,
+        },
+      ],
+
+      childStyle: [],
+      gridColSpan: 12,
+    },
+  };
+
 export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
@@ -1349,7 +1588,7 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 0, // For the test
+          repeatMin: 0,
           repeatMax: 1.7976931348623157e308,
         },
         components: [
@@ -1451,7 +1690,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
           showLabel: true,
           repeat: {
             minNumberOfRepeatingToShow: 1,
-            repeatMin: 1, // For the test
+            repeatMin: 1,
             repeatMax: 1,
           },
           components: [
@@ -1469,7 +1708,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
               showLabel: false,
               repeat: {
                 minNumberOfRepeatingToShow: 1,
-                repeatMin: 0, // For the test
+                repeatMin: 0,
                 repeatMax: 1,
               },
               components: [
@@ -1516,7 +1755,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                   showLabel: false,
                   repeat: {
                     minNumberOfRepeatingToShow: 1,
-                    repeatMin: 1, // For the test
+                    repeatMin: 1,
                     repeatMax: 1,
                   },
                   components: [
@@ -1534,7 +1773,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                       showLabel: false,
                       repeat: {
                         minNumberOfRepeatingToShow: 1,
-                        repeatMin: 1, // For the test
+                        repeatMin: 1,
                         repeatMax: 1,
                       },
                       components: [
@@ -1552,7 +1791,7 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                           showLabel: false,
                           repeat: {
                             minNumberOfRepeatingToShow: 1,
-                            repeatMin: 1, // For the test
+                            repeatMin: 1,
                             repeatMax: 1,
                           },
                           components: [

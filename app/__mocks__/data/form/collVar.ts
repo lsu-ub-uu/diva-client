@@ -17,7 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type {
+  FormSchema,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
 
 export const formDefCollVarsWithSameNameInData: RecordFormSchema = {
   validationTypeId: 'nationalSubjectCategory',

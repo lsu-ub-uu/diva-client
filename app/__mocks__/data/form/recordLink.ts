@@ -40,6 +40,7 @@ export const formDefWithOneRecordLinkBeingOptional: RecordFormSchema = {
         type: 'recordLink',
         name: 'nationalSubjectCategory',
         presentationId: 'somePLink',
+        recordLinkType: 'someLinkedRecordType',
         mode: 'input',
         repeat: {
           repeatMin: 0,
@@ -105,6 +106,7 @@ export const formDefWithOneRecordLinkBeingRequired1_X: RecordFormSchema = {
         type: 'recordLink',
         name: 'link',
         presentationId: 'somePLink',
+        recordLinkType: 'someLinkedRecordType',
         mode: 'input',
         repeat: {
           repeatMin: 1,
@@ -136,6 +138,7 @@ export const formDefWithOneRecordLinkBeingRequired1_1: RecordFormSchema = {
       {
         type: 'recordLink',
         name: 'link',
+        recordLinkType: 'someLinkedRecordType',
         presentationId: 'somePLink',
         mode: 'input',
         repeat: {

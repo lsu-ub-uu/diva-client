@@ -52,7 +52,7 @@ export const formDefWithOneNumberVariable0_1: RecordFormSchema = {
           numberOfDecimals: 0,
         },
         repeat: {
-          repeatMin: 1,
+          repeatMin: 0,
           repeatMax: 1,
           minNumberOfRepeatingToShow: 1,
         },
@@ -457,5 +457,67 @@ export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
 
     childStyle: [],
     gridColSpan: 12,
+  },
+};
+
+export const formDefWithTwoRepeatingNumberVariable: RecordFormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    showLabel: true,
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'root',
+    presentationId: 'someRootNameInDataPGroup',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'someNameInData',
+        presentationId: 'somePVar',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          minNumberOfRepeatingToShow: 3,
+          repeatMin: 1,
+          repeatMax: 3,
+        },
+        validation: {
+          type: 'number',
+          min: 5,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        inputType: 'input',
+      },
+      {
+        type: 'numberVariable',
+        name: 'someOtherNameInData',
+        presentationId: 'somePVar',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          minNumberOfRepeatingToShow: 3,
+          repeatMin: 1,
+          repeatMax: 3,
+        },
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
   },
 };

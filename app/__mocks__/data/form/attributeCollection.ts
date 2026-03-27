@@ -214,6 +214,247 @@ export const formDefWithOneNumberVariableWithAttributeCollection1_1: RecordFormS
     },
   };
 
+export const formDefWithOneTextVariableWithAttributeCollection0_1: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'textVariable',
+          name: 'textVar',
+          label: 'test',
+          placeholder: 'someEmptyTextId',
+          showLabel: true,
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someTextVarTextId',
+            body: 'someTextVarDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              showLabel: true,
+              label: 'attribute colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+
+export const formDefWithOneRecordLinkWithAttributeCollection0_1: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'recordLink',
+          name: 'recordLink',
+          label: 'test',
+          placeholder: 'someEmptyTextId',
+          showLabel: true,
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someRecordLinkTextId',
+            body: 'someRecordLinkDefTextId',
+          },
+          recordLinkType: 'someLinkedRecordType',
+
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              showLabel: true,
+              label: 'attribute colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+export const formDefWithOneCollectionVariableWithAttributeCollection0_1: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'collectionVariable',
+          name: 'collectionVar',
+          label: 'test',
+          placeholder: 'someEmptyTextId',
+          showLabel: true,
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someCollVarTextId',
+            body: 'someCollVarDefTextId',
+          },
+          options: [
+            { value: 'swe', label: 'sweText' },
+            { value: 'eng', label: 'engText' },
+          ],
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              showLabel: true,
+              label: 'attribute colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+
+export const formDefWithOneTextVariableWithAttributeCollection1_1: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'textVariable',
+          name: 'textVar',
+          label: 'test',
+          placeholder: 'someEmptyTextId',
+          showLabel: true,
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someTextVarTextId',
+            body: 'someTextVarDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              showLabel: true,
+              label: 'attribute colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+
 export const formDefWithOneOptionalNumberVariableWithAttributeCollection: RecordFormSchema =
   {
     validationTypeId: 'someValidationTypeId',
