@@ -34,9 +34,21 @@ import {
 import {
   formDefCollVarsWithSameNameInDataNEW,
   formDefRequiredRepeatingCollectionVar1_X,
-  formDefWithHiddenComponents,
   formDefWithOneCollectionVariable1_1,
 } from '@/__mocks__/data/form/collVar';
+import {
+  formDefContributorGroupWithAuthorGroupAuthor,
+  formDefTitleInfoGroupSameNameInData,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVarButOneIsFinalValue,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
+  formDefWithWithOptionalGroupWithRequiredVar,
+} from '@/__mocks__/data/form/group';
+import { formDefWithHiddenComponents2 } from '@/__mocks__/data/form/hiddenInput';
 import {
   formDefWithOneNumberVariable0_1,
   formDefWithOneNumberVariable1_1,
@@ -45,7 +57,6 @@ import {
 } from '@/__mocks__/data/form/numVar';
 import {
   formDefWithOneRecordLinkBeingOptional,
-  formDefWithOneRecordLinkBeingRequired,
   formDefWithOneRecordLinkBeingRequired1_1,
   formDefWithOneRecordLinkBeingRequired1_X,
   formDefWithRecordLinkTypeBinary,
@@ -59,27 +70,18 @@ import {
   formDefWithTwoRepeatingTextVariable,
   formDefWithTwoTextVariableHavingFinalValue,
 } from '@/__mocks__/data/form/textVar';
+import type {
+  FormComponentGroup,
+  FormSchema,
+} from '@/components/FormGenerator/types';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { CoraData } from '@/cora/cora-data/types.server';
 import { describe, expect, it } from 'vitest';
 import { validateFormData } from '../validateFormData';
 import {
-  formDefContributorGroupWithAuthorGroupAuthor,
-  formDefTitleInfoGroupSameNameInData,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVarButOneIsFinalValue,
-  formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLink,
-  formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithWithOptionalGroupWithRequiredVar,
-} from '@/__mocks__/data/form/group';
-import type {
-  FormComponentGroup,
-  FormSchema,
-} from '@/components/FormGenerator/types';
-import { formDefWithHiddenComponents2 } from '@/__mocks__/data/form/hiddenInput';
+  formDefWithNestedSurroundingContainersAroundTextVariable,
+  formDefWithSurroundingContainerAroundTextVariable,
+} from '@/__mocks__/data/form/container';
 describe('validateFormData', async () => {
   describe('form validation', () => {
     describe('textVariable', () => {
@@ -280,7 +282,7 @@ describe('validateFormData', async () => {
         expect(
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
-          message: 'divaClient_fieldInvalidFormatText',
+          message: 'divaClient_invalidRangeMinText',
         });
       });
 
@@ -303,7 +305,7 @@ describe('validateFormData', async () => {
         expect(
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
-          message: 'divaClient_fieldInvalidFormatText',
+          message: 'divaClient_invalidRangeMaxText',
         });
       });
 
@@ -361,7 +363,7 @@ describe('validateFormData', async () => {
         expect(
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
-          message: 'divaClient_fieldInvalidFormatText',
+          message: 'divaClient_fieldRequiredText',
         });
       });
     });
@@ -1956,7 +1958,7 @@ describe('validateFormData', async () => {
 
         const data: CoraData = {
           name: 'root',
-          children: [{ name: 'someOtherNameInData', value: '21' }],
+          children: [{ name: 'someOtherNameInData', value: '2' }],
         };
 
         const { valid, errors } = validateFormData(formSchema, data);
@@ -1967,7 +1969,7 @@ describe('validateFormData', async () => {
             message: 'divaClient_fieldRequiredText',
           },
           'root[0].someOtherNameInData[0]': {
-            message: 'divaClient_invalidRangeMaxText',
+            message: 'divaClient_invalidRangeMinText',
           },
         });
       });
@@ -2002,6 +2004,72 @@ describe('validateFormData', async () => {
             message: 'divaClient_invalidRangeMaxText',
           },
         });
+      });
+    });
+  });
+
+  describe('containers', () => {
+    it('is valid for text variable in a surrounding container', async () => {
+      const formSchema = formDefWithSurroundingContainerAroundTextVariable;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [{ name: 'someNameInData', value: 'someValue' }],
+      };
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('is invalid for empty text variable in a surrounding container', async () => {
+      const formSchema = formDefWithSurroundingContainerAroundTextVariable;
+
+      const data: CoraData = {
+        name: 'someRootNameInData',
+        children: [{ name: 'someNameInData', value: '' }],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors).toStrictEqual({
+        'someRootNameInData[0].someNameInData[0]': {
+          message: 'divaClient_fieldRequiredText',
+        },
+      });
+    });
+
+    it('is valid for text variable in a surrounding container', async () => {
+      const formSchema =
+        formDefWithNestedSurroundingContainersAroundTextVariable;
+
+      const data: CoraData = {
+        name: 'root',
+        children: [{ name: 'someNameInData', value: 'someValue' }],
+      };
+
+      const { valid } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(true);
+    });
+
+    it('is invalid for empty text variable in nested surrounding container', async () => {
+      const formSchema =
+        formDefWithNestedSurroundingContainersAroundTextVariable;
+
+      const data: CoraData = {
+        name: 'someRootNameInData',
+        children: [{ name: 'someNameInData', value: '' }],
+      };
+
+      const { valid, errors } = validateFormData(formSchema, data);
+
+      expect(valid).toBe(false);
+      expect(errors).toStrictEqual({
+        'someRootNameInData[0].someNameInData[0]': {
+          message: 'divaClient_fieldRequiredText',
+        },
       });
     });
   });

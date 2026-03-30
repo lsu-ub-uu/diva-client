@@ -509,7 +509,7 @@ export const formDefWithTwoRepeatingNumberVariable: RecordFormSchema = {
         },
         validation: {
           type: 'number',
-          min: 1,
+          min: 5,
           max: 20,
           warningMin: 2,
           warningMax: 10,

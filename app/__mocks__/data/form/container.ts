@@ -128,3 +128,70 @@ export const formDefWithSurroundingContainerAroundTextVariable: RecordFormSchema
       ],
     },
   };
+
+export const formDefWithNestedSurroundingContainersAroundTextVariable: RecordFormSchema =
+  {
+    validationTypeId: 'book',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      mode: 'input',
+      components: [
+        {
+          type: 'text',
+          name: 'someHeaderText',
+        },
+        {
+          type: 'container',
+          containerType: 'surrounding',
+          name: 'someSurroundingContainerName',
+          presentationStyle: 'frame',
+          childStyle: [],
+          components: [
+            {
+              type: 'container',
+              containerType: 'surrounding',
+              name: 'someInnerSurroundingContainerName',
+              presentationStyle: 'frame',
+              childStyle: [],
+              components: [
+                {
+                  type: 'textVariable',
+                  name: 'someNameInData',
+                  label: 'someTextId',
+                  childStyle: [],
+                  placeholder: 'text variable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  tooltip: {
+                    title: 'someTextId',
+                    body: 'someDefTextId',
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  mode: 'input',
+                  inputType: 'input',
+                },
+              ],
+              mode: 'input',
+            },
+          ],
+          mode: 'input',
+        },
+      ],
+    },
+  };

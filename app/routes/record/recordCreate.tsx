@@ -53,6 +53,7 @@ import { InputPresentation } from '@/components/InputPresentation/InputPresentat
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { transformFormDataToCora } from './transformFormDataToCora';
 import { postRecordData } from '@/cora/postRecordData.server';
+import { validateFormData } from '@/components/InputPresentation/validateFormData';
 
 export const loader = async ({
   request,
@@ -169,6 +170,22 @@ export const action = async ({
     JSON.stringify(transformedFormData, null, 2),
   );
 
+  const { valid, errors } = validateFormData(
+    formDefinition,
+    transformedFormData,
+  );
+
+  console.log('Validation result:', { valid, errors });
+
+  if (!valid) {
+    flashNotification({
+      severity: 'error',
+      summary: t('divaClient_formValidationErrorText'),
+      details: JSON.stringify(errors, null, 2),
+    });
+    return { validationErrors: errors, data: transformedFormData };
+  }
+
   try {
     await postRecordData(
       transformedFormData,
@@ -218,16 +235,6 @@ export const action = async ({
   //   }}
 };
 
-const transformFormData = (formData: FormData): Record<string, any> => {
-  const coraData = {};
-
-  let currentLevel = coraData;
-  formData.forEach((value, key) => {
-    const keys = key.split('.').map((part) => part.replace(/\[\d+\]/g, ''));
-  });
-  return coraData;
-};
-
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation();
   if (isRouteErrorResponse(error)) {
@@ -257,21 +264,22 @@ export const links: Route.LinksFunction = () => [
 
 export default function CreateRecordRoute({
   loaderData,
+  actionData,
 }: Route.ComponentProps) {
   const { t } = useTranslation();
   const {
     formDefinition,
     previewFormDefinition,
     notification,
-    defaultValues,
     validationTypes,
   } = loaderData;
 
+  const { validationErrors, data } = actionData;
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     null,
   );
   const deferredPreviewData = useDeferredValue(previewData);
-
+  console.log('Action data:', actionData);
   if (!formDefinition) {
     return (
       <main>

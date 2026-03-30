@@ -16,6 +16,7 @@ import type {
 } from '../FormGenerator/types';
 import {
   isComponentCollVar,
+  isComponentContainer,
   isComponentGroup,
   isComponentNumVar,
   isComponentRecordLink,
@@ -70,6 +71,16 @@ const validateComponent = (
 
   if (isComponentGroup(component)) {
     return validateGroup(component, parentData, parentPath);
+  }
+
+  if (isComponentContainer(component) && component.components) {
+    return component.components.reduce<Record<string, ValidationError>>(
+      (acc, childComponent) => ({
+        ...acc,
+        ...validateComponent(childComponent, parentData, parentPath),
+      }),
+      {},
+    );
   }
 
   return {};
@@ -153,10 +164,7 @@ const validateNumVar = (
     if ((component.repeat?.repeatMin ?? 0) >= 1) {
       return {
         [`${parentPath}.${component.name}[0]`]: {
-          message:
-            component.validation?.type === 'number'
-              ? 'divaClient_fieldInvalidFormatText'
-              : 'divaClient_fieldRequiredText',
+          message: 'divaClient_fieldRequiredText',
         },
       };
     }
@@ -173,12 +181,12 @@ const validateNumVar = (
       if (hasValue && component.validation?.type === 'number') {
         const num = Number(child.value);
 
-        if (
-          Number.isNaN(num) ||
-          num < component.validation.min ||
-          num > component.validation.max
-        ) {
+        if (Number.isNaN(num)) {
           errors[fieldPath] = { message: 'divaClient_fieldInvalidFormatText' };
+        } else if (num < component.validation.min) {
+          errors[fieldPath] = { message: 'divaClient_invalidRangeMinText' };
+        } else if (num > component.validation.max) {
+          errors[fieldPath] = { message: 'divaClient_invalidRangeMaxText' };
         } else {
           const decimalPart = child.value.split('.')[1];
           const actualDecimals = decimalPart ? decimalPart.length : 0;
@@ -194,10 +202,7 @@ const validateNumVar = (
         !hasAttributes
       ) {
         errors[fieldPath] = {
-          message:
-            component.validation?.type === 'number'
-              ? 'divaClient_fieldInvalidFormatText'
-              : 'divaClient_fieldRequiredText',
+          message: 'divaClient_fieldRequiredText',
         };
       }
 
