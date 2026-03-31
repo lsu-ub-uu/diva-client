@@ -1,4 +1,5 @@
 import type { CoraData, DataGroup } from '@/cora/cora-data/types.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
 
 interface Node {
   name: string;
@@ -86,18 +87,28 @@ const parseSegment = (segment: string) => {
 
 const finalizeNode = (node: Node): CoraData | undefined => {
   const attributes =
-    Object.keys(node.attributes).length > 0 ? node.attributes : undefined;
+    Object.keys(node.attributes).length > 0
+      ? Object.entries(node.attributes).reduce(
+          (acc, [key, value]) => {
+            if (value) {
+              acc[key] = value;
+            }
+            return acc;
+          },
+          {} as Record<string, any>,
+        )
+      : undefined;
 
   if (Object.hasOwn(node, 'value')) {
     if (!node.value) {
       return undefined;
     }
-    return {
+    return removeEmpty({
       name: node.name,
       attributes,
       value: node.value,
       repeatId: node.repeatId,
-    };
+    }) as CoraData;
   }
 
   const children = node.children
@@ -108,10 +119,10 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     return undefined;
   }
 
-  return {
+  return removeEmpty({
     name: node.name,
     attributes,
     children,
     repeatId: node.repeatId,
-  } as CoraData;
+  }) as CoraData;
 };

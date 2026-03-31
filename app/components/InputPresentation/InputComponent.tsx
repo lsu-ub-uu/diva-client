@@ -19,6 +19,7 @@ import { InputGroup } from './InputGroup';
 import { InputNumberVariable } from './InputNumberVariable';
 import { InputRecordLink } from './InputRecordLink';
 import { InputVariable } from './InputVariable';
+import { InputContainer } from './InputContainer';
 
 interface InputComponentProps {
   path: string;
@@ -80,7 +81,13 @@ export const InputComponent = ({
         />
       );
     case 'container':
-      return <InputContainer component={component} data={data as DataGroup} />;
+      return (
+        <InputContainer
+          path={path}
+          component={component as FormComponentGroup}
+          data={data as DataGroup}
+        />
+      );
     default:
       return null;
   }

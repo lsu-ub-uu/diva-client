@@ -4,6 +4,8 @@ import type { FormComponentCollVar } from '../FormGenerator/types';
 import { Fieldset } from '../Input/Fieldset';
 import { Select } from '../Input/Select';
 import { InputAttributes } from './InputAttributes';
+import { ValidationErrorContext } from './InputPresentation';
+import { use } from 'react';
 
 interface InputCollectionVariableProps {
   component: FormComponentCollVar;
@@ -17,15 +19,23 @@ export const InputCollectionVariable = ({
   data,
 }: InputCollectionVariableProps) => {
   const { t } = useTranslation();
+  const serverValidationError = use(ValidationErrorContext)[path];
 
   return (
     <div
       className='form-component-collection-variable form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
-      <InputAttributes path={path} component={component} />
-      <Fieldset label={component.showLabel ? t(component.label) : undefined}>
-        <Select name={path} defaultValue={data?.value}>
+      <InputAttributes path={path} data={data} component={component} />
+      <Fieldset
+        label={component.showLabel ? t(component.label) : undefined}
+        errorMessage={serverValidationError?.message}
+      >
+        <Select
+          name={path}
+          defaultValue={data?.value}
+          aria-invalid={!!serverValidationError}
+        >
           <option value=''>{t('initialEmptyValueText')}</option>
           {component.options.map((option) => (
             <option key={option.value} value={option.value}>

@@ -40,10 +40,7 @@ export const ComponentChildren = ({
         );
       }
 
-      const childData =
-        childComponent.type === 'container'
-          ? [getContainerData(childComponent, data)]
-          : findChildData(childComponent, data);
+      const childData = findChildData(childComponent, data);
       if (!childData) {
         return null;
       }

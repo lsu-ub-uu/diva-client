@@ -178,10 +178,6 @@ export const action = async ({
   console.log('Validation result:', { valid, errors });
 
   if (!valid) {
-    flashNotification({
-      severity: 'error',
-      summary: t('divaClient_formValidationErrorsText'),
-    });
     return { validationErrors: errors, data: transformedFormData };
   }
 

@@ -1,5 +1,14 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { FormComponent, FormComponentGroup } from '../FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentGroup,
+  FormComponentWithData,
+} from '../FormGenerator/types';
+import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { OutputComponent } from '../OutputPresentation/OutputComponent';
+import { findChildData } from '../OutputPresentation/findChildData';
+import { InputFieldArray } from './InputFieldArray';
+import { InputComponent } from './InputComponent';
 
 interface InputContainerProps {
   path: string;
@@ -40,18 +49,17 @@ const createChildren = (
     }
 
     if (childComponent.mode === 'output') {
-      const nameIndex = nameIndices.get(childComponent.name) || 0;
-      nameIndices.set(childComponent.name, nameIndex + 1);
-      const childData = data
-        ? findChildData(childComponent, data)[nameIndex]
-        : undefined;
-      return (
+      if (!data) {
+        return null;
+      }
+      const childData = findChildData(childComponent, data);
+      return childData.map((data, childIndex) => (
         <OutputComponent
+          key={`${index}-${childIndex}`}
           component={childComponent}
-          key={componentKey}
-          data={childData}
+          data={data}
         />
-      );
+      ));
     }
 
     const isRepeating =

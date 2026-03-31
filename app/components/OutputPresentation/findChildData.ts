@@ -56,7 +56,7 @@ export const doesDataMatchComponent = (
   });
 };
 
-const getContainerData = (
+export const getContainerData = (
   container: FormComponentContainer,
   dataGroup: DataGroup,
 ) => {

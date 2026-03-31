@@ -3,6 +3,8 @@ import type { FormComponentWithData } from '../FormGenerator/types';
 import { Fieldset } from '../Input/Fieldset';
 import { Select } from '../Input/Select';
 import type { CoraData } from '@/cora/cora-data/types.server';
+import { ValidationErrorContext } from './InputPresentation';
+import { use } from 'react';
 
 interface AttributesProps {
   path: string;
@@ -12,6 +14,8 @@ interface AttributesProps {
 
 export const InputAttributes = ({ path, component, data }: AttributesProps) => {
   const { t } = useTranslation();
+  const validationErrors = use(ValidationErrorContext);
+
   if (!component.attributes) {
     return null;
   }
@@ -40,12 +44,21 @@ export const InputAttributes = ({ path, component, data }: AttributesProps) => {
       );
     }
 
+    const name = `${path}._${attribute.name}`;
+    const error = validationErrors?.[name];
+
     return (
-      <Fieldset label={t(attribute.label)} key={attribute.name} size='small'>
+      <Fieldset
+        label={t(attribute.label)}
+        key={attribute.name}
+        size='small'
+        errorMessage={error?.message}
+      >
         <Select
           name={`${path}._${attribute.name}`}
           placeholder={attribute.placeholder}
           defaultValue={data?.attributes && data.attributes[attribute.name]}
+          aria-invalid={!!error}
         >
           {attribute.options.map((option) => (
             <option key={option.value} value={option.value}>

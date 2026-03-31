@@ -10,11 +10,11 @@ import type {
   FormComponentWithData,
 } from '../FormGenerator/types';
 import { findChildData } from '../OutputPresentation/findChildData';
+import { OutputComponent } from '../OutputPresentation/OutputComponent';
 import { Typography } from '../Typography/Typography';
 import { InputAttributes } from './InputAttributes';
 import { InputComponent } from './InputComponent';
 import { InputFieldArray } from './InputFieldArray';
-import { OutputComponent } from '../OutputPresentation/OutputComponent';
 
 interface InputGroupProps {
   path: string;
@@ -70,18 +70,17 @@ const createChildren = (
     }
 
     if (childComponent.mode === 'output') {
-      const nameIndex = nameIndices.get(childComponent.name) || 0;
-      nameIndices.set(childComponent.name, nameIndex + 1);
-      const childData = data
-        ? findChildData(childComponent, data)[nameIndex]
-        : undefined;
-      return (
+      if (!data) {
+        return null;
+      }
+      const childData = findChildData(childComponent, data);
+      return childData.map((data, childIndex) => (
         <OutputComponent
+          key={`${index}-${childIndex}`}
           component={childComponent}
-          key={componentKey}
-          data={childData}
+          data={data}
         />
-      );
+      ));
     }
 
     const isRepeating =
@@ -106,7 +105,10 @@ const createChildren = (
       ? findChildData(childComponent, data)[nameIndex]
       : undefined;
 
-    const childPath = `${path}.${childComponent.name}[${nameIndex}]`;
+    const childPath =
+      childComponent.type === 'container'
+        ? path
+        : `${path}.${childComponent.name}[${nameIndex}]`;
 
     return (
       <InputComponent
