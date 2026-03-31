@@ -13,12 +13,12 @@ import type {
   FormComponentRecordLink,
   FormComponentTextVar,
 } from '../FormGenerator/types';
+import { HiddenInputComponent } from './HiddenInputComponent';
 import { InputCollectionVariable } from './InputCollectionVariable';
 import { InputGroup } from './InputGroup';
 import { InputNumberVariable } from './InputNumberVariable';
-import { InputVariable } from './InputVariable';
-import { HiddenInputComponent } from './HiddenInputComponent';
 import { InputRecordLink } from './InputRecordLink';
+import { InputVariable } from './InputVariable';
 
 interface InputComponentProps {
   path: string;
@@ -79,6 +79,8 @@ export const InputComponent = ({
           data={data as DataRecordLink}
         />
       );
+    case 'container':
+      return <InputContainer component={component} data={data as DataGroup} />;
     default:
       return null;
   }

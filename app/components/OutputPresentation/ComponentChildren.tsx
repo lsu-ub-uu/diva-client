@@ -70,21 +70,3 @@ export const ComponentChildren = ({
 /**
  * Gets a copy of the data group with only the children that match the components in the container.
  */
-const getContainerData = (
-  container: FormComponentContainer,
-  dataGroup: DataGroup,
-) => {
-  const matchingChildren = dataGroup.children.filter((childData) => {
-    return container.components?.some((childComponent) => {
-      if (isComponentContainer(childComponent)) {
-        return childComponent.components?.some((nestedChild) =>
-          doesDataMatchComponent(nestedChild, childData),
-        );
-      }
-
-      return doesDataMatchComponent(childComponent, childData);
-    });
-  });
-
-  return { ...dataGroup, children: matchingChildren };
-};

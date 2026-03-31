@@ -1,55 +1,25 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import { useTranslation } from 'react-i18next';
-import {
-  headlineLevelToTypographyVariant,
-  isComponentWithData,
-} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type {
-  FormComponent,
-  FormComponentGroup,
-  FormComponentWithData,
-} from '../FormGenerator/types';
-import { findChildData } from '../OutputPresentation/findChildData';
-import { Typography } from '../Typography/Typography';
-import { InputAttributes } from './InputAttributes';
-import { InputComponent } from './InputComponent';
-import { InputFieldArray } from './InputFieldArray';
-import { OutputComponent } from '../OutputPresentation/OutputComponent';
+import type { FormComponent, FormComponentGroup } from '../FormGenerator/types';
 
-interface InputGroupProps {
+interface InputContainerProps {
   path: string;
   component: FormComponentGroup;
   data?: DataGroup;
 }
 
-export const InputGroup = ({ path, component, data }: InputGroupProps) => {
-  const { t } = useTranslation();
+export const InputContainer = ({
+  path,
+  component,
+  data,
+}: InputContainerProps) => {
   return (
     <div
-      className='form-component-group form-component-item'
+      className='form-component-container form-component-item'
       data-colspan={component.gridColSpan ?? 12}
       data-layout={component.presentationStyle === 'inline' ? 'inline' : 'grid'}
       data-text-style={component.textStyle}
     >
-      {component.showLabel && (
-        <Typography
-          as={component.headlineLevel}
-          variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-        >
-          {t(component.label)}
-        </Typography>
-      )}
-      <InputAttributes path={path} component={component} data={data} />
-
-      <div
-        className='form-component-container'
-        data-layout={
-          component.presentationStyle === 'inline' ? 'inline' : 'grid'
-        }
-        data-text-style={component.textStyle}
-      >
-        {createChildren(component.components, path, data)}
-      </div>
+      {createChildren(component.components, path, data)}
     </div>
   );
 };

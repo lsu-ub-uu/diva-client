@@ -1604,6 +1604,16 @@ export interface PersonUpdateGroup {
     _type: 'scopus';
     __text?: { sv: string; en: string };
   }[];
+  nameIdentifier_type_wos?: {
+    value: string;
+    _type: 'wos';
+    __text?: { sv: string; en: string };
+  }[];
+  nameIdentifier_type_googleScholar?: {
+    value: string;
+    _type: 'googleScholar';
+    __text?: { sv: string; en: string };
+  }[];
   nameIdentifier_type_viaf?: {
     value: string;
     _type: 'viaf';
@@ -2801,8 +2811,25 @@ export interface StudentDegreeGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface RoleContributorGroup {
+  roleTerm?: {
+    value: 'ctb';
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
 export interface NameOrganisationExternalCollaborationGroup {
-  namePart?: { value: string; __text?: { sv: string; en: string } }[];
+  role?: RoleContributorGroup;
+  namePart?: { value: string; __text?: { sv: string; en: string } };
+  identifier_type_ror?: {
+    value: string;
+    _type: 'ror';
+    __text?: { sv: string; en: string };
+  };
+  _type: 'corporate';
+  _otherType: 'externalCollaboration';
   __text?: { sv: string; en: string };
 }
 
@@ -3006,6 +3033,7 @@ export interface AddressDefenceGroup {
 export interface PresentationDivaGroup {
   language?: LanguageGroup;
   dateOther_type_presentation?: DateOtherPresentationGroup;
+  location?: LocationGroup;
   address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
@@ -3023,6 +3051,7 @@ export interface DateOtherDefenceGroup {
 export interface DefenceGroup {
   language?: LanguageGroup;
   dateOther_type_defence?: DateOtherDefenceGroup;
+  location?: LocationGroup;
   address?: AddressDefenceGroup;
   __text?: { sv: string; en: string };
 }
@@ -3874,7 +3903,7 @@ export interface DivaOutputGroup {
   };
   academicSemester?: AcademicSemesterGroup;
   studentDegree?: StudentDegreeGroup[];
-  externalCollaboration?: NameOrganisationExternalCollaborationGroup;
+  name_otherType_externalCollaboration_type_corporate?: NameOrganisationExternalCollaborationGroup[];
   name_otherType_degreeGrantingInstitution_type_corporate?: NameOrganisationDegreeGrantingInstitutionGroup;
   name_otherType_thesisAdvisor_type_personal?: NamePersonalThesisAdvisorGroup[];
   name_otherType_degreeSupervisor_type_personal?: NamePersonalDegreeSupervisorGroup[];
