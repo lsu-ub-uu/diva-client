@@ -133,10 +133,3 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     repeatId: node.repeatId,
   }) as CoraData;
 };
-
-const isRecordLink = (node: Node) => {
-  return node.children.some(
-    (child) =>
-      child.name === 'linkedRecordType' || child.name === 'linkedRecordId',
-  );
-};

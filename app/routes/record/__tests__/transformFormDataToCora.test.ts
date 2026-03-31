@@ -1,4 +1,3 @@
-import { transform } from 'lodash-es';
 import { describe, expect, it } from 'vitest';
 import { transformFormDataToCora } from '../transformFormDataToCora';
 
@@ -176,5 +175,147 @@ describe('transformDataToCora', () => {
         },
       ],
     });
+  });
+
+  it('keeps recordLink when linkedRecordId has data', () => {
+    const formData = new FormData();
+    formData.append(
+      'root[0].someRecordLink[0].linkedRecordType',
+      'someRecordType',
+    );
+    formData.append('root[0].someRecordLink[0].linkedRecordId', 'someId');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        {
+          name: 'someRecordLink',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'someRecordType',
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'someId',
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('transforms nested groups', () => {
+    const formData = new FormData();
+    formData.append('root[0].outerGroup[0].innerGroup[0].variable', 'deep');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        {
+          name: 'outerGroup',
+          children: [
+            {
+              name: 'innerGroup',
+              children: [
+                {
+                  name: 'variable',
+                  value: 'deep',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('transforms group with attributes', () => {
+    const formData = new FormData();
+    formData.append('root[0].childGroup[0]._type', 'someType');
+    formData.append('root[0].childGroup[0].variable', 'some value');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        {
+          name: 'childGroup',
+          attributes: {
+            type: 'someType',
+          },
+          children: [
+            {
+              name: 'variable',
+              value: 'some value',
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('removes group with empty attribute and no children', () => {
+    const formData = new FormData();
+    formData.append('root[0].childGroup[0]._type', '');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual(undefined);
+  });
+
+  it('sorts children by index', () => {
+    const formData = new FormData();
+    formData.append('root[0].variable[2]', 'third');
+    formData.append('root[0].variable[0]', 'first');
+    formData.append('root[0].variable[1]', 'second');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        { name: 'variable', value: 'first' },
+        { name: 'variable', value: 'second' },
+        { name: 'variable', value: 'third' },
+      ],
+    });
+  });
+
+  it('reuses existing child node for same segment', () => {
+    const formData = new FormData();
+    formData.append('root[0].variable[0]', 'some value');
+    formData.append('root[0].variable[0]._color', 'blue');
+    formData.append('root[0].variable[0]._size', 'large');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        {
+          name: 'variable',
+          value: 'some value',
+          attributes: {
+            color: 'blue',
+            size: 'large',
+          },
+        },
+      ],
+    });
+  });
+
+  it('throws on invalid segment format', () => {
+    const formData = new FormData();
+    formData.append('root[0].[0]', 'some value');
+
+    expect(() => transformFormDataToCora(formData)).toThrow(
+      'Invalid form data path segment: [0]',
+    );
   });
 });
