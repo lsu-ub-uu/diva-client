@@ -53,6 +53,7 @@ export const InputAttributes = ({ path, component, data }: AttributesProps) => {
         key={attribute.name}
         size='small'
         errorMessage={error?.message}
+        variant='inline'
       >
         <Select
           name={`${path}._${attribute.name}`}
@@ -60,6 +61,7 @@ export const InputAttributes = ({ path, component, data }: AttributesProps) => {
           defaultValue={data?.attributes && data.attributes[attribute.name]}
           aria-invalid={!!error}
         >
+          <option value=''>{t('initialEmptyValueText')}</option>
           {attribute.options.map((option) => (
             <option key={option.value} value={option.value}>
               {t(option.label)}

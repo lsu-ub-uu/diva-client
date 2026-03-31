@@ -1,9 +1,11 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
-import {
-  headlineLevelToTypographyVariant,
-  isComponentWithData,
-} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Card } from '../Card/Card';
+import { CardContent } from '../Card/CardContent';
+import { CardHeader } from '../Card/CardHeader';
+import { CardTitle } from '../Card/CardTitle';
+import { FieldInfo } from '../FieldInfo/FieldInfo';
+import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponent,
   FormComponentGroup,
@@ -11,7 +13,6 @@ import type {
 } from '../FormGenerator/types';
 import { findChildData } from '../OutputPresentation/findChildData';
 import { OutputComponent } from '../OutputPresentation/OutputComponent';
-import { Typography } from '../Typography/Typography';
 import { InputAttributes } from './InputAttributes';
 import { InputComponent } from './InputComponent';
 import { InputFieldArray } from './InputFieldArray';
@@ -24,32 +25,45 @@ interface InputGroupProps {
 
 export const InputGroup = ({ path, component, data }: InputGroupProps) => {
   const { t } = useTranslation();
+  const groupLevel = path.split('.').length;
   return (
     <div
-      className='form-component-group form-component-item'
+      className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
       data-layout={component.presentationStyle === 'inline' ? 'inline' : 'grid'}
       data-text-style={component.textStyle}
     >
-      {component.showLabel && (
-        <Typography
-          as={component.headlineLevel}
-          variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+      <Card boxed={groupLevel !== 1 && component.showLabel}>
+        <CardHeader
+          attributes={
+            <InputAttributes path={path} component={component} data={data} />
+          }
         >
-          {t(component.label)}
-        </Typography>
-      )}
-      <InputAttributes path={path} component={component} data={data} />
+          {component.showLabel && (
+            <CardTitle
+              level={component.headlineLevel}
+              info={
+                component.tooltip &&
+                component.showLabel && <FieldInfo {...component.tooltip} />
+              }
+            >
+              {t(component.label)}
+            </CardTitle>
+          )}
+        </CardHeader>
 
-      <div
-        className='form-component-container'
-        data-layout={
-          component.presentationStyle === 'inline' ? 'inline' : 'grid'
-        }
-        data-text-style={component.textStyle}
-      >
-        {createChildren(component.components, path, data)}
-      </div>
+        <CardContent>
+          <div
+            className='form-component-container'
+            data-layout={
+              component.presentationStyle === 'inline' ? 'inline' : 'grid'
+            }
+            data-text-style={component.textStyle}
+          >
+            {createChildren(component.components, path, data)}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

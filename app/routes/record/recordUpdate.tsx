@@ -17,37 +17,31 @@
  */
 
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { updateRecord } from '@/data/updateRecord.server';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { getValidatedFormData } from 'remix-hook-form';
+import type { BFFDataRecordData } from '@/types/record';
 
-import { RecordForm } from '@/components/Form/RecordForm';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { getRecordTitle } from '@/utils/getRecordTitle';
-import { assertDefined } from '@/utils/invariant';
 
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
+import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
+import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
+import { cleanFormData } from '@/utils/cleanFormData';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
-import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { transformFormDataToCora } from './transformFormDataToCora';
-import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);

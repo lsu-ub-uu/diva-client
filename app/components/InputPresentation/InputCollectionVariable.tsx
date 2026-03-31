@@ -26,10 +26,12 @@ export const InputCollectionVariable = ({
       className='form-component-collection-variable form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
-      <InputAttributes path={path} data={data} component={component} />
       <Fieldset
         label={component.showLabel ? t(component.label) : undefined}
         errorMessage={serverValidationError?.message}
+        attributes={
+          <InputAttributes path={path} data={data} component={component} />
+        }
       >
         <Select
           name={path}

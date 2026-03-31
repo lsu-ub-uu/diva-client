@@ -57,10 +57,12 @@ export const InputVariable = ({
       className='form-component-text-variable form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
-      <InputAttributes path={path} component={component} />
       <Fieldset
         label={component.showLabel ? t(component.label) : undefined}
         errorMessage={validationError?.message}
+        attributes={
+          <InputAttributes path={path} component={component} data={data} />
+        }
       >
         <Input
           type='text'
