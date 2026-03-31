@@ -21,59 +21,66 @@ import { describe, expect, it } from 'vitest';
 import { removeEmpty } from '../removeEmpty';
 
 describe('removeEmpty', () => {
-  const data = {
-    prop1: 'hello',
-    prop2: undefined,
-    prop3: null,
-    prop4: {
-      innerProp: undefined,
-      innerProp2: 'world',
-    },
-    prop5: [],
-    prop6: ['a'],
-    prop7: '',
-  };
-
-  const cleaned = {
-    prop1: 'hello',
-    prop4: {
-      innerProp2: 'world',
-    },
-    prop5: [],
-    prop6: ['a'],
-    prop7: '',
-  };
-
-  it('should return a data object with properties removed if null or undefined', () => {
-    expect(removeEmpty(data)).toStrictEqual(cleaned);
-  });
-
-  it('should return non-object, non-array values as is', () => {
-    // Test with various primitive types
-    expect(removeEmpty(42)).toBe(42);
-    expect(removeEmpty('hello')).toBe('hello');
-    expect(removeEmpty(true)).toBe(true);
-    expect(removeEmpty(false)).toBe(false);
-    expect(removeEmpty(null)).toBe(null);
-    expect(removeEmpty(undefined)).toBe(undefined);
-    expect(
-      removeEmpty({
+  it.each([
+    {
+      description: 'should remove null and undefined properties',
+      input: {
         prop1: 'hello',
+        prop2: undefined,
+        prop3: null,
         prop4: {
+          innerProp: undefined,
           innerProp2: 'world',
         },
         prop5: [],
         prop6: ['a'],
         prop7: '',
-      }),
-    ).toStrictEqual({
-      prop1: 'hello',
-      prop4: {
-        innerProp2: 'world',
+        prop8: {},
       },
-      prop5: [],
-      prop6: ['a'],
-      prop7: '',
-    });
+      expected: {
+        prop1: 'hello',
+        prop4: {
+          innerProp2: 'world',
+        },
+        prop6: ['a'],
+      },
+    },
+    {
+      description: 'should remove empty values from a clean object',
+      input: {
+        prop1: 'hello',
+        prop4: {
+          innerProp2: 'world',
+        },
+        prop6: ['a'],
+      },
+      expected: {
+        prop1: 'hello',
+        prop4: {
+          innerProp2: 'world',
+        },
+        prop6: ['a'],
+      },
+    },
+    { description: 'should return number as is', input: 42, expected: 42 },
+    {
+      description: 'should return string as is',
+      input: 'hello',
+      expected: 'hello',
+    },
+    { description: 'should return true as is', input: true, expected: true },
+    {
+      description: 'should return false as is',
+      input: false,
+      expected: false,
+    },
+    { description: 'should return null as is', input: null, expected: null },
+    {
+      description: 'should return undefined as is',
+      input: undefined,
+      expected: undefined,
+    },
+  ])('$description', ({ input, expected }) => {
+    expect(removeEmpty(input)).toStrictEqual(expected);
   });
 });
