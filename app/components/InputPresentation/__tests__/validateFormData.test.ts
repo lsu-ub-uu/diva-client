@@ -73,6 +73,7 @@ import {
 import type {
   FormComponentGroup,
   FormSchema,
+  RecordFormSchema,
 } from '@/components/FormGenerator/types';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { CoraData } from '@/cora/cora-data/types.server';
@@ -129,87 +130,91 @@ describe('validateFormData', async () => {
 
         expect(valid).toBe(false);
         expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+          label: 'someLabelTextId',
           message: 'divaClient_fieldRequiredText',
         });
       });
-    });
 
-    it('is valid for one textVar 1-X with value', async () => {
-      const formSchema = formDefWithOneTextVariableNEW1_X;
+      it('is valid for one textVar 1-X with value', async () => {
+        const formSchema = formDefWithOneTextVariableNEW1_X;
 
-      const data: CoraData = {
-        name: 'root',
-        children: [
-          { name: 'someNameInData', value: 'someValue' },
-          { name: 'someNameInData', value: 'someValue2' },
-          { name: 'someNameInData', value: 'someValue3' },
-          { name: 'someNameInData', value: 'someValue4' },
-        ],
-      };
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: 'someValue' },
+            { name: 'someNameInData', value: 'someValue2' },
+            { name: 'someNameInData', value: 'someValue3' },
+            { name: 'someNameInData', value: 'someValue4' },
+          ],
+        };
 
-      const { valid } = validateFormData(formSchema, data);
-      expect(valid).toBe(true);
-    });
-
-    it('is invalid for one textVar 1-X without field', async () => {
-      const formSchema = formDefWithOneTextVariableNEW1_X;
-
-      const data: CoraData = {
-        name: 'root',
-        children: [],
-      };
-
-      const { valid, errors } = validateFormData(formSchema, data);
-      expect(valid).toBe(false);
-      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-        message: 'divaClient_fieldRequiredText',
+        const { valid } = validateFormData(formSchema, data);
+        expect(valid).toBe(true);
       });
-    });
 
-    it('is invalid for one textVar 1-X without value', async () => {
-      const formSchema = formDefWithOneTextVariableNEW1_X;
+      it('is invalid for one textVar 1-X without field', async () => {
+        const formSchema = formDefWithOneTextVariableNEW1_X;
 
-      const data: CoraData = {
-        name: 'root',
-        children: [{ name: 'someNameInData', value: '' }],
-      };
+        const data: CoraData = {
+          name: 'root',
+          children: [],
+        };
 
-      const { valid, errors } = validateFormData(formSchema, data);
-      expect(valid).toBe(false);
-      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-        message: 'divaClient_fieldRequiredText',
+        const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(false);
+        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+          label: 'someLabelTextId',
+          message: 'divaClient_fieldRequiredText',
+        });
       });
-    });
 
-    it('is valid for two textVar 1-1 with value', async () => {
-      const formSchema = formDefWithTwoTextVariableHavingFinalValue;
+      it('is invalid for one textVar 1-X without value', async () => {
+        const formSchema = formDefWithOneTextVariableNEW1_X;
 
-      const data: CoraData = {
-        name: 'root',
-        children: [
-          { name: 'someNameInData', value: 'someFinalValue1' },
-          { name: 'someOtherNameInData', value: 'someFinalValue2' },
-        ],
-      };
+        const data: CoraData = {
+          name: 'root',
+          children: [{ name: 'someNameInData', value: '' }],
+        };
 
-      const { valid } = validateFormData(formSchema, data);
+        const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(false);
+        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+          label: 'someLabelTextId',
+          message: 'divaClient_fieldRequiredText',
+        });
+      });
 
-      expect(valid).toBe(true);
-    });
+      it('is valid for two textVar 1-1 with value', async () => {
+        const formSchema = formDefWithTwoTextVariableHavingFinalValue;
 
-    it('is invalid for one textVar 0-1 with bad regex', async () => {
-      const formSchema = formDefWithOneTextVariableNEW0_1REGEX;
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: 'someFinalValue1' },
+            { name: 'someOtherNameInData', value: 'someFinalValue2' },
+          ],
+        };
 
-      const data: CoraData = {
-        name: 'root',
-        children: [{ name: 'someNameInData', value: '???' }],
-      };
+        const { valid } = validateFormData(formSchema, data);
 
-      const { valid, errors } = validateFormData(formSchema, data);
+        expect(valid).toBe(true);
+      });
 
-      expect(valid).toBe(false);
-      expect(errors['root[0].someNameInData[0]']).toStrictEqual({
-        message: 'divaClient_fieldInvalidFormatText',
+      it('is invalid for one textVar 0-1 with bad regex', async () => {
+        const formSchema = formDefWithOneTextVariableNEW0_1REGEX;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [{ name: 'someNameInData', value: '???' }],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors['root[0].someNameInData[0]']).toStrictEqual({
+          label: 'someLabelTextId',
+          message: 'divaClient_fieldInvalidFormatText',
+        });
       });
     });
 
@@ -259,6 +264,7 @@ describe('validateFormData', async () => {
         expect(
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
+          label: 'someNumberVariableNameInData',
           message: 'divaClient_fieldInvalidFormatText',
         });
       });
@@ -283,6 +289,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
           message: 'divaClient_invalidRangeMinText',
+          label: 'someNumberVariableNameInData',
         });
       });
 
@@ -306,6 +313,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
           message: 'divaClient_invalidRangeMaxText',
+          label: 'someNumberVariableNameInData',
         });
       });
 
@@ -329,6 +337,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
           message: 'divaClient_inalidNumberOfDecimalsText',
+          label: 'someNumberVariableNameInData',
         });
       });
 
@@ -364,6 +373,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].someNumberVariableNameInData[0]'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'someNumberVariableNameInData',
         });
       });
     });
@@ -429,6 +439,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: '',
         });
       });
 
@@ -480,6 +491,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: '',
         });
       });
 
@@ -496,6 +508,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['root[0].link[0].linkedRecordId']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: '',
         });
       });
 
@@ -542,6 +555,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].attachmentFile[0].linkedRecordId'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'attachmentFileLinkText',
         });
       });
     });
@@ -581,6 +595,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['someRootNameInData[0].colour[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'Colour',
         });
       });
 
@@ -639,6 +654,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['root[0].languageTerm[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'languageCollectionVarText',
         });
       });
     });
@@ -680,6 +696,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].numberVar[0]._colour'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
 
@@ -701,6 +718,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].textVar[0]._colour'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
 
@@ -725,6 +743,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].recordLink[0]._colour'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
 
@@ -747,6 +766,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].collectionVar[0]._colour'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
 
@@ -770,6 +790,7 @@ describe('validateFormData', async () => {
           errors['someRootNameInData[0].numberVar[0]._colour'],
         ).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
 
@@ -794,6 +815,7 @@ describe('validateFormData', async () => {
         expect(valid).toBe(false);
         expect(errors['someRootNameInData[0].numberVar[0]']).toStrictEqual({
           message: 'divaClient_fieldRequiredText',
+          label: 'test',
         });
       });
     });
@@ -1073,6 +1095,7 @@ describe('validateFormData', async () => {
       expect(valid).toBe(false);
       expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
         message: 'divaClient_fieldRequiredText',
+        label: 'latitudeTextVarText',
       });
     });
 
@@ -1121,6 +1144,7 @@ describe('validateFormData', async () => {
       expect(valid).toBe(false);
       expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
         message: 'divaClient_fieldRequiredText',
+        label: 'latitudeTextVarText',
       });
     });
 
@@ -1157,6 +1181,7 @@ describe('validateFormData', async () => {
       expect(valid).toBe(false);
       expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
         message: 'divaClient_fieldRequiredText',
+        label: 'latitudeTextVarText',
       });
     });
 
@@ -1226,6 +1251,7 @@ describe('validateFormData', async () => {
       expect(valid).toBe(false);
       expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
         message: 'divaClient_fieldRequiredText',
+        label: 'latitudeTextVarText',
       });
     });
 
@@ -1262,6 +1288,7 @@ describe('validateFormData', async () => {
       expect(valid).toBe(false);
       expect(errors['root[0].polygon[0].point[0].latitude[0]']).toStrictEqual({
         message: 'divaClient_fieldRequiredText',
+        label: 'someOtherCollectionVarText',
       });
     });
 
@@ -1303,6 +1330,7 @@ describe('validateFormData', async () => {
       expect(errors).toStrictEqual({
         'root[0].mainGroup[0].givenName[0]': {
           message: 'divaClient_fieldRequiredText',
+          label: 'givenNameTextVarText',
         },
       });
     });
@@ -1423,6 +1451,7 @@ describe('validateFormData', async () => {
       expect(errors).toStrictEqual({
         'root[0].mainGroup[0].nestedGroup[0].variable[0]': {
           message: 'divaClient_fieldRequiredText',
+          label: 'mainTitleTextVarText',
         },
       });
     });
@@ -1579,6 +1608,7 @@ describe('validateFormData', async () => {
       expect(errors).toStrictEqual({
         'root[0].titleInfo[0].title[0]': {
           message: 'divaClient_fieldRequiredText',
+          label: 'titleTextVarText',
         },
       });
     });
@@ -1735,6 +1765,7 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].grandPaGroup[0].parentGroup[0].childVar[0]': {
             message: 'divaClient_fieldRequiredText',
+            label: '',
           },
         });
       });
@@ -1820,9 +1851,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
         });
       });
@@ -1844,9 +1877,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldRequiredText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
         });
       });
@@ -1865,9 +1900,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldRequiredText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
         });
       });
@@ -1891,15 +1928,19 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
           'root[0].someNameInData[1]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
           'root[0].someOtherNameInData[1]': {
             message: 'divaClient_fieldInvalidFormatText',
+            label: '',
           },
         });
       });
@@ -1922,9 +1963,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_invalidRangeMinText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_invalidRangeMaxText',
+            label: '',
           },
         });
       });
@@ -1946,9 +1989,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldRequiredText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_invalidRangeMaxText',
+            label: '',
           },
         });
       });
@@ -1967,9 +2012,11 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_fieldRequiredText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_invalidRangeMinText',
+            label: '',
           },
         });
       });
@@ -1993,15 +2040,44 @@ describe('validateFormData', async () => {
         expect(errors).toStrictEqual({
           'root[0].someNameInData[0]': {
             message: 'divaClient_invalidRangeMinText',
+            label: '',
           },
           'root[0].someNameInData[1]': {
             message: 'divaClient_invalidRangeMinText',
+            label: '',
           },
           'root[0].someOtherNameInData[0]': {
             message: 'divaClient_invalidRangeMaxText',
+            label: '',
           },
           'root[0].someOtherNameInData[1]': {
             message: 'divaClient_invalidRangeMaxText',
+            label: '',
+          },
+        });
+      });
+    });
+    describe('collVar', () => {
+      it('returns same error for different fields on same level', () => {
+        const formSchema = formDefWithTwoRepeatingCollVariable;
+
+        const data: CoraData = {
+          name: 'root',
+          children: [
+            { name: 'someNameInData', value: '???' },
+            { name: 'someOtherNameInData', value: '???' },
+          ],
+        };
+
+        const { valid, errors } = validateFormData(formSchema, data);
+
+        expect(valid).toBe(false);
+        expect(errors).toStrictEqual({
+          'root[0].someNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
+          },
+          'root[0].someOtherNameInData[0]': {
+            message: 'divaClient_fieldInvalidFormatText',
           },
         });
       });
@@ -2036,6 +2112,7 @@ describe('validateFormData', async () => {
       expect(errors).toStrictEqual({
         'someRootNameInData[0].someNameInData[0]': {
           message: 'divaClient_fieldRequiredText',
+          label: 'someTextId',
         },
       });
     });
@@ -2069,8 +2146,2996 @@ describe('validateFormData', async () => {
       expect(errors).toStrictEqual({
         'someRootNameInData[0].someNameInData[0]': {
           message: 'divaClient_fieldRequiredText',
+          label: 'someTextId',
         },
       });
+    });
+  });
+
+  it('temp', () => {
+    const formSchema: RecordFormSchema = {
+      validationTypeId: 'diva-person',
+      form: {
+        presentationId: 'personUpdatePGroup',
+        type: 'group',
+        name: 'person',
+        mode: 'input',
+        tooltip: {
+          title: 'personNewGroupText',
+          body: 'personNewGroupDefText',
+        },
+        label: 'personNewGroupText',
+        headlineLevel: 'h1',
+        showLabel: true,
+        components: [
+          {
+            presentationId: 'recordInfoPersonUpdatePGroup',
+            type: 'group',
+            name: 'recordInfo',
+            mode: 'input',
+            tooltip: {
+              title: 'recordInfoPersonUpdateGroupText',
+              body: 'recordInfoPersonUpdateGroupDefText',
+            },
+            label: 'recordInfoPersonUpdateGroupText',
+            showLabel: false,
+            components: [
+              {
+                presentationId: 'trashBinPCollVar',
+                options: [
+                  {
+                    value: 'false',
+                    label: 'falseItemText',
+                  },
+                  {
+                    value: 'true',
+                    label: 'trueItemText',
+                  },
+                ],
+                name: 'inTrashBin',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'trashBinCollectionVarText',
+                  body: 'trashBinCollectionVarDefText',
+                },
+                label: 'trashBinCollectionVarText',
+                showLabel: true,
+                type: 'collectionVariable',
+                repeat: {
+                  minNumberOfRepeatingToShow: 0,
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+              },
+              {
+                presentationId: 'oldIdPVar',
+                name: 'oldId',
+                mode: 'input',
+                tooltip: {
+                  title: 'oldIdTextVarText',
+                  body: 'oldIdTextVarDefText',
+                },
+                label: 'oldIdTextVarText',
+                showLabel: true,
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^\\S.*$',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 0,
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                type: 'hidden',
+                name: 'validationType',
+                finalValue: 'diva-person',
+                attributesToShow: 'none',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'validationType',
+              },
+              {
+                type: 'hidden',
+                name: 'dataDivider',
+                finalValue: 'divaData',
+                attributesToShow: 'none',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                linkedRecordType: 'system',
+              },
+            ],
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'singleInitiallyHidden',
+            title: 'recordInfoPersonUpdateGroupText',
+            titleHeadlineLevel: 'h2',
+          },
+          {
+            presentationId: 'authorityPersonalPGroup',
+            type: 'group',
+            name: 'authority',
+            mode: 'input',
+            tooltip: {
+              title: 'authorityPersonalGroupText',
+              body: 'authorityPersonalGroupDefText',
+            },
+            label: 'authorityPersonalGroupText',
+            showLabel: false,
+            components: [
+              {
+                presentationId: 'namePersonPGroup',
+                type: 'group',
+                name: 'name',
+                mode: 'input',
+                tooltip: {
+                  title: 'namePersonGroupText',
+                  body: 'namePersonGroupDefText',
+                },
+                label: 'namePersonGroupText',
+                showLabel: false,
+                attributesToShow: 'selectable',
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'nameTypeCollectionVarText',
+                      body: 'nameTypeCollectionVarDefText',
+                    },
+                    label: 'nameTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'personal',
+                        label: 'personalItemText',
+                      },
+                      {
+                        value: 'corporate',
+                        label: 'corporateItemText',
+                      },
+                      {
+                        value: 'external',
+                        label: 'externalItemText',
+                      },
+                      {
+                        value: 'coordinating',
+                        label: 'coordinatingItemText',
+                      },
+                    ],
+                    finalValue: 'personal',
+                  },
+                ],
+                components: [
+                  {
+                    presentationId: 'namePartGivenPVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartGivenTextVarText',
+                      body: 'namePartGivenTextVarDefText',
+                    },
+                    label: 'namePartGivenTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'given',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                  {
+                    presentationId: 'namePartFamilyPVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartFamilyTextVarText',
+                      body: 'namePartFamilyTextVarDefText',
+                    },
+                    label: 'namePartFamilyTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'family',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                  {
+                    presentationId: 'namePartTermsOfAddressPVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartTermsOfAddressTextVarText',
+                      body: 'namePartTermsOfAddressTextVarDefText',
+                    },
+                    label: 'namePartTermsOfAddressTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'termsOfAddress',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                  {
+                    presentationId: 'namePartDatePVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartDateTextVarText',
+                      body: 'namePartDateTextVarDefText',
+                    },
+                    label: 'namePartDateTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^((\\d{4})|(\\d{4}\\-\\d{4})|(\\-\\d{4}))$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'date',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 0,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+              },
+            ],
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'firstLarger',
+            title: 'authorityPersonalGroupText',
+            titleHeadlineLevel: 'h2',
+            alternativePresentation: {
+              presentationId: 'authorityPersonalInputOutputPGroup',
+              type: 'group',
+              name: 'authority',
+              mode: 'output',
+              tooltip: {
+                title: 'authorityPersonalGroupText',
+                body: 'authorityPersonalGroupDefText',
+              },
+              label: 'authorityPersonalGroupText',
+              showLabel: false,
+              components: [
+                {
+                  presentationId: 'namePersonInputOutputPGroup',
+                  type: 'group',
+                  name: 'name',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'namePersonGroupText',
+                    body: 'namePersonGroupDefText',
+                  },
+                  label: 'namePersonGroupText',
+                  showLabel: false,
+                  attributesToShow: 'selectable',
+                  presentationStyle: 'inline',
+                  attributes: [
+                    {
+                      type: 'collectionVariable',
+                      name: 'type',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'nameTypeCollectionVarText',
+                        body: 'nameTypeCollectionVarDefText',
+                      },
+                      label: 'nameTypeCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'personal',
+                          label: 'personalItemText',
+                        },
+                        {
+                          value: 'corporate',
+                          label: 'corporateItemText',
+                        },
+                        {
+                          value: 'external',
+                          label: 'externalItemText',
+                        },
+                        {
+                          value: 'coordinating',
+                          label: 'coordinatingItemText',
+                        },
+                      ],
+                      finalValue: 'personal',
+                    },
+                  ],
+                  components: [
+                    {
+                      presentationId: 'namePartGivenOutputPVar',
+                      name: 'namePart',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'namePartGivenTextVarText',
+                        body: 'namePartGivenTextVarDefText',
+                      },
+                      label: 'namePartGivenTextVarText',
+                      showLabel: true,
+                      attributesToShow: 'selectable',
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '^\\S.*$',
+                      },
+                      attributes: [
+                        {
+                          type: 'collectionVariable',
+                          name: 'type',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'output',
+                          tooltip: {
+                            title: 'namePartTypeDivaCollectionVarText',
+                            body: 'namePartTypeDivaCollectionVarDefText',
+                          },
+                          label: 'namePartTypeDivaCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'given',
+                              label: 'givenItemText',
+                            },
+                            {
+                              value: 'family',
+                              label: 'familyItemText',
+                            },
+                            {
+                              value: 'termsOfAddress',
+                              label: 'termsOfAddressItemText',
+                            },
+                            {
+                              value: 'date',
+                              label: 'dateItemText',
+                            },
+                          ],
+                          finalValue: 'given',
+                        },
+                      ],
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                    {
+                      presentationId: 'namePartFamilyOutputPVar',
+                      name: 'namePart',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'namePartFamilyTextVarText',
+                        body: 'namePartFamilyTextVarDefText',
+                      },
+                      label: 'namePartFamilyTextVarText',
+                      showLabel: true,
+                      attributesToShow: 'selectable',
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '^\\S.*$',
+                      },
+                      attributes: [
+                        {
+                          type: 'collectionVariable',
+                          name: 'type',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'output',
+                          tooltip: {
+                            title: 'namePartTypeDivaCollectionVarText',
+                            body: 'namePartTypeDivaCollectionVarDefText',
+                          },
+                          label: 'namePartTypeDivaCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'given',
+                              label: 'givenItemText',
+                            },
+                            {
+                              value: 'family',
+                              label: 'familyItemText',
+                            },
+                            {
+                              value: 'termsOfAddress',
+                              label: 'termsOfAddressItemText',
+                            },
+                            {
+                              value: 'date',
+                              label: 'dateItemText',
+                            },
+                          ],
+                          finalValue: 'family',
+                        },
+                      ],
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                },
+              ],
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [],
+              gridColSpan: 12,
+              presentationSize: 'firstLarger',
+              title: 'authorityPersonalGroupText',
+              titleHeadlineLevel: 'h2',
+            },
+          },
+          {
+            presentationId: 'variantPersonalPGroup',
+            type: 'group',
+            name: 'variant',
+            mode: 'input',
+            tooltip: {
+              title: 'variantPersonalGroupText',
+              body: 'variantPersonalGroupDefText',
+            },
+            label: 'variantPersonalGroupText',
+            showLabel: false,
+            components: [
+              {
+                presentationId: 'namePersonVariantPGroup',
+                type: 'group',
+                name: 'name',
+                mode: 'input',
+                tooltip: {
+                  title: 'namePersonVariantGroupText',
+                  body: 'namePersonVariantGroupDefText',
+                },
+                label: 'namePersonVariantGroupText',
+                showLabel: false,
+                attributesToShow: 'selectable',
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'nameTypeCollectionVarText',
+                      body: 'nameTypeCollectionVarDefText',
+                    },
+                    label: 'nameTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'personal',
+                        label: 'personalItemText',
+                      },
+                      {
+                        value: 'corporate',
+                        label: 'corporateItemText',
+                      },
+                      {
+                        value: 'external',
+                        label: 'externalItemText',
+                      },
+                      {
+                        value: 'coordinating',
+                        label: 'coordinatingItemText',
+                      },
+                    ],
+                    finalValue: 'personal',
+                  },
+                ],
+                components: [
+                  {
+                    presentationId: 'namePartGivenPVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartGivenTextVarText',
+                      body: 'namePartGivenTextVarDefText',
+                    },
+                    label: 'namePartGivenTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'given',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                  {
+                    presentationId: 'namePartFamilyPVar',
+                    name: 'namePart',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'namePartFamilyTextVarText',
+                      body: 'namePartFamilyTextVarDefText',
+                    },
+                    label: 'namePartFamilyTextVarText',
+                    showLabel: true,
+                    attributesToShow: 'selectable',
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    attributes: [
+                      {
+                        type: 'collectionVariable',
+                        name: 'type',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTypeDivaCollectionVarText',
+                          body: 'namePartTypeDivaCollectionVarDefText',
+                        },
+                        label: 'namePartTypeDivaCollectionVarText',
+                        showLabel: true,
+                        options: [
+                          {
+                            value: 'given',
+                            label: 'givenItemText',
+                          },
+                          {
+                            value: 'family',
+                            label: 'familyItemText',
+                          },
+                          {
+                            value: 'termsOfAddress',
+                            label: 'termsOfAddressItemText',
+                          },
+                          {
+                            value: 'date',
+                            label: 'dateItemText',
+                          },
+                        ],
+                        finalValue: 'family',
+                      },
+                    ],
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                presentationSize: 'firstLarger',
+                title: 'namePersonVariantGroupText',
+                titleHeadlineLevel: 'h3',
+                alternativePresentation: {
+                  presentationId: 'namePersonVariantInputOutputPGroup',
+                  type: 'group',
+                  name: 'name',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'namePersonVariantGroupText',
+                    body: 'namePersonVariantGroupDefText',
+                  },
+                  label: 'namePersonVariantGroupText',
+                  showLabel: false,
+                  attributesToShow: 'selectable',
+                  presentationStyle: 'inline',
+                  attributes: [
+                    {
+                      type: 'collectionVariable',
+                      name: 'type',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'nameTypeCollectionVarText',
+                        body: 'nameTypeCollectionVarDefText',
+                      },
+                      label: 'nameTypeCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'personal',
+                          label: 'personalItemText',
+                        },
+                        {
+                          value: 'corporate',
+                          label: 'corporateItemText',
+                        },
+                        {
+                          value: 'external',
+                          label: 'externalItemText',
+                        },
+                        {
+                          value: 'coordinating',
+                          label: 'coordinatingItemText',
+                        },
+                      ],
+                      finalValue: 'personal',
+                    },
+                  ],
+                  components: [
+                    {
+                      presentationId: 'namePartGivenOutputPVar',
+                      name: 'namePart',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'namePartGivenTextVarText',
+                        body: 'namePartGivenTextVarDefText',
+                      },
+                      label: 'namePartGivenTextVarText',
+                      showLabel: true,
+                      attributesToShow: 'selectable',
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '^\\S.*$',
+                      },
+                      attributes: [
+                        {
+                          type: 'collectionVariable',
+                          name: 'type',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'output',
+                          tooltip: {
+                            title: 'namePartTypeDivaCollectionVarText',
+                            body: 'namePartTypeDivaCollectionVarDefText',
+                          },
+                          label: 'namePartTypeDivaCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'given',
+                              label: 'givenItemText',
+                            },
+                            {
+                              value: 'family',
+                              label: 'familyItemText',
+                            },
+                            {
+                              value: 'termsOfAddress',
+                              label: 'termsOfAddressItemText',
+                            },
+                            {
+                              value: 'date',
+                              label: 'dateItemText',
+                            },
+                          ],
+                          finalValue: 'given',
+                        },
+                      ],
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                    {
+                      presentationId: 'namePartFamilyOutputPVar',
+                      name: 'namePart',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'namePartFamilyTextVarText',
+                        body: 'namePartFamilyTextVarDefText',
+                      },
+                      label: 'namePartFamilyTextVarText',
+                      showLabel: true,
+                      attributesToShow: 'selectable',
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '^\\S.*$',
+                      },
+                      attributes: [
+                        {
+                          type: 'collectionVariable',
+                          name: 'type',
+                          placeholder: 'initialEmptyValueText',
+                          mode: 'output',
+                          tooltip: {
+                            title: 'namePartTypeDivaCollectionVarText',
+                            body: 'namePartTypeDivaCollectionVarDefText',
+                          },
+                          label: 'namePartTypeDivaCollectionVarText',
+                          showLabel: true,
+                          options: [
+                            {
+                              value: 'given',
+                              label: 'givenItemText',
+                            },
+                            {
+                              value: 'family',
+                              label: 'familyItemText',
+                            },
+                            {
+                              value: 'termsOfAddress',
+                              label: 'termsOfAddressItemText',
+                            },
+                            {
+                              value: 'date',
+                              label: 'dateItemText',
+                            },
+                          ],
+                          finalValue: 'family',
+                        },
+                      ],
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                  presentationSize: 'firstLarger',
+                  title: 'namePersonVariantGroupText',
+                  titleHeadlineLevel: 'h3',
+                },
+              },
+            ],
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'singleInitiallyHidden',
+            title: 'variantPersonalGroupText',
+            titleHeadlineLevel: 'h2',
+          },
+          {
+            presentationId: 'personInfoSContainer',
+            type: 'container',
+            name: 'personInfoSContainer',
+            mode: 'input',
+            containerType: 'surrounding',
+            components: [
+              {
+                presentationId: 'emailDivaPVar',
+                name: 'email',
+                mode: 'input',
+                tooltip: {
+                  title: 'emailDivaTextVarText',
+                  body: 'emailDivaTextVarDefText',
+                },
+                label: 'emailDivaTextVarText',
+                showLabel: true,
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^([0-9a-zA-Z].*?@([0-9a-zA-Z].*\\.\\w{2,4}))$',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                presentationSize: 'firstLarger',
+                title: 'emailDivaTextVarText',
+                titleHeadlineLevel: 'h3',
+                inputType: 'input',
+                alternativePresentation: {
+                  presentationId: 'emailDivaWithouLabelOutputPVar',
+                  name: 'email',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'emailDivaTextVarText',
+                    body: 'emailDivaTextVarDefText',
+                  },
+                  label: 'emailDivaTextVarText',
+                  showLabel: false,
+                  type: 'textVariable',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^([0-9a-zA-Z].*?@([0-9a-zA-Z].*\\.\\w{2,4}))$',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                  presentationSize: 'firstLarger',
+                  title: 'emailDivaTextVarText',
+                  titleHeadlineLevel: 'h3',
+                  inputType: 'input',
+                },
+              },
+              {
+                presentationId: 'locationPGroup',
+                type: 'group',
+                name: 'location',
+                mode: 'input',
+                tooltip: {
+                  title: 'locationGroupText',
+                  body: 'locationGroupDefText',
+                },
+                label: 'locationGroupText',
+                showLabel: false,
+                components: [
+                  {
+                    presentationId: 'urlDivaPVar',
+                    name: 'url',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'urlDivaTextVarText',
+                      body: 'urlDivaTextVarDefText',
+                    },
+                    label: 'urlDivaTextVarText',
+                    showLabel: true,
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern:
+                        '(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:;!%._\\+~#=(),]{2,256}\\.[a-z]{2,63}\\b([-a-zA-Z0-9@:;!%_\\+.~#?&//=(),]*)',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                  {
+                    presentationId: 'displayLabelPVar',
+                    name: 'displayLabel',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'displayLabelTextVarText',
+                      body: 'displayLabelTextVarDefText',
+                    },
+                    label: 'displayLabelTextVarText',
+                    showLabel: true,
+                    type: 'textVariable',
+                    validation: {
+                      type: 'regex',
+                      pattern: '^\\S.*$',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                presentationSize: 'firstLarger',
+                title: 'locationGroupText',
+                titleHeadlineLevel: 'h3',
+                alternativePresentation: {
+                  presentationId: 'locationInputOutputPGroup',
+                  type: 'group',
+                  name: 'location',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'locationGroupText',
+                    body: 'locationGroupDefText',
+                  },
+                  label: 'locationGroupText',
+                  showLabel: false,
+                  presentationStyle: 'inline',
+                  components: [
+                    {
+                      presentationId: 'urlDivaWithouLabelOutputPVar',
+                      name: 'url',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'urlDivaTextVarText',
+                        body: 'urlDivaTextVarDefText',
+                      },
+                      label: 'urlDivaTextVarText',
+                      showLabel: false,
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern:
+                          '(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:;!%._\\+~#=(),]{2,256}\\.[a-z]{2,63}\\b([-a-zA-Z0-9@:;!%_\\+.~#?&//=(),]*)',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                  presentationSize: 'firstLarger',
+                  title: 'locationGroupText',
+                  titleHeadlineLevel: 'h3',
+                },
+              },
+              {
+                presentationId: 'noteBiographicalPVar',
+                name: 'note',
+                mode: 'input',
+                tooltip: {
+                  title: 'noteBiographicalTextVarText',
+                  body: 'noteBiographicalTextVarDefText',
+                },
+                label: 'noteBiographicalTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^\\S.*$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'typeCollectionVarText',
+                      body: 'typeCollectionVarDefText',
+                    },
+                    label: 'typeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'contentType',
+                        label: 'contentTypeItemText',
+                      },
+                      {
+                        value: 'restrictionOnAccess',
+                        label: 'restrictionOnAccessItemText',
+                      },
+                      {
+                        value: 'constituent',
+                        label: 'constituentItemText',
+                      },
+                      {
+                        value: 'internal',
+                        label: 'internalItemText',
+                      },
+                      {
+                        value: 'biographical',
+                        label: 'biographicalItemText',
+                      },
+                    ],
+                    finalValue: 'biographical',
+                  },
+                  {
+                    type: 'collectionVariable',
+                    name: 'lang',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'swe',
+                        label: 'sweLangItemText',
+                      },
+                      {
+                        value: 'eng',
+                        label: 'engLangItemText',
+                      },
+                    ],
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                presentationSize: 'firstLarger',
+                title: 'noteBiographicalTextVarText',
+                titleHeadlineLevel: 'h3',
+                inputType: 'textarea',
+                alternativePresentation: {
+                  presentationId: 'noteBiographicalWithouLabelOutputPVar',
+                  name: 'note',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'noteBiographicalTextVarText',
+                    body: 'noteBiographicalTextVarDefText',
+                  },
+                  label: 'noteBiographicalTextVarText',
+                  showLabel: false,
+                  attributesToShow: 'selectable',
+                  type: 'textVariable',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^\\S.*$',
+                  },
+                  attributes: [
+                    {
+                      type: 'collectionVariable',
+                      name: 'type',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'typeCollectionVarText',
+                        body: 'typeCollectionVarDefText',
+                      },
+                      label: 'typeCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'contentType',
+                          label: 'contentTypeItemText',
+                        },
+                        {
+                          value: 'restrictionOnAccess',
+                          label: 'restrictionOnAccessItemText',
+                        },
+                        {
+                          value: 'constituent',
+                          label: 'constituentItemText',
+                        },
+                        {
+                          value: 'internal',
+                          label: 'internalItemText',
+                        },
+                        {
+                          value: 'biographical',
+                          label: 'biographicalItemText',
+                        },
+                      ],
+                      finalValue: 'biographical',
+                    },
+                    {
+                      type: 'collectionVariable',
+                      name: 'lang',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'languageCollectionVarText',
+                        body: 'languageCollectionVarDefText',
+                      },
+                      label: 'languageCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'swe',
+                          label: 'sweLangItemText',
+                        },
+                        {
+                          value: 'eng',
+                          label: 'engLangItemText',
+                        },
+                      ],
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                  presentationSize: 'firstLarger',
+                  title: 'noteBiographicalTextVarText',
+                  titleHeadlineLevel: 'h3',
+                  inputType: 'textarea',
+                },
+              },
+            ],
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'singleInitiallyHidden',
+            title: 'personInfoHeadlineText',
+            titleHeadlineLevel: 'h2',
+          },
+          {
+            presentationId: 'nameIdentifierSContainer',
+            type: 'container',
+            name: 'nameIdentifierSContainer',
+            mode: 'input',
+            containerType: 'surrounding',
+            components: [
+              {
+                presentationId: 'nameIdentifierLocalIdPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierLocalIdTextVarText',
+                  body: 'nameIdentifierLocalIdTextVarDefText',
+                },
+                label: 'nameIdentifierLocalIdTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^\\S.*$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'localId',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                presentationId: 'nameIdentifierOrcidPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierOrcidTextVarText',
+                  body: 'nameIdentifierOrcidTextVarDefText',
+                },
+                label: 'nameIdentifierOrcidTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'orcid',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                presentationId: 'nameIdentifierSeLibrPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierSeLibrTextVarText',
+                  body: 'nameIdentifierSeLibrTextVarDefText',
+                },
+                label: 'nameIdentifierSeLibrTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^[0-9A-Za-z:-_\\s]{2,1000}',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'se-libr',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                presentationId: 'nameIdentifierOpenAlexPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierOpenAlexTextVarText',
+                  body: 'nameIdentifierOpenAlexTextVarDefText',
+                },
+                label: 'nameIdentifierOpenAlexTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^\\S.*$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'openAlex',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                presentationId: 'nameIdentifierScopusPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierScopusTextVarText',
+                  body: 'nameIdentifierScopusTextVarDefText',
+                },
+                label: 'nameIdentifierScopusTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^(\\d+)$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'scopus',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+              {
+                presentationId: 'nameIdentifierViafPVar',
+                name: 'nameIdentifier',
+                mode: 'input',
+                tooltip: {
+                  title: 'nameIdentifierViafTextVarText',
+                  body: 'nameIdentifierViafTextVarDefText',
+                },
+                label: 'nameIdentifierViafTextVarText',
+                showLabel: true,
+                attributesToShow: 'selectable',
+                type: 'textVariable',
+                validation: {
+                  type: 'regex',
+                  pattern: '^(\\d+)$',
+                },
+                attributes: [
+                  {
+                    type: 'collectionVariable',
+                    name: 'type',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'identifierTypeCollectionVarText',
+                      body: 'identifierTypeCollectionVarDefText',
+                    },
+                    label: 'identifierTypeCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'doi',
+                        label: 'doiItemText',
+                      },
+                      {
+                        value: 'isbn',
+                        label: 'isbnItemText',
+                      },
+                      {
+                        value: 'ismn',
+                        label: 'ismnItemText',
+                      },
+                      {
+                        value: 'isrn',
+                        label: 'isrnItemText',
+                      },
+                      {
+                        value: 'issn',
+                        label: 'issnItemText',
+                      },
+                      {
+                        value: 'wos',
+                        label: 'wosItemText',
+                      },
+                      {
+                        value: 'scopus',
+                        label: 'scopusItemText',
+                      },
+                      {
+                        value: 'pmid',
+                        label: 'pmidItemText',
+                      },
+                      {
+                        value: 'openAlex',
+                        label: 'openAlexItemText',
+                      },
+                      {
+                        value: 'localId',
+                        label: 'localIdItemText',
+                      },
+                      {
+                        value: 'patentNumber',
+                        label: 'patentNumberItemText',
+                      },
+                      {
+                        value: 'archiveNumber',
+                        label: 'archiveNumberItemText',
+                      },
+                      {
+                        value: 'raid',
+                        label: 'raidItemText',
+                      },
+                      {
+                        value: 'swecris',
+                        label: 'swecrisItemText',
+                      },
+                      {
+                        value: 'cordis',
+                        label: 'cordisItemText',
+                      },
+                      {
+                        value: 'se-libr',
+                        label: 'seLibrItemText',
+                      },
+                      {
+                        value: 'urn',
+                        label: 'urnItemText',
+                      },
+                      {
+                        value: 'oai',
+                        label: 'oaiItemText',
+                      },
+                      {
+                        value: 'uri',
+                        label: 'uriItemText',
+                      },
+                      {
+                        value: 'orcid',
+                        label: 'orcidItemText',
+                      },
+                      {
+                        value: 'ror',
+                        label: 'rorItemText',
+                      },
+                      {
+                        value: 'organisationCode',
+                        label: 'organisationCodeItemText',
+                      },
+                      {
+                        value: 'organisationNumber',
+                        label: 'organisationNumberItemText',
+                      },
+                      {
+                        value: 'viaf',
+                        label: 'viafItemText',
+                      },
+                      {
+                        value: 'project',
+                        label: 'projectItemText',
+                      },
+                      {
+                        value: 'reference',
+                        label: 'referenceItemText',
+                      },
+                      {
+                        value: 'registrationNumber',
+                        label: 'registrationNumberItemText',
+                      },
+                    ],
+                    finalValue: 'viaf',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                inputType: 'input',
+              },
+            ],
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'singleInitiallyHidden',
+            title: 'identifierHeadlineText',
+          },
+          {
+            presentationId: 'affiliationSContainer',
+            type: 'container',
+            name: 'affiliationSContainer',
+            mode: 'input',
+            containerType: 'surrounding',
+            components: [
+              {
+                presentationId: 'affiliationPGroup',
+                type: 'group',
+                name: 'affiliation',
+                mode: 'input',
+                tooltip: {
+                  title: 'affiliationGroupText',
+                  body: 'affiliationGroupDefText',
+                },
+                label: 'affiliationGroupText',
+                showLabel: false,
+                components: [
+                  {
+                    name: 'affiliationHelpText',
+                    type: 'text',
+                    textStyle: 'italicTextStyle',
+                    childStyle: [],
+                    gridColSpan: 12,
+                  },
+                  {
+                    presentationId: 'organisationPLink',
+                    name: 'organisation',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'organisationLinkText',
+                      body: 'organisationLinkDefText',
+                    },
+                    label: 'organisationLinkText',
+                    showLabel: true,
+                    type: 'recordLink',
+                    recordLinkType: 'diva-organisation',
+                    searchPresentation: {
+                      searchType: 'diva-organisationMinimalSearch',
+                      autocompleteSearchTerm: {
+                        name: 'organisationSearch.include.includePart.nameSearchTerm[0].value',
+                      },
+                      permissionUnitSearchTerm: {
+                        name: 'organisationSearch.include.includePart.permissionUnitSearchTerm[0].value',
+                      },
+                    },
+                    linkedRecordPresentation: {
+                      presentedRecordType: 'diva-organisation',
+                      presentationId: 'organisationLinkedOutputPGroup',
+                    },
+                    presentationRecordLinkId: 'organisationPLink',
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [],
+                    gridColSpan: 12,
+                    presentationSize: 'singleInitiallyHidden',
+                    title: 'affiliationDivaHeadlineText',
+                    titleHeadlineLevel: 'h4',
+                  },
+                  {
+                    presentationId: 'affiliationExternalSContainer',
+                    type: 'container',
+                    name: 'affiliationExternalSContainer',
+                    mode: 'input',
+                    containerType: 'surrounding',
+                    components: [
+                      {
+                        presentationId: 'namePartPVar',
+                        name: 'namePart',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'namePartTextVarText',
+                          body: 'namePartTextVarDefText',
+                        },
+                        label: 'namePartTextVarText',
+                        showLabel: true,
+                        type: 'textVariable',
+                        validation: {
+                          type: 'regex',
+                          pattern: '^\\S.*$',
+                        },
+                        repeat: {
+                          minNumberOfRepeatingToShow: 1,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                        inputType: 'input',
+                      },
+                      {
+                        presentationId: 'identifierRorPVar',
+                        name: 'identifier',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'identifierRorTextVarText',
+                          body: 'identifierRorTextVarDefText',
+                        },
+                        label: 'identifierRorTextVarText',
+                        showLabel: true,
+                        attributesToShow: 'selectable',
+                        type: 'textVariable',
+                        validation: {
+                          type: 'regex',
+                          pattern: '^(0[a-z|0-9]{6}[0-9]{2})$',
+                        },
+                        attributes: [
+                          {
+                            type: 'collectionVariable',
+                            name: 'type',
+                            placeholder: 'initialEmptyValueText',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'identifierTypeCollectionVarText',
+                              body: 'identifierTypeCollectionVarDefText',
+                            },
+                            label: 'identifierTypeCollectionVarText',
+                            showLabel: true,
+                            options: [
+                              {
+                                value: 'doi',
+                                label: 'doiItemText',
+                              },
+                              {
+                                value: 'isbn',
+                                label: 'isbnItemText',
+                              },
+                              {
+                                value: 'ismn',
+                                label: 'ismnItemText',
+                              },
+                              {
+                                value: 'isrn',
+                                label: 'isrnItemText',
+                              },
+                              {
+                                value: 'issn',
+                                label: 'issnItemText',
+                              },
+                              {
+                                value: 'wos',
+                                label: 'wosItemText',
+                              },
+                              {
+                                value: 'scopus',
+                                label: 'scopusItemText',
+                              },
+                              {
+                                value: 'pmid',
+                                label: 'pmidItemText',
+                              },
+                              {
+                                value: 'openAlex',
+                                label: 'openAlexItemText',
+                              },
+                              {
+                                value: 'localId',
+                                label: 'localIdItemText',
+                              },
+                              {
+                                value: 'patentNumber',
+                                label: 'patentNumberItemText',
+                              },
+                              {
+                                value: 'archiveNumber',
+                                label: 'archiveNumberItemText',
+                              },
+                              {
+                                value: 'raid',
+                                label: 'raidItemText',
+                              },
+                              {
+                                value: 'swecris',
+                                label: 'swecrisItemText',
+                              },
+                              {
+                                value: 'cordis',
+                                label: 'cordisItemText',
+                              },
+                              {
+                                value: 'se-libr',
+                                label: 'seLibrItemText',
+                              },
+                              {
+                                value: 'urn',
+                                label: 'urnItemText',
+                              },
+                              {
+                                value: 'oai',
+                                label: 'oaiItemText',
+                              },
+                              {
+                                value: 'uri',
+                                label: 'uriItemText',
+                              },
+                              {
+                                value: 'orcid',
+                                label: 'orcidItemText',
+                              },
+                              {
+                                value: 'ror',
+                                label: 'rorItemText',
+                              },
+                              {
+                                value: 'organisationCode',
+                                label: 'organisationCodeItemText',
+                              },
+                              {
+                                value: 'organisationNumber',
+                                label: 'organisationNumberItemText',
+                              },
+                              {
+                                value: 'viaf',
+                                label: 'viafItemText',
+                              },
+                              {
+                                value: 'project',
+                                label: 'projectItemText',
+                              },
+                              {
+                                value: 'reference',
+                                label: 'referenceItemText',
+                              },
+                              {
+                                value: 'registrationNumber',
+                                label: 'registrationNumberItemText',
+                              },
+                            ],
+                            finalValue: 'ror',
+                          },
+                        ],
+                        repeat: {
+                          minNumberOfRepeatingToShow: 1,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                        inputType: 'input',
+                      },
+                      {
+                        presentationId: 'countryPCollVar',
+                        options: [
+                          {
+                            value: 'aa',
+                            label: 'aaCountryItemText',
+                          },
+                          {
+                            value: 'ae',
+                            label: 'aeCountryItemText',
+                          },
+                          {
+                            value: 'af',
+                            label: 'afCountryItemText',
+                          },
+                          {
+                            value: 'ag',
+                            label: 'agCountryItemText',
+                          },
+                          {
+                            value: 'ai',
+                            label: 'aiCountryItemText',
+                          },
+                        ],
+                        name: 'country',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'countryCollectionVarText',
+                          body: 'countryCollectionVarDefText',
+                        },
+                        label: 'countryCollectionVarText',
+                        showLabel: true,
+                        type: 'collectionVariable',
+                        repeat: {
+                          minNumberOfRepeatingToShow: 1,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                      },
+                      {
+                        presentationId: 'descriptionPCollVar',
+                        options: [
+                          {
+                            value: 'researchGroup',
+                            label: 'researchGroupItemText',
+                          },
+                        ],
+                        name: 'description',
+                        placeholder: 'initialEmptyValueText',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'descriptionCollectionVarText',
+                          body: 'descriptionCollectionVarDefText',
+                        },
+                        label: 'descriptionCollectionVarText',
+                        showLabel: true,
+                        type: 'collectionVariable',
+                        repeat: {
+                          minNumberOfRepeatingToShow: 1,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                      },
+                    ],
+                    childStyle: [],
+                    gridColSpan: 12,
+                    presentationSize: 'singleInitiallyHidden',
+                    title: 'affiliationExternalHeadlineText',
+                    titleHeadlineLevel: 'h4',
+                  },
+                  {
+                    presentationId: 'affiliationStartEndDateSContainer',
+                    type: 'container',
+                    name: 'affiliationStartEndDateSContainer',
+                    mode: 'input',
+                    containerType: 'surrounding',
+                    components: [
+                      {
+                        presentationId: 'affiliationStartDatePGroup',
+                        type: 'group',
+                        name: 'startDate',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'startDateGroupText',
+                          body: 'startDateGroupDefText',
+                        },
+                        label: 'startDateGroupText',
+                        headlineLevel: 'h5',
+                        showLabel: true,
+                        components: [
+                          {
+                            presentationId: 'yearPVar',
+                            name: 'year',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'yearTextVarText',
+                              body: 'yearTextVarDefText',
+                            },
+                            label: 'yearTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '(^[0-9]{4,4}$)',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 1,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                          {
+                            presentationId: 'monthPVar',
+                            name: 'month',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'monthTextVarText',
+                              body: 'monthTextVarDefText',
+                            },
+                            label: 'monthTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '(^(0[1-9]|1[012])$)',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 0,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                          {
+                            presentationId: 'dayPVar',
+                            name: 'day',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'dayTextVarText',
+                              body: 'dayTextVarDefText',
+                            },
+                            label: 'dayTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '^(0[1-9]|[1|2]\\d|3[01])$',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 0,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                        ],
+                        repeat: {
+                          minNumberOfRepeatingToShow: 1,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                      },
+                      {
+                        presentationId: 'affiliationEndDatePGroup',
+                        type: 'group',
+                        name: 'endDate',
+                        mode: 'input',
+                        tooltip: {
+                          title: 'endDateGroupText',
+                          body: 'endDateGroupDefText',
+                        },
+                        label: 'endDateGroupText',
+                        headlineLevel: 'h5',
+                        showLabel: true,
+                        components: [
+                          {
+                            presentationId: 'yearPVar',
+                            name: 'year',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'yearTextVarText',
+                              body: 'yearTextVarDefText',
+                            },
+                            label: 'yearTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '(^[0-9]{4,4}$)',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 1,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                          {
+                            presentationId: 'monthPVar',
+                            name: 'month',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'monthTextVarText',
+                              body: 'monthTextVarDefText',
+                            },
+                            label: 'monthTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '(^(0[1-9]|1[012])$)',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 0,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                          {
+                            presentationId: 'dayPVar',
+                            name: 'day',
+                            mode: 'input',
+                            tooltip: {
+                              title: 'dayTextVarText',
+                              body: 'dayTextVarDefText',
+                            },
+                            label: 'dayTextVarText',
+                            showLabel: true,
+                            type: 'textVariable',
+                            validation: {
+                              type: 'regex',
+                              pattern: '^(0[1-9]|[1|2]\\d|3[01])$',
+                            },
+                            repeat: {
+                              minNumberOfRepeatingToShow: 1,
+                              repeatMin: 0,
+                              repeatMax: 1,
+                            },
+                            childStyle: ['fourChildStyle'],
+                            gridColSpan: 4,
+                            inputType: 'input',
+                          },
+                        ],
+                        repeat: {
+                          minNumberOfRepeatingToShow: 0,
+                          repeatMin: 0,
+                          repeatMax: 1,
+                        },
+                        childStyle: [],
+                        gridColSpan: 12,
+                      },
+                    ],
+                    childStyle: [],
+                    gridColSpan: 12,
+                    presentationSize: 'singleInitiallyHidden',
+                    title: 'startEndDateHeadlineText',
+                    titleHeadlineLevel: 'h4',
+                  },
+                ],
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                childStyle: [],
+                gridColSpan: 12,
+                presentationSize: 'firstLarger',
+                title: 'affiliationGroupText',
+                titleHeadlineLevel: 'h3',
+                alternativePresentation: {
+                  presentationId: 'affiliationInputOutputPGroup',
+                  type: 'group',
+                  name: 'affiliation',
+                  mode: 'output',
+                  tooltip: {
+                    title: 'affiliationGroupText',
+                    body: 'affiliationGroupDefText',
+                  },
+                  label: 'affiliationGroupText',
+                  showLabel: false,
+                  attributesToShow: 'selectable',
+                  presentationStyle: 'inline',
+                  components: [
+                    {
+                      presentationId: 'organisationOutputPLink',
+                      name: 'organisation',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'organisationLinkText',
+                        body: 'organisationLinkDefText',
+                      },
+                      label: 'organisationLinkText',
+                      showLabel: false,
+                      type: 'recordLink',
+                      recordLinkType: 'diva-organisation',
+                      linkedRecordPresentation: {
+                        presentedRecordType: 'diva-organisation',
+                        presentationId: 'organisationLinkedOutputPGroup',
+                      },
+                      presentationRecordLinkId: 'organisationOutputPLink',
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                    },
+                    {
+                      presentationId: 'namePartOutputPVar',
+                      name: 'namePart',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'namePartTextVarText',
+                        body: 'namePartTextVarDefText',
+                      },
+                      label: 'namePartTextVarText',
+                      showLabel: true,
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '^\\S.*$',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                      inputType: 'input',
+                    },
+                    {
+                      presentationId: 'descriptionOutputPCollVar',
+                      options: [
+                        {
+                          value: 'researchGroup',
+                          label: 'researchGroupItemText',
+                        },
+                      ],
+                      name: 'description',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'output',
+                      tooltip: {
+                        title: 'descriptionCollectionVarText',
+                        body: 'descriptionCollectionVarDefText',
+                      },
+                      label: 'descriptionCollectionVarText',
+                      showLabel: true,
+                      type: 'collectionVariable',
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 0,
+                        repeatMax: 1,
+                      },
+                      childStyle: [],
+                      gridColSpan: 12,
+                    },
+                  ],
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1.7976931348623157e308,
+                  },
+                  childStyle: [],
+                  gridColSpan: 12,
+                  presentationSize: 'firstLarger',
+                  title: 'affiliationGroupText',
+                  titleHeadlineLevel: 'h3',
+                },
+              },
+            ],
+            childStyle: [],
+            gridColSpan: 12,
+            presentationSize: 'singleInitiallyHidden',
+            title: 'affiliationHeadlineText',
+            titleHeadlineLevel: 'h2',
+          },
+        ],
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        gridColSpan: 12,
+      },
+    };
+    const data: CoraData = {
+      name: 'person',
+      attributes: undefined,
+      children: [
+        {
+          name: 'recordInfo',
+          attributes: undefined,
+          children: [
+            {
+              name: 'validationType',
+              attributes: undefined,
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  attributes: undefined,
+                  value: 'validationType',
+                  repeatId: undefined,
+                },
+                {
+                  name: 'linkedRecordId',
+                  attributes: undefined,
+                  value: 'diva-person',
+                  repeatId: undefined,
+                },
+              ],
+              repeatId: undefined,
+            },
+            {
+              name: 'dataDivider',
+              attributes: undefined,
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  attributes: undefined,
+                  value: 'system',
+                  repeatId: undefined,
+                },
+                {
+                  name: 'linkedRecordId',
+                  attributes: undefined,
+                  value: 'divaData',
+                  repeatId: undefined,
+                },
+              ],
+              repeatId: undefined,
+            },
+          ],
+          repeatId: undefined,
+        },
+      ],
+      repeatId: undefined,
+    };
+
+    const { valid, errors } = validateFormData(formSchema, data);
+
+    expect(valid).toBe(false);
+    expect(errors).toStrictEqual({
+      'person[0].authority[0].name[0].namePart[1]': {
+        message: 'divaClient_fieldRequiredText',
+        label: 'namePartFamilyTextVarText',
+      },
     });
   });
 });

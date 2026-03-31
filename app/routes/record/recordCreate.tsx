@@ -180,8 +180,7 @@ export const action = async ({
   if (!valid) {
     flashNotification({
       severity: 'error',
-      summary: t('divaClient_formValidationErrorText'),
-      details: JSON.stringify(errors, null, 2),
+      summary: t('divaClient_formValidationErrorsText'),
     });
     return { validationErrors: errors, data: transformedFormData };
   }
@@ -274,7 +273,7 @@ export default function CreateRecordRoute({
     validationTypes,
   } = loaderData;
 
-  const { validationErrors, data } = actionData;
+  const { validationErrors, data } = actionData ?? {};
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
     null,
   );
@@ -312,7 +311,11 @@ export default function CreateRecordRoute({
             {notification.details}
           </Alert>
         )}
-        <InputPresentation formSchema={formDefinition} />
+        <InputPresentation
+          formSchema={formDefinition}
+          data={data}
+          validationErrors={validationErrors}
+        />
       </main>
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (

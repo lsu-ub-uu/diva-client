@@ -6,25 +6,30 @@ import { FloatingActionButtonContainer } from '../FloatingActionButton/FloatingA
 import { FloatingActionButton } from '../FloatingActionButton/FloatingActionButton';
 import { SaveIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import type { ValidationError } from './validateFormData';
+import { createContext } from 'react';
 
 interface InputPresentationProps {
   formSchema: FormSchema;
   data?: DataGroup;
+  validationErrors?: Record<string, ValidationError>;
 }
 
 export const InputPresentation = ({
   formSchema,
   data,
+  validationErrors = {},
 }: InputPresentationProps) => {
   const { t } = useTranslation();
   return (
     <Form method='post'>
-      <InputComponent
-        component={formSchema.form}
-        data={data}
-        path={`${formSchema.form.name}[0]`}
-      />
-
+      <ValidationErrorContext value={validationErrors}>
+        <InputComponent
+          component={formSchema.form}
+          data={data}
+          path={`${formSchema.form.name}[0]`}
+        />
+      </ValidationErrorContext>
       <FloatingActionButtonContainer>
         <FloatingActionButton
           variant='primary'
@@ -36,3 +41,7 @@ export const InputPresentation = ({
     </Form>
   );
 };
+
+export const ValidationErrorContext = createContext<
+  Record<string, ValidationError>
+>({});

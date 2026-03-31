@@ -4,6 +4,9 @@ import { Fieldset } from '../Input/Fieldset';
 import { Input } from '../Input/Input';
 import { InputAttributes } from './InputAttributes';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
+import { use, useEffect, useState } from 'react';
+import { ValidationErrorContext } from './InputPresentation';
+import type { ValidationError } from './validateFormData';
 
 export interface InputVariableProps {
   component: FormComponentTextVar;
@@ -17,6 +20,37 @@ export const InputVariable = ({
   data,
 }: InputVariableProps) => {
   const { t } = useTranslation();
+  const [isDirty, setIsDirty] = useState(false);
+  const serverValidationError = use(ValidationErrorContext)[path];
+  const [clientValidationError, setClientValidationError] = useState<
+    ValidationError | null | undefined
+  >(serverValidationError);
+
+  useEffect(() => {
+    setClientValidationError(serverValidationError);
+  }, [serverValidationError]);
+
+  const validationError =
+    isDirty && clientValidationError !== undefined
+      ? clientValidationError
+      : serverValidationError;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (component.validation?.pattern) {
+      if (
+        event.target.value &&
+        !new RegExp(component.validation.pattern).test(event.target.value)
+      ) {
+        setClientValidationError({
+          message: t('divaClient_fieldInvalidFormatText'),
+          label: t(component.label),
+          type: 'invalidFormat',
+        });
+      } else {
+        setClientValidationError(null);
+      }
+    }
+  };
 
   return (
     <div
@@ -24,8 +58,18 @@ export const InputVariable = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <InputAttributes path={path} component={component} />
-      <Fieldset label={component.showLabel ? t(component.label) : undefined}>
-        <Input type='text' name={path} defaultValue={data?.value} />
+      <Fieldset
+        label={component.showLabel ? t(component.label) : undefined}
+        errorMessage={validationError?.message}
+      >
+        <Input
+          type='text'
+          name={path}
+          defaultValue={data?.value}
+          aria-invalid={!!validationError}
+          onChange={handleChange}
+          onBlur={() => setIsDirty(true)}
+        />
       </Fieldset>
     </div>
   );

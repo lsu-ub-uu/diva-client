@@ -565,3 +565,110 @@ export const formDefRequiredRepeatingCollection2Var: RecordFormSchema = {
     gridColSpan: 12,
   },
 };
+
+export const formDefWithTwoRepeatingCollVariable: RecordFormSchema = {
+  validationTypeId: 'nationalSubjectCategory',
+  form: {
+    name: 'nationalSubjectCategory',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+      body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+    },
+    label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'genre',
+        type: 'collectionVariable',
+        placeholder: 'initialEmptyValueText',
+        mode: 'input',
+        tooltip: {
+          title: 'outputTypeCollectionVarText',
+          body: 'outputTypeCollectionVarDefText',
+        },
+        label: 'outputTypeCollectionVarText1',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        options: [
+          {
+            value: 'artistic-work_original-creative-work',
+            label: 'artisticWorkOriginalCreativeWorkItemText',
+          },
+          {
+            value: 'artistic-work_artistic-thesis',
+            label: 'artisticWorkArtisticThesisItemText',
+          },
+        ],
+        attributes: [
+          {
+            name: 'type',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'typeCollectionVarText',
+              body: 'typeCollectionVarDefText',
+            },
+            label: 'typeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'code',
+                label: 'codeItemText',
+              },
+              {
+                value: 'contentType',
+                label: 'contentTypeItemText',
+              },
+            ],
+            finalValue: 'code',
+          },
+        ],
+        childStyle: [],
+        gridColSpan: 12,
+      },
+      {
+        name: 'genre',
+        type: 'collectionVariable',
+        placeholder: 'initialEmptyValueText2',
+        mode: 'input',
+        tooltip: {
+          title: 'outputTypeCollectionVarText',
+          body: 'outputTypeCollectionVarDefText',
+        },
+        label: 'outputTypeCollectionVarText2',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        options: [
+          {
+            value: 'artistic-work_original-creative-work',
+            label: 'artisticWorkOriginalCreativeWorkItemText',
+          },
+          {
+            value: 'artistic-work_artistic-thesis',
+            label: 'artisticWorkArtisticThesisItemText',
+          },
+        ],
+        childStyle: [],
+        gridColSpan: 12,
+      },
+    ],
+
+    childStyle: [],
+    gridColSpan: 12,
+  },
+};

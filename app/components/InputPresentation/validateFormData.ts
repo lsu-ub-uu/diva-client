@@ -25,6 +25,8 @@ import {
 
 export interface ValidationError {
   message: string;
+  label: string;
+  type: 'required' | 'invalidFormat';
 }
 
 export const validateFormData = (
@@ -36,51 +38,59 @@ export const validateFormData = (
   const path = `${parentData.name}[0]`;
 
   const errors = rootGroup.components
-    ? rootGroup.components.reduce<Record<string, ValidationError>>(
-        (acc, component) => ({
-          ...acc,
-          ...validateComponent(component, parentData, path),
-        }),
-        {},
-      )
+    ? validateComponentList(rootGroup.components, parentData, path)
     : {};
 
   return { valid: Object.keys(errors).length === 0, errors };
+};
+
+const validateComponentList = (
+  components: FormComponent[],
+  parentData: DataGroup,
+  parentPath: string,
+): Record<string, ValidationError> => {
+  const nameCount: Record<string, number> = {};
+  return components.reduce<Record<string, ValidationError>>(
+    (acc, component) => {
+      const offset = nameCount[component.name] ?? 0;
+      nameCount[component.name] = offset + 1;
+      return {
+        ...acc,
+        ...validateComponent(component, parentData, parentPath, offset),
+      };
+    },
+    {},
+  );
 };
 
 const validateComponent = (
   component: FormComponent,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
   if (isComponentTextVariable(component)) {
-    return validateTextVariable(component, parentData, parentPath);
+    return validateTextVariable(component, parentData, parentPath, indexOffset);
   }
 
   if (isComponentNumVar(component)) {
-    return validateNumVar(component, parentData, parentPath);
+    return validateNumVar(component, parentData, parentPath, indexOffset);
   }
 
   if (isComponentRecordLink(component)) {
-    return validateRecordLink(component, parentData, parentPath);
+    return validateRecordLink(component, parentData, parentPath, indexOffset);
   }
 
   if (isComponentCollVar(component)) {
-    return validateCollVar(component, parentData, parentPath);
+    return validateCollVar(component, parentData, parentPath, indexOffset);
   }
 
   if (isComponentGroup(component)) {
-    return validateGroup(component, parentData, parentPath);
+    return validateGroup(component, parentData, parentPath, indexOffset);
   }
 
   if (isComponentContainer(component) && component.components) {
-    return component.components.reduce<Record<string, ValidationError>>(
-      (acc, childComponent) => ({
-        ...acc,
-        ...validateComponent(childComponent, parentData, parentPath),
-      }),
-      {},
-    );
+    return validateComponentList(component.components, parentData, parentPath);
   }
 
   return {};
@@ -90,13 +100,14 @@ const validateAttributes = (
   componentAttributes: FormAttributeCollection[],
   dataAttributes: Record<string, string> | undefined,
   fieldPath: string,
+  label: string,
 ): Record<string, ValidationError> =>
   Object.fromEntries(
     componentAttributes
       .filter((attr) => !dataAttributes?.[attr.name])
       .map((attr) => [
         `${fieldPath}._${attr.name}`,
-        { message: 'divaClient_fieldRequiredText' },
+        { message: 'divaClient_fieldRequiredText', label, type: 'required' },
       ]),
   );
 
@@ -104,16 +115,27 @@ const validateTextVariable = (
   component: FormComponentTextVar,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
-  const children = parentData.children.filter(
+  const allByName = parentData.children.filter(
     (c) => c.name === component.name,
   ) as DataAtomic[];
+
+  const children = component.attributes
+    ? allByName.filter((c) =>
+        matchesComponentFinalValues(c.attributes, component.attributes),
+      )
+    : allByName;
+
+  const label = component.label ?? '';
 
   if (children.length === 0) {
     if (component.repeat && component.repeat.repeatMin >= 1) {
       return {
-        [`${parentPath}.${component.name}[0]`]: {
+        [`${parentPath}.${component.name}[${indexOffset}]`]: {
           message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
         },
       };
     }
@@ -122,26 +144,40 @@ const validateTextVariable = (
 
   return children.reduce<Record<string, ValidationError>>(
     (errors, child, index) => {
-      const fieldPath = `${parentPath}.${component.name}[${index}]`;
+      const dataIndex = component.attributes ? allByName.indexOf(child) : index;
+      const fieldPath = `${parentPath}.${component.name}[${dataIndex}]`;
       const value = child?.value ?? '';
 
       if (component.repeat && component.repeat.repeatMin >= 1) {
         if (value === '') {
-          errors[fieldPath] = { message: 'divaClient_fieldRequiredText' };
+          errors[fieldPath] = {
+            message: 'divaClient_fieldRequiredText',
+            label,
+            type: 'required',
+          };
         }
       }
 
       if (value !== '' && component.validation?.type === 'regex') {
         const regex = new RegExp(component.validation.pattern);
         if (!regex.test(value)) {
-          errors[fieldPath] = { message: 'divaClient_fieldInvalidFormatText' };
+          errors[fieldPath] = {
+            message: 'divaClient_fieldInvalidFormatText',
+            label,
+            type: 'invalidFormat',
+          };
         }
       }
 
       if (component.attributes && value !== '') {
         Object.assign(
           errors,
-          validateAttributes(component.attributes, child.attributes, fieldPath),
+          validateAttributes(
+            component.attributes,
+            child.attributes,
+            fieldPath,
+            label,
+          ),
         );
       }
 
@@ -155,16 +191,27 @@ const validateNumVar = (
   component: FormComponentNumVar,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
-  const children = parentData.children.filter(
+  const allByName = parentData.children.filter(
     (c) => c.name === component.name,
   ) as DataAtomic[];
+
+  const children = component.attributes
+    ? allByName.filter((c) =>
+        matchesComponentFinalValues(c.attributes, component.attributes),
+      )
+    : allByName;
+
+  const label = component.label ?? '';
 
   if (children.length === 0) {
     if ((component.repeat?.repeatMin ?? 0) >= 1) {
       return {
-        [`${parentPath}.${component.name}[0]`]: {
+        [`${parentPath}.${component.name}[${indexOffset}]`]: {
           message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
         },
       };
     }
@@ -182,17 +229,31 @@ const validateNumVar = (
         const num = Number(child.value);
 
         if (Number.isNaN(num)) {
-          errors[fieldPath] = { message: 'divaClient_fieldInvalidFormatText' };
+          errors[fieldPath] = {
+            message: 'divaClient_fieldInvalidFormatText',
+            label,
+            type: 'invalidFormat',
+          };
         } else if (num < component.validation.min) {
-          errors[fieldPath] = { message: 'divaClient_invalidRangeMinText' };
+          errors[fieldPath] = {
+            message: 'divaClient_invalidRangeMinText',
+            label,
+            type: 'invalidFormat',
+          };
         } else if (num > component.validation.max) {
-          errors[fieldPath] = { message: 'divaClient_invalidRangeMaxText' };
+          errors[fieldPath] = {
+            message: 'divaClient_invalidRangeMaxText',
+            label,
+            type: 'invalidFormat',
+          };
         } else {
           const decimalPart = child.value.split('.')[1];
           const actualDecimals = decimalPart ? decimalPart.length : 0;
           if (actualDecimals > component.validation.numberOfDecimals) {
             errors[fieldPath] = {
               message: 'divaClient_inalidNumberOfDecimalsText',
+              label,
+              type: 'invalidFormat',
             };
           }
         }
@@ -203,6 +264,8 @@ const validateNumVar = (
       ) {
         errors[fieldPath] = {
           message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
         };
       }
 
@@ -211,13 +274,22 @@ const validateNumVar = (
         hasAttributes &&
         (component.repeat?.repeatMin ?? 0) >= 1
       ) {
-        errors[fieldPath] = { message: 'divaClient_fieldRequiredText' };
+        errors[fieldPath] = {
+          message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
+        };
       }
 
       if (component.attributes && (hasValue || hasAttributes)) {
         Object.assign(
           errors,
-          validateAttributes(component.attributes, child.attributes, fieldPath),
+          validateAttributes(
+            component.attributes,
+            child.attributes,
+            fieldPath,
+            label,
+          ),
         );
       }
 
@@ -231,16 +303,27 @@ const validateRecordLink = (
   component: FormComponentRecordLink,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
-  const children = parentData.children.filter(
+  const allByName = parentData.children.filter(
     (c) => c.name === component.name,
   ) as DataRecordLink[];
+
+  const children = component.attributes
+    ? allByName.filter((c) =>
+        matchesComponentFinalValues(c.attributes, component.attributes),
+      )
+    : allByName;
+
+  const label = component.label ?? '';
 
   if (children.length === 0) {
     if (component.repeat && component.repeat.repeatMin >= 1) {
       return {
-        [`${parentPath}.${component.name}[0].linkedRecordId`]: {
+        [`${parentPath}.${component.name}[${indexOffset}].linkedRecordId`]: {
           message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
         },
       };
     }
@@ -259,6 +342,8 @@ const validateRecordLink = (
         if (!linkedRecordId || linkedRecordId.value === '') {
           errors[`${fieldPath}.linkedRecordId`] = {
             message: 'divaClient_fieldRequiredText',
+            label,
+            type: 'required',
           };
         }
       }
@@ -268,7 +353,12 @@ const validateRecordLink = (
       if (component.attributes && hasValue) {
         Object.assign(
           errors,
-          validateAttributes(component.attributes, child.attributes, fieldPath),
+          validateAttributes(
+            component.attributes,
+            child.attributes,
+            fieldPath,
+            label,
+          ),
         );
       }
 
@@ -282,16 +372,27 @@ const validateCollVar = (
   component: FormComponentCollVar,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
-  const children = parentData.children.filter(
+  const allByName = parentData.children.filter(
     (c) => c.name === component.name,
   ) as DataAtomic[];
+
+  const children = component.attributes
+    ? allByName.filter((c) =>
+        matchesComponentFinalValues(c.attributes, component.attributes),
+      )
+    : allByName;
+
+  const label = component.label ?? '';
 
   if (children.length === 0) {
     if (component.repeat && component.repeat.repeatMin >= 1) {
       return {
-        [`${parentPath}.${component.name}[0]`]: {
+        [`${parentPath}.${component.name}[${indexOffset}]`]: {
           message: 'divaClient_fieldRequiredText',
+          label,
+          type: 'required',
         },
       };
     }
@@ -304,14 +405,23 @@ const validateCollVar = (
 
       if (component.repeat && component.repeat.repeatMin >= 1) {
         if (child.value === '') {
-          errors[fieldPath] = { message: 'divaClient_fieldRequiredText' };
+          errors[fieldPath] = {
+            message: 'divaClient_fieldRequiredText',
+            label,
+            type: 'required',
+          };
         }
       }
 
       if (component.attributes && child.value !== '') {
         Object.assign(
           errors,
-          validateAttributes(component.attributes, child.attributes, fieldPath),
+          validateAttributes(
+            component.attributes,
+            child.attributes,
+            fieldPath,
+            label,
+          ),
         );
       }
 
@@ -344,6 +454,23 @@ const hasChildData = (group: DataGroup, components: FormComponent[]): boolean =>
     return false;
   });
 
+const matchesComponentFinalValues = (
+  dataAttributes: Record<string, string> | undefined,
+  componentAttributes: FormAttributeCollection[] | undefined,
+): boolean => {
+  const attrsWithFinalValue = (componentAttributes ?? []).filter(
+    (a) => 'finalValue' in a && a.finalValue !== undefined,
+  );
+  if (attrsWithFinalValue.length === 0) {
+    return true;
+  }
+  return attrsWithFinalValue.every(
+    (attr) =>
+      dataAttributes?.[attr.name] ===
+      (attr as { finalValue: string }).finalValue,
+  );
+};
+
 const matchesComponentAttributes = (
   dataAttributes: Record<string, string> | undefined,
   componentAttributes: FormAttributeCollection[] | undefined,
@@ -362,6 +489,7 @@ const validateGroup = (
   component: FormComponentGroup,
   parentData: DataGroup,
   parentPath: string,
+  indexOffset: number = 0,
 ): Record<string, ValidationError> => {
   const children = (
     parentData.children.filter((c) => c.name === component.name) as DataGroup[]
@@ -369,8 +497,18 @@ const validateGroup = (
     matchesComponentAttributes(c.attributes, component.attributes),
   );
 
-  if (children.length === 0 || !component.components) {
+  if (!component.components) {
     return {};
+  }
+
+  if (children.length === 0) {
+    const isOptional = (component.repeat?.repeatMin ?? 0) === 0;
+    if (isOptional) {
+      return {};
+    }
+    const fieldPath = `${parentPath}.${component.name}[${indexOffset}]`;
+    const emptyGroup: DataGroup = { name: component.name, children: [] };
+    return validateComponentList(component.components, emptyGroup, fieldPath);
   }
 
   const isOptional = (component.repeat?.repeatMin ?? 0) === 0;
@@ -379,14 +517,10 @@ const validateGroup = (
     (errors, child, index) => {
       const fieldPath = `${parentPath}.${component.name}[${index}]`;
 
-      const childErrors = component.components!.reduce<
-        Record<string, ValidationError>
-      >(
-        (acc, childComponent) => ({
-          ...acc,
-          ...validateComponent(childComponent, child, fieldPath),
-        }),
-        {},
+      const childErrors = validateComponentList(
+        component.components!,
+        child,
+        fieldPath,
       );
 
       if (
