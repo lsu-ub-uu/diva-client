@@ -115,6 +115,13 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     .map(finalizeNode)
     .filter((child): child is CoraData => child !== undefined);
 
+  if (
+    children.some((child) => child.name === 'linkedRecordType') &&
+    !children.some((child) => child.name === 'linkedRecordId')
+  ) {
+    return undefined;
+  }
+
   if (children.length === 0) {
     return undefined;
   }
@@ -125,4 +132,11 @@ const finalizeNode = (node: Node): CoraData | undefined => {
     children,
     repeatId: node.repeatId,
   }) as CoraData;
+};
+
+const isRecordLink = (node: Node) => {
+  return node.children.some(
+    (child) =>
+      child.name === 'linkedRecordType' || child.name === 'linkedRecordId',
+  );
 };

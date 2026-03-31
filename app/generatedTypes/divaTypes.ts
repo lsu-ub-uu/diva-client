@@ -2563,11 +2563,18 @@ export interface CopyrightDateGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface DateOtherOnlineGroup {
+export type DateOtherTypePublicationStatusCollection =
+  | 'online'
+  | 'submitted'
+  | 'accepted'
+  | 'inPress'
+  | 'retracted';
+
+export interface DateOtherPublicationStatusGroup {
   year?: { value: string; __text?: { sv: string; en: string } };
   month?: { value: string; __text?: { sv: string; en: string } };
   day?: { value: string; __text?: { sv: string; en: string } };
-  _type: 'online';
+  _type: DateOtherTypePublicationStatusCollection;
   __text?: { sv: string; en: string };
 }
 
@@ -2606,7 +2613,7 @@ export interface PlaceGroup {
 export interface OriginInfoGroup {
   dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
-  dateOther_type_online?: DateOtherOnlineGroup;
+  dateOther?: DateOtherPublicationStatusGroup[];
   agent?: AgentGroup[];
   place?: PlaceGroup[];
   edition?: { value: string; __text?: { sv: string; en: string } };

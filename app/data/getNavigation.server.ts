@@ -59,7 +59,7 @@ export const getNavigation = async (
 ): Promise<Navigation> => {
   const recordTypes = Array.from(dependencies.recordTypePool.values())
     .filter((recordType) =>
-      recordType.recordTypeCategory.includes(
+      (recordType.recordTypeCategory ?? []).includes(
         CLIENT_NAVIGATION_RECORD_TYPE_CATEGORY,
       ),
     )

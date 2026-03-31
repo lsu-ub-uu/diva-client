@@ -156,5 +156,25 @@ describe('transformDataToCora', () => {
     });
   });
 
-  it('does remove recordLink when no data', () => {});
+  it('does remove recordLink when no data', () => {
+    const formData = new FormData();
+    formData.append('root[0].variable[0]', 'some value');
+    formData.append(
+      'root[0].someRecordLink[0].linkedRecordType',
+      'someRecordType',
+    );
+    formData.append('root[0].someRecordLink[0].linkedRecordId', '');
+
+    const result = transformFormDataToCora(formData);
+
+    expect(result).toStrictEqual({
+      name: 'root',
+      children: [
+        {
+          name: 'variable',
+          value: 'some value',
+        },
+      ],
+    });
+  });
 });
