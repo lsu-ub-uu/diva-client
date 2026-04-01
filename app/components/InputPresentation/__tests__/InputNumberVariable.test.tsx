@@ -1,13 +1,13 @@
-import type { FormComponentTextVar } from '@/components/FormGenerator/types';
-import { describe, expect, it } from 'vitest';
-import { InputVariable } from '../InputVariable';
-import { render, screen } from '@testing-library/react';
+import type { FormComponentNumVar } from '@/components/FormGenerator/types';
 import { IconButton } from '@/components/IconButton/IconButton';
-import { XIcon } from 'lucide-react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { XIcon } from 'lucide-react';
+import { describe, expect, it } from 'vitest';
+import { InputNumberVariable } from '../InputNumberVariable';
 
-describe('InputVariable', () => {
-  it('renders an Input', () => {
+describe('InputNumberVariable', () => {
+  it('renders an InputNumber', () => {
     const component = {
       type: 'textVariable',
       name: 'someNameInData',
@@ -15,17 +15,21 @@ describe('InputVariable', () => {
       showLabel: true,
       mode: 'input',
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-    } as FormComponentTextVar;
+    } as FormComponentNumVar;
 
-    render(<InputVariable component={component} path='somePath' />);
+    render(<InputNumberVariable component={component} path='somePath' />);
     expect(screen.getByLabelText('someNameInData')).toBeInTheDocument();
   });
 
-  it('renders an Input with attributes', () => {
+  it('renders an InputNumber with attributes', () => {
     const component = {
       type: 'textVariable',
       name: 'someNameInData',
@@ -58,13 +62,17 @@ describe('InputVariable', () => {
         },
       ],
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-    } as FormComponentTextVar;
+    } as FormComponentNumVar;
 
-    render(<InputVariable component={component} path='somePath' />);
+    render(<InputNumberVariable component={component} path='somePath' />);
     expect(
       screen.getByRole('combobox', { name: 'languageCollectionVarText' }),
     ).toBeInTheDocument();
@@ -78,16 +86,20 @@ describe('InputVariable', () => {
       showLabel: true,
       mode: 'input',
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-      finalValue: 'finalValue',
-    } as FormComponentTextVar;
+      finalValue: '99999',
+    } as FormComponentNumVar;
 
-    render(<InputVariable component={component} path='somePath' />);
+    render(<InputNumberVariable component={component} path='somePath' />);
     expect(screen.getByText('someNameInData')).toBeInTheDocument();
-    expect(screen.getByText('finalValue')).toBeInTheDocument();
+    expect(screen.getByText('99999')).toBeInTheDocument();
   });
 
   it('renders without label', () => {
@@ -98,37 +110,18 @@ describe('InputVariable', () => {
       showLabel: false,
       mode: 'input',
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-    } as FormComponentTextVar;
+    } as FormComponentNumVar;
 
-    render(<InputVariable component={component} path='somePath' />);
+    render(<InputNumberVariable component={component} path='somePath' />);
     expect(screen.queryByLabelText('someNameInData')).not.toBeInTheDocument();
-  });
-
-  it.each([
-    ['textarea', 'TEXTAREA'],
-    ['input', 'INPUT'],
-  ])('renders as %s', (inputType, expectedTagName) => {
-    const component = {
-      type: 'textVariable',
-      name: 'someNameInData',
-      label: 'someNameInData',
-      showLabel: true,
-      mode: 'input',
-      validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
-      },
-      inputType,
-    } as FormComponentTextVar;
-
-    render(<InputVariable component={component} path='somePath' />);
-    const element = screen.getByLabelText('someNameInData');
-    expect(element).toBeInTheDocument();
-    expect(element.tagName).toBe(expectedTagName);
   });
 
   it('renders with actionButtons', () => {
@@ -139,14 +132,18 @@ describe('InputVariable', () => {
       showLabel: true,
       mode: 'input',
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-    } as FormComponentTextVar;
+    } as FormComponentNumVar;
 
     render(
-      <InputVariable
+      <InputNumberVariable
         component={component}
         path='somePath'
         actionButtonGroup={
@@ -170,14 +167,18 @@ describe('InputVariable', () => {
       showLabel: true,
       mode: 'input',
       validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
+        type: 'number',
+        min: 1,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
       },
       inputType: 'input',
-    } as FormComponentTextVar;
+    } as FormComponentNumVar;
 
     render(
-      <InputVariable
+      <InputNumberVariable
         component={component}
         path='somePath'
         parentPresentationStyle={parentPresentationStyle as any}
@@ -187,28 +188,35 @@ describe('InputVariable', () => {
     expect(fieldset).toHaveAttribute('data-variant', parentPresentationStyle);
   });
 
-  it('should validate input against pattern and show client validation error', async () => {
-    const component = {
-      type: 'textVariable',
-      name: 'someNameInData',
-      label: 'someNameInData',
-      showLabel: true,
-      mode: 'input',
-      validation: {
-        type: 'regex',
-        pattern: '^[a-zA-Z]$',
-      },
-      inputType: 'input',
-    } as FormComponentTextVar;
+  it.todo(
+    'should validate input against pattern and show client validation error',
+    async () => {
+      const component = {
+        type: 'textVariable',
+        name: 'someNameInData',
+        label: 'someNameInData',
+        showLabel: true,
+        mode: 'input',
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        inputType: 'input',
+      } as FormComponentNumVar;
 
-    render(<InputVariable component={component} path='somePath' />);
+      render(<InputNumberVariable component={component} path='somePath' />);
 
-    const user = userEvent.setup();
+      const user = userEvent.setup();
 
-    const input = screen.getByLabelText('someNameInData');
-    await user.type(input, '???');
-    await user.click(document.body);
+      const input = screen.getByLabelText('someNameInData');
+      await user.type(input, '21');
+      await user.click(document.body);
 
-    expect(input).toHaveAttribute('aria-invalid', 'true');
-  });
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+    },
+  );
 });

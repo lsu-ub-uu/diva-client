@@ -5,6 +5,7 @@ import { Fieldset } from '../Input/Fieldset';
 import { Input } from '../Input/Input';
 import { InputAttributes } from './InputAttributes';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { OutputField } from '../OutputPresentation/OutputField';
 
 interface InputNumberVariableProps {
   component: FormComponentNumVar;
@@ -22,6 +23,15 @@ export const InputNumberVariable = ({
   parentPresentationStyle,
 }: InputNumberVariableProps) => {
   const { t } = useTranslation();
+
+  if (component.finalValue) {
+    return (
+      <>
+        <input type='hidden' name={path} value={component.finalValue} />
+        <OutputField label={t(component.label)} value={component.finalValue} />
+      </>
+    );
+  }
 
   return (
     <div
