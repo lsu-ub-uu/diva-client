@@ -23,43 +23,65 @@ import { removeEmpty } from '../removeEmpty';
 describe('removeEmpty', () => {
   it.each([
     {
-      description: 'should remove null and undefined properties',
+      description: 'should keep non-empty string property',
+      input: { prop1: 'hello' },
+      expected: { prop1: 'hello' },
+    },
+    {
+      description: 'should remove undefined property',
+      input: { prop2: undefined },
+      expected: {},
+    },
+    {
+      description: 'should remove null property',
+      input: { prop3: null },
+      expected: {},
+    },
+    {
+      description: 'should remove undefined nested property',
       input: {
-        prop1: 'hello',
-        prop2: undefined,
-        prop3: null,
         prop4: {
           innerProp: undefined,
           innerProp2: 'world',
         },
-        prop5: [],
-        prop6: ['a'],
-        prop7: '',
-        prop8: {},
       },
       expected: {
-        prop1: 'hello',
         prop4: {
           innerProp2: 'world',
         },
-        prop6: ['a'],
       },
     },
     {
-      description: 'should remove empty values from a clean object',
+      description: 'should remove empty array property',
+      input: { prop5: [] },
+      expected: {},
+    },
+    {
+      description: 'should keep non-empty array property',
+      input: { prop6: ['a'] },
+      expected: { prop6: ['a'] },
+    },
+    {
+      description: 'should remove empty string property',
+      input: { prop7: '' },
+      expected: {},
+    },
+    {
+      description: 'should remove empty object property',
+      input: { prop8: {} },
+      expected: {},
+    },
+    {
+      description: 'should keep nested non-empty object property',
       input: {
-        prop1: 'hello',
         prop4: {
           innerProp2: 'world',
         },
-        prop6: ['a'],
       },
       expected: {
-        prop1: 'hello',
         prop4: {
           innerProp2: 'world',
         },
-        prop6: ['a'],
       },
     },
     { description: 'should return number as is', input: 42, expected: 42 },
