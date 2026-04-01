@@ -1,3 +1,4 @@
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataAtomic } from '@/cora/cora-data/types.server';
 import {
   use,
@@ -10,13 +11,11 @@ import { useTranslation } from 'react-i18next';
 import type { FormComponentTextVar } from '../FormGenerator/types';
 import { Fieldset } from '../Input/Fieldset';
 import { Input } from '../Input/Input';
+import { Textarea } from '../Input/Textarea';
+import { OutputField } from '../OutputPresentation/OutputField';
 import { InputAttributes } from './InputAttributes';
 import { ValidationErrorContext } from './InputPresentation';
 import type { ValidationError } from './validateFormData';
-import { Textarea } from '../Input/Textarea';
-import type { PresentationStyle } from '@/cora/bffTypes.server';
-import { OutputVariable } from '../OutputPresentation/OutputVariable';
-import { OutputField } from '../OutputPresentation/OutputField';
 
 export interface InputVariableProps {
   component: FormComponentTextVar;

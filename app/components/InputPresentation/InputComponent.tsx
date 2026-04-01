@@ -1,9 +1,12 @@
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type {
   CoraData,
   DataAtomic,
   DataGroup,
   DataRecordLink,
 } from '@/cora/cora-data/types.server';
+import type { ReactNode } from 'react';
+import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponent,
   FormComponentCollVar,
@@ -13,24 +16,19 @@ import type {
   FormComponentRecordLink,
   FormComponentTextVar,
 } from '../FormGenerator/types';
+import { OutputComponent } from '../OutputPresentation/OutputComponent';
 import { HiddenInputComponent } from './HiddenInputComponent';
 import { InputCollectionVariable } from './InputCollectionVariable';
+import { InputContainer } from './InputContainer';
 import { InputGroup } from './InputGroup';
 import { InputNumberVariable } from './InputNumberVariable';
-import { InputRecordLink } from './InputRecordLink';
-import { InputVariable } from './InputVariable';
-import { InputContainer } from './InputContainer';
-import type { ReactNode } from 'react';
-import type { PresentationStyle } from '@/cora/bffTypes.server';
-import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { OutputComponent } from '../OutputPresentation/OutputComponent';
 import {
   InputAlternativePresentationSwitcher,
   InputSinglePresentationSwitcher,
   type FormComponentWithTitle,
 } from './InputPresentationSwitcher';
-import { OutputPresentationSwitcher } from '../OutputPresentation/OutputPresentationSwitcher';
-import { InputPresentation } from './InputPresentation';
+import { InputRecordLink } from './InputRecordLink';
+import { InputVariable } from './InputVariable';
 
 interface InputComponentProps {
   path: string;
