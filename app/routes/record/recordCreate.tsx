@@ -270,9 +270,7 @@ export default function CreateRecordRoute({
   } = loaderData;
 
   const { validationErrors, data } = actionData ?? {};
-  const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
-    null,
-  );
+  const [previewData, setPreviewData] = useState<DataGroup | null>(null);
   const deferredPreviewData = useDeferredValue(previewData);
   console.log('Action data:', actionData);
   if (!formDefinition) {
@@ -284,7 +282,7 @@ export default function CreateRecordRoute({
     );
   }
 
-  const handleFormChange = (data: BFFDataRecordData) => {
+  const handleFormChange = (data: DataGroup) => {
     setPreviewData(data);
   };
 
@@ -311,13 +309,14 @@ export default function CreateRecordRoute({
           formSchema={formDefinition}
           data={data}
           validationErrors={validationErrors}
+          onDataChange={handleFormChange}
         />
       </main>
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
             <OutputPresentation
-              data={transformToRaw(cleanFormData(deferredPreviewData))}
+              data={deferredPreviewData}
               formSchema={previewFormDefinition}
             />
           </div>

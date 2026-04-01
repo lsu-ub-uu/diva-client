@@ -1,20 +1,11 @@
-import type { DataGroup } from '@/cora/cora-data/types.server';
-import {
-  isComponentContainer,
-  isComponentWithData,
-} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type {
-  FormComponent,
-  FormComponentContainer,
-} from '../FormGenerator/types';
-import { OutputComponent } from './OutputComponent';
-import {
-  doesDataMatchComponent,
-  findChildData as findChildData,
-} from './findChildData';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
 import { Fragment } from 'react/jsx-runtime';
+import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type { FormComponent } from '../FormGenerator/types';
+import { OutputComponent } from './OutputComponent';
 import { OutputDevInfo } from './OutputDevInfo';
+import { findChildData } from './findChildData';
 
 interface ComponentChildrenProps {
   components?: FormComponent[];

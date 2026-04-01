@@ -1,14 +1,10 @@
-import type { CoraData } from '@/cora/cora-data/types.server';
 import { Button } from '@/components/Button/Button';
-import { IconButton } from '@/components/IconButton/IconButton';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CirclePlusIcon,
-  XIcon,
-} from 'lucide-react';
+import type { CoraData } from '@/cora/cora-data/types.server';
+import { CirclePlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ActionButtonGroup } from '../FormGenerator/components/ActionButtonGroup';
+import { isComponentSingularAndOptional } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '../FormGenerator/types';
 import { InputComponent } from './InputComponent';
 
@@ -75,62 +71,33 @@ export const InputFieldArray = ({
             key={field.repeatId}
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
-            style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}
           >
             <input
               type='hidden'
               name={`${fieldPath}._repeatId`}
               value={field.repeatId}
             />
-            <div style={{ flex: 1 }}>
-              <InputComponent
-                component={component}
-                path={fieldPath}
-                data={field.data}
-              />
-            </div>
-            {fields.length > 1 && (
-              <div
-                role='group'
-                aria-label={t('divaClient_actionsForFieldText')}
-                style={{
-                  display: 'flex',
-                  gap: '0.25rem',
-                }}
-              >
-                <IconButton
-                  size='small'
-                  tooltip={t('divaClient_moveFieldUpText', {
-                    fieldName: t(component.label ?? ''),
-                  })}
-                  disabled={index === 0}
-                  onClick={() => handleMove(index, index - 1)}
-                >
-                  <ArrowUpIcon />
-                </IconButton>
-                <IconButton
-                  size='small'
-                  tooltip={t('divaClient_moveFieldDownText', {
-                    fieldName: t(component.label ?? ''),
-                  })}
-                  disabled={index === fields.length - 1}
-                  onClick={() => handleMove(index, index + 1)}
-                >
-                  <ArrowDownIcon />
-                </IconButton>
-                {fields.length > repeatMin && (
-                  <IconButton
-                    size='small'
-                    tooltip={t('divaClient_deleteFieldText', {
-                      fieldName: t(component.label ?? ''),
-                    })}
-                    onClick={() => handleRemove(index)}
-                  >
-                    <XIcon />
-                  </IconButton>
-                )}
-              </div>
-            )}
+            <InputComponent
+              component={component}
+              path={fieldPath}
+              data={field.data}
+              actionButtonGroup={
+                <ActionButtonGroup
+                  entityName={t(component.label)}
+                  hideMoveButtons={isComponentSingularAndOptional(component)}
+                  hideDeleteButton={
+                    isComponentSingularAndOptional(component) &&
+                    !component.showLabel
+                  }
+                  moveUpButtonDisabled={index === 0}
+                  moveUpButtonAction={() => handleMove(index, index - 1)}
+                  moveDownButtonDisabled={index === fields.length - 1}
+                  moveDownButtonAction={() => handleMove(index, index + 1)}
+                  deleteButtonDisabled={fields.length <= repeatMin}
+                  deleteButtonAction={() => handleRemove(index)}
+                />
+              }
+            />
           </div>
         );
       })}

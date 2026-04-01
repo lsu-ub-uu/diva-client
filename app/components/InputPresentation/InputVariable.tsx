@@ -1,23 +1,37 @@
+import type { DataAtomic } from '@/cora/cora-data/types.server';
+import {
+  use,
+  useEffect,
+  useState,
+  type HTMLProps,
+  type ReactNode,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FormComponentTextVar } from '../FormGenerator/types';
 import { Fieldset } from '../Input/Fieldset';
 import { Input } from '../Input/Input';
 import { InputAttributes } from './InputAttributes';
-import type { DataAtomic } from '@/cora/cora-data/types.server';
-import { use, useEffect, useState } from 'react';
 import { ValidationErrorContext } from './InputPresentation';
 import type { ValidationError } from './validateFormData';
+import { Textarea } from '../Input/Textarea';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { OutputVariable } from '../OutputPresentation/OutputVariable';
+import { OutputField } from '../OutputPresentation/OutputField';
 
 export interface InputVariableProps {
   component: FormComponentTextVar;
   path: string;
   data?: DataAtomic;
+  actionButtonGroup?: ReactNode;
+  parentPresentationStyle?: PresentationStyle;
 }
 
 export const InputVariable = ({
   component,
   path,
   data,
+  actionButtonGroup,
+  parentPresentationStyle,
 }: InputVariableProps) => {
   const { t } = useTranslation();
   const [isDirty, setIsDirty] = useState(false);
@@ -35,7 +49,9 @@ export const InputVariable = ({
       ? clientValidationError
       : serverValidationError;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (component.validation?.pattern) {
       if (
         event.target.value &&
@@ -52,6 +68,24 @@ export const InputVariable = ({
     }
   };
 
+  if (component.finalValue) {
+    return (
+      <>
+        <input type='hidden' name={path} value={component.finalValue} />
+        <OutputField label={t(component.label)} value={component.finalValue} />
+      </>
+    );
+  }
+
+  const inputProps: HTMLProps<HTMLInputElement> &
+    HTMLProps<HTMLTextAreaElement> = {
+    name: path,
+    defaultValue: data?.value,
+    'aria-invalid': !!validationError,
+    onChange: handleChange,
+    onBlur: () => setIsDirty(true),
+  };
+
   return (
     <div
       className='form-component-text-variable form-component-item'
@@ -60,18 +94,18 @@ export const InputVariable = ({
       <Fieldset
         label={component.showLabel ? t(component.label) : undefined}
         errorMessage={validationError?.message}
+        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
         attributes={
           <InputAttributes path={path} component={component} data={data} />
         }
+        actionButtonGroup={actionButtonGroup}
+        info={component.tooltip}
       >
-        <Input
-          type='text'
-          name={path}
-          defaultValue={data?.value}
-          aria-invalid={!!validationError}
-          onChange={handleChange}
-          onBlur={() => setIsDirty(true)}
-        />
+        {component.inputType === 'textarea' ? (
+          <Textarea {...inputProps} />
+        ) : (
+          <Input type={component.inputFormat ?? 'text'} {...inputProps} />
+        )}
       </Fieldset>
     </div>
   );

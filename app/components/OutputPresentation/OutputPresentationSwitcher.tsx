@@ -163,7 +163,7 @@ export const OutputPresentationSwitcher = ({
   );
 };
 
-const getExpandIcon = (
+export const getExpandIcon = (
   presentationSize: PresentationSize = 'firstSmaller',
   showingAlternativePresentation: boolean,
 ) => {
@@ -180,7 +180,7 @@ const getExpandIcon = (
   return showingAlternativePresentation ? <Maximize2Icon /> : <Minimize2Icon />;
 };
 
-const getExpandButtonText = (
+export const getExpandButtonText = (
   presentationSize: PresentationSize = 'firstSmaller',
   showingAlternativePresentation: boolean,
 ) => {

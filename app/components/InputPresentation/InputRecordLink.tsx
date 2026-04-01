@@ -14,24 +14,27 @@ import {
 import { Fieldset } from '../Input/Fieldset';
 import { OutputPresentation } from '../OutputPresentation/OutputPresentation';
 import { InputAttributes } from './InputAttributes';
+import type { ReactNode } from 'react';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface InputRecordLinkProps {
   path: string;
   component: FormComponentRecordLink;
   data?: DataRecordLink;
+  actionButtonGroup?: ReactNode;
+  parentPresentationStyle?: PresentationStyle;
 }
 
 export const InputRecordLink = ({
   path,
   component,
   data,
+  actionButtonGroup,
+  parentPresentationStyle,
 }: InputRecordLinkProps) => {
   const fetcher = useFetcher();
   const member = useMember();
   const { t } = useTranslation();
-  const linkedRecordType = data?.children?.find(
-    (child) => child.name === 'linkedRecordType',
-  )?.value;
   const linkedRecordId = data?.children?.find(
     (child) => child.name === 'linkedRecordId',
   )?.value;
@@ -72,13 +75,20 @@ export const InputRecordLink = ({
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
     >
-      <InputAttributes path={path} component={component} />
       <input
         type='hidden'
         name={`${path}.linkedRecordType`}
         value={component.recordLinkType}
       />
-      <Fieldset label={component.showLabel ? t(component.label) : undefined}>
+      <Fieldset
+        label={component.showLabel ? t(component.label) : undefined}
+        attributes={
+          <InputAttributes path={path} component={component} data={data} />
+        }
+        actionButtonGroup={actionButtonGroup}
+        info={component.tooltip}
+        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
+      >
         <Combobox name={`${path}.linkedRecordId`} defaultValue={linkedRecordId}>
           <ComboboxInput onChange={handleComboboxInputChange} />
           <ComboboxOptions anchor='bottom'>

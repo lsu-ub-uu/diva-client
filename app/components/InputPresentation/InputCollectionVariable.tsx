@@ -5,21 +5,43 @@ import { Fieldset } from '../Input/Fieldset';
 import { Select } from '../Input/Select';
 import { InputAttributes } from './InputAttributes';
 import { ValidationErrorContext } from './InputPresentation';
-import { use } from 'react';
+import { use, type ReactNode } from 'react';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { OutputField } from '../OutputPresentation/OutputField';
 
 interface InputCollectionVariableProps {
   component: FormComponentCollVar;
   path: string;
   data?: DataAtomic;
+  actionButtonGroup?: ReactNode;
+  parentPresentationStyle?: PresentationStyle;
 }
 
 export const InputCollectionVariable = ({
   component,
   path,
   data,
+  actionButtonGroup,
+  parentPresentationStyle,
 }: InputCollectionVariableProps) => {
   const { t } = useTranslation();
   const serverValidationError = use(ValidationErrorContext)[path];
+
+  if (component.finalValue) {
+    return (
+      <>
+        <input type='hidden' name={path} value={component.finalValue} />
+        <OutputField
+          label={t(component.label)}
+          value={t(
+            component.options.find(
+              (option) => option.value === component.finalValue,
+            )?.label ?? component.finalValue,
+          )}
+        />
+      </>
+    );
+  }
 
   return (
     <div
@@ -32,6 +54,9 @@ export const InputCollectionVariable = ({
         attributes={
           <InputAttributes path={path} data={data} component={component} />
         }
+        actionButtonGroup={actionButtonGroup}
+        info={component.tooltip}
+        variant={parentPresentationStyle === 'inline' ? 'inline' : 'block'}
       >
         <Select
           name={path}

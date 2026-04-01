@@ -33,7 +33,6 @@ interface ActionButtonGroupProps {
   moveDownButtonAction: () => void;
   deleteButtonDisabled: boolean;
   deleteButtonAction: () => void;
-  entityType: string;
 }
 
 export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
@@ -90,11 +89,4 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
       )}
     </div>
   );
-};
-
-export const isComponentGroupAndSingularForStyling = (
-  entityType: string,
-  hideMoveButtons: boolean,
-) => {
-  return entityType === 'group' && hideMoveButtons;
 };

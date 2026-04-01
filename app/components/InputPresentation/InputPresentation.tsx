@@ -9,21 +9,35 @@ import { useTranslation } from 'react-i18next';
 import type { ValidationError } from './validateFormData';
 import { createContext } from 'react';
 import { Alert, AlertTitle } from '../Alert/Alert';
+import { transformFormDataToCora } from '@/routes/record/transformFormDataToCora';
 
 interface InputPresentationProps {
   formSchema: FormSchema;
   data?: DataGroup;
   validationErrors?: Record<string, ValidationError>;
+  onDataChange?: (data: DataGroup) => void;
 }
 
 export const InputPresentation = ({
   formSchema,
   data,
   validationErrors = {},
+  onDataChange,
 }: InputPresentationProps) => {
+  console.log({ formSchema });
   const { t } = useTranslation();
+
   return (
-    <Form method='post'>
+    <Form
+      method='post'
+      onChange={(e) => {
+        if (onDataChange) {
+          const formData = new FormData(e.currentTarget);
+          const coraData = transformFormDataToCora(formData);
+          onDataChange(coraData);
+        }
+      }}
+    >
       {Object.keys(validationErrors).length > 0 && (
         <Alert severity='error'>
           <AlertTitle>{t('divaClient_formValidationErrorsText')}</AlertTitle>

@@ -1,10 +1,13 @@
 Validering
-Containers
+✅Containers
 Styling
+minNumberOfRepeatingToShow
 Record link m länkad presentation
 Alternativa presentationer
 Kolla att output komponenter faktiskt funkar
 Tester
+Snabbnavigeringen
+Förhandsgranskningen
 
 nya textnycklar:
 divaClient_inalidNumberOfDecimalsText
