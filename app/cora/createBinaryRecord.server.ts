@@ -22,7 +22,7 @@ import {
   RECORD_CONTENT_TYPE,
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
-import axios from 'axios';
+import { httpClient } from './httpClient.server';
 
 export const createBinaryRecord = async (
   fileName: string,
@@ -72,5 +72,7 @@ export const createBinaryRecord = async (
     authToken,
   );
 
-  return await axios.post(coraApiUrl('/record/binary/'), payload, { headers });
+  return await httpClient.post(coraApiUrl('/record/binary/'), payload, {
+    headers,
+  });
 };

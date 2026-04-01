@@ -37,16 +37,14 @@ export const DEPLOYMENT_INFO_CONTENT_TYPE =
   'application/vnd.cora.deploymentInfo+json';
 
 export const createHeaders = (
-  init: Record<string, string | undefined>,
+  init: HeadersInit,
   authToken?: string,
-): Record<string, string | undefined> => {
-  const headers = init;
-
+): HeadersInit => {
   if (authToken) {
-    headers.Authtoken = authToken;
+    return { ...init, Authtoken: authToken };
   }
 
-  return headers;
+  return init;
 };
 
 export const externalCoraApiUrl = (path: string) => {
