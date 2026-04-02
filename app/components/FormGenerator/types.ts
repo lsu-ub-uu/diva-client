@@ -89,7 +89,6 @@ export interface FormComponentMetadata extends FormComponentBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
   finalValue?: string;
-
   textStyle?: TextStyle;
   presentationStyle?: PresentationStyle;
   presentationSize?: PresentationSize;
