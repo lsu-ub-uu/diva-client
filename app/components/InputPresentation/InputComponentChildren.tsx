@@ -13,6 +13,8 @@ import { findChildData } from '../OutputPresentation/findChildData';
 import { InputFieldArray } from './InputFieldArray';
 import { InputComponent } from './InputComponent';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { NameIndexContext } from './NameIndexContext';
+import { use } from 'react';
 
 interface InputComponentChildrenProps {
   components?: FormComponent[];
@@ -27,7 +29,7 @@ export const InputComponentChildren = ({
   data,
   parentPresentationStyle,
 }: InputComponentChildrenProps) => {
-  const nameIndices = new Map<string, number>();
+  const nameIndices = use(NameIndexContext);
 
   return components?.map((childComponent, index) => {
     const componentKey =
@@ -74,8 +76,9 @@ export const InputComponentChildren = ({
       );
     }
 
-    const nameIndex = nameIndices.get(childComponent.name) || 0;
-    nameIndices.set(childComponent.name, nameIndex + 1);
+    const nameIndexKey = `${path}.${childComponent.name}`;
+    const nameIndex = nameIndices.get(nameIndexKey) || 0;
+    nameIndices.set(nameIndexKey, nameIndex + 1);
 
     const childData = data
       ? findChildData(childComponent, data)[nameIndex]

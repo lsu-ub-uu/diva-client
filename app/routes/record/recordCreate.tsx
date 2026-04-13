@@ -19,41 +19,33 @@
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
+import { validateFormData } from '@/components/InputPresentation/validateFormData';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
-import { createRecord } from '@/data/createRecord.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { postRecordData } from '@/cora/postRecordData.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
-import type { BFFDataRecordData } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { assertDefined } from '@/utils/invariant';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse, redirect } from 'react-router';
-import { getValidatedFormData } from 'remix-hook-form';
+import { data, isRouteErrorResponse } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { InputPresentation } from '@/components/InputPresentation/InputPresentation';
-import type { DataGroup } from '@/cora/cora-data/types.server';
 import { transformFormDataToCora } from './transformFormDataToCora';
-import { postRecordData } from '@/cora/postRecordData.server';
-import { validateFormData } from '@/components/InputPresentation/validateFormData';
 
 export const loader = async ({
   request,

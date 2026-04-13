@@ -8,7 +8,10 @@ import { CardExpandButton } from '../Card/CardExpandButton';
 import { CardHeader } from '../Card/CardHeader';
 import { CardTitle } from '../Card/CardTitle';
 import type { FormComponent } from '../FormGenerator/types';
-import { getExpandButtonText } from '../OutputPresentation/OutputPresentationSwitcher';
+import {
+  getExpandButtonText,
+  getExpandIcon,
+} from '../OutputPresentation/OutputPresentationSwitcher';
 import { InputComponent } from './InputComponent';
 
 export type FormComponentWithTitle = FormComponent & {
@@ -90,6 +93,10 @@ export const InputAlternativePresentationSwitcher = (
         <CardHeader>
           <CardTitle level={component.titleHeadlineLevel ?? 'h2'}>
             <CardExpandButton
+              icon={getExpandIcon(
+                component.presentationSize,
+                showingAlternativePresentation,
+              )}
               expanded={showingAlternativePresentation}
               onClick={() =>
                 setShowingAlternativePresentation(
@@ -108,22 +115,21 @@ export const InputAlternativePresentationSwitcher = (
             </CardExpandButton>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {showingAlternativePresentation ? (
-            <InputComponent
-              {...props}
-              component={component.alternativePresentation}
-            />
-          ) : (
-            <InputComponent
-              {...props}
-              component={{
-                ...component,
-                alternativePresentation: undefined,
-                title: undefined,
-              }}
-            />
-          )}
+        <CardContent hidden={!showingAlternativePresentation}>
+          <InputComponent
+            {...props}
+            component={component.alternativePresentation}
+          />
+        </CardContent>
+        <CardContent hidden={showingAlternativePresentation}>
+          <InputComponent
+            {...props}
+            component={{
+              ...component,
+              alternativePresentation: undefined,
+              title: undefined,
+            }}
+          />
         </CardContent>
       </Card>
     </div>

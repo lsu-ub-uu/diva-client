@@ -6,25 +6,30 @@ import {
   ChevronUpIcon,
   TriangleAlertIcon,
 } from 'lucide-react';
-import { use, type HTMLProps } from 'react';
+import { use, type HTMLProps, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Card.module.css';
 import { CardContext } from './CardContext';
 
 interface CardExpandButtonProps extends HTMLProps<HTMLButtonElement> {
   expanded: boolean | 'bothEqual';
+  icon?: ReactNode;
 }
 
 export const CardExpandButton = ({
   expanded,
   children,
   className,
+  icon,
   ...rest
 }: CardExpandButtonProps) => {
   const { t } = useTranslation();
   const { ids, boxed } = use(CardContext);
 
   const getIcon = () => {
+    if (icon) {
+      return icon;
+    }
     if (expanded === 'bothEqual') {
       return <ArrowLeftRightIcon />;
     }

@@ -7,9 +7,10 @@ import { FloatingActionButton } from '../FloatingActionButton/FloatingActionButt
 import { SaveIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ValidationError } from './validateFormData';
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 import { Alert, AlertTitle } from '../Alert/Alert';
 import { transformFormDataToCora } from '@/routes/record/transformFormDataToCora';
+import { NameIndexContext, type NameIndexMap } from './NameIndexContext';
 
 interface InputPresentationProps {
   formSchema: FormSchema;
@@ -26,7 +27,7 @@ export const InputPresentation = ({
 }: InputPresentationProps) => {
   console.log({ formSchema });
   const { t } = useTranslation();
-
+  const nameIndexMap: NameIndexMap = new Map();
   return (
     <Form
       method='post'
@@ -51,11 +52,13 @@ export const InputPresentation = ({
         </Alert>
       )}
       <ValidationErrorContext value={validationErrors}>
-        <InputComponent
-          component={formSchema.form}
-          data={data}
-          path={`${formSchema.form.name}[0]`}
-        />
+        <NameIndexContext value={nameIndexMap}>
+          <InputComponent
+            component={formSchema.form}
+            data={data}
+            path={`${formSchema.form.name}[0]`}
+          />
+        </NameIndexContext>
       </ValidationErrorContext>
       <FloatingActionButtonContainer>
         <FloatingActionButton

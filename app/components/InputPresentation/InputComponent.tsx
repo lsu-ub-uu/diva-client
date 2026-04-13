@@ -50,6 +50,7 @@ export const InputComponent = ({
       <OutputComponent
         component={component}
         parentPresentationStyle={parentPresentationStyle}
+        data={data}
       />
     );
   }

@@ -2582,6 +2582,11 @@ export interface DivaPublisher {
   publisher: PublisherUpdateGroup;
 }
 
+export interface PlaceGroup {
+  placeTerm?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
 export interface RolePublisherGroup {
   roleTerm?: {
     value: 'pbl';
@@ -2591,7 +2596,7 @@ export interface RolePublisherGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface AgentGroup {
+export interface NameOrganisationPublisherGroup {
   publisher?: {
     value: string;
     linkedRecord: {
@@ -2600,13 +2605,20 @@ export interface AgentGroup {
 
     __text?: { sv: string; en: string };
   };
-  namePart?: { value: string; __text?: { sv: string; en: string } };
+  namePart_type_publisher?: {
+    value: string;
+    _type: 'publisher';
+    __text?: { sv: string; en: string };
+  };
+  namePart_type_imprint?: {
+    value: string;
+    _type: 'imprint';
+    __text?: { sv: string; en: string };
+  };
+  place?: PlaceGroup;
   role?: RolePublisherGroup;
-  __text?: { sv: string; en: string };
-}
-
-export interface PlaceGroup {
-  placeTerm?: { value: string; __text?: { sv: string; en: string } };
+  _type: 'corporate';
+  _otherType: 'publisher';
   __text?: { sv: string; en: string };
 }
 
@@ -2614,9 +2626,8 @@ export interface OriginInfoGroup {
   dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther?: DateOtherPublicationStatusGroup[];
-  agent?: AgentGroup[];
-  place?: PlaceGroup[];
   edition?: { value: string; __text?: { sv: string; en: string } };
+  name_otherType_publisher_type_corporate?: NameOrganisationPublisherGroup[];
   __text?: { sv: string; en: string };
 }
 
@@ -3902,7 +3913,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
   }[];
   location?: LocationGroup[];
-  location_displayLabel_orderLink?: LocationOrderLinkGroup;
+  location_displayLabel_orderLink?: LocationOrderLinkGroup[];
   note_type_external?: {
     value: string;
     _type: 'external';
