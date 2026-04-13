@@ -84,6 +84,7 @@ export const InputAlternativePresentationSwitcher = (
   const [showingAlternativePresentation, setShowingAlternativePresentation] =
     useState(false);
   const { component } = props;
+
   return (
     <div
       className='form-component-item'

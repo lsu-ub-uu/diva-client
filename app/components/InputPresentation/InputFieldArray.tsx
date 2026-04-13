@@ -1,12 +1,13 @@
 import { Button } from '@/components/Button/Button';
 import type { CoraData } from '@/cora/cora-data/types.server';
 import { CirclePlusIcon } from 'lucide-react';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from '../FormGenerator/components/ActionButtonGroup';
 import { isComponentSingularAndOptional } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import type { FormComponentWithData } from '../FormGenerator/types';
 import { InputComponent } from './InputComponent';
+import { NameIndexContext } from './NameIndexContext';
 
 interface InputFieldArrayProps {
   path: string;
@@ -19,6 +20,7 @@ export const InputFieldArray = ({
   component,
   initialData: data,
 }: InputFieldArrayProps) => {
+  const nameIndices = use(NameIndexContext);
   const { t } = useTranslation();
   const repeatMin = component.repeat?.repeatMin ?? 1;
   const repeatMax = component.repeat?.repeatMax ?? 1;
@@ -38,6 +40,10 @@ export const InputFieldArray = ({
 
     return [...dataFields, ...emptyFields];
   });
+
+  const nameIndexKey = `${path}.${component.name}`;
+  const [baseNameIndex] = useState(() => nameIndices.get(nameIndexKey) ?? 0);
+  nameIndices.set(nameIndexKey, baseNameIndex + fields.length);
 
   const handleAppend = () => {
     setFields((prev) => [
@@ -65,18 +71,20 @@ export const InputFieldArray = ({
   return (
     <>
       {fields.map((field, index) => {
-        const fieldPath = `${path}.${component.name}[${index}]`;
+        const fieldPath = `${path}.${component.name}[${baseNameIndex + index}]`;
         return (
           <div
             key={field.repeatId}
             className='form-component-item'
             data-colspan={component.gridColSpan ?? 12}
           >
-            <input
-              type='hidden'
-              name={`${fieldPath}._repeatId`}
-              value={field.repeatId}
-            />
+            {repeatMax > 1 && (
+              <input
+                type='hidden'
+                name={`${fieldPath}._repeatId`}
+                value={field.repeatId}
+              />
+            )}
             <InputComponent
               component={component}
               path={fieldPath}
