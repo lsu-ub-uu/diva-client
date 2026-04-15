@@ -10,6 +10,7 @@ import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGen
 import type {
   FormComponent,
   FormComponentCollVar,
+  FormComponentContainer,
   FormComponentGroup,
   FormComponentHidden,
   FormComponentNumVar,
@@ -141,7 +142,7 @@ export const InputComponent = ({
       return (
         <InputContainer
           path={path}
-          component={component as FormComponentGroup}
+          component={component as FormComponentContainer}
           data={data as DataGroup}
           parentPresentationStyle={parentPresentationStyle}
         />
