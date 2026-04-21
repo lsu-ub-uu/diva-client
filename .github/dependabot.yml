@@ -21,3 +21,8 @@ updates:
         patterns:
           - 'vitest'
           - '@vitest/*'
+      stylelint-packages:
+        patterns:
+          - 'stylelint'
+          - 'stylelint-config-standard'
+          - 'stylelint-config-standard-scss'
