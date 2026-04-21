@@ -393,7 +393,7 @@ interface MockRequestOptions {
 function createMockRequest(
   { method }: MockRequestOptions = { method: 'GET' },
 ): Request {
-  return { method } as Request;
+  return { method, url: 'http://localhost' } as Request;
 }
 
 function createMockResponse() {
