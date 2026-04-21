@@ -17,14 +17,7 @@
  */
 
 import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
-import {
-  href,
-  Link,
-  useFetcher,
-  useLocation,
-  useNavigation,
-  useSubmit,
-} from 'react-router';
+import { href, Link, useFetcher, useLocation } from 'react-router';
 
 import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
@@ -39,12 +32,12 @@ import {
   logInWithWebRedirect,
   useWebRedirectLogin,
 } from '@/auth/useWebRedirectLogin';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useHydrated } from '@/utils/useHydrated';
 import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
-import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 
 interface LoginMenuProps {
   loginUnits: LoginDefinition[];
@@ -57,10 +50,8 @@ export default function LoginMenu({
 }: LoginMenuProps) {
   const user = useUser();
   const fetcher = useFetcher();
-  const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
-  const navigation = useNavigation();
   const hydrated = useHydrated();
 
   const searchParams = new URLSearchParams(location.search);
@@ -69,11 +60,12 @@ export default function LoginMenu({
   const returnTo = encodeURIComponent(rawReturnTo);
 
   const submitting =
-    navigation.state !== 'idle' && navigation.formAction?.includes('/login');
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/login');
+
   useWebRedirectLogin({ returnTo });
 
   const handleDevSelection = ({ loginId, appToken }: ExampleUser) => {
-    submit(
+    fetcher.submit(
       {
         loginType: 'appToken',
         loginId,

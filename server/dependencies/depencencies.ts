@@ -82,6 +82,7 @@ import {
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
 import type { DataChangedHeaders } from '../listenForDataChange';
+import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
 
@@ -92,7 +93,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
-let poolsInitialized = false;
+// Use a promise guard to prevent multiple concurrent initializations
+let initializationPromise: Promise<void> | null = null;
 
 const dependencies: Dependencies = {
   textPool: listToPool<BFFText>([]),
@@ -191,15 +193,14 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
-  poolsInitialized = true;
-
   console.info('Loaded stuff from Cora');
 };
 
 export const getDependencies = async () => {
-  if (!poolsInitialized) {
-    await loadDependencies();
+  if (!initializationPromise) {
+    initializationPromise = loadDependencies();
   }
+  await initializationPromise;
 
   return dependencies;
 };
@@ -260,8 +261,14 @@ export const handleDataChanged = async ({
     >;
     pool.set(id, transformedData);
   }
+
+  // Clear i18n cache when text pool changes so translations are refreshed
+  if (type === 'text') {
+    clearI18nCache();
+  }
 };
 
 export const refreshDependencies = async () => {
   await loadDependencies();
+  clearI18nCache();
 };

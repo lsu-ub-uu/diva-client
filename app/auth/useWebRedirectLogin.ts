@@ -1,9 +1,9 @@
 import { messageIsFromWindowOpenedFromHere } from '@/components/Layout/Header/Login/utils/utils';
 import { useEffect } from 'react';
-import { useSubmit } from 'react-router';
+import { useFetcher } from 'react-router';
 
 export const useWebRedirectLogin = ({ returnTo }: { returnTo: string }) => {
-  const submit = useSubmit();
+  const fetcher = useFetcher();
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent<any>) => {
@@ -12,7 +12,7 @@ export const useWebRedirectLogin = ({ returnTo }: { returnTo: string }) => {
         event.data.authentication
       ) {
         window.removeEventListener('message', receiveMessage);
-        submit(
+        fetcher.submit(
           {
             loginType: 'webRedirect',
             auth: JSON.stringify(event.data),

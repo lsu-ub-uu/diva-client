@@ -21,7 +21,6 @@ import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { i18nCookie } from '@/i18n/i18nCookie.server';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
@@ -53,6 +52,7 @@ import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
+  type UserPreferences,
 } from './userPreferences/userPreferencesCookie.server';
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
@@ -98,33 +98,43 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get('intent');
+  const userPreferences = await parseUserPreferencesCookie(request);
 
   if (intent === 'changeLanguage') {
-    return await changeLanguage(formData);
+    return await changeLanguage(userPreferences, formData);
   }
 
   if (intent === 'changeColorScheme') {
-    return await changeColorScheme(formData);
+    return await changeColorScheme(userPreferences, formData);
   }
 
   return {};
 }
 
-const changeLanguage = async (formData: FormData) => {
+const changeLanguage = async (
+  userPreferences: UserPreferences,
+  formData: FormData,
+) => {
   const language = formData.get('language');
-  if (typeof language === 'string') {
+  if (language === 'sv' || language === 'en' || language === 'cimode') {
     return data(
       {},
       {
         headers: {
-          'Set-Cookie': await i18nCookie.serialize(language),
+          'Set-Cookie': await serializeUserPreferencesCookie({
+            ...userPreferences,
+            language,
+          }),
         },
       },
     );
   }
 };
 
-const changeColorScheme = async (formData: FormData) => {
+const changeColorScheme = async (
+  userPreferences: UserPreferences,
+  formData: FormData,
+) => {
   const colorScheme = formData.get('colorScheme');
   if (colorScheme === 'light' || colorScheme === 'dark') {
     return data(
@@ -132,6 +142,7 @@ const changeColorScheme = async (formData: FormData) => {
       {
         headers: {
           'Set-Cookie': await serializeUserPreferencesCookie({
+            ...userPreferences,
             colorScheme,
           }),
         },

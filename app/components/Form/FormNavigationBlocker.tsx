@@ -1,12 +1,12 @@
 import { ExternalLinkIcon, SquareArrowRightExitIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useBlocker } from 'react-router';
+import { useBlocker, type BlockerFunction } from 'react-router';
+import { Button } from '../Button/Button';
 import {
   ConfirmDialog,
   useConfirmDialog,
 } from '../ConfirmDialog/ConfirmDialog';
-import { Button } from '../Button/Button';
 
 interface FormNavigationBlockerProps {
   isDirty: boolean;
@@ -17,10 +17,12 @@ export const FormNavigationBlocker = ({
 }: FormNavigationBlockerProps) => {
   const { t } = useTranslation();
   const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
-  const blocker = useBlocker(
-    ({ currentLocation, nextLocation }) =>
-      currentLocation.pathname !== nextLocation.pathname && isDirty,
-  );
+
+  const shouldBlock: BlockerFunction = ({ currentLocation, nextLocation }) => {
+    return currentLocation.pathname !== nextLocation.pathname && isDirty;
+  };
+
+  const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
