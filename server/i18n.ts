@@ -1,19 +1,18 @@
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
+import { i18nConfig } from '@/i18n/i18nConfig';
+import {
+  userPreferencesCookie,
+  type UserPreferences,
+} from '@/userPreferences/userPreferencesCookie.server';
 import type { Request } from 'express';
 import { createInstance, type i18n as I18nInstance } from 'i18next';
-import { i18nCookie } from '@/i18n/i18nCookie.server';
-import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
-import { i18nConfig } from '@/i18n/i18nConfig';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition.server';
+import { initReactI18next } from 'react-i18next';
 import { createContext } from 'react-router';
-import type { Dependencies } from '@/cora/bffTypes.server';
-
-const CI_MODE = process.env.CI_MODE === 'true';
 
 // Cache i18n instances per locale to avoid creating new instances on every request
 const i18nCache = new Map<string, I18nInstance>();
-
-type SupportedLocale = 'sv' | 'en' | 'cimode';
 
 export const i18nContext = createContext<I18nInstance>();
 
@@ -21,8 +20,10 @@ export const createi18nInstance = async (
   request: Request,
   dependencies: Dependencies,
 ) => {
-  const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
-  const locale: SupportedLocale = CI_MODE ? 'cimode' : (languageCookie ?? 'sv');
+  const userPreferences = (await userPreferencesCookie.parse(
+    request.headers.cookie ?? null,
+  )) as UserPreferences | null;
+  const locale = userPreferences?.language ?? 'sv';
 
   const cached = i18nCache.get(locale);
   if (cached) {
