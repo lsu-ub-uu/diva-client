@@ -24,7 +24,7 @@
     "coverage": "vitest --coverage"
   },
   "engines": {
-    "node": "22.14.0"
+    "node": "25.9.0"
   },
   "dependencies": {
     "@codemirror/lang-json": "^6.0.2",

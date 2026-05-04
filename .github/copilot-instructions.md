@@ -27,7 +27,7 @@
 
 ## Dev workflows
 
-- Prereqs: Node `22.14.0` (see [../package.json](../package.json)).
+- Prereqs: Node `25.9.0` (see [../package.json](../package.json)).
 - Main dev loop: `npm run dev` (runs type generation, then `tsx server.ts`).
 - Useful variants: `npm run dev:minikube`, `npm run dev:preview` for different Cora backends.
 - Type/lint/style checks: `npm run typecheck`, `npm run lint`, `npm run stylelint`.
