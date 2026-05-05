@@ -442,11 +442,13 @@ describe('OutputView', () => {
     const mockData = {
       output: {
         recordInfo: { id: { value: '12345' } },
-        location_displayLabel_orderLink: {
-          __text: { en: 'Order link' },
-          url: { value: 'http://orderlink.com' },
-          displayLabel: { value: 'Order here' },
-        },
+        location_displayLabel_orderLink: [
+          {
+            __text: { en: 'Order link' },
+            url: { value: 'http://orderlink.com' },
+            displayLabel: { value: 'Order here' },
+          },
+        ],
       },
     } as DivaOutput;
 

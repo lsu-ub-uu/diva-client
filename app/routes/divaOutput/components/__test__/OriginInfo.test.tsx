@@ -4,10 +4,71 @@ import { describe, expect, it } from 'vitest';
 import { OriginInfo } from '../OriginInfo';
 
 describe('OriginInfo', () => {
-  it('renders linked and unlinked agents correctly', () => {
+  it('renders date issued', () => {
+    const originInfo = {
+      dateIssued: {
+        day: { value: '01' },
+        month: { value: '01' },
+        year: { value: '2023' },
+        __text: { en: 'Date issued' },
+      },
+    } as OriginInfoGroup;
+
+    render(<OriginInfo originInfo={originInfo} />);
+
+    expect(screen.getByText('Date issued')).toBeInTheDocument();
+    expect(screen.getByText('2023-01-01')).toBeInTheDocument();
+  });
+
+  it('renders other dates', () => {
+    const originInfo = {
+      dateOther: [
+        {
+          _type: 'accepted',
+          year: { value: '2001' },
+          __text: { en: 'Other date' },
+        },
+        {
+          _type: 'inPress',
+          year: { value: '2002' },
+          __text: { en: 'Other date' },
+        },
+        {
+          _type: 'online',
+          year: { value: '2000' },
+          __text: { en: 'Other date' },
+        },
+        {
+          _type: 'retracted',
+          year: { value: '2003' },
+          __text: { en: 'Other date' },
+        },
+        {
+          _type: 'submitted',
+          year: { value: '2004' },
+          __text: { en: 'Other date' },
+        },
+      ],
+    } as OriginInfoGroup;
+
+    render(<OriginInfo originInfo={originInfo} />);
+
+    expect(screen.getByText('Other date (accepted)')).toBeInTheDocument();
+    expect(screen.getByText('2000')).toBeInTheDocument();
+    expect(screen.getByText('Other date (inPress)')).toBeInTheDocument();
+    expect(screen.queryByText('2001')).not.toBeInTheDocument();
+    expect(screen.getByText('Other date (online)')).toBeInTheDocument();
+    expect(screen.queryByText('2002')).not.toBeInTheDocument();
+    expect(screen.getByText('Other date (retracted)')).toBeInTheDocument();
+    expect(screen.queryByText('2003')).not.toBeInTheDocument();
+    expect(screen.getByText('Other date (submitted)')).toBeInTheDocument();
+    expect(screen.queryByText('2004')).not.toBeInTheDocument();
+  });
+
+  it('renders linked and unlinked publishers correctly', () => {
     const originInfo = {
       __text: { en: 'Origin info', sv: 'Ursprung' },
-      agent: [
+      name_otherType_publisher_type_corporate: [
         {
           publisher: {
             value: 'publisher1',
@@ -18,6 +79,12 @@ describe('OriginInfo', () => {
                 },
               },
             },
+          },
+          namePart_type_imprint: {
+            value: 'imprint1',
+          },
+          place: {
+            value: 'Place1',
           },
         },
         {
@@ -32,18 +99,35 @@ describe('OriginInfo', () => {
             },
           },
         },
-        { namePart: { value: 'Uncontrolled agent1' } },
-        { namePart: { value: 'Uncontrolled agent2' } },
+        {
+          namePart_type_publisher: {
+            value: 'Uncontrolled publisher1',
+          },
+          namePart_type_imprint: {
+            value: 'imprint2',
+          },
+          place: {
+            value: 'Place2',
+          },
+        },
+        {
+          namePart_type_publisher: {
+            value: 'Uncontrolled publisher2',
+          },
+        },
       ],
     } as OriginInfoGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 
     expect(screen.getByText('agentGroupText')).toBeInTheDocument();
-    expect(screen.getByText('Uncontrolled agent1')).toBeInTheDocument();
-    expect(screen.getByText('Uncontrolled agent2')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher1')).toBeInTheDocument();
+    expect(screen.getByText('imprint1')).toBeInTheDocument();
+    expect(screen.getByText('Place1')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher2')).toBeInTheDocument();
+    expect(screen.getByText('imprint2')).toBeInTheDocument();
+    expect(screen.getByText('Place2')).toBeInTheDocument();
+    expect(screen.getByText('Uncontrolled publisher2')).toBeInTheDocument();
   });
 
   it('renders linked publisher name over uncontrolled', () => {

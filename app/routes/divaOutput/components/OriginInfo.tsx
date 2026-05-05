@@ -17,13 +17,6 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
       <h2 id='origin-info'>{originInfo?.__text?.[language]}</h2>
       <dl className='inline-definitions'>
         <Term
-          label={originInfo?.place?.[0]?.__text?.[language]}
-          value={originInfo?.place
-            ?.map((place) => place?.placeTerm?.value)
-            .join(', ')}
-        />
-
-        <Term
           label={originInfo?.dateIssued?.__text?.[language]}
           value={<DateDisplay date={originInfo?.dateIssued} />}
         />
@@ -33,19 +26,17 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
           value={<DateDisplay date={originInfo?.copyrightDate} />}
         />
 
-        <Term
-          label={originInfo?.dateOther_type_online?.__text?.[language]} //'Online'
-          value={<DateDisplay date={originInfo?.dateOther_type_online} />}
-        />
+        {originInfo?.dateOther?.map((dateOther, index) => (
+          <Term
+            key={index}
+            label={`${dateOther.__text?.[language]} (${dateOther._type})`}
+            value={<DateDisplay date={dateOther} />}
+          />
+        ))}
 
         <Term
           label={t('agentGroupText')}
           value={getPublisherNames(originInfo)}
-        />
-
-        <Term
-          label={originInfo?.edition?.__text?.[language]}
-          value={originInfo?.edition?.value}
         />
       </dl>
     </section>

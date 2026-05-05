@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vitest';
-import { generateCitationMeta } from '../generateCitationMeta';
 import type {
   DateIssuedGroup,
-  DateOtherOnlineGroup,
+  DateOtherPublicationStatusGroup,
   DivaOutput,
   TitleInfoLangGroup,
 } from '@/generatedTypes/divaTypes';
+import { describe, expect, it } from 'vitest';
+import { generateCitationMeta } from '../generateCitationMeta';
 
 const divaOutput = {
   output: {
@@ -20,11 +20,14 @@ const divaOutput = {
         month: { value: '03' },
         day: { value: '15' },
       },
-      dateOther_type_online: {
-        year: { value: '2024' },
-        month: { value: '03' },
-        day: { value: '20' },
-      },
+      dateOther: [
+        {
+          _type: 'online',
+          year: { value: '2024' },
+          month: { value: '03' },
+          day: { value: '20' },
+        },
+      ],
     },
     identifier_type_isbn: [
       { value: '978-3-16-148410-0', _displayLabel: 'online' },
@@ -229,9 +232,12 @@ describe('generateCitationMeta', () => {
 
   it('generates citation_online_date with only year', () => {
     const divaOutputWithYearOnly = structuredClone(divaOutput);
-    divaOutputWithYearOnly.output.originInfo!.dateOther_type_online = {
-      year: { value: '2024' },
-    } as DateOtherOnlineGroup;
+    divaOutputWithYearOnly.output.originInfo!.dateOther = [
+      {
+        _type: 'online',
+        year: { value: '2024' },
+      } as DateOtherPublicationStatusGroup,
+    ];
 
     const result = generateCitationMeta(
       divaOutputWithYearOnly,

@@ -4,6 +4,7 @@ import { Organisation } from './Organisation';
 import { Term } from './Term';
 import { Event } from './Event';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
+import { Organisations } from './Organisations';
 
 interface DegreeProjectFieldsProps {
   output: DivaOutputGroup;
@@ -22,13 +23,12 @@ export const DegreeProjectFields = ({ output }: DegreeProjectFieldsProps) => {
           .filter(Boolean)
           .join(' ')}
       />
-      {output.externalCollaboration && (
-        <>
-          <dt>{output.externalCollaboration.__text?.[language]}</dt>
-          {output.externalCollaboration.namePart?.map((namePart, index) => (
-            <dd key={index}>{namePart.value}</dd>
-          ))}
-        </>
+      {output.name_otherType_externalCollaboration_type_corporate && (
+        <Organisations
+          organisations={
+            output.name_otherType_externalCollaboration_type_corporate
+          }
+        />
       )}
       <Term
         label={

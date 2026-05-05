@@ -165,7 +165,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             <Project key={index} project={project} />
           ))}
 
-          {output.relatedItem_type_funder?.map((funder, index) => (
+          {output.name_otherType_funder_type_corporate?.map((funder, index) => (
             <Funder key={index} funder={funder} />
           ))}
 
@@ -235,17 +235,17 @@ export const OutputView = ({ data }: OutputViewProps) => {
               ))}
             </>
           )}
-          <Term
-            label={output.location_displayLabel_orderLink?.__text?.[language]}
-            value={
-              output.location_displayLabel_orderLink && (
-                <Location
-                  location={output.location_displayLabel_orderLink}
-                  icon={<ShoppingCartIcon />}
-                />
-              )
-            }
-          />
+          {output.location_displayLabel_orderLink?.map((orderLink, index) => (
+            <Term
+              key={index}
+              label={orderLink.__text?.[language]}
+              value={
+                orderLink && (
+                  <Location location={orderLink} icon={<ShoppingCartIcon />} />
+                )
+              }
+            />
+          ))}
         </dl>
         <Identifiers output={output} />
 
