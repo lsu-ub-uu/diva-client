@@ -1,7 +1,7 @@
 .popover {
   margin: 0;
   inset: unset;
-  bottom: calc(anchor(top) + var(--gap));
+  top: calc(anchor(top) + var(--gap-l));
   /* stylelint-disable-next-line declaration-property-value-no-unknown */
   justify-self: anchor-center;
   position-try: normal flip-block;
@@ -21,4 +21,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.title {
+  margin-top: 0;
 }

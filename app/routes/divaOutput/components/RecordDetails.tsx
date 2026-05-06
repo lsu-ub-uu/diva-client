@@ -1,6 +1,7 @@
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 import {
   CheckCircleIcon,
   ChevronDownIcon,
@@ -10,7 +11,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { formatTimestamp } from '../utils/format';
 import { Term } from './Term';
-import { useUser } from '@/utils/rootLoaderDataUtils';
 
 interface RecordDetailsProps {
   output: DivaOutputGroup;

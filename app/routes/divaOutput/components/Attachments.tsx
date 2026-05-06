@@ -1,8 +1,7 @@
-import { ShowMoreOrLessButton } from '@/components/CollapsableText/ShowMoreOrLessButton';
 import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
-import { useId, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useId } from 'react';
 import { Attachment } from './Attachment';
+import { DataText } from './DataText';
 
 interface AttachmentsProps {
   attachments?: AttachmentsGroup;
@@ -10,40 +9,31 @@ interface AttachmentsProps {
 export const Attachments = ({
   attachments: attachmentsGroup,
 }: AttachmentsProps) => {
-  const { t } = useTranslation();
   const id = useId();
-  const [expanded, setExpanded] = useState(false);
 
   if (!attachmentsGroup) {
     return null;
   }
 
   const attachments =
-    attachmentsGroup.attachment?.filter(
-      (attachment) => attachment.file?.linkedRecord?.binary?.master != null,
-    ) ?? [];
-  const expandable = attachments.length > 1;
-  const attachmentsToShow = expanded ? attachments : attachments.slice(0, 1);
+    attachmentsGroup.attachment
+      ?.filter((attachment) => attachment._label !== 'previewImage')
+      .filter(
+        (attachment) => attachment.file?.linkedRecord?.binary?.master != null,
+      ) ?? [];
 
   return (
     <div className='attachments'>
+      <h2>
+        <DataText data={attachmentsGroup} />
+      </h2>
       <ul id={id}>
-        {attachmentsToShow.map((attachment, index) => (
+        {attachments.map((attachment, index) => (
           <li key={index}>
             <Attachment attachment={attachment} />
           </li>
         ))}
       </ul>
-      {expandable && (
-        <ShowMoreOrLessButton
-          onClick={() => setExpanded(!expanded)}
-          expanded={expanded}
-          aria-controls={id}
-          showMoreText={t('divaClient_showAllAttachmentsText', {
-            count: attachments.length,
-          })}
-        />
-      )}
     </div>
   );
 };

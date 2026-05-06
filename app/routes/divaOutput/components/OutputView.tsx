@@ -30,6 +30,7 @@ import {
   getFullTitleForOutput,
   getTitleFromTitleInfo,
 } from '@/utils/getRecordTitle';
+import { PresentationImage } from './PresentationImage';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -192,6 +193,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside className='grid-col-4 grid-col-m-12'>
+        <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
         <dl>
           <Term

@@ -1,7 +1,7 @@
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRoutesStub, Outlet } from 'react-router';
+import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { RecordDetails } from '../RecordDetails';
 

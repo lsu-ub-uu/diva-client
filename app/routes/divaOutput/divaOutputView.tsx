@@ -1,4 +1,5 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
@@ -10,7 +11,9 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
+import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
+import { CodeXmlIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   href,
@@ -24,7 +27,6 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 
 export const loader = async ({
   request,
@@ -91,6 +93,8 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
+  const { t } = useTranslation();
+
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
   const isInTrashBin =
@@ -105,7 +109,20 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
       <div className='diva-output-view-page grid-col-12'>
         <div className='top-bar'>
           <Breadcrumbs />
-          <RecordActionBar record={record} apiUrl={apiUrl} />
+          <div className='top-bar-actions'>
+            <IconButton
+              as='a'
+              href={apiUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='View raw data'
+              size='small'
+              tooltip={t('divaClient_viewInApiText')}
+            >
+              <CodeXmlIcon />
+            </IconButton>
+            <RecordActionBar record={record} />
+          </div>
         </div>
       </div>
       <OutputView data={record.data} />
