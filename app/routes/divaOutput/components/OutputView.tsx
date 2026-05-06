@@ -196,6 +196,28 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
         <dl>
+          {output.location_displayLabel_orderLink?.map((orderLink, index) => (
+            <Term
+              key={index}
+              label={orderLink.__text?.[language]}
+              value={
+                orderLink && (
+                  <Location location={orderLink} icon={<ShoppingCartIcon />} />
+                )
+              }
+            />
+          ))}
+          {output.location && (
+            <>
+              <dt>{output.location?.[0].__text?.[language]}</dt>
+              {output.location?.map((location, index) => (
+                <dd key={index}>
+                  <Location location={location} />
+                </dd>
+              ))}
+            </>
+          )}
+
           <Term
             label={
               output['accessCondition_authority_kb-se']?.__text?.[language]
@@ -204,9 +226,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
               output['accessCondition_authority_kb-se']?.__valueText?.[language]
             }
           />
-        </dl>
-
-        <dl>
           <Term
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
             value={<DateDisplay date={output.dateOther_type_patent} />}
@@ -222,28 +241,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.patentCountry?.__text?.[language]}
             value={output.patentCountry?.__valueText?.[language]}
           />
-
-          {output.location && (
-            <>
-              <dt>{output.location?.[0].__text?.[language]}</dt>
-              {output.location?.map((location, index) => (
-                <dd key={index}>
-                  <Location location={location} />
-                </dd>
-              ))}
-            </>
-          )}
-          {output.location_displayLabel_orderLink?.map((orderLink, index) => (
-            <Term
-              key={index}
-              label={orderLink.__text?.[language]}
-              value={
-                orderLink && (
-                  <Location location={orderLink} icon={<ShoppingCartIcon />} />
-                )
-              }
-            />
-          ))}
         </dl>
         <Identifiers output={output} />
 

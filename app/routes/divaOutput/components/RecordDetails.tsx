@@ -27,7 +27,7 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
         <h2>{t('divaClient_recordDetailsText')}</h2>
         <InfoIcon />
       </summary>
-      <dl>
+      <dl className='compact'>
         <Term
           label={t('divaClient_createdText')}
           value={<Timestamp timestamp={output.recordInfo.tsCreated?.value} />}
