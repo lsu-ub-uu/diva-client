@@ -106,8 +106,6 @@ dd.inline {
 
   dd:has(+ dd),
   dd + dd {
-    padding-left: var(--gap);
-
     &::before {
       display: none;
     }
@@ -188,10 +186,6 @@ address {
 
 .affiliation {
   margin-top: var(--gap);
-
-  dl {
-    padding-left: var(--gap-l);
-  }
 }
 
 .attachments {
