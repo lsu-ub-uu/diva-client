@@ -189,17 +189,6 @@ export const RecordActionBar = ({
           {t('divaClient_deleteRecordText')}
         </ActionBarButton>
       )}
-      {apiUrl && (
-        <ActionBarButton
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          icon={<CodeIcon />}
-        >
-          {t('divaClient_viewInApiText')}
-        </ActionBarButton>
-      )}
     </ActionBar>
   );
 };

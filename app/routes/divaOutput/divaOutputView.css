@@ -67,12 +67,7 @@ dt {
   font-weight: bold;
 }
 
-dd {
-}
-
 dd + dd {
-  padding-left: 0;
-
   &:not(:has(> button))::before {
     content: ', ';
   }
@@ -92,10 +87,14 @@ dd.block {
   }
 }
 
+dd.inline {
+  display: inline;
+}
+
 .inline-definitions {
   display: grid;
   grid-template-columns: max-content 1fr;
-  row-gap: var(--gap-s);
+  gap: var(--gap-s);
 
   dt {
     margin-top: 0;
@@ -222,7 +221,7 @@ address {
   padding: var(--gap);
   border-radius: var(--border-radius-s);
   border: 1px solid var(--color-output-card-border);
-  margin-bottom: var(--gap-xl);
+  margin-block: var(--gap-xl);
 
   summary {
     cursor: pointer;

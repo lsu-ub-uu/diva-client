@@ -20,6 +20,7 @@
 }
 
 .action-bar-button {
+  a,
   button {
     white-space: nowrap;
   }

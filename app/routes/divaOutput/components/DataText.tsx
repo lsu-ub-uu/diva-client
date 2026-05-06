@@ -1,6 +1,6 @@
 import { useLanguage } from '@/i18n/useLanguage';
 
-interface Data {
+export interface Data {
   __text?: { sv: string; en: string };
 }
 

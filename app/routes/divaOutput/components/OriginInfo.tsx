@@ -12,31 +12,28 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
   const language = useLanguage();
 
   return (
-    <section aria-labelledby='origin-info'>
-      <h2 id='origin-info'>{originInfo?.__text?.[language]}</h2>
-      <dl>
+    <dl>
+      <Term
+        label={originInfo?.dateIssued?.__text?.[language]}
+        value={<DateDisplay date={originInfo?.dateIssued} />}
+      />
+
+      <Term
+        label={originInfo?.copyrightDate?.__text?.[language]}
+        value={<DateDisplay date={originInfo?.copyrightDate} />}
+      />
+
+      {originInfo?.dateOther?.map((dateOther, index) => (
         <Term
-          label={originInfo?.dateIssued?.__text?.[language]}
-          value={<DateDisplay date={originInfo?.dateIssued} />}
+          key={index}
+          label={`${dateOther.__text?.[language]} (${dateOther._type})`}
+          value={<DateDisplay date={dateOther} />}
         />
+      ))}
 
-        <Term
-          label={originInfo?.copyrightDate?.__text?.[language]}
-          value={<DateDisplay date={originInfo?.copyrightDate} />}
-        />
-
-        {originInfo?.dateOther?.map((dateOther, index) => (
-          <Term
-            key={index}
-            label={`${dateOther.__text?.[language]} (${dateOther._type})`}
-            value={<DateDisplay date={dateOther} />}
-          />
-        ))}
-
-        <Publishers
-          publishers={originInfo?.name_otherType_publisher_type_corporate}
-        />
-      </dl>
-    </section>
+      <Publishers
+        publishers={originInfo?.name_otherType_publisher_type_corporate}
+      />
+    </dl>
   );
 };

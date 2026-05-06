@@ -18,7 +18,10 @@ export const Attachments = ({
     return null;
   }
 
-  const attachments = attachmentsGroup.attachment ?? [];
+  const attachments =
+    attachmentsGroup.attachment?.filter(
+      (attachment) => attachment.file?.linkedRecord?.binary?.master != null,
+    ) ?? [];
   const expandable = attachments.length > 1;
   const attachmentsToShow = expanded ? attachments : attachments.slice(0, 1);
 

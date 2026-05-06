@@ -89,6 +89,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
                     ?.__valueText?.[language],
               )}
             />
+            <OriginInfo originInfo={output.originInfo} />
 
             {output.artisticWork_type_outputType && (
               <Term
@@ -116,9 +117,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 output.note_type_publicationStatus?.__valueText?.[language]
               }
             />
-          </dl>
-
-          <dl>
             <Term
               label={
                 output.physicalDescription?.extent_unit_pages?.__text?.[
@@ -194,8 +192,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside className='grid-col-4 grid-col-m-12'>
-        <RecordDetails output={output} />
-
         <Attachments attachments={output.attachments} />
         <dl>
           <Term
@@ -207,7 +203,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             }
           />
         </dl>
-        <OriginInfo originInfo={output.originInfo} />
+
         <dl>
           <Term
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
@@ -250,6 +246,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <Identifiers output={output} />
 
         <Classifications output={output} />
+        <RecordDetails output={output} />
       </aside>
     </>
   );
