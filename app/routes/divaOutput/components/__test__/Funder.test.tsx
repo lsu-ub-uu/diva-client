@@ -92,10 +92,10 @@ describe('Funder', () => {
   it('renders a text funder', () => {
     const funder = {
       role: { roleTerm: { value: 'fnd' } },
-      namePart_type_funder: { value: 'Text funder' },
+      namePart_type_funder: { value: 'Text funder', __text: { en: 'Funder' } },
       _type: 'corporate',
       _otherType: 'funder',
-      __text: { sv: 'Funder heading' },
+      __text: { en: 'Funder heading' },
     } as NameOrganisationFunderGroup;
 
     render(<Funder funder={funder} />);

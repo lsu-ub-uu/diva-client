@@ -64,10 +64,10 @@ aside {
 dt {
   color: var(--color-label);
   margin-top: var(--gap-l);
+  font-weight: bold;
 }
 
 dd {
-  padding-left: var(--gap);
 }
 
 dd + dd {
@@ -85,7 +85,6 @@ dd + dd {
 
 dd.block {
   display: block;
-  padding-left: var(--gap);
   margin-bottom: var(--gap-s);
 
   &::before {

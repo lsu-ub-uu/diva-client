@@ -20,6 +20,22 @@ describe('OriginInfo', () => {
     expect(screen.getByText('2023-01-01')).toBeInTheDocument();
   });
 
+  it('renders copyright date', () => {
+    const originInfo = {
+      copyrightDate: {
+        day: { value: '15' },
+        month: { value: '06' },
+        year: { value: '2020' },
+        __text: { en: 'Copyright date' },
+      },
+    } as OriginInfoGroup;
+
+    render(<OriginInfo originInfo={originInfo} />);
+
+    expect(screen.getByText('Copyright date')).toBeInTheDocument();
+    expect(screen.getByText('2020-06-15')).toBeInTheDocument();
+  });
+
   it('renders other dates', () => {
     const originInfo = {
       dateOther: [
@@ -56,13 +72,13 @@ describe('OriginInfo', () => {
     expect(screen.getByText('Other date (accepted)')).toBeInTheDocument();
     expect(screen.getByText('2000')).toBeInTheDocument();
     expect(screen.getByText('Other date (inPress)')).toBeInTheDocument();
-    expect(screen.queryByText('2001')).not.toBeInTheDocument();
+    expect(screen.getByText('2001')).toBeInTheDocument();
     expect(screen.getByText('Other date (online)')).toBeInTheDocument();
-    expect(screen.queryByText('2002')).not.toBeInTheDocument();
+    expect(screen.getByText('2002')).toBeInTheDocument();
     expect(screen.getByText('Other date (retracted)')).toBeInTheDocument();
-    expect(screen.queryByText('2003')).not.toBeInTheDocument();
+    expect(screen.getByText('2003')).toBeInTheDocument();
     expect(screen.getByText('Other date (submitted)')).toBeInTheDocument();
-    expect(screen.queryByText('2004')).not.toBeInTheDocument();
+    expect(screen.getByText('2004')).toBeInTheDocument();
   });
 
   it('renders linked and unlinked publishers correctly', () => {
@@ -70,6 +86,7 @@ describe('OriginInfo', () => {
       __text: { en: 'Origin info', sv: 'Ursprung' },
       name_otherType_publisher_type_corporate: [
         {
+          __text: { en: 'Publisher', sv: 'Förlag' },
           publisher: {
             value: 'publisher1',
             linkedRecord: {
@@ -80,14 +97,9 @@ describe('OriginInfo', () => {
               },
             },
           },
-          namePart_type_imprint: {
-            value: 'imprint1',
-          },
-          place: {
-            value: 'Place1',
-          },
         },
         {
+          __text: { en: 'Publisher', sv: 'Förlag' },
           publisher: {
             value: 'publisher2',
             linkedRecord: {
@@ -100,19 +112,9 @@ describe('OriginInfo', () => {
           },
         },
         {
+          __text: { en: 'Publisher', sv: 'Förlag' },
           namePart_type_publisher: {
             value: 'Uncontrolled publisher1',
-          },
-          namePart_type_imprint: {
-            value: 'imprint2',
-          },
-          place: {
-            value: 'Place2',
-          },
-        },
-        {
-          namePart_type_publisher: {
-            value: 'Uncontrolled publisher2',
           },
         },
       ],
@@ -120,22 +122,19 @@ describe('OriginInfo', () => {
 
     render(<OriginInfo originInfo={originInfo} />);
 
-    expect(screen.getByText('agentGroupText')).toBeInTheDocument();
+    expect(screen.getByText('Publisher')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher1')).toBeInTheDocument();
-    expect(screen.getByText('imprint1')).toBeInTheDocument();
-    expect(screen.getByText('Place1')).toBeInTheDocument();
     expect(screen.getByText('Linked publisher2')).toBeInTheDocument();
-    expect(screen.getByText('imprint2')).toBeInTheDocument();
-    expect(screen.getByText('Place2')).toBeInTheDocument();
-    expect(screen.getByText('Uncontrolled publisher2')).toBeInTheDocument();
+    expect(screen.getByText('Uncontrolled publisher1')).toBeInTheDocument();
   });
 
   it('renders linked publisher name over uncontrolled', () => {
     const originInfo = {
       __text: { en: 'Origin info', sv: 'Ursprung' },
-      agent: [
+      name_otherType_publisher_type_corporate: [
         {
-          namePart: { value: 'Uncontrolled name' },
+          __text: { en: 'Publisher', sv: 'Förlag' },
+          namePart_type_publisher: { value: 'Uncontrolled name' },
           publisher: {
             value: 'publisher2',
             linkedRecord: {

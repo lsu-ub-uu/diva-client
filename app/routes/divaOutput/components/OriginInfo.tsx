@@ -1,7 +1,7 @@
 import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
-import { useTranslation } from 'react-i18next';
+import { Publishers } from './Publishers';
 import { Term } from './Term';
 
 interface OriginInfoProps {
@@ -10,12 +10,11 @@ interface OriginInfoProps {
 
 export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
   const language = useLanguage();
-  const { t } = useTranslation();
 
   return (
     <section aria-labelledby='origin-info'>
       <h2 id='origin-info'>{originInfo?.__text?.[language]}</h2>
-      <dl className='inline-definitions'>
+      <dl>
         <Term
           label={originInfo?.dateIssued?.__text?.[language]}
           value={<DateDisplay date={originInfo?.dateIssued} />}
@@ -34,21 +33,10 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
           />
         ))}
 
-        <Term
-          label={t('agentGroupText')}
-          value={getPublisherNames(originInfo)}
+        <Publishers
+          publishers={originInfo?.name_otherType_publisher_type_corporate}
         />
       </dl>
     </section>
   );
-};
-
-const getPublisherNames = (originInfo?: OriginInfoGroup) => {
-  return originInfo?.agent?.map((agent) => {
-    const textName = agent.namePart?.value;
-    const linkedName =
-      agent?.publisher?.linkedRecord?.publisher?.name_type_corporate?.namePart
-        ?.value;
-    return linkedName || textName;
-  });
 };
