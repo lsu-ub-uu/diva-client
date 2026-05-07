@@ -2,15 +2,10 @@ import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import type { TFunction } from 'i18next';
+import { DownloadIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { AttachmentDetails } from './AttachmentDetails';
 import { formatBytes } from '../utils/format';
-import {
-  DownloadIcon,
-  FileArchiveIcon,
-  FileImageIcon,
-  FileTextIcon,
-} from 'lucide-react';
+import { AttachmentDetails } from './AttachmentDetails';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;
