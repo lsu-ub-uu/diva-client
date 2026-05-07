@@ -97,27 +97,28 @@ dd.inline {
 }
 
 dl.inline-definitions {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: var(--gap-s);
-
   dt {
+    display: inline;
     margin-top: 0;
+
+    /* Force a line break before each dt */
+    &::before {
+      content: '';
+      display: block;
+      margin-top: var(--gap-s);
+    }
+
+    &:first-child::before {
+      margin-top: 0;
+    }
 
     &::after {
       content: ':';
     }
   }
 
-  dd:has(+ dd),
-  dd + dd {
-    padding-left: var(--gap);
-
-    &::before {
-      display: none;
-    }
-
-    grid-column: 2;
+  dd {
+    display: inline;
   }
 }
 
