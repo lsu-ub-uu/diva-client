@@ -1,13 +1,13 @@
+import { IconButton } from '@/components/IconButton/IconButton';
+import { Popover } from '@/components/Popover/Popover';
+import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { ChevronDownIcon, InfoIcon } from 'lucide-react';
+import { InfoIcon } from 'lucide-react';
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';
 import { DateDisplay } from './DateDisplay';
 import { Term } from './Term';
-import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
-import { IconButton } from '@/components/IconButton/IconButton';
-import { useId } from 'react';
-import { Popover } from '@/components/Popover/Popover';
 
 interface AttachmentProps {
   attachment: AttachmentGroup;

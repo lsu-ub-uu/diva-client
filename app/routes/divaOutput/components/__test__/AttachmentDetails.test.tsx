@@ -67,7 +67,11 @@ describe('AttachmentDetails', () => {
     ]);
     render(<RoutesStub />);
 
-    await user.click(screen.getByText('divaClient_attachmentDetailsText'));
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_attachmentDetailsText',
+      }),
+    );
 
     expect(screen.getByText('Display Label')).toBeInTheDocument();
     expect(screen.getByText('Test Document')).toBeInTheDocument();
@@ -115,7 +119,11 @@ describe('AttachmentDetails', () => {
     ]);
     render(<RoutesStub />);
 
-    await user.click(screen.getByText('divaClient_attachmentDetailsText'));
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_attachmentDetailsText',
+      }),
+    );
 
     expect(screen.getByText('Visibility')).toBeInTheDocument();
     expect(screen.getByText(/Public/)).toBeInTheDocument();
@@ -160,7 +168,11 @@ describe('AttachmentDetails', () => {
     ]);
     render(<RoutesStub />);
 
-    await user.click(screen.getByText('divaClient_attachmentDetailsText'));
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_attachmentDetailsText',
+      }),
+    );
 
     expect(screen.getByText('Registration Number')).toBeInTheDocument();
     expect(screen.getByText('REG-123456')).toBeInTheDocument();
@@ -191,7 +203,11 @@ describe('AttachmentDetails', () => {
     ]);
     render(<RoutesStub />);
 
-    await user.click(screen.getByText('divaClient_attachmentDetailsText'));
+    await user.click(
+      screen.getByRole('button', {
+        name: 'divaClient_attachmentDetailsText',
+      }),
+    );
 
     expect(screen.getByText('Attachment Version')).toBeInTheDocument();
     expect(screen.getByText('Final Version')).toBeInTheDocument();
@@ -209,7 +225,9 @@ describe('AttachmentDetails', () => {
     render(<RoutesStub />);
 
     expect(
-      screen.getByText('divaClient_attachmentDetailsText'),
+      screen.getByRole('button', {
+        name: 'divaClient_attachmentDetailsText',
+      }),
     ).toBeInTheDocument();
   });
 });
