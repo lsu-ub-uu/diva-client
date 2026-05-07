@@ -12,7 +12,7 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
   const language = useLanguage();
 
   return (
-    <dl>
+    <>
       <Term
         label={originInfo?.dateIssued?.__text?.[language]}
         value={<DateDisplay date={originInfo?.dateIssued} />}
@@ -34,6 +34,6 @@ export const OriginInfo = ({ originInfo }: OriginInfoProps) => {
       <Publishers
         publishers={originInfo?.name_otherType_publisher_type_corporate}
       />
-    </dl>
+    </>
   );
 };
