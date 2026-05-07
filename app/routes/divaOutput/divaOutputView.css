@@ -216,10 +216,6 @@ address {
   display: flex;
   align-items: flex-start;
   gap: var(--gap-l);
-  background: var(--color-output-card-background);
-  border-radius: var(--border-radius-s);
-  border: 1px solid var(--color-output-card-border);
-  padding: var(--gap);
 
   > :last-child {
     margin-left: auto;
