@@ -1,6 +1,7 @@
 import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 import {
   CheckCircleIcon,
   ChevronDownIcon,
@@ -18,29 +19,24 @@ interface RecordDetailsProps {
 export const RecordDetails = ({ output }: RecordDetailsProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
+  const user = useUser();
   return (
     <details className='record-details'>
       <summary>
         <ChevronDownIcon className='expand-chevron' />
-        <h2>{t('divaClient_recordDetailsText')}</h2>
+        {t('divaClient_recordDetailsText')}
         <InfoIcon />
       </summary>
-      <dl>
+      <dl className='compact'>
         <Term
           label={t('divaClient_createdText')}
-          value={
-            <TimestampAndUser
-              timestamp={output.recordInfo.tsCreated?.value}
-              userId={output.recordInfo.createdBy?.value}
-            />
-          }
+          value={<Timestamp timestamp={output.recordInfo.tsCreated?.value} />}
         />
         <Term
           label={t('divaClient_updatedText')}
           value={
-            <TimestampAndUser
+            <Timestamp
               timestamp={output.recordInfo.updated?.at(-1)?.tsUpdated?.value}
-              userId={output.recordInfo.updated?.at(-1)?.updatedBy?.value}
             />
           }
         />
@@ -67,15 +63,17 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
             )
           }
         />
-        <Term
-          label={output.dataQuality?.__text?.[language]}
-          value={
-            <span className='icon-text'>
-              {getDataQualityIcon(output.dataQuality?.value)}{' '}
-              {output.dataQuality?.__valueText?.[language]}
-            </span>
-          }
-        />
+        {user && (
+          <Term
+            label={output.dataQuality?.__text?.[language]}
+            value={
+              <span className='icon-text'>
+                {getDataQualityIcon(output.dataQuality?.value)}{' '}
+                {output.dataQuality?.__valueText?.[language]}
+              </span>
+            }
+          />
+        )}
         <Term
           label={output.adminInfo?.note_type_internal?.__text?.[language]}
           value={output.adminInfo?.note_type_internal?.value}
@@ -102,23 +100,12 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
   );
 };
 
-const TimestampAndUser = ({
-  timestamp,
-  userId,
-}: {
-  timestamp?: string;
-  userId?: string;
-}) => {
+const Timestamp = ({ timestamp }: { timestamp?: string }) => {
   const language = useLanguage();
-  if (!timestamp && !userId) {
+  if (!timestamp) {
     return null;
   }
-  return (
-    <span>
-      {formatTimestamp(timestamp, language)}
-      {userId && <> ({userId})</>}
-    </span>
-  );
+  return <span>{formatTimestamp(timestamp, language)}</span>;
 };
 
 const getDataQualityIcon = (dataQuality?: string) => {

@@ -18,6 +18,7 @@
 
 .breadcrumbs {
   font-size: var(--font-size-s);
+  max-width: 60rem;
 
   ol {
     list-style-type: none;

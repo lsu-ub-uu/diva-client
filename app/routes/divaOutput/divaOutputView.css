@@ -41,6 +41,7 @@ h1 {
 
 h2 {
   margin-top: var(--gap-l);
+  margin-bottom: var(--gap-s);
   font-size: 1.3rem;
 }
 
@@ -85,43 +86,51 @@ dd + dd {
 
 dd.block {
   display: block;
-  padding-left: var(--gap);
   margin-bottom: var(--gap-s);
+  padding-left: var(--gap);
 
   &::before {
     display: none;
   }
 }
 
-.inline-definitions {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  row-gap: var(--gap-s);
+dd.inline {
+  display: inline;
+}
 
+dl.inline-definitions {
   dt {
+    display: inline;
     margin-top: 0;
+
+    /* Force a line break before each dt */
+    &::before {
+      content: '';
+      display: block;
+      margin-top: var(--gap-s);
+    }
+
+    &:first-child::before {
+      margin-top: 0;
+    }
 
     &::after {
       content: ':';
     }
   }
 
-  dd:has(+ dd),
-  dd + dd {
-    padding-left: var(--gap);
+  dd {
+    display: inline;
+  }
+}
 
-    &::before {
-      display: none;
-    }
-
-    grid-column: 2;
+dl.compact {
+  dt {
+    margin-top: var(--gap);
   }
 }
 
 section {
-  border-bottom: 1px solid var(--color-thin-border);
-  padding-bottom: var(--gap-l);
-
   dt:first-child {
     margin-top: 0;
   }
@@ -190,10 +199,6 @@ address {
 
 .affiliation {
   margin-top: var(--gap);
-
-  dl {
-    padding-left: var(--gap-l);
-  }
 }
 
 .attachments {
@@ -203,18 +208,38 @@ address {
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    width: max-content;
+    max-width: 100%;
   }
+}
+
+.presentation-image {
+  width: 250px;
+  margin-bottom: var(--gap-l);
+  border: 1px solid var(--color-output-card-border);
+  border-radius: var(--border-radius-s);
 }
 
 .attachment {
   margin-bottom: var(--gap-l);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-l);
+
+  > :last-child {
+    margin-left: auto;
+  }
+}
+
+.attachment-heading {
+  font-size: var(--font-size-h4);
+  margin-top: 0;
 }
 
 .attachment-thumbnail {
-  width: 250px;
+  width: 60px;
   margin-bottom: var(--gap-s);
-  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+  border: 1px solid var(--color-output-card-border);
   border-radius: var(--border-radius-s);
 }
 
@@ -223,7 +248,7 @@ address {
   padding: var(--gap);
   border-radius: var(--border-radius-s);
   border: 1px solid var(--color-output-card-border);
-  margin-bottom: var(--gap-xl);
+  margin-block: var(--gap-xl);
 
   summary {
     cursor: pointer;

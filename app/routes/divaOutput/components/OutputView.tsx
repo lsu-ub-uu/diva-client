@@ -30,6 +30,7 @@ import {
   getFullTitleForOutput,
   getTitleFromTitleInfo,
 } from '@/utils/getRecordTitle';
+import { PresentationImage } from './PresentationImage';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -89,6 +90,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
                     ?.__valueText?.[language],
               )}
             />
+            <OriginInfo originInfo={output.originInfo} />
 
             {output.artisticWork_type_outputType && (
               <Term
@@ -116,9 +118,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
                 output.note_type_publicationStatus?.__valueText?.[language]
               }
             />
-          </dl>
-
-          <dl>
             <Term
               label={
                 output.physicalDescription?.extent_unit_pages?.__text?.[
@@ -165,7 +164,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             <Project key={index} project={project} />
           ))}
 
-          {output.relatedItem_type_funder?.map((funder, index) => (
+          {output.name_otherType_funder_type_corporate?.map((funder, index) => (
             <Funder key={index} funder={funder} />
           ))}
 
@@ -194,10 +193,31 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside className='grid-col-4 grid-col-m-12'>
-        <RecordDetails output={output} />
-
+        <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
         <dl>
+          {output.location_displayLabel_orderLink?.map((orderLink, index) => (
+            <Term
+              key={index}
+              label={orderLink.__text?.[language]}
+              value={
+                orderLink && (
+                  <Location location={orderLink} icon={<ShoppingCartIcon />} />
+                )
+              }
+            />
+          ))}
+          {output.location && (
+            <>
+              <dt>{output.location?.[0].__text?.[language]}</dt>
+              {output.location?.map((location, index) => (
+                <dd key={index}>
+                  <Location location={location} />
+                </dd>
+              ))}
+            </>
+          )}
+
           <Term
             label={
               output['accessCondition_authority_kb-se']?.__text?.[language]
@@ -206,9 +226,6 @@ export const OutputView = ({ data }: OutputViewProps) => {
               output['accessCondition_authority_kb-se']?.__valueText?.[language]
             }
           />
-        </dl>
-        <OriginInfo originInfo={output.originInfo} />
-        <dl>
           <Term
             label={output.dateOther_type_patent?.__text?.[language]} //Patent
             value={<DateDisplay date={output.dateOther_type_patent} />}
@@ -224,32 +241,11 @@ export const OutputView = ({ data }: OutputViewProps) => {
             label={output.patentCountry?.__text?.[language]}
             value={output.patentCountry?.__valueText?.[language]}
           />
-
-          {output.location && (
-            <>
-              <dt>{output.location?.[0].__text?.[language]}</dt>
-              {output.location?.map((location, index) => (
-                <dd key={index}>
-                  <Location location={location} />
-                </dd>
-              ))}
-            </>
-          )}
-          <Term
-            label={output.location_displayLabel_orderLink?.__text?.[language]}
-            value={
-              output.location_displayLabel_orderLink && (
-                <Location
-                  location={output.location_displayLabel_orderLink}
-                  icon={<ShoppingCartIcon />}
-                />
-              )
-            }
-          />
         </dl>
         <Identifiers output={output} />
 
         <Classifications output={output} />
+        <RecordDetails output={output} />
       </aside>
     </>
   );

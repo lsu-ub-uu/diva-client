@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Funder } from '../Funder';
 import { render, screen } from '@testing-library/react';
-import type { RelatedItemFunderGroup } from '@/generatedTypes/divaTypes';
+import type { NameOrganisationFunderGroup } from '@/generatedTypes/divaTypes';
 import { createRoutesStub } from 'react-router';
 
 describe('Funder', () => {
@@ -31,14 +31,11 @@ describe('Funder', () => {
         },
         __text: { en: 'Linked funder' },
       },
-      identifier_type_project: {
-        value: '123456789',
-        _type: 'project',
-        __text: { en: 'project' },
-      },
-      _type: 'funder',
+      role: { roleTerm: { value: 'fnd' } },
+      _type: 'corporate',
+      _otherType: 'funder',
       __text: { en: 'Funder' },
-    } as RelatedItemFunderGroup;
+    } as NameOrganisationFunderGroup;
 
     const RoutesStub = createRoutesStub([
       { path: '/', Component: () => <Funder funder={funder} /> },
@@ -47,7 +44,6 @@ describe('Funder', () => {
 
     expect(screen.getByRole('heading')).toHaveTextContent('Funder');
     expect(screen.getByRole('link')).toHaveTextContent('Linked funder SV');
-    expect(screen.getByText('123456789')).toBeInTheDocument();
   });
 
   it('Render linked funder english name', () => {
@@ -79,9 +75,11 @@ describe('Funder', () => {
         },
         __text: { en: 'Linked funder' },
       },
-      _type: 'funder',
+      role: { roleTerm: { value: 'fnd' } },
+      _type: 'corporate',
+      _otherType: 'funder',
       __text: { en: 'Funder' },
-    } as RelatedItemFunderGroup;
+    } as NameOrganisationFunderGroup;
 
     const RoutesStub = createRoutesStub([
       { path: '/', Component: () => <Funder funder={funder} /> },
@@ -89,5 +87,20 @@ describe('Funder', () => {
     render(<RoutesStub />);
 
     expect(screen.getByRole('link')).toHaveTextContent('Linked funder EN');
+  });
+
+  it('renders a text funder', () => {
+    const funder = {
+      role: { roleTerm: { value: 'fnd' } },
+      namePart_type_funder: { value: 'Text funder', __text: { en: 'Funder' } },
+      _type: 'corporate',
+      _otherType: 'funder',
+      __text: { en: 'Funder heading' },
+    } as NameOrganisationFunderGroup;
+
+    render(<Funder funder={funder} />);
+
+    expect(screen.getByRole('heading')).toHaveTextContent('Funder heading');
+    expect(screen.getByText('Text funder')).toBeInTheDocument();
   });
 });

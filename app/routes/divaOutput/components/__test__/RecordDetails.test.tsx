@@ -1,5 +1,5 @@
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -52,10 +52,10 @@ describe('RecordDetails', () => {
     await user.click(screen.getByText('divaClient_recordDetailsText'));
 
     expect(screen.getByText('divaClient_createdText')).toBeVisible();
-    expect(screen.getByText('2023-01-01T12:00:00.000Z (user1)')).toBeVisible();
+    expect(screen.getByText('2023-01-01T12:00:00.000Z')).toBeVisible();
 
     expect(screen.getByText('divaClient_updatedText')).toBeVisible();
-    expect(screen.getByText('2023-02-01T12:00:00.000Z (user2)')).toBeVisible();
+    expect(screen.getByText('2023-02-01T12:00:00.000Z')).toBeVisible();
 
     expect(screen.getByText('Visibility')).toBeVisible();
     expect(screen.getByText('Public (2023-03-01T12:00:00.000Z)')).toBeVisible();
@@ -178,5 +178,114 @@ describe('RecordDetails', () => {
 
     expect(screen.getByText('Reviewed')).toBeVisible();
     expect(screen.getByText('Yes')).toBeVisible();
+  });
+
+  it('does not show data quality when user is not logged in', async () => {
+    const user = userEvent.setup();
+    const mockData = {
+      recordInfo: {
+        createdBy: { __text: { en: 'Created By' }, value: 'user1' },
+        tsCreated: {
+          __text: { en: 'Created At' },
+          value: '2023-01-01T12:00:00Z',
+        },
+        updated: [
+          {
+            updatedBy: { __text: { en: 'Updated By' }, value: 'user2' },
+            tsUpdated: {
+              __text: { en: 'Updated At' },
+              value: '2023-02-01T12:00:00Z',
+            },
+          },
+        ],
+        visibility: {
+          __text: { en: 'Visibility' },
+          __valueText: { en: 'Public' },
+        },
+        tsVisibility: {
+          __text: { en: 'Visibility Timestamp' },
+          value: '2023-03-01T12:00:00Z',
+        },
+      },
+      dataQuality: {
+        value: '2026',
+        __text: { en: 'Data quality' },
+        __valueText: { en: 'DiVA 2026' },
+      },
+    } as DivaOutputGroup;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => <RecordDetails output={mockData} />,
+        loader: () => {
+          return { user: null };
+        },
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() => {
+      expect(screen.getByText('divaClient_recordDetailsText')).toBeVisible();
+    });
+    await user.click(screen.getByText('divaClient_recordDetailsText'));
+
+    expect(screen.queryByText('Data quality')).not.toBeInTheDocument();
+  });
+
+  it('shows data quality when user is logged in', async () => {
+    const user = userEvent.setup();
+    const mockData = {
+      recordInfo: {
+        createdBy: { __text: { en: 'Created By' }, value: 'user1' },
+        tsCreated: {
+          __text: { en: 'Created At' },
+          value: '2023-01-01T12:00:00Z',
+        },
+        updated: [
+          {
+            updatedBy: { __text: { en: 'Updated By' }, value: 'user2' },
+            tsUpdated: {
+              __text: { en: 'Updated At' },
+              value: '2023-02-01T12:00:00Z',
+            },
+          },
+        ],
+        visibility: {
+          __text: { en: 'Visibility' },
+          __valueText: { en: 'Public' },
+        },
+        tsVisibility: {
+          __text: { en: 'Visibility Timestamp' },
+          value: '2023-03-01T12:00:00Z',
+        },
+      },
+      dataQuality: {
+        value: '2026',
+        __text: { en: 'Data quality' },
+        __valueText: { en: 'DiVA 2026' },
+      },
+    } as DivaOutputGroup;
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => <RecordDetails output={mockData} />,
+        loader: () => ({ user: { name: 'Test User' } }),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() => {
+      expect(screen.getByText('divaClient_recordDetailsText')).toBeVisible();
+    });
+    await user.click(screen.getByText('divaClient_recordDetailsText'));
+
+    expect(screen.getByText('Data quality')).toBeVisible();
+    expect(screen.getByText('DiVA 2026')).toBeVisible();
   });
 });

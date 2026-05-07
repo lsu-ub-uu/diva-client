@@ -1,6 +1,6 @@
 import type {
   DivaFunder,
-  RelatedItemFunderGroup,
+  NameOrganisationFunderGroup,
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { getTitleForFunder } from '@/utils/getRecordTitle';
@@ -9,7 +9,7 @@ import { href, Link } from 'react-router';
 import { Term } from './Term';
 
 interface FunderProps {
-  funder: RelatedItemFunderGroup | undefined;
+  funder: NameOrganisationFunderGroup | undefined;
 }
 
 export const Funder = ({ funder }: FunderProps) => {
@@ -40,8 +40,8 @@ export const Funder = ({ funder }: FunderProps) => {
           />
         )}
         <Term
-          label={funder.identifier_type_project?.__text?.[language]}
-          value={funder.identifier_type_project?.value}
+          label={funder.namePart_type_funder?.__text?.[language]}
+          value={funder.namePart_type_funder?.value}
         />
       </dl>
     </section>

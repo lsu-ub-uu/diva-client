@@ -256,53 +256,6 @@ describe('RecordActionBar', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders with a record with a api path', () => {
-    const record = {
-      id: '1234',
-      recordType: 'diva-person',
-      validationType: 'diva-person',
-      updated: [],
-      userRights: [],
-      actionLinks: {},
-      data: {
-        someRootGroup: {
-          recordInfo: {
-            id: {
-              value: '1234',
-              required: true,
-            },
-            type: {
-              value: 'diva-person',
-              required: true,
-            },
-            validationType: {
-              value: 'diva-person',
-              required: true,
-            },
-            inTrashBin: {
-              value: 'false',
-              required: true,
-            },
-            required: true,
-          },
-        },
-      },
-    } as BFFDataRecord;
-
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <RecordActionBar record={record} apiUrl='someUrl/1234' />
-        ),
-      },
-    ]);
-
-    render(<RoutesStub />);
-
-    expect(screen.getByText('divaClient_viewInApiText')).toBeInTheDocument();
-  });
-
   it('does not show view record link when user lacks read right', () => {
     const record = {
       id: '1234',
@@ -498,6 +451,54 @@ describe('RecordActionBar', () => {
     expect(
       screen.queryByRole('button', { name: 'divaClient_trashRecordText' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('does not render at all when there are no actions', () => {
+    const record = {
+      id: '1234',
+      recordType: 'diva-person',
+      validationType: 'diva-person',
+      updated: [],
+      userRights: [],
+      actionLinks: {},
+      data: {
+        someRootGroup: {
+          recordInfo: {
+            id: {
+              value: '1234',
+              required: true,
+            },
+            type: {
+              value: 'diva-person',
+              required: true,
+            },
+            validationType: {
+              value: 'diva-person',
+              required: true,
+            },
+            inTrashBin: {
+              value: 'false',
+              required: true,
+            },
+            required: true,
+          },
+        },
+      },
+    } as BFFDataRecord;
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <div data-testid='wrapper'>
+            <RecordActionBar record={record} />
+          </div>
+        ),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    expect(screen.getByTestId('wrapper').children).toHaveLength(0);
   });
 
   it('does not show untrash button when user lacks untrash right', () => {
