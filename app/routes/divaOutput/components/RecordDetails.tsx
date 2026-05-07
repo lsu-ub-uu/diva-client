@@ -24,7 +24,7 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
     <details className='record-details'>
       <summary>
         <ChevronDownIcon className='expand-chevron' />
-        <h2>{t('divaClient_recordDetailsText')}</h2>
+        {t('divaClient_recordDetailsText')}
         <InfoIcon />
       </summary>
       <dl className='compact'>
