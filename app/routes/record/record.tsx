@@ -38,7 +38,6 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { recordType, recordId } = params;
-  const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
   const dependencies = await getDependencies();
   try {
     const record = await getRecordByRecordTypeAndRecordId({
@@ -53,7 +52,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     const pageTitle =
       getRecordTitle(record, language) || t('divaClient_missingTitleText');
 
-    return { record, breadcrumb, pageTitle, apiUrl };
+    return { record, breadcrumb, pageTitle };
   } catch (error) {
     throw createRouteErrorResponse(error);
   }
@@ -107,7 +106,7 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
-  const { record, apiUrl } = loaderData;
+  const { record } = loaderData;
 
   function isInTrashBin() {
     const rootGroup = Object.values(record.data)[0];
@@ -124,7 +123,7 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
         )}
         <div className='top-bar grid-col-12'>
           <Breadcrumbs />
-          <RecordActionBar record={record} apiUrl={apiUrl} />
+          <RecordActionBar record={record} />
         </div>
       </div>
       <Outlet />
