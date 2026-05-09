@@ -1,7 +1,6 @@
-import type { BFFValidationType } from '@/cora/transform/bffTypes.server';
-import { listToPool } from '@/utils/structs/listToPool';
+import type { BFFValidationType, Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it, vi } from 'vitest';
-import type { Dependencies } from '../formDefinition/formDefinitionsDep.server';
 import { getValidationTypes } from '../getValidationTypes.server';
 
 vi.mock('@/cora/getSearchResultDataListBySearchType.server');

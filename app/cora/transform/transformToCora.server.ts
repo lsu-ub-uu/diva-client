@@ -24,7 +24,7 @@ import type {
   RecordLink,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { BFFDataResourceLink } from '@/types/record';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
@@ -235,7 +235,7 @@ export const isRepeating = (value: any) => {
 };
 
 export const isVariable = (item: DataGroup | DataAtomic) => {
-  return 'value' in item;
+  return 'value' in item && typeof item.value !== 'object';
 };
 
 export const createLeaf = (

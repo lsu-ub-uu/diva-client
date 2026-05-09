@@ -23,7 +23,6 @@ import {
 } from '@/__mocks__/data/form/alternativePresentation';
 import {
   formSchemaWithBinary,
-  linkedBinaryMock,
   recordWithBinary,
 } from '@/__mocks__/data/form/binary';
 import { formDefWithOneCollectionVariableWithModeOutput } from '@/__mocks__/data/form/collVar';
@@ -58,7 +57,7 @@ import type {
 } from '@/types/record';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRoutesStub } from 'react-router';
+import { createRoutesStub, Link } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
 const actionSpy = vi.fn();
@@ -101,6 +100,89 @@ describe('<Form />', () => {
   }));
 
   describe('form', () => {
+    it('asks for confirmation before navigating away with unsaved changes', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <Link to={'/other-page'}>Go to other page</Link>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+        {
+          path: '/other-page',
+          Component: () => <div>This is the other page</div>,
+        },
+      ]);
+
+      const user = userEvent.setup();
+
+      render(<RoutesStub />);
+
+      user.type(screen.getByRole('textbox'), 'some unsaved changes');
+
+      user.click(screen.getByRole('link', { name: 'Go to other page' }));
+
+      expect(
+        screen.queryByText('This is the other page'),
+      ).not.toBeInTheDocument();
+
+      expect(
+        screen.getByText('divaClient_unsavedChangesConfirmHeadingText'),
+      ).toBeInTheDocument();
+
+      user.click(
+        screen.getByRole('button', {
+          name: 'divaClient_unsavedChangesConfirmButtonText',
+          hidden: true, // workaround because jsdom doesn't handle native dialogs
+        }),
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('This is the other page')).toBeInTheDocument();
+      });
+    });
+
+    it('does not ask for confirmation before navigating away with no unsaved changes', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <Link to={'/other-page'}>Go to other page</Link>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+        {
+          path: '/other-page',
+          Component: () => <div>This is the other page</div>,
+        },
+      ]);
+
+      const user = userEvent.setup();
+
+      render(<RoutesStub />);
+
+      user.click(screen.getByRole('link', { name: 'Go to other page' }));
+
+      await waitFor(() => {
+        expect(screen.getByText('This is the other page')).toBeInTheDocument();
+      });
+    });
+
     it('renders a form from a given definition', () => {
       render(<RecordFormWithRoutesStub formSchema={formDefWithTextVar} />);
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
@@ -218,7 +300,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -369,7 +450,6 @@ describe('<Form />', () => {
                     'parentNationalSubjectCategoryPLink',
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -512,7 +592,6 @@ describe('<Form />', () => {
                     repeatMin: 1,
                     repeatMax: 1,
                   },
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -610,7 +689,6 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
@@ -708,12 +786,10 @@ describe('<Form />', () => {
                       gridColSpan: 6,
                     },
                   ],
-                  presentationStyle: '',
                   childStyle: [],
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
               childStyle: [],
               gridColSpan: 12,
             },
@@ -1404,34 +1480,14 @@ describe('<Form />', () => {
             />
           ),
         },
-        {
-          path: '/record/:recordType/:recordId',
-          loader: () => {
-            return { record: linkedBinaryMock };
-          },
-        },
-        {
-          path: '/binary/:id/:name',
-          loader: () => {
-            return '';
-          },
-        },
       ]);
 
       await act(() => render(<RoutesStub />));
-      expect(
-        screen.getByRole('heading', {
-          level: 2,
-          name: /attachmentgrouptext/i,
-        }),
-      ).toBeInTheDocument();
 
       expect(screen.getByRole('presentation')).toHaveAttribute(
         'src',
-        '/binary/binary:1283806137807105/thumbnail',
+        '/binary/binary:34466800953608169/binary',
       );
-
-      expect(screen.getByText('cat.jpg')).toBeInTheDocument();
 
       const downloadLink = screen.getByRole('link', {
         name: /resourcelinkdownloadtext/i,
@@ -1439,7 +1495,7 @@ describe('<Form />', () => {
 
       expect(downloadLink).toHaveAttribute(
         'href',
-        '/binary/binary:1283806137807105/master',
+        '/binary/binary:34466800953608169/binary',
       );
       expect(downloadLink).toHaveAttribute('type', 'image/jpeg');
     });
@@ -2348,78 +2404,6 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(screen.getByRole('button', { name: 'someTitle' }));
       expect(screen.getByText('Some data')).toBeInTheDocument();
-    });
-  });
-
-  describe('trash bin', () => {
-    it('hides trash bin collection var from input form', () => {
-      const formSchema: RecordFormSchema = {
-        validationTypeId: 'someValidationTypeId',
-        form: {
-          type: 'group',
-          label: 'someRootFormGroupText',
-          showLabel: true,
-          name: 'someRootNameInData',
-          mode: 'input',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          components: [
-            {
-              type: 'group',
-              mode: 'input',
-              name: 'recordInfo',
-              label: 'Group',
-              showLabel: true,
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              components: [
-                {
-                  mode: 'input',
-                  showLabel: true,
-                  type: 'collectionVariable',
-                  name: 'inTrashBin',
-                  label: 'trashBinCollectionVarText',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1,
-                  },
-                  options: [
-                    { value: 'false', label: 'falseItemText' },
-                    { value: 'true', label: 'trueItemText' },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      };
-
-      const record = {
-        id: 'someId',
-        recordType: 'someRecordType',
-        validationType: 'someValidationType',
-        actionLinks: {
-          read: { url: '', requestMethod: 'get', rel: 'read' },
-        },
-        userRights: ['read', 'update', 'index', 'delete', 'trash'],
-        data: {
-          recordInfo: {
-            inTrashBin: { value: 'false', required: true },
-          },
-        },
-      } as BFFDataRecord<BFFDataRecordData>;
-
-      render(
-        <RecordFormWithRoutesStub formSchema={formSchema} record={record} />,
-      );
-
-      expect(
-        screen.queryByLabelText('trashBinCollectionVarText'),
-      ).not.toBeInTheDocument();
     });
   });
 });

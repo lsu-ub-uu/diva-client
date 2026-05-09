@@ -3,7 +3,6 @@ import {
   ArchiveRestoreIcon,
   BookCheckIcon,
   BookDashedIcon,
-  CodeIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
@@ -16,14 +15,9 @@ import { ActionBarButton } from './ActionBarButton';
 
 interface ActionBarProps {
   record: BFFDataRecord;
-  apiUrl?: string;
   className?: string;
 }
-export const RecordActionBar = ({
-  record,
-  apiUrl,
-  className,
-}: ActionBarProps) => {
+export const RecordActionBar = ({ record, className }: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
@@ -32,6 +26,20 @@ export const RecordActionBar = ({
   const isOnViewPage =
     matches.at(-1)?.id === 'routes/record/recordView' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
+
+  const rights = record.userRights ?? [];
+  const hasActions =
+    (!isOnViewPage && rights.includes('read')) ||
+    (!isOnUpdatePage && rights.includes('update')) ||
+    rights.includes('publish') ||
+    rights.includes('unpublish') ||
+    rights.includes('trash') ||
+    rights.includes('untrash') ||
+    rights.includes('delete');
+
+  if (!hasActions) {
+    return null;
+  }
 
   const deleteRecord = () => {
     fetcher.submit(
@@ -159,6 +167,7 @@ export const RecordActionBar = ({
             headingText: t('divaClient_confirmTrashHeadingText'),
             messageText: t('divaClient_confirmTrashText'),
             confirmButtonText: t('divaClient_trashRecordText'),
+            cancelButtonText: t('divaClient_cancelText'),
           }}
         >
           {t('divaClient_trashRecordText')}
@@ -182,20 +191,10 @@ export const RecordActionBar = ({
             headingText: t('divaClient_confirmDeleteHeadingText'),
             messageText: t('divaClient_confirmDeleteText'),
             confirmButtonText: t('divaClient_deleteRecordText'),
+            cancelButtonText: t('divaClient_cancelText'),
           }}
         >
           {t('divaClient_deleteRecordText')}
-        </ActionBarButton>
-      )}
-      {apiUrl && (
-        <ActionBarButton
-          as='a'
-          href={apiUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          icon={<CodeIcon />}
-        >
-          {t('divaClient_viewInApiText')}
         </ActionBarButton>
       )}
     </ActionBar>

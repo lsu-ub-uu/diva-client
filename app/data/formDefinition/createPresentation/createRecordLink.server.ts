@@ -18,31 +18,33 @@
  */
 
 import type {
-  FormComponent,
+  FormAttributeCollection,
   FormComponentRecordLink,
 } from '@/components/FormGenerator/types';
 import type {
-  BFFMetadataChildReference,
   BFFMetadataRecordLink,
-  BFFPresentationChildReference,
   BFFPresentationRecordLink,
-} from '@/cora/transform/bffTypes.server';
-import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { type CommonParameters } from '@/data/formDefinition/utils/createCommonParameters.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
-import type { Dependencies } from '../formDefinitionsDep.server';
-import { createAttributes } from './createAttributes';
+import type {
+  PresentationChildReferenceData,
+  Repeat,
+} from './createPresentationComponent';
 import { createRecordLinkSearchPresentation } from './createRecordLinkSearchPresentation.server';
-import { createRepeat } from './createRepeat.server';
 
 export const createRecordLink = (
   dependencies: Dependencies,
   metadata: BFFMetadataRecordLink,
   presentation: BFFPresentationRecordLink,
-  metadataChildReference: BFFMetadataChildReference,
-  presentationChildReference: BFFPresentationChildReference,
-  alternativePresentation: FormComponent | undefined,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
 ): FormComponentRecordLink => {
+  const finalValue = metadata.finalValue;
   const recordLinkType = metadata.linkedRecordType;
   const type = metadata.type;
   let searchPresentation;
@@ -58,44 +60,32 @@ export const createRecordLink = (
   }
   const presentationRecordLinkId = presentation.id;
 
-  const repeat = createRepeat(
-    presentationChildReference,
-    metadataChildReference,
-  );
-
-  const attributes = createAttributes(
-    metadata,
-    dependencies.metadataPool,
-    undefined,
-    presentation.mode,
-  );
-
   const {
     childStyle,
     textStyle,
-    gridColSpan,
     presentationSize,
     title,
     titleHeadlineLevel,
     addText,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
     showLabel,
     attributesToShow,
-  } = createCommonParameters(metadata, presentation);
+  } = commonParameters;
 
   return removeEmpty({
     presentationId: presentation.id,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
@@ -107,12 +97,12 @@ export const createRecordLink = (
     linkedRecordPresentation,
     presentationRecordLinkId,
     presentAs: presentation.presentAs,
+    finalValue,
     attributes,
     repeat,
     childStyle,
     textStyle,
     gridColSpan,
-    alternativePresentation,
     presentationSize,
     title,
     titleHeadlineLevel,

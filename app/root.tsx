@@ -16,12 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import divaLogo from '@/assets/divaLogo.svg';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
-import { i18nCookie } from '@/i18n/i18nCookie.server';
+import { getNavigation } from '@/data/getNavigation.server';
+import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
+import { AngryIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,
@@ -33,12 +36,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import rootCss from './styles/root.css?url';
-import divaLogo from '@/assets/divaLogo.svg';
-import { getNavigation } from '@/data/getNavigation.server';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { AngryIcon } from 'lucide-react';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -50,26 +48,28 @@ import {
 import { Alert, type Severity } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
+import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
   serializeUserPreferencesCookie,
+  type UserPreferences,
 } from './userPreferences/userPreferencesCookie.server';
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { dependencies } = context.get(dependenciesContext);
   const { auth, notification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const exampleUsers = dependencies.deploymentInfo.exampleUsers;
-  const applicationVersion = dependencies.deploymentInfo.applicationVersion;
+  const { exampleUsers, applicationVersion } = await getDeploymentInfo();
   const locale = context.get(i18nContext).language;
   const navigation = await getNavigation(dependencies, member, auth);
   const user = auth && createUser(auth);
@@ -98,33 +98,43 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get('intent');
+  const userPreferences = await parseUserPreferencesCookie(request);
 
   if (intent === 'changeLanguage') {
-    return await changeLanguage(formData);
+    return await changeLanguage(userPreferences, formData);
   }
 
   if (intent === 'changeColorScheme') {
-    return await changeColorScheme(formData);
+    return await changeColorScheme(userPreferences, formData);
   }
 
   return {};
 }
 
-const changeLanguage = async (formData: FormData) => {
+const changeLanguage = async (
+  userPreferences: UserPreferences,
+  formData: FormData,
+) => {
   const language = formData.get('language');
-  if (typeof language === 'string') {
+  if (language === 'sv' || language === 'en' || language === 'cimode') {
     return data(
       {},
       {
         headers: {
-          'Set-Cookie': await i18nCookie.serialize(language),
+          'Set-Cookie': await serializeUserPreferencesCookie({
+            ...userPreferences,
+            language,
+          }),
         },
       },
     );
   }
 };
 
-const changeColorScheme = async (formData: FormData) => {
+const changeColorScheme = async (
+  userPreferences: UserPreferences,
+  formData: FormData,
+) => {
   const colorScheme = formData.get('colorScheme');
   if (colorScheme === 'light' || colorScheme === 'dark') {
     return data(
@@ -132,6 +142,7 @@ const changeColorScheme = async (formData: FormData) => {
       {
         headers: {
           'Set-Cookie': await serializeUserPreferencesCookie({
+            ...userPreferences,
             colorScheme,
           }),
         },

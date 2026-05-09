@@ -6,5 +6,6 @@
   "terminal.explorerKind": "external",
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "disabled"
 }

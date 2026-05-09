@@ -2,7 +2,7 @@ import { vi, describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MainSearchInput } from '../MainSearchInput';
-import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
+import type { BFFMetadata } from '@/cora/bffTypes.server';
 
 const mainSearchTerm = {
   textId: 'mainSearchText',

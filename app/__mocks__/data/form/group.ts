@@ -306,12 +306,12 @@ export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -382,12 +382,12 @@ export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
             mode: 'input',
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -451,12 +451,12 @@ export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
               presentationRecordLinkId: 'funderPLink',
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -623,12 +623,12 @@ export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -731,12 +731,12 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordF
               gridColSpan: 6,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -833,12 +833,12 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFor
               gridColSpan: 6,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -935,12 +935,12 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordF
               gridColSpan: 6,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1052,17 +1052,17 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordF
                   gridColSpan: 6,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1176,17 +1176,17 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithNumberVar: Recor
                   gridColSpan: 6,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1300,17 +1300,17 @@ export const formDefWithOptionalGroupWithNestedOptionalGroupWithCollVar: RecordF
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1406,12 +1406,12 @@ export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -1586,32 +1586,32 @@ export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
                               gridColSpan: 6,
                             },
                           ],
-                          presentationStyle: '',
+
                           childStyle: [],
                           gridColSpan: 12,
                         },
                       ],
-                      presentationStyle: '',
+
                       childStyle: [],
                       gridColSpan: 12,
                     },
                   ],
-                  presentationStyle: '',
+
                   childStyle: [],
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1704,7 +1704,7 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
@@ -1796,12 +1796,12 @@ export const formDefTitleInfoGroup: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -1894,7 +1894,7 @@ export const formDefTitleInfoGroupSameNameInData: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
@@ -1986,12 +1986,12 @@ export const formDefTitleInfoGroupSameNameInData: RecordFormSchema = {
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -2139,12 +2139,12 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             gridColSpan: 6,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -2235,12 +2235,12 @@ export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
             gridColSpan: 6,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -2371,7 +2371,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           ],
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -2489,12 +2489,12 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: Re
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -2612,12 +2612,12 @@ export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: Re
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -2708,7 +2708,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
             gridColSpan: 6,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
@@ -2841,22 +2841,22 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
                     gridColSpan: 6,
                   },
                 ],
-                presentationStyle: '',
+
                 childStyle: [],
                 gridColSpan: 12,
               },
             ],
-            presentationStyle: '',
+
             childStyle: [],
             gridColSpan: 12,
           },
         ],
-        presentationStyle: '',
+
         childStyle: [],
         gridColSpan: 12,
       },
     ],
-    presentationStyle: '',
+
     childStyle: [],
     gridColSpan: 12,
   },
@@ -2974,7 +2974,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
               gridColSpan: 6,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
@@ -3072,7 +3072,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
               gridColSpan: 6,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },

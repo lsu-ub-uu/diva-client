@@ -33,15 +33,14 @@ describe('RecordLinkWithLinkedPresentation', () => {
         ),
       },
       {
-        path: 'record/:recordType/:recordId',
+        path: 'linkedRecord/:recordType/:recordId',
         loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
           record: {
-            presentation: formDefWithTwoTextVariableWithModeOutput,
-            data: {
-              someRootNameInData: {
-                someTextVar: {
-                  value: 'someValue',
-                },
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
               },
             },
           },
@@ -54,39 +53,6 @@ describe('RecordLinkWithLinkedPresentation', () => {
     await waitFor(() =>
       expect(screen.getByText('someValue')).toBeInTheDocument(),
     );
-  });
-
-  it('renders link button to linked record', () => {
-    const mockComponent = {
-      linkedRecordPresentation: {
-        presentedRecordType: 'someType',
-        presentationId: 'somePresentationId',
-      },
-      showLabel: true,
-      label: 'someLabel',
-    } as FormComponentRecordLink;
-
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': 'someId' }}>
-            <RecordLinkWithLinkedPresentation
-              component={mockComponent}
-              name='some.name'
-            />
-          </MockFormProvider>
-        ),
-      },
-      {
-        path: 'record/:recordType/:recordId',
-      },
-    ]);
-    render(<RoutesStub />);
-
-    expect(
-      screen.getByRole('link', { name: 'divaClient_linkToRecordText' }),
-    ).toHaveAttribute('href', '/someType/someId');
   });
 
   it('renders clear button when input mode and not repeating', () => {
@@ -114,7 +80,18 @@ describe('RecordLinkWithLinkedPresentation', () => {
         ),
       },
       {
-        path: 'record/:recordType/:recordId',
+        path: 'linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
       },
     ]);
     render(<RoutesStub />);
@@ -149,7 +126,18 @@ describe('RecordLinkWithLinkedPresentation', () => {
         ),
       },
       {
-        path: 'record/:recordType/:recordId',
+        path: 'linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
       },
     ]);
     render(<RoutesStub />);
@@ -184,7 +172,18 @@ describe('RecordLinkWithLinkedPresentation', () => {
         ),
       },
       {
-        path: 'record/:recordType/:recordId',
+        path: 'linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
       },
     ]);
     render(<RoutesStub />);

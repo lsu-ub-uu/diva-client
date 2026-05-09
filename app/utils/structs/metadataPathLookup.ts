@@ -18,7 +18,7 @@
  */
 
 import { removeEmpty } from './removeEmpty';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type {
   DataAtomic,
   DataGroup,

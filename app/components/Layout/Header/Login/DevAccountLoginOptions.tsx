@@ -18,8 +18,8 @@
 
 import { useTranslation } from 'react-i18next';
 
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
 import { MenuItem } from '@/components/Menu/MenuItem';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 
 interface DevAccountsProps {
   exampleUsers: ExampleUser[];

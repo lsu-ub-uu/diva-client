@@ -1,27 +1,28 @@
 import type { RelatedItemProjectGroup } from '@/generatedTypes/divaTypes';
-import { useLanguage } from '@/i18n/useLanguage';
+import { getFullTitleForProject } from '@/utils/getRecordTitle';
 import { useId } from 'react';
 import { href, Link } from 'react-router';
+import { DataText } from './DataText';
 import { Term } from './Term';
 import { TitleInfo } from './TitleInfo';
-import { createTitle } from '../utils/createTitle';
 
 interface ProjectProps {
   project: RelatedItemProjectGroup | undefined;
 }
 
 export const Project = ({ project }: ProjectProps) => {
-  const language = useLanguage();
   const id = useId();
   if (!project) return null;
 
   return (
     <section aria-labelledby={id}>
-      <h2 id={id}>{project.__text?.[language]}</h2>
+      <h2 id={id}>
+        <DataText data={project} />
+      </h2>
       <dl>
         {project.project && (
           <Term
-            label={project.project?.__text?.[language]}
+            label={project.project}
             value={
               <Link
                 to={href('/:recordType/:recordId', {
@@ -31,12 +32,16 @@ export const Project = ({ project }: ProjectProps) => {
                   recordId: project.project?.value,
                 })}
               >
-                {createTitle(project.project?.linkedRecord?.project?.titleInfo)}
+                {getFullTitleForProject(project.project?.linkedRecord)}
               </Link>
             }
           />
         )}
         <TitleInfo titleInfo={project.titleInfo} />
+        <Term
+          label={project.identifier_type_project}
+          value={project.identifier_type_project?.value}
+        />
       </dl>
     </section>
   );

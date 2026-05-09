@@ -132,13 +132,16 @@ describe('Organisation', () => {
         displayName: undefined,
         linkedRecord: {
           organisation: {
-            authority_lang_swe: {
-              name_type_corporate: {
-                namePart: {
-                  value: 'Länkad organisation',
+            authority: [
+              {
+                _lang: 'swe',
+                name_type_corporate: {
+                  namePart: {
+                    value: 'Länkad organisation',
+                  },
                 },
               },
-            },
+            ],
           },
         },
       },

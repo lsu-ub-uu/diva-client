@@ -17,13 +17,12 @@
  */
 
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
-} from '@/cora/transform/bffTypes.server';
-
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createLinkedRecordDefinition.server';
+} from '@/cora/bffTypes.server';
+import { createLinkedRecordDefinition } from './formDefinition/createFormDefinition.server';
 
 export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
   const searchFromPool = dependencies.searchPool.get(searchId);

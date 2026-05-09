@@ -1,4 +1,4 @@
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import type { SearchFormDefinition } from './createSearchFormDefinition.server';
 import type { Auth } from '@/auth/Auth';
 import type {

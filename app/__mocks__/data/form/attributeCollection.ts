@@ -606,12 +606,12 @@ export const formDefWithOneOptionalGroupWithAttributeCollection0_1_1_1: RecordFo
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -698,12 +698,12 @@ export const formDefWithOneOptionalGroupWithAttributeCollection1_1_1_1: RecordFo
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -790,12 +790,12 @@ export const formDefWithOneOptionalGroupWithAttributeCollection: RecordFormSchem
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -904,12 +904,12 @@ export const formDefWithOneRequiredGroupWithAttributeCollection: RecordFormSchem
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1035,17 +1035,17 @@ export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars: RecordFo
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1147,17 +1147,17 @@ export const formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW: Recor
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1262,12 +1262,12 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1372,12 +1372,12 @@ export const formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes: R
               gridColSpan: 12,
             },
           ],
-          presentationStyle: '',
+
           childStyle: [],
           gridColSpan: 12,
         },
       ],
-      presentationStyle: '',
+
       childStyle: [],
       gridColSpan: 12,
     },
@@ -1506,7 +1506,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
                   gridColSpan: 12,
                 },
               ],
-              presentationStyle: '',
+
               childStyle: [],
               gridColSpan: 12,
             },
@@ -1515,7 +1515,6 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
         },
       ],
 
-      presentationStyle: '',
       childStyle: [],
       gridColSpan: 12,
     },

@@ -25,6 +25,7 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
+      // @ts-expect-error we don't care about this type
       {
         request: mockRequest,
         context: mockContext,
@@ -67,8 +68,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -106,8 +108,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
         unstable_pattern: '',
+        unstable_url: new URL(mockRequest.url),
+        params: {},
       },
       mockNextFunction,
     );
@@ -145,8 +148,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -189,8 +193,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -237,8 +242,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -278,8 +284,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -323,8 +330,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -366,8 +374,9 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        params: {},
+        unstable_url: new URL(mockRequest.url),
         unstable_pattern: '',
+        params: {},
       },
       mockNextFunction,
     );
@@ -384,7 +393,7 @@ interface MockRequestOptions {
 function createMockRequest(
   { method }: MockRequestOptions = { method: 'GET' },
 ): Request {
-  return { method } as Request;
+  return { method, url: 'http://localhost' } as Request;
 }
 
 function createMockResponse() {

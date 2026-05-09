@@ -10,8 +10,8 @@ The project is written in TypeScript. A code editor that supports real-time Type
 
 ### Prerequisites
 
-- Node.js (version 22.14 or later)
-- npm (version 10.8 or later)
+- Node.js (version 25.9.0 or later)
+- npm (version 11.12.1 or later)
 
 ### Installation
 

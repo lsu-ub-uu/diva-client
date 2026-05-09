@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createSearchQuery } from '../createSearchQuery.server';
 import type { SearchFormDefinition } from '../createSearchFormDefinition.server';
 import type { ActiveFilter } from '../createActiveFilters.server';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 
 describe('createSearchQuery', () => {
   it('creates a basic query', () => {

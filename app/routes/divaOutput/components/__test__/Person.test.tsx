@@ -329,16 +329,20 @@ describe('Person', () => {
             linkedRecord: {
               organisation: {
                 recordInfo: { type: { value: 'diva-organisation' } },
-                authority_lang_swe: {
-                  name_type_corporate: {
-                    namePart: { value: 'Länkad organisation' },
+                authority: [
+                  {
+                    _lang: 'swe',
+                    name_type_corporate: {
+                      namePart: { value: 'Länkad organisation' },
+                    },
                   },
-                },
-                variant_lang_eng: {
-                  name_type_corporate: {
-                    namePart: { value: 'Linked University' },
+                  {
+                    _lang: 'eng',
+                    name_type_corporate: {
+                      namePart: { value: 'Linked University' },
+                    },
                   },
-                },
+                ],
               },
             },
           },
@@ -362,16 +366,20 @@ describe('Person', () => {
             linkedRecord: {
               organisation: {
                 recordInfo: { type: { value: 'diva-organisation' } },
-                authority_lang_swe: {
-                  name_type_corporate: {
-                    namePart: { value: 'Länkad organisation' },
+                authority: [
+                  {
+                    _lang: 'swe',
+                    name_type_corporate: {
+                      namePart: { value: 'Länkad organisation' },
+                    },
                   },
-                },
-                variant_lang_eng: {
-                  name_type_corporate: {
-                    namePart: { value: 'Linked University' },
+                  {
+                    _lang: 'eng',
+                    name_type_corporate: {
+                      namePart: { value: 'Linked University' },
+                    },
                   },
-                },
+                ],
               },
             },
           },
@@ -399,11 +407,14 @@ describe('Person', () => {
             linkedRecord: {
               organisation: {
                 recordInfo: { type: { value: 'diva-organisation' } },
-                authority_lang_swe: {
-                  name_type_corporate: {
-                    namePart: { value: 'Länkad organisation' },
+                authority: [
+                  {
+                    _lang: 'swe',
+                    name_type_corporate: {
+                      namePart: { value: 'Länkad organisation' },
+                    },
                   },
-                },
+                ],
               },
             },
           },

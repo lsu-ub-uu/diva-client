@@ -64,10 +64,6 @@ export const ArtisticWorkFields = ({ output }: ArtisticWorkFieldsProps) => {
         </>
       )}
       <Term
-        label={output.size?.__text?.[language]}
-        value={output.size?.value}
-      />
-      <Term
         label={output.duration?.__text?.[language]}
         value={
           output.duration && (

@@ -37,7 +37,7 @@ import type {
 } from '../types';
 
 import type { Option } from '@/components';
-import type { TextStyle } from '@/cora/transform/bffTypes.server';
+import type { TextStyle } from '@/cora/bffTypes.server';
 import { get } from 'lodash-es';
 import type { EnhancedFieldsConfig } from '../FormGeneratorContext';
 

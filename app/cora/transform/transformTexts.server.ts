@@ -29,7 +29,7 @@ import {
 import { getAllChildrenWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFText } from './bffTypes.server';
+import type { BFFText } from '../bffTypes.server';
 
 export const transformCoraTexts = (
   dataListWrapper: DataListWrapper,
@@ -42,7 +42,9 @@ export const transformCoraTexts = (
   return coraRecordWrappers.map(transformCoraTextToBFFText);
 };
 
-const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
+export const transformCoraTextToBFFText = (
+  coraRecordWrapper: RecordWrapper,
+) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);

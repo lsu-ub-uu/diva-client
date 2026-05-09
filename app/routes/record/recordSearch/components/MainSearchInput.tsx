@@ -1,4 +1,4 @@
-import type { BFFMetadata } from '@/cora/transform/bffTypes.server';
+import type { BFFMetadata } from '@/cora/bffTypes.server';
 import { SearchIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';

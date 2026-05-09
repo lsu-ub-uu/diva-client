@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import type { DivaOutput } from '@/generatedTypes/divaTypes';
+import { renderWithRoutesStub } from '@/utils/testUtils';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OutputView } from '../OutputView';
-import type { DivaOutput } from '@/generatedTypes/divaTypes';
 
 describe('OutputView', () => {
   it('renders minimal output', () => {
@@ -10,7 +11,7 @@ describe('OutputView', () => {
         recordInfo: { id: { value: '12345' } },
       },
     } as DivaOutput;
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'divaClient_missingTitleText',
@@ -29,7 +30,7 @@ describe('OutputView', () => {
         },
       },
     } as DivaOutput;
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Test Publication Title: Subtitle',
@@ -55,7 +56,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Author')).toBeInTheDocument();
     expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -79,7 +80,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Organization')).toBeInTheDocument();
     expect(screen.getByText('University A')).toBeInTheDocument();
@@ -97,7 +98,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Number of creators')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
@@ -123,7 +124,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(
       screen.getByText('Alternative title (sweLangItemText)'),
@@ -146,7 +147,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Output type')).toBeInTheDocument();
     expect(screen.getByText('Thesis')).toBeInTheDocument();
@@ -163,7 +164,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Subcategory')).toBeInTheDocument();
     expect(screen.getByText('Bachelor Thesis')).toBeInTheDocument();
@@ -190,7 +191,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Language')).toBeInTheDocument();
     expect(screen.getByText('English')).toBeInTheDocument();
@@ -208,7 +209,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Artistic work type')).toBeInTheDocument();
     expect(screen.getByText('Painting')).toBeInTheDocument();
@@ -225,7 +226,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Content type')).toBeInTheDocument();
     expect(screen.getByText('Fiction')).toBeInTheDocument();
@@ -250,7 +251,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Abstract (engLangItemText)')).toBeInTheDocument();
     expect(screen.getByText('This is an abstract.')).toBeInTheDocument();
@@ -269,7 +270,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Publication status')).toBeInTheDocument();
     expect(screen.getByText('Published')).toBeInTheDocument();
@@ -288,7 +289,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Number of pages')).toBeInTheDocument();
     expect(screen.getByText('150')).toBeInTheDocument();
@@ -305,7 +306,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Conference')).toBeInTheDocument();
     expect(
@@ -324,7 +325,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Publication channel')).toBeInTheDocument();
     expect(screen.getByText('Science Journal')).toBeInTheDocument();
@@ -348,7 +349,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Initiative')).toBeInTheDocument();
     expect(screen.getByText('Initiative 1')).toBeInTheDocument();
@@ -368,7 +369,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Patent date')).toBeInTheDocument();
     expect(screen.getByText('2021-12-05')).toBeInTheDocument();
@@ -384,7 +385,7 @@ describe('OutputView', () => {
         },
       },
     } as DivaOutput;
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Patent holder')).toBeInTheDocument();
     expect(screen.getByText('Patent Corp')).toBeInTheDocument();
@@ -401,7 +402,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Patent country')).toBeInTheDocument();
     expect(screen.getByText('Sweden')).toBeInTheDocument();
@@ -426,7 +427,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByRole('link', { name: 'Some link' })).toHaveAttribute(
       'href',
@@ -442,15 +443,17 @@ describe('OutputView', () => {
     const mockData = {
       output: {
         recordInfo: { id: { value: '12345' } },
-        location_displayLabel_orderLink: {
-          __text: { en: 'Order link' },
-          url: { value: 'http://orderlink.com' },
-          displayLabel: { value: 'Order here' },
-        },
+        location_displayLabel_orderLink: [
+          {
+            __text: { en: 'Order link' },
+            url: { value: 'http://orderlink.com' },
+            displayLabel: { value: 'Order here' },
+          },
+        ],
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByRole('link', { name: 'Order here' })).toHaveAttribute(
       'href',
@@ -469,7 +472,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('External note')).toBeInTheDocument();
     expect(screen.getByText('This is an external note.')).toBeInTheDocument();
@@ -488,27 +491,10 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Internal note')).toBeInTheDocument();
     expect(screen.getByText('This is an internal note.')).toBeInTheDocument();
-  });
-
-  it('shows data quality', () => {
-    const mockData = {
-      output: {
-        recordInfo: { id: { value: '12345' } },
-        dataQuality: {
-          __text: { en: 'Data quality' },
-          __valueText: { en: 'High' },
-        },
-      },
-    } as DivaOutput;
-
-    render(<OutputView data={mockData} />);
-
-    expect(screen.getByText('Data quality')).toBeInTheDocument();
-    expect(screen.getByText('High')).toBeInTheDocument();
   });
 
   it('shows failed', () => {
@@ -521,7 +507,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Failed')).toBeInTheDocument();
     expect(screen.getByText('True')).toBeInTheDocument();
@@ -537,7 +523,7 @@ describe('OutputView', () => {
       },
     } as DivaOutput;
 
-    render(<OutputView data={mockData} />);
+    renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Reviewed')).toBeInTheDocument();
     expect(screen.getByText('Yes')).toBeInTheDocument();

@@ -41,21 +41,11 @@ describe('formatIsbnIsmnLabel', () => {
     expect(enResult).toBe('English text (undefined)');
   });
 
-  it('handles missing text with undefined', () => {
-    const identifier: IsbnIsmn = {
-      _displayLabel: 'invalid',
-    };
-
-    const result = formatIsbnIsmnLabel(identifier, 'sv');
-    expect(result).toBe('undefined (invalid)');
-  });
-
   it('handles all possible display label values', () => {
     const displayLabels: IdentifierDisplayLabelIsbnIsmnCollection[] = [
       'print',
       'online',
       'undefined',
-      'invalid',
     ];
 
     displayLabels.forEach((label) => {

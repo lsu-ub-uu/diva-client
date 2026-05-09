@@ -1,27 +1,28 @@
 import { useTranslation } from 'react-i18next';
 
-import type {
-  FilterDefinition,
-  AutocompleteFilter,
-} from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
-import { useState } from 'react';
-import { useFetcher, href } from 'react-router';
 import {
   Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
 } from '@/components/Input/Combobox';
+import type {
+  AutocompleteFilter,
+  FilterDefinition,
+} from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import type { BFFDataRecord } from '@/types/record';
+import { useState } from 'react';
+import { href, useFetcher } from 'react-router';
 
-import { get } from 'lodash-es';
-import { useLanguage } from '@/i18n/useLanguage';
+import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
+import { useLanguage } from '@/i18n/useLanguage';
 import { useHydrated } from '@/utils/useHydrated';
+import { get } from 'lodash-es';
 
 interface FilterProps {
   filter: FilterDefinition;
@@ -185,9 +186,10 @@ const AutocompleteFilter = ({
             fetcher.data.result.map((result: BFFDataRecord) => (
               <ComboboxOption key={result.id} value={result.id}>
                 {get(result.data, filter.presentationPath[language]) || (
-                  <AutocompleteForm
-                    record={result}
+                  <OutputPresentation
+                    data={transformToRaw(result.data)}
                     formSchema={result.presentation!}
+                    compact
                   />
                 )}
               </ComboboxOption>

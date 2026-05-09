@@ -17,14 +17,7 @@
  */
 
 import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
-import {
-  href,
-  Link,
-  useFetcher,
-  useLocation,
-  useNavigation,
-  useSubmit,
-} from 'react-router';
+import { href, Link, useFetcher, useLocation } from 'react-router';
 
 import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
@@ -39,7 +32,7 @@ import {
 } from '@/auth/useWebRedirectLogin';
 import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
-import type { ExampleUser } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useHydrated } from '@/utils/useHydrated';
@@ -57,10 +50,8 @@ export default function LoginMenu({
 }: LoginMenuProps) {
   const user = useUser();
   const fetcher = useFetcher();
-  const submit = useSubmit();
   const { t } = useTranslation();
   const location = useLocation();
-  const navigation = useNavigation();
   const hydrated = useHydrated();
 
   const { menuProps: loginMenuProps, triggerProps: loginTriggerProps } =
@@ -74,11 +65,12 @@ export default function LoginMenu({
   const returnTo = encodeURIComponent(rawReturnTo);
 
   const submitting =
-    navigation.state !== 'idle' && navigation.formAction?.includes('/login');
+    fetcher.state !== 'idle' && fetcher.formAction?.includes('/login');
+
   useWebRedirectLogin({ returnTo });
 
   const handleDevSelection = ({ loginId, appToken }: ExampleUser) => {
-    submit(
+    fetcher.submit(
       {
         loginType: 'appToken',
         loginId,

@@ -1,9 +1,9 @@
-import type {
-  CourseUpdateGroup,
-  ProgrammeUpdateGroup,
-  StudentDegreeGroup,
-} from '@/generatedTypes/divaTypes';
+import type { StudentDegreeGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
+import {
+  getTitleForCourse,
+  getTitleForProgramme,
+} from '@/utils/getRecordTitle';
 import { Term } from './Term';
 
 interface StudentDegreeGroupProps {
@@ -19,17 +19,22 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
       <dl>
         <Term
           label={studentDegree.course?.__text?.[language]}
-          value={formatCourseOrProgramme(
-            studentDegree.course?.linkedRecord.course,
-            language,
-          )}
+          value={
+            studentDegree.course?.linkedRecord
+              ? getTitleForCourse(studentDegree.course?.linkedRecord, language)
+              : studentDegree.course?.value
+          }
         />
         <Term
           label={studentDegree.programme?.__text?.[language]}
-          value={formatCourseOrProgramme(
-            studentDegree.programme?.linkedRecord.programme,
-            language,
-          )}
+          value={
+            studentDegree.programme?.linkedRecord
+              ? getTitleForProgramme(
+                  studentDegree.programme?.linkedRecord,
+                  language,
+                )
+              : studentDegree.programme?.value
+          }
         />
         <Term
           label={studentDegree.degreeLevel?.__text?.[language]}
@@ -42,20 +47,4 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
       </dl>
     </section>
   ));
-};
-
-const formatCourseOrProgramme = (
-  courseOrProgramme: ProgrammeUpdateGroup | CourseUpdateGroup | undefined,
-  language: 'sv' | 'en',
-) => {
-  if (!courseOrProgramme) return undefined;
-
-  const topicSwedish = courseOrProgramme.authority_lang_swe?.topic?.value;
-  const topicEnglish = courseOrProgramme.variant_lang_eng?.topic?.value;
-
-  if (language === 'en' && topicEnglish) {
-    return topicEnglish;
-  }
-
-  return topicSwedish;
 };

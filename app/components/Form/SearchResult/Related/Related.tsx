@@ -1,8 +1,8 @@
 import type { RelatedOutputGroup } from '@/generatedTypes/divaTypes';
 import styles from './Related.module.css';
 import { useLanguage } from '@/i18n/useLanguage';
-import { createTitle } from '@/routes/divaOutput/utils/createTitle';
 import { Term } from '@/routes/divaOutput/components/Term';
+import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
 
 interface RelatedProps {
   related: RelatedOutputGroup[] | undefined;
@@ -20,7 +20,9 @@ export const Related = ({ related }: RelatedProps) => {
       <div key={i} className={styles['related-book']}>
         <Term
           label={`${related.__text?.[language]}:`}
-          value={createTitle(related.output?.linkedRecord?.output?.titleInfo)}
+          value={getTitleFromTitleInfo(
+            related.output?.linkedRecord?.output?.titleInfo,
+          )}
         />
       </div>
     );

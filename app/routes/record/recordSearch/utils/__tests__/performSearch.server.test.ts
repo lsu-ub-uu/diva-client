@@ -1,5 +1,5 @@
 import type { Auth } from '@/auth/Auth';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import type { BFFDataRecord } from '@/types/record';
 import { AxiosError, type AxiosResponse } from 'axios';

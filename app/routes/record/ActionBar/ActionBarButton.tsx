@@ -36,7 +36,11 @@ export const ActionBarButton = ({
         onClick={() => {
           if (onAction) {
             if (confirmDialog) {
-              showConfirmDialog(onAction);
+              showConfirmDialog((returnValue) => {
+                if (returnValue === 'submit') {
+                  onAction();
+                }
+              });
             } else {
               onAction();
             }
@@ -52,13 +56,17 @@ export const ActionBarButton = ({
           ref={confirmDialogRef}
           headingText={confirmDialog.headingText}
           messageText={confirmDialog.messageText}
-          confirmButtonText={
+          actions={
             <>
-              {confirmDialog.confirmButtonText}
-              {icon}
+              <Button variant='secondary' value='cancel' type='submit'>
+                {confirmDialog.cancelButtonText}
+              </Button>
+              <Button variant='primary' value='submit' type='submit'>
+                {confirmDialog.confirmButtonText}
+                {icon}
+              </Button>
             </>
           }
-          cancelButtonText={confirmDialog.cancelButtonText}
         />
       )}
     </div>

@@ -19,13 +19,15 @@
 import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
+import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { ValidationTypePicker } from '@/components/ValidationTypePicker/ValidationTypePicker';
+import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
@@ -42,11 +44,11 @@ import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
-import { dependenciesContext } from 'server/depencencies';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export const loader = async ({
   request,
@@ -55,8 +57,8 @@ export const loader = async ({
 }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { auth, notification } = context.get(sessionContext);
-  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
+  const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
 
@@ -137,12 +139,11 @@ export const loader = async ({
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const { auth, flashNotification } = context.get(sessionContext);
   const { t } = context.get(i18nContext);
-  const { dependencies } = context.get(dependenciesContext);
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
-
   assertDefined(validationTypeId, 'divaClient_missingValidationTypeIdText');
 
+  const dependencies = await getDependencies();
   const formDefinition = await getFormDefinitionByValidationTypeId(
     dependencies,
     validationTypeId,
@@ -266,8 +267,8 @@ export default function CreateRecordRoute({
       <aside className='grid-col-4 grid-col-l-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
-            <ReadOnlyForm
-              recordData={deferredPreviewData}
+            <OutputPresentation
+              data={transformToRaw(cleanFormData(deferredPreviewData))}
               formSchema={previewFormDefinition}
             />
           </div>

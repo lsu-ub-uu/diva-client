@@ -15,6 +15,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import { render } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import type {
   Control,
@@ -23,6 +24,7 @@ import type {
   UseFormGetValues,
   UseFormReturn,
 } from 'react-hook-form';
+import { createRoutesStub } from 'react-router';
 import { RemixFormProvider } from 'remix-hook-form';
 import { vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
@@ -63,4 +65,14 @@ export const MockFormProvider = ({
       {children}
     </RemixFormProvider>
   );
+};
+
+export const renderWithRoutesStub = (ui: ReactNode) => {
+  const RoutesStub = createRoutesStub([
+    {
+      path: '/',
+      Component: () => <>{ui}</>,
+    },
+  ]);
+  render(<RoutesStub />);
 };

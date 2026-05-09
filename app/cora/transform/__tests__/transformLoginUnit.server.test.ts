@@ -2,27 +2,27 @@ import testLoginUnit from '@/__mocks__/bff/coraLoginUnit.json';
 import testLoginUnitWithTwoUnits from '@/__mocks__/bff/coraLoginUnitWithTwoUnits.json';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import { describe, expect, it } from 'vitest';
-import { transformLoginUnit } from '../transformLoginUnit.server';
+import { transformLoginUnits } from '../transformLoginUnit.server';
 
 describe('transformLoginUnit', () => {
   it('Empty list should return empty', () => {
-    const loginUnit = transformLoginUnit(emptyTestData);
+    const loginUnit = transformLoginUnits(emptyTestData);
     expect(loginUnit).toStrictEqual([]);
   });
 
   it('Returns one loginUnit entry', () => {
-    const loginUnit = transformLoginUnit(testLoginUnit);
+    const loginUnit = transformLoginUnits(testLoginUnit);
     expect(loginUnit).toHaveLength(1);
   });
 
   it('Returns one loginUnit entry with id', () => {
-    const loginUnit = transformLoginUnit(testLoginUnit);
+    const loginUnit = transformLoginUnits(testLoginUnit);
     const firstLoginUnit = loginUnit[0];
     expect(firstLoginUnit.id).toEqual('someLoginUnitId');
   });
 
   it('Returns one loginUnit entry with id and login', () => {
-    const loginUnit = transformLoginUnit(testLoginUnit);
+    const loginUnit = transformLoginUnits(testLoginUnit);
     expect(loginUnit).toHaveLength(1);
     expect(loginUnit[0]).toStrictEqual({
       id: 'someLoginUnitId',
@@ -32,7 +32,7 @@ describe('transformLoginUnit', () => {
   });
 
   it('Returns two loginUnit entries with id and login', () => {
-    const loginUnit = transformLoginUnit(testLoginUnitWithTwoUnits);
+    const loginUnit = transformLoginUnits(testLoginUnitWithTwoUnits);
     expect(loginUnit).toHaveLength(2);
     expect(loginUnit[0]).toStrictEqual({
       id: 'someLoginUnitId',

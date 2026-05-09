@@ -38,12 +38,12 @@ import type {
   RecordWrapper,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+
 import {
   createFormMetaData,
   createViewMetadata,
-} from '@/data/formDefinition/formMetadata.server';
+} from '@/data/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -53,7 +53,11 @@ import type {
 } from '@/types/record';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFRecordType, FormDefinitionMode } from './bffTypes.server';
+import type {
+  BFFRecordType,
+  Dependencies,
+  FormDefinitionMode,
+} from '../bffTypes.server';
 
 /**
  * Transforms records
@@ -170,7 +174,7 @@ export const transformRecordData = (
   dependencies: Dependencies,
 ) => {
   return {
-    [dataRecordGroup.name]: {
+    [createDataName(dataRecordGroup, formMetadata)]: {
       ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
       ...transformAttributes(dataRecordGroup),
     },

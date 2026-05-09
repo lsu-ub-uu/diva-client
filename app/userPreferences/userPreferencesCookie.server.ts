@@ -19,7 +19,8 @@
 import { createCookie } from 'react-router';
 
 export interface UserPreferences {
-  colorScheme: 'light' | 'dark';
+  language?: 'sv' | 'en' | 'cimode';
+  colorScheme?: 'light' | 'dark';
 }
 
 export const userPreferencesCookie = createCookie('userPreferences', {
@@ -33,7 +34,8 @@ export const parseUserPreferencesCookie = async (
   const cookieHeader = request.headers.get('Cookie');
   const userPreferences = await userPreferencesCookie.parse(cookieHeader);
   return (
-    userPreferences || ({ colorScheme: 'light' } satisfies UserPreferences)
+    userPreferences ||
+    ({ colorScheme: 'light', language: 'sv' } satisfies UserPreferences)
   );
 };
 

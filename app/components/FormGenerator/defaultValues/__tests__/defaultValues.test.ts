@@ -66,7 +66,7 @@ import {
 } from '@/__mocks__/data/form/alternativePresentationsWithContainers';
 
 import * as generateRepeatIdModule from '../generateRepeatId';
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import type { User } from '@/auth/createUser';
 
 describe('defaultValues', () => {
@@ -749,7 +749,6 @@ describe('defaultValues', () => {
                 },
               },
             ],
-            presentationStyle: '',
             childStyle: [],
             gridColSpan: 12,
           },
@@ -889,7 +888,6 @@ describe('defaultValues', () => {
                     gridColSpan: 6,
                   },
                 ],
-                presentationStyle: '',
                 childStyle: [],
                 gridColSpan: 12,
               },
@@ -983,7 +981,6 @@ describe('defaultValues', () => {
                     gridColSpan: 6,
                   },
                 ],
-                presentationStyle: '',
                 childStyle: [],
                 gridColSpan: 12,
               },
@@ -2107,7 +2104,6 @@ describe('defaultValues', () => {
                 gridColSpan: 6,
               },
             ],
-            presentationStyle: '',
             childStyle: [],
             gridColSpan: 12,
           },
@@ -2201,7 +2197,6 @@ describe('defaultValues', () => {
                 gridColSpan: 6,
               },
             ],
-            presentationStyle: '',
             childStyle: [],
             gridColSpan: 12,
           },

@@ -25,6 +25,11 @@ interface GuiElementLinkProps {
 
 export const GuiElementLink = ({ component }: GuiElementLinkProps) => {
   return (
-    <LinkButton href={component.url ?? ''} text={component.elementText ?? ''} />
+    <LinkButton
+      className='form-component-item'
+      data-colspan={component.gridColSpan ?? 12}
+      href={component.url ?? ''}
+      text={component.elementText ?? ''}
+    />
   );
 };

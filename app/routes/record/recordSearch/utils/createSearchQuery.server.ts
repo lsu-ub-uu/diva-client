@@ -1,4 +1,4 @@
-import type { BFFMember } from '@/cora/transform/bffTypes.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from './createActiveFilters.server';
 

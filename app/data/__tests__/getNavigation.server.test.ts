@@ -6,12 +6,9 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type {
-  BFFMember,
-  BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
-import type { Dependencies } from '@/data/formDefinition/formDefinitionsDep.server';
-import { listToPool } from '@/utils/structs/listToPool';
+import type { BFFMember, BFFRecordType } from '@/cora/bffTypes.server';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import type { AxiosResponse } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
 import { getNavigation } from '../getNavigation.server';

@@ -40,7 +40,7 @@ import type {
   BFFPresentationRecordLink,
   BFFPresentationResourceLink,
   BFFPresentationSurroundingContainer,
-} from './bffTypes.server';
+} from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata.server';
 import {
@@ -71,7 +71,7 @@ export const transformCoraPresentations = (
   )[];
 };
 
-const transformCoraPresentationToBFFPresentation = (
+export const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
 ):
   | BFFPresentationBase
@@ -79,8 +79,7 @@ const transformCoraPresentationToBFFPresentation = (
   | BFFPresentationSurroundingContainer
   | BFFGuiElement
   | BFFPresentationRecordLink
-  | BFFPresentationResourceLink
-  | undefined => {
+  | BFFPresentationResourceLink => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
@@ -123,7 +122,7 @@ const transformCoraPresentationToBFFPresentation = (
     }
 
     default: {
-      return undefined;
+      throw new Error(`Unknown presentation type: ${type}`);
     }
   }
 };
@@ -464,7 +463,6 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
 ): BFFGuiElement => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
   const presentAs = getFirstDataAtomicValueWithNameInData(
     dataRecordGroup,
@@ -475,7 +473,7 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
     'elementText',
   );
 
-  return { id, type, url, presentAs, elementText };
+  return { id, type: 'guiElementLink', url, presentAs, elementText };
 };
 
 const transformCoraPresentationResourceLinkToBFFPresentation = (

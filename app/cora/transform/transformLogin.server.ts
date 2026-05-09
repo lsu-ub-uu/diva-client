@@ -21,14 +21,14 @@ import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import type { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes.server';
+import type { BFFLoginPassword, BFFLoginWebRedirect } from '../bffTypes.server';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/cora/cora-data/CoraDataTransforms.server';
 import { getAllDataAtomicValueFromDataGroup } from '@/cora/cora-data/CoraDataUtils.server';
 
-export const transformLogin = (
+export const transformLogins = (
   dataListWrapper: DataListWrapper,
 ): (BFFLoginWebRedirect | BFFLoginPassword)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
@@ -41,7 +41,7 @@ export const transformLogin = (
     .filter((item) => item !== undefined);
 };
 
-const transformCoraLoginToBFFLogin = (
+export const transformCoraLoginToBFFLogin = (
   coraRecordWrapper: RecordWrapper,
 ): BFFLoginWebRedirect | BFFLoginPassword => {
   const coraRecord = coraRecordWrapper.record;

@@ -1,10 +1,11 @@
-import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { useRef, useState } from 'react';
-import { useSubmit } from 'react-router';
-import { Filters } from './Filters';
-import { RecordSearchView } from './RecordSearchView';
+import {
+  DrawerDialog,
+  useDrawerDialog,
+} from '@/components/DrawerDialog/DrawerDialog';
 import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
+import { Filters } from './Filters';
+import { RecordSearchView } from './RecordSearchView';
 
 interface SearchLayoutProps {
   query: string;
@@ -39,22 +40,8 @@ export const SearchLayout = ({
   children,
   userRights,
 }: SearchLayoutProps) => {
-  const submit = useSubmit();
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const filterFormRef = useRef<HTMLFormElement>(null);
-
-  const handleFilterChange = useDebouncedCallback(() => {
-    if (filterFormRef.current) {
-      const formData = new FormData(filterFormRef.current);
-
-      for (const [key, value] of Array.from(formData.entries())) {
-        if (typeof value === 'string' && value.trim() === '') {
-          formData.delete(key);
-        }
-      }
-      submit(formData, { method: 'GET' });
-    }
-  }, 400);
+  const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
+    useDrawerDialog();
 
   return (
     <div className='grid'>
@@ -75,23 +62,32 @@ export const SearchLayout = ({
               activeFilters={activeFilters}
               onRemoveFilter={onRemoveFilter}
               onClearAllFilters={onClearAllFilters}
-              filtersOpen={filtersOpen}
-              setFiltersOpen={setFiltersOpen}
               apiUrl={apiUrl}
+              showFilterDialog={showDrawerDialog}
             />
           </main>
-          <div className='grid-col-3'>
+          <div className='grid-col-3 grid-col-l-hidden'>
             <Filters
-              open={filtersOpen}
-              ref={filterFormRef}
               filters={searchFormDefinition.filters}
               activeFilters={activeFilters}
               query={query}
               rows={rows}
-              onFilterChange={handleFilterChange}
-              onClose={() => setFiltersOpen(false)}
+              onClose={closeDrawerDialog}
             />
           </div>
+          <DrawerDialog
+            ref={drawerDialogRef}
+            variant='right'
+            className='filter-dialog'
+          >
+            <Filters
+              filters={searchFormDefinition.filters}
+              activeFilters={activeFilters}
+              query={query}
+              rows={rows}
+              onClose={closeDrawerDialog}
+            />
+          </DrawerDialog>
         </>
       )}
     </div>

@@ -18,36 +18,36 @@ import testTestWithTwoAttributes from '@/__mocks__/bff/coraMetadataTextVarWithTw
 import testMetaDataWithFinalValue from '@/__mocks__/bff/coraMetadataWithFinalValue.json';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import { describe, expect, it } from 'vitest';
-import { transformMetadata } from '../transformMetadata.server';
+import { transformMetadatas } from '../transformMetadata.server';
 
 import type { DataListWrapper } from '@/cora/cora-data/types.server';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
-    const metadataList = transformMetadata(emptyTestData);
+    const metadataList = transformMetadatas(emptyTestData);
     expect(metadataList).toStrictEqual([]);
   });
 
   it('Returns one metadata entry', () => {
-    const metadataList = transformMetadata(testMetaData);
+    const metadataList = transformMetadatas(testMetaData);
     expect(metadataList).toHaveLength(1);
   });
 
   it('Returns one metadata entry with id', () => {
-    const metadataList = transformMetadata(testMetaData);
+    const metadataList = transformMetadatas(testMetaData);
     const firstMetadata = metadataList[0];
     expect(firstMetadata.id).toEqual('someTextVar');
   });
 
   it('Return one metadata with type from attribute', () => {
-    const metadataList = transformMetadata(testMetaData);
+    const metadataList = transformMetadatas(testMetaData);
     const firstMetadata = metadataList[0];
     expect(firstMetadata.type).toEqual('textVariable');
   });
 
   describe('textVariable', () => {
     it('Returns one BFFMetadata for textVariable without finalValue', () => {
-      const metadataList = transformMetadata(testMetaData);
+      const metadataList = transformMetadatas(testMetaData);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
@@ -61,7 +61,7 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadata for textVariable with finalValue', () => {
-      const metadataList = transformMetadata(testMetaDataWithFinalValue);
+      const metadataList = transformMetadatas(testMetaDataWithFinalValue);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
@@ -77,7 +77,7 @@ describe('transformMetadata', () => {
 
   describe('metadataGroup', () => {
     it('Returns one BFFMetadata for group', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testMetaDataForGroupWithTwoChildren,
       );
       expect(metadataList).toHaveLength(1);
@@ -114,7 +114,7 @@ describe('transformMetadata', () => {
 
   describe('numberVariable', () => {
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
-      const metadataList = transformMetadata(testNumberVariableMetaData);
+      const metadataList = transformMetadatas(testNumberVariableMetaData);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         id: 'someNumberVar',
@@ -132,7 +132,7 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadata for numberVariable with finalValue', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testNumberVariableWithFinalValueMetaData,
       );
       expect(metadataList).toHaveLength(1);
@@ -155,7 +155,7 @@ describe('transformMetadata', () => {
 
   describe('collectionVariable', () => {
     it('Returns one BFFMetadata for collectionVariable without finalValue', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testCollectionVariableMetaData as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -171,7 +171,7 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testCollectionVariableMetaDataWithFinalValue as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -190,7 +190,7 @@ describe('transformMetadata', () => {
 
   describe('itemCollection', () => {
     it('Returns one BFFMetadata for itemCollection', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testItemCollection as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -211,7 +211,7 @@ describe('transformMetadata', () => {
 
   describe('collectionItem', () => {
     it('Returns one BFFMetadata for collectionItem', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testTestCollectionItem as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -227,7 +227,7 @@ describe('transformMetadata', () => {
 
   describe('attributeReference', () => {
     it('Returns one BFFMetadataGroup with one attributeReference', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testMetadataGroupWithAttribute as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -252,7 +252,7 @@ describe('transformMetadata', () => {
       });
     });
     it('Returns one BFFMetadataTextVariable with one attributeReference', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testTextWithOneAttribute as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -271,7 +271,7 @@ describe('transformMetadata', () => {
       });
     });
     it('Returns one BFFMetadataTextVariable with two attributeReference', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testTestWithTwoAttributes as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -293,7 +293,7 @@ describe('transformMetadata', () => {
       });
     });
     it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testNumberWithTwoAttributes as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -320,7 +320,7 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadataCollectionVariable with two attributeReference', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testCollectionWithTwoAttributes as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -345,7 +345,7 @@ describe('transformMetadata', () => {
 
   describe('recordLink', () => {
     it('Returns one BFFMetadata for recordLink without finalValue', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testMetadataRecordLink as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -360,7 +360,7 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadata for recordLink with finalValue and one attribute', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testMetadataRecordLinkWithFinalValue as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -383,7 +383,7 @@ describe('transformMetadata', () => {
 
   describe('anyTypeRecordLink', () => {
     it('Returns one BFFMetadata for recordLink without finalValue', () => {
-      const metadataList = transformMetadata(
+      const metadataList = transformMetadatas(
         testMetadataAnyTypeRecordLink as DataListWrapper,
       );
       expect(metadataList).toHaveLength(1);
@@ -399,7 +399,9 @@ describe('transformMetadata', () => {
 
   describe('resourceLink', () => {
     it('Returns one BFFMetadata for resourceLink', () => {
-      const metadataList = transformMetadata(testResourceLinkThumbnailMetaData);
+      const metadataList = transformMetadatas(
+        testResourceLinkThumbnailMetaData,
+      );
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         defTextId: 'resourceLinkResLinkDefText',

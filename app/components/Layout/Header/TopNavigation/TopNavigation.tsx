@@ -1,4 +1,8 @@
+import { Button } from '@/components/Button/Button';
 import { NavigationLink } from '@/components/Layout/Header/TopNavigation/NavigationLink';
+import { Menu, useMenu } from '@/components/Menu/Menu';
+import { MenuItem } from '@/components/Menu/MenuItem';
+import type { Navigation } from '@/data/getNavigation.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import clsx from 'clsx';
 import {
@@ -23,9 +27,6 @@ import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, useLocation } from 'react-router';
 import styles from './TopNavigation.module.css';
-import type { Navigation } from '@/data/getNavigation.server';
-import { Menu, useMenu } from '@/components/Menu/Menu';
-import { MenuItem } from '@/components/Menu/MenuItem';
 
 export interface TopNavigationLink {
   label: string;
@@ -76,7 +77,8 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
         ))}
         {navigation.otherNavigationItems.length > 0 && (
           <li>
-            <button
+            <Button
+              variant='tertiary'
               className={clsx(
                 styles['navigation-link'],
                 styles['menu-navigation-button'],
@@ -89,7 +91,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
                 {t('divaClient_moreNavigationText')}
               </span>
               <ChevronDownIcon className={styles['menu-navigation-chevron']} />
-            </button>
+            </Button>
             <Menu alignment='center' {...menuProps}>
               {navigation.otherNavigationItems.map((navItem) => (
                 <MenuItem key={navItem.id}>

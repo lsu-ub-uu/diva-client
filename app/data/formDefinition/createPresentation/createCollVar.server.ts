@@ -18,89 +18,83 @@
  */
 
 import type {
-  BFFMetadata,
-  BFFMetadataChildReference,
-  BFFMetadataCollectionVariable,
-  BFFPresentationBase,
-  BFFPresentationChildReference,
-} from '@/cora/transform/bffTypes.server';
-import { createCollectionVariableOptions } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
-import type { Lookup } from '@/utils/structs/lookup';
-import { createCommonParameters } from '@/data/formDefinition/createCommonParameters.server';
-import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { createAttributes } from './createAttributes';
-import { createPresentationChildReferenceParameters } from '../createPresentationChildReferenceParameters.server';
-import type {
-  FormComponent,
+  FormAttributeCollection,
   FormComponentCollVar,
 } from '@/components/FormGenerator/types';
-import { createRepeat } from './createRepeat.server';
+import type {
+  BFFMetadataCollectionVariable,
+  BFFPresentationBase,
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { removeEmpty } from '@/utils/structs/removeEmpty';
+import type {
+  PresentationChildReferenceData,
+  Repeat,
+} from './createPresentationComponent';
+import type { CommonParameters } from '../utils/createCommonParameters.server';
+import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
+import { createCollectionVariableOptions } from '../utils/formDefinitionUtils.server';
 
 export const createCollVar = (
-  metadataPool: Lookup<string, BFFMetadata>,
+  dependencies: Dependencies,
   metadata: BFFMetadataCollectionVariable,
   presentation: BFFPresentationBase,
-  metadataChildReference: BFFMetadataChildReference,
-  presentationChildReference: BFFPresentationChildReference,
-  alternativePresentation: FormComponent | undefined,
+  attributes: FormAttributeCollection[] | undefined,
+  repeat: Repeat,
+  presentationChildReferenceData: PresentationChildReferenceData,
+  commonParameters: CommonParameters,
 ): FormComponentCollVar => {
   const finalValue = metadata.finalValue;
-  const options = createCollectionVariableOptions(metadataPool, metadata);
-  const attributes = createAttributes(
-    metadata,
-    metadataPool,
-    undefined,
-    presentation.mode,
-  );
+  const inputFormat = presentation.inputFormat;
   const type = metadata.type;
-  const repeat = createRepeat(
-    presentationChildReference,
-    metadataChildReference,
+  const options = createCollectionVariableOptions(
+    dependencies.metadataPool,
+    metadata,
   );
 
   const {
     childStyle,
     textStyle,
-    gridColSpan,
     presentationSize,
     title,
     titleHeadlineLevel,
     addText,
-  } = createPresentationChildReferenceParameters(presentationChildReference);
+  } = presentationChildReferenceData;
+
+  const gridColSpan = convertChildStylesToGridColSpan(childStyle ?? []);
 
   const {
     name,
     placeholder,
-    mode,
     tooltip,
     label,
     headlineLevel,
     showLabel,
     attributesToShow,
-  } = createCommonParameters(metadata, presentation);
+  } = commonParameters;
 
   return removeEmpty({
     presentationId: presentation.id,
-    type,
+    options,
     name,
     placeholder,
-    mode,
+    mode: presentation.mode,
     tooltip,
     label,
     headlineLevel,
     showLabel,
     attributesToShow,
-    options,
+    type,
     finalValue,
+    inputFormat,
     attributes,
+    repeat,
     childStyle,
     textStyle,
     gridColSpan,
     presentationSize,
     title,
     titleHeadlineLevel,
-    alternativePresentation,
-    repeat,
     addText,
   });
 };

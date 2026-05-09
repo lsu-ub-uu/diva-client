@@ -1,9 +1,8 @@
 import { expect, it, vi } from 'vitest';
 import { describe } from 'vitest';
 import { searchRecords } from '../searchRecords.server';
-import type { Dependencies } from '../formDefinition/formDefinitionsDep.server';
-import { Lookup } from '@/utils/structs/lookup';
-import { listToPool } from '@/utils/structs/listToPool';
+import { Lookup } from 'server/dependencies/util/lookup';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import type {
   BFFMetadata,
   BFFMetadataGroup,
@@ -11,7 +10,8 @@ import type {
   BFFPresentation,
   BFFRecordType,
   BFFSearch,
-} from '@/cora/transform/bffTypes.server';
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type { AxiosResponse } from 'axios';
 import type {
@@ -19,12 +19,12 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import { transformRecords } from '@/cora/transform/transformRecord.server';
-import { createLinkedRecordDefinition } from '../formDefinition/createLinkedRecordDefinition.server';
 import type { FormSchema } from '@/components/FormGenerator/types';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/createFormDefinition.server';
 
 vi.mock('@/cora/getSearchResultDataListBySearchType.server');
 vi.mock('@/cora/transform/transformRecord.server');
-vi.mock('@/data/formDefinition/createLinkedRecordDefinition.server');
+vi.mock('@/data/formDefinition/createFormDefinition.server');
 
 describe('searchRecords', () => {
   it('throws an error when searchType not in pool', async () => {

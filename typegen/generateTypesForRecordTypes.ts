@@ -7,9 +7,9 @@ import type {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFRecordType,
-} from '@/cora/transform/bffTypes.server';
+} from '@/cora/bffTypes.server';
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
-import type { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from 'server/dependencies/util/lookup';
 import { generateInterfaceName as generateTypeName } from './utils/generateInterfaceName';
 import { getValueForRepeat } from './utils/getValueForRepeat';
 

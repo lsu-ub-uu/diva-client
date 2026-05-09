@@ -68,7 +68,7 @@ export const RecordLink = ({
     return (
       <RecordLinkWithSearch
         component={component}
-        path={name}
+        path={path}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
