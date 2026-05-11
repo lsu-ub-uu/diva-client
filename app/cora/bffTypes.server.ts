@@ -70,6 +70,14 @@ export type BFFMetadata =
   | BFFMetadataGroup
   | BFFMetadataItemCollection;
 
+export type BFFMetadataWithAttributes =
+  | BFFMetadataTextVariable
+  | BFFMetadataNumberVariable
+  | BFFMetadataRecordLink
+  | BFFMetadataAnyTypeRecordLink
+  | BFFMetadataCollectionVariable
+  | BFFMetadataGroup;
+
 export interface BFFAttributeReference {
   refCollectionVarId: string;
 }

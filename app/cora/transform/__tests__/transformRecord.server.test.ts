@@ -74,12 +74,17 @@ import {
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
 import type {
+  BFFMetadataBase,
+  BFFMetadataCollectionVariable,
+  BFFMetadataItemCollection,
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import type {
   ActionLink,
   DataGroup,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -4813,6 +4818,202 @@ describe('transformRecord', () => {
         const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).toContain('unpublish');
       });
+    });
+  });
+
+  it('matches data against two metadata with same name but different selectable attributes', () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        {
+          id: 'someRecordTypeId',
+          metadataId: 'someRootGroup',
+          useTrashBin: true,
+        } as BFFRecordType,
+      ]),
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someRootGroup',
+          type: 'group',
+          nameInData: 'root',
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+            {
+              childId: 'textVarWithFinalValueAttr',
+              repeatMin: '0',
+              repeatMax: '1',
+            },
+            {
+              childId: 'textVarWithSelectableAndFinalValueAttr',
+              repeatMin: '0',
+              repeatMax: '1',
+            },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'recordInfoGroup',
+          nameInData: 'recordInfo',
+          type: 'group',
+          children: [
+            { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+            { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+            { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'idVar',
+          type: 'textVariable',
+          nameInData: 'id',
+        } as BFFMetadataTextVariable,
+        {
+          id: 'typeLink',
+          type: 'recordLink',
+          nameInData: 'type',
+          linkedRecordType: 'recordType',
+        } as BFFMetadataRecordLink,
+        {
+          id: 'validationTypeLink',
+          type: 'recordLink',
+          nameInData: 'validationType',
+          linkedRecordType: 'validationType',
+        } as BFFMetadataRecordLink,
+        {
+          id: 'textVarWithFinalValueAttr',
+          type: 'textVariable',
+          nameInData: 'someText',
+          attributeReferences: [
+            { refCollectionVarId: 'attr1WithFinalValueColVar' },
+          ],
+        } as BFFMetadataTextVariable,
+        {
+          id: 'textVarWithSelectableAndFinalValueAttr',
+          type: 'textVariable',
+          nameInData: 'someText',
+          attributeReferences: [
+            { refCollectionVarId: 'attr1SelectableColVar' },
+            { refCollectionVarId: 'attr2WithFinalValueColVar' },
+          ],
+        } as BFFMetadataTextVariable,
+        {
+          id: 'attr1WithFinalValueColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr1',
+          refCollection: 'attr1Collection',
+          finalValue: 'opt1',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr1SelectableColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr1',
+          refCollection: 'attr1Collection',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr2WithFinalValueColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr2',
+          refCollection: 'attr2Collection',
+          finalValue: 'opt1',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr1Collection',
+          collectionItemReferences: [
+            { refCollectionItemId: 'attr1Opt1' },
+            { refCollectionItemId: 'attr1Opt2' },
+          ],
+        } as BFFMetadataItemCollection,
+        {
+          id: 'attr2Collection',
+          collectionItemReferences: [
+            { refCollectionItemId: 'attr2Opt1' },
+            { refCollectionItemId: 'attr2Opt2' },
+          ],
+        } as BFFMetadataItemCollection,
+        { id: 'attr1Opt1', nameInData: 'opt1' } as BFFMetadataBase,
+        { id: 'attr1Opt2', nameInData: 'opt2' } as BFFMetadataBase,
+        { id: 'attr2Opt1', nameInData: 'opt1' } as BFFMetadataBase,
+        { id: 'attr2Opt2', nameInData: 'opt2' } as BFFMetadataBase,
+      ]),
+    } as Dependencies;
+    // someText attr1="opt1"
+    // someText attr1="opt1 | opt2" attr2="opt3"
+    const record: RecordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            {
+              name: 'recordInfo',
+              children: [
+                { name: 'id', value: '1234' },
+                {
+                  name: 'type',
+                  children: [
+                    { name: 'linkedRecordType', value: 'recordType' },
+                    { name: 'linkedRecordId', value: 'someRecordTypeId' },
+                  ],
+                },
+                {
+                  name: 'validationType',
+                  children: [
+                    { name: 'linkedRecordType', value: 'validationType' },
+                    { name: 'linkedRecordId', value: 'someValidationTypeId' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'someText',
+              attributes: {
+                attr1: 'opt1',
+                attr2: 'opt1',
+              },
+              value: 'someValue',
+            },
+            {
+              name: 'someText',
+              attributes: {
+                attr1: 'opt1',
+              },
+              value: 'someOtherValue',
+            },
+          ],
+        },
+        actionLinks: {},
+      },
+    };
+
+    const transformed = transformRecord(mockDependencies, record, 'view');
+
+    expect(transformed.data).toEqual({
+      root: {
+        fromStorage: true,
+        recordInfo: {
+          fromStorage: true,
+          id: {
+            required: true,
+            value: '1234',
+          },
+          required: true,
+          type: {
+            linkedRecordType: 'recordType',
+            required: true,
+            value: 'someRecordTypeId',
+          },
+          validationType: {
+            linkedRecordType: 'validationType',
+            required: true,
+            value: 'someValidationTypeId',
+          },
+        },
+        someText_attr2_opt1: {
+          _attr1: 'opt1',
+          _attr2: 'opt1',
+          value: 'someValue',
+        },
+        someText_attr1_opt1: {
+          _attr1: 'opt1',
+          value: 'someOtherValue',
+        },
+      },
     });
   });
 });
