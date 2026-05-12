@@ -251,28 +251,21 @@ describe('Identifiers', () => {
     expect(screen.getByText('someArchiveNumber1234')).toBeInTheDocument();
   });
 
-  it('should render Local IDs', () => {
+  it('should render Local ID', () => {
     const output = {
       recordInfo: {
         id: { value: '1234' },
       },
-      identifier_type_localId: [
-        {
-          __text: { en: 'Local ID' },
-          value: 'localid1234',
-        },
-        {
-          __text: { en: 'Local ID' },
-          value: 'localid5678',
-        },
-      ],
+      identifier_type_localId: {
+        __text: { en: 'Local ID' },
+        value: 'localid1234',
+      },
     } as DivaOutputGroup;
 
     render(<Identifiers output={output} />);
 
     expect(screen.getByText('Local ID')).toBeInTheDocument();
     expect(screen.getByText('localid1234')).toBeInTheDocument();
-    expect(screen.getByText('localid5678')).toBeInTheDocument();
   });
 
   it('should render patent number', () => {

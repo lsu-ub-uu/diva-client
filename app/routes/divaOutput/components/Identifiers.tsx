@@ -72,8 +72,8 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         />
 
         <Term
-          label={output.identifier_type_localId?.[0]?.__text?.[language]}
-          value={output.identifier_type_localId?.map((libr) => libr.value)}
+          label={output.identifier_type_localId?.__text?.[language]}
+          value={output.identifier_type_localId?.value}
         />
         <Term
           label={output.identifier_type_patentNumber?.__text?.[language]}

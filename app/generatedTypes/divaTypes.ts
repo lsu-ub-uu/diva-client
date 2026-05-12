@@ -2292,7 +2292,7 @@ export interface RecordInfoOutputUpdateGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  urn?: { value: string; __text?: { sv: string; en: string } };
+  urn: { value: string; __text?: { sv: string; en: string } };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -2300,8 +2300,8 @@ export interface RecordInfoOutputUpdateGroup {
 export type DataQualityCollection = 'classic' | '2026';
 
 export type SubcategoryCollection =
-  | 'oralPresentation'
-  | 'oralPresentationAbstract'
+  | 'presentation'
+  | 'presentationAbstract'
   | 'bookOfAbstracts'
   | 'policyDocument'
   | 'exhibitionCatalog';
@@ -3553,11 +3553,18 @@ export interface LocalLabelUpdateGroup {
 
 export type FailedCollection = 'true' | 'false';
 
+export type HiddenExternallyCollection = 'true' | 'false';
+
 export type ReviewedCollection = 'true' | 'false';
 
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  hidden?: {
+    value: HiddenExternallyCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
@@ -3937,7 +3944,7 @@ export interface DivaOutputGroup {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
-  }[];
+  };
   identifier_displayLabel_invalid?: {
     value: string;
     _type: IdentifierTypeDoiIsbnCollection;
