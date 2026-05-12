@@ -18,56 +18,6 @@
  */
 
 import {
-  createdByLink,
-  dataDividerLink,
-  epoCollectionItem,
-  faoCollectionItem,
-  idTextVar,
-  kalCollectionItem,
-  languageCollectionVar,
-  nationalSubjectCategoryLink,
-  newLangCollVariable,
-  newLangItemCollection,
-  newLangItemCollectionItemEng,
-  newLangItemCollectionItemSwe,
-  newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
-  pSomeMainTitleTitleInfoTextVariable,
-  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
-  pSomeNewMetadataGroupTitleInfoPGroup,
-  recordInfoMetadata,
-  recordTypeLink,
-  someAbstractTextVariable,
-  someAlternativeTitleMetadataChildGroup,
-  someMainTitleTextVariable,
-  someMainTitleTitleInfoATextVariable,
-  someManuscriptEditMetadataGroup,
-  someManuscriptRecordType,
-  someNamePartTextVariable,
-  someNamePartWithAttributesTextVariable,
-  someNationalSubjectCategoryRecordType,
-  someNewMetadataGroupRepeatingNamePartGroup,
-  someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
-  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  someNewMetadataGroupTitleInfoAlternativeGroup,
-  someNewMetadataGroupTitleInfoGroup,
-  someOtherNamePartTextVariable,
-  someOtherNamePartWithAttributesTextVariable,
-  someRecordTypeForRepeatingTitleInfo,
-  someRecordTypeNamePart,
-  someRecordTypeNamePartWithAttributes,
-  someSubTitleTextVariable,
-  sometitleMetadataChildGroup,
-  tsCreatedTextVar,
-  tsUpdatedTextVar,
-  typeCollectionItemAlternative,
-  typeCollVariable,
-  typeItemCollection,
-  updatedByLink,
-  updatedGroup,
-  validationTypeLink,
-} from '@/__mocks__/bff/form/bffMock';
-import {
   createAnyTypeRecordLink,
   createCollVar,
   createCollVarFinal,
@@ -87,45 +37,19 @@ import type {
   BFFMetadataItemCollection,
   Dependencies,
 } from '@/cora/bffTypes.server';
-import type {
-  BFFMetadataBase,
-  BFFMetadataCollectionVariable,
-  BFFMetadataItemCollection,
-  Dependencies,
-} from '@/cora/bffTypes.server';
-import type {
-  ActionLink,
-  DataGroup,
-  RecordWrapper,
-} from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
+import type { ActionLink, RecordWrapper } from '@/cora/cora-data/types.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
-import type { Lookup } from 'server/dependencies/util/lookup';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type {
-  BFFGuiElement,
-  BFFLoginUnit,
-  BFFLoginWebRedirect,
-  BFFMember,
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFOrganisation,
-  BFFPresentation,
-  BFFPresentationBase,
-  BFFPresentationGroup,
-  BFFPresentationResourceLink,
-  BFFPresentationSurroundingContainer,
   BFFRecordType,
-  BFFSearch,
-  BFFText,
   BFFValidationType,
 } from '../../bffTypes.server';
-import {
-  transformRecord,
-  transformRecordData,
-} from '../transformRecord.server';
+import { transformRecord } from '../transformRecord.server';
 
 describe('transformRecord', () => {
   it('should transform record for view mode', () => {
@@ -1744,385 +1668,253 @@ describe('transformRecord', () => {
     });
   });
 
-  describe('transformRecord', () => {
-    let metadataPool: Lookup<string, BFFMetadata>;
-    let presentationPool: Lookup<
-      string,
-      | BFFPresentationBase
-      | BFFPresentationGroup
-      | BFFPresentationSurroundingContainer
-      | BFFGuiElement
-      | BFFPresentationResourceLink
-    >;
-    let recordTypePool: Lookup<string, BFFRecordType>;
-    let dependencies: Dependencies;
+  describe('organisation display name', () => {
+    const dependenciesMock = {
+      organisationPool: listToPool<BFFOrganisation>([
+        {
+          id: 'organisation:1',
+          parentOrganisationId: 'organisation:2',
+          name: {
+            sv: 'Institutionen för mikrobiologi',
+            en: 'Institution for Microbiology',
+          },
+        },
+        {
+          id: 'organisation:2',
+          parentOrganisationId: 'organisation:3',
+          name: { sv: 'Biologiska faktulteten', en: 'Faculty for Biology' },
+        },
+        {
+          id: 'organisation:3',
+          parentOrganisationId: 'organisation:4',
+          name: {
+            sv: 'Vetenskapsområdet för naturvetenskap',
+            en: 'Area of Nature',
+          },
+        },
+        {
+          id: 'organisation:4',
+          name: {
+            sv: 'Uppsala universitet',
+            en: 'Uppsala University',
+          },
+        },
+      ]),
+      recordTypePool: listToPool<BFFRecordType>([
+        createRecordType('someRecordTypeId', { metadataId: 'parentGroup' }),
+        {
+          id: 'diva-organisation',
+          metadataId: 'diva-organisation-metadata',
+        } as BFFRecordType,
+      ]),
+      validationTypePool: listToPool<BFFValidationType>([
+        createValidationType('someValidationTypeId'),
+      ]),
+      metadataPool: listToPool<BFFMetadata>([
+        createGroup('parentGroup', 'parent', [
+          'recordInfoGroup',
+          'someOrganisationRecordLink',
+        ]),
+        ...createRecordInfoMetadata(),
+        createRecordLink('someOrganisationRecordLink', 'diva-organisation', {
+          nameInData: 'someOrganisationRecordLink',
+        }),
+        {
+          id: 'diva-organisation-metadata',
+          type: 'group',
+          nameInData: 'organisation',
+          textId: '',
+          defTextId: '',
+          children: [],
+        } as BFFMetadataGroup,
+      ]),
+    } as Dependencies;
 
-    beforeEach(() => {
-      recordTypePool = listToPool<BFFRecordType>([
-        someManuscriptRecordType,
-        someNationalSubjectCategoryRecordType,
-        someRecordTypeForRepeatingTitleInfo,
-        someRecordTypeNamePart,
-        someRecordTypeNamePartWithAttributes,
-      ]);
-      metadataPool = listToPool<BFFMetadata>([
-        someManuscriptEditMetadataGroup,
-        someAlternativeTitleMetadataChildGroup,
-        someMainTitleTextVariable,
-        someSubTitleTextVariable,
-        someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-        someNewMetadataGroupTitleInfoGroup,
-        someNewMetadataGroupTitleInfoAlternativeGroup,
-        newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
-        someMainTitleTitleInfoATextVariable,
-        typeCollVariable,
-        typeItemCollection,
-        typeCollectionItemAlternative,
-        newLangCollVariable,
-        newLangItemCollection,
-        newLangItemCollectionItemEng,
-        newLangItemCollectionItemSwe,
-        someNewMetadataGroupRepeatingNamePartGroup,
-        someNamePartTextVariable,
-        someOtherNamePartTextVariable,
-        someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
-        someNamePartWithAttributesTextVariable,
-        someOtherNamePartWithAttributesTextVariable,
-        recordInfoMetadata,
-        someAbstractTextVariable,
-        createdByLink,
-        dataDividerLink,
-        idTextVar,
-        tsCreatedTextVar,
-        recordTypeLink,
-        updatedGroup,
-        updatedByLink,
-        tsUpdatedTextVar,
-        validationTypeLink,
-        nationalSubjectCategoryLink,
-        faoCollectionItem,
-        epoCollectionItem,
-        kalCollectionItem,
-        languageCollectionVar,
-        sometitleMetadataChildGroup,
-      ]);
-      presentationPool = listToPool<BFFPresentation>([
-        pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-        pSomeNewMetadataGroupTitleInfoPGroup,
-        pSomeNewMetadataGroupTitleInfoAlternativePGroup,
-        pSomeMainTitleTitleInfoTextVariable,
-      ]);
+    it('builds display name from organisation with no parent', () => {
+      const recordWrapper: RecordWrapper = {
+        record: {
+          actionLinks: {},
+          data: {
+            name: 'parent',
+            children: [
+              createRecordInfoData(),
+              {
+                name: 'someOrganisationRecordLink',
+                children: [
+                  { name: 'linkedRecordType', value: 'diva-organisation' },
+                  { name: 'linkedRecordId', value: 'organisation:4' },
+                  {
+                    name: 'linkedRecord',
+                    children: [
+                      {
+                        name: 'organisation',
+                        children: [
+                          {
+                            name: 'recordInfo',
+                            children: [
+                              { name: 'id', value: 'organisation:4' },
+                              {
+                                name: 'type',
+                                children: [
+                                  {
+                                    name: 'linkedRecordType',
+                                    value: 'recordType',
+                                  },
+                                  {
+                                    name: 'linkedRecordId',
+                                    value: 'diva-organisation',
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
 
-      dependencies = {
-        textPool: listToPool<BFFText>([]),
-        validationTypePool: listToPool<BFFValidationType>([]),
-        metadataPool,
-        presentationPool,
-        recordTypePool: recordTypePool,
-        searchPool: listToPool<BFFSearch>([]),
-        loginUnitPool: listToPool<BFFLoginUnit>([]),
-        loginPool: listToPool<BFFLoginWebRedirect>([]),
-        memberPool: listToPool<BFFMember>([]),
-        organisationPool: listToPool<BFFOrganisation>([]),
-      } as Dependencies;
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
+
+      expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
+        value: 'organisation:4',
+        linkedRecordType: 'diva-organisation',
+        displayName: {
+          en: 'Uppsala University',
+          sv: 'Uppsala universitet',
+        },
+        linkedRecord: { organisation: { fromStorage: true } },
+        required: true,
+      });
     });
 
-    describe('organisation display name', () => {
-      const dependenciesMock = {
-        organisationPool: listToPool<BFFOrganisation>([
-          {
-            id: 'organisation:1',
-            parentOrganisationId: 'organisation:2',
-            name: {
-              sv: 'Institutionen för mikrobiologi',
-              en: 'Institution for Microbiology',
-            },
-          },
-          {
-            id: 'organisation:2',
-            parentOrganisationId: 'organisation:3',
-            name: { sv: 'Biologiska faktulteten', en: 'Faculty for Biology' },
-          },
-          {
-            id: 'organisation:3',
-            parentOrganisationId: 'organisation:4',
-            name: {
-              sv: 'Vetenskapsområdet för naturvetenskap',
-              en: 'Area of Nature',
-            },
-          },
-          {
-            id: 'organisation:4',
-            name: {
-              sv: 'Uppsala universitet',
-              en: 'Uppsala University',
-            },
-          },
-        ]),
-        recordTypePool: listToPool<BFFRecordType>([
-          createRecordType('someRecordTypeId', { metadataId: 'parentGroup' }),
-          {
-            id: 'diva-organisation',
-            metadataId: 'diva-organisation-metadata',
-          } as BFFRecordType,
-        ]),
-        validationTypePool: listToPool<BFFValidationType>([
-          createValidationType('someValidationTypeId'),
-        ]),
-        metadataPool: listToPool<BFFMetadata>([
-          createGroup('parentGroup', 'parent', [
-            'recordInfoGroup',
-            'someOrganisationRecordLink',
-          ]),
-          ...createRecordInfoMetadata(),
-          {
-            id: 'diva-organisation-metadata',
-            type: 'group',
-            nameInData: 'organisation',
-            textId: '',
-            defTextId: '',
-            children: [],
-          } as BFFMetadataGroup,
-        ]),
-      } as Dependencies;
-
-      it('builds display name from organisation with no parent', () => {
-        const data: DataGroup = {
-          name: 'parent',
-          children: [
-            {
-              name: 'someOrganisationRecordLink',
-              children: [
-                { name: 'linkedRecordType', value: 'diva-organisation' },
-                { name: 'linkedRecordId', value: 'organisation:4' },
-                {
-                  name: 'linkedRecord',
-                  children: [
-                    {
-                      name: 'organisation',
-                      children: [
-                        {
-                          name: 'recordInfo',
-                          children: [
-                            { name: 'id', value: 'organisation:4' },
-                            {
-                              name: 'type',
-                              children: [
-                                {
-                                  name: 'linkedRecordType',
-                                  value: 'recordType',
-                                },
-                                {
-                                  name: 'linkedRecordId',
-                                  value: 'diva-organisation',
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        };
-
-        const formMetadata: FormMetaData = {
-          type: 'group',
-          name: 'parent',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'someOrganisationRecordLink',
-              linkedRecordType: 'diva-organisation',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const result = transformRecordData(
-          data,
-          formMetadata,
-          dependenciesMock,
-        );
-
-        expect(result).toStrictEqual({
-          parent: {
-            fromStorage: true,
-            someOrganisationRecordLink: {
-              value: 'organisation:4',
-              linkedRecordType: 'diva-organisation',
-              displayName: {
-                en: 'Uppsala University',
-                sv: 'Uppsala universitet',
+    it('builds display name from organisation with three parents', () => {
+      const recordWrapper: RecordWrapper = {
+        record: {
+          actionLinks: {},
+          data: {
+            name: 'parent',
+            children: [
+              createRecordInfoData(),
+              {
+                name: 'someOrganisationRecordLink',
+                children: [
+                  { name: 'linkedRecordType', value: 'diva-organisation' },
+                  { name: 'linkedRecordId', value: 'organisation:1' },
+                  {
+                    name: 'linkedRecord',
+                    children: [
+                      {
+                        name: 'organisation',
+                        children: [
+                          {
+                            name: 'recordInfo',
+                            children: [
+                              { name: 'id', value: 'organisation:1234' },
+                              {
+                                name: 'type',
+                                children: [
+                                  {
+                                    name: 'linkedRecordType',
+                                    value: 'recordType',
+                                  },
+                                  {
+                                    name: 'linkedRecordId',
+                                    value: 'diva-organisation',
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
-              linkedRecord: { organisation: { fromStorage: true } },
-              required: true,
-            },
+            ],
           },
-        });
+        },
+      };
+
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
+
+      expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
+        value: 'organisation:1',
+        linkedRecordType: 'diva-organisation',
+        displayName: {
+          en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
+          sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
+        },
+        linkedRecord: { organisation: { fromStorage: true } },
+        required: true,
       });
+    });
 
-      it('builds display name from organisation with three parents', () => {
-        const data: DataGroup = {
-          name: 'parent',
-          children: [
-            {
-              name: 'someOrganisationRecordLink',
-              children: [
-                { name: 'linkedRecordType', value: 'diva-organisation' },
-                { name: 'linkedRecordId', value: 'organisation:1' },
-                {
-                  name: 'linkedRecord',
-                  children: [
-                    {
-                      name: 'organisation',
-                      children: [
-                        {
-                          name: 'recordInfo',
-                          children: [
-                            { name: 'id', value: 'organisation:1234' },
-                            {
-                              name: 'type',
-                              children: [
-                                {
-                                  name: 'linkedRecordType',
-                                  value: 'recordType',
-                                },
-                                {
-                                  name: 'linkedRecordId',
-                                  value: 'diva-organisation',
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        };
-
-        const formMetadata: FormMetaData = {
-          type: 'group',
-          name: 'parent',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'someOrganisationRecordLink',
-              linkedRecordType: 'diva-organisation',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const result = transformRecordData(
-          data,
-          formMetadata,
-          dependenciesMock,
-        );
-
-        expect(result).toStrictEqual({
-          parent: {
-            fromStorage: true,
-            someOrganisationRecordLink: {
-              value: 'organisation:1',
-              linkedRecordType: 'diva-organisation',
-              displayName: {
-                en: 'Institution for Microbiology, Faculty for Biology, Area of Nature, Uppsala University',
-                sv: 'Institutionen för mikrobiologi, Biologiska faktulteten, Vetenskapsområdet för naturvetenskap, Uppsala universitet',
+    it('handles organisation that does not exist in pool', () => {
+      const recordWrapper: RecordWrapper = {
+        record: {
+          actionLinks: {},
+          data: {
+            name: 'parent',
+            children: [
+              createRecordInfoData(),
+              {
+                name: 'someOrganisationRecordLink',
+                children: [
+                  { name: 'linkedRecordType', value: 'diva-organisation' },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'someNonExistingOrganisationId',
+                  },
+                  {
+                    name: 'linkedRecord',
+                    children: [
+                      {
+                        name: 'organisation',
+                        children: [
+                          {
+                            name: 'recordInfo',
+                            children: [
+                              { name: 'id', value: 'organisation:4' },
+                              {
+                                name: 'type',
+                                children: [
+                                  {
+                                    name: 'linkedRecordType',
+                                    value: 'recordType',
+                                  },
+                                  {
+                                    name: 'linkedRecordId',
+                                    value: 'diva-organisation',
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
-              linkedRecord: { organisation: { fromStorage: true } },
-              required: true,
-            },
+            ],
           },
-        });
-      });
+        },
+      };
 
-      it('handles organisation that does not exist in pool', () => {
-        const data: DataGroup = {
-          name: 'parent',
-          children: [
-            {
-              name: 'someOrganisationRecordLink',
-              children: [
-                { name: 'linkedRecordType', value: 'diva-organisation' },
-                {
-                  name: 'linkedRecordId',
-                  value: 'someNonExistingOrganisationId',
-                },
-                {
-                  name: 'linkedRecord',
-                  children: [
-                    {
-                      name: 'organisation',
-                      children: [
-                        {
-                          name: 'recordInfo',
-                          children: [
-                            { name: 'id', value: 'organisation:4' },
-                            {
-                              name: 'type',
-                              children: [
-                                {
-                                  name: 'linkedRecordType',
-                                  value: 'recordType',
-                                },
-                                {
-                                  name: 'linkedRecordId',
-                                  value: 'diva-organisation',
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        };
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
 
-        const formMetadata: FormMetaData = {
-          type: 'group',
-          name: 'parent',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'someOrganisationRecordLink',
-              linkedRecordType: 'diva-organisation',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const result = transformRecordData(
-          data,
-          formMetadata,
-          dependenciesMock,
-        );
-
-        expect(result).toStrictEqual({
-          parent: {
-            fromStorage: true,
-            someOrganisationRecordLink: {
-              value: 'someNonExistingOrganisationId',
-              linkedRecordType: 'diva-organisation',
-              linkedRecord: { organisation: { fromStorage: true } },
-              required: true,
-            },
-          },
-        });
+      expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
+        value: 'someNonExistingOrganisationId',
+        linkedRecordType: 'diva-organisation',
+        linkedRecord: { organisation: { fromStorage: true } },
+        required: true,
       });
     });
   });

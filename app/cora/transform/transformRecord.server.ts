@@ -38,12 +38,7 @@ import type {
   RecordWrapper,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 
-import {
-  createFormMetaData,
-  createViewMetadata,
-} from '@/data/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -424,23 +419,25 @@ const doesDataMatchMetadataChildRef = (
 ) => {
   const { metadataPool } = dependencies;
   const metadata = metadataPool.get(metadataChildRef.childId);
-  if (!('attributeReferences' in metadata)) {
-    return false;
-  }
 
   if (data.name !== metadata.nameInData) {
     return false;
   }
 
+  const metadataAttributes =
+    'attributeReferences' in metadata
+      ? (metadata.attributeReferences ?? [])
+      : [];
+
   const dataAttributes = Object.entries(data.attributes ?? {}).filter(
     ([key]) => !key.startsWith('_'),
   );
 
-  if (dataAttributes.length !== metadata.attributeReferences?.length) {
+  if (dataAttributes.length !== metadataAttributes?.length) {
     return false;
   }
 
-  return (metadata.attributeReferences ?? []).every((attributeReference) => {
+  return metadataAttributes.every((attributeReference) => {
     const collVar = metadataPool.get(
       attributeReference.refCollectionVarId,
     ) as BFFMetadataCollectionVariable;
