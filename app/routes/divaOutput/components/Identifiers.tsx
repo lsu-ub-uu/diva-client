@@ -79,6 +79,13 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
           label={output.identifier_type_patentNumber?.__text?.[language]}
           value={output.identifier_type_patentNumber?.value}
         />
+        {output.identifier_displayLabel_invalid?.map((identifier, index) => (
+          <Term
+            key={index}
+            label={`${identifier.__text?.[language]} (${identifier._type})`}
+            value={identifier.value}
+          />
+        ))}
       </dl>
     </section>
   );
