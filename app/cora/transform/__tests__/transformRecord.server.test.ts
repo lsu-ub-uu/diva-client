@@ -17,12 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import recordManuscript from '@/__mocks__/bff/coraRecordManuscript.json';
-import recordManuscriptWithoutCreatedAndUpdates from '@/__mocks__/bff/coraRecordManuscriptPublicWithoutSensitiveData.json';
-import recordManuscriptWithSameNameInDataVar from '@/__mocks__/bff/coraRecordManuscriptWithNamePart.json';
-import recordManuscriptWithSameNameInDataVarWithoutAllVars from '@/__mocks__/bff/coraRecordManuscriptWithNamePartWithoutAllVars.json';
-import recordManuscriptWithSameNameInDataGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInData.json';
-import coraRecordManuscriptWithSameNameInDataWithOneGroup from '@/__mocks__/bff/coraRecordManuscriptWithSameNameInDataWithOneGroup.json';
 import {
   createdByLink,
   dataDividerLink,
@@ -73,6 +67,26 @@ import {
   updatedGroup,
   validationTypeLink,
 } from '@/__mocks__/bff/form/bffMock';
+import {
+  createAnyTypeRecordLink,
+  createCollVar,
+  createCollVarFinal,
+  createGroup,
+  createNumVar,
+  createRecordInfoData,
+  createRecordInfoMetadata,
+  createRecordLink,
+  createRecordType,
+  createResourceLink,
+  createTextVar,
+  createValidationType,
+} from '@/__mocks__/bffTestDataUtils';
+import type {
+  BFFMetadataBase,
+  BFFMetadataCollectionVariable,
+  BFFMetadataItemCollection,
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import type {
   BFFMetadataBase,
   BFFMetadataCollectionVariable,
@@ -109,13 +123,1627 @@ import type {
   BFFValidationType,
 } from '../../bffTypes.server';
 import {
-  transformAttributes,
-  transformDataGroup,
   transformRecord,
   transformRecordData,
 } from '../transformRecord.server';
 
 describe('transformRecord', () => {
+  it('should transform record for view mode', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: { required: true, value: 'some value' },
+        },
+      },
+    });
+  });
+
+  it('should transform record for update mode', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId', {
+          metadataGroupId: 'rootUpdateGroup',
+          newMetadataGroupId: 'rootNewGroup',
+        }),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        createGroup('rootUpdateGroup', 'root', ['recordInfoGroup']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [createRecordInfoData()],
+        },
+        actionLinks: {},
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'update',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      actionLinks: {},
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+        },
+      },
+    });
+  });
+
+  it('should transform record for create mode', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId', {
+          metadataGroupId: 'rootUpdateGroup',
+          newMetadataGroupId: 'rootNewGroup',
+        }),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        createGroup('rootNewGroup', 'root', ['recordInfoGroup']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [createRecordInfoData()],
+        },
+        actionLinks: {},
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'create',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      actionLinks: {},
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+        },
+      },
+    });
+  });
+
+  it('should add final value attributes to data name', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1'], {
+          attributeReferences: [
+            { refCollectionVarId: 'someFinalValueAttributeCollVar' },
+            { refCollectionVarId: 'someSelectableAttributeCollVar' },
+          ],
+        }),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', [
+          'someFinalValueAttributeCollVar',
+          'someSelectableAttributeCollVar',
+        ]),
+        createCollVarFinal(
+          'someFinalValueAttributeCollVar',
+          'someFinalAttr',
+          'someFinalValue',
+          [],
+        ),
+        ...createCollVar(
+          'someSelectableAttributeCollVar',
+          'someSelectableAttr',
+          ['someSelectableValue1', 'someSelectableValue2'],
+          [],
+        ),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          attributes: {
+            someFinalAttr: 'someFinalValue',
+            someSelectableAttr: 'someSelectableValue1',
+          },
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'text1',
+              value: 'some value',
+              attributes: {
+                someFinalAttr: 'someFinalValue',
+                someSelectableAttr: 'someSelectableValue1',
+              },
+            },
+          ],
+        },
+        actionLinks: {},
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      actionLinks: {},
+      data: {
+        root_someFinalAttr_someFinalValue: {
+          fromStorage: true,
+          _someFinalAttr: 'someFinalValue',
+          _someSelectableAttr: 'someSelectableValue1',
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1_someFinalAttr_someFinalValue: {
+            required: true,
+            value: 'some value',
+            _someFinalAttr: 'someFinalValue',
+            _someSelectableAttr: 'someSelectableValue1',
+          },
+        },
+      },
+    });
+  });
+
+  it('handle same nameInDate but different final value attributes', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup(
+          'rootGroup',
+          'root',
+          [
+            'recordInfoGroup',
+            'textVarWithoutAttr',
+            'textVarAttrVal1',
+            'textVarAttrVal2',
+            'textVarAttrVal2OtherAttrVal2',
+            'textVarOtherAttrVal1',
+          ],
+          {},
+        ),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVarWithoutAttr', 'text1', []),
+        createTextVar('textVarAttrVal1', 'text1', ['someAttrVal1CollVar']),
+        createTextVar('textVarAttrVal2', 'text1', ['someAttrVal2CollVar']),
+        createTextVar('textVarAttrVal2OtherAttrVal2', 'text1', [
+          'someAttrVal2CollVar',
+          'someOtherAttrVal2CollVar',
+        ]),
+        createTextVar('textVarOtherAttrVal1', 'text1', [
+          'someOtherAttrVal1CollVar',
+        ]),
+        createCollVarFinal('someAttrVal1CollVar', 'someAttr', 'val1', []),
+        createCollVarFinal('someAttrVal2CollVar', 'someAttr', 'val2', []),
+        createCollVarFinal(
+          'someOtherAttrVal1CollVar',
+          'someOtherAttr',
+          'val1',
+          [],
+        ),
+        createCollVarFinal(
+          'someOtherAttrVal2CollVar',
+          'someOtherAttr',
+          'val2',
+          [],
+        ),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          attributes: {
+            someFinalAttr: 'someFinalValue',
+            someSelectableAttr: 'someSelectableValue1',
+          },
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'text1',
+              value: 'some value for no attrs',
+            },
+            {
+              name: 'text1',
+              attributes: { someAttr: 'val1' },
+              value: 'some value for someAttr=val1',
+            },
+            {
+              name: 'text1',
+              attributes: { someAttr: 'val2' },
+              value: 'some value for someAttr=val2',
+            },
+            {
+              name: 'text1',
+              attributes: { someAttr: 'val2', someOtherAttr: 'val2' },
+              value: 'some value for someAttr=val2 and someOtherAttr=val2',
+            },
+            {
+              name: 'text1',
+              attributes: { someOtherAttr: 'val1' },
+              value: 'some value for someOtherAttr=val1',
+            },
+          ],
+        },
+        actionLinks: {},
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      actionLinks: {},
+      data: {
+        root: {
+          fromStorage: true,
+          _someFinalAttr: 'someFinalValue',
+          _someSelectableAttr: 'someSelectableValue1',
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: {
+            required: true,
+            value: 'some value for no attrs',
+          },
+          text1_someAttr_val1: {
+            required: true,
+            value: 'some value for someAttr=val1',
+            _someAttr: 'val1',
+          },
+          text1_someAttr_val2: {
+            required: true,
+            value: 'some value for someAttr=val2',
+            _someAttr: 'val2',
+          },
+          text1_someAttr_val2_someOtherAttr_val2: {
+            required: true,
+            value: 'some value for someAttr=val2 and someOtherAttr=val2',
+            _someAttr: 'val2',
+            _someOtherAttr: 'val2',
+          },
+          text1_someOtherAttr_val1: {
+            required: true,
+            value: 'some value for someOtherAttr=val1',
+            _someOtherAttr: 'val1',
+          },
+        },
+      },
+    });
+  });
+
+  it('matches data against two metadata with same name but different selectable attributes', () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        {
+          id: 'someRecordTypeId',
+          metadataId: 'someRootGroup',
+          useTrashBin: true,
+        } as BFFRecordType,
+      ]),
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someRootGroup',
+          type: 'group',
+          nameInData: 'root',
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+            {
+              childId: 'textVarWithFinalValueAttr',
+              repeatMin: '0',
+              repeatMax: '1',
+            },
+            {
+              childId: 'textVarWithSelectableAndFinalValueAttr',
+              repeatMin: '0',
+              repeatMax: '1',
+            },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'recordInfoGroup',
+          nameInData: 'recordInfo',
+          type: 'group',
+          children: [
+            { childId: 'idVar', repeatMin: '1', repeatMax: '1' },
+            { childId: 'typeLink', repeatMin: '1', repeatMax: '1' },
+            { childId: 'validationTypeLink', repeatMin: '1', repeatMax: '1' },
+          ],
+        } as BFFMetadataGroup,
+        {
+          id: 'idVar',
+          type: 'textVariable',
+          nameInData: 'id',
+        } as BFFMetadataTextVariable,
+        {
+          id: 'typeLink',
+          type: 'recordLink',
+          nameInData: 'type',
+          linkedRecordType: 'recordType',
+        } as BFFMetadataRecordLink,
+        {
+          id: 'validationTypeLink',
+          type: 'recordLink',
+          nameInData: 'validationType',
+          linkedRecordType: 'validationType',
+        } as BFFMetadataRecordLink,
+        {
+          id: 'textVarWithFinalValueAttr',
+          type: 'textVariable',
+          nameInData: 'someText',
+          attributeReferences: [
+            { refCollectionVarId: 'attr1WithFinalValueColVar' },
+          ],
+        } as BFFMetadataTextVariable,
+        {
+          id: 'textVarWithSelectableAndFinalValueAttr',
+          type: 'textVariable',
+          nameInData: 'someText',
+          attributeReferences: [
+            { refCollectionVarId: 'attr1SelectableColVar' },
+            { refCollectionVarId: 'attr2WithFinalValueColVar' },
+          ],
+        } as BFFMetadataTextVariable,
+        {
+          id: 'attr1WithFinalValueColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr1',
+          refCollection: 'attr1Collection',
+          finalValue: 'opt1',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr1SelectableColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr1',
+          refCollection: 'attr1Collection',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr2WithFinalValueColVar',
+          type: 'collectionVariable',
+          nameInData: 'attr2',
+          refCollection: 'attr2Collection',
+          finalValue: 'opt1',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'attr1Collection',
+          collectionItemReferences: [
+            { refCollectionItemId: 'attr1Opt1' },
+            { refCollectionItemId: 'attr1Opt2' },
+          ],
+        } as BFFMetadataItemCollection,
+        {
+          id: 'attr2Collection',
+          collectionItemReferences: [
+            { refCollectionItemId: 'attr2Opt1' },
+            { refCollectionItemId: 'attr2Opt2' },
+          ],
+        } as BFFMetadataItemCollection,
+        { id: 'attr1Opt1', nameInData: 'opt1' } as BFFMetadataBase,
+        { id: 'attr1Opt2', nameInData: 'opt2' } as BFFMetadataBase,
+        { id: 'attr2Opt1', nameInData: 'opt1' } as BFFMetadataBase,
+        { id: 'attr2Opt2', nameInData: 'opt2' } as BFFMetadataBase,
+      ]),
+    } as Dependencies;
+    // someText attr1="opt1"
+    // someText attr1="opt1 | opt2" attr2="opt3"
+    const record: RecordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            {
+              name: 'recordInfo',
+              children: [
+                { name: 'id', value: '1234' },
+                {
+                  name: 'type',
+                  children: [
+                    { name: 'linkedRecordType', value: 'recordType' },
+                    { name: 'linkedRecordId', value: 'someRecordTypeId' },
+                  ],
+                },
+                {
+                  name: 'validationType',
+                  children: [
+                    { name: 'linkedRecordType', value: 'validationType' },
+                    { name: 'linkedRecordId', value: 'someValidationTypeId' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'someText',
+              attributes: {
+                attr1: 'opt1',
+                attr2: 'opt1',
+              },
+              value: 'someValue',
+            },
+            {
+              name: 'someText',
+              attributes: {
+                attr1: 'opt1',
+              },
+              value: 'someOtherValue',
+            },
+          ],
+        },
+        actionLinks: {},
+      },
+    };
+
+    const transformed = transformRecord(mockDependencies, record, 'view');
+
+    expect(transformed.data).toEqual({
+      root: {
+        fromStorage: true,
+        recordInfo: {
+          fromStorage: true,
+          id: {
+            required: true,
+            value: '1234',
+          },
+          required: true,
+          type: {
+            linkedRecordType: 'recordType',
+            required: true,
+            value: 'someRecordTypeId',
+          },
+          validationType: {
+            linkedRecordType: 'validationType',
+            required: true,
+            value: 'someValidationTypeId',
+          },
+        },
+        someText_attr2_opt1: {
+          _attr1: 'opt1',
+          _attr2: 'opt1',
+          value: 'someValue',
+        },
+        someText_attr1_opt1: {
+          _attr1: 'opt1',
+          value: 'someOtherValue',
+        },
+      },
+    });
+  });
+
+  it('should transform a text var', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.text1.value).toEqual('some value');
+  });
+
+  it('should transform a num var', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'numVar1']),
+        ...createRecordInfoMetadata(),
+        createNumVar('numVar1', 'num1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [createRecordInfoData(), { name: 'num1', value: 42 }],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.num1.value).toEqual(42);
+  });
+
+  it('should transform a coll var', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'collVar1']),
+        ...createRecordInfoMetadata(),
+        ...createCollVar('collVar1', 'collVar1', ['option1', 'option2'], []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'collVar1', value: 'option1' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.collVar1.value).toEqual('option1');
+  });
+
+  it('should transform a resourceLink', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [
+          'recordInfoGroup',
+          'someResourceLinkId',
+        ]),
+        ...createRecordInfoMetadata(),
+        createResourceLink('someResourceLinkId', 'someResourceLink'),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'someResourceLink',
+              children: [
+                { name: 'linkedRecordId', value: 'someBinaryId' },
+                { name: 'mimeType', value: 'application/pdf' },
+              ],
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.someResourceLink).toEqual({
+      name: 'someResourceLink',
+      mimeType: 'application/pdf',
+      id: 'someBinaryId',
+      required: true,
+    });
+  });
+
+  it('should transform a recordLink', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [
+          'recordInfoGroup',
+          'someRecordLinkId',
+        ]),
+        ...createRecordInfoMetadata(),
+        createRecordLink('someRecordLinkId', 'someOtherRecordType', {
+          nameInData: 'someRecordLink',
+        }),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'someRecordLink',
+              children: [
+                { name: 'linkedRecordId', value: 'someRecordLink' },
+                { name: 'linkedRecordType', value: 'someOtherRecordType' },
+              ],
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.someRecordLink).toEqual({
+      linkedRecordType: 'someOtherRecordType',
+      required: true,
+      value: 'someRecordLink',
+    });
+  });
+
+  it('should transform a anyTypeRecordLink', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [
+          'recordInfoGroup',
+          'someAnyTypeRecordLinkId',
+        ]),
+        ...createRecordInfoMetadata(),
+        createAnyTypeRecordLink('someAnyTypeRecordLinkId', {
+          nameInData: 'someAnyTypeRecordLink',
+        }),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'someAnyTypeRecordLink',
+              children: [
+                { name: 'linkedRecordId', value: 'someOtherRecordId' },
+                { name: 'linkedRecordType', value: 'someOtherRecordType' },
+              ],
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.someAnyTypeRecordLink).toEqual({
+      linkedRecordType: 'someOtherRecordType',
+      required: true,
+      value: 'someOtherRecordId',
+    });
+  });
+
+  it('should handle unknown type', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [
+          'recordInfoGroup',
+          'someUnknownTypeId',
+        ]),
+        ...createRecordInfoMetadata(),
+        {
+          id: 'someUnknownTypeId',
+          type: 'unknownType',
+          nameInData: 'unknown',
+        } as unknown as BFFMetadata,
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'unknown', value: 'some value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.unknown).toEqual({
+      required: true,
+      value: 'some value',
+    });
+  });
+
+  it('should ignore data not matching metadata', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+            { name: 'text2', value: 'some value that will be ignored' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: { required: true, value: 'some value' },
+        },
+      },
+    });
+  });
+
+  it('should handle nested groups', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'childGroup']),
+        createGroup('childGroup', 'child', ['textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'child',
+              children: [{ name: 'text1', value: 'some value' }],
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          child: {
+            required: true,
+            fromStorage: true,
+            text1: { required: true, value: 'some value' },
+          },
+        },
+      },
+    });
+  });
+
+  it('should mark field as required or optional', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [], {
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+            { childId: 'textVar1', repeatMin: '0', repeatMax: '1' },
+          ],
+        }),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: { /* no required: true here */ value: 'some value' },
+        },
+      },
+    });
+  });
+
+  it('should handle repeating variable', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [], {
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+            { childId: 'textVar1', repeatMin: '0', repeatMax: 'X' },
+          ],
+        }),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+            { name: 'text1', value: 'some other value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: [{ value: 'some value' }, { value: 'some other value' }],
+        },
+      },
+    });
+  });
+
+  it('should handle repeating group', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [], {
+          children: [
+            { childId: 'recordInfoGroup', repeatMin: '1', repeatMax: '1' },
+            { childId: 'childGroup', repeatMin: '1', repeatMax: 'X' },
+          ],
+        }),
+        createGroup('childGroup', 'child', ['textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'child',
+              children: [{ name: 'text1', value: 'some value' }],
+            },
+            {
+              name: 'child',
+              children: [{ name: 'text1', value: 'some other value' }],
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          child: [
+            {
+              required: true,
+              fromStorage: true,
+              text1: { required: true, value: 'some value' },
+            },
+            {
+              required: true,
+              fromStorage: true,
+              text1: { required: true, value: 'some other value' },
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it('should mark final value', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', [], undefined, {
+          finalValue: 'final value',
+        }),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'final value' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: { final: true, required: true, value: 'final value' },
+        },
+      },
+    });
+  });
+
+  it('should use final value from metadata over data', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1']),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', [], undefined, {
+          finalValue: 'final value from metadata',
+        }),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'value from data' },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      data: {
+        root: {
+          fromStorage: true,
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: {
+            final: true,
+            required: true,
+            value: 'final value from metadata',
+          },
+        },
+      },
+    });
+  });
+
+  it('should handle attributes on root group', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', ['recordInfoGroup', 'textVar1'], {
+          attributeReferences: [{ refCollectionVarId: 'attrColVar' }],
+        }),
+        ...createRecordInfoMetadata(),
+        createTextVar('textVar1', 'text1', []),
+        ...createCollVar('attrColVar', 'attr', ['val1', 'val2'], []),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          attributes: {
+            attr: 'val1',
+          },
+          children: [
+            createRecordInfoData(),
+            { name: 'text1', value: 'some value' },
+          ],
+        },
+        actionLinks: {},
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData).toEqual({
+      id: 'someRecordId',
+      recordType: 'someRecordTypeId',
+      updated: [],
+      userRights: [],
+      validationType: 'someValidationTypeId',
+      actionLinks: {},
+      data: {
+        root: {
+          fromStorage: true,
+          _attr: 'val1',
+          recordInfo: {
+            fromStorage: true,
+            required: true,
+            id: { value: 'someRecordId', required: true },
+            type: {
+              linkedRecordType: 'recordType',
+              value: 'someRecordTypeId',
+              required: true,
+            },
+            validationType: {
+              linkedRecordType: 'validationType',
+              value: 'someValidationTypeId',
+              required: true,
+            },
+          },
+          text1: { required: true, value: 'some value' },
+        },
+      },
+    });
+  });
+
+  describe('decorated', () => {
+    it('should handle linked record in data', () => {
+      const mockDependencies = {
+        validationTypePool: listToPool([
+          createValidationType('someValidationTypeId'),
+          createValidationType('someOtherValidationTypeId'),
+        ]),
+        recordTypePool: listToPool([
+          createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+          createRecordType('someOtherRecordTypeId', {
+            metadataId: 'someOtherRecordTypeRootGroup',
+          }),
+        ]),
+        metadataPool: listToPool([
+          createGroup('rootGroup', 'root', [
+            'recordInfoGroup',
+            'someRecordLinkId',
+          ]),
+          ...createRecordInfoMetadata(),
+          createRecordLink('someRecordLinkId', 'someOtherRecordType', {
+            nameInData: 'someRecordLink',
+          }),
+          createGroup(
+            'someOtherRecordTypeRootGroup',
+            'someOtherRecordTypeRoot',
+            ['recordInfoGroup', 'someFieldId'],
+          ),
+          createTextVar('someFieldId', 'someField', []),
+        ]),
+      } as Dependencies;
+
+      const recordWrapper = {
+        record: {
+          data: {
+            name: 'root',
+            children: [
+              createRecordInfoData(),
+              {
+                name: 'someRecordLink',
+                children: [
+                  { name: 'linkedRecordId', value: 'someRecordLink' },
+                  { name: 'linkedRecordType', value: 'someOtherRecordType' },
+                  {
+                    name: 'linkedRecord',
+                    children: [
+                      {
+                        name: 'someOtherRecordTypeRoot',
+                        children: [
+                          createRecordInfoData({
+                            id: 'someOtherRecordId',
+                            recordTypeId: 'someOtherRecordTypeId',
+                            validationTypeId: 'someOtherValidationTypeId',
+                          }),
+                          { name: 'someField', value: 'someValue' },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      } as RecordWrapper;
+
+      const transformData = transformRecord(
+        mockDependencies,
+        recordWrapper,
+        'view',
+      );
+
+      expect(transformData.data.root.someRecordLink).toEqual({
+        linkedRecordType: 'someOtherRecordType',
+        required: true,
+        value: 'someRecordLink',
+        linkedRecord: {
+          someOtherRecordTypeRoot: {
+            fromStorage: true,
+            recordInfo: {
+              fromStorage: true,
+              required: true,
+              id: { value: 'someOtherRecordId', required: true },
+              type: {
+                linkedRecordType: 'recordType',
+                value: 'someOtherRecordTypeId',
+                required: true,
+              },
+              validationType: {
+                linkedRecordType: 'validationType',
+                value: 'someOtherValidationTypeId',
+                required: true,
+              },
+            },
+            someField: {
+              required: true,
+              value: 'someValue',
+            },
+          },
+        },
+      });
+    });
+  });
+
   describe('transformRecord', () => {
     let metadataPool: Lookup<string, BFFMetadata>;
     let presentationPool: Lookup<
@@ -198,2852 +1826,6 @@ describe('transformRecord', () => {
         organisationPool: listToPool<BFFOrganisation>([]),
       } as Dependencies;
     });
-    describe('transformRecord', () => {
-      it('should transform a record for view mode', () => {
-        const transformData = transformRecord(
-          dependencies,
-          recordManuscript as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutput:519333261463755',
-          recordType: 'manuscriptRecordTypeId',
-          validationType: 'manuscript',
-          createdAt: '2023-10-11T09:24:30.511487Z',
-          createdBy: 'coraUser:490742519075086',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            delete: {
-              rel: 'delete',
-              requestMethod: 'DELETE',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-            },
-            index: {
-              accept: 'application/vnd.cora.record+json',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'divaOutput',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutput:519333261463755',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              rel: 'index',
-              requestMethod: 'POST',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-            },
-            read: {
-              accept: 'application/vnd.cora.record+json',
-              rel: 'read',
-              requestMethod: 'GET',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-            },
-            update: {
-              accept: 'application/vnd.cora.record+json',
-              contentType: 'application/vnd.cora.record+json',
-              rel: 'update',
-              requestMethod: 'POST',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-            },
-          },
-          updated: [
-            {
-              updateAt: '2023-10-11T09:24:30.511487Z',
-              updatedBy: 'coraUser:490742519075086',
-            },
-            {
-              updateAt: '2023-10-18T09:09:13.554736Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2023-10-26T12:33:22.260532Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2023-10-26T12:35:28.748398Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2023-10-26T12:35:40.545698Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2023-10-26T12:35:52.293623Z',
-              updatedBy: '161616',
-            },
-          ],
-          data: {
-            divaOutput: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                createdBy: {
-                  linkedRecordType: 'user',
-                  value: 'coraUser:490742519075086',
-                  required: true,
-                },
-                dataDivider: {
-                  linkedRecordType: 'system',
-                  value: 'diva',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutput:519333261463755',
-                  required: true,
-                },
-                tsCreated: {
-                  value: '2023-10-11T09:24:30.511487Z',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'manuscriptRecordTypeId',
-                  required: true,
-                },
-                updated: [
-                  {
-                    fromStorage: true,
-                    repeatId: '0',
-                    tsUpdated: {
-                      value: '2023-10-11T09:24:30.511487Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: 'coraUser:490742519075086',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '1',
-                    tsUpdated: {
-                      value: '2023-10-18T09:09:13.554736Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '2',
-                    tsUpdated: {
-                      value: '2023-10-26T12:33:22.260532Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '3',
-                    tsUpdated: {
-                      value: '2023-10-26T12:35:28.748398Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '4',
-                    tsUpdated: {
-                      value: '2023-10-26T12:35:40.545698Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '5',
-                    tsUpdated: {
-                      value: '2023-10-26T12:35:52.293623Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                ],
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'manuscript',
-                  required: true,
-                },
-                required: true,
-              },
-              title: {
-                fromStorage: true,
-                mainTitle: {
-                  value: 'aaaaaa',
-                  required: true,
-                },
-                _language: 'kal',
-                required: true,
-              },
-              alternativeTitle: {
-                fromStorage: true,
-                mainTitle: {
-                  value: 'bbbbb',
-                  required: true,
-                },
-                subTitle: {
-                  value: 'subTitle1',
-                },
-                _language: 'epo',
-                _titleType: 'alternativeTitle',
-              },
-              nationalSubjectCategory: {
-                linkedRecordType: 'nationalSubjectCategory',
-                value: 'nationalSubjectCategory:6325370460697648',
-              },
-              abstract: {
-                value: 'hej!',
-                _language: 'fao',
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a record with repeating nameInDatas for groups having one with attributes', () => {
-        const transformData = transformRecord(
-          dependencies,
-          recordManuscriptWithSameNameInDataGroup as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutputSwepub:2087392797647370',
-          recordType: 'divaOutputSwepub',
-          validationType: 'divaOutputSwepub',
-          createdAt: '2024-09-13T11:49:37.288927Z',
-          createdBy: '161616',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            update: {
-              requestMethod: 'POST',
-              rel: 'update',
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            index: {
-              requestMethod: 'POST',
-              rel: 'index',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'divaOutputSwepub',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutputSwepub:2087392797647370',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.cora.record+json',
-            },
-            delete: {
-              requestMethod: 'DELETE',
-              rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-            },
-          },
-          updated: [
-            {
-              updateAt: '2024-09-13T11:49:37.288927Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-13T11:49:54.085586Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-16T08:00:42.892622Z',
-              updatedBy: '161616',
-            },
-          ],
-          data: {
-            output: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                createdBy: {
-                  linkedRecordType: 'user',
-                  value: '161616',
-                  required: true,
-                },
-                dataDivider: {
-                  linkedRecordType: 'system',
-                  value: 'divaData',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutputSwepub:2087392797647370',
-                  required: true,
-                },
-                tsCreated: {
-                  value: '2024-09-13T11:49:37.288927Z',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'divaOutputSwepub',
-                  required: true,
-                },
-                updated: [
-                  {
-                    fromStorage: true,
-                    repeatId: '0',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:37.288927Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '1',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:54.085586Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '2',
-                    tsUpdated: {
-                      value: '2024-09-16T08:00:42.892622Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                ],
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'divaOutputSwepub',
-                  required: true,
-                },
-                required: true,
-              },
-              titleInfo: {
-                fromStorage: true,
-                _lang: 'ady',
-                title: {
-                  value: 'EN utmärkt titel',
-                  required: true,
-                },
-                required: true,
-              },
-              titleInfo_type_alternative: {
-                fromStorage: true,
-                _lang: 'amh',
-                _type: 'alternative',
-                title: {
-                  value: 'EN utmärkt alternativ titel',
-                  required: true,
-                },
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a record with repeating nameInDatas for groups having one with attributes and one data', () => {
-        const transformData = transformRecord(
-          dependencies,
-          coraRecordManuscriptWithSameNameInDataWithOneGroup as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutputSwepub:2087392797647370',
-          recordType: 'divaOutputSwepub',
-          validationType: 'divaOutputSwepub',
-          createdAt: '2024-09-13T11:49:37.288927Z',
-          createdBy: '161616',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            update: {
-              requestMethod: 'POST',
-              rel: 'update',
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            index: {
-              requestMethod: 'POST',
-              rel: 'index',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'divaOutputSwepub',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutputSwepub:2087392797647370',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.cora.record+json',
-            },
-            delete: {
-              requestMethod: 'DELETE',
-              rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-            },
-          },
-          updated: [
-            {
-              updateAt: '2024-09-13T11:49:37.288927Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-13T11:49:54.085586Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-16T08:00:42.892622Z',
-              updatedBy: '161616',
-            },
-          ],
-          data: {
-            output: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                createdBy: {
-                  linkedRecordType: 'user',
-
-                  value: '161616',
-                  required: true,
-                },
-                dataDivider: {
-                  linkedRecordType: 'system',
-
-                  value: 'divaData',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutputSwepub:2087392797647370',
-                  required: true,
-                },
-                tsCreated: {
-                  value: '2024-09-13T11:49:37.288927Z',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'divaOutputSwepub',
-                  required: true,
-                },
-                updated: [
-                  {
-                    fromStorage: true,
-                    repeatId: '0',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:37.288927Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '1',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:54.085586Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '2',
-                    tsUpdated: {
-                      value: '2024-09-16T08:00:42.892622Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                ],
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'divaOutputSwepub',
-                  required: true,
-                },
-                required: true,
-              },
-              titleInfo: {
-                fromStorage: true,
-                _lang: 'ady',
-                title: {
-                  value: 'EN utmärkt titel',
-                  required: true,
-                },
-                required: true,
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a record with repeating nameInDatas for textVar having one with attributes', () => {
-        const transformData = transformRecord(
-          dependencies,
-          recordManuscriptWithSameNameInDataVar as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutputSwepub:2087392797647370',
-          recordType: 'namePartValidationTypeId',
-          validationType: 'namePartValidationTypeId',
-          createdAt: '2024-09-13T11:49:37.288927Z',
-          createdBy: '161616',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            update: {
-              requestMethod: 'POST',
-              rel: 'update',
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            index: {
-              requestMethod: 'POST',
-              rel: 'index',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'divaOutputSwepub',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutputSwepub:2087392797647370',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.cora.record+json',
-            },
-            delete: {
-              requestMethod: 'DELETE',
-              rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-            },
-          },
-          updated: [
-            {
-              updateAt: '2024-09-13T11:49:37.288927Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-13T11:49:54.085586Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-16T08:00:42.892622Z',
-              updatedBy: '161616',
-            },
-          ],
-          data: {
-            name: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                createdBy: {
-                  linkedRecordType: 'user',
-
-                  value: '161616',
-                  required: true,
-                },
-                dataDivider: {
-                  linkedRecordType: 'system',
-
-                  value: 'divaData',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutputSwepub:2087392797647370',
-                  required: true,
-                },
-                tsCreated: {
-                  value: '2024-09-13T11:49:37.288927Z',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'namePartValidationTypeId',
-                  required: true,
-                },
-                updated: [
-                  {
-                    fromStorage: true,
-                    repeatId: '0',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:37.288927Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '1',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:54.085586Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '2',
-                    tsUpdated: {
-                      value: '2024-09-16T08:00:42.892622Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                ],
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'namePartValidationTypeId',
-                  required: true,
-                },
-                required: true,
-              },
-              namePart: {
-                value: 'value1',
-                required: true,
-              },
-              namePart_language_eng: {
-                value: 'value2',
-                _language: 'eng',
-                required: true,
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a record with repeating nameInDatas for textVar having one with attributes without all vars', () => {
-        const transformData = transformRecord(
-          dependencies,
-          recordManuscriptWithSameNameInDataVarWithoutAllVars as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutputSwepub:2087392797647370',
-          recordType: 'namePartPartWithAttributesRecordTypeId',
-          validationType: 'namePartPartWithAttributesValidationTypeId',
-          createdAt: '2024-09-13T11:49:37.288927Z',
-          createdBy: '161616',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            update: {
-              requestMethod: 'POST',
-              rel: 'update',
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-              accept: 'application/vnd.cora.record+json',
-            },
-            index: {
-              requestMethod: 'POST',
-              rel: 'index',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'divaOutputSwepub',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutputSwepub:2087392797647370',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.cora.record+json',
-            },
-            delete: {
-              requestMethod: 'DELETE',
-              rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutputSwepub/divaOutputSwepub:2087392797647370',
-            },
-          },
-          updated: [
-            {
-              updateAt: '2024-09-13T11:49:37.288927Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-13T11:49:54.085586Z',
-              updatedBy: '161616',
-            },
-            {
-              updateAt: '2024-09-16T08:00:42.892622Z',
-              updatedBy: '161616',
-            },
-          ],
-          data: {
-            name: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                createdBy: {
-                  linkedRecordType: 'user',
-                  value: '161616',
-                  required: true,
-                },
-                dataDivider: {
-                  linkedRecordType: 'system',
-                  value: 'divaData',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutputSwepub:2087392797647370',
-                  required: true,
-                },
-                tsCreated: {
-                  value: '2024-09-13T11:49:37.288927Z',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'namePartPartWithAttributesRecordTypeId',
-                  required: true,
-                },
-                updated: [
-                  {
-                    fromStorage: true,
-                    repeatId: '0',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:37.288927Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '1',
-                    tsUpdated: {
-                      value: '2024-09-13T11:49:54.085586Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                  {
-                    fromStorage: true,
-                    repeatId: '2',
-                    tsUpdated: {
-                      value: '2024-09-16T08:00:42.892622Z',
-                      required: true,
-                    },
-                    updatedBy: {
-                      linkedRecordType: 'user',
-                      value: '161616',
-                      required: true,
-                    },
-                    required: true,
-                  },
-                ],
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'namePartPartWithAttributesValidationTypeId',
-                  required: true,
-                },
-                required: true,
-              },
-              namePart_language_eng: {
-                value: 'value2',
-                _language: 'eng',
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should be able to return a record without created and updated data', () => {
-        const transformData = transformRecord(
-          dependencies,
-          recordManuscriptWithoutCreatedAndUpdates as RecordWrapper,
-          'view',
-        );
-        const expected = {
-          id: 'divaOutput:519333261463755',
-          recordType: 'manuscriptRecordTypeId',
-          validationType: 'manuscript',
-          userRights: ['read', 'update', 'index', 'delete'],
-          actionLinks: {
-            read: {
-              requestMethod: 'GET',
-              rel: 'read',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-              accept: 'application/vnd.cora.record+json',
-            },
-            update: {
-              requestMethod: 'POST',
-              rel: 'update',
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-              accept: 'application/vnd.cora.record+json',
-            },
-            index: {
-              requestMethod: 'POST',
-              rel: 'index',
-              body: {
-                children: [
-                  {
-                    children: [
-                      {
-                        name: 'linkedRecordType',
-                        value: 'recordType',
-                      },
-                      {
-                        name: 'linkedRecordId',
-                        value: 'manuscriptRecordTypeId',
-                      },
-                    ],
-                    name: 'recordType',
-                  },
-                  {
-                    name: 'recordId',
-                    value: 'divaOutput:519333261463755',
-                  },
-                  {
-                    name: 'type',
-                    value: 'index',
-                  },
-                ],
-                name: 'workOrder',
-              },
-              contentType: 'application/vnd.cora.record+json',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.cora.record+json',
-            },
-            delete: {
-              requestMethod: 'DELETE',
-              rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/divaOutput/divaOutput:519333261463755',
-            },
-          },
-          updated: [],
-          data: {
-            divaOutput: {
-              fromStorage: true,
-              recordInfo: {
-                fromStorage: true,
-                dataDivider: {
-                  linkedRecordType: 'system',
-                  value: 'diva',
-                  required: true,
-                },
-                id: {
-                  value: 'divaOutput:519333261463755',
-                  required: true,
-                },
-                type: {
-                  linkedRecordType: 'recordType',
-                  value: 'manuscriptRecordTypeId',
-                  required: true,
-                },
-                validationType: {
-                  linkedRecordType: 'validationType',
-                  value: 'manuscript',
-                  required: true,
-                },
-                required: true,
-              },
-              title: {
-                fromStorage: true,
-                mainTitle: {
-                  value: 'aaaaaa',
-                  required: true,
-                },
-                _language: 'kal',
-                required: true,
-              },
-              alternativeTitle: {
-                fromStorage: true,
-                mainTitle: {
-                  value: 'bbbbb',
-                  required: true,
-                },
-                subTitle: {
-                  value: 'subTitle1',
-                },
-                _language: 'epo',
-                _titleType: 'alternativeTitle',
-              },
-              nationalSubjectCategory: {
-                linkedRecordType: 'nationalSubjectCategory',
-                value: 'nationalSubjectCategory:6325370460697648',
-              },
-              abstract: {
-                value: 'hej!',
-                _language: 'fao',
-              },
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-    });
-
-    describe('transformRecordData', () => {
-      it('should return a root group with a dataAtomic child', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'title',
-              value: 'testTitleVal',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              name: 'title',
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            title: {
-              value: 'testTitleVal',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with a childGroup with atomic children', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'childGroup',
-              children: [
-                {
-                  name: 'title',
-                  value: 'testTitleVal',
-                },
-              ],
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'group',
-              name: 'childGroup',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              children: [
-                {
-                  type: 'textVariable',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                  name: 'title',
-                },
-              ],
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            childGroup: {
-              fromStorage: true,
-              title: {
-                value: 'testTitleVal',
-                required: true,
-              },
-              required: true,
-            },
-            fromStorage: true,
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with two dataAtomic children', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'title',
-              value: 'testTitleVal',
-            },
-            {
-              name: 'age',
-              value: '12',
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'title',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            {
-              type: 'textVariable',
-              name: 'age',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            title: {
-              value: 'testTitleVal',
-              required: true,
-            },
-            age: {
-              value: '12',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with repeating children', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'exampleNumberVar',
-              value: '12.99',
-              repeatId: '0',
-            },
-            {
-              name: 'exampleNumberVar',
-              value: '1.34',
-              repeatId: '1',
-            },
-            {
-              name: 'exampleNumberVarTwo',
-              value: '99.00',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'exampleNumberVar',
-              repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
-            },
-            {
-              type: 'textVariable',
-              name: 'exampleNumberVarTwo',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            exampleNumberVar: [
-              {
-                repeatId: '0',
-                value: '12.99',
-              },
-              {
-                repeatId: '1',
-                value: '1.34',
-              },
-            ],
-            exampleNumberVarTwo: {
-              value: '99.00',
-              required: true,
-            },
-            fromStorage: true,
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with repeating children with attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'exampleNumberVar',
-              value: '12.99',
-              repeatId: '0',
-              attributes: {
-                language: 'kal',
-              },
-            },
-            {
-              name: 'exampleNumberVar',
-              value: '1.34',
-              repeatId: '1',
-              attributes: {
-                language: 'eng',
-              },
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'exampleNumberVar',
-              repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            exampleNumberVar: [
-              {
-                value: '12.99',
-                _language: 'kal',
-                repeatId: '0',
-              },
-              {
-                value: '1.34',
-                _language: 'eng',
-                repeatId: '1',
-              },
-            ],
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with two different repeating children', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'exampleNumberVar',
-              value: '12.99',
-              repeatId: '0',
-            },
-            {
-              name: 'exampleNumberVar',
-              value: '1.34',
-              repeatId: '1',
-            },
-            {
-              name: 'exampleNumberVarTwo',
-              value: '99.00',
-              repeatId: '0',
-            },
-            {
-              name: 'exampleNumberVarTwo',
-              value: '101.00',
-              repeatId: '1',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'exampleNumberVar',
-              repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
-            },
-            {
-              type: 'textVariable',
-              name: 'exampleNumberVarTwo',
-              repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            exampleNumberVar: [
-              {
-                repeatId: '0',
-                value: '12.99',
-              },
-              {
-                repeatId: '1',
-                value: '1.34',
-              },
-            ],
-            exampleNumberVarTwo: [
-              {
-                repeatId: '0',
-                value: '99.00',
-              },
-              {
-                repeatId: '1',
-                value: '101.00',
-              },
-            ],
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with a repeating childGroup with atomic children', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'childGroup',
-              repeatId: '0',
-              children: [
-                {
-                  name: 'title',
-                  value: 'testTitleVal1',
-                },
-              ],
-            },
-            {
-              name: 'childGroup',
-              repeatId: '1',
-              children: [
-                {
-                  name: 'title',
-                  value: 'testTitleVal2',
-                },
-              ],
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'group',
-              name: 'childGroup',
-              repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
-              children: [
-                {
-                  type: 'textVariable',
-                  name: 'title',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                },
-              ],
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            childGroup: [
-              {
-                fromStorage: true,
-                repeatId: '0',
-                title: {
-                  value: 'testTitleVal1',
-                  required: true,
-                },
-                required: true,
-              },
-              {
-                fromStorage: true,
-                repeatId: '1',
-                title: {
-                  value: 'testTitleVal2',
-                  required: true,
-                },
-                required: true,
-              },
-            ],
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with a non-repeating RecordLink', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'nationalSubjectCategory',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'nationalSubjectCategory',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'nationalSubjectCategory:6325370460697648',
-                },
-              ],
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            nationalSubjectCategory: {
-              linkedRecordType: 'nationalSubjectCategory',
-              value: 'nationalSubjectCategory:6325370460697648',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with a repeating RecordLinks having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              repeatId: '0',
-              attributes: {
-                language: 'eng',
-              },
-              name: 'nationalSubjectCategory',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'nationalSubjectCategory',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'nationalSubjectCategory:6325370460697648',
-                },
-              ],
-            },
-            {
-              repeatId: '1',
-              attributes: {
-                language: 'swe',
-              },
-              name: 'nationalSubjectCategory',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'nationalSubjectCategory',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'nationalSubjectCategory:6325370460697641',
-                },
-              ],
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            nationalSubjectCategory: [
-              {
-                linkedRecordType: 'nationalSubjectCategory',
-                value: 'nationalSubjectCategory:6325370460697648',
-                _language: 'eng',
-                repeatId: '0',
-                required: true,
-              },
-              {
-                linkedRecordType: 'nationalSubjectCategory',
-                value: 'nationalSubjectCategory:6325370460697641',
-                _language: 'swe',
-                repeatId: '1',
-                required: true,
-              },
-            ],
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with multiple variables with same nameInData having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              attributes: {
-                language: 'eng',
-              },
-              name: 'subject',
-              value: 'value1',
-            },
-            {
-              attributes: {
-                language: 'swe',
-              },
-              name: 'subject',
-              value: 'value2',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'subject',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-            },
-            {
-              type: 'textVariable',
-              name: 'subject',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'eng',
-              },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            subject_language_eng: {
-              value: 'value1',
-              _language: 'eng',
-              required: true,
-            },
-            subject_language_swe: {
-              value: 'value2',
-              _language: 'swe',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with multiple variables with same nameInData and one having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'subject',
-              value: 'value1',
-            },
-            {
-              attributes: {
-                language: 'swe',
-              },
-              name: 'subject',
-              value: 'value2',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'subject',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-            },
-            {
-              type: 'textVariable',
-              name: 'subject',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            subject: {
-              value: 'value1',
-              required: true,
-            },
-            subject_language_swe: {
-              value: 'value2',
-              _language: 'swe',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it(`should return a root group with multiple variables with same 
-    nameInData and one having attributes with formPathLookup`, () => {
-        const data: DataGroup = {
-          children: [
-            {
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'ady',
-              },
-            },
-            {
-              repeatId: '7',
-              children: [
-                {
-                  name: 'title',
-                  value: 'EN utmärkt alternativ titel',
-                },
-              ],
-              name: 'titleInfo',
-              attributes: {
-                lang: 'amh',
-                type: 'alternative',
-              },
-            },
-          ],
-          name: 'output',
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'output',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'group',
-              name: 'titleInfo',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              children: [
-                {
-                  type: 'textVariable',
-                  name: 'title',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                },
-              ],
-            },
-            {
-              type: 'group',
-              name: 'titleInfo',
-              attributes: { type: 'alternative' },
-              repeat: { repeatMin: 0, repeatMax: Number.MAX_VALUE },
-              children: [
-                {
-                  type: 'textVariable',
-                  name: 'title',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                },
-              ],
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-        const expected = {
-          output: {
-            fromStorage: true,
-            titleInfo: {
-              fromStorage: true,
-              _lang: 'ady',
-              title: {
-                value: 'EN utmärkt titel',
-                required: true,
-              },
-              required: true,
-            },
-            titleInfo_type_alternative: [
-              {
-                fromStorage: true,
-                _lang: 'amh',
-                _type: 'alternative',
-                repeatId: '7',
-                title: {
-                  value: 'EN utmärkt alternativ titel',
-                  required: true,
-                },
-              },
-            ],
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with multiple colVar with same nameInData having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              attributes: {
-                language: 'eng',
-              },
-              name: 'domain',
-              value: 'hb',
-            },
-            {
-              attributes: {
-                language: 'swe',
-              },
-              name: 'domain',
-              value: 'uu',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'output',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'collectionVariable',
-              name: 'domain',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'eng',
-              },
-            },
-            {
-              type: 'collectionVariable',
-              name: 'domain',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            domain_language_eng: {
-              value: 'hb',
-              _language: 'eng',
-              required: true,
-            },
-            domain_language_swe: {
-              value: 'uu',
-              _language: 'swe',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with multiple recordLinks with same nameInData having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'nationalSubjectCategory',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'nationalSubjectCategory',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'nationalSubjectCategory:1111111111111111',
-                },
-              ],
-              attributes: {
-                language: 'swe',
-              },
-            },
-            {
-              name: 'nationalSubjectCategory',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'nationalSubjectCategory',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'nationalSubjectCategory:2222222222222222',
-                },
-              ],
-              attributes: {
-                language: 'eng',
-              },
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'eng',
-              },
-            },
-            {
-              type: 'recordLink',
-              name: 'nationalSubjectCategory',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            nationalSubjectCategory_language_swe: {
-              linkedRecordType: 'nationalSubjectCategory',
-              value: 'nationalSubjectCategory:1111111111111111',
-              _language: 'swe',
-              required: true,
-            },
-            nationalSubjectCategory_language_eng: {
-              linkedRecordType: 'nationalSubjectCategory',
-              value: 'nationalSubjectCategory:2222222222222222',
-              _language: 'eng',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with groups with same nameInData having attributes', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'author',
-              children: [
-                {
-                  name: 'name',
-                  value: 'value1',
-                },
-              ],
-              attributes: {
-                language: 'eng',
-              },
-            },
-            {
-              name: 'author',
-              children: [
-                {
-                  name: 'name',
-                  value: 'value2',
-                },
-              ],
-              attributes: {
-                language: 'swe',
-              },
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'group',
-              name: 'author',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'eng',
-              },
-              children: [
-                {
-                  type: 'textVariable',
-                  name: 'name',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                },
-              ],
-            },
-            {
-              type: 'group',
-              name: 'author',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-              children: [
-                {
-                  type: 'textVariable',
-                  name: 'name',
-                  repeat: { repeatMin: 1, repeatMax: 1 },
-                },
-              ],
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            author_language_eng: {
-              fromStorage: true,
-              _language: 'eng',
-              name: {
-                value: 'value1',
-                required: true,
-              },
-              required: true,
-            },
-            author_language_swe: {
-              fromStorage: true,
-              _language: 'swe',
-              name: {
-                value: 'value2',
-                required: true,
-              },
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should return a root group with variables with same nameInData and one having attributes', () => {
-        const data = {
-          name: 'output',
-          children: [
-            {
-              name: 'namePart',
-              value: 'value1',
-            },
-            {
-              name: 'namePart',
-              value: 'value1',
-              attributes: {
-                language: 'swe',
-              },
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'output',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              name: 'namePart',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-            {
-              type: 'textVariable',
-              name: 'namePart',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              attributes: {
-                language: 'swe',
-              },
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          output: {
-            fromStorage: true,
-            namePart: {
-              value: 'value1',
-              required: true,
-            },
-            namePart_language_swe: {
-              value: 'value1',
-              _language: 'swe',
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should handle linked records', () => {
-        const data = {
-          name: 'someRootGroup',
-          children: [
-            {
-              name: 'someRecordLink',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'someLinkedRecordTypeId',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'someRecordId',
-                },
-                {
-                  name: 'linkedRecord',
-                  children: [
-                    {
-                      name: 'someLinkedRecordRootGroup',
-                      children: [
-                        {
-                          name: 'recordInfo',
-                          children: [
-                            {
-                              name: 'type',
-                              children: [
-                                {
-                                  name: 'linkedRecordId',
-                                  value: 'someLinkedRecordTypeId',
-                                },
-                              ],
-                            },
-                            {
-                              name: 'validationType',
-                              children: [
-                                {
-                                  name: 'linkedRecordId',
-                                  value: 'someLinkedRecordValidationTypeId',
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          name: 'someTextVariable',
-                          value: 'value1',
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'someRootGroup',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'recordLink',
-              name: 'someRecordLink',
-              linkedRecordType: 'someLinkedRecordRootGroupId',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-            },
-          ],
-        };
-
-        dependencies.recordTypePool.set('someLinkedRecordTypeId', {
-          id: 'someLinkedRecordTypeId',
-          metadataId: 'someLinkedRecordRootGroupId',
-        } as BFFRecordType);
-
-        dependencies.metadataPool.set('someLinkedRecordRootGroupId', {
-          id: 'someLinkedRecordRootGroupId',
-          type: 'group',
-          nameInData: 'someLinkedRecordRootGroup',
-          textId: '',
-          defTextId: '',
-          children: [
-            {
-              childId: 'someTextVariableId',
-              repeatMin: '1',
-              repeatMax: '1',
-            },
-          ],
-        });
-
-        dependencies.metadataPool.set('someTextVariableId', {
-          id: 'someTextVariableId',
-          type: 'textVariable',
-          nameInData: 'someTextVariable',
-          textId: '',
-          defTextId: '',
-        });
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          someRootGroup: {
-            fromStorage: true,
-            someRecordLink: {
-              value: 'someRecordId',
-              linkedRecordType: 'someLinkedRecordTypeId',
-              linkedRecord: {
-                someLinkedRecordRootGroup: {
-                  fromStorage: true,
-                  someTextVariable: {
-                    value: 'value1',
-                    required: true,
-                  },
-                },
-              },
-              required: true,
-            },
-          },
-        };
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('handles fields with multiple matching metadatas', () => {
-        const dataRecordGroup = {
-          children: [
-            {
-              repeatId: '0',
-              children: [
-                {
-                  name: 'namePart',
-                  attributes: {
-                    type: 'family',
-                  },
-                  value: 'eeeeeee',
-                },
-                {
-                  name: 'namePart',
-                  attributes: {
-                    type: 'given',
-                  },
-                  value: 'gil',
-                },
-              ],
-              name: 'name',
-              attributes: {
-                type: 'personal',
-              },
-            },
-          ],
-          name: 'output',
-        } as DataGroup;
-
-        const formMetaData = {
-          name: 'output',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          children: [
-            {
-              name: 'name',
-              type: 'group',
-              attributes: {
-                type: 'personal',
-              },
-              repeat: {
-                repeatMin: 0,
-                repeatMax: 1.7976931348623157e308,
-              },
-              children: [
-                {
-                  name: 'person',
-                  type: 'recordLink',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                  linkedRecordType: 'diva-person',
-                },
-                {
-                  name: 'namePart',
-                  type: 'textVariable',
-                  attributes: {
-                    type: 'family',
-                  },
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                },
-                {
-                  name: 'namePart',
-                  type: 'textVariable',
-                  attributes: {
-                    type: 'given',
-                  },
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                },
-                {
-                  name: 'role',
-                  type: 'group',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                  children: [
-                    {
-                      name: 'roleTerm',
-                      type: 'collectionVariable',
-                      repeat: {
-                        repeatMin: 1,
-                        repeatMax: 1,
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: 'affiliation',
-                  type: 'group',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1.7976931348623157e308,
-                  },
-                  children: [
-                    {
-                      name: 'organisation',
-                      type: 'recordLink',
-                      repeat: {
-                        repeatMin: 0,
-                        repeatMax: 1,
-                      },
-                      linkedRecordType: 'diva-organisation',
-                    },
-                    {
-                      name: 'name',
-                      type: 'group',
-                      attributes: {
-                        type: 'corporate',
-                      },
-                      repeat: {
-                        repeatMin: 0,
-                        repeatMax: 1,
-                      },
-                      children: [
-                        {
-                          name: 'namePart',
-                          type: 'textVariable',
-                          repeat: {
-                            repeatMin: 1,
-                            repeatMax: 1,
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      name: 'identifier',
-                      type: 'textVariable',
-                      attributes: {
-                        type: 'ror',
-                      },
-                      repeat: {
-                        repeatMin: 0,
-                        repeatMax: 1,
-                      },
-                    },
-                    {
-                      name: 'country',
-                      type: 'collectionVariable',
-                      repeat: {
-                        repeatMin: 0,
-                        repeatMax: 1,
-                      },
-                    },
-                    {
-                      name: 'description',
-                      type: 'textVariable',
-                      repeat: {
-                        repeatMin: 0,
-                        repeatMax: 1,
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              name: 'name',
-              type: 'group',
-              attributes: {
-                type: 'corporate',
-              },
-              repeat: {
-                repeatMin: 0,
-                repeatMax: 1.7976931348623157e308,
-              },
-              children: [
-                {
-                  name: 'organisation',
-                  type: 'recordLink',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                  linkedRecordType: 'diva-organisation',
-                },
-                {
-                  name: 'namePart',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                },
-                {
-                  name: 'role',
-                  type: 'group',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                  children: [
-                    {
-                      name: 'roleTerm',
-                      type: 'collectionVariable',
-                      repeat: {
-                        repeatMin: 1,
-                        repeatMax: 1,
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: 'identifier',
-                  type: 'textVariable',
-                  attributes: {
-                    type: 'ror',
-                  },
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                },
-                {
-                  name: 'description',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 0,
-                    repeatMax: 1,
-                  },
-                },
-              ],
-            },
-          ],
-        } satisfies FormMetaData;
-
-        const actual = transformDataGroup(
-          dataRecordGroup,
-          formMetaData,
-          dependencies,
-        );
-
-        const expected = {
-          fromStorage: true,
-          name_type_personal: [
-            {
-              fromStorage: true,
-              namePart_type_family: {
-                value: 'eeeeeee',
-                _type: 'family',
-              },
-
-              namePart_type_given: {
-                value: 'gil',
-                _type: 'given',
-              },
-              repeatId: '0',
-              _type: 'personal',
-            },
-          ],
-        };
-        expect(actual).toStrictEqual(expected);
-      });
-
-      it("should handle data that doesn't match metadata", () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'title',
-              value: 'testTitleVal',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'textVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              name: 'notTitle',
-            },
-          ],
-        };
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: { fromStorage: true },
-        };
-
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should handle unknown metadataType', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'title',
-              value: 'testTitleVal',
-            },
-          ],
-        };
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'GLORP',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              name: 'title',
-            },
-          ],
-        } as unknown as FormMetaData;
-
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            title: {
-              value: 'testTitleVal',
-              required: true,
-            },
-          },
-        };
-
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should handle resourceLink', () => {
-        const data = {
-          name: 'divaOutput',
-          children: [
-            {
-              name: 'master',
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'binary',
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'binary:8037579210342018',
-                },
-                {
-                  name: 'mimeType',
-                  value: 'audio/mpeg',
-                },
-              ],
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'divaOutput',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              type: 'resourceLink',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              name: 'master',
-            },
-          ],
-        } as unknown as FormMetaData;
-        const transformData = transformRecordData(data, metadata, dependencies);
-
-        const expected = {
-          divaOutput: {
-            fromStorage: true,
-            master: {
-              id: 'binary:8037579210342018',
-              mimeType: 'audio/mpeg',
-              name: 'master',
-              required: true,
-            },
-          },
-        };
-
-        expect(transformData).toStrictEqual(expected);
-      });
-
-      it('should transform finalValue', () => {
-        const data = {
-          name: 'root',
-          children: [
-            {
-              name: 'someFinalValueName',
-              value: 'someFinalValue',
-            },
-          ],
-        };
-
-        const metadata: FormMetaData = {
-          type: 'group',
-          name: 'root',
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          children: [
-            {
-              name: 'someFinalValueName',
-              type: 'textVariable',
-              repeat: { repeatMin: 1, repeatMax: 1 },
-              finalValue: 'someFinalValue',
-            },
-          ],
-        };
-
-        const transformedData = transformRecordData(
-          data,
-          metadata,
-          dependencies,
-        );
-
-        expect(transformedData).toStrictEqual({
-          root: {
-            fromStorage: true,
-            someFinalValueName: {
-              value: 'someFinalValue',
-              final: true,
-              required: true,
-            },
-          },
-        });
-      });
-    });
-
-    it('should use finalValue from metadata over data', () => {
-      const data = {
-        name: 'root',
-        children: [
-          {
-            name: 'someFinalValueName',
-            value: 'valueInData',
-          },
-        ],
-      };
-
-      const metadata: FormMetaData = {
-        type: 'group',
-        name: 'root',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-        children: [
-          {
-            name: 'someFinalValueName',
-            type: 'textVariable',
-            repeat: { repeatMin: 1, repeatMax: 1 },
-            finalValue: 'valueInMetadata',
-          },
-        ],
-      };
-
-      const transformedData = transformRecordData(data, metadata, dependencies);
-
-      expect(transformedData).toStrictEqual({
-        root: {
-          fromStorage: true,
-          someFinalValueName: {
-            value: 'valueInMetadata',
-            final: true,
-            required: true,
-          },
-        },
-      });
-    });
-
-    it('should handle attributes on outer groups', () => {
-      const data = {
-        children: [
-          {
-            children: [
-              {
-                name: 'resourceId',
-                value: 'binary:8037579210342018-master',
-              },
-            ],
-            name: 'master',
-          },
-        ],
-        name: 'binary',
-        attributes: {
-          type: 'sound',
-        },
-      };
-      const metadata: FormMetaData = {
-        name: 'binary',
-        type: 'group',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        children: [
-          {
-            name: 'master',
-            type: 'group',
-            repeat: {
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            children: [
-              {
-                name: 'resourceId',
-                type: 'textVariable',
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-            ],
-          },
-        ],
-      } as unknown as FormMetaData;
-
-      const transformData = transformRecordData(data, metadata, dependencies);
-
-      const expected = {
-        binary: {
-          fromStorage: true,
-          _type: 'sound',
-          master: {
-            fromStorage: true,
-            resourceId: {
-              value: 'binary:8037579210342018-master',
-              required: true,
-            },
-          },
-        },
-      };
-
-      expect(transformData).toStrictEqual(expected);
-    });
-
-    it('should handle DiVA decorated format for data', () => {});
-
-    describe('it should transform attributes', () => {
-      it('it shoud return undefind when undefined', () => {
-        expect(
-          transformAttributes({ name: 'foo', value: 'bar' }),
-        ).toStrictEqual({});
-      });
-      it('transform regular attributes', () => {
-        expect(
-          transformAttributes({
-            name: 'foo',
-            value: 'bar',
-            attributes: { key: 'value' },
-          }),
-        ).toStrictEqual({
-          _key: 'value',
-        });
-      });
-
-      it('transforms decortated texts', () => {
-        expect(
-          transformAttributes({
-            name: 'foo',
-            value: 'bar',
-            attributes: { _sv: 'Rättighetsenhet', _en: 'Permission unit' },
-          }),
-        ).toStrictEqual({
-          __text: {
-            sv: 'Rättighetsenhet',
-            en: 'Permission unit',
-            cimode: 'fooText',
-          },
-        });
-      });
-      it('transforms decortated values', () => {
-        expect(
-          transformAttributes({
-            name: 'foo',
-            value: 'bar',
-            attributes: {
-              _value_en: 'Published',
-              _value_sv: 'Publicerad',
-            },
-          }),
-        ).toStrictEqual({
-          __valueText: {
-            sv: 'Publicerad',
-            en: 'Published',
-            cimode: 'barValueText',
-          },
-        });
-      });
-    });
 
     describe('organisation display name', () => {
       const dependenciesMock = {
@@ -3078,12 +1860,21 @@ describe('transformRecord', () => {
           },
         ]),
         recordTypePool: listToPool<BFFRecordType>([
+          createRecordType('someRecordTypeId', { metadataId: 'parentGroup' }),
           {
             id: 'diva-organisation',
             metadataId: 'diva-organisation-metadata',
           } as BFFRecordType,
         ]),
+        validationTypePool: listToPool<BFFValidationType>([
+          createValidationType('someValidationTypeId'),
+        ]),
         metadataPool: listToPool<BFFMetadata>([
+          createGroup('parentGroup', 'parent', [
+            'recordInfoGroup',
+            'someOrganisationRecordLink',
+          ]),
+          ...createRecordInfoMetadata(),
           {
             id: 'diva-organisation-metadata',
             type: 'group',
