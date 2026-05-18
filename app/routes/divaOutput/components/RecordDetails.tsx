@@ -1,4 +1,3 @@
-import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useUser } from '@/utils/rootLoaderDataUtils';
