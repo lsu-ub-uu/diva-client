@@ -54,15 +54,6 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
           label={t('divaClient_memberText')}
           value={output.recordInfo?.permissionUnit?.value}
         />
-
-        <Term
-          label={output.note_type_external?.__text?.[language]}
-          value={
-            output.note_type_external?.value && (
-              <CollapsableText text={output.note_type_external?.value} />
-            )
-          }
-        />
         {user && (
           <Term
             label={output.dataQuality?.__text?.[language]}
