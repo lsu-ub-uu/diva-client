@@ -199,6 +199,19 @@ export function getFirstDataGroupWithNameInData(
   return firstMatchingDataGroup;
 }
 
+export function getAllDataGroupsWithNameInData(
+  dataGroup: DataGroup,
+  nameInData: string,
+): DataGroup[] {
+  const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
+    return Object.hasOwn(child, 'children');
+  });
+
+  return dataGroups.filter((child) => {
+    return child.name === nameInData;
+  });
+}
+
 export function getFirstDataGroupWithNameInDataAndAttributes(
   dataGroup: DataGroup,
   nameInData: string,

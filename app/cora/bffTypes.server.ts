@@ -356,14 +356,11 @@ export interface BFFResourceLink extends BFFMetadataBase {
   type: 'resourceLink';
 }
 
-export interface BFFThemeLink {
+export interface BFFMemberLink {
+  lang: 'swe' | 'eng';
+  visibility: 'public' | 'admin' | 'all';
   url: string;
   displayLabel: string;
-}
-
-export interface BFFThemeLinkWrapper {
-  sv: BFFThemeLink;
-  en: BFFThemeLink;
 }
 
 export interface BFFMember {
@@ -377,10 +374,8 @@ export interface BFFMember {
   textColor: string;
   backgroundColorDarkMode?: string;
   textColorDarkMode?: string;
-  publicLinks?: BFFThemeLinkWrapper[];
-  adminLinks?: BFFThemeLinkWrapper[];
+  links?: BFFMemberLink[];
   logo: {
-    url?: string;
     svg?: string;
   };
   hostnames: string[];

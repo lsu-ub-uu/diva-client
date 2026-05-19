@@ -15,11 +15,11 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import divaMemberListWithBinaryLogo from '@/__mocks__/bff/divaMemberListWithBinaryLogo.json';
 import divaMemberListWithMemberPermissionUnit from '@/__mocks__/bff/divaMemberListWithMemberPermissionUnit.json';
 import divaMemberListWithSvgLogo from '@/__mocks__/bff/divaMemberListWithSvgLogo.json';
 import divaMemberLogoBinary from '@/__mocks__/bff/divaMemberLogoBinary.json';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { transformMembers } from '@/cora/transform/transformMembers.server';
 import type { AxiosResponse } from 'axios';
@@ -29,13 +29,13 @@ import { mock } from 'vitest-mock-extended';
 vi.mock('@/cora/getRecordDataById.server');
 
 describe('transformMember', () => {
-  it('transforms empty list', async () => {
-    const transformData = await transformMembers(emptyDataList);
+  it('transforms empty list', () => {
+    const transformData = transformMembers(emptyDataList);
     expect(transformData).toStrictEqual([]);
   });
 
-  it('transforms a member with links and svg logo', async () => {
-    const transformData = await transformMembers(divaMemberListWithSvgLogo);
+  it('transforms a member with links and svg logo', () => {
+    const transformData = transformMembers(divaMemberListWithSvgLogo);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       id: 'uu-theme',
@@ -47,38 +47,30 @@ describe('transformMember', () => {
       textColor: '#990000',
       backgroundColorDarkMode: '#990000',
       textColorDarkMode: '#CCCCCC',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
+          lang: 'swe',
+          visibility: 'public',
+          url: 'https://www.uu.se/bibliotek',
+          displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          sv: {
-            url: 'http://libanswers.ub.uu.se',
-            displayLabel: 'Fråga biblioteket',
-          },
-          en: {
-            url: 'http://libanswers.ub.uu.se/en',
-            displayLabel: 'Ask the Library',
-          },
+          lang: 'eng',
+          visibility: 'public',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
         },
-      ],
-      adminLinks: [
         {
-          sv: {
-            url: 'https://www.uu.se/support',
-            displayLabel: 'Kontakta support',
-          },
-          en: {
-            url: 'https://www.uu.se/en/support',
-            displayLabel: 'Contact support',
-          },
+          lang: 'swe',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se',
+          displayLabel: 'Fråga biblioteket',
+        },
+        {
+          lang: 'eng',
+          visibility: 'all',
+          url: 'http://libanswers.ub.uu.se/en',
+          displayLabel: 'Ask the Library',
         },
       ],
       logo: {
@@ -90,40 +82,16 @@ describe('transformMember', () => {
         'uu.pre.diva-portal.org',
       ],
       loginUnitIds: ['uu'],
-    });
+    } satisfies BFFMember);
   });
 
-  it('transforms a member without links and binary logo', async () => {
+  it('transforms a member memberPermissionUnit', () => {
     vi.mocked(getRecordDataById).mockResolvedValue(
       mock<AxiosResponse>({
         data: divaMemberLogoBinary,
       }),
     );
-    const transformData = await transformMembers(divaMemberListWithBinaryLogo);
-    expect(transformData).toHaveLength(1);
-    expect(transformData[0]).toStrictEqual({
-      backgroundColor: '#75598e',
-      id: 'diva-member',
-      logo: {
-        url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/master',
-      },
-      pageTitle: {
-        en: 'DiVA',
-        sv: 'DiVA',
-      },
-      textColor: '#ffffff',
-      hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
-      loginUnitIds: ['uu'],
-    });
-  });
-
-  it('transforms a member memberPermissionUnit', async () => {
-    vi.mocked(getRecordDataById).mockResolvedValue(
-      mock<AxiosResponse>({
-        data: divaMemberLogoBinary,
-      }),
-    );
-    const transformData = await transformMembers(
+    const transformData = transformMembers(
       divaMemberListWithMemberPermissionUnit,
     );
     expect(transformData).toHaveLength(1);

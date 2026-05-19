@@ -1,4 +1,5 @@
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
@@ -9,13 +10,13 @@ describe('<MemberBar />', () => {
   it('sets background and text color from member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [],
+      links: [],
       logo: {},
       loginUnitIds: [],
     };
@@ -33,7 +34,7 @@ describe('<MemberBar />', () => {
   it('sets dark mode background and text color from member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -41,7 +42,7 @@ describe('<MemberBar />', () => {
       textColor: '#FFFFFF',
       backgroundColorDarkMode: '#222222',
       textColorDarkMode: '#EEEEEE',
-      publicLinks: [],
+      links: [],
       logo: {},
       loginUnitIds: [],
     };
@@ -58,7 +59,7 @@ describe('<MemberBar />', () => {
   it('shows svg logo if present in member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -67,7 +68,7 @@ describe('<MemberBar />', () => {
       logo: {
         svg: '<svg><title>Uppsala universitet svg</title></svg>',
       },
-      publicLinks: [],
+      links: [],
       loginUnitIds: [],
     };
 
@@ -78,57 +79,39 @@ describe('<MemberBar />', () => {
     ).toEqual(member.logo.svg);
   });
 
-  it('shows image logo if present and svg not present in member', () => {
-    vi.mocked(useLanguage).mockReturnValue('sv');
-
-    const member = {
-      id: 'uu-member',
-      hostnames: ['uu.diva-portal.org'],
-      pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
-      backgroundColor: '#111111',
-      textColor: '#FFFFFF',
-      logo: {
-        url: 'https://www.uu.se/logo.png',
-      },
-      loginUnitIds: [],
-    };
-
-    render(<MemberBar member={member} loggedIn={false} />);
-
-    expect(
-      screen.getByRole('img', { name: 'Uppsala universitet logo' }),
-    ).toHaveAttribute('src', member.logo.url);
-  });
-
   it('shows english links when language is english', () => {
     vi.mocked(useLanguage).mockReturnValue('en');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
+          lang: 'swe',
+          visibility: 'public',
+          url: 'https://www.uu.se/bibliotek',
+          displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          sv: {
-            url: 'http://libanswers.ub.uu.se',
-            displayLabel: 'Fråga biblioteket',
-          },
-          en: {
-            url: 'http://libanswers.ub.uu.se/en',
-            displayLabel: 'Ask the Library',
-          },
+          lang: 'eng',
+          visibility: 'public',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
+          lang: 'swe',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se',
+          displayLabel: 'Fråga biblioteket',
+        },
+        {
+          lang: 'eng',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se/en',
+          displayLabel: 'Ask the Library',
         },
       ],
       logo: {},
@@ -153,32 +136,36 @@ describe('<MemberBar />', () => {
   it('shows swedish links when language is swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
+          lang: 'swe',
+          visibility: 'public',
+          url: 'https://www.uu.se/bibliotek',
+          displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          sv: {
-            url: 'http://libanswers.ub.uu.se',
-            displayLabel: 'Fråga biblioteket',
-          },
-          en: {
-            url: 'http://libanswers.ub.uu.se/en',
-            displayLabel: 'Ask the Library',
-          },
+          lang: 'eng',
+          visibility: 'public',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
+          lang: 'swe',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se',
+          displayLabel: 'Fråga biblioteket',
+        },
+        {
+          lang: 'eng',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se/en',
+          displayLabel: 'Ask the Library',
         },
       ],
       logo: {},
@@ -200,47 +187,51 @@ describe('<MemberBar />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows admin link when logged in', () => {
+  it('shows admin and all links when logged in', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
-        },
-      ],
-      adminLinks: [
-        {
-          sv: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Kontakta DiVA support',
-          },
-          en: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Contect DiVA support',
-          },
+          visibility: 'public',
+          lang: 'swe',
+          url: 'https://www.uu.se/bibliotek',
+          displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          sv: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'Vanliga frågor',
-          },
-          en: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'FAQ',
-          },
+          visibility: 'public',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
+          visibility: 'admin',
+          lang: 'swe',
+          url: 'https://www.diva-portal.org/support',
+          displayLabel: 'Kontakta DiVA support',
+        },
+        {
+          visibility: 'admin',
+          lang: 'eng',
+          url: 'https://www.diva-portal.org/support',
+          displayLabel: 'Contect DiVA support',
+        },
+        {
+          visibility: 'admin',
+          lang: 'swe',
+          url: 'https://www.uu.se/en/faq',
+          displayLabel: 'Vanliga frågor',
+        },
+        {
+          visibility: 'all',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/faq',
+          displayLabel: 'FAQ',
         },
       ],
       logo: {},
@@ -262,47 +253,51 @@ describe('<MemberBar />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows public link when not logged in', () => {
+  it('shows public and all links when not logged in', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
-        },
-      ],
-      adminLinks: [
-        {
-          sv: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Kontakta DiVA support',
-          },
-          en: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Contect DiVA support',
-          },
+          visibility: 'public',
+          lang: 'swe',
+          url: 'https://www.uu.se/bibliotek',
+          displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          sv: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'Vanliga frågor',
-          },
-          en: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'FAQ',
-          },
+          visibility: 'public',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
+          visibility: 'admin',
+          lang: 'swe',
+          url: 'https://www.diva-portal.org/support',
+          displayLabel: 'Kontakta DiVA support',
+        },
+        {
+          visibility: 'admin',
+          lang: 'eng',
+          url: 'https://www.diva-portal.org/support',
+          displayLabel: 'Contect DiVA support',
+        },
+        {
+          visibility: 'admin',
+          lang: 'swe',
+          url: 'https://www.uu.se/en/faq',
+          displayLabel: 'Vanliga frågor',
+        },
+        {
+          visibility: 'all',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/faq',
+          displayLabel: 'FAQ',
         },
       ],
       logo: {},
@@ -316,6 +311,10 @@ describe('<MemberBar />', () => {
     ).toHaveAttribute('href', 'https://www.uu.se/bibliotek');
 
     expect(
+      screen.getByRole('link', { name: 'Vanliga frågor' }),
+    ).toHaveAttribute('href', 'https://www.uu.se/en/faq');
+
+    expect(
       screen.queryByRole('link', { name: 'Kontakta DiVA support' }),
     ).not.toBeInTheDocument();
   });
@@ -323,46 +322,12 @@ describe('<MemberBar />', () => {
   it('renders children', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member = {
+    const member: BFFMember = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
       backgroundColor: '#111111',
       textColor: '#FFFFFF',
-      publicLinks: [
-        {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
-        },
-      ],
-      adminLinks: [
-        {
-          sv: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Kontakta DiVA support',
-          },
-          en: {
-            url: 'https://www.diva-portal.org/support',
-            displayLabel: 'Contect DiVA support',
-          },
-        },
-        {
-          sv: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'Vanliga frågor',
-          },
-          en: {
-            url: 'https://www.uu.se/en/faq',
-            displayLabel: 'FAQ',
-          },
-        },
-      ],
       logo: {},
       loginUnitIds: [],
     };

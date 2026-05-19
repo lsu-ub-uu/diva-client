@@ -778,6 +778,149 @@ describe('getFirstDataGroupWithNameInData', () => {
   });
 });
 
+describe('getAllDataGroupsWithNameInData', () => {
+  it('should return empty array with no children', () => {
+    expect(
+      cdu.getAllDataGroupsWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someMChildName',
+      ),
+    ).toEqual([]);
+  });
+
+  it('does not return atomics with the name', () => {
+    expect(
+      cdu.getAllDataGroupsWithNameInData(
+        { name: 'root', children: [{ name: 'someName', value: 'someValue' }] },
+        'someName',
+      ),
+    ).toEqual([]);
+  });
+
+  it('returns groups that has matching name', () => {
+    expect(
+      cdu.getAllDataGroupsWithNameInData(
+        {
+          name: 'root',
+          children: [
+            {
+              name: 'someChildGroup',
+              children: [{ name: 'someAtomicName', value: 'someValue' }],
+            },
+            {
+              name: 'someChildGroup',
+              children: [{ name: 'someAtomicName', value: 'someOtherValue' }],
+            },
+          ],
+        },
+        'someChildGroup',
+      ),
+    ).toEqual([
+      {
+        name: 'someChildGroup',
+        children: [{ name: 'someAtomicName', value: 'someValue' }],
+      },
+      {
+        name: 'someChildGroup',
+        children: [{ name: 'someAtomicName', value: 'someOtherValue' }],
+      },
+    ]);
+  });
+
+  it('does not return groups that has not matching name', () => {
+    expect(
+      cdu.getAllDataGroupsWithNameInData(
+        {
+          name: 'root',
+          children: [
+            {
+              name: 'someChildGroup',
+              children: [{ name: 'someAtomicName', value: 'someValue' }],
+            },
+            {
+              name: 'someOtherChildGroup',
+              children: [{ name: 'someAtomicName', value: 'someOtherValue' }],
+            },
+          ],
+        },
+        'someChildGroup',
+      ),
+    ).toEqual([
+      {
+        name: 'someChildGroup',
+        children: [{ name: 'someAtomicName', value: 'someValue' }],
+      },
+    ]);
+  });
+
+  it('returns groups that has matching name but different attributes', () => {
+    expect(
+      cdu.getAllDataGroupsWithNameInData(
+        {
+          name: 'root',
+          children: [
+            {
+              name: 'someChildGroup',
+              attributes: { someAttr: 'someValue' },
+              children: [{ name: 'someAtomicName', value: 'someValue' }],
+            },
+            {
+              name: 'someChildGroup',
+              attributes: { someOtherAttr: 'someOtherValue' },
+              children: [{ name: 'someAtomicName', value: 'someOtherValue' }],
+            },
+          ],
+        },
+        'someChildGroup',
+      ),
+    ).toEqual([
+      {
+        name: 'someChildGroup',
+        attributes: { someAttr: 'someValue' },
+        children: [{ name: 'someAtomicName', value: 'someValue' }],
+      },
+      {
+        name: 'someChildGroup',
+        attributes: { someOtherAttr: 'someOtherValue' },
+        children: [{ name: 'someAtomicName', value: 'someOtherValue' }],
+      },
+    ]);
+  });
+
+  //   expect(
+  //     cdu.getFirstDataGroupWithNameInData(
+  //       dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
+  //       'someInterestingChildName',
+  //     ),
+  //   ).toStrictEqual({
+  //     name: 'someInterestingChildName',
+  //     children: [
+  //       {
+  //         name: 'someOtherChild',
+  //         value: 'someValue',
+  //       },
+  //     ],
+  //   });
+  // });
+
+  // it('if dataGroup has several matching DataGroups, should return the first of them', () => {
+  //   expect(
+  //     cdu.getFirstDataGroupWithNameInData(
+  //       dataGroupWithSeveralMatchingDataGroups,
+  //       'someInterestingChildName',
+  //     ),
+  //   ).toStrictEqual({
+  //     name: 'someInterestingChildName',
+  //     children: [
+  //       {
+  //         name: 'firstChild',
+  //         value: 'someValue',
+  //       },
+  //     ],
+  //   });
+  // });
+});
+
 const dataGroupWithNonMatchingAttributes: DataGroup = {
   name: 'someName',
   children: [

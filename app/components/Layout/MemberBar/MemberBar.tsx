@@ -69,10 +69,6 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
             }}
           />
         )}
-        {!member.logo.svg && member.logo.url && (
-          <img src={member.logo.url} alt={`${member.pageTitle[lang]} logo`} />
-        )}
-
         {links && (
           <>
             <div className={styles['links']}>
