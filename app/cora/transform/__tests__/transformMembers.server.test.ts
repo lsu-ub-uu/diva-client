@@ -49,28 +49,40 @@ describe('transformMember', () => {
       textColorDarkMode: '#CCCCCC',
       links: [
         {
-          lang: 'swe',
-          visibility: 'public',
-          url: 'https://www.uu.se/bibliotek',
           displayLabel: 'Uppsala universitetsbibliotek',
-        },
-        {
-          lang: 'eng',
-          visibility: 'public',
-          url: 'https://www.uu.se/en/library',
-          displayLabel: 'Uppsala University Library',
-        },
-        {
           lang: 'swe',
-          visibility: 'admin',
-          url: 'http://libanswers.ub.uu.se',
-          displayLabel: 'Fråga biblioteket',
+          url: 'https://www.uu.se/bibliotek',
+          visibility: 'public',
         },
         {
-          lang: 'eng',
+          displayLabel: 'Fråga biblioteket',
+          lang: 'swe',
+          url: 'http://libanswers.ub.uu.se',
+          visibility: 'admin',
+        },
+        {
+          displayLabel: 'Url för alla',
+          lang: 'swe',
+          url: 'http://someUrlForAll.se',
           visibility: 'all',
-          url: 'http://libanswers.ub.uu.se/en',
+        },
+        {
+          displayLabel: 'Uppsala University Library',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/library',
+          visibility: 'public',
+        },
+        {
           displayLabel: 'Ask the Library',
+          lang: 'eng',
+          url: 'http://libanswers.ub.uu.se/en',
+          visibility: 'admin',
+        },
+        {
+          displayLabel: 'Url for everyone',
+          lang: 'eng',
+          url: 'http://someUrlForAll.com/en',
+          visibility: 'all',
         },
       ],
       logo: {

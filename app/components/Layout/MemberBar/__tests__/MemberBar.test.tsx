@@ -96,22 +96,34 @@ describe('<MemberBar />', () => {
           displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          lang: 'eng',
-          visibility: 'public',
-          url: 'https://www.uu.se/en/library',
-          displayLabel: 'Uppsala University Library',
-        },
-        {
           lang: 'swe',
           visibility: 'admin',
           url: 'http://libanswers.ub.uu.se',
           displayLabel: 'Fråga biblioteket',
         },
         {
+          lang: 'swe',
+          visibility: 'all',
+          url: 'http://someUrlForAll.se',
+          displayLabel: 'Url för alla',
+        },
+        {
+          lang: 'eng',
+          visibility: 'public',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
           lang: 'eng',
           visibility: 'admin',
           url: 'http://libanswers.ub.uu.se/en',
           displayLabel: 'Ask the Library',
+        },
+        {
+          lang: 'eng',
+          visibility: 'all',
+          url: 'http://someUrlForAll.com/en',
+          displayLabel: 'Url for everyone',
         },
       ],
       logo: {},
@@ -125,11 +137,23 @@ describe('<MemberBar />', () => {
     ).toHaveAttribute('href', 'https://www.uu.se/en/library');
 
     expect(
-      screen.getByRole('link', { name: 'Ask the Library' }),
-    ).toHaveAttribute('href', 'http://libanswers.ub.uu.se/en');
+      screen.getByRole('link', { name: 'Url for everyone' }),
+    ).toHaveAttribute('href', 'http://someUrlForAll.com/en');
+
+    expect(
+      screen.queryByRole('link', { name: 'Ask the Library' }),
+    ).not.toBeInTheDocument();
 
     expect(
       screen.queryByRole('link', { name: 'Uppsala universitetsbibliotek' }),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('link', { name: 'Fråga biblioteket' }),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('link', { name: 'Url för alla' }),
     ).not.toBeInTheDocument();
   });
 
@@ -150,22 +174,34 @@ describe('<MemberBar />', () => {
           displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          lang: 'eng',
-          visibility: 'public',
-          url: 'https://www.uu.se/en/library',
-          displayLabel: 'Uppsala University Library',
-        },
-        {
           lang: 'swe',
           visibility: 'admin',
           url: 'http://libanswers.ub.uu.se',
           displayLabel: 'Fråga biblioteket',
         },
         {
+          lang: 'swe',
+          visibility: 'all',
+          url: 'http://someUrlForAll.se',
+          displayLabel: 'Url för alla',
+        },
+        {
+          lang: 'eng',
+          visibility: 'public',
+          url: 'https://www.uu.se/en/library',
+          displayLabel: 'Uppsala University Library',
+        },
+        {
           lang: 'eng',
           visibility: 'admin',
           url: 'http://libanswers.ub.uu.se/en',
           displayLabel: 'Ask the Library',
+        },
+        {
+          lang: 'eng',
+          visibility: 'all',
+          url: 'http://someUrlForAll.com/en',
+          displayLabel: 'Url for everyone',
         },
       ],
       logo: {},
@@ -178,16 +214,26 @@ describe('<MemberBar />', () => {
       screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }),
     ).toHaveAttribute('href', 'https://www.uu.se/bibliotek');
 
-    expect(
-      screen.getByRole('link', { name: 'Fråga biblioteket' }),
-    ).toHaveAttribute('href', 'http://libanswers.ub.uu.se');
+    expect(screen.getByRole('link', { name: 'Url för alla' })).toHaveAttribute(
+      'href',
+      'http://someUrlForAll.se',
+    );
 
+    expect(
+      screen.queryByRole('link', { name: 'Fråga biblioteket' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'Uppsala University Library' }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Ask the Library' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Url for everyone' }),
+    ).not.toBeInTheDocument();
   });
 
-  it('shows admin and all links when logged in', () => {
+  it('shows admin and all links when logged in in swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
     const member: BFFMember = {
@@ -198,40 +244,40 @@ describe('<MemberBar />', () => {
       textColor: '#FFFFFF',
       links: [
         {
-          visibility: 'public',
           lang: 'swe',
+          visibility: 'public',
           url: 'https://www.uu.se/bibliotek',
           displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          visibility: 'public',
+          lang: 'swe',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se',
+          displayLabel: 'Fråga biblioteket',
+        },
+        {
+          lang: 'swe',
+          visibility: 'all',
+          url: 'http://someUrlForAll.se',
+          displayLabel: 'Url för alla',
+        },
+        {
           lang: 'eng',
+          visibility: 'public',
           url: 'https://www.uu.se/en/library',
           displayLabel: 'Uppsala University Library',
         },
         {
-          visibility: 'admin',
-          lang: 'swe',
-          url: 'https://www.diva-portal.org/support',
-          displayLabel: 'Kontakta DiVA support',
-        },
-        {
-          visibility: 'admin',
           lang: 'eng',
-          url: 'https://www.diva-portal.org/support',
-          displayLabel: 'Contect DiVA support',
-        },
-        {
           visibility: 'admin',
-          lang: 'swe',
-          url: 'https://www.uu.se/en/faq',
-          displayLabel: 'Vanliga frågor',
+          url: 'http://libanswers.ub.uu.se/en',
+          displayLabel: 'Ask the Library',
         },
         {
+          lang: 'eng',
           visibility: 'all',
-          lang: 'eng',
-          url: 'https://www.uu.se/en/faq',
-          displayLabel: 'FAQ',
+          url: 'http://someUrlForAll.com/en',
+          displayLabel: 'Url for everyone',
         },
       ],
       logo: {},
@@ -241,19 +287,24 @@ describe('<MemberBar />', () => {
     render(<MemberBar member={member} loggedIn={true} />);
 
     expect(
-      screen.getByRole('link', { name: 'Kontakta DiVA support' }),
-    ).toHaveAttribute('href', 'https://www.diva-portal.org/support');
+      screen.getByRole('link', { name: 'Fråga biblioteket' }),
+    ).toHaveAttribute('href', 'http://libanswers.ub.uu.se');
+
+    expect(screen.getByRole('link', { name: 'Url för alla' })).toHaveAttribute(
+      'href',
+      'http://someUrlForAll.se',
+    );
 
     expect(
-      screen.getByRole('link', { name: 'Vanliga frågor' }),
-    ).toHaveAttribute('href', 'https://www.uu.se/en/faq');
+      screen.queryByRole('link', { name: 'Uppsala universitetsbibliotek' }),
+    ).not.toBeInTheDocument();
 
     expect(
       screen.queryByRole('link', { name: 'Uppsala University Library' }),
     ).not.toBeInTheDocument();
   });
 
-  it('shows public and all links when not logged in', () => {
+  it('shows public and all links when not logged in in swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
     const member: BFFMember = {
@@ -264,40 +315,40 @@ describe('<MemberBar />', () => {
       textColor: '#FFFFFF',
       links: [
         {
-          visibility: 'public',
           lang: 'swe',
+          visibility: 'public',
           url: 'https://www.uu.se/bibliotek',
           displayLabel: 'Uppsala universitetsbibliotek',
         },
         {
-          visibility: 'public',
+          lang: 'swe',
+          visibility: 'admin',
+          url: 'http://libanswers.ub.uu.se',
+          displayLabel: 'Fråga biblioteket',
+        },
+        {
+          lang: 'swe',
+          visibility: 'all',
+          url: 'http://someUrlForAll.se',
+          displayLabel: 'Url för alla',
+        },
+        {
           lang: 'eng',
+          visibility: 'public',
           url: 'https://www.uu.se/en/library',
           displayLabel: 'Uppsala University Library',
         },
         {
-          visibility: 'admin',
-          lang: 'swe',
-          url: 'https://www.diva-portal.org/support',
-          displayLabel: 'Kontakta DiVA support',
-        },
-        {
-          visibility: 'admin',
           lang: 'eng',
-          url: 'https://www.diva-portal.org/support',
-          displayLabel: 'Contect DiVA support',
-        },
-        {
           visibility: 'admin',
-          lang: 'swe',
-          url: 'https://www.uu.se/en/faq',
-          displayLabel: 'Vanliga frågor',
+          url: 'http://libanswers.ub.uu.se/en',
+          displayLabel: 'Ask the Library',
         },
         {
+          lang: 'eng',
           visibility: 'all',
-          lang: 'eng',
-          url: 'https://www.uu.se/en/faq',
-          displayLabel: 'FAQ',
+          url: 'http://someUrlForAll.com/en',
+          displayLabel: 'Url for everyone',
         },
       ],
       logo: {},
@@ -310,12 +361,13 @@ describe('<MemberBar />', () => {
       screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }),
     ).toHaveAttribute('href', 'https://www.uu.se/bibliotek');
 
-    expect(
-      screen.getByRole('link', { name: 'Vanliga frågor' }),
-    ).toHaveAttribute('href', 'https://www.uu.se/en/faq');
+    expect(screen.getByRole('link', { name: 'Url för alla' })).toHaveAttribute(
+      'href',
+      'http://someUrlForAll.se',
+    );
 
     expect(
-      screen.queryByRole('link', { name: 'Kontakta DiVA support' }),
+      screen.queryByRole('link', { name: 'Fråga biblioteket' }),
     ).not.toBeInTheDocument();
   });
 

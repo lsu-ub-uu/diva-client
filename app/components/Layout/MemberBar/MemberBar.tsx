@@ -41,7 +41,14 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
     return <div className={styles['diva-bar']} />;
   }
 
-  const links = loggedIn ? member.adminLinks : member.publicLinks;
+  const langKey = lang === 'sv' ? 'swe' : 'eng';
+  const links = member.links
+    ?.filter((link) =>
+      loggedIn
+        ? link.visibility === 'admin' || link.visibility === 'all'
+        : link.visibility === 'public' || link.visibility === 'all',
+    )
+    .filter((link) => link.lang === langKey);
 
   return (
     <section
@@ -69,14 +76,14 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
             }}
           />
         )}
-        {links && (
+        {links && links.length > 0 && (
           <>
             <div className={styles['links']}>
               <ul>
                 {links.map((link, index) => (
                   <li key={index}>
-                    <a href={link[lang].url} target='_blank' rel='noreferrer'>
-                      {link[lang].displayLabel}
+                    <a href={link.url} target='_blank' rel='noreferrer'>
+                      {link.displayLabel}
                     </a>
                   </li>
                 ))}
@@ -97,9 +104,9 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
               >
                 <ul>
                   {links.map((link) => (
-                    <li key={link[lang].url}>
-                      <a href={link[lang].url} target='_blank' rel='noreferrer'>
-                        {link[lang].displayLabel}
+                    <li key={link.url}>
+                      <a href={link.url} target='_blank' rel='noreferrer'>
+                        {link.displayLabel}
                       </a>
                     </li>
                   ))}

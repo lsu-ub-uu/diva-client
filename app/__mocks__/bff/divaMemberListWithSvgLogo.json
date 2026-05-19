@@ -165,24 +165,6 @@
               },
               {
                 "attributes": {
-                  "lang": "eng",
-                  "visibility": "public"
-                },
-                "children": [
-                  {
-                    "name": "url",
-                    "value": "https://www.uu.se/en/library"
-                  },
-                  {
-                    "name": "displayLabel",
-                    "value": "Uppsala University Library"
-                  }
-                ],
-                "name": "link"
-              },
-
-              {
-                "attributes": {
                   "lang": "swe",
                   "visibility": "admin"
                 },
@@ -200,8 +182,42 @@
               },
               {
                 "attributes": {
-                  "lang": "eng",
+                  "lang": "swe",
                   "visibility": "all"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "http://someUrlForAll.se"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Url för alla"
+                  }
+                ],
+                "name": "link"
+              },
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "public"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "https://www.uu.se/en/library"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Uppsala University Library"
+                  }
+                ],
+                "name": "link"
+              },
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "admin"
                 },
                 "children": [
                   {
@@ -215,7 +231,23 @@
                 ],
                 "name": "link"
               },
-
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "all"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "http://someUrlForAll.com/en"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Url for everyone"
+                  }
+                ],
+                "name": "link"
+              },
               {
                 "repeatId": "0",
                 "name": "hostname",
