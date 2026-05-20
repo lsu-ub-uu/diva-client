@@ -147,100 +147,106 @@
                 "value": "<svg></svg>"
               },
               {
-                "repeatId": "1",
+                "attributes": {
+                  "lang": "swe",
+                  "visibility": "public"
+                },
                 "children": [
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "https://www.uu.se/bibliotek"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Uppsala universitetsbibliotek"
-                      }
-                    ],
-                    "name": "linkSv"
+                    "name": "url",
+                    "value": "https://www.uu.se/bibliotek"
                   },
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "https://www.uu.se/en/library"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Uppsala University Library"
-                      }
-                    ],
-                    "name": "linkEn"
+                    "name": "displayLabel",
+                    "value": "Uppsala universitetsbibliotek"
                   }
                 ],
-                "name": "linkPublic"
+                "name": "link"
               },
               {
-                "repeatId": "2",
+                "attributes": {
+                  "lang": "swe",
+                  "visibility": "admin"
+                },
                 "children": [
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "http://libanswers.ub.uu.se"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Fråga biblioteket"
-                      }
-                    ],
-                    "name": "linkSv"
+                    "name": "url",
+                    "value": "http://libanswers.ub.uu.se"
                   },
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "http://libanswers.ub.uu.se/en"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Ask the Library"
-                      }
-                    ],
-                    "name": "linkEn"
+                    "name": "displayLabel",
+                    "value": "Fråga biblioteket"
                   }
                 ],
-                "name": "linkPublic"
+                "name": "link"
               },
               {
-                "repeatId": "1",
+                "attributes": {
+                  "lang": "swe",
+                  "visibility": "all"
+                },
                 "children": [
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "https://www.uu.se/support"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Kontakta support"
-                      }
-                    ],
-                    "name": "linkSv"
+                    "name": "url",
+                    "value": "http://someUrlForAll.se"
                   },
                   {
-                    "children": [
-                      {
-                        "name": "url",
-                        "value": "https://www.uu.se/en/support"
-                      },
-                      {
-                        "name": "displayLabel",
-                        "value": "Contact support"
-                      }
-                    ],
-                    "name": "linkEn"
+                    "name": "displayLabel",
+                    "value": "Url för alla"
                   }
                 ],
-                "name": "linkAdmin"
+                "name": "link"
+              },
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "public"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "https://www.uu.se/en/library"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Uppsala University Library"
+                  }
+                ],
+                "name": "link"
+              },
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "admin"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "http://libanswers.ub.uu.se/en"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Ask the Library"
+                  }
+                ],
+                "name": "link"
+              },
+              {
+                "attributes": {
+                  "lang": "eng",
+                  "visibility": "all"
+                },
+                "children": [
+                  {
+                    "name": "url",
+                    "value": "http://someUrlForAll.com/en"
+                  },
+                  {
+                    "name": "displayLabel",
+                    "value": "Url for everyone"
+                  }
+                ],
+                "name": "link"
               },
               {
                 "repeatId": "0",

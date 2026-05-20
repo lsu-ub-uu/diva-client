@@ -4011,30 +4011,6 @@ export interface RecordInfoMemberGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface ThemeLinkSweGroup {
-  url?: { value: string; __text?: { sv: string; en: string } };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkEngGroup {
-  url?: { value: string; __text?: { sv: string; en: string } };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkAdminGroup {
-  linkSv?: ThemeLinkSweGroup;
-  linkEn?: ThemeLinkEngGroup;
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkPublicGroup {
-  linkSv?: ThemeLinkSweGroup;
-  linkEn?: ThemeLinkEngGroup;
-  __text?: { sv: string; en: string };
-}
-
 export interface LoginUnit {
   loginUnit: LoginUnitGroup;
 }
@@ -4896,6 +4872,16 @@ export interface LoginUnitGroup {
   __text?: { sv: string; en: string };
 }
 
+export type MemberLinkVisibilityCollection = 'public' | 'admin' | 'all';
+
+export interface MemberLinkGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  _visibility: MemberLinkVisibilityCollection;
+  _lang: LanguageSweEngCollection;
+  __text?: { sv: string; en: string };
+}
+
 export interface DivaMemberGroup {
   recordInfo: RecordInfoMemberGroup;
   memberPermissionUnit?: {
@@ -4914,10 +4900,10 @@ export interface DivaMemberGroup {
   };
   textColorDarkMode?: { value: string; __text?: { sv: string; en: string } };
   logoSvg?: { value: string; __text?: { sv: string; en: string } };
-  linkAdmin?: ThemeLinkAdminGroup[];
-  linkPublic?: ThemeLinkPublicGroup[];
   pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
   pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
+  heroTextSwe?: { value: string; __text?: { sv: string; en: string } };
+  heroTextEng?: { value: string; __text?: { sv: string; en: string } };
   hostname?: { value: string; __text?: { sv: string; en: string } }[];
   loginUnit?: {
     value: string;
@@ -4927,5 +4913,6 @@ export interface DivaMemberGroup {
 
     __text?: { sv: string; en: string };
   }[];
+  link?: MemberLinkGroup[];
   __text?: { sv: string; en: string };
 }
