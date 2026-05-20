@@ -886,39 +886,6 @@ describe('getAllDataGroupsWithNameInData', () => {
       },
     ]);
   });
-
-  //   expect(
-  //     cdu.getFirstDataGroupWithNameInData(
-  //       dataGroupWithOneMatchingAtomicAndOneMatchingGroup,
-  //       'someInterestingChildName',
-  //     ),
-  //   ).toStrictEqual({
-  //     name: 'someInterestingChildName',
-  //     children: [
-  //       {
-  //         name: 'someOtherChild',
-  //         value: 'someValue',
-  //       },
-  //     ],
-  //   });
-  // });
-
-  // it('if dataGroup has several matching DataGroups, should return the first of them', () => {
-  //   expect(
-  //     cdu.getFirstDataGroupWithNameInData(
-  //       dataGroupWithSeveralMatchingDataGroups,
-  //       'someInterestingChildName',
-  //     ),
-  //   ).toStrictEqual({
-  //     name: 'someInterestingChildName',
-  //     children: [
-  //       {
-  //         name: 'firstChild',
-  //         value: 'someValue',
-  //       },
-  //     ],
-  //   });
-  // });
 });
 
 const dataGroupWithNonMatchingAttributes: DataGroup = {

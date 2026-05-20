@@ -4902,6 +4902,8 @@ export interface DivaMemberGroup {
   logoSvg?: { value: string; __text?: { sv: string; en: string } };
   pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
   pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
+  heroTextSwe?: { value: string; __text?: { sv: string; en: string } };
+  heroTextEng?: { value: string; __text?: { sv: string; en: string } };
   hostname?: { value: string; __text?: { sv: string; en: string } }[];
   loginUnit?: {
     value: string;

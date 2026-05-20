@@ -17,7 +17,7 @@
  */
 
 import styles from './MemberBar.module.css';
-import type { BFFMember } from '@/cora/bffTypes.server';
+import type { BFFMember, BFFMemberLink } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
@@ -41,14 +41,9 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
     return <div className={styles['diva-bar']} />;
   }
 
-  const langKey = lang === 'sv' ? 'swe' : 'eng';
-  const links = member.links
-    ?.filter((link) =>
-      loggedIn
-        ? link.visibility === 'admin' || link.visibility === 'all'
-        : link.visibility === 'public' || link.visibility === 'all',
-    )
-    .filter((link) => link.lang === langKey);
+  const links = member.links?.filter((link) =>
+    shouldLinkBeShown(link, loggedIn, lang),
+  );
 
   return (
     <section
@@ -120,4 +115,19 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
       </div>
     </section>
   );
+};
+
+const shouldLinkBeShown = (
+  link: BFFMemberLink,
+  loggedIn: boolean,
+  lang: 'sv' | 'en',
+) => {
+  const correctVisibility = loggedIn
+    ? link.visibility === 'admin' || link.visibility === 'all'
+    : link.visibility === 'public' || link.visibility === 'all';
+
+  const langKey = lang === 'sv' ? 'swe' : 'eng';
+  const correctLang = link.lang === langKey;
+
+  return correctVisibility && correctLang;
 };
