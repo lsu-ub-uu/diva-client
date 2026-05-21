@@ -36,7 +36,10 @@
 .attributes {
   grid-area: attributes;
   justify-self: end;
-  margin-bottom: var(--gap);
+  display: flex;
+  gap: var(--gap-s);
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .action-buttons {

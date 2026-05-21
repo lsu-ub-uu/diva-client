@@ -1,4 +1,4 @@
-import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
+import type { OriginInfoEditionGroup } from '@/generatedTypes/divaTypes';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OriginInfo } from '../OriginInfo';
@@ -12,7 +12,7 @@ describe('OriginInfo', () => {
         year: { value: '2023' },
         __text: { en: 'Date issued' },
       },
-    } as OriginInfoGroup;
+    } as OriginInfoEditionGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 
@@ -28,7 +28,7 @@ describe('OriginInfo', () => {
         year: { value: '2020' },
         __text: { en: 'Copyright date' },
       },
-    } as OriginInfoGroup;
+    } as OriginInfoEditionGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 
@@ -65,7 +65,7 @@ describe('OriginInfo', () => {
           __text: { en: 'Other date' },
         },
       ],
-    } as OriginInfoGroup;
+    } as OriginInfoEditionGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 
@@ -118,7 +118,7 @@ describe('OriginInfo', () => {
           },
         },
       ],
-    } as OriginInfoGroup;
+    } as OriginInfoEditionGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 
@@ -147,7 +147,7 @@ describe('OriginInfo', () => {
           },
         },
       ],
-    } as OriginInfoGroup;
+    } as OriginInfoEditionGroup;
 
     render(<OriginInfo originInfo={originInfo} />);
 

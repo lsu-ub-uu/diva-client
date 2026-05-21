@@ -1,11 +1,11 @@
-import type { OriginInfoGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
 import { Publishers } from './Publishers';
 import { Term } from './Term';
+import type { OriginInfoEditionGroup } from '@/generatedTypes/divaTypes';
 
 interface OriginInfoProps {
-  originInfo?: OriginInfoGroup;
+  originInfo?: OriginInfoEditionGroup;
 }
 
 export const OriginInfo = ({ originInfo }: OriginInfoProps) => {

@@ -363,13 +363,40 @@ export interface BFFMemberLink {
   displayLabel: string;
 }
 
-export interface BFFMember {
-  id: string;
-  memberPermissionUnit?: string;
-  pageTitle: {
+export interface BFFImageAttribution {
+  title?: {
     sv: string;
     en: string;
   };
+  author?: string;
+  source: {
+    displayLabel: string;
+    url: string;
+  };
+  license: {
+    displayLabel: string;
+    url?: string;
+  };
+}
+
+export interface BFFSweEngText {
+  sv: string;
+  en: string;
+}
+
+export interface BFFMemberHero {
+  title: BFFSweEngText;
+  subTitle?: BFFSweEngText;
+  imageUrl: string;
+  imageAttribution: BFFImageAttribution;
+}
+
+export interface BFFMember {
+  id: string;
+  memberPermissionUnit?: string;
+  hostnames: string[];
+  loginUnitIds: string[];
+  pageTitle: BFFSweEngText;
   backgroundColor: string;
   textColor: string;
   backgroundColorDarkMode?: string;
@@ -378,17 +405,13 @@ export interface BFFMember {
   logo: {
     svg?: string;
   };
-  hostnames: string[];
-  loginUnitIds: string[];
+  hero: BFFMemberHero;
 }
 
 export interface BFFOrganisation {
   id: string;
   parentOrganisationId?: string;
-  name: {
-    sv: string;
-    en?: string;
-  };
+  name: BFFSweEngText;
   rorId?: string;
 }
 

@@ -2630,10 +2630,11 @@ export interface NameOrganisationPublisherGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface OriginInfoGroup {
+export interface OriginInfoEditionGroup {
   dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther?: DateOtherPublicationStatusGroup[];
+  edition?: { value: string; __text?: { sv: string; en: string } };
   name_otherType_publisher_type_corporate?: NameOrganisationPublisherGroup[];
   __text?: { sv: string; en: string };
 }
@@ -3874,7 +3875,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  originInfo?: OriginInfoGroup;
+  originInfo?: OriginInfoEditionGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
@@ -4872,6 +4873,76 @@ export interface LoginUnitGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface MemberHeroTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface MemberHeroSubTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionSourceGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionLicenseGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionGroup {
+  title?: ImageAttributionTitleGroup;
+  author?: { value: string; __text?: { sv: string; en: string } };
+  source?: ImageAttributionSourceGroup;
+  license?: ImageAttributionLicenseGroup;
+  __text?: { sv: string; en: string };
+}
+
+export interface MemberHeroGroup {
+  title?: MemberHeroTitleGroup;
+  subTitle?: MemberHeroSubTitleGroup;
+  imageUrl?: { value: string; __text?: { sv: string; en: string } };
+  imageAttribution?: ImageAttributionGroup;
+  __text?: { sv: string; en: string };
+}
+
 export type MemberLinkVisibilityCollection = 'public' | 'admin' | 'all';
 
 export interface MemberLinkGroup {
@@ -4892,6 +4963,15 @@ export interface DivaMemberGroup {
 
     __text?: { sv: string; en: string };
   };
+  hostname?: { value: string; __text?: { sv: string; en: string } }[];
+  loginUnit?: {
+    value: string;
+    linkedRecord: {
+      loginUnit: LoginUnitGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  }[];
   backgroundColor?: { value: string; __text?: { sv: string; en: string } };
   textColor?: { value: string; __text?: { sv: string; en: string } };
   backgroundColorDarkMode?: {
@@ -4902,17 +4982,7 @@ export interface DivaMemberGroup {
   logoSvg?: { value: string; __text?: { sv: string; en: string } };
   pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
   pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
-  heroTextSwe?: { value: string; __text?: { sv: string; en: string } };
-  heroTextEng?: { value: string; __text?: { sv: string; en: string } };
-  hostname?: { value: string; __text?: { sv: string; en: string } }[];
-  loginUnit?: {
-    value: string;
-    linkedRecord: {
-      loginUnit: LoginUnitGroup;
-    };
-
-    __text?: { sv: string; en: string };
-  }[];
+  hero?: MemberHeroGroup;
   link?: MemberLinkGroup[];
   __text?: { sv: string; en: string };
 }
