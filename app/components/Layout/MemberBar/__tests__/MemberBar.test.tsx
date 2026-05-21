@@ -1,5 +1,5 @@
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import type { BFFMember } from '@/cora/bffTypes.server';
+import type { BFFMember, BFFMemberHero } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
@@ -10,7 +10,7 @@ describe('<MemberBar />', () => {
   it('sets background and text color from member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -19,7 +19,8 @@ describe('<MemberBar />', () => {
       links: [],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -34,7 +35,7 @@ describe('<MemberBar />', () => {
   it('sets dark mode background and text color from member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -45,7 +46,8 @@ describe('<MemberBar />', () => {
       links: [],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -59,7 +61,7 @@ describe('<MemberBar />', () => {
   it('shows svg logo if present in member', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -70,7 +72,8 @@ describe('<MemberBar />', () => {
       },
       links: [],
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -82,7 +85,7 @@ describe('<MemberBar />', () => {
   it('shows english links when language is english', () => {
     vi.mocked(useLanguage).mockReturnValue('en');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -128,7 +131,8 @@ describe('<MemberBar />', () => {
       ],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -160,7 +164,7 @@ describe('<MemberBar />', () => {
   it('shows swedish links when language is swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -206,7 +210,8 @@ describe('<MemberBar />', () => {
       ],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -236,7 +241,7 @@ describe('<MemberBar />', () => {
   it('shows admin and all links when logged in in swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -282,7 +287,8 @@ describe('<MemberBar />', () => {
       ],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={true} />);
 
@@ -307,7 +313,7 @@ describe('<MemberBar />', () => {
   it('shows public and all links when not logged in in swedish', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -353,7 +359,8 @@ describe('<MemberBar />', () => {
       ],
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(<MemberBar member={member} loggedIn={false} />);
 
@@ -374,7 +381,7 @@ describe('<MemberBar />', () => {
   it('renders children', () => {
     vi.mocked(useLanguage).mockReturnValue('sv');
 
-    const member: BFFMember = {
+    const member = {
       id: 'uu-member',
       hostnames: ['uu.diva-portal.org'],
       pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
@@ -382,7 +389,8 @@ describe('<MemberBar />', () => {
       textColor: '#FFFFFF',
       logo: {},
       loginUnitIds: [],
-    };
+      hero: {} as BFFMemberHero,
+    } as BFFMember;
 
     render(
       <MemberBar member={member} loggedIn={false}>

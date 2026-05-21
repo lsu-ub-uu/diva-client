@@ -387,8 +387,8 @@ export interface BFFSweEngText {
 export interface BFFMemberHero {
   title: BFFSweEngText;
   subTitle?: BFFSweEngText;
-  imageUrl?: string;
-  imageAttribution?: BFFImageAttribution;
+  imageUrl: string;
+  imageAttribution: BFFImageAttribution;
 }
 
 export interface BFFMember {

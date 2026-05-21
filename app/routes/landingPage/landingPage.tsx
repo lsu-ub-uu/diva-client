@@ -21,6 +21,7 @@ import { heroImages } from './heroImages';
 import { ImageAttribution } from './ImageAttribution';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
+import { Hero } from './Hero';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const auth = context.get(sessionContext);
@@ -66,35 +67,15 @@ const navigationCardDescriptions: Record<string, string> = {
 };
 
 export default function LandingPage({ loaderData }: Route.ComponentProps) {
-  const { title, member, heroImage } = loaderData;
+  const { member } = loaderData;
   const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
   const navigation = rootLoaderData?.navigation;
   const { t } = useTranslation();
-  const language = useLanguage();
 
   return (
     <div className='landing-main'>
       <main>
-        <div className='hero-container'>
-          <figure className='hero-background'>
-            <img src={heroImage.url} alt='' className='hero-image' />
-            <figcaption className='image-credit'>
-              <details>
-                <summary>{t('divaClient_heroImageSourceText')}</summary>
-                <ImageAttribution attribution={heroImage.attribution} />
-              </details>
-            </figcaption>
-          </figure>
-
-          <h1 className='hero-title'>{title}</h1>
-          {member?.pageTitle[language] && (
-            <div className='hero-subtitle'>
-              {t('divaClient_heroSubtitleText', {
-                member: member?.pageTitle[language],
-              })}
-            </div>
-          )}
-
+        <Hero hero={member.hero}>
           <Form
             action={href('/:recordType', { recordType: 'diva-output' })}
             className='search-form'
@@ -120,7 +101,7 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
               </button>
             </div>
           </Form>
-        </div>
+        </Hero>
         {navigation && (
           <div className='navigation-grid'>
             {navigation.mainNavigationItems.map((navItem) => (
