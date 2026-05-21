@@ -128,6 +128,10 @@
   .attributes {
     grid-area: attributes;
     justify-self: end;
+    display: flex;
+    gap: var(--gap-s);
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .actions {

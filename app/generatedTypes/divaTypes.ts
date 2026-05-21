@@ -2630,10 +2630,11 @@ export interface NameOrganisationPublisherGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface OriginInfoGroup {
+export interface OriginInfoEditionGroup {
   dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther?: DateOtherPublicationStatusGroup[];
+  edition?: { value: string; __text?: { sv: string; en: string } };
   name_otherType_publisher_type_corporate?: NameOrganisationPublisherGroup[];
   __text?: { sv: string; en: string };
 }
@@ -3874,7 +3875,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  originInfo?: OriginInfoGroup;
+  originInfo?: OriginInfoEditionGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
