@@ -8,6 +8,7 @@ const defaultMember: BFFMember = {
   pageTitle: {
     sv: 'DiVA',
     en: 'DiVA',
+    cimode: 'DiVA',
   },
   hostnames: [],
   logo: { svg: '<svg></svg>' },
@@ -16,12 +17,14 @@ const defaultMember: BFFMember = {
     title: {
       sv: 'DiVA',
       en: 'DiVA',
+      cimode: 'DiVA',
     },
     imageUrl: '/divaclient/images/hero/diva.webp',
     imageAttribution: {
       title: {
         sv: 'Carl Johansson: Kall septemberdag i Medelpad',
         en: 'Carl Johansson: A Cold September Day in Medelpad',
+        cimode: 'title',
       },
       author: 'Nationalmuseum (Foto: Rickard Karlsson)',
       source: {

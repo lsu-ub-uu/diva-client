@@ -367,6 +367,7 @@ export interface BFFImageAttribution {
   title?: {
     sv: string;
     en: string;
+    cimode?: string;
   };
   author?: string;
   source: {
@@ -382,6 +383,7 @@ export interface BFFImageAttribution {
 export interface BFFSweEngText {
   sv: string;
   en: string;
+  cimode?: string;
 }
 
 export interface BFFMemberHero {

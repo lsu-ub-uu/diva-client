@@ -59,6 +59,7 @@ export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
     pageTitle: {
       sv: getFirstDataAtomicValueWithNameInData(data, 'pageTitleSv'),
       en: getFirstDataAtomicValueWithNameInData(data, 'pageTitleEn'),
+      cimode: 'pageTitle',
     },
     backgroundColor: getFirstDataAtomicValueWithNameInData(
       data,
@@ -152,5 +153,6 @@ const transformSweEngText = (data: DataGroup) => {
     en: getFirstDataAtomicWithNameInData(data, 'text', {
       lang: 'eng',
     }).value,
+    cimode: data.name,
   };
 };
