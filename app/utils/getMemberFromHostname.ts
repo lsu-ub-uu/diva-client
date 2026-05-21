@@ -17,7 +17,7 @@ const defaultMember: BFFMember = {
       sv: 'DiVA',
       en: 'DiVA',
     },
-    imageUrl: '/divaclient/public/images/hero/diva.webp',
+    imageUrl: '/divaclient/images/hero/diva.webp',
     imageAttribution: {
       title: {
         sv: 'Carl Johansson: Kall septemberdag i Medelpad',
