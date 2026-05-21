@@ -29,12 +29,16 @@ import {
   getAllRecordLinksWithNameInData,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttributes,
   hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import type { BFFMember, BFFMemberLink } from '../bffTypes.server';
+import type {
+  BFFImageAttribution,
+  BFFMember,
+  BFFMemberHero,
+  BFFMemberLink,
+} from '../bffTypes.server';
 
 export const transformMembers = (
   dataListWrapper: DataListWrapper,
@@ -101,7 +105,7 @@ const transformLink = (data: DataGroup): BFFMemberLink => {
   };
 };
 
-const transformHero = (data: DataGroup) => {
+const transformHero = (data: DataGroup): BFFMemberHero => {
   return {
     title: transformSweEngText(getFirstDataGroupWithNameInData(data, 'title')),
     subTitle: hasChildWithNameInData(data, 'subTitle')
@@ -114,7 +118,7 @@ const transformHero = (data: DataGroup) => {
   };
 };
 
-const transformImageAttribution = (data: DataGroup) => {
+const transformImageAttribution = (data: DataGroup): BFFImageAttribution => {
   return {
     title: hasChildWithNameInData(data, 'title')
       ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'title'))
@@ -124,7 +128,7 @@ const transformImageAttribution = (data: DataGroup) => {
       : undefined,
     source: transformSourceOrLicense(
       getFirstDataGroupWithNameInData(data, 'source'),
-    ),
+    ) as BFFImageAttribution['source'],
     license: transformSourceOrLicense(
       getFirstDataGroupWithNameInData(data, 'license'),
     ),

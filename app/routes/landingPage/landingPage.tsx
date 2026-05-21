@@ -1,7 +1,6 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { icons } from '@/components/Layout/Header/TopNavigation/TopNavigation';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { useLanguage } from '@/i18n/useLanguage';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { SearchIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -17,11 +16,9 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';
-import { heroImages } from './heroImages';
-import { ImageAttribution } from './ImageAttribution';
+import { Hero } from './Hero';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
-import { Hero } from './Hero';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const auth = context.get(sessionContext);
@@ -45,7 +42,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     title,
     decription,
     member,
-    heroImage: heroImages[member?.id ?? 'default'] ?? heroImages['default'],
   };
 };
 
