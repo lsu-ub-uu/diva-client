@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface ImageAttributionProps {
   title?: string;
@@ -18,6 +19,7 @@ export const ImageAttribution = ({
 }: {
   attribution: ImageAttributionProps;
 }) => {
+  const { t } = useTranslation();
   const fragments = [
     attribution.title,
     attribution.author,
@@ -55,6 +57,7 @@ export const ImageAttribution = ({
           ];
         }
       }, [])}
+      <span> ({t('divaClient_imageAttributionModifiedText')})</span>
     </div>
   );
 };

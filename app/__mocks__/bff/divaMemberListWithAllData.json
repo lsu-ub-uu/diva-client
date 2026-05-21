@@ -276,6 +276,103 @@
                     "value": "uu"
                   }
                 ]
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "text",
+                        "attributes": {
+                          "lang": "swe"
+                        },
+                        "value": "Hjälte"
+                      },
+                      {
+                        "name": "text",
+                        "attributes": {
+                          "lang": "eng"
+                        },
+                        "value": "Hero"
+                      }
+                    ],
+                    "name": "title"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "text",
+                        "attributes": {
+                          "lang": "swe"
+                        },
+                        "value": "Underhjälte"
+                      },
+                      {
+                        "name": "text",
+                        "attributes": {
+                          "lang": "eng"
+                        },
+                        "value": "Subhero"
+                      }
+                    ],
+                    "name": "subTitle"
+                  },
+                  {
+                    "name": "imageUrl",
+                    "value": "/divaclient/public/images/hero/hero.jpg"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "title",
+                        "children": [
+                          {
+                            "name": "text",
+                            "attributes": { "lang": "swe" },
+                            "value": "Bildtitel"
+                          },
+                          {
+                            "name": "text",
+                            "attributes": { "lang": "eng" },
+                            "value": "Image title"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "author",
+                        "value": "Palle Kuling"
+                      },
+                      {
+                        "children": [
+                          {
+                            "name": "url",
+                            "value": "https://example.com/source"
+                          },
+                          {
+                            "name": "displayLabel",
+                            "value": "Source"
+                          }
+                        ],
+                        "name": "source"
+                      },
+                      {
+                        "children": [
+                          {
+                            "name": "displayLabel",
+                            "value": "License"
+                          },
+                          {
+                            "name": "url",
+                            "value": "https://example.com/license"
+                          }
+                        ],
+                        "name": "license"
+                      }
+                    ],
+                    "name": "imageAttribution"
+                  }
+                ],
+                "name": "hero"
               }
             ],
             "name": "diva-member"

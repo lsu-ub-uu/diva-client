@@ -27,7 +27,9 @@ import {
   getAllDataAtomicsWithNameInData,
   getAllDataGroupsWithNameInData,
   getAllRecordLinksWithNameInData,
+  getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInDataAndAttributes,
   hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
@@ -82,6 +84,7 @@ export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
     loginUnitIds: getAllRecordLinksWithNameInData(data, 'loginUnit').map(
       (recordLink) => recordLink.id,
     ),
+    hero: transformHero(getFirstDataGroupWithNameInData(data, 'hero')),
   } satisfies BFFMember);
 };
 
@@ -95,5 +98,55 @@ const transformLink = (data: DataGroup): BFFMemberLink => {
     lang: data.attributes?.lang as BFFMemberLink['lang'],
     url: getFirstDataAtomicValueWithNameInData(data, 'url'),
     displayLabel: getFirstDataAtomicValueWithNameInData(data, 'displayLabel'),
+  };
+};
+
+const transformHero = (data: DataGroup) => {
+  return {
+    title: transformSweEngText(getFirstDataGroupWithNameInData(data, 'title')),
+    subTitle: hasChildWithNameInData(data, 'subTitle')
+      ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'subTitle'))
+      : undefined,
+    imageUrl: getFirstDataAtomicValueWithNameInData(data, 'imageUrl'),
+    imageAttribution: transformImageAttribution(
+      getFirstDataGroupWithNameInData(data, 'imageAttribution'),
+    ),
+  };
+};
+
+const transformImageAttribution = (data: DataGroup) => {
+  return {
+    title: hasChildWithNameInData(data, 'title')
+      ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'title'))
+      : undefined,
+    author: hasChildWithNameInData(data, 'author')
+      ? getFirstDataAtomicValueWithNameInData(data, 'author')
+      : undefined,
+    source: transformSourceOrLicense(
+      getFirstDataGroupWithNameInData(data, 'source'),
+    ),
+    license: transformSourceOrLicense(
+      getFirstDataGroupWithNameInData(data, 'license'),
+    ),
+  };
+};
+
+const transformSourceOrLicense = (data: DataGroup) => {
+  return {
+    displayLabel: getFirstDataAtomicValueWithNameInData(data, 'displayLabel'),
+    url: hasChildWithNameInData(data, 'url')
+      ? getFirstDataAtomicValueWithNameInData(data, 'url')
+      : undefined,
+  };
+};
+
+const transformSweEngText = (data: DataGroup) => {
+  return {
+    sv: getFirstDataAtomicWithNameInData(data, 'text', {
+      lang: 'swe',
+    }).value,
+    en: getFirstDataAtomicWithNameInData(data, 'text', {
+      lang: 'eng',
+    }).value,
   };
 };
