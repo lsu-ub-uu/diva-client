@@ -67,30 +67,30 @@ export const getEntries = ({
   entries,
   permissionUnit,
 }: GetEntriesParams = {}): SitemapEntry[] => {
-  const values = permissionUnit
-    ? Array.from(cache.get(permissionUnit)?.values() ?? [])
-    : Array.from(cache.values()).flatMap((map) => Array.from(map.values()));
+  const sitemapEntries = permissionUnit
+    ? getSitemapEntriesForPermissionUnit(permissionUnit)
+    : getAllSitemapEntries();
 
   if (entries) {
-    return values.slice(from, from + entries);
+    return sitemapEntries.slice(from, from + entries);
   }
 
-  return values.slice(from);
+  return sitemapEntries.slice(from);
 };
 
 const getSitemapEntriesForPermissionUnit = (permissionUnitId: string) => {
   const entries = cache.get(permissionUnitId);
 
   if (!entries) {
-    return []
+    return [];
   }
 
-  return Array.from(entries.values())
-}
+  return Array.from(entries.values());
+};
 
 const getAllSitemapEntries = () => {
-
-}
+  return Array.from(cache.values()).flatMap((map) => Array.from(map.values()));
+};
 
 export interface SitemapEntry {
   id: string;

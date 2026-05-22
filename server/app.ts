@@ -27,7 +27,7 @@ import {
 } from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
 import { listenForDataChange } from './listenForDataChange';
-import { populateCache } from './sitemapCache';
+import { populateCache } from './sitemapCache.server';
 
 const dependenciesPromise = getDependencies();
 dependenciesPromise.then(() => listenForDataChange(handleDataChanged));

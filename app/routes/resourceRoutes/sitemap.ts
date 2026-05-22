@@ -2,7 +2,7 @@ import type { BFFMember } from '@/cora/bffTypes.server';
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { getDependencies } from 'server/dependencies/depencencies';
-import { getEntries } from 'server/sitemapCache';
+import { getEntries } from '../../../server/sitemapCache.server';
 import type { Route } from '../resourceRoutes/+types/sitemap';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -39,11 +39,9 @@ export const generateSitemapXml = async (
     sitemap += `  </url>\n`;
   });
 
-  const recordEntries = getEntries(
-    0,
-    10000,
-    member ? member.memberPermissionUnit : undefined,
-  );
+  const recordEntries = getEntries({
+    permissionUnit: member ? member.memberPermissionUnit : undefined,
+  });
 
   recordEntries.forEach((entry) => {
     sitemap += `  <url>\n`;
