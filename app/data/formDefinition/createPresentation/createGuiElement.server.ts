@@ -17,22 +17,19 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { FormComponentGuiElement } from '@/components/FormGenerator/types';
 import type {
   BFFGuiElement,
   BFFPresentationChildReference,
+  BFFPresentationChildRefGroup,
 } from '@/cora/bffTypes.server';
 import { convertChildStylesToGridColSpan } from '@/cora/cora-data/CoraDataUtilsPresentations.server';
-import { getPresentationChildRefGroup } from '@/data/formDefinition/createPresentation/createGroupOrComponent';
 
 export const createGuiElement = (
   presentationChildReference: BFFPresentationChildReference,
   presentationPool: any,
-  alternative: boolean,
-) => {
-  const refGroup = getPresentationChildRefGroup(
-    presentationChildReference,
-    alternative,
-  );
+  refGroup: BFFPresentationChildRefGroup,
+): FormComponentGuiElement => {
   const presentationChildId = refGroup.childId;
   const presentation: BFFGuiElement = presentationPool.get(presentationChildId);
   return {

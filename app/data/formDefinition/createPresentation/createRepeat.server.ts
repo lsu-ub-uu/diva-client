@@ -2,13 +2,14 @@ import type {
   BFFMetadataChildReference,
   BFFPresentationChildReference,
 } from '@/cora/bffTypes.server';
-import { determineRepeatMax } from '../formDefinition.server';
+import { determineRepeatMax } from '../utils/formDefinitionUtils.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import type { Repeat } from './createPresentationComponent';
 
 export const createRepeat = (
   presentationChildReference: BFFPresentationChildReference,
   metaDataChildRef: BFFMetadataChildReference,
-) => {
+): Repeat => {
   const minNumberOfRepeatingToShow = getMinNumberOfRepeatingToShow(
     presentationChildReference,
   );

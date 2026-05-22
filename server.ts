@@ -18,10 +18,15 @@
 
 import compression from 'compression';
 import 'dotenv/config';
-import express from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
+import prometheusClient from 'prom-client';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -43,10 +48,29 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
   );
 }
 
+prometheusClient.collectDefaultMetrics();
+
+const httpRequestCounter = new prometheusClient.Counter({
+  name: 'diva_client_http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+});
+
+const httpRequestDuration = new prometheusClient.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'HTTP request duration in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.1, 0.5, 1, 5],
+  registers: [prometheusClient.register],
+});
+
 const app = express();
 
 app.use(compression());
 app.disable('x-powered-by');
+
+app.use(prometheusMiddleware);
+app.get(`${BASE_PATH}/metrics`, prometheusMetrics);
 
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled Rejection', reason);
@@ -90,13 +114,17 @@ if (DEVELOPMENT) {
     `${BASE_PATH}/assets`,
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
+  app.use(
+    `${BASE_PATH}/images`,
+    express.static('dist/client/images', { immutable: false, maxAge: '1d' }),
+  );
   app.use(express.static('dist/client', { maxAge: '1h' }));
   app.use(reactRouterApp.app);
 }
 
 app.use(morgan('tiny'));
 
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   console.info(`CORA_API_URL ${CORA_API_URL}`);
   console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
   console.info(`BASE_PATH ${BASE_PATH}`);
@@ -116,6 +144,18 @@ app.listen(PORT, async () => {
   }
 });
 
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(
+      `Port ${PORT} is already in use. Please choose another port or stop the process using it.`,
+    );
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+    process.exit(1);
+  }
+});
+
 const getLocalIp = () => {
   const interfaces = os.networkInterfaces();
 
@@ -127,3 +167,31 @@ const getLocalIp = () => {
     }
   }
 };
+
+function prometheusMiddleware(req: Request, res: Response, next: NextFunction) {
+  const end = httpRequestDuration.startTimer({
+    method: req.method,
+    route: req.path,
+  });
+
+  res.on('finish', () => {
+    end({ status_code: res.statusCode });
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.route ? req.route.path : req.path,
+      status_code: res.statusCode,
+    });
+  });
+  next();
+}
+
+async function prometheusMetrics(_req: Request, res: Response) {
+  try {
+    res.setHeader('Content-Type', prometheusClient.register.contentType);
+    res.end(await prometheusClient.register.metrics());
+  } catch (err) {
+    res
+      .status(500)
+      .end(err instanceof Error ? err.message : 'Error collecting metrics');
+  }
+}

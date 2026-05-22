@@ -15,70 +15,71 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import divaMemberListWithBinaryLogo from '@/__mocks__/bff/divaMemberListWithBinaryLogo.json';
-import divaMemberListWithMemberPermissionUnit from '@/__mocks__/bff/divaMemberListWithMemberPermissionUnit.json';
-import divaMemberListWithSvgLogo from '@/__mocks__/bff/divaMemberListWithSvgLogo.json';
-import divaMemberLogoBinary from '@/__mocks__/bff/divaMemberLogoBinary.json';
+import divaMemberListWithAllData from '@/__mocks__/bff/divaMemberListWithAllData.json';
+import divaMemberListWithMinimalData from '@/__mocks__/bff/divaMemberListWithMinimalData.json';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
-import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { transformMembers } from '@/cora/transform/transformMembers.server';
-import type { AxiosResponse } from 'axios';
 import { describe, expect, it, vi } from 'vitest';
-import { mock } from 'vitest-mock-extended';
 
 vi.mock('@/cora/getRecordDataById.server');
 
 describe('transformMember', () => {
-  it('transforms empty list', async () => {
-    const transformData = await transformMembers(emptyDataList);
+  it('transforms empty list', () => {
+    const transformData = transformMembers(emptyDataList);
     expect(transformData).toStrictEqual([]);
   });
 
-  it('transforms a member with links and svg logo', async () => {
-    const transformData = await transformMembers(divaMemberListWithSvgLogo);
+  it('transforms a member with all data', () => {
+    const transformData = transformMembers(divaMemberListWithAllData);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       id: 'uu-theme',
       pageTitle: {
         sv: 'Uppsala Universitet',
         en: 'Uppsala University',
+        cimode: 'pageTitle',
       },
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
       backgroundColorDarkMode: '#990000',
       textColorDarkMode: '#CCCCCC',
-      publicLinks: [
+      links: [
         {
-          sv: {
-            url: 'https://www.uu.se/bibliotek',
-            displayLabel: 'Uppsala universitetsbibliotek',
-          },
-          en: {
-            url: 'https://www.uu.se/en/library',
-            displayLabel: 'Uppsala University Library',
-          },
+          displayLabel: 'Uppsala universitetsbibliotek',
+          lang: 'swe',
+          url: 'https://www.uu.se/bibliotek',
+          visibility: 'public',
         },
         {
-          sv: {
-            url: 'http://libanswers.ub.uu.se',
-            displayLabel: 'Fråga biblioteket',
-          },
-          en: {
-            url: 'http://libanswers.ub.uu.se/en',
-            displayLabel: 'Ask the Library',
-          },
+          displayLabel: 'Fråga biblioteket',
+          lang: 'swe',
+          url: 'http://libanswers.ub.uu.se',
+          visibility: 'admin',
         },
-      ],
-      adminLinks: [
         {
-          sv: {
-            url: 'https://www.uu.se/support',
-            displayLabel: 'Kontakta support',
-          },
-          en: {
-            url: 'https://www.uu.se/en/support',
-            displayLabel: 'Contact support',
-          },
+          displayLabel: 'Url för alla',
+          lang: 'swe',
+          url: 'http://someUrlForAll.se',
+          visibility: 'all',
+        },
+        {
+          displayLabel: 'Uppsala University Library',
+          lang: 'eng',
+          url: 'https://www.uu.se/en/library',
+          visibility: 'public',
+        },
+        {
+          displayLabel: 'Ask the Library',
+          lang: 'eng',
+          url: 'http://libanswers.ub.uu.se/en',
+          visibility: 'admin',
+        },
+        {
+          displayLabel: 'Url for everyone',
+          lang: 'eng',
+          url: 'http://someUrlForAll.com/en',
+          visibility: 'all',
         },
       ],
       logo: {
@@ -90,57 +91,72 @@ describe('transformMember', () => {
         'uu.pre.diva-portal.org',
       ],
       loginUnitIds: ['uu'],
-    });
+      hero: {
+        title: {
+          sv: 'Hjälte',
+          en: 'Hero',
+          cimode: 'title',
+        },
+        subTitle: {
+          sv: 'Underhjälte',
+          en: 'Subhero',
+          cimode: 'subTitle',
+        },
+        imageUrl: '/divaclient/public/images/hero/hero.jpg',
+        imageAttribution: {
+          title: {
+            sv: 'Bildtitel',
+            en: 'Image title',
+            cimode: 'title',
+          },
+          author: 'Palle Kuling',
+          source: {
+            displayLabel: 'Source',
+            url: 'https://example.com/source',
+          },
+          license: {
+            displayLabel: 'License',
+            url: 'https://example.com/license',
+          },
+        },
+      },
+    } satisfies BFFMember);
   });
 
-  it('transforms a member without links and binary logo', async () => {
-    vi.mocked(getRecordDataById).mockResolvedValue(
-      mock<AxiosResponse>({
-        data: divaMemberLogoBinary,
-      }),
-    );
-    const transformData = await transformMembers(divaMemberListWithBinaryLogo);
+  it('transforms a member with minimal data', () => {
+    const transformData = transformMembers(divaMemberListWithMinimalData);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
-      backgroundColor: '#75598e',
-      id: 'diva-member',
-      logo: {
-        url: 'https://cora.epc.ub.uu.se/diva/rest/record/binary/binary:1719226498099516/master',
-      },
+      id: 'uu-theme',
       pageTitle: {
-        en: 'DiVA',
-        sv: 'DiVA',
+        sv: 'Uppsala Universitet',
+        en: 'Uppsala University',
+        cimode: 'pageTitle',
       },
-      textColor: '#ffffff',
-      hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
-      loginUnitIds: ['uu'],
-    });
-  });
-
-  it('transforms a member memberPermissionUnit', async () => {
-    vi.mocked(getRecordDataById).mockResolvedValue(
-      mock<AxiosResponse>({
-        data: divaMemberLogoBinary,
-      }),
-    );
-    const transformData = await transformMembers(
-      divaMemberListWithMemberPermissionUnit,
-    );
-    expect(transformData).toHaveLength(1);
-    expect(transformData[0]).toStrictEqual({
-      backgroundColor: '#75598e',
-      id: 'diva-member',
-      memberPermissionUnit: 'uu',
+      backgroundColor: '#CCCCCC',
+      textColor: '#990000',
       logo: {
         svg: '<svg></svg>',
       },
-      pageTitle: {
-        en: 'DiVA',
-        sv: 'DiVA',
-      },
-      textColor: '#ffffff',
-      hostnames: ['localhost', 'cora.epc.ub.uu.se', 'pre.diva-portal.org'],
+      hostnames: ['uu.localhost'],
       loginUnitIds: ['uu'],
-    });
+      hero: {
+        title: {
+          sv: 'Hjälte',
+          en: 'Hero',
+          cimode: 'title',
+        },
+        imageUrl: '/divaclient/public/images/hero/hero.jpg',
+        imageAttribution: {
+          source: {
+            displayLabel: 'Source',
+            url: 'https://example.com/source',
+          },
+          license: {
+            displayLabel: 'License',
+          },
+        },
+      },
+    } satisfies BFFMember);
   });
 });

@@ -1,5 +1,6 @@
 import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
 import { NavigationLink } from '@/components/Layout/Header/TopNavigation/NavigationLink';
+import type { Navigation } from '@/data/getNavigation.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import clsx from 'clsx';
@@ -11,6 +12,7 @@ import {
   ChevronDownIcon,
   EllipsisIcon,
   FlaskRoundIcon,
+  GamepadIcon,
   GraduationCapIcon,
   HandCoinsIcon,
   LibraryIcon,
@@ -25,7 +27,6 @@ import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, useLocation } from 'react-router';
 import styles from './TopNavigation.module.css';
-import type { Navigation } from '@/data/getNavigation.server';
 
 export interface TopNavigationLink {
   label: string;
@@ -112,6 +113,15 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
                       >
                         <PaletteIcon />
                         Design system
+                      </NavLink>
+                    </MenuItem>
+                    <MenuItem>
+                      <NavLink
+                        to={href('/presentation-playground')}
+                        className={styles['menu-navigation-link']}
+                      >
+                        <GamepadIcon />
+                        Presentation playground
                       </NavLink>
                     </MenuItem>
                   </>

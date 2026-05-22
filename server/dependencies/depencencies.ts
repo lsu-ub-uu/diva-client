@@ -32,13 +32,11 @@ import type {
   BFFText,
   BFFValidationType,
   Dependencies,
-  DeploymentInfo,
 } from '@/cora/bffTypes.server';
 import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
-import { getDeploymentInfo } from '@/cora/getDeploymentInfo.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import {
   transformCoraSearch,
@@ -84,6 +82,7 @@ import {
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
 import type { DataChangedHeaders } from '../listenForDataChange';
+import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
 
@@ -94,7 +93,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
   return Promise.all(promises);
 };
 
-let poolsInitialized = false;
+// Use a promise guard to prevent multiple concurrent initializations
+let initializationPromise: Promise<void> | null = null;
 
 const dependencies: Dependencies = {
   textPool: listToPool<BFFText>([]),
@@ -107,7 +107,6 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
-  deploymentInfo: {} as DeploymentInfo,
 };
 
 export type DependencyType =
@@ -121,8 +120,7 @@ export type DependencyType =
   | 'login'
   | 'diva-member'
   | 'diva-organisation'
-  | 'text'
-  | 'deploymentInfo';
+  | 'text';
 
 const loadDependencies = async () => {
   console.info('Loading stuff from Cora...');
@@ -185,7 +183,7 @@ const loadDependencies = async () => {
   );
 
   try {
-    const members = await transformMembers(coraMembers.data);
+    const members = transformMembers(coraMembers.data);
     dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
     console.error('Error transforming members:', error);
@@ -195,17 +193,14 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
-  dependencies.deploymentInfo = await getDeploymentInfo();
-
-  poolsInitialized = true;
-
   console.info('Loaded stuff from Cora');
 };
 
 export const getDependencies = async () => {
-  if (!poolsInitialized) {
-    await loadDependencies();
+  if (!initializationPromise) {
+    initializationPromise = loadDependencies();
   }
+  await initializationPromise;
 
   return dependencies;
 };
@@ -266,8 +261,14 @@ export const handleDataChanged = async ({
     >;
     pool.set(id, transformedData);
   }
+
+  // Clear i18n cache when text pool changes so translations are refreshed
+  if (type === 'text') {
+    clearI18nCache();
+  }
 };
 
 export const refreshDependencies = async () => {
   await loadDependencies();
+  clearI18nCache();
 };

@@ -85,9 +85,9 @@ import {
 import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
+import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
-import { createFormMetaData } from '@/data/formDefinition/formMetadata.server';
+import { createFormMetaData } from '@/data/formMetadata.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';

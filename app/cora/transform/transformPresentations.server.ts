@@ -463,7 +463,6 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
 ): BFFGuiElement => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
   const presentAs = getFirstDataAtomicValueWithNameInData(
     dataRecordGroup,
@@ -474,7 +473,7 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
     'elementText',
   );
 
-  return { id, type, url, presentAs, elementText };
+  return { id, type: 'guiElementLink', url, presentAs, elementText };
 };
 
 const transformCoraPresentationResourceLinkToBFFPresentation = (

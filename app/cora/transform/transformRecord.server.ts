@@ -38,12 +38,7 @@ import type {
   RecordWrapper,
   ResourceLink,
 } from '@/cora/cora-data/types.server';
-import type { FormMetaData } from '@/data/formDefinition/formDefinition.server';
 
-import {
-  createFormMetaData,
-  createViewMetadata,
-} from '@/data/formDefinition/formMetadata.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -54,6 +49,12 @@ import type {
 import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import type {
+  BFFMetadata,
+  BFFMetadataBase,
+  BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataItemCollection,
   BFFRecordType,
   Dependencies,
   FormDefinitionMode,
@@ -142,15 +143,20 @@ const transformRecordDataGroup = (
   mode: FormDefinitionMode,
   dependencies: Dependencies,
 ) => {
-  const formMetadata = createFormMetadata(mode, dataRecordGroup, dependencies);
-  return transformRecordData(dataRecordGroup, formMetadata, dependencies);
+  const rootMetadataGroup = getRootMetadataGroup(
+    mode,
+    dataRecordGroup,
+    dependencies,
+  );
+  return transformRecordData(dataRecordGroup, rootMetadataGroup, dependencies);
 };
 
-const createFormMetadata = (
+const getRootMetadataGroup = (
   mode: FormDefinitionMode,
   dataRecordGroup: DataGroup,
   dependencies: Dependencies,
 ) => {
+  const { recordTypePool, metadataPool, validationTypePool } = dependencies;
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
   if (mode === 'view' || mode === 'list') {
@@ -158,24 +164,32 @@ const createFormMetadata = (
       recordInfo,
       'type',
     );
-    return createViewMetadata(dependencies, recordTypeId);
+    const recordType = recordTypePool.get(recordTypeId);
+    return metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
   }
 
   const validationTypeId = extractLinkedRecordIdFromNamedRecordLink(
     recordInfo,
     'validationType',
   );
-  return createFormMetaData(dependencies, validationTypeId, mode);
+  const validationType = validationTypePool.get(validationTypeId);
+
+  if (mode === 'create') {
+    return metadataPool.get(
+      validationType.newMetadataGroupId,
+    ) as BFFMetadataGroup;
+  }
+  return metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
 };
 
 export const transformRecordData = (
   dataRecordGroup: DataGroup,
-  formMetadata: FormMetaData,
+  metadataGroup: BFFMetadataGroup,
   dependencies: Dependencies,
 ) => {
   return {
-    [dataRecordGroup.name]: {
-      ...transformDataGroup(dataRecordGroup, formMetadata, dependencies),
+    [createDataName(dataRecordGroup, metadataGroup, dependencies)]: {
+      ...transformDataGroup(dataRecordGroup, metadataGroup, dependencies),
       ...transformAttributes(dataRecordGroup),
     },
   };
@@ -183,28 +197,37 @@ export const transformRecordData = (
 
 export const transformDataGroup = (
   dataGroup: DataGroup,
-  metadataGroup: FormMetaData,
+  metadataGroup: BFFMetadataGroup,
   dependencies: Dependencies,
 ): Metadata => {
   const init = { fromStorage: true } as Metadata;
   return dataGroup.children.reduce<Metadata>((group, dataChild) => {
-    const matchingMetadata = findMatchingMetadata(dataChild, metadataGroup);
+    const matchingMetadataChildRef = findMatchingMetadataChildRef(
+      dataChild,
+      metadataGroup,
+      dependencies,
+    );
 
-    if (!matchingMetadata) {
+    if (!matchingMetadataChildRef) {
       console.warn(`Failed to find matching metadata for ${dataChild.name}`);
       return group;
     }
 
-    const name = createDataName(dataChild, matchingMetadata);
+    const matchingMetadata = dependencies.metadataPool.get(
+      matchingMetadataChildRef.childId,
+    ) as BFFMetadata;
+
+    const name = createDataName(dataChild, matchingMetadata, dependencies);
 
     const transformedChild = {
       ...transformData(dataChild, matchingMetadata, dependencies),
       ...transformAttributes(dataChild),
     };
-    if (isRequired(matchingMetadata)) {
+
+    if (isRequired(matchingMetadataChildRef)) {
       transformedChild.required = true;
     }
-    const repeating = isRepeating(matchingMetadata);
+    const repeating = isRepeating(matchingMetadataChildRef);
 
     if (repeating) {
       group[name] ??= [];
@@ -217,20 +240,43 @@ export const transformDataGroup = (
   }, init);
 };
 
-const createDataName = (data: CoraData, metadata: FormMetaData) => {
-  const metadataAttributes = Object.entries(metadata.attributes ?? {}).map(
-    ([name, value]) => ({ name, value }),
-  );
+const createDataName = (
+  data: CoraData,
+  metadata: BFFMetadata,
+  dependencies: Dependencies,
+) => {
+  const { metadataPool } = dependencies;
+
+  if (!('attributeReferences' in metadata)) {
+    return metadata.nameInData;
+  }
+
+  const metadataAttributes = (metadata.attributeReferences ?? [])
+    ?.map(
+      (attributeReference) =>
+        metadataPool.get(
+          attributeReference.refCollectionVarId,
+        ) as BFFMetadataCollectionVariable,
+    )
+    .filter((collVar) => collVar.finalValue)
+    .map((collVar) => ({
+      name: collVar.nameInData,
+      value: collVar.finalValue,
+    }));
   return createFieldNameWithAttributes(data.name, metadataAttributes);
 };
 
 const transformData = (
   data: CoraData,
-  metadata: FormMetaData,
+  metadata: BFFMetadata,
   dependencies: Dependencies,
 ) => {
   if (metadata.type === 'group') {
-    return transformDataGroup(data as DataGroup, metadata, dependencies);
+    return transformDataGroup(
+      data as DataGroup,
+      metadata as BFFMetadataGroup,
+      dependencies,
+    );
   }
 
   if (metadata.type === 'recordLink' || metadata.type === 'anyTypeRecordLink') {
@@ -331,8 +377,8 @@ const transformLinkedRecord = (
   return transformRecordDataGroup(linkedRecordGroup, 'view', dependencies);
 };
 
-const transformDataAtomic = (data: DataAtomic, metadata: FormMetaData) => {
-  if (metadata.finalValue) {
+const transformDataAtomic = (data: DataAtomic, metadata: BFFMetadata) => {
+  if ('finalValue' in metadata && metadata.finalValue) {
     return {
       value: metadata.finalValue,
       final: true,
@@ -356,55 +402,61 @@ const transformResourceLink = (data: ResourceLink): BFFDataResourceLink => {
   };
 };
 
-const findMatchingMetadata = (data: CoraData, metadataParent: FormMetaData) => {
-  const matchingMetadatas = (metadataParent.children ?? [])
-    .filter((metadata) => metadata.name === data.name)
-    .filter((metadata) => allAttributesMatchInData(data, metadata));
-
-  if (matchingMetadatas.length === 0) {
-    return undefined;
-  }
-
-  if (matchingMetadatas.length === 1) {
-    return matchingMetadatas[0];
-  }
-
-  if (matchingMetadatas.length > 0) {
-    return metadataWithMostMatchingAttributes(data, matchingMetadatas);
-  }
-};
-
-const allAttributesMatchInData = (data: CoraData, metadata: FormMetaData) => {
-  return Object.entries(metadata.attributes ?? {}).every(
-    ([name, value]) => (data.attributes ?? {})[name] === value,
+const findMatchingMetadataChildRef = (
+  data: CoraData,
+  metadataParent: BFFMetadataGroup,
+  dependencies: Dependencies,
+) => {
+  return metadataParent.children.find((metadataChildRef) =>
+    doesDataMatchMetadataChildRef(data, metadataChildRef, dependencies),
   );
 };
 
-const metadataWithMostMatchingAttributes = (
+const doesDataMatchMetadataChildRef = (
   data: CoraData,
-  metadataCandidates: FormMetaData[],
+  metadataChildRef: BFFMetadataChildReference,
+  dependencies: Dependencies,
 ) => {
-  return metadataCandidates.reduce((bestMatchSoFar, candidate) => {
-    if (
-      getNumberOfMatchingAttributes(data, candidate) >
-      getNumberOfMatchingAttributes(data, bestMatchSoFar)
-    ) {
-      return candidate;
+  const { metadataPool } = dependencies;
+  const metadata = metadataPool.get(metadataChildRef.childId);
+
+  if (data.name !== metadata.nameInData) {
+    return false;
+  }
+
+  const metadataAttributes =
+    'attributeReferences' in metadata
+      ? (metadata.attributeReferences ?? [])
+      : [];
+
+  const dataAttributes = Object.entries(data.attributes ?? {}).filter(
+    ([key]) => !key.startsWith('_'),
+  );
+
+  if (dataAttributes.length !== metadataAttributes?.length) {
+    return false;
+  }
+
+  return metadataAttributes.every((attributeReference) => {
+    const collVar = metadataPool.get(
+      attributeReference.refCollectionVarId,
+    ) as BFFMetadataCollectionVariable;
+
+    if (collVar.finalValue !== undefined) {
+      return collVar.finalValue === data.attributes?.[collVar.nameInData];
     }
-    return bestMatchSoFar;
-  }, metadataCandidates[0]);
-};
 
-const getNumberOfMatchingAttributes = (
-  data: CoraData,
-  metadata: FormMetaData,
-) => {
-  const dataAttributes = Object.entries(data.attributes ?? {});
-  const candidateAttributes = metadata.attributes ?? {};
-
-  return dataAttributes.filter(([name, value]) => {
-    return candidateAttributes[name] === value;
-  }).length;
+    const collection = metadataPool.get(
+      collVar.refCollection,
+    ) as BFFMetadataItemCollection;
+    const collectionItems = collection.collectionItemReferences.map(
+      (itemRef) =>
+        metadataPool.get(itemRef.refCollectionItemId) as BFFMetadataBase,
+    );
+    return collectionItems.some(
+      (item) => item.nameInData === data.attributes?.[collVar.nameInData],
+    );
+  });
 };
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
@@ -458,12 +510,12 @@ export const transformAttributes = (data: CoraData) => {
   return result;
 };
 
-export const isRepeating = (metadata: FormMetaData) => {
-  return metadata.repeat.repeatMax > 1;
+export const isRepeating = (childRef: BFFMetadataChildReference) => {
+  return childRef.repeatMax === 'X' || Number(childRef.repeatMax) > 1;
 };
 
-export const isRequired = (metadata: FormMetaData) => {
-  return metadata.repeat.repeatMin > 0;
+export const isRequired = (childRef: BFFMetadataChildReference) => {
+  return Number(childRef.repeatMin) > 0;
 };
 
 const createUserRights = (

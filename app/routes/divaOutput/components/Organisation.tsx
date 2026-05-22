@@ -1,5 +1,6 @@
 import type {
   NameOrganisationDegreeGrantingInstitutionGroup,
+  NameOrganisationExternalCollaborationGroup,
   NameOrganisationGroup,
   NameOrganisationPatentHolderGroup,
 } from '@/generatedTypes/divaTypes';
@@ -12,7 +13,8 @@ export interface OrganisationProps {
   organisation:
     | NameOrganisationGroup
     | NameOrganisationDegreeGrantingInstitutionGroup
-    | NameOrganisationPatentHolderGroup;
+    | NameOrganisationPatentHolderGroup
+    | NameOrganisationExternalCollaborationGroup;
   expanded?: boolean;
 }
 
@@ -26,7 +28,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
   return (
     <div className='expanded-card'>
       <span className='name'>
-        {formatOrganisationName(organisation, language)}
+        {formatOrganisationName(organisation, language)}{' '}
       </span>
       {formatOrganisationRoles(organisation, language)}
       <dl>
@@ -38,6 +40,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
                 href={`https://ror.org/${organisation.identifier_type_ror.value}`}
                 target='_blank'
                 rel='noopener noreferrer'
+                className='icon-text'
               >
                 {organisation.identifier_type_ror.value} <ExternalLinkIcon />
               </a>

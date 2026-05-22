@@ -28,6 +28,7 @@ import { DevInfoButton } from './components/DevInfo';
 import type { BFFDataRecord } from '@/types/record';
 import styles from './FormGenerator.module.css';
 import clsx from 'clsx';
+import { addAttributesToName } from './defaultValues/defaultValues';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -61,7 +62,10 @@ export const FormGenerator = ({
         <Component
           component={props.formSchema.form}
           parentPath={''}
-          currentComponentNamePath={props.formSchema.form.name}
+          currentComponentNamePath={addAttributesToName(
+            props.formSchema.form,
+            props.formSchema.form.name,
+          )}
         />
       </FormGeneratorContext>
     </div>

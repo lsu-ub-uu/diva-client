@@ -3,7 +3,7 @@ import type { User } from '@/auth/createUser';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 import type { BFFMember } from '@/cora/bffTypes.server';
-import type { ExampleUser } from '@/cora/bffTypes.server';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { Navigation } from '@/data/getNavigation.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
@@ -19,6 +19,7 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import LoginMenu from './Login/LoginMenu';
 import { MobileNavigation } from './MobileNavigation/MobileNavigation';
 import { TopNavigation } from './TopNavigation/TopNavigation';
+
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
@@ -42,6 +43,7 @@ export const Header = ({
   const returnTo = encodeURIComponent(location.pathname + location.search);
   const devMode = useIsDevMode();
   const { t } = useTranslation();
+
   return (
     <header className={clsx(styles.header, className)}>
       <NavigationLoader />

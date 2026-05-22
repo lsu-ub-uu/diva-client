@@ -30,6 +30,10 @@ describe('Project', () => {
         title: { value: 'Project title' },
         subtitle: { value: 'Project subtitle' },
       },
+      identifier_type_project: {
+        __text: { en: 'Project ID' },
+        value: '12345',
+      },
     } as RelatedItemProjectGroup;
 
     const RoutesStub = createRoutesStub([
@@ -46,5 +50,8 @@ describe('Project', () => {
     ).toHaveAttribute('href', '/diva-project/diva-project:123');
 
     expect(screen.getByText('Title')).toBeInTheDocument();
+
+    expect(screen.getByText('Project ID')).toBeInTheDocument();
+    expect(screen.getByText('12345')).toBeInTheDocument();
   });
 });

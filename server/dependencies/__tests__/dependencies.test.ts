@@ -7,7 +7,7 @@ import coraPresentationGroup from '@/__mocks__/bff/coraPresentationGroup.json';
 import coraGuiElements from '@/__mocks__/bff/coraPresentationGuiElement.json';
 import coraSearch from '@/__mocks__/bff/coraSearch.json';
 import coraTexts from '@/__mocks__/bff/coraTextWithOneChild.json';
-import coraMembers from '@/__mocks__/bff/divaMemberListWithSvgLogo.json';
+import coraMembers from '@/__mocks__/bff/divaMemberListWithAllData.json';
 import coraValidationType from '@/__mocks__/bff/validationTypeList.json';
 import type {
   DataListWrapper,
@@ -195,7 +195,7 @@ describe('dependencies', () => {
       });
 
       expect(dependencies.textPool.has('someRecordId')).toBe(false);
-    })
+    });
     it('handle exit gracefully on update when poolType is undefined', async () => {
       const { getDependencies, handleDataChanged } =
         await importDependenciesModule();
@@ -211,7 +211,7 @@ describe('dependencies', () => {
       });
 
       expect(dependencies.textPool.has('someRecordId')).toBe(false);
-    })
+    });
 
     it('handles update', async () => {
       const { getDependencies, handleDataChanged } =
@@ -313,5 +313,4 @@ describe('dependencies', () => {
       },
     );
   });
-
 });

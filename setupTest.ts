@@ -8,6 +8,37 @@ beforeAll(() => {
   vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
   vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
 
+  const localStorageMock: Storage = (() => {
+    const store = new Map<string, string>();
+
+    return {
+      get length() {
+        return store.size;
+      },
+      clear: vi.fn(() => {
+        store.clear();
+      }),
+      getItem: vi.fn((key: string) => {
+        return store.get(key) ?? null;
+      }),
+      key: vi.fn((index: number) => {
+        const keys = Array.from(store.keys());
+        return keys[index] ?? null;
+      }),
+      removeItem: vi.fn((key: string) => {
+        store.delete(key);
+      }),
+      setItem: vi.fn((key: string, value: string) => {
+        store.set(key, String(value));
+      }),
+    };
+  })();
+
+  Object.defineProperty(window, 'localStorage', {
+    configurable: true,
+    value: localStorageMock,
+  });
+
   global.ResizeObserver = class ResizeObserver {
     observe() {}
     unobserve() {}

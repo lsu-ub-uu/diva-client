@@ -29,6 +29,7 @@ export const MobileNavigation = ({
   ];
   const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
     useDrawerDialog();
+
   return (
     <>
       <IconButton
@@ -59,7 +60,7 @@ export const MobileNavigation = ({
                   to={navItem.link}
                   label={t(navItem.textId)}
                   icon={icons[navItem.id]}
-                  onClick={() => drawerDialogRef.current?.close()}
+                  onClick={closeDrawerDialog}
                 />
               </li>
             ))}

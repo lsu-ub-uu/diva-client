@@ -45,7 +45,7 @@ export const Popover = ({
     >
       <div className={styles['field-info-panel']}>
         <div className={styles['label-wrapper']}>
-          {title && <h3>{title}</h3>}
+          {title && <h3 className={styles.title}>{title}</h3>}
           <IconButton
             popoverTarget={id}
             popoverTargetAction='hide'

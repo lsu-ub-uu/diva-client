@@ -22,31 +22,31 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 
-import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
+import { extractLinkedRecordIdFromNamedRecordLink } from '@/cora/cora-data/CoraDataTransforms.server';
 import {
   getAllDataAtomicsWithNameInData,
-  getAllDataGroupsWithNameInDataAndAttributes,
+  getAllDataGroupsWithNameInData,
   getAllRecordLinksWithNameInData,
+  getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
-  getFirstResourceLinkWithNameInData,
   hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
+import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import {
-  extractLinkedRecordIdFromNamedRecordLink,
-  fetchLinkedRecordForRecordLinkWithNameInData,
-} from '@/cora/cora-data/CoraDataTransforms.server';
-import type { BFFMember } from '../bffTypes.server';
+import type {
+  BFFImageAttribution,
+  BFFMember,
+  BFFMemberHero,
+  BFFMemberLink,
+} from '../bffTypes.server';
 
 export const transformMembers = (
   dataListWrapper: DataListWrapper,
-): Promise<BFFMember[]> => {
-  return Promise.all(dataListWrapper.dataList.data.map(transformMember));
+): BFFMember[] => {
+  return dataListWrapper.dataList.data.map(transformMember);
 };
 
-export const transformMember = async (
-  recordWrapper: RecordWrapper,
-): Promise<BFFMember> => {
+export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
   const data = recordWrapper.record.data;
   return removeEmpty({
     id: getFirstDataAtomicValueWithNameInData(
@@ -59,6 +59,7 @@ export const transformMember = async (
     pageTitle: {
       sv: getFirstDataAtomicValueWithNameInData(data, 'pageTitleSv'),
       en: getFirstDataAtomicValueWithNameInData(data, 'pageTitleEn'),
+      cimode: 'pageTitle',
     },
     backgroundColor: getFirstDataAtomicValueWithNameInData(
       data,
@@ -78,17 +79,9 @@ export const transformMember = async (
       svg: hasChildWithNameInData(data, 'logoSvg')
         ? getFirstDataAtomicValueWithNameInData(data, 'logoSvg')
         : undefined,
-      url: await transformLogo(data),
     },
-    publicLinks: hasChildWithNameInData(data, 'linkPublic')
-      ? transformLinks(
-          getAllDataGroupsWithNameInDataAndAttributes(data, 'linkPublic'),
-        )
-      : undefined,
-    adminLinks: hasChildWithNameInData(data, 'linkAdmin')
-      ? transformLinks(
-          getAllDataGroupsWithNameInDataAndAttributes(data, 'linkAdmin'),
-        )
+    links: hasChildWithNameInData(data, 'link')
+      ? transformLinks(getAllDataGroupsWithNameInData(data, 'link'))
       : undefined,
     hostnames: getAllDataAtomicsWithNameInData(data, 'hostname').map(
       (atomic) => atomic.value,
@@ -96,45 +89,70 @@ export const transformMember = async (
     loginUnitIds: getAllRecordLinksWithNameInData(data, 'loginUnit').map(
       (recordLink) => recordLink.id,
     ),
-  });
+    hero: transformHero(getFirstDataGroupWithNameInData(data, 'hero')),
+  } satisfies BFFMember);
 };
 
-const transformLinks = (data: DataGroup[]) => {
-  return data.map((item) => {
-    return {
-      sv: transformLink(getFirstDataGroupWithNameInData(item, 'linkSv')),
-      en: transformLink(getFirstDataGroupWithNameInData(item, 'linkEn')),
-    };
-  });
+const transformLinks = (data: DataGroup[]): BFFMemberLink[] => {
+  return data.map(transformLink);
 };
 
-const transformLink = (data: DataGroup) => {
+const transformLink = (data: DataGroup): BFFMemberLink => {
   return {
+    visibility: data.attributes?.visibility as BFFMemberLink['visibility'],
+    lang: data.attributes?.lang as BFFMemberLink['lang'],
     url: getFirstDataAtomicValueWithNameInData(data, 'url'),
     displayLabel: getFirstDataAtomicValueWithNameInData(data, 'displayLabel'),
   };
 };
 
-const transformLogo = async (data: DataGroup) => {
-  if (!hasChildWithNameInData(data, 'logo')) {
-    return undefined;
-  }
+const transformHero = (data: DataGroup): BFFMemberHero => {
+  return {
+    title: transformSweEngText(getFirstDataGroupWithNameInData(data, 'title')),
+    subTitle: hasChildWithNameInData(data, 'subTitle')
+      ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'subTitle'))
+      : undefined,
+    imageUrl: getFirstDataAtomicValueWithNameInData(data, 'imageUrl'),
+    imageAttribution: transformImageAttribution(
+      getFirstDataGroupWithNameInData(data, 'imageAttribution'),
+    ),
+  };
+};
 
-  try {
-    const binaryRecordWrapper =
-      await fetchLinkedRecordForRecordLinkWithNameInData(data, 'logo');
-    const binaryDataGroup = binaryRecordWrapper.record.data;
-    const binaryMasterGroup = getFirstDataGroupWithNameInData(
-      binaryDataGroup,
-      'master',
-    );
-    const masterResourceLink = getFirstResourceLinkWithNameInData(
-      binaryMasterGroup,
-      'master',
-    );
-    return masterResourceLink.actionLinks!.read.url;
-  } catch (error) {
-    console.error('Failed to fetch logo binary', error);
-    return undefined;
-  }
+const transformImageAttribution = (data: DataGroup): BFFImageAttribution => {
+  return {
+    title: hasChildWithNameInData(data, 'title')
+      ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'title'))
+      : undefined,
+    author: hasChildWithNameInData(data, 'author')
+      ? getFirstDataAtomicValueWithNameInData(data, 'author')
+      : undefined,
+    source: transformSourceOrLicense(
+      getFirstDataGroupWithNameInData(data, 'source'),
+    ) as BFFImageAttribution['source'],
+    license: transformSourceOrLicense(
+      getFirstDataGroupWithNameInData(data, 'license'),
+    ),
+  };
+};
+
+const transformSourceOrLicense = (data: DataGroup) => {
+  return {
+    displayLabel: getFirstDataAtomicValueWithNameInData(data, 'displayLabel'),
+    url: hasChildWithNameInData(data, 'url')
+      ? getFirstDataAtomicValueWithNameInData(data, 'url')
+      : undefined,
+  };
+};
+
+const transformSweEngText = (data: DataGroup) => {
+  return {
+    sv: getFirstDataAtomicWithNameInData(data, 'text', {
+      lang: 'swe',
+    }).value,
+    en: getFirstDataAtomicWithNameInData(data, 'text', {
+      lang: 'eng',
+    }).value,
+    cimode: data.name,
+  };
 };

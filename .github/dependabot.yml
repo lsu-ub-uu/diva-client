@@ -1,22 +1,28 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/" 
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
+    cooldown:
+      default-days: 2
     groups:
       react-packages:
         patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
       react-router-packages:
         patterns:
-          - "react-router"
-          - "@react-router/*"
+          - 'react-router'
+          - '@react-router/*'
       vitest-packages:
         patterns:
-          - "vitest"
-          - "@vitest/*"
-
+          - 'vitest'
+          - '@vitest/*'
+      stylelint-packages:
+        patterns:
+          - 'stylelint'
+          - 'stylelint-config-standard'
+          - 'stylelint-config-standard-scss'

@@ -29,10 +29,24 @@ describe('DegreeProjectFields', () => {
 
   it('should render external collaboration', () => {
     const output = {
-      externalCollaboration: {
-        __text: { en: 'External collaboration' },
-        namePart: [{ value: 'Company A' }, { value: 'Company B' }],
-      },
+      name_otherType_externalCollaboration_type_corporate: [
+        {
+          __text: { en: 'External collaboration' },
+          _type: 'corporate',
+          _otherType: 'externalCollaboration',
+          role: { roleTerm: { value: 'ctb' } },
+          namePart: { value: 'Company A' },
+          identifier_type_ror: { value: 'https://ror.org/123456789' },
+        },
+        {
+          __text: { en: 'External collaboration' },
+          _type: 'corporate',
+          _otherType: 'externalCollaboration',
+          role: { roleTerm: { value: 'ctb' } },
+          namePart: { value: 'Company B' },
+          identifier_type_ror: { value: 'https://ror.org/987654321' },
+        },
+      ],
     } as DivaOutputGroup;
 
     render(<DegreeProjectFields output={output} />);

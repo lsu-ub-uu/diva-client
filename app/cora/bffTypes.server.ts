@@ -70,6 +70,14 @@ export type BFFMetadata =
   | BFFMetadataGroup
   | BFFMetadataItemCollection;
 
+export type BFFMetadataWithAttributes =
+  | BFFMetadataTextVariable
+  | BFFMetadataNumberVariable
+  | BFFMetadataRecordLink
+  | BFFMetadataAnyTypeRecordLink
+  | BFFMetadataCollectionVariable
+  | BFFMetadataGroup;
+
 export interface BFFAttributeReference {
   refCollectionVarId: string;
 }
@@ -142,7 +150,6 @@ export interface BFFPresentationBase extends BFFBase {
     | 'container'
     | 'pRecordLink'
     | 'pResourceLink';
-  presentationOf: string;
   mode: 'input' | 'output';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
@@ -151,18 +158,24 @@ export interface BFFPresentationBase extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
-export interface BFFPresentationTextVar extends BFFPresentationBase {
+export interface BFFPresentationOfSingleMetadata extends BFFPresentationBase {
+  presentationOf: string;
+}
+
+export interface BFFPresentationTextVar extends BFFPresentationOfSingleMetadata {
   type: 'pVar';
   inputType: 'input' | 'textarea';
 }
 
-export interface BFFPresentationResourceLink extends BFFPresentationBase {
+export interface BFFPresentationResourceLink extends Omit<
+  BFFPresentationOfSingleMetadata,
+  'mode'
+> {
   outputFormat: 'image' | 'download';
   type: 'pResourceLink';
-  mode: never;
 }
 
-export interface BFFPresentationRecordLink extends BFFPresentationBase {
+export interface BFFPresentationRecordLink extends BFFPresentationOfSingleMetadata {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
   presentAs?: 'onlyTranslatedText' | 'permissionUnit';
@@ -173,26 +186,37 @@ export interface BFFLinkedRecordPresentation {
   presentationId: string;
 }
 
-export interface BFFPresentationContainer extends BFFPresentationBase {
+export type PresentationStyle =
+  | 'inline'
+  | 'frame'
+  | 'specification'
+  | 'highlight'
+  | 'rowBased';
+
+export type PresentationSize =
+  | 'firstSmaller'
+  | 'firstLarger'
+  | 'bothEqual'
+  | 'singleInitiallyVisible'
+  | 'singleInitiallyHidden';
+
+export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadata {
   type: 'container';
   repeat: 'children' | 'this';
-  presentationStyle?: string;
+  presentationStyle?: PresentationStyle;
   children: BFFPresentationChildReference[];
 }
 
-type SurroundingContainerBase = Omit<
+export interface BFFPresentationSurroundingContainer extends Omit<
   BFFPresentationContainer,
   'presentationOf'
->;
-
-export interface BFFPresentationSurroundingContainer extends SurroundingContainerBase {
+> {
   presentationsOf?: string[];
 }
 
-export interface BFFPresentationGroup extends BFFPresentationBase {
+export interface BFFPresentationGroup extends BFFPresentationOfSingleMetadata {
   type: 'pGroup';
-  presentationOf: string;
-  presentationStyle?: string;
+  presentationStyle?: PresentationStyle;
   children: BFFPresentationChildReference[];
   specifiedHeadlineTextId?: string;
   specifiedHeadlineLevel?: string;
@@ -211,7 +235,7 @@ export interface BFFPresentationChildReference {
   minNumberOfRepeatingToShow?: string;
   textStyle?: TextStyle;
   childStyle?: ChildStyle[];
-  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
@@ -256,7 +280,7 @@ export interface BFFPresentationChildReference {
   minNumberOfRepeatingToShow?: string;
   textStyle?: TextStyle;
   childStyle?: ChildStyle[];
-  presentationSize?: 'firstSmaller' | 'firstLarger' | 'bothEqual';
+  presentationSize?: PresentationSize;
   title?: string;
   titleHeadlineLevel?: HeadlineLevel;
   addText?: string;
@@ -286,15 +310,16 @@ export interface BFFGuiElement extends BFFBase {
   url: string;
   elementText: string;
   presentAs: 'link' | 'image';
-  type: string;
+  type: 'guiElementLink';
 }
 
 export type BFFPresentation =
   | BFFPresentationBase
+  | BFFPresentationTextVar
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
-  | BFFGuiElement
-  | BFFPresentationResourceLink;
+  | BFFPresentationResourceLink
+  | BFFGuiElement;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
@@ -331,73 +356,68 @@ export interface BFFResourceLink extends BFFMetadataBase {
   type: 'resourceLink';
 }
 
-export interface BFFThemeLink {
+export interface BFFMemberLink {
+  lang: 'swe' | 'eng';
+  visibility: 'public' | 'admin' | 'all';
   url: string;
   displayLabel: string;
 }
 
-export interface BFFThemeLinkWrapper {
-  sv: BFFThemeLink;
-  en: BFFThemeLink;
+export interface BFFImageAttribution {
+  title?: {
+    sv: string;
+    en: string;
+    cimode?: string;
+  };
+  author?: string;
+  source: {
+    displayLabel: string;
+    url: string;
+  };
+  license: {
+    displayLabel: string;
+    url?: string;
+  };
+}
+
+export interface BFFSweEngText {
+  sv: string;
+  en: string;
+  cimode?: string;
+}
+
+export interface BFFMemberHero {
+  title: BFFSweEngText;
+  subTitle?: BFFSweEngText;
+  imageUrl: string;
+  imageAttribution: BFFImageAttribution;
 }
 
 export interface BFFMember {
   id: string;
   memberPermissionUnit?: string;
-  pageTitle: {
-    sv: string;
-    en: string;
-  };
+  hostnames: string[];
+  loginUnitIds: string[];
+  pageTitle: BFFSweEngText;
   backgroundColor: string;
   textColor: string;
   backgroundColorDarkMode?: string;
   textColorDarkMode?: string;
-  publicLinks?: BFFThemeLinkWrapper[];
-  adminLinks?: BFFThemeLinkWrapper[];
+  links?: BFFMemberLink[];
   logo: {
-    url?: string;
     svg?: string;
   };
-  hostnames: string[];
-  loginUnitIds: string[];
+  hero: BFFMemberHero;
 }
 
 export interface BFFOrganisation {
   id: string;
   parentOrganisationId?: string;
-  name: {
-    sv: string;
-    en?: string;
-  };
+  name: BFFSweEngText;
   rorId?: string;
 }
 
 export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';
-
-export interface DeploymentInfo {
-  applicationName: string;
-  deploymentName: string;
-  coraVersion: string;
-  applicationVersion: string;
-  urls: {
-    REST: string;
-    appTokenLogin: string;
-    passwordLogin: string;
-    record: string;
-    recordType: string;
-    iiif: string;
-    [key: string]: string;
-  };
-  exampleUsers: ExampleUser[];
-}
-
-export interface ExampleUser {
-  name: string;
-  text: string;
-  type: string;
-  loginId: string;
-  appToken: string;
-}
 
 export interface Dependencies {
   validationTypePool: Lookup<string, BFFValidationType>;
@@ -410,5 +430,4 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
-  deploymentInfo: DeploymentInfo;
 }

@@ -18,8 +18,8 @@
 
 import { useTranslation } from 'react-i18next';
 
-import type { ExampleUser } from '@/cora/bffTypes.server';
 import { MenuItem } from '@headlessui/react';
+import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 
 interface DevAccountsProps {
   exampleUsers: ExampleUser[];

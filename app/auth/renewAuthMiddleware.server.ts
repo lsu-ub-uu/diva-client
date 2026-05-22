@@ -7,6 +7,7 @@ import {
   sessionContext,
   type SessionContext,
 } from './sessionMiddleware.server';
+import { isAxiosError } from 'axios';
 
 /**
  * How long before token expiry to refresh the token
@@ -42,6 +43,7 @@ export const handleRenew = async (
       details: t('divaClient_sessionExpiredDetailsText'),
     });
     removeAuth();
+    return;
   }
 
   if (isAuthAboutToExpire(auth)) {
@@ -50,7 +52,10 @@ export const handleRenew = async (
 
       setAuth(renewedAuth);
     } catch (error) {
-      console.error('Failed to renew auth token', error);
+      console.error(
+        'Failed to renew auth token',
+        isAxiosError(error) ? error.message : error,
+      );
     }
   }
 };
