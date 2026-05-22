@@ -23,7 +23,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export const generateSitemapXml = async (
   origin: string,
   navigation: Navigation,
-  member: BFFMember | undefined,
+  member?: BFFMember,
 ): Promise<string> => {
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,

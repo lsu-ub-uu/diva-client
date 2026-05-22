@@ -64,7 +64,7 @@ describe('sitemapCache', () => {
 
     await sitemapCache.populateCache();
 
-    const entries = sitemapCache.getEntries(0, 1000);
+    const entries = sitemapCache.getEntries({from: 0, entries: 1000});
 
     expect(entries).toStrictEqual(expectedEntries);
   });
@@ -72,105 +72,34 @@ describe('sitemapCache', () => {
   it('populates cache that requires multiple searches', async () => {
     vi.resetModules();
     const sitemapCache = await import('server/sitemapCache');
+    const mockResults = Array.from({ length: 1500 }, (_, i) => ({
+      id: i.toString(),
+      tsUpdated: '2026-02-25T12:23:48.968Z',
+      permissionUnit: 'uu',
+    }));
+
     vi.mocked(getSearchResultDataListBySearchType)
       .mockResolvedValueOnce({
         data: generateSearchResultMock(
-          [
-            {
-              id: '1',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-              permissionUnit: 'uu',
-            },
-            {
-              id: '2',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '3',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '4',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '5',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '6',
-              permissionUnit: 'nordiskamuseet',
-              tsUpdated: '2026-02-26T12:23:48.968Z',
-            },
-            {
-              id: '7',
-              permissionUnit: 'nordiskamuseet',
-              tsUpdated: '2026-02-26T12:23:48.968Z',
-            },
-            {
-              id: '8',
-              permissionUnit: 'nordiskamuseet',
-              tsUpdated: '2026-02-26T12:23:48.968Z',
-            },
-            {
-              id: '9',
-              permissionUnit: 'nordiskamuseet',
-              tsUpdated: '2026-02-26T12:23:48.968Z',
-            },
-            {
-              id: '10',
-              permissionUnit: 'kth',
-              tsUpdated: '2021-02-26T12:23:48.968Z',
-            },
-          ],
+         mockResults.slice(0,1000),
           '1',
-          '10',
-          '15',
+          '1000',
+          '1500',
         ),
       } as AxiosResponse<DataListWrapper>)
       .mockResolvedValueOnce({
         data: generateSearchResultMock(
-          [
-            {
-              id: '11',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-              permissionUnit: 'uu',
-            },
-            {
-              id: '12',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '13',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '14',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-            {
-              id: '15',
-              permissionUnit: 'uu',
-              tsUpdated: '2026-02-25T12:23:48.968Z',
-            },
-          ],
-          '11',
-          '15',
-          '15',
+          mockResults.slice(1000),
+          '1001',
+          '1500',
+          '1500',
         ),
       } as AxiosResponse<DataListWrapper>);
 
     await sitemapCache.populateCache();
 
-    const entries = sitemapCache.getEntries(0, 1000);
-    expect(entries).toHaveLength(15);
+    const entries = sitemapCache.getEntries({from: 0, entries: 10000});
+    expect(entries).toHaveLength(1500);
   });
 
   it('populates cache 2 permissionUnits and return entries for a specific permissionUnit', async () => {
@@ -199,7 +128,7 @@ describe('sitemapCache', () => {
 
     await sitemapCache.populateCache();
 
-    const entries = sitemapCache.getEntries(0, 1000, 'uu');
+    const entries = sitemapCache.getEntries({from: 0, entries: 1000, permissionUnit: 'uu'});
 
     expect(entries).toStrictEqual([
       {
@@ -271,10 +200,52 @@ describe('sitemapCache', () => {
 
     await sitemapCache.populateCache();
 
-    const entries = sitemapCache.getEntries(3, 5);
+    const entries = sitemapCache.getEntries({from:3, entries:5});
 
     expect(entries.length).toBe(5);
   });
+
+  it('is possible to get all entries from cache', async () => {
+    vi.resetModules();
+    const sitemapCache = await import('server/sitemapCache');
+
+    vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
+      data: generateSearchResultMock([
+        {
+          id: '1',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '2',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '3',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '4',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+          permissionUnit: 'uu',
+        },
+        {
+          id: '5',
+          permissionUnit: 'uu',
+          tsUpdated: '2026-02-25T12:23:48.968Z',
+        },
+      ]),
+    } as AxiosResponse<DataListWrapper>);
+
+    await sitemapCache.populateCache();
+
+    const entries = sitemapCache.getEntries();
+
+    expect(entries.length).toBe(5)
+  });
+
 });
 
 const generateSearchResultMock = (

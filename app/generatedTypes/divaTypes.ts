@@ -500,6 +500,8 @@ export type OrganisationTypeCollection =
   | 'topOrganisation'
   | 'partOfOrganisation';
 
+export type LanguageSweEngCollection = 'swe' | 'eng';
+
 export interface NameCorporateGroup {
   namePart?: { value: string; __text?: { sv: string; en: string } };
   _type: 'corporate';
@@ -508,13 +510,12 @@ export interface NameCorporateGroup {
 
 export interface AuthorityCorporateLangGroup {
   name_type_corporate?: NameCorporateGroup;
-  _lang: 'swe';
+  _lang: LanguageSweEngCollection;
   __text?: { sv: string; en: string };
 }
 
 export interface VariantCorporateLangGroup {
   name_type_corporate?: NameCorporateGroup;
-  _lang: 'eng';
   __text?: { sv: string; en: string };
 }
 
@@ -827,8 +828,8 @@ export interface OrganisationUpdateGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  authority_lang_swe?: AuthorityCorporateLangGroup;
-  variant_lang_eng?: VariantCorporateLangGroup;
+  authority?: AuthorityCorporateLangGroup[];
+  variant?: VariantCorporateLangGroup[];
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   address?: AddressGroup;
@@ -963,8 +964,6 @@ export interface RecordInfoProjectUpdateGroup {
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
-
-export type LanguageSweEngCollection = 'swe' | 'eng';
 
 export interface TitleInfoLangSweEngGroup {
   title?: { value: string; __text?: { sv: string; en: string } };
@@ -1776,13 +1775,7 @@ export interface RecordInfoSubjectUpdateGroup {
 
 export interface AuthorityTopicLangGroup {
   topic?: { value: string; __text?: { sv: string; en: string } };
-  _lang: 'swe';
-  __text?: { sv: string; en: string };
-}
-
-export interface VariantTopicLangGroup {
-  topic?: { value: string; __text?: { sv: string; en: string } };
-  _lang: 'eng';
+  _lang: LanguageSweEngCollection;
   __text?: { sv: string; en: string };
 }
 
@@ -1803,15 +1796,14 @@ export interface RelatedSubjectGroup {
 
 export interface SubjectUpdateGroup {
   recordInfo: RecordInfoSubjectUpdateGroup;
-  authority_lang_swe?: AuthorityTopicLangGroup;
-  variant_lang_eng?: VariantTopicLangGroup;
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
+  authority?: AuthorityTopicLangGroup[];
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   related?: RelatedSubjectGroup[];
   __text?: { sv: string; en: string };
 }
@@ -2228,8 +2220,8 @@ export interface RecordInfoFunderUpdateGroup {
 
 export interface FunderUpdateGroup {
   recordInfo: RecordInfoFunderUpdateGroup;
-  authority_lang_swe?: AuthorityCorporateLangGroup;
-  variant_lang_eng?: VariantCorporateLangGroup;
+  authority?: AuthorityCorporateLangGroup[];
+  variant?: VariantCorporateLangGroup[];
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   identifier_type_organisationNumber?: {
@@ -2752,15 +2744,14 @@ export interface RelatedCourseGroup {
 
 export interface CourseUpdateGroup {
   recordInfo: RecordInfoCourseUpdateGroup;
-  authority_lang_swe?: AuthorityTopicLangGroup;
-  variant_lang_eng?: VariantTopicLangGroup;
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
+  authority?: AuthorityTopicLangGroup[];
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   related?: RelatedCourseGroup[];
   __text?: { sv: string; en: string };
 }
@@ -2805,15 +2796,14 @@ export interface RelatedProgrammeGroup {
 
 export interface ProgrammeUpdateGroup {
   recordInfo: RecordInfoProgrammeUpdateGroup;
-  authority_lang_swe?: AuthorityTopicLangGroup;
-  variant_lang_eng?: VariantTopicLangGroup;
-  startDate?: StartDateGroup;
-  endDate?: EndDateGroup;
+  authority?: AuthorityTopicLangGroup[];
   identifier_type_localId?: {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
+  startDate?: StartDateGroup;
+  endDate?: EndDateGroup;
   related?: RelatedProgrammeGroup[];
   __text?: { sv: string; en: string };
 }

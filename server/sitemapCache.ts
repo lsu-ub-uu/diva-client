@@ -14,7 +14,6 @@ export const populateCache = async () => {
   let moreData = true;
   let start = 1;
   while (moreData) {
-    console.log(`Fetching data for sitemap cache, start=${start}`);
     const searchResponse =
       await getSearchResultDataListBySearchType<DataListWrapper>(
         'diva-outputSearch',
@@ -48,35 +47,50 @@ export const populateCache = async () => {
       cache.get(entry.permissionUnit)!.set(entry.id, entry);
     });
 
-    console.log('number of results', searchResponse.data.dataList.data.length);
     if (searchResponse.data.dataList.data.length < SEARCH_ROWS - 1) {
-      console.log('got all data!!!');
       moreData = false;
     } else {
       start += SEARCH_ROWS - 1;
-      console.log('getting more data, start=', start);
     }
-    console.log('totalNo', searchResponse.data.dataList.totalNo);
-    console.log('toNo', searchResponse.data.dataList.toNo);
   }
   console.info('Finished populating sitemap cache');
 };
 
-export const getEntries = (
-  from: number,
-  entries: number,
-  permissionUnit?: string,
-): SitemapEntry[] => {
-  if (!permissionUnit) {
-    return Array.from(cache.values())
-      .flatMap((map) => Array.from(map.values()))
-      .slice(from, from + entries);
+interface GetEntriesParams {
+  from?: number;
+  entries?: number;
+  permissionUnit?: string;
+}
+
+export const getEntries = ({
+  from = 0,
+  entries,
+  permissionUnit,
+}: GetEntriesParams = {}): SitemapEntry[] => {
+  const values = permissionUnit
+    ? Array.from(cache.get(permissionUnit)?.values() ?? [])
+    : Array.from(cache.values()).flatMap((map) => Array.from(map.values()));
+
+  if (entries) {
+    return values.slice(from, from + entries);
   }
-  return Array.from(cache.get(permissionUnit)?.values() ?? []).slice(
-    from,
-    from + entries,
-  );
+
+  return values.slice(from);
 };
+
+const getSitemapEntriesForPermissionUnit = (permissionUnitId: string) => {
+  const entries = cache.get(permissionUnitId);
+
+  if (!entries) {
+    return []
+  }
+
+  return Array.from(entries.values())
+}
+
+const getAllSitemapEntries = () => {
+
+}
 
 export interface SitemapEntry {
   id: string;
