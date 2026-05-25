@@ -24,7 +24,7 @@ import { ErrorPage } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { AngryIcon } from 'lucide-react';
+import { ServerCrashIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,
@@ -48,6 +48,7 @@ import {
 import { Alert, type Severity } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
+import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
@@ -57,7 +58,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 
 const { MODE } = import.meta.env;
 
@@ -178,7 +178,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<AngryIcon />}
+          icon={<ServerCrashIcon />}
           titleText={`${error.status}`}
           bodyText={JSON.stringify(error.data)}
         />
@@ -191,19 +191,19 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<AngryIcon />}
+          icon={<ServerCrashIcon />}
           titleText='Okänt fel'
           bodyText='Ett okänt fel inträffade. Försök igen senare'
           links={<a href='/'>Gå till startsidan</a>}
+          technicalInfo={<pre>{stack}</pre>}
         />
-        <pre>{stack}</pre>
       </RootErrorPage>
     );
   }
   return (
     <RootErrorPage>
       <ErrorPage
-        icon={<AngryIcon />}
+        icon={<ServerCrashIcon />}
         titleText='Okänt fel'
         bodyText='Ett okänt fel inträffade. Försök igen senare'
         links={<a href='/'>Gå till startsidan</a>}
