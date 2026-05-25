@@ -1,16 +1,32 @@
 import { extractLinkedRecordIdFromNamedRecordLink } from '@/cora/cora-data/CoraDataTransforms.server';
 import { getFirstDataGroupWithNameInData } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
-import type { DataListWrapper } from '@/cora/cora-data/types.server';
+import type {
+  DataListWrapper,
+  RecordWrapper,
+} from '@/cora/cora-data/types.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
+import type { DataChangedEvent } from './listenForDataChange';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
 
 /** A map from permissionUnitId map from record id to entry. */
 const cache = new Map<string, Map<string, SitemapEntry>>();
+let cacheState: 'cold' | 'warming' | 'ready' = 'cold';
+const eventBuffer = new Map<string, DataChangedEvent>();
 
 const SEARCH_ROWS = 1000;
 
 export const populateCache = async () => {
   console.info('Populating sitemap cache');
+  cacheState = 'warming';
+  getAllSitemapEntries();
+  eventBuffer.values().forEach(applyDataChangeEvent);
+  eventBuffer.clear();
+  cacheState = 'ready';
+  console.info('Finished populating sitemap cache');
+};
+
+const getAllSitemapEntries = async () => {
   let moreData = true;
   let start = 1;
   while (moreData) {
@@ -53,10 +69,9 @@ export const populateCache = async () => {
       start += SEARCH_ROWS - 1;
     }
   }
-  console.info('Finished populating sitemap cache');
 };
 
-interface GetEntriesParams {
+export interface GetEntriesParams {
   from?: number;
   entries?: number;
   permissionUnit?: string;
@@ -101,29 +116,69 @@ export interface SitemapEntry {
 export const transformSearchResults = (
   divaOutputSearchResults: DataListWrapper,
 ): SitemapEntry[] => {
-  return divaOutputSearchResults.dataList.data.map((recordWrapper) => {
-    const data = recordWrapper.record.data;
+  return divaOutputSearchResults.dataList.data.map(
+    transformRecordToSitemapEntry,
+  );
+};
 
-    const recordInfo = getFirstDataGroupWithNameInData(data, 'recordInfo');
-    const id = getFirstDataAtomicValueWithNameInData(recordInfo, 'id');
-    const updated = getFirstDataGroupWithNameInData(recordInfo, 'updated');
-    const tsUpdated = getFirstDataAtomicValueWithNameInData(
-      updated,
-      'tsUpdated',
-    );
-    const isoDate = new Date(tsUpdated).toISOString();
+const transformRecordToSitemapEntry = (
+  recordWrapper: RecordWrapper,
+): SitemapEntry => {
+  const data = recordWrapper.record.data;
 
-    const permissionUnitId = extractLinkedRecordIdFromNamedRecordLink(
-      recordInfo,
-      'permissionUnit',
-    );
+  const recordInfo = getFirstDataGroupWithNameInData(data, 'recordInfo');
+  const id = getFirstDataAtomicValueWithNameInData(recordInfo, 'id');
+  const updated = getFirstDataGroupWithNameInData(recordInfo, 'updated');
+  const tsUpdated = getFirstDataAtomicValueWithNameInData(updated, 'tsUpdated');
+  const isoDate = new Date(tsUpdated).toISOString();
 
-    return {
-      id,
-      tsUpdated: isoDate,
-      permissionUnit: permissionUnitId,
-    };
-  });
+  const permissionUnitId = extractLinkedRecordIdFromNamedRecordLink(
+    recordInfo,
+    'permissionUnit',
+  );
+
+  return {
+    id,
+    tsUpdated: isoDate,
+    permissionUnit: permissionUnitId,
+  };
+};
+
+export const handleDataChanged = async (event: DataChangedEvent) => {
+  const { id, type } = event;
+
+  if (cacheState !== 'ready') {
+    eventBuffer.set(`${type}-${id}`, event);
+  } else {
+    applyDataChangeEvent(event);
+  }
+};
+
+const applyDataChangeEvent = async ({ id, type, action }: DataChangedEvent) => {
+  if (type !== 'diva-output') {
+    return;
+  }
+  switch (action) {
+    case 'delete': {
+      cache.values().forEach((permissionUnitCache) => {
+        permissionUnitCache.delete(id);
+      });
+      break;
+    }
+    case 'update':
+    case 'create': {
+      const recordData = await getRecordDataById<RecordWrapper>(type, id);
+      const sitemapEntry = transformRecordToSitemapEntry(recordData.data);
+
+      let permissionUnitCache = cache.get(sitemapEntry.permissionUnit);
+      if (!permissionUnitCache) {
+        permissionUnitCache = new Map();
+        cache.set(sitemapEntry.permissionUnit, permissionUnitCache);
+      }
+      permissionUnitCache.set(id, sitemapEntry);
+      break;
+    }
+  }
 };
 
 /*

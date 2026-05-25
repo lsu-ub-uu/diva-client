@@ -81,7 +81,7 @@ import {
 
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
-import type { DataChangedHeaders } from '../listenForDataChange';
+import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
@@ -237,7 +237,7 @@ export const handleDataChanged = async ({
   type,
   id,
   action,
-}: DataChangedHeaders) => {
+}: DataChangedEvent) => {
   const poolKey = poolTypeMap[type as keyof typeof poolTypeMap];
   const tranformFunction =
     transformFunctionMap[type as keyof typeof transformFunctionMap];

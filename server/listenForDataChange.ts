@@ -1,6 +1,6 @@
 import amqplib from 'amqplib';
 
-export interface DataChangedHeaders {
+export interface DataChangedEvent {
   type: string;
   id: string;
   action: 'update' | 'delete' | 'create';
@@ -8,7 +8,7 @@ export interface DataChangedHeaders {
 }
 
 export const listenForDataChange = async (
-  onDataChange: (type: DataChangedHeaders) => void,
+  onDataChange: (type: DataChangedEvent) => void,
 ) => {
   const host = process.env.RABBITMQ_HOST;
   const port = process.env.RABBITMQ_PORT;
@@ -23,7 +23,7 @@ export const listenForDataChange = async (
 
   const handleMessage = (msg: amqplib.ConsumeMessage | null) => {
     if (msg !== null) {
-      onDataChange(msg.properties.headers as DataChangedHeaders);
+      onDataChange(msg.properties.headers as DataChangedEvent);
     }
   };
 
