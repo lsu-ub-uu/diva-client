@@ -11,7 +11,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const navigation = await getNavigation(dependencies, undefined, undefined);
   const origin = new URL(request.url).origin;
 
-  const sitemap = await generateSitemapXml(origin, navigation, member);
+  const sitemap = generateSitemapXml(origin, navigation, member);
 
   return new Response(sitemap, {
     headers: {
@@ -20,11 +20,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   });
 };
 
-export const generateSitemapXml = async (
+export const generateSitemapXml = (
   origin: string,
   navigation: Navigation,
-  member?: BFFMember,
-): Promise<string> => {
+  member: BFFMember,
+): string => {
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,
   );
@@ -40,7 +40,7 @@ export const generateSitemapXml = async (
   });
 
   const recordEntries = getEntries({
-    permissionUnit: member ? member.memberPermissionUnit : undefined,
+    permissionUnit: member.memberPermissionUnit,
   });
 
   recordEntries.forEach((entry) => {
@@ -54,5 +54,3 @@ export const generateSitemapXml = async (
   sitemap += `</urlset>`;
   return sitemap;
 };
-
-//sök
