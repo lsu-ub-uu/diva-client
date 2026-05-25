@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Form,
   href,
+  isRouteErrorResponse,
   NavLink,
   redirect,
   useRouteLoaderData,
@@ -19,30 +20,36 @@ import type { Route } from './+types/landingPage';
 import { Hero } from './Hero';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  const auth = context.get(sessionContext);
+  try {
+    const auth = context.get(sessionContext);
 
-  if (auth?.auth?.data.token) {
-    return redirect(href('/:recordType', { recordType: 'diva-output' }));
+    if (auth?.auth?.data.token) {
+      return redirect(href('/:recordType', { recordType: 'diva-output' }));
+    }
+
+    const i18n = context.get(i18nContext);
+    const language = i18n.language as 'sv' | 'en';
+    const dependencies = await getDependencies();
+    const decription = i18n.t('divaClient_landingPageDescriptionText');
+    const member = getMemberFromHostname(request, dependencies);
+    const title = member
+      ? member.id !== 'diva'
+        ? `${i18n.t('divaClient_heroTitleText', { member: member.pageTitle[language] })}`
+        : i18n.t('divaText')
+      : i18n.t('divaText');
+    return {
+      title,
+      decription,
+      member,
+    };
+  } catch (error) {
+    throw createRouteErrorResponse(error);
   }
-
-  const i18n = context.get(i18nContext);
-  const language = i18n.language as 'sv' | 'en';
-  const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
-  const title = member
-    ? member.id !== 'diva'
-      ? `${i18n.t('divaClient_heroTitleText', { member: member.pageTitle[language] })}`
-      : i18n.t('divaText')
-    : i18n.t('divaText');
-
-  const decription = i18n.t('divaClient_landingPageDescriptionText');
-  return {
-    title,
-    decription,
-    member,
-  };
 };
 
 export const links: Route.LinksFunction = () => [
@@ -50,11 +57,30 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export const meta: Route.MetaFunction = ({ loaderData }) => [
-  { title: loaderData.title },
+  { title: loaderData?.title ?? 'DiVA' },
   {
-    description: loaderData.decription,
+    description: loaderData?.decription ?? '',
   },
 ];
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={t(`divaClient_error${status}BodyText`)}
+        technicalInfo={error.data}
+      />
+    );
+  }
+
+  return <UnhandledErrorPage error={error} />;
+};
 
 const navigationCardDescriptions: Record<string, string> = {
   'diva-output': 'divaClient_navigationCardPublicationDescriptionText',

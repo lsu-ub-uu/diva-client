@@ -20,7 +20,7 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
@@ -58,41 +58,46 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { auth, notification } = context.get(sessionContext);
-  const { t } = context.get(i18nContext);
-  const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
-  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const { exampleUsers, applicationVersion } = await getDeploymentInfo();
-  const locale = context.get(i18nContext).language;
-  const navigation = await getNavigation(dependencies, member, auth);
-  const user = auth && createUser(auth);
-  const userPreferences = await parseUserPreferencesCookie(request);
-  const globalAlert = {
-    severity: 'warning' as Severity,
-    text: t('divaClient_metadataWarningText'),
-  };
-  const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
+  try {
+    const { auth, notification } = context.get(sessionContext);
+    const { t } = context.get(i18nContext);
+    const dependencies = await getDependencies();
+    const member = getMemberFromHostname(request, dependencies);
+    const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+    const { exampleUsers, applicationVersion } = await getDeploymentInfo();
+    const locale = context.get(i18nContext).language;
+    const navigation = await getNavigation(dependencies, member, auth);
+    const user = auth && createUser(auth);
+    const userPreferences = await parseUserPreferencesCookie(request);
+    const globalAlert = {
+      severity: 'warning' as Severity,
+      text: t('divaClient_metadataWarningText'),
+    };
+    const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
-  return {
-    user,
-    locale,
-    loginUnits,
-    exampleUsers,
-    member,
-    navigation,
-    userPreferences,
-    notification,
-    globalAlert,
-    blockRobotIndexing,
-    applicationVersion,
-  };
+    return {
+      user,
+      locale,
+      loginUnits,
+      exampleUsers,
+      member,
+      navigation,
+      userPreferences,
+      notification,
+      globalAlert,
+      blockRobotIndexing,
+      applicationVersion,
+    };
+  } catch (error) {
+    throw createRouteErrorResponse(error);
+  }
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -178,8 +183,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<ServerCrashIcon />}
-          titleText={`${error.status}`}
+          icon={getIconByHTTPStatus(error.status)}
+          titleText={`${error.status} - ${error.statusText}`}
           bodyText={JSON.stringify(error.data)}
         />
       </RootErrorPage>
