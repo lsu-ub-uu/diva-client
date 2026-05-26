@@ -313,4 +313,200 @@ describe('dependencies', () => {
       },
     );
   });
+
+  describe('events during cache warmup', () => {
+    const poolTestCases: [string, string, string][] = [
+      ['text', 'someText', 'textPool'],
+      ['metadata', 'someTextVar', 'metadataPool'],
+      ['presentation', 'someNewPGroup', 'presentationPool'],
+      ['validationType', 'someValidationTypeId', 'validationTypePool'],
+      ['guiElement', 'demoTestLinkGuiElement', 'presentationPool'],
+      ['recordType', 'someId', 'recordTypePool'],
+      ['search', 'personSearch', 'searchPool'],
+      ['loginUnit', 'someLoginUnitId', 'loginUnitPool'],
+      ['login', 'someLoginUnitId', 'loginPool'],
+      ['diva-member', 'uu-theme', 'memberPool'],
+      [
+        'diva-organisation',
+        'diva-organisation:19263605242540875',
+        'organisationPool',
+      ],
+    ];
+
+    it.each(poolTestCases)(
+      'buffers create event for %s during warmup and applies after loading',
+      async (recordType, recordId, poolName) => {
+        const { getDependencies, handleDataChanged } =
+          await importDependenciesModule();
+
+        let resolveAll: () => void;
+        const gate = new Promise<void>((resolve) => {
+          resolveAll = resolve;
+        });
+
+        vi.mocked(getRecordDataListByType).mockImplementation(
+          async (type: string) => {
+            await gate;
+            return {
+              data: testDataByRecordTypeId[type] as DataListWrapper,
+            } as AxiosResponse<DataListWrapper>;
+          },
+        );
+
+        const dependenciesPromise = getDependencies();
+
+        vi.mocked(getRecordDataById).mockResolvedValue({
+          data: testDataByRecordTypeId[recordType].dataList
+            .data[0] as RecordWrapper,
+        } as AxiosResponse<RecordWrapper>);
+
+        handleDataChanged({
+          type: recordType,
+          id: 'buffered-id',
+          action: 'create',
+          messagingId: '5678',
+        });
+
+        expect(getRecordDataById).not.toHaveBeenCalled();
+
+        resolveAll!();
+
+        const dependencies = await dependenciesPromise;
+
+        expect(getRecordDataById).toHaveBeenCalledWith(
+          recordType,
+          'buffered-id',
+        );
+        const pool = dependencies[
+          poolName as keyof typeof dependencies
+        ] as Lookup<string, any>;
+        expect(pool.has('buffered-id')).toBe(true);
+      },
+    );
+
+    it.each(poolTestCases)(
+      'buffers delete event for %s during warmup and applies after loading',
+      async (recordType, recordId, poolName) => {
+        const { getDependencies, handleDataChanged } =
+          await importDependenciesModule();
+
+        let resolveAll: () => void;
+        const gate = new Promise<void>((resolve) => {
+          resolveAll = resolve;
+        });
+
+        vi.mocked(getRecordDataListByType).mockImplementation(
+          async (type: string) => {
+            await gate;
+            return {
+              data: testDataByRecordTypeId[type] as DataListWrapper,
+            } as AxiosResponse<DataListWrapper>;
+          },
+        );
+
+        const dependenciesPromise = getDependencies();
+
+        handleDataChanged({
+          type: recordType,
+          id: recordId,
+          action: 'delete',
+          messagingId: '9999',
+        });
+
+        resolveAll!();
+
+        const dependencies = await dependenciesPromise;
+
+        const pool = dependencies[
+          poolName as keyof typeof dependencies
+        ] as Lookup<string, any>;
+        expect(pool.has(recordId)).toBe(false);
+      },
+    );
+
+    it.each(poolTestCases)(
+      'only keeps the latest event per %s record when buffering',
+      async (recordType, recordId, poolName) => {
+        const { getDependencies, handleDataChanged } =
+          await importDependenciesModule();
+
+        let resolveAll: () => void;
+        const gate = new Promise<void>((resolve) => {
+          resolveAll = resolve;
+        });
+
+        vi.mocked(getRecordDataListByType).mockImplementation(
+          async (type: string) => {
+            await gate;
+            return {
+              data: testDataByRecordTypeId[type] as DataListWrapper,
+            } as AxiosResponse<DataListWrapper>;
+          },
+        );
+
+        const dependenciesPromise = getDependencies();
+
+        // First create, then delete — only delete should apply
+        handleDataChanged({
+          type: recordType,
+          id: recordId,
+          action: 'create',
+          messagingId: '1',
+        });
+        handleDataChanged({
+          type: recordType,
+          id: recordId,
+          action: 'delete',
+          messagingId: '2',
+        });
+
+        resolveAll!();
+
+        const dependencies = await dependenciesPromise;
+
+        const pool = dependencies[
+          poolName as keyof typeof dependencies
+        ] as Lookup<string, any>;
+        expect(pool.has(recordId)).toBe(false);
+        expect(getRecordDataById).not.toHaveBeenCalledWith(
+          recordType,
+          recordId,
+        );
+      },
+    );
+
+    it('does not apply buffered events for unknown types', async () => {
+      const { getDependencies, handleDataChanged } =
+        await importDependenciesModule();
+
+      let resolveAll: () => void;
+      const gate = new Promise<void>((resolve) => {
+        resolveAll = resolve;
+      });
+
+      vi.mocked(getRecordDataListByType).mockImplementation(
+        async (type: string) => {
+          await gate;
+          return {
+            data: testDataByRecordTypeId[type] as DataListWrapper,
+          } as AxiosResponse<DataListWrapper>;
+        },
+      );
+
+      const dependenciesPromise = getDependencies();
+
+      handleDataChanged({
+        type: 'unknownType',
+        id: 'some-id',
+        action: 'create',
+        messagingId: '3',
+      });
+
+      resolveAll!();
+
+      await dependenciesPromise;
+
+      expect(getRecordDataById).not.toHaveBeenCalled();
+    });
+  });
 });
