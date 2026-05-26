@@ -318,8 +318,6 @@ describe('sitemapCache', () => {
   });
 
   describe('handleDataChanged', () => {
-    it('ignores event when cache is not populated');
-
     it('should delete entry from cache when action is delete', async () => {
       vi.resetModules();
       const sitemapCache = await import('../sitemapCache.server');

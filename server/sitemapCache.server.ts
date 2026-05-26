@@ -19,14 +19,14 @@ const SEARCH_ROWS = 1000;
 export const populateCache = async () => {
   console.info('Populating sitemap cache');
   cacheState = 'warming';
-  getAllSitemapEntries();
+  await searchSitemapEntries();
   eventBuffer.values().forEach(applyDataChangeEvent);
   eventBuffer.clear();
   cacheState = 'ready';
   console.info('Finished populating sitemap cache');
 };
 
-const getAllSitemapEntries = async () => {
+const searchSitemapEntries = async () => {
   let moreData = true;
   let start = 1;
   while (moreData) {
