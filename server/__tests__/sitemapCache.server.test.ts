@@ -531,6 +531,242 @@ describe('sitemapCache', () => {
       expect(sitemapCache.getEntries({ permissionUnit: 'uu' })).toHaveLength(2);
     });
   });
+
+  describe('events during cache warmup', () => {
+    it('buffers events received while cache is warming and applies them after', async () => {
+      vi.resetModules();
+      const sitemapCache = await import('../sitemapCache.server');
+
+      let resolveSearch: (value: any) => void;
+      const searchPromise = new Promise((resolve) => {
+        resolveSearch = resolve;
+      });
+
+      vi.mocked(getSearchResultDataListBySearchType).mockReturnValue(
+        searchPromise as any,
+      );
+
+      // Start populating (will block on the search)
+      const populatePromise = sitemapCache.populateCache();
+
+      // While warming, send a create event
+      vi.mocked(getRecordDataById).mockResolvedValue({
+        data: createRecordWrapperMock({
+          id: 'new-1',
+          tsUpdated: '2026-03-01T00:00:00.000Z',
+          permissionUnit: 'uu',
+        }),
+      } as AxiosResponse<RecordWrapper>);
+
+      // This should be buffered, not applied immediately
+      sitemapCache.handleDataChanged({
+        type: 'diva-output',
+        id: 'new-1',
+        action: 'create',
+        messagingId: '456',
+      });
+
+      // Resolve the search
+      resolveSearch!({
+        data: generateSearchResultMock([
+          {
+            id: '1',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+        ]),
+      });
+
+      await populatePromise;
+
+      // The buffered create event should have been applied
+      const entries = sitemapCache.getEntries();
+      expect(entries).toHaveLength(2);
+      expect(entries.find((e) => e.id === 'new-1')).toEqual({
+        id: 'new-1',
+        tsUpdated: '2026-03-01T00:00:00.000Z',
+        permissionUnit: 'uu',
+      });
+    });
+
+    it('buffers delete event during warmup and removes entry after population', async () => {
+      vi.resetModules();
+      const sitemapCache = await import('../sitemapCache.server');
+
+      let resolveSearch: (value: any) => void;
+      const searchPromise = new Promise((resolve) => {
+        resolveSearch = resolve;
+      });
+
+      vi.mocked(getSearchResultDataListBySearchType).mockReturnValue(
+        searchPromise as any,
+      );
+
+      const populatePromise = sitemapCache.populateCache();
+
+      // Buffer a delete for an entry that will be in the search results
+      sitemapCache.handleDataChanged({
+        type: 'diva-output',
+        id: '1',
+        action: 'delete',
+        messagingId: '789',
+      });
+
+      resolveSearch!({
+        data: generateSearchResultMock([
+          {
+            id: '1',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+          {
+            id: '2',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+        ]),
+      });
+
+      await populatePromise;
+
+      const entries = sitemapCache.getEntries();
+      expect(entries).toHaveLength(1);
+      expect(entries.find((e) => e.id === '1')).toBeUndefined();
+      expect(entries[0].id).toBe('2');
+    });
+
+    it('only keeps the latest event per record when buffering', async () => {
+      vi.resetModules();
+      const sitemapCache = await import('../sitemapCache.server');
+
+      let resolveSearch: (value: any) => void;
+      const searchPromise = new Promise((resolve) => {
+        resolveSearch = resolve;
+      });
+
+      vi.mocked(getSearchResultDataListBySearchType).mockReturnValue(
+        searchPromise as any,
+      );
+
+      const populatePromise = sitemapCache.populateCache();
+
+      // First a create, then a delete for the same record — only delete should apply
+      sitemapCache.handleDataChanged({
+        type: 'diva-output',
+        id: '99',
+        action: 'create',
+        messagingId: '1',
+      });
+      sitemapCache.handleDataChanged({
+        type: 'diva-output',
+        id: '99',
+        action: 'delete',
+        messagingId: '2',
+      });
+
+      resolveSearch!({
+        data: generateSearchResultMock([
+          {
+            id: '99',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+        ]),
+      });
+
+      await populatePromise;
+
+      const entries = sitemapCache.getEntries();
+      expect(entries).toHaveLength(0);
+    });
+
+    it('buffers update event during warmup and applies updated data', async () => {
+      vi.resetModules();
+      const sitemapCache = await import('../sitemapCache.server');
+
+      let resolveSearch: (value: any) => void;
+      const searchPromise = new Promise((resolve) => {
+        resolveSearch = resolve;
+      });
+
+      vi.mocked(getSearchResultDataListBySearchType).mockReturnValue(
+        searchPromise as any,
+      );
+
+      vi.mocked(getRecordDataById).mockResolvedValue({
+        data: createRecordWrapperMock({
+          id: '1',
+          tsUpdated: '2026-03-10T00:00:00.000Z',
+          permissionUnit: 'uu',
+        }),
+      } as AxiosResponse<RecordWrapper>);
+
+      const populatePromise = sitemapCache.populateCache();
+
+      sitemapCache.handleDataChanged({
+        type: 'diva-output',
+        id: '1',
+        action: 'update',
+        messagingId: '999',
+      });
+
+      resolveSearch!({
+        data: generateSearchResultMock([
+          {
+            id: '1',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+        ]),
+      });
+
+      await populatePromise;
+
+      const entries = sitemapCache.getEntries();
+      expect(entries).toHaveLength(1);
+      expect(entries[0].tsUpdated).toBe('2026-03-10T00:00:00.000Z');
+    });
+
+    it('does not buffer events for non diva-output types during warmup', async () => {
+      vi.resetModules();
+      const sitemapCache = await import('../sitemapCache.server');
+
+      let resolveSearch: (value: any) => void;
+      const searchPromise = new Promise((resolve) => {
+        resolveSearch = resolve;
+      });
+
+      vi.mocked(getSearchResultDataListBySearchType).mockReturnValue(
+        searchPromise as any,
+      );
+
+      const populatePromise = sitemapCache.populateCache();
+
+      // Non diva-output events are still buffered by key but applyDataChangeEvent ignores them
+      sitemapCache.handleDataChanged({
+        type: 'diva-person',
+        id: '1',
+        action: 'create',
+        messagingId: '100',
+      });
+
+      resolveSearch!({
+        data: generateSearchResultMock([
+          {
+            id: '1',
+            tsUpdated: '2026-02-25T12:23:48.968Z',
+            permissionUnit: 'uu',
+          },
+        ]),
+      });
+
+      await populatePromise;
+
+      // Should still only have the search result, non-diva-output event is ignored
+      const entries = sitemapCache.getEntries();
+      expect(entries).toHaveLength(1);
+    });
+  });
 });
 
 const generateSearchResultMock = (

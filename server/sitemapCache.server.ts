@@ -20,7 +20,9 @@ export const populateCache = async () => {
   console.info('Populating sitemap cache');
   cacheState = 'warming';
   await searchSitemapEntries();
-  eventBuffer.values().forEach(applyDataChangeEvent);
+  for (const event of eventBuffer.values()) {
+    await applyDataChangeEvent(event);
+  }
   eventBuffer.clear();
   cacheState = 'ready';
   console.info('Finished populating sitemap cache');
