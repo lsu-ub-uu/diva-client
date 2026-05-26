@@ -16,6 +16,18 @@ const eventBuffer = new Map<string, DataChangedEvent>();
 
 const SEARCH_ROWS = 1000;
 
+export interface SitemapEntry {
+  id: string;
+  tsUpdated: string;
+  permissionUnit: string;
+}
+
+export interface GetEntriesParams {
+  from?: number;
+  entries?: number;
+  permissionUnit?: string;
+}
+
 export const populateCache = async () => {
   console.info('Populating sitemap cache');
   cacheState = 'warming';
@@ -26,6 +38,32 @@ export const populateCache = async () => {
   eventBuffer.clear();
   cacheState = 'ready';
   console.info('Finished populating sitemap cache');
+};
+
+export const getEntries = ({
+  from = 0,
+  entries,
+  permissionUnit,
+}: GetEntriesParams = {}): SitemapEntry[] => {
+  const sitemapEntries = permissionUnit
+    ? getSitemapEntriesForPermissionUnit(permissionUnit)
+    : getAllSitemapEntries();
+
+  if (entries) {
+    return sitemapEntries.slice(from, from + entries);
+  }
+
+  return sitemapEntries.slice(from);
+};
+
+export const handleDataChanged = async (event: DataChangedEvent) => {
+  const { id, type } = event;
+
+  if (cacheState !== 'ready') {
+    eventBuffer.set(`${type}-${id}`, event);
+  } else {
+    applyDataChangeEvent(event);
+  }
 };
 
 const searchSitemapEntries = async () => {
@@ -73,26 +111,12 @@ const searchSitemapEntries = async () => {
   }
 };
 
-export interface GetEntriesParams {
-  from?: number;
-  entries?: number;
-  permissionUnit?: string;
-}
-
-export const getEntries = ({
-  from = 0,
-  entries,
-  permissionUnit,
-}: GetEntriesParams = {}): SitemapEntry[] => {
-  const sitemapEntries = permissionUnit
-    ? getSitemapEntriesForPermissionUnit(permissionUnit)
-    : getAllSitemapEntries();
-
-  if (entries) {
-    return sitemapEntries.slice(from, from + entries);
-  }
-
-  return sitemapEntries.slice(from);
+export const transformSearchResults = (
+  divaOutputSearchResults: DataListWrapper,
+): SitemapEntry[] => {
+  return divaOutputSearchResults.dataList.data.map(
+    transformRecordToSitemapEntry,
+  );
 };
 
 const getSitemapEntriesForPermissionUnit = (permissionUnitId: string) => {
@@ -107,20 +131,6 @@ const getSitemapEntriesForPermissionUnit = (permissionUnitId: string) => {
 
 const getAllSitemapEntries = () => {
   return Array.from(cache.values()).flatMap((map) => Array.from(map.values()));
-};
-
-export interface SitemapEntry {
-  id: string;
-  tsUpdated: string;
-  permissionUnit: string;
-}
-
-export const transformSearchResults = (
-  divaOutputSearchResults: DataListWrapper,
-): SitemapEntry[] => {
-  return divaOutputSearchResults.dataList.data.map(
-    transformRecordToSitemapEntry,
-  );
 };
 
 const transformRecordToSitemapEntry = (
@@ -144,16 +154,6 @@ const transformRecordToSitemapEntry = (
     tsUpdated: isoDate,
     permissionUnit: permissionUnitId,
   };
-};
-
-export const handleDataChanged = async (event: DataChangedEvent) => {
-  const { id, type } = event;
-
-  if (cacheState !== 'ready') {
-    eventBuffer.set(`${type}-${id}`, event);
-  } else {
-    applyDataChangeEvent(event);
-  }
 };
 
 const applyDataChangeEvent = async ({ id, type, action }: DataChangedEvent) => {
@@ -182,43 +182,3 @@ const applyDataChangeEvent = async ({ id, type, action }: DataChangedEvent) => {
     }
   }
 };
-
-/*
- cache: { "nordiskamuseet": { "1": { id: "1", tsupdated: "123" }, "2": { id: "2", updated: "124" }}}
-  populateSitemap: Promise<void>
-    sök diva-output id ** rows=1000
-    transformSearchResults -
-    > transform to sitemap entries
-    put in cache based on permissionUnit
-    while more data to get, repeat
-
-handleDataChanged(DataChangeEvent): void
-  if delete -> delete from cache
-  if create or update
-    fetch record
-    transform to entry
-    cache[permissionUnit][id] = entry
-
-getNumberOfEntries(permissionUnit?: string): int
-  cache[persmissionUnit].values().size()
-
-getEntries(start: int, numberOfEntries: int, permissionUnit?: string): { entries: SitemapEntry[] }
-  cache[permissionUnit].value()
-
-
-
- /sitemap-index.xml
-    get permission unit from url
-    pages = cache.getNumberOfEntries(permissionUnit) / 10000
-    construct xml 
-  
- /sitemap-base.xml
-    hårdkodad xml
-
-
- /sitemap-records-{page}.xml.gz
-    get permission unit from url
-    entries = cache.getEntries(start=page * 10000 - 1, 10000, permissionUnit)
-    construct xml
-    return zip
-*/
