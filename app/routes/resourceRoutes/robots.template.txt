@@ -1,0 +1,5 @@
+User-agent: *
+Allow: {BASE_PATH}
+Disallow: /
+
+Sitemap: {SITEMAP_URL}
