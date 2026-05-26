@@ -85,6 +85,7 @@ const FooterLink = ({ href, children }: FooterLinkProps) => (
     variant='tertiary'
     as='a'
     href={href}
+    rel='noopener noreferrer nofollow'
     className={styles['footer-link']}
   >
     {children}
