@@ -1,13 +1,17 @@
+import type { BFFMember } from '@/cora/bffTypes.server';
 import { getNavigation, type Navigation } from '@/data/getNavigation.server';
-import type { Route } from '../resourceRoutes/+types/sitemap';
+import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { getDependencies } from 'server/dependencies/depencencies';
+import { getEntries } from '../../../server/sitemapCache.server';
+import type { Route } from '../resourceRoutes/+types/sitemap';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
+  const member = getMemberFromHostname(request, dependencies);
   const navigation = await getNavigation(dependencies, undefined, undefined);
   const origin = new URL(request.url).origin;
 
-  const sitemap = await generateSitemapXml(origin, navigation);
+  const sitemap = generateSitemapXml(origin, navigation, member);
 
   return new Response(sitemap, {
     headers: {
@@ -16,10 +20,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   });
 };
 
-export const generateSitemapXml = async (
+export const generateSitemapXml = (
   origin: string,
   navigation: Navigation,
-): Promise<string> => {
+  member: BFFMember,
+): string => {
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,
   );
@@ -34,7 +39,18 @@ export const generateSitemapXml = async (
     sitemap += `  </url>\n`;
   });
 
-  sitemap += `</urlset>`;
+  const recordEntries = getEntries({
+    permissionUnit: member.memberPermissionUnit,
+  });
 
+  recordEntries.forEach((entry) => {
+    sitemap += `  <url>\n`;
+    sitemap += `    <loc>${origin}/diva-output/${entry.id}</loc>\n`;
+    sitemap += `    <lastmod>${entry.tsUpdated}</lastmod>\n`;
+    sitemap += `    <changefreq>yearly</changefreq>\n`;
+    sitemap += `  </url>\n`;
+  });
+
+  sitemap += `</urlset>`;
   return sitemap;
 };

@@ -38,6 +38,7 @@ export default [
   route('binaryRecord', 'routes/resourceRoutes/binaryRecord.ts'),
   route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
   route('sitemap.xml', 'routes/resourceRoutes/sitemap.ts'),
+  route('robots.txt', 'routes/resourceRoutes/robots.ts'),
 
   route('design-system', 'routes/docs/designSystem.tsx'),
   route('presentation-playground', 'routes/docs/presentationPlayground.tsx'),

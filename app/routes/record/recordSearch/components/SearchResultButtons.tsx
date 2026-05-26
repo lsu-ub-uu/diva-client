@@ -28,7 +28,7 @@ export const SearchResultButtons = ({
           as='a'
           href={apiUrl}
           target='_blank'
-          rel='noopener noreferrer'
+          rel='noopener noreferrer nofollow'
         >
           <CodeIcon />
           {t('divaClient_viewInApiText')}

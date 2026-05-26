@@ -81,7 +81,7 @@ import {
 
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
-import type { DataChangedHeaders } from '../listenForDataChange';
+import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
@@ -95,6 +95,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
 
 // Use a promise guard to prevent multiple concurrent initializations
 let initializationPromise: Promise<void> | null = null;
+let cacheState: 'cold' | 'warming' | 'ready' = 'cold';
+const eventBuffer = new Map<string, DataChangedEvent>();
 
 const dependencies: Dependencies = {
   textPool: listToPool<BFFText>([]),
@@ -124,6 +126,7 @@ export type DependencyType =
 
 const loadDependencies = async () => {
   console.info('Loading stuff from Cora...');
+  cacheState = 'warming';
   const [
     coraTexts,
     coraMetadata,
@@ -193,6 +196,11 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
+  for (const event of eventBuffer.values()) {
+    await applyDataChangeEvent(event);
+  }
+  eventBuffer.clear();
+  cacheState = 'ready';
   console.info('Loaded stuff from Cora');
 };
 
@@ -233,11 +241,15 @@ const transformFunctionMap = {
   text: transformCoraTextToBFFText,
 } as const;
 
-export const handleDataChanged = async ({
-  type,
-  id,
-  action,
-}: DataChangedHeaders) => {
+export const handleDataChanged = async (event: DataChangedEvent) => {
+  if (cacheState !== 'ready') {
+    eventBuffer.set(`${event.type}-${event.id}`, event);
+  } else {
+    await applyDataChangeEvent(event);
+  }
+};
+
+const applyDataChangeEvent = async ({ type, id, action }: DataChangedEvent) => {
   const poolKey = poolTypeMap[type as keyof typeof poolTypeMap];
   const tranformFunction =
     transformFunctionMap[type as keyof typeof transformFunctionMap];

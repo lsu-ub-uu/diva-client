@@ -4,6 +4,7 @@
   place-items: center;
   gap: var(--gap-l);
   text-align: center;
+  padding-block: var(--gap-xxl);
 
   h1 {
     font-size: var(--font-size-xxl);
