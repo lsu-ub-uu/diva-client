@@ -362,7 +362,7 @@ describe('dependencies', () => {
 
         handleDataChanged({
           type: recordType,
-          id: 'buffered-id',
+          id: recordId,
           action: 'create',
           messagingId: '5678',
         });
@@ -373,14 +373,11 @@ describe('dependencies', () => {
 
         const dependencies = await dependenciesPromise;
 
-        expect(getRecordDataById).toHaveBeenCalledWith(
-          recordType,
-          'buffered-id',
-        );
+        expect(getRecordDataById).toHaveBeenCalledWith(recordType, recordId);
         const pool = dependencies[
           poolName as keyof typeof dependencies
         ] as Lookup<string, any>;
-        expect(pool.has('buffered-id')).toBe(true);
+        expect(pool.has(recordId)).toBe(true);
       },
     );
 
