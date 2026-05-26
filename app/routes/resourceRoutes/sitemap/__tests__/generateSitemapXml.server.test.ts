@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateSitemapXml } from '../sitemap';
 import {
   getEntries,
   type GetEntriesParams,
@@ -7,6 +6,7 @@ import {
 } from 'server/sitemapCache.server';
 import type { BFFMember } from '@/cora/bffTypes.server';
 import type { Navigation } from '@/data/getNavigation.server';
+import { generateSitemapXml } from '../generateSitemapXml.server';
 
 vi.mock('@/cora/getSearchResultDataListBySearchType.server');
 vi.mock('server/sitemapCache.server');

@@ -1,4 +1,4 @@
-import type { Route } from '../resourceRoutes/+types/robots';
+import type { Route } from './+types/robots';
 import robotsTxtTemplate from './robots.template.txt?raw';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
