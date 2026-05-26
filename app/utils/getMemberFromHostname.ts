@@ -8,9 +8,10 @@ export const getMemberFromHostname = (
 ): BFFMember => {
   const { hostname } = new URL(request.url);
 
-  const member = Array.from(dependencies.memberPool.values()).find((member) =>
-    member.hostnames?.includes(hostname),
-  );
+  const member =
+    Array.from(dependencies.memberPool.values()).find((member) =>
+      member.hostnames?.includes(hostname),
+    ) ?? dependencies.memberPool.get('diva');
 
   if (!member) {
     throw new NotFoundError(`No member found for hostname: ${hostname}`);
