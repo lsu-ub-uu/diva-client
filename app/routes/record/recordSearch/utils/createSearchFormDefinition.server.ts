@@ -33,13 +33,11 @@ export const createSearchFormDefinition = (
     includePartGroup.children[0].childId,
   ) as BFFMetadataTextVariable;
 
-  const filterSearchTerms = includePartGroup.children
-    .slice(1)
-    .map((childRef) => dependencies.metadataPool.get(childRef.childId));
+  const filterSearchTermRefs = includePartGroup.children.slice(1);
 
   return {
     searchRootName: searchMetadata.nameInData,
     mainSearchTerm,
-    filters: createFilters(filterSearchTerms, dependencies),
+    filters: createFilters(filterSearchTermRefs, dependencies),
   };
 };

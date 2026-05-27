@@ -1,10 +1,11 @@
 import type {
-  BFFMetadata,
   BFFMetadataBase,
+  BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataItemCollection,
+  Dependencies,
 } from '@/cora/bffTypes.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
+import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
 
 export type FilterDefinition =
   | TextFilter
@@ -17,6 +18,7 @@ export interface BaseFilter {
   name: string;
   textId: string;
   placeholderTextId: string;
+  repeat: Repeat;
 }
 
 export interface TextFilter extends BaseFilter {
@@ -73,23 +75,33 @@ const autocompleteSearchTerms: Record<
 };
 
 export const createFilters = (
-  filterMetadatas: BFFMetadata[],
+  filterMetadataRefs: BFFMetadataChildReference[],
   dependencies: Dependencies,
 ): FilterDefinition[] => {
-  return filterMetadatas
+  return filterMetadataRefs
     .map((metadata) => createFilter(metadata, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };
 
 const createFilter = (
-  metadata: BFFMetadata,
+  filterMetadataRef: BFFMetadataChildReference,
   depencencies: Dependencies,
 ): FilterDefinition | undefined => {
+  const metadata = depencencies.metadataPool.get(
+    filterMetadataRef.childId,
+  ) as BFFMetadataBase;
   const commonValues = {
     id: metadata.id,
     name: metadata.nameInData,
     textId: metadata.textId,
     placeholderTextId: metadata.defTextId,
+    repeat: {
+      repeatMin: Number.parseInt(filterMetadataRef.repeatMin),
+      repeatMax:
+        filterMetadataRef.repeatMax === 'X'
+          ? Number.MAX_VALUE
+          : Number.parseInt(filterMetadataRef.repeatMax),
+    },
   };
 
   if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
