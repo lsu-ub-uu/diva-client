@@ -73,7 +73,7 @@ export const Filters = ({
                 key={filter.id}
                 currentValue={activeFilter?.value}
                 currentValueText={activeFilter?.valueTextId}
-                forceSubmit={() => handleFilterChange}
+                forceSubmit={handleFilterChange}
               />
             );
           })}
