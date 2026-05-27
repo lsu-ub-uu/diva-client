@@ -1,4 +1,4 @@
-import { DivaOutputSearchResult } from '@/components/Form/SearchResult/DivaOutputSearchResult';
+import { DivaOutputSearchResult } from '@/routes/record/recordSearch/components/SearchResult/DivaOutputSearchResult';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord, Metadata } from '@/types/record';
