@@ -39,7 +39,7 @@ describe('generateSitemapXml', () => {
     } as BFFMember;
 
     const sitemap = generateSitemapXml(
-      'http://example.com',
+      'http://example.com/sitemap.xml',
       mockNavigation,
       mockMember,
     );
@@ -70,7 +70,7 @@ describe('generateSitemapXml', () => {
     } as BFFMember;
 
     const sitemap = generateSitemapXml(
-      'http://example.com',
+      'http://example.com/sitemap.xml',
       mockNavigation,
       mockMember,
     );
@@ -95,7 +95,7 @@ describe('generateSitemapXml', () => {
     } as BFFMember;
 
     const sitemap = generateSitemapXml(
-      'http://example.com',
+      'http://example.com/sitemap.xml',
       mockNavigation,
       mockMember,
     );
@@ -130,7 +130,7 @@ describe('generateSitemapXml', () => {
     } as BFFMember;
 
     const sitemap = generateSitemapXml(
-      'http://example.com',
+      'http://example.com/sitemap.xml',
       mockNavigation,
       mockMember,
     );
@@ -154,6 +154,56 @@ describe('generateSitemapXml', () => {
     <loc>http://example.com/diva-output/3</loc>
     <lastmod>2024-01-03</lastmod>
     <changefreq>yearly</changefreq>
+  </url>
+</urlset>`);
+  });
+
+  it('generates correct sitemap xml with basename', () => {
+    const mockNavigation: Navigation = {
+      mainNavigationItems: [],
+      otherNavigationItems: [],
+    };
+
+    const mockMember = {
+      id: 'member1',
+      memberPermissionUnit: 'somePermissionUnitWithoutRecords',
+    } as BFFMember;
+
+    const sitemap = generateSitemapXml(
+      'http://example.com/basepath/sitemap.xml',
+      mockNavigation,
+      mockMember,
+    );
+
+    expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://example.com/basepath</loc>
+  </url>
+</urlset>`);
+  });
+
+  it('generates sitemap with correct protocol', () => {
+    const mockNavigation: Navigation = {
+      mainNavigationItems: [],
+      otherNavigationItems: [],
+    };
+
+    const mockMember = {
+      id: 'member1',
+      memberPermissionUnit: 'somePermissionUnitWithoutRecords',
+    } as BFFMember;
+
+    const sitemap = generateSitemapXml(
+      'https://example.com/sitemap.xml',
+      mockNavigation,
+      mockMember,
+    );
+
+    expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://example.com</loc>
   </url>
 </urlset>`);
   });

@@ -8,9 +8,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const navigation = await getNavigation(dependencies, undefined, undefined);
-  const origin = new URL(request.url).origin;
 
-  const sitemap = generateSitemapXml(origin, navigation, member);
+  const sitemap = generateSitemapXml(request.url, navigation, member);
 
   return new Response(sitemap, {
     headers: {
