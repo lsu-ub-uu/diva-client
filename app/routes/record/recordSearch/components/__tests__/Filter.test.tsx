@@ -18,6 +18,10 @@ describe('Filter', () => {
       name: 'someTextFilterName',
       textId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     render(
@@ -41,6 +45,10 @@ describe('Filter', () => {
       name: 'someTextFilterName',
       textId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     render(
@@ -64,6 +72,10 @@ describe('Filter', () => {
       name: 'someTextFilterName',
       textId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     const { rerender } = render(
@@ -102,6 +114,10 @@ describe('Filter', () => {
       min: 0,
       max: 100,
       placeholderTextId: 'numberFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     render(
@@ -132,6 +148,10 @@ describe('Filter', () => {
         { value: 'option2', text: 'Option 2' },
         { value: 'option3', text: 'Option 3' },
       ],
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     render(
@@ -172,6 +192,10 @@ describe('Filter', () => {
         { value: 'option2', text: 'Option 2' },
         { value: 'option3', text: 'Option 3' },
       ],
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     render(
@@ -202,6 +226,10 @@ describe('Filter', () => {
         { value: 'option2', text: 'Option 2' },
         { value: 'option3', text: 'Option 3' },
       ],
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     const { rerender } = render(
@@ -249,6 +277,10 @@ describe('Filter', () => {
         en: 'some.en.path',
       },
       placeholderTextId: 'autocompleteFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     const autocompleteMock = vi.fn();
@@ -293,6 +325,10 @@ describe('Filter', () => {
         en: 'some.en.path',
       },
       placeholderTextId: 'autocompleteFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     const autocompleteMock = vi.fn().mockReturnValue({
