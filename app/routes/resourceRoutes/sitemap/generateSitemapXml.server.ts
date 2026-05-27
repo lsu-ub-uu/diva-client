@@ -3,10 +3,11 @@ import type { Navigation } from '@/data/getNavigation.server';
 import { getEntries } from 'server/sitemapCache.server';
 
 export const generateSitemapXml = (
-  origin: string,
+  requestUrl: string,
   navigation: Navigation,
   member: BFFMember,
 ): string => {
+  const baseUrl = requestUrl.replace(/\/sitemap\.xml$/, '');
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,
   );
@@ -17,7 +18,7 @@ export const generateSitemapXml = (
 
   urls.forEach((path) => {
     sitemap += `  <url>\n`;
-    sitemap += `    <loc>${origin}${path}</loc>\n`;
+    sitemap += `    <loc>${baseUrl}${path}</loc>\n`;
     sitemap += `  </url>\n`;
   });
 
@@ -27,7 +28,7 @@ export const generateSitemapXml = (
 
   recordEntries.forEach((entry) => {
     sitemap += `  <url>\n`;
-    sitemap += `    <loc>${origin}/diva-output/${entry.id}</loc>\n`;
+    sitemap += `    <loc>${baseUrl}/diva-output/${entry.id}</loc>\n`;
     sitemap += `    <lastmod>${entry.tsUpdated}</lastmod>\n`;
     sitemap += `    <changefreq>yearly</changefreq>\n`;
     sitemap += `  </url>\n`;
