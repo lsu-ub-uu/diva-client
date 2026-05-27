@@ -25,6 +25,10 @@
   flex-direction: row;
   padding-block: var(--gap-l);
   border-bottom: 1px solid var(--color-thin-border);
+
+  --search-result-list-item-title-line-height: calc(
+    var(--line-height-base) * var(--font-size-l)
+  );
 }
 
 .result-list-item:last-child {
@@ -33,7 +37,10 @@
 
 .result-list-item::before {
   content: counter(result) '. ';
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-m);
+
+  /* Line height to line up with title font size */
+  line-height: var(--search-result-list-item-title-line-height);
   margin-right: var(--gap);
 }
 

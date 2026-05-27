@@ -21,7 +21,7 @@ export const DivaOutputSearchResult = ({
   return (
     <div className={styles['layout']}>
       <div>
-        <h2>
+        <h2 className={styles['title']}>
           <Link
             to={`/${searchResult.recordType}/${searchResult.id}`}
             prefetch='intent'
