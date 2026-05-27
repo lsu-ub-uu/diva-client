@@ -36,6 +36,10 @@ describe('SearchLayout', () => {
         textId: 'searchRecordIdTextVarText',
         placeholderTextId: 'searchRecordIdTextVarDefText',
         type: 'text',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
       },
     ];
 
