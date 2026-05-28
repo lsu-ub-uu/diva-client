@@ -37,13 +37,16 @@ export const ComboboxInput = ({
   className,
   ...rest
 }: HUIComboboxInputProps) => {
-  const { ids } = use(FieldContext);
+  const { ids, validationError } = use(FieldContext);
 
   return (
     <div className={styles['combobox-input-wrapper']}>
       <HUIComboboxInput
         id={ids.input}
         className={clsx(inputStyles['combobox-input'], className)}
+        {...(validationError
+          ? { 'aria-invalid': true, 'aria-describedby': ids.error }
+          : {})}
         {...rest}
       />
       <TextSearchIcon className={styles['combobox-input-icon']} />

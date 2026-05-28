@@ -26,12 +26,15 @@ interface TextareaProps extends HTMLProps<HTMLTextAreaElement> {
 }
 
 export const Textarea = ({ className, ref, ...rest }: TextareaProps) => {
-  const { ids } = use(FieldContext);
+  const { ids, validationError } = use(FieldContext);
 
   return (
     <textarea
       id={ids.input}
       className={clsx(styles['textarea'], className)}
+      {...(validationError
+        ? { 'aria-invalid': true, 'aria-describedby': ids.error }
+        : {})}
       {...rest}
       ref={ref}
     />

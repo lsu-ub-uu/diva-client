@@ -60,7 +60,7 @@ export const Fieldset = ({
   };
 
   return (
-    <FieldContext value={{ ids }}>
+    <FieldContext value={{ ids, validationError: errorMessage !== undefined }}>
       <FieldsetRoot
         label={label}
         hasAttributes={attributes !== undefined}
@@ -100,12 +100,24 @@ export const Fieldset = ({
   );
 };
 
-export const FieldContext = createContext({
+interface FieldContextValues {
+  ids: {
+    label: string;
+    input: string;
+    details: string;
+    error: string;
+  };
+  validationError: boolean;
+}
+
+export const FieldContext = createContext<FieldContextValues>({
   ids: { label: '', details: '', input: '', error: '' },
+  validationError: false,
 });
 
-interface FieldsetRootProps
-  extends HTMLProps<HTMLDivElement & HTMLFieldSetElement> {
+interface FieldsetRootProps extends HTMLProps<
+  HTMLDivElement & HTMLFieldSetElement
+> {
   hasAttributes: boolean;
   label?: string;
   children?: ReactNode;

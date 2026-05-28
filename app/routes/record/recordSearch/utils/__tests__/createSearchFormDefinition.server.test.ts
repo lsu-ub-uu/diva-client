@@ -109,6 +109,7 @@ describe('createSearchFormDefinition', () => {
             repeatMin: 0,
             repeatMax: 1,
           },
+          regEx: '.+',
         },
       ],
     } satisfies SearchFormDefinition);

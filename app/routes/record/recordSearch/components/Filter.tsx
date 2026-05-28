@@ -30,6 +30,7 @@ interface FilterProps {
   onChange?: (newValue: string) => void;
   forceSubmit: () => void;
   currentValueText?: string;
+  validationError?: string;
 }
 
 export const Filter = ({
@@ -37,6 +38,7 @@ export const Filter = ({
   currentValue,
   forceSubmit,
   currentValueText,
+  validationError,
 }: FilterProps) => {
   const { t } = useTranslation();
   const [prevValue, setPrevValue] = useState(currentValue);
@@ -54,7 +56,11 @@ export const Filter = ({
   switch (filter.type) {
     case 'text':
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Input
             name={filter.name}
             value={value}
@@ -66,7 +72,11 @@ export const Filter = ({
       );
     case 'number':
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Input
             type='number'
             name={filter.name}
@@ -82,7 +92,11 @@ export const Filter = ({
     case 'collection':
       if (hydrated && filter.options.length > 20) {
         return (
-          <Fieldset label={t(filter.textId)} size='small'>
+          <Fieldset
+            label={t(filter.textId)}
+            size='small'
+            errorMessage={validationError && t(validationError)}
+          >
             <ComboboxSelect
               name={filter.name}
               value={value}
@@ -99,7 +113,11 @@ export const Filter = ({
         );
       }
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Select
             name={filter.name}
             value={value}

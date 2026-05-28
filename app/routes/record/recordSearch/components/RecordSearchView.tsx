@@ -23,6 +23,7 @@ interface RecordSearchViewProps {
   onClearAllFilters: () => void;
   showFilterDialog: () => void;
   apiUrl: string;
+  validationErrors: Map<string, string>;
 }
 
 export const RecordSearchView = ({
@@ -39,6 +40,7 @@ export const RecordSearchView = ({
   onClearAllFilters,
   showFilterDialog,
   apiUrl,
+  validationErrors,
 }: RecordSearchViewProps) => {
   return (
     <>
@@ -52,6 +54,7 @@ export const RecordSearchView = ({
           mainSearchTerm={mainSearchTerm}
           searching={searching}
           onClearMainQuery={onClearMainQuery}
+          validationError={validationErrors.get(mainSearchTerm.nameInData)}
         />
         <SearchHiddenInputs
           rows={rows}
@@ -89,6 +92,7 @@ export const RecordSearchView = ({
         start={start}
         searching={searching}
         userHasSearched={query.length > 0 || activeFilters.length > 0}
+        validationErrors={validationErrors}
       />
 
       {searchResults.data.length > 0 && (

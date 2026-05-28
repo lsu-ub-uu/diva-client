@@ -26,12 +26,15 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
 }
 
 export const Input = ({ className, ref, ...rest }: InputProps) => {
-  const { ids } = use(FieldContext);
+  const { ids, validationError } = use(FieldContext);
   return (
     <input
       id={ids.input}
       className={clsx(styles['input'], className)}
       ref={ref}
+      {...(validationError
+        ? { 'aria-invalid': true, 'aria-describedby': ids.error }
+        : {})}
       {...rest}
     />
   );

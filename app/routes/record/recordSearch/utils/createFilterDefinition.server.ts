@@ -3,6 +3,7 @@ import type {
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataItemCollection,
+  BFFMetadataTextVariable,
   Dependencies,
 } from '@/cora/bffTypes.server';
 import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
@@ -23,6 +24,7 @@ export interface BaseFilter {
 
 export interface TextFilter extends BaseFilter {
   type: 'text';
+  regEx: string;
 }
 
 export interface NumberFilter extends BaseFilter {
@@ -116,6 +118,7 @@ const createFilter = (
     return {
       ...commonValues,
       type: 'text',
+      regEx: (metadata as BFFMetadataTextVariable).regEx,
     };
   }
 
