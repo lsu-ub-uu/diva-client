@@ -53,7 +53,7 @@ const autocompleteSearchTerms: Record<
   string,
   Omit<AutocompleteFilter, keyof BaseFilter | 'type'>
 > = {
-  subjectTopicSearchTerm: {
+  subjectLinkedRecordIdSearchTerm: {
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',

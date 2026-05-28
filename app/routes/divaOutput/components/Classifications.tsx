@@ -47,7 +47,7 @@ export const Classifications = ({ output }: ClassificationsProps) => {
         <SearchLinkList
           pill
           heading={output.subject_authority_diva.__text?.[language]}
-          searchTerm='subjectTopicSearchTerm'
+          searchTerm='subjectLinkedRecordIdSearchTerm'
           items={output.subject_authority_diva?.topic?.map((subject) => ({
             label:
               getTitleForSubject(subject.linkedRecord, language) ||
@@ -70,7 +70,7 @@ export const Classifications = ({ output }: ClassificationsProps) => {
         <SearchLinkList
           pill
           heading={output.localLabel[0].__text?.[language]}
-          searchTerm='localLabelsLinkSearchTerm'
+          searchTerm='localLabelLinkedRecordIdSearchTerm'
           items={output.localLabel.map((label, index) => ({
             key: index,
             label: label.linkedRecord?.localLabel?.localLabel?.value,
