@@ -30,7 +30,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
@@ -65,7 +65,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
@@ -100,7 +100,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: { value: '' },
             mainSearchTerm: { value: '**' },
           },
@@ -137,7 +137,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: {
               value: 'permissionUnit_memberPermissionUnit',
             },
@@ -178,7 +178,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             filter1: { value: 'value1' },
@@ -191,7 +191,7 @@ describe('createSearchQuery', () => {
     });
   });
 
-  it('is possible to override trashBinSearchTerm and permissionUnitSearchTerm', () => {
+  it('is possible to override visibilitySearchTerm and permissionUnitSearchTerm', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: { nameInData: 'mainSearchTerm' },
@@ -202,7 +202,7 @@ describe('createSearchQuery', () => {
       memberPermissionUnit: 'memberPermissionUnit',
     } as BFFMember;
     const activeFilters = [
-      { name: 'trashBinSearchTerm', value: 'true' },
+      { name: 'visibilitySearchTerm', value: 'unpublished' },
       { name: 'permissionUnitSearchTerm', value: 'permissionUnit_test' },
     ] as ActiveFilter[];
     const start = 0;
@@ -221,7 +221,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'true' },
+            visibilitySearchTerm: { value: 'unpublished' },
             permissionUnitSearchTerm: { value: 'permissionUnit_test' },
             mainSearchTerm: { value: 'test query' },
           },
@@ -275,7 +275,7 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            trashBinSearchTerm: { value: 'false' },
+            visibilitySearchTerm: { value: 'published' },
             permissionUnitSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             testFilter: [{ value: 'testValue' }],

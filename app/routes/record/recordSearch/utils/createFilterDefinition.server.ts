@@ -55,7 +55,7 @@ const autocompleteSearchTerms: Record<
   string,
   Omit<AutocompleteFilter, keyof BaseFilter | 'type'>
 > = {
-  subjectTopicSearchTerm: {
+  subjectLinkedRecordIdSearchTerm: {
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
@@ -76,12 +76,14 @@ const autocompleteSearchTerms: Record<
   },
 };
 
+const hiddenSearchTerms = ['visibilitySearchTerm'];
+
 export const createFilters = (
   filterMetadataRefs: BFFMetadataChildReference[],
   dependencies: Dependencies,
 ): FilterDefinition[] => {
   return filterMetadataRefs
-    .map((metadata) => createFilter(metadata, dependencies))
+    .map((ref) => createFilter(ref, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };
 
@@ -92,6 +94,11 @@ const createFilter = (
   const metadata = depencencies.metadataPool.get(
     filterMetadataRef.childId,
   ) as BFFMetadataBase;
+
+  if (hiddenSearchTerms.includes(metadata.nameInData)) {
+    return undefined;
+  }
+
   const commonValues = {
     id: metadata.id,
     name: metadata.nameInData,

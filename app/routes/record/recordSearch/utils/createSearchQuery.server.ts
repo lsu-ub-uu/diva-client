@@ -14,7 +14,7 @@ export const createSearchQuery = (
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
-          trashBinSearchTerm: { value: 'false' },
+          visibilitySearchTerm: { value: 'published' },
           permissionUnitSearchTerm: {
             value: member?.memberPermissionUnit
               ? `permissionUnit_${member?.memberPermissionUnit}`
