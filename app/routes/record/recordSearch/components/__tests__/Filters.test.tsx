@@ -23,6 +23,7 @@ describe('Filters', () => {
         type: 'text',
         placeholderTextId: 'Filter1Placeholder',
         repeat: { repeatMin: 0, repeatMax: 1 },
+        regEx: '.*',
       },
     ];
     const activeFilters: ActiveFilter[] = [];
@@ -39,6 +40,7 @@ describe('Filters', () => {
             query={query}
             rows={rows}
             onClose={vi.fn()}
+            validationErrors={new Map()}
           />
         ),
       },

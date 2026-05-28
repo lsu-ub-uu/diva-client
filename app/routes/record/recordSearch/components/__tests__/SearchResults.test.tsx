@@ -24,6 +24,7 @@ describe('SearchResults', () => {
         searching={true}
         start={1}
         userHasSearched={false}
+        validationErrors={new Map()}
       />,
     );
 
@@ -102,6 +103,7 @@ describe('SearchResults', () => {
             searching={false}
             start={1}
             userHasSearched={false}
+            validationErrors={new Map()}
           />
         ),
       },
@@ -167,6 +169,7 @@ describe('SearchResults', () => {
             searching={false}
             start={1}
             userHasSearched={false}
+            validationErrors={new Map()}
           />
         ),
       },

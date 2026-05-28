@@ -11,6 +11,7 @@ interface SearchResultsProps {
   searching?: boolean;
   start: number;
   userHasSearched: boolean;
+  validationErrors: Map<string, string>;
 }
 
 export const SearchResults = ({
@@ -18,8 +19,17 @@ export const SearchResults = ({
   searching,
   start,
   userHasSearched,
+  validationErrors,
 }: SearchResultsProps) => {
   const { t } = useTranslation();
+
+  if (validationErrors.size > 0) {
+    return (
+      <Alert severity='warning'>
+        {t('divaClient_searchResultValidationErrorText')}
+      </Alert>
+    );
+  }
 
   if (searchResults.alert) {
     return (

@@ -28,13 +28,20 @@ interface SelectProps extends HTMLProps<HTMLSelectElement> {
 }
 
 export const Select = ({ className, adornment, ref, ...rest }: SelectProps) => {
-  const { ids } = use(FieldContext);
+  const { ids, validationError } = use(FieldContext);
   return (
     <div className={clsx(styles['select-wrapper'], className)}>
       {adornment && (
         <div className={clsx(styles['select-adornment'])}>{adornment}</div>
       )}
-      <select id={ids.input} {...rest} ref={ref} />
+      <select
+        id={ids.input}
+        {...(validationError
+          ? { 'aria-invalid': true, 'aria-describedby': ids.error }
+          : {})}
+        {...rest}
+        ref={ref}
+      />
       <ChevronDownIcon
         className={styles['select-chevron']}
         aria-hidden='true'

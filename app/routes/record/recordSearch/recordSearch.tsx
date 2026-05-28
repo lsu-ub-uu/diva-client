@@ -19,6 +19,7 @@ import css from './recordSearch.css?url';
 import { createActiveFilters } from './utils/createActiveFilters.server';
 import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
+import { validateSearchFormData } from './utils/validateSearchFormData.server';
 
 export const loader = async ({
   request,
@@ -55,6 +56,12 @@ export const loader = async ({
     language,
   );
 
+  const validationErrors = validateSearchFormData(
+    q,
+    activeFilters,
+    searchFormDefinition,
+  );
+
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
@@ -64,16 +71,22 @@ export const loader = async ({
     rows,
   );
 
-  const decorated = recordType.id === 'diva-output';
-
-  const searchResults = await performSearch({
-    dependencies,
-    searchId,
-    searchQuery,
-    auth,
-    decorated,
-    t,
-  });
+  let searchResults;
+  if (validationErrors.size === 0) {
+    searchResults = await performSearch({
+      dependencies,
+      searchId,
+      searchQuery,
+      auth,
+      decorated: recordType.id === 'diva-output',
+      t,
+    });
+  } else {
+    searchResults = {
+      data: [],
+      total: 0,
+    };
+  }
 
   const apiUrl =
     searchQuery &&
@@ -98,6 +111,7 @@ export const loader = async ({
     validationTypes,
     apiUrl,
     userRights,
+    validationErrors,
   };
 };
 
@@ -117,6 +131,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
     validationTypes,
     apiUrl,
     userRights,
+    validationErrors,
   } = loaderData;
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -178,6 +193,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
       onRemoveFilter={handleRemoveFilter}
       onClearAllFilters={handleClearAllFilters}
       userRights={userRights}
+      validationErrors={validationErrors}
     >
       <div className='main-content'>
         <div className='top-bar'>

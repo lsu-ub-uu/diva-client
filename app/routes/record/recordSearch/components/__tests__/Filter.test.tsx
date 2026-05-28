@@ -22,6 +22,7 @@ describe('Filter', () => {
         repeatMin: 0,
         repeatMax: 1,
       },
+      regEx: '.+',
     };
 
     render(
@@ -49,6 +50,7 @@ describe('Filter', () => {
         repeatMin: 0,
         repeatMax: 1,
       },
+      regEx: '.+',
     };
 
     render(
@@ -76,6 +78,7 @@ describe('Filter', () => {
         repeatMin: 0,
         repeatMax: 1,
       },
+      regEx: '.+',
     };
 
     const { rerender } = render(

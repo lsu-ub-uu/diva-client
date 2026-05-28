@@ -40,6 +40,7 @@ describe('SearchLayout', () => {
           repeatMin: 0,
           repeatMax: 1,
         },
+        regEx: '.+',
       },
     ];
 
@@ -72,6 +73,7 @@ describe('SearchLayout', () => {
             onClearAllFilters={onClearAllFilters}
             apiUrl=''
             userRights={['search']}
+            validationErrors={new Map()}
           />
         ),
       },

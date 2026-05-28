@@ -13,6 +13,7 @@ interface MainSearchInputProps {
   mainSearchTerm: BFFMetadata;
   searching: boolean;
   onClearMainQuery: () => void;
+  validationError?: string;
 }
 
 export const MainSearchInput = ({
@@ -20,6 +21,7 @@ export const MainSearchInput = ({
   mainSearchTerm,
   searching,
   onClearMainQuery,
+  validationError,
 }: MainSearchInputProps) => {
   const { t } = useTranslation();
   const [value, setValue] = useState(query);
@@ -33,7 +35,11 @@ export const MainSearchInput = ({
   }, [query]);
 
   return (
-    <Fieldset label={t(mainSearchTerm.textId)} size='large'>
+    <Fieldset
+      label={t(mainSearchTerm.textId)}
+      size='large'
+      errorMessage={validationError && t(validationError)}
+    >
       <div className={styles['search-query-wrapper']}>
         <Input
           type='search'
@@ -42,6 +48,7 @@ export const MainSearchInput = ({
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
           ref={inputRef}
+          aria-invalid={validationError ? 'true' : 'false'}
         />
         <div className={styles['search-buttons']}>
           {query.length > 0 && (

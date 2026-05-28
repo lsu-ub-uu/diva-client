@@ -44,6 +44,7 @@ describe('createFilters', () => {
         repeatMin: 0,
         repeatMax: 1,
       },
+      regEx: '.+',
     });
   });
 
@@ -167,6 +168,7 @@ describe('createFilters', () => {
         repeatMin: 0,
         repeatMax: Number.MAX_VALUE,
       },
+      regEx: '.+',
     });
   });
 });
