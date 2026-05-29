@@ -244,51 +244,54 @@ describe('createFilters', () => {
     },
   );
 
-  it('should hide visibilitySearchTerm', () => {
-    const dependencies = {
-      metadataPool: listToPool<BFFMetadata>([
-        {
-          id: 'visibilityCollectionVar',
-          type: 'collectionVariable',
-          textId: 'someTextId',
-          nameInData: 'visibilitySearchTerm',
-          refCollection: 'visibilityCollection',
-        } as BFFMetadataCollectionVariable,
-        {
-          id: 'visibilityCollection',
-          nameInData: 'visibility',
-          type: 'itemCollection',
-          collectionItemReferences: [
-            { refCollectionItemId: 'publishedItem' },
-            { refCollectionItemId: 'unpublishedItem' },
-          ],
-        } as BFFMetadataItemCollection,
-        {
-          id: 'publishedItem',
-          nameInData: 'published',
-          type: 'collectionItem',
-          textId: 'someCollectionItemTextId',
-          defTextId: 'someCollectionItemDefTextId',
-        },
-        {
-          id: 'unpublishedItem',
-          nameInData: 'unpublished',
-          type: 'collectionItem',
-          textId: 'someCollectionItemTextId',
-          defTextId: 'someCollectionItemDefTextId',
-        },
-      ]),
-    } as Dependencies;
+  it.each(['visibilitySearchTerm', 'permissionUnitSearchTerm'])(
+    'hides %s',
+    (searchTermName) => {
+      const dependencies = {
+        metadataPool: listToPool<BFFMetadata>([
+          {
+            id: 'someCollectionVar',
+            type: 'collectionVariable',
+            textId: 'someTextId',
+            nameInData: searchTermName,
+            refCollection: 'someCollection',
+          } as BFFMetadataCollectionVariable,
+          {
+            id: 'someCollection',
+            nameInData: 'some',
+            type: 'itemCollection',
+            collectionItemReferences: [
+              { refCollectionItemId: 'publishedItem' },
+              { refCollectionItemId: 'unpublishedItem' },
+            ],
+          } as BFFMetadataItemCollection,
+          {
+            id: 'publishedItem',
+            nameInData: 'published',
+            type: 'collectionItem',
+            textId: 'someCollectionItemTextId',
+            defTextId: 'someCollectionItemDefTextId',
+          },
+          {
+            id: 'unpublishedItem',
+            nameInData: 'unpublished',
+            type: 'collectionItem',
+            textId: 'someCollectionItemTextId',
+            defTextId: 'someCollectionItemDefTextId',
+          },
+        ]),
+      } as Dependencies;
 
-    const metadataRefs = [
-      {
-        childId: 'visibilityCollectionVar',
-        repeatMin: '0',
-        repeatMax: '1',
-      } as BFFMetadataChildReference,
-    ];
+      const metadataRefs = [
+        {
+          childId: 'someCollectionVar',
+          repeatMin: '0',
+          repeatMax: '1',
+        } as BFFMetadataChildReference,
+      ];
 
-    const filters = createFilters(metadataRefs, dependencies);
-    expect(filters).toHaveLength(0);
-  });
+      const filters = createFilters(metadataRefs, dependencies);
+      expect(filters).toHaveLength(0);
+    },
+  );
 });

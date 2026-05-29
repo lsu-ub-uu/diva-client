@@ -76,7 +76,7 @@ const autocompleteSearchTerms: Record<
   },
 };
 
-const hiddenSearchTerms = ['visibilitySearchTerm'];
+const hiddenSearchTerms = ['visibilitySearchTerm', 'permissionUnitSearchTerm'];
 
 export const createFilters = (
   filterMetadataRefs: BFFMetadataChildReference[],
