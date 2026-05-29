@@ -174,7 +174,7 @@ const createFormDefinitionFromRecordTypeUsingKey = (
   );
 };
 
-const createDefinitionFromMetadataGroupAndPresentationGroup = (
+export const createDefinitionFromMetadataGroupAndPresentationGroup = (
   dependencies: Dependencies,
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup,
