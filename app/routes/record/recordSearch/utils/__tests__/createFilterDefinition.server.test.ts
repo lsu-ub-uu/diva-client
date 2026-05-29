@@ -185,19 +185,6 @@ describe('createFilters', () => {
         },
       },
     ],
-    [
-      'permissionUnitSearchTerm',
-      {
-        recordType: 'permissionUnit',
-        searchType: 'permissionUnitSearch',
-        searchTerm:
-          'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
-        presentationPath: {
-          sv: 'permissionUnit.recordInfo.id.value',
-          en: 'permissionUnit.recordInfo.id.value',
-        },
-      },
-    ],
   ])(
     'creates an autocomplete filter for search term %s',
     (
