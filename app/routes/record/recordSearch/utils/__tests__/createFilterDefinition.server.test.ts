@@ -172,6 +172,31 @@ describe('createFilters', () => {
     });
   });
 
+  it('returns no filter for unsupported metadata type', () => {
+    const dependencies = {
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someGroup',
+          type: 'unknownType' as any,
+          textId: 'someTextId',
+          defTextId: 'someDefTextId',
+          nameInData: 'someGroupName',
+        } as BFFMetadata,
+      ]),
+    } as Dependencies;
+
+    const metadataRefs = [
+      {
+        childId: 'someGroup',
+        repeatMin: '0',
+        repeatMax: '1',
+      } as BFFMetadataChildReference,
+    ];
+
+    const filters = createFilters(metadataRefs, dependencies);
+    expect(filters).toHaveLength(0);
+  });
+
   it.each([
     [
       'subjectLinkedRecordIdSearchTerm',

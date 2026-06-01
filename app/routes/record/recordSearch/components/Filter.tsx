@@ -142,6 +142,7 @@ export const Filter = ({
             forceSubmit();
           }}
           currentValueText={currentValueText}
+          validationError={validationError}
         />
       );
   }
@@ -152,6 +153,7 @@ interface AutocompleteFilterProps {
   value: string;
   onChange: (newValue: string) => void;
   currentValueText?: string;
+  validationError?: string;
 }
 
 const AutocompleteFilter = ({
@@ -159,6 +161,7 @@ const AutocompleteFilter = ({
   value,
   onChange,
   currentValueText,
+  validationError,
 }: AutocompleteFilterProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
@@ -183,7 +186,11 @@ const AutocompleteFilter = ({
   };
 
   return (
-    <Fieldset label={t(filter.textId)} size='small'>
+    <Fieldset
+      label={t(filter.textId)}
+      size='small'
+      errorMessage={validationError && t(validationError)}
+    >
       <Combobox
         name={filter.name}
         value={value}
