@@ -133,7 +133,7 @@ const EnglishContent = () => (
     </section>
 
     <footer className='last-updated'>
-      Last updated: <time dateTime='2026-06'>June 2026.</time>.
+      Last updated: <time dateTime='2026-06'>June 2026</time>.
     </footer>
   </>
 );
@@ -241,7 +241,7 @@ const SwedishContent = () => (
     </section>
 
     <footer className='last-updated'>
-      Senast uppdaterad: <time dateTime='2026-06'>juni 2026.</time>.
+      Senast uppdaterad: <time dateTime='2026-06'>juni 2026</time>.
     </footer>
   </>
 );
