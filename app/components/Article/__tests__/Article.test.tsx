@@ -17,13 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen } from '@testing-library/react';
+import { renderWithRoutesStub } from '@/utils/testUtils';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Article } from '../Article';
 
 describe('Article', () => {
   it('renders children inside an article element', () => {
-    render(
+    renderWithRoutesStub(
       <Article>
         <h1>Test Title</h1>
         <p>Test content</p>
@@ -39,7 +40,7 @@ describe('Article', () => {
   });
 
   it('renders inside a main element', () => {
-    render(
+    renderWithRoutesStub(
       <Article>
         <p>Content</p>
       </Article>,
