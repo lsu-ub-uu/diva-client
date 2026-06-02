@@ -65,6 +65,7 @@
   --color-output-card-border: var(--color-thin-border);
   --background-image-filter: saturate(0.7) brightness(0.7) contrast(0.8);
   --color-modal-backdrop: rgb(0 0 0 / 50%);
+  --color-table-heading: var(--color-gray-main);
 
   @mixin dark-color-scheme {
     --color-background: rgb(33 33 33);
@@ -113,9 +114,10 @@
     --background-image-filter: saturate(0.7) brightness(0.5) contrast(0.8);
     --color-highlighted: var(--color-button-secondary-hover);
     --color-highligted: var(--color-highlighted);
+    --color-table-heading: var(--color-card);
   }
 
-  [data-color-scheme='dark'] {
+  &[data-color-scheme='dark'] {
     @include dark-color-scheme;
   }
 }

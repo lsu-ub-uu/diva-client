@@ -6,15 +6,11 @@ import { BugOffIcon } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
+import { href, NavLink } from 'react-router';
 
 interface FooterProps {
   applicationVersion: string;
 }
-
-const accessibilityLink = {
-  sv: 'https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse',
-  en: 'https://www.info.diva-portal.org/w/diva/en/about-diva/accessibility-report---diva',
-};
 
 const aboutLink = {
   sv: 'https://www.info.diva-portal.org/w/diva/om-diva',
@@ -37,7 +33,34 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles['footer-links']}>
+      <nav
+        aria-label={t('divaClient_footerLinksAriaLabelText')}
+        className={styles['footer-links']}
+      >
+        <FooterExternalLink href={aboutLink[language]}>
+          {t('divaClient_footerAboutLinkText')}
+        </FooterExternalLink>
+        <FooterExternalLink href='/rest'>
+          {t('divaClient_footerRestApiLinkText')}
+        </FooterExternalLink>
+        <FooterExternalLink href='/jsclient'>
+          {t('divaClient_footerJsClientLinkText')}
+        </FooterExternalLink>
+        <FooterInternalLink href={href('/cookies')}>
+          {t('divaClient_footerCookiesLinkText')}
+        </FooterInternalLink>
+
+        <FooterInternalLink href={href('/accessibility')}>
+          {t('divaClient_footerAccessibilityLinkText')}
+        </FooterInternalLink>
+      </nav>
+
+      {/* eslint-disable-next-line  */}
+      <div
+        className={styles['footer-version']}
+        onClick={handleVersionClick}
+        style={{ transform: `rotate(${devModeClickCount}deg)` }}
+      >
         {devMode && (
           <IconButton
             tooltip='Disable dev mode'
@@ -50,26 +73,7 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
             <BugOffIcon />
           </IconButton>
         )}
-        {/* eslint-disable-next-line  */}
-        <span
-          className={styles['footer-link']}
-          onClick={handleVersionClick}
-          style={{ transform: `rotate(${devModeClickCount}deg)` }}
-        >
-          {t('divaClient_footerVersionText', { version: applicationVersion })}
-        </span>
-        <FooterLink href={accessibilityLink[language]}>
-          {t('divaClient_footerAccessibilityLinkText')}
-        </FooterLink>
-        <FooterLink href={aboutLink[language]}>
-          {t('divaClient_footerAboutLinkText')}
-        </FooterLink>
-        <FooterLink href='/rest'>
-          {t('divaClient_footerRestApiLinkText')}
-        </FooterLink>
-        <FooterLink href='/jsclient'>
-          {t('divaClient_footerJsClientLinkText')}
-        </FooterLink>
+        {t('divaClient_footerVersionText', { version: applicationVersion })}
       </div>
     </footer>
   );
@@ -80,12 +84,23 @@ interface FooterLinkProps {
   children: ReactNode;
 }
 
-const FooterLink = ({ href, children }: FooterLinkProps) => (
+const FooterExternalLink = ({ href, children }: FooterLinkProps) => (
   <Button
     variant='tertiary'
     as='a'
     href={href}
     rel='noopener noreferrer nofollow'
+    className={styles['footer-link']}
+  >
+    {children}
+  </Button>
+);
+
+const FooterInternalLink = ({ href, children }: FooterLinkProps) => (
+  <Button
+    variant='tertiary'
+    as={NavLink}
+    to={href}
     className={styles['footer-link']}
   >
     {children}
