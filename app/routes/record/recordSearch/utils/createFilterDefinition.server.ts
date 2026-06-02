@@ -64,7 +64,7 @@ const autocompleteSearchTerms: Record<
       en: 'subject.variant_lang_eng.topic.value',
     },
   },
-  permissionUnitSearchTerm: {
+  permissionUnitLinkedRecordIdSearchTerm: {
     recordType: 'permissionUnit',
     searchType: 'permissionUnitSearch',
     searchTerm:
@@ -76,7 +76,10 @@ const autocompleteSearchTerms: Record<
   },
 };
 
-const hiddenSearchTerms = ['visibilitySearchTerm', 'permissionUnitSearchTerm'];
+const hiddenSearchTerms = [
+  'visibilitySearchTerm',
+  'permissionUnitLinkedRecordIdSearchTerm',
+];
 
 export const createFilters = (
   filterMetadataRefs: BFFMetadataChildReference[],
