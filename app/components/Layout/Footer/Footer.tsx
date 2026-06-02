@@ -12,19 +12,10 @@ interface FooterProps {
   applicationVersion: string;
 }
 
-const accessibilityLink = {
-  sv: 'https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse',
-  en: 'https://www.info.diva-portal.org/w/diva/en/about-diva/accessibility-report---diva',
-};
 
 const aboutLink = {
   sv: 'https://www.info.diva-portal.org/w/diva/om-diva',
   en: 'https://www.info.diva-portal.org/w/diva/en/about-diva',
-};
-
-const accessibilityReportLink = {
-  sv: 'https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse',
-  en: 'https://www.info.diva-portal.org/w/diva/en/about-diva/accessibility-report---diva',
 };
 
 export const Footer = ({ applicationVersion }: FooterProps) => {
@@ -44,26 +35,22 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
   return (
     <footer className={styles.footer}>
       <div className={styles['footer-links']}>
-        <FooterLink href={aboutLink[language]}>
+        <FooterExternalLink href={aboutLink[language]}>
           {t('divaClient_footerAboutLinkText')}
-        </FooterLink>
-        <FooterLink href='/rest'>
+        </FooterExternalLink>
+        <FooterExternalLink href='/rest'>
           {t('divaClient_footerRestApiLinkText')}
-        </FooterLink>
-        <FooterLink href='/jsclient'>
+        </FooterExternalLink>
+        <FooterExternalLink href='/jsclient'>
           {t('divaClient_footerJsClientLinkText')}
-        </FooterLink>
-        <Button
-          variant='tertiary'
-          as={Link}
-          to={href('/cookies')}
-          className={styles['footer-link']}
-        >
+        </FooterExternalLink>
+        <FooterInternalLink href={href('/cookies')}>
           {t('divaClient_footerCookiesLinkText')}
-        </Button>
-        <FooterLink href={accessibilityReportLink[language]}>
+        </FooterInternalLink>
+
+        <FooterInternalLink href={href('/accessibility')}>
           {t('divaClient_footerAccessibilityLinkText')}
-        </FooterLink>
+        </FooterInternalLink>
       </div>
 
       {/* eslint-disable-next-line  */}
@@ -95,12 +82,23 @@ interface FooterLinkProps {
   children: ReactNode;
 }
 
-const FooterLink = ({ href, children }: FooterLinkProps) => (
+const FooterExternalLink = ({ href, children }: FooterLinkProps) => (
   <Button
     variant='tertiary'
     as='a'
     href={href}
     rel='noopener noreferrer nofollow'
+    className={styles['footer-link']}
+  >
+    {children}
+  </Button>
+);
+
+const FooterInternalLink = ({ href, children }: FooterLinkProps) => (
+  <Button
+    variant='tertiary'
+    as={Link}
+    to={href}
     className={styles['footer-link']}
   >
     {children}

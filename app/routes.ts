@@ -27,6 +27,7 @@ export default [
 
   /* Article pages */
   route('cookies', 'routes/cookies/cookies.tsx'),
+  route('accessibility', 'routes/accessibility/accessibility.tsx'),
 
   /* Resource routes */
   route(

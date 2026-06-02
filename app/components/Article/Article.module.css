@@ -16,7 +16,14 @@
   line-height: 1.6;
 }
 
-.article .last-updated {
+.article ul,
+.article ol {
+  padding-left: var(--gap-xl);
+  margin-bottom: var(--gap);
+  line-height: 1.6;
+}
+
+.article footer {
   margin-top: var(--gap-xl);
   font-style: italic;
 }
