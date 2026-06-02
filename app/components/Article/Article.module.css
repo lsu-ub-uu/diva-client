@@ -1,0 +1,22 @@
+.article {
+  max-width: 1000px;
+}
+
+.article h1 {
+  margin-bottom: var(--gap-l);
+}
+
+.article h2 {
+  margin-top: var(--gap-xl);
+  margin-bottom: var(--gap-s);
+}
+
+.article p {
+  margin-bottom: var(--gap);
+  line-height: 1.6;
+}
+
+.article .last-updated {
+  margin-top: var(--gap-xl);
+  font-style: italic;
+}

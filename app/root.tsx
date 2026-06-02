@@ -224,14 +224,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   useChangeLanguage(locale);
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      data-color-scheme={userPreferences?.colorScheme || 'light'}
+    >
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Meta />
         <Links />
       </head>
-      <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
+      <body>
         {children}
         <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />

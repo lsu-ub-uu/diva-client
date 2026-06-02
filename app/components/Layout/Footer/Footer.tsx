@@ -6,6 +6,7 @@ import { BugOffIcon } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
+import { href, Link } from 'react-router';
 
 interface FooterProps {
   applicationVersion: string;
@@ -19,6 +20,11 @@ const accessibilityLink = {
 const aboutLink = {
   sv: 'https://www.info.diva-portal.org/w/diva/om-diva',
   en: 'https://www.info.diva-portal.org/w/diva/en/about-diva',
+};
+
+const accessibilityReportLink = {
+  sv: 'https://www.info.diva-portal.org/w/diva/om-diva/diva-portalernas-tillganglighetsredogorelse',
+  en: 'https://www.info.diva-portal.org/w/diva/en/about-diva/accessibility-report---diva',
 };
 
 export const Footer = ({ applicationVersion }: FooterProps) => {
@@ -38,6 +44,34 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
   return (
     <footer className={styles.footer}>
       <div className={styles['footer-links']}>
+        <FooterLink href={aboutLink[language]}>
+          {t('divaClient_footerAboutLinkText')}
+        </FooterLink>
+        <FooterLink href='/rest'>
+          {t('divaClient_footerRestApiLinkText')}
+        </FooterLink>
+        <FooterLink href='/jsclient'>
+          {t('divaClient_footerJsClientLinkText')}
+        </FooterLink>
+        <Button
+          variant='tertiary'
+          as={Link}
+          to={href('/cookies')}
+          className={styles['footer-link']}
+        >
+          {t('divaClient_footerCookiesLinkText')}
+        </Button>
+        <FooterLink href={accessibilityReportLink[language]}>
+          {t('divaClient_footerAccessibilityLinkText')}
+        </FooterLink>
+      </div>
+
+      {/* eslint-disable-next-line  */}
+      <div
+        className={styles['footer-version']}
+        onClick={handleVersionClick}
+        style={{ transform: `rotate(${devModeClickCount}deg)` }}
+      >
         {devMode && (
           <IconButton
             tooltip='Disable dev mode'
@@ -50,26 +84,7 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
             <BugOffIcon />
           </IconButton>
         )}
-        {/* eslint-disable-next-line  */}
-        <span
-          className={styles['footer-link']}
-          onClick={handleVersionClick}
-          style={{ transform: `rotate(${devModeClickCount}deg)` }}
-        >
-          {t('divaClient_footerVersionText', { version: applicationVersion })}
-        </span>
-        <FooterLink href={accessibilityLink[language]}>
-          {t('divaClient_footerAccessibilityLinkText')}
-        </FooterLink>
-        <FooterLink href={aboutLink[language]}>
-          {t('divaClient_footerAboutLinkText')}
-        </FooterLink>
-        <FooterLink href='/rest'>
-          {t('divaClient_footerRestApiLinkText')}
-        </FooterLink>
-        <FooterLink href='/jsclient'>
-          {t('divaClient_footerJsClientLinkText')}
-        </FooterLink>
+        {t('divaClient_footerVersionText', { version: applicationVersion })}
       </div>
     </footer>
   );

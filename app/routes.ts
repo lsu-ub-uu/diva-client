@@ -18,11 +18,15 @@ export default [
     ]),
   ]),
 
+  /* DiVA output specific pages */
   route('diva-output/:recordId', 'routes/divaOutput/divaOutputView.tsx'),
 
   /* Auth */
   route('login', 'routes/auth/login.tsx'),
   route('logout', 'routes/auth/logout.tsx'),
+
+  /* Article pages */
+  route('cookies', 'routes/cookies/cookies.tsx'),
 
   /* Resource routes */
   route(
@@ -40,6 +44,7 @@ export default [
   route('sitemap.xml', 'routes/resourceRoutes/sitemap/sitemap.ts'),
   route('robots.txt', 'routes/resourceRoutes/robots/robots.ts'),
 
+  /* Dev pages */
   route('design-system', 'routes/docs/designSystem.tsx'),
   route('presentation-playground', 'routes/docs/presentationPlayground.tsx'),
 ] satisfies RouteConfig;
