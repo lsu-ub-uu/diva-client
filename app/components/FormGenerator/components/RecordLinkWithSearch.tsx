@@ -77,11 +77,12 @@ export const RecordLinkWithSearch = ({
     };
 
     if (
-      recordLinkSearchPresentation.permissionUnitSearchTerm &&
+      recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm &&
       member?.memberPermissionUnit
     ) {
-      data[recordLinkSearchPresentation.permissionUnitSearchTerm.name] =
-        `permissionUnit_${member?.memberPermissionUnit}`;
+      data[
+        recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm.name
+      ] = `permissionUnit_${member?.memberPermissionUnit}`;
     }
 
     fetcher.submit(data, {

@@ -31,7 +31,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: { value: '' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -66,7 +66,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: { value: '' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -101,7 +101,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: { value: '' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: '**' },
           },
         },
@@ -138,7 +138,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: {
+            permissionUnitLinkedRecordIdSearchTerm: {
               value: 'permissionUnit_memberPermissionUnit',
             },
             mainSearchTerm: { value: 'test query' },
@@ -179,7 +179,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: { value: '' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             filter1: { value: 'value1' },
             filter2: { value: 'value2' },
@@ -191,7 +191,7 @@ describe('createSearchQuery', () => {
     });
   });
 
-  it('is possible to override visibilitySearchTerm and permissionUnitSearchTerm', () => {
+  it('is possible to override visibilitySearchTerm and permissionUnitLinkedRecordIdSearchTerm', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: { nameInData: 'mainSearchTerm' },
@@ -203,7 +203,10 @@ describe('createSearchQuery', () => {
     } as BFFMember;
     const activeFilters = [
       { name: 'visibilitySearchTerm', value: 'unpublished' },
-      { name: 'permissionUnitSearchTerm', value: 'permissionUnit_test' },
+      {
+        name: 'permissionUnitLinkedRecordIdSearchTerm',
+        value: 'permissionUnit_test',
+      },
     ] as ActiveFilter[];
     const start = 0;
     const rows = 10;
@@ -222,7 +225,9 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'unpublished' },
-            permissionUnitSearchTerm: { value: 'permissionUnit_test' },
+            permissionUnitLinkedRecordIdSearchTerm: {
+              value: 'permissionUnit_test',
+            },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -276,7 +281,7 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             visibilitySearchTerm: { value: 'published' },
-            permissionUnitSearchTerm: { value: '' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             testFilter: [{ value: 'testValue' }],
           },

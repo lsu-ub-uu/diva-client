@@ -72,7 +72,7 @@ const searchSitemapEntries = async () => {
   while (moreData) {
     const searchResponse =
       await getSearchResultDataListBySearchType<DataListWrapper>(
-        'diva-outputSearch',
+        'outputPublicSearch',
         {
           name: 'search',
           children: [
@@ -83,8 +83,8 @@ const searchSitemapEntries = async () => {
                   name: 'includePart',
                   children: [
                     {
-                      name: 'recordIdSearchTerm',
-                      value: '**',
+                      name: 'visibilitySearchTerm',
+                      value: 'published',
                     },
                   ],
                 },

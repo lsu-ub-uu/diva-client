@@ -15,7 +15,7 @@ export const createSearchQuery = (
       include: {
         includePart: {
           visibilitySearchTerm: { value: 'published' },
-          permissionUnitSearchTerm: {
+          permissionUnitLinkedRecordIdSearchTerm: {
             value: member?.memberPermissionUnit
               ? `permissionUnit_${member?.memberPermissionUnit}`
               : '',

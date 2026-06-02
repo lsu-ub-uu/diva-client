@@ -256,7 +256,7 @@ describe('createFilters', () => {
     },
   );
 
-  it.each(['visibilitySearchTerm', 'permissionUnitSearchTerm'])(
+  it.each(['visibilitySearchTerm', 'permissionUnitLinkedRecordIdSearchTerm'])(
     'hides %s',
     (searchTermName) => {
       const dependencies = {
