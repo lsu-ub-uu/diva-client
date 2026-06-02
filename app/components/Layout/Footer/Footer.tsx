@@ -6,12 +6,11 @@ import { BugOffIcon } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Footer.module.css';
-import { href, Link } from 'react-router';
+import { href, NavLink } from 'react-router';
 
 interface FooterProps {
   applicationVersion: string;
 }
-
 
 const aboutLink = {
   sv: 'https://www.info.diva-portal.org/w/diva/om-diva',
@@ -34,7 +33,10 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles['footer-links']}>
+      <nav
+        aria-label={t('divaClient_footerLinksAriaLabelText')}
+        className={styles['footer-links']}
+      >
         <FooterExternalLink href={aboutLink[language]}>
           {t('divaClient_footerAboutLinkText')}
         </FooterExternalLink>
@@ -51,7 +53,7 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
         <FooterInternalLink href={href('/accessibility')}>
           {t('divaClient_footerAccessibilityLinkText')}
         </FooterInternalLink>
-      </div>
+      </nav>
 
       {/* eslint-disable-next-line  */}
       <div
@@ -97,7 +99,7 @@ const FooterExternalLink = ({ href, children }: FooterLinkProps) => (
 const FooterInternalLink = ({ href, children }: FooterLinkProps) => (
   <Button
     variant='tertiary'
-    as={Link}
+    as={NavLink}
     to={href}
     className={styles['footer-link']}
   >

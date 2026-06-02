@@ -25,6 +25,12 @@
 
 .footer-link {
   font-size: var(--font-size-s);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.footer-link[aria-current='page'] {
+  background-color: var(--color-button-secondary-active);
 }
 
 .footer-version {

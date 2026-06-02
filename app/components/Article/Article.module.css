@@ -1,4 +1,5 @@
 .article {
+  padding-top: var(--gap-xl);
   max-width: 1000px;
 }
 

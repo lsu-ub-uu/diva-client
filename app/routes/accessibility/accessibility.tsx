@@ -20,9 +20,15 @@
 import { useLanguage } from '@/i18n/useLanguage';
 import { Article } from '@/components/Article/Article';
 import type { Route } from './+types/accessibility';
+import { i18nContext } from 'server/i18n';
 
-export const meta: Route.MetaFunction = () => [
-  { title: 'Accessibility | DiVA' },
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const { t } = context.get(i18nContext);
+  return { breadcrumb: t('divaClient_footerAccessibilityLinkText') };
+};
+
+export const meta: Route.MetaFunction = ({ loaderData }) => [
+  { title: `${loaderData.breadcrumb} | DiVA` },
 ];
 
 const EnglishContent = () => (

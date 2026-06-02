@@ -19,6 +19,7 @@
 
 import type { ReactNode } from 'react';
 import styles from './Article.module.css';
+import { Breadcrumbs } from '../Layout/Breadcrumbs/Breadcrumbs';
 
 interface ArticleProps {
   children: ReactNode;
@@ -26,6 +27,10 @@ interface ArticleProps {
 
 export const Article = ({ children }: ArticleProps) => (
   <main className='grid main-content'>
+    <div className='grid-col-12'>
+      <Breadcrumbs />
+    </div>
+
     <article className={`grid-col-12 ${styles['article']}`}>{children}</article>
   </main>
 );
