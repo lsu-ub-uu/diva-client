@@ -86,6 +86,8 @@
       border-spacing: 0;
       border: 1px solid var(--color-output-card-border);
       border-radius: var(--border-radius-s);
+      display: block;
+      overflow-x: auto;
     }
 
     th,

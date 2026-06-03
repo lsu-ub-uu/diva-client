@@ -141,7 +141,7 @@ const EnglishContent = () => (
 const SwedishContent = () => (
   <>
     <header>
-      <h1>Tillgänglighetsredogörelse</h1>
+      <h1>Tillgänglighets­redogörelse</h1>
       <p>
         Det här dokumentet beskriver hur den gemensamma DiVA-portalen och
         DiVA-medlemmarnas enskilda portaler uppfyller lagen om tillgänglighet
