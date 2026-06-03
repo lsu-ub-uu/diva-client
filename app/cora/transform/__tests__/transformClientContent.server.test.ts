@@ -1,24 +1,22 @@
-import coraDivaClientContent from '@/__mocks__/bff/coraDivaClientContent.json';
+import { coraDivaClientContent } from '@/__mocks__/bff/coraDivaClientContent';
 import emptyTestData from '@/__mocks__/bff/emptyDataList.json';
 import { describe, expect, it } from 'vitest';
 import { transformClientContent } from '../transformClientContent.server';
-import type { BFFClientContent } from '@/cora/bffTypes.server';
+import type { BFFClientContent, BFFSeverity } from '@/cora/bffTypes.server';
 
 describe('transformClientContent', () => {
-  it('transforms the first record in the list', () => {});
-
   it('Empty list should return empty', () => {
     const metadataList = transformClientContent(emptyTestData);
     expect(metadataList).toStrictEqual([]);
   });
 
-  it('Returns one clientContent entry', () => {
-    const result = transformClientContent(coraDivaClientContent);
+  it.each(['success', 'info', 'warning', 'error', 'neutral'] as BFFSeverity[])('Returns one clientContent entry for severity %s', (severity) => {
+    const result = transformClientContent(coraDivaClientContent(severity));
     expect(result).toStrictEqual([
       {
         id: 'diva-clientContent',
         globalAlert: {
-          severity: 'warning',
+          severity,
           text: {
             cimode: 'textText',
             sv: 'Det här är en förhandsvisning av nya DiVA, med tillfälliga testdata. Miljön är inte färdig och kommer att ändras.',
