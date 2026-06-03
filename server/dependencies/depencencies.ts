@@ -86,7 +86,10 @@ import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
-import { transformClientContent } from '@/cora/transform/transformClientContent.server';
+import {
+  transformClientContent,
+  transformClientContentRecord,
+} from '@/cora/transform/transformClientContent.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -111,7 +114,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
-  clientContent: listToPool<BFFClientContent>([]),
+  clientContentPool: listToPool<BFFClientContent>([]),
 };
 
 export type DependencyType =
@@ -205,7 +208,7 @@ const loadDependencies = async () => {
     await applyDataChangeEvent(event);
   }
 
-  dependencies.clientContent = listToPool<BFFClientContent>(
+  dependencies.clientContentPool = listToPool<BFFClientContent>(
     transformClientContent(clientContents.data),
   );
   eventBuffer.clear();
@@ -223,7 +226,7 @@ export const getDependencies = async () => {
 };
 
 export const getClientContent = (dependencies: Dependencies) => {
-  return dependencies.clientContent.get('diva-clientContent');
+  return dependencies.clientContentPool.get('diva-clientContent');
 };
 
 export const poolTypeMap = {
@@ -237,7 +240,7 @@ export const poolTypeMap = {
   login: 'loginPool',
   'diva-member': 'memberPool',
   'diva-organisation': 'organisationPool',
-  'diva-clientContent': 'clientContent',
+  'diva-clientContent': 'clientContentPool',
   text: 'textPool',
 } as const;
 
@@ -252,7 +255,7 @@ const transformFunctionMap = {
   login: transformCoraLoginToBFFLogin,
   'diva-member': transformMember,
   'diva-organisation': transformOrganisation,
-  clientContent: transformClientContent,
+  'diva-clientContent': transformClientContentRecord,
   text: transformCoraTextToBFFText,
 } as const;
 

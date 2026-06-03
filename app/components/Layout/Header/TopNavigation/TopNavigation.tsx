@@ -20,6 +20,7 @@ import {
   NewspaperIcon,
   NotebookTabsIcon,
   PaletteIcon,
+  PanelsTopLeftIcon,
   TagIcon,
   UsersIcon,
 } from 'lucide-react';
@@ -51,6 +52,7 @@ export const icons: Record<string, ReactNode> = {
   'diva-publisher': <BookCheckIcon />,
   'diva-funder': <HandCoinsIcon />,
   'diva-member': <MonitorCogIcon />,
+  'diva-clientContent': <PanelsTopLeftIcon />,
 };
 
 export const TopNavigation = ({ navigation }: TopNavigationProps) => {

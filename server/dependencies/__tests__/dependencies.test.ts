@@ -1,3 +1,4 @@
+import coraClientContent from '@/__mocks__/bff/coraDivaClientContent.json';
 import coraRecordType from '@/__mocks__/bff/coraDivaRecordTypes.json';
 import coraLoginUnit from '@/__mocks__/bff/coraLoginUnit.json';
 import coraLoginWebRedirect from '@/__mocks__/bff/coraLoginWebRedirect.json';
@@ -42,6 +43,7 @@ const testDataByRecordTypeId: Record<string, DataListWrapper> = {
   login: coraLoginWebRedirect,
   'diva-member': coraMembers,
   'diva-organisation': coraOrganisations as DataListWrapper,
+  'diva-clientContent': coraClientContent as DataListWrapper,
 };
 
 const setUpMocks = () => {
@@ -96,6 +98,11 @@ const setUpMocks = () => {
         data: coraOrganisations as DataListWrapper,
       } as AxiosResponse<DataListWrapper>;
     }
+    if (type === 'diva-clientContent') {
+      return {
+        data: coraClientContent as DataListWrapper,
+      } as AxiosResponse<DataListWrapper>;
+    }
     if (type === 'guiElement') {
       return {
         data: coraGuiElements as DataListWrapper,
@@ -146,6 +153,9 @@ describe('dependencies', () => {
       expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledWith(
         'diva-organisation',
       );
+      expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledWith(
+        'diva-clientContent',
+      );
     });
 
     it('should return cached dependencies when already initialized', async () => {
@@ -154,11 +164,11 @@ describe('dependencies', () => {
       setUpMocks();
       await getDependencies();
 
-      expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledTimes(11);
+      expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledTimes(12);
 
       await getDependencies();
 
-      expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledTimes(11);
+      expect(vi.mocked(getRecordDataListByType)).toHaveBeenCalledTimes(12);
     });
   });
 
@@ -281,6 +291,7 @@ describe('dependencies', () => {
         'diva-organisation:19263605242540875',
         'organisationPool',
       ],
+      ['diva-clientContent', 'diva-clientContent', 'clientContentPool'],
     ])(
       'handles update with correct transformation for recordType %s',
       async (recordType, recordId, poolName) => {

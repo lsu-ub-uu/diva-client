@@ -441,5 +441,5 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
-  clientContent: Lookup<string, BFFClientContent>;
+  clientContentPool: Lookup<string, BFFClientContent>;
 }

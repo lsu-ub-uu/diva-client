@@ -48,10 +48,12 @@ import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
-import { Alert, type Severity } from './components/Alert/Alert';
+import { Alert } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
 import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
+import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
+import { useLanguage } from './i18n/useLanguage';
 import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
@@ -61,8 +63,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
-import { useLanguage } from './i18n/useLanguage';
 
 const { MODE } = import.meta.env;
 
@@ -71,16 +71,21 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   try {
     const { auth, notification } = context.get(sessionContext);
-    const { t } = context.get(i18nContext);
     const dependencies = await getDependencies();
     const member = getMemberFromHostname(request, dependencies);
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
-    const navigation = await getNavigation(dependencies, member, auth);
+    const clientContent = getClientContent(dependencies);
+    const navigation = await getNavigation(
+      dependencies,
+      member,
+      clientContent,
+      auth,
+    );
     const user = auth && createUser(auth);
     const userPreferences = await parseUserPreferencesCookie(request);
-    const globalAlert = getClientContent(dependencies).globalAlert;
+    const globalAlert = clientContent.globalAlert;
     const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
     return {
