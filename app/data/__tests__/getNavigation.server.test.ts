@@ -6,7 +6,11 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { BFFMember, BFFRecordType } from '@/cora/bffTypes.server';
+import type {
+  BFFClientContent,
+  BFFMember,
+  BFFRecordType,
+} from '@/cora/bffTypes.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import type { AxiosResponse } from 'axios';
@@ -38,6 +42,7 @@ describe('getNavigation', () => {
 
     const navigation = await getNavigation(
       mockDependencies,
+      undefined,
       undefined,
       undefined,
     );
@@ -84,6 +89,7 @@ describe('getNavigation', () => {
 
     const navigation = await getNavigation(
       mockDependencies,
+      undefined,
       undefined,
       mockAuth,
     );
@@ -141,6 +147,7 @@ describe('getNavigation', () => {
 
     const navigation = await getNavigation(
       mockDependencies,
+      undefined,
       undefined,
       mockAuth,
     );
@@ -203,6 +210,7 @@ describe('getNavigation', () => {
     const navigation = await getNavigation(
       mockDependencies,
       mockMember,
+      undefined,
       mockAuth,
     );
 
@@ -257,6 +265,7 @@ describe('getNavigation', () => {
     const navigation = await getNavigation(
       mockDependencies,
       mockMember,
+      undefined,
       mockAuth,
     );
 
@@ -270,6 +279,116 @@ describe('getNavigation', () => {
       id: 'diva-member',
       link: '/diva-member/someMemberId/update',
       textId: 'divaClient_memberSettingsText',
+    });
+  });
+
+  it('includes client content settings item when user has update permission', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
+
+    const mockAuth = {
+      data: { token: '1234' },
+    } as Auth;
+
+    const mockClientContent = { id: 'diva-clientContent' } as BFFClientContent;
+
+    vi.mocked(getRecordDataById).mockResolvedValue({
+      data: {
+        record: {
+          data: {} as DataGroup,
+          actionLinks: { update: { url: 'someurl' } as ActionLink },
+        } as CoraRecord,
+      } as RecordWrapper,
+    } as AxiosResponse<RecordWrapper>);
+
+    const navigation = await getNavigation(
+      mockDependencies,
+      undefined,
+      mockClientContent,
+      mockAuth,
+    );
+
+    expect(getRecordDataById).toHaveBeenCalledWith(
+      'diva-clientContent',
+      'diva-clientContent',
+      '1234',
+    );
+
+    expect(navigation.otherNavigationItems).toContainEqual({
+      id: 'diva-clientContent',
+      link: '/diva-clientContent/diva-clientContent/update',
+      textId: 'divaClient_clientContentSettingsText',
+    });
+  });
+
+  it('does not include client content settings item when user does not have update permission', async () => {
+    const mockDependencies = {
+      recordTypePool: listToPool<BFFRecordType>([
+        createMockRecordType({
+          id: 'someMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({
+          id: 'someOtherMainRecordType',
+          publicationType: true,
+        }),
+        createMockRecordType({ id: 'someRecordType' }),
+        createMockRecordType({ id: 'someOtherRecordType' }),
+        createMockRecordType({
+          id: 'someNonNavigableRecordType',
+          clientNavigation: false,
+        }),
+      ]),
+    } as Dependencies;
+
+    const mockAuth = {
+      data: { token: '1234' },
+    } as Auth;
+
+    const mockClientContent = { id: 'diva-clientContent' } as BFFClientContent;
+
+    vi.mocked(getRecordDataById).mockResolvedValue({
+      data: {
+        record: {
+          data: {} as DataGroup,
+          actionLinks: { read: { url: 'someurl' } as ActionLink },
+        } as CoraRecord,
+      } as RecordWrapper,
+    } as AxiosResponse<RecordWrapper>);
+
+    const navigation = await getNavigation(
+      mockDependencies,
+      undefined,
+      mockClientContent,
+      mockAuth,
+    );
+
+    expect(getRecordDataById).toHaveBeenCalledWith(
+      'diva-clientContent',
+      'diva-clientContent',
+      '1234',
+    );
+
+    expect(navigation.otherNavigationItems).not.toContainEqual({
+      id: 'diva-clientContent',
+      link: '/diva-clientContent/diva-clientContent/update',
+      textId: 'divaClient_clientContentSettingsText',
     });
   });
 });

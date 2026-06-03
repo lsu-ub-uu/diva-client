@@ -38,7 +38,7 @@ describe('transformMember', () => {
       pageTitle: {
         sv: 'Uppsala Universitet',
         en: 'Uppsala University',
-        cimode: 'pageTitle',
+        cimode: 'pageTitleText',
       },
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
@@ -95,19 +95,19 @@ describe('transformMember', () => {
         title: {
           sv: 'Hjälte',
           en: 'Hero',
-          cimode: 'title',
+          cimode: 'titleText',
         },
         subTitle: {
           sv: 'Underhjälte',
           en: 'Subhero',
-          cimode: 'subTitle',
+          cimode: 'subTitleText',
         },
         imageUrl: '/divaclient/public/images/hero/hero.jpg',
         imageAttribution: {
           title: {
             sv: 'Bildtitel',
             en: 'Image title',
-            cimode: 'title',
+            cimode: 'titleText',
           },
           author: 'Palle Kuling',
           source: {
@@ -131,7 +131,7 @@ describe('transformMember', () => {
       pageTitle: {
         sv: 'Uppsala Universitet',
         en: 'Uppsala University',
-        cimode: 'pageTitle',
+        cimode: 'pageTitleText',
       },
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
@@ -144,7 +144,7 @@ describe('transformMember', () => {
         title: {
           sv: 'Hjälte',
           en: 'Hero',
-          cimode: 'title',
+          cimode: 'titleText',
         },
         imageUrl: '/divaclient/public/images/hero/hero.jpg',
         imageAttribution: {

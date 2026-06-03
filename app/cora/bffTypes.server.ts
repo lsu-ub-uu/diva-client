@@ -417,6 +417,17 @@ export interface BFFOrganisation {
   rorId?: string;
 }
 
+export type BFFSeverity = 'success' | 'info' | 'warning' | 'error' | 'neutral';
+
+export interface BFFAlert {
+  severity: BFFSeverity;
+  text: BFFSweEngText;
+}
+
+export interface BFFClientContent extends BFFBase {
+  globalAlert?: BFFAlert;
+}
+
 export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';
 
 export interface Dependencies {
@@ -430,4 +441,5 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
+  clientContentPool: Lookup<string, BFFClientContent>;
 }

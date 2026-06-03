@@ -7,7 +7,12 @@ import type { Route } from './+types/sitemap';
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
-  const navigation = await getNavigation(dependencies, undefined, undefined);
+  const navigation = await getNavigation(
+    dependencies,
+    undefined,
+    undefined,
+    undefined,
+  );
 
   const sitemap = generateSitemapXml(request.url, navigation, member);
 

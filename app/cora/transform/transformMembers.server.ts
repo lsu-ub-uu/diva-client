@@ -27,7 +27,6 @@ import {
   getAllDataAtomicsWithNameInData,
   getAllDataGroupsWithNameInData,
   getAllRecordLinksWithNameInData,
-  getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
   hasChildWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils.server';
@@ -39,6 +38,7 @@ import type {
   BFFMemberHero,
   BFFMemberLink,
 } from '../bffTypes.server';
+import { transformSweEngText } from './transformSweEngText.server';
 
 export const transformMembers = (
   dataListWrapper: DataListWrapper,
@@ -59,7 +59,7 @@ export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
     pageTitle: {
       sv: getFirstDataAtomicValueWithNameInData(data, 'pageTitleSv'),
       en: getFirstDataAtomicValueWithNameInData(data, 'pageTitleEn'),
-      cimode: 'pageTitle',
+      cimode: 'pageTitleText',
     },
     backgroundColor: getFirstDataAtomicValueWithNameInData(
       data,
@@ -142,17 +142,5 @@ const transformSourceOrLicense = (data: DataGroup) => {
     url: hasChildWithNameInData(data, 'url')
       ? getFirstDataAtomicValueWithNameInData(data, 'url')
       : undefined,
-  };
-};
-
-const transformSweEngText = (data: DataGroup) => {
-  return {
-    sv: getFirstDataAtomicWithNameInData(data, 'text', {
-      lang: 'swe',
-    }).value,
-    en: getFirstDataAtomicWithNameInData(data, 'text', {
-      lang: 'eng',
-    }).value,
-    cimode: data.name,
   };
 };

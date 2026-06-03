@@ -19,7 +19,11 @@
 import type { Auth } from '@/auth/Auth';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { BFFMember, BFFRecordType } from '@/cora/bffTypes.server';
+import type {
+  BFFClientContent,
+  BFFMember,
+  BFFRecordType,
+} from '@/cora/bffTypes.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { href } from 'react-router';
 
@@ -54,8 +58,9 @@ const sortOrder = [
 
 export const getNavigation = async (
   dependencies: Dependencies,
-  member?: BFFMember,
-  auth?: Auth,
+  member: BFFMember | undefined,
+  clientContent: BFFClientContent | undefined,
+  auth: Auth | undefined,
 ): Promise<Navigation> => {
   const recordTypes = Array.from(dependencies.recordTypePool.values())
     .filter((recordType) =>
@@ -77,6 +82,16 @@ export const getNavigation = async (
 
   if (member && auth && (await canEditMemberSettings(member, auth))) {
     otherNavigationItems.push(createNavigationItemForMemberSettings(member));
+  }
+
+  if (
+    clientContent &&
+    auth &&
+    (await canEditClientContent(clientContent, auth))
+  ) {
+    otherNavigationItems.push(
+      createNavigationItemForClientContentSettings(clientContent),
+    );
   }
 
   return { mainNavigationItems, otherNavigationItems };
@@ -116,6 +131,26 @@ const canEditMemberSettings = async (member: BFFMember, auth: Auth) => {
   }
 };
 
+const canEditClientContent = async (
+  clientContent: BFFClientContent,
+  auth: Auth,
+) => {
+  try {
+    const clientContentData = await getRecordDataById<RecordWrapper>(
+      'diva-clientContent',
+      clientContent.id,
+      auth?.data?.token,
+    );
+    if (clientContentData.data.record.actionLinks.update === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch {
+    return false;
+  }
+};
+
 const createNavigationItemForMemberSettings = (member: BFFMember) => ({
   id: 'diva-member',
   link: href('/:recordType/:recordId/update', {
@@ -123,4 +158,15 @@ const createNavigationItemForMemberSettings = (member: BFFMember) => ({
     recordId: member!.id,
   }),
   textId: 'divaClient_memberSettingsText',
+});
+
+const createNavigationItemForClientContentSettings = (
+  clientContent: BFFClientContent,
+) => ({
+  id: 'diva-clientContent',
+  link: href('/:recordType/:recordId/update', {
+    recordType: 'diva-clientContent',
+    recordId: clientContent.id,
+  }),
+  textId: 'divaClient_clientContentSettingsText',
 });

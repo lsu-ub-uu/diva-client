@@ -36,7 +36,10 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { getDependencies } from 'server/dependencies/depencencies';
+import {
+  getClientContent,
+  getDependencies,
+} from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -45,10 +48,12 @@ import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
-import { Alert, type Severity } from './components/Alert/Alert';
+import { Alert } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
 import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
+import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
+import { useLanguage } from './i18n/useLanguage';
 import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
@@ -58,7 +63,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
 
 const { MODE } = import.meta.env;
 
@@ -67,19 +71,21 @@ export const middleware = [sessionMiddleware, renewAuthMiddleware];
 export async function loader({ request, context }: Route.LoaderArgs) {
   try {
     const { auth, notification } = context.get(sessionContext);
-    const { t } = context.get(i18nContext);
     const dependencies = await getDependencies();
     const member = getMemberFromHostname(request, dependencies);
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
-    const navigation = await getNavigation(dependencies, member, auth);
+    const clientContent = getClientContent(dependencies);
+    const navigation = await getNavigation(
+      dependencies,
+      member,
+      clientContent,
+      auth,
+    );
     const user = auth && createUser(auth);
     const userPreferences = await parseUserPreferencesCookie(request);
-    const globalAlert = {
-      severity: 'warning' as Severity,
-      text: t('divaClient_metadataWarningText'),
-    };
+    const globalAlert = clientContent.globalAlert;
     const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
     return {
@@ -247,6 +253,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+  const language = useLanguage();
 
   const {
     userPreferences,
@@ -270,7 +277,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       {globalAlert && (
         <div className='global-alert'>
           <Alert severity={globalAlert.severity} variant='banner'>
-            {globalAlert.text}
+            {globalAlert.text[language]}
           </Alert>
         </div>
       )}

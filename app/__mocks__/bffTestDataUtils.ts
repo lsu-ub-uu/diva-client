@@ -622,5 +622,6 @@ export const createBasicDependencies = (): Dependencies => {
     loginPool: listToPool([]),
     memberPool: listToPool([]),
     organisationPool: listToPool([]),
+    clientContentPool: listToPool([]),
   };
 };

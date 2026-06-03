@@ -1,0 +1,189 @@
+import type { BFFSeverity } from "@/cora/bffTypes.server"
+
+export const coraDivaClientContent = (severity: BFFSeverity) => {
+  return {
+    "dataList": {
+      "fromNo": "0",
+      "data": [
+        {
+          "record": {
+            "data": {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        { "name": "linkedRecordType", "value": "validationType" },
+                        {
+                          "name": "linkedRecordId",
+                          "value": "diva-clientContent"
+                        }
+                      ],
+                      "actionLinks": {
+                        "read": {
+                          "requestMethod": "GET",
+                          "rel": "read",
+                          "url": "http://130.238.171.238:38082/diva/rest/record/validationType/diva-clientContent",
+                          "accept": "application/vnd.cora.record+json"
+                        }
+                      },
+                      "name": "validationType"
+                    },
+                    {
+                      "children": [
+                        { "name": "linkedRecordType", "value": "system" },
+                        { "name": "linkedRecordId", "value": "divaPreview" }
+                      ],
+                      "actionLinks": {
+                        "read": {
+                          "requestMethod": "GET",
+                          "rel": "read",
+                          "url": "http://130.238.171.238:38082/diva/rest/record/system/divaPreview",
+                          "accept": "application/vnd.cora.record+json"
+                        }
+                      },
+                      "name": "dataDivider"
+                    },
+                    { "name": "id", "value": "diva-clientContent" },
+                    {
+                      "children": [
+                        { "name": "linkedRecordType", "value": "recordType" },
+                        {
+                          "name": "linkedRecordId",
+                          "value": "diva-clientContent"
+                        }
+                      ],
+                      "actionLinks": {
+                        "read": {
+                          "requestMethod": "GET",
+                          "rel": "read",
+                          "url": "http://130.238.171.238:38082/diva/rest/record/recordType/diva-clientContent",
+                          "accept": "application/vnd.cora.record+json"
+                        }
+                      },
+                      "name": "type"
+                    },
+                    {
+                      "children": [
+                        { "name": "linkedRecordType", "value": "user" },
+                        { "name": "linkedRecordId", "value": "161616" }
+                      ],
+                      "actionLinks": {
+                        "read": {
+                          "requestMethod": "GET",
+                          "rel": "read",
+                          "url": "http://130.238.171.238:38082/diva/rest/record/user/161616",
+                          "accept": "application/vnd.cora.record+json"
+                        }
+                      },
+                      "name": "createdBy"
+                    },
+                    {
+                      "name": "tsCreated",
+                      "value": "2026-06-03T09:20:36.457446Z"
+                    },
+                    {
+                      "repeatId": "0",
+                      "children": [
+                        {
+                          "name": "tsUpdated",
+                          "value": "2026-06-03T09:23:10.821516Z"
+                        },
+                        {
+                          "children": [
+                            { "name": "linkedRecordType", "value": "user" },
+                            { "name": "linkedRecordId", "value": "161616" }
+                          ],
+                          "actionLinks": {
+                            "read": {
+                              "requestMethod": "GET",
+                              "rel": "read",
+                              "url": "http://130.238.171.238:38082/diva/rest/record/user/161616",
+                              "accept": "application/vnd.cora.record+json"
+                            }
+                          },
+                          "name": "updatedBy"
+                        }
+                      ],
+                      "name": "updated"
+                    }
+                  ],
+                  "name": "recordInfo"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "name": "text",
+                          "attributes": { "lang": "swe" },
+                          "value": "Det här är en förhandsvisning av nya DiVA, med tillfälliga testdata. Miljön är inte färdig och kommer att ändras."
+                        },
+                        {
+                          "name": "text",
+                          "attributes": { "lang": "eng" },
+                          "value": "This is a preview of the new DiVA web page, with temporary test data. This pre-production environment is not ready and will change."
+                        }
+                      ],
+                      "name": "text"
+                    }
+                  ],
+                  "name": "globalAlert",
+                  "attributes": { "severity": severity }
+                }
+              ],
+              "name": "diva-clientContent"
+            },
+            "actionLinks": {
+              "read": {
+                "requestMethod": "GET",
+                "rel": "read",
+                "url": "http://130.238.171.238:38082/diva/rest/record/diva-clientContent/diva-clientContent",
+                "accept": "application/vnd.cora.record+json"
+              },
+              "update": {
+                "requestMethod": "POST",
+                "rel": "update",
+                "contentType": "application/vnd.cora.recordgroup+json",
+                "url": "http://130.238.171.238:38082/diva/rest/record/diva-clientContent/diva-clientContent",
+                "accept": "application/vnd.cora.record+json"
+              },
+              "index": {
+                "requestMethod": "POST",
+                "rel": "index",
+                "body": {
+                  "children": [
+                    {
+                      "children": [
+                        { "name": "linkedRecordType", "value": "recordType" },
+                        {
+                          "name": "linkedRecordId",
+                          "value": "diva-clientContent"
+                        }
+                      ],
+                      "name": "recordType"
+                    },
+                    { "name": "recordId", "value": "diva-clientContent" },
+                    { "name": "type", "value": "index" }
+                  ],
+                  "name": "workOrder"
+                },
+                "contentType": "application/vnd.cora.recordgroup+json",
+                "url": "http://130.238.171.238:38082/diva/rest/record/workOrder/",
+                "accept": "application/vnd.cora.record+json"
+              },
+              "delete": {
+                "requestMethod": "DELETE",
+                "rel": "delete",
+                "url": "http://130.238.171.238:38082/diva/rest/record/diva-clientContent/diva-clientContent"
+              }
+            }
+          }
+        }
+      ],
+      "totalNo": "1",
+      "containDataOfType": "diva-clientContent",
+      "toNo": "1"
+    }
+  }
+}
