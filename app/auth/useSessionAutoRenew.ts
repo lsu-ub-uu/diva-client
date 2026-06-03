@@ -17,62 +17,39 @@
  */
 
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
-import { useCallback, useEffect, useRef } from 'react';
-import { useRevalidator } from 'react-router';
+import { useEffect, useRef } from 'react';
+import { useFetcher } from 'react-router';
 
 /**
  * How long before token expiry to start the renewal process
  */
 const RENEW_TIME_BUFFER = 30_000;
 
-/**
- * The amount of time to wait for other browser window messages,
- * to determine which should be the master window that performs the renewal
- */
-const WINDOW_SYNC_BUFFER = 1000;
-
-/**
- * The amount of time that non-master windows will wait before revalidating,
- * to get the new session cookie set by the master window
- */
-const REVALIDATE_TIME_BUFFER = 5000;
-
 export const useSessionAutoRenew = () => {
   const user = useUser();
   const renewTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
-  const { revalidate } = useRevalidator();
-
-  const isNewestWindow = useIsNewestWindow(WINDOW_SYNC_BUFFER);
+  const fetcher = useFetcher();
   const validUntil = Number(user?.validUntil);
-
-  /**
-   * Only the newest window/tab renews the auth token.
-   */
-  const renewAuthToken = useCallback(async () => {
-    if (await isNewestWindow()) {
-      revalidate();
-    } else {
-      setTimeout(() => {
-        revalidate();
-      }, REVALIDATE_TIME_BUFFER);
-    }
-  }, [isNewestWindow, revalidate]);
 
   useEffect(() => {
     if (!validUntil) {
       return;
     }
     const timeUntilNextRenew = getTimeUntilNextRenew(validUntil);
-    renewTimeout.current = setTimeout(renewAuthToken, timeUntilNextRenew);
+    renewTimeout.current = setTimeout(() => {
+      fetcher.submit(
+        { intent: 'renewSession' },
+        { method: 'POST', action: '/' },
+      );
+    }, timeUntilNextRenew);
     return () => {
       if (renewTimeout.current) {
         clearTimeout(renewTimeout.current);
       }
     };
-  }, [renewAuthToken, validUntil]);
+  }, [fetcher, validUntil]);
 };
 
 export const getTimeUntilNextRenew = (validUntil: number) => {

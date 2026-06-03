@@ -26,6 +26,7 @@ import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
 import { ServerCrashIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
+import type { ShouldRevalidateFunctionArgs } from 'react-router';
 import {
   data,
   isRouteErrorResponse,
@@ -49,6 +50,7 @@ import { Alert, type Severity } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
 import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
+import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
 import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
@@ -58,11 +60,20 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
+
+export function shouldRevalidate({
+  defaultShouldRevalidate,
+  formMethod,
+}: ShouldRevalidateFunctionArgs) {
+  if (formMethod && formMethod !== 'GET') {
+    return defaultShouldRevalidate;
+  }
+  return false;
+}
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   try {
@@ -111,6 +122,11 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (intent === 'changeColorScheme') {
     return await changeColorScheme(userPreferences, formData);
+  }
+
+  if (intent === 'renewSession') {
+    // Session will be renewed in the renewAuthMiddleware, so we just need to return a successful response here
+    return {};
   }
 
   return {};

@@ -21,13 +21,9 @@ import {
   getTimeUntilNextRenew,
   useSessionAutoRenew,
 } from '@/auth/useSessionAutoRenew';
-import { useIsNewestWindow } from '@/utils/useIsNewestWindow';
 import { act, render } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
-import type { User } from '../createUser';
-
-vi.mock('@/utils/useIsNewestWindow');
 
 const TestComponent = () => {
   useSessionAutoRenew();
@@ -35,14 +31,11 @@ const TestComponent = () => {
 };
 
 describe('useSessionAutoRenew', () => {
-  it('renews auth token 30 seconds before validUntil has expired', async () => {
-    const mockIsNewestWindow = vi.fn().mockReturnValue(Promise.resolve(true));
-    vi.mocked(useIsNewestWindow).mockReturnValue(mockIsNewestWindow);
-
+  it('submits renewal 30 seconds before validUntil has expired', async () => {
     vi.useFakeTimers();
-    const mockDate = new Date('2025-01-09T00:00:00Z');
-    vi.setSystemTime(mockDate);
+    vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
 
+    const actionSpy = vi.fn().mockReturnValue({});
     const loaderSpy = vi.fn().mockReturnValue({
       user: createMockUser({
         validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
@@ -54,27 +47,29 @@ describe('useSessionAutoRenew', () => {
         id: 'root',
         Component: TestComponent,
         loader: loaderSpy,
+        action: actionSpy,
       },
     ]);
 
     await act(() => render(<RoutesStub />));
 
+    expect(actionSpy).not.toHaveBeenCalled();
+
     await act(() => vi.advanceTimersByTime(minutesToMillis(4) + 30_000));
-    expect(loaderSpy).toHaveBeenCalled();
+
+    expect(actionSpy).toHaveBeenCalled();
   });
 
-  it('renews auth token after 1s if validUntil within 30 seconds', async () => {
-    const mockIsNewestWindow = vi.fn().mockReturnValue(Promise.resolve(true));
-    vi.mocked(useIsNewestWindow).mockReturnValue(mockIsNewestWindow);
-
+  it('submits renewal immediately if validUntil within 30 seconds', async () => {
     vi.useFakeTimers();
-
     vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
-    const user: User = createMockUser({
-      validUntil: new Date('2025-01-09T00:00:29Z').getTime().toString(),
-    });
 
-    const loaderSpy = vi.fn(() => ({ user }));
+    const actionSpy = vi.fn().mockReturnValue({});
+    const loaderSpy = vi.fn().mockReturnValue({
+      user: createMockUser({
+        validUntil: new Date('2025-01-09T00:00:29Z').getTime().toString(),
+      }),
+    });
 
     const RoutesStub = createRoutesStub([
       {
@@ -82,6 +77,7 @@ describe('useSessionAutoRenew', () => {
         id: 'root',
         Component: TestComponent,
         loader: loaderSpy,
+        action: actionSpy,
       },
     ]);
 
@@ -89,24 +85,21 @@ describe('useSessionAutoRenew', () => {
 
     await act(() => vi.advanceTimersByTime(1000));
 
-    expect(loaderSpy).toHaveBeenCalled();
+    expect(actionSpy).toHaveBeenCalled();
   });
 
   it('does not renew when no auth token returned from backend', async () => {
     vi.useFakeTimers();
-    const mockDate = new Date('2025-01-09T00:00:00Z');
-    vi.setSystemTime(mockDate);
+    vi.setSystemTime(new Date('2025-01-09T00:00:00Z'));
 
-    const renewAuthTokenActionSpy = vi.fn().mockReturnValue({
-      status: 'Session not renew',
-    });
+    const actionSpy = vi.fn().mockReturnValue({});
 
     const RoutesStub = createRoutesStub([
       {
         path: '/',
         id: 'root',
         Component: TestComponent,
-        action: renewAuthTokenActionSpy,
+        action: actionSpy,
         loader: vi.fn().mockReturnValue({
           user: undefined,
         }),
@@ -116,42 +109,7 @@ describe('useSessionAutoRenew', () => {
     await act(() => render(<RoutesStub />));
 
     await act(() => vi.advanceTimersToNextTimer());
-    expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();
-  });
-
-  it('revalidates (after 1s delay) instead of renewing when not newest window', async () => {
-    const mockIsNewestWindow = vi.fn().mockReturnValue(Promise.resolve(false));
-    vi.mocked(useIsNewestWindow).mockReturnValue(mockIsNewestWindow);
-
-    vi.useFakeTimers();
-    const mockDate = new Date('2025-01-09T00:00:00Z');
-    vi.setSystemTime(mockDate);
-
-    const renewAuthTokenActionSpy = vi.fn().mockReturnValue({});
-    const loaderSpy = vi.fn().mockReturnValue({
-      user: createMockUser({
-        validUntil: new Date('2025-01-09T00:00:05Z').getTime().toString(),
-      }),
-    });
-
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        id: 'root',
-        Component: TestComponent,
-        loader: loaderSpy,
-        action: renewAuthTokenActionSpy,
-      },
-    ]);
-
-    await act(() => render(<RoutesStub />));
-
-    await act(() => vi.advanceTimersByTime(minutesToMillis(4) + 30_000));
-    expect(renewAuthTokenActionSpy).not.toHaveBeenCalled();
-    expect(loaderSpy).toHaveBeenCalledTimes(1);
-
-    await act(() => vi.advanceTimersByTime(5000));
-    expect(loaderSpy).toHaveBeenCalledTimes(2);
+    expect(actionSpy).not.toHaveBeenCalled();
   });
 
   describe('getTimeUntilNextRenew', () => {

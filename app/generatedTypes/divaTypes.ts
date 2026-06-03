@@ -3784,6 +3784,7 @@ export interface AttachmentsGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
+  temp?: { value: 'temp'; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 

@@ -30,7 +30,6 @@ export const handleRenew = async (
 ) => {
   const { auth, setAuth, removeAuth, flashNotification } = sessionContext;
   const { t } = i18n;
-
   if (!auth) {
     return;
   }
