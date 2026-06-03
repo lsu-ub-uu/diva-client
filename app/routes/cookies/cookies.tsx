@@ -181,8 +181,8 @@ const SwedishContent = () => (
               <pre>_shibsession_&lt;id&gt;</pre>
             </td>
             <td>
-              Används för att upprätthålla din &quot;Single sign-on&quot;
-              session
+              Används för att upprätthålla din &quot;Single
+              sign-on&quot;-session
             </td>
             <td>Strikt nödvändig</td>
           </tr>
