@@ -36,7 +36,10 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { getDependencies } from 'server/dependencies/depencencies';
+import {
+  getClientContent,
+  getDependencies,
+} from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -59,6 +62,7 @@ import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
+import { useLanguage } from './i18n/useLanguage';
 
 const { MODE } = import.meta.env;
 
@@ -76,10 +80,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     const navigation = await getNavigation(dependencies, member, auth);
     const user = auth && createUser(auth);
     const userPreferences = await parseUserPreferencesCookie(request);
-    const globalAlert = {
-      severity: 'warning' as Severity,
-      text: t('divaClient_metadataWarningText'),
-    };
+    const globalAlert = getClientContent(dependencies).globalAlert;
     const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
     return {
@@ -247,6 +248,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+  const language = useLanguage();
 
   const {
     userPreferences,
@@ -270,7 +272,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       {globalAlert && (
         <div className='global-alert'>
           <Alert severity={globalAlert.severity} variant='banner'>
-            {globalAlert.text}
+            {globalAlert.text[language]}
           </Alert>
         </div>
       )}

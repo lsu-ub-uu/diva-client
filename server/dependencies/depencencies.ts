@@ -17,6 +17,7 @@
  */
 
 import type {
+  BFFClientContent,
   BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
@@ -85,6 +86,7 @@ import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
+import { transformClientContent } from '@/cora/transform/transformClientContent.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -109,6 +111,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
+  clientContent: listToPool<BFFClientContent>([]),
 };
 
 export type DependencyType =
@@ -139,6 +142,7 @@ const loadDependencies = async () => {
     coraLogins,
     coraMembers,
     coraOrganisations,
+    clientContents,
   ] = await getPoolsFromCora([
     'text',
     'metadata',
@@ -151,6 +155,7 @@ const loadDependencies = async () => {
     'login',
     'diva-member',
     'diva-organisation',
+    'diva-clientContent',
   ]);
 
   const texts = transformCoraTexts(coraTexts.data);
@@ -199,6 +204,10 @@ const loadDependencies = async () => {
   for (const event of eventBuffer.values()) {
     await applyDataChangeEvent(event);
   }
+
+  dependencies.clientContent = listToPool<BFFClientContent>(
+    transformClientContent(clientContents.data),
+  );
   eventBuffer.clear();
   cacheState = 'ready';
   console.info('Loaded stuff from Cora');
@@ -213,6 +222,10 @@ export const getDependencies = async () => {
   return dependencies;
 };
 
+export const getClientContent = (dependencies: Dependencies) => {
+  return dependencies.clientContent.get('diva-clientContent');
+};
+
 export const poolTypeMap = {
   recordType: 'recordTypePool',
   metadata: 'metadataPool',
@@ -224,6 +237,7 @@ export const poolTypeMap = {
   login: 'loginPool',
   'diva-member': 'memberPool',
   'diva-organisation': 'organisationPool',
+  'diva-clientContent': 'clientContent',
   text: 'textPool',
 } as const;
 
@@ -238,6 +252,7 @@ const transformFunctionMap = {
   login: transformCoraLoginToBFFLogin,
   'diva-member': transformMember,
   'diva-organisation': transformOrganisation,
+  clientContent: transformClientContent,
   text: transformCoraTextToBFFText,
 } as const;
 

@@ -36,6 +36,7 @@ export const performSearch = async ({
       decorated,
     );
   } catch (error) {
+    console.error('Error performing search', error);
     const notification = createNotificationFromAxiosError(t, error);
 
     return {
