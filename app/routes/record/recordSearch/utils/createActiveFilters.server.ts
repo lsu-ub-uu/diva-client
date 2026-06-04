@@ -1,12 +1,12 @@
-import type { Dependencies } from '@/cora/bffTypes.server';
-import type { SearchFormDefinition } from './createSearchFormDefinition.server';
 import type { Auth } from '@/auth/Auth';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 import type {
   AutocompleteFilter,
   FilterDefinition,
 } from './createFilterDefinition.server';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
-import { get } from 'lodash-es';
+import type { SearchFormDefinition } from './createSearchFormDefinition.server';
 
 export interface ActiveFilter {
   name: string;
@@ -79,11 +79,7 @@ const getValueTextForAutocompleteFilter = async (
       recordId,
     });
 
-    return (
-      filter.getPresentationPath?.(record, language) ??
-      get(record.data, filter.presentationPath[language]) ??
-      value
-    );
+    return getRecordTitle(record, language) ?? value;
   } catch {
     return value;
   }

@@ -7,7 +7,6 @@ import type {
   Dependencies,
 } from '@/cora/bffTypes.server';
 import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
-import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 
 export type FilterDefinition =
   | TextFilter
@@ -46,10 +45,6 @@ export interface AutocompleteFilter extends BaseFilter {
   searchType: string;
   searchTerm: string;
   recordType: string;
-  getPresentationPath: (
-    record: BFFDataRecord<BFFDataRecordData>,
-    lang: 'sv' | 'en',
-  ) => string | undefined;
 }
 
 const autocompleteSearchTerms: Record<
@@ -60,34 +55,12 @@ const autocompleteSearchTerms: Record<
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
-    getPresentationPath: (
-      record: BFFDataRecord<BFFDataRecordData>,
-      lang: 'sv' | 'en',
-    ) => {
-      if (lang === 'sv') {
-        return record.data.subject?.authority?.find((a) => a._lang === 'swe')
-          ?.topic?.value;
-      }
-      if (lang === 'en') {
-        return record.data.subject?.authority?.find((a) => a._lang === 'eng')
-          ?.topic?.value;
-      }
-      return undefined;
-    },
-    presentationPath: {
-      sv: 'subject.authority[0].topic.value',
-      en: 'subject.authority[0].topic.value',
-    },
   },
   permissionUnitLinkedRecordIdSearchTerm: {
     recordType: 'permissionUnit',
     searchType: 'permissionUnitSearch',
     searchTerm:
       'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
-
-    getPresentationPath: (record: BFFDataRecord<BFFDataRecordData>) => {
-      return record.data.permissionUnit?.recordInfo?.id?.value;
-    },
   },
 };
 

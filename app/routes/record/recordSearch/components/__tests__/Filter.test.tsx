@@ -9,6 +9,9 @@ import type {
   AutocompleteFilter,
 } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { createRoutesStub } from 'react-router';
+import { getRecordTitle } from '@/utils/getRecordTitle';
+
+vi.mock('@/utils/getRecordTitle');
 
 describe('Filter', () => {
   describe('TextFilter', () => {
@@ -282,10 +285,6 @@ describe('Filter', () => {
         textId: 'autocompleteFilterText',
         searchType: 'someSearchType',
         searchTerm: 'someSearchTerm',
-        presentationPath: {
-          sv: 'some.sv.path',
-          en: 'some.en.path',
-        },
         placeholderTextId: 'autocompleteFilterPlaceholderText',
         repeat: {
           repeatMin: 0,
@@ -416,10 +415,6 @@ describe('Filter', () => {
         textId: 'autocompleteFilterText',
         searchType: 'someSearchType',
         searchTerm: 'someSearchTerm',
-        presentationPath: {
-          sv: 'some.sv.path',
-          en: 'some.en.path',
-        },
         placeholderTextId: 'autocompleteFilterPlaceholderText',
         repeat: {
           repeatMin: 0,
@@ -455,6 +450,7 @@ describe('Filter', () => {
   });
 
   it('is possible to search in autocomplete filter', async () => {
+    vi.mocked(getRecordTitle).mockReturnValue('Result 1');
     const user = userEvent.setup();
     const filter: AutocompleteFilter = {
       recordType: 'someRecordType',
@@ -464,10 +460,6 @@ describe('Filter', () => {
       textId: 'autocompleteFilterText',
       searchType: 'someSearchType',
       searchTerm: 'someSearchTerm',
-      presentationPath: {
-        sv: 'some.sv.path',
-        en: 'some.en.path',
-      },
       placeholderTextId: 'autocompleteFilterPlaceholderText',
       repeat: {
         repeatMin: 0,
