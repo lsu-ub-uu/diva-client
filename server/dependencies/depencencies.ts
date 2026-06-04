@@ -225,8 +225,12 @@ export const getDependencies = async () => {
   return dependencies;
 };
 
-export const getClientContent = (dependencies: Dependencies) => {
-  return dependencies.clientContentPool.get('diva-clientContent');
+export const getClientContent = (
+  dependencies: Dependencies,
+): BFFClientContent => {
+  return dependencies.clientContentPool.has('diva-clientContent')
+    ? dependencies.clientContentPool.get('diva-clientContent')
+    : { id: 'diva-clientContent' };
 };
 
 export const poolTypeMap = {
