@@ -40,7 +40,7 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
         <FooterExternalLink href={aboutLink[language]}>
           {t('divaClient_footerAboutLinkText')}
         </FooterExternalLink>
-        <FooterExternalLink href='/rest'>
+        <FooterExternalLink href='/rest/'>
           {t('divaClient_footerRestApiLinkText')}
         </FooterExternalLink>
         <FooterExternalLink href='/jsclient'>
