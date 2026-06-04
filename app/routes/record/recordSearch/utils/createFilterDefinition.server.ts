@@ -7,6 +7,7 @@ import type {
   Dependencies,
 } from '@/cora/bffTypes.server';
 import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
+import type { BFFDataRecord, BFFDataRecordData } from '@/types/record';
 
 export type FilterDefinition =
   | TextFilter
@@ -45,10 +46,10 @@ export interface AutocompleteFilter extends BaseFilter {
   searchType: string;
   searchTerm: string;
   recordType: string;
-  presentationPath: {
-    sv: string;
-    en: string;
-  };
+  getPresentationPath: (
+    record: BFFDataRecord<BFFDataRecordData>,
+    lang: 'sv' | 'en',
+  ) => string | undefined;
 }
 
 const autocompleteSearchTerms: Record<
@@ -59,9 +60,23 @@ const autocompleteSearchTerms: Record<
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
+    getPresentationPath: (
+      record: BFFDataRecord<BFFDataRecordData>,
+      lang: 'sv' | 'en',
+    ) => {
+      if (lang === 'sv') {
+        return record.data.subject?.authority?.find((a) => a._lang === 'swe')
+          ?.topic?.value;
+      }
+      if (lang === 'en') {
+        return record.data.subject?.authority?.find((a) => a._lang === 'eng')
+          ?.topic?.value;
+      }
+      return undefined;
+    },
     presentationPath: {
-      sv: 'subject.authority_lang_swe.topic.value',
-      en: 'subject.variant_lang_eng.topic.value',
+      sv: 'subject.authority[0].topic.value',
+      en: 'subject.authority[0].topic.value',
     },
   },
   permissionUnitLinkedRecordIdSearchTerm: {
@@ -69,9 +84,9 @@ const autocompleteSearchTerms: Record<
     searchType: 'permissionUnitSearch',
     searchTerm:
       'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
-    presentationPath: {
-      sv: 'permissionUnit.recordInfo.id.value',
-      en: 'permissionUnit.recordInfo.id.value',
+
+    getPresentationPath: (record: BFFDataRecord<BFFDataRecordData>) => {
+      return record.data.permissionUnit?.recordInfo?.id?.value;
     },
   },
 };

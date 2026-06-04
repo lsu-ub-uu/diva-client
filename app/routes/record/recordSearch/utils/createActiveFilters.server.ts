@@ -79,7 +79,11 @@ const getValueTextForAutocompleteFilter = async (
       recordId,
     });
 
-    return get(record.data, filter.presentationPath[language]);
+    return (
+      filter.getPresentationPath(record.data.record, language) ??
+      get(record.data.record, filter.presentationPath[language]) ??
+      value
+    );
   } catch {
     return value;
   }
