@@ -205,9 +205,11 @@ describe('createFilters', () => {
         searchType: 'diva-subjectMinimalSearch',
         searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
         presentationPath: {
-          sv: 'subject.authority_lang_swe.topic.value',
-          en: 'subject.variant_lang_eng.topic.value',
+          sv: 'subject.authority[0].topic.value',
+          en: 'subject.authority[0].topic.value',
         },
+        getPresentationPath: (_record: unknown, _lang: 'en') =>
+          undefined,
       },
     ],
   ])(
@@ -251,6 +253,7 @@ describe('createFilters', () => {
           repeatMin: 0,
           repeatMax: 1,
         },
+        getPresentationPath: expect.any(Function),
         presentationPath,
       });
     },

@@ -80,8 +80,8 @@ const getValueTextForAutocompleteFilter = async (
     });
 
     return (
-      filter.getPresentationPath(record.data.record, language) ??
-      get(record.data.record, filter.presentationPath[language]) ??
+      filter.getPresentationPath?.(record, language) ??
+      get(record.data, filter.presentationPath[language]) ??
       value
     );
   } catch {
