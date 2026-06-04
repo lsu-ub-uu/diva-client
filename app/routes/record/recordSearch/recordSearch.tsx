@@ -7,10 +7,11 @@ import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { createSearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { data, useNavigation, useSubmit } from 'react-router';
+import { useNavigation, useSubmit } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -20,99 +21,103 @@ import { createActiveFilters } from './utils/createActiveFilters.server';
 import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
 import { validateSearchFormData } from './utils/validateSearchFormData.server';
+import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
 
 export const loader = async ({
   request,
   context,
   params,
 }: Route.LoaderArgs) => {
-  const { t, language } = context.get(i18nContext);
-  const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
-  const { auth } = context.get(sessionContext);
-  const recordType = dependencies.recordTypePool.get(params.recordType);
-  const userRights = await getUserRightsForRecordType(params.recordType, auth);
-  const searchId = recordType.searchId;
-  if (!searchId) {
-    throw data('Record type has no search', { status: 404 });
-  }
-
-  const searchFormDefinition = createSearchFormDefinition(
-    searchId,
-    dependencies,
-  );
-
-  const searchParams = new URL(request.url).searchParams;
-
-  const q = searchParams.get('q') ?? '';
-  const start = Number(searchParams.get('start')) || 1;
-  const rows = Number(searchParams.get('rows')) || 20;
-
-  const activeFilters = await createActiveFilters(
-    searchFormDefinition,
-    searchParams,
-    dependencies,
-    auth,
-    language,
-  );
-
-  const validationErrors = validateSearchFormData(
-    q,
-    activeFilters,
-    searchFormDefinition,
-  );
-
-  const searchQuery = createSearchQuery(
-    searchFormDefinition,
-    q,
-    member,
-    activeFilters,
-    start,
-    rows,
-  );
-
-  let searchResults;
-  if (validationErrors.size === 0) {
-    searchResults = await performSearch({
-      dependencies,
-      searchId,
-      searchQuery,
+  try {
+    const { t, language } = context.get(i18nContext);
+    const dependencies = await getDependencies();
+    const member = getMemberFromHostname(request, dependencies);
+    const { auth } = context.get(sessionContext);
+    const recordType = dependencies.recordTypePool.get(params.recordType);
+    const userRights = await getUserRightsForRecordType(
+      params.recordType,
       auth,
-      decorated: recordType.id === 'diva-output',
-      t,
-    });
-  } else {
-    searchResults = {
-      data: [],
-      total: 0,
-    };
-  }
-
-  const apiUrl =
-    searchQuery &&
-    encodeURI(
-      externalCoraApiUrl(
-        `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(searchId), searchQuery))}`,
-      ),
     );
-  const validationTypes = getValidationTypes(params.recordType, dependencies);
+    const searchId = getSearchIdForRecordType(recordType, auth);
+    const searchFormDefinition = createSearchFormDefinition(
+      searchId,
+      dependencies,
+    );
 
-  return {
-    recordTypeId: recordType.id,
-    recordTypeTextId: recordType.textId,
-    searchFormDefinition,
-    searchId,
-    title: t(recordType.pluralTextId),
-    query: q,
-    start,
-    rows,
-    searchResults,
-    activeFilters,
-    validationTypes,
-    apiUrl,
-    userRights,
-    validationErrors,
-  };
+    const searchParams = new URL(request.url).searchParams;
+
+    const q = searchParams.get('q') ?? '';
+    const start = Number(searchParams.get('start')) || 1;
+    const rows = Number(searchParams.get('rows')) || 20;
+
+    const activeFilters = await createActiveFilters(
+      searchFormDefinition,
+      searchParams,
+      dependencies,
+      auth,
+      language,
+    );
+
+    const validationErrors = validateSearchFormData(
+      q,
+      activeFilters,
+      searchFormDefinition,
+    );
+
+    const searchQuery = createSearchQuery(
+      searchFormDefinition,
+      q,
+      member,
+      activeFilters,
+      start,
+      rows,
+    );
+
+    let searchResults;
+    if (validationErrors.size === 0) {
+      searchResults = await performSearch({
+        dependencies,
+        searchId,
+        searchQuery,
+        auth,
+        decorated: recordType.id === 'diva-output',
+        t,
+      });
+    } else {
+      searchResults = {
+        data: [],
+        total: 0,
+      };
+    }
+
+    const apiUrl =
+      searchQuery &&
+      encodeURI(
+        externalCoraApiUrl(
+          `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(searchId), searchQuery))}`,
+        ),
+      );
+    const validationTypes = getValidationTypes(params.recordType, dependencies);
+
+    return {
+      recordTypeId: recordType.id,
+      recordTypeTextId: recordType.textId,
+      searchFormDefinition,
+      searchId,
+      title: t(recordType.pluralTextId),
+      query: q,
+      start,
+      rows,
+      searchResults,
+      activeFilters,
+      validationTypes,
+      apiUrl,
+      userRights,
+      validationErrors,
+    };
+  } catch (error) {
+    throw createRouteErrorResponse(error);
+  }
 };
 
 export const links = () => [{ rel: 'stylesheet', href: css }];
