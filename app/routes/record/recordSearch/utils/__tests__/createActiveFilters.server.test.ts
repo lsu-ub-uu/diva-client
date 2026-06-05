@@ -95,7 +95,7 @@ describe('createActiveFilters', () => {
   });
 
   it('creates active filters for an autocomplete filter', async () => {
-    vi.mocked(getRecordTitle).mockReturnValue('Värde 2');
+    vi.mocked(getRecordTitle).mockReturnValue('Some title');
 
     const searchFormDefinition = {
       filters: [
@@ -132,7 +132,7 @@ describe('createActiveFilters', () => {
         name: 'filter1',
         value: 'someRecordType_someRecordId',
         textId: 'filter1Text',
-        valueTextId: 'Värde 2',
+        valueTextId: 'Some title',
       },
     ]);
   });
@@ -141,8 +141,8 @@ describe('createActiveFilters', () => {
     vi.mocked(getRecordByRecordTypeAndRecordId).mockResolvedValue({
       data: {
         root: {
-          titleEn: { value: 'Value 2' },
-          titleSv: { value: 'Värde 2' },
+          titleEn: { value: 'Title en' },
+          titleSv: { value: 'Title sv' },
         },
       } as BFFDataRecordData,
     } as BFFDataRecord<BFFDataRecordData>);

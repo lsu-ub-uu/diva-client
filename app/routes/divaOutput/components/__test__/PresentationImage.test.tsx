@@ -47,7 +47,7 @@ describe('PresentationImage', () => {
 
     render(<PresentationImage output={mockData} />);
 
-    expect(screen.getByRole('img')).toHaveAttribute(
+    expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
       expect.stringContaining('first-attachment-large-id'),
     );
@@ -62,7 +62,7 @@ describe('PresentationImage', () => {
 
     const { container } = render(<PresentationImage output={mockData} />);
 
-    expect(container.querySelector('img')).not.toBeInTheDocument();
+    expect(container.querySelector('presentation')).not.toBeInTheDocument();
   });
 
   it('renders nothing if the first attachment has no large image', () => {
@@ -143,7 +143,7 @@ describe('PresentationImage', () => {
 
     render(<PresentationImage output={mockData} />);
 
-    expect(screen.getByRole('img')).toHaveAttribute(
+    expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
       expect.stringContaining('presentation-image-large-id'),
     );
@@ -189,7 +189,7 @@ describe('PresentationImage', () => {
 
     render(<PresentationImage output={mockData} />);
 
-    expect(screen.getByRole('img')).toHaveAttribute(
+    expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
       expect.stringContaining('other-fulltext-large-id'),
     );
