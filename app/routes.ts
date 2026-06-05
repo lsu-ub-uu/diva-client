@@ -25,6 +25,7 @@ export default [
   route('login', 'routes/auth/login.tsx'),
   route('logout', 'routes/auth/logout.tsx'),
 
+  route('article/:articleId', 'routes/article/article.tsx'),
   /* Article pages */
   route('cookies', 'routes/cookies/cookies.tsx'),
   route('accessibility', 'routes/accessibility/accessibility.tsx'),
