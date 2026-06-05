@@ -1,12 +1,14 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraBinaryUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
+import { transformCoraBinaryResponse } from './utils/binaryUtils';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
   const { id, name } = params;
 
-  return await fetch(coraBinaryUrl({ id, name, auth }));
+  const response = await fetch(coraBinaryUrl({ id, name, auth }));
+  return transformCoraBinaryResponse(response, name);
 };
 
 export const action = async ({
