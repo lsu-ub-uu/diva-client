@@ -204,18 +204,11 @@ describe('createFilters', () => {
         recordType: 'diva-subject',
         searchType: 'diva-subjectMinimalSearch',
         searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
-        presentationPath: {
-          sv: 'subject.authority_lang_swe.topic.value',
-          en: 'subject.variant_lang_eng.topic.value',
-        },
       },
     ],
   ])(
     'creates an autocomplete filter for search term %s',
-    (
-      searchTermName,
-      { recordType, searchType, searchTerm, presentationPath },
-    ) => {
+    (searchTermName, { recordType, searchType, searchTerm }) => {
       const dependencies = {
         metadataPool: listToPool<BFFMetadata>([
           {
@@ -251,7 +244,6 @@ describe('createFilters', () => {
           repeatMin: 0,
           repeatMax: 1,
         },
-        presentationPath,
       });
     },
   );

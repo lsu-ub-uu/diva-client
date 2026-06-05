@@ -18,11 +18,9 @@ import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSe
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
-import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { useLanguage } from '@/i18n/useLanguage';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useHydrated } from '@/utils/useHydrated';
-import { get } from 'lodash-es';
 
 interface FilterProps {
   filter: FilterDefinition;
@@ -210,13 +208,7 @@ const AutocompleteFilter = ({
             fetcher.data &&
             fetcher.data.result.map((result: BFFDataRecord) => (
               <ComboboxOption key={result.id} value={result.id}>
-                {get(result.data, filter.presentationPath[language]) || (
-                  <OutputPresentation
-                    data={transformToRaw(result.data)}
-                    formSchema={result.presentation!}
-                    compact
-                  />
-                )}
+                {getRecordTitle(result, language)}
               </ComboboxOption>
             ))}
           {fetcher.state === 'idle' &&

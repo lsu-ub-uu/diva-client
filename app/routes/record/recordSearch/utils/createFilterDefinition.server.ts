@@ -45,10 +45,6 @@ export interface AutocompleteFilter extends BaseFilter {
   searchType: string;
   searchTerm: string;
   recordType: string;
-  presentationPath: {
-    sv: string;
-    en: string;
-  };
 }
 
 const autocompleteSearchTerms: Record<
@@ -59,20 +55,12 @@ const autocompleteSearchTerms: Record<
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
-    presentationPath: {
-      sv: 'subject.authority_lang_swe.topic.value',
-      en: 'subject.variant_lang_eng.topic.value',
-    },
   },
   permissionUnitLinkedRecordIdSearchTerm: {
     recordType: 'permissionUnit',
     searchType: 'permissionUnitSearch',
     searchTerm:
       'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
-    presentationPath: {
-      sv: 'permissionUnit.recordInfo.id.value',
-      en: 'permissionUnit.recordInfo.id.value',
-    },
   },
 };
 

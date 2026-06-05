@@ -20,7 +20,23 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
 
   const firstAttachment = attachments.attachment[0];
   const binary = firstAttachment?.file?.linkedRecord?.binary;
+
+  const previewImage = attachments?.attachment?.find(
+    (attachment) => attachment._label === 'previewImage',
+  );
+  const previewImageThumbnail =
+    previewImage?.file?.linkedRecord?.binary.thumbnail?.thumbnail;
+
   if (!binary?.master?.master || !binary?.thumbnail?.thumbnail) {
+    if (previewImageThumbnail) {
+      return (
+        <img
+          className={styles['attachment-thumbnail']}
+          src={createDownloadLinkFromResourceLink(previewImageThumbnail)}
+          alt=''
+        />
+      );
+    }
     return null;
   }
 

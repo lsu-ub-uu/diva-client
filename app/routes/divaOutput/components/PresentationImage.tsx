@@ -25,13 +25,7 @@ export const PresentationImage = ({ output }: PresentationImageProps) => {
     return null;
   }
 
-  return (
-    <img
-      className='presentation-image'
-      src={imageUrl}
-      alt='Presentationsbild'
-    />
-  );
+  return <img className='presentation-image' src={imageUrl} alt='' />;
 };
 
 const getImageUrlFromAttachment = (attachment: AttachmentGroup | undefined) => {
