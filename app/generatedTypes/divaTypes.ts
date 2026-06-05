@@ -2680,7 +2680,7 @@ export type DegreeLevelCollection =
   | 'H4'
   | 'H5';
 
-export type UniversityPointsCollection =
+export type CreditsCollection =
   | '5'
   | '7,5'
   | '10'
@@ -2814,8 +2814,8 @@ export interface StudentDegreeGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  universityPoints?: {
-    value: UniversityPointsCollection;
+  credits?: {
+    value: CreditsCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
