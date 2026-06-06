@@ -73,7 +73,10 @@ describe('createRecordLinkSearchPresentation', () => {
           children: [
             { childId: 'genericSearchTermId', repeatMin: '0' },
             { childId: 'someOtherSearchTermId', repeatMin: '0' },
-            { childId: 'permissionUnitSearchTermId', repeatMin: '0' },
+            {
+              childId: 'permissionUnitLinkedRecordIdSearchTermId',
+              repeatMin: '0',
+            },
           ],
         },
         {
@@ -81,8 +84,8 @@ describe('createRecordLinkSearchPresentation', () => {
           nameInData: 'genericSearchTerm',
         },
         {
-          id: 'permissionUnitSearchTermId',
-          nameInData: 'permissionUnitSearchTerm',
+          id: 'permissionUnitLinkedRecordIdSearchTermId',
+          nameInData: 'permissionUnitLinkedRecordIdSearchTerm',
         },
         {
           id: 'someOtherSearchTermId',
@@ -98,8 +101,8 @@ describe('createRecordLinkSearchPresentation', () => {
       autocompleteSearchTerm: {
         name: 'searchGroup.includeGroup.includePartGroup.genericSearchTerm[0].value',
       },
-      permissionUnitSearchTerm: {
-        name: 'searchGroup.includeGroup.includePartGroup.permissionUnitSearchTerm[0].value',
+      permissionUnitLinkedRecordIdSearchTerm: {
+        name: 'searchGroup.includeGroup.includePartGroup.permissionUnitLinkedRecordIdSearchTerm[0].value',
       },
       searchType: 'searchType',
     });

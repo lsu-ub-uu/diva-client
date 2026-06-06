@@ -18,11 +18,9 @@ import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSe
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
-import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
-import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { useLanguage } from '@/i18n/useLanguage';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useHydrated } from '@/utils/useHydrated';
-import { get } from 'lodash-es';
 
 interface FilterProps {
   filter: FilterDefinition;
@@ -30,6 +28,7 @@ interface FilterProps {
   onChange?: (newValue: string) => void;
   forceSubmit: () => void;
   currentValueText?: string;
+  validationError?: string;
 }
 
 export const Filter = ({
@@ -37,6 +36,7 @@ export const Filter = ({
   currentValue,
   forceSubmit,
   currentValueText,
+  validationError,
 }: FilterProps) => {
   const { t } = useTranslation();
   const [prevValue, setPrevValue] = useState(currentValue);
@@ -54,7 +54,11 @@ export const Filter = ({
   switch (filter.type) {
     case 'text':
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Input
             name={filter.name}
             value={value}
@@ -66,7 +70,11 @@ export const Filter = ({
       );
     case 'number':
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Input
             type='number'
             name={filter.name}
@@ -82,7 +90,11 @@ export const Filter = ({
     case 'collection':
       if (hydrated && filter.options.length > 20) {
         return (
-          <Fieldset label={t(filter.textId)} size='small'>
+          <Fieldset
+            label={t(filter.textId)}
+            size='small'
+            errorMessage={validationError && t(validationError)}
+          >
             <ComboboxSelect
               name={filter.name}
               value={value}
@@ -99,7 +111,11 @@ export const Filter = ({
         );
       }
       return (
-        <Fieldset label={t(filter.textId)} size='small'>
+        <Fieldset
+          label={t(filter.textId)}
+          size='small'
+          errorMessage={validationError && t(validationError)}
+        >
           <Select
             name={filter.name}
             value={value}
@@ -124,6 +140,7 @@ export const Filter = ({
             forceSubmit();
           }}
           currentValueText={currentValueText}
+          validationError={validationError}
         />
       );
   }
@@ -134,6 +151,7 @@ interface AutocompleteFilterProps {
   value: string;
   onChange: (newValue: string) => void;
   currentValueText?: string;
+  validationError?: string;
 }
 
 const AutocompleteFilter = ({
@@ -141,6 +159,7 @@ const AutocompleteFilter = ({
   value,
   onChange,
   currentValueText,
+  validationError,
 }: AutocompleteFilterProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
@@ -165,7 +184,11 @@ const AutocompleteFilter = ({
   };
 
   return (
-    <Fieldset label={t(filter.textId)} size='small'>
+    <Fieldset
+      label={t(filter.textId)}
+      size='small'
+      errorMessage={validationError && t(validationError)}
+    >
       <Combobox
         name={filter.name}
         value={value}
@@ -185,13 +208,7 @@ const AutocompleteFilter = ({
             fetcher.data &&
             fetcher.data.result.map((result: BFFDataRecord) => (
               <ComboboxOption key={result.id} value={result.id}>
-                {get(result.data, filter.presentationPath[language]) || (
-                  <OutputPresentation
-                    data={transformToRaw(result.data)}
-                    formSchema={result.presentation!}
-                    compact
-                  />
-                )}
+                {getRecordTitle(result, language)}
               </ComboboxOption>
             ))}
           {fetcher.state === 'idle' &&

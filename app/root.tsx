@@ -20,11 +20,11 @@ import divaLogo from '@/assets/divaLogo.svg';
 import { useSessionAutoRenew } from '@/auth/useSessionAutoRenew';
 import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
-import { ErrorPage } from '@/errorHandling/ErrorPage';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
-import { AngryIcon } from 'lucide-react';
+import { ServerCrashIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,
@@ -36,7 +36,10 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { getDependencies } from 'server/dependencies/depencencies';
+import {
+  getClientContent,
+  getDependencies,
+} from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/root';
 import { createUser } from './auth/createUser';
@@ -45,9 +48,12 @@ import {
   sessionContext,
   sessionMiddleware,
 } from './auth/sessionMiddleware.server';
-import { Alert, type Severity } from './components/Alert/Alert';
+import { Alert } from './components/Alert/Alert';
 import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
+import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
+import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
+import { useLanguage } from './i18n/useLanguage';
 import rootCss from './styles/root.css?url';
 import {
   parseUserPreferencesCookie,
@@ -57,42 +63,47 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 
 const { MODE } = import.meta.env;
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const { auth, notification } = context.get(sessionContext);
-  const { t } = context.get(i18nContext);
-  const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
-  const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-  const { exampleUsers, applicationVersion } = await getDeploymentInfo();
-  const locale = context.get(i18nContext).language;
-  const navigation = await getNavigation(dependencies, member, auth);
-  const user = auth && createUser(auth);
-  const userPreferences = await parseUserPreferencesCookie(request);
-  const globalAlert = {
-    severity: 'warning' as Severity,
-    text: t('divaClient_metadataWarningText'),
-  };
-  const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
+  try {
+    const { auth, notification } = context.get(sessionContext);
+    const dependencies = await getDependencies();
+    const member = getMemberFromHostname(request, dependencies);
+    const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+    const { exampleUsers, applicationVersion } = await getDeploymentInfo();
+    const locale = context.get(i18nContext).language;
+    const clientContent = getClientContent(dependencies);
+    const navigation = await getNavigation(
+      dependencies,
+      member,
+      clientContent,
+      auth,
+    );
+    const user = auth && createUser(auth);
+    const userPreferences = await parseUserPreferencesCookie(request);
+    const globalAlert = clientContent.globalAlert;
+    const blockRobotIndexing = process.env.BLOCK_ROBOT_INDEXING !== 'false';
 
-  return {
-    user,
-    locale,
-    loginUnits,
-    exampleUsers,
-    member,
-    navigation,
-    userPreferences,
-    notification,
-    globalAlert,
-    blockRobotIndexing,
-    applicationVersion,
-  };
+    return {
+      user,
+      locale,
+      loginUnits,
+      exampleUsers,
+      member,
+      navigation,
+      userPreferences,
+      notification,
+      globalAlert,
+      blockRobotIndexing,
+      applicationVersion,
+    };
+  } catch (error) {
+    throw createRouteErrorResponse(error);
+  }
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -178,8 +189,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<AngryIcon />}
-          titleText={`${error.status}`}
+          icon={getIconByHTTPStatus(error.status)}
+          titleText={`${error.status} - ${error.statusText}`}
           bodyText={JSON.stringify(error.data)}
         />
       </RootErrorPage>
@@ -191,19 +202,19 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<AngryIcon />}
+          icon={<ServerCrashIcon />}
           titleText='Okänt fel'
           bodyText='Ett okänt fel inträffade. Försök igen senare'
           links={<a href='/'>Gå till startsidan</a>}
+          technicalInfo={<pre>{stack}</pre>}
         />
-        <pre>{stack}</pre>
       </RootErrorPage>
     );
   }
   return (
     <RootErrorPage>
       <ErrorPage
-        icon={<AngryIcon />}
+        icon={<ServerCrashIcon />}
         titleText='Okänt fel'
         bodyText='Ett okänt fel inträffade. Försök igen senare'
         links={<a href='/'>Gå till startsidan</a>}
@@ -219,14 +230,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   useChangeLanguage(locale);
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      data-color-scheme={userPreferences?.colorScheme || 'light'}
+    >
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Meta />
         <Links />
       </head>
-      <body data-color-scheme={userPreferences?.colorScheme || 'light'}>
+      <body>
         {children}
         <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
@@ -239,6 +253,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useHydratedFlag();
   useSessionAutoRenew();
   useDevModeSearchParam();
+  const language = useLanguage();
 
   const {
     userPreferences,
@@ -262,7 +277,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       {globalAlert && (
         <div className='global-alert'>
           <Alert severity={globalAlert.severity} variant='banner'>
-            {globalAlert.text}
+            {globalAlert.text[language]}
           </Alert>
         </div>
       )}

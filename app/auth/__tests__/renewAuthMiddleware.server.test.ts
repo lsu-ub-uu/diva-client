@@ -26,7 +26,7 @@ describe('renewAuthMiddleware', () => {
       t: (translationKey) => translationKey,
     } as i18n;
 
-    handleRenew(mockSessionContext, mockI18n);
+    await handleRenew(mockSessionContext, mockI18n);
 
     expect(mockSessionContext.removeAuth).toHaveBeenCalled();
     expect(mockSessionContext.setAuth).not.toHaveBeenCalled();
@@ -35,6 +35,8 @@ describe('renewAuthMiddleware', () => {
       summary: 'divaClient_sessionExpiredSummaryText',
       details: 'divaClient_sessionExpiredDetailsText',
     });
+    expect(vi.mocked(renewAuthToken)).not.toHaveBeenCalled();
+    expect(mockSessionContext.setAuth).not.toHaveBeenCalled();
   });
 
   it('renews auth token if about to expire', async () => {
@@ -101,7 +103,7 @@ describe('renewAuthMiddleware', () => {
     expect(mockSessionContext.flashNotification).not.toHaveBeenCalled();
     expect(consoleMock).toHaveBeenCalledWith(
       'Failed to renew auth token',
-      expect.any(AxiosError),
+      'Unauthorized',
     );
   });
 

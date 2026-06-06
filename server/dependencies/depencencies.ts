@@ -17,6 +17,7 @@
  */
 
 import type {
+  BFFClientContent,
   BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
@@ -81,10 +82,14 @@ import {
 
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import 'dotenv/config';
-import type { DataChangedHeaders } from '../listenForDataChange';
+import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';
 import { Lookup } from './util/lookup';
+import {
+  transformClientContent,
+  transformClientContentRecord,
+} from '@/cora/transform/transformClientContent.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -95,6 +100,8 @@ const getPoolsFromCora = (poolTypes: string[]) => {
 
 // Use a promise guard to prevent multiple concurrent initializations
 let initializationPromise: Promise<void> | null = null;
+let cacheState: 'cold' | 'warming' | 'ready' = 'cold';
+const eventBuffer = new Map<string, DataChangedEvent>();
 
 const dependencies: Dependencies = {
   textPool: listToPool<BFFText>([]),
@@ -107,6 +114,7 @@ const dependencies: Dependencies = {
   loginPool: listToPool<BFFLoginWebRedirect>([]),
   memberPool: listToPool<BFFMember>([]),
   organisationPool: listToPool<BFFOrganisation>([]),
+  clientContentPool: listToPool<BFFClientContent>([]),
 };
 
 export type DependencyType =
@@ -124,6 +132,7 @@ export type DependencyType =
 
 const loadDependencies = async () => {
   console.info('Loading stuff from Cora...');
+  cacheState = 'warming';
   const [
     coraTexts,
     coraMetadata,
@@ -136,6 +145,7 @@ const loadDependencies = async () => {
     coraLogins,
     coraMembers,
     coraOrganisations,
+    clientContents,
   ] = await getPoolsFromCora([
     'text',
     'metadata',
@@ -148,6 +158,7 @@ const loadDependencies = async () => {
     'login',
     'diva-member',
     'diva-organisation',
+    'diva-clientContent',
   ]);
 
   const texts = transformCoraTexts(coraTexts.data);
@@ -183,7 +194,7 @@ const loadDependencies = async () => {
   );
 
   try {
-    const members = await transformMembers(coraMembers.data);
+    const members = transformMembers(coraMembers.data);
     dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
     console.error('Error transforming members:', error);
@@ -193,6 +204,15 @@ const loadDependencies = async () => {
   const organisations = await transformOrganisations(coraOrganisations.data);
   dependencies.organisationPool = listToPool<BFFOrganisation>(organisations);
 
+  for (const event of eventBuffer.values()) {
+    await applyDataChangeEvent(event);
+  }
+
+  dependencies.clientContentPool = listToPool<BFFClientContent>(
+    transformClientContent(clientContents.data),
+  );
+  eventBuffer.clear();
+  cacheState = 'ready';
   console.info('Loaded stuff from Cora');
 };
 
@@ -203,6 +223,14 @@ export const getDependencies = async () => {
   await initializationPromise;
 
   return dependencies;
+};
+
+export const getClientContent = (
+  dependencies: Dependencies,
+): BFFClientContent => {
+  return dependencies.clientContentPool.has('diva-clientContent')
+    ? dependencies.clientContentPool.get('diva-clientContent')
+    : { id: 'diva-clientContent' };
 };
 
 export const poolTypeMap = {
@@ -216,6 +244,7 @@ export const poolTypeMap = {
   login: 'loginPool',
   'diva-member': 'memberPool',
   'diva-organisation': 'organisationPool',
+  'diva-clientContent': 'clientContentPool',
   text: 'textPool',
 } as const;
 
@@ -230,14 +259,19 @@ const transformFunctionMap = {
   login: transformCoraLoginToBFFLogin,
   'diva-member': transformMember,
   'diva-organisation': transformOrganisation,
+  'diva-clientContent': transformClientContentRecord,
   text: transformCoraTextToBFFText,
 } as const;
 
-export const handleDataChanged = async ({
-  type,
-  id,
-  action,
-}: DataChangedHeaders) => {
+export const handleDataChanged = async (event: DataChangedEvent) => {
+  if (cacheState !== 'ready') {
+    eventBuffer.set(`${event.type}-${event.id}`, event);
+  } else {
+    await applyDataChangeEvent(event);
+  }
+};
+
+const applyDataChangeEvent = async ({ type, id, action }: DataChangedEvent) => {
   const poolKey = poolTypeMap[type as keyof typeof poolTypeMap];
   const tranformFunction =
     transformFunctionMap[type as keyof typeof transformFunctionMap];

@@ -22,6 +22,10 @@ export const Attachments = ({
         (attachment) => attachment.file?.linkedRecord?.binary?.master != null,
       ) ?? [];
 
+  if (attachments.length === 0) {
+    return null;
+  }
+
   return (
     <div className='attachments'>
       <h2>

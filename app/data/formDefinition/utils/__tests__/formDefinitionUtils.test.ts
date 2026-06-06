@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { createCollVar, createCollVarFinal } from '../../__tests__/utils';
+import {
+  createCollVar,
+  createCollVarFinal,
+} from '../../../../__mocks__/bffTestDataUtils';
 import type {
   BFFAttributeReference,
   BFFMetadata,

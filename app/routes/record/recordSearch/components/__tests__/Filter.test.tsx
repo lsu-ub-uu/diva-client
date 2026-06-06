@@ -9,276 +9,448 @@ import type {
   AutocompleteFilter,
 } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { createRoutesStub } from 'react-router';
+import { getRecordTitle } from '@/utils/getRecordTitle';
+
+vi.mock('@/utils/getRecordTitle');
 
 describe('Filter', () => {
-  it('renders a TextFilter', () => {
-    const filter: TextFilter = {
-      type: 'text',
-      id: 'someTextFilterId',
-      name: 'someTextFilterName',
-      textId: 'textFilterText',
-      placeholderTextId: 'textFilterPlaceholderText',
-    };
+  describe('TextFilter', () => {
+    it('renders a TextFilter', () => {
+      const filter: TextFilter = {
+        type: 'text',
+        id: 'someTextFilterId',
+        name: 'someTextFilterName',
+        textId: 'textFilterText',
+        placeholderTextId: 'textFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        regEx: '.+',
+      };
 
-    render(
-      <Filter
-        filter={filter}
-        currentValue=''
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
+      render(
+        <Filter
+          filter={filter}
+          currentValue=''
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
 
-    expect(
-      screen.getByRole('textbox', { name: 'textFilterText' }),
-    ).toHaveAttribute('name', 'someTextFilterName');
-  });
-
-  it('renders a TextFilter with current value', () => {
-    const filter: TextFilter = {
-      type: 'text',
-      id: 'someTextFilterId',
-      name: 'someTextFilterName',
-      textId: 'textFilterText',
-      placeholderTextId: 'textFilterPlaceholderText',
-    };
-
-    render(
-      <Filter
-        filter={filter}
-        currentValue='Some value'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
-
-    expect(screen.getByRole('textbox', { name: 'textFilterText' })).toHaveValue(
-      'Some value',
-    );
-  });
-
-  it('syncs TextFilter value when currentValue changes', async () => {
-    const filter: TextFilter = {
-      type: 'text',
-      id: 'someTextFilterId',
-      name: 'someTextFilterName',
-      textId: 'textFilterText',
-      placeholderTextId: 'textFilterPlaceholderText',
-    };
-
-    const { rerender } = render(
-      <Filter
-        filter={filter}
-        currentValue='Initial value'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
-
-    expect(screen.getByRole('textbox', { name: 'textFilterText' })).toHaveValue(
-      'Initial value',
-    );
-
-    rerender(
-      <Filter
-        filter={filter}
-        currentValue='Updated value'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
-
-    expect(screen.getByRole('textbox', { name: 'textFilterText' })).toHaveValue(
-      'Updated value',
-    );
-  });
-
-  it('renders a NumberFilter', () => {
-    const filter: NumberFilter = {
-      type: 'number',
-      id: 'someNumberFilterId',
-      name: 'someNumberFilterName',
-      textId: 'numberFilterText',
-      min: 0,
-      max: 100,
-      placeholderTextId: 'numberFilterPlaceholderText',
-    };
-
-    render(
-      <Filter
-        filter={filter}
-        currentValue='42'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
-
-    const spinbutton = screen.getByRole('spinbutton', {
-      name: 'numberFilterText',
+      expect(
+        screen.getByRole('textbox', { name: 'textFilterText' }),
+      ).toHaveAttribute('name', 'someTextFilterName');
     });
-    expect(spinbutton).toHaveAttribute('name', 'someNumberFilterName');
-    expect(spinbutton).toHaveValue(42);
-  });
 
-  it('renders a CollectionFilter', () => {
-    const filter: CollectionFilter = {
-      type: 'collection',
-      id: 'someCollectionFilterId',
-      name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
-      placeholderTextId: 'collectionFilterPlaceholderText',
-      options: [
-        { value: 'option1', text: 'Option 1' },
-        { value: 'option2', text: 'Option 2' },
-        { value: 'option3', text: 'Option 3' },
-      ],
-    };
+    it('renders a TextFilter with current value', () => {
+      const filter: TextFilter = {
+        type: 'text',
+        id: 'someTextFilterId',
+        name: 'someTextFilterName',
+        textId: 'textFilterText',
+        placeholderTextId: 'textFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        regEx: '.+',
+      };
 
-    render(
-      <Filter
-        filter={filter}
-        currentValue=''
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
+      render(
+        <Filter
+          filter={filter}
+          currentValue='Some value'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
 
-    const listbox = screen.getByRole('combobox', {
-      name: 'collectionFilterText',
+      expect(
+        screen.getByRole('textbox', { name: 'textFilterText' }),
+      ).toHaveValue('Some value');
     });
-    expect(listbox).toHaveAttribute('name', 'someCollectionFilterName');
 
-    expect(screen.getByRole('option', { name: 'Option 1' })).toHaveValue(
-      'option1',
-    );
-    expect(screen.getByRole('option', { name: 'Option 2' })).toHaveValue(
-      'option2',
-    );
+    it('syncs TextFilter value when currentValue changes', async () => {
+      const filter: TextFilter = {
+        type: 'text',
+        id: 'someTextFilterId',
+        name: 'someTextFilterName',
+        textId: 'textFilterText',
+        placeholderTextId: 'textFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        regEx: '.+',
+      };
 
-    expect(screen.getByRole('option', { name: 'Option 3' })).toHaveValue(
-      'option3',
-    );
+      const { rerender } = render(
+        <Filter
+          filter={filter}
+          currentValue='Initial value'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'textFilterText' }),
+      ).toHaveValue('Initial value');
+
+      rerender(
+        <Filter
+          filter={filter}
+          currentValue='Updated value'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole('textbox', { name: 'textFilterText' }),
+      ).toHaveValue('Updated value');
+    });
   });
 
-  it('renders a CollectionFilter with current value', () => {
-    const filter: CollectionFilter = {
-      type: 'collection',
-      id: 'someCollectionFilterId',
-      name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
-      placeholderTextId: 'collectionFilterPlaceholderText',
-      options: [
-        { value: 'option1', text: 'Option 1' },
-        { value: 'option2', text: 'Option 2' },
-        { value: 'option3', text: 'Option 3' },
-      ],
-    };
+  describe('NumberFilter', () => {
+    it('renders a NumberFilter', () => {
+      const filter: NumberFilter = {
+        type: 'number',
+        id: 'someNumberFilterId',
+        name: 'someNumberFilterName',
+        textId: 'numberFilterText',
+        min: 0,
+        max: 100,
+        placeholderTextId: 'numberFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
 
-    render(
-      <Filter
-        filter={filter}
-        currentValue='option2'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
+      render(
+        <Filter
+          filter={filter}
+          currentValue='42'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toHaveValue('option2');
+      const spinbutton = screen.getByRole('spinbutton', {
+        name: 'numberFilterText',
+      });
+      expect(spinbutton).toHaveAttribute('name', 'someNumberFilterName');
+      expect(spinbutton).toHaveValue(42);
+    });
   });
 
-  it('syncs CollectionFilter value when currentValue changes', () => {
-    const filter: CollectionFilter = {
-      type: 'collection',
-      id: 'someCollectionFilterId',
-      name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
-      placeholderTextId: 'collectionFilterPlaceholderText',
-      options: [
-        { value: 'option1', text: 'Option 1' },
-        { value: 'option2', text: 'Option 2' },
-        { value: 'option3', text: 'Option 3' },
-      ],
-    };
+  describe('CollectionFilter', () => {
+    it('renders a CollectionFilter', () => {
+      const filter: CollectionFilter = {
+        type: 'collection',
+        id: 'someCollectionFilterId',
+        name: 'someCollectionFilterName',
+        textId: 'collectionFilterText',
+        placeholderTextId: 'collectionFilterPlaceholderText',
+        options: [
+          { value: 'option1', text: 'Option 1' },
+          { value: 'option2', text: 'Option 2' },
+          { value: 'option3', text: 'Option 3' },
+        ],
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
 
-    const { rerender } = render(
-      <Filter
-        filter={filter}
-        currentValue='option2'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
+      render(
+        <Filter
+          filter={filter}
+          currentValue=''
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
 
-    expect(
-      screen.getByRole('combobox', {
+      const listbox = screen.getByRole('combobox', {
         name: 'collectionFilterText',
-      }),
-    ).toHaveValue('option2');
+      });
+      expect(listbox).toHaveAttribute('name', 'someCollectionFilterName');
 
-    rerender(
-      <Filter
-        filter={filter}
-        currentValue='option3'
-        onChange={vi.fn()}
-        forceSubmit={vi.fn()}
-      />,
-    );
+      expect(screen.getByRole('option', { name: 'Option 1' })).toHaveValue(
+        'option1',
+      );
+      expect(screen.getByRole('option', { name: 'Option 2' })).toHaveValue(
+        'option2',
+      );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toHaveValue('option3');
+      expect(screen.getByRole('option', { name: 'Option 3' })).toHaveValue(
+        'option3',
+      );
+    });
+
+    it('renders a CollectionFilter with current value', () => {
+      const filter: CollectionFilter = {
+        type: 'collection',
+        id: 'someCollectionFilterId',
+        name: 'someCollectionFilterName',
+        textId: 'collectionFilterText',
+        placeholderTextId: 'collectionFilterPlaceholderText',
+        options: [
+          { value: 'option1', text: 'Option 1' },
+          { value: 'option2', text: 'Option 2' },
+          { value: 'option3', text: 'Option 3' },
+        ],
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
+
+      render(
+        <Filter
+          filter={filter}
+          currentValue='option2'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole('combobox', {
+          name: 'collectionFilterText',
+        }),
+      ).toHaveValue('option2');
+    });
+
+    it('syncs CollectionFilter value when currentValue changes', () => {
+      const filter: CollectionFilter = {
+        type: 'collection',
+        id: 'someCollectionFilterId',
+        name: 'someCollectionFilterName',
+        textId: 'collectionFilterText',
+        placeholderTextId: 'collectionFilterPlaceholderText',
+        options: [
+          { value: 'option1', text: 'Option 1' },
+          { value: 'option2', text: 'Option 2' },
+          { value: 'option3', text: 'Option 3' },
+        ],
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
+
+      const { rerender } = render(
+        <Filter
+          filter={filter}
+          currentValue='option2'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole('combobox', {
+          name: 'collectionFilterText',
+        }),
+      ).toHaveValue('option2');
+
+      rerender(
+        <Filter
+          filter={filter}
+          currentValue='option3'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole('combobox', {
+          name: 'collectionFilterText',
+        }),
+      ).toHaveValue('option3');
+    });
   });
 
-  it('renders a AutocompleteFilter', () => {
-    const filter: AutocompleteFilter = {
-      recordType: 'someRecordType',
-      type: 'autocomplete',
-      id: 'someAutocompleteFilterId',
-      name: 'someAutocompleteFilterName',
-      textId: 'autocompleteFilterText',
-      searchType: 'someSearchType',
-      searchTerm: 'someSearchTerm',
-      presentationPath: {
-        sv: 'some.sv.path',
-        en: 'some.en.path',
-      },
-      placeholderTextId: 'autocompleteFilterPlaceholderText',
-    };
+  describe('AutocompleteFilter', () => {
+    it('renders a AutocompleteFilter', () => {
+      const filter: AutocompleteFilter = {
+        recordType: 'someRecordType',
+        type: 'autocomplete',
+        id: 'someAutocompleteFilterId',
+        name: 'someAutocompleteFilterName',
+        textId: 'autocompleteFilterText',
+        searchType: 'someSearchType',
+        searchTerm: 'someSearchTerm',
+        placeholderTextId: 'autocompleteFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
 
-    const autocompleteMock = vi.fn();
+      const autocompleteMock = vi.fn();
 
-    const RoutesStub = createRoutesStub([
-      {
-        path: '/',
-        Component: () => (
-          <Filter
-            filter={filter}
-            currentValue=''
-            onChange={vi.fn()}
-            forceSubmit={vi.fn()}
-          />
-        ),
-      },
-      {
-        path: '/autoCompleteSearch/:searchType',
-        loader: autocompleteMock,
-      },
-    ]);
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <Filter
+              filter={filter}
+              currentValue=''
+              onChange={vi.fn()}
+              forceSubmit={vi.fn()}
+            />
+          ),
+        },
+        {
+          path: '/autoCompleteSearch/:searchType',
+          loader: autocompleteMock,
+        },
+      ]);
 
-    render(<RoutesStub />);
+      render(<RoutesStub />);
 
-    screen.getByRole('combobox', {
-      name: 'autocompleteFilterText',
+      screen.getByRole('combobox', {
+        name: 'autocompleteFilterText',
+      });
+    });
+  });
+
+  describe('validation errors', () => {
+    it('renders validation error for TextFilter', () => {
+      const filter: TextFilter = {
+        type: 'text',
+        id: 'someTextFilterId',
+        name: 'someTextFilterName',
+        textId: 'textFilterText',
+        placeholderTextId: 'textFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        regEx: '.+',
+      };
+
+      render(
+        <Filter
+          filter={filter}
+          currentValue=''
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+          validationError='textValidationError'
+        />,
+      );
+
+      expect(screen.getByText('textValidationError')).toBeInTheDocument();
+    });
+
+    it('renders validation error for NumberFilter', () => {
+      const filter: NumberFilter = {
+        type: 'number',
+        id: 'someNumberFilterId',
+        name: 'someNumberFilterName',
+        textId: 'numberFilterText',
+        min: 0,
+        max: 100,
+        placeholderTextId: 'numberFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
+
+      render(
+        <Filter
+          filter={filter}
+          currentValue='42'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+          validationError='numberValidationError'
+        />,
+      );
+
+      expect(screen.getByText('numberValidationError')).toBeInTheDocument();
+    });
+
+    it('renders validation error for CollectionFilter', () => {
+      const filter: CollectionFilter = {
+        type: 'collection',
+        id: 'someCollectionFilterId',
+        name: 'someCollectionFilterName',
+        textId: 'collectionFilterText',
+        placeholderTextId: 'collectionFilterPlaceholderText',
+        options: [
+          { value: 'option1', text: 'Option 1' },
+          { value: 'option2', text: 'Option 2' },
+        ],
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
+
+      render(
+        <Filter
+          filter={filter}
+          currentValue='option1'
+          onChange={vi.fn()}
+          forceSubmit={vi.fn()}
+          validationError='collectionValidationError'
+        />,
+      );
+
+      expect(screen.getByText('collectionValidationError')).toBeInTheDocument();
+    });
+
+    it('renders validation error for AutocompleteFilter', () => {
+      const filter: AutocompleteFilter = {
+        recordType: 'someRecordType',
+        type: 'autocomplete',
+        id: 'someAutocompleteFilterId',
+        name: 'someAutocompleteFilterName',
+        textId: 'autocompleteFilterText',
+        searchType: 'someSearchType',
+        searchTerm: 'someSearchTerm',
+        placeholderTextId: 'autocompleteFilterPlaceholderText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+      };
+
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <Filter
+              filter={filter}
+              currentValue=''
+              onChange={vi.fn()}
+              forceSubmit={vi.fn()}
+              validationError='autocompleteValidationError'
+            />
+          ),
+        },
+        {
+          path: '/autoCompleteSearch/:searchType',
+          loader: () => ({ result: [] }),
+        },
+      ]);
+
+      render(<RoutesStub />);
+
+      expect(
+        screen.getByText('autocompleteValidationError'),
+      ).toBeInTheDocument();
     });
   });
 
   it('is possible to search in autocomplete filter', async () => {
+    vi.mocked(getRecordTitle).mockReturnValue('Result 1');
     const user = userEvent.setup();
     const filter: AutocompleteFilter = {
       recordType: 'someRecordType',
@@ -288,11 +460,11 @@ describe('Filter', () => {
       textId: 'autocompleteFilterText',
       searchType: 'someSearchType',
       searchTerm: 'someSearchTerm',
-      presentationPath: {
-        sv: 'some.sv.path',
-        en: 'some.en.path',
-      },
       placeholderTextId: 'autocompleteFilterPlaceholderText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
     };
 
     const autocompleteMock = vi.fn().mockReturnValue({

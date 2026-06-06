@@ -3,6 +3,7 @@ import { createSearchQuery } from '../createSearchQuery.server';
 import type { SearchFormDefinition } from '../createSearchFormDefinition.server';
 import type { ActiveFilter } from '../createActiveFilters.server';
 import type { BFFMember } from '@/cora/bffTypes.server';
+import type { FilterDefinition } from '../createFilterDefinition.server';
 
 describe('createSearchQuery', () => {
   it('creates a basic query', () => {
@@ -29,9 +30,8 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'false' },
-            permissionUnitSearchTerm: { value: '' },
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -65,9 +65,8 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'false' },
-            permissionUnitSearchTerm: { value: '' },
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -101,9 +100,8 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'false' },
-            permissionUnitSearchTerm: { value: '' },
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: '**' },
           },
         },
@@ -139,9 +137,8 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'false' },
-            permissionUnitSearchTerm: {
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: {
               value: 'permissionUnit_memberPermissionUnit',
             },
             mainSearchTerm: { value: 'test query' },
@@ -157,6 +154,7 @@ describe('createSearchQuery', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      filters: [] as FilterDefinition[],
     } as SearchFormDefinition;
     const q = 'test query';
     const member = undefined;
@@ -180,9 +178,8 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'false' },
-            permissionUnitSearchTerm: { value: '' },
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             filter1: { value: 'value1' },
             filter2: { value: 'value2' },
@@ -194,18 +191,22 @@ describe('createSearchQuery', () => {
     });
   });
 
-  it('is possible to override trashBinSearchTerm and permissionUnitSearchTerm', () => {
+  it('is possible to override visibilitySearchTerm and permissionUnitLinkedRecordIdSearchTerm', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      filters: [] as FilterDefinition[],
     } as SearchFormDefinition;
     const q = 'test query';
     const member = {
       memberPermissionUnit: 'memberPermissionUnit',
     } as BFFMember;
     const activeFilters = [
-      { name: 'trashBinSearchTerm', value: 'true' },
-      { name: 'permissionUnitSearchTerm', value: 'permissionUnit_test' },
+      { name: 'visibilitySearchTerm', value: 'unpublished' },
+      {
+        name: 'permissionUnitLinkedRecordIdSearchTerm',
+        value: 'permissionUnit_test',
+      },
     ] as ActiveFilter[];
     const start = 0;
     const rows = 10;
@@ -223,10 +224,66 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            recordIdSearchTerm: { value: '**' },
-            trashBinSearchTerm: { value: 'true' },
-            permissionUnitSearchTerm: { value: 'permissionUnit_test' },
+            visibilitySearchTerm: { value: 'unpublished' },
+            permissionUnitLinkedRecordIdSearchTerm: {
+              value: 'permissionUnit_test',
+            },
             mainSearchTerm: { value: 'test query' },
+          },
+        },
+        start: { value: '0' },
+        rows: { value: '10' },
+      },
+    });
+  });
+
+  it('sets filter values as array when repeatMax is larger than 1', () => {
+    const searchFormDefinition = {
+      searchRootName: 'testSearch',
+      mainSearchTerm: {
+        nameInData: 'mainSearchTerm',
+      },
+      filters: [
+        {
+          id: 'testFilter',
+          name: 'testFilter',
+          textId: 'testFilterTextId',
+          placeholderTextId: 'testFilterPlaceholderTextId',
+          repeat: {
+            repeatMin: 0,
+            repeatMax: Number.MAX_VALUE,
+          },
+        },
+      ],
+    } as SearchFormDefinition;
+    const q = 'test query';
+    const member = undefined;
+    const activeFilters = [
+      {
+        name: 'testFilter',
+        value: 'testValue',
+      },
+    ] as ActiveFilter[];
+    const start = 0;
+    const rows = 10;
+
+    const query = createSearchQuery(
+      searchFormDefinition,
+      q,
+      member,
+      activeFilters,
+      start,
+      rows,
+    );
+
+    expect(query).toEqual({
+      testSearch: {
+        include: {
+          includePart: {
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
+            mainSearchTerm: { value: 'test query' },
+            testFilter: [{ value: 'testValue' }],
           },
         },
         start: { value: '0' },

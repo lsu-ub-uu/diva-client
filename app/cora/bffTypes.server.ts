@@ -70,6 +70,14 @@ export type BFFMetadata =
   | BFFMetadataGroup
   | BFFMetadataItemCollection;
 
+export type BFFMetadataWithAttributes =
+  | BFFMetadataTextVariable
+  | BFFMetadataNumberVariable
+  | BFFMetadataRecordLink
+  | BFFMetadataAnyTypeRecordLink
+  | BFFMetadataCollectionVariable
+  | BFFMetadataGroup;
+
 export interface BFFAttributeReference {
   refCollectionVarId: string;
 }
@@ -348,45 +356,76 @@ export interface BFFResourceLink extends BFFMetadataBase {
   type: 'resourceLink';
 }
 
-export interface BFFThemeLink {
+export interface BFFMemberLink {
+  lang: 'swe' | 'eng';
+  visibility: 'public' | 'admin' | 'all';
   url: string;
   displayLabel: string;
 }
 
-export interface BFFThemeLinkWrapper {
-  sv: BFFThemeLink;
-  en: BFFThemeLink;
+export interface BFFImageAttribution {
+  title?: {
+    sv: string;
+    en: string;
+    cimode?: string;
+  };
+  author?: string;
+  source: {
+    displayLabel: string;
+    url: string;
+  };
+  license: {
+    displayLabel: string;
+    url?: string;
+  };
+}
+
+export interface BFFSweEngText {
+  sv: string;
+  en: string;
+  cimode?: string;
+}
+
+export interface BFFMemberHero {
+  title: BFFSweEngText;
+  subTitle?: BFFSweEngText;
+  imageUrl: string;
+  imageAttribution: BFFImageAttribution;
 }
 
 export interface BFFMember {
   id: string;
   memberPermissionUnit?: string;
-  pageTitle: {
-    sv: string;
-    en: string;
-  };
+  hostnames: string[];
+  loginUnitIds: string[];
+  pageTitle: BFFSweEngText;
   backgroundColor: string;
   textColor: string;
   backgroundColorDarkMode?: string;
   textColorDarkMode?: string;
-  publicLinks?: BFFThemeLinkWrapper[];
-  adminLinks?: BFFThemeLinkWrapper[];
+  links?: BFFMemberLink[];
   logo: {
-    url?: string;
     svg?: string;
   };
-  hostnames: string[];
-  loginUnitIds: string[];
+  hero: BFFMemberHero;
 }
 
 export interface BFFOrganisation {
   id: string;
   parentOrganisationId?: string;
-  name: {
-    sv: string;
-    en?: string;
-  };
+  name: BFFSweEngText;
   rorId?: string;
+}
+
+export type BFFSeverity = 'success' | 'info' | 'warning' | 'error' | 'neutral';
+
+export interface BFFAlert {
+  severity: BFFSeverity;
+  text: BFFSweEngText;
+}
+
+export interface BFFClientContent extends BFFBase {
+  globalAlert?: BFFAlert;
 }
 
 export type FormDefinitionMode = 'create' | 'update' | 'view' | 'list';
@@ -402,4 +441,5 @@ export interface Dependencies {
   loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
   memberPool: Lookup<string, BFFMember>;
   organisationPool: Lookup<string, BFFOrganisation>;
+  clientContentPool: Lookup<string, BFFClientContent>;
 }

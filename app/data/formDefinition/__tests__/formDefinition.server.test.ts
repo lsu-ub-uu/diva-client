@@ -53,7 +53,7 @@ import {
   createPresentationVar,
   createRecordLink,
   createTextVar,
-} from './utils';
+} from '../../../__mocks__/bffTestDataUtils';
 
 describe('formDefinition', () => {
   const FORM_MODE_NEW = 'create';

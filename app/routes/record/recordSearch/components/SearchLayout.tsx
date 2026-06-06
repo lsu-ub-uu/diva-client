@@ -22,6 +22,7 @@ interface SearchLayoutProps {
   onClearAllFilters: () => void;
   children?: React.ReactNode;
   userRights: string[];
+  validationErrors: Map<string, string>;
 }
 
 export const SearchLayout = ({
@@ -39,6 +40,7 @@ export const SearchLayout = ({
   onClearAllFilters,
   children,
   userRights,
+  validationErrors,
 }: SearchLayoutProps) => {
   const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
     useDrawerDialog();
@@ -64,6 +66,7 @@ export const SearchLayout = ({
               onClearAllFilters={onClearAllFilters}
               apiUrl={apiUrl}
               showFilterDialog={showDrawerDialog}
+              validationErrors={validationErrors}
             />
           </main>
           <div className='grid-col-3 grid-col-l-hidden'>
@@ -73,6 +76,7 @@ export const SearchLayout = ({
               query={query}
               rows={rows}
               onClose={closeDrawerDialog}
+              validationErrors={validationErrors}
             />
           </div>
           <DrawerDialog
@@ -86,6 +90,7 @@ export const SearchLayout = ({
               query={query}
               rows={rows}
               onClose={closeDrawerDialog}
+              validationErrors={validationErrors}
             />
           </DrawerDialog>
         </>

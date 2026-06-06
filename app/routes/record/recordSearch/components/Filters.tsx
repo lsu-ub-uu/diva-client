@@ -15,6 +15,7 @@ interface FiltersProps {
   query: string;
   rows: number;
   onClose: () => void;
+  validationErrors: Map<string, string>;
 }
 
 export const Filters = ({
@@ -23,6 +24,7 @@ export const Filters = ({
   query,
   rows,
   onClose,
+  validationErrors,
 }: FiltersProps) => {
   const { t } = useTranslation();
   const submit = useSubmit();
@@ -73,7 +75,8 @@ export const Filters = ({
                 key={filter.id}
                 currentValue={activeFilter?.value}
                 currentValueText={activeFilter?.valueTextId}
-                forceSubmit={() => handleFilterChange}
+                forceSubmit={handleFilterChange}
+                validationError={validationErrors.get(filter.name)}
               />
             );
           })}

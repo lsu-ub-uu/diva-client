@@ -91,15 +91,15 @@ export const OutputView = ({ data }: OutputViewProps) => {
               )}
             />
             <OriginInfo originInfo={output.originInfo} />
-
-            {output.artisticWork_type_outputType && (
-              <Term
-                label={output.artisticWork_type_outputType.__text?.[language]}
-                value={
-                  output.artisticWork_type_outputType.__valueText?.[language]
-                }
-              />
-            )}
+            {output.artisticWork_type_outputType &&
+              output.artisticWork_type_outputType.value === 'true' && (
+                <Term
+                  label={output.artisticWork_type_outputType.__text?.[language]}
+                  value={
+                    output.artisticWork_type_outputType.__valueText?.[language]
+                  }
+                />
+              )}
             <Term
               label={output.genre_type_contentType?.__text?.[language]}
               value={output.genre_type_contentType?.__valueText?.[language]}
@@ -190,6 +190,16 @@ export const OutputView = ({ data }: OutputViewProps) => {
               </dl>
             </section>
           )}
+          <dl>
+            <Term
+              label={output.note_type_external?.__text?.[language]}
+              value={
+                output.note_type_external?.value && (
+                  <CollapsableText text={output.note_type_external?.value} />
+                )
+              }
+            />
+          </dl>
         </article>
       </main>
       <aside className='grid-col-4 grid-col-m-12'>

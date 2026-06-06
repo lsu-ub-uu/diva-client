@@ -114,6 +114,10 @@ if (DEVELOPMENT) {
     `${BASE_PATH}/assets`,
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
+  app.use(
+    `${BASE_PATH}/images`,
+    express.static('dist/client/images', { immutable: false, maxAge: '1d' }),
+  );
   app.use(express.static('dist/client', { maxAge: '1h' }));
   app.use(reactRouterApp.app);
 }

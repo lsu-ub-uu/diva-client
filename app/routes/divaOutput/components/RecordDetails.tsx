@@ -1,4 +1,3 @@
-import { CollapsableText } from '@/components/CollapsableText/CollapsableText';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useUser } from '@/utils/rootLoaderDataUtils';
@@ -53,15 +52,6 @@ export const RecordDetails = ({ output }: RecordDetailsProps) => {
         <Term
           label={t('divaClient_memberText')}
           value={output.recordInfo?.permissionUnit?.value}
-        />
-
-        <Term
-          label={output.note_type_external?.__text?.[language]}
-          value={
-            output.note_type_external?.value && (
-              <CollapsableText text={output.note_type_external?.value} />
-            )
-          }
         />
         {user && (
           <Term

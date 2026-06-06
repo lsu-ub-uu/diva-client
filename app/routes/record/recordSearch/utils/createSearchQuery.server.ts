@@ -14,9 +14,8 @@ export const createSearchQuery = (
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
-          recordIdSearchTerm: { value: '**' },
-          trashBinSearchTerm: { value: 'false' },
-          permissionUnitSearchTerm: {
+          visibilitySearchTerm: { value: 'published' },
+          permissionUnitLinkedRecordIdSearchTerm: {
             value: member?.memberPermissionUnit
               ? `permissionUnit_${member?.memberPermissionUnit}`
               : '',
@@ -25,7 +24,15 @@ export const createSearchQuery = (
             value: q || '**',
           },
           ...activeFilters.reduce((acc, filter) => {
-            return { ...acc, [filter.name]: { value: filter.value } };
+            const filterDef = searchFormDefinition.filters.find(
+              (f) => f.name === filter.name,
+            );
+            const value =
+              filterDef && filterDef?.repeat.repeatMax > 1
+                ? [{ value: filter.value }]
+                : { value: filter.value };
+
+            return { ...acc, [filter.name]: value };
           }, {}),
         },
       },

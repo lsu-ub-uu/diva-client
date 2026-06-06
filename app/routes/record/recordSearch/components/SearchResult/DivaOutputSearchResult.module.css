@@ -1,0 +1,17 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--gap);
+
+  @media (width < 900px) {
+    flex-direction: column;
+  }
+}
+
+.title {
+  @media (width < 900px) {
+    font-size: var(--font-size-m);
+    line-height: var(--item-title-line-height);
+  }
+}

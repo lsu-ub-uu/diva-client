@@ -114,7 +114,7 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
               as='a'
               href={apiUrl}
               target='_blank'
-              rel='noopener noreferrer'
+              rel='noopener noreferrer nofollow'
               aria-label='View raw data'
               size='small'
               tooltip={t('divaClient_viewInApiText')}

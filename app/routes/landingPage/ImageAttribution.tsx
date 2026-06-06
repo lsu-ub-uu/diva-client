@@ -1,45 +1,38 @@
+import type { BFFImageAttribution } from '@/cora/bffTypes.server';
+import { useLanguage } from '@/i18n/useLanguage';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface ImageAttributionProps {
-  title?: string;
-  author?: string;
-  source: {
-    text: string;
-    link: string;
-  };
-  license: {
-    text: string;
-    link?: string;
-  };
+  attribution: BFFImageAttribution;
 }
 
-export const ImageAttribution = ({
-  attribution,
-}: {
-  attribution: ImageAttributionProps;
-}) => {
+export const ImageAttribution = ({ attribution }: ImageAttributionProps) => {
+  const { t } = useTranslation();
+  const language = useLanguage();
+
   const fragments = [
-    attribution.title,
+    attribution.title && attribution.title[language],
     attribution.author,
     <>
       <a
-        href={attribution.source.link}
+        href={attribution.source.url}
         target='_blank'
         rel='noopener noreferrer'
       >
-        {attribution.source.text}
+        {attribution.source.displayLabel}
       </a>
     </>,
-    attribution.license.link ? (
+    attribution.license.url ? (
       <a
-        href={attribution.license.link}
+        href={attribution.license.url}
         target='_blank'
         rel='noopener noreferrer'
       >
-        {attribution.license.text}
+        {attribution.license.displayLabel}
       </a>
     ) : (
-      attribution.license.text
+      attribution.license.displayLabel
     ),
   ];
   return (
@@ -55,6 +48,7 @@ export const ImageAttribution = ({
           ];
         }
       }, [])}
+      <span> ({t('divaClient_imageAttributionModifiedText')})</span>
     </div>
   );
 };

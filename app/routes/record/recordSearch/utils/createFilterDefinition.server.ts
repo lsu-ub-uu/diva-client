@@ -1,10 +1,12 @@
 import type {
-  BFFMetadata,
   BFFMetadataBase,
+  BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataItemCollection,
+  BFFMetadataTextVariable,
+  Dependencies,
 } from '@/cora/bffTypes.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
+import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
 
 export type FilterDefinition =
   | TextFilter
@@ -17,10 +19,12 @@ export interface BaseFilter {
   name: string;
   textId: string;
   placeholderTextId: string;
+  repeat: Repeat;
 }
 
 export interface TextFilter extends BaseFilter {
   type: 'text';
+  regEx: string;
 }
 
 export interface NumberFilter extends BaseFilter {
@@ -41,55 +45,63 @@ export interface AutocompleteFilter extends BaseFilter {
   searchType: string;
   searchTerm: string;
   recordType: string;
-  presentationPath: {
-    sv: string;
-    en: string;
-  };
 }
 
 const autocompleteSearchTerms: Record<
   string,
   Omit<AutocompleteFilter, keyof BaseFilter | 'type'>
 > = {
-  subjectTopicSearchTerm: {
+  subjectLinkedRecordIdSearchTerm: {
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
-    presentationPath: {
-      sv: 'subject.authority_lang_swe.topic.value',
-      en: 'subject.variant_lang_eng.topic.value',
-    },
   },
-  permissionUnitSearchTerm: {
+  permissionUnitLinkedRecordIdSearchTerm: {
     recordType: 'permissionUnit',
     searchType: 'permissionUnitSearch',
     searchTerm:
       'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
-    presentationPath: {
-      sv: 'permissionUnit.recordInfo.id.value',
-      en: 'permissionUnit.recordInfo.id.value',
-    },
   },
 };
 
+const hiddenSearchTerms = [
+  'visibilitySearchTerm',
+  'permissionUnitLinkedRecordIdSearchTerm',
+];
+
 export const createFilters = (
-  filterMetadatas: BFFMetadata[],
+  filterMetadataRefs: BFFMetadataChildReference[],
   dependencies: Dependencies,
 ): FilterDefinition[] => {
-  return filterMetadatas
-    .map((metadata) => createFilter(metadata, dependencies))
+  return filterMetadataRefs
+    .map((ref) => createFilter(ref, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };
 
 const createFilter = (
-  metadata: BFFMetadata,
+  filterMetadataRef: BFFMetadataChildReference,
   depencencies: Dependencies,
 ): FilterDefinition | undefined => {
+  const metadata = depencencies.metadataPool.get(
+    filterMetadataRef.childId,
+  ) as BFFMetadataBase;
+
+  if (hiddenSearchTerms.includes(metadata.nameInData)) {
+    return undefined;
+  }
+
   const commonValues = {
     id: metadata.id,
     name: metadata.nameInData,
     textId: metadata.textId,
     placeholderTextId: metadata.defTextId,
+    repeat: {
+      repeatMin: Number.parseInt(filterMetadataRef.repeatMin),
+      repeatMax:
+        filterMetadataRef.repeatMax === 'X'
+          ? Number.MAX_VALUE
+          : Number.parseInt(filterMetadataRef.repeatMax),
+    },
   };
 
   if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
@@ -104,6 +116,7 @@ const createFilter = (
     return {
       ...commonValues,
       type: 'text',
+      regEx: (metadata as BFFMetadataTextVariable).regEx,
     };
   }
 

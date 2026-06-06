@@ -198,21 +198,40 @@ describe('OutputView', () => {
     expect(screen.getByText('Swedish')).toBeInTheDocument();
   });
 
-  it('shows output type', () => {
+  it('does show artistic work when value is true', () => {
     const mockData = {
       output: {
         recordInfo: { id: { value: '12345' } },
         artisticWork_type_outputType: {
-          __text: { en: 'Artistic work type' },
-          __valueText: { en: 'Painting' },
+          __text: { en: 'Artistic work' },
+          __valueText: { en: 'Yes' },
+          value: 'true',
         },
       },
     } as DivaOutput;
 
     renderWithRoutesStub(<OutputView data={mockData} />);
 
-    expect(screen.getByText('Artistic work type')).toBeInTheDocument();
-    expect(screen.getByText('Painting')).toBeInTheDocument();
+    expect(screen.getByText('Artistic work')).toBeInTheDocument();
+    expect(screen.getByText('Yes')).toBeInTheDocument();
+  });
+
+  it('does not show artistic work when value is false', () => {
+    const mockData = {
+      output: {
+        recordInfo: { id: { value: '12345' } },
+        artisticWork_type_outputType: {
+          __text: { en: 'Artistic work' },
+          __valueText: { en: 'No' },
+          value: 'false',
+        },
+      },
+    } as DivaOutput;
+
+    renderWithRoutesStub(<OutputView data={mockData} />);
+
+    expect(screen.queryByText('Artistic work')).not.toBeInTheDocument();
+    expect(screen.queryByText('Yes')).not.toBeInTheDocument();
   });
 
   it('shows genre', () => {

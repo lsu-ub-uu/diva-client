@@ -11,7 +11,7 @@ export interface RecordLinkSearchPresentation {
   autocompleteSearchTerm: {
     name: string;
   };
-  permissionUnitSearchTerm?: {
+  permissionUnitLinkedRecordIdSearchTerm?: {
     name: string;
   };
 }
@@ -67,42 +67,47 @@ export const createRecordLinkSearchPresentation = (
     autocompleteSearchTerm,
     autocompleteSearchTermChildRef,
   );
-  const permissionUnitSearchTermPath = getPermissionUnitSearchTermPath(
-    dependencies,
-    includePartGroup,
-  );
+  const permissionUnitLinkedRecordIdSearchTermPath =
+    getPermissionUnitLinkedRecordIdSearchTermPath(
+      dependencies,
+      includePartGroup,
+    );
 
   return removeEmpty({
     searchType,
     autocompleteSearchTerm: {
       name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${autocompleteSearchTermPath}.value`,
     },
-    permissionUnitSearchTerm: permissionUnitSearchTermPath
-      ? {
-          name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${permissionUnitSearchTermPath}.value`,
-        }
-      : undefined,
+    permissionUnitLinkedRecordIdSearchTerm:
+      permissionUnitLinkedRecordIdSearchTermPath
+        ? {
+            name: `${searchPath}.${includeGroupPath}.${includePartGroupPath}.${permissionUnitLinkedRecordIdSearchTermPath}.value`,
+          }
+        : undefined,
   });
 };
 
-const getPermissionUnitSearchTermPath = (
+const getPermissionUnitLinkedRecordIdSearchTermPath = (
   dependencies: Dependencies,
   includePartGroup: BFFMetadataGroup,
 ) => {
-  const permissionUnitSearchTermData = includePartGroup.children
+  const permissionUnitLinkedRecordIdSearchTermData = includePartGroup.children
     .map((childRef) => ({
       childRef,
       metadata: dependencies.metadataPool.get(childRef.childId),
     }))
-    .find(({ metadata }) => metadata.nameInData === 'permissionUnitSearchTerm');
+    .find(
+      ({ metadata }) =>
+        metadata.nameInData === 'permissionUnitLinkedRecordIdSearchTerm',
+    );
 
-  if (!permissionUnitSearchTermData) {
+  if (!permissionUnitLinkedRecordIdSearchTermData) {
     return undefined;
   }
 
   return getFieldPathSegment(
-    permissionUnitSearchTermData.metadata,
-    permissionUnitSearchTermData.childRef,
+    permissionUnitLinkedRecordIdSearchTermData.metadata,
+    permissionUnitLinkedRecordIdSearchTermData.childRef,
   );
 };
 

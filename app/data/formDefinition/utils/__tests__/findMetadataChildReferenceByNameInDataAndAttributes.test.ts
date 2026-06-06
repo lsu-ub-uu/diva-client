@@ -12,7 +12,7 @@ import {
   createCollVar,
   createCollVarFinal,
   createTextVar,
-} from '../../__tests__/utils';
+} from '../../../../__mocks__/bffTestDataUtils';
 import {
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,

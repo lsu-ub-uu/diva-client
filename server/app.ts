@@ -23,13 +23,23 @@ import 'react-router';
 import { RouterContextProvider } from 'react-router';
 import {
   getDependencies,
-  handleDataChanged,
+  handleDataChanged as dependenciesHandleDataChanged,
 } from './dependencies/depencencies';
 import { createi18nInstance, i18nContext } from './i18n';
 import { listenForDataChange } from './listenForDataChange';
+import {
+  handleDataChanged as sitemapHandleDataChanged,
+  populateCache as populateSitemapCache,
+} from './sitemapCache.server';
 
 const dependenciesPromise = getDependencies();
-dependenciesPromise.then(() => listenForDataChange(handleDataChanged));
+
+populateSitemapCache();
+
+listenForDataChange((changeEvent) => {
+  dependenciesHandleDataChanged(changeEvent);
+  sitemapHandleDataChanged(changeEvent);
+});
 
 export const app = express();
 

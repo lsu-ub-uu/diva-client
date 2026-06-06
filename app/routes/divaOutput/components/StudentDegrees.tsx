@@ -41,8 +41,8 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
           value={studentDegree.degreeLevel?.__valueText?.[language]}
         />
         <Term
-          label={studentDegree.universityPoints?.__text?.[language]}
-          value={studentDegree.universityPoints?.__valueText?.[language]}
+          label={studentDegree.credits?.__text?.[language]}
+          value={studentDegree.credits?.__valueText?.[language]}
         />
       </dl>
     </section>

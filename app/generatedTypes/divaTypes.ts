@@ -2292,7 +2292,7 @@ export interface RecordInfoOutputUpdateGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  urn?: { value: string; __text?: { sv: string; en: string } };
+  urn: { value: string; __text?: { sv: string; en: string } };
   oldId?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
@@ -2300,8 +2300,8 @@ export interface RecordInfoOutputUpdateGroup {
 export type DataQualityCollection = 'classic' | '2026';
 
 export type SubcategoryCollection =
-  | 'oralPresentation'
-  | 'oralPresentationAbstract'
+  | 'presentation'
+  | 'presentationAbstract'
   | 'bookOfAbstracts'
   | 'policyDocument'
   | 'exhibitionCatalog';
@@ -2630,10 +2630,11 @@ export interface NameOrganisationPublisherGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface OriginInfoGroup {
+export interface OriginInfoEditionGroup {
   dateIssued?: DateIssuedGroup;
   copyrightDate?: CopyrightDateGroup;
   dateOther?: DateOtherPublicationStatusGroup[];
+  edition?: { value: string; __text?: { sv: string; en: string } };
   name_otherType_publisher_type_corporate?: NameOrganisationPublisherGroup[];
   __text?: { sv: string; en: string };
 }
@@ -2679,7 +2680,7 @@ export type DegreeLevelCollection =
   | 'H4'
   | 'H5';
 
-export type UniversityPointsCollection =
+export type CreditsCollection =
   | '5'
   | '7,5'
   | '10'
@@ -2813,8 +2814,8 @@ export interface StudentDegreeGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  universityPoints?: {
-    value: UniversityPointsCollection;
+  credits?: {
+    value: CreditsCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
@@ -3553,11 +3554,18 @@ export interface LocalLabelUpdateGroup {
 
 export type FailedCollection = 'true' | 'false';
 
+export type HiddenExternallyCollection = 'true' | 'false';
+
 export type ReviewedCollection = 'true' | 'false';
 
 export interface AdminInfoDivaGroup {
   failed?: {
     value: FailedCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  hidden?: {
+    value: HiddenExternallyCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
@@ -3867,7 +3875,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  originInfo?: OriginInfoGroup;
+  originInfo?: OriginInfoEditionGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
     _authority: 'ssif';
@@ -3937,7 +3945,7 @@ export interface DivaOutputGroup {
     value: string;
     _type: 'localId';
     __text?: { sv: string; en: string };
-  }[];
+  };
   identifier_displayLabel_invalid?: {
     value: string;
     _type: IdentifierTypeDoiIsbnCollection;
@@ -3996,35 +4004,11 @@ export interface RecordInfoMemberGroup {
   id: { value: string; __text?: { sv: string; en: string } };
   type: { value: 'diva-member'; __text?: { sv: string; en: string } };
   validationType: { value: 'diva-member'; __text?: { sv: string; en: string } };
-  dataDivider: { value: 'diva'; __text?: { sv: string; en: string } };
+  dataDivider: { value: string; __text?: { sv: string; en: string } };
   createdBy: { value: string; __text?: { sv: string; en: string } };
   permissionUnit: { value: string; __text?: { sv: string; en: string } };
   tsCreated: { value: string; __text?: { sv: string; en: string } };
   updated: UpdatedDivaGroup[];
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkSweGroup {
-  url?: { value: string; __text?: { sv: string; en: string } };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkEngGroup {
-  url?: { value: string; __text?: { sv: string; en: string } };
-  displayLabel?: { value: string; __text?: { sv: string; en: string } };
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkAdminGroup {
-  linkSv?: ThemeLinkSweGroup;
-  linkEn?: ThemeLinkEngGroup;
-  __text?: { sv: string; en: string };
-}
-
-export interface ThemeLinkPublicGroup {
-  linkSv?: ThemeLinkSweGroup;
-  linkEn?: ThemeLinkEngGroup;
   __text?: { sv: string; en: string };
 }
 
@@ -4889,6 +4873,86 @@ export interface LoginUnitGroup {
   __text?: { sv: string; en: string };
 }
 
+export interface MemberHeroTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface MemberHeroSubTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionTitleGroup {
+  text_lang_swe?: {
+    value: string;
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  text_lang_eng?: {
+    value: string;
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionSourceGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionLicenseGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface ImageAttributionGroup {
+  title?: ImageAttributionTitleGroup;
+  author?: { value: string; __text?: { sv: string; en: string } };
+  source?: ImageAttributionSourceGroup;
+  license?: ImageAttributionLicenseGroup;
+  __text?: { sv: string; en: string };
+}
+
+export interface MemberHeroGroup {
+  title?: MemberHeroTitleGroup;
+  subTitle?: MemberHeroSubTitleGroup;
+  imageUrl?: { value: string; __text?: { sv: string; en: string } };
+  imageAttribution?: ImageAttributionGroup;
+  __text?: { sv: string; en: string };
+}
+
+export type MemberLinkVisibilityCollection = 'public' | 'admin' | 'all';
+
+export interface MemberLinkGroup {
+  url?: { value: string; __text?: { sv: string; en: string } };
+  displayLabel?: { value: string; __text?: { sv: string; en: string } };
+  _visibility: MemberLinkVisibilityCollection;
+  _lang: LanguageSweEngCollection;
+  __text?: { sv: string; en: string };
+}
+
 export interface DivaMemberGroup {
   recordInfo: RecordInfoMemberGroup;
   memberPermissionUnit?: {
@@ -4899,18 +4963,6 @@ export interface DivaMemberGroup {
 
     __text?: { sv: string; en: string };
   };
-  backgroundColor?: { value: string; __text?: { sv: string; en: string } };
-  textColor?: { value: string; __text?: { sv: string; en: string } };
-  backgroundColorDarkMode?: {
-    value: string;
-    __text?: { sv: string; en: string };
-  };
-  textColorDarkMode?: { value: string; __text?: { sv: string; en: string } };
-  logoSvg?: { value: string; __text?: { sv: string; en: string } };
-  linkAdmin?: ThemeLinkAdminGroup[];
-  linkPublic?: ThemeLinkPublicGroup[];
-  pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
-  pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
   hostname?: { value: string; __text?: { sv: string; en: string } }[];
   loginUnit?: {
     value: string;
@@ -4920,5 +4972,17 @@ export interface DivaMemberGroup {
 
     __text?: { sv: string; en: string };
   }[];
+  backgroundColor?: { value: string; __text?: { sv: string; en: string } };
+  textColor?: { value: string; __text?: { sv: string; en: string } };
+  backgroundColorDarkMode?: {
+    value: string;
+    __text?: { sv: string; en: string };
+  };
+  textColorDarkMode?: { value: string; __text?: { sv: string; en: string } };
+  logoSvg?: { value: string; __text?: { sv: string; en: string } };
+  pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
+  pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
+  hero?: MemberHeroGroup;
+  link?: MemberLinkGroup[];
   __text?: { sv: string; en: string };
 }

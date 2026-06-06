@@ -33,7 +33,7 @@
 }
 
 .accordion-header:hover {
-  background-color: var(--color-gray-main);
+  background-color: var(--color-table-heading);
 }
 
 .accordion-title {
