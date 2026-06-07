@@ -17,7 +17,7 @@
  */
 
 import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
-import { href, Link, useFetcher, useLocation } from 'react-router';
+import { Link, useFetcher, useLocation } from 'react-router';
 
 import { Button, type ButtonProps } from '@/components/Button/Button';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
@@ -35,7 +35,6 @@ import { MenuItem } from '@/components/Menu/MenuItem';
 import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import { useHydrated } from '@/utils/useHydrated';
 import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from 'lucide-react';
 import styles from './Login.module.css';
 
@@ -52,7 +51,6 @@ export default function LoginMenu({
   const fetcher = useFetcher();
   const { t } = useTranslation();
   const location = useLocation();
-  const hydrated = useHydrated();
 
   const { menuProps: loginMenuProps, triggerProps: loginTriggerProps } =
     useMenu();
@@ -127,20 +125,6 @@ export default function LoginMenu({
       );
     }
 
-    if (!hydrated) {
-      return (
-        <div className={styles['login']}>
-          <Button
-            {...loginButtonProps}
-            as={Link}
-            to={{ pathname: href('/login'), search: `?returnTo=${returnTo}` }}
-          >
-            {loginButtonChildren}
-          </Button>
-        </div>
-      );
-    }
-
     return (
       <div className={styles['login']}>
         <Button
@@ -187,21 +171,6 @@ export default function LoginMenu({
       <CircleUserRoundIcon />
     </>
   );
-
-  if (!hydrated) {
-    return (
-      <div className={styles['login']}>
-        <Button
-          variant='tertiary'
-          as={Link}
-          to={{ pathname: href('/logout'), search: `?returnTo=${returnTo}` }}
-          className={styles['login-button']}
-        >
-          {logoutButtonChildren}
-        </Button>
-      </div>
-    );
-  }
 
   return (
     <div className={styles['login']}>

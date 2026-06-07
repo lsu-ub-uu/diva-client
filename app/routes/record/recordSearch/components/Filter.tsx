@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { Combobox as FilterCombobox } from '@/components/Combobox/Combobox';
+
 import {
   Combobox,
   ComboboxInput,
@@ -14,7 +16,6 @@ import type { BFFDataRecord } from '@/types/record';
 import { useState } from 'react';
 import { href, useFetcher } from 'react-router';
 
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Input/Select';
@@ -95,16 +96,16 @@ export const Filter = ({
             size='small'
             errorMessage={validationError && t(validationError)}
           >
-            <ComboboxSelect
+            <FilterCombobox
               name={filter.name}
               value={value}
               onChange={(newValue) => {
-                setValue(newValue as string);
+                setValue(newValue);
                 forceSubmit();
               }}
               options={filter.options.map((option) => ({
                 value: option.value,
-                label: option.text,
+                label: t(option.text),
               }))}
             />
           </Fieldset>
@@ -121,7 +122,6 @@ export const Filter = ({
             value={value}
             onChange={(e) => setValue(e.currentTarget.value)}
           >
-            <option value=''>--</option>
             {filter.options.map((option) => (
               <option key={option.value} value={option.value}>
                 {t(option.text)}

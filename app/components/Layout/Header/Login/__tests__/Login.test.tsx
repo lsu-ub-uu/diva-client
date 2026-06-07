@@ -24,12 +24,6 @@ import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/utils/useHydrated', () => {
-  return {
-    useHydrated: vi.fn(() => true),
-  };
-});
-
 const loginUnits = [
   {
     loginDescription: 'rkhTestDiVALoginUnitText',

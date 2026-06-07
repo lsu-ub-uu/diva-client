@@ -5,6 +5,7 @@ import { Input, type InputProps } from '../Input/Input';
 import styles from './Menu.module.css';
 import { MenuContext } from './MenuContext';
 import type { ButtonProps } from '../Button/Button';
+import { isTouchDevice } from '@/utils/isTouchDevice';
 
 export interface MenuProps {
   title?: string;
@@ -157,8 +158,10 @@ export const useMenu = () => {
         setActiveItemId(undefined);
         setFilter('');
       } else {
-        // Focus the filter input when menu opens
-        filterInputRef.current?.focus();
+        // Focus the filter input when menu opens, except on touch devices where the on-screen keyboard would cover the menu
+        if (!isTouchDevice()) {
+          filterInputRef.current?.focus();
+        }
       }
       setOpen(open);
     },
