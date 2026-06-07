@@ -76,7 +76,7 @@
 }
 
 .input:has(select),
-.input:has(input[role='combobox']) {
+.input:has([role='combobox']) {
   /* stylelint-disable-next-line no-descending-specificity */
   .error-icon {
     right: var(--gap-xl);

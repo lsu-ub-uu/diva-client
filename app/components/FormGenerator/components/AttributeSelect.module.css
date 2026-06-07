@@ -18,5 +18,8 @@
 
 .attribute-select {
   font-style: italic;
+}
+
+.attribute-combobox {
   min-width: 200px;
 }

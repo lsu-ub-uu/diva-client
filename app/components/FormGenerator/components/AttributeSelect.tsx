@@ -114,6 +114,7 @@ export const AttributeSelect = ({
                 value: option.value,
                 label: t(option.label),
               }))}
+              className={styles['attribute-combobox']}
             />
           )}
         />
