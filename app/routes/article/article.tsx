@@ -2,14 +2,14 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../article/+types/article';
 import styles from '@/components/Article/Article.module.css';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse } from 'react-router';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMarkdown } from './getMarkdown.server';
+import { Markdown } from '@/components/Markdown/Markdown';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { language } = context.get(i18nContext);
@@ -53,21 +53,7 @@ export default function Article({ loaderData }: Route.ComponentProps) {
       </div>
 
       <article className={`grid-col-12 ${styles['article']}`}>
-        <Markdown
-          remarkPlugins={[remarkGfm]}
-          components={{
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            a({ node, children, ...rest }) {
-              return (
-                <a {...rest} target='_blank' rel='noopener noreferrer nofollow'>
-                  {children}
-                </a>
-              );
-            },
-          }}
-        >
-          {loaderData.markdown}
-        </Markdown>
+        <Markdown content={loaderData.markdown} />
       </article>
     </main>
   );
