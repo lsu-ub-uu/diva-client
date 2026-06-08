@@ -17,7 +17,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 
   try {
     const { markdown, title } = await getMarkdown(articleId, language);
-    return { markdown: markdown.default, breadcrumb: title };
+    return { markdown, breadcrumb: title };
   } catch (error) {
     return createRouteErrorResponse(error);
   }
