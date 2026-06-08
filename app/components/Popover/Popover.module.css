@@ -1,10 +1,10 @@
 .popover {
-  position: absolute;
   margin: 0;
   inset: unset;
-  top: calc(anchor(top) + var(--gap-l));
+  position-area: bottom span-all;
+  position-try-fallbacks: flip-block;
+  top: var(--gap);
   justify-self: anchor-center;
-  position-try: normal flip-block;
   background-color: var(--color-background);
   color: var(--color-text);
   padding: var(--gap-l);
