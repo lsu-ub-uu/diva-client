@@ -1,3 +1,4 @@
+import { isTouchDevice } from '@/utils/isTouchDevice';
 import { supportsAnchorPositioning } from '@/utils/supportsAnchorPositioning';
 import { useRef } from 'react';
 
@@ -7,6 +8,10 @@ export const useTooltip = () => {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   function showTooltip() {
+    if (isTouchDevice()) {
+      return;
+    }
+
     tooltipRef.current?.showPopover({ source: triggerRef.current });
 
     if (!supportsAnchorPositioning()) {
