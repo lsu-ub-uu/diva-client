@@ -10,11 +10,11 @@ Cookies are small text files that are stored on your computer or device when you
 
 DiVA Portal uses the following cookies, all of which are classified as strictly necessary cookies:
 
-| Cookie Name | Purpose | Type |
-| --- | --- | --- |
-| `__session` | Used to remember your login status and maintain your session while you use the platform | Strictly Necessary |
-| `_shibsession_<id>` | Used to maintain your single sign-on login session | Strictly Necessary |
-| `userPreferences` | Used to remember your user preferences, including your selected language and color theme | Strictly Necessary |
+| Cookie Name         | Purpose                                                                                  | Type               |
+| ------------------- | ---------------------------------------------------------------------------------------- | ------------------ |
+| `__session`         | Used to remember your login status and maintain your session while you use the platform  | Strictly Necessary |
+| `_shibsession_<id>` | Used to maintain your single sign-on login session                                       | Strictly Necessary |
+| `userPreferences`   | Used to remember your user preferences, including your selected language and color theme | Strictly Necessary |
 
 ## Why We Use These Cookies
 

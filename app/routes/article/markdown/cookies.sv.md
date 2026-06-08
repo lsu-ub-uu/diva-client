@@ -10,11 +10,11 @@ Kakor är små textfiler som lagras på din dator eller enhet när du besöker v
 
 DiVA Portal använder följande kakor, vilka alla klassificeras som strikt nödvändiga kakor:
 
-| Kakans namn | Syfte | Typ |
-| --- | --- | --- |
-| `__session` | Används för att komma ihåg din inloggning och upprätthålla din session medan du använder plattformen | Strikt nödvändig |
-| `_shibsession_<id>` | Används för att upprätthålla din "Single sign-on"-session | Strikt nödvändig |
-| `userPreferences` | Används för att komma ihåg dina användarpreferenser, inklusive ditt valda språk och färgtema | Strikt nödvändig |
+| Kakans namn         | Syfte                                                                                                | Typ              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- | ---------------- |
+| `__session`         | Används för att komma ihåg din inloggning och upprätthålla din session medan du använder plattformen | Strikt nödvändig |
+| `_shibsession_<id>` | Används för att upprätthålla din "Single sign-on"-session                                            | Strikt nödvändig |
+| `userPreferences`   | Används för att komma ihåg dina användarpreferenser, inklusive ditt valda språk och färgtema         | Strikt nödvändig |
 
 ## Varför vi använder dessa kakor
 

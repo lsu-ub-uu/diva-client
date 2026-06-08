@@ -4,28 +4,45 @@ import styles from '@/components/Article/Article.module.css';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { useTranslation } from 'react-i18next';
+import { isRouteErrorResponse } from 'react-router';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
+import { getMarkdown } from './getMarkdown.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { language } = context.get(i18nContext);
   const { articleId } = params;
 
-  console.log(`Loading article ${`./${articleId}.${language}.md`}`);
+  try {
+    const { markdown, title } = await getMarkdown(articleId, language);
+    return { markdown: markdown.default, breadcrumb: title };
+  } catch (error) {
+    return createRouteErrorResponse(error);
+  }
+};
 
-  const markdown = await import(`./${articleId}.${language}.md?raw`).catch(
-    (e) => {
-      console.error(
-        `Failed to load article ${articleId} in language ${language}:`,
-        e,
-      );
-      return null;
-    },
-  );
+export const meta: Route.MetaFunction = ({ loaderData }) => {
+  return [{ title: `${loaderData.breadcrumb} | DiVA` }];
+};
 
-  if (!markdown) {
-    throw new Response('Article not found', { status: 404 });
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+  const { t } = useTranslation();
+
+  if (isRouteErrorResponse(error)) {
+    const { status } = error;
+    return (
+      <ErrorPage
+        icon={getIconByHTTPStatus(status)}
+        titleText={t(`divaClient_error${status}TitleText`)}
+        bodyText={t(`divaClient_error${status}BodyText`)}
+        technicalInfo={error.data}
+      />
+    );
   }
 
-  return { markdown: markdown.default, breadcrumb: articleId };
+  return <UnhandledErrorPage error={error} />;
 };
 
 export default function Article({ loaderData }: Route.ComponentProps) {
@@ -36,7 +53,21 @@ export default function Article({ loaderData }: Route.ComponentProps) {
       </div>
 
       <article className={`grid-col-12 ${styles['article']}`}>
-        <Markdown remarkPlugins={[remarkGfm]}>{loaderData.markdown}</Markdown>
+        <Markdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            a({ node, children, ...rest }) {
+              return (
+                <a {...rest} target='_blank' rel='noopener noreferrer nofollow'>
+                  {children}
+                </a>
+              );
+            },
+          }}
+        >
+          {loaderData.markdown}
+        </Markdown>
       </article>
     </main>
   );
