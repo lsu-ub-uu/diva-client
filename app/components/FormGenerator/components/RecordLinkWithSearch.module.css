@@ -1,0 +1,68 @@
+.dialog {
+  width: min(60vw, 60rem);
+  margin-inline: auto;
+  margin-block: var(--gap-xxl);
+  max-height: 70dvh;
+  padding: var(--gap-l);
+  border: 1px solid var(--color-lighter-border);
+  border-radius: var(--border-radius);
+  background: var(--color-background);
+  color: var(--color-text);
+  box-shadow: var(--elevation);
+
+  ul {
+    margin: 0;
+    padding-top: var(--gap);
+    list-style: none;
+    max-height: 50dvh;
+    overflow-y: auto;
+  }
+}
+
+.link-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--gap-xxl);
+  border: 2px dashed var(--color-card-dark);
+  width: 100%;
+  border-radius: var(--border-radius);
+  gap: var(--gap);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-card);
+  }
+
+  span {
+    height: var(--input-height);
+    padding: 0 calc(var(--gap) * 2);
+    border-radius: calc(var(--border-radius) / 2);
+    border-width: 2px;
+    border-style: solid;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    border-color: var(--color-button);
+  }
+}
+
+.dialog::backdrop {
+  background: rgb(0 0 0 / 45%);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-search {
+  margin-bottom: var(--gap);
+}
+
+.result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding-bottom: var(--gap-l);
+  border-bottom: 1px solid var(--color-secondary);
+  margin-bottom: var(--gap-l);
+}

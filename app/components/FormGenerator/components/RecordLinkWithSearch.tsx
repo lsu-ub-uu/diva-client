@@ -17,7 +17,7 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode, use } from 'react';
+import { type ReactNode, use, useId } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
@@ -38,6 +38,13 @@ import { useMember } from '@/utils/rootLoaderDataUtils';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
+import { Button } from '@/components/Button/Button';
+import { ChevronRightCircleIcon, LinkIcon } from 'lucide-react';
+import styles from './RecordLinkWithSearch.module.css';
+import { Input } from '@/components/Input/Input';
+import { Alert } from '@/components/Alert/Alert';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -52,12 +59,13 @@ export const RecordLinkWithSearch = ({
   attributes,
   actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
+  const id = useId();
   const { t } = useTranslation();
   const { formState, control } = useRemixFormContext();
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, `${path}.value`);
   const member = useMember();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher({ key: id });
   const recordLinkSearchPresentation = component.searchPresentation;
   const label = t(component.label);
 
@@ -66,14 +74,9 @@ export const RecordLinkWithSearch = ({
     'Record link has no search presentation',
   );
 
-  const handleComboboxInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const comboboxInputValue = event.currentTarget.value;
-
+  const search = (searchTerm: string) => {
     const data = {
-      [recordLinkSearchPresentation.autocompleteSearchTerm.name]:
-        comboboxInputValue,
+      [recordLinkSearchPresentation.autocompleteSearchTerm.name]: searchTerm,
     };
 
     if (
@@ -92,6 +95,15 @@ export const RecordLinkWithSearch = ({
       }),
     });
   };
+
+  const handleComboboxInputChange = useDebouncedCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('callback');
+      const comboboxInputValue = event.target.value ?? '**';
+      search(comboboxInputValue);
+    },
+    300,
+  );
 
   return (
     <div
@@ -114,52 +126,68 @@ export const RecordLinkWithSearch = ({
           control={control}
           name={path}
           render={({ field: { name, value, onChange } }) => (
-            <Combobox
-              name={name}
-              value={value}
-              onChange={(recordId) =>
-                onChange({
-                  linkedRecordType: component.recordLinkType,
-                  value: recordId,
-                })
-              }
-            >
-              <ComboboxInput
-                aria-invalid={errorMessage !== undefined}
-                aria-busy={fetcher.state !== 'idle'}
-                placeholder={t(
-                  'divaClient_recordLinkAutocompletePlaceholderText',
-                  { recordType: label.toLowerCase() },
-                )}
-                name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
-                onChange={handleComboboxInputChange}
-              />
-              <ComboboxOptions anchor='bottom'>
-                {fetcher.state === 'idle' &&
-                  fetcher.data &&
-                  fetcher.data.result.map((result: BFFDataRecord) => (
-                    <ComboboxOption key={result.id} value={result.id}>
-                      <OutputPresentation
-                        data={transformToRaw(result.data)}
-                        formSchema={result.presentation!}
-                        compact
-                      />
-                    </ComboboxOption>
-                  ))}
+            <>
+              <Button variant='secondary' commandfor={id} command='show-modal'>
+                Länka {label.toLowerCase()} <LinkIcon />
+              </Button>
+              <dialog
+                id={id}
+                closedby='any'
+                className={styles.dialog}
+                onToggle={(e) => {
+                  if (e.newState === 'open') {
+                    search('**');
+                  }
+                }}
+              >
+                <h2>Länka {label.toLowerCase()}</h2>
+                <Fieldset
+                  label={`Sök efter ${label.toLowerCase()}`}
+                  className={styles['dialog-search']}
+                >
+                  <Input type='text' onChange={handleComboboxInputChange} />
+                </Fieldset>
                 {fetcher.state === 'idle' &&
                   fetcher.data &&
                   fetcher.data.result.length === 0 && (
-                    <ComboboxOption disabled value=''>
+                    <Alert severity='info'>
                       {t('divaClient_recordLinkAutocompleteNoResultsText')}
-                    </ComboboxOption>
+                    </Alert>
                   )}
                 {fetcher.state === 'loading' && (
-                  <ComboboxOption disabled value=''>
-                    {t('divaClient_recordLinkAutocompleteSearchingText')}
-                  </ComboboxOption>
+                  <div>
+                    {t('divaClient_recordLinkAutocompleteSearchingText')}{' '}
+                    <CircularLoader />
+                  </div>
                 )}
-              </ComboboxOptions>
-            </Combobox>
+                <ul>
+                  {fetcher.state === 'idle' &&
+                    fetcher.data &&
+                    fetcher.data.result.map((result: BFFDataRecord) => (
+                      <li key={result.id}>
+                        <div key={result.id} className={styles['result']}>
+                          <OutputPresentation
+                            data={transformToRaw(result.data)}
+                            formSchema={result.presentation!}
+                            compact
+                          />
+                          <Button
+                            variant='secondary'
+                            onClick={() => {
+                              onChange({
+                                linkedRecordType: component.recordLinkType,
+                                value: result.id,
+                              });
+                            }}
+                          >
+                            Välj <ChevronRightCircleIcon />
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </dialog>
+            </>
           )}
         />
       </Fieldset>
