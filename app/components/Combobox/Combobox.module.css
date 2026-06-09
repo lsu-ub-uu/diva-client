@@ -21,11 +21,10 @@
 
 .options {
   inset: unset;
-  top: calc(anchor(bottom) + var(--gap));
-  left: anchor(left);
-  right: anchor(right);
+  margin: 0;
+  position-area: bottom;
   width: anchor-size(width);
-  position-try: normal flip-block;
+  position-try-fallbacks: flip-block;
   border-radius: var(--border-radius-s);
   border: 1px solid var(--color-input-border);
   background-color: var(--color-background);

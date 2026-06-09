@@ -1,9 +1,8 @@
 .menu {
   inset: unset;
-  top: calc(anchor(bottom) + var(--gap));
-  right: anchor(right);
-  justify-self: anchor-center;
-  position-try: normal flip-block;
+  margin: 0;
+  position-area: bottom;
+  position-try-fallbacks: flip-block;
   border-radius: var(--border-radius-s);
   border: 1px solid var(--color-input-border);
   background-color: var(--color-background);
