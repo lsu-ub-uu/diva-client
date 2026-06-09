@@ -24,6 +24,7 @@ import { PasswordLogin } from './PasswordLogin';
 import { PasswordLoginOptions } from './PasswordLoginOptions';
 import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { logError } from '@/utils/logError';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
@@ -81,8 +82,8 @@ const authenticate = async (form: FormData): Promise<Auth | null> => {
       try {
         const authFromWebRedirect = JSON.parse(form.get('auth') as string);
         return transformCoraAuth(authFromWebRedirect);
-      } catch (e) {
-        console.error('Failed to parse webRedirect auth', e);
+      } catch (error) {
+        logError(error, 'Failed to parse webRedirect auth');
         return null;
       }
     }

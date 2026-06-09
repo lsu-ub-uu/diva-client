@@ -25,10 +25,11 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/createFormDefinition.server';
 import { assertDefined } from '@/utils/invariant';
+import { logError } from '@/utils/logError';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from './+types/getLinkedRecord';
-import { createLinkedRecordDefinition } from '@/data/formDefinition/createFormDefinition.server';
 
 export const loader = async ({
   request,
@@ -69,7 +70,8 @@ export const loader = async ({
 
     return { record: recordWrapper, presentation };
   } catch (error) {
-    console.error(error);
+    logError(error, 'Server error while fetching linked record data');
+
     return { error: true };
   }
 };

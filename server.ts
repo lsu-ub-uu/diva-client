@@ -27,6 +27,10 @@ import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
 import prometheusClient from 'prom-client';
+import { installTimestampedConsole } from '@/utils/installTimestampedConsole';
+import { logError } from '@/utils/logError';
+
+installTimestampedConsole();
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -190,6 +194,7 @@ async function prometheusMetrics(_req: Request, res: Response) {
     res.setHeader('Content-Type', prometheusClient.register.contentType);
     res.end(await prometheusClient.register.metrics());
   } catch (err) {
+    logError(err, 'Error collecting metrics');
     res
       .status(500)
       .end(err instanceof Error ? err.message : 'Error collecting metrics');

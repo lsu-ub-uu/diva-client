@@ -5,6 +5,7 @@ import {
   createHeaders,
   RECORD_LIST_CONTENT_TYPE,
 } from '@/cora/helper.server';
+import { logError } from '@/utils/logError';
 
 export async function getRecordDataListByType<T>(
   type: string,
@@ -18,7 +19,7 @@ export async function getRecordDataListByType<T>(
   try {
     return axios.get(apiUrl, { headers });
   } catch (error) {
-    console.error(`Failed to fetch list of type ${type}`, error);
+    logError(error, `Failed to fetch record data list of type ${type}`);
     throw error;
   }
 }

@@ -27,6 +27,7 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { logError } from '@/utils/logError';
 
 export const loader = async ({
   request,
@@ -64,6 +65,7 @@ export const loader = async ({
       origin,
     };
   } catch (error) {
+    logError(error, `Failed to load diva output page with id ${recordId}`);
     throw createRouteErrorResponse(error);
   }
 };
@@ -78,7 +80,7 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
       );
     }
   } catch (error) {
-    console.error('Failed to generate citation meta:', error);
+    logError(error, 'Failed to generate citation meta');
   }
   return [
     {

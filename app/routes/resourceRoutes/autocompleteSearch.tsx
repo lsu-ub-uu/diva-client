@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { searchRecords } from '@/data/searchRecords.server';
-
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { searchRecords } from '@/data/searchRecords.server';
+import { logError } from '@/utils/logError';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 import { getDependencies } from 'server/dependencies/depencencies';
+import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
 export const loader = async ({
   params,
@@ -40,7 +40,7 @@ export const loader = async ({
     );
     return { result: result.data };
   } catch (error) {
-    console.error(error);
+    logError(error, 'Error while performing autocomplete search');
     return { result: [] };
   }
 };

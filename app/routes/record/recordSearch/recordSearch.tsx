@@ -22,6 +22,7 @@ import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
 import { validateSearchFormData } from './utils/validateSearchFormData.server';
 import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
+import { logError } from '@/utils/logError';
 
 export const loader = async ({
   request,
@@ -116,6 +117,7 @@ export const loader = async ({
       validationErrors,
     };
   } catch (error) {
+    logError(error, 'Failed to load record search');
     throw createRouteErrorResponse(error);
   }
 };

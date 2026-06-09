@@ -90,6 +90,7 @@ import {
   transformClientContent,
   transformClientContentRecord,
 } from '@/cora/transform/transformClientContent.server';
+import { logError } from '@/utils/logError';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -197,7 +198,7 @@ const loadDependencies = async () => {
     const members = transformMembers(coraMembers.data);
     dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
-    console.error('Error transforming members:', error);
+    logError(error, 'Error transforming members');
     dependencies.memberPool = new Lookup<string, BFFMember>();
   }
 

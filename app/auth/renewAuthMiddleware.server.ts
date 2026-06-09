@@ -8,6 +8,7 @@ import {
   type SessionContext,
 } from './sessionMiddleware.server';
 import { isAxiosError } from 'axios';
+import { logError } from '@/utils/logError';
 
 /**
  * How long before token expiry to refresh the token
@@ -52,10 +53,7 @@ export const handleRenew = async (
 
       setAuth(renewedAuth);
     } catch (error) {
-      console.error(
-        'Failed to renew auth token',
-        isAxiosError(error) ? error.message : error,
-      );
+      logError(error, 'Failed to renew auth token');
     }
   }
 };

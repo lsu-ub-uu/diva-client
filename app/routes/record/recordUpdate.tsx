@@ -43,6 +43,7 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { logError } from '@/utils/logError';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);
@@ -154,7 +155,7 @@ export const action = async ({
       }),
     });
   } catch (error) {
-    console.error(error);
+    logError(error, 'Error while updating record');
     flashNotification(createNotificationFromAxiosError(t, error));
   }
 };

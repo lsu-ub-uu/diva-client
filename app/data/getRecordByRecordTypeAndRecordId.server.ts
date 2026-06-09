@@ -23,6 +23,7 @@ import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type * as TYPES from '@/cora/bffTypes.server';
 import type { BFFPresentationGroup } from '@/cora/bffTypes.server';
 import { createLinkedRecordDefinition } from './formDefinition/createFormDefinition.server';
+import { logError } from '@/utils/logError';
 
 interface GetRecordByRecordTypeAndRecordIdArgs {
   dependencies: Dependencies;
@@ -71,9 +72,9 @@ export const getRecordByRecordTypeAndRecordId = async ({
         listPresentationGroup as BFFPresentationGroup,
       );
     } catch (error) {
-      console.error(
-        `Failed to create list presentation for presentationRecordLinkId ${presentationRecordLinkId}`,
+      logError(
         error,
+        `Failed to create list presentation for presentationRecordLinkId ${presentationRecordLinkId}`,
       );
     }
   }

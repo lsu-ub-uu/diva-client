@@ -49,6 +49,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { logError } from '@/utils/logError';
 
 export const loader = async ({
   request,
@@ -178,8 +179,8 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     });
     return redirect(`/${recordTypeId}/${id}/update`);
   } catch (error) {
+    logError(error, 'Error while creating record');
     flashNotification(createNotificationFromAxiosError(t, error));
-    console.error(error);
   }
 };
 

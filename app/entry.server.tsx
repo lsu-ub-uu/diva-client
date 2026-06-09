@@ -8,6 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import type { EntryContext, RouterContextProvider } from 'react-router';
 import { ServerRouter } from 'react-router';
 import { i18nContext } from 'server/i18n';
+import { logError } from './utils/logError';
 
 export const streamTimeout = 5_000;
 
@@ -60,7 +61,7 @@ export default function handleRequest(
           // errors encountered during initial shell rendering since they'll
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
-            console.error(error);
+            logError(error, 'Error while streaming response');
           }
         },
       },

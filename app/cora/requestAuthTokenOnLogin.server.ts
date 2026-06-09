@@ -24,6 +24,7 @@ import {
   LOGIN_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import { logError } from '@/utils/logError';
 
 export async function requestAuthTokenOnLogin(
   user: string,
@@ -42,7 +43,7 @@ export async function requestAuthTokenOnLogin(
     const auth = transformCoraAuth(response.data);
     return auth;
   } catch (error) {
-    console.error(error);
+    logError(error, 'Error while requesting auth token on login');
     throw error;
   }
 }

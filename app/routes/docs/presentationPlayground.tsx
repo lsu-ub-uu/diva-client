@@ -6,6 +6,7 @@ import { json } from '@codemirror/lang-json';
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { useState } from 'react';
+import { logError } from '@/utils/logError';
 
 const defaultFormSchema: FormSchema = {
   form: {
@@ -88,7 +89,7 @@ export default function PresentationPlayground() {
                 setFormSchemaError(null);
               } catch (error) {
                 setFormSchemaError('Invalid JSON for form schema');
-                console.error('Invalid JSON for form schema', error);
+                logError(error, 'Invalid JSON for form schema');
               }
             }}
           />
@@ -109,7 +110,7 @@ export default function PresentationPlayground() {
                 setData(parsed);
                 setDataError(null);
               } catch (error) {
-                console.error('Invalid JSON for data', error);
+                logError(error, 'Invalid JSON for data');
                 setDataError('Invalid JSON for data');
               }
             }}

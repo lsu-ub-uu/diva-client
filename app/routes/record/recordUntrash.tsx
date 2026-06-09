@@ -24,6 +24,7 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { getDependencies } from 'server/dependencies/depencencies';
+import { logError } from '@/utils/logError';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;
@@ -55,7 +56,7 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
       }),
     });
   } catch (error) {
-    console.error(error);
+    logError(error, 'Error while untrashing record');
     flashNotification(createNotificationFromAxiosError(t, error));
   }
 };

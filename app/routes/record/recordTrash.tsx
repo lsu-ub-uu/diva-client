@@ -25,6 +25,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { redirect } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
+import { logError } from '@/utils/logError';
 
 export const action = async ({
   request,
@@ -71,7 +72,7 @@ export const action = async ({
       return redirect(`/${recordTypeId}`);
     }
   } catch (error) {
-    console.error(error);
+    logError(error, 'Error while trashing record');
     flashNotification(createNotificationFromAxiosError(t, error));
   }
 };

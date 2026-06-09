@@ -30,6 +30,7 @@ export const deleteRecord = async (
 
   if (!recordTypePool.has(recordType)) {
     console.error(`Record type [${recordType}] does not exist`);
+
     throw new Response(`Record type [${recordType}] does not exist`, {
       status: 404,
     });

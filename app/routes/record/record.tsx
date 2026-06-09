@@ -32,6 +32,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
 import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
+import { logError } from '@/utils/logError';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
@@ -53,6 +54,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 
     return { record, breadcrumb, pageTitle };
   } catch (error) {
+    logError(error, 'Failed to load record route');
     throw createRouteErrorResponse(error);
   }
 };
