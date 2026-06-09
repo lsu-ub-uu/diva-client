@@ -8,7 +8,7 @@ Cora is a name that references the English word "core." It is a generic system, 
 
 Cora is a metadata-driven system. This means the entire system is defined in metadata, such as record types, value lists, variables, texts, presentations, etc., and these definitions are directly available through the API.
 
-The goal of the REST API is to fully support other clients (other platforms such as Android or iOS, integrations with other systems, servers as clients, or others who want to build their own interfaces for DiVA). The entire system is accessible through the API. It also enables us to change forms and presentations without changing the client.
+The goal of the REST API is to fully support other clients (other platforms such as Android or iOS, integrations with other systems, servers as clients, or others who want to build their own interfaces for DiVA). The entire system is accessible through the API. It also enables the DiVA maintenence team to change forms and presentations without changing the client.
 
 The development of Cora is also continuously made available as open source on [GitHub](https://github.com/lsu-ub-uu).
 
