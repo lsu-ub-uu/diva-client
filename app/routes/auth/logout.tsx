@@ -22,7 +22,7 @@ import { Form, redirect } from 'react-router';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import type { Route } from '../auth/+types/logout';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export async function action({ request, context }: Route.ActionArgs) {
   const { auth, destroySession } = context.get(sessionContext);

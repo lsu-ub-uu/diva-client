@@ -23,7 +23,7 @@ import { NavigationCard } from './NavigationCard';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   try {

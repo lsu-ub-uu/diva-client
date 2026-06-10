@@ -18,7 +18,7 @@
 
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { searchRecords } from '@/data/searchRecords.server';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/autocompleteSearch';

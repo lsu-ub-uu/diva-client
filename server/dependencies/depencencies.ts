@@ -90,7 +90,8 @@ import {
   transformClientContent,
   transformClientContentRecord,
 } from '@/cora/transform/transformClientContent.server';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
+import { log } from '@/logging/logger';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -132,7 +133,7 @@ export type DependencyType =
   | 'text';
 
 const loadDependencies = async () => {
-  console.info('Loading stuff from Cora...');
+  log.info('Populating metadata cache from Cora...');
   cacheState = 'warming';
   const [
     coraTexts,
@@ -214,7 +215,7 @@ const loadDependencies = async () => {
   );
   eventBuffer.clear();
   cacheState = 'ready';
-  console.info('Loaded stuff from Cora');
+  log.info('Loaded stuff from Cora');
 };
 
 export const getDependencies = async () => {

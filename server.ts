@@ -27,10 +27,7 @@ import morgan from 'morgan';
 import os from 'os';
 import process from 'node:process';
 import prometheusClient from 'prom-client';
-import { installTimestampedConsole } from '@/utils/installTimestampedConsole';
-import { logError } from '@/utils/logError';
-
-installTimestampedConsole();
+import pino from 'pino';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -39,6 +36,8 @@ const DEVELOPMENT = process.env.NODE_ENV === 'development';
 const BASE_PATH = process.env.BASE_PATH ?? '';
 const PORT = Number.parseInt(process.env.PORT || '5173');
 const { CORA_API_URL, CORA_LOGIN_URL, CORA_EXTERNAL_SYSTEM_URL } = process.env;
+
+const log = pino();
 
 if (!CORA_API_URL) {
   throw new Error('Missing required environment variable CORA_API_URL');
@@ -77,7 +76,7 @@ app.use(prometheusMiddleware);
 app.get(`${BASE_PATH}/metrics`, prometheusMetrics);
 
 process.on('unhandledRejection', (reason) => {
-  console.error('Unhandled Rejection', reason);
+  log.error({ err: reason }, 'Unhandled Rejection');
 });
 
 // Redirect root path to BASE_PATH if it is set
@@ -88,7 +87,7 @@ if (BASE_PATH && BASE_PATH !== '/') {
 }
 
 if (DEVELOPMENT) {
-  console.info('Starting development server');
+  log.info('Starting development server');
   app.get('/devLogin', (req, res) => {
     res.sendFile(new URL('devLogin.html', import.meta.url).pathname);
   });
@@ -112,7 +111,7 @@ if (DEVELOPMENT) {
     }
   });
 } else {
-  console.info('Starting production server');
+  log.info('Starting production server');
   const reactRouterApp = await import(BUILD_PATH);
   app.use(
     `${BASE_PATH}/assets`,
@@ -129,20 +128,20 @@ if (DEVELOPMENT) {
 app.use(morgan('tiny'));
 
 const server = app.listen(PORT, async () => {
-  console.info(`CORA_API_URL ${CORA_API_URL}`);
-  console.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
-  console.info(`BASE_PATH ${BASE_PATH}`);
-  console.info(`CORA_EXTERNAL_SYSTEM_URL ${CORA_EXTERNAL_SYSTEM_URL}`);
+  log.info(`CORA_API_URL ${CORA_API_URL}`);
+  log.info(`CORA_LOGIN_URL ${CORA_LOGIN_URL}`);
+  log.info(`BASE_PATH ${BASE_PATH}`);
+  log.info(`CORA_EXTERNAL_SYSTEM_URL ${CORA_EXTERNAL_SYSTEM_URL}`);
 
   if (DEVELOPMENT) {
-    console.info(
+    log.info(
       `*** Development server is running on http://localhost:${PORT}${BASE_PATH} ***`,
     );
-    console.info(
+    log.info(
       `*** Local network http://${getLocalIp()}:${PORT}${BASE_PATH} ***`,
     );
   } else {
-    console.info(
+    log.info(
       `*** Server is started and listening on port ${PORT} ${BASE_PATH} ***`,
     );
   }
@@ -150,12 +149,12 @@ const server = app.listen(PORT, async () => {
 
 server.on('error', (err: any) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(
+    log.error(
       `Port ${PORT} is already in use. Please choose another port or stop the process using it.`,
     );
     process.exit(1);
   } else {
-    console.error('Server error:', err);
+    log.error(err, 'Server error');
     process.exit(1);
   }
 });
@@ -194,7 +193,7 @@ async function prometheusMetrics(_req: Request, res: Response) {
     res.setHeader('Content-Type', prometheusClient.register.contentType);
     res.end(await prometheusClient.register.metrics());
   } catch (err) {
-    logError(err, 'Error collecting metrics');
+    log.error({ err }, 'Error collecting metrics');
     res
       .status(500)
       .end(err instanceof Error ? err.message : 'Error collecting metrics');

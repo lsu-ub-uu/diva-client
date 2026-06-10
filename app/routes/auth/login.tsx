@@ -24,7 +24,7 @@ import { PasswordLogin } from './PasswordLogin';
 import { PasswordLoginOptions } from './PasswordLoginOptions';
 import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);

@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readdir, readFile, writeFile, stat } from 'fs/promises';
 import process from 'process';
+import pino from 'pino';
+
+const log = pino();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,7 +29,7 @@ async function findFiles(dir) {
       }
     }
   } catch (error) {
-    console.error(`Error reading directory ${dir}:`, error.message);
+    log.error({ err: error }, `Error reading directory ${dir}`);
   }
 
   return files;
@@ -47,7 +50,7 @@ async function replaceInFile(filePath, searchText, replaceText) {
 
     return false;
   } catch (error) {
-    console.error(`Error processing file ${filePath}:`, error.message);
+    log.error({ err: error }, `Error processing file ${filePath}`);
     return false;
   }
 }
@@ -56,12 +59,12 @@ async function main() {
   const projectRoot = join(__dirname, '..');
   const distPath = join(projectRoot, 'dist');
 
-  console.info('Starting prestart script...');
-  console.info(`Searching for files in: ${distPath}`);
+  log.info('Starting prestart script...');
+  log.info(`Searching for files in: ${distPath}`);
 
   try {
     const files = await findFiles(distPath);
-    console.info(`Found ${files.length} files to process`);
+    log.info(`Found ${files.length} files to process`);
 
     let modifiedCount = 0;
 
@@ -73,13 +76,13 @@ async function main() {
       );
       if (wasModified) {
         modifiedCount++;
-        console.info(`Modified: ${file}`);
+        log.info(`Modified: ${file}`);
       }
     }
 
-    console.info(`Prestart complete. Modified ${modifiedCount} files.`);
+    log.info(`Prestart complete. Modified ${modifiedCount} files.`);
   } catch (error) {
-    console.error('Error during prestart:', error.message);
+    log.error({ err: error }, 'Error during prestart');
     process.exit(1);
   }
 }

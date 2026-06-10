@@ -43,7 +43,7 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const { auth, notification } = context.get(sessionContext);

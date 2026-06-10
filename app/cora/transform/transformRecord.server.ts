@@ -59,6 +59,7 @@ import type {
   Dependencies,
   FormDefinitionMode,
 } from '../bffTypes.server';
+import { log } from '@/logging/logger';
 
 /**
  * Transforms records
@@ -209,7 +210,7 @@ export const transformDataGroup = (
     );
 
     if (!matchingMetadataChildRef) {
-      console.warn(`Failed to find matching metadata for ${dataChild.name}`);
+      log.warn(`Failed to find matching metadata for ${dataChild.name}`);
       return group;
     }
 
@@ -295,7 +296,7 @@ const transformData = (
     return transformResourceLink(data as ResourceLink);
   }
 
-  console.warn('Unhandled metadata type', metadata.type);
+  log.warn(`Unhandled metadata type ${metadata.type}`);
   return transformDataAtomic(data as DataAtomic, metadata);
 };
 

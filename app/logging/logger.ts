@@ -1,14 +1,21 @@
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { AxiosError, isAxiosError } from 'axios';
+import pino from 'pino';
+
+const log = pino();
+
+export { log };
 
 export const logError = (error: unknown, contextMessage?: string) => {
   if (error instanceof NotFoundError) {
     return;
   }
   if (isAxiosError(error)) {
-    console.error(formatAxiosError(error, contextMessage));
+    if (error.status && error.status >= 500) {
+      log.error(formatAxiosError(error, contextMessage));
+    }
   } else {
-    console.error(contextMessage ? `${contextMessage}: ${error}` : error);
+    log.error(contextMessage ? `${contextMessage}: ${error}` : error);
   }
 };
 

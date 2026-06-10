@@ -10,7 +10,7 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMarkdown } from './getMarkdown.server';
 import { Markdown } from '@/components/Markdown/Markdown';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { language } = context.get(i18nContext);

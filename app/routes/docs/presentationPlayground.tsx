@@ -6,7 +6,7 @@ import { json } from '@codemirror/lang-json';
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { useState } from 'react';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 const defaultFormSchema: FormSchema = {
   form: {

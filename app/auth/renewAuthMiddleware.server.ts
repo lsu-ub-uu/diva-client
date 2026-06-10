@@ -7,8 +7,7 @@ import {
   sessionContext,
   type SessionContext,
 } from './sessionMiddleware.server';
-import { isAxiosError } from 'axios';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 /**
  * How long before token expiry to refresh the token

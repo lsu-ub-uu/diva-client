@@ -8,6 +8,7 @@ import type {
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type { DataChangedEvent } from './listenForDataChange';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { log } from '@/logging/logger';
 
 /** A map from permissionUnitId map from record id to entry. */
 const cache = new Map<string, Map<string, SitemapEntry>>();
@@ -29,7 +30,7 @@ export interface GetEntriesParams {
 }
 
 export const populateCache = async () => {
-  console.info('Populating sitemap cache');
+  log.info('Populating sitemap cache');
   cacheState = 'warming';
   await searchSitemapEntries();
   for (const event of eventBuffer.values()) {
@@ -37,7 +38,7 @@ export const populateCache = async () => {
   }
   eventBuffer.clear();
   cacheState = 'ready';
-  console.info('Finished populating sitemap cache');
+  log.info('Finished populating sitemap cache');
 };
 
 export const getEntries = ({

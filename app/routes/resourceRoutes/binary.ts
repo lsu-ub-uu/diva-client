@@ -2,7 +2,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraBinaryUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
 import { transformCoraBinaryResponse } from './utils/transformCoraBinaryResponse';
-import { logError } from '@/utils/logError';
+import { log, logError } from '@/logging/logger';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -12,7 +12,7 @@ export const loader = async ({ context, params }: Route.LoaderArgs) => {
     const response = await fetch(coraBinaryUrl({ id, name, auth }));
 
     if (!response.ok) {
-      console.error(
+      log.error(
         `Binary download failed: ${response.status} ${response.statusText} for ${name}`,
       );
       return new Response('Failed to download binary', {
@@ -51,7 +51,7 @@ export const action = async ({
     });
 
     if (!response.ok) {
-      console.error(
+      log.error(
         `Binary upload failed: ${response.status} ${response.statusText} for ${name}`,
       );
     }
@@ -61,9 +61,7 @@ export const action = async ({
       statusText: response.statusText,
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Binary upload error for ${name}:`, errorMessage);
+    logError(error, `Binary upload error for ${name}`);
 
     // Return error response instead of throwing to prevent form data loss
     return new Response('Failed to upload binary due to connection error', {

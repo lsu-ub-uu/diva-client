@@ -23,7 +23,7 @@ import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type * as TYPES from '@/cora/bffTypes.server';
 import type { BFFPresentationGroup } from '@/cora/bffTypes.server';
 import { createLinkedRecordDefinition } from './formDefinition/createFormDefinition.server';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 interface GetRecordByRecordTypeAndRecordIdArgs {
   dependencies: Dependencies;

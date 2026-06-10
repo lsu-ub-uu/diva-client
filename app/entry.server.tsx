@@ -8,7 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import type { EntryContext, RouterContextProvider } from 'react-router';
 import { ServerRouter } from 'react-router';
 import { i18nContext } from 'server/i18n';
-import { logError } from './utils/logError';
+import { logError } from './logging/logger';
 
 export const streamTimeout = 5_000;
 

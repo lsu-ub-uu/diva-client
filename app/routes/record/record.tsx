@@ -32,7 +32,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
 import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);

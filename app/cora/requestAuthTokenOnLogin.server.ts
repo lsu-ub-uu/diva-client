@@ -24,7 +24,7 @@ import {
   LOGIN_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export async function requestAuthTokenOnLogin(
   user: string,

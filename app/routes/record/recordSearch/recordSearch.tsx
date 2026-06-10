@@ -22,7 +22,7 @@ import { createSearchQuery } from './utils/createSearchQuery.server';
 import { performSearch } from './utils/performSearch.server';
 import { validateSearchFormData } from './utils/validateSearchFormData.server';
 import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 
 export const loader = async ({
   request,

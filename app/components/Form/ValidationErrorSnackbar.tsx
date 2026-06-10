@@ -17,7 +17,7 @@
  */
 
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-import { logError } from '@/utils/logError';
+import { logError } from '@/logging/logger';
 import { isEmpty } from 'lodash-es';
 import { useState } from 'react';
 import { useFormState } from 'react-hook-form';
