@@ -24,7 +24,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 };
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
-  return [{ title: `${loaderData.breadcrumb} | DiVA` }];
+  return [{ title: `${loaderData?.breadcrumb ?? ''} | DiVA` }];
 };
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
