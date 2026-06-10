@@ -12,7 +12,6 @@ import { createFieldNameWithAttributes } from '@/utils/createFieldNameWithAttrib
 import type { Lookup } from 'server/dependencies/util/lookup';
 import { generateInterfaceName as generateTypeName } from './utils/generateInterfaceName';
 import { getValueForRepeat } from './utils/getValueForRepeat';
-import { log } from '@/logging/logger';
 
 let metadataTypes: Map<string, string>;
 
@@ -40,7 +39,7 @@ export function generateTypesForRecordTypes(
 
     return outputString;
   } catch (error) {
-    log.error(error, 'Failed to generate types');
+    console.error(error, 'Failed to generate types');
     return '';
   }
 }

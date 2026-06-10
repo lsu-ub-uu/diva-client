@@ -4,7 +4,7 @@ import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import type { BFFSearchResult } from '@/types/record';
 import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 import type { TFunction } from 'i18next';
 
 interface PerformSearchParams {

@@ -8,7 +8,6 @@ import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
 import { generateTypesForRecordTypes } from './generateTypesForRecordTypes';
-import { log } from '@/logging/logger';
 
 const [metadataPool, recordTypePool] = await Promise.all([
   getMetadataPool(),
@@ -52,9 +51,9 @@ try {
   });
   fs.writeFileSync(outputPath, formattedCode, 'utf8');
 
-  log.info('Types generated at ${}:');
+  console.info('Types generated at ${}:');
 } catch (error) {
-  log.error({ err: error }, 'Error formatting code');
+  console.error(error, 'Error formatting code');
   process.exit(1);
 }
 

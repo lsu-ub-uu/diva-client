@@ -25,7 +25,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { redirect } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 
 export const action = async ({
   request,

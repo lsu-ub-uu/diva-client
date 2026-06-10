@@ -49,7 +49,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 
 export const loader = async ({
   request,

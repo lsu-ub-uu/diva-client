@@ -17,7 +17,6 @@
  */
 
 import { Snackbar } from '@/components/Snackbar/Snackbar';
-import { logError } from '@/logging/logger';
 import { isEmpty } from 'lodash-es';
 import { useState } from 'react';
 import { useFormState } from 'react-hook-form';
@@ -30,7 +29,7 @@ export const ValidationErrorSnackbar = () => {
   const [prevErrors, setPrevErrors] = useState(errors);
 
   if (errors !== prevErrors) {
-    logError(errors, 'Validation errors');
+    console.error(errors, 'Validation errors');
     setPrevErrors(errors);
     setSnackbarOpen(!isEmpty(errors));
   }

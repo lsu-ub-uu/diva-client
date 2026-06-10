@@ -8,7 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import type { EntryContext, RouterContextProvider } from 'react-router';
 import { ServerRouter } from 'react-router';
 import { i18nContext } from 'server/i18n';
-import { log, logError } from './logging/logger';
+import { log, logError } from './logging/logger.server.';
 import type { LoaderFunctionArgs } from 'react-router';
 import type { ActionFunctionArgs } from 'react-router';
 

@@ -7,7 +7,7 @@ import {
   sessionContext,
   type SessionContext,
 } from './sessionMiddleware.server';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 
 /**
  * How long before token expiry to refresh the token

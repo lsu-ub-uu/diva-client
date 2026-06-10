@@ -5,7 +5,7 @@ import {
   createHeaders,
   RECORD_LIST_CONTENT_TYPE,
 } from '@/cora/helper.server';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 
 export async function getRecordDataListByType<T>(
   type: string,

@@ -2,7 +2,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraBinaryUrl } from '@/cora/helper.server';
 import type { Route } from './+types/binary';
 import { transformCoraBinaryResponse } from './utils/transformCoraBinaryResponse';
-import { log, logError } from '@/logging/logger';
+import { log, logError } from '@/logging/logger.server.';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);
@@ -23,7 +23,7 @@ export const loader = async ({ context, params }: Route.LoaderArgs) => {
 
     return transformCoraBinaryResponse(response, name);
   } catch (error) {
-    logError(error, `Binary download error for ${name}:`);
+    logError(error, `Binary download error for ${name}`);
 
     // Return error response instead of throwing to prevent error boundary
     return new Response('Failed to download binary due to connection error', {

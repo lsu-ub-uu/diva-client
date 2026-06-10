@@ -24,7 +24,7 @@ import { createNotificationFromAxiosError } from '@/utils/createNotificationFrom
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
-import { logError } from '@/logging/logger';
+import { logError } from '@/logging/logger.server.';
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
   const { recordType: recordTypeId, recordId } = params;
