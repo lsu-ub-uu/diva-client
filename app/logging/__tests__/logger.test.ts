@@ -1,4 +1,4 @@
-import { logError } from '@/logging/logger';
+import { log, logError } from '@/logging/logger';
 import { AxiosError, AxiosHeaders } from 'axios';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -7,9 +7,9 @@ describe('logError', () => {
     vi.restoreAllMocks();
   });
 
-  it('logs axios request details with method, url and status information', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
+  it('logs context message prefixed to error message when context is provided', () => {
+    const logErrorSpy = vi
+      .spyOn(log, 'error')
       .mockImplementation(() => undefined);
 
     const error = new AxiosError(
@@ -35,14 +35,15 @@ describe('logError', () => {
 
     logError(error, 'Failed to save record');
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Failed to save record | POST https://api.example.test/records | HTTP 500 Internal Server Error | ERR_BAD_RESPONSE | Request failed with status code 500 | response={"reason":"boom"}',
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      { err: error },
+      'Failed to save record: Request failed with status code 500',
     );
   });
 
-  it('falls back to available axios details when response metadata is missing', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
+  it('logs only the error message when no context is provided', () => {
+    const logErrorSpy = vi
+      .spyOn(log, 'error')
       .mockImplementation(() => undefined);
 
     const error = new AxiosError('Network Error', 'ERR_NETWORK', {
@@ -53,8 +54,6 @@ describe('logError', () => {
 
     logError(error);
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'GET /records/123 | ERR_NETWORK | Network Error',
-    );
+    expect(logErrorSpy).toHaveBeenCalledWith({ err: error }, 'Network Error');
   });
 });

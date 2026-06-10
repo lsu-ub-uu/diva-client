@@ -6,6 +6,7 @@ import { type SessionContext } from '../sessionMiddleware.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { Auth } from '../Auth';
 import { AxiosError } from 'axios';
+import { log } from '@/logging/logger';
 
 vi.mock('@/cora/renewAuthToken.server');
 
@@ -73,7 +74,7 @@ describe('renewAuthMiddleware', () => {
   it('does not throw an error when failing to renew auth token', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2025-01-01T00:00:00Z'));
-    const consoleMock = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const logErrorMock = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     vi.mocked(renewAuthToken).mockRejectedValue(
       new AxiosError('Unauthorized', '401'),
@@ -101,9 +102,11 @@ describe('renewAuthMiddleware', () => {
     expect(mockSessionContext.setAuth).not.toHaveBeenCalled();
     expect(mockSessionContext.removeAuth).not.toHaveBeenCalled();
     expect(mockSessionContext.flashNotification).not.toHaveBeenCalled();
-    expect(consoleMock).toHaveBeenCalledWith(
-      'Failed to renew auth token',
-      'Unauthorized',
+    expect(logErrorMock).toHaveBeenCalledWith(
+      {
+        err: expect.any(AxiosError),
+      },
+      'Failed to renew auth token: Unauthorized',
     );
   });
 

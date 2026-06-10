@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createRouteErrorResponse } from '../createRouteErrorResponse.server';
 
 describe('createRouteErrorResponse', () => {
-  it('should return data response when error is an AxiosError', () => {
+  it('should throw data response when error is an AxiosError', () => {
     const errorData = {
       message: 'Not found',
       code: 'RESOURCE_NOT_FOUND',
@@ -22,20 +22,27 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(404);
+    try {
+      createRouteErrorResponse(axiosError);
+      expect.fail('Expected createRouteErrorResponse to throw');
+    } catch (error) {
+      expect(error).toMatchObject({
+        data: errorData,
+        init: {
+          status: 404,
+          statusText: 'Request failed with status code 404',
+        },
+      });
+    }
   });
 
-  it('should return data response with 500 data when AxiosError has no response', () => {
+  it('should throw the original AxiosError when AxiosError has no response', () => {
     const axiosError = new AxiosError('Network Error');
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(500);
+    expect(() => createRouteErrorResponse(axiosError)).toThrow(axiosError);
   });
 
-  it('should return data response when AxiosError has response but no data', () => {
+  it('should throw the original AxiosError when AxiosError has status 500', () => {
     const axiosError = new AxiosError(
       'Request failed with status code 500',
       '500',
@@ -50,9 +57,7 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(500);
+    expect(() => createRouteErrorResponse(axiosError)).toThrow(axiosError);
   });
 
   it('should throw error when error is not an AxiosError', () => {
@@ -81,15 +86,14 @@ describe('createRouteErrorResponse', () => {
     expect(() => createRouteErrorResponse(undefinedError)).toThrow();
   });
 
-  it('should handle AxiosError with different status codes', () => {
-    const testCases = [
-      { status: 400, statusText: 'Bad Request' },
-      { status: 401, statusText: 'Unauthorized' },
-      { status: 403, statusText: 'Forbidden' },
-      { status: 500, statusText: 'Internal Server Error' },
-    ];
-
-    testCases.forEach(({ status, statusText }) => {
+  it.each([
+    { status: 400, statusText: 'Bad Request' },
+    { status: 401, statusText: 'Unauthorized' },
+    { status: 403, statusText: 'Forbidden' },
+    { status: 500, statusText: 'Internal Server Error' },
+  ])(
+    'should wrap AxiosError only for status codes below 500 (status: $status)',
+    ({ status, statusText }) => {
       const axiosError = new AxiosError(
         `Request failed with status code ${status}`,
         status.toString(),
@@ -104,9 +108,22 @@ describe('createRouteErrorResponse', () => {
         },
       );
 
-      const result = createRouteErrorResponse(axiosError);
-
-      expect(result?.init?.status).toBe(status);
-    });
-  });
+      try {
+        createRouteErrorResponse(axiosError);
+        expect.fail('Expected createRouteErrorResponse to throw');
+      } catch (error) {
+        if (status < 500) {
+          expect(error).toMatchObject({
+            data: { error: statusText },
+            init: {
+              status,
+              statusText: `Request failed with status code ${status}`,
+            },
+          });
+        } else {
+          expect(error).toBe(axiosError);
+        }
+      }
+    },
+  );
 });
