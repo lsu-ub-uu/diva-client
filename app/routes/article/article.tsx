@@ -1,16 +1,15 @@
-import { i18nContext } from 'server/i18n';
-import type { Route } from '../article/+types/article';
 import styles from '@/components/Article/Article.module.css';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { i18nContext } from 'server/i18n';
+import type { Route } from '../article/+types/article';
 
+import { Markdown } from '@/components/Markdown/Markdown';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
-import { useTranslation } from 'react-i18next';
-import { isRouteErrorResponse } from 'react-router';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
+import { useTranslation } from 'react-i18next';
+import { isRouteErrorResponse } from 'react-router';
 import { getMarkdown } from './getMarkdown.server';
-import { Markdown } from '@/components/Markdown/Markdown';
-import { logError } from '@/logging/logger';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { language } = context.get(i18nContext);
@@ -20,7 +19,6 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     const { markdown, title } = await getMarkdown(articleId, language);
     return { markdown, breadcrumb: title };
   } catch (error) {
-    logError(error, `Failed to load article with id ${articleId}`);
     return createRouteErrorResponse(error);
   }
 };

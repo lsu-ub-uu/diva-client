@@ -65,7 +65,6 @@ export const loader = async ({
       origin,
     };
   } catch (error) {
-    logError(error, `Failed to load diva output page with id ${recordId}`);
     throw createRouteErrorResponse(error);
   }
 };

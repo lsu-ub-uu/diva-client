@@ -1,6 +1,6 @@
+import { logError } from '@/logging/logger';
 import { AxiosError, AxiosHeaders } from 'axios';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { logError } from '../../logging/logError';
 
 describe('logError', () => {
   afterEach(() => {

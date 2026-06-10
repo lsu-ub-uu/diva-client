@@ -1,6 +1,9 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { icons } from '@/components/Layout/Header/TopNavigation/TopNavigation';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { SearchIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -20,10 +23,6 @@ import type { Route } from './+types/landingPage';
 import { Hero } from './Hero';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
-import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
-import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { logError } from '@/logging/logger';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   try {
@@ -49,7 +48,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
       member,
     };
   } catch (error) {
-    logError(error, 'Failed to load landing page');
     throw createRouteErrorResponse(error);
   }
 };
