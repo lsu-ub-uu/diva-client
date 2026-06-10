@@ -19,6 +19,7 @@ export const ShowMoreOrLessButton = ({
   return (
     <button
       {...rest}
+      type='button'
       className={clsx(styles['expand-button'], className)}
       aria-expanded={expanded}
     >

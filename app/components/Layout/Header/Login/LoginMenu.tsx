@@ -210,7 +210,11 @@ export default function LoginMenu({
         </Button>
         <DropdownMenu anchor='bottom end'>
           <MenuItem>
-            <button onClick={logout} className={styles['logout-button']}>
+            <button
+              type='button'
+              onClick={logout}
+              className={styles['logout-button']}
+            >
               {t('divaClient_LogoutText')}
               <LogOutIcon />
             </button>

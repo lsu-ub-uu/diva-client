@@ -45,6 +45,7 @@ export const OutputSinglePresentationSwitcher = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <button
+        type='button'
         className={styles['accordion-header']}
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
@@ -97,6 +98,7 @@ export const OutputPresentationSwitcher = ({
       data-colspan={component.gridColSpan ?? 12}
     >
       <button
+        type='button'
         className={styles['accordion-header']}
         onClick={() =>
           setShowingAlternativePresentation(!showingAlternativePresentation)
