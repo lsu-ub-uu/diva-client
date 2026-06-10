@@ -17,18 +17,19 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { type ReactNode, use, useId } from 'react';
+import {
+  type ReactNode,
+  use,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+} from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@/components/Input/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
@@ -39,12 +40,13 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
 import { Button } from '@/components/Button/Button';
-import { ChevronRightCircleIcon, LinkIcon } from 'lucide-react';
+import { ChevronRightCircleIcon, LinkIcon, XIcon } from 'lucide-react';
 import styles from './RecordLinkWithSearch.module.css';
 import { Input } from '@/components/Input/Input';
 import { Alert } from '@/components/Alert/Alert';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
+import { IconButton } from '@/components/IconButton/IconButton';
 
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
@@ -65,7 +67,8 @@ export const RecordLinkWithSearch = ({
   const { showTooltips } = use(FormGeneratorContext);
   const errorMessage = getErrorMessageForField(formState, `${path}.value`);
   const member = useMember();
-  const fetcher = useFetcher({ key: id });
+  const { submit, state, data } = useFetcher({ key: id });
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const recordLinkSearchPresentation = component.searchPresentation;
   const label = t(component.label);
 
@@ -74,36 +77,62 @@ export const RecordLinkWithSearch = ({
     'Record link has no search presentation',
   );
 
-  const search = (searchTerm: string) => {
-    const data = {
-      [recordLinkSearchPresentation.autocompleteSearchTerm.name]: searchTerm,
-    };
+  const search = useCallback(
+    (searchTerm: string) => {
+      const data = {
+        [recordLinkSearchPresentation.autocompleteSearchTerm.name]: searchTerm,
+      };
 
-    if (
-      recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm &&
-      member?.memberPermissionUnit
-    ) {
-      data[
-        recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm.name
-      ] = `permissionUnit_${member?.memberPermissionUnit}`;
-    }
+      if (
+        recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm &&
+        member?.memberPermissionUnit
+      ) {
+        data[
+          recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm.name
+        ] = `permissionUnit_${member?.memberPermissionUnit}`;
+      }
 
-    fetcher.submit(data, {
-      method: 'GET',
-      action: href('/autocompleteSearch/:searchType', {
-        searchType: recordLinkSearchPresentation.searchType,
-      }),
-    });
-  };
+      submit(data, {
+        method: 'GET',
+        action: href('/autocompleteSearch/:searchType', {
+          searchType: recordLinkSearchPresentation.searchType,
+        }),
+      });
+    },
+    [
+      submit,
+      member?.memberPermissionUnit,
+      recordLinkSearchPresentation.autocompleteSearchTerm.name,
+      recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm,
+      recordLinkSearchPresentation.searchType,
+    ],
+  );
 
   const handleComboboxInputChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('callback');
       const comboboxInputValue = event.target.value ?? '**';
       search(comboboxInputValue);
     },
     300,
   );
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog) return;
+
+    const handleBeforeToggle = (event: ToggleEvent) => {
+      if (event.newState === 'open') {
+        search('**');
+      }
+    };
+
+    dialog.addEventListener('beforetoggle', handleBeforeToggle);
+
+    return () => {
+      dialog.removeEventListener('beforetoggle', handleBeforeToggle);
+    };
+  }, [search]);
 
   return (
     <div
@@ -125,45 +154,48 @@ export const RecordLinkWithSearch = ({
         <Controller
           control={control}
           name={path}
-          render={({ field: { name, value, onChange } }) => (
+          render={({ field: { onChange } }) => (
             <>
-              <Button variant='secondary' commandfor={id} command='show-modal'>
+              <Button variant='secondary' command='show-modal' commandfor={id}>
                 Länka {label.toLowerCase()} <LinkIcon />
               </Button>
               <dialog
                 id={id}
+                ref={dialogRef}
                 closedby='any'
                 className={styles.dialog}
-                onToggle={(e) => {
-                  if (e.newState === 'open') {
-                    search('**');
-                  }
-                }}
               >
-                <h2>Länka {label.toLowerCase()}</h2>
+                <div className={styles['dialog-header']}>
+                  <h2>Länka {label.toLowerCase()}</h2>
+                  <IconButton command='close' commandfor={id} tooltip='Close'>
+                    <XIcon />
+                  </IconButton>
+                </div>
                 <Fieldset
                   label={`Sök efter ${label.toLowerCase()}`}
                   className={styles['dialog-search']}
                 >
-                  <Input type='text' onChange={handleComboboxInputChange} />
+                  <Input
+                    autoFocus
+                    type='text'
+                    onChange={handleComboboxInputChange}
+                  />
                 </Fieldset>
-                {fetcher.state === 'idle' &&
-                  fetcher.data &&
-                  fetcher.data.result.length === 0 && (
-                    <Alert severity='info'>
-                      {t('divaClient_recordLinkAutocompleteNoResultsText')}
-                    </Alert>
-                  )}
-                {fetcher.state === 'loading' && (
+                {state === 'idle' && data && data.result.length === 0 && (
+                  <Alert severity='info'>
+                    {t('divaClient_recordLinkAutocompleteNoResultsText')}
+                  </Alert>
+                )}
+                {state === 'loading' && (
                   <div>
                     {t('divaClient_recordLinkAutocompleteSearchingText')}{' '}
                     <CircularLoader />
                   </div>
                 )}
                 <ul>
-                  {fetcher.state === 'idle' &&
-                    fetcher.data &&
-                    fetcher.data.result.map((result: BFFDataRecord) => (
+                  {state === 'idle' &&
+                    data &&
+                    data.result.map((result: BFFDataRecord) => (
                       <li key={result.id}>
                         <div key={result.id} className={styles['result']}>
                           <OutputPresentation
