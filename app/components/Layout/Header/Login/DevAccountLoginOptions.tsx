@@ -38,7 +38,7 @@ export const DevAccountLoginOptions = ({
       <h2>{t('divaClient_LoginDevAccountText')}</h2>
       {exampleUsers.map((exampleUser) => (
         <MenuItem key={exampleUser.loginId}>
-          <button onClick={() => onSelect(exampleUser)}>
+          <button type='button' onClick={() => onSelect(exampleUser)}>
             {exampleUser.name}
           </button>
         </MenuItem>
