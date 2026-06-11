@@ -79,7 +79,7 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
       );
     }
   } catch (error) {
-    logError(error, 'Failed to generate citation meta');
+    console.error(error, 'Failed to generate citation meta');
   }
   return [
     {
