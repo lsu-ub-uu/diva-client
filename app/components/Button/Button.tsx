@@ -41,7 +41,7 @@ export interface ButtonProps extends Omit<
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
   error?: boolean;
   command?: string;
-  commandfor?: string;
+  commandFor?: string;
   children?: ReactNode;
 }
 

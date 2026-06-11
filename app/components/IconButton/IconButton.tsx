@@ -6,8 +6,10 @@ import { clsx } from 'clsx';
 import { useTooltip } from '../Tooltip/useTooltip';
 import { Tooltip } from '../Tooltip/Tooltip';
 
-export interface IconButtonProps
-  extends Omit<HTMLProps<HTMLButtonElement>, 'as' | 'size'> {
+export interface IconButtonProps extends Omit<
+  HTMLProps<HTMLButtonElement>,
+  'as' | 'size'
+> {
   tooltip: string;
   size?: 'small' | 'medium' | 'large';
   as?: ElementType;
@@ -15,6 +17,8 @@ export interface IconButtonProps
   href?: string;
   target?: string;
   error?: boolean;
+  command?: string;
+  commandfor?: string;
 }
 
 export const IconButton = ({

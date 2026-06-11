@@ -17,37 +17,35 @@
  */
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import {
-  type ReactNode,
-  use,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-} from 'react';
+import { type ReactNode, use, useCallback, useId, useRef } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
+import { Alert } from '@/components/Alert/Alert';
+import { Button } from '@/components/Button/Button';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { Fieldset } from '@/components/Input/Fieldset';
+import { Input } from '@/components/Input/Input';
+import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
 import { useMember } from '@/utils/rootLoaderDataUtils';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
+import {
+  ChevronRightCircleIcon,
+  FilePlusIcon,
+  LinkIcon,
+  SearchIcon,
+  XIcon,
+} from 'lucide-react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { href, useFetcher } from 'react-router';
-import { Button } from '@/components/Button/Button';
-import { ChevronRightCircleIcon, LinkIcon, XIcon } from 'lucide-react';
+import { href, Link, useFetcher } from 'react-router';
 import styles from './RecordLinkWithSearch.module.css';
-import { Input } from '@/components/Input/Input';
-import { Alert } from '@/components/Alert/Alert';
-import { CircularLoader } from '@/components/Loader/CircularLoader';
-import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { IconButton } from '@/components/IconButton/IconButton';
-
 interface RecordLinkWithSearchProps {
   component: FormComponentRecordLink;
   path: string;
@@ -69,8 +67,10 @@ export const RecordLinkWithSearch = ({
   const member = useMember();
   const { submit, state, data } = useFetcher({ key: id });
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const dialogSearchInputRef = useRef<HTMLInputElement>(null);
   const recordLinkSearchPresentation = component.searchPresentation;
   const label = t(component.label);
+  const recordTypeTempLabel = label.toLowerCase().replace('diva-', '');
 
   assertDefined(
     recordLinkSearchPresentation,
@@ -110,29 +110,11 @@ export const RecordLinkWithSearch = ({
 
   const handleComboboxInputChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const comboboxInputValue = event.target.value ?? '**';
-      search(comboboxInputValue);
+      const comboboxInputValue = event.target.value || '';
+      search(`*${comboboxInputValue}*`);
     },
     300,
   );
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-
-    if (!dialog) return;
-
-    const handleBeforeToggle = (event: ToggleEvent) => {
-      if (event.newState === 'open') {
-        search('**');
-      }
-    };
-
-    dialog.addEventListener('beforetoggle', handleBeforeToggle);
-
-    return () => {
-      dialog.removeEventListener('beforetoggle', handleBeforeToggle);
-    };
-  }, [search]);
 
   return (
     <div
@@ -156,68 +138,107 @@ export const RecordLinkWithSearch = ({
           name={path}
           render={({ field: { onChange } }) => (
             <>
-              <Button variant='secondary' command='show-modal' commandfor={id}>
-                Länka {label.toLowerCase()} <LinkIcon />
-              </Button>
+              <button
+                className={styles['record-link-button']}
+                type='button'
+                command='show-modal'
+                commandFor={id}
+              >
+                Länka {recordTypeTempLabel} <LinkIcon />
+              </button>
               <dialog
                 id={id}
                 ref={dialogRef}
                 closedby='any'
                 className={styles.dialog}
+                onBeforeToggle={(event) => {
+                  if (event.newState === 'open') {
+                    search('**');
+                  }
+                }}
+                onToggle={(event) => {
+                  if (event.newState === 'open') {
+                    dialogSearchInputRef.current?.focus();
+                  }
+                }}
               >
                 <div className={styles['dialog-header']}>
-                  <h2>Länka {label.toLowerCase()}</h2>
+                  <h2>Länka {recordTypeTempLabel}</h2>
                   <IconButton command='close' commandfor={id} tooltip='Close'>
                     <XIcon />
                   </IconButton>
                 </div>
-                <Fieldset
-                  label={`Sök efter ${label.toLowerCase()}`}
-                  className={styles['dialog-search']}
-                >
-                  <Input
-                    autoFocus
-                    type='text'
-                    onChange={handleComboboxInputChange}
-                  />
-                </Fieldset>
-                {state === 'idle' && data && data.result.length === 0 && (
-                  <Alert severity='info'>
-                    {t('divaClient_recordLinkAutocompleteNoResultsText')}
-                  </Alert>
-                )}
-                {state === 'loading' && (
-                  <div>
-                    {t('divaClient_recordLinkAutocompleteSearchingText')}{' '}
-                    <CircularLoader />
-                  </div>
-                )}
-                <ul>
-                  {state === 'idle' &&
-                    data &&
-                    data.result.map((result: BFFDataRecord) => (
-                      <li key={result.id}>
-                        <div key={result.id} className={styles['result']}>
-                          <OutputPresentation
-                            data={transformToRaw(result.data)}
-                            formSchema={result.presentation!}
-                            compact
-                          />
+                <div className={styles['dialog-body']}>
+                  <Fieldset
+                    label={`Sök efter ${recordTypeTempLabel} att länka`}
+                    className={styles['dialog-search']}
+                  >
+                    <div className={styles['search-input-wrapper']}>
+                      <Input
+                        ref={dialogSearchInputRef}
+                        type='search'
+                        onChange={handleComboboxInputChange}
+                      />
+                      <div className={styles['search-icon']}>
+                        {state === 'loading' ? (
+                          <CircularLoader />
+                        ) : (
+                          <SearchIcon />
+                        )}
+                      </div>
+                    </div>
+                  </Fieldset>
+                  {state === 'idle' && data && data.result.length === 0 && (
+                    <Alert
+                      severity='info'
+                      action={
+                        component.recordLinkType && (
                           <Button
                             variant='secondary'
-                            onClick={() => {
-                              onChange({
-                                linkedRecordType: component.recordLinkType,
-                                value: result.id,
-                              });
-                            }}
+                            as={Link}
+                            to={href('/:recordType/create', {
+                              recordType: component.recordLinkType,
+                            })}
+                            target='_blank'
                           >
-                            Välj <ChevronRightCircleIcon />
+                            <FilePlusIcon /> Skapa ny {recordTypeTempLabel}
                           </Button>
-                        </div>
-                      </li>
-                    ))}
-                </ul>
+                        )
+                      }
+                    >
+                      Vi hittade inga {recordTypeTempLabel} som matchade din
+                      sökning.
+                    </Alert>
+                  )}
+                  <ul
+                    aria-busy={state === 'loading'}
+                    className={styles['search-results']}
+                  >
+                    {data &&
+                      data.result.map((result: BFFDataRecord) => (
+                        <li key={result.id}>
+                          <div key={result.id} className={styles['result']}>
+                            <OutputPresentation
+                              data={transformToRaw(result.data)}
+                              formSchema={result.presentation!}
+                              compact
+                            />
+                            <Button
+                              variant='secondary'
+                              onClick={() => {
+                                onChange({
+                                  linkedRecordType: component.recordLinkType,
+                                  value: result.id,
+                                });
+                              }}
+                            >
+                              Välj <ChevronRightCircleIcon />
+                            </Button>
+                          </div>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
               </dialog>
             </>
           )}

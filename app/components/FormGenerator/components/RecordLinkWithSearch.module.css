@@ -1,9 +1,31 @@
+.record-link-button {
+  background: var(--color-background);
+  height: var(--input-height);
+  border-radius: calc(var(--border-radius) / 2);
+  padding-inline: var(--gap);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: 2px dashed var(--color-input-border);
+
+  &:hover {
+    background-color: rgb(0 0 0 / 5%);
+  }
+
+  &:active {
+    background-color: rgb(0 0 0 / 10%);
+  }
+}
+
 .dialog {
   width: min(60vw, 60rem);
   margin-inline: auto;
   margin-block: var(--gap-xxl);
   max-height: 70dvh;
-  padding: var(--gap-l);
   border: 1px solid var(--color-lighter-border);
   border-radius: var(--border-radius);
   background: var(--color-background);
@@ -34,22 +56,23 @@
       overlay 0.2s allow-discrete,
       display 0.2s ease-in-out allow-discrete;
   }
+}
 
-  h2 {
-    margin-bottom: var(--gap);
-  }
+.search-results {
+  margin: 0;
+  padding-top: var(--gap-l);
+  list-style: none;
+  max-height: 50dvh;
+  overflow-y: auto;
 
-  ul {
-    margin: 0;
-    padding-top: var(--gap-l);
-    list-style: none;
-    max-height: 50dvh;
-    overflow-y: auto;
+  &[aria-busy='true'] {
+    opacity: 0.5;
+    pointer-events: none;
   }
+}
 
-  li:last-child .result {
-    border-bottom: none;
-  }
+.search-results li:last-child .result {
+  border-bottom: none;
 }
 
 @starting-style {
@@ -67,34 +90,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid var(--color-thin-border);
+  padding: var(--gap-l);
+  width: 100%;
 }
 
-.link-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--gap-xxl);
-  border: 2px dashed var(--color-card-dark);
-  width: 100%;
-  border-radius: var(--border-radius);
-  gap: var(--gap);
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--color-card);
-  }
-
-  span {
-    height: var(--input-height);
-    padding: 0 calc(var(--gap) * 2);
-    border-radius: calc(var(--border-radius) / 2);
-    border-width: 2px;
-    border-style: solid;
-    display: flex;
-    align-items: center;
-    gap: var(--gap);
-    border-color: var(--color-button);
-  }
+.dialog-body {
+  padding: var(--gap-l);
 }
 
 .dialog::backdrop {
@@ -103,7 +105,19 @@
 }
 
 .dialog-search {
-  margin-bottom: var(--gap);
+  margin-bottom: var(--gap-l);
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: var(--gap);
+  transform: translateY(-50%);
+  font-size: var(--font-size-icon);
 }
 
 .result {
