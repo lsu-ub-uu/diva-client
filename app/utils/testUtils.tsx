@@ -74,5 +74,5 @@ export const renderWithRoutesStub = (ui: ReactNode) => {
       Component: () => <>{ui}</>,
     },
   ]);
-  render(<RoutesStub />);
+  return render(<RoutesStub />);
 };
