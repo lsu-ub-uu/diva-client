@@ -27,7 +27,7 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { logError } from '@/logging/logger.server.';
+import { logError } from '@/logging/logger.server';
 
 export const loader = async ({
   request,

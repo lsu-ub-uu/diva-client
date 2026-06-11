@@ -1,4 +1,4 @@
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 import type { Channel, ChannelModel, ConsumeMessage } from 'amqplib';
 import amqplib from 'amqplib';
 import { listenForDataChange } from 'server/listenForDataChange';

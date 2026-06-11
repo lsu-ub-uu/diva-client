@@ -1,5 +1,5 @@
-import { logError } from '@/logging/logger.server.';
-import { log } from '@/logging/logger.server.';
+import { logError } from '@/logging/logger.server';
+import { log } from '@/logging/logger.server';
 import amqplib from 'amqplib';
 
 export interface DataChangedEvent {

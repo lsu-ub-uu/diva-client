@@ -19,7 +19,7 @@
 import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { deleteRecordDataById } from '@/cora/deleteRecordDataById.server';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 export const deleteRecord = async (
   dependencies: Dependencies,

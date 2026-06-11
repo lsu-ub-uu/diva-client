@@ -90,8 +90,8 @@ import {
   transformClientContent,
   transformClientContentRecord,
 } from '@/cora/transform/transformClientContent.server';
-import { logError } from '@/logging/logger.server.';
-import { log } from '@/logging/logger.server.';
+import { logError } from '@/logging/logger.server';
+import { log } from '@/logging/logger.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>

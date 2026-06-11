@@ -59,7 +59,7 @@ import type {
   Dependencies,
   FormDefinitionMode,
 } from '../bffTypes.server';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 /**
  * Transforms records

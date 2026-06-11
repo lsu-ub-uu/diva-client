@@ -1,4 +1,4 @@
-import { log, logError } from '@/logging/logger.server.';
+import { log, logError } from '@/logging/logger.server';
 import { AxiosError, AxiosHeaders } from 'axios';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 

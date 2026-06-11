@@ -6,7 +6,7 @@ import { type SessionContext } from '../sessionMiddleware.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
 import type { Auth } from '../Auth';
 import { AxiosError } from 'axios';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 vi.mock('@/cora/renewAuthToken.server');
 

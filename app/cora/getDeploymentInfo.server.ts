@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { coraApiUrl, DEPLOYMENT_INFO_CONTENT_TYPE } from './helper.server';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 export interface ExampleUser {
   name: string;

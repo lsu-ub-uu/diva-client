@@ -37,7 +37,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
-import { logError } from '@/logging/logger.server.';
+import { logError } from '@/logging/logger.server';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';

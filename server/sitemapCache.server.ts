@@ -8,7 +8,7 @@ import type {
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import type { DataChangedEvent } from './listenForDataChange';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 /** A map from permissionUnitId map from record id to entry. */
 const cache = new Map<string, Map<string, SitemapEntry>>();

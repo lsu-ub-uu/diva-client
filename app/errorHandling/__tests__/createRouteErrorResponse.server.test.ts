@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createRouteErrorResponse } from '../createRouteErrorResponse.server';
 
 describe('createRouteErrorResponse', () => {
-  it('should throw data response when error is an AxiosError', () => {
+  it('should return data response when error is an AxiosError', () => {
     const errorData = {
       message: 'Not found',
       code: 'RESOURCE_NOT_FOUND',
@@ -22,27 +22,22 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    try {
-      createRouteErrorResponse(axiosError);
-      expect.fail('Expected createRouteErrorResponse to throw');
-    } catch (error) {
-      expect(error).toMatchObject({
-        data: errorData,
-        init: {
-          status: 404,
-          statusText: 'Request failed with status code 404',
-        },
-      });
-    }
+    expect(createRouteErrorResponse(axiosError)).toMatchObject({
+      data: errorData,
+      init: {
+        status: 404,
+        statusText: 'Request failed with status code 404',
+      },
+    });
   });
 
-  it('should throw the original AxiosError when AxiosError has no response', () => {
+  it('should return the original AxiosError when AxiosError has no response', () => {
     const axiosError = new AxiosError('Network Error');
 
-    expect(() => createRouteErrorResponse(axiosError)).toThrow(axiosError);
+    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
   });
 
-  it('should throw the original AxiosError when AxiosError has status 500', () => {
+  it('should return the original AxiosError when AxiosError has status 500', () => {
     const axiosError = new AxiosError(
       'Request failed with status code 500',
       '500',
@@ -57,33 +52,31 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    expect(() => createRouteErrorResponse(axiosError)).toThrow(axiosError);
+    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
   });
 
-  it('should throw error when error is not an AxiosError', () => {
+  it('should return the original error when error is not an AxiosError', () => {
     const genericError = new Error('Something went wrong');
 
-    expect(() => createRouteErrorResponse(genericError)).toThrow(
-      'Something went wrong',
-    );
+    expect(createRouteErrorResponse(genericError)).toBe(genericError);
   });
 
-  it('should throw error when error is a string', () => {
+  it('should return the original error when error is a string', () => {
     const stringError = 'String error message';
 
-    expect(() => createRouteErrorResponse(stringError)).toThrow(stringError);
+    expect(createRouteErrorResponse(stringError)).toBe(stringError);
   });
 
-  it('should throw error when error is null', () => {
+  it('should return the original error when error is null', () => {
     const nullError = null;
 
-    expect(() => createRouteErrorResponse(nullError)).toThrow();
+    expect(createRouteErrorResponse(nullError)).toBe(nullError);
   });
 
-  it('should throw error when error is undefined', () => {
+  it('should return the original error when error is undefined', () => {
     const undefinedError = undefined;
 
-    expect(() => createRouteErrorResponse(undefinedError)).toThrow();
+    expect(createRouteErrorResponse(undefinedError)).toBe(undefinedError);
   });
 
   it.each([
@@ -108,21 +101,17 @@ describe('createRouteErrorResponse', () => {
         },
       );
 
-      try {
-        createRouteErrorResponse(axiosError);
-        expect.fail('Expected createRouteErrorResponse to throw');
-      } catch (error) {
-        if (status < 500) {
-          expect(error).toMatchObject({
-            data: { error: statusText },
-            init: {
-              status,
-              statusText: `Request failed with status code ${status}`,
-            },
-          });
-        } else {
-          expect(error).toBe(axiosError);
-        }
+      const result = createRouteErrorResponse(axiosError);
+      if (status < 500) {
+        expect(result).toMatchObject({
+          data: { error: statusText },
+          init: {
+            status,
+            statusText: `Request failed with status code ${status}`,
+          },
+        });
+      } else {
+        expect(result).toBe(axiosError);
       }
     },
   );

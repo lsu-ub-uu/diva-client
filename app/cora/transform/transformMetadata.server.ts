@@ -46,7 +46,7 @@ import type {
   BFFMetadataRecordLink,
 } from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { log } from '@/logging/logger.server.';
+import { log } from '@/logging/logger.server';
 
 export const transformMetadatas = (
   dataListWrapper: DataListWrapper,
