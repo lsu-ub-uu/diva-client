@@ -1,3 +1,4 @@
+import { log } from '@/logging/logger.server';
 import type { Channel, ChannelModel, ConsumeMessage } from 'amqplib';
 import amqplib from 'amqplib';
 import { listenForDataChange } from 'server/listenForDataChange';
@@ -129,18 +130,16 @@ describe('listenForDataChange', () => {
 
     expect(connectionOnCallback).toBeDefined();
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     const connectionError = new Error('connection error');
     connectionOnCallback!(connectionError);
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'RabbitMQ connection error:',
-      connectionError,
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      { err: connectionError },
+      'RabbitMQ connection error: connection error',
     );
-    consoleErrorSpy.mockRestore();
+    logErrorSpy.mockRestore();
   });
 
   it('handles connection close', async () => {
@@ -158,14 +157,19 @@ describe('listenForDataChange', () => {
 
     expect(connectionOnCallback).toBeDefined();
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     connectionOnCallback!();
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith('RabbitMQ connection closed.');
-    consoleErrorSpy.mockRestore();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      {
+        err: expect.objectContaining({
+          message: 'RabbitMQ connection closed.',
+        }),
+      },
+      'RabbitMQ connection closed: RabbitMQ connection closed.',
+    );
+    logErrorSpy.mockRestore();
   });
 
   it('handles channel error', async () => {
@@ -183,18 +187,16 @@ describe('listenForDataChange', () => {
 
     expect(channelOnCallback).toBeDefined();
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     const channelError = new Error('channel error');
     channelOnCallback!(channelError);
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'RabbitMQ channel error:',
-      channelError,
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      { err: channelError },
+      'RabbitMQ channel error: channel error',
     );
-    consoleErrorSpy.mockRestore();
+    logErrorSpy.mockRestore();
   });
 
   it('handles channel close', async () => {
@@ -212,14 +214,19 @@ describe('listenForDataChange', () => {
 
     expect(channelOnCallback).toBeDefined();
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     channelOnCallback!();
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith('RabbitMQ channel closed.');
-    consoleErrorSpy.mockRestore();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      {
+        err: expect.objectContaining({
+          message: 'RabbitMQ channel closed.',
+        }),
+      },
+      'RabbitMQ channel closed: RabbitMQ channel closed.',
+    );
+    logErrorSpy.mockRestore();
   });
 
   it('handles unexpected promise rejection', async () => {
@@ -228,13 +235,17 @@ describe('listenForDataChange', () => {
     vi.mocked(amqplib.connect).mockRejectedValueOnce(new Error('unexpected'));
 
     const onDataChange = vi.fn();
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     await listenForDataChange(onDataChange);
 
     expect(spy).toHaveBeenCalledWith(
-      'Error starting RabbitMQ consumer:',
-      expect.any(Error),
+      {
+        err: expect.objectContaining({
+          message: 'unexpected',
+        }),
+      },
+      'Error starting RabbitMQ consumer: unexpected',
     );
     spy.mockRestore();
   });

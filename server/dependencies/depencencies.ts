@@ -90,6 +90,8 @@ import {
   transformClientContent,
   transformClientContentRecord,
 } from '@/cora/transform/transformClientContent.server';
+import { logError } from '@/logging/logger.server';
+import { log } from '@/logging/logger.server';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>
@@ -131,7 +133,7 @@ export type DependencyType =
   | 'text';
 
 const loadDependencies = async () => {
-  console.info('Loading stuff from Cora...');
+  log.info('Populating metadata cache from Cora...');
   cacheState = 'warming';
   const [
     coraTexts,
@@ -197,7 +199,7 @@ const loadDependencies = async () => {
     const members = transformMembers(coraMembers.data);
     dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
-    console.error('Error transforming members:', error);
+    logError(error, 'Error transforming members');
     dependencies.memberPool = new Lookup<string, BFFMember>();
   }
 
@@ -213,7 +215,7 @@ const loadDependencies = async () => {
   );
   eventBuffer.clear();
   cacheState = 'ready';
-  console.info('Loaded stuff from Cora');
+  log.info('Loaded stuff from Cora');
 };
 
 export const getDependencies = async () => {

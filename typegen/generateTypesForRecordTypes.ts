@@ -39,7 +39,7 @@ export function generateTypesForRecordTypes(
 
     return outputString;
   } catch (error) {
-    console.error(`Failed to generate types`, error);
+    console.error(error, 'Failed to generate types');
     return '';
   }
 }

@@ -19,9 +19,9 @@ import { SearchLayout } from './components/SearchLayout';
 import css from './recordSearch.css?url';
 import { createActiveFilters } from './utils/createActiveFilters.server';
 import { createSearchQuery } from './utils/createSearchQuery.server';
+import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
 import { performSearch } from './utils/performSearch.server';
 import { validateSearchFormData } from './utils/validateSearchFormData.server';
-import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
 
 export const loader = async ({
   request,

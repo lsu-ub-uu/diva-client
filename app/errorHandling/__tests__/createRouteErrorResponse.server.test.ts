@@ -22,20 +22,22 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(404);
+    expect(createRouteErrorResponse(axiosError)).toMatchObject({
+      data: errorData,
+      init: {
+        status: 404,
+        statusText: 'Request failed with status code 404',
+      },
+    });
   });
 
-  it('should return data response with 500 data when AxiosError has no response', () => {
+  it('should return the original AxiosError when AxiosError has no response', () => {
     const axiosError = new AxiosError('Network Error');
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(500);
+    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
   });
 
-  it('should return data response when AxiosError has response but no data', () => {
+  it('should return the original AxiosError when AxiosError has status 500', () => {
     const axiosError = new AxiosError(
       'Request failed with status code 500',
       '500',
@@ -50,46 +52,41 @@ describe('createRouteErrorResponse', () => {
       },
     );
 
-    const result = createRouteErrorResponse(axiosError);
-
-    expect(result?.init?.status).toBe(500);
+    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
   });
 
-  it('should throw error when error is not an AxiosError', () => {
+  it('should return the original error when error is not an AxiosError', () => {
     const genericError = new Error('Something went wrong');
 
-    expect(() => createRouteErrorResponse(genericError)).toThrow(
-      'Something went wrong',
-    );
+    expect(createRouteErrorResponse(genericError)).toBe(genericError);
   });
 
-  it('should throw error when error is a string', () => {
+  it('should return the original error when error is a string', () => {
     const stringError = 'String error message';
 
-    expect(() => createRouteErrorResponse(stringError)).toThrow(stringError);
+    expect(createRouteErrorResponse(stringError)).toBe(stringError);
   });
 
-  it('should throw error when error is null', () => {
+  it('should return the original error when error is null', () => {
     const nullError = null;
 
-    expect(() => createRouteErrorResponse(nullError)).toThrow();
+    expect(createRouteErrorResponse(nullError)).toBe(nullError);
   });
 
-  it('should throw error when error is undefined', () => {
+  it('should return the original error when error is undefined', () => {
     const undefinedError = undefined;
 
-    expect(() => createRouteErrorResponse(undefinedError)).toThrow();
+    expect(createRouteErrorResponse(undefinedError)).toBe(undefinedError);
   });
 
-  it('should handle AxiosError with different status codes', () => {
-    const testCases = [
-      { status: 400, statusText: 'Bad Request' },
-      { status: 401, statusText: 'Unauthorized' },
-      { status: 403, statusText: 'Forbidden' },
-      { status: 500, statusText: 'Internal Server Error' },
-    ];
-
-    testCases.forEach(({ status, statusText }) => {
+  it.each([
+    { status: 400, statusText: 'Bad Request' },
+    { status: 401, statusText: 'Unauthorized' },
+    { status: 403, statusText: 'Forbidden' },
+    { status: 500, statusText: 'Internal Server Error' },
+  ])(
+    'should wrap AxiosError only for status codes below 500 (status: $status)',
+    ({ status, statusText }) => {
       const axiosError = new AxiosError(
         `Request failed with status code ${status}`,
         status.toString(),
@@ -105,8 +102,17 @@ describe('createRouteErrorResponse', () => {
       );
 
       const result = createRouteErrorResponse(axiosError);
-
-      expect(result?.init?.status).toBe(status);
-    });
-  });
+      if (status < 500) {
+        expect(result).toMatchObject({
+          data: { error: statusText },
+          init: {
+            status,
+            statusText: `Request failed with status code ${status}`,
+          },
+        });
+      } else {
+        expect(result).toBe(axiosError);
+      }
+    },
+  );
 });

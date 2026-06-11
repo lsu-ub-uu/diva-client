@@ -8,10 +8,13 @@ export const createRouteErrorResponse = (error: unknown) => {
   }
 
   if (error instanceof AxiosError) {
-    return data(error?.response?.data, {
-      status: error.status || 500,
-      statusText: error.message,
-    });
+    if (error.status && error.status < 500) {
+      return data(error?.response?.data, {
+        status: error.status,
+        statusText: error.message,
+      });
+    }
   }
-  throw error;
+
+  return error;
 };

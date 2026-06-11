@@ -19,6 +19,7 @@
 import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { deleteRecordDataById } from '@/cora/deleteRecordDataById.server';
+import { log } from '@/logging/logger.server';
 
 export const deleteRecord = async (
   dependencies: Dependencies,
@@ -29,7 +30,8 @@ export const deleteRecord = async (
   const { recordTypePool } = dependencies;
 
   if (!recordTypePool.has(recordType)) {
-    console.error(`Record type [${recordType}] does not exist`);
+    log.error(`Record type [${recordType}] does not exist`);
+
     throw new Response(`Record type [${recordType}] does not exist`, {
       status: 404,
     });

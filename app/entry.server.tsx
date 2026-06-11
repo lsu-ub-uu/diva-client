@@ -8,6 +8,9 @@ import { I18nextProvider } from 'react-i18next';
 import type { EntryContext, RouterContextProvider } from 'react-router';
 import { ServerRouter } from 'react-router';
 import { i18nContext } from 'server/i18n';
+import { log, logError } from './logging/logger.server';
+import type { LoaderFunctionArgs } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
 
 export const streamTimeout = 5_000;
 
@@ -60,7 +63,7 @@ export default function handleRequest(
           // errors encountered during initial shell rendering since they'll
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
-            console.error(error);
+            logError(error, 'Error while streaming response');
           }
         },
       },
@@ -70,4 +73,16 @@ export default function handleRequest(
     // flush down the rejected boundaries
     setTimeout(abort, streamTimeout + 1000);
   });
+}
+
+export function handleError(
+  error: unknown,
+  { request }: LoaderFunctionArgs | ActionFunctionArgs,
+) {
+  if (!request.signal.aborted) {
+    log.error(
+      { url: request.url, method: request.method, err: error },
+      `Unexpected error during request handling`,
+    );
+  }
 }

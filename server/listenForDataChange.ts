@@ -1,3 +1,5 @@
+import { logError } from '@/logging/logger.server';
+import { log } from '@/logging/logger.server';
 import amqplib from 'amqplib';
 
 export interface DataChangedEvent {
@@ -15,7 +17,7 @@ export const listenForDataChange = async (
   const exchangeName = 'dataChangedExchange';
 
   if (!host || !port) {
-    console.warn(
+    log.warn(
       'RABBITMQ_HOST or RABBITMQ_PORT is not defined. Skipping RabbitMQ consumer setup.',
     );
     return;
@@ -31,21 +33,27 @@ export const listenForDataChange = async (
     const connection = await amqplib.connect(`amqp://${host}:${port}`);
 
     connection.on('error', (err) => {
-      console.error('RabbitMQ connection error:', err);
+      logError(err, 'RabbitMQ connection error');
     });
 
     connection.on('close', () => {
-      console.error('RabbitMQ connection closed.');
+      logError(
+        new Error('RabbitMQ connection closed.'),
+        'RabbitMQ connection closed',
+      );
     });
 
     const channel = await connection.createChannel();
 
     channel.on('error', (err) => {
-      console.error('RabbitMQ channel error:', err);
+      logError(err, 'RabbitMQ channel error');
     });
 
     channel.on('close', () => {
-      console.error('RabbitMQ channel closed.');
+      logError(
+        new Error('RabbitMQ channel closed.'),
+        'RabbitMQ channel closed',
+      );
     });
 
     await channel.assertExchange(exchangeName, 'topic', {
@@ -56,12 +64,10 @@ export const listenForDataChange = async (
 
     await channel.bindQueue(queue, exchangeName, '#');
 
-    console.info(
-      `RabbitMQ consumer is waiting for messages in queue: ${queue}`,
-    );
+    log.info(`RabbitMQ consumer is waiting for messages in queue: ${queue}`);
 
     channel.consume(queue, handleMessage, { noAck: true });
   } catch (error) {
-    console.error('Error starting RabbitMQ consumer:', error);
+    logError(error, 'Error starting RabbitMQ consumer');
   }
 };

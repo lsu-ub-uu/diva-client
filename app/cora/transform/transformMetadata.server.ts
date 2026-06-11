@@ -46,6 +46,7 @@ import type {
   BFFMetadataRecordLink,
 } from '../bffTypes.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { log } from '@/logging/logger.server';
 
 export const transformMetadatas = (
   dataListWrapper: DataListWrapper,
@@ -100,7 +101,7 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     }
     default: {
       const unknownMetadata = metadata as any;
-      console.warn(
+      log.warn(
         `Unknown metadata type: ${unknownMetadata.type} for metadata with id: ${unknownMetadata.id}`,
       );
       return undefined;

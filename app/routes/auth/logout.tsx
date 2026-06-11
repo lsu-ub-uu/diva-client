@@ -22,6 +22,7 @@ import { Form, redirect } from 'react-router';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Button } from '@/components/Button/Button';
 import type { Route } from '../auth/+types/logout';
+import { logError } from '@/logging/logger.server';
 
 export async function action({ request, context }: Route.ActionArgs) {
   const { auth, destroySession } = context.get(sessionContext);
@@ -32,7 +33,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     try {
       await deleteSession(auth);
     } catch (error) {
-      console.error('Failed to delete session', error);
+      logError(error, 'Failed to delete session');
     }
   }
 
