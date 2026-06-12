@@ -18,7 +18,7 @@ export interface IconButtonProps extends Omit<
   target?: string;
   error?: boolean;
   command?: string;
-  commandfor?: string;
+  commandFor?: string;
 }
 
 export const IconButton = ({

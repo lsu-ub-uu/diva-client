@@ -141,7 +141,10 @@ export const RecordLinkWithSearch = ({
               <button
                 className={styles['record-link-button']}
                 type='button'
+                // @ts-expect-error command and commandFor are not yet in @types/react
+                // eslint-disable-next-line react/no-unknown-property
                 command='show-modal'
+                // eslint-disable-next-line react/no-unknown-property
                 commandFor={id}
               >
                 Länka {recordTypeTempLabel} <LinkIcon />
@@ -164,7 +167,7 @@ export const RecordLinkWithSearch = ({
               >
                 <div className={styles['dialog-header']}>
                   <h2>Länka {recordTypeTempLabel}</h2>
-                  <IconButton command='close' commandfor={id} tooltip='Close'>
+                  <IconButton command='close' commandFor={id} tooltip='Close'>
                     <XIcon />
                   </IconButton>
                 </div>

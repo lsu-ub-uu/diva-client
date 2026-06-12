@@ -55,6 +55,7 @@
       background-color 0.2s ease-in-out,
       overlay 0.2s allow-discrete,
       display 0.2s ease-in-out allow-discrete;
+    backdrop-filter: blur(2px);
   }
 }
 
@@ -97,11 +98,6 @@
 
 .dialog-body {
   padding: var(--gap-l);
-}
-
-.dialog::backdrop {
-  background: rgb(0 0 0 / 45%);
-  backdrop-filter: blur(2px);
 }
 
 .dialog-search {
