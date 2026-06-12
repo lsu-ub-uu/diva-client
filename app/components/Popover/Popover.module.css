@@ -1,20 +1,14 @@
 .popover {
   margin: 0;
   inset: unset;
-  top: calc(anchor(top) + var(--gap-l));
-  /* stylelint-disable-next-line declaration-property-value-no-unknown */
-  justify-self: anchor-center;
-  position-try: normal flip-block;
+  position-area: bottom span-all;
+  position-try-fallbacks: flip-block;
   background-color: var(--color-background);
   color: var(--color-text);
   padding: var(--gap-l);
   box-shadow: var(--elevation);
   border-radius: var(--border-radius);
   max-width: 600px;
-
-  @supports not (top: anchor(center)) {
-    position: absolute;
-  }
 }
 
 .label-wrapper {

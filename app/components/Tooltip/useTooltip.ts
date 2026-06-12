@@ -1,4 +1,4 @@
-import { supportsAnchorPositioning } from '@/utils/supportsAnchorPositioning';
+import { isTouchDevice } from '@/utils/isTouchDevice';
 import { useRef } from 'react';
 
 export const useTooltip = () => {
@@ -7,12 +7,11 @@ export const useTooltip = () => {
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   function showTooltip() {
-    tooltipRef.current?.showPopover({ source: triggerRef.current });
-
-    if (!supportsAnchorPositioning()) {
-      // Remove this workaround when support for CSS anchor positioning is widespread. (https://caniuse.com/css-anchor-positioning)
-      positionTooltipManually(triggerRef.current, tooltipRef.current);
+    if (isTouchDevice()) {
+      return;
     }
+
+    tooltipRef.current?.showPopover({ source: triggerRef.current });
   }
 
   function handleMouseEnter() {
@@ -59,17 +58,4 @@ export const useTooltip = () => {
     tooltipTriggerProps,
     tooltipWrapperProps,
   };
-};
-
-const positionTooltipManually = (
-  trigger: HTMLButtonElement | null,
-  tooltip: HTMLDivElement | null,
-) => {
-  if (!trigger || !tooltip) {
-    return;
-  }
-  const triggerRect = trigger.getBoundingClientRect();
-  const tooltipRect = tooltip.getBoundingClientRect();
-  tooltip.style.top = `${triggerRect.bottom + window.scrollY}px`;
-  tooltip.style.left = `${triggerRect.left + window.scrollX + triggerRect.width / 2 - tooltipRect.width / 2}px`;
 };

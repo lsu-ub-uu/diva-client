@@ -26,8 +26,10 @@ import {
 } from 'react';
 import type { LinkProps } from 'react-router';
 
-export interface ButtonProps
-  extends Omit<HTMLProps<HTMLButtonElement>, 'as' | 'size'> {
+export interface ButtonProps extends Omit<
+  HTMLProps<HTMLButtonElement>,
+  'as' | 'size'
+> {
   variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
@@ -38,6 +40,8 @@ export interface ButtonProps
   target?: string;
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
   error?: boolean;
+  command?: string;
+  commandFor?: string;
   children?: ReactNode;
 }
 

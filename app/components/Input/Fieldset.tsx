@@ -68,7 +68,7 @@ export const Fieldset = ({
         data-variant={variant}
         data-size={size}
       >
-        {(label || info) && (
+        {label && (
           <div className={styles['label']}>
             {label && (
               <label id={ids.label} htmlFor={ids.input}>
