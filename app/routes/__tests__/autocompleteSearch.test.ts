@@ -42,7 +42,7 @@ describe('autocompleteSearch', () => {
   describe('loader', () => {
     it('calls searchRecords with correct query', async () => {
       const request = mock<Request>({
-        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm.0.value=searchQuery',
       });
 
       const mockDependencies = {
@@ -111,7 +111,7 @@ describe('autocompleteSearch', () => {
 
     it('returns search results', async () => {
       const request = mock<Request>({
-        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm.0.value=searchQuery',
       });
 
       const mockDependencies = {

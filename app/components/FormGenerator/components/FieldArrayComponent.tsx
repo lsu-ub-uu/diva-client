@@ -109,9 +109,9 @@ export const FieldArrayComponent = ({
         const repeatId = (field as RepeatingField).repeatId;
 
         return (
-          <Fragment key={repeatId ?? field.id}>
+          <Fragment key={field.id}>
             {renderCallback(
-              `${name}[${index}]` as const,
+              `${name}.${index}` as const,
               actionButtonGroup,
               index,
               appended === repeatId,

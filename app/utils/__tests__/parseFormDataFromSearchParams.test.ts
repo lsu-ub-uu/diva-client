@@ -81,7 +81,7 @@ describe('parseFormDaraFormSearchParam', () => {
 
   it('handles arrays with multiple repeats', () => {
     const searchParams = new URLSearchParams(
-      'search.include.includePart.genericSearchTerm.value=**&search.rows[0].value=10&search.rows[1].value=11',
+      'search.include.includePart.genericSearchTerm.value=**&search.rows.0.value=10&search.rows.1.value=11',
     );
     const actual = parseFormDataFromSearchParams(searchParams);
     expect(actual).toStrictEqual({
@@ -100,7 +100,7 @@ describe('parseFormDaraFormSearchParam', () => {
 
   it('handles array leafs', () => {
     const searchParams = new URLSearchParams(
-      'search.include.includePart.genericSearchTerm.value=**&search.rows.values[0]=10',
+      'search.include.includePart.genericSearchTerm.value=**&search.rows.values.0=10',
     );
     const actual = parseFormDataFromSearchParams(searchParams);
     expect(actual).toStrictEqual({

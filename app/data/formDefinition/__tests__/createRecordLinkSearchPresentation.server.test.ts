@@ -45,7 +45,7 @@ describe('createRecordLinkSearchPresentation', () => {
 
     expect(result).toStrictEqual({
       autocompleteSearchTerm: {
-        name: 'searchGroup.includeGroup.includePartGroup.genericSearchTerm[0].value',
+        name: 'searchGroup.includeGroup.includePartGroup.genericSearchTerm.0.value',
       },
       searchType: 'searchType',
     });
@@ -99,10 +99,10 @@ describe('createRecordLinkSearchPresentation', () => {
 
     expect(result).toStrictEqual({
       autocompleteSearchTerm: {
-        name: 'searchGroup.includeGroup.includePartGroup.genericSearchTerm[0].value',
+        name: 'searchGroup.includeGroup.includePartGroup.genericSearchTerm.0.value',
       },
       permissionUnitLinkedRecordIdSearchTerm: {
-        name: 'searchGroup.includeGroup.includePartGroup.permissionUnitLinkedRecordIdSearchTerm[0].value',
+        name: 'searchGroup.includeGroup.includePartGroup.permissionUnitLinkedRecordIdSearchTerm.0.value',
       },
       searchType: 'searchType',
     });
