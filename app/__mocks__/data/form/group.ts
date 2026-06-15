@@ -2056,7 +2056,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
             searchPresentation: {
               searchType: 'personSearch',
               autocompleteSearchTerm: {
-                name: 'search.include.includeGroup.genericSearchTerm[0].value',
+                name: 'search.include.includeGroup.genericSearchTerm.0.value',
               },
             },
           },
@@ -2288,7 +2288,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           searchPresentation: {
             searchType: 'nationalSubjectCategorySearch',
             autocompleteSearchTerm: {
-              name: 'search.include.includeGroup.genericSearchTerm[0].value',
+              name: 'search.include.includeGroup.genericSearchTerm.0.value',
             },
           },
           attributes: [
@@ -2340,7 +2340,7 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
           searchPresentation: {
             searchType: 'nationalSubjectCategorySearch',
             autocompleteSearchTerm: {
-              name: 'search.include.includeGroup.genericSearchTerm[0].value',
+              name: 'search.include.includeGroup.genericSearchTerm.0.value',
             },
           },
           attributes: [
