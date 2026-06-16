@@ -1,9 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const appPort = 44173;
-const simulatorPort = 38181;
 const appBaseUrl = `http://127.0.0.1:${appPort}`;
-const simulatorBaseUrl = `http://127.0.0.1:${simulatorPort}`;
+const coraMockBaseUrl = 'https://cora.mock';
 
 /**
  * Read environment variables from file.
@@ -75,20 +74,10 @@ export default defineConfig({
     // },
   ],
 
-  /* Run simulator and app server before starting tests */
+  /* Run app server with in-process MSW mocks before starting tests */
   webServer: [
     {
-      command: 'npx tsx playwright/cora-simulator/cora-simulator.ts',
-      url: `${simulatorBaseUrl}/health`,
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-      env: {
-        CORA_SIMULATOR_PORT: String(simulatorPort),
-        CORA_SIMULATOR_BASE_URL: simulatorBaseUrl,
-      },
-    },
-    {
-      command: 'npm run dev',
+      command: 'tsx server.ts',
       url: `${appBaseUrl}/`,
       reuseExistingServer: !process.env.CI,
       timeout: 240 * 1000,
@@ -96,9 +85,10 @@ export default defineConfig({
         NODE_ENV: 'development',
         PORT: String(appPort),
         BASE_PATH: '',
-        CORA_API_URL: `${simulatorBaseUrl}/rest`,
-        CORA_LOGIN_URL: `${simulatorBaseUrl}/login/rest`,
-        CORA_EXTERNAL_SYSTEM_URL: simulatorBaseUrl,
+        USE_CORA_MSW: 'true',
+        CORA_API_URL: `${coraMockBaseUrl}/rest`,
+        CORA_LOGIN_URL: `${coraMockBaseUrl}/login/rest`,
+        CORA_EXTERNAL_SYSTEM_URL: coraMockBaseUrl,
       },
     },
   ],

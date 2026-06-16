@@ -31,6 +31,7 @@ const BUILD_PATH = './dist/server/index.js';
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 const BASE_PATH = process.env.BASE_PATH ?? '';
 const PORT = Number.parseInt(process.env.PORT || '5173');
+const USE_CORA_MSW = process.env.USE_CORA_MSW === 'true';
 const { CORA_API_URL, CORA_LOGIN_URL, CORA_EXTERNAL_SYSTEM_URL } = process.env;
 
 const log = pino();
@@ -50,6 +51,12 @@ if (!CORA_EXTERNAL_SYSTEM_URL) {
 prometheusClient.collectDefaultMetrics();
 
 const app = express();
+
+if (USE_CORA_MSW) {
+  const { startCoraMswServer } =
+    await import('./playwright/cora-simulator/cora-msw.server');
+  startCoraMswServer();
+}
 
 app.use(compression());
 app.disable('x-powered-by');
