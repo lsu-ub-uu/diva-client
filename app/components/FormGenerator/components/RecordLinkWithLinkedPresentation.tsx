@@ -68,6 +68,7 @@ export const RecordLinkWithLinkedPresentation = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
+      {...(linkedRecordId && { 'data-has-value': '' })}
     >
       <DevInfo
         label='RecordLinkWithLinkedPresentation'

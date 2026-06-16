@@ -39,6 +39,7 @@ export const OutputRecordLink = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
+      {...(linkedRecordId && { 'data-has-value': '' })}
     >
       <DevInfo component={component} path={path} />
       <div
