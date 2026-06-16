@@ -2,8 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { Filters } from '../Filters';
 import { createRoutesStub } from 'react-router';
-import type { FilterDefinition } from '../../utils/createFilterDefinition.server';
-import type { ActiveFilter } from '../../utils/createActiveFilters.server';
+import type { FilterDefinition } from '../../../utils/createFilterDefinition.server';
+import type { ActiveFilter } from '../../../utils/createActiveFilters.server';
 import { userEvent } from '@testing-library/user-event/dist/cjs/setup/index.js';
 import { act } from 'react';
 

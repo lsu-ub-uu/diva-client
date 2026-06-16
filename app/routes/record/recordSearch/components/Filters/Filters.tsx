@@ -4,9 +4,9 @@ import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { FunnelIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
-import type { ActiveFilter } from '../utils/createActiveFilters.server';
+import type { ActiveFilter } from '../../utils/createActiveFilters.server';
 import { Filter } from './Filter';
-import { SearchHiddenInputs } from './SearchHiddenInputs';
+import { SearchHiddenInputs } from '../SearchHiddenInputs';
 import { useRef } from 'react';
 
 interface FiltersProps {

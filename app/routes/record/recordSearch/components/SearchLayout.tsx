@@ -4,7 +4,7 @@ import {
 } from '@/components/DrawerDialog/DrawerDialog';
 import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
-import { Filters } from './Filters';
+import { Filters } from './Filters/Filters';
 import { RecordSearchView } from './RecordSearchView';
 
 interface SearchLayoutProps {
