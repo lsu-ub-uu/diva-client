@@ -38,6 +38,9 @@ export const CollectionSelectFilter = ({
         onChange={() => {
           userChangedRef.current = true;
         }}
+        onBlur={() => {
+          userChangedRef.current = false;
+        }}
         ref={selectRef}
       >
         <option value=''>--</option>

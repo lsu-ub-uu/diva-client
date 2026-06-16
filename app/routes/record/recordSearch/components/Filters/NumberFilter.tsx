@@ -41,6 +41,9 @@ export const NumberFilter = ({
         onChange={() => {
           userTypedRef.current = true;
         }}
+        onBlur={() => {
+          userTypedRef.current = false;
+        }}
         ref={inputRef}
       />
     </Fieldset>

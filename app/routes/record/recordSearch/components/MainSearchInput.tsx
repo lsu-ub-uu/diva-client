@@ -49,6 +49,9 @@ export const MainSearchInput = ({
           onChange={() => {
             userTypedRef.current = true;
           }}
+          onBlur={() => {
+            userTypedRef.current = false;
+          }}
           ref={inputRef}
           aria-invalid={validationError ? 'true' : 'false'}
         />
