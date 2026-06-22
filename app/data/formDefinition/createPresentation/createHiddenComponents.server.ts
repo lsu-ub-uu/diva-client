@@ -16,15 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Dependencies } from '@/cora/bffTypes.server';
-import type {
-  BFFMetadata,
-  BFFMetadataChildReference,
-  BFFMetadataGroup,
-  BFFPresentation,
-  BFFPresentationChildReference,
-  BFFPresentationGroup,
-} from '@/cora/bffTypes.server';
 import type {
   FormAttributeCollection,
   FormComponent,
@@ -32,13 +23,21 @@ import type {
   FormComponentHidden,
   FormComponentRepeat,
 } from '@/components/FormGenerator/types';
+import type {
+  BFFMetadata,
+  BFFMetadataChildReference,
+  BFFMetadataGroup,
+  BFFPresentation,
+  BFFPresentationChildReference,
+  Dependencies,
+} from '@/cora/bffTypes.server';
 import { doesMetadataAndPresentationMatch } from '@/data/formDefinition/utils/findMetadataChildReferenceByNameInDataAndAttributes.server';
-import { createAttributes } from './createAttributes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import {
   determineRepeatMax,
   type BFFMetadataTypes,
 } from '../utils/formDefinitionUtils.server';
+import { createAttributes } from './createAttributes';
 
 export const createHiddenComponents = (
   dependencies: Dependencies,
@@ -65,11 +64,9 @@ const createHiddenComponentsForMetadata = (
     metadataChildReference.childId,
   );
 
-  const presentation = getPresentation(
-    presentationChildReferences,
-    dependencies,
-    metadata,
-  );
+  if (hasPresentation(presentationChildReferences, dependencies, metadata)) {
+    return undefined;
+  }
 
   const repeat = {
     repeatMin: parseInt(metadataChildReference.repeatMin),
@@ -86,68 +83,54 @@ const createHiddenComponentsForMetadata = (
     return createHiddenComponentsForGroup(
       dependencies,
       metadata,
-      presentation as BFFPresentationGroup,
       attributes,
       repeat,
     );
   }
 
-  const hiddenComponent = createHiddenVariable(
-    presentation,
-    metadata,
-    attributes,
-    repeat,
-  );
-  return hiddenComponent;
+  return createHiddenComponentForVariable(metadata, attributes, repeat);
 };
 
 const createHiddenComponentsForGroup = (
   dependencies: Dependencies,
   group: BFFMetadataGroup,
-  presentation: BFFPresentationGroup | undefined,
   attributes: FormAttributeCollection[] | undefined,
   repeat: FormComponentRepeat,
-): FormComponent | undefined => {
-  const hasPresentation = presentation !== undefined;
+): FormComponentGroup | undefined => {
+  const components = createHiddenComponents(dependencies, group.children, []);
 
-  if (!hasPresentation) {
-    const components = createHiddenComponents(dependencies, group.children, []);
-
-    if (components.length > 0) {
-      const groupComponent = removeEmpty({
-        type: 'group',
-        name: group.nameInData,
-        mode: 'input',
-        components,
-        attributes,
-        repeat,
-        hidden: true,
-      });
-      return groupComponent as FormComponentGroup;
-    }
+  if (components.length > 0) {
+    return removeEmpty({
+      type: 'group',
+      name: group.nameInData,
+      mode: 'input',
+      components,
+      attributes,
+      repeat,
+      hidden: true,
+      label: '',
+      showLabel: false,
+    });
   }
+  return undefined;
 };
 
-function createHiddenVariable(
-  presentation: BFFPresentation | undefined,
+function createHiddenComponentForVariable(
   metadata: BFFMetadata,
   attributes: FormAttributeCollection[] | undefined,
   repeat: FormComponentRepeat,
 ): FormComponentHidden | undefined {
-  const hasPresentation = presentation !== undefined;
-  const isFinalValue =
-    'finalValue' in metadata && metadata.finalValue !== undefined;
-
-  if (isFinalValue && !hasPresentation) {
+  if ('finalValue' in metadata && metadata.finalValue !== undefined) {
     return {
       type: 'hidden',
       name: metadata.nameInData,
-      finalValue: metadata.finalValue!,
+      finalValue: metadata.finalValue,
       attributes,
       attributesToShow: 'none',
       repeat,
     };
   }
+  return undefined;
 }
 
 const isMetadataGroup = (
@@ -156,21 +139,40 @@ const isMetadataGroup = (
   return metadata.type === 'group';
 };
 
-function getPresentation(
+const hasPresentation = (
   presentationChildReferences: BFFPresentationChildReference[],
   dependencies: Dependencies,
   metadata: BFFMetadata,
-) {
+) => {
   return presentationChildReferences
     .filter((ref) => ref.refGroups[0].type === 'presentation')
     .map((ref) => dependencies.presentationPool.get(ref.refGroups[0].childId))
-    .find(
-      (presentation) =>
-        'presentationOf' in presentation &&
-        doesMetadataAndPresentationMatch(
-          dependencies.metadataPool,
-          metadata,
-          dependencies.metadataPool.get(presentation.presentationOf),
-        ),
+    .some((presentation) =>
+      isMetadataPresentedByPresentation(metadata, presentation!, dependencies),
     );
-}
+};
+
+const isMetadataPresentedByPresentation = (
+  metadata: BFFMetadata,
+  presentation: BFFPresentation,
+  dependencies: Dependencies,
+) => {
+  if ('presentationsOf' in presentation) {
+    return presentation.presentationsOf?.some((presentationMetadataId) => {
+      return doesMetadataAndPresentationMatch(
+        dependencies.metadataPool,
+        metadata,
+        dependencies.metadataPool.get(presentationMetadataId)!,
+      );
+    });
+  }
+
+  return (
+    'presentationOf' in presentation &&
+    doesMetadataAndPresentationMatch(
+      dependencies.metadataPool,
+      metadata,
+      dependencies.metadataPool.get(presentation.presentationOf),
+    )
+  );
+};

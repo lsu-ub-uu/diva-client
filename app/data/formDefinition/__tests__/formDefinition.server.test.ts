@@ -996,6 +996,8 @@ describe('formDefinition', () => {
               name: 'recordInfo',
               type: 'group',
               hidden: true,
+              label: '',
+              showLabel: false,
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1,

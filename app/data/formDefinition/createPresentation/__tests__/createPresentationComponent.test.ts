@@ -154,6 +154,8 @@ describe('createPresentationComponent', () => {
             repeatMin: 1,
             repeatMax: 1,
           },
+          label: '',
+          showLabel: false,
           components: [
             {
               type: 'hidden',
