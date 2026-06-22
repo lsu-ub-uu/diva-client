@@ -540,8 +540,38 @@ const testRequiredIfOptionalAncestorHasValue: TestConfig<
       return false;
     }
 
+    if (hasValueInRepeatingLeafArray(context, closestOptionalAncestor.value)) {
+      return true;
+    }
+
     return !hasValuableData(closestOptionalAncestor.value);
   },
+};
+
+const hasValueInRepeatingLeafArray = (
+  context: yup.TestContext<AnyObject>,
+  closestOptionalAncestorValue: unknown,
+): boolean => {
+  const repeatedLeafPathMatch = context.path?.match(
+    /(?:^|\.)([^.[\]]+)\[\d+\]\.value$/,
+  );
+
+  if (!repeatedLeafPathMatch || !closestOptionalAncestorValue) {
+    return false;
+  }
+
+  const repeatedFieldValue = (
+    closestOptionalAncestorValue as Record<string, unknown>
+  )[repeatedLeafPathMatch[1]];
+
+  if (!Array.isArray(repeatedFieldValue)) {
+    return false;
+  }
+
+  return (
+    !repeatedFieldValue.some((item) => (item as any).type === 'group') &&
+    repeatedFieldValue.some((item) => hasValuableData(item))
+  );
 };
 
 const generateYupSchemaForCollections = () => {
