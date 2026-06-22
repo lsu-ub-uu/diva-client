@@ -26,6 +26,7 @@ export const OutputField = ({
       data-colspan={colspan ?? 12}
       data-variant={variant}
       data-text-style={textStyle}
+      data-has-value={true}
     >
       {label && <div className={styles['label']}>{label}</div>}
       {attributes}

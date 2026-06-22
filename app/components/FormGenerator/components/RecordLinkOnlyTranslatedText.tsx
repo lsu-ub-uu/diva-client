@@ -20,6 +20,7 @@ export const RecordLinkOnlyTranslatedText = ({
     <div
       className='form-component-item'
       data-colspan={component.gridColSpan ?? 12}
+      data-has-value={true}
     >
       <DevInfo
         component={component}
