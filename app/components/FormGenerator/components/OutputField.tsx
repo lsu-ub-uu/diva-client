@@ -62,6 +62,7 @@ export const OutputField = ({
       className={clsx(styles['output-field'], className)}
       data-variant={variant}
       data-has-label={label ? 'true' : 'false'}
+      data-has-value={true}
     >
       <div className={styles['label-wrapper']}>
         {label && (

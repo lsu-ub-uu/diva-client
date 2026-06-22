@@ -101,6 +101,7 @@ export const Group = ({
         boxed={boxGroups && groupLevel !== 0 && cardTitle !== undefined}
         label={cardTitle ?? t(component.label)}
         expanded={expanded !== false}
+        expandable={expandable}
       >
         <CardHeader
           alert={enhancement?.type === 'group' && enhancement?.alert === true}

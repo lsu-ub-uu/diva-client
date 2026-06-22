@@ -46,3 +46,10 @@ junit-report.xml
 
 # Fedora
 .directory
+
+# Playwright
+playwright-report/
+test-results/
+
+# Slaskfiles
+slask.*

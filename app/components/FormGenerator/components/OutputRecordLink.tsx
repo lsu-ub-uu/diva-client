@@ -46,6 +46,7 @@ export const OutputRecordLink = ({
         className={clsx(styles['output-field'])}
         data-variant={variant}
         data-has-label={label ? 'true' : 'false'}
+        data-has-value={true}
       >
         <div className={styles['label-wrapper']}>
           {label && (

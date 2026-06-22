@@ -132,7 +132,7 @@ export const AlternativePresentationSwitcher = (
       className='form-component-item'
       data-colspan={'gridColSpan' in component ? component.gridColSpan : 12}
     >
-      <Card boxed={boxGroups} expanded={expanded}>
+      <Card boxed={boxGroups} expandable expanded={expanded}>
         <CardHeader>
           <CardTitle level={titleHeadlineLevel}>
             <CardExpandButton

@@ -26,6 +26,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   boxed?: boolean;
   label?: string;
   expanded?: boolean;
+  expandable?: boolean;
 }
 
 export const Card = ({
@@ -34,6 +35,7 @@ export const Card = ({
   label,
   className,
   expanded = true,
+  expandable = false,
   ...rest
 }: CardProps) => {
   const id = useId();
@@ -50,6 +52,7 @@ export const Card = ({
       data-expanded={expanded}
       {...rest}
       {...(boxed && { 'data-boxed': '' })}
+      {...(expandable && { 'data-expandable': '' })}
     >
       <CardContext value={{ boxed, ids }}>{children}</CardContext>
     </section>

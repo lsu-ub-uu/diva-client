@@ -75,7 +75,7 @@
   font-size: 1rem;
 }
 
-.card[data-expanded='false']:has([data-has-value]) {
+.card[data-expanded='false']:has([data-has-value]) > .card-header {
   .expand-button {
     color: var(--color-link);
   }
@@ -85,7 +85,7 @@
   }
 }
 
-.card[data-expanded='false']:has([aria-invalid='true']) {
+.card[data-expandable]:has([aria-invalid='true']) > .card-header {
   .expand-button {
     color: var(--color-error-main);
   }
