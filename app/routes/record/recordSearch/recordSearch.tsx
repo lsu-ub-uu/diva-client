@@ -4,11 +4,8 @@ import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
-import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { createSearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { useNavigation, useSubmit } from 'react-router';
@@ -17,11 +14,7 @@ import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
 import { SearchLayout } from './components/SearchLayout';
 import css from './recordSearch.css?url';
-import { createActiveFilters } from './utils/createActiveFilters.server';
-import { createSearchQuery } from './utils/createSearchQuery.server';
-import { getSearchIdForRecordType } from './utils/getSearchIdForRecorrdType.server';
-import { performSearch } from './utils/performSearch.server';
-import { validateSearchFormData } from './utils/validateSearchFormData.server';
+import { loadSearchView } from './utils/loadSearchView.server';
 
 export const loader = async ({
   request,
@@ -34,70 +27,34 @@ export const loader = async ({
     const member = getMemberFromHostname(request, dependencies);
     const { auth } = context.get(sessionContext);
     const recordType = dependencies.recordTypePool.get(params.recordType);
+    const searchParams = new URL(request.url).searchParams;
+
     const userRights = await getUserRightsForRecordType(
       params.recordType,
       auth,
     );
-    const searchId = getSearchIdForRecordType(recordType, auth);
-    const searchFormDefinition = createSearchFormDefinition(
+
+    const validationTypes = getValidationTypes(params.recordType, dependencies);
+
+    const {
+      searchFormDefinition,
       searchId,
-      dependencies,
-    );
-
-    const searchParams = new URL(request.url).searchParams;
-
-    const q = searchParams.get('q') ?? '';
-    const start = Number(searchParams.get('start')) || 1;
-    const rows = Number(searchParams.get('rows')) || 20;
-
-    const activeFilters = await createActiveFilters(
-      searchFormDefinition,
-      searchParams,
-      dependencies,
-      auth,
-      language,
-    );
-
-    const validationErrors = validateSearchFormData(
-      q,
-      activeFilters,
-      searchFormDefinition,
-    );
-
-    const searchQuery = createSearchQuery(
-      searchFormDefinition,
-      q,
-      member,
-      activeFilters,
+      query,
       start,
       rows,
-    );
-
-    let searchResults;
-    if (validationErrors.size === 0) {
-      searchResults = await performSearch({
-        dependencies,
-        searchId,
-        searchQuery,
-        auth,
-        decorated: recordType.id === 'diva-output',
-        t,
-      });
-    } else {
-      searchResults = {
-        data: [],
-        total: 0,
-      };
-    }
-
-    const apiUrl =
-      searchQuery &&
-      encodeURI(
-        externalCoraApiUrl(
-          `/record/searchResult/${recordType.searchId}?searchData=${JSON.stringify(createCoraSearchQuery(dependencies, dependencies.searchPool.get(searchId), searchQuery))}`,
-        ),
-      );
-    const validationTypes = getValidationTypes(params.recordType, dependencies);
+      activeFilters,
+      apiUrl,
+      validationErrors,
+      searchResults,
+    } = await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams,
+      auth,
+      language,
+      member,
+      t,
+    });
 
     return {
       recordTypeId: recordType.id,
@@ -105,7 +62,7 @@ export const loader = async ({
       searchFormDefinition,
       searchId,
       title: t(recordType.pluralTextId),
-      query: q,
+      query,
       start,
       rows,
       searchResults,
