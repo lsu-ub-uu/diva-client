@@ -31,16 +31,10 @@ import { logError } from '@/logging/logger.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from './+types/getLinkedRecord';
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: Route.LoaderArgs) => {
+export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   try {
     const { auth } = context.get(sessionContext);
     const { recordType, recordId } = params;
-
-    const url = new URL(request.url);
 
     const presentationRecordLinkId = url.searchParams.get(
       'presentationRecordLinkId',
