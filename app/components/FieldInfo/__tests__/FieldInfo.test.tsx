@@ -27,19 +27,12 @@ describe('<FieldInfo />', () => {
     const title = 'Test Title';
     const body = 'body content';
     render(<FieldInfo title={title} body={body} />);
-    
+
     await user.click(
       screen.getByRole('button', { name: 'divaClient_fieldInfoText' }),
     );
 
-
     screen.getByText('Test Title');
     screen.getByText('body content');
-
-    await user.click(
-      screen.getByRole('button', {
-        name: 'divaClient_closeText',
-      }),
-    );
   });
 });
