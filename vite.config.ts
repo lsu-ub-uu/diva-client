@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitest/config';
 import { reactRouter } from '@react-router/dev/vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import babelPlugin from 'vite-plugin-babel';
 
@@ -20,7 +19,6 @@ export default defineConfig({
           sourceMaps: true,
         },
       }),
-    tsconfigPaths(),
     svgr({
       include: 'app/icons/**/*.svg?react',
       svgrOptions: {
@@ -34,13 +32,12 @@ export default defineConfig({
       exclude: 'app/icons/**/*.svg?react',
     }),
   ],
-
-  /**
-   * Fix for issue with Vitest + remix-hook-form on Node 20.19+
-   * https://github.com/remix-run/react-router/issues/12785#issuecomment-2731496414
-   * */
+  ssr: {
+    noExternal: ['@react-router/express', 'remix-hook-form'],
+  },
   resolve: {
     conditions: ['module-sync'],
+    tsconfigPaths: true,
   },
   test: {
     environment: 'jsdom',
