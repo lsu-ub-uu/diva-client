@@ -18,7 +18,7 @@ import {
 } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
-import { loader as rootLoader } from '../../root';
+import type { loader as rootLoader } from '../../root';
 import type { Route } from './+types/landingPage';
 import { Hero } from './Hero';
 import css from './landingPage.css?url';
