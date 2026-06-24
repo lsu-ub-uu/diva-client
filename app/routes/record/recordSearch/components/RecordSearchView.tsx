@@ -1,110 +1,119 @@
-import type { BFFMetadata } from '@/cora/bffTypes.server';
-import type { BFFSearchResult } from '@/types/record';
-import { Form } from 'react-router';
-import type { ActiveFilter } from '../utils/createActiveFilters.server';
-import { ActiveFilters } from './ActiveFilters';
-import { MainSearchInput } from './MainSearchInput';
-import { Pagination } from './Pagination';
-import { SearchHiddenInputs } from './SearchHiddenInputs';
-import { SearchResultButtons } from './SearchResultButtons';
-import { SearchResults } from './SearchResults';
+import { useNavigation, useSubmit } from 'react-router';
+import type { SearchView } from '../utils/loadSearchView.server';
+import { RecordSearchMain } from './RecordSearchMain';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
+import { Filters } from './Filters/Filters';
+import {
+  DrawerDialog,
+  useDrawerDialog,
+} from '@/components/DrawerDialog/DrawerDialog';
 
 interface RecordSearchViewProps {
-  query: string;
-  onQueryChange: (form: HTMLFormElement) => void;
-  mainSearchTerm: BFFMetadata;
-  searching: boolean;
-  onClearMainQuery: () => void;
-  searchResults: BFFSearchResult;
-  rows: number;
-  start: number;
-  activeFilters: ActiveFilter[];
-  onRemoveFilter: (name: string) => void;
-  onClearAllFilters: () => void;
-  showFilterDialog: () => void;
-  apiUrl: string;
-  validationErrors: Map<string, string>;
+  searchView: SearchView;
 }
 
-export const RecordSearchView = ({
-  query,
-  onQueryChange,
-  mainSearchTerm,
-  searching,
-  onClearMainQuery,
-  searchResults,
-  rows,
-  start,
-  activeFilters,
-  onRemoveFilter,
-  onClearAllFilters,
-  showFilterDialog,
-  apiUrl,
-  validationErrors,
-}: RecordSearchViewProps) => {
+export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
+  const {
+    searchFormDefinition,
+    query,
+    start,
+    rows,
+    searchResults,
+    activeFilters,
+    validationErrors,
+    apiUrl,
+  } = searchView;
+
+  const submit = useSubmit();
+  const navigation = useNavigation();
+  const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
+    useDrawerDialog();
+
+  const searching = Boolean(
+    navigation.state !== 'idle' &&
+    navigation.formAction?.includes(location.pathname),
+  );
+
+  const handleQueryChange = useDebouncedCallback(
+    (form: HTMLFormElement) => submit(form),
+    400,
+  );
+
+  const handleRemoveFilter = (filterName: string) => {
+    const formData = new FormData();
+    formData.append('q', query);
+    formData.append('start', start.toString());
+    formData.append('rows', rows.toString());
+    activeFilters.forEach((filter) => {
+      if (filter.name !== filterName) {
+        formData.append(filter.name, filter.value);
+      }
+    });
+    submit(formData, { method: 'GET' });
+  };
+
+  const handleClearAllFilters = () => {
+    const formData = new FormData();
+    formData.append('q', query);
+    formData.append('start', start.toString());
+    formData.append('rows', rows.toString());
+    submit(formData, { method: 'GET' });
+  };
+
+  const handleClearMainQuery = () => {
+    const formData = new FormData();
+    formData.append('start', start.toString());
+    formData.append('rows', rows.toString());
+    activeFilters.forEach((filter) => {
+      formData.append(filter.name, filter.value);
+    });
+    submit(formData, { method: 'GET' });
+  };
+
   return (
     <>
-      <Form
-        method='GET'
-        onChange={(e) => onQueryChange(e.currentTarget)}
-        className='main-query-form'
-      >
-        <MainSearchInput
+      <main className='grid-col-9 grid-col-l-12 search-main'>
+        <RecordSearchMain
           query={query}
-          mainSearchTerm={mainSearchTerm}
+          onQueryChange={handleQueryChange}
+          mainSearchTerm={searchFormDefinition.mainSearchTerm}
           searching={searching}
-          onClearMainQuery={onClearMainQuery}
-          validationError={validationErrors.get(mainSearchTerm.nameInData)}
-        />
-        <SearchHiddenInputs
+          onClearMainQuery={handleClearMainQuery}
+          searchResults={searchResults}
           rows={rows}
-          start={1}
-          activeFilters={activeFilters}
-        />
-      </Form>
-
-      <SearchResultButtons
-        searchResults={searchResults}
-        apiUrl={apiUrl}
-        activeFilters={activeFilters}
-        onClearAllFilters={onClearAllFilters}
-        showFilterDialog={showFilterDialog}
-      />
-
-      <ActiveFilters
-        activeFilters={activeFilters}
-        onRemoveFilter={onRemoveFilter}
-      />
-
-      {searchResults.data.length > 0 && (
-        <Pagination
-          rowsPerPage={rows}
-          searchResults={searchResults}
           start={start}
-          query={query}
-          onQueryChange={onQueryChange}
           activeFilters={activeFilters}
+          onRemoveFilter={handleRemoveFilter}
+          onClearAllFilters={handleClearAllFilters}
+          apiUrl={apiUrl}
+          showFilterDialog={showDrawerDialog}
+          validationErrors={validationErrors}
         />
-      )}
-
-      <SearchResults
-        searchResults={searchResults}
-        start={start}
-        searching={searching}
-        userHasSearched={query.length > 0 || activeFilters.length > 0}
-        validationErrors={validationErrors}
-      />
-
-      {searchResults.data.length > 0 && (
-        <Pagination
-          rowsPerPage={rows}
-          searchResults={searchResults}
-          start={start}
-          query={query}
-          onQueryChange={onQueryChange}
+      </main>
+      <div className='grid-col-3 grid-col-l-hidden'>
+        <Filters
+          filters={searchFormDefinition.filters}
           activeFilters={activeFilters}
+          query={query}
+          rows={rows}
+          onClose={closeDrawerDialog}
+          validationErrors={validationErrors}
         />
-      )}
+      </div>
+      <DrawerDialog
+        ref={drawerDialogRef}
+        variant='right'
+        className='filter-dialog'
+      >
+        <Filters
+          filters={searchFormDefinition.filters}
+          activeFilters={activeFilters}
+          query={query}
+          rows={rows}
+          onClose={closeDrawerDialog}
+          validationErrors={validationErrors}
+        />
+      </DrawerDialog>
     </>
   );
 };

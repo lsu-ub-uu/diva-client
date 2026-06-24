@@ -1,27 +1,20 @@
+import type {
+  BFFMetadata,
+  BFFMetadataGroup,
+  BFFMetadataTextVariable,
+  BFFSearch,
+  Dependencies,
+} from '@/cora/bffTypes.server';
+import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it } from 'vitest';
 import {
   createSearchFormDefinition,
   type SearchFormDefinition,
 } from '../createSearchFormDefinition.server';
-import type {
-  BFFMetadata,
-  BFFSearch,
-  BFFMetadataTextVariable,
-  Dependencies,
-  BFFMetadataGroup,
-} from '@/cora/bffTypes.server';
-import { listToPool } from 'server/dependencies/util/listToPool';
-import type { Lookup } from 'server/dependencies/util/lookup';
 
 describe('createSearchFormDefinition', () => {
   it('creates a search form definition', () => {
     const mockDependencies = {
-      searchPool: listToPool([
-        {
-          id: 'testSearch',
-          metadataId: 'testSearchGroup',
-        },
-      ]) as Lookup<string, BFFSearch>,
       metadataPool: listToPool<BFFMetadata>([
         {
           id: 'testSearchGroup',
@@ -83,10 +76,12 @@ describe('createSearchFormDefinition', () => {
       ]),
     } as Dependencies;
 
-    const definition = createSearchFormDefinition(
-      'testSearch',
-      mockDependencies,
-    );
+    const search = {
+      id: 'testSearch',
+      metadataId: 'testSearchGroup',
+    } as BFFSearch;
+
+    const definition = createSearchFormDefinition(search, mockDependencies);
 
     expect(definition).toEqual({
       searchRootName: 'testSearch',
