@@ -51,7 +51,7 @@ export default defineConfig({
   environments: {
     ssr: {
       build: {
-        rollupOptions: {
+        rolldownOptions: {
           input: './server/app.ts',
         },
       },
