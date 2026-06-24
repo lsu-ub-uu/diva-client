@@ -19,7 +19,6 @@
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
 import type { i18n } from 'i18next';
-import 'react-router';
 import { RouterContextProvider } from 'react-router';
 import {
   getDependencies,

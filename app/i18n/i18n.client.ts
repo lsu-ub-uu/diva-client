@@ -18,19 +18,19 @@
 
 import { i18nConfig } from '@/i18n/i18nConfig';
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import I18NextHttpBackend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
-export const initClienti18n = () => {
-  return i18n
-    .use(initReactI18next)
-    .use(LanguageDetector)
-    .use(I18NextHttpBackend)
-    .init({
-      ...i18nConfig,
-      backend: {
-        loadPath: `${import.meta.env.BASE_URL}translations/{{lng}}`,
+export const initClienti18n = (
+  locale: string,
+  translations: Record<string, string>,
+) => {
+  return i18n.use(initReactI18next).init({
+    ...i18nConfig,
+    lng: locale,
+    resources: {
+      [locale]: {
+        translation: translations,
       },
-    });
+    },
+  });
 };

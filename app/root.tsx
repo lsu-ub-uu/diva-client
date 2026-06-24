@@ -22,10 +22,13 @@ import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
+import { i18nConfig } from '@/i18n/i18nConfig';
+import i18next from 'i18next';
 import dev_favicon from '@/images/diva-star-dev.svg';
 import favicon from '@/images/diva-star.svg';
 import { ServerCrashIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 import {
   data,
   isRouteErrorResponse,
@@ -53,6 +56,7 @@ import { Footer } from './components/Layout/Footer/Footer';
 import { Header } from './components/Layout/Header/Header';
 import { getDeploymentInfo } from './cora/getDeploymentInfo.server';
 import { createRouteErrorResponse } from './errorHandling/createRouteErrorResponse.server';
+import { createTextDefinition } from './data/textDefinition/textDefinition.server';
 import { useLanguage } from './i18n/useLanguage';
 import rootCss from './styles/root.css?url';
 import {
@@ -63,6 +67,7 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
+import { isClient } from './utils/isClient';
 
 const { MODE } = import.meta.env;
 
@@ -76,6 +81,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
+    const translations = createTextDefinition(dependencies, locale);
     const clientContent = getClientContent(dependencies);
     const navigation = await getNavigation(
       dependencies,
@@ -91,6 +97,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     return {
       user,
       locale,
+      translations,
       loginUnits,
       exampleUsers,
       member,
@@ -227,9 +234,29 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   const data = useRouteLoaderData<typeof loader>('root');
   const userPreferences = data?.userPreferences;
   const locale = data?.locale ?? 'sv';
-  useChangeLanguage(locale);
+  const translations = data?.translations;
 
-  return (
+  // On client: init i18next once and load translations synchronously
+  // before render so t() returns correct values during hydration.
+  if (isClient()) {
+    if (!i18next.isInitialized) {
+      i18next.use(initReactI18next).init({ ...i18nConfig, resources: {} });
+    }
+    if (translations) {
+      i18next.addResourceBundle(
+        locale,
+        'translation',
+        translations,
+        true,
+        true,
+      );
+    }
+  }
+
+  // Handle subsequent language changes via useEffect
+  useChangeLanguage(locale, translations);
+
+  const content = (
     <html
       lang={locale}
       data-color-scheme={userPreferences?.colorScheme || 'light'}
@@ -247,6 +274,13 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </body>
     </html>
   );
+
+  // Server: I18nextProvider is in entry.server.tsx (per-request instance)
+  // Client: Provide i18next here since we have translations from loader data
+  if (isClient()) {
+    return <I18nextProvider i18n={i18next}>{content}</I18nextProvider>;
+  }
+  return content;
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {

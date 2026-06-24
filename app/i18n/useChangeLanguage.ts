@@ -19,11 +19,17 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const useChangeLanguage = (locale: string) => {
+export const useChangeLanguage = (
+  locale: string,
+  translations?: Record<string, string>,
+) => {
   const { i18n } = useTranslation();
   useEffect(() => {
+    if (translations) {
+      i18n.addResourceBundle(locale, 'translation', translations, true, true);
+    }
     if (locale !== i18n.language) {
       i18n.changeLanguage(locale);
     }
-  }, [locale, i18n]);
+  }, [locale, translations, i18n]);
 };

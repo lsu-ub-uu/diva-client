@@ -17,7 +17,6 @@
  */
 
 import type { loader } from '@/root';
-import { useTranslation } from 'react-i18next';
 import { useFetcher, useLoaderData } from 'react-router';
 
 import { Button } from '@/components/Button/Button';
@@ -26,7 +25,6 @@ import { GlobeIcon } from 'lucide-react';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
-  const { i18n } = useTranslation();
   const fetcher = useFetcher();
   const language = fetcher.formData ? fetcher.formData.get('language') : locale;
 
@@ -42,9 +40,6 @@ export const LanguageSwitcher = () => {
           variant='tertiary'
           name='language'
           value={language === 'sv' ? 'en' : 'sv'}
-          onClick={(e) =>
-            i18n.changeLanguage((e.target as HTMLButtonElement).value)
-          }
         >
           {language === 'sv' ? 'English' : 'Svenska'}
           <GlobeIcon />

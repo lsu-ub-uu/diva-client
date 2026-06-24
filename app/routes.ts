@@ -38,7 +38,6 @@ export default [
     'autocompleteSearch/:searchType',
     'routes/resourceRoutes/autocompleteSearch.tsx',
   ),
-  route('translations/:lang', 'routes/resourceRoutes/translations.tsx'),
   route('binaryRecord', 'routes/resourceRoutes/binaryRecord.ts'),
   route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
   route('sitemap.xml', 'routes/resourceRoutes/sitemap/sitemap.ts'),
