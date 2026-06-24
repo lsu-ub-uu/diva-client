@@ -26,9 +26,8 @@ import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { logError } from '@/logging/logger.server';
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request, url, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
-  const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const loginUnit = url.searchParams.get('loginUnit');
   const session = await getSession(request.headers.get('Cookie'));

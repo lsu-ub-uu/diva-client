@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export const loader = async ({
   request,
+  url,
   context,
   params,
 }: Route.LoaderArgs) => {
@@ -27,7 +28,7 @@ export const loader = async ({
     const member = getMemberFromHostname(request, dependencies);
     const { auth } = context.get(sessionContext);
     const recordType = dependencies.recordTypePool.get(params.recordType);
-    const searchParams = new URL(request.url).searchParams;
+    const searchParams = url.searchParams;
 
     const userRights = await getUserRightsForRecordType(
       params.recordType,

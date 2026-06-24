@@ -1,8 +1,8 @@
 import type { Route } from './+types/robots';
 import robotsTxtTemplate from './robots.template.txt?raw';
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  return new Response(generateRobotsTxt(request.url), {
+export const loader = async ({ url }: Route.LoaderArgs) => {
+  return new Response(generateRobotsTxt(url.href), {
     headers: {
       'Content-Type': 'text/plain;charset=UTF-8',
     },

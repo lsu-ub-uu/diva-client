@@ -42,10 +42,8 @@ export async function action({ request, context }: Route.ActionArgs) {
   return redirect(returnTo ?? '/');
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const returnTo = decodeURIComponent(
-    new URL(request.url).searchParams.get('returnTo') || '',
-  );
+export async function loader({ url }: Route.LoaderArgs) {
+  const returnTo = decodeURIComponent(url.searchParams.get('returnTo') || '');
   return { returnTo };
 }
 
