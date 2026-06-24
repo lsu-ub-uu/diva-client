@@ -5,7 +5,7 @@ import {
 import type { SearchFormDefinition } from '@/routes/record/recordSearch/utils/createSearchFormDefinition.server';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
 import { Filters } from './Filters/Filters';
-import { RecordSearchView } from './RecordSearchView';
+import { RecordSearchMain } from './RecordSearchMain';
 
 interface SearchLayoutProps {
   query: string;
@@ -52,7 +52,7 @@ export const SearchLayout = ({
       {userRights.includes('search') && (
         <>
           <main className='grid-col-9 grid-col-l-12 search-main'>
-            <RecordSearchView
+            <RecordSearchMain
               query={query}
               onQueryChange={onQueryChange}
               mainSearchTerm={searchFormDefinition.mainSearchTerm}

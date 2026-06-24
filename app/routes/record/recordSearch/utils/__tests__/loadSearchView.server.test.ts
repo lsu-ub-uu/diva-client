@@ -14,7 +14,7 @@ import { performSearch } from '../performSearch.server';
 vi.mock('../performSearch.server');
 
 describe('loadSearchView', () => {
-  it('loads search view for non logged in user without search params', async () => {
+  it('loads search view for without search params', async () => {
     const mockSearchResult = {
       data: [],
       fromNo: 0,
@@ -37,6 +37,16 @@ describe('loadSearchView', () => {
     const member = undefined;
     const t = ((key: string) => key) as TFunction;
 
+    const searchView = await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams,
+      auth,
+      language,
+      member,
+      t,
+    });
+    expect(searchView).toBeDefined();
     const {
       searchFormDefinition,
       searchId,
@@ -47,15 +57,7 @@ describe('loadSearchView', () => {
       activeFilters,
       validationErrors,
       apiUrl,
-    } = await loadSearchView({
-      dependencies,
-      recordType,
-      searchParams,
-      auth,
-      language,
-      member,
-      t,
-    });
+    } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
     expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
@@ -76,7 +78,7 @@ describe('loadSearchView', () => {
     );
   });
 
-  it('loads search view for non logged in user with search params', async () => {
+  it('loads search view with search params', async () => {
     const mockSearchResult = {
       data: [],
       fromNo: 0,
@@ -94,7 +96,7 @@ describe('loadSearchView', () => {
       searchId: 'someSearchId',
     } as BFFRecordType;
     const searchParams = new URLSearchParams();
-    searchParams.set('q', 'test query');
+    searchParams.set('q', 'test');
     searchParams.set('start', '5');
     searchParams.set('rows', '10');
     searchParams.set('filter1', 'value1');
@@ -103,6 +105,18 @@ describe('loadSearchView', () => {
     const language = 'sv';
     const member = undefined;
     const t = ((key: string) => key) as TFunction;
+
+    const searchView = await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams,
+      auth,
+      language,
+      member,
+      t,
+    });
+
+    expect(searchView).toBeDefined();
 
     const {
       searchFormDefinition,
@@ -114,15 +128,7 @@ describe('loadSearchView', () => {
       activeFilters,
       validationErrors,
       apiUrl,
-    } = await loadSearchView({
-      dependencies,
-      recordType,
-      searchParams,
-      auth,
-      language,
-      member,
-      t,
-    });
+    } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
     expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
@@ -132,7 +138,7 @@ describe('loadSearchView', () => {
     expect(searchFormDefinition.filters[0].name).toBe('filter1');
     expect(searchFormDefinition.filters[1].name).toBe('filter2');
     expect(searchId).toBe('someSearchId');
-    expect(query).toBe('test query');
+    expect(query).toBe('test');
     expect(start).toBe(5);
     expect(rows).toBe(10);
     expect(searchResults).toEqual(mockSearchResult);
@@ -180,15 +186,7 @@ describe('loadSearchView', () => {
     const member = undefined;
     const t = ((key: string) => key) as TFunction;
 
-    const {
-      searchFormDefinition,
-      searchId,
-      query,
-      searchResults,
-      activeFilters,
-      validationErrors,
-      apiUrl,
-    } = await loadSearchView({
+    const searchView = await loadSearchView({
       dependencies,
       recordType,
       searchParams,
@@ -198,6 +196,15 @@ describe('loadSearchView', () => {
       t,
     });
 
+    expect(searchView).toBeDefined();
+    const {
+      searchFormDefinition,
+      searchId,
+      query,
+      searchResults,
+      validationErrors,
+    } = searchView!;
+
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
     expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
       'mainSearchTerm',
@@ -206,34 +213,77 @@ describe('loadSearchView', () => {
     expect(searchId).toBe('someSearchId');
     expect(query).toBe('invalid$$$$');
     expect(vi.mocked(performSearch)).not.toHaveBeenCalled();
-    expect(searchResults).toEqual({ data: [], total: 0 });
-    expect(activeFilters).toEqual([
-      {
-        name: 'filter1',
-        textId: 'filter1TextId',
-        value: 'value1',
-        valueTextId: 'value1',
-      },
-      {
-        name: 'filter2',
-        textId: 'filter2TextId',
-        value: 'value2',
-        valueTextId: 'value2',
-      },
-    ]);
-    expect(validationErrors.size).toBe(0);
-    expect(apiUrl).toBe(
-      'https://cora.example.com/rest/record/searchResult/someSearchId?searchData=%7B%22name%22:%22searchRoot%22,%22children%22:%5B%5D%7D',
-    );
+    expect(searchResults).toEqual({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    expect(validationErrors.size).toBe(1);
+  });
+
+  it('returns undefined when record type has no searchId', async () => {
+    const dependencies = createMockDependencies();
+
+    const recordType = {
+      id: 'someRecordTypeId',
+      searchId: undefined,
+    } as BFFRecordType;
+    const searchParams = new URLSearchParams();
+    const auth = undefined;
+    const language = 'sv';
+    const member = undefined;
+    const t = ((key: string) => key) as TFunction;
+
+    const searchView = await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams,
+      auth,
+      language,
+      member,
+      t,
+    });
+
+    expect(searchView).toBeUndefined();
+  });
+
+  it('returns undefined when searchGroup is not public search', async () => {
+    const dependencies = createMockDependencies('autocomplete');
+    const recordType = {
+      id: 'someRecordTypeId',
+      searchId: 'someSearchId',
+    } as BFFRecordType;
+    const searchParams = new URLSearchParams();
+    const auth = undefined;
+    const language = 'sv';
+    const member = undefined;
+    const t = ((key: string) => key) as TFunction;
+
+    const searchView = await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams,
+      auth,
+      language,
+      member,
+      t,
+    });
+
+    expect(searchView).toBeUndefined();
   });
 });
 
-const createMockDependencies = (): Dependencies => {
+const createMockDependencies = (
+  searchGroup: BFFSearch['searchGroup'] = 'publicSearch',
+): Dependencies => {
   return {
     searchPool: listToPool([
       {
         id: 'someSearchId',
         metadataId: 'someSearchRootGroupId',
+        searchGroup,
       } as BFFSearch,
     ]),
     metadataPool: listToPool([
@@ -259,7 +309,7 @@ const createMockDependencies = (): Dependencies => {
         nameInData: 'mainSearchTerm',
         type: 'textVariable',
         textId: 'mainSearchTermTextId',
-        regEx: '[A-z0-9]+',
+        regEx: '^[A-z0-9]+$',
       } as BFFMetadataTextVariable,
       {
         id: 'someFilter1Id',

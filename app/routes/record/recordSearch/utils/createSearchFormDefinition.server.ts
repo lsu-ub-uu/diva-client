@@ -1,6 +1,7 @@
 import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFSearch,
 } from '@/cora/bffTypes.server';
 import {
   createFilters,
@@ -15,10 +16,9 @@ export interface SearchFormDefinition {
 }
 
 export const createSearchFormDefinition = (
-  searchId: string,
+  search: BFFSearch,
   dependencies: Dependencies,
 ): SearchFormDefinition => {
-  const search = dependencies.searchPool.get(searchId);
   const searchMetadata = dependencies.metadataPool.get(
     search.metadataId,
   ) as BFFMetadataGroup;
