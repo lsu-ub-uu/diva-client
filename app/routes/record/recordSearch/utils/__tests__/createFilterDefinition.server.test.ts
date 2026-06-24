@@ -203,7 +203,7 @@ describe('createFilters', () => {
       {
         recordType: 'diva-subject',
         searchType: 'diva-subjectMinimalSearch',
-        searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
+        searchTerm: 'search.include.includePart.topicSearchTerm.0.value',
       },
     ],
   ])(

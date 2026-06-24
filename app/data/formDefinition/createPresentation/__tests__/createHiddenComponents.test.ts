@@ -9,6 +9,7 @@ import type {
   BFFPresentation,
   BFFPresentationChildReference,
   BFFPresentationGroup,
+  BFFPresentationSurroundingContainer,
   BFFPresentationTextVar,
   Dependencies,
 } from '@/cora/bffTypes.server';
@@ -46,6 +47,54 @@ describe('createHiddenComponents', () => {
           {
             type: 'presentation',
             childId: 'somePresentationChildId',
+          },
+        ],
+      },
+    ] as BFFPresentationChildReference[];
+
+    const hiddenComponents = createHiddenComponents(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReferences,
+    );
+
+    expect(hiddenComponents).toEqual([]);
+  });
+
+  it('does not create hidden component for final value variable that is presented in an sContainer', () => {
+    const dependencies = {
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someChildId',
+          nameInData: 'someNameInData',
+          finalValue: 'someFinalValue',
+          type: 'textVariable',
+        } as BFFMetadataTextVariable,
+      ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePresentationSContainerId',
+          type: 'container',
+          presentationsOf: ['someChildId'],
+        } as BFFPresentationSurroundingContainer,
+        {
+          id: 'somePresentationChildId',
+          type: 'pVar',
+          presentationOf: 'someChildId',
+        } as BFFPresentationTextVar,
+      ]),
+    } as Dependencies;
+
+    const metadataChildReferences = [
+      { childId: 'someChildId' },
+    ] as BFFMetadataChildReference[];
+
+    const presentationChildReferences = [
+      {
+        refGroups: [
+          {
+            type: 'presentation',
+            childId: 'somePresentationSContainerId',
           },
         ],
       },
@@ -193,6 +242,8 @@ describe('createHiddenComponents', () => {
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: 1 },
         hidden: true,
+        label: '',
+        showLabel: false,
         components: [
           {
             attributesToShow: 'none',
@@ -277,6 +328,8 @@ describe('createHiddenComponents', () => {
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: 1 },
         hidden: true,
+        label: '',
+        showLabel: false,
         components: [
           {
             attributesToShow: 'none',
@@ -479,6 +532,8 @@ describe('createHiddenComponents', () => {
         mode: 'input',
         repeat: { repeatMin: 1, repeatMax: Number.MAX_VALUE },
         hidden: true,
+        label: '',
+        showLabel: false,
         components: [
           {
             attributesToShow: 'none',
@@ -490,5 +545,93 @@ describe('createHiddenComponents', () => {
         ],
       },
     ]);
+  });
+
+  it('does NOT create hidden component for non-final value variable that does not have a presentation', () => {
+    const dependencies = {
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someChildId',
+          nameInData: 'someNameInData',
+          attributeReferences: [{ refCollectionVarId: 'someCollectionVarId' }],
+          type: 'textVariable',
+        } as BFFMetadataTextVariable,
+        {
+          id: 'someCollectionVarId',
+          nameInData: 'someCollectionNameInData',
+          type: 'collectionVariable',
+          finalValue: 'someCollectionFinalValue',
+          refCollection: 'someCollection',
+        } as BFFMetadataCollectionVariable,
+        {
+          id: 'someCollection',
+          nameInData: 'someCollectionNameInData',
+          collectionItemReferences: [
+            { refCollectionItemId: 'someCollectionItemId' },
+          ],
+          type: 'itemCollection',
+        } as BFFMetadataItemCollection,
+        {
+          id: 'someCollectionItemId',
+          nameInData: 'someCollectionItem',
+          type: 'collectionItem',
+        } as BFFMetadataBase,
+      ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePresentationChildId',
+          type: 'pVar',
+          presentationOf: 'someOtherChildId',
+        } as BFFPresentationTextVar,
+      ]),
+    } as Dependencies;
+
+    const metadataChildReferences = [
+      { childId: 'someChildId', repeatMin: '1', repeatMax: '1' },
+    ] as BFFMetadataChildReference[];
+
+    const presentationChildReferences = [] as BFFPresentationChildReference[];
+
+    const hiddenComponents = createHiddenComponents(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReferences,
+    );
+
+    expect(hiddenComponents).toEqual([]);
+  });
+
+  it('does NOT create hidden components for a group without children', () => {
+    const dependencies = {
+      metadataPool: listToPool<BFFMetadata>([
+        {
+          id: 'someGroupId',
+          nameInData: 'someGroupNameInData',
+          type: 'group',
+          children: [] as BFFMetadataChildReference[],
+        } as BFFMetadataGroup,
+      ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePresentationChildId',
+          type: 'pVar',
+          presentationOf: 'someOtherChildId',
+        } as BFFPresentationTextVar,
+      ]),
+    } as Dependencies;
+
+    const metadataChildReferences = [
+      { childId: 'someGroupId', repeatMin: '1', repeatMax: '1' },
+    ] as BFFMetadataChildReference[];
+
+    const presentationChildReferences = [] as BFFPresentationChildReference[];
+
+    const hiddenComponents = createHiddenComponents(
+      dependencies,
+      metadataChildReferences,
+      presentationChildReferences,
+    );
+
+    expect(hiddenComponents).toEqual([]);
   });
 });

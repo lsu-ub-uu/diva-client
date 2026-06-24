@@ -54,13 +54,13 @@ const autocompleteSearchTerms: Record<
   subjectLinkedRecordIdSearchTerm: {
     searchType: 'diva-subjectMinimalSearch',
     recordType: 'diva-subject',
-    searchTerm: 'search.include.includePart.topicSearchTerm[0].value',
+    searchTerm: 'search.include.includePart.topicSearchTerm.0.value',
   },
   permissionUnitLinkedRecordIdSearchTerm: {
     recordType: 'permissionUnit',
     searchType: 'permissionUnitSearch',
     searchTerm:
-      'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm[0].value',
+      'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm.0.value',
   },
 };
 

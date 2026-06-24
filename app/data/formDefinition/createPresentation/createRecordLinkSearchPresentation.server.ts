@@ -116,7 +116,7 @@ const getFieldPathSegment = (
   childRef?: BFFMetadataChildReference,
 ) => {
   if (childRef?.repeatMin === '0') {
-    return `${metadata.nameInData}[0]`;
+    return `${metadata.nameInData}.0`;
   }
   return metadata.nameInData;
 };

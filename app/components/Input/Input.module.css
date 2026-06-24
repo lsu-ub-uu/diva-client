@@ -61,7 +61,7 @@
   transform: translateY(-50%);
   right: var(--gap);
   font-size: 1.5em;
-  color: var(--color-primary);
+  color: inherit;
   pointer-events: none;
 }
 

@@ -27,13 +27,8 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { logError } from '@/logging/logger.server';
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: Route.LoaderArgs) => {
+export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
   const { auth } = context.get(sessionContext);
   const { recordId } = params;
@@ -41,7 +36,7 @@ export const loader = async ({
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
 
-  const origin = new URL(request.url).origin;
+  const origin = url.origin;
   const dependencies = await getDependencies();
   try {
     const record = (await getRecordByRecordTypeAndRecordId({
@@ -79,7 +74,7 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
       );
     }
   } catch (error) {
-    logError(error, 'Failed to generate citation meta');
+    console.error(error, 'Failed to generate citation meta');
   }
   return [
     {

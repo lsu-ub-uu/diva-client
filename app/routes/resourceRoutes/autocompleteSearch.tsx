@@ -23,12 +23,7 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from '../resourceRoutes/+types/autocompleteSearch';
 
-export const loader = async ({
-  params,
-  request,
-  context,
-}: Route.LoaderArgs) => {
-  const url = new URL(request.url);
+export const loader = async ({ params, url, context }: Route.LoaderArgs) => {
   const query = parseFormDataFromSearchParams(url.searchParams);
   const { auth } = context.get(sessionContext);
   try {

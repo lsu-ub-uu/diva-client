@@ -42,7 +42,7 @@ describe('autocompleteSearch', () => {
   describe('loader', () => {
     it('calls searchRecords with correct query', async () => {
       const request = mock<Request>({
-        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm.0.value=searchQuery',
       });
 
       const mockDependencies = {
@@ -83,8 +83,8 @@ describe('autocompleteSearch', () => {
         params: {
           searchType: 'nationalSubjectCategorySearch',
         },
-        unstable_pattern: '/autocompleteSearch/:searchType',
-        unstable_url: new URL(request.url),
+        pattern: '/autocompleteSearch/:searchType',
+        url: new URL(request.url),
       });
 
       expect(searchRecords).toHaveBeenCalledWith(
@@ -111,7 +111,7 @@ describe('autocompleteSearch', () => {
 
     it('returns search results', async () => {
       const request = mock<Request>({
-        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm[0].value=searchQuery',
+        url: 'http://diva-portal.org/autocompleteSearch/nationalSubjectCategory?nationalSubjectCategorySearch.include.includePart.nationalSubjectCategorySearchTerm.0.value=searchQuery',
       });
 
       const mockDependencies = {
@@ -151,8 +151,8 @@ describe('autocompleteSearch', () => {
         request,
         context,
         params: { searchType: 'nationalSubjectCategorySearch' },
-        unstable_pattern: '/autocompleteSearch/:searchType',
-        unstable_url: new URL(request.url),
+        pattern: '/autocompleteSearch/:searchType',
+        url: new URL(request.url),
       });
 
       expect(response.result).toEqual([{ id: 'result1' }, { id: 'result2' }]);

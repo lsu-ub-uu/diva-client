@@ -27,11 +27,11 @@
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.188-SNAPSHOT</version>
+  <version>1.192-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>
-    <frontend-maven-plugin.version>2.0.0</frontend-maven-plugin.version>
+    <frontend-maven-plugin.version>2.0.1</frontend-maven-plugin.version>
     <nodeVersion>v25.9.0</nodeVersion>
   </properties>
 

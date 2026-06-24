@@ -1374,5 +1374,54 @@ describe('yupSchema', async () => {
         ).resolves.toBe(true);
       });
     });
+
+    it('is valid when repeating child in optional group has empty values', async () => {
+      const formSchema = {
+        form: {
+          name: 'root',
+          type: 'group',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'grandPaGroup',
+              type: 'group',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  name: 'repeatingTextVar',
+                  type: 'textVariable',
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 10,
+                  },
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                },
+              ],
+            } as FormComponentGroup,
+          ],
+        },
+      } as FormSchema;
+
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const data = {
+        root: {
+          grandPaGroup: {
+            repeatingTextVar: [{ value: 'Some value' }, { value: '' }],
+          },
+        },
+      };
+
+      await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
   });
 });

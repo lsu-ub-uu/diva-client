@@ -49,7 +49,11 @@ import {
 } from '@/__mocks__/data/form/textVar';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type {
+  FormComponentCollVar,
+  FormComponentGroup,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
 import type {
   BFFDataRecord,
   BFFDataRecordData,
@@ -2404,6 +2408,614 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(screen.getByRole('button', { name: 'someTitle' }));
       expect(screen.getByText('Some data')).toBeInTheDocument();
+    });
+  });
+
+  describe('field array', () => {
+    it('is possible to append a value', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'collectionVariable',
+              presentationId: 'someNameInDataVar',
+              name: 'someNameInData',
+              label: 'someLabelTextId',
+              showLabel: true,
+              mode: 'input',
+              placeholder: 'someEmptyTextId',
+              options: [
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+              ],
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 99999,
+                minNumberOfRepeatingToShow: 2,
+              },
+            } satisfies FormComponentCollVar,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+
+      await user.click(
+        screen.getByRole('button', { name: 'divaClient_addFieldText' }),
+      );
+
+      expect(screen.getAllByLabelText('someLabelTextId')).toHaveLength(3);
+    });
+
+    it('is possible to remove a value', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'collectionVariable',
+              presentationId: 'someNameInDataVar',
+              name: 'someNameInData',
+              label: 'someLabelTextId',
+              showLabel: true,
+              mode: 'input',
+              placeholder: 'someEmptyTextId',
+              options: [
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+              ],
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 99999,
+                minNumberOfRepeatingToShow: 2,
+              },
+            } satisfies FormComponentCollVar,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_deleteFieldText',
+        })[0],
+      );
+
+      expect(screen.getAllByLabelText('someLabelTextId')).toHaveLength(1);
+    });
+
+    it('is possible to move a value up', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'collectionVariable',
+              presentationId: 'someNameInDataVar',
+              name: 'someNameInData',
+              label: 'someLabelTextId',
+              showLabel: true,
+              mode: 'input',
+              placeholder: 'someEmptyTextId',
+              options: [
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+              ],
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 99999,
+                minNumberOfRepeatingToShow: 2,
+              },
+            } satisfies FormComponentCollVar,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+      const comboboxes = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      await user.selectOptions(comboboxes[0], 'option1');
+
+      await user.selectOptions(comboboxes[1], 'option2');
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_moveFieldUpText',
+        })[1],
+      );
+
+      const comboboxesAfterMoveUp = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      expect(comboboxesAfterMoveUp[0]).toHaveValue('option2');
+      expect(comboboxesAfterMoveUp[1]).toHaveValue('option1');
+    });
+
+    it('is possible to move a value down', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'collectionVariable',
+              presentationId: 'someNameInDataVar',
+              name: 'someNameInData',
+              label: 'someLabelTextId',
+              showLabel: true,
+              mode: 'input',
+              placeholder: 'someEmptyTextId',
+              options: [
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+              ],
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 99999,
+                minNumberOfRepeatingToShow: 2,
+              },
+            } satisfies FormComponentCollVar,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+      const comboboxes = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      await user.selectOptions(comboboxes[0], 'option1');
+
+      await user.selectOptions(comboboxes[1], 'option2');
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_moveFieldDownText',
+        })[0],
+      );
+
+      const comboboxesAfterMoveDown = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      expect(comboboxesAfterMoveDown[0]).toHaveValue('option2');
+      expect(comboboxesAfterMoveDown[1]).toHaveValue('option1');
+    });
+
+    it('is possible to append a group', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'group',
+              name: 'someGroup',
+              label: 'Some Group',
+              showLabel: true,
+              mode: 'input',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 10,
+                minNumberOfRepeatingToShow: 2,
+              },
+              components: [
+                {
+                  type: 'collectionVariable',
+                  presentationId: 'someNameInDataVar',
+                  name: 'someNameInData',
+                  label: 'someLabelTextId',
+                  showLabel: true,
+                  mode: 'input',
+                  placeholder: 'someEmptyTextId',
+                  options: [
+                    { label: 'Option 1', value: 'option1' },
+                    { label: 'Option 2', value: 'option2' },
+                  ],
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                    minNumberOfRepeatingToShow: 1,
+                  },
+                } satisfies FormComponentCollVar,
+              ],
+            } satisfies FormComponentGroup,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+
+      await user.click(
+        screen.getByRole('button', { name: 'divaClient_addFieldText' }),
+      );
+
+      expect(screen.getAllByLabelText('Some Group')).toHaveLength(3);
+    });
+
+    it('is possible to remove a group', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'group',
+              name: 'someGroup',
+              label: 'Some Group',
+              showLabel: true,
+              mode: 'input',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 10,
+                minNumberOfRepeatingToShow: 2,
+              },
+              components: [
+                {
+                  type: 'collectionVariable',
+                  presentationId: 'someNameInDataVar',
+                  name: 'someNameInData',
+                  label: 'someLabelTextId',
+                  showLabel: true,
+                  mode: 'input',
+                  placeholder: 'someEmptyTextId',
+                  options: [
+                    { label: 'Option 1', value: 'option1' },
+                    { label: 'Option 2', value: 'option2' },
+                  ],
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                    minNumberOfRepeatingToShow: 1,
+                  },
+                } satisfies FormComponentCollVar,
+              ],
+            } satisfies FormComponentGroup,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_deleteFieldText',
+        })[0],
+      );
+
+      expect(screen.getAllByLabelText('Some Group')).toHaveLength(1);
+    });
+
+    it('is possible to move a group up', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'group',
+              name: 'someGroup',
+              label: 'Some Group',
+              showLabel: true,
+              mode: 'input',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 10,
+                minNumberOfRepeatingToShow: 2,
+              },
+              components: [
+                {
+                  type: 'collectionVariable',
+                  presentationId: 'someNameInDataVar',
+                  name: 'someNameInData',
+                  label: 'someLabelTextId',
+                  showLabel: true,
+                  mode: 'input',
+                  placeholder: 'someEmptyTextId',
+                  options: [
+                    { label: 'Option 1', value: 'option1' },
+                    { label: 'Option 2', value: 'option2' },
+                  ],
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                    minNumberOfRepeatingToShow: 1,
+                  },
+                } satisfies FormComponentCollVar,
+              ],
+            } satisfies FormComponentGroup,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+      const comboboxes = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      await user.selectOptions(comboboxes[0], 'option1');
+
+      await user.selectOptions(comboboxes[1], 'option2');
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_moveFieldUpText',
+        })[1],
+      );
+
+      const comboboxesAfterMoveUp = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      expect(comboboxesAfterMoveUp[0]).toHaveValue('option2');
+      expect(comboboxesAfterMoveUp[1]).toHaveValue('option1');
+    });
+
+    it('is possible to move a group down', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'group',
+              name: 'someGroup',
+              label: 'Some Group',
+              showLabel: true,
+              mode: 'input',
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 10,
+                minNumberOfRepeatingToShow: 2,
+              },
+              components: [
+                {
+                  type: 'collectionVariable',
+                  presentationId: 'someNameInDataVar',
+                  name: 'someNameInData',
+                  label: 'someLabelTextId',
+                  showLabel: true,
+                  mode: 'input',
+                  placeholder: 'someEmptyTextId',
+                  options: [
+                    { label: 'Option 1', value: 'option1' },
+                    { label: 'Option 2', value: 'option2' },
+                  ],
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                    minNumberOfRepeatingToShow: 1,
+                  },
+                } satisfies FormComponentCollVar,
+              ],
+            } satisfies FormComponentGroup,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+      const comboboxes = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      await user.selectOptions(comboboxes[0], 'option1');
+
+      await user.selectOptions(comboboxes[1], 'option2');
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_moveFieldDownText',
+        })[0],
+      );
+
+      const comboboxesAfterMoveDown = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      expect(comboboxesAfterMoveDown[0]).toHaveValue('option2');
+      expect(comboboxesAfterMoveDown[1]).toHaveValue('option1');
+    });
+
+    it('is possible to move a filterable combobox up', async () => {
+      const formSchema: RecordFormSchema = {
+        validationTypeId: 'someValidationTypeId',
+        form: {
+          type: 'group',
+          presentationId: 'someRootNameInDataPGroup',
+          showLabel: true,
+          label: 'someRootFormGroupText',
+          name: 'someRootNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'textId345',
+            body: 'defTextId678',
+          },
+          components: [
+            {
+              type: 'collectionVariable',
+              presentationId: 'someNameInDataVar',
+              name: 'someNameInData',
+              label: 'someLabelTextId',
+              showLabel: true,
+              mode: 'input',
+              placeholder: 'someEmptyTextId',
+              options: Array.from({ length: 30 }, (_, i) => ({
+                label: `Option ${i + 1}`,
+                value: `option${i + 1}`,
+              })),
+              repeat: {
+                repeatMin: 0,
+                repeatMax: 99999,
+                minNumberOfRepeatingToShow: 2,
+              },
+            } satisfies FormComponentCollVar,
+          ],
+          mode: 'input',
+        },
+      };
+
+      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
+
+      const user = userEvent.setup();
+      const comboboxes = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+
+      await user.click(comboboxes[0]);
+      await user.clear(comboboxes[0]);
+      await user.type(comboboxes[0], 'Option 11');
+      await user.keyboard('{ArrowDown}{Enter}');
+      expect(comboboxes[0]).toHaveValue('Option 11');
+
+      await user.click(comboboxes[1]);
+      await user.clear(comboboxes[1]);
+      await user.type(comboboxes[1], 'Option 21');
+      await user.keyboard('{ArrowDown}{Enter}');
+      expect(comboboxes[1]).toHaveValue('Option 21');
+
+      await user.click(
+        screen.getAllByRole('button', {
+          name: 'divaClient_moveFieldUpText',
+        })[1],
+      );
+
+      const comboboxesAfterMoveUp = screen.getAllByRole('combobox', {
+        name: 'someLabelTextId',
+      });
+      screen.debug(comboboxesAfterMoveUp);
+      expect(comboboxesAfterMoveUp[0]).toHaveValue('Option 21');
+      expect(comboboxesAfterMoveUp[1]).toHaveValue('Option 11');
     });
   });
 });

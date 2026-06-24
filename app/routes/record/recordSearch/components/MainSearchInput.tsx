@@ -2,7 +2,7 @@ import type { BFFMetadata } from '@/cora/bffTypes.server';
 import { SearchIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { Input } from '@/components/Input/Input';
 import { IconButton } from '@/components/IconButton/IconButton';
@@ -24,14 +24,14 @@ export const MainSearchInput = ({
   validationError,
 }: MainSearchInputProps) => {
   const { t } = useTranslation();
-  const [value, setValue] = useState(query);
   const inputRef = useRef<HTMLInputElement>(null);
+  const userTypedRef = useRef(false);
 
   useEffect(() => {
-    const searchField = inputRef.current;
-    if (searchField !== null && searchField !== document.activeElement) {
-      searchField.value = query || '';
+    if (!userTypedRef.current && inputRef.current) {
+      inputRef.current.value = query || '';
     }
+    userTypedRef.current = false;
   }, [query]);
 
   return (
@@ -45,8 +45,13 @@ export const MainSearchInput = ({
           type='search'
           name='q'
           placeholder={t(mainSearchTerm.defTextId)}
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
+          defaultValue={query}
+          onChange={() => {
+            userTypedRef.current = true;
+          }}
+          onBlur={() => {
+            userTypedRef.current = false;
+          }}
           ref={inputRef}
           aria-invalid={validationError ? 'true' : 'false'}
         />

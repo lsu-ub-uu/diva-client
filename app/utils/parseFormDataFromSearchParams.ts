@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-const ARRAY_KEY_REGEX = /\[(\d*)\]$/;
-
 export const parseFormDataFromSearchParams = (
   urlSearchParams: URLSearchParams,
 ) => {
@@ -30,27 +28,28 @@ export const parseFormDataFromSearchParams = (
 
     keyParts.forEach((keyPart, depth) => {
       const isLeaf = depth === keyParts.length - 1;
-      const isArray = ARRAY_KEY_REGEX.test(keyPart);
+      const isNumeric = /^\d+$/.test(keyPart);
 
-      if (isArray) {
-        const arrayIndex = keyPart.match(ARRAY_KEY_REGEX)![1];
-        const strippedKey = keyPart.replace(ARRAY_KEY_REGEX, '');
-
-        if (!parent[strippedKey]) {
-          parent[strippedKey] = [];
-        }
-
+      if (isNumeric) {
         if (isLeaf) {
-          parent[strippedKey][arrayIndex] = value;
+          parent[keyPart] = value;
         } else {
-          parent[strippedKey][arrayIndex] = {};
-          parent = parent[strippedKey][arrayIndex];
+          parent[keyPart] ??= {};
+          parent = parent[keyPart];
         }
       } else {
         if (isLeaf) {
           parent[keyPart] ??= value;
         } else {
-          parent[keyPart] ??= {};
+          // Look ahead to see if next part is numeric (array index)
+          const nextPart = keyParts[depth + 1];
+          const nextIsNumeric = /^\d+$/.test(nextPart);
+
+          if (nextIsNumeric) {
+            parent[keyPart] ??= [];
+          } else {
+            parent[keyPart] ??= {};
+          }
           parent = parent[keyPart];
         }
       }

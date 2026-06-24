@@ -68,10 +68,14 @@
 }
 
 .fieldset:has([aria-invalid='true']) {
-  color: var(--color-error-main);
+  & > .label,
+  & > .input,
+  & > .error-message {
+    color: var(--color-error-main);
 
-  .error-icon {
-    opacity: 1;
+    .error-icon {
+      opacity: 1;
+    }
   }
 }
 
