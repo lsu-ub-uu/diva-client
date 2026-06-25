@@ -46,19 +46,20 @@ export default defineConfig({
       {
         extends: true,
         test: {
-          name: { label: 'jsdom', color: 'blue' },
-          environment: 'jsdom',
-          include: ['**/*.test.{ts,tsx}'],
-          setupFiles: './setupTest/jsdomSetup.ts',
+          name: { label: 'node' },
+          environment: 'node',
+          include: ['**/*.server.test.ts'],
+          setupFiles: './setupTest/nodeSetup.ts',
         },
       },
       {
         extends: true,
         test: {
-          name: { label: 'node' },
-          environment: 'node',
-          include: ['**/*.server.test.ts'],
-          setupFiles: './setupTest/nodeSetup.ts',
+          name: { label: 'jsdom', color: 'blue' },
+          environment: 'jsdom',
+          include: ['**/*.test.{ts,tsx}'],
+          exclude: ['**/*.server.test.ts'],
+          setupFiles: './setupTest/jsdomSetup.ts',
         },
       },
     ],
