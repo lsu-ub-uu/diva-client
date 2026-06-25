@@ -41,10 +41,27 @@ export default defineConfig({
     conditions: VITEST ? ['module-sync'] : undefined,
   },
   test: {
-    environment: 'jsdom',
-    include: ['**/*.{test,spec}.{js,ts,mts,cts,tsx}'],
     exclude: ['**/node_modules/**', '**/target/**'],
-    setupFiles: './setupTest.ts',
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: { label: 'jsdom', color: 'blue' },
+          environment: 'jsdom',
+          include: ['**/*.test.{ts,tsx}'],
+          setupFiles: './setupTest/jsdomSetup.ts',
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: { label: 'node' },
+          environment: 'node',
+          include: ['**/*.server.test.ts'],
+          setupFiles: './setupTest/nodeSetup.ts',
+        },
+      },
+    ],
   },
   environments: {
     ssr: {
