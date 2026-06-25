@@ -2,8 +2,6 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { afterEach, beforeAll, vi } from 'vitest';
 
-vi.mock('@/logging/logger.server');
-
 beforeAll(() => {
   vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
   vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
