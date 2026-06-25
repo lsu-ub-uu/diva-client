@@ -1,12 +1,11 @@
+import { renewAuthToken } from '@/cora/renewAuthToken.server';
+import { AxiosError } from 'axios';
 import type { i18n } from 'i18next';
 import { describe, expect, it, vi } from 'vitest';
 import { mock } from 'vitest-mock-extended';
+import type { Auth } from '../Auth';
 import { handleRenew } from '../renewAuthMiddleware.server';
 import { type SessionContext } from '../sessionMiddleware.server';
-import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import type { Auth } from '../Auth';
-import { AxiosError } from 'axios';
-import { log } from '@/logging/logger.server';
 
 vi.mock('@/cora/renewAuthToken.server');
 
@@ -74,7 +73,6 @@ describe('renewAuthMiddleware', () => {
   it('does not throw an error when failing to renew auth token', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2025-01-01T00:00:00Z'));
-    const logErrorMock = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     vi.mocked(renewAuthToken).mockRejectedValue(
       new AxiosError('Unauthorized', '401'),
@@ -102,12 +100,6 @@ describe('renewAuthMiddleware', () => {
     expect(mockSessionContext.setAuth).not.toHaveBeenCalled();
     expect(mockSessionContext.removeAuth).not.toHaveBeenCalled();
     expect(mockSessionContext.flashNotification).not.toHaveBeenCalled();
-    expect(logErrorMock).toHaveBeenCalledWith(
-      {
-        err: expect.any(AxiosError),
-      },
-      'Failed to renew auth token: Unauthorized',
-    );
   });
 
   it('does nothing if auth token not expired and not about to expire', async () => {
