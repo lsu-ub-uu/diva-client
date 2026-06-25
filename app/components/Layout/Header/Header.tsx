@@ -55,7 +55,10 @@ export const Header = ({
               navigation={navigation}
               userPreferences={userPreferences}
             />
-            <Link to='/' aria-label={t('divaClient_breadcrumbStartText')}>
+            <Link
+              to={href('/')}
+              aria-label={t('divaClient_breadcrumbStartText')}
+            >
               <DivaLogo className={styles.logo} />
             </Link>
             <TopNavigation navigation={navigation} />

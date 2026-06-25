@@ -555,7 +555,7 @@ describe('<Form />', () => {
       );
       const user = userEvent.setup();
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       await user.click(submitButton);
@@ -1027,7 +1027,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const user = userEvent.setup();
@@ -1043,7 +1043,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const user = userEvent.setup();
@@ -1059,7 +1059,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const group = screen.getByRole('group', { name: 'passwordLabel' });
@@ -1803,7 +1803,7 @@ describe('<Form />', () => {
       ).not.toBeInTheDocument();
 
       await user.click(
-        screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+        screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
       );
 
       expect(
@@ -1900,7 +1900,7 @@ describe('<Form />', () => {
           />,
         );
         user.click(
-          screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+          screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
         );
 
         expect(

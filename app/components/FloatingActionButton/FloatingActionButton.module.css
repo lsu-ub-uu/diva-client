@@ -99,3 +99,12 @@
     }
   }
 }
+
+.hotkey-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-main);
+
+  @media (pointer: coarse) {
+    display: none;
+  }
+}

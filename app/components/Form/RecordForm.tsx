@@ -30,36 +30,17 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import type { BFFDataRecordData } from '@/types/record';
 import { SaveIcon } from 'lucide-react';
-import { type KeyboardEvent, useEffect } from 'react';
+import { type KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
 import { FormNavigationBlocker } from './FormNavigationBlocker';
+import { useHotkey } from '@/utils/useHotkey';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
   defaultValues: Record<string, any>;
   onChange?: (data: BFFDataRecordData) => void;
 }
-
-interface FormHotkey {
-  matches: (event: KeyboardEvent<HTMLFormElement>) => boolean;
-  run: (event: KeyboardEvent<HTMLFormElement>) => void;
-}
-
-const triggerFormSubmit = (formElement: HTMLFormElement) => {
-  if (typeof formElement.requestSubmit === 'function') {
-    formElement.requestSubmit();
-    return;
-  }
-
-  const submitElement = formElement.querySelector<
-    HTMLButtonElement | HTMLInputElement
-  >('button[type="submit"], input[type="submit"]');
-
-  if (submitElement) {
-    submitElement.click();
-  }
-};
 
 export const RecordForm = ({
   defaultValues,
@@ -87,54 +68,23 @@ export const RecordForm = ({
     formState: { dirtyFields },
   } = methods;
 
-  const isTextareaTarget = (event: KeyboardEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLElement | null;
+  const formRef = useRef<HTMLFormElement>(null);
 
-    return target?.tagName === 'TEXTAREA';
-  };
-
-  const submitOnAltS = (event: KeyboardEvent<HTMLFormElement>) => {
-    if (submitting) {
-      return;
+  const handleKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    if (
+      event.key === 'Enter' &&
+      event.target instanceof HTMLElement &&
+      event.target.tagName !== 'TEXTAREA'
+    ) {
+      event.preventDefault();
     }
-
-    event.preventDefault();
-    const formElement = event.currentTarget;
-    queueMicrotask(() => {
-      triggerFormSubmit(formElement);
-    });
   };
 
-  const formHotkeys: FormHotkey[] = [
-    {
-      matches: (event) => event.key === 'Enter' && !isTextareaTarget(event),
-      run: (event) => {
-        event.preventDefault();
-      },
-    },
-    {
-      matches: (event) => {
-        return (
-          event.code === 'KeyS' &&
-          event.altKey &&
-          !event.ctrlKey &&
-          !event.metaKey &&
-          !event.shiftKey
-        );
-      },
-      run: submitOnAltS,
-    },
-  ];
-
-  const handleFormHotkeys = (event: KeyboardEvent<HTMLFormElement>) => {
-    const matchedHotkey = formHotkeys.find((hotkey) => hotkey.matches(event));
-
-    if (!matchedHotkey) {
-      return;
-    }
-
-    matchedHotkey.run(event);
-  };
+  useHotkey(
+    'alt',
+    'KeyS',
+    useCallback(() => formRef.current?.requestSubmit(), []),
+  );
 
   useEffect(() => {
     const unsubscribe = subscribe({
@@ -157,10 +107,11 @@ export const RecordForm = ({
       <FormNavigationBlocker isDirty={Object.keys(dirtyFields).length > 0} />
 
       <Form
+        ref={formRef}
         method='POST'
         className={styles['form']}
         onSubmit={handleSubmit}
-        onKeyDown={handleFormHotkeys}
+        onKeyDown={handleKeyDown}
       >
         <RemixFormProvider {...methods}>
           <ValidationErrorSnackbar />
@@ -178,6 +129,7 @@ export const RecordForm = ({
                 ? t('divaClient_SubmittingButtonText')
                 : t('divaClient_SubmitButtonText')
             }
+            hotkeyLabel='Alt+S'
             disabled={submitting}
           />
         </FloatingActionButtonContainer>
