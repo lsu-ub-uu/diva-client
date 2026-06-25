@@ -1,4 +1,5 @@
 <!--
+
   ~ Copyright 2024 Uppsala University Library
   ~
   ~ This file is part of Cora.
@@ -17,7 +18,9 @@
   ~     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -110,6 +113,16 @@
             </goals>
             <configuration>
               <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install playwright browsers</id>
+            <phase>test</phase>
+            <goals>
+              <goal>npx</goal>
+            </goals>
+            <configuration>
+              <arguments>playwright install --with-deps firefox</arguments>
             </configuration>
           </execution>
           <execution>
