@@ -2,7 +2,8 @@ import { defineConfig } from 'vitest/config';
 import { reactRouter } from '@react-router/dev/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
-import babelPlugin from 'vite-plugin-babel';
+import { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 
 export default defineConfig({
   base: process.env.BASE_PATH ? `${process.env.BASE_PATH}/` : undefined,
@@ -12,14 +13,11 @@ export default defineConfig({
   plugins: [
     !process.env.VITEST && reactRouter(),
     !process.env.VITEST &&
-      babelPlugin({
-        filter: /\.tsx?$/,
-        babelConfig: {
-          presets: ['@babel/preset-typescript'],
-          plugins: ['babel-plugin-react-compiler'],
-          sourceMaps: true,
-        },
+      babel({
+        include: /\.[jt]sx?$/,
+        presets: [reactCompilerPreset()],
       }),
+
     tsconfigPaths(),
     svgr({
       include: 'app/icons/**/*.svg?react',
