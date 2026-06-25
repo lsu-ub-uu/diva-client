@@ -40,7 +40,9 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "../diva-docker-divaclient/testSetup/setupTest.ts",
+    "../diva-docker-divaclient/testSetup/setupTestNode.ts"
   ],
   "exclude": ["node_modules", "dist", "target"]
 }

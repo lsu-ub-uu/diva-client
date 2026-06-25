@@ -25,12 +25,12 @@ describe('sessionMiddleware', () => {
     });
 
     await sessionMiddleware(
-      // @ts-expect-error we don't care about this type
       {
         request: mockRequest,
         context: mockContext,
         params: {},
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
       },
       mockNextFunction,
     );
@@ -68,8 +68,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -108,8 +108,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_pattern: '',
-        unstable_url: new URL(mockRequest.url),
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -148,8 +148,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -193,8 +193,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -242,8 +242,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -284,8 +284,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -330,8 +330,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,
@@ -374,8 +374,8 @@ describe('sessionMiddleware', () => {
       {
         request: mockRequest,
         context: mockContext,
-        unstable_url: new URL(mockRequest.url),
-        unstable_pattern: '',
+        url: new URL(mockRequest.url),
+        pattern: '',
         params: {},
       },
       mockNextFunction,

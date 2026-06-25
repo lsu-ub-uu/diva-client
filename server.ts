@@ -92,6 +92,7 @@ if (DEVELOPMENT) {
     }
   });
 } else {
+  // PRODUCTION
   log.info('Starting production server');
   const reactRouterApp = await import(BUILD_PATH);
   app.use(

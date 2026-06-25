@@ -4,7 +4,7 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { generateSitemapXml } from './generateSitemapXml.server';
 import type { Route } from './+types/sitemap';
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request, url }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const navigation = await getNavigation(
@@ -14,7 +14,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     undefined,
   );
 
-  const sitemap = generateSitemapXml(request.url, navigation, member);
+  const sitemap = generateSitemapXml(url.href, navigation, member);
 
   return new Response(sitemap, {
     headers: {
