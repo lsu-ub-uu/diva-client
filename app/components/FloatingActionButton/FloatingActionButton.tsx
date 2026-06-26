@@ -20,14 +20,17 @@
 import styles from './FloatingActionButton.module.css';
 import type { ElementType, HTMLProps, ReactNode } from 'react';
 
-interface FloatingActionButtonProps
-  extends Omit<HTMLProps<HTMLButtonElement>, 'as'> {
+interface FloatingActionButtonProps extends Omit<
+  HTMLProps<HTMLButtonElement>,
+  'as'
+> {
   variant?: 'primary' | 'secondary';
   text: string;
   icon: ReactNode;
   as?: ElementType;
   to?: string;
   href?: string;
+  hotkeyLabel?: string;
 }
 
 export const FloatingActionButton = ({
@@ -35,6 +38,7 @@ export const FloatingActionButton = ({
   icon,
   text,
   as,
+  hotkeyLabel,
   ...rest
 }: FloatingActionButtonProps) => {
   const Root = as || 'button';
@@ -45,6 +49,9 @@ export const FloatingActionButton = ({
       {...rest}
     >
       {icon} <span className={styles['content']}>{text}</span>
+      {hotkeyLabel && (
+        <span className={styles['hotkey-label']}>[{hotkeyLabel}]</span>
+      )}
     </Root>
   );
 };

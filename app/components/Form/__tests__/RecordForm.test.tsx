@@ -59,7 +59,14 @@ import type {
   BFFDataRecordData,
   RecordInfo,
 } from '@/types/record';
-import { act, render, screen, waitFor, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub, Link } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -185,6 +192,74 @@ describe('<Form />', () => {
       await waitFor(() => {
         expect(screen.getByText('This is the other page')).toBeInTheDocument();
       });
+    });
+
+    it('does not submit form on enter press', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+      ]);
+
+      const user = userEvent.setup();
+
+      render(<RoutesStub />);
+
+      const textbox = screen.getByRole('textbox');
+      await user.type(textbox, 'some changes');
+
+      expect(
+        fireEvent.keyDown(textbox, {
+          key: 'Enter',
+          code: 'Enter',
+          charCode: 13,
+        }),
+      ).toBe(false);
+
+      expect(actionSpy).not.toHaveBeenCalled();
+    });
+
+    it('submits form on alt+s press', async () => {
+      const formSchema = formDefWithOneTextVariableBeingOptional;
+      const RoutesStub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => (
+            <div>
+              <RecordForm
+                formSchema={formSchema}
+                defaultValues={createDefaultValuesFromFormSchema(formSchema)}
+              />
+            </div>
+          ),
+          action: actionSpy,
+        },
+      ]);
+
+      const user = userEvent.setup();
+      const requestSubmitSpy = vi.spyOn(
+        HTMLFormElement.prototype,
+        'requestSubmit',
+      );
+
+      render(<RoutesStub />);
+
+      const textbox = screen.getByRole('textbox');
+      await user.type(textbox, 'some changes');
+      await user.keyboard('{Alt>}s{/Alt}');
+
+      expect(requestSubmitSpy).toHaveBeenCalledTimes(1);
+      requestSubmitSpy.mockRestore();
     });
 
     it('renders a form from a given definition', () => {
@@ -480,7 +555,7 @@ describe('<Form />', () => {
       );
       const user = userEvent.setup();
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       await user.click(submitButton);
@@ -952,7 +1027,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const user = userEvent.setup();
@@ -968,7 +1043,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const user = userEvent.setup();
@@ -984,7 +1059,7 @@ describe('<Form />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        name: /divaClient_SubmitButtonText/,
       });
 
       const group = screen.getByRole('group', { name: 'passwordLabel' });
@@ -1728,7 +1803,7 @@ describe('<Form />', () => {
       ).not.toBeInTheDocument();
 
       await user.click(
-        screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+        screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
       );
 
       expect(
@@ -1825,7 +1900,7 @@ describe('<Form />', () => {
           />,
         );
         user.click(
-          screen.getByRole('button', { name: 'divaClient_SubmitButtonText' }),
+          screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
         );
 
         expect(
