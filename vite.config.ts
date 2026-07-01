@@ -46,6 +46,9 @@ export default defineConfig({
     env: {
       LOG_LEVEL: 'silent',
     },
+    coverage: {
+      provider: 'istanbul',
+    },
     exclude: ['**/node_modules/**', '**/target/**'],
     projects: [
       {
