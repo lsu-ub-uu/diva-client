@@ -8,9 +8,9 @@ import {
   type SessionFlashData,
 } from '../sessions.server';
 
-describe('sessionMiddleware', () => {
-  vi.mock('../sessions.server');
+vi.mock('../sessions.server');
 
+describe('sessionMiddleware', () => {
   it('sets auth', async () => {
     const mockRequest = createMockRequest();
     const { mockContext, setContextSpy } = createMockContext();

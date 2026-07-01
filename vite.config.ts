@@ -42,6 +42,10 @@ export default defineConfig({
     conditions: VITEST ? ['module-sync'] : undefined,
   },
   test: {
+    silent: true,
+    env: {
+      LOG_LEVEL: 'silent',
+    },
     exclude: ['**/node_modules/**', '**/target/**'],
     projects: [
       {

@@ -74,6 +74,14 @@ import { describe, expect, it, vi } from 'vitest';
 const actionSpy = vi.fn();
 vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+    };
+  },
+}));
+
 const RecordFormWithRoutesStub = ({
   formSchema,
   record,
@@ -102,14 +110,6 @@ const RecordFormWithRoutesStub = ({
 };
 
 describe('<Form />', () => {
-  vi.mock('react-i18next', () => ({
-    useTranslation: () => {
-      return {
-        t: (str: string) => str,
-      };
-    },
-  }));
-
   describe('form', () => {
     it('asks for confirmation before navigating away with unsaved changes', async () => {
       const formSchema = formDefWithOneTextVariableBeingOptional;
