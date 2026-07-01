@@ -42,7 +42,7 @@ describe('requestAuthTokenOnLogin', () => {
       'apptoken',
     );
 
-    expect(postSpy).toBeCalledWith(
+    expect(postSpy).toHaveBeenCalledWith(
       'https://cora.epc.ub.uu.se/diva/login/apptoken',
       expectedBody,
       { headers: expectedHeaders },
@@ -65,7 +65,7 @@ describe('requestAuthTokenOnLogin', () => {
 
     requestAuthTokenOnLogin(loginId, 'hunter2', 'password');
 
-    expect(postSpy).toBeCalledWith(
+    expect(postSpy).toHaveBeenCalledWith(
       'https://cora.epc.ub.uu.se/diva/login/password',
       expectedBody,
       { headers: expectedHeaders },

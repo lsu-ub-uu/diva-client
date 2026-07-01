@@ -30,7 +30,7 @@
   </parent>
 
   <artifactId>diva-client</artifactId>
-  <version>1.195-SNAPSHOT</version>
+  <version>1.196-SNAPSHOT</version>
   <name>DiVA Client</name>
 
   <properties>
