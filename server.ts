@@ -33,7 +33,7 @@ const BASE_PATH = process.env.BASE_PATH ?? '';
 const PORT = Number.parseInt(process.env.PORT || '5173');
 const { CORA_API_URL, CORA_LOGIN_URL, CORA_EXTERNAL_SYSTEM_URL } = process.env;
 
-const log = pino();
+const log = pino({ level: process.env.LOG_LEVEL ?? 'info' });
 
 if (!CORA_API_URL) {
   throw new Error('Missing required environment variable CORA_API_URL');
@@ -92,6 +92,7 @@ if (DEVELOPMENT) {
     }
   });
 } else {
+  // PRODUCTION
   log.info('Starting production server');
   const reactRouterApp = await import(BUILD_PATH);
   app.use(

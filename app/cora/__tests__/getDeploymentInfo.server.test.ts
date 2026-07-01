@@ -16,11 +16,14 @@ describe('getDeploymentInfo', () => {
 
     const result = await getDeploymentInfo();
 
-    expect(requestSpy).toBeCalledWith('https://cora.epc.ub.uu.se/diva/rest/', {
-      headers: {
-        Accept: DEPLOYMENT_INFO_CONTENT_TYPE,
+    expect(requestSpy).toHaveBeenCalledWith(
+      'https://cora.epc.ub.uu.se/diva/rest/',
+      {
+        headers: {
+          Accept: DEPLOYMENT_INFO_CONTENT_TYPE,
+        },
       },
-    });
+    );
 
     expect(result).toStrictEqual(mockDeploymentInfo);
   });

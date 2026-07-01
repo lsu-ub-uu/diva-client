@@ -1,23 +1,23 @@
 import { defineConfig } from 'vitest/config';
 import { reactRouter } from '@react-router/dev/vite';
 import svgr from 'vite-plugin-svgr';
-import babelPlugin from 'vite-plugin-babel';
+import { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+import { playwright } from '@vitest/browser-playwright';
+
+const { VITEST, BASE_PATH } = process.env;
 
 export default defineConfig({
-  base: process.env.BASE_PATH ? `${process.env.BASE_PATH}/` : undefined,
+  base: BASE_PATH ? `${BASE_PATH}/` : undefined,
   css: {
     devSourcemap: true,
   },
   plugins: [
-    !process.env.VITEST && reactRouter(),
-    !process.env.VITEST &&
-      babelPlugin({
-        filter: /\.tsx?$/,
-        babelConfig: {
-          presets: ['@babel/preset-typescript'],
-          plugins: ['babel-plugin-react-compiler'],
-          sourceMaps: true,
-        },
+    !VITEST && reactRouter(),
+    !VITEST &&
+      babel({
+        include: /\.[jt]sx?$/,
+        presets: [reactCompilerPreset()],
       }),
     svgr({
       include: 'app/icons/**/*.svg?react',
@@ -36,19 +36,59 @@ export default defineConfig({
     noExternal: ['@react-router/express', 'remix-hook-form'],
   },
   resolve: {
-    conditions: ['module-sync'],
     tsconfigPaths: true,
+    /**
+     * Fix for issue with Vitest + remix-hook-form on Node 20.19+
+     * https://github.com/remix-run/react-router/issues/12785#issuecomment-2731496414
+     * */
+    conditions: VITEST ? ['module-sync'] : undefined,
   },
   test: {
-    environment: 'jsdom',
-    include: ['**/*.{test,spec}.{js,ts,mts,cts,tsx}'],
+    silent: true,
+    env: {
+      LOG_LEVEL: 'silent',
+    },
     exclude: ['**/node_modules/**', '**/target/**'],
-    setupFiles: './setupTest.ts',
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: { label: 'node' },
+          environment: 'node',
+          include: ['**/*.server.test.ts'],
+          setupFiles: './setupTest/nodeSetup.ts',
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: { label: 'browser', color: 'magenta' },
+          include: ['**/*.browser.test.{ts,tsx}'],
+          setupFiles: './setupTest/browserSetup.ts',
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            headless: true,
+            instances: [{ browser: 'firefox' }],
+          },
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: { label: 'jsdom', color: 'blue' },
+          environment: 'jsdom',
+          include: ['**/*.test.{ts,tsx}'],
+          exclude: ['**/*.server.test.ts', '**/*.browser.test.{ts,tsx}'],
+          setupFiles: './setupTest/jsdomSetup.ts',
+        },
+      },
+    ],
   },
   environments: {
     ssr: {
       build: {
-        rolldownOptions: {
+        rollupOptions: {
           input: './server/app.ts',
         },
       },

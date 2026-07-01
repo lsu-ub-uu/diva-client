@@ -92,13 +92,15 @@ The following variables must be set in order to start the server.
 
 ### Additional variables (optional)
 
-The follwing variables are optional and have some
+The follwing variables are optional
 
+- `RABBITMQ_HOST` and RABBITMQ_PORT`: Use to connect the client to RabbitMQ to update internla caches when data changes.
 - `BASE_PATH`: A base URL path under which all routes are served. (E.g. `/divaclient`)
   BASE_PATH=/divaclient
 - `PORT`: The port on which the server will listen (Default `5173`)
 - `SESSION_SECURE`: Whether to use a secure session cookie (Default `true`)
 - `SESSION_SECRETS`: A comma separated list of secrets to use for the secure session cookie. Add items to the list to rotate in new secrets without breaking the old. (E.g. `s3cret,h3mlis`)
+- `LOG_LEVEL`: Pino log level (Default `info`). Set to `silent` to disable all log output.
 
 ```
 

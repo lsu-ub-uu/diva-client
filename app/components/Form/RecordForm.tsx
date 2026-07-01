@@ -30,10 +30,11 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import type { BFFDataRecordData } from '@/types/record';
 import { SaveIcon } from 'lucide-react';
-import { useEffect } from 'react';
+import { type KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
 import { FormNavigationBlocker } from './FormNavigationBlocker';
+import { useHotkey } from '@/utils/useHotkey';
 
 export interface RecordFormProps {
   formSchema: RecordFormSchema;
@@ -67,6 +68,24 @@ export const RecordForm = ({
     formState: { dirtyFields },
   } = methods;
 
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    if (
+      event.key === 'Enter' &&
+      event.target instanceof HTMLElement &&
+      event.target.tagName !== 'TEXTAREA'
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  useHotkey(
+    'alt',
+    'KeyS',
+    useCallback(() => formRef.current?.requestSubmit(), []),
+  );
+
   useEffect(() => {
     const unsubscribe = subscribe({
       formState: {
@@ -87,7 +106,13 @@ export const RecordForm = ({
     <>
       <FormNavigationBlocker isDirty={Object.keys(dirtyFields).length > 0} />
 
-      <Form method='POST' className={styles['form']} onSubmit={handleSubmit}>
+      <Form
+        ref={formRef}
+        method='POST'
+        className={styles['form']}
+        onSubmit={handleSubmit}
+        onKeyDown={handleKeyDown}
+      >
         <RemixFormProvider {...methods}>
           <ValidationErrorSnackbar />
           <FormGenerator formSchema={formSchema} boxGroups />
@@ -104,6 +129,7 @@ export const RecordForm = ({
                 ? t('divaClient_SubmittingButtonText')
                 : t('divaClient_SubmitButtonText')
             }
+            hotkeyLabel='Alt+S'
             disabled={submitting}
           />
         </FloatingActionButtonContainer>

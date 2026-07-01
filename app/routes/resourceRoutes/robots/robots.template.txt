@@ -1,5 +1,10 @@
 User-agent: *
-Allow: {BASE_PATH}
-Disallow: /
+Allow: /
+Disallow: {BASE_PATH}/metrics
+Disallow: /login
+Disallow: /Shibboleth.sso
+Disallow: /idplogin
+Disallow: /playwright
+Disallow: /fitnesse
 
 Sitemap: {SITEMAP_URL}
