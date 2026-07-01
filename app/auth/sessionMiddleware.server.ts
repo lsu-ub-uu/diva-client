@@ -11,7 +11,7 @@ export interface SessionContext {
   setAuth: (auth: Auth) => void;
   removeAuth: () => void;
   notification: Notification | undefined;
-  flashNotification: (notification: Notification) => void;
+  flashNotification: (notification: Omit<Notification, 'id'>) => void;
   destroySession: () => void;
 }
 
@@ -49,12 +49,16 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
       return notification;
     },
     flashNotification: (flashedNotification) => {
+      const notificationWithId = {
+        ...flashedNotification,
+        id: crypto.randomUUID(),
+      };
       if (request.method === 'GET') {
         // For GET request, just add the notification to the context
-        notification = flashedNotification;
+        notification = notificationWithId;
       } else {
         // For POST request, flash the notification to the session to be shown in subsequent GET
-        session.flash('notification', flashedNotification);
+        session.flash('notification', notificationWithId);
         shouldCommitSession = true;
       }
     },

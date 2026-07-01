@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { sessionMiddleware } from '../sessionMiddleware.server';
 import type { RouterContextProvider, Session, SessionData } from 'react-router';
 import {
@@ -11,6 +11,10 @@ import {
 vi.mock('../sessions.server');
 
 describe('sessionMiddleware', () => {
+  beforeEach(() => {
+    vi.spyOn(crypto, 'randomUUID').mockReturnValue('x-x-x-x-x');
+  });
+
   it('sets auth', async () => {
     const mockRequest = createMockRequest();
     const { mockContext, setContextSpy } = createMockContext();
@@ -164,7 +168,9 @@ describe('sessionMiddleware', () => {
     expect(mockCommitSession).not.toHaveBeenCalled();
 
     const sessionContext = setContextSpy.mock.calls[0][1];
+
     expect(sessionContext.notification).toEqual({
+      id: 'x-x-x-x-x',
       severity: 'success',
       summary: 'Test notification',
     });
@@ -206,6 +212,7 @@ describe('sessionMiddleware', () => {
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
       severity: 'success',
       summary: 'Test notification',
+      id: 'x-x-x-x-x',
     });
 
     expect(mockResponse.headers.append).toHaveBeenCalledWith(

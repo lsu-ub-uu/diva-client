@@ -25,6 +25,7 @@ export type SessionData = {
 };
 
 export type Notification = {
+  id: string;
   severity: 'success' | 'error' | 'info';
   summary: string;
   details?: string;

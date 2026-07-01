@@ -271,7 +271,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div>
       {blockRobotIndexing && <meta name='robots' content='noindex, nofollow' />}
       <NotificationSnackbar
-        key={loaderData.notification?.summary}
+        key={loaderData.notification?.id}
         notification={loaderData.notification}
       />
       {globalAlert && (
