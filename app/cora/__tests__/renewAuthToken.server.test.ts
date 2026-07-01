@@ -47,7 +47,7 @@ describe('renewAuthToken', () => {
       }),
     );
 
-    expect(requestSpy).toBeCalledWith({
+    expect(requestSpy).toHaveBeenCalledWith({
       method: 'POST',
       url: '/someUrl',
       headers: {
