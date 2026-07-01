@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { generateRobotsTxt } from '../robots.server';
+import { generateRobotsTxt } from '../robots';
 
 describe('robots.txt', () => {
   it('should generate correct robots.txt content with basePath', () => {

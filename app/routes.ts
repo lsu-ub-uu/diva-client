@@ -42,7 +42,7 @@ export default [
   route('binaryRecord', 'routes/resourceRoutes/binaryRecord.ts'),
   route('binary/:id/:name', 'routes/resourceRoutes/binary.ts'),
   route('sitemap.xml', 'routes/resourceRoutes/sitemap/sitemap.ts'),
-  route('robots.txt', 'routes/resourceRoutes/robots/robots.server.ts'),
+  route('robots.txt', 'routes/resourceRoutes/robots/robots.ts'),
 
   /* Dev pages */
   route('design-system', 'routes/docs/designSystem.tsx'),
