@@ -94,6 +94,7 @@ The following variables must be set in order to start the server.
 
 The follwing variables are optional
 
+- `RABBITMQ_HOST` and RABBITMQ_PORT`: Use to connect the client to RabbitMQ to update internla caches when data changes.
 - `BASE_PATH`: A base URL path under which all routes are served. (E.g. `/divaclient`)
   BASE_PATH=/divaclient
 - `PORT`: The port on which the server will listen (Default `5173`)
