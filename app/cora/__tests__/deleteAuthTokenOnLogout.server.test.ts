@@ -46,7 +46,7 @@ describe('deleteAuthTokenOnLogout', () => {
       Authtoken: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     };
 
-    expect(requestSpy).toBeCalledWith({
+    expect(requestSpy).toHaveBeenCalledWith({
       headers: expectedHeaders,
       url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
       method: 'DELETE',

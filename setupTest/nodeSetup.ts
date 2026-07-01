@@ -1,11 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { afterEach, beforeAll, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, vi } from 'vitest';
 
 beforeAll(() => {
-  vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
-  vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
-
   i18n.use(initReactI18next).init({
     resources: {
       en: {
@@ -24,6 +21,11 @@ beforeAll(() => {
       escapeValue: false,
     },
   });
+});
+
+beforeEach(() => {
+  vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
+  vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
 });
 
 afterEach(() => {
