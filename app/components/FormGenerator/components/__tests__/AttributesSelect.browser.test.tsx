@@ -1,5 +1,5 @@
 import { MockFormProvider } from '@/utils/testUtils';
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { describe, expect, it, vi } from 'vitest';
 import { AttributeSelect } from '../AttributeSelect';
 import { useWatch } from 'react-hook-form';
@@ -7,10 +7,10 @@ import { useWatch } from 'react-hook-form';
 vi.mock('react-hook-form');
 
 describe('AttributeSelect', () => {
-  it('renders nothing when output mode and no value', () => {
+  it('renders nothing when output mode and no value', async () => {
     mockAttributeValue(undefined);
 
-    render(
+    const { container } = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -29,13 +29,13 @@ describe('AttributeSelect', () => {
       </MockFormProvider>,
     );
 
-    expect(document.body.innerHTML).toBe('<div></div>');
+    expect(container.innerHTML).toBe('');
   });
 
-  it('render in output mode when attributesToShow none', () => {
+  it('render in output mode when attributesToShow none', async () => {
     mockAttributeValue('option1');
 
-    render(
+    const { container } = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -53,13 +53,14 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(document.body.innerHTML).toBe('<div></div>');
+
+    expect(container.innerHTML).toBe('');
   });
 
-  it('renders in output mode when value and attributesToShow all', () => {
+  it('renders in output mode when value and attributesToShow all', async () => {
     mockAttributeValue('option1');
 
-    render(
+    const screen = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -77,14 +78,15 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(screen.getByText('Some label')).toBeInTheDocument();
-    expect(screen.getByText('Option1')).toBeInTheDocument();
+
+    await expect.element(screen.getByText('Some label')).toBeVisible();
+    await expect.element(screen.getByText('Option1')).toBeVisible();
   });
 
-  it('renders nothing when attributesToShow selectable with value in output mode', () => {
+  it('renders nothing when attributesToShow selectable with value in output mode', async () => {
     mockAttributeValue('option1');
 
-    render(
+    const { container } = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -102,13 +104,14 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(document.body.innerHTML).toBe('<div></div>');
+
+    expect(container.innerHTML).toBe('');
   });
 
-  it('renders nothing when input mode and attributesToShow none', () => {
+  it('renders nothing when input mode and attributesToShow none', async () => {
     mockAttributeValue('option1');
 
-    render(
+    const { container } = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -126,13 +129,14 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(document.body.innerHTML).toBe('<div></div>');
+
+    expect(container.innerHTML).toBe('');
   });
 
-  it('renders combobox when in input mode and attributesToShow selectable', () => {
+  it('renders combobox when in input mode and attributesToShow selectable', async () => {
     mockAttributeValue(undefined);
 
-    render(
+    const screen = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -150,17 +154,22 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(
-      screen.getByRole('combobox', { name: 'Some label' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Option1' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Option2' })).toBeInTheDocument();
+
+    await expect
+      .element(screen.getByRole('combobox', { name: 'Some label' }))
+      .toBeVisible();
+    await expect
+      .element(screen.getByRole('option', { name: 'Option1' }))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('option', { name: 'Option2' }))
+      .toBeInTheDocument();
   });
 
-  it('renders combobox when in input mode and attributesToShow all', () => {
+  it('renders combobox when in input mode and attributesToShow all', async () => {
     mockAttributeValue(undefined);
 
-    render(
+    const screen = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -178,17 +187,22 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(
-      screen.getByRole('combobox', { name: 'Some label' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Option1' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Option2' })).toBeInTheDocument();
+
+    await expect
+      .element(screen.getByRole('combobox', { name: 'Some label' }))
+      .toBeVisible();
+    await expect
+      .element(screen.getByRole('option', { name: 'Option1' }))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('option', { name: 'Option2' }))
+      .toBeInTheDocument();
   });
 
-  it('renders selectable with value in input mode', () => {
+  it('renders selectable with value in input mode', async () => {
     mockAttributeValue('option1');
 
-    render(
+    const screen = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -206,14 +220,19 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(screen.getByRole('combobox', { name: 'Some label' })).toHaveValue(
-      'option1',
-    );
-    expect(screen.getByRole('option', { name: 'Option1' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Option2' })).toBeInTheDocument();
+
+    await expect
+      .element(screen.getByRole('combobox', { name: 'Some label' }))
+      .toHaveValue('option1');
+    await expect
+      .element(screen.getByRole('option', { name: 'Option1' }))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('option', { name: 'Option2' }))
+      .toBeInTheDocument();
   });
 
-  it('renders searchable combobox when more than 20 options', () => {
+  it('renders searchable combobox when more than 20 options', async () => {
     mockAttributeValue('option1');
 
     const manyOptions = Array.from({ length: 21 }, (_, i) => ({
@@ -221,7 +240,7 @@ describe('AttributeSelect', () => {
       value: `option${i + 1}`,
     }));
 
-    render(
+    const screen = await render(
       <MockFormProvider>
         <AttributeSelect
           name='some.name'
@@ -236,9 +255,10 @@ describe('AttributeSelect', () => {
         />
       </MockFormProvider>,
     );
-    expect(
-      screen.getByRole('group', { name: 'Some label' }),
-    ).toBeInTheDocument();
+
+    await expect
+      .element(screen.getByRole('group', { name: 'Some label' }))
+      .toBeVisible();
   });
 });
 
