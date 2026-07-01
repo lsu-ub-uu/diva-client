@@ -4,7 +4,7 @@ import svgr from 'vite-plugin-svgr';
 import { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { playwright } from '@vitest/browser-playwright';
-
+//hej
 const { VITEST, BASE_PATH } = process.env;
 
 export default defineConfig({
