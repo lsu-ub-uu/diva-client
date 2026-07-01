@@ -201,9 +201,13 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   return <UnhandledErrorPage error={error} />;
 };
 
-export const meta = ({ data, error }: Route.MetaArgs) => {
+export const meta = ({ loaderData, error }: Route.MetaArgs) => {
   return [
-    { title: error ? getMetaTitleFromError(error) : `${data?.title} | DiVA` },
+    {
+      title: error
+        ? getMetaTitleFromError(error)
+        : `${loaderData?.title} | DiVA`,
+    },
   ];
 };
 
