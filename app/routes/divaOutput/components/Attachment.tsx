@@ -46,7 +46,7 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
             href={downloadLink}
             type={attachment.file.linkedRecord.binary.master?.mimeType?.value}
           >
-            {formatHeading(attachment, t)}
+            {formatAttachmentHeading(attachment, t)}
             <DownloadIcon />
           </a>
         </h3>
@@ -66,7 +66,10 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
   );
 };
 
-const formatHeading = (attachment: AttachmentGroup, t: TFunction): string => {
+export const formatAttachmentHeading = (
+  attachment: AttachmentGroup,
+  t: TFunction,
+): string => {
   const attachmentTypeText = t(`${attachment._label}ItemText`);
 
   const fileSize = formatBytes(

@@ -1,10 +1,8 @@
 import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
-import { useLanguage } from '@/i18n/useLanguage';
 import { render } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Attachments } from '../Attachments';
 
-vi.mock('@/i18n/useLanguage');
 vi.mock('@/utils/createDownloadLinkFromResourceLink', () => ({
   createDownloadLinkFromResourceLink: ({
     id,
@@ -16,10 +14,6 @@ vi.mock('@/utils/createDownloadLinkFromResourceLink', () => ({
 }));
 
 describe('<Attachments />', () => {
-  beforeEach(() => {
-    vi.mocked(useLanguage).mockReturnValue('sv');
-  });
-
   it('uses preview image thumbnail as fallback when firstAttachment has no master url', () => {
     const attachments = {
       attachment: [
@@ -108,7 +102,6 @@ describe('<Attachments />', () => {
       attachment: [
         {
           _label: 'fullText',
-          __text: { sv: 'Fulltext sv', en: 'Fulltext en' },
           file: {
             value: 'someFileId',
             linkedRecord: {
@@ -120,6 +113,7 @@ describe('<Attachments />', () => {
                     mimeType: 'application/pdf',
                     name: 'file.pdf',
                   },
+                  fileSize: { value: '1048576' },
                 },
                 thumbnail: {
                   thumbnail: {
@@ -145,17 +139,14 @@ describe('<Attachments />', () => {
 
     const img = container.querySelector('img');
     expect(img).toHaveAttribute('src', '/binary/thumb-id/thumb.jpg');
-    expect(img).toHaveAttribute('alt', 'Fulltext sv');
   });
 
-  it('uses correct language for alt text', () => {
-    vi.mocked(useLanguage).mockReturnValue('en');
-
+  it('includes displayLabel in alt text when present', () => {
     const attachments = {
       attachment: [
         {
           _label: 'fullText',
-          __text: { sv: 'Fulltext sv', en: 'Fulltext en' },
+          displayLabel: { value: 'Chapter 1' },
           file: {
             value: 'someFileId',
             linkedRecord: {
@@ -167,6 +158,7 @@ describe('<Attachments />', () => {
                     mimeType: 'application/pdf',
                     name: 'file.pdf',
                   },
+                  fileSize: { value: '1048576' },
                 },
                 thumbnail: {
                   thumbnail: {
@@ -186,6 +178,45 @@ describe('<Attachments />', () => {
     const { container } = render(<Attachments attachments={attachments} />);
 
     const img = container.querySelector('img');
-    expect(img).toHaveAttribute('alt', 'Fulltext en');
+    expect(img).toHaveAttribute('alt', 'Chapter 1, fullTextItemText (1 MB)');
+  });
+
+  it('does not include displayLabel prefix in alt text when displayLabel is absent', () => {
+    const attachments = {
+      attachment: [
+        {
+          _label: 'fullText',
+          file: {
+            value: 'someFileId',
+            linkedRecord: {
+              binary: {
+                recordInfo: { id: { value: 'binary1' } },
+                master: {
+                  master: {
+                    id: 'master-id',
+                    mimeType: 'application/pdf',
+                    name: 'file.pdf',
+                  },
+                  fileSize: { value: '2048' },
+                },
+                thumbnail: {
+                  thumbnail: {
+                    id: 'thumb-id',
+                    mimeType: 'image/jpeg',
+                    name: 'thumb.jpg',
+                  },
+                },
+                _type: 'generic',
+              },
+            },
+          },
+        },
+      ],
+    } as AttachmentsGroup;
+
+    const { container } = render(<Attachments attachments={attachments} />);
+
+    const img = container.querySelector('img');
+    expect(img).toHaveAttribute('alt', 'fullTextItemText (2 KB)');
   });
 });

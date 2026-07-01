@@ -1,14 +1,19 @@
-import type { AttachmentsGroup } from '@/generatedTypes/divaTypes';
-import { useLanguage } from '@/i18n/useLanguage';
+import type {
+  AttachmentGroup,
+  AttachmentsGroup,
+} from '@/generatedTypes/divaTypes';
+import { formatAttachmentHeading } from '@/routes/divaOutput/components/Attachment';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
+import { useTranslation } from 'react-i18next';
 import styles from './Attachments.module.css';
+import type { TFunction } from 'i18next';
 
 interface AttachmentsProps {
   attachments?: AttachmentsGroup;
 }
 
 export const Attachments = ({ attachments }: AttachmentsProps) => {
-  const language = useLanguage();
+  const { t } = useTranslation();
 
   if (
     !attachments ||
@@ -50,8 +55,17 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
       <img
         className={styles['attachment-thumbnail']}
         src={createDownloadLinkFromResourceLink(binary.thumbnail.thumbnail)}
-        alt={firstAttachment.__text?.[language]}
+        alt={formatAttachmentAltText(firstAttachment, t)}
       />
     </a>
   );
+};
+
+const formatAttachmentAltText = (attachment: AttachmentGroup, t: TFunction) => {
+  return attachment.displayLabel?.value
+    ? `${attachment.displayLabel?.value}, ${formatAttachmentHeading(
+        attachment,
+        t,
+      )}`
+    : formatAttachmentHeading(attachment, t);
 };
