@@ -3,6 +3,7 @@ import { reactRouter } from '@react-router/dev/vite';
 import svgr from 'vite-plugin-svgr';
 import { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
+import { playwright } from '@vitest/browser-playwright';
 
 const { VITEST, BASE_PATH } = process.env;
 
@@ -41,6 +42,10 @@ export default defineConfig({
     conditions: VITEST ? ['module-sync'] : undefined,
   },
   test: {
+    silent: true,
+    env: {
+      LOG_LEVEL: 'silent',
+    },
     exclude: ['**/node_modules/**', '**/target/**'],
     projects: [
       {
@@ -55,10 +60,24 @@ export default defineConfig({
       {
         extends: true,
         test: {
+          name: { label: 'browser', color: 'magenta' },
+          include: ['**/*.browser.test.{ts,tsx}'],
+          setupFiles: './setupTest/browserSetup.ts',
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            headless: true,
+            instances: [{ browser: 'firefox' }],
+          },
+        },
+      },
+      {
+        extends: true,
+        test: {
           name: { label: 'jsdom', color: 'blue' },
           environment: 'jsdom',
           include: ['**/*.test.{ts,tsx}'],
-          exclude: ['**/*.server.test.ts'],
+          exclude: ['**/*.server.test.ts', '**/*.browser.test.{ts,tsx}'],
           setupFiles: './setupTest/jsdomSetup.ts',
         },
       },

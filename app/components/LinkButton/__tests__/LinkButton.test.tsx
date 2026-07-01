@@ -21,15 +21,16 @@ import { LinkButton } from '@/components/LinkButton/LinkButton';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      t: (_: string) => 'translated to english',
+    };
+  },
+}));
+
 describe('<LinkButton>', () => {
-  vi.mock('react-i18next', () => ({
-    useTranslation: () => {
-      return {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        t: (_: string) => 'translated to english',
-      };
-    },
-  }));
   it('should render a link with text translated into english', () => {
     render(<LinkButton text='not translated' href='https://www.test.com' />);
 

@@ -17,22 +17,32 @@
  */
 
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { render } from 'vitest-browser-react';
 
 describe('<FieldInfo />', () => {
   it('Renders info button with popover', async () => {
-    const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';
-    render(<FieldInfo title={title} body={body} />);
+    const screen = await render(<FieldInfo title={title} body={body} />);
 
-    await user.click(
-      screen.getByRole('button', { name: 'divaClient_fieldInfoText' }),
-    );
+    await expect.element(screen.getByText('Test Title')).not.toBeVisible();
 
-    screen.getByText('Test Title');
-    screen.getByText('body content');
+    await screen
+      .getByRole('button', {
+        name: 'divaClient_fieldInfoText',
+      })
+      .click();
+
+    await expect.element(screen.getByText('Test Title')).toBeVisible();
+    await expect.element(screen.getByText('body content')).toBeVisible();
+
+    await screen
+      .getByRole('button', {
+        name: 'divaClient_closeText',
+      })
+      .click();
+
+    await expect.element(screen.getByText('Test Title')).not.toBeVisible();
   });
 });
