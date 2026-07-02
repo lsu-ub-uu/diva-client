@@ -49,6 +49,7 @@ export const useTooltip = () => {
     onMouseEnter: handleMouseEnter,
     onFocus: handleFocus,
     onBlur: hideTooltip,
+    onClick: hideTooltip,
     onKeyDown: handleKeyDown,
   };
 

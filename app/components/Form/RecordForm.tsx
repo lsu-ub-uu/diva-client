@@ -52,7 +52,7 @@ export const RecordForm = ({
   const location = useLocation();
   const submitting =
     navigation.state !== 'idle' &&
-    navigation.formAction?.includes(location.pathname);
+    !!navigation.formAction?.includes(location.pathname);
 
   const methods = useRemixForm({
     mode: 'onChange',
@@ -70,6 +70,21 @@ export const RecordForm = ({
 
   const formRef = useRef<HTMLFormElement>(null);
 
+  const submitGuard = useRef(false);
+
+  useEffect(() => {
+    submitGuard.current = submitting;
+  }, [submitting]);
+
+  const handleAltS = useCallback(() => {
+    if (!submitGuard.current) {
+      submitGuard.current = true;
+      formRef.current?.requestSubmit();
+    }
+  }, []);
+
+  useHotkey('alt', 'KeyS', handleAltS);
+
   const handleKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
     if (
       event.key === 'Enter' &&
@@ -79,12 +94,6 @@ export const RecordForm = ({
       event.preventDefault();
     }
   };
-
-  useHotkey(
-    'alt',
-    'KeyS',
-    useCallback(() => formRef.current?.requestSubmit(), []),
-  );
 
   useEffect(() => {
     const unsubscribe = subscribe({
