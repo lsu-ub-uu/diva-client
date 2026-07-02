@@ -256,6 +256,11 @@ address {
     display: flex;
     align-items: center;
     gap: var(--gap-s);
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
 
     &:hover {
       background-color: var(--color-secondary-hover);
