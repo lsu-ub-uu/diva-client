@@ -32,7 +32,7 @@ const isHtmlContent = (data: unknown): boolean => {
 export const createNotificationFromAxiosError = (
   t: TFunction,
   error: unknown,
-): Omit<Notification, 'id'> => {
+): Notification => {
   if (isAxiosError(error)) {
     const responseData = error.response?.data;
     const shouldShowResponseData = responseData && !isHtmlContent(responseData);

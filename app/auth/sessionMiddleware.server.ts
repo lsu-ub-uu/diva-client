@@ -5,13 +5,14 @@ import {
   destroySession,
   getSessionFromCookie,
   type Notification,
+  type NotificationWithId,
 } from './sessions.server';
 export interface SessionContext {
   auth: Auth | undefined;
   setAuth: (auth: Auth) => void;
   removeAuth: () => void;
-  notification: Notification | undefined;
-  flashNotification: (notification: Omit<Notification, 'id'>) => void;
+  notification: NotificationWithId | undefined;
+  flashNotification: (notification: Notification) => void;
   destroySession: () => void;
 }
 

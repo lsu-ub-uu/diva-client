@@ -25,14 +25,15 @@ export type SessionData = {
 };
 
 export type Notification = {
-  id: string;
   severity: 'success' | 'error' | 'info';
   summary: string;
   details?: string;
 };
 
+export type NotificationWithId = Notification & { id: string };
+
 export type SessionFlashData = {
-  notification: Notification;
+  notification: NotificationWithId;
 };
 
 const { getSession, commitSession, destroySession } =
