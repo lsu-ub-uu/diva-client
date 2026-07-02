@@ -37,10 +37,17 @@ export const useTooltip = () => {
     }
   }
 
+  function handleFocus() {
+    if (!triggerRef.current?.matches(':focus-visible')) {
+      return;
+    }
+    showTooltip();
+  }
+
   const tooltipTriggerProps = {
     ref: triggerRef,
     onMouseEnter: handleMouseEnter,
-    onFocus: showTooltip,
+    onFocus: handleFocus,
     onBlur: hideTooltip,
     onKeyDown: handleKeyDown,
   };
