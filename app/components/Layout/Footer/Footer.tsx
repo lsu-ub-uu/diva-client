@@ -40,21 +40,18 @@ export const Footer = ({ applicationVersion }: FooterProps) => {
         <FooterExternalLink href={aboutLink[language]}>
           {t('divaClient_footerAboutLinkText')}
         </FooterExternalLink>
-        <FooterInternalLink
-          href={href('/article/:articleId', { articleId: 'cookies' })}
-        >
+        <FooterExternalLink href='/rest/'>
+          {t('divaClient_footerRestApiLinkText')}
+        </FooterExternalLink>
+        <FooterExternalLink href='/jsclient'>
+          {t('divaClient_footerJsClientLinkText')}
+        </FooterExternalLink>
+        <FooterInternalLink href={href('/cookies')}>
           {t('divaClient_footerCookiesLinkText')}
         </FooterInternalLink>
 
-        <FooterInternalLink
-          href={href('/article/:articleId', { articleId: 'accessibility' })}
-        >
+        <FooterInternalLink href={href('/accessibility')}>
           {t('divaClient_footerAccessibilityLinkText')}
-        </FooterInternalLink>
-        <FooterInternalLink
-          href={href('/article/:articleId', { articleId: 'developer' })}
-        >
-          {t('divaClient_footerDeveloperLinkText')}
         </FooterInternalLink>
       </nav>
 

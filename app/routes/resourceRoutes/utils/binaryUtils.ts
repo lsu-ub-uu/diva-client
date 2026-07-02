@@ -1,5 +1,3 @@
-import { mimeTypeToFileExtension } from './mimeTypeToFileExtension';
-
 export const transformCoraBinaryResponse = async (
   response: Response,
   fallbackFileName: string,
@@ -79,6 +77,22 @@ const toContentDispositionValue = (fileName: string): string => {
   return `attachment; filename="${asciiFileName}"; filename*=UTF-8''${utf8Encoded}`;
 };
 
+const MIME_TYPE_EXTENSIONS: Record<string, string> = {
+  'application/pdf': 'pdf',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/gif': 'gif',
+  'image/tiff': 'tif',
+  'text/plain': 'txt',
+  'text/html': 'html',
+  'application/zip': 'zip',
+  'application/msword': 'doc',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+    'docx',
+  'application/vnd.ms-excel': 'xls',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+};
+
 const hasFileExtension = (fileName: string): boolean => {
   return /\.[^./\\]+$/.test(fileName);
 };
@@ -91,5 +105,10 @@ const extensionFromContentType = (
   }
 
   const mimeType = contentType.split(';')[0].trim().toLowerCase();
-  return mimeTypeToFileExtension(mimeType);
+  const mappedExtension = MIME_TYPE_EXTENSIONS[mimeType];
+  if (mappedExtension) {
+    return mappedExtension;
+  }
+
+  return mimeType.split('/')[1]?.trim();
 };
