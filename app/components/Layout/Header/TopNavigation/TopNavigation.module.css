@@ -17,17 +17,17 @@
  */
 
 .top-navigation {
-  ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    list-style: none;
-    gap: var(--gap);
-  }
-
   @media (width < 900px) {
     display: none;
   }
+}
+
+.navigation-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  gap: var(--gap);
 }
 
 .navigation-link {

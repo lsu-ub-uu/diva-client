@@ -17,7 +17,7 @@
  */
 
 import type { Option } from '@/components';
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { Combobox } from '@/components/Combobox/Combobox';
 import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import {
   findOptionLabelByValue,
@@ -104,13 +104,17 @@ export const AttributeSelect = ({
           control={control}
           name={name}
           render={({ field: { name, value, onChange } }) => (
-            <ComboboxSelect
+            <Combobox
               name={name}
               value={value}
               onChange={onChange}
               invalid={errorMessage !== undefined}
               aria-label={!showLabel ? t(label) : undefined}
-              options={options}
+              options={options.map((option) => ({
+                value: option.value,
+                label: t(option.label),
+              }))}
+              className={styles['attribute-combobox']}
             />
           )}
         />

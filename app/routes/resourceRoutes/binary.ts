@@ -1,8 +1,8 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraBinaryUrl } from '@/cora/helper.server';
-import type { Route } from './+types/binary';
-import { transformCoraBinaryResponse } from './utils/transformCoraBinaryResponse';
 import { log, logError } from '@/logging/logger.server';
+import type { Route } from './+types/binary';
+import { transformCoraBinaryResponse } from './utils/binaryUtils';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { auth } = context.get(sessionContext);

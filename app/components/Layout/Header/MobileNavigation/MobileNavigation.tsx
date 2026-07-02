@@ -44,7 +44,7 @@ export const MobileNavigation = ({
           <LanguageSwitcher />
           <ColorSchemeSwitcher colorScheme={userPreferences.colorScheme} />
           <IconButton
-            tooltip={t('divaClient_closeText')}
+            tooltip={t('divaClient_closeMenuText')}
             onClick={closeDrawerDialog}
             className={styles['menu-close-button']}
           >

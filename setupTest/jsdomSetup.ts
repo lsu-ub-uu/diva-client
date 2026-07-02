@@ -42,7 +42,6 @@ beforeAll(() => {
   };
 
   window.open = vi.fn();
-  window.matchMedia = () => ({ matches: false }) as MediaQueryList;
   HTMLElement.prototype.showPopover = vi.fn();
   HTMLElement.prototype.hidePopover = vi.fn();
   CSS.supports = vi.fn().mockReturnValue(true);

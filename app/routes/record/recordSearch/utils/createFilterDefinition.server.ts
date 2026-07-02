@@ -141,7 +141,7 @@ const createFilter = (
     return {
       ...commonValues,
       type: 'collection',
-      options,
+      options: [{ text: '--', value: '' }, ...options],
     };
   }
 
