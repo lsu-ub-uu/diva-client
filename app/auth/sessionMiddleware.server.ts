@@ -5,12 +5,13 @@ import {
   destroySession,
   getSessionFromCookie,
   type Notification,
+  type NotificationWithId,
 } from './sessions.server';
 export interface SessionContext {
   auth: Auth | undefined;
   setAuth: (auth: Auth) => void;
   removeAuth: () => void;
-  notification: Notification | undefined;
+  notification: NotificationWithId | undefined;
   flashNotification: (notification: Notification) => void;
   destroySession: () => void;
 }
@@ -49,12 +50,16 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
       return notification;
     },
     flashNotification: (flashedNotification) => {
+      const notificationWithId = {
+        ...flashedNotification,
+        id: crypto.randomUUID(),
+      };
       if (request.method === 'GET') {
         // For GET request, just add the notification to the context
-        notification = flashedNotification;
+        notification = notificationWithId;
       } else {
         // For POST request, flash the notification to the session to be shown in subsequent GET
-        session.flash('notification', flashedNotification);
+        session.flash('notification', notificationWithId);
         shouldCommitSession = true;
       }
     },

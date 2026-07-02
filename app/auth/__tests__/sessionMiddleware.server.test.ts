@@ -1,5 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
-import { sessionMiddleware } from '../sessionMiddleware.server';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  sessionMiddleware,
+  sessionContext as sessionContextKey,
+} from '../sessionMiddleware.server';
 import type { RouterContextProvider, Session, SessionData } from 'react-router';
 import {
   getSessionFromCookie,
@@ -11,6 +14,10 @@ import {
 vi.mock('../sessions.server');
 
 describe('sessionMiddleware', () => {
+  beforeEach(() => {
+    vi.spyOn(crypto, 'randomUUID').mockReturnValue('x-x-x-x-x');
+  });
+
   it('sets auth', async () => {
     const mockRequest = createMockRequest();
     const { mockContext, setContextSpy } = createMockContext();
@@ -164,7 +171,9 @@ describe('sessionMiddleware', () => {
     expect(mockCommitSession).not.toHaveBeenCalled();
 
     const sessionContext = setContextSpy.mock.calls[0][1];
+
     expect(sessionContext.notification).toEqual({
+      id: 'x-x-x-x-x',
       severity: 'success',
       summary: 'Test notification',
     });
@@ -206,6 +215,7 @@ describe('sessionMiddleware', () => {
     expect(mockSession.flash).toHaveBeenCalledWith('notification', {
       severity: 'success',
       summary: 'Test notification',
+      id: 'x-x-x-x-x',
     });
 
     expect(mockResponse.headers.append).toHaveBeenCalledWith(
@@ -383,6 +393,164 @@ describe('sessionMiddleware', () => {
 
     expect(mockResponse.headers.append).toHaveBeenCalled();
     expect(mockCommitSession).toHaveBeenCalled();
+  });
+
+  it('reads existing auth from session without calling setAuth', async () => {
+    const mockRequest = createMockRequest();
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession({ auth: { userId: '456' } });
+    setupSessionMocks(mockSession);
+
+    let authReadInNextFunction: any;
+    const mockNextFunction = vi.fn().mockImplementation(async () => {
+      const sessionContext = setContextSpy.mock.calls[0][1];
+      authReadInNextFunction = sessionContext.auth;
+      return mockResponse;
+    });
+
+    await sessionMiddleware(
+      {
+        request: mockRequest,
+        context: mockContext,
+        url: new URL(mockRequest.url),
+        pattern: '',
+        params: {},
+      },
+      mockNextFunction,
+    );
+
+    expect(authReadInNextFunction).toEqual({ userId: '456' });
+  });
+
+  it('does not call commitSession when destroySession is called', async () => {
+    const mockRequest = createMockRequest();
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession({ auth: { userId: '123' } });
+    const { mockDestroySession } = setupDestroySessionMock(mockSession);
+    const mockCommitSessionFn = vi.mocked(commitSession);
+
+    const mockNextFunction = vi.fn().mockImplementation(async () => {
+      const sessionContext = setContextSpy.mock.calls[0][1];
+      sessionContext.destroySession();
+      return mockResponse;
+    });
+
+    await sessionMiddleware(
+      {
+        request: mockRequest,
+        context: mockContext,
+        url: new URL(mockRequest.url),
+        pattern: '',
+        params: {},
+      },
+      mockNextFunction,
+    );
+
+    expect(mockDestroySession).toHaveBeenCalledWith(mockSession);
+    expect(mockCommitSessionFn).not.toHaveBeenCalled();
+  });
+
+  it('destroySession takes precedence over setAuth', async () => {
+    const mockRequest = createMockRequest();
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession();
+    const { mockDestroySession } = setupDestroySessionMock(mockSession);
+    const mockCommitSessionFn = vi.mocked(commitSession);
+
+    const mockNextFunction = vi.fn().mockImplementation(async () => {
+      const sessionContext = setContextSpy.mock.calls[0][1];
+      sessionContext.setAuth({ userId: '123' });
+      sessionContext.destroySession();
+      return mockResponse;
+    });
+
+    await sessionMiddleware(
+      {
+        request: mockRequest,
+        context: mockContext,
+        url: new URL(mockRequest.url),
+        pattern: '',
+        params: {},
+      },
+      mockNextFunction,
+    );
+
+    expect(mockResponse.headers.append).toHaveBeenCalledWith(
+      'Set-Cookie',
+      'destroy-cookie-value',
+    );
+    expect(mockDestroySession).toHaveBeenCalledWith(mockSession);
+    expect(mockCommitSessionFn).not.toHaveBeenCalled();
+  });
+
+  it('flashNotification on PUT request flashes to session and commits', async () => {
+    const mockRequest = createMockRequest({ method: 'PUT' });
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession({ auth: { userId: '123' } });
+    const { mockCommitSession } = setupSessionMocks(
+      mockSession,
+      'commit-cookie-value',
+    );
+
+    const mockNextFunction = vi.fn().mockImplementation(async () => {
+      const sessionContext = setContextSpy.mock.calls[0][1];
+      sessionContext.flashNotification({
+        severity: 'success',
+        summary: 'Test notification',
+      });
+      return mockResponse;
+    });
+
+    await sessionMiddleware(
+      {
+        request: mockRequest,
+        context: mockContext,
+        url: new URL(mockRequest.url),
+        pattern: '',
+        params: {},
+      },
+      mockNextFunction,
+    );
+
+    expect(mockSession.flash).toHaveBeenCalledWith('notification', {
+      severity: 'success',
+      summary: 'Test notification',
+      id: 'x-x-x-x-x',
+    });
+    expect(mockResponse.headers.append).toHaveBeenCalledWith(
+      'Set-Cookie',
+      'commit-cookie-value',
+    );
+    expect(mockCommitSession).toHaveBeenCalledWith(mockSession);
+    const sessionContext = setContextSpy.mock.calls[0][1];
+    expect(sessionContext.notification).toBeUndefined();
+  });
+
+  it('sets context using the sessionContext key', async () => {
+    const mockRequest = createMockRequest();
+    const { mockContext, setContextSpy } = createMockContext();
+    const mockResponse = createMockResponse();
+    const mockSession = createMockSession();
+    setupSessionMocks(mockSession);
+
+    const mockNextFunction = vi.fn().mockResolvedValue(mockResponse);
+
+    await sessionMiddleware(
+      {
+        request: mockRequest,
+        context: mockContext,
+        url: new URL(mockRequest.url),
+        pattern: '',
+        params: {},
+      },
+      mockNextFunction,
+    );
+
+    expect(setContextSpy.mock.calls[0][0]).toBe(sessionContextKey);
   });
 });
 

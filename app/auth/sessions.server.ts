@@ -30,8 +30,10 @@ export type Notification = {
   details?: string;
 };
 
+export type NotificationWithId = Notification & { id: string };
+
 export type SessionFlashData = {
-  notification: Notification;
+  notification: NotificationWithId;
 };
 
 const { getSession, commitSession, destroySession } =

@@ -35,6 +35,7 @@ export const NotificationSnackbar = ({
       onClose={() => setDismissed(true)}
       severity={notification?.severity ?? 'info'}
       text={notification?.summary ?? ''}
+      autoCloseDelay={6000}
     />
   );
 };

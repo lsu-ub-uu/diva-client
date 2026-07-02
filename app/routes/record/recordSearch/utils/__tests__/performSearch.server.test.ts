@@ -9,8 +9,9 @@ import { performSearch } from '../performSearch.server';
 
 const mockTFunction = vi.fn((key) => key) as unknown as TFunction;
 
+vi.mock('@/data/searchRecords.server');
+
 describe('performSearch', () => {
-  vi.mock('@/data/searchRecords.server');
 
   it('returns empty response with alert on 400 error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {

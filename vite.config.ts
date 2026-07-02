@@ -48,6 +48,9 @@ export default defineConfig({
     env: {
       LOG_LEVEL: 'silent',
     },
+    coverage: {
+      provider: 'istanbul',
+    },
     exclude: ['**/node_modules/**', '**/target/**'],
     projects: [
       {
@@ -69,7 +72,7 @@ export default defineConfig({
             provider: playwright(),
             enabled: true,
             headless: true,
-            instances: [{ browser: 'firefox' }],
+            instances: [{ browser: 'chromium' }],
           },
         },
       },

@@ -35,14 +35,12 @@ describe('getSessionCookieOptions', () => {
       secrets: ['secret1', 'secret2'],
       secure: true,
     });
-    vi.unstubAllEnvs();
   });
 
   it('creates an insecure cookie when explicitly disabled', () => {
     vi.stubEnv('SESSION_SECURE', 'false');
     const actual = getSessionCookieOptions();
     expect(actual.secure).toEqual(false);
-    vi.unstubAllEnvs();
   });
 
   it('creates a secure cookie by default', () => {
@@ -50,8 +48,24 @@ describe('getSessionCookieOptions', () => {
     expect(actual.secure).toEqual(true);
   });
 
-  it('sets secrets to undefiend by default', () => {
+  it('sets secrets to undefined by default', () => {
     const actual = getSessionCookieOptions();
     expect(actual.secrets).toBeUndefined();
+  });
+
+  it('keeps cookie secure for values other than false', () => {
+    vi.stubEnv('SESSION_SECURE', '0');
+
+    const actual = getSessionCookieOptions();
+
+    expect(actual.secure).toEqual(true);
+  });
+
+  it('splits a single secret into an array with one value', () => {
+    vi.stubEnv('SESSION_SECRETS', 'secret1');
+
+    const actual = getSessionCookieOptions();
+
+    expect(actual.secrets).toEqual(['secret1']);
   });
 });
