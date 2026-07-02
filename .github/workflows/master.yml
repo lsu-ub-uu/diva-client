@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - run: npm ci
-      - run: npx playwright install --with-deps firefox
+      - run: npx playwright install --with-deps chromium
       - run: npm run test:ci
 
   build:
