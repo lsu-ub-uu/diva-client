@@ -43,7 +43,6 @@ export const CollectionSelectFilter = ({
         }}
         ref={selectRef}
       >
-        <option value=''>--</option>
         {filter.options.map((option) => (
           <option key={option.value} value={option.value}>
             {t(option.text)}

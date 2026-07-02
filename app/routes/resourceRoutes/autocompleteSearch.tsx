@@ -33,6 +33,10 @@ export const loader = async ({ params, url, context }: Route.LoaderArgs) => {
       query,
       auth,
     );
+    console.log('autocomplete search result', {
+      query: JSON.stringify(query),
+      result,
+    });
     return { result: result.data };
   } catch (error) {
     logError(error, 'Error while performing autocomplete search');

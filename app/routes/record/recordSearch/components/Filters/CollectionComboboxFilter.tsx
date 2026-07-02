@@ -1,4 +1,4 @@
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { Combobox } from '@/components/Combobox/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
 import type { CollectionFilter } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { useState } from 'react';
@@ -37,19 +37,20 @@ export const CollectionComboboxFilter = ({
       size='small'
       errorMessage={validationError && t(validationError)}
     >
-      <ComboboxSelect
-        name={filter.name}
+      <Combobox
         value={value}
         onChange={(newValue) => {
           setValue(newValue as string);
           setPendingSync(true);
           forceSubmit();
         }}
+        invalid={validationError !== undefined}
         options={filter.options.map((option) => ({
           value: option.value,
-          label: option.text,
+          label: t(option.text),
         }))}
       />
+      <input type='hidden' name={filter.name} value={value} />
     </Fieldset>
   );
 };

@@ -20,21 +20,17 @@ import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { type ReactNode, use } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 
+import { Autocomplete } from '@/components/Autocomplete/Autocomplete';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getErrorMessageForField } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@/components/Input/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord } from '@/types/record';
 import { assertDefined } from '@/utils/invariant';
 import { useMember } from '@/utils/rootLoaderDataUtils';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { href, useFetcher } from 'react-router';
@@ -66,31 +62,56 @@ export const RecordLinkWithSearch = ({
     'Record link has no search presentation',
   );
 
-  const handleComboboxInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const comboboxInputValue = event.currentTarget.value;
+  const handleAutocompleteInputChange = useDebouncedCallback(
+    (autocompleteInputValue: string) => {
+      const data = {
+        [recordLinkSearchPresentation.autocompleteSearchTerm.name]:
+          autocompleteInputValue,
+      };
 
-    const data = {
-      [recordLinkSearchPresentation.autocompleteSearchTerm.name]:
-        comboboxInputValue,
-    };
+      if (
+        recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm &&
+        member?.memberPermissionUnit
+      ) {
+        data[
+          recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm.name
+        ] = `permissionUnit_${member?.memberPermissionUnit}`;
+      }
 
-    if (
-      recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm &&
-      member?.memberPermissionUnit
-    ) {
-      data[
-        recordLinkSearchPresentation.permissionUnitLinkedRecordIdSearchTerm.name
-      ] = `permissionUnit_${member?.memberPermissionUnit}`;
+      fetcher.submit(data, {
+        method: 'GET',
+        action: href('/autocompleteSearch/:searchType', {
+          searchType: recordLinkSearchPresentation.searchType,
+        }),
+      });
+    },
+    300,
+  );
+
+  const getAutocompleteOptions = () => {
+    if (!fetcher.data) {
+      return [];
     }
 
-    fetcher.submit(data, {
-      method: 'GET',
-      action: href('/autocompleteSearch/:searchType', {
-        searchType: recordLinkSearchPresentation.searchType,
-      }),
-    });
+    if (fetcher.data.result.length === 0) {
+      return [
+        {
+          value: '',
+          presentation: t('divaClient_recordLinkAutocompleteNoResultsText'),
+        },
+      ];
+    }
+
+    return fetcher.data.result.map((result: BFFDataRecord) => ({
+      value: result.id,
+      presentation: (
+        <OutputPresentation
+          data={transformToRaw(result.data)}
+          formSchema={result.presentation!}
+          compact
+        />
+      ),
+    }));
   };
 
   return (
@@ -113,53 +134,72 @@ export const RecordLinkWithSearch = ({
         <Controller
           control={control}
           name={path}
-          render={({ field: { name, value, onChange } }) => (
-            <Combobox
-              name={name}
+          render={({ field: { value, onChange } }) => (
+            <Autocomplete
               value={value}
+              onAutocompleteInputChange={handleAutocompleteInputChange}
               onChange={(recordId) =>
                 onChange({
                   linkedRecordType: component.recordLinkType,
                   value: recordId,
                 })
               }
-            >
-              <ComboboxInput
-                aria-invalid={errorMessage !== undefined}
-                aria-busy={fetcher.state !== 'idle'}
-                placeholder={t(
-                  'divaClient_recordLinkAutocompletePlaceholderText',
-                  { recordType: label.toLowerCase() },
-                )}
-                name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
-                onChange={handleComboboxInputChange}
-              />
-              <ComboboxOptions anchor='bottom'>
-                {fetcher.state === 'idle' &&
-                  fetcher.data &&
-                  fetcher.data.result.map((result: BFFDataRecord) => (
-                    <ComboboxOption key={result.id} value={result.id}>
-                      <OutputPresentation
-                        data={transformToRaw(result.data)}
-                        formSchema={result.presentation!}
-                        compact
-                      />
-                    </ComboboxOption>
-                  ))}
-                {fetcher.state === 'idle' &&
-                  fetcher.data &&
-                  fetcher.data.result.length === 0 && (
-                    <ComboboxOption disabled value=''>
-                      {t('divaClient_recordLinkAutocompleteNoResultsText')}
-                    </ComboboxOption>
-                  )}
-                {fetcher.state === 'loading' && (
-                  <ComboboxOption disabled value=''>
-                    {t('divaClient_recordLinkAutocompleteSearchingText')}
-                  </ComboboxOption>
-                )}
-              </ComboboxOptions>
-            </Combobox>
+              options={getAutocompleteOptions()}
+              invalid={!!errorMessage}
+              loading={fetcher.state !== 'idle'}
+              placeholder={t(
+                'divaClient_recordLinkAutocompletePlaceholderText',
+                {
+                  recordType: label.toLowerCase(),
+                },
+              )}
+            />
+            // <Combobox
+            //   name={name}
+            //   value={value}
+            //   onChange={(recordId) =>
+            //     onChange({
+            //       linkedRecordType: component.recordLinkType,
+            //       value: recordId,
+            //     })
+            //   }
+            // >
+            //   <ComboboxInput
+            //     aria-invalid={errorMessage !== undefined}
+            //     aria-busy={fetcher.state !== 'idle'}
+            //     placeholder={t(
+            //       'divaClient_recordLinkAutocompletePlaceholderText',
+            //       { recordType: label.toLowerCase() },
+            //     )}
+            //     name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
+            //     onChange={handleComboboxInputChange}
+            //   />
+            //   <ComboboxOptions anchor='bottom'>
+            //     {fetcher.state === 'idle' &&
+            //       fetcher.data &&
+            //       fetcher.data.result.map((result: BFFDataRecord) => (
+            //         <ComboboxOption key={result.id} value={result.id}>
+            //           <OutputPresentation
+            //             data={transformToRaw(result.data)}
+            //             formSchema={result.presentation!}
+            //             compact
+            //           />
+            //         </ComboboxOption>
+            //       ))}
+            //     {fetcher.state === 'idle' &&
+            //       fetcher.data &&
+            //       fetcher.data.result.length === 0 && (
+            //         <ComboboxOption disabled value=''>
+            //           {t('divaClient_recordLinkAutocompleteNoResultsText')}
+            //         </ComboboxOption>
+            //       )}
+            //     {fetcher.state === 'loading' && (
+            //       <ComboboxOption disabled value=''>
+            //         {t('divaClient_recordLinkAutocompleteSearchingText')}
+            //       </ComboboxOption>
+            //     )}
+            //   </ComboboxOptions>
+            // </Combobox>
           )}
         />
       </Fieldset>
