@@ -32,7 +32,9 @@ export default defineConfig({
       exclude: 'app/icons/**/*.svg?react',
     }),
   ],
-
+  ssr: {
+    noExternal: ['@react-router/express', 'remix-hook-form'],
+  },
   resolve: {
     tsconfigPaths: true,
     /**

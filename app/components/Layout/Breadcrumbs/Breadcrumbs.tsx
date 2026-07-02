@@ -29,15 +29,15 @@ export interface HandleWithBreadcrumb {
 }
 
 export interface MatchWithBreadcrumb extends UIMatch {
-  data: {
+  loaderData: {
     breadcrumb: string;
   };
 }
 
 const hasBreadcrumb = (match: UIMatch): match is MatchWithBreadcrumb =>
-  match.data != null &&
-  typeof match.data === 'object' &&
-  'breadcrumb' in match.data;
+  match.loaderData != null &&
+  typeof match.loaderData === 'object' &&
+  'breadcrumb' in match.loaderData;
 
 export const Breadcrumbs = () => {
   const matches = useMatches();
@@ -73,7 +73,9 @@ export const Breadcrumbs = () => {
           }
           crumbs.push(
             <li key={match.id}>
-              <NavLink to={match.pathname}>{match.data.breadcrumb}</NavLink>
+              <NavLink to={match.pathname}>
+                {match.loaderData.breadcrumb}
+              </NavLink>
             </li>,
           );
           return crumbs;
