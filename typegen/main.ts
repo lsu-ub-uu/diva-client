@@ -51,7 +51,7 @@ try {
   });
   fs.writeFileSync(outputPath, formattedCode, 'utf8');
 
-  console.info('Types generated at ${}:');
+  console.info(`Types generated at ${outputPath}`);
 } catch (error) {
   console.error(error, 'Error formatting code');
   process.exit(1);
