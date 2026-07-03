@@ -44,6 +44,7 @@ beforeAll(() => {
   window.open = vi.fn();
   HTMLElement.prototype.showPopover = vi.fn();
   HTMLElement.prototype.hidePopover = vi.fn();
+  HTMLElement.prototype.scrollIntoView = vi.fn();
   CSS.supports = vi.fn().mockReturnValue(true);
 
   HTMLDialogElement.prototype.showModal = vi.fn();

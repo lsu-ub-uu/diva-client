@@ -1,11 +1,12 @@
+import { isTouchDevice } from '@/utils/isTouchDevice';
 import { FilterIcon } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { ButtonProps } from '../Button/Button';
 import { Fieldset } from '../Input/Fieldset';
 import { Input, type InputProps } from '../Input/Input';
 import styles from './Menu.module.css';
 import { MenuContext } from './MenuContext';
-import type { ButtonProps } from '../Button/Button';
-import { isTouchDevice } from '@/utils/isTouchDevice';
 
 export interface MenuProps {
   title?: string;
@@ -36,6 +37,7 @@ export const Menu = ({
   menuRef,
   triggerId,
 }: MenuProps) => {
+  const { t } = useTranslation();
   return (
     <div
       id={id}
@@ -53,7 +55,10 @@ export const Menu = ({
         {title && <h2 className={styles['menu-title']}>{title}</h2>}
         {useFilter && (
           <Fieldset size='small' className={styles['menu-filter']}>
-            <Input placeholder='Filtrera...' {...filterInputProps} />
+            <Input
+              placeholder={`${t('divaClient_filteringText')}`}
+              {...filterInputProps}
+            />
             <FilterIcon className={styles['menu-filter-icon']} />
           </Fieldset>
         )}

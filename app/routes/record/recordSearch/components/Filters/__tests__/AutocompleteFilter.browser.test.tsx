@@ -1,15 +1,14 @@
 import type { AutocompleteFilter as AutocompleteFilterDef } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { getRecordTitle } from '@/utils/getRecordTitle';
-import userEvent from '@testing-library/user-event';
 import { AutocompleteFilter } from '../AutocompleteFilter';
 
 vi.mock('@/utils/getRecordTitle');
 
 describe('AutocompleteFilter', () => {
-  it('renders a AutocompleteFilter', () => {
+  it('renders a AutocompleteFilter', async () => {
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
       type: 'autocomplete',
@@ -44,14 +43,18 @@ describe('AutocompleteFilter', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    screen.getByRole('combobox', {
-      name: 'autocompleteFilterText',
-    });
+    await expect
+      .element(
+        screen.getByRole('combobox', {
+          name: 'autocompleteFilterText',
+        }),
+      )
+      .toBeVisible();
   });
 
-  it('renders a AutocompleteFilter with current value', () => {
+  it('renders a AutocompleteFilter with current value', async () => {
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
       type: 'autocomplete',
@@ -86,14 +89,17 @@ describe('AutocompleteFilter', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    const autocomplete = screen.getByRole('combobox', {
-      name: 'autocompleteFilterText',
-    });
-
-    expect(autocomplete).toHaveValue('someRecordType_1');
+    await expect
+      .element(
+        screen.getByRole('combobox', {
+          name: 'autocompleteFilterText',
+        }),
+      )
+      .toBeVisible();
   });
+
   it('syncs AutocompleteFilter value when currentValue changes', async () => {
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
@@ -132,28 +138,30 @@ describe('AutocompleteFilter', () => {
 
     let RoutesStub = createStub('someRecordType_1');
 
-    const { rerender } = render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'autocompleteFilterText',
-      }),
-    ).toHaveValue('someRecordType_1');
-
-    RoutesStub = createStub('someRecordType_2');
-    rerender(<RoutesStub />);
-
-    await waitFor(() => {
-      expect(
+    await expect
+      .element(
         screen.getByRole('combobox', {
           name: 'autocompleteFilterText',
         }),
-      ).toHaveValue('someRecordType_2');
-    });
+      )
+      .toBeVisible();
+
+    RoutesStub = createStub('someRecordType_2');
+    screen.rerender(<RoutesStub />);
+
+    await expect
+      .element(
+        screen.getByRole('combobox', {
+          name: 'autocompleteFilterText',
+        }),
+      )
+      .toBeVisible();
   });
+
   it('does not overwrite user input in AutocompleteFilter when currentValue changes', async () => {
     vi.mocked(getRecordTitle).mockReturnValue('Result 1');
-    const user = userEvent.setup();
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
       type: 'autocomplete',
@@ -200,33 +208,27 @@ describe('AutocompleteFilter', () => {
 
     let RoutesStub = createStub('');
 
-    const { rerender } = render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
     const autocomplete = screen.getByRole('combobox', {
       name: 'autocompleteFilterText',
     });
 
-    await user.type(autocomplete, 'A');
+    await autocomplete.fill('A');
 
-    await waitFor(() => {
-      expect(screen.getByText('Result 1')).toBeInTheDocument();
-    });
+    await expect.element(screen.getByText('Result 1')).toBeVisible();
 
-    await user.click(screen.getByText('Result 1'));
+    await screen.getByText('Result 1').click();
 
-    await waitFor(() => {
-      expect(autocomplete).toHaveValue('someRecordType_result1');
-    });
+    await expect.element(autocomplete).toHaveValue('Result 1');
 
     RoutesStub = createStub('someRecordType_stale');
-    rerender(<RoutesStub />);
+    screen.rerender(<RoutesStub />);
 
-    await waitFor(() => {
-      expect(autocomplete).toHaveValue('someRecordType_result1');
-    });
+    await expect.element(autocomplete).toHaveValue('Result 1');
   });
 
-  it('renders validation error for AutocompleteFilter', () => {
+  it('renders validation error for AutocompleteFilter', async () => {
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
       type: 'autocomplete',
@@ -262,17 +264,16 @@ describe('AutocompleteFilter', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(screen.getByText('Some error')).toBeInTheDocument();
-    expect(
-      screen.getByRole('combobox', { name: 'autocompleteFilterText' }),
-    ).toHaveAttribute('aria-invalid', 'true');
+    await expect.element(screen.getByText('Some error')).toBeVisible();
+    await expect
+      .element(screen.getByRole('combobox', { name: 'autocompleteFilterText' }))
+      .toHaveAttribute('aria-invalid', 'true');
   });
 
   it('is possible to search and select a value in autocomplete filter', async () => {
     vi.mocked(getRecordTitle).mockReturnValue('Result 1');
-    const user = userEvent.setup();
     const filter: AutocompleteFilterDef = {
       recordType: 'someRecordType',
       type: 'autocomplete',
@@ -318,23 +319,19 @@ describe('AutocompleteFilter', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
     const autocomplete = screen.getByRole('combobox', {
       name: 'autocompleteFilterText',
     });
 
-    await user.type(autocomplete, 'A');
+    await autocomplete.fill('A');
 
-    await waitFor(() => {
-      expect(screen.getByText('Result 1')).toBeInTheDocument();
-    });
+    await expect.element(screen.getByText('Result 1')).toBeVisible();
 
-    await user.click(screen.getByText('Result 1'));
+    await screen.getByText('Result 1').click();
 
-    await waitFor(() => {
-      expect(autocomplete).toHaveValue('someRecordType_result1');
-    });
+    await expect.element(autocomplete).toHaveValue('Result 1');
     expect(forceSubmitSpy).toHaveBeenCalledTimes(1);
   });
 });

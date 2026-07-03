@@ -1,8 +1,15 @@
 import { isTouchDevice } from '@/utils/isTouchDevice';
 import clsx from 'clsx';
 import { ChevronDownIcon, FilterIcon } from 'lucide-react';
-import { useEffect, useId, useRef, useState, type HTMLAttributes } from 'react';
-import { Fieldset } from '../Input/Fieldset';
+import {
+  use,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type HTMLAttributes,
+} from 'react';
+import { FieldContext, Fieldset } from '../Input/Fieldset';
 import { Input } from '../Input/Input';
 import inputStyles from '../Input/Input.module.css';
 import styles from './Combobox.module.css';
@@ -35,6 +42,7 @@ export const Combobox = ({
   ...rest
 }: ComboboxProps) => {
   const id = useId();
+  const fieldContext = use(FieldContext);
   const comboboxRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const optionRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
@@ -46,7 +54,6 @@ export const Combobox = ({
   );
 
   const ids = {
-    combobox: `combobox-${id}`,
     input: `combobox-input-${id}`,
     popover: `combobox-popover-${id}`,
     listbox: `combobox-listbox-${id}`,
@@ -142,6 +149,7 @@ export const Combobox = ({
   return (
     <>
       <button
+        id={fieldContext?.ids.input}
         className={clsx(
           inputStyles['combobox-input'],
           styles['trigger'],
@@ -152,6 +160,7 @@ export const Combobox = ({
         aria-haspopup='listbox'
         aria-expanded={expanded}
         aria-invalid={invalid}
+        aria-describedby={invalid ? fieldContext?.ids.error : undefined}
         aria-controls={ids.listbox}
         aria-activedescendant={
           activeOption ? ids.option(activeOption) : undefined

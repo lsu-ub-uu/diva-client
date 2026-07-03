@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { DevAccountLoginOptions } from '../DevAccountLoginOptions';
 import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import { Menu } from '@/components/Menu/Menu';
@@ -16,7 +16,7 @@ const menuProps = {
 
 describe('DevAccountLoginOptions', () => {
   it('should render correctly when there are dev accounts', async () => {
-    render(
+    const screen = await render(
       <Menu {...menuProps}>
         <DevAccountLoginOptions
           exampleUsers={
@@ -37,32 +37,28 @@ describe('DevAccountLoginOptions', () => {
         />
       </Menu>,
     );
-    expect(
-      screen.getByRole('heading', { name: 'divaClient_LoginDevAccountText' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('menuitem', { name: 'User Test' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('menuitem', { name: 'User Test2' }),
-    ).toBeInTheDocument();
+    await expect
+      .element(screen.getByText('divaClient_LoginDevAccountText'))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByText('User Test', { exact: true }))
+      .toBeInTheDocument();
+    await expect.element(screen.getByText('User Test2')).toBeInTheDocument();
   });
 
   it('should not render when there are no dev accounts', async () => {
-    render(
+    const screen = await render(
       <Menu {...menuProps}>
         <DevAccountLoginOptions onSelect={vi.fn()} exampleUsers={[]} />
       </Menu>,
     );
 
-    expect(
-      screen.queryByRole('heading', { name: 'divaClient_LoginDevAccountText' }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('menuitem', { name: 'User Test' }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('menuitem', { name: 'Account Another' }),
-    ).not.toBeInTheDocument();
+    await expect
+      .element(screen.getByText('divaClient_LoginDevAccountText'))
+      .not.toBeInTheDocument();
+    await expect.element(screen.getByText('User Test')).not.toBeInTheDocument();
+    await expect
+      .element(screen.getByText('Account Another'))
+      .not.toBeInTheDocument();
   });
 });
