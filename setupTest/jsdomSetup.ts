@@ -42,6 +42,7 @@ beforeAll(() => {
   };
 
   window.open = vi.fn();
+  window.matchMedia = () => ({ matches: false }) as MediaQueryList;
   HTMLElement.prototype.showPopover = vi.fn();
   HTMLElement.prototype.hidePopover = vi.fn();
   HTMLElement.prototype.scrollIntoView = vi.fn();
