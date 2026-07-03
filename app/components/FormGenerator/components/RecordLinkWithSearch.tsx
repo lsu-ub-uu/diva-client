@@ -154,52 +154,6 @@ export const RecordLinkWithSearch = ({
                 },
               )}
             />
-            // <Combobox
-            //   name={name}
-            //   value={value}
-            //   onChange={(recordId) =>
-            //     onChange({
-            //       linkedRecordType: component.recordLinkType,
-            //       value: recordId,
-            //     })
-            //   }
-            // >
-            //   <ComboboxInput
-            //     aria-invalid={errorMessage !== undefined}
-            //     aria-busy={fetcher.state !== 'idle'}
-            //     placeholder={t(
-            //       'divaClient_recordLinkAutocompletePlaceholderText',
-            //       { recordType: label.toLowerCase() },
-            //     )}
-            //     name={recordLinkSearchPresentation.autocompleteSearchTerm.name}
-            //     onChange={handleComboboxInputChange}
-            //   />
-            //   <ComboboxOptions anchor='bottom'>
-            //     {fetcher.state === 'idle' &&
-            //       fetcher.data &&
-            //       fetcher.data.result.map((result: BFFDataRecord) => (
-            //         <ComboboxOption key={result.id} value={result.id}>
-            //           <OutputPresentation
-            //             data={transformToRaw(result.data)}
-            //             formSchema={result.presentation!}
-            //             compact
-            //           />
-            //         </ComboboxOption>
-            //       ))}
-            //     {fetcher.state === 'idle' &&
-            //       fetcher.data &&
-            //       fetcher.data.result.length === 0 && (
-            //         <ComboboxOption disabled value=''>
-            //           {t('divaClient_recordLinkAutocompleteNoResultsText')}
-            //         </ComboboxOption>
-            //       )}
-            //     {fetcher.state === 'loading' && (
-            //       <ComboboxOption disabled value=''>
-            //         {t('divaClient_recordLinkAutocompleteSearchingText')}
-            //       </ComboboxOption>
-            //     )}
-            //   </ComboboxOptions>
-            // </Combobox>
           )}
         />
       </Fieldset>
