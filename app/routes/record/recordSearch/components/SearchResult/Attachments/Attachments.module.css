@@ -2,8 +2,13 @@
   border: 1px solid var(--color-thin-border);
   border-radius: var(--border-radius-s);
   transition: filter 0.1s ease-in-out;
+  flex-shrink: 0;
 
   &:hover {
     filter: brightness(1.1) contrast(1.1);
   }
+}
+
+.attachment-link {
+  flex-shrink: 0;
 }

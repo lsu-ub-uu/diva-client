@@ -45,6 +45,7 @@ export const Attachments = ({ attachments }: AttachmentsProps) => {
       href={createDownloadLinkFromResourceLink(binary.master.master)}
       target='_blank'
       rel='noopener noreferrer'
+      className={styles['attachment-link']}
     >
       <img
         className={styles['attachment-thumbnail']}

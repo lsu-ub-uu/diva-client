@@ -1,9 +1,8 @@
 .tooltip {
   margin: 0;
   inset: unset;
-  bottom: anchor(top);
-  justify-self: anchor-center;
-  position-try: normal flip-block;
+  position-area: top span-all;
+  position-try-fallbacks: flip-block;
   background-color: var(--color-background-inverted);
   color: var(--color-text-inverted);
   padding: var(--gap-s);
