@@ -4,9 +4,9 @@ import type {
 } from '@/components/FormGenerator/types';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { RecordFormWithRoutesStub } from './RecordForm.test';
+import { RecordFormWithRoutesStub } from './RecordFormTestHelper';
 
-describe('RecordForm', () => {
+describe('RecordFormBrowser', () => {
   it('is possible to move a filterable combobox up', async () => {
     const formSchema: RecordFormSchema = {
       validationTypeId: 'someValidationTypeId',
@@ -62,6 +62,7 @@ describe('RecordForm', () => {
         name: 'Option 1',
         exact: true,
       })
+      .first()
       .click();
 
     await comboboxes.last().click();

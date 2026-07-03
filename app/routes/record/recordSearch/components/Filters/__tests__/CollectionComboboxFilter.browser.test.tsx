@@ -1,8 +1,8 @@
 import type { CollectionFilter } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it, vi } from 'vitest';
-import { userEvent } from '@vitest/browser/context';
 import { CollectionComboboxFilter } from '../CollectionComboboxFilter';
+import { userEvent } from 'vitest/browser';
 
 describe('CollectionComboboxFilter', () => {
   it('renders a CollectionFilter', async () => {

@@ -70,35 +70,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub, Link } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
-
-const actionSpy = vi.fn();
-
-export const RecordFormWithRoutesStub = ({
-  formSchema,
-  record,
-}: {
-  formSchema: RecordFormSchema;
-  record?: BFFDataRecord;
-}) => {
-  const RoutesStub = createRoutesStub([
-    {
-      path: '/',
-      Component: () => (
-        <RecordForm
-          formSchema={formSchema}
-          defaultValues={createDefaultValuesFromFormSchema(
-            formSchema,
-            record?.data,
-          )}
-        />
-      ),
-      action: actionSpy,
-    },
-  ]);
-
-  // eslint-disable-next-line react-hooks/static-components
-  return <RoutesStub />;
-};
+import { actionSpy, RecordFormWithRoutesStub } from './RecordFormTestHelper';
 
 describe('<Form />', () => {
   describe('form', () => {
