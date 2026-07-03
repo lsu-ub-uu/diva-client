@@ -1,8 +1,8 @@
 import type { CollectionFilter } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { describe, expect, it, vi } from 'vitest';
 import { CollectionComboboxFilter } from '../CollectionComboboxFilter';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from 'vitest/browser';
 
 describe('CollectionComboboxFilter', () => {
   it('renders a CollectionFilter', async () => {
@@ -23,7 +23,7 @@ describe('CollectionComboboxFilter', () => {
       },
     };
 
-    render(
+    const screen = await render(
       <CollectionComboboxFilter
         filter={filter}
         currentValue=''
@@ -31,14 +31,10 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toBeInTheDocument();
+    await expect.element(screen.getByRole('combobox')).toBeVisible();
   });
 
-  it('renders a CollectionFilter with current value', () => {
+  it('renders a CollectionFilter with current value', async () => {
     const filter: CollectionFilter = {
       type: 'collection',
       id: 'someCollectionFilterId',
@@ -56,7 +52,7 @@ describe('CollectionComboboxFilter', () => {
       },
     };
 
-    render(
+    const screen = await render(
       <CollectionComboboxFilter
         filter={filter}
         currentValue='option1'
@@ -64,14 +60,12 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toHaveValue('Option 1');
+    await expect
+      .element(screen.getByRole('combobox'))
+      .toHaveTextContent('Option 1');
   });
 
-  it('syncs CollectionFilter value when currentValue changes', () => {
+  it('syncs CollectionFilter value when currentValue changes', async () => {
     const filter: CollectionFilter = {
       type: 'collection',
       id: 'someCollectionFilterId',
@@ -89,7 +83,7 @@ describe('CollectionComboboxFilter', () => {
       },
     };
 
-    const { rerender } = render(
+    const screen = await render(
       <CollectionComboboxFilter
         filter={filter}
         currentValue='option2'
@@ -97,13 +91,11 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toHaveValue('Option 2');
+    await expect
+      .element(screen.getByRole('combobox'))
+      .toHaveTextContent('Option 2');
 
-    rerender(
+    screen.rerender(
       <CollectionComboboxFilter
         filter={filter}
         currentValue='option3'
@@ -111,11 +103,9 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('combobox', {
-        name: 'collectionFilterText',
-      }),
-    ).toHaveValue('Option 3');
+    await expect
+      .element(screen.getByRole('combobox'))
+      .toHaveTextContent('Option 3');
   });
 
   it('calls forceSubmit when user selects a new value', async () => {
@@ -138,7 +128,7 @@ describe('CollectionComboboxFilter', () => {
 
     const forceSubmitSpy = vi.fn();
 
-    render(
+    const screen = await render(
       <CollectionComboboxFilter
         filter={filter}
         currentValue='option1'
@@ -146,12 +136,11 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    const combobox = screen.getByRole('combobox', {
-      name: 'collectionFilterText',
-    });
-    const user = userEvent.setup();
-    await user.click(combobox);
-    await user.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+    const combobox = screen.getByRole('combobox');
+    await combobox.click();
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
 
     expect(forceSubmitSpy).toHaveBeenCalledTimes(1);
   });
@@ -171,7 +160,7 @@ describe('CollectionComboboxFilter', () => {
       repeat: { repeatMin: 0, repeatMax: 1 },
     };
 
-    const { rerender } = render(
+    const screen = await render(
       <CollectionComboboxFilter
         filter={filter}
         currentValue=''
@@ -179,26 +168,23 @@ describe('CollectionComboboxFilter', () => {
       />,
     );
 
-    const combobox = screen.getByRole('combobox', {
-      name: 'collectionFilterText',
-    });
-    const user = userEvent.setup();
+    const combobox = screen.getByRole('combobox');
 
-    // User selects option2 (first ArrowDown from empty) — pendingSync becomes true
-    await user.click(combobox);
-    await user.keyboard('{ArrowDown}{Enter}');
+    // User selects option1 (first ArrowDown from empty)
+    await combobox.click();
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
 
-    // A stale navigation completes with a different currentValue before the
-    // user's own navigation finishes
-    rerender(
+    // A stale navigation completes with a different currentValue
+    screen.rerender(
       <CollectionComboboxFilter
         filter={filter}
-        currentValue='option1'
+        currentValue='option3'
         forceSubmit={vi.fn()}
       />,
     );
 
-    // User's selection (option2) must be preserved
-    expect(combobox).toHaveValue('Option 2');
+    // User's selection (option1) must be preserved
+    await expect.element(combobox).toHaveTextContent('Option 1');
   });
 });

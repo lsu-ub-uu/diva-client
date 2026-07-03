@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { MenuItem } from '@/components/Menu/MenuItem';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
-import { MenuItem } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { href, Link } from 'react-router';
 
@@ -36,9 +36,9 @@ export const PasswordLoginMenuOptions = ({
   }
   return (
     <>
-      <h2>{t('divaClient_LoginPasswordText')}</h2>
+      <h3>{t('divaClient_LoginPasswordText')}</h3>
       {passwordLoginUnits.map(({ loginDescription, id }) => (
-        <MenuItem key='tempLoginUnitPassword'>
+        <MenuItem key={id} text={t(loginDescription)}>
           <Link
             to={{
               pathname: href('/login'),

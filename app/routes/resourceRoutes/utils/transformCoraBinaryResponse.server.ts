@@ -1,4 +1,4 @@
-import { mimeTypeToFileExtension } from './mimeTypeToFileExtension';
+import { mimeTypeToFileExtension } from './mimeTypeToFileExtension.server';
 
 export const transformCoraBinaryResponse = async (
   response: Response,

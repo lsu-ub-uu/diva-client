@@ -17,19 +17,33 @@
  */
 
 .snackbar {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  inset: unset;
+  overflow: visible;
   position: fixed;
   top: var(--gap-l);
   right: var(--gap-l);
   box-shadow: var(--elevation);
   border-radius: var(--border-radius);
-  z-index: 1;
+  opacity: 0;
+  transform: translateX(100%);
   transition:
     opacity 0.25s ease-out,
-    transform 0.25s ease-out;
+    transform 0.25s ease-out,
+    display 0.25s ease-out allow-discrete,
+    overlay 0.25s ease-out allow-discrete;
 
-  &[data-closed] {
-    opacity: 0;
-    transform: translateX(100%);
+  &:popover-open {
+    opacity: 1;
+    transform: translateX(0);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateX(100%);
+    }
   }
 }
 

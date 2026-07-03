@@ -1,9 +1,3 @@
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@/components/Input/Combobox';
 import { Fieldset } from '@/components/Input/Fieldset';
 import type { AutocompleteFilter as AutocompleteFilterDef } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import type { BFFDataRecord } from '@/types/record';
@@ -12,6 +6,8 @@ import { href, useFetcher } from 'react-router';
 import { useLanguage } from '@/i18n/useLanguage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
+import { Autocomplete } from '@/components/Autocomplete/Autocomplete';
+import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
 
 interface AutocompleteFilterProps {
   filter: AutocompleteFilterDef;
@@ -44,22 +40,40 @@ export const AutocompleteFilter = ({
     }
   }
 
-  const handleComboboxInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    event.stopPropagation();
-    const comboboxInputValue = event.currentTarget.value;
+  const handleAutocompleteInputChange = useDebouncedCallback(
+    (autocompleteInputValue: string) => {
+      const data = {
+        [filter.searchTerm]: autocompleteInputValue,
+      };
 
-    const data = {
-      [filter.searchTerm]: comboboxInputValue,
-    };
+      fetcher.submit(data, {
+        method: 'GET',
+        action: href('/autocompleteSearch/:searchType', {
+          searchType: filter.searchType,
+        }),
+      });
+    },
+    300,
+  );
 
-    fetcher.submit(data, {
-      method: 'GET',
-      action: href('/autocompleteSearch/:searchType', {
-        searchType: filter.searchType,
-      }),
-    });
+  const getAutocompleteOptions = () => {
+    if (!fetcher.data) {
+      return [];
+    }
+
+    if (fetcher.data.result.length === 0) {
+      return [
+        {
+          value: '',
+          presentation: t('divaClient_recordLinkAutocompleteNoResultsText'),
+        },
+      ];
+    }
+
+    return fetcher.data.result.map((result: BFFDataRecord) => ({
+      value: result.id,
+      presentation: getRecordTitle(result, language),
+    }));
   };
 
   return (
@@ -68,44 +82,22 @@ export const AutocompleteFilter = ({
       size='small'
       errorMessage={validationError && t(validationError)}
     >
-      <Combobox
-        name={filter.name}
+      <Autocomplete
+        onAutocompleteInputChange={handleAutocompleteInputChange}
+        options={getAutocompleteOptions()}
         value={value}
         onChange={(newValue) => {
           setValue(newValue ? `${filter.recordType}_${newValue}` : '');
           setPendingSync(true);
           forceSubmit();
         }}
-      >
-        <ComboboxInput
-          onChange={handleComboboxInputChange}
-          placeholder={t('divaClient_recordLinkAutocompletePlaceholderText', {
-            recordType: t(filter.textId).toLowerCase(),
-          })}
-          displayValue={(item) => currentValueText ?? item}
-        />
-        <ComboboxOptions anchor='bottom'>
-          {fetcher.state === 'idle' &&
-            fetcher.data &&
-            fetcher.data.result.map((result: BFFDataRecord) => (
-              <ComboboxOption key={result.id} value={result.id}>
-                {getRecordTitle(result, language)}
-              </ComboboxOption>
-            ))}
-          {fetcher.state === 'idle' &&
-            fetcher.data &&
-            fetcher.data.result.length === 0 && (
-              <ComboboxOption disabled value=''>
-                {t('divaClient_recordLinkAutocompleteNoResultsText')}
-              </ComboboxOption>
-            )}
-          {fetcher.state === 'loading' && (
-            <ComboboxOption disabled value=''>
-              {t('divaClient_recordLinkAutocompleteSearchingText')}
-            </ComboboxOption>
-          )}
-        </ComboboxOptions>
-      </Combobox>
+        invalid={!!validationError}
+        displayValue={currentValueText}
+        placeholder={t('divaClient_recordLinkAutocompletePlaceholderText', {
+          recordType: t(filter.textId).toLowerCase(),
+        })}
+      />
+      <input type='hidden' name={filter.name} value={value} />
     </Fieldset>
   );
 };

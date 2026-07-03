@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mimeTypeToFileExtension } from '../mimeTypeToFileExtension';
+import { mimeTypeToFileExtension } from '../mimeTypeToFileExtension.server';
 describe('mimeTypeToFileExtension', () => {
   it.each([
     ['audio/aac', 'aac'],

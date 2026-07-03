@@ -124,7 +124,7 @@ describe('<Snackbar />', () => {
     vi.useRealTimers();
   });
 
-  it('defaults aria-live to assertive', async () => {
+  it('sets aria-live to polite', async () => {
     const screen = await render(
       <Snackbar
         open={true}
@@ -136,27 +136,8 @@ describe('<Snackbar />', () => {
 
     await expect
       .element(screen.getByRole('alert'))
-      .toHaveAttribute('aria-live', 'assertive');
+      .toHaveAttribute('aria-live', 'polite');
   });
-
-  it.each(['assertive', 'polite', 'off'] as const)(
-    'sets aria-live to %s when provided',
-    async (ariaLive) => {
-      const screen = await render(
-        <Snackbar
-          open={true}
-          onClose={vi.fn()}
-          text='Snacktext'
-          severity='info'
-          ariaLive={ariaLive}
-        />,
-      );
-
-      await expect
-        .element(screen.getByRole('alert'))
-        .toHaveAttribute('aria-live', ariaLive);
-    },
-  );
 
   it('renders text passed as a ReactNode', async () => {
     const screen = await render(
@@ -189,8 +170,8 @@ describe('<Snackbar />', () => {
     },
   );
 
-  it('renders content into document.body via portal', async () => {
-    const { container, baseElement } = await render(
+  it('renders in the top layer via popover', async () => {
+    const screen = await render(
       <Snackbar
         open={true}
         onClose={vi.fn()}
@@ -199,9 +180,8 @@ describe('<Snackbar />', () => {
       />,
     );
 
-    // Portal bypasses the local render container
-    expect(container.querySelector('[role="alert"]')).toBeNull();
-    // Content is rendered in document.body
-    expect(baseElement.querySelector('[role="alert"]')).not.toBeNull();
+    await expect
+      .element(screen.getByRole('alert'))
+      .toHaveAttribute('popover', 'manual');
   });
 });

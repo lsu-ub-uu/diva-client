@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@codemirror/lang-json": "^6.0.2",
-    "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.4.0",
     "@react-router/express": "^8.1.0",
     "@react-router/node": "^8.1.0",

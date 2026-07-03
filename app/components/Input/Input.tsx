@@ -21,7 +21,7 @@ import clsx from 'clsx';
 import { use, type HTMLProps, type Ref } from 'react';
 import { FieldContext } from './Fieldset';
 
-interface InputProps extends HTMLProps<HTMLInputElement> {
+export interface InputProps extends HTMLProps<HTMLInputElement> {
   ref?: Ref<HTMLInputElement>;
 }
 

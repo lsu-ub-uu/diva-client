@@ -125,10 +125,16 @@ describe('createFilters', () => {
       textId: 'someTextId',
       options: [
         {
+          text: '--',
+          value: '',
+        },
+        {
           text: 'someCollectionItemTextId',
           value: 'someItem',
         },
       ],
+      placeholderTextId: undefined,
+
       repeat: {
         repeatMin: 0,
         repeatMax: 1,

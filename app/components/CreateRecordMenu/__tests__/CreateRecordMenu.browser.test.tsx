@@ -17,9 +17,7 @@
  */
 
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { renderWithRoutesStub } from '@/utils/testUtils';
-import { act, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
@@ -37,41 +35,51 @@ describe('CreateRecordMenu', () => {
       },
     ]);
 
-    await act(() => render(<RoutesStub />));
+    const screen = await render(<RoutesStub />);
 
     const link = screen.getByRole('link', {
       name: 'divaClient_createText',
     });
 
-    expect(link).toHaveAttribute('href', `/create?validationType=someValue`);
+    await expect
+      .element(link)
+      .toHaveAttribute('href', `/create?validationType=someValue`);
   });
 
   it('renders a dropdown when two validation type', async () => {
-    const user = userEvent.setup();
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <CreateRecordMenu
+            validationTypes={[
+              { value: 'someValue', label: 'someLabel' },
+              { value: 'someOtherValue', label: 'someOtherLabel' },
+            ]}
+            recordTypeTextId={'id'}
+          />
+        ),
+      },
+    ]);
 
-    await act(() =>
-      renderWithRoutesStub(
-        <CreateRecordMenu
-          validationTypes={[
-            { value: 'someValue', label: 'someLabel' },
-            { value: 'someOtherValue', label: 'someOtherLabel' },
-          ]}
-          recordTypeTextId={'id'}
-        />,
-      ),
-    );
+    const screen = await render(<RoutesStub />);
 
     const button = screen.getByRole('button', {
       name: 'divaClient_createText',
     });
-    await user.click(button);
-    expect(screen.getByRole('menuitem', { name: 'someLabel' })).toHaveAttribute(
-      'href',
-      `/create?validationType=someValue`,
-    );
-    expect(
-      screen.getByRole('menuitem', { name: 'someOtherLabel' }),
-    ).toHaveAttribute('href', `/create?validationType=someOtherValue`);
+    await button.click();
+
+    const someLabelItem = screen.getByRole('menuitem', { name: 'someLabel' });
+    await expect
+      .element(someLabelItem.getByRole('link'))
+      .toHaveAttribute('href', `/create?validationType=someValue`);
+
+    const someOtherLabelItem = screen.getByRole('menuitem', {
+      name: 'someOtherLabel',
+    });
+    await expect
+      .element(someOtherLabelItem.getByRole('link'))
+      .toHaveAttribute('href', `/create?validationType=someOtherValue`);
   });
 
   it('renders nothing when no validation type', async () => {
@@ -84,7 +92,9 @@ describe('CreateRecordMenu', () => {
       },
     ]);
 
-    await act(() => render(<RoutesStub />));
-    expect(screen.queryByText('divaClient_createText')).not.toBeInTheDocument();
+    const screen = await render(<RoutesStub />);
+    await expect
+      .element(screen.getByText('divaClient_createText'))
+      .not.toBeInTheDocument();
   });
 });

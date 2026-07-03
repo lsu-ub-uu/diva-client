@@ -1,8 +1,9 @@
-import { DropdownMenu } from '@/components/DropdownMenu/DropdownMenu';
+import { Button } from '@/components/Button/Button';
 import { NavigationLink } from '@/components/Layout/Header/TopNavigation/NavigationLink';
+import { Menu, useMenu } from '@/components/Menu/Menu';
+import { MenuItem } from '@/components/Menu/MenuItem';
 import type { Navigation } from '@/data/getNavigation.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
-import { Menu, MenuButton, MenuItem } from '@headlessui/react';
 import clsx from 'clsx';
 import {
   BookCheckIcon,
@@ -12,7 +13,6 @@ import {
   ChevronDownIcon,
   EllipsisIcon,
   FlaskRoundIcon,
-  GamepadIcon,
   GraduationCapIcon,
   HandCoinsIcon,
   LibraryIcon,
@@ -59,6 +59,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
   const devMode = useIsDevMode();
   const location = useLocation();
   const { t } = useTranslation();
+  const { triggerProps, menuProps } = useMenu();
 
   const isOtherNavActive = navigation.otherNavigationItems.some((navItem) =>
     location.pathname.startsWith(navItem.link),
@@ -66,7 +67,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
 
   return (
     <nav className={styles['top-navigation']}>
-      <ul>
+      <ul className={styles['navigation-list']}>
         {navigation.mainNavigationItems.map((navItem) => (
           <li key={navItem.id}>
             <NavigationLink
@@ -78,57 +79,46 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
         ))}
         {navigation.otherNavigationItems.length > 0 && (
           <li>
-            <Menu>
-              <MenuButton
-                className={clsx(
-                  styles['navigation-link'],
-                  styles['menu-navigation-button'],
-                )}
-                data-active={isOtherNavActive}
-              >
-                <EllipsisIcon />
-                <span className={styles['label']}>
-                  {t('divaClient_moreNavigationText')}
-                </span>
-                <ChevronDownIcon
-                  className={styles['menu-navigation-chevron']}
-                />
-              </MenuButton>
-              <DropdownMenu anchor='bottom start'>
-                {navigation.otherNavigationItems.map((navItem) => (
-                  <MenuItem key={navItem.id}>
+            <Button
+              variant='tertiary'
+              className={clsx(
+                styles['navigation-link'],
+                styles['menu-navigation-button'],
+              )}
+              data-active={isOtherNavActive}
+              {...triggerProps}
+            >
+              <EllipsisIcon />
+              <span className={styles['label']}>
+                {t('divaClient_moreNavigationText')}
+              </span>
+              <ChevronDownIcon className={styles['menu-navigation-chevron']} />
+            </Button>
+            <Menu alignment='center' {...menuProps}>
+              {navigation.otherNavigationItems.map((navItem) => (
+                <MenuItem key={navItem.id}>
+                  <NavLink
+                    to={navItem.link}
+                    className={styles['menu-navigation-link']}
+                  >
+                    {icons[navItem.id]}
+                    {t(navItem.textId)}
+                  </NavLink>
+                </MenuItem>
+              ))}
+              {devMode && (
+                <>
+                  <MenuItem>
                     <NavLink
-                      to={navItem.link}
+                      to={href('/design-system')}
                       className={styles['menu-navigation-link']}
                     >
-                      {icons[navItem.id]}
-                      {t(navItem.textId)}
+                      <PaletteIcon />
+                      Design system
                     </NavLink>
                   </MenuItem>
-                ))}
-                {devMode && (
-                  <>
-                    <MenuItem>
-                      <NavLink
-                        to={href('/design-system')}
-                        className={styles['menu-navigation-link']}
-                      >
-                        <PaletteIcon />
-                        Design system
-                      </NavLink>
-                    </MenuItem>
-                    <MenuItem>
-                      <NavLink
-                        to={href('/presentation-playground')}
-                        className={styles['menu-navigation-link']}
-                      >
-                        <GamepadIcon />
-                        Presentation playground
-                      </NavLink>
-                    </MenuItem>
-                  </>
-                )}
-              </DropdownMenu>
+                </>
+              )}
             </Menu>
           </li>
         )}

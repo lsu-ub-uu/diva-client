@@ -70,44 +70,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub, Link } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
-
-const actionSpy = vi.fn();
-vi.mock('notistack', () => ({ enqueueSnackbar: vi.fn() }));
-
-vi.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (str: string) => str,
-    };
-  },
-}));
-
-const RecordFormWithRoutesStub = ({
-  formSchema,
-  record,
-}: {
-  formSchema: RecordFormSchema;
-  record?: BFFDataRecord;
-}) => {
-  const RoutesStub = createRoutesStub([
-    {
-      path: '/',
-      Component: () => (
-        <RecordForm
-          formSchema={formSchema}
-          defaultValues={createDefaultValuesFromFormSchema(
-            formSchema,
-            record?.data,
-          )}
-        />
-      ),
-      action: actionSpy,
-    },
-  ]);
-
-  // eslint-disable-next-line react-hooks/static-components
-  return <RoutesStub />;
-};
+import { actionSpy, RecordFormWithRoutesStub } from './RecordFormTestHelper';
 
 describe('<Form />', () => {
   describe('form', () => {
@@ -1785,35 +1748,6 @@ describe('<Form />', () => {
       expect(accordionTitle).toBeVisible();
     });
 
-    it('expands accordion when validation error ', async () => {
-      const user = userEvent.setup();
-
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={createAlternativePresentationFormDef(
-            'singleInitiallyHidden',
-            'someTitle',
-            false,
-          )}
-        />,
-      );
-
-      expect(
-        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
-      ).not.toBeInTheDocument();
-
-      await user.click(
-        screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
-      );
-
-      expect(
-        screen.getByRole('textbox', { name: 'someLabelTextId' }),
-      ).toBeVisible();
-      expect(
-        screen.getByRole('textbox', { name: 'someLabelTextId' }),
-      ).toBeInvalid();
-    });
-
     it('expands accordion when appended to field array, even when set to single initially hidden', async () => {
       const formDefinition = {
         validationTypeId: 'someValidationTypeId',
@@ -3017,80 +2951,6 @@ describe('<Form />', () => {
 
       expect(comboboxesAfterMoveDown[0]).toHaveValue('option2');
       expect(comboboxesAfterMoveDown[1]).toHaveValue('option1');
-    });
-
-    it('is possible to move a filterable combobox up', async () => {
-      const formSchema: RecordFormSchema = {
-        validationTypeId: 'someValidationTypeId',
-        form: {
-          type: 'group',
-          presentationId: 'someRootNameInDataPGroup',
-          showLabel: true,
-          label: 'someRootFormGroupText',
-          name: 'someRootNameInData',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          tooltip: {
-            title: 'textId345',
-            body: 'defTextId678',
-          },
-          components: [
-            {
-              type: 'collectionVariable',
-              presentationId: 'someNameInDataVar',
-              name: 'someNameInData',
-              label: 'someLabelTextId',
-              showLabel: true,
-              mode: 'input',
-              placeholder: 'someEmptyTextId',
-              options: Array.from({ length: 30 }, (_, i) => ({
-                label: `Option ${i + 1}`,
-                value: `option${i + 1}`,
-              })),
-              repeat: {
-                repeatMin: 0,
-                repeatMax: 99999,
-                minNumberOfRepeatingToShow: 2,
-              },
-            } satisfies FormComponentCollVar,
-          ],
-          mode: 'input',
-        },
-      };
-
-      render(<RecordFormWithRoutesStub formSchema={formSchema} />);
-
-      const user = userEvent.setup();
-      const comboboxes = screen.getAllByRole('combobox', {
-        name: 'someLabelTextId',
-      });
-
-      await user.click(comboboxes[0]);
-      await user.clear(comboboxes[0]);
-      await user.type(comboboxes[0], 'Option 11');
-      await user.keyboard('{ArrowDown}{Enter}');
-      expect(comboboxes[0]).toHaveValue('Option 11');
-
-      await user.click(comboboxes[1]);
-      await user.clear(comboboxes[1]);
-      await user.type(comboboxes[1], 'Option 21');
-      await user.keyboard('{ArrowDown}{Enter}');
-      expect(comboboxes[1]).toHaveValue('Option 21');
-
-      await user.click(
-        screen.getAllByRole('button', {
-          name: 'divaClient_moveFieldUpText',
-        })[1],
-      );
-
-      const comboboxesAfterMoveUp = screen.getAllByRole('combobox', {
-        name: 'someLabelTextId',
-      });
-      screen.debug(comboboxesAfterMoveUp);
-      expect(comboboxesAfterMoveUp[0]).toHaveValue('Option 21');
-      expect(comboboxesAfterMoveUp[1]).toHaveValue('Option 11');
     });
   });
 });

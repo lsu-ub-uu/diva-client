@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ComboboxSelect } from '@/components/FormGenerator/components/ComboboxSelect';
+import { Combobox } from '@/components/Combobox/Combobox';
 import {
   isComponentCollVar,
   isComponentTextVariable,
@@ -63,7 +63,10 @@ export const InputField = ({
   if (isComponentCollVar(component)) {
     const options = [
       { value: '', label: t('initialEmptyValueText') },
-      ...component.options,
+      ...component.options.map((option) => ({
+        value: option.value,
+        label: t(option.label),
+      })),
     ];
     if (hydrated && component.options.length > 20) {
       return (
@@ -71,7 +74,7 @@ export const InputField = ({
           control={control}
           name={path}
           render={({ field: { name, value, onChange } }) => (
-            <ComboboxSelect
+            <Combobox
               name={name}
               value={value}
               onChange={onChange}

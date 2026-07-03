@@ -3,7 +3,6 @@
   inset: unset;
   position-area: top span-all;
   position-try-fallbacks: flip-block;
-  justify-self: anchor-center;
   background-color: var(--color-background-inverted);
   color: var(--color-text-inverted);
   padding: var(--gap-s);

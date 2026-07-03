@@ -1,7 +1,7 @@
 .popover {
   margin: 0;
   inset: unset;
-  position-area: bottom span-all;
+  position-area: bottom;
   position-try-fallbacks: flip-block;
   background-color: var(--color-background);
   color: var(--color-text);
@@ -9,6 +9,22 @@
   box-shadow: var(--elevation);
   border-radius: var(--border-radius);
   max-width: 600px;
+
+  @supports not (top: anchor(center)) {
+    position: absolute;
+  }
+
+  &[data-anchor='top'] {
+    position-area: top;
+  }
+
+  &[data-anchor='left'] {
+    position-area: left;
+  }
+
+  &[data-anchor='right'] {
+    position-area: right;
+  }
 }
 
 .label-wrapper {

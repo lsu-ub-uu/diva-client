@@ -18,7 +18,7 @@
 
 import { useTranslation } from 'react-i18next';
 
-import { MenuItem } from '@headlessui/react';
+import { MenuItem } from '@/components/Menu/MenuItem';
 import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 
 interface DevAccountsProps {
@@ -35,9 +35,9 @@ export const DevAccountLoginOptions = ({
   }
   return (
     <>
-      <h2>{t('divaClient_LoginDevAccountText')}</h2>
+      <h3>{t('divaClient_LoginDevAccountText')}</h3>
       {exampleUsers.map((exampleUser) => (
-        <MenuItem key={exampleUser.loginId}>
+        <MenuItem key={exampleUser.loginId} text={exampleUser.name}>
           <button type='button' onClick={() => onSelect(exampleUser)}>
             {exampleUser.name}
           </button>

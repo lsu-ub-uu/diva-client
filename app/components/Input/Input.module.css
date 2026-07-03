@@ -18,6 +18,7 @@
 
 .select-wrapper select,
 .input,
+.combobox-trigger,
 .combobox-input,
 .textarea {
   background: var(--color-background);

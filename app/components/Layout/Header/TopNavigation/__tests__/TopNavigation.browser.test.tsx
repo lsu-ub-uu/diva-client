@@ -19,8 +19,7 @@
 
 import { TopNavigation } from '@/components/Layout/Header/TopNavigation/TopNavigation';
 import type { Navigation } from '@/data/getNavigation.server';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
@@ -53,17 +52,21 @@ describe('<TopNavigation />', () => {
         Component: () => <TopNavigation navigation={navigation} />,
       },
     ]);
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(screen.getByRole('link', { name: 'Output' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Personer' })).toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('link', { name: 'Output' }))
+      .toBeVisible();
+    await expect
+      .element(screen.getByRole('link', { name: 'Personer' }))
+      .toBeVisible();
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'divaClient_moreNavigationText' }),
-    );
+    await screen
+      .getByRole('button', { name: 'divaClient_moreNavigationText' })
+      .click();
 
-    expect(
-      screen.getByRole('menuitem', { name: 'Organisationer' }),
-    ).toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('menuitem', { name: 'Organisationer' }))
+      .toBeVisible();
   });
 });
