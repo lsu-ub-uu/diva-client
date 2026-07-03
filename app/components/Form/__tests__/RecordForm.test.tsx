@@ -1748,35 +1748,6 @@ describe('<Form />', () => {
       expect(accordionTitle).toBeVisible();
     });
 
-    it('expands accordion when validation error ', async () => {
-      const user = userEvent.setup();
-
-      render(
-        <RecordFormWithRoutesStub
-          formSchema={createAlternativePresentationFormDef(
-            'singleInitiallyHidden',
-            'someTitle',
-            false,
-          )}
-        />,
-      );
-
-      expect(
-        screen.queryByRole('textbox', { name: 'someLabelTextId' }),
-      ).not.toBeInTheDocument();
-
-      await user.click(
-        screen.getByRole('button', { name: /divaClient_SubmitButtonText/ }),
-      );
-
-      expect(
-        screen.getByRole('textbox', { name: 'someLabelTextId' }),
-      ).toBeVisible();
-      expect(
-        screen.getByRole('textbox', { name: 'someLabelTextId' }),
-      ).toBeInvalid();
-    });
-
     it('expands accordion when appended to field array, even when set to single initially hidden', async () => {
       const formDefinition = {
         validationTypeId: 'someValidationTypeId',

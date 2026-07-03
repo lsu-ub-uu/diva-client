@@ -5,8 +5,36 @@ import type {
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { RecordFormWithRoutesStub } from './RecordFormTestHelper';
+import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 
-describe('RecordFormBrowser', () => {
+describe('RecordForm', () => {
+  it('expands accordion when validation error ', async () => {
+    const screen = await render(
+      <RecordFormWithRoutesStub
+        formSchema={createAlternativePresentationFormDef(
+          'singleInitiallyHidden',
+          'someTitle',
+          false,
+        )}
+      />,
+    );
+
+    await expect
+      .element(screen.getByRole('textbox', { name: 'someLabelTextId' }))
+      .not.toBeInTheDocument();
+
+    await screen
+      .getByRole('button', { name: /divaClient_SubmitButtonText/ })
+      .click();
+
+    await expect
+      .element(screen.getByRole('textbox', { name: 'someLabelTextId' }))
+      .toBeVisible();
+    await expect
+      .element(screen.getByRole('textbox', { name: 'someLabelTextId' }))
+      .toBeInvalid();
+  });
+
   it('is possible to move a filterable combobox up', async () => {
     const formSchema: RecordFormSchema = {
       validationTypeId: 'someValidationTypeId',
