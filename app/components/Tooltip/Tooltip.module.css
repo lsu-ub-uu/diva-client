@@ -9,8 +9,4 @@
   padding: var(--gap-s);
   box-shadow: var(--elevation);
   border-radius: var(--border-radius-s);
-
-  @supports not (anchor-name: --my-anchor) {
-    position: absolute;
-  }
 }
