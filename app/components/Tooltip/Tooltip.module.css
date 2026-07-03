@@ -1,9 +1,7 @@
 .tooltip {
   margin: 0;
   inset: unset;
-  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   bottom: anchor(top);
-  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   justify-self: anchor-center;
   position-try: normal flip-block;
   background-color: var(--color-background-inverted);
