@@ -29,7 +29,9 @@ export const ValidationErrorSnackbar = () => {
   const [prevErrors, setPrevErrors] = useState(errors);
 
   if (errors !== prevErrors) {
-    console.error(errors, 'Validation errors');
+    if (!isEmpty(errors)) {
+      console.error(errors, 'Validation errors');
+    }
     setPrevErrors(errors);
     setSnackbarOpen(!isEmpty(errors));
   }
