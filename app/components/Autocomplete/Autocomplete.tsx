@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 import {
+  use,
+  useCallback,
   useEffect,
   useId,
   useRef,
@@ -11,6 +13,7 @@ import { Input } from '../Input/Input';
 import styles from './Autocomplete.module.css';
 import { TextSearchIcon } from 'lucide-react';
 import { CircularLoader } from '../Loader/CircularLoader';
+import { FieldContext } from '../Input/Fieldset';
 
 interface AutocompleteOption {
   value: string;
@@ -46,18 +49,19 @@ export const Autocomplete = ({
   placeholder,
   ...rest
 }: AutocompleteProps) => {
-  const id = useId();
+  const fieldContext = use(FieldContext);
   const comboboxRef = useRef<HTMLInputElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const optionRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const optionRefs = useRef<Map<string, HTMLLIElement>>(new Map());
   const [autocompleteInputValue, setAutocompleteInputValue] = useState(
     displayValue ?? '',
   );
   const [prevDisplayValue, setPrevDisplayValue] = useState(displayValue);
   const [expanded, setExpanded] = useState(false);
+
+  const id = useId();
   const ids = {
     combobox: `autocomplete-${id}`,
-    input: `autocomplete-input-${id}`,
     popover: `autocomplete-popover-${id}`,
     listbox: `autocomplete-listbox-${id}`,
     option: (option: AutocompleteOption) =>
@@ -74,31 +78,28 @@ export const Autocomplete = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const activeOption = options[activeIndex];
 
-  const openListbox = () => {
-    popoverRef.current?.showPopover({ source: comboboxRef.current });
-  };
+  const openListbox = useCallback(() => {
+    if (options.length > 0) {
+      popoverRef.current?.showPopover({ source: comboboxRef.current });
+    }
+  }, [options]);
 
-  const closeListbox = () => {
+  const closeListbox = useCallback(() => {
     popoverRef.current?.hidePopover();
-  };
+  }, []);
 
+  // Handle listbox toggle
   useEffect(() => {
     const listboxEl = popoverRef.current;
     const handleToggle = (e: ToggleEvent) => {
-      if (e.newState === 'open') {
-        setActiveIndex(options.findIndex((option) => option.value === value));
-        setExpanded(true);
-      } else {
-        setActiveIndex(0);
-        setExpanded(false);
-      }
+      setActiveIndex(0);
       setExpanded(e.newState === 'open');
     };
     listboxEl?.addEventListener('toggle', handleToggle);
     return () => {
       listboxEl?.removeEventListener('toggle', handleToggle);
     };
-  }, [options, value]);
+  }, [options]);
 
   const selectOption = (option: AutocompleteOption) => {
     onChange(option.value);
@@ -108,12 +109,22 @@ export const Autocomplete = ({
     closeListbox();
   };
 
+  // Scroll active option into view when it changes
   useEffect(() => {
     if (activeOption) {
       const optionEl = optionRefs.current.get(activeOption.value);
       optionEl?.scrollIntoView({ block: 'nearest' });
     }
   }, [activeOption]);
+
+  // Open the listbox when options change and there are options available
+  useEffect(() => {
+    if (options.length > 0 && comboboxRef.current === document.activeElement) {
+      openListbox();
+    } else {
+      closeListbox();
+    }
+  }, [options, openListbox, closeListbox]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
@@ -149,24 +160,20 @@ export const Autocomplete = ({
     }
   };
 
-  useEffect(() => {
-    if (options.length > 0) {
-      openListbox();
-    } else {
-      closeListbox();
-    }
-  }, [options]);
-
   return (
     <>
       <div className={styles['autocomplete-input-wrapper']}>
         <Input
+          id={fieldContext?.ids.input}
           ref={comboboxRef}
           role='combobox'
           aria-autocomplete='list'
           aria-haspopup='listbox'
           aria-expanded={expanded}
           aria-invalid={invalid}
+          aria-describedby={
+            fieldContext?.validationError ? fieldContext.ids.error : undefined
+          }
           aria-controls={ids.listbox}
           aria-activedescendant={
             activeOption ? ids.option(activeOption) : undefined
@@ -178,6 +185,7 @@ export const Autocomplete = ({
             setActiveIndex(0);
           }}
           onFocus={() => comboboxRef.current?.select()}
+          onClick={openListbox}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           className={clsx(styles['trigger'], className)}
@@ -185,8 +193,10 @@ export const Autocomplete = ({
           placeholder={placeholder}
           {...rest}
         />
-        <div className={styles['autocomplete-input-icon']}>
-          {loading ? <CircularLoader /> : <TextSearchIcon />}
+        <div className={styles['autocomplete-input-icon-wrapper']}>
+          <div className={styles['autocomplete-input-icon']}>
+            {loading ? <CircularLoader /> : <TextSearchIcon />}
+          </div>
         </div>
       </div>
 
@@ -199,28 +209,29 @@ export const Autocomplete = ({
       >
         <ul role='listbox' id={ids.listbox} aria-busy={loading}>
           {options.map((option) => (
-            <li key={option.value}>
-              <button
-                disabled={option.disabled}
-                id={ids.option(option)}
-                type='button'
-                role='option'
-                aria-selected={option.value === value}
-                onClick={() => {
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- keyboard interaction handled by combobox input
+            <li
+              key={option.value}
+              role='option'
+              aria-selected={option.value === value}
+              aria-disabled={option.disabled}
+              id={ids.option(option)}
+              onClick={() => {
+                if (!option.disabled) {
                   selectOption(option);
-                }}
-                className={styles.option}
-                data-active={activeOption?.value === option.value}
-                ref={(el) => {
-                  if (el) {
-                    optionRefs.current.set(option.value, el);
-                  } else {
-                    optionRefs.current.delete(option.value);
-                  }
-                }}
-              >
-                {option.presentation}
-              </button>
+                }
+              }}
+              className={styles.option}
+              data-active={activeOption?.value === option.value}
+              ref={(el) => {
+                if (el) {
+                  optionRefs.current.set(option.value, el);
+                } else {
+                  optionRefs.current.delete(option.value);
+                }
+              }}
+            >
+              {option.presentation}
             </li>
           ))}
         </ul>

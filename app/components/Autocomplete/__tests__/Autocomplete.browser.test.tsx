@@ -49,7 +49,7 @@ describe('<Autocomplete />', () => {
     await expect.element(input).toHaveAttribute('placeholder', 'Search...');
   });
 
-  it('displays options in popover when input is focused', async () => {
+  it('displays options in popover', async () => {
     const screen = await render(
       <Autocomplete
         options={mockOptions}
@@ -249,6 +249,55 @@ describe('<Autocomplete />', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  it('closes popover when clicking outside', async () => {
+    const screen = await render(
+      <div>
+        <button type='button'>Outside Button</button>
+        <Autocomplete
+          options={mockOptions}
+          value='option1'
+          onChange={vi.fn()}
+          onAutocompleteInputChange={vi.fn()}
+        />
+      </div>,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'true');
+
+    const option1 = screen.getByRole('option', { name: 'Option One' });
+    await expect.element(option1).toBeVisible();
+
+    const outsideButton = screen.getByRole('button', {
+      name: 'Outside Button',
+    });
+    await outsideButton.click();
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('closes popover when Escape key is pressed', async () => {
+    const screen = await render(
+      <Autocomplete
+        options={mockOptions}
+        value='option1'
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.keyboard('{Escape}');
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('displays loading indicator when loading is true', async () => {
     const screen = await render(
       <Autocomplete
@@ -260,8 +309,14 @@ describe('<Autocomplete />', () => {
       />,
     );
 
-    const loader = screen.getByRole('status');
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    const loader = screen.getByRole('progressbar');
     await expect.element(loader).toBeInTheDocument();
+
+    const listbox = screen.getByRole('listbox');
+    await expect.element(listbox).toHaveAttribute('aria-busy', 'true');
   });
 
   it('disables input when disabled is true', async () => {
@@ -294,7 +349,7 @@ describe('<Autocomplete />', () => {
     await expect.element(input).toHaveAttribute('aria-invalid', 'true');
   });
 
-  it('updates display value when displayValue prop changes', async () => {
+  it('updates input value when displayValue prop changes', async () => {
     const { rerender, getByRole } = await render(
       <Autocomplete
         options={mockOptions}
@@ -374,14 +429,15 @@ describe('<Autocomplete />', () => {
     const input = screen.getByRole('combobox');
     await input.click();
 
+    await expect.element(input).toHaveAttribute('aria-expanded', 'true');
+
     const option2 = screen.getByRole('option', { name: 'Option Two' });
     await option2.click();
 
-    const option1 = screen.getByRole('option', { name: 'Option One' });
-    await expect.element(option1).not.toBeVisible();
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('opens popover when ArrowDown is pressed with empty options', async () => {
+  it('does not open popover when ArrowDown is pressed with empty options', async () => {
     const screen = await render(
       <Autocomplete
         options={[]}
@@ -396,8 +452,7 @@ describe('<Autocomplete />', () => {
     await userEvent.keyboard('{ArrowDown}');
 
     // Popover should not open when there are no options
-    const listbox = screen.getByRole('listbox');
-    await expect.element(listbox).not.toBeVisible();
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('has correct aria attributes for accessibility', async () => {

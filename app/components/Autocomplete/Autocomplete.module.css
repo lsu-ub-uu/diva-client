@@ -10,10 +10,6 @@
   &[aria-expanded='true'] {
     outline: 2px solid var(--color-link-selected);
   }
-
-  button {
-    background: transparent;
-  }
 }
 
 .autocomplete-value {
@@ -69,8 +65,9 @@
   top: 50%;
   transform: translateY(-50%);
   right: var(--gap);
-  font-size: var(--font-size-icon);
+  font-size: 1.4rem;
   pointer-events: none;
+  background: transparent;
 }
 
 .trigger[aria-expanded='true'] .autocomplete-input-icon {
@@ -85,13 +82,12 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-  border-radius: var(--border-radius-s);
 
   &:hover {
     background-color: var(--color-button-secondary-hover);
   }
 
-  &:disabled {
+  &[aria-disabled='true'] {
     pointer-events: none;
     color: var(--color-label);
   }
