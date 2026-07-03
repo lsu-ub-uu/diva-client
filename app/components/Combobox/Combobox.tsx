@@ -29,7 +29,6 @@ interface ComboboxProps extends Omit<
   disabled?: boolean;
   invalid?: boolean;
   defaultValue?: string;
-  name: string;
 }
 
 export const Combobox = ({

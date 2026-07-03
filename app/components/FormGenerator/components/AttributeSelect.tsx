@@ -103,9 +103,8 @@ export const AttributeSelect = ({
         <Controller
           control={control}
           name={name}
-          render={({ field: { name, value, onChange } }) => (
+          render={({ field: { value, onChange } }) => (
             <Combobox
-              name={name}
               value={value}
               onChange={onChange}
               invalid={errorMessage !== undefined}
