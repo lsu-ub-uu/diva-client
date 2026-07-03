@@ -113,6 +113,9 @@ export const Combobox = ({
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
       case 'ArrowDown': {
+        if (filteredOptions.length === 0) {
+          return;
+        }
         event.preventDefault();
         const nextIndex = (activeIndex + 1) % filteredOptions.length;
         setActiveIndex(nextIndex);
@@ -123,6 +126,9 @@ export const Combobox = ({
         break;
       }
       case 'ArrowUp': {
+        if (filteredOptions.length === 0) {
+          return;
+        }
         event.preventDefault();
         const prevIndex =
           (activeIndex - 1 + filteredOptions.length) % filteredOptions.length;
