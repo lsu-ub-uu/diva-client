@@ -44,7 +44,7 @@ export const FieldInfo = ({ title, body }: FieldInfoProps) => {
       >
         <InfoIcon />
       </IconButton>
-      <Popover id={id} title={t(title)}>
+      <Popover id={id} title={t(title)} anchor='top'>
         {body && <p id={ids.details}>{t(body)}</p>}
       </Popover>
     </div>

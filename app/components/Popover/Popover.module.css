@@ -1,10 +1,8 @@
 .popover {
   margin: 0;
   inset: unset;
-  top: calc(anchor(top) + var(--gap-l));
-  /* stylelint-disable-next-line declaration-property-value-no-unknown */
-  justify-self: anchor-center;
-  position-try: normal flip-block;
+  position-area: bottom;
+  position-try-fallbacks: flip-block;
   background-color: var(--color-background);
   color: var(--color-text);
   padding: var(--gap-l);
@@ -14,6 +12,18 @@
 
   @supports not (top: anchor(center)) {
     position: absolute;
+  }
+
+  &[data-anchor='top'] {
+    position-area: top;
+  }
+
+  &[data-anchor='left'] {
+    position-area: left;
+  }
+
+  &[data-anchor='right'] {
+    position-area: right;
   }
 }
 

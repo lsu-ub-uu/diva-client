@@ -1,8 +1,6 @@
 import { Alert, type AlertProps } from '@/components/Alert/Alert';
-import { type ReactNode, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { type ReactNode, useEffect, useRef } from 'react';
 
-import { Transition } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
@@ -14,7 +12,6 @@ interface SnackbarProps {
   autoCloseDelay?: number;
   severity: AlertProps['severity'];
   text: ReactNode;
-  ariaLive?: 'assertive' | 'polite' | 'off';
 }
 
 export const Snackbar = ({
@@ -23,9 +20,22 @@ export const Snackbar = ({
   autoCloseDelay = 5000,
   text,
   severity,
-  ariaLive = 'assertive',
 }: SnackbarProps) => {
   const { t } = useTranslation();
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = popoverRef.current;
+    if (!el) return;
+    const isOpen = el.matches(':popover-open');
+
+    if (open && !isOpen) {
+      el.showPopover();
+    } else if (!open && isOpen) {
+      el.hidePopover();
+    }
+  }, [open]);
+
   useEffect(() => {
     if (autoCloseDelay) {
       const autoCloseTimeout = setTimeout(onClose, autoCloseDelay);
@@ -33,27 +43,26 @@ export const Snackbar = ({
     }
   }, [open, onClose, autoCloseDelay]);
 
-  if (typeof document === 'undefined') {
-    return null;
-  }
-
-  return createPortal(
-    <Transition show={open} unmount={true} appear={true}>
-      <div role='alert' aria-live={ariaLive} className={styles['snackbar']}>
-        <Alert severity={severity}>
-          <div className={styles['alert-content']}>
-            {text}
-            <IconButton
-              size='small'
-              tooltip={t('divaClient_closeText')}
-              onClick={onClose}
-            >
-              <XIcon />
-            </IconButton>
-          </div>
-        </Alert>
-      </div>
-    </Transition>,
-    document.body,
+  return (
+    <div
+      ref={popoverRef}
+      popover='manual'
+      role='alert'
+      aria-live='polite'
+      className={styles['snackbar']}
+    >
+      <Alert severity={severity}>
+        <div className={styles['alert-content']}>
+          {text}
+          <IconButton
+            size='small'
+            tooltip={t('divaClient_closeText')}
+            onClick={onClose}
+          >
+            <XIcon />
+          </IconButton>
+        </div>
+      </Alert>
+    </div>
   );
 };

@@ -19,13 +19,13 @@
 import styles from './MemberBar.module.css';
 import type { BFFMember, BFFMemberLink } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Button } from '@/components/Button/Button';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import clsx from 'clsx';
+import { Popover } from '@/components/Popover/Popover';
 
 interface MemberBarProps {
   member: BFFMember | undefined;
@@ -84,29 +84,27 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
                 ))}
               </ul>
             </div>
-            <Popover className='relative'>
-              <PopoverButton
-                as={Button}
-                variant='tertiary'
-                className={styles['links-popover-button']}
-                aria-hidden={true}
-              >
-                {t('divaClient_memberBarLinksText')} <ChevronDownIcon />
-              </PopoverButton>
-              <PopoverPanel
-                anchor='bottom'
-                className={styles['links-popover-panel']}
-              >
-                <ul>
-                  {links.map((link) => (
-                    <li key={link.url}>
-                      <a href={link.url} target='_blank' rel='noreferrer'>
-                        {link.displayLabel}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </PopoverPanel>
+            <Button
+              variant='tertiary'
+              className={styles['links-popover-button']}
+              popoverTarget='member-bar-links-popover'
+            >
+              {t('divaClient_memberBarLinksText')} <ChevronDownIcon />
+            </Button>
+            <Popover
+              id='member-bar-links-popover'
+              closeButton={false}
+              className={styles['links-popover-panel']}
+            >
+              <ul>
+                {links.map((link) => (
+                  <li key={link.url}>
+                    <a href={link.url} target='_blank' rel='noreferrer'>
+                      {link.displayLabel}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </Popover>
           </>
         )}

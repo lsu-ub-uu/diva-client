@@ -85,7 +85,7 @@
   }
 
   &[data-active='true'] {
-    outline: 1px solid vaŒr(--color-link-selected);
+    outline: 1px solid var(--color-link-selected);
     background: var(--color-card);
   }
 }
