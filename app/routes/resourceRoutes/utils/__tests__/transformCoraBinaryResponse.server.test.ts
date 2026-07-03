@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { transformCoraBinaryResponse } from '../binaryUtils.server';
+import { transformCoraBinaryResponse } from '../transformCoraBinaryResponse.server';
 
 describe('transformCoraBinaryResponse', () => {
   it('preserves Cora filename when it already has an extension', async () => {
