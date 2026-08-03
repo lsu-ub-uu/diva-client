@@ -36,7 +36,8 @@ export const Text = ({ component }: TextProps) => {
       data-colspan={component.gridColSpan}
       style={{
         flexBasis:
-          convertChildStyleToString(component.childStyle) === 'compact'
+          convertChildStyleToString(component.childStyle) ===
+          'compactChildStyle'
             ? 'auto'
             : '2em',
       }}
