@@ -505,4 +505,136 @@ describe('<Autocomplete />', () => {
     const listItems = listbox.getByRole('listitem');
     await expect.element(listItems).not.toBeInTheDocument();
   });
+
+  it('does not open popover when input is clicked with empty options', async () => {
+    const screen = await render(
+      <Autocomplete
+        options={[]}
+        value=''
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('does not call onChange when clicking a disabled option', async () => {
+    const onChange = vi.fn();
+    const screen = await render(
+      <Autocomplete
+        options={[...mockOptions, disabledOption]}
+        value='option1'
+        onChange={onChange}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    const disabledBtn = screen.getByRole('option', { name: 'Disabled Option' });
+    // Use direct DOM click to bypass Playwright actionability checks on aria-disabled element
+    (disabledBtn.element() as HTMLElement).click();
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('has aria-controls attribute pointing to listbox', async () => {
+    const screen = await render(
+      <Autocomplete
+        options={mockOptions}
+        value='option1'
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    const listbox = screen.getByRole('listbox');
+    const ariaControls = input.element().getAttribute('aria-controls');
+    expect(ariaControls).toBe(listbox.element().id);
+  });
+
+  it('updates aria-activedescendant when navigating options', async () => {
+    const screen = await render(
+      <Autocomplete
+        options={mockOptions}
+        value='option1'
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = screen.getByRole('combobox');
+    await input.click();
+
+    const option1 = screen.getByRole('option', { name: 'Option One' });
+    await expect
+      .element(input)
+      .toHaveAttribute('aria-activedescendant', option1.element().id);
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    const option2 = screen.getByRole('option', { name: 'Option Two' });
+    await expect
+      .element(input)
+      .toHaveAttribute('aria-activedescendant', option2.element().id);
+  });
+
+  it('closes popover when options change to empty while focused', async () => {
+    const { rerender, getByRole } = await render(
+      <Autocomplete
+        options={mockOptions}
+        value='option1'
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    const input = getByRole('combobox');
+    await input.click();
+    await expect.element(input).toHaveAttribute('aria-expanded', 'true');
+
+    await rerender(
+      <Autocomplete
+        options={[]}
+        value='option1'
+        onChange={vi.fn()}
+        onAutocompleteInputChange={vi.fn()}
+      />,
+    );
+
+    await expect.element(input).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('does not update input value when selected option has non-string presentation', async () => {
+    const onChange = vi.fn();
+    const optionsWithNodePresentation = [
+      { value: 'node-option', presentation: <span>Node Option</span> },
+    ];
+    const { getByRole } = await render(
+      <Autocomplete
+        options={optionsWithNodePresentation}
+        value=''
+        onChange={onChange}
+        onAutocompleteInputChange={vi.fn()}
+        displayValue='initial'
+      />,
+    );
+
+    const input = getByRole('combobox');
+    await input.click();
+
+    const option = getByRole('option', { name: 'Node Option' });
+    await option.click();
+
+    expect(onChange).toHaveBeenCalledWith('node-option');
+    await expect.element(input).toHaveValue('initial');
+  });
 });
