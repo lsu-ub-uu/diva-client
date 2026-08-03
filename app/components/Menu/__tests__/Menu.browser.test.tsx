@@ -1,9 +1,10 @@
 import { Button } from '@/components/Button/Button';
+import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
 import { Menu, useMenu, type MenuProps } from '../Menu';
 import { MenuItem } from '../MenuItem';
-import { userEvent } from 'vitest/browser';
 
 const MenuTest = ({ title, useFilter, children }: Partial<MenuProps>) => {
   const { menuProps, triggerProps } = useMenu();
@@ -190,6 +191,97 @@ describe('Menu', () => {
     expect(onBetaClick).not.toHaveBeenCalled();
   });
 
+  it('should click active link item on Enter when menu is open', async () => {
+    const onLinkClick = vi.fn((e: React.MouseEvent<HTMLAnchorElement>) =>
+      e.preventDefault(),
+    );
+
+    const screen = await render(
+      <MenuTest useFilter>
+        <MenuItem text='Alpha'>
+          <a href='/alpha' onClick={onLinkClick}>
+            Alpha
+          </a>
+        </MenuItem>
+      </MenuTest>,
+    );
+
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
+    await userEvent.click(menuButton);
+
+    const filterInput = screen.getByPlaceholder('divaClient_filteringText');
+    await filterInput.fill('alpha');
+
+    await userEvent.keyboard('{Enter}');
+
+    expect(onLinkClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should click active button item on Enter when menu is open', async () => {
+    const onButtonClick = vi.fn();
+
+    const screen = await render(
+      <MenuTest useFilter>
+        <MenuItem text='Alpha'>
+          <button type='button' onClick={onButtonClick}>
+            Alpha
+          </button>
+        </MenuItem>
+      </MenuTest>,
+    );
+
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
+    await userEvent.click(menuButton);
+
+    const filterInput = screen.getByPlaceholder('divaClient_filteringText');
+    await filterInput.fill('alpha');
+
+    await userEvent.keyboard('{Enter}');
+
+    expect(onButtonClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not trigger click on Enter when active item has no link or button', async () => {
+    const screen = await render(
+      <MenuTest useFilter>
+        <MenuItem text='Alpha'>
+          <span>Alpha</span>
+        </MenuItem>
+      </MenuTest>,
+    );
+
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
+    await userEvent.click(menuButton);
+
+    const filterInput = screen.getByPlaceholder('divaClient_filteringText');
+    await filterInput.fill('alpha');
+
+    // Should not throw even with no link or button
+    await userEvent.keyboard('{Enter}');
+
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('should not trigger click on Enter when menu is closed', async () => {
+    const onAlphaClick = vi.fn();
+
+    const screen = await render(
+      <MenuTest useFilter>
+        <MenuItem text='Alpha'>
+          <Button onClick={onAlphaClick}>Alpha</Button>
+        </MenuItem>
+      </MenuTest>,
+    );
+
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+    await menuButton.element().focus();
+    await userEvent.keyboard('{Enter}');
+
+    expect(onAlphaClick).not.toHaveBeenCalled();
+  });
+
   it('should loop to first menu item when pressing ArrowDown on last item', async () => {
     const onAlphaClick = vi.fn();
     const onBetaClick = vi.fn();
@@ -221,5 +313,23 @@ describe('Menu', () => {
 
     expect(onAlphaClick).toHaveBeenCalledTimes(1);
     expect(onBetaClick).not.toHaveBeenCalled();
+  });
+
+  it('should close menu when clicking a menu item', async () => {
+    const screen = await render(
+      <MenuTest>
+        <MenuItem>
+          <Button>Alpha</Button>
+        </MenuItem>
+      </MenuTest>,
+    );
+
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
+    await userEvent.click(menuButton);
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Alpha' }));
+
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
   });
 });
