@@ -232,6 +232,109 @@ describe('AttributeSelect', () => {
       .toBeInTheDocument();
   });
 
+  it('renders output field when finalValue is set in input mode and attributesToShow all', async () => {
+    mockAttributeValue(undefined);
+
+    const screen = await render(
+      <MockFormProvider>
+        <AttributeSelect
+          name='some.name'
+          label='Some label'
+          options={[
+            { label: 'Option1', value: 'option1' },
+            { label: 'Option2', value: 'option2' },
+          ]}
+          showLabel={true}
+          placeholder={undefined}
+          tooltip={undefined}
+          displayMode='input'
+          finalValue='option1'
+          attributesToShow='all'
+        />
+      </MockFormProvider>,
+    );
+
+    await expect.element(screen.getByText('Some label')).toBeVisible();
+    await expect.element(screen.getByText('Option1')).toBeVisible();
+  });
+
+  it('renders nothing when finalValue is set in input mode and attributesToShow selectable', async () => {
+    mockAttributeValue(undefined);
+
+    const { container } = await render(
+      <MockFormProvider>
+        <AttributeSelect
+          name='some.name'
+          label='Some label'
+          options={[
+            { label: 'Option1', value: 'option1' },
+            { label: 'Option2', value: 'option2' },
+          ]}
+          showLabel={true}
+          placeholder={undefined}
+          tooltip={undefined}
+          displayMode='input'
+          finalValue='option1'
+          attributesToShow='selectable'
+        />
+      </MockFormProvider>,
+    );
+
+    expect(container.innerHTML).toBe('');
+  });
+
+  it('does not render label text when showLabel is false', async () => {
+    mockAttributeValue(undefined);
+
+    const { container } = await render(
+      <MockFormProvider>
+        <AttributeSelect
+          name='some.name'
+          label='Some label'
+          options={[
+            { label: 'Option1', value: 'option1' },
+            { label: 'Option2', value: 'option2' },
+          ]}
+          showLabel={false}
+          placeholder={undefined}
+          tooltip={undefined}
+          displayMode='input'
+          finalValue={undefined}
+          attributesToShow='all'
+        />
+      </MockFormProvider>,
+    );
+
+    expect(container.querySelector('label')).toBeNull();
+  });
+
+  it('renders tooltip info button when tooltip is provided', async () => {
+    mockAttributeValue(undefined);
+
+    const screen = await render(
+      <MockFormProvider>
+        <AttributeSelect
+          name='some.name'
+          label='Some label'
+          options={[
+            { label: 'Option1', value: 'option1' },
+            { label: 'Option2', value: 'option2' },
+          ]}
+          showLabel={true}
+          placeholder={undefined}
+          tooltip={{ title: 'Tooltip title', body: 'Tooltip body' }}
+          displayMode='input'
+          finalValue={undefined}
+          attributesToShow='all'
+        />
+      </MockFormProvider>,
+    );
+
+    await expect
+      .element(screen.getByRole('button', { name: 'divaClient_fieldInfoText' }))
+      .toBeVisible();
+  });
+
   it('renders searchable combobox when more than 20 options', async () => {
     mockAttributeValue('option1');
 
@@ -259,6 +362,75 @@ describe('AttributeSelect', () => {
     await expect
       .element(screen.getByRole('group', { name: 'Some label' }))
       .toBeVisible();
+  });
+
+  describe('default values', () => {
+    it('defaults options to empty array when omitted', async () => {
+      mockAttributeValue(undefined);
+
+      const { container } = await render(
+        <MockFormProvider>
+          <AttributeSelect
+            name='some.name'
+            label='Some label'
+            options={undefined}
+            showLabel={true}
+            placeholder={undefined}
+            tooltip={undefined}
+            displayMode='input'
+            finalValue={undefined}
+            attributesToShow='all'
+          />
+        </MockFormProvider>,
+      );
+
+      expect(container.querySelectorAll('option')).toHaveLength(0);
+    });
+
+    it('defaults showLabel to true when omitted', async () => {
+      mockAttributeValue(undefined);
+
+      const screen = await render(
+        <MockFormProvider>
+          <AttributeSelect
+            name='some.name'
+            label='Some label'
+            options={[{ label: 'Option1', value: 'option1' }]}
+            showLabel={undefined}
+            placeholder={undefined}
+            tooltip={undefined}
+            displayMode='input'
+            finalValue={undefined}
+            attributesToShow='all'
+          />
+        </MockFormProvider>,
+      );
+
+      await expect.element(screen.getByText('Some label')).toBeVisible();
+    });
+
+    it('defaults attributesToShow to all when omitted', async () => {
+      mockAttributeValue(undefined);
+
+      const screen = await render(
+        <MockFormProvider>
+          <AttributeSelect
+            name='some.name'
+            label='Some label'
+            options={[{ label: 'Option1', value: 'option1' }]}
+            showLabel={true}
+            placeholder={undefined}
+            tooltip={undefined}
+            displayMode='input'
+            finalValue={undefined}
+          />
+        </MockFormProvider>,
+      );
+
+      await expect
+        .element(screen.getByRole('combobox', { name: 'Some label' }))
+        .toBeVisible();
+    });
   });
 });
 
