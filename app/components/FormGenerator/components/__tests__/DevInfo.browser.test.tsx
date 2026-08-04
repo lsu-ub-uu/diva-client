@@ -104,6 +104,32 @@ describe('DevInfo', () => {
     expect(container.textContent).not.toContain('DATA (metadata.title)');
   });
 
+  it('copies form definition JSON when copy button is clicked', async () => {
+    getValuesMock.mockReturnValue(undefined);
+
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: writeTextMock },
+    });
+
+    const screen = await render(
+      <FormGeneratorContext
+        value={{ showDevInfo: true, boxGroups: false, showTooltips: true }}
+      >
+        <DevInfo component={component} path='metadata.title' />
+      </FormGeneratorContext>,
+    );
+
+    await screen.getByRole('button', { name: /textvariable/i }).click();
+    await screen.getByLabelText('Copy JSON').click();
+
+    expect(writeTextMock).toHaveBeenCalledTimes(1);
+    expect(writeTextMock).toHaveBeenCalledWith(
+      JSON.stringify(component, null, 2),
+    );
+  });
+
   it('does not render DevInfoButton when local storage does not contain diva-dev', async () => {
     vi.stubGlobal('localStorage', {
       getItem: vi.fn().mockReturnValue(null),
