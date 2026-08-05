@@ -16,7 +16,7 @@ describe('GuiElementLink', () => {
   it('renders a link with the correct href', async () => {
     const screen = await render(<GuiElementLink component={component} />);
     const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', 'https://example.com');
+    await expect(link).toHaveAttribute('href', 'https://example.com');
   });
 
   it('renders the element text', async () => {
@@ -27,7 +27,7 @@ describe('GuiElementLink', () => {
   it('opens in a new tab', async () => {
     const screen = await render(<GuiElementLink component={component} />);
     const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('target', '_blank');
-    expect(link).toHaveAttribute('rel', 'noreferrer');
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noreferrer');
   });
 });

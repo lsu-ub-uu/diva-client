@@ -160,7 +160,7 @@ describe('LeafComponent', () => {
       <LeafComponent component={component} path={path} />,
     );
 
-    expect(screen.getByRole('link')).toHaveAttribute(
+    await expect(screen.getByRole('link')).toHaveAttribute(
       'href',
       'https://example.com',
     );

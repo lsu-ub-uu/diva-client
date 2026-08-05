@@ -6,13 +6,14 @@ import { OutputField } from '@/components/FormGenerator/components/OutputField';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
+import type { ReactElement } from 'react';
 
 interface RenderOutputFieldOptions {
   enhancedFields?: Record<string, EnhancedFieldsConfig>;
 }
 
 const renderOutputField = async (
-  ui: React.ReactElement,
+  ui: ReactElement,
   { enhancedFields = {} }: RenderOutputFieldOptions = {},
 ) => {
   const RoutesStub = createRoutesStub([
