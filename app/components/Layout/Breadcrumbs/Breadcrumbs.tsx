@@ -66,7 +66,7 @@ export const Breadcrumbs = () => {
                 <NavLink
                   to={href('/:recordType', { recordType: 'diva-output' })}
                 >
-                  {t('diva-outputText')}
+                  {t('diva-outputPluralText')}
                 </NavLink>
               </li>,
             );
