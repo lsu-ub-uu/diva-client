@@ -58,7 +58,7 @@ describe('Text', () => {
   it('uses auto flexBasis when child style is compact', async () => {
     const component = {
       ...baseComponent,
-      childStyle: ['compactChildStyle'],
+      childStyle: ['compact'],
     } as unknown as FormComponentText;
 
     const { container } = await render(<Text component={component} />);
