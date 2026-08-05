@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { SearchLinkList } from '../SearchLinkList';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
+import { vi } from 'vitest';
 
 describe('SearchLinkList', () => {
   it('renders links with href as pill', () => {
@@ -45,6 +47,46 @@ describe('SearchLinkList', () => {
       'nofollow',
     );
   });
+
+  it('scrolls to top when clicking a rendered link', async () => {
+    const items = [
+      {
+        href: 'someLink',
+        label: 'Some label',
+      },
+    ];
+
+    const scrollToSpy = vi
+      .spyOn(window, 'scrollTo')
+      .mockImplementation(() => undefined);
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => (
+          <SearchLinkList
+            heading='Some heading'
+            searchTerm='someSearchTerm'
+            items={items}
+            language='en'
+            pill={true}
+          />
+        ),
+      },
+      {
+        path: '/diva-output',
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await userEvent.click(screen.getByRole('link', { name: 'Some label' }));
+
+    expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+    scrollToSpy.mockRestore();
+  });
+
   it('renders links without href as pill', () => {
     const items = [
       {
