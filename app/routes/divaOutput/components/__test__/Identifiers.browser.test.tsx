@@ -19,8 +19,8 @@ describe('Identifiers', () => {
         screen.getByRole('heading', { name: 'divaClient_identifierText' }),
       )
       .toBeVisible();
-    expect(content).toContain('divaClient_divaIdText');
-    expect(content).toContain('1234');
+    await expect(content).toContain('divaClient_divaIdText');
+    await expect(content).toContain('1234');
   });
 
   it('should render urn', async () => {
@@ -37,8 +37,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('URN');
-    expect(content).toContain('urn:nbn:se:uu:diva-1234');
+    await expect(content).toContain('URN');
+    await expect(content).toContain('urn:nbn:se:uu:diva-1234');
   });
 
   it('should render isbn', async () => {
@@ -68,12 +68,12 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('ISBN (print)');
-    expect(content).toContain('978-3-16-148410-0');
-    expect(content).toContain('ISBN (online)');
-    expect(content).toContain('978-3-16-148410-1');
-    expect(content).toContain('ISBN (unknown)');
-    expect(content).toContain('978-3-16-148410-2');
+    await expect(content).toContain('ISBN (print)');
+    await expect(content).toContain('978-3-16-148410-0');
+    await expect(content).toContain('ISBN (online)');
+    await expect(content).toContain('978-3-16-148410-1');
+    await expect(content).toContain('ISBN (unknown)');
+    await expect(content).toContain('978-3-16-148410-2');
   });
 
   it('should render isrn', async () => {
@@ -90,8 +90,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('ISRN');
-    expect(content).toContain('ISRN 1234');
+    await expect(content).toContain('ISRN');
+    await expect(content).toContain('ISRN 1234');
   });
 
   it('should render ismn', async () => {
@@ -111,8 +111,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('ISMN (print)');
-    expect(content).toContain('ISMN 1234');
+    await expect(content).toContain('ISMN (print)');
+    await expect(content).toContain('ISMN 1234');
   });
 
   it('should render Patent number', async () => {
@@ -129,8 +129,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('Patent number');
-    expect(content).toContain('patent1234');
+    await expect(content).toContain('Patent number');
+    await expect(content).toContain('patent1234');
   });
 
   it('should render Doi', async () => {
@@ -147,8 +147,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('DOI number');
-    expect(content).toContain('doi1234');
+    await expect(content).toContain('DOI number');
+    await expect(content).toContain('doi1234');
   });
 
   it('should render Pmid', async () => {
@@ -165,8 +165,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('PMID');
-    expect(content).toContain('somepmid1234');
+    await expect(content).toContain('PMID');
+    await expect(content).toContain('somepmid1234');
   });
 
   it('should render Wos', async () => {
@@ -183,8 +183,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('WOS');
-    expect(content).toContain('somewos1234');
+    await expect(content).toContain('WOS');
+    await expect(content).toContain('somewos1234');
   });
 
   it('should render Scopus', async () => {
@@ -201,8 +201,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('Scopus');
-    expect(content).toContain('somescopus1234');
+    await expect(content).toContain('Scopus');
+    await expect(content).toContain('somescopus1234');
   });
 
   it('should render OpenAlex', async () => {
@@ -219,8 +219,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('OpenAlex');
-    expect(content).toContain('someAlex1234');
+    await expect(content).toContain('OpenAlex');
+    await expect(content).toContain('someAlex1234');
   });
 
   it('should render libris ids', async () => {
@@ -243,9 +243,9 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('Libris ID');
-    expect(content).toContain('libris1234');
-    expect(content).toContain('libris5678');
+    await expect(content).toContain('Libris ID');
+    await expect(content).toContain('libris1234');
+    await expect(content).toContain('libris5678');
   });
 
   it('should render Archive Number', async () => {
@@ -262,8 +262,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('ArchiveNumber');
-    expect(content).toContain('someArchiveNumber1234');
+    await expect(content).toContain('ArchiveNumber');
+    await expect(content).toContain('someArchiveNumber1234');
   });
 
   it('should render Local ID', async () => {
@@ -280,8 +280,8 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('Local ID');
-    expect(content).toContain('localid1234');
+    await expect(content).toContain('Local ID');
+    await expect(content).toContain('localid1234');
   });
 
   it('should render patent number', async () => {
@@ -298,7 +298,7 @@ describe('Identifiers', () => {
     const screen = await render(<Identifiers output={output} />);
     const content = screen.baseElement.textContent ?? '';
 
-    expect(content).toContain('Patent Number');
-    expect(content).toContain('patent1234');
+    await expect(content).toContain('Patent Number');
+    await expect(content).toContain('patent1234');
   });
 });

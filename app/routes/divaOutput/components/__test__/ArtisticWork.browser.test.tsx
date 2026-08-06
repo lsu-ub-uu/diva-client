@@ -12,7 +12,7 @@ describe('ArtisticWorkFields', () => {
         <ArtisticWorkFields output={emptyOutput} />
       </dl>,
     );
-    expect(screen.baseElement.querySelector('dt')).toBeNull();
+    await expect(screen.baseElement.querySelector('dt')).toBeNull();
   });
 
   it('renders typeOfResource label and value', async () => {
@@ -125,9 +125,9 @@ describe('ArtisticWorkFields', () => {
 
     await expect.element(screen.getByText('Duration')).toBeVisible();
     const time = screen.baseElement.querySelector('time');
-    expect(time).not.toBeNull();
-    expect(time).toHaveAttribute('datetime', '1h 30m 15s');
-    expect(time).toHaveTextContent('1h 30m 15s');
+    await expect(time).not.toBeNull();
+    await expect(time).toHaveAttribute('datetime', '1h 30m 15s');
+    await expect(time).toHaveTextContent('1h 30m 15s');
   });
 
   it('renders physical description', async () => {

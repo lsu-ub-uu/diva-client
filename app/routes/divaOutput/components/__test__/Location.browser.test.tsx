@@ -11,9 +11,9 @@ describe('Location', () => {
     } as LocationGroup;
     const screen = await render(<Location location={location} />);
     const link = screen.getByRole('link', { name: 'Example' }).element();
-    expect(link).toHaveAttribute('href', 'https://example.com');
-    expect(link).toHaveAttribute('target', '_blank');
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(link).toHaveAttribute('href', 'https://example.com');
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('renders an optional icon', async () => {
@@ -33,7 +33,7 @@ describe('Location', () => {
       displayLabel: { value: 'Example' },
     } as LocationGroup;
     const screen = await render(<Location location={location} />);
-    expect(
+    await expect(
       screen.getByRole('link', { name: 'Example' }).element(),
     ).toHaveAttribute('href', 'https://example.com');
   });
@@ -44,7 +44,7 @@ describe('Location', () => {
       displayLabel: { value: 'Example' },
     } as LocationGroup;
     const screen = await render(<Location location={location} />);
-    expect(
+    await expect(
       screen.getByRole('link', { name: 'Example' }).element(),
     ).toHaveAttribute('href', 'http://example.com');
   });

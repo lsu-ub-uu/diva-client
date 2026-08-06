@@ -7,7 +7,7 @@ describe('Duration', () => {
   it('should render null when duration is undefined', async () => {
     const screen = await render(<Duration duration={undefined} />);
 
-    expect(screen.baseElement.querySelector('time')).toBeNull();
+    await expect(screen.baseElement.querySelector('time')).toBeNull();
   });
 
   it('should format duration correctly with hours, minutes, and seconds', async () => {
@@ -24,8 +24,8 @@ describe('Duration', () => {
     );
 
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', 'PT1H2M3S');
-    expect(time).toHaveTextContent('1h 2m 3s');
+    await expect(time).toHaveAttribute('datetime', 'PT1H2M3S');
+    await expect(time).toHaveTextContent('1h 2m 3s');
   });
 
   it('should format duration correctly with only minutes and seconds', async () => {
@@ -40,8 +40,8 @@ describe('Duration', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', 'PT5M30S');
-    expect(time).toHaveTextContent('5m 30s');
+    await expect(time).toHaveAttribute('datetime', 'PT5M30S');
+    await expect(time).toHaveTextContent('5m 30s');
   });
 
   it('should format duration correctly with only seconds', async () => {
@@ -55,7 +55,7 @@ describe('Duration', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', 'PT45S');
-    expect(time).toHaveTextContent('45s');
+    await expect(time).toHaveAttribute('datetime', 'PT45S');
+    await expect(time).toHaveTextContent('45s');
   });
 });

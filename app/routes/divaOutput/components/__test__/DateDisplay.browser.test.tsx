@@ -6,7 +6,7 @@ describe('DateDisplay', () => {
   it('should render null when date is undefined', async () => {
     const screen = await render(<DateDisplay date={undefined} />);
 
-    expect(screen.baseElement.querySelector('time')).toBeNull();
+    await expect(screen.baseElement.querySelector('time')).toBeNull();
   });
   it('should format date correctly with year, month, and day', async () => {
     const screen = await render(
@@ -19,8 +19,8 @@ describe('DateDisplay', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', '2023-10-05');
-    expect(time).toHaveTextContent('2023-10-05');
+    await expect(time).toHaveAttribute('datetime', '2023-10-05');
+    await expect(time).toHaveTextContent('2023-10-05');
   });
   it('should format date correctly with year, month, day, hour, and minute', async () => {
     const screen = await render(
@@ -35,8 +35,8 @@ describe('DateDisplay', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', '2023-10-05T14:30');
-    expect(time).toHaveTextContent('2023-10-05 14:30');
+    await expect(time).toHaveAttribute('datetime', '2023-10-05T14:30');
+    await expect(time).toHaveTextContent('2023-10-05 14:30');
   });
   it('should handle missing month and day gracefully', async () => {
     const screen = await render(
@@ -47,8 +47,8 @@ describe('DateDisplay', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', '2023');
-    expect(time).toHaveTextContent('2023');
+    await expect(time).toHaveAttribute('datetime', '2023');
+    await expect(time).toHaveTextContent('2023');
   });
 
   it('should handle missing hour and minute gracefully', async () => {
@@ -62,7 +62,7 @@ describe('DateDisplay', () => {
       />,
     );
     const time = screen.getByRole('time').element() as HTMLElement;
-    expect(time).toHaveAttribute('datetime', '2023-10-05');
-    expect(time).toHaveTextContent('2023-10-05');
+    await expect(time).toHaveAttribute('datetime', '2023-10-05');
+    await expect(time).toHaveTextContent('2023-10-05');
   });
 });

@@ -44,8 +44,10 @@ describe('Funder', () => {
     ]);
     const screen = await render(<RoutesStub />);
 
-    expect(screen.getByRole('heading').element()).toHaveTextContent('Funder');
-    expect(screen.getByRole('link').element()).toHaveTextContent(
+    await expect(screen.getByRole('heading').element()).toHaveTextContent(
+      'Funder',
+    );
+    await expect(screen.getByRole('link').element()).toHaveTextContent(
       'Linked funder SV',
     );
   });
@@ -90,7 +92,7 @@ describe('Funder', () => {
     ]);
     const screen = await render(<RoutesStub />);
 
-    expect(screen.getByRole('link').element()).toHaveTextContent(
+    await expect(screen.getByRole('link').element()).toHaveTextContent(
       'Linked funder EN',
     );
   });
@@ -106,9 +108,9 @@ describe('Funder', () => {
 
     const screen = await render(<Funder funder={funder} />);
 
-    expect(screen.getByRole('heading').element()).toHaveTextContent(
+    await expect(screen.getByRole('heading').element()).toHaveTextContent(
       'Funder heading',
     );
-    await expect.element(screen.getByText('Text funder')).toBeVisible();
+    await expect(screen.getByText('Text funder')).toBeVisible();
   });
 });

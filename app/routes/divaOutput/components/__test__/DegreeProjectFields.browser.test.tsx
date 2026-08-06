@@ -9,8 +9,8 @@ describe('DegreeProjectFields', () => {
 
     const screen = await render(<DegreeProjectFields output={output} />);
 
-    expect(screen.baseElement.querySelector('dd')).toBeNull();
-    expect(
+    await expect(screen.baseElement.querySelector('dd')).toBeNull();
+    await expect(
       screen.baseElement.querySelector('h1, h2, h3, h4, h5, h6'),
     ).toBeNull();
   });
@@ -25,8 +25,8 @@ describe('DegreeProjectFields', () => {
     } as DivaOutputGroup;
 
     const screen = await render(<DegreeProjectFields output={output} />);
-    await expect.element(screen.getByText('Academic semester')).toBeVisible();
-    await expect.element(screen.getByText('HT 2023')).toBeVisible();
+    await expect(screen.getByText('Academic semester')).toBeVisible();
+    await expect(screen.getByText('HT 2023')).toBeVisible();
   });
 
   it('should render external collaboration', async () => {
