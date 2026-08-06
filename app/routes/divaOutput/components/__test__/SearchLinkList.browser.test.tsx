@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { SearchLinkList } from '../SearchLinkList';
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
 
 describe('SearchLinkList', () => {
-  it('renders links with href as pill', () => {
+  it('renders links with href as pill', async () => {
     const items = [
       {
         href: 'someLink',
@@ -31,21 +31,20 @@ describe('SearchLinkList', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(
-      screen.getByRole('heading', { name: 'Some heading' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Some label' })).toHaveAttribute(
+    await expect
+      .element(screen.getByRole('heading', { name: 'Some heading' }))
+      .toBeVisible();
+    const link = screen.getByRole('link', { name: 'Some label' }).element();
+    expect(link).toHaveAttribute(
       'href',
       `/diva-output?someSearchTerm=${items[0].href}`,
     );
-    expect(screen.getByRole('link', { name: 'Some label' })).toHaveAttribute(
-      'rel',
-      'nofollow',
-    );
+    expect(link).toHaveAttribute('rel', 'nofollow');
   });
-  it('renders links without href as pill', () => {
+
+  it('renders links without href as pill', async () => {
     const items = [
       {
         label: 'Some label',
@@ -70,13 +69,13 @@ describe('SearchLinkList', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
+    await expect
+      .element(screen.getByRole('heading', { name: 'Some heading' }))
+      .toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'Some heading' }), // a
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('link', { name: 'Some label' }),
-    ).not.toBeInTheDocument();
+      screen.baseElement.querySelector('a[href*="someSearchTerm"]'),
+    ).toBeNull();
   });
 });
