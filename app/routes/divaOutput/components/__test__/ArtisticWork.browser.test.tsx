@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { ArtisticWorkFields } from '../ArtisticWork';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
@@ -6,16 +6,16 @@ import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 const emptyOutput = {} as DivaOutputGroup;
 
 describe('ArtisticWorkFields', () => {
-  it('renders nothing when output has no artistic work fields', () => {
-    const { container } = render(
+  it('renders nothing when output has no artistic work fields', async () => {
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={emptyOutput} />
       </dl>,
     );
-    expect(container.querySelector('dt')).not.toBeInTheDocument();
+    expect(screen.baseElement.querySelector('dt')).toBeNull();
   });
 
-  it('renders typeOfResource label and value', () => {
+  it('renders typeOfResource label and value', async () => {
     const output = {
       typeOfResource: {
         value: 'cartographic',
@@ -24,17 +24,17 @@ describe('ArtisticWorkFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Type of resource')).toBeInTheDocument();
-    expect(screen.getByText('Cartographic')).toBeInTheDocument();
+    await expect.element(screen.getByText('Type of resource')).toBeVisible();
+    await expect.element(screen.getByText('Cartographic')).toBeVisible();
   });
 
-  it('renders type list with language attributes', () => {
+  it('renders type list with language attributes', async () => {
     const output = {
       type: [
         { value: 'Painting', _lang: 'eng', __text: { en: 'Type', sv: 'Typ' } },
@@ -46,18 +46,22 @@ describe('ArtisticWorkFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Type')).toBeInTheDocument();
-    expect(screen.getByText('Painting')).toHaveAttribute('lang', 'en');
-    expect(screen.getByText('Målning')).toHaveAttribute('lang', 'sv');
+    await expect.element(screen.getByText(/^Type$/)).toBeVisible();
+    await expect
+      .element(screen.getByText('Painting'))
+      .toHaveAttribute('lang', 'en');
+    await expect
+      .element(screen.getByText('Målning'))
+      .toHaveAttribute('lang', 'sv');
   });
 
-  it('renders material list with language attributes', () => {
+  it('renders material list with language attributes', async () => {
     const output = {
       material: [
         {
@@ -68,17 +72,19 @@ describe('ArtisticWorkFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Material')).toBeInTheDocument();
-    expect(screen.getByText('Oil on canvas')).toHaveAttribute('lang', 'en');
+    await expect.element(screen.getByText('Material')).toBeVisible();
+    await expect
+      .element(screen.getByText('Oil on canvas'))
+      .toHaveAttribute('lang', 'en');
   });
 
-  it('renders technique list with language attributes', () => {
+  it('renders technique list with language attributes', async () => {
     const output = {
       technique: [
         {
@@ -89,17 +95,19 @@ describe('ArtisticWorkFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Technique')).toBeInTheDocument();
-    expect(screen.getByText('Watercolor')).toHaveAttribute('lang', 'en');
+    await expect.element(screen.getByText('Technique')).toBeVisible();
+    await expect
+      .element(screen.getByText('Watercolor'))
+      .toHaveAttribute('lang', 'en');
   });
 
-  it('renders duration as a time element', () => {
+  it('renders duration as a time element', async () => {
     const output = {
       duration: {
         __text: { en: 'Duration', sv: 'Längd' },
@@ -109,19 +117,20 @@ describe('ArtisticWorkFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Duration')).toBeInTheDocument();
-    const time = screen.getByRole('time');
+    await expect.element(screen.getByText('Duration')).toBeVisible();
+    const time = screen.baseElement.querySelector('time');
+    expect(time).not.toBeNull();
     expect(time).toHaveAttribute('datetime', '1h 30m 15s');
     expect(time).toHaveTextContent('1h 30m 15s');
   });
 
-  it('renders physical description', () => {
+  it('renders physical description', async () => {
     const output = {
       physicalDescription: {
         __text: { en: 'Physical description', sv: 'Fysisk beskrivning' },
@@ -129,17 +138,19 @@ describe('ArtisticWorkFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Physical description')).toBeInTheDocument();
-    expect(screen.getByText('50x70 cm')).toBeInTheDocument();
+    await expect
+      .element(screen.getByText('Physical description'))
+      .toBeVisible();
+    await expect.element(screen.getByText('50x70 cm')).toBeVisible();
   });
 
-  it('renders notes with language info', () => {
+  it('renders notes with language info', async () => {
     const output = {
       note_type_context: [
         {
@@ -151,17 +162,19 @@ describe('ArtisticWorkFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText(/Context/)).toBeInTheDocument();
-    expect(screen.getByText('Exhibition at Gallery X')).toBeInTheDocument();
+    await expect.element(screen.getByText(/Context/)).toBeVisible();
+    await expect
+      .element(screen.getByText('Exhibition at Gallery X'))
+      .toBeVisible();
   });
 
-  it('renders all fields together', () => {
+  it('renders all fields together', async () => {
     const output = {
       typeOfResource: {
         value: 'cartographic',
@@ -199,23 +212,25 @@ describe('ArtisticWorkFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(
+    const screen = await render(
       <dl>
         <ArtisticWorkFields output={output} />
       </dl>,
     );
 
-    expect(screen.getByText('Type of resource')).toBeInTheDocument();
-    expect(screen.getByText('Cartographic')).toBeInTheDocument();
-    expect(screen.getByText('Type')).toBeInTheDocument();
-    expect(screen.getByText('Painting')).toBeInTheDocument();
-    expect(screen.getByText('Material')).toBeInTheDocument();
-    expect(screen.getByText('Oil')).toBeInTheDocument();
-    expect(screen.getByText('Technique')).toBeInTheDocument();
-    expect(screen.getByText('Brushwork')).toBeInTheDocument();
-    expect(screen.getByText('Duration')).toBeInTheDocument();
-    expect(screen.getByText('5m')).toBeInTheDocument();
-    expect(screen.getByText('Physical description')).toBeInTheDocument();
-    expect(screen.getByText('30x40 cm')).toBeInTheDocument();
+    await expect.element(screen.getByText('Type of resource')).toBeVisible();
+    await expect.element(screen.getByText('Cartographic')).toBeVisible();
+    await expect.element(screen.getByText(/^Type$/)).toBeVisible();
+    await expect.element(screen.getByText('Painting')).toBeVisible();
+    await expect.element(screen.getByText('Material')).toBeVisible();
+    await expect.element(screen.getByText('Oil')).toBeVisible();
+    await expect.element(screen.getByText('Technique')).toBeVisible();
+    await expect.element(screen.getByText('Brushwork')).toBeVisible();
+    await expect.element(screen.getByText('Duration')).toBeVisible();
+    await expect.element(screen.getByText('5m')).toBeVisible();
+    await expect
+      .element(screen.getByText('Physical description'))
+      .toBeVisible();
+    await expect.element(screen.getByText('30x40 cm')).toBeVisible();
   });
 });
