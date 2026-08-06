@@ -1,19 +1,21 @@
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { DegreeProjectFields } from '../DegreeProjectFields';
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 
 describe('DegreeProjectFields', () => {
-  it('should render with no data', () => {
+  it('should render with no data', async () => {
     const output = {} as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
+    const screen = await render(<DegreeProjectFields output={output} />);
 
-    expect(screen.queryByRole('definition')).not.toBeInTheDocument();
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    await expect(screen.baseElement.querySelector('dd')).toBeNull();
+    await expect(
+      screen.baseElement.querySelector('h1, h2, h3, h4, h5, h6'),
+    ).toBeNull();
   });
 
-  it('should render academic semester', () => {
+  it('should render academic semester', async () => {
     const output = {
       academicSemester: {
         __text: { en: 'Academic semester' },
@@ -22,12 +24,12 @@ describe('DegreeProjectFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Academic semester')).toBeInTheDocument();
-    expect(screen.getByText('HT 2023')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect(screen.getByText('Academic semester')).toBeVisible();
+    await expect(screen.getByText('HT 2023')).toBeVisible();
   });
 
-  it('should render external collaboration', () => {
+  it('should render external collaboration', async () => {
     const output = {
       name_otherType_externalCollaboration_type_corporate: [
         {
@@ -49,13 +51,15 @@ describe('DegreeProjectFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('External collaboration')).toBeInTheDocument();
-    expect(screen.getByText('Company A')).toBeInTheDocument();
-    expect(screen.getByText('Company B')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect
+      .element(screen.getByText('External collaboration'))
+      .toBeVisible();
+    await expect.element(screen.getByText('Company A')).toBeVisible();
+    await expect.element(screen.getByText('Company B')).toBeVisible();
   });
 
-  it('should render degree granting institution', () => {
+  it('should render degree granting institution', async () => {
     const output = {
       name_otherType_degreeGrantingInstitution_type_corporate: {
         __text: { en: 'Degree Granting Institution' },
@@ -63,12 +67,14 @@ describe('DegreeProjectFields', () => {
       },
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Degree Granting Institution')).toBeInTheDocument();
-    expect(screen.getByText('University X')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect
+      .element(screen.getByText('Degree Granting Institution'))
+      .toBeVisible();
+    await expect.element(screen.getByText('University X')).toBeVisible();
   });
 
-  it('should render thesis advisors', () => {
+  it('should render thesis advisors', async () => {
     const output = {
       name_otherType_thesisAdvisor_type_personal: [
         {
@@ -84,13 +90,13 @@ describe('DegreeProjectFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Thesis Advisor')).toBeInTheDocument();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect.element(screen.getByText('Thesis Advisor')).toBeVisible();
+    await expect.element(screen.getByText('John Doe')).toBeVisible();
+    await expect.element(screen.getByText('Jane Smith')).toBeVisible();
   });
 
-  it('should render opponents', () => {
+  it('should render opponents', async () => {
     const output = {
       name_otherType_opponent_type_personal: [
         {
@@ -106,13 +112,13 @@ describe('DegreeProjectFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Opponent')).toBeInTheDocument();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect.element(screen.getByText('Opponent')).toBeVisible();
+    await expect.element(screen.getByText('John Doe')).toBeVisible();
+    await expect.element(screen.getByText('Jane Smith')).toBeVisible();
   });
 
-  it('should render degree supervisors', () => {
+  it('should render degree supervisors', async () => {
     const output = {
       name_otherType_degreeSupervisor_type_personal: [
         {
@@ -128,13 +134,13 @@ describe('DegreeProjectFields', () => {
       ],
     } as DivaOutputGroup;
 
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Degree Supervisor')).toBeInTheDocument();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect.element(screen.getByText('Degree Supervisor')).toBeVisible();
+    await expect.element(screen.getByText('John Doe')).toBeVisible();
+    await expect.element(screen.getByText('Jane Smith')).toBeVisible();
   });
 
-  it('should render presentation event', () => {
+  it('should render presentation event', async () => {
     const output = {
       presentation: {
         __text: { en: 'Presentation' },
@@ -148,9 +154,9 @@ describe('DegreeProjectFields', () => {
         address: { location: { value: 'Auditorium' } },
       },
     } as DivaOutputGroup;
-    render(<DegreeProjectFields output={output} />);
-    expect(screen.getByText('Presentation')).toBeInTheDocument();
-    expect(screen.getByText('2023-06-20 14:30')).toBeInTheDocument();
-    expect(screen.getByText('Auditorium')).toBeInTheDocument();
+    const screen = await render(<DegreeProjectFields output={output} />);
+    await expect.element(screen.getByText('Presentation')).toBeVisible();
+    await expect.element(screen.getByText('2023-06-20 14:30')).toBeVisible();
+    await expect.element(screen.getByText('Auditorium')).toBeVisible();
   });
 });
