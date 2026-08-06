@@ -1,28 +1,28 @@
 import type { RelatedItemJournalGroup } from '@/generatedTypes/divaTypes';
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { Journal } from '../Journal';
 
 describe('Journal', () => {
-  it('shows nothing when there is no journal', () => {
-    render(<Journal journal={undefined} />);
+  it('shows nothing when there is no journal', async () => {
+    const screen = await render(<Journal journal={undefined} />);
 
-    expect(screen.queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(screen.baseElement.querySelector('h2')).toBeNull();
   });
 
-  it('shows journal heading when there is a journal', () => {
+  it('shows journal heading when there is a journal', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(
-      screen.getByRole('heading', { level: 2, name: 'Journal' }),
-    ).toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('heading', { level: 2, name: 'Journal' }))
+      .toBeVisible();
   });
 
-  it('shows uncontrolled journal information', () => {
+  it('shows uncontrolled journal information', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
       titleInfo: {
@@ -46,21 +46,21 @@ describe('Journal', () => {
       },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(
-      screen.getByText("Nature: It's about nature and stuff"),
-    ).toBeInTheDocument();
+    await expect.element(screen.getByText('Title')).toBeVisible();
+    await expect
+      .element(screen.getByText("Nature: It's about nature and stuff"))
+      .toBeVisible();
 
-    expect(screen.getByText('Print ISSN')).toBeInTheDocument();
-    expect(screen.getByText('1845-9323')).toBeInTheDocument();
+    await expect.element(screen.getByText('Print ISSN')).toBeVisible();
+    await expect.element(screen.getByText('1845-9323')).toBeVisible();
 
-    expect(screen.getByText('Electronic ISSN')).toBeInTheDocument();
-    expect(screen.getByText('3791-2443')).toBeInTheDocument();
+    await expect.element(screen.getByText('Electronic ISSN')).toBeVisible();
+    await expect.element(screen.getByText('3791-2443')).toBeVisible();
   });
 
-  it('shows uncontrolled journal title without subtitle', () => {
+  it('shows uncontrolled journal title without subtitle', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
       titleInfo: {
@@ -72,13 +72,13 @@ describe('Journal', () => {
       },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(screen.getByText('Nature')).toBeInTheDocument();
+    await expect.element(screen.getByText('Title')).toBeVisible();
+    await expect.element(screen.getByText('Nature')).toBeVisible();
   });
 
-  it('shows controlled journal info', () => {
+  it('shows controlled journal info', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
       journal: {
@@ -109,21 +109,21 @@ describe('Journal', () => {
       },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(
-      screen.getByText("Nature: It's about nature and stuff"),
-    ).toBeInTheDocument();
+    await expect.element(screen.getByText('Title')).toBeVisible();
+    await expect
+      .element(screen.getByText("Nature: It's about nature and stuff"))
+      .toBeVisible();
 
-    expect(screen.getByText('Print ISSN')).toBeInTheDocument();
-    expect(screen.getByText('1845-9323')).toBeInTheDocument();
+    await expect.element(screen.getByText('Print ISSN')).toBeVisible();
+    await expect.element(screen.getByText('1845-9323')).toBeVisible();
 
-    expect(screen.getByText('Electronic ISSN')).toBeInTheDocument();
-    expect(screen.getByText('3791-2443')).toBeInTheDocument();
+    await expect.element(screen.getByText('Electronic ISSN')).toBeVisible();
+    await expect.element(screen.getByText('3791-2443')).toBeVisible();
   });
 
-  it('shows controlled information over uncontrolled', () => {
+  it('shows controlled information over uncontrolled', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
       titleInfo: {
@@ -165,21 +165,21 @@ describe('Journal', () => {
       },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(
-      screen.getByText("Nature: It's about nature and stuff"),
-    ).toBeInTheDocument();
+    await expect.element(screen.getByText('Title')).toBeVisible();
+    await expect
+      .element(screen.getByText("Nature: It's about nature and stuff"))
+      .toBeVisible();
 
-    expect(screen.queryByText('Print ISSN')).toBeInTheDocument();
-    expect(screen.queryByText('1845-9323')).toBeInTheDocument();
+    await expect.element(screen.getByText('Print ISSN')).toBeVisible();
+    await expect.element(screen.getByText('1845-9323')).toBeVisible();
 
-    expect(screen.queryByText('Electronic ISSN')).toBeInTheDocument();
-    expect(screen.queryByText('3791-2443')).toBeInTheDocument();
+    await expect.element(screen.getByText('Electronic ISSN')).toBeVisible();
+    await expect.element(screen.getByText('3791-2443')).toBeVisible();
   });
 
-  it('shows part of journal information', () => {
+  it('shows part of journal information', async () => {
     const journal = {
       __text: { en: 'Journal', sv: 'Tidskrift' },
       part: {
@@ -208,21 +208,21 @@ describe('Journal', () => {
       },
     } as RelatedItemJournalGroup;
 
-    render(<Journal journal={journal} />);
+    const screen = await render(<Journal journal={journal} />);
 
-    expect(screen.getByText('Volume')).toBeInTheDocument();
-    expect(screen.getByText('12')).toBeInTheDocument();
+    await expect.element(screen.getByText('Volume')).toBeVisible();
+    await expect.element(screen.getByText('12')).toBeVisible();
 
-    expect(screen.getByText('Issue')).toBeInTheDocument();
-    expect(screen.getByText('3')).toBeInTheDocument();
+    await expect.element(screen.getByText('Issue')).toBeVisible();
+    await expect.element(screen.getByText('3')).toBeVisible();
 
-    expect(screen.getByText('Article Number')).toBeInTheDocument();
-    expect(screen.getByText('456')).toBeInTheDocument();
+    await expect.element(screen.getByText('Article Number')).toBeVisible();
+    await expect.element(screen.getByText('456')).toBeVisible();
 
-    expect(screen.getByText('Start Page')).toBeInTheDocument();
-    expect(screen.getByText('1')).toBeInTheDocument();
+    await expect.element(screen.getByText('Start Page')).toBeVisible();
+    await expect.element(screen.getByText(/^1$/)).toBeVisible();
 
-    expect(screen.getByText('End Page')).toBeInTheDocument();
-    expect(screen.getByText('10')).toBeInTheDocument();
+    await expect.element(screen.getByText('End Page')).toBeVisible();
+    await expect.element(screen.getByText('10')).toBeVisible();
   });
 });
