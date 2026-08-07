@@ -42,6 +42,9 @@ const hasBreadcrumb = (match: UIMatch): match is MatchWithBreadcrumb =>
 export const Breadcrumbs = () => {
   const matches = useMatches();
   const { t } = useTranslation();
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   return (
     <nav
@@ -53,6 +56,7 @@ export const Breadcrumbs = () => {
           <NavLink
             to={href('/')}
             aria-label={t('divaClient_breadcrumbStartText')}
+            onClick={scrollToTop}
           >
             <HouseIcon />
           </NavLink>
@@ -65,6 +69,7 @@ export const Breadcrumbs = () => {
               <li key='publikationer-crumb'>
                 <NavLink
                   to={href('/:recordType', { recordType: 'diva-output' })}
+                  onClick={scrollToTop}
                 >
                   {t('diva-outputPluralText')}
                 </NavLink>
@@ -73,7 +78,7 @@ export const Breadcrumbs = () => {
           }
           crumbs.push(
             <li key={match.id}>
-              <NavLink to={match.pathname}>
+              <NavLink to={match.pathname} onClick={scrollToTop}>
                 {match.loaderData.breadcrumb}
               </NavLink>
             </li>,

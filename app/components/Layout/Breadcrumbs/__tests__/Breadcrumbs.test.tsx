@@ -17,8 +17,9 @@
  */
 
 import { act, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Breadcrumbs } from '../Breadcrumbs';
 
 describe('<Breadcrumbs />', () => {
@@ -190,5 +191,35 @@ describe('<Breadcrumbs />', () => {
     ).not.toBeInTheDocument();
 
     within(breadcrumbs).getByRole('link', { name: 'page1_1_1Crumb' });
+  });
+
+  it('scrolls to top when a breadcrumb link is clicked', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        children: [
+          {
+            path: 'page1_1',
+            loader: () => ({ breadcrumb: 'page1_1Crumb' }),
+            Component: Breadcrumbs,
+          },
+        ],
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    const scrollToSpy = vi
+      .spyOn(window, 'scrollTo')
+      .mockImplementation(() => undefined);
+
+    await act(() => render(<RoutesStub initialEntries={['/page1/page1_1']} />));
+
+    await userEvent.click(
+      screen.getByRole('link', { name: 'divaClient_breadcrumbStartText' }),
+    );
+
+    expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+    scrollToSpy.mockRestore();
   });
 });

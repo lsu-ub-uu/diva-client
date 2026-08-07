@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { SearchLinkList } from '../SearchLinkList';
 import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
@@ -36,12 +36,50 @@ describe('SearchLinkList', () => {
     await expect
       .element(screen.getByRole('heading', { name: 'Some heading' }))
       .toBeVisible();
-    const link = screen.getByRole('link', { name: 'Some label' }).element();
-    expect(link).toHaveAttribute(
-      'href',
-      `/diva-output?someSearchTerm=${items[0].href}`,
-    );
-    expect(link).toHaveAttribute('rel', 'nofollow');
+    const link = screen.getByRole('link', { name: 'Some label' });
+    await expect
+      .element(link)
+      .toHaveAttribute('href', `/diva-output?someSearchTerm=${items[0].href}`);
+    await expect.element(link).toHaveAttribute('rel', 'nofollow');
+  });
+
+  it('scrolls to top when clicking a rendered link', async () => {
+    const items = [
+      {
+        href: 'someLink',
+        label: 'Some label',
+      },
+    ];
+
+    const scrollToSpy = vi
+      .spyOn(window, 'scrollTo')
+      .mockImplementation(() => undefined);
+
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        id: 'root',
+        Component: () => (
+          <SearchLinkList
+            heading='Some heading'
+            searchTerm='someSearchTerm'
+            items={items}
+            language='en'
+            pill={true}
+          />
+        ),
+      },
+      {
+        path: '/diva-output',
+      },
+    ]);
+
+    const screen = await render(<RoutesStub />);
+
+    await screen.getByRole('link', { name: 'Some label' }).click();
+
+    expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+    scrollToSpy.mockRestore();
   });
 
   it('renders links without href as pill', async () => {
@@ -74,8 +112,8 @@ describe('SearchLinkList', () => {
     await expect
       .element(screen.getByRole('heading', { name: 'Some heading' }))
       .toBeVisible();
-    expect(
-      screen.baseElement.querySelector('a[href*="someSearchTerm"]'),
-    ).toBeNull();
+    await expect
+      .element(screen.getByRole('link', { name: 'Some label' }))
+      .not.toBeInTheDocument();
   });
 });
