@@ -64,8 +64,33 @@ describe('<Breadcrumbs />', () => {
     const breadcrumbs = screen.getByRole('navigation', {
       name: 'divaClient_breadcrumbText',
     });
-    within(breadcrumbs).getByRole('link', { name: 'diva-outputText' });
+    const links = within(breadcrumbs).getAllByRole('link');
+
+    expect(links).toHaveLength(3);
+    expect(links[1]).toHaveAttribute('href', '/diva-output');
+    within(breadcrumbs).getByRole('link', { name: 'diva-outputPluralText' });
     within(breadcrumbs).getByRole('link', { name: 'Lorem ipsum' });
+  });
+
+  it('does not render publication breadcrumbs for other routes', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/page1',
+        loader: () => ({ breadcrumb: 'page1Crumb' }),
+        Component: Breadcrumbs,
+      },
+    ]);
+
+    await act(() => render(<RoutesStub initialEntries={['/page1']} />));
+
+    const breadcrumbs = screen.getByRole('navigation', {
+      name: 'divaClient_breadcrumbText',
+    });
+
+    expect(
+      within(breadcrumbs).queryByRole('link', { name: 'diva-outputText' }),
+    ).not.toBeInTheDocument();
+    within(breadcrumbs).getByRole('link', { name: 'page1Crumb' });
   });
 
   it('Can take the user back to home page', async () => {

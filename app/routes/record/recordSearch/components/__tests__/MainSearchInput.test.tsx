@@ -87,4 +87,49 @@ describe('MainSearchInput', () => {
     await user.type(input, 'hello');
     expect(input).toHaveValue('hello');
   });
+
+  it('shows search icon when not searching and no validation error', () => {
+    render(
+      <MainSearchInput
+        query='test'
+        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        searching={false}
+        onClearMainQuery={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toHaveAttribute(
+      'aria-invalid',
+      'false',
+    );
+  });
+
+  it('shows loader icon when searching', () => {
+    render(
+      <MainSearchInput
+        query='test'
+        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        searching={true}
+        onClearMainQuery={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
+
+  it('shows alert icon when there is a validation error', () => {
+    render(
+      <MainSearchInput
+        query='test'
+        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        searching={false}
+        onClearMainQuery={vi.fn()}
+        validationError='search.error'
+      />,
+    );
+    expect(screen.getByRole('searchbox')).toHaveAttribute(
+      'aria-invalid',
+      'true',
+    );
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+  });
 });

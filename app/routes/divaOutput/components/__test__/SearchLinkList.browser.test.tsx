@@ -1,12 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { SearchLinkList } from '../SearchLinkList';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
-import { vi } from 'vitest';
 
 describe('SearchLinkList', () => {
-  it('renders links with href as pill', () => {
+  it('renders links with href as pill', async () => {
     const items = [
       {
         href: 'someLink',
@@ -33,19 +31,16 @@ describe('SearchLinkList', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(
-      screen.getByRole('heading', { name: 'Some heading' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Some label' })).toHaveAttribute(
-      'href',
-      `/diva-output?someSearchTerm=${items[0].href}`,
-    );
-    expect(screen.getByRole('link', { name: 'Some label' })).toHaveAttribute(
-      'rel',
-      'nofollow',
-    );
+    await expect
+      .element(screen.getByRole('heading', { name: 'Some heading' }))
+      .toBeVisible();
+    const link = screen.getByRole('link', { name: 'Some label' });
+    await expect
+      .element(link)
+      .toHaveAttribute('href', `/diva-output?someSearchTerm=${items[0].href}`);
+    await expect.element(link).toHaveAttribute('rel', 'nofollow');
   });
 
   it('scrolls to top when clicking a rendered link', async () => {
@@ -79,15 +74,15 @@ describe('SearchLinkList', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    await userEvent.click(screen.getByRole('link', { name: 'Some label' }));
+    await screen.getByRole('link', { name: 'Some label' }).click();
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     scrollToSpy.mockRestore();
   });
 
-  it('renders links without href as pill', () => {
+  it('renders links without href as pill', async () => {
     const items = [
       {
         label: 'Some label',
@@ -112,13 +107,13 @@ describe('SearchLinkList', () => {
       },
     ]);
 
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(
-      screen.getByRole('heading', { name: 'Some heading' }), // a
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('link', { name: 'Some label' }),
-    ).not.toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('heading', { name: 'Some heading' }))
+      .toBeVisible();
+    await expect
+      .element(screen.getByRole('link', { name: 'Some label' }))
+      .not.toBeInTheDocument();
   });
 });

@@ -1,17 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import { RelatedOutput } from '../RelatedOutput';
-import { render, screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import type { RelatedOutputGroup } from '@/generatedTypes/divaTypes';
 import { createRoutesStub } from 'react-router';
 
 describe('RelatedOutput', () => {
-  it('Renders nothing when no related output', () => {
-    render(<RelatedOutput relatedOutput={undefined} />);
+  it('Renders nothing when no related output', async () => {
+    const screen = await render(<RelatedOutput relatedOutput={undefined} />);
 
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    expect(
+      screen.baseElement.querySelector('h1, h2, h3, h4, h5, h6'),
+    ).toBeNull();
   });
 
-  it('Renders nothing when no related output', () => {
+  it('Renders nothing when no related output', async () => {
     const relatedOutput = {
       output: {
         value: 'divaOutput:1234',
@@ -31,10 +33,10 @@ describe('RelatedOutput', () => {
         Component: () => <RelatedOutput relatedOutput={relatedOutput} />,
       },
     ]);
-    render(<RoutesStub />);
+    const screen = await render(<RoutesStub />);
 
-    expect(
-      screen.getByRole('link', { name: 'Linked record title' }),
-    ).toBeInTheDocument();
+    await expect
+      .element(screen.getByRole('link', { name: 'Linked record title' }))
+      .toBeVisible();
   });
 });

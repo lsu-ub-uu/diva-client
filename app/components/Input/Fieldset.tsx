@@ -36,6 +36,7 @@ interface FieldsetProps {
   };
   variant?: 'block' | 'inline';
   size?: 'small' | 'medium' | 'large';
+  hideErrorIcon?: boolean;
 }
 
 export const Fieldset = ({
@@ -46,6 +47,7 @@ export const Fieldset = ({
   info,
   children,
   errorMessage,
+  hideErrorIcon,
   variant,
   size,
 }: FieldsetProps) => {
@@ -85,10 +87,12 @@ export const Fieldset = ({
         )}
         <div className={styles['input']}>
           {children}
-          <TriangleAlertIcon
-            className={styles['error-icon']}
-            aria-hidden='true'
-          />
+          {!hideErrorIcon && (
+            <TriangleAlertIcon
+              className={styles['error-icon']}
+              aria-hidden='true'
+            />
+          )}
         </div>
         {errorMessage && (
           <p id={ids.error} className={styles['error-message']}>

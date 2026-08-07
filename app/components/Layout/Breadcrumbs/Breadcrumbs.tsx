@@ -71,7 +71,7 @@ export const Breadcrumbs = () => {
                   to={href('/:recordType', { recordType: 'diva-output' })}
                   onClick={scrollToTop}
                 >
-                  {t('diva-outputText')}
+                  {t('diva-outputPluralText')}
                 </NavLink>
               </li>,
             );
