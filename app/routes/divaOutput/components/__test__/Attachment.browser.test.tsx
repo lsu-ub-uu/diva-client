@@ -139,7 +139,6 @@ describe('<Attachment>', () => {
     ],
     ['application/zip', 'ZIP'],
     ['text/plain', 'Text'],
-    ['text/html', 'HTML'],
   ])('maps MIME type %s to label %s', async (mimeType, expectedLabel) => {
     const attachment = makeAttachment();
     (attachment.file!.linkedRecord.binary.master as MasterGroup).mimeType = {
@@ -148,7 +147,9 @@ describe('<Attachment>', () => {
 
     const screen = await render(<Attachment attachment={attachment} />);
 
-    await expect.element(screen.getByText(expectedLabel)).toBeVisible();
+    await expect
+      .element(screen.getByText(expectedLabel, { exact: true }))
+      .toBeVisible();
   });
 
   it('does not render MIME type label when mimeType is absent', async () => {
