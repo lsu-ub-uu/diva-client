@@ -1,5 +1,5 @@
 import type { BFFMetadata } from '@/cora/bffTypes.server';
-import { SearchIcon, XIcon } from 'lucide-react';
+import { SearchIcon, TriangleAlertIcon, XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
 import { useEffect, useRef } from 'react';
@@ -39,6 +39,7 @@ export const MainSearchInput = ({
       label={t(mainSearchTerm.textId)}
       size='large'
       errorMessage={validationError && t(validationError)}
+      hideErrorIcon
     >
       <div className={styles['search-query-wrapper']}>
         <Input
@@ -71,10 +72,18 @@ export const MainSearchInput = ({
             tooltip={t('divaClient_SearchButtonText')}
             className={styles['search-button']}
           >
-            {searching ? <CircularLoader /> : <SearchIcon />}
+            {searchIcon(searching, validationError)}
           </IconButton>
         </div>
       </div>
     </Fieldset>
   );
+};
+
+const searchIcon = (searching: boolean, validationError?: string) => {
+  if (validationError) {
+    return <TriangleAlertIcon />;
+  } else {
+    return searching ? <CircularLoader /> : <SearchIcon />;
+  }
 };
