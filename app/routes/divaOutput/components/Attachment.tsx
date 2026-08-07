@@ -44,6 +44,8 @@ export const Attachment = ({ attachment }: AttachmentProps) => {
           <a
             className='icon-text'
             href={downloadLink}
+            target='_blank'
+            rel='noopener noreferrer'
             type={attachment.file.linkedRecord.binary.master?.mimeType?.value}
           >
             {formatHeading(attachment, t)}
