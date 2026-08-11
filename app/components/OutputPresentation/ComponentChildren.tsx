@@ -1,4 +1,4 @@
-import type { DataGroup } from '@/cora/cora-data/types.server';
+import type { CoraData, DataGroup } from '@/cora/cora-data/types.server';
 import {
   isComponentContainer,
   isComponentWithData,
@@ -15,15 +15,18 @@ import {
 import type { PresentationStyle } from '@/cora/bffTypes.server';
 import { Fragment } from 'react/jsx-runtime';
 import { OutputDevInfo } from './OutputDevInfo';
+import { getAlternativeChildComponents } from './OutputContainer';
 
 interface ComponentChildrenProps {
   components?: FormComponent[];
+  alternativeComponents?: FormComponent[];
   data: DataGroup;
   parentPresentationStyle?: PresentationStyle | undefined;
 }
 
 export const ComponentChildren = ({
   components,
+  alternativeComponents,
   data,
   parentPresentationStyle,
 }: ComponentChildrenProps) => {
@@ -75,16 +78,30 @@ const getContainerData = (
   dataGroup: DataGroup,
 ) => {
   const matchingChildren = dataGroup.children.filter((childData) => {
-    return container.components?.some((childComponent) => {
-      if (isComponentContainer(childComponent)) {
-        return childComponent.components?.some((nestedChild) =>
-          doesDataMatchComponent(nestedChild, childData),
-        );
-      }
-
-      return doesDataMatchComponent(childComponent, childData);
-    });
+    return doesDataMatchContainer(container, childData);
   });
 
   return { ...dataGroup, children: matchingChildren };
+};
+
+const doesDataMatchContainer = (
+  container: FormComponentContainer,
+  childData: CoraData,
+) => {
+  return doesDataMatchAnyComponent(container.components, childData);
+};
+
+const doesDataMatchAnyComponent = (
+  components: FormComponent[] | undefined,
+  childData: CoraData,
+) => {
+  return components?.some((childComponent) => {
+    if (isComponentContainer(childComponent)) {
+      return childComponent.components?.some((nestedChild) =>
+        doesDataMatchComponent(nestedChild, childData),
+      );
+    }
+
+    return doesDataMatchComponent(childComponent, childData);
+  });
 };

@@ -9,6 +9,89 @@ import { describe, expect, it } from 'vitest';
 import { OutputPresentation } from '../OutputPresentation';
 
 describe('OutputPresentation', () => {
+  it('renders an sContainer with only text and alternative presentation with data', () => {
+    const formSchema = {
+      form: {
+        name: 'root',
+        label: 'Root',
+        showLabel: true,
+        type: 'group',
+        presentationId: 'rootPGroup',
+        components: [
+          {
+            type: 'container',
+            name: 'someMinimizedContainer',
+            mode: 'output',
+            containerType: 'surrounding',
+            components: [
+              {
+                name: 'someText',
+                type: 'text',
+                textStyle: 'h3TextStyle',
+              },
+            ],
+            childStyle: [],
+            gridColSpan: 12,
+            alternativePresentation: {
+              type: 'container',
+              name: 'someContainer',
+              mode: 'output',
+              containerType: 'surrounding',
+              components: [
+                {
+                  name: 'updatesHeadlineText',
+                  type: 'text',
+                  textStyle: 'h3TextStyle',
+                },
+                {
+                  type: 'group',
+                  name: 'someGroup',
+                  mode: 'output',
+                  components: [
+                    {
+                      name: 'someTextVar',
+                      mode: 'output',
+                      label: 'tsUpdatedDivaTextVarText',
+                      showLabel: true,
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    } as FormSchema;
+    const data = {
+      name: 'root',
+      children: [
+        {
+          name: 'someGroup',
+          repeatId: '0',
+          children: [
+            {
+              name: 'someTextVar',
+              value: 'someValue',
+            },
+          ],
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(screen.getByText('someText')).toBeInTheDocument();
+  });
   it('renders a group with a text variable', () => {
     const formSchema = {
       form: {
