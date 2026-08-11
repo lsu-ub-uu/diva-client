@@ -35,7 +35,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
   );
 
   const handleQueryChange = useDebouncedCallback(
-    (form: HTMLFormElement) => submit(form),
+    (form: HTMLFormElement) => submit(form, { replace: true }),
     400,
   );
 
@@ -49,7 +49,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
         formData.append(filter.name, filter.value);
       }
     });
-    submit(formData, { method: 'GET' });
+    submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearAllFilters = () => {
@@ -57,7 +57,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
     formData.append('q', query);
     formData.append('start', start.toString());
     formData.append('rows', rows.toString());
-    submit(formData, { method: 'GET' });
+    submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearMainQuery = () => {
@@ -67,7 +67,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
     activeFilters.forEach((filter) => {
       formData.append(filter.name, filter.value);
     });
-    submit(formData, { method: 'GET' });
+    submit(formData, { method: 'GET', replace: true });
   };
 
   return (
