@@ -48,6 +48,7 @@ export const RecordSearchMain = ({
         method='GET'
         onChange={(e) => onQueryChange(e.currentTarget)}
         className='main-query-form'
+        replace
       >
         <MainSearchInput
           query={query}

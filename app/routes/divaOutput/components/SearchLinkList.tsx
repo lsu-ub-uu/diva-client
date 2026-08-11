@@ -21,10 +21,6 @@ export const SearchLinkList = ({
     return null;
   }
 
-  const scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
   return (
     <section>
       {heading && <h2 id={id}>{heading}</h2>}
@@ -37,7 +33,6 @@ export const SearchLinkList = ({
                 <Link
                   to={`/diva-output?${searchTerm}=${item.href}`}
                   rel='nofollow'
-                  onClick={scrollToTop}
                 >
                   {item.label}
                 </Link>

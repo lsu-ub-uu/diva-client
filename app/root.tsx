@@ -33,6 +33,7 @@ import {
   Meta,
   Outlet,
   Scripts,
+  ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
 import {
@@ -241,6 +242,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </head>
       <body>
         {children}
+        <ScrollRestoration />
         <Scripts />
       </body>
     </html>

@@ -41,7 +41,7 @@ export const Filters = ({
         formData.delete(key);
       }
     }
-    submit(formData, { method: 'GET' });
+    submit(formData, { method: 'GET', replace: true });
   }, 400);
 
   if (filters.length === 0) {
@@ -63,7 +63,7 @@ export const Filters = ({
             <XIcon />
           </IconButton>
         </div>
-        <Form method='GET' onChange={handleFilterChange} ref={formRef}>
+        <Form method='GET' onChange={handleFilterChange} ref={formRef} replace>
           <SearchHiddenInputs query={query} rows={rows} start={1} />
           {filters.map((filter) => {
             const activeFilter = activeFilters.find(
