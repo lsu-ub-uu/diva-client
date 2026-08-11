@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
-import { SearchLinkList } from '../SearchLinkList';
-import { render } from 'vitest-browser-react';
 import { createRoutesStub } from 'react-router';
+import { describe, expect, it } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { SearchLinkList } from '../SearchLinkList';
 
 describe('SearchLinkList', () => {
   it('renders links with href as pill', async () => {
