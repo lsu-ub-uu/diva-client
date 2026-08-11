@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   DrawerDialog,
   useDrawerDialog,
@@ -29,6 +30,22 @@ export const MobileNavigation = ({
   ];
   const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
     useDrawerDialog();
+
+  useEffect(() => {
+    const desktopMediaQuery = window.matchMedia('(width >= 900px)');
+
+    const handleDesktopBreakpoint = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        drawerDialogRef.current?.close();
+      }
+    };
+
+    desktopMediaQuery.addEventListener('change', handleDesktopBreakpoint);
+
+    return () => {
+      desktopMediaQuery.removeEventListener('change', handleDesktopBreakpoint);
+    };
+  }, [drawerDialogRef]);
 
   return (
     <>
