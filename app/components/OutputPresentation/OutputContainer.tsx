@@ -1,14 +1,7 @@
 import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type {
-  FormComponent,
-  FormComponentContainer,
-} from '../FormGenerator/types';
+import type { FormComponentContainer } from '../FormGenerator/types';
 import { ComponentChildren } from './ComponentChildren';
-import {
-  isComponentContainer,
-  isComponentGroup,
-} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface OutputContainerProps {
   component: FormComponentContainer;
@@ -30,7 +23,6 @@ export const OutputContainer = ({
     >
       <ComponentChildren
         components={component.components}
-        alternativeComponents={getAlternativeChildComponents(component)}
         data={data}
         parentPresentationStyle={
           component.presentationStyle ?? parentPresentationStyle
@@ -38,17 +30,4 @@ export const OutputContainer = ({
       />
     </div>
   );
-};
-
-export const getAlternativeChildComponents = (component: FormComponent) => {
-  if (!component.alternativePresentation) {
-    return undefined;
-  }
-
-  if (
-    isComponentContainer(component.alternativePresentation) ||
-    isComponentGroup(component.alternativePresentation)
-  ) {
-    return component.alternativePresentation.components;
-  }
 };

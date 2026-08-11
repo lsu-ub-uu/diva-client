@@ -7,6 +7,7 @@ import { renderWithRoutesStub } from '@/utils/testUtils';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OutputPresentation } from '../OutputPresentation';
+import userEvent from '@testing-library/user-event';
 
 describe('OutputPresentation', () => {
   it('renders an sContainer with only text and alternative presentation with data', () => {
@@ -92,6 +93,78 @@ describe('OutputPresentation', () => {
 
     expect(screen.getByText('someText')).toBeInTheDocument();
   });
+
+  it('renders a group with more data in alternative presentation', async () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Person',
+        name: 'person',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'textVariable',
+            label: 'Name',
+            showLabel: true,
+            name: 'name',
+          },
+        ],
+        alternativePresentation: {
+          type: 'group',
+          label: 'Person',
+          name: 'person',
+          showLabel: true,
+          headlineLevel: 'h1',
+          components: [
+            {
+              type: 'textVariable',
+              label: 'Name',
+              showLabel: true,
+              name: 'name',
+            },
+            {
+              type: 'numberVariable',
+              label: 'Age',
+              showLabel: true,
+              name: 'age',
+            },
+          ],
+        },
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'person',
+      children: [
+        {
+          name: 'name',
+          value: 'Alice',
+        },
+        {
+          name: 'age',
+          value: '30',
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Person' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Alice')).toBeInTheDocument();
+    expect(screen.queryByText('Age')).not.toBeInTheDocument();
+    expect(screen.queryByText('30')).not.toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button'));
+
+    expect(screen.getByText('Age')).toBeInTheDocument();
+    expect(screen.getByText('30')).toBeInTheDocument();
+  });
+
   it('renders a group with a text variable', () => {
     const formSchema = {
       form: {

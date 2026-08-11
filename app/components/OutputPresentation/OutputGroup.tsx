@@ -1,6 +1,5 @@
 import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import { getAlternativeChildComponents } from './OutputContainer';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -50,7 +49,6 @@ export const OutputGroup = ({
       >
         <ComponentChildren
           components={component.components}
-          alternativeComponents={getAlternativeChildComponents(component)}
           data={data}
           parentPresentationStyle={
             component.presentationStyle ?? parentPresentationStyle

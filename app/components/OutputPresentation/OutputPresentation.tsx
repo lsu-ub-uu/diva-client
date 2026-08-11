@@ -14,7 +14,6 @@ export const OutputPresentation = ({
   data,
   compact,
 }: OutputPresentationProps) => {
-  console.log('OutputPresentation', formSchema, data);
   return (
     <div
       className={styles['output-presentation']}

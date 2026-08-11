@@ -1,20 +1,28 @@
 import type { CoraData, DataGroup } from '@/cora/cora-data/types.server';
-import { isComponentWithData } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import type { FormComponent } from '../FormGenerator/types';
+import {
+  isComponentContainer,
+  isComponentGroup,
+  isComponentWithData,
+} from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import type {
+  FormComponent,
+  FormComponentContainer,
+} from '../FormGenerator/types';
 
 export const findChildData = (
   component: FormComponent,
-  group: DataGroup,
+  groupData: DataGroup,
 ): CoraData[] => {
-  return group.children.filter((child) =>
-    doesDataMatchComponent(component, child),
+  if (isComponentContainer(component)) {
+    return getContainerData(component, groupData);
+  }
+
+  return groupData.children.filter((childData) =>
+    doesDataMatchComponent(component, childData),
   );
 };
 
-export const doesDataMatchComponent = (
-  component: FormComponent,
-  data: CoraData,
-) => {
+const doesDataMatchComponent = (component: FormComponent, data: CoraData) => {
   if (!isComponentWithData(component)) {
     return false;
   }
@@ -46,24 +54,44 @@ export const doesDataMatchComponent = (
   });
 };
 
-/**
- * Gets a copy of the data group with only the children that match the components in the container.
- */
 const getContainerData = (
-  container: FormComponentContainer,
-  dataGroup: DataGroup,
-) => {
-  const matchingChildren = dataGroup.children.filter((childData) => {
-    return container.components?.some((childComponent) => {
-      if (isComponentContainer(childComponent)) {
-        return childComponent.components?.some((nestedChild) =>
-          doesDataMatchComponent(nestedChild, childData),
-        );
-      }
+  component: FormComponentContainer,
+  groupData: DataGroup,
+): CoraData[] => {
+  return [
+    {
+      ...groupData,
+      children: groupData.children.filter((childData) =>
+        doesDataMatchComponentTree(component, childData),
+      ),
+    },
+  ];
+};
 
-      return doesDataMatchComponent(childComponent, childData);
-    });
-  });
+const doesDataMatchComponentTree = (
+  component: FormComponent | undefined,
+  childData: CoraData,
+): boolean => {
+  if (!component) {
+    return false;
+  }
 
-  return { ...dataGroup, children: matchingChildren };
+  if (doesDataMatchComponent(component, childData)) {
+    return true;
+  }
+
+  return getNestedComponents(component).some((nestedComponent) =>
+    doesDataMatchComponentTree(nestedComponent, childData),
+  );
+};
+
+const getNestedComponents = (component: FormComponent): FormComponent[] => {
+  const nestedComponents =
+    isComponentContainer(component) || isComponentGroup(component)
+      ? (component.components ?? [])
+      : [];
+
+  return component.alternativePresentation
+    ? [...nestedComponents, component.alternativePresentation]
+    : nestedComponents;
 };
