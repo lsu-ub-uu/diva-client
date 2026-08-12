@@ -1,15 +1,14 @@
+import type { PresentationStyle } from '@/cora/bffTypes.server';
 import type { DataRecordLink } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
 import type {
   FormComponentAnyTypeRecordLink,
   FormComponentRecordLink,
 } from '../FormGenerator/types';
 import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
-import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
-import type { PresentationStyle } from '@/cora/bffTypes.server';
 import { OutputRecordLinkWithoutPresentation } from './OutputRecordLinkWithoutPresentation';
+import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;

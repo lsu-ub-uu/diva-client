@@ -17,6 +17,7 @@ describe('OutputRecordLinkWithPresentation', () => {
         linkedRecordId='someRecordId'
         linkedRecordType='someRecordType'
         presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={true}
       />,
     );
 
@@ -31,6 +32,7 @@ describe('OutputRecordLinkWithPresentation', () => {
         linkedRecordId='someRecordId'
         linkedRecordType='someRecordType'
         presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={true}
       />,
     );
 
@@ -63,10 +65,61 @@ describe('OutputRecordLinkWithPresentation', () => {
         linkedRecordId='someRecordId'
         linkedRecordType='someRecordType'
         presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={true}
       />,
     );
 
     expect(await screen.findByText('someValue')).toBeInTheDocument();
+  });
+
+  it('renders fallback ui without a link when hasReadAccess is false and fetch fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Fetch error')));
+
+    renderWithRoutesStub(
+      <OutputRecordLinkWithPresentation
+        linkedRecordId='someRecordId'
+        linkedRecordType='someRecordType'
+        presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={false}
+      />,
+    );
+
+    const text = await screen.findByText('someRecordType/someRecordId');
+    expect(text).toBeInTheDocument();
+    expect(text.tagName).toBe('SPAN');
+    expect(text.closest('a')).toBeNull();
+  });
+
+  it('renders record data without link icon when hasReadAccess is false', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
+      } as Response),
+    );
+
+    renderWithRoutesStub(
+      <OutputRecordLinkWithPresentation
+        linkedRecordId='someRecordId'
+        linkedRecordType='someRecordType'
+        presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={false}
+      />,
+    );
+
+    expect(await screen.findByText('someValue')).toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
   it('aborts fetch signal on unmount', async () => {
@@ -84,6 +137,7 @@ describe('OutputRecordLinkWithPresentation', () => {
         linkedRecordId='someRecordId'
         linkedRecordType='someRecordType'
         presentationRecordLinkId='somePresentationRecordLinkId'
+        hasReadAccess={true}
       />,
     );
 
