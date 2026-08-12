@@ -27,6 +27,7 @@ import {
   formDefWithOneOptionalGroupWithTextVariableAndMultipleAttributes,
   formDefWithRequiredGroupWithRequiredGroupWithRequiredVarsNEW,
 } from '@/__mocks__/data/form/attributeCollection';
+import { formDefWithSurroundingContainerAroundTextVariable } from '@/__mocks__/data/form/container';
 import {
   formDefCollVarsWithSameNameInDataNEW,
   formDefRequiredRepeatingCollectionVar1_X,
@@ -1422,6 +1423,412 @@ describe('yupSchema', async () => {
       };
 
       await expect(yupSchema.isValid(data)).resolves.toBe(true);
+    });
+  });
+
+  describe('surrounding container', () => {
+    it('is valid for a required textVar inside a surrounding container with value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithSurroundingContainerAroundTextVariable,
+      );
+
+      await expect(
+        yupSchema.isValid({
+          someRootNameInData: {
+            someNameInData: { value: 'someValue' },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is invalid for a required textVar inside a surrounding container without value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithSurroundingContainerAroundTextVariable,
+      );
+
+      const data = {
+        someRootNameInData: {
+          someNameInData: { value: '' },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+  });
+
+  describe('optional numberVar inside optional ancestor', () => {
+    const formSchema = {
+      form: {
+        name: 'root',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        components: [
+          {
+            name: 'optionalGroup',
+            type: 'group',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+            components: [
+              {
+                name: 'optionalNumber',
+                type: 'numberVariable',
+                repeat: { repeatMin: 0, repeatMax: 1 },
+                validation: {
+                  type: 'number',
+                  min: 0,
+                  max: 100,
+                  warningMin: 0,
+                  warningMax: 100,
+                  numberOfDecimals: 0,
+                },
+              },
+            ],
+          } as FormComponentGroup,
+        ],
+      },
+    } as FormSchema;
+
+    it('is valid with no value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalNumber: { value: '' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is valid with a valid number value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalNumber: { value: '50' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is invalid with non-numeric value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const data = {
+        root: {
+          optionalGroup: {
+            optionalNumber: { value: 'abc' },
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldInvalidFormatText',
+      );
+    });
+  });
+
+  describe('required numberVar inside optional ancestor with empty values', () => {
+    it('is valid when optional group and required numberVar are both empty', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(
+        formDefWithOptionalGroupWithRequiredNumberVar,
+      );
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            group: {
+              numberVariable: { value: '' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is invalid when optional group has sibling data but required numberVar is empty', async () => {
+      const formSchema = {
+        form: {
+          name: 'root',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          components: [
+            {
+              name: 'optionalGroup',
+              type: 'group',
+              repeat: { repeatMin: 0, repeatMax: 1 },
+              components: [
+                {
+                  name: 'siblingVar',
+                  type: 'textVariable',
+                  repeat: { repeatMin: 0, repeatMax: 1 },
+                  validation: { type: 'regex', pattern: '.+' },
+                },
+                {
+                  name: 'requiredNumber',
+                  type: 'numberVariable',
+                  repeat: { repeatMin: 1, repeatMax: 1 },
+                  validation: {
+                    type: 'number',
+                    min: 1,
+                    max: 100,
+                    warningMin: 1,
+                    warningMax: 100,
+                    numberOfDecimals: 0,
+                  },
+                },
+              ],
+            } as FormComponentGroup,
+          ],
+        },
+      } as FormSchema;
+
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const data = {
+        root: {
+          optionalGroup: {
+            siblingVar: { value: 'hasData' },
+            requiredNumber: { value: '' },
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+  });
+
+  describe('optional collectionVariable inside optional ancestor', () => {
+    const formSchema = {
+      form: {
+        name: 'root',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        components: [
+          {
+            name: 'optionalGroup',
+            type: 'group',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+            components: [
+              {
+                name: 'optionalCollVar',
+                type: 'collectionVariable',
+                repeat: { repeatMin: 0, repeatMax: 1 },
+                options: [
+                  { value: 'blue', label: 'blueLabel' },
+                  { value: 'red', label: 'redLabel' },
+                ],
+              },
+            ],
+          } as FormComponentGroup,
+        ],
+      },
+    } as FormSchema;
+
+    it('is valid with no value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalCollVar: { value: '' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is valid with a selected value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalCollVar: { value: 'blue' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+  });
+
+  describe('optional textVar inside optional ancestor with regex', () => {
+    const formSchema = {
+      form: {
+        name: 'root',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        components: [
+          {
+            name: 'optionalGroup',
+            type: 'group',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+            components: [
+              {
+                name: 'optionalTextVar',
+                type: 'textVariable',
+                repeat: { repeatMin: 0, repeatMax: 1 },
+                validation: { type: 'regex', pattern: '^[a-z]+$' },
+              },
+            ],
+          } as FormComponentGroup,
+        ],
+      },
+    } as FormSchema;
+
+    it('is valid with no value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalTextVar: { value: '' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is valid with a matching value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalGroup: {
+              optionalTextVar: { value: 'abc' },
+            },
+          },
+        }),
+      ).resolves.toBe(true);
+    });
+
+    it('is invalid with a non-matching value', async () => {
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const data = {
+        root: {
+          optionalGroup: {
+            optionalTextVar: { value: 'ABC123' },
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldInvalidFormatText',
+      );
+    });
+  });
+
+  describe('attribute on optional host', () => {
+    it('is invalid when optional host has value but attribute is missing', async () => {
+      const formSchema = {
+        form: {
+          name: 'root',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          components: [
+            {
+              name: 'optionalVar',
+              type: 'textVariable',
+              repeat: { repeatMin: 0, repeatMax: 1 },
+              validation: { type: 'regex', pattern: '.+' },
+              attributes: [
+                {
+                  type: 'collectionVariable',
+                  name: 'language',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollVarText',
+                    body: 'languageCollVarDefText',
+                  },
+                  label: 'languageCollVarText',
+                  showLabel: true,
+                  options: [
+                    { value: 'eng', label: 'engLabel' },
+                    { value: 'swe', label: 'sweLabel' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      } as FormSchema;
+
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      const data = {
+        root: {
+          optionalVar: {
+            value: 'someValue',
+            _language: '',
+          },
+        },
+      };
+
+      await expect(yupSchema.validate(data)).rejects.toThrow(
+        'divaClient_fieldRequiredText',
+      );
+    });
+
+    it('is valid when optional host has no value and attribute is missing', async () => {
+      const formSchema = {
+        form: {
+          name: 'root',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          components: [
+            {
+              name: 'optionalVar',
+              type: 'textVariable',
+              repeat: { repeatMin: 0, repeatMax: 1 },
+              validation: { type: 'regex', pattern: '.+' },
+              attributes: [
+                {
+                  type: 'collectionVariable',
+                  name: 'language',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollVarText',
+                    body: 'languageCollVarDefText',
+                  },
+                  label: 'languageCollVarText',
+                  showLabel: true,
+                  options: [
+                    { value: 'eng', label: 'engLabel' },
+                    { value: 'swe', label: 'sweLabel' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      } as FormSchema;
+
+      const yupSchema = generateYupSchemaFromFormSchema(formSchema);
+
+      await expect(
+        yupSchema.isValid({
+          root: {
+            optionalVar: {
+              value: '',
+              _language: '',
+            },
+          },
+        }),
+      ).resolves.toBe(true);
     });
   });
 });
