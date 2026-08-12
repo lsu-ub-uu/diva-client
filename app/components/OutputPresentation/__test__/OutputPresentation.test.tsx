@@ -163,6 +163,13 @@ describe('OutputPresentation', () => {
             { name: 'linkedRecordType', value: 'profile' },
             { name: 'linkedRecordId', value: 'record-123' },
           ],
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'record',
+              url: '/profile/record-123',
+            },
+          },
         },
       ],
     } as DataGroup;
@@ -481,6 +488,13 @@ describe('OutputPresentation', () => {
             { name: 'linkedRecordType', value: 'profile' },
             { name: 'linkedRecordId', value: 'record-123' },
           ],
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'record',
+              url: '/profile/record-123',
+            },
+          },
         },
         {
           name: 'profileLink',
@@ -488,6 +502,13 @@ describe('OutputPresentation', () => {
             { name: 'linkedRecordType', value: 'profile' },
             { name: 'linkedRecordId', value: 'record-456' },
           ],
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'record',
+              url: '/profile/record-456',
+            },
+          },
         },
       ],
     } as DataGroup;

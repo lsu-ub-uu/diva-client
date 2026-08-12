@@ -1,16 +1,16 @@
+import { OutputRecordLinkWithoutPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithoutPresentation';
+import { Typography } from '@/components/Typography/Typography';
+import clsx from 'clsx';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRemixFormContext } from 'remix-hook-form';
+import { isComponentRecordLink } from '../formGeneratorUtils/formGeneratorUtils';
 import type {
   FormComponentAnyTypeRecordLink,
   FormComponentRecordLink,
 } from '../types';
 import { DevInfo } from './DevInfo';
 import styles from './OutputField.module.css';
-import { useTranslation } from 'react-i18next';
-import { Typography } from '@/components/Typography/Typography';
-import clsx from 'clsx';
-import { href, Link } from 'react-router';
-import { useRemixFormContext } from 'remix-hook-form';
-import { isComponentRecordLink } from '../formGeneratorUtils/formGeneratorUtils';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
@@ -35,6 +35,8 @@ export const OutputRecordLink = ({
     ? component.recordLinkType
     : getValues(`${path}.linkedRecordType`);
   const linkedRecordId = component.finalValue ?? getValues(`${path}.value`);
+  const userRights = getValues(`${path}.userRights`);
+
   return (
     <div
       className='form-component-item'
@@ -63,14 +65,11 @@ export const OutputRecordLink = ({
           {attributes}
           {actionButtonGroup}
         </div>
-        <Link
-          to={href('/:recordType/:recordId', {
-            recordType: linkedRecordType,
-            recordId: linkedRecordId,
-          })}
-        >
-          {linkedRecordType}/{linkedRecordId}
-        </Link>
+        <OutputRecordLinkWithoutPresentation
+          linkedRecordType={linkedRecordType}
+          linkedRecordId={linkedRecordId}
+          hasReadAccess={userRights?.includes('read')}
+        />
       </div>
     </div>
   );

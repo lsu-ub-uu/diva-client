@@ -35,24 +35,25 @@ import styles from './RecordLinkWithLinkedPresentation.module.css';
 
 interface RecordLinkWithLinkedPresentationProps {
   component: FormComponentRecordLink;
-  name: string;
+  path: string;
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
 
 export const RecordLinkWithLinkedPresentation = ({
   component,
-  name,
+  path,
   attributes,
   actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { t } = useTranslation();
   const { getValues, setValue } = useRemixFormContext();
-  const linkedRecordId = getValues(name);
+  const linkedRecordId = getValues(`${path}.value`);
+  const userRights = getValues(`${path}.userRights`) as string[] | undefined;
   const { showTooltips } = use(FormGeneratorContext);
 
   const clearValue = () => {
-    setValue(name, '');
+    setValue(`${path}.value`, '');
   };
 
   if (!linkedRecordId || !component.linkedRecordPresentation) {
@@ -73,7 +74,7 @@ export const RecordLinkWithLinkedPresentation = ({
       <DevInfo
         label='RecordLinkWithLinkedPresentation'
         component={component}
-        path={name}
+        path={path}
       />
 
       <div className={styles['label-and-adornment-wrapper']}>
@@ -107,6 +108,7 @@ export const RecordLinkWithLinkedPresentation = ({
         presentationRecordLinkId={
           component.linkedRecordPresentation.presentationId
         }
+        hasReadAccess={userRights !== undefined && userRights?.includes('read')}
       />
     </div>
   );

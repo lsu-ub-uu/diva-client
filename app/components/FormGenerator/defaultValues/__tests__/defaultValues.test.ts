@@ -2412,6 +2412,20 @@ describe('defaultValues', () => {
         expect(expectedData).toStrictEqual(actualData);
       });
 
+      it('should merge array with empty string', () => {
+        const actualData = mergeObjects(
+          {
+            someArray: '',
+          },
+          {
+            someArray: ['read'],
+          },
+        );
+        expect(actualData).toStrictEqual({
+          someArray: ['read'],
+        });
+      });
+
       it('merge full', () => {
         const base = {
           output: {

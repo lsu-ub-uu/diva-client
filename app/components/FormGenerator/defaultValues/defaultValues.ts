@@ -344,8 +344,14 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   const result = Array.isArray(target) ? [...target] : [target];
 
   overlay.forEach((item, index) => {
-    if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+    if (!item) {
+      return;
+    }
+
+    if (typeof item === 'object' && !Array.isArray(item)) {
       result[index] = mergeObjects(target[index] || {}, item);
+    } else {
+      result[index] = item;
     }
   });
 

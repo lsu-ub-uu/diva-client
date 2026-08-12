@@ -86,7 +86,7 @@ export const RecordLink = ({
     return (
       <RecordLinkWithLinkedPresentation
         component={component}
-        name={name}
+        path={path}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />

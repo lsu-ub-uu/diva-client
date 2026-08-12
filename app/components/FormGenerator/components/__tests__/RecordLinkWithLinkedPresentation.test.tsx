@@ -42,10 +42,10 @@ describe('RecordLinkWithLinkedPresentation', () => {
       {
         path: '/',
         Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': 'someId' }}>
+          <MockFormProvider mockValues={{ 'some.name.value': 'someId' }}>
             <RecordLinkWithLinkedPresentation
               component={mockComponent}
-              name='some.name'
+              path='some.name'
             />
           </MockFormProvider>
         ),
@@ -93,10 +93,10 @@ describe('RecordLinkWithLinkedPresentation', () => {
       {
         path: '/',
         Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': 'someId' }}>
+          <MockFormProvider mockValues={{ 'some.name.value': 'someId' }}>
             <RecordLinkWithLinkedPresentation
               component={mockComponent}
-              name='some.name'
+              path='some.name'
             />
           </MockFormProvider>
         ),
@@ -144,10 +144,10 @@ describe('RecordLinkWithLinkedPresentation', () => {
       {
         path: '/',
         Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': 'someId' }}>
+          <MockFormProvider mockValues={{ 'some.name.value': 'someId' }}>
             <RecordLinkWithLinkedPresentation
               component={mockComponent}
-              name='some.name'
+              path='some.name'
             />
           </MockFormProvider>
         ),
@@ -194,10 +194,10 @@ describe('RecordLinkWithLinkedPresentation', () => {
       {
         path: '/',
         Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': 'someId' }}>
+          <MockFormProvider mockValues={{ 'some.name.value': 'someId' }}>
             <RecordLinkWithLinkedPresentation
               component={mockComponent}
-              name='some.name'
+              path='some.name'
             />
           </MockFormProvider>
         ),
@@ -227,10 +227,10 @@ describe('RecordLinkWithLinkedPresentation', () => {
       {
         path: '/',
         Component: () => (
-          <MockFormProvider mockValues={{ 'some.name': '' }}>
+          <MockFormProvider mockValues={{ 'some.name.value': '' }}>
             <RecordLinkWithLinkedPresentation
               component={mockComponent}
-              name='some.name'
+              path='some.name'
             />
           </MockFormProvider>
         ),
