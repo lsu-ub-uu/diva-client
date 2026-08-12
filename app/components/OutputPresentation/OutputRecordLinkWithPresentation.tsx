@@ -9,6 +9,7 @@ import { IconButton } from '../IconButton/IconButton';
 import { CircularLoader } from '../Loader/CircularLoader';
 import { OutputPresentation } from './OutputPresentation';
 import styles from './OutputPresentation.module.css';
+import { OutputRecordLinkWithoutPresentation } from './OutputRecordLinkWithoutPresentation';
 
 type LinkedRecordLoaderData = Awaited<ReturnType<typeof getLinkedRecordLoader>>;
 
@@ -16,12 +17,14 @@ interface OutputRecordLinkWithPresentationProps {
   linkedRecordType: string;
   linkedRecordId: string;
   presentationRecordLinkId: string;
+  hasReadAccess: boolean;
 }
 
 export const OutputRecordLinkWithPresentation = ({
   linkedRecordType,
   linkedRecordId,
   presentationRecordLinkId,
+  hasReadAccess,
 }: OutputRecordLinkWithPresentationProps) => {
   const [data, setData] = useState<LinkedRecordLoaderData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,14 +71,11 @@ export const OutputRecordLinkWithPresentation = ({
   const presentation = data?.presentation as FormSchema;
   if (!dataGroup || !presentation) {
     return (
-      <Link
-        to={href('/:recordType/:recordId', {
-          recordType: linkedRecordType,
-          recordId: linkedRecordId,
-        })}
-      >
-        {linkedRecordType}/{linkedRecordId}
-      </Link>
+      <OutputRecordLinkWithoutPresentation
+        linkedRecordType={linkedRecordType}
+        linkedRecordId={linkedRecordId}
+        hasReadAccess={hasReadAccess}
+      />
     );
   }
 
@@ -84,17 +84,19 @@ export const OutputRecordLinkWithPresentation = ({
       <div className={styles['linked-presentation']}>
         <OutputPresentation formSchema={presentation} data={dataGroup} />
       </div>
-      <IconButton
-        size='small'
-        as={Link}
-        tooltip={`${linkedRecordType}/${linkedRecordId}`}
-        to={href('/:recordType/:recordId', {
-          recordType: linkedRecordType,
-          recordId: linkedRecordId,
-        })}
-      >
-        <LinkIcon />
-      </IconButton>
+      {hasReadAccess && (
+        <IconButton
+          size='small'
+          as={Link}
+          tooltip={`${linkedRecordType}/${linkedRecordId}`}
+          to={href('/:recordType/:recordId', {
+            recordType: linkedRecordType,
+            recordId: linkedRecordId,
+          })}
+        >
+          <LinkIcon />
+        </IconButton>
+      )}
     </div>
   );
 };

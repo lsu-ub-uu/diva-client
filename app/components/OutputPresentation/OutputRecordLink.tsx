@@ -9,6 +9,7 @@ import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
 import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
 import type { PresentationStyle } from '@/cora/bffTypes.server';
+import { OutputRecordLinkWithoutPresentation } from './OutputRecordLinkWithoutPresentation';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
@@ -45,6 +46,7 @@ export const OutputRecordLink = ({
           component={component}
           linkedRecordType={linkedRecordType}
           linkedRecordId={linkedRecordId}
+          hasReadAccess={data.actionLinks?.read !== undefined}
         />
       }
     />
@@ -55,11 +57,13 @@ interface RecordLinkValueProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
   linkedRecordType: string;
   linkedRecordId: string;
+  hasReadAccess: boolean;
 }
 const RecordLinkValue = ({
   component,
   linkedRecordType,
   linkedRecordId,
+  hasReadAccess,
 }: RecordLinkValueProps) => {
   const { t } = useTranslation();
 
@@ -75,18 +79,16 @@ const RecordLinkValue = ({
         presentationRecordLinkId={
           component.linkedRecordPresentation.presentationId
         }
+        hasReadAccess={hasReadAccess}
       />
     );
   }
 
   return (
-    <Link
-      to={href('/:recordType/:recordId', {
-        recordType: linkedRecordType,
-        recordId: linkedRecordId,
-      })}
-    >
-      {linkedRecordType}/{linkedRecordId}
-    </Link>
+    <OutputRecordLinkWithoutPresentation
+      linkedRecordType={linkedRecordType}
+      linkedRecordId={linkedRecordId}
+      hasReadAccess={hasReadAccess}
+    />
   );
 };
