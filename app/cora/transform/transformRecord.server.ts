@@ -310,6 +310,8 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
     'linkedRecordType',
   );
 
+  /* const actionLinks = getFirstDataGroupWithNameInData(data, 'actionLinks'); */
+
   const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
     ? transformLinkedRecord(data, dependencies)
     : undefined;
@@ -343,6 +345,10 @@ const transformRecordLink = (data: RecordLink, dependencies: Dependencies) => {
   });
 };
 
+/* const createUserRights = (actionLinks) => {
+
+}
+ */
 const formatLinkedOrganisationName = (
   linkedOrganisationId: string,
   lang: 'sv' | 'en',

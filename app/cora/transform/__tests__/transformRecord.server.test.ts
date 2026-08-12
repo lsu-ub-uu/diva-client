@@ -903,6 +903,66 @@ describe('transformRecord', () => {
     });
   });
 
+  it('should transform a recordLink with read rights', () => {
+    const mockDependencies = {
+      validationTypePool: listToPool([
+        createValidationType('someValidationTypeId'),
+      ]),
+      recordTypePool: listToPool([
+        createRecordType('someRecordTypeId', { metadataId: 'rootGroup' }),
+      ]),
+      metadataPool: listToPool([
+        createGroup('rootGroup', 'root', [
+          'recordInfoGroup',
+          'someRecordLinkId',
+        ]),
+        ...createRecordInfoMetadata(),
+        createRecordLink('someRecordLinkId', 'someOtherRecordType', {
+          nameInData: 'someRecordLink',
+        }),
+      ]),
+    } as Dependencies;
+
+    const recordWrapper = {
+      record: {
+        data: {
+          name: 'root',
+          children: [
+            createRecordInfoData(),
+            {
+              name: 'someRecordLink',
+              children: [
+                { name: 'linkedRecordId', value: 'someRecordLink' },
+                { name: 'linkedRecordType', value: 'someOtherRecordType' },
+              ],
+              actionLinks: {
+                read: {
+                  requestMethod: 'GET',
+                  rel: 'read',
+                  url: 'https://some.url/rest/record/user/someId',
+                  accept: 'application/vnd.cora.record+json',
+                },
+              },
+            },
+          ],
+        },
+      },
+    } as RecordWrapper;
+
+    const transformData = transformRecord(
+      mockDependencies,
+      recordWrapper,
+      'view',
+    );
+
+    expect(transformData.data.root.someRecordLink).toEqual({
+      linkedRecordType: 'someOtherRecordType',
+      required: true,
+      value: 'someRecordLink',
+      userRights: ['read'],
+    });
+  });
+
   it('should transform a anyTypeRecordLink', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
