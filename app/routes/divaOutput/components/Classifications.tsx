@@ -56,16 +56,17 @@ export const Classifications = ({ output }: ClassificationsProps) => {
           }))}
         />
       )}
-      {output.subject_authority_sdg && (
-        <SearchLinkList
-          heading={output.subject_authority_sdg.__text?.[language]}
-          searchTerm='sdgSearchTerm'
-          items={output.subject_authority_sdg?.topic?.map((topic) => ({
-            href: topic.value,
-            label: <SdgImage topic={topic} />,
-          }))}
-        />
-      )}
+      {output.subject_authority_sdg &&
+        output.subject_authority_sdg.length > 0 && (
+          <SearchLinkList
+            heading={output.subject_authority_sdg[0].__text?.[language]}
+            searchTerm='sdgSearchTerm'
+            items={output.subject_authority_sdg.map((sdg) => ({
+              href: sdg.topic?.value,
+              label: <SdgImage topic={sdg.topic} />,
+            }))}
+          />
+        )}
       {output.localLabel && (
         <SearchLinkList
           pill

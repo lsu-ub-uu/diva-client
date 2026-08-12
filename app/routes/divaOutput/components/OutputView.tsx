@@ -142,9 +142,11 @@ export const OutputView = ({ data }: OutputViewProps) => {
               }
             />
             <Term
-              label={output.relatedItem_type_initiative?.__text?.[language]}
-              value={output.relatedItem_type_initiative?.sfo?.map(
-                (initiative) => initiative.__valueText?.[language],
+              label={
+                output.relatedItem_type_initiative?.[0]?.__text?.[language]
+              }
+              value={output.relatedItem_type_initiative?.map(
+                (initiative) => initiative.sfo?.__valueText?.[language],
               )}
             />
           </dl>

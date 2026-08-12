@@ -1,4 +1,7 @@
-import type { DivaOutput } from '@/generatedTypes/divaTypes';
+import type {
+  DivaOutput,
+  RecordInfoOutputUpdateGroup,
+} from '@/generatedTypes/divaTypes';
 import { renderWithRoutesStub } from '@/utils/testUtils';
 import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
@@ -353,26 +356,35 @@ describe('OutputView', () => {
   it('shows sfo initiatives', () => {
     const mockData = {
       output: {
-        recordInfo: { id: { value: '12345' } },
-        relatedItem_type_initiative: {
-          __text: { en: 'Initiative' },
-          sfo: [
-            {
-              __valueText: { en: 'Initiative 1' },
+        recordInfo: { id: { value: '12345' } } as RecordInfoOutputUpdateGroup,
+        relatedItem_type_initiative: [
+          {
+            _type: 'initiative',
+            __text: { en: 'Initiative' },
+            sfo: {
+              value: 'cancer',
+              __text: { en: 'SFO' },
+              __valueText: { en: 'Cancer Initiative' },
             },
-            {
-              __valueText: { en: 'Initiative 2' },
+          },
+          {
+            _type: 'initiative',
+            __text: { en: 'Initiative' },
+            sfo: {
+              value: 'diabetes',
+              __text: { en: 'SFO' },
+              __valueText: { en: 'Diabetes Initiative' },
             },
-          ],
-        },
+          },
+        ],
       },
     } as DivaOutput;
 
     renderWithRoutesStub(<OutputView data={mockData} />);
 
     expect(screen.getByText('Initiative')).toBeInTheDocument();
-    expect(screen.getByText('Initiative 1')).toBeInTheDocument();
-    expect(screen.getByText('Initiative 2')).toBeInTheDocument();
+    expect(screen.getByText('Cancer Initiative')).toBeInTheDocument();
+    expect(screen.getByText('Diabetes Initiative')).toBeInTheDocument();
   });
 
   it('shows patent date', () => {
