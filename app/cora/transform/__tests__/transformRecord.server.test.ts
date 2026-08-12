@@ -102,11 +102,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: { required: true, value: 'some value' },
@@ -168,11 +170,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
         },
@@ -233,11 +237,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
         },
@@ -330,11 +336,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1_someFinalAttr_someFinalValue: {
@@ -464,11 +472,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: {
@@ -677,11 +687,13 @@ describe('transformRecord', () => {
             linkedRecordType: 'recordType',
             required: true,
             value: 'someRecordTypeId',
+            userRights: [],
           },
           validationType: {
             linkedRecordType: 'validationType',
             required: true,
             value: 'someValidationTypeId',
+            userRights: [],
           },
         },
         someText_attr2_opt1: {
@@ -900,6 +912,7 @@ describe('transformRecord', () => {
       linkedRecordType: 'someOtherRecordType',
       required: true,
       value: 'someRecordLink',
+      userRights: [],
     });
   });
 
@@ -1011,6 +1024,7 @@ describe('transformRecord', () => {
       linkedRecordType: 'someOtherRecordType',
       required: true,
       value: 'someOtherRecordId',
+      userRights: [],
     });
   });
 
@@ -1111,11 +1125,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: { required: true, value: 'some value' },
@@ -1178,11 +1194,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           child: {
@@ -1250,11 +1268,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: { /* no required: true here */ value: 'some value' },
@@ -1319,11 +1339,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: [{ value: 'some value' }, { value: 'some other value' }],
@@ -1395,11 +1417,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           child: [
@@ -1471,11 +1495,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: { final: true, required: true, value: 'final value' },
@@ -1536,11 +1562,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: {
@@ -1612,11 +1640,13 @@ describe('transformRecord', () => {
               linkedRecordType: 'recordType',
               value: 'someRecordTypeId',
               required: true,
+              userRights: [],
             },
             validationType: {
               linkedRecordType: 'validationType',
               value: 'someValidationTypeId',
               required: true,
+              userRights: [],
             },
           },
           text1: { required: true, value: 'some value' },
@@ -1700,6 +1730,7 @@ describe('transformRecord', () => {
         linkedRecordType: 'someOtherRecordType',
         required: true,
         value: 'someRecordLink',
+        userRights: [],
         linkedRecord: {
           someOtherRecordTypeRoot: {
             fromStorage: true,
@@ -1711,11 +1742,13 @@ describe('transformRecord', () => {
                 linkedRecordType: 'recordType',
                 value: 'someOtherRecordTypeId',
                 required: true,
+                userRights: [],
               },
               validationType: {
                 linkedRecordType: 'validationType',
                 value: 'someOtherValidationTypeId',
                 required: true,
+                userRights: [],
               },
             },
             someField: {
@@ -1850,6 +1883,7 @@ describe('transformRecord', () => {
         },
         linkedRecord: { organisation: { fromStorage: true } },
         required: true,
+        userRights: [],
       });
     });
 
@@ -1913,6 +1947,7 @@ describe('transformRecord', () => {
         },
         linkedRecord: { organisation: { fromStorage: true } },
         required: true,
+        userRights: [],
       });
     });
 
@@ -1975,6 +2010,7 @@ describe('transformRecord', () => {
         linkedRecordType: 'diva-organisation',
         linkedRecord: { organisation: { fromStorage: true } },
         required: true,
+        userRights: [],
       });
     });
   });
@@ -3640,11 +3676,13 @@ describe('transformRecord', () => {
             linkedRecordType: 'recordType',
             required: true,
             value: 'someRecordTypeId',
+            userRights: [],
           },
           validationType: {
             linkedRecordType: 'validationType',
             required: true,
             value: 'someValidationTypeId',
+            userRights: [],
           },
         },
         someText_attr2_opt1: {

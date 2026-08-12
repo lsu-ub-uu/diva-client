@@ -3,8 +3,8 @@ import type {
   CoraData,
   DataAtomic,
   DataGroup,
-  RecordLink,
-  ResourceLink,
+  DataRecordLink,
+  DataResourceLink,
 } from '@/cora/cora-data/types.server';
 import { GuiElementLink } from '../FormGenerator/components/GuiElementLink';
 import { Text } from '../FormGenerator/components/Text';
@@ -112,7 +112,7 @@ export const OutputComponent = ({
       return (
         <OutputRecordLink
           component={component as FormComponentRecordLink}
-          data={data as RecordLink}
+          data={data as DataRecordLink}
           parentPresentationStyle={parentPresentationStyle}
         />
       );
@@ -120,7 +120,7 @@ export const OutputComponent = ({
       return (
         <OutputRecordLink
           component={component as FormComponentAnyTypeRecordLink}
-          data={data as RecordLink}
+          data={data as DataRecordLink}
           parentPresentationStyle={parentPresentationStyle}
         />
       );
@@ -138,7 +138,7 @@ export const OutputComponent = ({
       return (
         <OutputResourceLink
           component={component as FormComponentResourceLink}
-          data={data as ResourceLink}
+          data={data as DataResourceLink}
         />
       );
     case 'guiElementLink':

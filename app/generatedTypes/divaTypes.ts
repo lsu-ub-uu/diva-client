@@ -2192,7 +2192,7 @@ export interface SubjectSdgGroup {
     value: SdgCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
-  }[];
+  };
   _authority: 'sdg';
   __text?: { sv: string; en: string };
 }
@@ -3486,7 +3486,7 @@ export interface RelatedItemInitiativeGroup {
     value: StrategicResearchAreasCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
-  }[];
+  };
   _type: 'initiative';
   __text?: { sv: string; en: string };
 }
@@ -3886,7 +3886,7 @@ export interface DivaOutputGroup {
     __valueText?: { sv: string; en: string };
   }[];
   subject_authority_diva?: SubjectSubjectGroup;
-  subject_authority_sdg?: SubjectSdgGroup;
+  subject_authority_sdg?: SubjectSdgGroup[];
   identifier_type_isbn?: {
     value: string;
     _type: 'isbn';
@@ -3980,7 +3980,7 @@ export interface DivaOutputGroup {
   relatedItem_type_researchData?: RelatedItemResearchDataGroup[];
   relatedItem_type_project?: RelatedItemProjectGroup[];
   name_otherType_funder_type_corporate?: NameOrganisationFunderGroup[];
-  relatedItem_type_initiative?: RelatedItemInitiativeGroup;
+  relatedItem_type_initiative?: RelatedItemInitiativeGroup[];
   related?: RelatedOutputGroup[];
   related_type_retracted?: RelatedOutputRetractedGroup[];
   related_type_constituent?: RelatedOutputConstituentGroup[];

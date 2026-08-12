@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { dataHasValues } from '../dataHasValues';
-import type { DataAtomic, RecordLink } from '@/cora/cora-data/types.server';
+import type { DataAtomic, DataRecordLink } from '@/cora/cora-data/types.server';
 
 describe('dataHasValues', () => {
   it('returns false for atomic with empty value', () => {
@@ -14,7 +14,7 @@ describe('dataHasValues', () => {
   });
 
   it('returns true for record link', () => {
-    const data: RecordLink = {
+    const data: DataRecordLink = {
       name: 'someName',
       children: [
         { name: 'linkedRecordType', value: 'someRecordType' },
