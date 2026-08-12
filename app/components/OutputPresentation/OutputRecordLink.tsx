@@ -1,18 +1,18 @@
-import type { RecordLink } from '@/cora/cora-data/types.server';
+import type { PresentationStyle } from '@/cora/bffTypes.server';
+import type { DataRecordLink } from '@/cora/cora-data/types.server';
 import { useTranslation } from 'react-i18next';
-import { href, Link } from 'react-router';
 import type {
   FormComponentAnyTypeRecordLink,
   FormComponentRecordLink,
 } from '../FormGenerator/types';
 import { Attributes } from './Attributes';
 import { OutputField } from './OutputField';
+import { OutputRecordLinkWithoutPresentation } from './OutputRecordLinkWithoutPresentation';
 import { OutputRecordLinkWithPresentation } from './OutputRecordLinkWithPresentation';
-import type { PresentationStyle } from '@/cora/bffTypes.server';
 
 interface OutputRecordLinkProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
-  data: RecordLink;
+  data: DataRecordLink;
   parentPresentationStyle?: PresentationStyle;
 }
 
@@ -45,6 +45,7 @@ export const OutputRecordLink = ({
           component={component}
           linkedRecordType={linkedRecordType}
           linkedRecordId={linkedRecordId}
+          hasReadAccess={data.actionLinks?.read !== undefined}
         />
       }
     />
@@ -55,11 +56,13 @@ interface RecordLinkValueProps {
   component: FormComponentRecordLink | FormComponentAnyTypeRecordLink;
   linkedRecordType: string;
   linkedRecordId: string;
+  hasReadAccess: boolean;
 }
 const RecordLinkValue = ({
   component,
   linkedRecordType,
   linkedRecordId,
+  hasReadAccess,
 }: RecordLinkValueProps) => {
   const { t } = useTranslation();
 
@@ -75,18 +78,16 @@ const RecordLinkValue = ({
         presentationRecordLinkId={
           component.linkedRecordPresentation.presentationId
         }
+        hasReadAccess={hasReadAccess}
       />
     );
   }
 
   return (
-    <Link
-      to={href('/:recordType/:recordId', {
-        recordType: linkedRecordType,
-        recordId: linkedRecordId,
-      })}
-    >
-      {linkedRecordType}/{linkedRecordId}
-    </Link>
+    <OutputRecordLinkWithoutPresentation
+      linkedRecordType={linkedRecordType}
+      linkedRecordId={linkedRecordId}
+      hasReadAccess={hasReadAccess}
+    />
   );
 };

@@ -23,8 +23,8 @@ import type {
   DataAtomic,
   DataElement,
   DataGroup,
-  RecordLink,
-  ResourceLink,
+  DataRecordLink,
+  DataResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { BFFRecordLink } from '../bffTypes.server';
 
@@ -32,7 +32,7 @@ export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
 ): BFFRecordLink[] {
-  const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
+  const recordLinks = <DataRecordLink[]>dataGroup.children.filter((child) => {
     if (Object.hasOwn(child, 'children')) {
       const dGChild = child as DataGroup;
       return (
@@ -141,16 +141,18 @@ export function getFirstDataAtomicWithNameInData(
 export function getFirstResourceLinkWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): ResourceLink {
+): DataResourceLink {
   if (dataGroup.children.length === 0) {
     throw new Error(
       `DataGroup with name [${dataGroup.name}] does not have any children`,
     );
   }
 
-  const resourceLinks = <ResourceLink[]>dataGroup.children.filter((child) => {
-    return Object.hasOwn(child, 'mimeType');
-  });
+  const resourceLinks = <DataResourceLink[]>dataGroup.children.filter(
+    (child) => {
+      return Object.hasOwn(child, 'mimeType');
+    },
+  );
 
   const firstMatchingResourceLink = resourceLinks.find((resourceLink) => {
     return resourceLink.name === nameInData;

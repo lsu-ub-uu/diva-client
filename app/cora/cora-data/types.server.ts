@@ -7,7 +7,11 @@ export interface Attributes {
   [key: string]: string;
 }
 
-export type CoraData = DataGroup | DataAtomic | RecordLink | ResourceLink;
+export type CoraData =
+  | DataGroup
+  | DataAtomic
+  | DataRecordLink
+  | DataResourceLink;
 
 export interface DataGroup extends DataElement {
   children: CoraData[];
@@ -19,14 +23,14 @@ export interface DataAtomic extends DataElement {
   attributes?: Attributes;
 }
 
-export interface RecordLink extends DataElement {
+export interface DataRecordLink extends DataElement {
   actionLinks?: ActionLinks;
   children: DataAtomic[];
   attributes?: Attributes;
   linkedRecord?: DataGroup;
 }
 
-export interface ResourceLink extends DataElement {
+export interface DataResourceLink extends DataElement {
   actionLinks?: { read: ActionLink };
   attributes?: Attributes;
   children: [

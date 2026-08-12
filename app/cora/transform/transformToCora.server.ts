@@ -21,8 +21,8 @@ import type {
   Attributes,
   DataAtomic,
   DataGroup,
-  RecordLink,
-  ResourceLink,
+  DataRecordLink,
+  DataResourceLink,
 } from '@/cora/cora-data/types.server';
 import type { FormMetaData } from '@/data/formDefinition/utils/formDefinitionUtils.server';
 import type { BFFDataResourceLink } from '@/types/record';
@@ -30,7 +30,7 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { isEmpty, mapValues } from 'lodash-es';
 
-type Data = DataGroup | DataAtomic | RecordLink | ResourceLink;
+type Data = DataGroup | DataAtomic | DataRecordLink | DataResourceLink;
 
 interface TransformEntryArgs {
   lookup: Record<string, FormMetaData>;
@@ -173,7 +173,7 @@ const transformResourceLink = (
   attributes: undefined | Record<string, string>,
   value: BFFDataResourceLink,
   repeatId: string | undefined,
-): ResourceLink => {
+): DataResourceLink => {
   return removeEmpty({
     name: removeAttributeFromName(name, attributes),
     children: [
@@ -243,7 +243,7 @@ export const createLeaf = (
   value: string,
   repeatId: string | undefined = undefined,
   attributes: Attributes | undefined = undefined,
-): DataAtomic | RecordLink | undefined => {
+): DataAtomic | DataRecordLink | undefined => {
   if (isEmpty(value)) {
     return undefined;
   }
@@ -292,8 +292,8 @@ export const createRecordLink = (
   linkedRecordId: string,
   attributes: Attributes | undefined = undefined,
   repeatId: string | undefined = undefined,
-): RecordLink => {
-  const recordLink: RecordLink = {
+): DataRecordLink => {
+  const recordLink: DataRecordLink = {
     name,
     children: [
       generateAtomicValue('linkedRecordType', linkedRecordType),
