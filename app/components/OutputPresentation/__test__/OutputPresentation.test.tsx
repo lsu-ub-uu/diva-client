@@ -7,8 +7,164 @@ import { renderWithRoutesStub } from '@/utils/testUtils';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OutputPresentation } from '../OutputPresentation';
+import userEvent from '@testing-library/user-event';
 
 describe('OutputPresentation', () => {
+  it('renders an sContainer with only text and alternative presentation with data', () => {
+    const formSchema = {
+      form: {
+        name: 'root',
+        label: 'Root',
+        showLabel: true,
+        type: 'group',
+        presentationId: 'rootPGroup',
+        components: [
+          {
+            type: 'container',
+            name: 'someMinimizedContainer',
+            mode: 'output',
+            containerType: 'surrounding',
+            components: [
+              {
+                name: 'someText',
+                type: 'text',
+                textStyle: 'h3TextStyle',
+              },
+            ],
+            childStyle: [],
+            gridColSpan: 12,
+            alternativePresentation: {
+              type: 'container',
+              name: 'someContainer',
+              mode: 'output',
+              containerType: 'surrounding',
+              components: [
+                {
+                  name: 'updatesHeadlineText',
+                  type: 'text',
+                  textStyle: 'h3TextStyle',
+                },
+                {
+                  type: 'group',
+                  name: 'someGroup',
+                  mode: 'output',
+                  components: [
+                    {
+                      name: 'someTextVar',
+                      mode: 'output',
+                      label: 'tsUpdatedDivaTextVarText',
+                      showLabel: true,
+                      type: 'textVariable',
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    } as FormSchema;
+    const data = {
+      name: 'root',
+      children: [
+        {
+          name: 'someGroup',
+          repeatId: '0',
+          children: [
+            {
+              name: 'someTextVar',
+              value: 'someValue',
+            },
+          ],
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(screen.getByText('someText')).toBeInTheDocument();
+  });
+
+  it('renders a group with more data in alternative presentation', async () => {
+    const formSchema = {
+      form: {
+        type: 'group',
+        label: 'Person',
+        name: 'person',
+        showLabel: true,
+        headlineLevel: 'h1',
+        components: [
+          {
+            type: 'textVariable',
+            label: 'Name',
+            showLabel: true,
+            name: 'name',
+          },
+        ],
+        alternativePresentation: {
+          type: 'group',
+          label: 'Person',
+          name: 'person',
+          showLabel: true,
+          headlineLevel: 'h1',
+          components: [
+            {
+              type: 'textVariable',
+              label: 'Name',
+              showLabel: true,
+              name: 'name',
+            },
+            {
+              type: 'numberVariable',
+              label: 'Age',
+              showLabel: true,
+              name: 'age',
+            },
+          ],
+        },
+      },
+    } as FormSchema;
+
+    const data = {
+      name: 'person',
+      children: [
+        {
+          name: 'name',
+          value: 'Alice',
+        },
+        {
+          name: 'age',
+          value: '30',
+        },
+      ],
+    } as DataGroup;
+
+    render(<OutputPresentation formSchema={formSchema} data={data} />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Person' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Alice')).toBeInTheDocument();
+    expect(screen.queryByText('Age')).not.toBeInTheDocument();
+    expect(screen.queryByText('30')).not.toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button'));
+
+    expect(screen.getByText('Age')).toBeInTheDocument();
+    expect(screen.getByText('30')).toBeInTheDocument();
+  });
+
   it('renders a group with a text variable', () => {
     const formSchema = {
       form: {

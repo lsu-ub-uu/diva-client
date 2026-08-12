@@ -1,4 +1,7 @@
-import type { FormComponentTextVar } from '@/components/FormGenerator/types';
+import type {
+  FormComponentContainer,
+  FormComponentTextVar,
+} from '@/components/FormGenerator/types';
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import { describe, expect, it } from 'vitest';
 import { findChildData } from '../findChildData';
@@ -155,6 +158,50 @@ describe('findChildData', () => {
         name: 'test',
         attributes: { color: 'red' },
         value: 'someValue',
+      },
+    ]);
+  });
+
+  it('matches container children through nested alternative presentations', () => {
+    const component = {
+      type: 'container',
+      name: 'wrapper',
+      components: [
+        {
+          type: 'container',
+          name: 'nestedWrapper',
+          alternativePresentation: {
+            type: 'group',
+            name: 'alternativeGroup',
+            label: 'Alternative group',
+            showLabel: false,
+            components: [
+              {
+                type: 'textVariable',
+                name: 'test',
+              },
+            ],
+          },
+        },
+      ],
+    } as FormComponentContainer;
+
+    const data = {
+      name: 'root',
+      type: 'group',
+      children: [
+        { name: 'test', value: 'someValue' },
+        { name: 'other', value: 'ignoredValue' },
+      ],
+    } as DataGroup;
+
+    const result = findChildData(component, data);
+
+    expect(result).toEqual([
+      {
+        name: 'root',
+        type: 'group',
+        children: [{ name: 'test', value: 'someValue' }],
       },
     ]);
   });

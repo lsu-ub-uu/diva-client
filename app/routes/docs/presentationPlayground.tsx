@@ -78,6 +78,7 @@ export default function PresentationPlayground() {
           <CodeMirror
             value={formSchemaJson}
             height='100%'
+            width='100%'
             extensions={[json()]}
             theme='light'
             onChange={(value) => {
