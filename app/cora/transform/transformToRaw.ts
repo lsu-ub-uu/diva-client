@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2026 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -56,7 +56,7 @@ const transformToRawRecursively = (payload: any, path?: string): CoraData[] => {
     .filter((entry) => entry !== undefined);
 };
 
-export const transformEntry = ({
+const transformEntry = ({
   key,
   value,
   path,
@@ -82,10 +82,7 @@ export const transformEntry = ({
   return transformGroup(value, path, key, attributes);
 };
 
-export const findChildrenAttributes = (obj: any) => {
-  if (!obj) {
-    return undefined;
-  }
+const findChildrenAttributes = (obj: any) => {
   const attributesArray: Record<string, string>[] = [];
   Object.keys(obj).forEach((key) => {
     if (Object.hasOwn(obj, key) && key.startsWith('_')) {
@@ -144,6 +141,7 @@ const transformLeaf = (
       removeAttributeFromName(key, attributes),
       value.linkedRecordType,
       value.value,
+      value.userRights,
       attributes,
     );
   }
@@ -164,19 +162,19 @@ const transformGroup = (
   return createGroup(key, attributes, childData);
 };
 
-export const isAttribute = (fieldKey: string) => {
+const isAttribute = (fieldKey: string) => {
   return fieldKey.startsWith('_');
 };
 
-export const isRepeating = (value: any) => {
+const isRepeating = (value: any) => {
   return Array.isArray(value);
 };
 
-export const isVariable = (item: DataGroup | DataAtomic) => {
+const isVariable = (item: DataGroup | DataAtomic) => {
   return 'value' in item && typeof item.value !== 'object';
 };
 
-export const createLeaf = (
+const createLeaf = (
   name: string,
   value: string,
   attributes: Attributes | undefined = undefined,
@@ -214,10 +212,11 @@ const createGroup = (
   return group;
 };
 
-export const createRecordLink = (
+const createRecordLink = (
   name: string,
   linkedRecordType: string,
   linkedRecordId: string,
+  userRights: string[] | undefined = undefined,
   attributes: Attributes | undefined = undefined,
 ): DataRecordLink => {
   const recordLink: DataRecordLink = {
@@ -226,6 +225,15 @@ export const createRecordLink = (
       generateAtomicValue('linkedRecordType', linkedRecordType),
       generateAtomicValue('linkedRecordId', linkedRecordId),
     ],
+    actionLinks: userRights?.includes('read')
+      ? {
+          read: {
+            requestMethod: 'GET',
+            url: '',
+            rel: 'record',
+          },
+        }
+      : undefined,
   };
 
   if (attributes) {
@@ -235,12 +243,12 @@ export const createRecordLink = (
   return recordLink;
 };
 
-export const generateAtomicValue = (name: string, value: any): DataAtomic => ({
+const generateAtomicValue = (name: string, value: any): DataAtomic => ({
   name,
   value,
 });
 
-export const removeAttributeFromName = (
+const removeAttributeFromName = (
   name: string,
   value: { [key: string]: string } | undefined,
 ) => {
