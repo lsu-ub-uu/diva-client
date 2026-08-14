@@ -40,10 +40,10 @@ export const createi18nInstance = async (
         locale === 'cimode'
           ? {}
           : {
-              [locale]: {
-                translation: createTextDefinition(dependencies, locale),
-              },
+            [locale]: {
+              translation: createTextDefinition(dependencies, locale),
             },
+          },
       lng: locale,
     });
 
