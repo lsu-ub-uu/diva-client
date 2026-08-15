@@ -56,17 +56,6 @@ app.disable('x-powered-by');
 
 app.get(`${BASE_PATH}/metrics`, prometheusMetrics);
 
-// Temporary: diagnose active handle types for memory leak investigation
-app.get(`${BASE_PATH}/debug/handles`, (_req, res) => {
-  const handles = (process as any)._getActiveHandles();
-  const summary: Record<string, number> = {};
-  for (const h of handles) {
-    const type = h.constructor?.name || typeof h;
-    summary[type] = (summary[type] || 0) + 1;
-  }
-  res.json({ total: handles.length, types: summary });
-});
-
 process.on('unhandledRejection', (reason) => {
   log.error({ err: reason }, 'Unhandled Rejection');
 });
