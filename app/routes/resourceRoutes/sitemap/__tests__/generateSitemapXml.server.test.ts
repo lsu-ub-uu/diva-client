@@ -47,13 +47,13 @@ describe('generateSitemapXml', () => {
     expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com</loc>
+    <loc>https://example.com</loc>
   </url>
   <url>
-    <loc>http://example.com/recordType1</loc>
+    <loc>https://example.com/recordType1</loc>
   </url>
   <url>
-    <loc>http://example.com/recordType2</loc>
+    <loc>https://example.com/recordType2</loc>
   </url>
 </urlset>`);
   });
@@ -78,7 +78,7 @@ describe('generateSitemapXml', () => {
     expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com</loc>
+    <loc>https://example.com</loc>
   </url>
 </urlset>`);
   });
@@ -103,15 +103,15 @@ describe('generateSitemapXml', () => {
     expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com</loc>
+    <loc>https://example.com</loc>
   </url>
   <url>
-    <loc>http://example.com/diva-output/1</loc>
+    <loc>https://example.com/diva-output/1</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>http://example.com/diva-output/2</loc>
+    <loc>https://example.com/diva-output/2</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>yearly</changefreq>
   </url>
@@ -138,20 +138,20 @@ describe('generateSitemapXml', () => {
     expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com</loc>
+    <loc>https://example.com</loc>
   </url>
   <url>
-    <loc>http://example.com/diva-output/1</loc>
+    <loc>https://example.com/diva-output/1</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>http://example.com/diva-output/2</loc>
+    <loc>https://example.com/diva-output/2</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>http://example.com/diva-output/3</loc>
+    <loc>https://example.com/diva-output/3</loc>
     <lastmod>2024-01-03</lastmod>
     <changefreq>yearly</changefreq>
   </url>
@@ -178,7 +178,7 @@ describe('generateSitemapXml', () => {
     expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com/basepath</loc>
+    <loc>https://example.com/basepath</loc>
   </url>
 </urlset>`);
   });
