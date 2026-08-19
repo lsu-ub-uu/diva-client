@@ -19,11 +19,11 @@
 import compression from 'compression';
 import 'dotenv/config';
 import express, { type Request, type Response } from 'express';
-import morgan from 'morgan';
-import os from 'os';
+
 import process from 'node:process';
-import prometheusClient from 'prom-client';
+import os from 'os';
 import pino from 'pino';
+import prometheusClient from 'prom-client';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = './dist/server/index.js';
@@ -106,8 +106,6 @@ if (DEVELOPMENT) {
   app.use(express.static('dist/client', { maxAge: '1h' }));
   app.use(reactRouterApp.app);
 }
-
-app.use(morgan('tiny'));
 
 const server = app.listen(PORT, async () => {
   log.info(`CORA_API_URL ${CORA_API_URL}`);
