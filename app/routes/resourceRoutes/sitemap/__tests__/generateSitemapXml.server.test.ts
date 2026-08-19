@@ -207,6 +207,31 @@ describe('generateSitemapXml', () => {
   </url>
 </urlset>`);
   });
+
+  it('generates sitemap entries with https even when requestUrl uses http', () => {
+    const mockNavigation: Navigation = {
+      mainNavigationItems: [],
+      otherNavigationItems: [],
+    };
+
+    const mockMember = {
+      id: 'member1',
+      memberPermissionUnit: 'somePermissionUnitWithoutRecords',
+    } as BFFMember;
+
+    const sitemap = generateSitemapXml(
+      'http://example.com/sitemap.xml',
+      mockNavigation,
+      mockMember,
+    );
+
+    expect(sitemap).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://example.com</loc>
+  </url>
+</urlset>`);
+  });
 });
 
 const mockedGetEntries = ({
