@@ -59,7 +59,8 @@ export const links: Route.LinksFunction = () => [
 export const meta: Route.MetaFunction = ({ loaderData }) => [
   { title: loaderData?.title ?? 'DiVA' },
   {
-    description: loaderData?.decription ?? '',
+    name: 'description',
+    content: loaderData?.decription,
   },
 ];
 
