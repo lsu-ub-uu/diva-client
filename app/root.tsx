@@ -22,7 +22,8 @@ import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
-import dev_favicon from '@/images/diva-star-dev.svg';
+import dev_favicon from '@/images/diva-star-dev.svg?no-inline';
+import favicon from '@/images/diva-star.svg?no-inline';
 import { ServerCrashIcon } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 import {
@@ -62,7 +63,6 @@ import {
 import { getMemberFromHostname } from './utils/getMemberFromHostname';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
-import { withBaseName } from './utils/withBasename';
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
@@ -164,7 +164,7 @@ export const links: Route.LinksFunction = () => [
   {
     rel: 'icon',
     type: 'image/svg+xml',
-    href: import.meta.env.DEV ? dev_favicon : withBaseName('/favicon.svg'),
+    href: import.meta.env.DEV ? dev_favicon : favicon,
   },
   { rel: 'stylesheet', href: rootCss },
 ];
