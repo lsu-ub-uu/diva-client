@@ -11,7 +11,9 @@ export const loader = async ({ url }: Route.LoaderArgs) => {
 
 export const generateRobotsTxt = (requestUrl: string): string => {
   const BASE_PATH = process.env.BASE_PATH ?? '';
-  const sitemapURL = requestUrl.replace('robots.txt', 'sitemap.xml');
+  const sitemapURL = requestUrl
+    .replace('http://', 'https://')
+    .replace('robots.txt', 'sitemap.xml');
 
   return robotsTxtTemplate
     .replace(/\{BASE_PATH}/g, BASE_PATH)
