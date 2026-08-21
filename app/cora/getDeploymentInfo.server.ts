@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { httpClient } from '@/cora/httpClient.server';
 import { coraApiUrl, DEPLOYMENT_INFO_CONTENT_TYPE } from './helper.server';
 import { log } from '@/logging/logger.server';
 
@@ -35,12 +35,12 @@ export const getDeploymentInfo = async (): Promise<DeploymentInfo> => {
   }
 
   log.info('Fetching deployment info from Cora API');
-  const response = await axios.get<DeploymentInfo>(coraApiUrl('/'), {
+  const response = await httpClient.get<DeploymentInfo>(coraApiUrl('/'), {
     headers: {
       Accept: DEPLOYMENT_INFO_CONTENT_TYPE,
     },
   });
   cachedDeploymentInfo = response.data;
   log.info('Deployment info fetched successfully');
-  return response.data;
+  return cachedDeploymentInfo;
 };

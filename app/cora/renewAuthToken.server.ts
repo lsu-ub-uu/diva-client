@@ -17,14 +17,15 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
+import { httpClient } from '@/cora/httpClient.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
-import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
 
 export const renewAuthToken = async (auth: Auth) => {
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
-  );
-
+  const actionLink = auth.actionLinks.renew;
+  const response = await httpClient.action(actionLink, actionLink.body, {
+    headers: {
+      Authtoken: auth.data.token,
+    },
+  });
   return transformCoraAuth(response.data);
 };

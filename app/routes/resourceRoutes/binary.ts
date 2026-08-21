@@ -1,5 +1,6 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { coraBinaryUrl } from '@/cora/helper.server';
+import { httpClient } from '@/cora/httpClient.server';
 import { log, logError } from '@/logging/logger.server';
 import type { Route } from './+types/binary';
 import { transformCoraBinaryResponse } from './utils/transformCoraBinaryResponse.server';
@@ -9,7 +10,7 @@ export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { id, name } = params;
 
   try {
-    const response = await fetch(coraBinaryUrl({ id, name, auth }));
+    const response = await httpClient.raw(coraBinaryUrl({ id, name, auth }));
 
     if (!response.ok) {
       log.error(
@@ -42,7 +43,7 @@ export const action = async ({
   const { id, name } = params;
 
   try {
-    const response = await fetch(coraBinaryUrl({ id, name, auth }), {
+    const response = await httpClient.raw(coraBinaryUrl({ id, name, auth }), {
       body: request.body,
       headers: request.headers,
       method: request.method,

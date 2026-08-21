@@ -17,14 +17,15 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
 import {
   AUTHENTICATION_CONTENT_TYPE,
+  coraApiUrl,
   coraLoginUrl,
   LOGIN_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { logError } from '@/logging/logger.server';
+import { httpClient } from './httpClient.server';
 
 export async function requestAuthTokenOnLogin(
   user: string,
@@ -39,7 +40,9 @@ export async function requestAuthTokenOnLogin(
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {
-    const response = await axios.post(url, body, { headers });
+    const response = await httpClient.post(url, body, {
+      headers,
+    });
     const auth = transformCoraAuth(response.data);
     return auth;
   } catch (error) {
