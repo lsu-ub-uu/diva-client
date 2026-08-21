@@ -16,27 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import { coraApiUrl, createHeaders } from '@/cora/helper.server';
-
-type FetchLikeResponse<T> = {
-  data: T;
-  status: number;
-};
 
 export async function deleteRecordDataById<T>(
   recordId: string,
   type: string,
   authToken?: string,
-): Promise<FetchLikeResponse<T>> {
+): Promise<HttpResponse<T>> {
   const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
   const rawHeaders = createHeaders({}, authToken);
   const headers = Object.fromEntries(
     Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  const response = await fetch(apiUrl, { method: 'DELETE', headers });
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+  return httpClient.delete<T>(apiUrl, { headers });
 }

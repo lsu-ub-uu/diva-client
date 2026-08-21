@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
@@ -74,13 +75,9 @@ export const createBinaryRecord = async (
     Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  const response = await fetch(coraApiUrl('/record/binary/'), {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(payload),
-  });
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+  return httpClient.post<Record<string, unknown>>(
+    coraApiUrl('/record/binary/'),
+    payload,
+    { headers },
+  );
 };

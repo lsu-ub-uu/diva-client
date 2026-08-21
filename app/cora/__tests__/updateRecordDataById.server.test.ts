@@ -4,6 +4,7 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
+import { HttpError } from '@/cora/httpClient.server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 describe('updateRecordDataById', () => {
@@ -152,7 +153,7 @@ describe('updateRecordDataById', () => {
     );
   });
 
-  it('should return parsed data and non-2xx status', async () => {
+  it('should throw HttpError on non-2xx status', async () => {
     const type = 'divaOutput';
     const recordId = 'divaOutput:44444444444444';
     const payload = {
@@ -161,28 +162,20 @@ describe('updateRecordDataById', () => {
         { name: 'title', children: [{ name: 'mainTitle', value: 'x' }] },
       ],
     };
-    const expectedErrorResponse = {
-      message: 'Bad request',
-    };
 
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
-        new Response(JSON.stringify(expectedErrorResponse), {
+        new Response(JSON.stringify({ message: 'Bad request' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         }),
       ),
     );
 
-    const response = await updateRecordDataById<typeof expectedErrorResponse>(
-      recordId,
-      payload,
-      type,
+    await expect(updateRecordDataById(recordId, payload, type)).rejects.toThrow(
+      HttpError,
     );
-
-    expect(response.status).toBe(400);
-    expect(response.data).toEqual(expectedErrorResponse);
   });
 
   it('should reject when response body is not valid json', async () => {

@@ -17,6 +17,7 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
@@ -24,16 +25,11 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
-type FetchLikeResponse<T> = {
-  data: T;
-  status: number;
-};
-
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
   authToken?: string,
-): Promise<FetchLikeResponse<T>> {
+): Promise<HttpResponse<T>> {
   const apiUrl = coraApiUrl(`/record/${type}`);
 
   const rawHeaders = createHeaders(
@@ -44,14 +40,5 @@ export async function postRecordData<T>(
     Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(payload),
-  });
-
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+  return httpClient.post<T>(apiUrl, payload, { headers });
 }

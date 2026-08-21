@@ -17,6 +17,7 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
@@ -24,17 +25,12 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
-type FetchLikeResponse<T> = {
-  data: T;
-  status: number;
-};
-
 export const updateRecordDataById = async <T>(
   recordId: string,
   payload: DataGroup,
   type: string,
   authToken?: string,
-): Promise<FetchLikeResponse<T>> => {
+): Promise<HttpResponse<T>> => {
   const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
@@ -44,14 +40,5 @@ export const updateRecordDataById = async <T>(
     Object.entries(headers).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: requestHeaders,
-    body: JSON.stringify(payload),
-  });
-
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+  return httpClient.post<T>(apiUrl, payload, { headers: requestHeaders });
 };

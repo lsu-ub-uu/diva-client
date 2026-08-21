@@ -4,6 +4,7 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { postRecordData } from '@/cora/postRecordData.server';
+import { HttpError } from '@/cora/httpClient.server';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('postRecordData', () => {
@@ -37,7 +38,7 @@ describe('postRecordData', () => {
     expect(response.data).toEqual(expect.objectContaining(expectedResponse));
   });
 
-  it('should return a non-2xx status without throwing', async () => {
+  it('should throw HttpError on non-2xx status', async () => {
     const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
     vi.stubGlobal(
       'fetch',
@@ -49,13 +50,9 @@ describe('postRecordData', () => {
       ),
     );
 
-    const response = await postRecordData(
-      divaOutputData,
-      divaOutputType,
-      authToken,
-    );
-
-    expect(response.status).toBe(400);
+    await expect(
+      postRecordData(divaOutputData, divaOutputType, authToken),
+    ).rejects.toThrow(HttpError);
   });
 
   it('should omit Authtoken header when no authToken is provided', async () => {

@@ -39,8 +39,9 @@ describe('getSearchResultDataListBySearchType', () => {
         Accept: RECORD_LIST_CONTENT_TYPE,
         Authtoken: authToken,
       },
+      method: 'GET',
     });
-    expect(response).toStrictEqual({ status: 200, data: mockData });
+    expect(response).toMatchObject({ status: 200, data: mockData });
   });
 
   it('sets decorated header', async () => {
@@ -67,6 +68,7 @@ describe('getSearchResultDataListBySearchType', () => {
         Accept: RECORD_LIST_CONTENT_TYPE_DECORATED,
         Authtoken: authToken,
       },
+      method: 'GET',
     });
   });
 
@@ -84,6 +86,7 @@ describe('getSearchResultDataListBySearchType', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(ENCODED_URL, {
       headers: { Accept: RECORD_LIST_CONTENT_TYPE },
+      method: 'GET',
     });
   });
 });

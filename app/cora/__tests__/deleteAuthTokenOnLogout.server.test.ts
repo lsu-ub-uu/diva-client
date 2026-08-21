@@ -5,7 +5,7 @@ describe('deleteAuthTokenOnLogout', () => {
   it('Delete an appToken', async () => {
     const fetchMock = vi
       .fn()
-      .mockResolvedValue(new Response(null, { status: 200 }));
+      .mockResolvedValue(new Response(JSON.stringify({}), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 
     const response = await deleteAuthTokenFromCora({
@@ -21,11 +21,15 @@ describe('deleteAuthTokenOnLogout', () => {
           requestMethod: 'POST',
           rel: 'renew',
           url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+          accept: 'application/vnd.cora.auth+json',
+          contentType: 'application/vnd.cora.auth+json',
         },
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
           url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+          accept: 'application/vnd.cora.auth+json',
+          contentType: 'application/vnd.cora.auth+json',
         },
       },
     });
@@ -34,8 +38,10 @@ describe('deleteAuthTokenOnLogout', () => {
       'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
       {
         method: 'DELETE',
-        headers: { Authtoken: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa' },
-        body: undefined,
+        headers: {
+          Accept: 'application/vnd.cora.auth+json',
+          'Content-Type': 'application/vnd.cora.auth+json',
+        },
       },
     );
     expect(response.status).toEqual(200);

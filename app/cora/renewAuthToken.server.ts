@@ -17,27 +17,15 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import { createHeaders } from '@/cora/helper.server';
+import { httpClient } from '@/cora/httpClient.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 
 export const renewAuthToken = async (auth: Auth) => {
   const actionLink = auth.actionLinks.renew;
-  const headers = createHeaders(
-    {
-      Accept: actionLink.accept,
-      'Content-Type': actionLink.contentType,
+  const response = await httpClient.action(actionLink, actionLink.body, {
+    headers: {
+      Authtoken: auth.data.token,
     },
-    auth.data.token,
-  );
-  const requestHeaders = Object.fromEntries(
-    Object.entries(headers).filter(([, value]) => value !== undefined),
-  ) as Record<string, string>;
-
-  const response = await fetch(actionLink.url, {
-    method: actionLink.requestMethod,
-    headers: requestHeaders,
-    body: actionLink.body ? JSON.stringify(actionLink.body) : undefined,
   });
-
-  return transformCoraAuth(await response.json());
+  return transformCoraAuth(response.data);
 };

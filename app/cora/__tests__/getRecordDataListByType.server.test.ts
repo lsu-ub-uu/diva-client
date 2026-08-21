@@ -1,5 +1,6 @@
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import { coraApiUrl, RECORD_LIST_CONTENT_TYPE } from '@/cora/helper.server';
+import { HttpError } from '@/cora/httpClient.server';
 import { log } from '@/logging/logger.server';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -39,11 +40,13 @@ describe('getRecordDataListByType', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(apiUrl, {
       headers: { Accept: RECORD_LIST_CONTENT_TYPE, Authtoken: authToken },
+      method: 'GET',
     });
   });
 
-  it('should return a non-2xx status without throwing', async () => {
+  it('throws HttpError when status is non-2xx', async () => {
     const type = 'invalidType';
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
@@ -54,9 +57,12 @@ describe('getRecordDataListByType', () => {
       ),
     );
 
-    const response = await getRecordDataListByType(type, 'validToken');
+    await expect(getRecordDataListByType(type, 'validToken')).rejects.toThrow(
+      HttpError,
+    );
 
-    expect(response.status).toBe(404);
+    expect(logErrorSpy).toHaveBeenCalled();
+    logErrorSpy.mockRestore();
   });
 
   it('logs the error and re-throws when fetch rejects', async () => {

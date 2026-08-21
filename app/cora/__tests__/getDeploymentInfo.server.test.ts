@@ -22,6 +22,7 @@ describe('getDeploymentInfo', () => {
         headers: {
           Accept: DEPLOYMENT_INFO_CONTENT_TYPE,
         },
+        method: 'GET',
       },
     );
     expect(result).toStrictEqual(mockDeploymentInfo);

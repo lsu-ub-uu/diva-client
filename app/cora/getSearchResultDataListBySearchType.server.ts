@@ -17,6 +17,7 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
@@ -24,17 +25,12 @@ import {
   RECORD_LIST_CONTENT_TYPE_DECORATED,
 } from '@/cora/helper.server';
 
-type FetchLikeResponse<T> = {
-  data: T;
-  status: number;
-};
-
 export async function getSearchResultDataListBySearchType<T>(
   searchType: string,
   searchData: DataGroup,
   authToken?: string,
   decorated: boolean = false,
-): Promise<FetchLikeResponse<T>> {
+): Promise<HttpResponse<T>> {
   const apiUrl: string = coraApiUrl(`/record/searchResult/${searchType}`);
 
   const searchDataString = JSON.stringify(searchData);
@@ -52,9 +48,5 @@ export async function getSearchResultDataListBySearchType<T>(
     Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  const response = await fetch(finalUrl, { headers });
-  return {
-    data: await response.json(),
-    status: response.status,
-  };
+  return httpClient.get<T>(finalUrl, { headers });
 }

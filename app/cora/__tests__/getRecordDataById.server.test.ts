@@ -25,6 +25,7 @@ describe('getRecordDataById', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(apiUrl, {
       headers: { Accept: RECORD_CONTENT_TYPE, Authtoken: authToken },
+      method: 'GET',
     });
     expect(response.data).toEqual(expect.objectContaining(expectedData));
   });
@@ -46,6 +47,7 @@ describe('getRecordDataById', () => {
       coraApiUrl(`/record/${type}/${id}`),
       {
         headers: { Accept: RECORD_CONTENT_TYPE_DECORATED },
+        method: 'GET',
       },
     );
   });
@@ -67,6 +69,7 @@ describe('getRecordDataById', () => {
       coraApiUrl(`/record/${type}/${id}`),
       {
         headers: { Accept: RECORD_CONTENT_TYPE },
+        method: 'GET',
       },
     );
   });
