@@ -25,7 +25,6 @@ import { FileInput } from '@/components/Input/FileInput';
 import { Progress } from '@/components/Progress/Progress';
 import type { BFFDataRecord } from '@/types/record';
 import { withBaseName } from '@/utils/withBasename';
-import axios from 'axios';
 import { type ReactNode, use, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href } from 'react-router';
@@ -64,13 +63,17 @@ export const FileUpload = ({
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setFileName(file.name);
-      const response = await axios.post(withBaseName(href('/binaryRecord')), {
-        fileName: file.name,
-        fileSize: String(file.size),
-        hostRecordType,
-        hostRecordId,
+      const response = await fetch(withBaseName(href('/binaryRecord')), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileSize: String(file.size),
+          hostRecordType,
+          hostRecordId,
+        }),
       });
-      const binaryRecord: BFFDataRecord = response.data.binaryRecord;
+      const binaryRecord: BFFDataRecord = (await response.json()).binaryRecord;
 
       const formData = new FormData();
       formData.append('file', file);
@@ -78,20 +81,15 @@ export const FileUpload = ({
       const name = uploadUrlParts.pop() as string;
       const id = uploadUrlParts.pop() as string;
 
-      await axios.post(
-        withBaseName(href('/binary/:id/:name', { id, name })),
-        formData,
-        {
-          headers: {
-            'content-type': 'multipart/form-data',
-          },
-
-          onUploadProgress: (event) =>
-            setProgress(
-              Math.round((100 * event.loaded) / (event.total ?? 100)),
-            ),
-        },
-      );
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.upload.onprogress = (event) =>
+          setProgress(Math.round((100 * event.loaded) / (event.total || 100)));
+        xhr.onload = () => resolve();
+        xhr.onerror = () => reject(new Error('Upload failed'));
+        xhr.open('POST', withBaseName(href('/binary/:id/:name', { id, name })));
+        xhr.send(formData);
+      });
 
       setValue(path, binaryRecord.id);
     }

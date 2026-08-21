@@ -17,7 +17,6 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
 import {
   AUTHENTICATION_CONTENT_TYPE,
   coraLoginUrl,
@@ -39,9 +38,9 @@ export async function requestAuthTokenOnLogin(
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {
-    const response = await axios.post(url, body, { headers });
-    const auth = transformCoraAuth(response.data);
-    return auth;
+    const response = await fetch(url, { method: 'POST', headers, body });
+    const data = await response.json();
+    return transformCoraAuth(data);
   } catch (error) {
     logError(error, 'Error while requesting auth token on login');
     throw error;

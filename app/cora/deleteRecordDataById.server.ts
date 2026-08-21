@@ -16,17 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
 import { coraApiUrl, createHeaders } from '@/cora/helper.server';
+
+type FetchLikeResponse<T> = {
+  data: T;
+  status: number;
+};
 
 export async function deleteRecordDataById<T>(
   recordId: string,
   type: string,
   authToken?: string,
-): Promise<AxiosResponse<T>> {
+): Promise<FetchLikeResponse<T>> {
   const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
-  const headers = createHeaders({}, authToken);
-  const response = axios.delete(apiUrl, { headers });
-  return response;
+  const rawHeaders = createHeaders({}, authToken);
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
+
+  const response = await fetch(apiUrl, { method: 'DELETE', headers });
+  return {
+    data: await response.json(),
+    status: response.status,
+  };
 }

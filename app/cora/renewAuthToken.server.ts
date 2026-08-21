@@ -17,14 +17,27 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
+import { createHeaders } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
-import { getAxiosRequestFromActionLink } from '@/cora/helper.server';
 
 export const renewAuthToken = async (auth: Auth) => {
-  const response = await axios.request(
-    getAxiosRequestFromActionLink(auth.actionLinks.renew, auth.data.token),
+  const actionLink = auth.actionLinks.renew;
+  const headers = createHeaders(
+    {
+      Accept: actionLink.accept,
+      'Content-Type': actionLink.contentType,
+    },
+    auth.data.token,
   );
+  const requestHeaders = Object.fromEntries(
+    Object.entries(headers).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
 
-  return transformCoraAuth(response.data);
+  const response = await fetch(actionLink.url, {
+    method: actionLink.requestMethod,
+    headers: requestHeaders,
+    body: actionLink.body ? JSON.stringify(actionLink.body) : undefined,
+  });
+
+  return transformCoraAuth(await response.json());
 };

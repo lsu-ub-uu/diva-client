@@ -21,7 +21,6 @@ import { FileUpload } from '@/components/FormGenerator/components/FileUpload';
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { MockFormProvider } from '@/utils/testUtils';
 import { userEvent } from '@vitest/browser/context';
-import axios from 'axios';
 import type { FieldValues, FormState } from 'react-hook-form';
 import { mock } from 'vitest-mock-extended';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -72,6 +71,48 @@ const makeHostGetValues = () =>
       },
     },
   );
+
+const makeFetchMock = (binaryRecord = mockBinaryRecord) =>
+  vi.fn().mockResolvedValue(
+    new Response(JSON.stringify({ binaryRecord }), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' },
+    }),
+  );
+
+const stubXHR = (progress?: { loaded: number; total?: number }) => {
+  const instances: Array<{
+    upload: { onprogress: ((e: any) => void) | null };
+    onload: (() => void) | null;
+    onerror: (() => void) | null;
+    open: ReturnType<typeof vi.fn>;
+    send: ReturnType<typeof vi.fn>;
+  }> = [];
+
+  class MockXMLHttpRequest {
+    upload = { onprogress: null as ((e: any) => void) | null };
+    onload: (() => void) | null = null;
+    onerror: (() => void) | null = null;
+    open = vi.fn();
+    send = vi.fn().mockImplementation(() => {
+      if (progress !== undefined && this.upload.onprogress) {
+        this.upload.onprogress({
+          loaded: progress.loaded,
+          total: progress.total,
+        });
+      }
+      this.onload?.();
+    });
+
+    constructor() {
+      instances.push(this);
+    }
+  }
+
+  vi.stubGlobal('XMLHttpRequest', MockXMLHttpRequest as any);
+
+  return instances;
+};
 
 describe('FileUpload', () => {
   afterEach(() => {
@@ -246,17 +287,8 @@ describe('FileUpload', () => {
 
   describe('file upload flow', () => {
     it('shows a progress bar after selecting a file', async () => {
-      vi.spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockImplementationOnce(async (_url, _data, config) => {
-          config?.onUploadProgress?.({
-            loaded: 50,
-            total: 100,
-            bytes: 50,
-            lengthComputable: true,
-          });
-          return {};
-        });
+      vi.stubGlobal('fetch', makeFetchMock());
+      stubXHR({ loaded: 50, total: 100 });
 
       const screen = await render(
         <MockFormProvider
@@ -270,22 +302,18 @@ describe('FileUpload', () => {
         </MockFormProvider>,
       );
 
-      const file = new File(['content'], 'report.pdf', {
-        type: 'application/pdf',
-      });
       await userEvent.upload(
         screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
+        new File(['content'], 'report.pdf', { type: 'application/pdf' }),
       );
 
       await expect.element(screen.getByRole('progressbar')).toBeVisible();
     });
 
     it('posts to /binaryRecord with fileName, fileSize, hostRecordType and hostRecordId', async () => {
-      const postSpy = vi
-        .spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockResolvedValue({});
+      const fetchMock = makeFetchMock();
+      vi.stubGlobal('fetch', fetchMock);
+      stubXHR();
 
       const screen = await render(
         <MockFormProvider
@@ -299,65 +327,55 @@ describe('FileUpload', () => {
         </MockFormProvider>,
       );
 
-      const file = new File(['hello'], 'report.pdf', {
-        type: 'application/pdf',
-      });
       await userEvent.upload(
         screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
+        new File(['hello'], 'report.pdf', { type: 'application/pdf' }),
       );
 
-      expect(postSpy).toHaveBeenCalledWith(
+      expect(fetchMock).toHaveBeenCalledWith(
         expect.stringContaining('/binaryRecord'),
-        {
-          fileName: 'report.pdf',
-          fileSize: '5',
-          hostRecordType: 'hostType',
-          hostRecordId: 'hostId',
-        },
-      );
-    });
-
-    it('posts the file to the binary upload URL with multipart/form-data', async () => {
-      const postSpy = vi
-        .spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockResolvedValue({});
-
-      const screen = await render(
-        <MockFormProvider
-          overrides={{ getValues: makeHostGetValues(), setValue: vi.fn() }}
-        >
-          <FileUpload
-            component={fileUploadComponent}
-            path='someFile'
-            parentPresentationStyle={undefined}
-          />
-        </MockFormProvider>,
-      );
-
-      const file = new File(['content'], 'report.pdf', {
-        type: 'application/pdf',
-      });
-      await userEvent.upload(
-        screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
-      );
-
-      expect(postSpy).toHaveBeenCalledWith(
-        expect.stringContaining('/binary/someBinaryId/someBinaryName'),
-        expect.any(FormData),
         expect.objectContaining({
-          headers: { 'content-type': 'multipart/form-data' },
+          body: JSON.stringify({
+            fileName: 'report.pdf',
+            fileSize: '5',
+            hostRecordType: 'hostType',
+            hostRecordId: 'hostId',
+          }),
         }),
       );
     });
 
-    it('calls setValue with the binary record id after upload', async () => {
-      vi.spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockResolvedValue({});
+    it('posts the file to the binary upload URL via XHR with FormData', async () => {
+      vi.stubGlobal('fetch', makeFetchMock());
+      const xhrInstances = stubXHR();
 
+      const screen = await render(
+        <MockFormProvider
+          overrides={{ getValues: makeHostGetValues(), setValue: vi.fn() }}
+        >
+          <FileUpload
+            component={fileUploadComponent}
+            path='someFile'
+            parentPresentationStyle={undefined}
+          />
+        </MockFormProvider>,
+      );
+
+      await userEvent.upload(
+        screen.getByRole('button', { name: 'someFileLabelText' }),
+        new File(['content'], 'report.pdf', { type: 'application/pdf' }),
+      );
+
+      expect(xhrInstances[0].open).toHaveBeenCalledWith(
+        'POST',
+        expect.stringContaining('/binary/someBinaryId/someBinaryName'),
+      );
+      expect(xhrInstances[0].send).toHaveBeenCalledWith(expect.any(FormData));
+    });
+
+    it('calls setValue with the binary record id after upload', async () => {
+      vi.stubGlobal('fetch', makeFetchMock());
+      stubXHR();
       const setValueSpy = vi.fn();
 
       const screen = await render(
@@ -372,12 +390,9 @@ describe('FileUpload', () => {
         </MockFormProvider>,
       );
 
-      const file = new File(['content'], 'report.pdf', {
-        type: 'application/pdf',
-      });
       await userEvent.upload(
         screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
+        new File(['content'], 'report.pdf', { type: 'application/pdf' }),
       );
 
       expect(setValueSpy).toHaveBeenCalledWith(
@@ -387,10 +402,8 @@ describe('FileUpload', () => {
     });
 
     it('extracts id and name from the binary upload URL', async () => {
-      const postSpy = vi
-        .spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockResolvedValue({});
+      vi.stubGlobal('fetch', makeFetchMock());
+      const xhrInstances = stubXHR();
 
       const screen = await render(
         <MockFormProvider
@@ -404,31 +417,19 @@ describe('FileUpload', () => {
         </MockFormProvider>,
       );
 
-      const file = new File(['content'], 'test.pdf', {
-        type: 'application/pdf',
-      });
       await userEvent.upload(
         screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
+        new File(['content'], 'test.pdf', { type: 'application/pdf' }),
       );
 
-      const binaryUploadUrl = postSpy.mock.calls[1][0] as string;
-      expect(binaryUploadUrl).toContain('someBinaryId');
-      expect(binaryUploadUrl).toContain('someBinaryName');
+      const uploadUrl = xhrInstances[0].open.mock.calls[0][1] as string;
+      expect(uploadUrl).toContain('someBinaryId');
+      expect(uploadUrl).toContain('someBinaryName');
     });
 
     it('updates progress during upload', async () => {
-      vi.spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockImplementationOnce(async (_url, _data, config) => {
-          config?.onUploadProgress?.({
-            loaded: 75,
-            total: 100,
-            bytes: 75,
-            lengthComputable: true,
-          });
-          return {};
-        });
+      vi.stubGlobal('fetch', makeFetchMock());
+      stubXHR({ loaded: 75, total: 100 });
 
       const screen = await render(
         <MockFormProvider
@@ -442,30 +443,19 @@ describe('FileUpload', () => {
         </MockFormProvider>,
       );
 
-      const file = new File(['content'], 'test.pdf', {
-        type: 'application/pdf',
-      });
       await userEvent.upload(
         screen.getByRole('button', { name: 'someFileLabelText' }),
-        file,
+        new File(['content'], 'test.pdf', { type: 'application/pdf' }),
       );
 
-      const progressBar = screen.getByRole('progressbar');
-      await expect.element(progressBar).toHaveAttribute('aria-valuenow', '75');
+      await expect
+        .element(screen.getByRole('progressbar'))
+        .toHaveAttribute('aria-valuenow', '75');
     });
 
     it('rounds progress to the nearest integer', async () => {
-      vi.spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockImplementationOnce(async (_url, _data, config) => {
-          config?.onUploadProgress?.({
-            loaded: 1,
-            total: 3,
-            bytes: 1,
-            lengthComputable: true,
-          });
-          return {};
-        });
+      vi.stubGlobal('fetch', makeFetchMock());
+      stubXHR({ loaded: 1, total: 3 });
 
       const screen = await render(
         <MockFormProvider
@@ -490,17 +480,8 @@ describe('FileUpload', () => {
     });
 
     it('defaults total to 100 when event.total is undefined', async () => {
-      vi.spyOn(axios, 'post')
-        .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-        .mockImplementationOnce(async (_url, _data, config) => {
-          config?.onUploadProgress?.({
-            loaded: 42,
-            total: undefined,
-            bytes: 42,
-            lengthComputable: false,
-          });
-          return {};
-        });
+      vi.stubGlobal('fetch', makeFetchMock());
+      stubXHR({ loaded: 42, total: undefined });
 
       const screen = await render(
         <MockFormProvider
@@ -525,8 +506,9 @@ describe('FileUpload', () => {
     });
   });
 
-  it('does not call axios when no file is selected', async () => {
-    const postSpy = vi.spyOn(axios, 'post');
+  it('does not call fetch when no file is selected', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
 
     const { container } = await render(
       <MockFormProvider overrides={{ getValues: makeGetValues() }}>
@@ -543,14 +525,13 @@ describe('FileUpload', () => {
     ) as HTMLInputElement;
     input.dispatchEvent(new Event('change', { bubbles: true }));
 
-    expect(postSpy).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('derives hostRecordId and hostRecordType from root form values', async () => {
-    const postSpy = vi
-      .spyOn(axios, 'post')
-      .mockResolvedValueOnce({ data: { binaryRecord: mockBinaryRecord } })
-      .mockResolvedValue({});
+    const fetchMock = makeFetchMock();
+    vi.stubGlobal('fetch', fetchMock);
+    stubXHR();
 
     const screen = await render(
       <MockFormProvider
@@ -577,20 +558,17 @@ describe('FileUpload', () => {
       </MockFormProvider>,
     );
 
-    const file = new File(['content'], 'test.pdf', {
-      type: 'application/pdf',
-    });
     await userEvent.upload(
       screen.getByRole('button', { name: 'someFileLabelText' }),
-      file,
+      new File(['content'], 'test.pdf', { type: 'application/pdf' }),
     );
 
-    expect(postSpy).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        hostRecordId: 'myRecordId',
-        hostRecordType: 'myRecordType',
-      }),
+    const body = JSON.parse(
+      (fetchMock.mock.calls[0][1] as RequestInit).body as string,
     );
+    expect(body).toMatchObject({
+      hostRecordId: 'myRecordId',
+      hostRecordType: 'myRecordType',
+    });
   });
 });

@@ -1,53 +1,77 @@
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
 import { coraApiUrl, RECORD_LIST_CONTENT_TYPE } from '@/cora/helper.server';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { log } from '@/logging/logger.server';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('getRecordDataListByType', () => {
-  let mockAxios: MockAdapter;
-
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios);
-  });
-
-  afterEach(() => {
-    mockAxios.restore();
-  });
-
   it('should fetch data for a valid type', async () => {
     const type = 'someValidType';
-    const expectedResponse = {
-      data: {
-        test: 'someTestValue',
-      },
-      headers: {},
-      request: {},
-      status: 200,
-    };
+    const expectedData = { test: 'someTestValue' };
     const apiUrl: string = coraApiUrl(`/record/${type}`);
-    mockAxios
-      .onGet(apiUrl, {
-        headers: { Accept: RECORD_LIST_CONTENT_TYPE },
-      })
-      .reply(200, expectedResponse);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify(expectedData), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      ),
+    );
+
     const response = await getRecordDataListByType(type);
-    expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+
+    expect(response.data).toEqual(expect.objectContaining(expectedData));
   });
 
-  it('should handle an error response with status 404', async () => {
-    const type = 'invalidType';
+  it('should call fetch with correct url and headers', async () => {
+    const type = 'someValidType';
+    const authToken = 'validToken';
     const apiUrl: string = coraApiUrl(`/record/${type}`);
-    mockAxios
-      .onGet(apiUrl, { headers: { Accept: RECORD_LIST_CONTENT_TYPE } })
-      .reply(404);
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
 
-    try {
-      await getRecordDataListByType(type, 'validToken');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        expect(error.response?.status).toBe(404);
-      }
-    }
+    await getRecordDataListByType(type, authToken);
+
+    expect(fetchMock).toHaveBeenCalledWith(apiUrl, {
+      headers: { Accept: RECORD_LIST_CONTENT_TYPE, Authtoken: authToken },
+    });
+  });
+
+  it('should return a non-2xx status without throwing', async () => {
+    const type = 'invalidType';
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({}), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      ),
+    );
+
+    const response = await getRecordDataListByType(type, 'validToken');
+
+    expect(response.status).toBe(404);
+  });
+
+  it('logs the error and re-throws when fetch rejects', async () => {
+    const type = 'someType';
+    const logErrorSpy = vi.spyOn(log, 'error').mockImplementation(() => {});
+    const error = new Error('network failure');
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(error));
+
+    await expect(getRecordDataListByType(type)).rejects.toThrow(error);
+
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      { err: error },
+      `Failed to fetch record data list of type ${type}: network failure`,
+    );
+
+    logErrorSpy.mockRestore();
   });
 });

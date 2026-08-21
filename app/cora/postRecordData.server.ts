@@ -17,8 +17,6 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
 import {
   coraApiUrl,
   createHeaders,
@@ -26,17 +24,34 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
+type FetchLikeResponse<T> = {
+  data: T;
+  status: number;
+};
+
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
   authToken?: string,
-): Promise<AxiosResponse<T>> {
+): Promise<FetchLikeResponse<T>> {
   const apiUrl = coraApiUrl(`/record/${type}`);
 
-  const headers = createHeaders(
+  const rawHeaders = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
 
-  return axios.post(apiUrl, payload, { headers });
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  return {
+    data: await response.json(),
+    status: response.status,
+  };
 }

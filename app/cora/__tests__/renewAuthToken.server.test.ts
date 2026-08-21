@@ -18,18 +18,17 @@
 
 import { createMockAuth, createMockCoraAuth } from '@/auth/__mocks__/auth';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
-import axios from 'axios';
 import { describe, expect, it, vi } from 'vitest';
-
-vi.mock('axios');
 
 describe('renewAuthToken', () => {
   it('makes a request according to renew action link', async () => {
-    const requestSpy = vi
-      .spyOn(axios, 'request')
-      .mockReturnValue(
-        Promise.resolve({ status: 200, data: createMockCoraAuth() }),
-      );
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(createMockCoraAuth()), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
 
     await renewAuthToken(
       createMockAuth({
@@ -47,13 +46,13 @@ describe('renewAuthToken', () => {
       }),
     );
 
-    expect(requestSpy).toHaveBeenCalledWith({
+    expect(fetchMock).toHaveBeenCalledWith('/someUrl', {
       method: 'POST',
-      url: '/someUrl',
       headers: {
         Accept: 'SomeAccept',
         Authtoken: 'someAuthtoken',
       },
+      body: undefined,
     });
   });
 
@@ -67,8 +66,14 @@ describe('renewAuthToken', () => {
       },
       actionLinks: mockAuth.actionLinks,
     });
-    vi.spyOn(axios, 'request').mockReturnValue(
-      Promise.resolve({ status: 200, data: mockRenewedCoraAuth }),
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify(mockRenewedCoraAuth), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      ),
     );
 
     const result = await renewAuthToken(mockAuth);

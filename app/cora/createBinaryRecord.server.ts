@@ -22,7 +22,6 @@ import {
   RECORD_CONTENT_TYPE,
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
-import axios from 'axios';
 
 export const createBinaryRecord = async (
   fileName: string,
@@ -67,10 +66,21 @@ export const createBinaryRecord = async (
     attributes: { type: 'generic' },
   };
 
-  const headers = createHeaders(
+  const rawHeaders = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
 
-  return await axios.post(coraApiUrl('/record/binary/'), payload, { headers });
+  const response = await fetch(coraApiUrl('/record/binary/'), {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  });
+  return {
+    data: await response.json(),
+    status: response.status,
+  };
 };
