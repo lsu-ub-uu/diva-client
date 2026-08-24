@@ -81,7 +81,6 @@ import {
 } from '@/cora/transform/transformValidationTypes.server';
 
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import 'dotenv/config';
 import type { DataChangedEvent } from '../listenForDataChange';
 import { clearI18nCache } from '../i18n';
 import { listToPool } from './util/listToPool';

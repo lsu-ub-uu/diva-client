@@ -4,7 +4,6 @@ import type { BFFMetadata, BFFRecordType } from '@/cora/bffTypes.server';
 import { transformMetadatas } from '@/cora/transform/transformMetadata.server';
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
-import 'dotenv/config';
 import fs from 'fs';
 import * as prettier from 'prettier';
 import { generateTypesForRecordTypes } from './generateTypesForRecordTypes';
