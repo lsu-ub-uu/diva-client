@@ -43,6 +43,5 @@
 
 ## Testing patterns to copy
 
-- HTTP-layer tests mock Axios with `axios-mock-adapter` (see [../app/cora/**tests**/getRecordDataById.server.test.ts](../app/cora/__tests__/getRecordDataById.server.test.ts)).
 - Session middleware tests mock `sessions.server` and assert `Set-Cookie` side effects (see [../app/auth/**tests**/sessionMiddleware.test.ts](../app/auth/__tests__/sessionMiddleware.test.ts)).
 - Integration with RabbitMQ is unit-tested by mocking `amqplib` (see [../server/**tests**/listenForDataChange.test.ts](../server/__tests__/listenForDataChange.test.ts)).
