@@ -31,7 +31,9 @@
 - Main dev loop: `npm run dev` (runs type generation, then `tsx server.ts`).
 - Useful variants: `npm run dev:minikube`, `npm run dev:preview` for different Cora backends.
 - Type/lint/style checks: `npm run typecheck`, `npm run lint`, `npm run stylelint`.
+- Before finalizing changes: run `npm run typecheck` and fix all reported type errors.
 - Tests: `npm test` (Vitest), `npm run test:ci` for JUnit report, `npm run coverage` for coverage output.
+- For new UI/component tests: use Vitest browser tests (e.g. `*.browser.test.tsx`) instead of jsdom tests.
 - Production path: `npm run build` then `npm start` (prestart rewrites placeholders via [../scripts/prestart.js](../scripts/prestart.js)).
 
 ## Integrations and runtime settings
