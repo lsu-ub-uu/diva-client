@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataGroup } from '@/cora/cora-data/types.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
@@ -25,11 +25,11 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
-export async function postRecordData<T>(
+export async function postRecordData(
   payload: DataGroup,
   type: string,
   authToken?: string,
-): Promise<HttpResponse<T>> {
+): Promise<HttpResponse<RecordWrapper>> {
   const apiUrl = coraApiUrl(`/record/${type}`);
 
   const rawHeaders = createHeaders(
@@ -40,5 +40,5 @@ export async function postRecordData<T>(
     Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
   ) as Record<string, string>;
 
-  return httpClient.post<T>(apiUrl, payload, { headers });
+  return httpClient.post<RecordWrapper>(apiUrl, payload, { headers });
 }

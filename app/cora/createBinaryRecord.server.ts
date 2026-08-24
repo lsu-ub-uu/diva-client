@@ -16,13 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
-import {
-  coraApiUrl,
-  createHeaders,
-  RECORD_CONTENT_TYPE,
-  RECORD_GROUP_CONTENT_TYPE,
-} from '@/cora/helper.server';
+import { postRecordData } from './postRecordData.server';
 
 export const createBinaryRecord = async (
   fileName: string,
@@ -66,18 +60,5 @@ export const createBinaryRecord = async (
     ],
     attributes: { type: 'generic' },
   };
-
-  const rawHeaders = createHeaders(
-    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
-    authToken,
-  );
-  const headers = Object.fromEntries(
-    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
-  ) as Record<string, string>;
-
-  return httpClient.post<Record<string, unknown>>(
-    coraApiUrl('/record/binary/'),
-    payload,
-    { headers },
-  );
+  return postRecordData(payload, 'binary', authToken);
 };

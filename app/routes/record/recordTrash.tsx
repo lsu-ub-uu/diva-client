@@ -20,7 +20,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { setRecordTrash } from '@/data/setRecordTrash.server';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
 import { redirect } from 'react-router';
@@ -73,6 +73,6 @@ export const action = async ({
     }
   } catch (error) {
     logError(error, 'Error while trashing record');
-    flashNotification(createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromHttpError(t, error));
   }
 };

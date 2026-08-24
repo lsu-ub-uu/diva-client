@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { action } from '@/root';
 import type { ActionLink } from './cora-data/types.server';
 
 export interface HttpResponse<T> {
@@ -96,17 +95,16 @@ export const httpClient = {
       method: actionLink.requestMethod,
       body: typeof body === 'string' ? body : JSON.stringify(body),
       headers: {
-        Accept: actionLink.accept,
-        'Content-Type': actionLink.contentType,
+        ...(actionLink.accept && { Accept: actionLink.accept }),
+        ...(actionLink.contentType && {
+          'Content-Type': actionLink.contentType,
+        }),
         ...options.headers,
       },
     });
   },
 
-  raw: async (
-    url: string,
-    options: RequestInit = {},
-  ): Promise<Response> => {
+  raw: async (url: string, options: RequestInit = {}): Promise<Response> => {
     const response = await fetch(url, options);
     return response;
   },

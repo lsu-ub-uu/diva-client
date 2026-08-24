@@ -19,13 +19,18 @@
 import type { Auth } from '@/auth/Auth';
 import { httpClient } from '@/cora/httpClient.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
+import type { AuthWrapper } from './cora-data/types.server';
 
 export const renewAuthToken = async (auth: Auth) => {
   const actionLink = auth.actionLinks.renew;
-  const response = await httpClient.action(actionLink, actionLink.body, {
-    headers: {
-      Authtoken: auth.data.token,
+  const response = await httpClient.action<AuthWrapper>(
+    actionLink,
+    actionLink.body,
+    {
+      headers: {
+        Authtoken: auth.data.token,
+      },
     },
-  });
+  );
   return transformCoraAuth(response.data);
 };

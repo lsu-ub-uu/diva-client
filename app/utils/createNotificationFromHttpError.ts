@@ -16,35 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isAxiosError } from 'axios';
+import { isHttpError } from '@/cora/httpClient.server';
 import type { Notification } from '@/auth/sessions.server';
 import type { TFunction } from 'i18next';
 
-const isHtmlContent = (data: unknown): boolean => {
-  if (typeof data !== 'string') {
-    return false;
-  }
-  // Check if the string starts with common HTML patterns
-  const htmlPattern = /^\s*<!DOCTYPE|^\s*<html|^\s*<\?xml/i;
-  return htmlPattern.test(data);
-};
-
-export const createNotificationFromAxiosError = (
+export const createNotificationFromHttpError = (
   t: TFunction,
   error: unknown,
 ): Notification => {
-  if (isAxiosError(error)) {
-    const responseData = error.response?.data;
-    const shouldShowResponseData = responseData && !isHtmlContent(responseData);
-
+  if (isHttpError(error)) {
     return {
       severity: 'error',
       summary: t(`divaClient_error${error.status}TitleText`, {
         defaultValue: error.message,
       }),
-      details: shouldShowResponseData
-        ? responseData
-        : t(`divaClient_error${error.status}BodyText`),
+      details: t(`divaClient_error${error.status}BodyText`),
     };
   }
 

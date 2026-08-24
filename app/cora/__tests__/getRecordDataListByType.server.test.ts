@@ -8,7 +8,7 @@ describe('getRecordDataListByType', () => {
   it('should fetch data for a valid type', async () => {
     const type = 'someValidType';
     const expectedData = { test: 'someTestValue' };
-    const apiUrl: string = coraApiUrl(`/record/${type}`);
+
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(

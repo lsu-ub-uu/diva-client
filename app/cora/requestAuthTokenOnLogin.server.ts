@@ -19,12 +19,12 @@
 import type { Auth } from '@/auth/Auth';
 import {
   AUTHENTICATION_CONTENT_TYPE,
-  coraApiUrl,
   coraLoginUrl,
   LOGIN_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { logError } from '@/logging/logger.server';
+import type { AuthWrapper } from './cora-data/types.server';
 import { httpClient } from './httpClient.server';
 
 export async function requestAuthTokenOnLogin(
@@ -40,7 +40,7 @@ export async function requestAuthTokenOnLogin(
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {
-    const response = await httpClient.post(url, body, {
+    const response = await httpClient.post<AuthWrapper>(url, body, {
       headers,
     });
     const auth = transformCoraAuth(response.data);
