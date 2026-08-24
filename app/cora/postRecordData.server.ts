@@ -16,9 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
@@ -26,17 +25,20 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 
-export async function postRecordData<T>(
+export async function postRecordData(
   payload: DataGroup,
   type: string,
   authToken?: string,
-): Promise<AxiosResponse<T>> {
+): Promise<HttpResponse<RecordWrapper>> {
   const apiUrl = coraApiUrl(`/record/${type}`);
 
-  const headers = createHeaders(
+  const rawHeaders = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
     authToken,
   );
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
 
-  return axios.post(apiUrl, payload, { headers });
+  return httpClient.post<RecordWrapper>(apiUrl, payload, { headers });
 }

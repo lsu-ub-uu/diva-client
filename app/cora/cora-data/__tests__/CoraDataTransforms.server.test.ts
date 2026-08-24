@@ -1,7 +1,7 @@
 import divaMemberLogoBinary from '@/__mocks__/bff/divaMemberLogoBinary.json';
-import type { DataGroup } from '@/cora/cora-data/types.server';
+import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
-import type { AxiosResponse } from 'axios';
+import type { HttpResponse } from '@/cora/httpClient.server';
 import { describe, expect, it, vi } from 'vitest';
 import {
   extractAttributeValueByName,
@@ -331,7 +331,9 @@ describe('CoraDataTransform', () => {
     it('fetches linked record and returns it', async () => {
       vi.mocked(getRecordDataById).mockResolvedValue({
         data: divaMemberLogoBinary,
-      } as AxiosResponse);
+        status: 200,
+        headers: new Headers(),
+      } as HttpResponse<RecordWrapper>);
 
       const actual = await fetchLinkedRecordForRecordLinkWithNameInData(
         {

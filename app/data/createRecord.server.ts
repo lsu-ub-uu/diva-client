@@ -18,15 +18,15 @@
 
 import type { BFFDataRecord } from '@/types/record';
 
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import type { Auth } from '@/auth/Auth';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { Dependencies } from '@/cora/bffTypes.server';
+import type { DataGroup } from '@/cora/cora-data/types.server';
+import { postRecordData } from '@/cora/postRecordData.server';
+import { transformRecord } from '@/cora/transform/transformRecord.server';
+import { transformToCoraData } from '@/cora/transform/transformToCora.server';
 import { createFormMetaData } from '@/data/formMetadata.server';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
-import { transformToCoraData } from '@/cora/transform/transformToCora.server';
-import { transformRecord } from '@/cora/transform/transformRecord.server';
-import type { DataGroup, RecordWrapper } from '@/cora/cora-data/types.server';
-import { postRecordData } from '@/cora/postRecordData.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
 
 export const createRecord = async (
   dependencies: Dependencies,
@@ -56,7 +56,7 @@ export const createRecord = async (
 
   const transformData = transformToCoraData(formMetaDataPathLookup, record);
 
-  const response = await postRecordData<RecordWrapper>(
+  const response = await postRecordData(
     transformData[0] as DataGroup,
     recordType,
     auth?.data?.token,

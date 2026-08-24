@@ -16,11 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { AxiosError } from 'axios';
 import { isRouteErrorResponse } from 'react-router';
 
+const hasStatusCode = (
+  error: unknown,
+): error is { status: number | undefined } => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'status' in error &&
+    (typeof (error as { status?: unknown }).status === 'number' ||
+      (error as { status?: unknown }).status === undefined)
+  );
+};
+
 export const getMetaTitleFromError = (error: unknown) => {
-  if (isRouteErrorResponse(error) || error instanceof AxiosError) {
+  if (isRouteErrorResponse(error) || hasStatusCode(error)) {
     return getTitleFromHTTPStatus(error.status);
   }
   return 'Internal Server Error';

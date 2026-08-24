@@ -28,7 +28,7 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { linksFromFormSchema } from '@/components/NavigationPanel/linksFromFormSchema';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 
@@ -156,7 +156,7 @@ export const action = async ({
     });
   } catch (error) {
     logError(error, 'Error while updating record');
-    flashNotification(createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromHttpError(t, error));
   }
 };
 

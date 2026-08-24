@@ -1,5 +1,4 @@
 import { log, logError } from '@/logging/logger.server';
-import { AxiosError, AxiosHeaders } from 'axios';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 describe('logError', () => {
@@ -12,26 +11,7 @@ describe('logError', () => {
       .spyOn(log, 'error')
       .mockImplementation(() => undefined);
 
-    const error = new AxiosError(
-      'Request failed with status code 500',
-      'ERR_BAD_RESPONSE',
-      {
-        baseURL: 'https://api.example.test/',
-        headers: new AxiosHeaders(),
-        method: 'post',
-        url: '/records',
-      },
-      undefined,
-      {
-        data: { reason: 'boom' },
-        status: 500,
-        statusText: 'Internal Server Error',
-        headers: {},
-        config: {
-          headers: new AxiosHeaders(),
-        },
-      },
-    );
+    const error = new Error('Request failed with status code 500');
 
     logError(error, 'Failed to save record');
 
@@ -46,11 +26,7 @@ describe('logError', () => {
       .spyOn(log, 'error')
       .mockImplementation(() => undefined);
 
-    const error = new AxiosError('Network Error', 'ERR_NETWORK', {
-      headers: new AxiosHeaders(),
-      method: 'get',
-      url: '/records/123',
-    });
+    const error = new Error('Network Error');
 
     logError(error);
 

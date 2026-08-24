@@ -1,25 +1,13 @@
 import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken.server';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
-vi.mock('axios');
+import { describe, expect, it, vi } from 'vitest';
 
 describe('deleteAuthTokenOnLogout', () => {
-  let mockAxios: MockAdapter;
-
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios);
-  });
-
-  afterEach(() => {
-    mockAxios.restore();
-  });
-
   it('Delete an appToken', async () => {
-    const requestSpy = vi
-      .spyOn(axios, 'request')
-      .mockReturnValue(Promise.resolve({ status: 200 }));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({}), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
     const response = await deleteAuthTokenFromCora({
       data: {
         validUntil: '',
@@ -33,24 +21,29 @@ describe('deleteAuthTokenOnLogout', () => {
           requestMethod: 'POST',
           rel: 'renew',
           url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+          accept: 'application/vnd.cora.auth+json',
+          contentType: 'application/vnd.cora.auth+json',
         },
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
           url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+          accept: 'application/vnd.cora.auth+json',
+          contentType: 'application/vnd.cora.auth+json',
         },
       },
     });
 
-    const expectedHeaders = {
-      Authtoken: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-    };
-
-    expect(requestSpy).toHaveBeenCalledWith({
-      headers: expectedHeaders,
-      url: 'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
-      method: 'DELETE',
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:38180/login/rest/authToken/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+      {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/vnd.cora.auth+json',
+          'Content-Type': 'application/vnd.cora.auth+json',
+        },
+      },
+    );
     expect(response.status).toEqual(200);
   });
 });

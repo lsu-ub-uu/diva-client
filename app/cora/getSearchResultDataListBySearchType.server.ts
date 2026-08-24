@@ -17,27 +17,26 @@
  */
 
 import type { DataGroup } from '@/cora/cora-data/types.server';
+import { httpClient, type HttpResponse } from '@/cora/httpClient.server';
 import {
   coraApiUrl,
   createHeaders,
   RECORD_LIST_CONTENT_TYPE,
   RECORD_LIST_CONTENT_TYPE_DECORATED,
 } from '@/cora/helper.server';
-import type { AxiosResponse } from 'axios';
-import axios from 'axios';
 
 export async function getSearchResultDataListBySearchType<T>(
   searchType: string,
   searchData: DataGroup,
   authToken?: string,
   decorated: boolean = false,
-): Promise<AxiosResponse<T>> {
+): Promise<HttpResponse<T>> {
   const apiUrl: string = coraApiUrl(`/record/searchResult/${searchType}`);
 
   const searchDataString = JSON.stringify(searchData);
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
-  const headers = createHeaders(
+  const rawHeaders = createHeaders(
     {
       Accept: decorated
         ? RECORD_LIST_CONTENT_TYPE_DECORATED
@@ -45,6 +44,9 @@ export async function getSearchResultDataListBySearchType<T>(
     },
     authToken,
   );
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
 
-  return axios.get(finalUrl, { headers });
+  return httpClient.get<T>(finalUrl, { headers });
 }

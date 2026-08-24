@@ -16,7 +16,7 @@ import type {
 } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { getRecordDataListByType } from '@/cora/getRecordDataListByType.server';
-import type { AxiosResponse } from 'axios';
+import type { HttpResponse } from '@/cora/httpClient.server';
 import { describe, expect, it, vi } from 'vitest';
 import type { Lookup } from '../util/lookup';
 
@@ -51,66 +51,66 @@ const setUpMocks = () => {
     if (type === 'text') {
       return {
         data: coraTexts as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'metadata') {
       return {
         data: testMetaData as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'presentation') {
       return {
         data: coraPresentationGroup as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'validationType') {
       return {
         data: coraValidationType as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'recordType') {
       return {
         data: coraRecordType as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'search') {
       return {
         data: coraSearch as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'loginUnit') {
       return {
         data: coraLoginUnit as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'login') {
       return {
         data: coraLoginWebRedirect as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'diva-member') {
       return {
         data: coraMembers as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'diva-organisation') {
       return {
         data: coraOrganisations as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'diva-clientContent') {
       return {
         data: coraClientContent as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     if (type === 'guiElement') {
       return {
         data: coraGuiElements as DataListWrapper,
-      } as AxiosResponse<DataListWrapper>;
+      } as HttpResponse<DataListWrapper>;
     }
     return {
       data: {},
-    } as AxiosResponse<DataListWrapper>;
+    } as HttpResponse<DataListWrapper>;
   };
   vi.mocked(getRecordDataListByType).mockImplementation(
     mockGetRecordDataListByType,
@@ -234,7 +234,7 @@ describe('dependencies', () => {
 
       vi.mocked(getRecordDataById).mockResolvedValueOnce({
         data: coraTexts.dataList.data[0] as RecordWrapper,
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       await handleDataChanged({
         type: 'text',
@@ -259,7 +259,7 @@ describe('dependencies', () => {
 
       vi.mocked(getRecordDataById).mockResolvedValueOnce({
         data: coraTexts.dataList.data[0] as RecordWrapper,
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       await handleDataChanged({
         type: 'text',
@@ -309,7 +309,7 @@ describe('dependencies', () => {
         vi.mocked(getRecordDataById).mockResolvedValueOnce({
           data: testDataByRecordTypeId[recordType].dataList
             .data[0] as RecordWrapper,
-        } as AxiosResponse<RecordWrapper>);
+        } as HttpResponse<RecordWrapper>);
 
         await handleDataChanged({
           action: 'update',
@@ -360,7 +360,7 @@ describe('dependencies', () => {
             await gate;
             return {
               data: testDataByRecordTypeId[type] as DataListWrapper,
-            } as AxiosResponse<DataListWrapper>;
+            } as HttpResponse<DataListWrapper>;
           },
         );
 
@@ -369,7 +369,7 @@ describe('dependencies', () => {
         vi.mocked(getRecordDataById).mockResolvedValue({
           data: testDataByRecordTypeId[recordType].dataList
             .data[0] as RecordWrapper,
-        } as AxiosResponse<RecordWrapper>);
+        } as HttpResponse<RecordWrapper>);
 
         handleDataChanged({
           type: recordType,
@@ -408,7 +408,7 @@ describe('dependencies', () => {
             await gate;
             return {
               data: testDataByRecordTypeId[type] as DataListWrapper,
-            } as AxiosResponse<DataListWrapper>;
+            } as HttpResponse<DataListWrapper>;
           },
         );
 
@@ -448,7 +448,7 @@ describe('dependencies', () => {
             await gate;
             return {
               data: testDataByRecordTypeId[type] as DataListWrapper,
-            } as AxiosResponse<DataListWrapper>;
+            } as HttpResponse<DataListWrapper>;
           },
         );
 
@@ -497,7 +497,7 @@ describe('dependencies', () => {
           await gate;
           return {
             data: testDataByRecordTypeId[type] as DataListWrapper,
-          } as AxiosResponse<DataListWrapper>;
+          } as HttpResponse<DataListWrapper>;
         },
       );
 

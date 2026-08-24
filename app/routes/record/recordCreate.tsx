@@ -36,7 +36,7 @@ import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import type { BFFDataRecordData } from '@/types/record';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -180,7 +180,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
     return redirect(`/${recordTypeId}/${id}/update`);
   } catch (error) {
     logError(error, 'Error while creating record');
-    flashNotification(createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromHttpError(t, error));
   }
 };
 

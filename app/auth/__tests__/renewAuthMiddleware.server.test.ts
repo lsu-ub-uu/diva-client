@@ -4,8 +4,8 @@ import { mock } from 'vitest-mock-extended';
 import { handleRenew } from '../renewAuthMiddleware.server';
 import { type SessionContext } from '../sessionMiddleware.server';
 import { renewAuthToken } from '@/cora/renewAuthToken.server';
+import { HttpError } from '@/cora/httpClient.server';
 import type { Auth } from '../Auth';
-import { AxiosError } from 'axios';
 import { log } from '@/logging/logger.server';
 
 vi.mock('@/cora/renewAuthToken.server');
@@ -77,7 +77,7 @@ describe('renewAuthMiddleware', () => {
     const logErrorMock = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     vi.mocked(renewAuthToken).mockRejectedValue(
-      new AxiosError('Unauthorized', '401'),
+      new HttpError(new Response('Unauthorized', { status: 401 })),
     );
 
     const mockSessionContext: SessionContext = {
@@ -104,9 +104,9 @@ describe('renewAuthMiddleware', () => {
     expect(mockSessionContext.flashNotification).not.toHaveBeenCalled();
     expect(logErrorMock).toHaveBeenCalledWith(
       {
-        err: expect.any(AxiosError),
+        err: expect.any(Error),
       },
-      'Failed to renew auth token: Unauthorized',
+      'Failed to renew auth token: Request failed with status 401',
     );
   });
 

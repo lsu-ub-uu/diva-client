@@ -17,7 +17,6 @@
  */
 
 import type { Auth } from '@/auth/Auth';
-import axios from 'axios';
 import {
   AUTHENTICATION_CONTENT_TYPE,
   coraLoginUrl,
@@ -25,6 +24,8 @@ import {
 } from '@/cora/helper.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { logError } from '@/logging/logger.server';
+import type { AuthWrapper } from './cora-data/types.server';
+import { httpClient } from './httpClient.server';
 
 export async function requestAuthTokenOnLogin(
   user: string,
@@ -39,7 +40,9 @@ export async function requestAuthTokenOnLogin(
   };
   const body = `${user}\n${appTokenOrPassword}`;
   try {
-    const response = await axios.post(url, body, { headers });
+    const response = await httpClient.post<AuthWrapper>(url, body, {
+      headers,
+    });
     const auth = transformCoraAuth(response.data);
     return auth;
   } catch (error) {

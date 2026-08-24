@@ -18,7 +18,6 @@
 
 import type { Auth } from '@/auth/Auth';
 import type { ActionLink } from '@/cora/cora-data/types.server';
-import { type AxiosRequestConfig } from 'axios';
 
 export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.cora.recordList+json';
 export const RECORD_LIST_CONTENT_TYPE_DECORATED =
@@ -77,20 +76,25 @@ export const coraLoginUrl = (path: string) => {
   return `${process.env.CORA_LOGIN_URL}${path}`;
 };
 
-export const getAxiosRequestFromActionLink = (
+export const getFetchRequestFromActionLink = (
   actionLink: ActionLink,
   authToken: string | undefined,
-): AxiosRequestConfig<any> => {
+): { url: string } & RequestInit => {
+  const rawHeaders = createHeaders(
+    {
+      Accept: actionLink.accept,
+      'Content-Type': actionLink.contentType,
+    },
+    authToken,
+  );
+  const headers = Object.fromEntries(
+    Object.entries(rawHeaders).filter(([, value]) => value !== undefined),
+  ) as Record<string, string>;
+
   return {
-    method: actionLink.requestMethod,
     url: actionLink.url,
-    data: actionLink.body,
-    headers: createHeaders(
-      {
-        Accept: actionLink.accept,
-        'Content-Type': actionLink.contentType,
-      },
-      authToken,
-    ),
+    method: actionLink.requestMethod,
+    headers,
+    body: actionLink.body ? JSON.stringify(actionLink.body) : undefined,
   };
 };
