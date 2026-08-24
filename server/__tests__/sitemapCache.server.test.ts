@@ -21,7 +21,7 @@ import type {
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 import type { SitemapEntry } from '../sitemapCache.server';
-import type { AxiosResponse } from 'axios';
+import type { HttpResponse } from '@/cora/httpClient.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 
@@ -47,7 +47,7 @@ describe('sitemapCache', () => {
       ];
       vi.mocked(getSearchResultDataListBySearchType).mockResolvedValue({
         data: generateSearchResultMock(expectedEntries),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -73,7 +73,7 @@ describe('sitemapCache', () => {
             '1000',
             '1500',
           ),
-        } as AxiosResponse<DataListWrapper>)
+        } as HttpResponse<DataListWrapper>)
         .mockResolvedValueOnce({
           data: generateSearchResultMock(
             mockResults.slice(1000),
@@ -81,7 +81,7 @@ describe('sitemapCache', () => {
             '1500',
             '1500',
           ),
-        } as AxiosResponse<DataListWrapper>);
+        } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -111,7 +111,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'kth',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -187,7 +187,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -230,7 +230,7 @@ describe('sitemapCache', () => {
             tsUpdated: '2026-02-25T12:23:48.968Z',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -271,7 +271,7 @@ describe('sitemapCache', () => {
             tsUpdated: '2026-02-25T12:23:48.968Z',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -304,7 +304,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -340,7 +340,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -378,7 +378,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -416,7 +416,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       vi.mocked(getRecordDataById).mockResolvedValue({
         data: createRecordWrapperMock({
@@ -424,7 +424,7 @@ describe('sitemapCache', () => {
           tsUpdated: '2026-02-26T12:23:48.968Z',
           permissionUnit: 'uu',
         }),
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -461,7 +461,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       vi.mocked(getRecordDataById).mockResolvedValue({
         data: createRecordWrapperMock({
@@ -469,7 +469,7 @@ describe('sitemapCache', () => {
           tsUpdated: '2026-02-26T12:23:48.968Z',
           permissionUnit: 'uu',
         }),
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -506,7 +506,7 @@ describe('sitemapCache', () => {
             permissionUnit: 'uu',
           },
         ]),
-      } as AxiosResponse<DataListWrapper>);
+      } as HttpResponse<DataListWrapper>);
 
       vi.mocked(getRecordDataById).mockResolvedValue({
         data: createRecordWrapperMock({
@@ -514,7 +514,7 @@ describe('sitemapCache', () => {
           tsUpdated: '2026-02-26T12:23:48.968Z',
           permissionUnit: 'kth',
         }),
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       await sitemapCache.populateCache();
 
@@ -556,7 +556,7 @@ describe('sitemapCache', () => {
           tsUpdated: '2026-03-01T00:00:00.000Z',
           permissionUnit: 'uu',
         }),
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       // This should be buffered, not applied immediately
       sitemapCache.handleDataChanged({
@@ -699,7 +699,7 @@ describe('sitemapCache', () => {
           tsUpdated: '2026-03-10T00:00:00.000Z',
           permissionUnit: 'uu',
         }),
-      } as AxiosResponse<RecordWrapper>);
+      } as HttpResponse<RecordWrapper>);
 
       const populatePromise = sitemapCache.populateCache();
 

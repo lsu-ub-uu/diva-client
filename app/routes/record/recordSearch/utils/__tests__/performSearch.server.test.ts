@@ -1,8 +1,8 @@
 import type { Auth } from '@/auth/Auth';
 import type { Dependencies } from '@/cora/bffTypes.server';
+import { HttpError } from '@/cora/httpClient.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import type { BFFDataRecord } from '@/types/record';
-import { AxiosError, type AxiosResponse } from 'axios';
 import type { TFunction } from 'i18next';
 import { describe, expect, it, vi } from 'vitest';
 import { performSearch } from '../performSearch.server';
@@ -12,12 +12,11 @@ const mockTFunction = vi.fn((key) => key) as unknown as TFunction;
 vi.mock('@/data/searchRecords.server');
 
 describe('performSearch', () => {
-
   it('returns empty response with alert on 400 error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {
-      const error = new AxiosError('Server error');
-      error.status = 400;
-      error.response = { data: 'Invalid search query' } as AxiosResponse;
+      const error = new HttpError(
+        new Response('Invalid search query', { status: 400 }),
+      );
       throw error;
     });
 
@@ -39,12 +38,12 @@ describe('performSearch', () => {
       alert: {
         severity: 'error',
         summary: 'divaClient_error400TitleText',
-        details: 'Invalid search query',
+        details: 'divaClient_error400BodyText',
       },
     });
   });
 
-  it('returns empty respone with alert on non-axios error', async () => {
+  it('returns empty respone with alert on non-http error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {
       throw new Error('Unexpected error');
     });

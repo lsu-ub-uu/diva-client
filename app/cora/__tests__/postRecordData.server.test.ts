@@ -4,69 +4,79 @@ import {
   RECORD_GROUP_CONTENT_TYPE,
 } from '@/cora/helper.server';
 import { postRecordData } from '@/cora/postRecordData.server';
-import type { AxiosError } from 'axios';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { HttpError } from '@/cora/httpClient.server';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('postRecordData', () => {
-  let mockAxios: MockAdapter;
-
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios);
-  });
-
-  afterEach(() => {
-    mockAxios.restore();
-  });
-
   it('should post a record to Cora', async () => {
     const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-    const expectedResponse = {
-      status: 200,
-    };
+    const expectedResponse = { status: 200 };
     const apiUrl: string = coraApiUrl(`/record/${divaOutputType}`);
-    mockAxios
-      .onPost(apiUrl, divaOutputData, {
-        headers: {
-          Accept: RECORD_CONTENT_TYPE,
-          'Content-Type': RECORD_GROUP_CONTENT_TYPE,
-          Authtoken: `${authToken}`,
-        },
-      })
-      .reply(200, expectedResponse);
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(expectedResponse), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
     const response = await postRecordData(
       divaOutputData,
       divaOutputType,
       authToken,
     );
+
+    expect(fetchMock).toHaveBeenCalledWith(apiUrl, {
+      method: 'POST',
+      headers: {
+        Accept: RECORD_CONTENT_TYPE,
+        'Content-Type': RECORD_GROUP_CONTENT_TYPE,
+        Authtoken: authToken,
+      },
+      body: JSON.stringify(divaOutputData),
+    });
     expect(response.data).toEqual(expect.objectContaining(expectedResponse));
   });
 
-  it('should NOT post a record to Cora with wrong divaOutputType', async () => {
+  it('should throw HttpError on non-2xx status', async () => {
     const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-    const expectedResponse = {
-      status: 400,
-    };
-    const apiUrl: string = coraApiUrl(`/record/${divaOutputType}`);
-    mockAxios
-      .onPost(apiUrl, divaOutputData, {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ status: 400 }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      ),
+    );
+
+    await expect(
+      postRecordData(divaOutputData, divaOutputType, authToken),
+    ).rejects.toThrow(HttpError);
+  });
+
+  it('should omit Authtoken header when no authToken is provided', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({}), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await postRecordData(divaOutputData, divaOutputType);
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      coraApiUrl(`/record/${divaOutputType}`),
+      {
+        method: 'POST',
         headers: {
           Accept: RECORD_CONTENT_TYPE,
           'Content-Type': RECORD_GROUP_CONTENT_TYPE,
-          Authtoken: `${authToken}`,
         },
-      })
-      .reply(400, expectedResponse);
-
-    try {
-      await postRecordData(divaOutputData, divaOutputType, authToken);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const castError: AxiosError = <AxiosError>error;
-        expect(castError.response?.status).toBe(400);
-      }
-    }
+        body: JSON.stringify(divaOutputData),
+      },
+    );
   });
 });
 

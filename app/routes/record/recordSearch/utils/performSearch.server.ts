@@ -4,7 +4,7 @@ import type { Dependencies } from '@/cora/bffTypes.server';
 import { searchRecords } from '@/data/searchRecords.server';
 import { logError } from '@/logging/logger.server';
 import type { BFFSearchResult } from '@/types/record';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import type { TFunction } from 'i18next';
 
 interface PerformSearchParams {
@@ -38,7 +38,7 @@ export const performSearch = async ({
     );
   } catch (error) {
     logError(error, 'Error performing search');
-    const notification = createNotificationFromAxiosError(t, error);
+    const notification = createNotificationFromHttpError(t, error);
 
     return {
       data: [],

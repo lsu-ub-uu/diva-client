@@ -16,13 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  coraApiUrl,
-  createHeaders,
-  RECORD_CONTENT_TYPE,
-  RECORD_GROUP_CONTENT_TYPE,
-} from '@/cora/helper.server';
-import axios from 'axios';
+import { postRecordData } from './postRecordData.server';
 
 export const createBinaryRecord = async (
   fileName: string,
@@ -66,11 +60,5 @@ export const createBinaryRecord = async (
     ],
     attributes: { type: 'generic' },
   };
-
-  const headers = createHeaders(
-    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_GROUP_CONTENT_TYPE },
-    authToken,
-  );
-
-  return await axios.post(coraApiUrl('/record/binary/'), payload, { headers });
+  return postRecordData(payload, 'binary', authToken);
 };

@@ -20,7 +20,7 @@ import { sessionContext } from '@/auth/sessionMiddleware.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { setRecordVisibility } from '@/data/setRecordVisibility';
-import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordDelete';
@@ -58,6 +58,6 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
     });
   } catch (error) {
     logError(error, 'Error while publishing record');
-    flashNotification(createNotificationFromAxiosError(t, error));
+    flashNotification(createNotificationFromHttpError(t, error));
   }
 };

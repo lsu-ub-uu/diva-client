@@ -1,61 +1,33 @@
-import { AxiosError } from 'axios';
+import { HttpError } from '@/cora/httpClient.server';
 import { describe, expect, it } from 'vitest';
 import { createRouteErrorResponse } from '../createRouteErrorResponse.server';
 
 describe('createRouteErrorResponse', () => {
-  it('should return data response when error is an AxiosError', () => {
-    const errorData = {
-      message: 'Not found',
-      code: 'RESOURCE_NOT_FOUND',
-    };
-    const axiosError = new AxiosError(
-      'Request failed with status code 404',
-      '404',
-      undefined,
-      undefined,
-      {
-        status: 404,
-        statusText: 'Not Found',
-        data: errorData,
-        headers: {},
-        config: {} as any,
-      },
+  it('should return route data response for HttpError status below 500', () => {
+    const httpError = new HttpError(
+      new Response('Unauthorized', { status: 401, statusText: 'Unauthorized' }),
     );
 
-    expect(createRouteErrorResponse(axiosError)).toMatchObject({
-      data: errorData,
+    expect(createRouteErrorResponse(httpError)).toMatchObject({
       init: {
-        status: 404,
-        statusText: 'Request failed with status code 404',
+        status: 401,
+        statusText: 'Request failed with status 401',
       },
     });
   });
 
-  it('should return the original AxiosError when AxiosError has no response', () => {
-    const axiosError = new AxiosError('Network Error');
-
-    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
-  });
-
-  it('should return the original AxiosError when AxiosError has status 500', () => {
-    const axiosError = new AxiosError(
-      'Request failed with status code 500',
-      '500',
-      undefined,
-      undefined,
-      {
+  it('should return the original HttpError when HttpError has status 500', () => {
+    const httpError = new HttpError(
+      new Response('Internal Server Error', {
         status: 500,
         statusText: 'Internal Server Error',
-        data: undefined,
-        headers: {},
-        config: {} as any,
-      },
+      }),
     );
 
-    expect(createRouteErrorResponse(axiosError)).toBe(axiosError);
+    expect(createRouteErrorResponse(httpError)).toBe(httpError);
   });
 
-  it('should return the original error when error is not an AxiosError', () => {
+  it('should return the original error when error is not an HTTP error', () => {
     const genericError = new Error('Something went wrong');
 
     expect(createRouteErrorResponse(genericError)).toBe(genericError);
@@ -79,40 +51,27 @@ describe('createRouteErrorResponse', () => {
     expect(createRouteErrorResponse(undefinedError)).toBe(undefinedError);
   });
 
-  it.each([
-    { status: 400, statusText: 'Bad Request' },
-    { status: 401, statusText: 'Unauthorized' },
-    { status: 403, statusText: 'Forbidden' },
-    { status: 500, statusText: 'Internal Server Error' },
-  ])(
-    'should wrap AxiosError only for status codes below 500 (status: $status)',
-    ({ status, statusText }) => {
-      const axiosError = new AxiosError(
-        `Request failed with status code ${status}`,
-        status.toString(),
-        undefined,
-        undefined,
-        {
-          status,
-          statusText,
-          data: { error: statusText },
-          headers: {},
-          config: {} as any,
-        },
+  it.each([400, 401, 403])(
+    'should wrap HttpError for client status codes below 500 (status: %s)',
+    (status) => {
+      const httpError = new HttpError(
+        new Response(null, { status, statusText: 'Client Error' }),
       );
 
-      const result = createRouteErrorResponse(axiosError);
-      if (status < 500) {
-        expect(result).toMatchObject({
-          data: { error: statusText },
-          init: {
-            status,
-            statusText: `Request failed with status code ${status}`,
-          },
-        });
-      } else {
-        expect(result).toBe(axiosError);
-      }
+      expect(createRouteErrorResponse(httpError)).toMatchObject({
+        init: {
+          status,
+          statusText: `Request failed with status ${status}`,
+        },
+      });
     },
   );
+
+  it('should return original HttpError for server status 500', () => {
+    const httpError = new HttpError(
+      new Response(null, { status: 500, statusText: 'Internal Server Error' }),
+    );
+
+    expect(createRouteErrorResponse(httpError)).toBe(httpError);
+  });
 });

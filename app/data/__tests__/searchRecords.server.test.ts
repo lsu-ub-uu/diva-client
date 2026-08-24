@@ -13,7 +13,7 @@ import type {
   Dependencies,
 } from '@/cora/bffTypes.server';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType.server';
-import type { AxiosResponse } from 'axios';
+import type { HttpResponse } from '@/cora/httpClient.server';
 import type {
   DataListWrapper,
   RecordWrapper,
@@ -118,7 +118,7 @@ describe('searchRecords', () => {
           containDataOfType: 'someType',
         },
       },
-    } as AxiosResponse<DataListWrapper>);
+    } as HttpResponse<DataListWrapper>);
 
     vi.mocked(transformRecords).mockReturnValue([
       {
@@ -232,7 +232,7 @@ describe('searchRecords', () => {
           containDataOfType: 'someType',
         },
       },
-    } as AxiosResponse<DataListWrapper>);
+    } as HttpResponse<DataListWrapper>);
 
     vi.mocked(transformRecords).mockReturnValue([
       {
