@@ -10,13 +10,28 @@ import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorRespon
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse } from 'react-router';
 import { getMarkdown } from './getMarkdown.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { getDependencies } from 'server/dependencies/depencencies';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { language } = context.get(i18nContext);
   const { articleId } = params;
+  const dependencies = await getDependencies();
 
   try {
-    const { markdown, title } = await getMarkdown(articleId, language);
+    const record = await getRecordByRecordTypeAndRecordId({
+      dependencies,
+      recordType: 'diva-clientArticle',
+      recordId: articleId,
+      mode: 'view',
+    });
+    const lang = language === 'sv' ? 'swe' : 'eng';
+
+    console.log(JSON.stringify(record.data['diva-clientArticle'], null, 2));
+    const title = record.data['diva-clientArticle'].title.text_lang_swe.value;
+    const markdown =
+      record.data['diva-clientArticle'].body.markdown_lang_swe.value;
+
     return { markdown, breadcrumb: title };
   } catch (error) {
     throw createRouteErrorResponse(error);
