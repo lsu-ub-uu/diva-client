@@ -14,9 +14,7 @@ vi.mock('@/data/searchRecords.server');
 describe('performSearch', () => {
   it('returns empty response with alert on 400 error', async () => {
     vi.mocked(searchRecords).mockImplementation(() => {
-      const error = new HttpError(
-        new Response('Invalid search query', { status: 400 }),
-      );
+      const error = new HttpError(400, 'Invalid search query');
       throw error;
     });
 
@@ -38,7 +36,7 @@ describe('performSearch', () => {
       alert: {
         severity: 'error',
         summary: 'divaClient_error400TitleText',
-        details: 'divaClient_error400BodyText',
+        details: 'Invalid search query',
       },
     });
   });
