@@ -49,6 +49,15 @@ describe('DivaOutputSearchResult', () => {
       },
       data: {
         output: {
+          recordInfo: {
+            permissionUnit: {
+              value: 'member:uu',
+              __text: {
+                sv: 'Rättighetsenhet',
+                en: 'Permission unit',
+              },
+            },
+          },
           attachment: [
             {
               adminInfo: {
@@ -723,6 +732,15 @@ describe('DivaOutputSearchResult', () => {
     const record = {
       data: {
         output: {
+          recordInfo: {
+            permissionUnit: {
+              value: 'member:uu',
+              __text: {
+                sv: 'Rättighetsenhet',
+                en: 'Permission unit',
+              },
+            },
+          },
           relatedItem_type_book: {
             __text: { en: 'Part of book' },
             book: {
@@ -759,6 +777,15 @@ describe('DivaOutputSearchResult', () => {
     const record = {
       data: {
         output: {
+          recordInfo: {
+            permissionUnit: {
+              value: 'member:uu',
+              __text: {
+                sv: 'Rättighetsenhet',
+                en: 'Permission unit',
+              },
+            },
+          },
           relatedItem_type_book: {
             __text: { en: 'Part of book' },
             titleInfo: {

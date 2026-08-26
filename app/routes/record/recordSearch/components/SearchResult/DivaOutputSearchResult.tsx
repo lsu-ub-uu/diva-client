@@ -1,6 +1,7 @@
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
-import { Link } from 'react-router';
+import type { loader as rootLoader } from '@/root';
+import { Link, useRouteLoaderData } from 'react-router';
 import { Attachments } from './Attachments/Attachments';
 import styles from './DivaOutputSearchResult.module.css';
 import { Persons } from './Persons';
@@ -39,7 +40,24 @@ export const DivaOutputSearchResult = ({
         <Related related={output.related} />
       </div>
       <Attachments attachments={output.attachments} />
-      {output.recordInfo.permissionUnit?.value}
+      <SvgFromMember output={output} />
     </div>
+  );
+};
+
+const SvgFromMember = ({ output }: { output: DivaOutputGroup }) => {
+  const permissionUnit = output.recordInfo.permissionUnit?.value;
+  const members = useRouteLoaderData<typeof rootLoader>('root')?.members;
+  const member = members?.find((member) => member.id === permissionUnit);
+  return member?.logo.svg ? (
+    <div
+      className={styles['member-logo']}
+      aria-label={`${member.id} logo`}
+      dangerouslySetInnerHTML={{
+        __html: member.logo.svg,
+      }}
+    />
+  ) : (
+    permissionUnit
   );
 };
