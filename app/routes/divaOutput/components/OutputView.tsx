@@ -31,6 +31,7 @@ import {
   getTitleFromTitleInfo,
 } from '@/utils/getRecordTitle';
 import { PresentationImage } from './PresentationImage';
+import { SvgFromMember } from '@/routes/record/recordSearch/components/SearchResult/DivaOutputSearchResult';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -40,21 +41,25 @@ export const OutputView = ({ data }: OutputViewProps) => {
   const language = useLanguage();
   const { t } = useTranslation();
   const output = data.output;
+
   return (
     <>
       <main className='grid-col-8 grid-col-m-12'>
         <article>
-          <h1
-            lang={
-              output.titleInfo?._lang &&
-              mapISO639_2b_to_ISO639_1(output.titleInfo._lang)
-            }
-            dir='auto'
-          >
-            {output.titleInfo
-              ? getFullTitleForOutput(data)
-              : t('divaClient_missingTitleText')}
-          </h1>
+          <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <h1
+              lang={
+                output.titleInfo?._lang &&
+                mapISO639_2b_to_ISO639_1(output.titleInfo._lang)
+              }
+              dir='auto'
+            >
+              {output.titleInfo
+                ? getFullTitleForOutput(data)
+                : t('divaClient_missingTitleText')}
+            </h1>
+            <SvgFromMember output={output} />
+          </span>
           <dl>
             <Persons persons={output.name_type_personal} />
             <Organisations organisations={output.name_type_corporate} />

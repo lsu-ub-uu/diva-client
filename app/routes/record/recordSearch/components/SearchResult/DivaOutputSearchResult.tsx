@@ -45,7 +45,7 @@ export const DivaOutputSearchResult = ({
   );
 };
 
-const SvgFromMember = ({ output }: { output: DivaOutputGroup }) => {
+export const SvgFromMember = ({ output }: { output: DivaOutputGroup }) => {
   const permissionUnit = output.recordInfo.permissionUnit?.value;
   const members = useRouteLoaderData<typeof rootLoader>('root')?.members;
   const member = members?.find((member) => member.id === permissionUnit);
