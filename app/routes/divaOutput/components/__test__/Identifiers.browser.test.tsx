@@ -38,7 +38,16 @@ describe('Identifiers', () => {
     const content = screen.baseElement.textContent ?? '';
 
     await expect(content).toContain('URN');
-    await expect(content).toContain('urn:nbn:se:uu:diva-1234');
+
+    const urnLink = screen.getByRole('link', {
+      name: 'urn:nbn:se:uu:diva-1234',
+    });
+    await expect(urnLink).toHaveAttribute(
+      'href',
+      'https://urn.kb.se/resolve?urn=urn:nbn:se:uu:diva-1234',
+    );
+    await expect(urnLink).toHaveAttribute('target', '_blank');
+    await expect(urnLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('should render isbn', async () => {

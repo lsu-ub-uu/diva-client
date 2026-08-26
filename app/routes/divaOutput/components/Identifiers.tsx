@@ -3,6 +3,7 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { useTranslation } from 'react-i18next';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { Term } from './Term';
+import { ExternalLinkIcon } from 'lucide-react';
 
 interface IdentifiersProps {
   output: DivaOutputGroup;
@@ -21,7 +22,16 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
         />
         <Term
           label={output.recordInfo.urn?.__text?.[language]}
-          value={output.recordInfo.urn?.value}
+          value={
+            <a
+              href={`https://urn.kb.se/resolve?urn=${output.recordInfo.urn?.value}`}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='icon-text-inline'
+            >
+              {output.recordInfo.urn?.value} <ExternalLinkIcon />
+            </a>
+          }
         />
         {output.identifier_type_isbn?.map((identifier, index) => (
           <Term

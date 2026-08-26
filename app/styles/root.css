@@ -163,3 +163,9 @@ body.dialog-open {
   align-items: center;
   gap: var(--gap-s);
 }
+
+.icon-text-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
