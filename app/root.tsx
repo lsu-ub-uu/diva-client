@@ -74,7 +74,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     const dependencies = await getDependencies();
     const member = getMemberFromHostname(request, dependencies);
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
-    const { exampleUsers, applicationVersion } = await getDeploymentInfo();
+    const {
+      exampleUsers,
+      applicationVersion,
+      helmChartVersion,
+      deploymentName,
+    } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
     const clientContent = getClientContent(dependencies);
     const navigation = await getNavigation(
@@ -100,6 +105,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       globalAlert,
       blockRobotIndexing,
       applicationVersion,
+      helmChartVersion,
+      deploymentName,
     };
   } catch (error) {
     throw createRouteErrorResponse(error);
@@ -265,6 +272,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
     globalAlert,
     blockRobotIndexing,
     applicationVersion,
+    deploymentName,
+    helmChartVersion,
   } = loaderData;
 
   return (
@@ -291,7 +300,11 @@ export default function App({ loaderData }: Route.ComponentProps) {
         navigation={navigation}
       />
       <Outlet />
-      <Footer applicationVersion={applicationVersion} />
+      <Footer
+        applicationVersion={applicationVersion}
+        deploymentName={deploymentName}
+        helmChartVersion={helmChartVersion}
+      />
     </div>
   );
 }

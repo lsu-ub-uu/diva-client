@@ -14,6 +14,7 @@ export interface DeploymentInfo {
   applicationName: string;
   deploymentName: string;
   coraVersion: string;
+  helmChartVersion: string;
   applicationVersion: string;
   urls: {
     REST: string;

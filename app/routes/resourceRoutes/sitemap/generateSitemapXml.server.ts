@@ -7,8 +7,7 @@ export const generateSitemapXml = (
   navigation: Navigation,
   member: BFFMember,
 ): string => {
-  const baseUrl = requestUrl.replace(/\/sitemap\.xml$/, '');
-  /*     .replace('http://', 'https://'); */
+  const baseUrl = requestUrl.replace(/\/sitemap\.xml$/, '').replace('http://', 'https://');
   const recordTypeUrls = navigation.mainNavigationItems.map(
     (recordType) => `/${recordType.id}`,
   );

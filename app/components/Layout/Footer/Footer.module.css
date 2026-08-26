@@ -7,6 +7,22 @@
   flex-direction: column;
   gap: var(--gap-l);
   align-items: center;
+
+  dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--gap-s);
+    margin: 0;
+    padding-top: var(--gap-l);
+  }
+
+  dt {
+    font-weight: var(--font-weight-bold);
+
+    &::after {
+      content: ':';
+    }
+  }
 }
 
 .footer-links {
