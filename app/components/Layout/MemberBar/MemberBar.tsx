@@ -26,18 +26,27 @@ import React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import clsx from 'clsx';
 import { Popover } from '@/components/Popover/Popover';
+import { Form, useSubmit } from 'react-router';
+import { Fieldset } from '@/components/Input/Fieldset';
 
 interface MemberBarProps {
+  members: BFFMember[];
   member: BFFMember | undefined;
   loggedIn: boolean;
   children?: ReactNode;
 }
 
-export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
+export const MemberBar = ({
+  members,
+  member,
+  loggedIn,
+  children,
+}: MemberBarProps) => {
   const { t } = useTranslation();
   const lang = useLanguage();
+  const submit = useSubmit();
 
-  if (!member || member.id === 'diva') {
+  if (!member) {
     return <div className={styles['diva-bar']} />;
   }
 
@@ -61,6 +70,26 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
       aria-label={member.pageTitle[lang]}
     >
       <div className={clsx(styles['bar-content'], 'grid')}>
+        <Form
+          method='GET'
+          onChange={(e) => submit(e.currentTarget, { method: 'GET' })}
+        >
+          <select
+            id='member-select'
+            name='member'
+            aria-label={t('divaClient_memberBarSelectMemberText')}
+            className={styles['member-select']}
+          >
+            <button type='button' className={styles['member-select-button']}>
+              <selectedcontent />
+            </button>
+            {members.map((m) => (
+              <option key={m.id} value={m.id} selected={m.id === member.id}>
+                {m.pageTitle[lang]}
+              </option>
+            ))}
+          </select>
+        </Form>
         {member.logo.svg && (
           <div
             role='img'
@@ -114,6 +143,9 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
     </section>
   );
 };
+
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const shouldLinkBeShown = (
   link: BFFMemberLink,

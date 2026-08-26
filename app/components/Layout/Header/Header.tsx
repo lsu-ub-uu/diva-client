@@ -22,6 +22,7 @@ import { TopNavigation } from './TopNavigation/TopNavigation';
 
 interface HeaderProps {
   className?: string;
+  members: BFFMember[];
   member: BFFMember | undefined;
   user: User | undefined;
   userPreferences: UserPreferences;
@@ -32,6 +33,7 @@ interface HeaderProps {
 
 export const Header = ({
   className,
+  members,
   member,
   user,
   userPreferences,
@@ -47,7 +49,11 @@ export const Header = ({
   return (
     <header className={clsx(styles.header, className)}>
       <NavigationLoader />
-      <MemberBar member={member} loggedIn={user !== undefined} />
+      <MemberBar
+        members={members}
+        member={member}
+        loggedIn={user !== undefined}
+      />
       <div className={clsx(styles['diva-header-bar'])}>
         <div className={clsx(styles['header-bar-content'], 'grid')}>
           <div className={styles['header-bar-left']}>

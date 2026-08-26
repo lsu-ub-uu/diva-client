@@ -38,6 +38,7 @@ export const DivaOutputSearchResult = ({
         <Related related={output.related} />
       </div>
       <Attachments attachments={output.attachments} />
+      {output.recordInfo.permissionUnit?.value}
     </div>
   );
 };

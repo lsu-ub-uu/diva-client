@@ -62,6 +62,7 @@ import { getCurrentMember } from './utils/getCurrentMember.server';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { withBaseName } from './utils/withBasename';
+import { getAllMembers } from './utils/getAllMembers.server';
 
 export const middleware = [sessionMiddleware, renewAuthMiddleware];
 
@@ -69,14 +70,16 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   try {
     const { auth, notification } = context.get(sessionContext);
     const dependencies = await getDependencies();
-    const member = getCurrentMember(request, dependencies);
-    const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
+    const currentMember = getCurrentMember(request, dependencies);
+    const members = getAllMembers(dependencies);
+
+    const loginUnits = getLoginUnits(dependencies, currentMember?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
     const clientContent = getClientContent(dependencies);
     const navigation = await getNavigation(
       dependencies,
-      member,
+      currentMember,
       clientContent,
       auth,
     );
@@ -90,7 +93,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       locale,
       loginUnits,
       exampleUsers,
-      member,
+      members,
+      currentMember,
       navigation,
       userPreferences,
       notification,
@@ -256,7 +260,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   const {
     userPreferences,
-    member,
+    members,
+    currentMember,
     loginUnits,
     exampleUsers,
     user,
@@ -282,7 +287,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
       )}
       <Header
         className='header'
-        member={member}
+        members={members}
+        member={currentMember}
         user={user}
         userPreferences={userPreferences}
         loginUnits={loginUnits}
