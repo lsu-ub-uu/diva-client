@@ -58,7 +58,7 @@ import {
   serializeUserPreferencesCookie,
   type UserPreferences,
 } from './userPreferences/userPreferencesCookie.server';
-import { getMemberFromHostname } from './utils/getMemberFromHostname';
+import { getCurrentMember } from './utils/getCurrentMember.server';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { withBaseName } from './utils/withBasename';
@@ -69,7 +69,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   try {
     const { auth, notification } = context.get(sessionContext);
     const dependencies = await getDependencies();
-    const member = getMemberFromHostname(request, dependencies);
+    const member = getCurrentMember(request, dependencies);
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;

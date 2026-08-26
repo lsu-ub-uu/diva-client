@@ -37,7 +37,7 @@ import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import type { BFFDataRecordData } from '@/types/record';
 import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { getCurrentMember } from '@/utils/getCurrentMember.server';
 import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
@@ -60,7 +60,7 @@ export const loader = async ({
   const { auth, notification } = context.get(sessionContext);
   const url = new URL(request.url);
   const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
+  const member = getCurrentMember(request, dependencies);
   const user = auth && createUser(auth);
 
   let validationTypeId = url.searchParams.get('validationType');

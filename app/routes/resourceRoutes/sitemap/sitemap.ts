@@ -1,5 +1,5 @@
 import { getNavigation } from '@/data/getNavigation.server';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { getCurrentMember } from '@/utils/getCurrentMember.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { generateSitemapXml } from './generateSitemapXml.server';
 import type { Route } from './+types/sitemap';
@@ -7,7 +7,7 @@ import type { Route } from './+types/sitemap';
 export const loader = async ({ request, url }: Route.LoaderArgs) => {
   const dependencies = await getDependencies();
 
-  const member = getMemberFromHostname(request, dependencies);
+  const member = getCurrentMember(request, dependencies);
   const navigation = await getNavigation(
     dependencies,
     undefined,

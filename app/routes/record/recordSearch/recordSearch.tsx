@@ -7,7 +7,7 @@ import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { getCurrentMember } from '@/utils/getCurrentMember.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -25,7 +25,7 @@ export const loader = async ({
   try {
     const { t, language } = context.get(i18nContext);
     const dependencies = await getDependencies();
-    const member = getMemberFromHostname(request, dependencies);
+    const member = getCurrentMember(request, dependencies);
     const { auth } = context.get(sessionContext);
     const recordType = dependencies.recordTypePool.get(params.recordType);
     const searchParams = url.searchParams;
