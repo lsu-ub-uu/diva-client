@@ -26,13 +26,13 @@ export interface HttpResponse<T> {
 
 export class HttpError extends Error {
   status: number;
-  response: Response;
+  body: string;
 
-  constructor(response: Response) {
-    super(`Request failed with status ${response.status}`);
+  constructor(status: number, body: string) {
+    super(`Request failed with status ${status}`);
     this.name = 'HttpError';
-    this.status = response.status;
-    this.response = response;
+    this.status = status;
+    this.body = body;
   }
 }
 
@@ -47,7 +47,8 @@ const request = async <T>(
   const response = await fetch(url, options);
 
   if (!response.ok) {
-    throw new HttpError(response);
+    const body = await response.text();
+    throw new HttpError(response.status, body);
   }
   const data: T = await response.json();
 

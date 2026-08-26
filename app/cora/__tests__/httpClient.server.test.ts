@@ -29,6 +29,7 @@ const createMockResponse = (
     status,
     headers: new Headers({ 'Content-Type': 'application/json' }),
     json: () => Promise.resolve(body),
+    text: () => Promise.resolve(JSON.stringify(body)),
   } as Response;
 };
 
@@ -349,18 +350,17 @@ describe('httpClient', () => {
   });
 
   describe('HttpError', () => {
-    it('contains status and response', () => {
-      const response = createMockResponse(404, {});
-      const error = new HttpError(response);
+    it('contains status and body', () => {
+      const error = new HttpError(404, 'Not found');
 
       expect(error.status).toBe(404);
-      expect(error.response).toBe(response);
+      expect(error.body).toBe('Not found');
       expect(error.message).toBe('Request failed with status 404');
       expect(error.name).toBe('HttpError');
     });
 
     it('is an instance of Error', () => {
-      const error = new HttpError(createMockResponse(500, {}));
+      const error = new HttpError(500, '');
 
       expect(error).toBeInstanceOf(Error);
     });
@@ -368,7 +368,7 @@ describe('httpClient', () => {
 
   describe('isHttpError', () => {
     it('returns true for HttpError instances', () => {
-      const error = new HttpError(createMockResponse(404, {}));
+      const error = new HttpError(404, '');
 
       expect(isHttpError(error)).toBe(true);
     });

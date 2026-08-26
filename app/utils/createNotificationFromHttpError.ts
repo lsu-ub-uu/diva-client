@@ -20,17 +20,30 @@ import { isHttpError } from '@/cora/httpClient.server';
 import type { Notification } from '@/auth/sessions.server';
 import type { TFunction } from 'i18next';
 
+const isHtmlContent = (data: unknown): boolean => {
+  if (typeof data !== 'string') {
+    return false;
+  }
+  // Check if the string starts with common HTML patterns
+  const htmlPattern = /^\s*<!DOCTYPE|^\s*<html|^\s*<\?xml/i;
+  return htmlPattern.test(data);
+};
+
 export const createNotificationFromHttpError = (
   t: TFunction,
   error: unknown,
 ): Notification => {
   if (isHttpError(error)) {
+    const responseBody = error.body;
+    const shouldShowResponseBody = responseBody && !isHtmlContent(responseBody);
     return {
       severity: 'error',
       summary: t(`divaClient_error${error.status}TitleText`, {
         defaultValue: error.message,
       }),
-      details: t(`divaClient_error${error.status}BodyText`),
+      details: shouldShowResponseBody
+        ? responseBody
+        : t(`divaClient_error${error.status}BodyText`),
     };
   }
 

@@ -77,7 +77,7 @@ describe('renewAuthMiddleware', () => {
     const logErrorMock = vi.spyOn(log, 'error').mockImplementation(() => {});
 
     vi.mocked(renewAuthToken).mockRejectedValue(
-      new HttpError(new Response('Unauthorized', { status: 401 })),
+      new HttpError(401, 'Unauthorized'),
     );
 
     const mockSessionContext: SessionContext = {

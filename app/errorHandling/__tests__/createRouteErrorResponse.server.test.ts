@@ -4,9 +4,7 @@ import { createRouteErrorResponse } from '../createRouteErrorResponse.server';
 
 describe('createRouteErrorResponse', () => {
   it('should return route data response for HttpError status below 500', () => {
-    const httpError = new HttpError(
-      new Response('Unauthorized', { status: 401, statusText: 'Unauthorized' }),
-    );
+    const httpError = new HttpError(401, 'Unauthorized');
 
     expect(createRouteErrorResponse(httpError)).toMatchObject({
       init: {
@@ -17,12 +15,7 @@ describe('createRouteErrorResponse', () => {
   });
 
   it('should return the original HttpError when HttpError has status 500', () => {
-    const httpError = new HttpError(
-      new Response('Internal Server Error', {
-        status: 500,
-        statusText: 'Internal Server Error',
-      }),
-    );
+    const httpError = new HttpError(500, 'Internal Server Error');
 
     expect(createRouteErrorResponse(httpError)).toBe(httpError);
   });
@@ -54,9 +47,7 @@ describe('createRouteErrorResponse', () => {
   it.each([400, 401, 403])(
     'should wrap HttpError for client status codes below 500 (status: %s)',
     (status) => {
-      const httpError = new HttpError(
-        new Response(null, { status, statusText: 'Client Error' }),
-      );
+      const httpError = new HttpError(status, '');
 
       expect(createRouteErrorResponse(httpError)).toMatchObject({
         init: {
@@ -68,9 +59,7 @@ describe('createRouteErrorResponse', () => {
   );
 
   it('should return original HttpError for server status 500', () => {
-    const httpError = new HttpError(
-      new Response(null, { status: 500, statusText: 'Internal Server Error' }),
-    );
+    const httpError = new HttpError(500, '');
 
     expect(createRouteErrorResponse(httpError)).toBe(httpError);
   });
