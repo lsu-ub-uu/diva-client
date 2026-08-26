@@ -46,7 +46,7 @@ export const MemberBar = ({
   const lang = useLanguage();
   const submit = useSubmit();
 
-  if (!member) {
+  if (true) {
     return <div className={styles['diva-bar']} />;
   }
 

@@ -56,30 +56,23 @@ const autocompleteSearchTerms: Record<
     recordType: 'diva-subject',
     searchTerm: 'search.include.includePart.topicSearchTerm.0.value',
   },
-  permissionUnitLinkedRecordIdSearchTerm: {
-    recordType: 'permissionUnit',
-    searchType: 'permissionUnitSearch',
-    searchTerm:
-      'permissionUnitSearch.include.includePart.permissionUnitIdSearchTerm.0.value',
-  },
 };
 
-const hiddenSearchTerms = [
-  'visibilitySearchTerm',
-  'permissionUnitLinkedRecordIdSearchTerm',
-];
+const hiddenSearchTerms = ['visibilitySearchTerm'];
 
 export const createFilters = (
   filterMetadataRefs: BFFMetadataChildReference[],
+  language: 'en' | 'sv',
   dependencies: Dependencies,
 ): FilterDefinition[] => {
   return filterMetadataRefs
-    .map((ref) => createFilter(ref, dependencies))
+    .map((ref) => createFilter(ref, language, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };
 
 const createFilter = (
   filterMetadataRef: BFFMetadataChildReference,
+  language: 'en' | 'sv',
   depencencies: Dependencies,
 ): FilterDefinition | undefined => {
   const metadata = depencencies.metadataPool.get(
@@ -103,6 +96,22 @@ const createFilter = (
           : Number.parseInt(filterMetadataRef.repeatMax),
     },
   };
+
+  if (metadata.nameInData === 'permissionUnitLinkedRecordIdSearchTerm') {
+    const options = Array.from(depencencies.memberPool.values())
+      .filter((member) => member.memberPermissionUnit !== undefined)
+      .map((member) => ({
+        text: member.pageTitle[language],
+        value: `permissionUnit_${member.memberPermissionUnit}`,
+      }));
+
+    return {
+      ...commonValues,
+      textId: 'divaClient_memberText',
+      type: 'collection',
+      options: [{ text: '--', value: '' }, ...options],
+    };
+  }
 
   if (autocompleteSearchTerms[metadata.nameInData] !== undefined) {
     return {

@@ -18,6 +18,7 @@ export const DivaOutputSearchResult = ({
 }: DivaOutputSearchResultProps) => {
   const { t } = useTranslation();
   const output = searchResult.data.output as DivaOutputGroup;
+
   return (
     <div className={styles['layout']}>
       <div>

@@ -7,7 +7,6 @@ import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
-import { getCurrentMember } from '@/utils/getCurrentMember.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from './+types/recordSearch';
@@ -16,16 +15,10 @@ import css from './recordSearch.css?url';
 import { loadSearchView } from './utils/loadSearchView.server';
 import { useTranslation } from 'react-i18next';
 
-export const loader = async ({
-  request,
-  url,
-  context,
-  params,
-}: Route.LoaderArgs) => {
+export const loader = async ({ url, context, params }: Route.LoaderArgs) => {
   try {
     const { t, language } = context.get(i18nContext);
     const dependencies = await getDependencies();
-    const member = getCurrentMember(request, dependencies);
     const { auth } = context.get(sessionContext);
     const recordType = dependencies.recordTypePool.get(params.recordType);
     const searchParams = url.searchParams;
@@ -43,7 +36,6 @@ export const loader = async ({
       searchParams,
       auth,
       language,
-      member,
       t,
     });
 

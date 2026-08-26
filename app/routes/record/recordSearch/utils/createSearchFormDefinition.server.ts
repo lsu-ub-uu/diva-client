@@ -17,6 +17,7 @@ export interface SearchFormDefinition {
 
 export const createSearchFormDefinition = (
   search: BFFSearch,
+  language: 'en' | 'sv',
   dependencies: Dependencies,
 ): SearchFormDefinition => {
   const searchMetadata = dependencies.metadataPool.get(
@@ -38,6 +39,6 @@ export const createSearchFormDefinition = (
   return {
     searchRootName: searchMetadata.nameInData,
     mainSearchTerm,
-    filters: createFilters(filterSearchTermRefs, dependencies),
+    filters: createFilters(filterSearchTermRefs, language, dependencies),
   };
 };

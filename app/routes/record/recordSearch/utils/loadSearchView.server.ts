@@ -1,9 +1,5 @@
 import type { Auth } from '@/auth/Auth';
-import type {
-  BFFMember,
-  BFFRecordType,
-  Dependencies,
-} from '@/cora/bffTypes.server';
+import type { BFFRecordType, Dependencies } from '@/cora/bffTypes.server';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import type { TFunction } from 'i18next';
@@ -29,7 +25,6 @@ interface LoadSearchViewParams {
   searchParams: URLSearchParams;
   auth: Auth | undefined;
   language: 'en' | 'sv';
-  member: BFFMember | undefined;
   t: TFunction;
 }
 
@@ -51,7 +46,6 @@ export const loadSearchView = async ({
   searchParams,
   auth,
   language,
-  member,
   t,
 }: LoadSearchViewParams): Promise<SearchView | undefined> => {
   const search = getSearchForRecordType(dependencies, recordType, auth);
@@ -60,7 +54,11 @@ export const loadSearchView = async ({
     return undefined;
   }
 
-  const searchFormDefinition = createSearchFormDefinition(search, dependencies);
+  const searchFormDefinition = createSearchFormDefinition(
+    search,
+    language,
+    dependencies,
+  );
 
   const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
@@ -83,7 +81,6 @@ export const loadSearchView = async ({
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
-    member,
     activeFilters,
     start,
     rows,
