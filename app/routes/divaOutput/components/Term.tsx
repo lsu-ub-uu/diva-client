@@ -7,9 +7,10 @@ interface TermProps {
   label?: string | Data;
   value?: ReactNode | ReactNode[];
   lang?: LanguageCollection;
+  variant?: 'inline' | 'block';
 }
 
-export const Term = ({ label, value, lang }: TermProps) => {
+export const Term = ({ label, value, lang, variant = 'inline' }: TermProps) => {
   if (!label || !value) {
     return null;
   }
@@ -23,12 +24,17 @@ export const Term = ({ label, value, lang }: TermProps) => {
             key={index}
             {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })}
             dir='auto'
+            className={variant === 'block' ? 'block' : 'inline'}
           >
             {val}
           </dd>
         ))
       ) : (
-        <dd {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })} dir='auto'>
+        <dd
+          {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })}
+          dir='auto'
+          className={variant === 'block' ? 'block' : 'inline'}
+        >
           {value}
         </dd>
       )}

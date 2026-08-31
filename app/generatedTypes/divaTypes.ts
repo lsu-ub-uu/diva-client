@@ -1742,7 +1742,7 @@ export interface NameOrganisationProjectGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface SubjectKeywordGroup {
+export interface SubjectKeywordsGroup {
   topic?: { value: string; __text?: { sv: string; en: string } };
   _lang: LanguageCollection;
   __text?: { sv: string; en: string };
@@ -3353,7 +3353,7 @@ export interface ProjectUpdateGroup {
     _lang: LanguageCollection;
     __text?: { sv: string; en: string };
   }[];
-  subject?: SubjectKeywordGroup[];
+  subject?: SubjectKeywordsGroup[];
   subject_authority_diva?: SubjectSubjectGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
@@ -3870,7 +3870,7 @@ export interface DivaOutputGroup {
     _lang: LanguageCollection;
     __text?: { sv: string; en: string };
   }[];
-  subject?: SubjectKeywordGroup[];
+  subject?: SubjectKeywordsGroup[];
   dateOther_type_patent?: DateOtherPatentGroup;
   name_otherType_patentHolder_type_corporate?: NameOrganisationPatentHolderGroup;
   patentCountry?: {

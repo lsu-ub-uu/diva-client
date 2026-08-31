@@ -1,11 +1,9 @@
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { DateDisplay } from '@/routes/divaOutput/components/DateDisplay';
-import { Location } from '@/routes/divaOutput/components/Location';
 import { Term } from '@/routes/divaOutput/components/Term';
 import { getLanguageTextId } from '@/routes/divaOutput/utils/translateLanguage';
 import { mapISO639_2b_to_ISO639_1 } from '@/utils/mapLanguageCode';
-import { ShoppingCartIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CollapsableText } from '../../../components/CollapsableText/CollapsableText';
 import { ArtisticWorkFields } from './ArtisticWork';
@@ -31,6 +29,7 @@ import {
   getTitleFromTitleInfo,
 } from '@/utils/getRecordTitle';
 import { PresentationImage } from './PresentationImage';
+import { Links } from './Links';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -207,29 +206,8 @@ export const OutputView = ({ data }: OutputViewProps) => {
       <aside className='grid-col-4 grid-col-m-12'>
         <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
+        <Links output={output} />
         <dl>
-          {output.location_displayLabel_orderLink?.map((orderLink, index) => (
-            <Term
-              key={index}
-              label={orderLink.__text?.[language]}
-              value={
-                orderLink && (
-                  <Location location={orderLink} icon={<ShoppingCartIcon />} />
-                )
-              }
-            />
-          ))}
-          {output.location && (
-            <>
-              <dt>{output.location?.[0].__text?.[language]}</dt>
-              {output.location?.map((location, index) => (
-                <dd key={index}>
-                  <Location location={location} />
-                </dd>
-              ))}
-            </>
-          )}
-
           <Term
             label={
               output['accessCondition_authority_kb-se']?.__text?.[language]

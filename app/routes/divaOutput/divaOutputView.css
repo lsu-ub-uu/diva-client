@@ -64,7 +64,10 @@ aside {
 
 dt {
   color: var(--color-label);
-  margin-top: var(--gap-l);
+
+  &:not(:first-child) {
+    margin-top: var(--gap-l);
+  }
 }
 
 dd {
