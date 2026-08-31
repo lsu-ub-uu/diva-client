@@ -26,7 +26,7 @@ import {
   ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 
 import styles from './Pagination.module.css';
 import { IconButton } from '@/components/IconButton/IconButton';

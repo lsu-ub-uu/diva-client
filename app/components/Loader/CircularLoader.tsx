@@ -17,7 +17,7 @@
  */
 
 import styles from './Loader.module.css';
-import { LoaderCircleIcon } from 'lucide-react';
+import { LoaderCircleIcon } from '@/components/Icons/Icons';
 
 export const CircularLoader = () => {
   return <LoaderCircleIcon role='progressbar' className={styles['spinner']} />;

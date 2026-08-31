@@ -27,7 +27,7 @@ import {
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href } from 'react-router';

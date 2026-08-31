@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
 import { Button } from '@/components/Button/Button';
-import { CodeIcon, FunnelIcon, FunnelXIcon } from 'lucide-react';
+import { CodeIcon, FunnelIcon, FunnelXIcon } from '@/components/Icons/Icons';
 import type { BFFSearchResult } from '@/types/record';
 
 interface SearchResultButtonsProps {

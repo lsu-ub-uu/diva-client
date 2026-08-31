@@ -1,6 +1,6 @@
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { Location } from './Location';
-import { ExternalLinkIcon, ShoppingCartIcon } from 'lucide-react';
+import { ExternalLinkIcon, ShoppingCartIcon } from '@/components/Icons/Icons';
 import { Term } from './Term';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/i18n/useLanguage';

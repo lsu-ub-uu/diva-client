@@ -1,4 +1,4 @@
-import { ArchiveRestoreIcon, Trash2Icon } from 'lucide-react';
+import { ArchiveRestoreIcon, Trash2Icon } from '@/components/Icons/Icons';
 import { Alert, AlertTitle } from '../Alert/Alert';
 import { Button } from '../Button/Button';
 import { href, useFetcher } from 'react-router';

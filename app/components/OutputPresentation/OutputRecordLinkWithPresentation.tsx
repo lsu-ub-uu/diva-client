@@ -1,7 +1,7 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { loader as getLinkedRecordLoader } from '@/routes/resourceRoutes/getLinkedRecord';
 import { withBaseName } from '@/utils/withBasename';
-import { LinkIcon } from 'lucide-react';
+import { LinkIcon } from '@/components/Icons/Icons';
 import { useEffect, useState } from 'react';
 import { href, Link } from 'react-router';
 import type { FormSchema } from '../FormGenerator/types';

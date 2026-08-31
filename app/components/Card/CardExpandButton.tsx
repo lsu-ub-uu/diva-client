@@ -5,7 +5,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   TriangleAlertIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import { use, type HTMLProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Card.module.css';

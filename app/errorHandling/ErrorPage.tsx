@@ -27,7 +27,7 @@ import {
   SearchSlashIcon,
   ServerCrashIcon,
   SwordsIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 
 interface RouteErrorPageProps {
   icon: ReactNode;

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './CollapsableText.module.css';
 import type { HTMLAttributes } from 'react';
 import { clsx } from 'clsx';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon } from '@/components/Icons/Icons';
 
 interface ShowMoreOrLessButtonProps extends HTMLAttributes<HTMLButtonElement> {
   expanded: boolean;

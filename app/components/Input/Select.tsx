@@ -20,7 +20,7 @@ import styles from './Input.module.css';
 import clsx from 'clsx';
 import { use, type HTMLProps, type ReactNode, type Ref } from 'react';
 import { FieldContext } from './Fieldset';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon } from '@/components/Icons/Icons';
 
 interface SelectProps extends HTMLProps<HTMLSelectElement> {
   ref?: Ref<HTMLSelectElement>;

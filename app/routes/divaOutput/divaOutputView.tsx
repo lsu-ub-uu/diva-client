@@ -13,7 +13,7 @@ import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
-import { CodeXmlIcon } from 'lucide-react';
+import { CodeXmlIcon } from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 import {
   href,

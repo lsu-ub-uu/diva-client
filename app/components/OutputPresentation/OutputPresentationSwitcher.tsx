@@ -10,7 +10,7 @@ import {
   ChevronUpIcon,
   Maximize2Icon,
   Minimize2Icon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { headlineLevelToTypographyVariant } from '../FormGenerator/formGeneratorUtils/formGeneratorUtils';

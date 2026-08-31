@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import styles from './LinkButton.module.css';
-import { ExternalLinkIcon } from 'lucide-react';
+import { ExternalLinkIcon } from '@/components/Icons/Icons';
 
 interface LinkButtonProps {
   text: string;

@@ -6,7 +6,7 @@ import {
 import { IconButton } from '@/components/IconButton/IconButton';
 import type { Navigation } from '@/data/getNavigation.server';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { MenuIcon, XIcon } from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 import { ColorSchemeSwitcher } from '../ColorSchemeSwitcher';
 import { LanguageSwitcher } from '../LanguageSwitcher';

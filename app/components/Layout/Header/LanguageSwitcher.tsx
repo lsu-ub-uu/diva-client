@@ -22,7 +22,7 @@ import { useFetcher, useLoaderData } from 'react-router';
 
 import { Button } from '@/components/Button/Button';
 import styles from './LanguageSwitcher.module.css';
-import { GlobeIcon } from 'lucide-react';
+import { GlobeIcon } from '@/components/Icons/Icons';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();

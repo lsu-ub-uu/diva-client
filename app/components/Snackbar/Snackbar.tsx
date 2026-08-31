@@ -1,7 +1,7 @@
 import { Alert, type AlertProps } from '@/components/Alert/Alert';
 import { type ReactNode, useEffect, useRef } from 'react';
 
-import { XIcon } from 'lucide-react';
+import { XIcon } from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
 import styles from './Snackbar.module.css';

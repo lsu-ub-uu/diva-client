@@ -29,7 +29,7 @@ import { ValidationErrorSnackbar } from './ValidationErrorSnackbar';
 import { FloatingActionButton } from '@/components/FloatingActionButton/FloatingActionButton';
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import type { BFFDataRecordData } from '@/types/record';
-import { SaveIcon } from 'lucide-react';
+import { SaveIcon } from '@/components/Icons/Icons';
 import { type KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';

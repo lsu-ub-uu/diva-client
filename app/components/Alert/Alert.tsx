@@ -23,7 +23,7 @@ import {
   CircleXIcon,
   InfoIcon,
   TriangleAlertIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import type { ReactNode } from 'react';
 import styles from './Alert.module.css';
 
@@ -73,7 +73,11 @@ export const Alert = ({
   variant = 'standard',
 }: AlertProps) => {
   return (
-    <div className={clsx(styles['alert'], className)} data-severity={severity} data-variant={variant}>
+    <div
+      className={clsx(styles['alert'], className)}
+      data-severity={severity}
+      data-variant={variant}
+    >
       <div className={styles['icon']}>
         {icon === undefined ? <GetIcons severity={severity} /> : icon}
       </div>

@@ -6,7 +6,7 @@ import {
   ChevronDownIcon,
   FileExclamationPointIcon,
   InfoIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 import { formatTimestamp } from '../utils/format';
 import { Term } from './Term';

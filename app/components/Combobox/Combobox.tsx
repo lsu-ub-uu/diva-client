@@ -1,6 +1,6 @@
 import { isTouchDevice } from '@/utils/isTouchDevice';
 import clsx from 'clsx';
-import { ChevronDownIcon, FilterIcon } from 'lucide-react';
+import { ChevronDownIcon, FilterIcon } from '@/components/Icons/Icons';
 import {
   use,
   useEffect,

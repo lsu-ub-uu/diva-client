@@ -17,7 +17,7 @@
  */
 
 import { ErrorPage } from '@/errorHandling/ErrorPage';
-import { ServerCrashIcon } from 'lucide-react';
+import { ServerCrashIcon } from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 
 interface UnhandledErrorPageProps {

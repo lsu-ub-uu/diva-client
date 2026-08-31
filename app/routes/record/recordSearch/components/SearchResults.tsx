@@ -1,6 +1,6 @@
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import { CircleDashedIcon, SearchSlashIcon } from 'lucide-react';
+import { CircleDashedIcon, SearchSlashIcon } from '@/components/Icons/Icons';
 import { useTranslation } from 'react-i18next';
 import type { PerformSearchResult } from '../utils/performSearch.server';
 import { SearchResultItem } from './SearchResultItem';

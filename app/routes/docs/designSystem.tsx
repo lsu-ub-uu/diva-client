@@ -45,7 +45,7 @@ import {
   Trash2Icon,
   UndoIcon,
   XIcon,
-} from 'lucide-react';
+} from '@/components/Icons/Icons';
 import { useState } from 'react';
 import css from './design-system.css?url';
 

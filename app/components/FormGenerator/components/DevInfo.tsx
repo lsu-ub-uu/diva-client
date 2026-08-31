@@ -23,7 +23,7 @@ import { useIsDevMode } from '@/utils/useIsDevMode';
 import { use, useState } from 'react';
 import { useRemixFormContext } from 'remix-hook-form';
 import styles from './DevInfo.module.css';
-import { BracesIcon, CheckIcon, CopyIcon } from 'lucide-react';
+import { BracesIcon, CheckIcon, CopyIcon } from '@/components/Icons/Icons';
 
 interface DevInfoProps {
   label?: string;
