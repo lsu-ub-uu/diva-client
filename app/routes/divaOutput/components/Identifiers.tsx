@@ -27,7 +27,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
               href={`https://urn.kb.se/resolve?urn=${output.recordInfo.urn?.value}`}
               target='_blank'
               rel='noopener noreferrer'
-              className='icon-text-inline'
+              className='icon-text'
             >
               {output.recordInfo.urn?.value} <ExternalLinkIcon />
             </a>

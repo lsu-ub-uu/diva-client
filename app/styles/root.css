@@ -158,14 +158,8 @@ body.dialog-open {
   width: 100%;
 }
 
-.icon-text {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-}
-
-.icon-text-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-s);
+.icon-text svg {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-left: var(--gap-s);
 }
