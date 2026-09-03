@@ -27,7 +27,7 @@ import {
   SearchSlashIcon,
   ServerCrashIcon,
   SwordsIcon,
-} from '@/components/Icons/Icons';
+} from '@/icons/icons';
 
 interface RouteErrorPageProps {
   icon: ReactNode;

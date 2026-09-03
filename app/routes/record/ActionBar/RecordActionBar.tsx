@@ -7,7 +7,7 @@ import {
   FileTextIcon,
   ShredderIcon,
   Trash2Icon,
-} from '@/components/Icons/Icons';
+} from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';

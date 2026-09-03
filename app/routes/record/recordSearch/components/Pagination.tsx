@@ -26,7 +26,7 @@ import {
   ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from '@/components/Icons/Icons';
+} from '@/icons/icons';
 
 import styles from './Pagination.module.css';
 import { IconButton } from '@/components/IconButton/IconButton';

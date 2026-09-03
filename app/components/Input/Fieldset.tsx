@@ -21,7 +21,7 @@ import styles from './Fieldset.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { TriangleAlertIcon } from '@/components/Icons/Icons';
+import { TriangleAlertIcon } from '@/icons/icons';
 
 interface FieldsetProps {
   className?: string;

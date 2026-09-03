@@ -35,11 +35,7 @@ import { MenuItem } from '@/components/Menu/MenuItem';
 import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
 import { useUser } from '@/utils/rootLoaderDataUtils';
-import {
-  CircleUserRoundIcon,
-  LogInIcon,
-  LogOutIcon,
-} from '@/components/Icons/Icons';
+import { CircleUserRoundIcon, LogInIcon, LogOutIcon } from '@/icons/icons';
 import styles from './Login.module.css';
 
 interface LoginMenuProps {

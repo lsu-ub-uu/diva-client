@@ -3,7 +3,7 @@ import { useLanguage } from '@/i18n/useLanguage';
 import { useTranslation } from 'react-i18next';
 import { formatIsbnIsmnLabel } from '../utils/format';
 import { Term } from './Term';
-import { ExternalLinkIcon } from '@/components/Icons/Icons';
+import { ExternalLinkIcon } from '@/icons/icons';
 
 interface IdentifiersProps {
   output: DivaOutputGroup;

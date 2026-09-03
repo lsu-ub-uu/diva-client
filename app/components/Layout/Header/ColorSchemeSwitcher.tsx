@@ -18,7 +18,7 @@
 
 import { IconButton } from '@/components/IconButton/IconButton';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
-import { MoonIcon, SunIcon } from '@/components/Icons/Icons';
+import { MoonIcon, SunIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';

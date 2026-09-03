@@ -5,7 +5,7 @@ import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorRespon
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
-import { SearchIcon } from '@/components/Icons/Icons';
+import { SearchIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import {
   Form,

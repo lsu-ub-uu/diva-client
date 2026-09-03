@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import resourceLinkStyles from './ResourceLink.module.css';
 import type { BFFDataResourceLink } from '@/types/record';
-import { DownloadIcon } from '@/components/Icons/Icons';
+import { DownloadIcon } from '@/icons/icons';
 
 interface ResourceLinkProps {
   component: FormComponentResourceLink;

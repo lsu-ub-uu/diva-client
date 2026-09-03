@@ -2,7 +2,7 @@ import { type HTMLProps } from 'react';
 import { Button } from '../Button/Button';
 
 import clsx from 'clsx';
-import { XIcon } from '@/components/Icons/Icons';
+import { XIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './Popover.module.css';
 import { IconButton } from '../IconButton/IconButton';

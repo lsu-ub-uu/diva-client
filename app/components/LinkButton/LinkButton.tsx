@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import styles from './LinkButton.module.css';
-import { ExternalLinkIcon } from '@/components/Icons/Icons';
+import { ExternalLinkIcon } from '@/icons/icons';
 
 interface LinkButtonProps {
   text: string;

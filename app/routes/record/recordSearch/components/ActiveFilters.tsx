@@ -1,5 +1,5 @@
 import { IconButton } from '@/components/IconButton/IconButton';
-import { XIcon } from '@/components/Icons/Icons';
+import { XIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
 import styles from './ActiveFilters.module.css';

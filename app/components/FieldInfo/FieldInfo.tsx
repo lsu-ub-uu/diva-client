@@ -17,7 +17,7 @@
  */
 
 import { FieldContext } from '@/components/Input/Fieldset';
-import { InfoIcon } from '@/components/Icons/Icons';
+import { InfoIcon } from '@/icons/icons';
 import { use, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';

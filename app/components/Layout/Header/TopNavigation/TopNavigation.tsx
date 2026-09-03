@@ -23,7 +23,7 @@ import {
   PanelsTopLeftIcon,
   TagIcon,
   UsersIcon,
-} from '@/components/Icons/Icons';
+} from '@/icons/icons';
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, useLocation } from 'react-router';

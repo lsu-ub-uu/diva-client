@@ -1,5 +1,5 @@
 import type { BFFMetadata } from '@/cora/bffTypes.server';
-import { SearchIcon, TriangleAlertIcon, XIcon } from '@/components/Icons/Icons';
+import { SearchIcon, TriangleAlertIcon, XIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
 import { useEffect, useRef } from 'react';

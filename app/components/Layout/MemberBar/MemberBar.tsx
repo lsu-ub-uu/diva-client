@@ -23,7 +23,7 @@ import { Button } from '@/components/Button/Button';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import React from 'react';
-import { ChevronDownIcon } from '@/components/Icons/Icons';
+import { ChevronDownIcon } from '@/icons/icons';
 import clsx from 'clsx';
 import { Popover } from '@/components/Popover/Popover';
 

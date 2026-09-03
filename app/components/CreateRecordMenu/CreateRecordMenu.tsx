@@ -19,7 +19,7 @@
 import type { Option } from '@/components';
 import { ActionBar } from '@/routes/record/ActionBar/ActionBar';
 import { ActionBarButton } from '@/routes/record/ActionBar/ActionBarButton';
-import { FilePlusIcon } from '@/components/Icons/Icons';
+import { FilePlusIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Menu, useMenu } from '../Menu/Menu';

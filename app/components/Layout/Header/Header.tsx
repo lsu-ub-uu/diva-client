@@ -9,7 +9,7 @@ import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.ser
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { clsx } from 'clsx';
-import { RefreshCwIcon } from '@/components/Icons/Icons';
+import { RefreshCwIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link, useLocation } from 'react-router';
 import { MemberBar } from '../MemberBar/MemberBar';

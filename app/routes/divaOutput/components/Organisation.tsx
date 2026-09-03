@@ -6,7 +6,7 @@ import type {
 } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { getTitleForOrganization } from '@/utils/getRecordTitle';
-import { ExternalLinkIcon } from '@/components/Icons/Icons';
+import { ExternalLinkIcon } from '@/icons/icons';
 import { Term } from './Term';
 
 export interface OrganisationProps {

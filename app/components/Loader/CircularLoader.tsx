@@ -17,7 +17,7 @@
  */
 
 import styles from './Loader.module.css';
-import { LoaderCircleIcon } from '@/components/Icons/Icons';
+import { LoaderCircleIcon } from '@/icons/icons';
 
 export const CircularLoader = () => {
   return <LoaderCircleIcon role='progressbar' className={styles['spinner']} />;

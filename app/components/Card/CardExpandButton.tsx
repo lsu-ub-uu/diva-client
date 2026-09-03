@@ -1,11 +1,11 @@
-import { ValueIcon } from '@/icons/ValueIcon';
 import { clsx } from 'clsx';
 import {
   ArrowLeftRightIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   TriangleAlertIcon,
-} from '@/components/Icons/Icons';
+  ValueIcon,
+} from '@/icons/icons';
 import { use, type HTMLProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Card.module.css';
