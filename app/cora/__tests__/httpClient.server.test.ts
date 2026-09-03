@@ -23,13 +23,27 @@ const createMockResponse = (
   status: number,
   body: unknown,
   ok?: boolean,
+  contentType = 'application/json',
 ): Response => {
   return {
     ok: ok ?? (status >= 200 && status < 300),
     status,
-    headers: new Headers({ 'Content-Type': 'application/json' }),
+    headers: new Headers({ 'Content-Type': contentType }),
     json: () => Promise.resolve(body),
     text: () => Promise.resolve(JSON.stringify(body)),
+  } as Response;
+};
+
+const createTextMockResponse = (
+  status: number,
+  body: string,
+  contentType: string,
+): Response => {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: new Headers({ 'Content-Type': contentType }),
+    text: () => Promise.resolve(body),
   } as Response;
 };
 
@@ -70,6 +84,51 @@ describe('httpClient', () => {
       const result = await httpClient.get<void>('http://example.com/api');
 
       expect(result.data).toBeUndefined();
+      expect(result.status).toBe(200);
+    });
+
+    it('returns plain text data on success', async () => {
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        createTextMockResponse(200, 'plain response', 'text/plain'),
+      );
+
+      const result = await httpClient.get<string>('http://example.com/api');
+
+      expect(result.data).toBe('plain response');
+      expect(result.status).toBe(200);
+    });
+
+    it('returns xml text data on success', async () => {
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        createTextMockResponse(
+          200,
+          '<response>ok</response>',
+          'application/xml',
+        ),
+      );
+
+      const result = await httpClient.get<string>('http://example.com/api');
+
+      expect(result.data).toBe('<response>ok</response>');
+      expect(result.status).toBe(200);
+    });
+
+    it('parses vendor json content types on success', async () => {
+      const expected = { id: 'record:1' };
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        createMockResponse(
+          200,
+          expected,
+          undefined,
+          'application/vnd.cora.record+json',
+        ),
+      );
+
+      const result = await httpClient.get<{ id: string }>(
+        'http://example.com/api',
+      );
+
+      expect(result.data).toEqual(expected);
       expect(result.status).toBe(200);
     });
 

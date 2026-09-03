@@ -40,6 +40,10 @@ export const isHttpError = (error: unknown): error is HttpError => {
   return error instanceof HttpError;
 };
 
+const isJsonContentType = (contentType: string | null): boolean => {
+  return contentType?.includes('json') ?? false;
+};
+
 const request = async <T>(
   url: string,
   options: RequestInit = {},
@@ -51,7 +55,12 @@ const request = async <T>(
     throw new HttpError(response.status, body);
   }
   const body = await response.text();
-  const data: T = body === '' ? (undefined as T) : JSON.parse(body);
+  const data: T =
+    body === ''
+      ? (undefined as T)
+      : isJsonContentType(response.headers.get('Content-Type'))
+        ? JSON.parse(body)
+        : (body as T);
 
   return {
     data,
