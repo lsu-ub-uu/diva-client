@@ -33,6 +33,15 @@ const createMockResponse = (
   } as Response;
 };
 
+const createEmptyMockResponse = (status: number): Response => {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: new Headers(),
+    text: () => Promise.resolve(''),
+  } as Response;
+};
+
 describe('httpClient', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
@@ -50,6 +59,17 @@ describe('httpClient', () => {
       );
 
       expect(result.data).toEqual(expected);
+      expect(result.status).toBe(200);
+    });
+
+    it('returns undefined data for empty success response', async () => {
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        createEmptyMockResponse(200),
+      );
+
+      const result = await httpClient.get<void>('http://example.com/api');
+
+      expect(result.data).toBeUndefined();
       expect(result.status).toBe(200);
     });
 
@@ -169,6 +189,19 @@ describe('httpClient', () => {
 
       expect(result.data).toEqual(expected);
       expect(result.status).toBe(200);
+    });
+
+    it('returns undefined data for 204 response', async () => {
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        createEmptyMockResponse(204),
+      );
+
+      const result = await httpClient.delete<void>(
+        'http://example.com/api/123',
+      );
+
+      expect(result.data).toBeUndefined();
+      expect(result.status).toBe(204);
     });
 
     it('sends DELETE method', async () => {

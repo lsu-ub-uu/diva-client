@@ -50,7 +50,8 @@ const request = async <T>(
     const body = await response.text();
     throw new HttpError(response.status, body);
   }
-  const data: T = await response.json();
+  const body = await response.text();
+  const data: T = body === '' ? (undefined as T) : JSON.parse(body);
 
   return {
     data,
