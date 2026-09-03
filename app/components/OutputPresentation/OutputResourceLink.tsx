@@ -3,7 +3,7 @@ import type { FormComponentResourceLink } from '../FormGenerator/types';
 import { withBaseName } from '@/utils/withBasename';
 import { href } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { DownloadIcon } from 'lucide-react';
+import { DownloadIcon } from '@/icons/icons';
 
 interface OutputResourceLinkProps {
   component: FormComponentResourceLink;

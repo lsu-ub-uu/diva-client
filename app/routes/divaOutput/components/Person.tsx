@@ -28,7 +28,7 @@ import { useId } from 'react';
 import { href, Link } from 'react-router';
 import { formatPersonName } from '../utils/formatPersonName';
 import { Term } from './Term';
-import { ExternalLinkIcon } from 'lucide-react';
+import { ExternalLinkIcon } from '@/icons/icons';
 import { getTitleForOrganization } from '@/utils/getRecordTitle';
 
 export type PersonType =

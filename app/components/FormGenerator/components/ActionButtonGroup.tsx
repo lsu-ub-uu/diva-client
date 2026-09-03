@@ -18,7 +18,7 @@
  */
 
 import { IconButton } from '@/components/IconButton/IconButton';
-import { ArrowDownIcon, ArrowUpIcon, XIcon } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon, XIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
 import clsx from 'clsx';

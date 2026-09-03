@@ -2,7 +2,7 @@ import { IconButton } from '@/components/IconButton/IconButton';
 import { Popover } from '@/components/Popover/Popover';
 import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
-import { InfoIcon } from 'lucide-react';
+import { InfoIcon } from '@/icons/icons';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatBytes, formatRawBytes, formatTimestamp } from '../utils/format';

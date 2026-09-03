@@ -1,5 +1,5 @@
 import { isTouchDevice } from '@/utils/isTouchDevice';
-import { FilterIcon } from 'lucide-react';
+import { FilterIcon } from '@/icons/icons';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ButtonProps } from '../Button/Button';

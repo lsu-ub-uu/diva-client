@@ -30,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { CirclePlusIcon } from 'lucide-react';
+import { CirclePlusIcon } from '@/icons/icons';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

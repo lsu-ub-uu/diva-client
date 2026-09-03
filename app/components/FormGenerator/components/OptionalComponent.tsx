@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import type { FormComponentWithData } from '../types';
-import { PlusCircleIcon, XIcon } from 'lucide-react';
+import { PlusCircleIcon, XIcon } from '@/icons/icons';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
 

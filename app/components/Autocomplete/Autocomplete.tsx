@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Input } from '../Input/Input';
 import styles from './Autocomplete.module.css';
-import { TextSearchIcon } from 'lucide-react';
+import { TextSearchIcon } from '@/icons/icons';
 import { CircularLoader } from '../Loader/CircularLoader';
 import { FieldContext } from '../Input/Fieldset';
 

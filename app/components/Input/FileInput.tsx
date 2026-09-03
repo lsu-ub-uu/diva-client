@@ -20,7 +20,7 @@ import { type ChangeEvent, use, useState } from 'react';
 import styles from './FileInput.module.css';
 import { useTranslation } from 'react-i18next';
 import { FieldContext } from './Fieldset';
-import { UploadIcon } from 'lucide-react';
+import { UploadIcon } from '@/icons/icons';
 
 interface FileInputProps {
   name: string;

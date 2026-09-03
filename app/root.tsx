@@ -22,7 +22,7 @@ import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
-import { ServerCrashIcon } from 'lucide-react';
+import { ServerCrashIcon } from '@/icons/icons';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,

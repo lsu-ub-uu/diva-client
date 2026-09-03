@@ -23,7 +23,7 @@ import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { OutputRecordLinkWithPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithPresentation';
-import { XIcon } from 'lucide-react';
+import { XIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';

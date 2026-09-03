@@ -1,4 +1,4 @@
-import { ExternalLinkIcon, SquareArrowRightExitIcon } from 'lucide-react';
+import { ExternalLinkIcon, SquareArrowRightExitIcon } from '@/icons/icons';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBlocker, type BlockerFunction } from 'react-router';

@@ -2,7 +2,7 @@ import type { AttachmentGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { createDownloadLinkFromResourceLink } from '@/utils/createDownloadLinkFromResourceLink';
 import type { TFunction } from 'i18next';
-import { DownloadIcon } from 'lucide-react';
+import { DownloadIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { formatBytes } from '../utils/format';
 import { AttachmentDetails } from './AttachmentDetails';

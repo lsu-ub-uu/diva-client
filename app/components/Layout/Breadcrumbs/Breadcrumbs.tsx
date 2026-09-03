@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HouseIcon } from 'lucide-react';
+import { HouseIcon } from '@/icons/icons';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, type UIMatch, useMatches } from 'react-router';
