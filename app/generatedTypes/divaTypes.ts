@@ -497,8 +497,7 @@ export interface RecordInfoOrganisationUpdateGroup {
 }
 
 export type OrganisationTypeCollection =
-  | 'topOrganisation'
-  | 'partOfOrganisation';
+  'topOrganisation' | 'partOfOrganisation';
 
 export type LanguageSweEngCollection = 'swe' | 'eng';
 
@@ -1742,7 +1741,7 @@ export interface NameOrganisationProjectGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface SubjectKeywordsGroup {
+export interface SubjectKeywordGroup {
   topic?: { value: string; __text?: { sv: string; en: string } };
   _lang: LanguageCollection;
   __text?: { sv: string; en: string };
@@ -1816,7 +1815,7 @@ export interface SubjectSubjectGroup {
     };
 
     __text?: { sv: string; en: string };
-  }[];
+  };
   _authority: 'diva';
   __text?: { sv: string; en: string };
 }
@@ -2572,11 +2571,7 @@ export interface CopyrightDateGroup {
 }
 
 export type DateOtherTypePublicationStatusCollection =
-  | 'online'
-  | 'submitted'
-  | 'accepted'
-  | 'inPress'
-  | 'retracted';
+  'online' | 'submitted' | 'accepted' | 'inPress' | 'retracted';
 
 export interface DateOtherPublicationStatusGroup {
   year?: { value: string; __text?: { sv: string; en: string } };
@@ -2640,9 +2635,7 @@ export interface OriginInfoEditionGroup {
 }
 
 export type IdentifierDisplayLabelIsbnIsmnCollection =
-  | 'print'
-  | 'online'
-  | 'undefined';
+  'print' | 'online' | 'undefined';
 
 export type IdentifierTypeDoiIsbnCollection = 'doi' | 'isbn';
 
@@ -3353,7 +3346,7 @@ export interface ProjectUpdateGroup {
     _lang: LanguageCollection;
     __text?: { sv: string; en: string };
   }[];
-  subject?: SubjectKeywordsGroup[];
+  subject?: SubjectKeywordGroup[];
   subject_authority_diva?: SubjectSubjectGroup;
   classification_authority_ssif?: {
     value: SsifCollection;
@@ -3608,13 +3601,7 @@ export interface Binary {
 }
 
 export type BinaryTypeCollection =
-  | 'generic'
-  | 'image'
-  | 'sound'
-  | 'video'
-  | 'document'
-  | 'text'
-  | 'compressed';
+  'generic' | 'image' | 'sound' | 'video' | 'document' | 'text' | 'compressed';
 
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };
@@ -3704,14 +3691,10 @@ export interface BinaryGroup {
 }
 
 export type AttachmentRequestedVisibilityCollection =
-  | 'published'
-  | 'unpublished'
-  | 'confidential';
+  'published' | 'unpublished' | 'confidential';
 
 export type AttachmentVersionCollection =
-  | 'submitted'
-  | 'accepted'
-  | 'published';
+  'submitted' | 'accepted' | 'published';
 
 export type DigitizedCollection = 'true' | 'false';
 
@@ -3870,7 +3853,7 @@ export interface DivaOutputGroup {
     _lang: LanguageCollection;
     __text?: { sv: string; en: string };
   }[];
-  subject?: SubjectKeywordsGroup[];
+  subject?: SubjectKeywordGroup[];
   dateOther_type_patent?: DateOtherPatentGroup;
   name_otherType_patentHolder_type_corporate?: NameOrganisationPatentHolderGroup;
   patentCountry?: {
@@ -3885,7 +3868,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   }[];
-  subject_authority_diva?: SubjectSubjectGroup;
+  subject_authority_diva?: SubjectSubjectGroup[];
   subject_authority_sdg?: SubjectSdgGroup[];
   identifier_type_isbn?: {
     value: string;
@@ -4147,8 +4130,7 @@ export interface GuiElement {
 }
 
 export type PresentationTypeGuiElementCollection =
-  | 'guiElementLink'
-  | 'guiElement';
+  'guiElementLink' | 'guiElement';
 
 export type GuiElementPresentAsCollection = 'link' | 'image';
 
@@ -4211,12 +4193,7 @@ export type PresentationSizeCollection =
   | 'singleInitiallyVisible';
 
 export type SpecifiedHeadlineLevelCollection =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6';
+  'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export interface PresentationChildReferenceGroup {
   textStyle?: {
@@ -4269,19 +4246,10 @@ export interface PresentationChildReferencesGroup {
 }
 
 export type PresentationStyleCollection =
-  | 'frame'
-  | 'inline'
-  | 'specification'
-  | 'highlight'
-  | 'rowBased';
+  'frame' | 'inline' | 'specification' | 'highlight' | 'rowBased';
 
 export type OutputFormatCollection =
-  | 'text'
-  | 'image'
-  | 'link'
-  | 'video'
-  | 'sound'
-  | 'download';
+  'text' | 'image' | 'link' | 'video' | 'sound' | 'download';
 
 export type InputTypeItemCollection = 'input' | 'textarea';
 
@@ -4523,10 +4491,7 @@ export type GroupOfRecordTypeCollection =
   | 'other';
 
 export type RecordTypeCategoryCollection =
-  | 'clientNavigation'
-  | 'categoryOne'
-  | 'categoryTwo'
-  | 'categoryThree';
+  'clientNavigation' | 'categoryOne' | 'categoryTwo' | 'categoryThree';
 
 export interface RecordTypeGroup {
   recordInfo: RecordInfoGroup;

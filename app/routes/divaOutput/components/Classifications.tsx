@@ -46,13 +46,16 @@ export const Classifications = ({ output }: ClassificationsProps) => {
       {output.subject_authority_diva && (
         <SearchLinkList
           pill
-          heading={output.subject_authority_diva.__text?.[language]}
+          heading={output.subject_authority_diva[0].__text?.[language]}
           searchTerm='subjectLinkedRecordIdSearchTerm'
-          items={output.subject_authority_diva?.topic?.map((subject) => ({
+          items={output.subject_authority_diva.map((group) => ({
             label:
-              getTitleForSubject(subject.linkedRecord, language) ||
-              subject.value,
-            href: `diva-subject_${subject.value}`,
+              (group.topic?.linkedRecord &&
+                getTitleForSubject(group.topic.linkedRecord, language)) ||
+              group.topic?.value,
+            href: group.topic?.value
+              ? `diva-subject_${group.topic.value}`
+              : undefined,
           }))}
         />
       )}

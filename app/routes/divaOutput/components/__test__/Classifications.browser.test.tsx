@@ -98,9 +98,9 @@ describe('Classifications', () => {
   it('renders DiVA subjects with linked record title', async () => {
     const output: DivaOutputGroup = {
       ...baseOutput,
-      subject_authority_diva: {
-        topic: [
-          {
+      subject_authority_diva: [
+        {
+          topic: {
             value: '42',
             linkedRecord: {
               subject: {
@@ -122,10 +122,10 @@ describe('Classifications', () => {
               },
             },
           },
-        ],
-        _authority: 'diva',
-        __text: { sv: 'DiVA ämnesord', en: 'DiVA subjects' },
-      },
+          _authority: 'diva',
+          __text: { sv: 'DiVA ämnesord', en: 'DiVA subjects' },
+        },
+      ],
     };
 
     const screen = await renderClassifications(output);
