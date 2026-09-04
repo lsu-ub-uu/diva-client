@@ -28,7 +28,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
   return (
     <div className='expanded-card'>
       <span className='name'>
-        {formatOrganisationName(organisation, language, true)}{' '}
+        {formatOrganisationName(organisation, language)}{' '}
       </span>
       {formatOrganisationRoles(organisation, language)}
       <dl>
@@ -62,7 +62,6 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
 export const formatOrganisationName = (
   organisation: OrganisationProps['organisation'],
   language: 'en' | 'sv',
-  full = false,
 ) => {
   if (organisation.namePart?.value) {
     return organisation.namePart.value;
@@ -71,7 +70,7 @@ export const formatOrganisationName = (
   if ('organisation' in organisation) {
     const displayName = organisation.organisation?.displayName?.[language];
 
-    if (displayName && full) {
+    if (displayName) {
       return displayName;
     }
     const linkedRecord = organisation.organisation?.linkedRecord;

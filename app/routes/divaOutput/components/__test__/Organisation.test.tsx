@@ -85,24 +85,12 @@ describe('Organisation', () => {
           sv: 'Uppsala universitet',
           en: 'Uppsala university',
         },
-        linkedRecord: {
-          organisation: {
-            authority: [
-              {
-                _lang: 'eng',
-                name_type_corporate: {
-                  namePart: { value: 'Linked Organisation' },
-                },
-              },
-            ],
-          },
-        },
       },
     } as NameOrganisationGroup;
 
     render(<Organisation organisation={organisation} />);
 
-    expect(screen.getByText('Linked Organisation')).toBeInTheDocument();
+    expect(screen.getByText('Uppsala university')).toBeInTheDocument();
   });
 
   it('renders organisation displayName for linked organisation when expanded', () => {
