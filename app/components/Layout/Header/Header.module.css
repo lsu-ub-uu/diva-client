@@ -3,6 +3,11 @@
   color: var(--color-label);
 }
 
+.diva-bar {
+  height: var(--gap-l);
+  background-color: var(--color-diva-purple);
+}
+
 .diva-header-bar {
   height: var(--diva-header-bar-height);
   border-bottom: 1px solid var(--color-thin-border);

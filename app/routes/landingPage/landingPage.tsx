@@ -4,7 +4,7 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
+import { getMember } from '@/utils/getMember.server';
 import { SearchIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import {
@@ -36,7 +36,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     const language = i18n.language as 'sv' | 'en';
     const dependencies = await getDependencies();
     const decription = i18n.t('divaClient_landingPageDescriptionText');
-    const member = getMemberFromHostname(request, dependencies);
+    const member = await getMember(request, dependencies);
     const title = member
       ? member.id !== 'diva'
         ? `${i18n.t('divaClient_heroTitleText', { member: member.pageTitle[language] })}`

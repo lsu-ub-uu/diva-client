@@ -30,6 +30,7 @@ import {
 } from '@/utils/getRecordTitle';
 import { PresentationImage } from './PresentationImage';
 import { Links } from './Links';
+import { MemberBranding } from '@/components/MemberBadge/MemberBranding';
 
 interface OutputViewProps {
   data: DivaOutput;
@@ -204,6 +205,9 @@ export const OutputView = ({ data }: OutputViewProps) => {
         </article>
       </main>
       <aside className='grid-col-4 grid-col-m-12'>
+        <MemberBranding
+          permissionUnit={output.recordInfo?.permissionUnit?.value}
+        />
         <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
         <Links output={output} />

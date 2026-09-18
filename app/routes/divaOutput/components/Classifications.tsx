@@ -43,22 +43,23 @@ export const Classifications = ({ output }: ClassificationsProps) => {
             )}
           />
         )}
-      {output.subject_authority_diva && (
-        <SearchLinkList
-          pill
-          heading={output.subject_authority_diva[0].__text?.[language]}
-          searchTerm='subjectLinkedRecordIdSearchTerm'
-          items={output.subject_authority_diva.map((group) => ({
-            label:
-              (group.topic?.linkedRecord &&
-                getTitleForSubject(group.topic.linkedRecord, language)) ||
-              group.topic?.value,
-            href: group.topic?.value
-              ? `diva-subject_${group.topic.value}`
-              : undefined,
-          }))}
-        />
-      )}
+      {output.subject_authority_diva &&
+        output.subject_authority_diva.length > 0 && (
+          <SearchLinkList
+            pill
+            heading={output.subject_authority_diva[0].__text?.[language]}
+            searchTerm='subjectLinkedRecordIdSearchTerm'
+            items={output.subject_authority_diva.map((group) => ({
+              label:
+                (group.topic?.linkedRecord &&
+                  getTitleForSubject(group.topic.linkedRecord, language)) ||
+                group.topic?.value,
+              href: group.topic?.value
+                ? `diva-subject_${group.topic.value}`
+                : undefined,
+            }))}
+          />
+        )}
       {output.subject_authority_sdg &&
         output.subject_authority_sdg.length > 0 && (
           <SearchLinkList

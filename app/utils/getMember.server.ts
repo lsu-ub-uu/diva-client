@@ -29,15 +29,3 @@ export const getMember = async (
 
   return member;
 };
-
-export const getMemberByPermissionUnit = (
-  members: BFFMember[],
-  permissionUnit: string | undefined,
-): BFFMember | undefined => {
-  if (!permissionUnit) {
-    return undefined;
-  }
-  return members.find(
-    (member) => member.memberPermissionUnit === permissionUnit,
-  );
-};

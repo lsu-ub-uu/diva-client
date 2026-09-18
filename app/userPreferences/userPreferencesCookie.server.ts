@@ -21,6 +21,7 @@ import { createCookie } from 'react-router';
 export interface UserPreferences {
   language?: 'sv' | 'en' | 'cimode';
   colorScheme?: 'light' | 'dark';
+  member?: string;
 }
 
 export const userPreferencesCookie = createCookie('userPreferences', {

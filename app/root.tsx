@@ -58,7 +58,7 @@ import {
   serializeUserPreferencesCookie,
   type UserPreferences,
 } from './userPreferences/userPreferencesCookie.server';
-import { getMemberFromHostname } from './utils/getMemberFromHostname';
+import { getMember } from './utils/getMember.server';
 import { NotificationSnackbar } from './utils/NotificationSnackbar';
 import { useDevModeSearchParam } from './utils/useDevModeSearchParam';
 import { withBaseName } from './utils/withBasename';
@@ -69,7 +69,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   try {
     const { auth, notification } = context.get(sessionContext);
     const dependencies = await getDependencies();
-    const member = getMemberFromHostname(request, dependencies);
+    const member = await getMember(request, dependencies);
+    const members = Array.from(dependencies.memberPool.values());
     const loginUnits = getLoginUnits(dependencies, member?.loginUnitIds);
     const { exampleUsers, applicationVersion } = await getDeploymentInfo();
     const locale = context.get(i18nContext).language;
@@ -91,6 +92,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       loginUnits,
       exampleUsers,
       member,
+      members,
       navigation,
       userPreferences,
       notification,
@@ -114,6 +116,10 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (intent === 'changeColorScheme') {
     return await changeColorScheme(userPreferences, formData);
+  }
+
+  if (intent === 'changeMember') {
+    return await changeMember(userPreferences, formData);
   }
 
   return {};
@@ -152,6 +158,26 @@ const changeColorScheme = async (
           'Set-Cookie': await serializeUserPreferencesCookie({
             ...userPreferences,
             colorScheme,
+          }),
+        },
+      },
+    );
+  }
+};
+
+const changeMember = async (
+  userPreferences: UserPreferences,
+  formData: FormData,
+) => {
+  const member = formData.get('member');
+  if (typeof member === 'string' && member.length > 0) {
+    return data(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await serializeUserPreferencesCookie({
+            ...userPreferences,
+            member,
           }),
         },
       },
@@ -257,6 +283,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   const {
     userPreferences,
     member,
+    members,
     loginUnits,
     exampleUsers,
     user,
@@ -283,6 +310,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       <Header
         className='header'
         member={member}
+        members={members}
         user={user}
         userPreferences={userPreferences}
         loginUnits={loginUnits}

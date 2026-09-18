@@ -15,3 +15,7 @@
     line-height: var(--item-title-line-height);
   }
 }
+
+.member-badge-row:not(:empty) {
+  margin-bottom: var(--gap-xs);
+}

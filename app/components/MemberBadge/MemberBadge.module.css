@@ -1,0 +1,33 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  padding: var(--gap-s) var(--gap);
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--badge-color) 45%, transparent);
+  background: var(--badge-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  width: 80px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  height: 1rem;
+}
+
+.logo svg,
+.logo img {
+  height: 100%;
+  width: auto;
+  color: var(--badge-text-color);
+}
+
+.label {
+  color: var(--color-text);
+  padding-inline: var(--gap);
+}

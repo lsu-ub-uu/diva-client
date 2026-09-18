@@ -12,17 +12,18 @@ import { clsx } from 'clsx';
 import { RefreshCwIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link, useLocation } from 'react-router';
-import { MemberBar } from '../MemberBar/MemberBar';
 import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
 import styles from './Header.module.css';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import LoginMenu from './Login/LoginMenu';
+import { MemberPicker } from './MemberPicker';
 import { MobileNavigation } from './MobileNavigation/MobileNavigation';
 import { TopNavigation } from './TopNavigation/TopNavigation';
 
 interface HeaderProps {
   className?: string;
   member: BFFMember | undefined;
+  members: BFFMember[];
   user: User | undefined;
   userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
@@ -33,7 +34,7 @@ interface HeaderProps {
 export const Header = ({
   className,
   member,
-  user,
+  members,
   userPreferences,
   loginUnits,
   exampleUsers,
@@ -47,7 +48,7 @@ export const Header = ({
   return (
     <header className={clsx(styles.header, className)}>
       <NavigationLoader />
-      <MemberBar member={member} loggedIn={user !== undefined} />
+      <div className={styles['diva-bar']} />
       <div className={clsx(styles['diva-header-bar'])}>
         <div className={clsx(styles['header-bar-content'], 'grid')}>
           <div className={styles['header-bar-left']}>
@@ -64,6 +65,7 @@ export const Header = ({
             <TopNavigation navigation={navigation} />
           </div>
           <div className={styles['header-bar-right']}>
+            <MemberPicker member={member} members={members} />
             {devMode && (
               <Form
                 action={href('/refreshDefinitions')}

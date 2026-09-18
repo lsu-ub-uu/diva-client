@@ -9,6 +9,7 @@ import { RelatedBook } from './RelatedBook/RelatedBook';
 import { InfoBox } from './InfoBox/InfoBox';
 import { useTranslation } from 'react-i18next';
 import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
+import { MemberBadge } from '@/components/MemberBadge/MemberBadge';
 
 interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
@@ -36,6 +37,11 @@ export const DivaOutputSearchResult = ({
         <InfoBox output={output} />
         <RelatedBook relatedBook={output.relatedItem_type_book} />
         <Related related={output.related} />
+        <div className={styles['member-badge-row']}>
+          <MemberBadge
+            permissionUnit={output.recordInfo?.permissionUnit?.value}
+          />
+        </div>
       </div>
       <Attachments attachments={output.attachments} />
     </div>
