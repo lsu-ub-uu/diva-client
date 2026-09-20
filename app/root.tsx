@@ -282,8 +282,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
   const {
     userPreferences,
-    member,
-    members,
     loginUnits,
     exampleUsers,
     user,
@@ -309,8 +307,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
       )}
       <Header
         className='header'
-        member={member}
-        members={members}
         user={user}
         userPreferences={userPreferences}
         loginUnits={loginUnits}

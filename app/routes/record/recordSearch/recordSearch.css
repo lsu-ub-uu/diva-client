@@ -5,6 +5,10 @@
   padding-bottom: var(--gap-xl);
 }
 
+.search-member-picker {
+  display: flex;
+}
+
 .active-filters-wrapper {
   display: flex;
   justify-content: space-between;

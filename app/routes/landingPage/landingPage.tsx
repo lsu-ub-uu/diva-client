@@ -23,6 +23,8 @@ import type { Route } from './+types/landingPage';
 import { Hero } from './Hero';
 import css from './landingPage.css?url';
 import { NavigationCard } from './NavigationCard';
+import { MemberPicker } from '@/components/MemberPicker/MemberPicker';
+import { useLanguage } from '@/i18n/useLanguage';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   try {
@@ -94,9 +96,50 @@ export default function LandingPage({ loaderData }: Route.ComponentProps) {
   const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root');
   const navigation = rootLoaderData?.navigation;
   const { t } = useTranslation();
+  const language = useLanguage();
+  const langKey = language === 'sv' ? 'swe' : 'eng';
+  const memberLinks = (member?.links ?? []).filter(
+    (link) =>
+      link.lang === langKey &&
+      (link.visibility === 'public' || link.visibility === 'all'),
+  );
 
   return (
-    <div className='landing-main'>
+    <div
+      className='landing-main'
+      style={
+        {
+          '--member-background-color': member?.backgroundColor ?? 'transparent',
+          '--member-text-color': member?.textColor ?? 'inherit',
+        } as React.CSSProperties
+      }
+    >
+      <div className='landing-member-bar'>
+        {member?.logo?.svg && (
+          <div
+            className='landing-member-logo'
+            role='img'
+            aria-label={`${member.pageTitle[language]} logo`}
+            dangerouslySetInnerHTML={{ __html: member.logo.svg }}
+          />
+        )}
+        <div className='landing-member-picker grid'>
+          <MemberPicker />
+          {memberLinks.length > 0 && (
+            <nav className='landing-member-links'>
+              <ul>
+                {memberLinks.map((link) => (
+                  <li key={link.url}>
+                    <a href={link.url} target='_blank' rel='noreferrer'>
+                      {link.displayLabel}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+        </div>
+      </div>
       <main>
         <Hero hero={member.hero}>
           <Form

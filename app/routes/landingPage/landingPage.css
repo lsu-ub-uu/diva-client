@@ -7,6 +7,69 @@
   text-align: center;
 }
 
+.landing-member-bar {
+  position: relative;
+  padding-block: var(--gap-l);
+  background-color: var(--member-background-color);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.landing-member-logo {
+  height: 4rem;
+  padding: var(--gap-s) 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 20%;
+  pointer-events: none;
+  color: var(--member-text-color);
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.landing-member-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+
+  button {
+    font-size: var(--font-size-s);
+  }
+
+  button[popovertarget],
+  button[popovertarget]:hover {
+    background: transparent;
+    color: var(--member-text-color);
+    border-color: var(--member-text-color);
+  }
+}
+
+.landing-member-links ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-l);
+  margin: 0;
+  padding: 0;
+}
+
+.landing-member-links a {
+  color: var(--member-text-color);
+  text-decoration: none;
+}
+
+.landing-member-links a:hover {
+  text-decoration: underline;
+}
+
 .hero-container {
   width: 100vw;
   height: 55vh;

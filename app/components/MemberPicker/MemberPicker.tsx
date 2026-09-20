@@ -3,14 +3,10 @@ import { Button } from '@/components/Button/Button';
 import { Popover } from '@/components/Popover/Popover';
 import { useLanguage } from '@/i18n/useLanguage';
 import { CheckIcon, ChevronDownIcon } from '@/icons/icons';
+import { useAllMembers, useMember } from '@/utils/rootLoaderDataUtils';
 import clsx from 'clsx';
 import { useFetcher } from 'react-router';
 import styles from './MemberPicker.module.css';
-
-interface MemberPickerProps {
-  member: BFFMember | undefined;
-  members: BFFMember[];
-}
 
 const POPOVER_ID = 'member-picker-popover';
 
@@ -46,8 +42,10 @@ const MemberLogoTile = ({
     </span>
   ) : null;
 
-export const MemberPicker = ({ member, members }: MemberPickerProps) => {
+export const MemberPicker = () => {
   const language = useLanguage();
+  const member = useMember();
+  const members = useAllMembers();
   const fetcher = useFetcher();
 
   const pendingMember = fetcher.formData?.get('member');

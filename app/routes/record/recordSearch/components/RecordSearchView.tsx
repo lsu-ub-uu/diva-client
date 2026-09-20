@@ -7,6 +7,7 @@ import {
   DrawerDialog,
   useDrawerDialog,
 } from '@/components/DrawerDialog/DrawerDialog';
+import { MemberPicker } from '@/components/MemberPicker/MemberPicker';
 
 interface RecordSearchViewProps {
   searchView: SearchView;
@@ -73,6 +74,9 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
   return (
     <>
       <main className='grid-col-9 grid-col-l-12 search-main'>
+        <div className='search-member-picker'>
+          <MemberPicker />
+        </div>
         <RecordSearchMain
           query={query}
           onQueryChange={handleQueryChange}

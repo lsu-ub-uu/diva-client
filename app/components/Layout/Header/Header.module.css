@@ -4,7 +4,7 @@
 }
 
 .diva-bar {
-  height: var(--gap-l);
+  height: 0;
   background-color: var(--color-diva-purple);
 }
 

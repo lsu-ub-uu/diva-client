@@ -2,7 +2,6 @@ import DivaLogo from '@/assets/divaLogo.svg?react';
 import type { User } from '@/auth/createUser';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import type { BFFMember } from '@/cora/bffTypes.server';
 import type { ExampleUser } from '@/cora/getDeploymentInfo.server';
 import type { Navigation } from '@/data/getNavigation.server';
 import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.server';
@@ -16,14 +15,11 @@ import { ColorSchemeSwitcher } from './ColorSchemeSwitcher';
 import styles from './Header.module.css';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import LoginMenu from './Login/LoginMenu';
-import { MemberPicker } from './MemberPicker';
 import { MobileNavigation } from './MobileNavigation/MobileNavigation';
 import { TopNavigation } from './TopNavigation/TopNavigation';
 
 interface HeaderProps {
   className?: string;
-  member: BFFMember | undefined;
-  members: BFFMember[];
   user: User | undefined;
   userPreferences: UserPreferences;
   loginUnits: LoginDefinition[];
@@ -33,8 +29,6 @@ interface HeaderProps {
 
 export const Header = ({
   className,
-  member,
-  members,
   userPreferences,
   loginUnits,
   exampleUsers,
@@ -65,7 +59,6 @@ export const Header = ({
             <TopNavigation navigation={navigation} />
           </div>
           <div className={styles['header-bar-right']}>
-            <MemberPicker member={member} members={members} />
             {devMode && (
               <Form
                 action={href('/refreshDefinitions')}
