@@ -14,9 +14,15 @@ The development of Cora is also continuously made available as open source on [G
 
 ## REST API
 
-Documentation for the DiVA REST API is available here: [REST](/rest/).
+Documentation for the DiVA REST API is available here: [REST](/rest/). See also [API Helper](/api-helper) for further documentation.
 
 The API provides, in the same way as the client, access to create, read, update, delete, validate, and index records, as well as upload and download binaries. The API supports both XML and JSON.
+
+## API Helper
+
+This is a helper application that aims to help developers working with the DiVA REST API by visualizing the metadata and request configuration.
+
+It can be found here: [API Helper](/api-helper)
 
 ## JSClient
 

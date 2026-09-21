@@ -14,9 +14,15 @@ Utvecklingen av Cora görs också löpande tillgänglig som öppen källkod på 
 
 ## REST-API
 
-Dokumentation för DiVAs REST API hittar du här: [REST](/rest/).
+Dokumentation för DiVAs REST API hittar du här: [REST](/rest/). Se även [API Helper](/api-helper) för ytterligare dokumentation.
 
 API:et ger på samma sätt som klienten tillgång till att skapa, läsa, uppdatera, ta bort, validera och indexera poster. Samt att ladda upp och ner binärer. API:et stödjer både XML och JSON.
+
+## API Helper
+
+Detta är en applikation som har målet att hjälpa utvecklare som arbetar mot DiVAs REST-API genom att visualisera metadat och anropskonfigurationer.
+
+API Helper hittar du här: [API Helper](/api-helper)
 
 ## JSClient
 
