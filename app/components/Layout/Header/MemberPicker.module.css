@@ -13,7 +13,6 @@
   border: 1px solid var(--color-thin-border);
   background: var(--color-background);
   box-shadow: var(--elevation-1, 0 1px 2px rgb(0 0 0 / 8%));
-  font-weight: 600;
   transition:
     box-shadow 0.15s ease,
     border-color 0.15s ease,
@@ -140,7 +139,6 @@
 }
 
 .option-label {
-  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
