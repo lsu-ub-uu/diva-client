@@ -1,7 +1,8 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
 import type { loader as getLinkedRecordLoader } from '@/routes/resourceRoutes/getLinkedRecord';
 import { withBaseName } from '@/utils/withBasename';
-import { LinkIcon } from '@/icons/icons';
+import type { ReactNode } from 'react';
+import { DownloadIcon, LinkIcon } from '@/icons/icons';
 import { useEffect, useState } from 'react';
 import { href, Link } from 'react-router';
 import type { FormSchema } from '../FormGenerator/types';
@@ -18,6 +19,7 @@ interface OutputRecordLinkWithPresentationProps {
   linkedRecordId: string;
   presentationRecordLinkId: string;
   hasReadAccess: boolean;
+  actionButtons?: ReactNode;
 }
 
 export const OutputRecordLinkWithPresentation = ({
@@ -25,6 +27,7 @@ export const OutputRecordLinkWithPresentation = ({
   linkedRecordId,
   presentationRecordLinkId,
   hasReadAccess,
+  actionButtons,
 }: OutputRecordLinkWithPresentationProps) => {
   const [data, setData] = useState<LinkedRecordLoaderData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,19 +87,22 @@ export const OutputRecordLinkWithPresentation = ({
       <div className={styles['linked-presentation']}>
         <OutputPresentation formSchema={presentation} data={dataGroup} />
       </div>
-      {hasReadAccess && (
-        <IconButton
-          size='small'
-          as={Link}
-          tooltip={`${linkedRecordType}/${linkedRecordId}`}
-          to={href('/:recordType/:recordId', {
-            recordType: linkedRecordType,
-            recordId: linkedRecordId,
-          })}
-        >
-          <LinkIcon />
-        </IconButton>
-      )}
+      <div className={styles['action-buttons']}>
+        {hasReadAccess && (
+          <IconButton
+            size='small'
+            as={Link}
+            tooltip={`${linkedRecordType}/${linkedRecordId}`}
+            to={href('/:recordType/:recordId', {
+              recordType: linkedRecordType,
+              recordId: linkedRecordId,
+            })}
+          >
+            <LinkIcon />
+          </IconButton>
+        )}
+        {actionButtons}
+      </div>
     </div>
   );
 };

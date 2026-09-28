@@ -60,3 +60,8 @@
   font-style: italic;
   font-size: var(--font-size-s);
 }
+
+.action-buttons {
+  display: grid;
+  gap: var(--gap-s);
+}

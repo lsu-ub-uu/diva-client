@@ -6,7 +6,6 @@ import type { Navigation } from '@/data/getNavigation.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import clsx from 'clsx';
 import {
-  BookCheckIcon,
   BookOpenIcon,
   BuildingIcon,
   ChartGanttIcon,
@@ -21,6 +20,7 @@ import {
   NotebookTabsIcon,
   PaletteIcon,
   PanelsTopLeftIcon,
+  PublishIcon,
   TagIcon,
   UsersIcon,
 } from '@/icons/icons';
@@ -49,7 +49,7 @@ export const icons: Record<string, ReactNode> = {
   'diva-programme': <GraduationCapIcon />,
   'diva-series': <LibraryIcon />,
   'diva-localLabel': <TagIcon />,
-  'diva-publisher': <BookCheckIcon />,
+  'diva-publisher': <PublishIcon />,
   'diva-funder': <HandCoinsIcon />,
   'diva-member': <MonitorCogIcon />,
   'diva-clientContent': <PanelsTopLeftIcon />,

@@ -1,8 +1,8 @@
 import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
-  BookCheckIcon,
-  BookDashedIcon,
+  PublishIcon,
+  UnpublishIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
@@ -141,7 +141,7 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
         <ActionBarButton
           onAction={publishRecord}
           disabled={isPublishing || isUnpublishing}
-          icon={<BookCheckIcon />}
+          icon={<PublishIcon />}
           pending={isPublishing}
         >
           {t('divaClient_publishRecordText')}
@@ -151,7 +151,7 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
         <ActionBarButton
           onAction={unpublishRecord}
           disabled={isPublishing || isUnpublishing}
-          icon={<BookDashedIcon />}
+          icon={<UnpublishIcon />}
           pending={isUnpublishing}
         >
           {t('divaClient_unpublishRecordText')}

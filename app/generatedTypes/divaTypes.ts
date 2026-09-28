@@ -1816,7 +1816,7 @@ export interface SubjectSubjectGroup {
     };
 
     __text?: { sv: string; en: string };
-  }[];
+  };
   _authority: 'diva';
   __text?: { sv: string; en: string };
 }
@@ -3885,7 +3885,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   }[];
-  subject_authority_diva?: SubjectSubjectGroup;
+  subject_authority_diva?: SubjectSubjectGroup[];
   subject_authority_sdg?: SubjectSdgGroup[];
   identifier_type_isbn?: {
     value: string;
